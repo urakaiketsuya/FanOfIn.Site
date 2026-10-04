@@ -98,3 +98,9 @@ evidence-gathering step is to refresh earlier pending tournaments and community
 deck sources through their existing ingestion workflows, then reassess only
 packages with additional independent lists. The amount of useful new evidence
 is unknown; this check does not establish that none exists elsewhere.
+
+A subsequent [source refresh](HELD_THEME_SOURCE_REFRESH.md) checked the recent
+unpublished tournament range and community decks. It recommends Tower for a
+future reviewed-package publication based on additional community evidence;
+Wolves and Officer remain holds. The published allowlist is unchanged by that
+source-refresh report.

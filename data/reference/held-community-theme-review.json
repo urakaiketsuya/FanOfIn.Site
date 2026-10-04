@@ -1,0 +1,5083 @@
+{
+  "version": 1,
+  "tournamentIndexSha256": "cc4ce74ec16bc446e54eaf87c4aacbb3aa8a3f59de973ffb761273e0bbf18e37",
+  "tournamentComparison": [
+    {
+      "id": "discorp-tower",
+      "tournament": [
+        {
+          "deckId": "64496:1219",
+          "main": [
+            {
+              "name": "Break the Line",
+              "quantity": 2
+            },
+            {
+              "name": "Cell Production",
+              "quantity": 4
+            },
+            {
+              "name": "Charged Directive",
+              "quantity": 4
+            },
+            {
+              "name": "Counter Interference",
+              "quantity": 2
+            },
+            {
+              "name": "Dawn of Ashes",
+              "quantity": 1
+            },
+            {
+              "name": "Delivery Droid",
+              "quantity": 2
+            },
+            {
+              "name": "Gray Lupindroid",
+              "quantity": 4
+            },
+            {
+              "name": "Harvester Mk II",
+              "quantity": 2
+            },
+            {
+              "name": "Manufacture Cell",
+              "quantity": 4
+            },
+            {
+              "name": "Nightframe, Hound's Bike",
+              "quantity": 1
+            },
+            {
+              "name": "Overcharged Droid",
+              "quantity": 4
+            },
+            {
+              "name": "Shieldroid",
+              "quantity": 4
+            },
+            {
+              "name": "Sinon, Babelia's Companion",
+              "quantity": 4
+            },
+            {
+              "name": "Sturdy Droid",
+              "quantity": 4
+            },
+            {
+              "name": "Topsy Decree",
+              "quantity": 3
+            },
+            {
+              "name": "Tower of Dis",
+              "quantity": 2
+            },
+            {
+              "name": "Trained Birdroid",
+              "quantity": 4
+            },
+            {
+              "name": "Unbroken Droid",
+              "quantity": 2
+            },
+            {
+              "name": "Uncanny Realization",
+              "quantity": 4
+            },
+            {
+              "name": "Undeniable Truth",
+              "quantity": 2
+            },
+            {
+              "name": "Virgil, Altered Future",
+              "quantity": 4
+            }
+          ],
+          "material": [
+            {
+              "name": "Backup Charger",
+              "quantity": 1
+            },
+            {
+              "name": "Fabled Ruby Fatestone",
+              "quantity": 1
+            },
+            {
+              "name": "Fire Resonance Bauble",
+              "quantity": 1
+            },
+            {
+              "name": "Guo Jia, Chosen Disciple",
+              "quantity": 1
+            },
+            {
+              "name": "Lorraine, Arclight Saber",
+              "quantity": 1
+            },
+            {
+              "name": "Mercurial Heart",
+              "quantity": 1
+            },
+            {
+              "name": "Safeguard Amulet",
+              "quantity": 1
+            },
+            {
+              "name": "Smoke Bombs",
+              "quantity": 1
+            },
+            {
+              "name": "Spirit of Purity",
+              "quantity": 1
+            },
+            {
+              "name": "Tariff Ring",
+              "quantity": 1
+            },
+            {
+              "name": "Viridian Protective Trinket",
+              "quantity": 1
+            },
+            {
+              "name": "Wind Resonance Bauble",
+              "quantity": 1
+            }
+          ],
+          "signature": "a0dee83751d32109272e8cf32786fdff0dcb31830d0f498c1977d61ecb4263f3"
+        },
+        {
+          "deckId": "64888:17615",
+          "main": [
+            {
+              "name": "Bedlam Borough",
+              "quantity": 4
+            },
+            {
+              "name": "Cellforger Droid",
+              "quantity": 4
+            },
+            {
+              "name": "Charged Directive",
+              "quantity": 3
+            },
+            {
+              "name": "Deflecting Edge",
+              "quantity": 3
+            },
+            {
+              "name": "Fairy Whispers",
+              "quantity": 4
+            },
+            {
+              "name": "Haze Droid",
+              "quantity": 4
+            },
+            {
+              "name": "Manufacture Cell",
+              "quantity": 4
+            },
+            {
+              "name": "Nightframe, Hound's Bike",
+              "quantity": 2
+            },
+            {
+              "name": "Overlord Mk III",
+              "quantity": 2
+            },
+            {
+              "name": "Rallied Advance",
+              "quantity": 4
+            },
+            {
+              "name": "Resolute Stand",
+              "quantity": 2
+            },
+            {
+              "name": "Second Wind",
+              "quantity": 4
+            },
+            {
+              "name": "Sinon, Babelia's Companion",
+              "quantity": 4
+            },
+            {
+              "name": "Tower of Dis",
+              "quantity": 3
+            },
+            {
+              "name": "Turbo Charge",
+              "quantity": 3
+            },
+            {
+              "name": "Unbroken Droid",
+              "quantity": 3
+            },
+            {
+              "name": "Uncanny Realization",
+              "quantity": 4
+            },
+            {
+              "name": "Virgil, Altered Future",
+              "quantity": 4
+            },
+            {
+              "name": "Winbless Hurricane Farm",
+              "quantity": 3
+            }
+          ],
+          "material": [
+            {
+              "name": "Backup Charger",
+              "quantity": 1
+            },
+            {
+              "name": "Fire Resonance Bauble",
+              "quantity": 1
+            },
+            {
+              "name": "Grand Crusader's Ring",
+              "quantity": 1
+            },
+            {
+              "name": "Lorraine, Blademaster",
+              "quantity": 1
+            },
+            {
+              "name": "Lorraine, Wandering Warrior",
+              "quantity": 1
+            },
+            {
+              "name": "Safeguard Amulet",
+              "quantity": 1
+            },
+            {
+              "name": "Smoke Bombs",
+              "quantity": 1
+            },
+            {
+              "name": "Spirit of Wind",
+              "quantity": 1
+            },
+            {
+              "name": "Sword of Seeking",
+              "quantity": 1
+            },
+            {
+              "name": "Tariff Ring",
+              "quantity": 1
+            },
+            {
+              "name": "Water Resonance Bauble",
+              "quantity": 1
+            },
+            {
+              "name": "Wind Resonance Bauble",
+              "quantity": 1
+            }
+          ],
+          "signature": "b538a68c387b8a1df4be281ce1c74ad29fa2c19bc8f8433151fd649279349b55"
+        }
+      ],
+      "communityDistinctLists": 21,
+      "combinedDistinctLists": 22,
+      "duplicateCommunityDeckIds": [
+        "shoutatyourdecks:11da0750-df37-4cf6-82c0-127283e069fa"
+      ]
+    },
+    {
+      "id": "wolf-refinement",
+      "tournament": [
+        {
+          "deckId": "22485:15045",
+          "main": [
+            {
+              "name": "Academy Guide",
+              "quantity": 2
+            },
+            {
+              "name": "Baby Red Slime",
+              "quantity": 3
+            },
+            {
+              "name": "Blazing Direwolf",
+              "quantity": 2
+            },
+            {
+              "name": "Cremation Ritual",
+              "quantity": 3
+            },
+            {
+              "name": "Crystallized Destiny",
+              "quantity": 3
+            },
+            {
+              "name": "Dire Requiem",
+              "quantity": 4
+            },
+            {
+              "name": "Direwolf Alpha",
+              "quantity": 3
+            },
+            {
+              "name": "Empowering Prayer",
+              "quantity": 2
+            },
+            {
+              "name": "Energetic Beastbonder",
+              "quantity": 1
+            },
+            {
+              "name": "Flamebreak Chorus",
+              "quantity": 2
+            },
+            {
+              "name": "Forest Cake",
+              "quantity": 3
+            },
+            {
+              "name": "Glow Forth",
+              "quantity": 2
+            },
+            {
+              "name": "Gray Wolf",
+              "quantity": 2
+            },
+            {
+              "name": "Hasty Messenger",
+              "quantity": 4
+            },
+            {
+              "name": "Heated Vengeance",
+              "quantity": 4
+            },
+            {
+              "name": "Lavaplume Fatestone",
+              "quantity": 4
+            },
+            {
+              "name": "Limitless Slime",
+              "quantity": 3
+            },
+            {
+              "name": "Restorative Flame",
+              "quantity": 2
+            },
+            {
+              "name": "Searing Truth",
+              "quantity": 4
+            },
+            {
+              "name": "Shatter the Brittle",
+              "quantity": 2
+            },
+            {
+              "name": "Slime Eruption",
+              "quantity": 3
+            },
+            {
+              "name": "Young Beastbonder",
+              "quantity": 2
+            }
+          ],
+          "material": [
+            {
+              "name": "Band of Burning Verdict",
+              "quantity": 1
+            },
+            {
+              "name": "Beastbond Ears",
+              "quantity": 1
+            },
+            {
+              "name": "Fabled Ruby Fatestone",
+              "quantity": 1
+            },
+            {
+              "name": "Fated Keepsake",
+              "quantity": 1
+            },
+            {
+              "name": "Grand Crusader's Ring",
+              "quantity": 1
+            },
+            {
+              "name": "Guo Jia, Blessed Scion",
+              "quantity": 1
+            },
+            {
+              "name": "Guo Jia, Chosen Disciple",
+              "quantity": 1
+            },
+            {
+              "name": "Guo Jia, Heaven's Favored",
+              "quantity": 1
+            },
+            {
+              "name": "Melodious Flute",
+              "quantity": 1
+            },
+            {
+              "name": "Portentous Tanggu",
+              "quantity": 1
+            },
+            {
+              "name": "Primal Whip",
+              "quantity": 1
+            },
+            {
+              "name": "Spirit of Fire",
+              "quantity": 1
+            }
+          ],
+          "signature": "92927703d176d6a8d51c6f5bfb684916a31ccf8800f7c4e5d68ca45fdfcbfb9e"
+        }
+      ],
+      "communityDistinctLists": 3,
+      "combinedDistinctLists": 4,
+      "duplicateCommunityDeckIds": []
+    },
+    {
+      "id": "discorp-officer",
+      "tournament": [],
+      "communityDistinctLists": 0,
+      "combinedDistinctLists": 0,
+      "duplicateCommunityDeckIds": []
+    }
+  ],
+  "generatedAt": "2026-10-04T19:38:17.999Z",
+  "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
+  "definitions": [
+    {
+      "id": "discorp-tower",
+      "name": "DisCorp Tower Automaton package",
+      "kind": "theme",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "names": [
+              "Biding Endroid",
+              "Cellforger Droid",
+              "Cellwarden Droid",
+              "Delivery Droid",
+              "Gray Lupindroid",
+              "Haze Droid",
+              "Hydrocask Droid",
+              "Incinerator Felindroid",
+              "Overcharged Droid",
+              "Production Crawldroid",
+              "Shieldroid",
+              "Sinon, Babelia's Companion",
+              "Sturdy Droid",
+              "Trained Birdroid",
+              "Unbroken Droid",
+              "Virgil, Altered Future"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 1,
+            "names": [
+              "Tower of Dis"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "wolf-refinement",
+      "name": "Wolves recheck",
+      "kind": "theme",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "WOLF"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "discorp-officer",
+      "name": "DisCorp Officer package",
+      "kind": "theme",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "DISCORP"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 1,
+            "names": [
+              "Acheron Express Officer"
+            ]
+          },
+          {
+            "section": "material",
+            "minimum": 1,
+            "type": "CHAMPION",
+            "subtypes": [
+              "RANGER"
+            ]
+          }
+        ]
+      ]
+    }
+  ],
+  "limits": [
+    "Community authors are handles, not verified independent people.",
+    "Formats retain cached source classification and confidence; membership does not establish legality.",
+    "Cached lists retain individual fetch times; a listing refresh does not re-fetch every older deck.",
+    "Main and Material only; no tournament recurrence or win-rate claims."
+  ],
+  "sources": [
+    {
+      "source": "tcgarchitect",
+      "cachedRecords": 667,
+      "excludedCountMismatches": [],
+      "completeQualifyingLists": 652,
+      "eligibleDecks": 651,
+      "inputSha256": "f275a9a05315493166455a2546874e6c4ff09d10a88454d434b2e1bd67d0bb01",
+      "evidence": [
+        {
+          "id": "discorp-tower",
+          "matches": [
+            {
+              "deckId": "tcgarchitect:01a09d51-f14c-71c9-a607-7d6bcf43eca8",
+              "url": "https://tcgarchitect.com/grand-archive/decks/01a09d51-f14c-71c9-a607-7d6bcf43eca8",
+              "title": "DISCORP GENBU",
+              "author": "WeRrsome",
+              "format": "STANDARD",
+              "formatConfidence": "declared",
+              "fetchedAt": "2026-10-04T18:10:18.832Z",
+              "declaredMainCount": 63,
+              "main": [
+                {
+                  "name": "Blanche, Sheltering Saint",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cellwarden Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Chamber of Reflections",
+                  "quantity": 4
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 2
+                },
+                {
+                  "name": "Engulf",
+                  "quantity": 2
+                },
+                {
+                  "name": "Fracturize",
+                  "quantity": 4
+                },
+                {
+                  "name": "Frostbind",
+                  "quantity": 2
+                },
+                {
+                  "name": "Frostsworn Paladin",
+                  "quantity": 4
+                },
+                {
+                  "name": "Geni, Gifted Mechanist",
+                  "quantity": 4
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Hydrocask Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sable Remnant",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Song of Frost",
+                  "quantity": 4
+                },
+                {
+                  "name": "Throne-Keeper Bullfrog",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 4
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fabled Sapphire Fatestone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Blessed Scion",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Chosen Disciple",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Heaven's Favored",
+                  "quantity": 1
+                },
+                {
+                  "name": "Inert Sword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Portentous Tanggu",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Water",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "The Looking Glass",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellwarden Droid",
+                    "Gray Lupindroid",
+                    "Hydrocask Droid",
+                    "Overcharged Droid",
+                    "Shieldroid",
+                    "Tower of Dis",
+                    "Unbroken Droid"
+                  ]
+                }
+              ],
+              "signature": "cbd23ab3099c85ea2de6a0ee92fa587eafb296ed1c19fbabb43e3a313f196376"
+            }
+          ],
+          "distinctLists": 1,
+          "authorHandles": [
+            "werrsome"
+          ]
+        },
+        {
+          "id": "wolf-refinement",
+          "matches": [
+            {
+              "deckId": "tcgarchitect:019d6365-c903-7032-aa41-4ce68550dffb",
+              "url": "https://tcgarchitect.com/grand-archive/decks/019d6365-c903-7032-aa41-4ce68550dffb",
+              "title": "Pantheon Allen(wip)",
+              "author": "BKakugane",
+              "format": "STANDARD",
+              "formatConfidence": "declared",
+              "fetchedAt": "2026-08-31T13:12:30.662Z",
+              "declaredMainCount": 61,
+              "main": [
+                {
+                  "name": "Absolving Flames",
+                  "quantity": 1
+                },
+                {
+                  "name": "Acolyte of Cultivation",
+                  "quantity": 1
+                },
+                {
+                  "name": "Animal Encounter",
+                  "quantity": 1
+                },
+                {
+                  "name": "Apostle of the Woods",
+                  "quantity": 1
+                },
+                {
+                  "name": "Auspicious Feast",
+                  "quantity": 1
+                },
+                {
+                  "name": "Battlefield Benediction",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bedivere, Woodland Overseer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Blazing Direwolf",
+                  "quantity": 1
+                },
+                {
+                  "name": "Blissful Calling",
+                  "quantity": 1
+                },
+                {
+                  "name": "Brackish Lutist",
+                  "quantity": 1
+                },
+                {
+                  "name": "Careful Study",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cheerful Slime",
+                  "quantity": 1
+                },
+                {
+                  "name": "Creative Shock",
+                  "quantity": 1
+                },
+                {
+                  "name": "Dire Requiem",
+                  "quantity": 1
+                },
+                {
+                  "name": "Direwolf Alpha",
+                  "quantity": 1
+                },
+                {
+                  "name": "Embersong",
+                  "quantity": 1
+                },
+                {
+                  "name": "Empowering Harmony",
+                  "quantity": 1
+                },
+                {
+                  "name": "Enchanted Fete",
+                  "quantity": 1
+                },
+                {
+                  "name": "Energetic Beastbonder",
+                  "quantity": 1
+                },
+                {
+                  "name": "Erupting Rhapsody",
+                  "quantity": 1
+                },
+                {
+                  "name": "Exorcise Curses",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fast Cure",
+                  "quantity": 1
+                },
+                {
+                  "name": "Feathery Tune",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fireball",
+                  "quantity": 1
+                },
+                {
+                  "name": "Flamebreak Chorus",
+                  "quantity": 1
+                },
+                {
+                  "name": "Flashfire Horse",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fractal of Mana",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gentle Respite",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gray Wolf",
+                  "quantity": 1
+                },
+                {
+                  "name": "Herd of the Hearth",
+                  "quantity": 1
+                },
+                {
+                  "name": "Indolent Leisure",
+                  "quantity": 1
+                },
+                {
+                  "name": "Limitless Slime",
+                  "quantity": 1
+                },
+                {
+                  "name": "Manifest Threat",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mendcall Mercy",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mnemonic Charm",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nascent Barrier",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nascent Blast",
+                  "quantity": 1
+                },
+                {
+                  "name": "Ordinary Horse",
+                  "quantity": 1
+                },
+                {
+                  "name": "Peer into Mana",
+                  "quantity": 1
+                },
+                {
+                  "name": "Pendant of Accrual",
+                  "quantity": 1
+                },
+                {
+                  "name": "Plea for Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purge in Flames",
+                  "quantity": 1
+                },
+                {
+                  "name": "Relic of Dancing Embers",
+                  "quantity": 1
+                },
+                {
+                  "name": "Restoring Embers",
+                  "quantity": 1
+                },
+                {
+                  "name": "Scry the Skies",
+                  "quantity": 1
+                },
+                {
+                  "name": "Shared Fervor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Shining Marchador",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sly Songstress",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smack with Flute",
+                  "quantity": 1
+                },
+                {
+                  "name": "Song of Nurturing",
+                  "quantity": 1
+                },
+                {
+                  "name": "Steady Verse",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tend the Land",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tenderheart Guard",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tether in Flames",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unbroken Mustang",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unwelcome Fortune",
+                  "quantity": 1
+                },
+                {
+                  "name": "Vermilion Decree",
+                  "quantity": 1
+                },
+                {
+                  "name": "Volcanic Crescendo",
+                  "quantity": 1
+                },
+                {
+                  "name": "Weaken Resistance",
+                  "quantity": 1
+                },
+                {
+                  "name": "Wisdom's Reprise",
+                  "quantity": 1
+                },
+                {
+                  "name": "Young Beastbonder",
+                  "quantity": 1
+                }
+              ],
+              "material": [
+                {
+                  "name": "Allen, Beast Beckoner",
+                  "quantity": 1
+                },
+                {
+                  "name": "Clockwork Musicbox",
+                  "quantity": 1
+                },
+                {
+                  "name": "Discordia, Harp of Malice",
+                  "quantity": 1
+                },
+                {
+                  "name": "Equinox Hour",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fabled Ruby Fatestone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Chosen Disciple",
+                  "quantity": 1
+                },
+                {
+                  "name": "Melodious Flute",
+                  "quantity": 1
+                },
+                {
+                  "name": "Portentous Tanggu",
+                  "quantity": 1
+                },
+                {
+                  "name": "Quicksilver Grail",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Fire",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tome of Sorcery",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Blazing Direwolf",
+                    "Direwolf Alpha",
+                    "Gray Wolf"
+                  ]
+                }
+              ],
+              "signature": "0c2dc3b6192bdd3eb44f13ae13bf536dad0de62ffb2ada866898a4c04a5c66cb"
+            }
+          ],
+          "distinctLists": 1,
+          "authorHandles": [
+            "bkakugane"
+          ]
+        },
+        {
+          "id": "discorp-officer",
+          "matches": [],
+          "distinctLists": 0,
+          "authorHandles": []
+        }
+      ]
+    },
+    {
+      "source": "shoutatyourdecks",
+      "cachedRecords": 22461,
+      "excludedCountMismatches": [
+        "08ca82d4-4f40-4111-8890-eac845acb794",
+        "1aad21a5-a61e-4173-af5c-43dc7a4d644f",
+        "21f08996-67f4-43e2-b9c0-87c27797a632",
+        "6b5fe487-aa74-4a8b-9cb3-842da3f06529",
+        "7630e40b-1783-4942-8b70-fcca69ef4c60",
+        "9a616887-f0c7-4cf6-a9fb-51c401951f88",
+        "9afc28e8-ac19-4476-91e7-7648b0ef944d",
+        "9c4bc651-0c02-4f87-a13a-cb5308e5d6f0",
+        "aa3c3e14-68a2-4e2e-9d3a-0d57a486a2f5",
+        "ae20cd73-95ba-4800-bb56-30806ae6d630",
+        "cdb9a76b-789b-4ffc-8666-afb1ed7877bf",
+        "cf5f575b-8e95-43ed-ab76-12a19ab0ac70",
+        "f8aa235e-b958-49e6-aa17-6ff7f359af4a",
+        "fc5c6d08-22e3-4624-8426-86a1c0cc8e6d"
+      ],
+      "completeQualifyingLists": 21781,
+      "eligibleDecks": 21671,
+      "inputSha256": "ad40c1b1ed99ba59fd26b173496fac35d80ee613b00b20c80d78d27e1506114d",
+      "evidence": [
+        {
+          "id": "discorp-tower",
+          "matches": [
+            {
+              "deckId": "shoutatyourdecks:07fe6e13-556e-4b30-9ab5-26e33b713375",
+              "url": "https://shoutatyourdecks.com/decks/07fe6e13-556e-4b30-9ab5-26e33b713375",
+              "title": "Wind Norm Automaton ",
+              "author": "Rennerussia",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-23T22:45:05.260Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Aesan Protector",
+                  "quantity": 4
+                },
+                {
+                  "name": "Armored Valkyrie",
+                  "quantity": 3
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 3
+                },
+                {
+                  "name": "Business Card",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Lucca, Gateway Manager",
+                  "quantity": 3
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 3
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 3
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 4
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                },
+                {
+                  "name": "Zephyr",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Dummy Trainer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reciprocity, Dorumegia's Call",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "SignalTech X Ultra",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Lone Mercenary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Shieldroid",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "40b410ba03e074d28fed51834982f044e61e146e6e06a5b2cec5c808774149f6"
+            },
+            {
+              "deckId": "shoutatyourdecks:11da0750-df37-4cf6-82c0-127283e069fa",
+              "url": "https://shoutatyourdecks.com/decks/11da0750-df37-4cf6-82c0-127283e069fa",
+              "title": "64 Bit Processor",
+              "author": "Kindred",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:15:58.664Z",
+              "declaredMainCount": 64,
+              "main": [
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 3
+                },
+                {
+                  "name": "Deflecting Edge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Fairy Whispers",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Nightframe, Hound's Bike",
+                  "quantity": 2
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 2
+                },
+                {
+                  "name": "Rallied Advance",
+                  "quantity": 4
+                },
+                {
+                  "name": "Resolute Stand",
+                  "quantity": 2
+                },
+                {
+                  "name": "Second Wind",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 3
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                },
+                {
+                  "name": "Winbless Hurricane Farm",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fire Resonance Bauble",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Blademaster",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Wandering Warrior",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sword of Seeking",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Water Resonance Bauble",
+                  "quantity": 1
+                },
+                {
+                  "name": "Wind Resonance Bauble",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Haze Droid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "b538a68c387b8a1df4be281ce1c74ad29fa2c19bc8f8433151fd649279349b55"
+            },
+            {
+              "deckId": "shoutatyourdecks:13be3582-0f27-4b89-9fc4-f922378ef9fa",
+              "url": "https://shoutatyourdecks.com/decks/13be3582-0f27-4b89-9fc4-f922378ef9fa",
+              "title": "DisCorp",
+              "author": "Meta",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-09-01T10:43:12.429Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Acheron Express Officer",
+                  "quantity": 3
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 3
+                },
+                {
+                  "name": "Cellwarden Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 4
+                },
+                {
+                  "name": "Fractal of Duplication",
+                  "quantity": 4
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Hydrocask Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Neos Sight",
+                  "quantity": 2
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Production Crawldroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sturdy Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 4
+                },
+                {
+                  "name": "Trained Birdroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Alchemical Scripture",
+                  "quantity": 1
+                },
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Discharger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Extinguishing Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "Minthe, Spirit of Water",
+                  "quantity": 1
+                },
+                {
+                  "name": "Revoker Bell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Creation's Will",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellwarden Droid",
+                    "Delivery Droid",
+                    "Gray Lupindroid",
+                    "Hydrocask Droid",
+                    "Overcharged Droid",
+                    "Production Crawldroid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Sturdy Droid",
+                    "Tower of Dis",
+                    "Trained Birdroid",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "23f5885c35f06c06bf44a746bbfcba1bd1299d89dd5bb41214f747e1fc869233"
+            },
+            {
+              "deckId": "shoutatyourdecks:1d2ead3b-20ad-47c9-8e89-e02398bf22a4",
+              "url": "https://shoutatyourdecks.com/decks/1d2ead3b-20ad-47c9-8e89-e02398bf22a4",
+              "title": "Automatony slop",
+              "author": "Broon",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-09-01T10:43:23.775Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Displace",
+                  "quantity": 2
+                },
+                {
+                  "name": "Dream Fairy",
+                  "quantity": 2
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 4
+                },
+                {
+                  "name": "Epicurean Institute",
+                  "quantity": 2
+                },
+                {
+                  "name": "Exalted Dorumegian Throne",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Rallied Advance",
+                  "quantity": 4
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 2
+                },
+                {
+                  "name": "Second Wind",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 4
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Enfeebling Orb",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Ornamental Greatsword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Poisoned Coating Oil",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reciprocity, Dorumegia's Call",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Lone Mercenary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                },
+                {
+                  "name": "Viridian Protective Trinket",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "5a12f8cd8f689a58560a0b85eb46f62230887b9103cb1a2a3deea9852e68e040"
+            },
+            {
+              "deckId": "shoutatyourdecks:1f7e7857-afb3-4c6b-a915-d6e723d053df",
+              "url": "https://shoutatyourdecks.com/decks/1f7e7857-afb3-4c6b-a915-d6e723d053df",
+              "title": "윈드 오토",
+              "author": "mongmyo",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:16:50.534Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Cell Production",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 4
+                },
+                {
+                  "name": "Charged Mannequin",
+                  "quantity": 4
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 2
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Nightframe, Hound's Bike",
+                  "quantity": 2
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Stifling Gyre",
+                  "quantity": 1
+                },
+                {
+                  "name": "StrideTech W",
+                  "quantity": 2
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 3
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 2
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                },
+                {
+                  "name": "Zephyr",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Enfeebling Orb",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Lantern",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Mirror",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, Wilds Whisperer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Gray Lupindroid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "2067098cf41ca91976d3b0c1540b0587d749724c95ebb6f19ff37d708e62f809"
+            },
+            {
+              "deckId": "shoutatyourdecks:23862c74-2d55-4d69-af3e-5bbf38d4040f",
+              "url": "https://shoutatyourdecks.com/decks/23862c74-2d55-4d69-af3e-5bbf38d4040f",
+              "title": "PRD FOILS",
+              "author": "Cheri",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:17:08.480Z",
+              "declaredMainCount": 147,
+              "main": [
+                {
+                  "name": "Aenean Cyclic Winds",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Flux Generator",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Frozen Shunt",
+                  "quantity": 2
+                },
+                {
+                  "name": "Aenean Pointed Flare",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Reclaim",
+                  "quantity": 2
+                },
+                {
+                  "name": "Aenean Repudiation",
+                  "quantity": 2
+                },
+                {
+                  "name": "Aenean Spark Alight",
+                  "quantity": 3
+                },
+                {
+                  "name": "Aenean Swelling Gusts",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Swelling Tides",
+                  "quantity": 2
+                },
+                {
+                  "name": "Annul Spell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Anointed Purifier",
+                  "quantity": 1
+                },
+                {
+                  "name": "Another Round",
+                  "quantity": 1
+                },
+                {
+                  "name": "AquaTech Shield",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 1
+                },
+                {
+                  "name": "Biding Endroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bifurcating Fractal",
+                  "quantity": 1
+                },
+                {
+                  "name": "Blightheart Penitent",
+                  "quantity": 1
+                },
+                {
+                  "name": "Blistering Insurgent",
+                  "quantity": 2
+                },
+                {
+                  "name": "Blood Surge",
+                  "quantity": 1
+                },
+                {
+                  "name": "Break the Line",
+                  "quantity": 2
+                },
+                {
+                  "name": "Breath's Coloratura",
+                  "quantity": 1
+                },
+                {
+                  "name": "Brooch X Ultra",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cell Production",
+                  "quantity": 1
+                },
+                {
+                  "name": "ChannelTech Charm S",
+                  "quantity": 1
+                },
+                {
+                  "name": "Convergent Beam",
+                  "quantity": 1
+                },
+                {
+                  "name": "CookTech Apron",
+                  "quantity": 1
+                },
+                {
+                  "name": "CookTech Knife",
+                  "quantity": 1
+                },
+                {
+                  "name": "Corrosive Juggler",
+                  "quantity": 1
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Destined Encounter",
+                  "quantity": 1
+                },
+                {
+                  "name": "Draught Dodge",
+                  "quantity": 2
+                },
+                {
+                  "name": "Elysian Aspirant",
+                  "quantity": 1
+                },
+                {
+                  "name": "Elysian Orphan",
+                  "quantity": 2
+                },
+                {
+                  "name": "Emberslash",
+                  "quantity": 2
+                },
+                {
+                  "name": "Embryonic Hemosynth",
+                  "quantity": 1
+                },
+                {
+                  "name": "Eminence in Fury",
+                  "quantity": 2
+                },
+                {
+                  "name": "Epicurean Institute",
+                  "quantity": 1
+                },
+                {
+                  "name": "Escharotomy",
+                  "quantity": 1
+                },
+                {
+                  "name": "FlameTech BladeCore",
+                  "quantity": 1
+                },
+                {
+                  "name": "FlameTech Shield",
+                  "quantity": 1
+                },
+                {
+                  "name": "Focused Flames",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fortification",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fran, Carmine Spark",
+                  "quantity": 1
+                },
+                {
+                  "name": "Frigid Embrittlement",
+                  "quantity": 2
+                },
+                {
+                  "name": "Gear Haul",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Hardy Veteran",
+                  "quantity": 1
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Hemoflux Drain",
+                  "quantity": 2
+                },
+                {
+                  "name": "Hightail",
+                  "quantity": 3
+                },
+                {
+                  "name": "Hulking Rearguard",
+                  "quantity": 2
+                },
+                {
+                  "name": "Hydrating Fractal",
+                  "quantity": 1
+                },
+                {
+                  "name": "Hydrocask Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Inflamed Bladehand",
+                  "quantity": 1
+                },
+                {
+                  "name": "Keen Tidebinder",
+                  "quantity": 2
+                },
+                {
+                  "name": "Leran, Pastoral Hymns",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lucca, Gateway Manager",
+                  "quantity": 2
+                },
+                {
+                  "name": "Lucia, Reclaimed Blight",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lurching Rogue",
+                  "quantity": 1
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Molten Impact",
+                  "quantity": 1
+                },
+                {
+                  "name": "Musical Curator",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nascent Blast",
+                  "quantity": 1
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Package Courier",
+                  "quantity": 3
+                },
+                {
+                  "name": "Peer the Depths",
+                  "quantity": 1
+                },
+                {
+                  "name": "Performance Enthusiast",
+                  "quantity": 1
+                },
+                {
+                  "name": "Perfusive Envelopment",
+                  "quantity": 1
+                },
+                {
+                  "name": "Piccarda, Night Rider",
+                  "quantity": 2
+                },
+                {
+                  "name": "PlasmaTech Blaster",
+                  "quantity": 1
+                },
+                {
+                  "name": "Production Crawldroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Pyrolysis Sage",
+                  "quantity": 2
+                },
+                {
+                  "name": "Rampant Bladehand",
+                  "quantity": 1
+                },
+                {
+                  "name": "Refreshing Slice",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reinforcing Air",
+                  "quantity": 2
+                },
+                {
+                  "name": "Revitalizer X Ultra",
+                  "quantity": 1
+                },
+                {
+                  "name": "Riveting Winds",
+                  "quantity": 2
+                },
+                {
+                  "name": "Scars of Old",
+                  "quantity": 3
+                },
+                {
+                  "name": "Signal Gunner",
+                  "quantity": 1
+                },
+                {
+                  "name": "SignalTech One",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoldering Cook",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sneaky Raccoon",
+                  "quantity": 2
+                },
+                {
+                  "name": "Soaked Slash",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spellshield: Exia",
+                  "quantity": 1
+                },
+                {
+                  "name": "Steady Verse",
+                  "quantity": 2
+                },
+                {
+                  "name": "Stoked Slice",
+                  "quantity": 1
+                },
+                {
+                  "name": "StrideTech W",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sturdy Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Thanatotic Hemosynth",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tidal Fractal",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Trained Birdroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Turbulent Bounty Hunter",
+                  "quantity": 1
+                },
+                {
+                  "name": "Umbilical Ritual",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 3
+                },
+                {
+                  "name": "Unruled Bereavement",
+                  "quantity": 1
+                },
+                {
+                  "name": "Updraft Slice",
+                  "quantity": 2
+                },
+                {
+                  "name": "Varicose Amplification",
+                  "quantity": 2
+                },
+                {
+                  "name": "Vascular Collapse",
+                  "quantity": 1
+                },
+                {
+                  "name": "Vel-ocity Punch",
+                  "quantity": 2
+                },
+                {
+                  "name": "VelTech Armiger",
+                  "quantity": 2
+                },
+                {
+                  "name": "VelTech Gear Hoarder",
+                  "quantity": 1
+                },
+                {
+                  "name": "VelTech QA Tester",
+                  "quantity": 1
+                },
+                {
+                  "name": "Waterfall Sage",
+                  "quantity": 2
+                },
+                {
+                  "name": "Wicked Gildbreaker",
+                  "quantity": 1
+                }
+              ],
+              "material": [],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Biding Endroid",
+                    "Delivery Droid",
+                    "Gray Lupindroid",
+                    "Haze Droid",
+                    "Hydrocask Droid",
+                    "Overcharged Droid",
+                    "Production Crawldroid",
+                    "Sturdy Droid",
+                    "Tower of Dis",
+                    "Trained Birdroid",
+                    "Unbroken Droid"
+                  ]
+                }
+              ],
+              "signature": "2d9352187259a04af9104f981922d6ef3dd0cab1e181e0d87b7db437d74043a4"
+            },
+            {
+              "deckId": "shoutatyourdecks:250a26ca-58c8-445e-924e-ed493cb4e519",
+              "url": "https://shoutatyourdecks.com/decks/250a26ca-58c8-445e-924e-ed493cb4e519",
+              "title": "bot",
+              "author": "coy",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-23T22:06:36.870Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 4
+                },
+                {
+                  "name": "Calming Breeze",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 3
+                },
+                {
+                  "name": "Crystallized Destiny",
+                  "quantity": 1
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 3
+                },
+                {
+                  "name": "Heavy Swing",
+                  "quantity": 2
+                },
+                {
+                  "name": "Hidden Secrets",
+                  "quantity": 2
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 2
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Stifling Trap",
+                  "quantity": 2
+                },
+                {
+                  "name": "Topsy Decree",
+                  "quantity": 2
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 3
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 4
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                },
+                {
+                  "name": "Zephyr",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bulwark Sword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Mirror",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reciprocity, Dorumegia's Call",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Lone Mercenary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                },
+                {
+                  "name": "Worn Gearblade",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Overcharged Droid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "0cb3a70277a2d1d7f9444c0edbde286e3f55be5353eb66a23f4c0f2054a745b6"
+            },
+            {
+              "deckId": "shoutatyourdecks:522e0f7a-a2d7-408f-89c3-5ce34b246752",
+              "url": "https://shoutatyourdecks.com/decks/522e0f7a-a2d7-408f-89c3-5ce34b246752",
+              "title": "Wind Automaton",
+              "author": "dj3370",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:20:13.701Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 3
+                },
+                {
+                  "name": "Calming Breeze",
+                  "quantity": 2
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 3
+                },
+                {
+                  "name": "Displace",
+                  "quantity": 2
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 3
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Second Wind",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shimmercloak Assassin",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 3
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 2
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Veiling Breeze",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                },
+                {
+                  "name": "Winbless Hurricane Farm",
+                  "quantity": 4
+                },
+                {
+                  "name": "Windmill Engineer",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cleric Robes",
+                  "quantity": 1
+                },
+                {
+                  "name": "Evaporation Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Quicksilver Grail",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Vanitas, Convergent Ruin",
+                  "quantity": 1
+                },
+                {
+                  "name": "Vanitas, Dominus Rex",
+                  "quantity": 1
+                },
+                {
+                  "name": "Vanitas, Obliviate Schemer",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Haze Droid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "7b6439c41da964a820311f31c1cb253451a6552650320634bc1e459fde1652a4"
+            },
+            {
+              "deckId": "shoutatyourdecks:6357312a-3d08-4798-af1d-db84dfc13e57",
+              "url": "https://shoutatyourdecks.com/decks/6357312a-3d08-4798-af1d-db84dfc13e57",
+              "title": "Wind Tony Automaton",
+              "author": "dj3370",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-23T22:06:52.135Z",
+              "declaredMainCount": 62,
+              "main": [
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 2
+                },
+                {
+                  "name": "Calming Breeze",
+                  "quantity": 2
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 1
+                },
+                {
+                  "name": "Displace",
+                  "quantity": 4
+                },
+                {
+                  "name": "Dungeon Guide",
+                  "quantity": 3
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 2
+                },
+                {
+                  "name": "Harvester Mk II",
+                  "quantity": 1
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Powerforged Burst",
+                  "quantity": 3
+                },
+                {
+                  "name": "Production Crawldroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shimmercloak Assassin",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Triumphant Mechanic",
+                  "quantity": 2
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 4
+                },
+                {
+                  "name": "Veiling Breeze",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                },
+                {
+                  "name": "Winbless Hurricane Farm",
+                  "quantity": 3
+                },
+                {
+                  "name": "Windmill Engineer",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Aegis of Dawn",
+                  "quantity": 1
+                },
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bulwark Sword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Evaporation Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lost Providence",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Genesis Aegis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Lone Mercenary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                },
+                {
+                  "name": "Worn Gearblade",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Haze Droid",
+                    "Production Crawldroid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "73ef1014d5d6550e615ac2cf9d919c297c0966422985701909c038a260300609"
+            },
+            {
+              "deckId": "shoutatyourdecks:6ba47ba9-bcd3-43ed-a63d-fe83c4085e87",
+              "url": "https://shoutatyourdecks.com/decks/6ba47ba9-bcd3-43ed-a63d-fe83c4085e87",
+              "title": "Lorraine Bots PRD",
+              "author": "Yujabbey",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-24T00:57:52.862Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Aella, Zephyr's Hand",
+                  "quantity": 4
+                },
+                {
+                  "name": "Aesan Protector",
+                  "quantity": 3
+                },
+                {
+                  "name": "Andronika, Eternal Herald",
+                  "quantity": 4
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cell Vanguard",
+                  "quantity": 2
+                },
+                {
+                  "name": "Displace",
+                  "quantity": 2
+                },
+                {
+                  "name": "Dream Fairy",
+                  "quantity": 2
+                },
+                {
+                  "name": "Fairy Whispers",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Rose, Eternal Paragon",
+                  "quantity": 2
+                },
+                {
+                  "name": "Shimmercloak Assassin",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 2
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Veiling Breeze",
+                  "quantity": 3
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                },
+                {
+                  "name": "Windmill Engineer",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Clarent, Reimagined",
+                  "quantity": 1
+                },
+                {
+                  "name": "Clarent, Sword of Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Blademaster",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Wandering Warrior",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sword of Seeking",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Overcharged Droid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "089b9947bd5bb4218c1cba825d19c5f0fea7109bc72d95c1004760eafb11f12d"
+            },
+            {
+              "deckId": "shoutatyourdecks:6f9f2fd1-2197-4a41-8342-c8b35a64c7dd",
+              "url": "https://shoutatyourdecks.com/decks/6f9f2fd1-2197-4a41-8342-c8b35a64c7dd",
+              "title": "PRD Fire Guo Jia",
+              "author": "randyt42",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-24T01:03:16.363Z",
+              "declaredMainCount": 61,
+              "main": [
+                {
+                  "name": "Advent of the Shenju",
+                  "quantity": 1
+                },
+                {
+                  "name": "Attune with the Winds",
+                  "quantity": 2
+                },
+                {
+                  "name": "Auspicious Manifestation",
+                  "quantity": 4
+                },
+                {
+                  "name": "Byakko's Command",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Engineered Slime",
+                  "quantity": 3
+                },
+                {
+                  "name": "Escape the Wreckage",
+                  "quantity": 2
+                },
+                {
+                  "name": "Fairy Whispers",
+                  "quantity": 4
+                },
+                {
+                  "name": "Fatestone of Heaven",
+                  "quantity": 2
+                },
+                {
+                  "name": "Forest Cake",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "GustTech Shield",
+                  "quantity": 2
+                },
+                {
+                  "name": "Music Aficionado",
+                  "quantity": 2
+                },
+                {
+                  "name": "Nightframe, Hound's Bike",
+                  "quantity": 2
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 1
+                },
+                {
+                  "name": "Rondo of the Wind",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 2
+                },
+                {
+                  "name": "StrideTech W",
+                  "quantity": 3
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tribute Singer",
+                  "quantity": 2
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 2
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 1
+                },
+                {
+                  "name": "Windmill Engineer",
+                  "quantity": 4
+                },
+                {
+                  "name": "Wuthering Sforzando",
+                  "quantity": 1
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fabled Emerald Fatestone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Blessed Scion",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Chosen Disciple",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Heaven's Favored",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gwendolyn, Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Incandescent Reliquary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lost Providence",
+                  "quantity": 1
+                },
+                {
+                  "name": "Portentous Tanggu",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "ResonanTech Module",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Gray Lupindroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "e6b74e9e1c4bb39b0388772a80dd2e7caa668738e9a35939839b801884bf35f9"
+            },
+            {
+              "deckId": "shoutatyourdecks:8f190853-539d-4794-9dc9-cc5a047e30e2",
+              "url": "https://shoutatyourdecks.com/decks/8f190853-539d-4794-9dc9-cc5a047e30e2",
+              "title": "Wind Automaton Silvie",
+              "author": "22Haste",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-23T22:07:05.213Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Aesan Protector",
+                  "quantity": 4
+                },
+                {
+                  "name": "Atmos Armor Type-Hermes",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Production",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Dream Fairy",
+                  "quantity": 2
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 3
+                },
+                {
+                  "name": "Second Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sturdy Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Trained Birdroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 4
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bauble of Abundance",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Evaporation Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, Wilds Whisperer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Gray Lupindroid",
+                    "Overcharged Droid",
+                    "Sinon, Babelia's Companion",
+                    "Sturdy Droid",
+                    "Tower of Dis",
+                    "Trained Birdroid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "e7d212b9d230e3b5390b6335a23f87b67da1fb3e1d969d1cad68fe50066953c3"
+            },
+            {
+              "deckId": "shoutatyourdecks:96d69cfc-fd1f-4190-85d6-c5488d500b5c",
+              "url": "https://shoutatyourdecks.com/decks/96d69cfc-fd1f-4190-85d6-c5488d500b5c",
+              "title": "Wind Bots",
+              "author": "Soulcraft",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-08-25T15:02:54.126Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Andronika, Eternal Herald",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cell Vanguard",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Crosswind Cuts",
+                  "quantity": 3
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Displace",
+                  "quantity": 4
+                },
+                {
+                  "name": "Eternal Magistrate",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Hurricane Sweep",
+                  "quantity": 2
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 2
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 2
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Updraft Slice",
+                  "quantity": 3
+                },
+                {
+                  "name": "Veiling Breeze",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 2
+                }
+              ],
+              "material": [
+                {
+                  "name": "Lorraine, Honed Operative",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Wandering Warrior",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sword of Seeking",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Shieldroid",
+                    "Tower of Dis",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "4c13bff61ba9483c1332fbe150d0dcd5203dfee7c8fcec2ceda826b9d8fce8c8"
+            },
+            {
+              "deckId": "shoutatyourdecks:9d9e7c78-1a99-48a3-a016-60367cf1ae3c",
+              "url": "https://shoutatyourdecks.com/decks/9d9e7c78-1a99-48a3-a016-60367cf1ae3c",
+              "title": "Virgil Fire Aggro",
+              "author": "AstonFurious",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:24:45.216Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Cell Assembler",
+                  "quantity": 3
+                },
+                {
+                  "name": "CookTech Mixer",
+                  "quantity": 4
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 2
+                },
+                {
+                  "name": "Creative Shock",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cremation Ritual",
+                  "quantity": 4
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Fractal of Sparks",
+                  "quantity": 4
+                },
+                {
+                  "name": "Hot Cake",
+                  "quantity": 4
+                },
+                {
+                  "name": "Ignis Deus",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Rococo, Explosive Maven",
+                  "quantity": 4
+                },
+                {
+                  "name": "Searing Rebuke",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Diao Chan, Enchantress",
+                  "quantity": 1
+                },
+                {
+                  "name": "Everflame Staff",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fire Resonance Bauble",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Scepter of Fascination",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Fire",
+                  "quantity": 1
+                },
+                {
+                  "name": "Water Resonance Bauble",
+                  "quantity": 1
+                },
+                {
+                  "name": "Wind Resonance Bauble",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Delivery Droid",
+                    "Overcharged Droid",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "4f189abc0eec7d1cd365353158068fa82f259ba4c8c1213f3e75e0ab9ea45fb5"
+            },
+            {
+              "deckId": "shoutatyourdecks:a92bc245-704d-4eaa-b1f4-da0f9ebad564",
+              "url": "https://shoutatyourdecks.com/decks/a92bc245-704d-4eaa-b1f4-da0f9ebad564",
+              "title": "The future is now",
+              "author": "Lemony_Fresh_Regret",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:25:37.032Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Academy Guide",
+                  "quantity": 1
+                },
+                {
+                  "name": "Armored Valkyrie",
+                  "quantity": 1
+                },
+                {
+                  "name": "Assemble the Ancients",
+                  "quantity": 1
+                },
+                {
+                  "name": "Atmos Armor Type-Ares",
+                  "quantity": 1
+                },
+                {
+                  "name": "Atmos Armor Type-Hermes",
+                  "quantity": 1
+                },
+                {
+                  "name": "Automata Genesis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Automaton Forgewarden",
+                  "quantity": 1
+                },
+                {
+                  "name": "Beckon Attention",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bolster Ranks",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Assembler",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Converter",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Generator",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Production",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 1
+                },
+                {
+                  "name": "Chateau de Coeurs",
+                  "quantity": 1
+                },
+                {
+                  "name": "City Protector",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cordelia, Aurous Kaiser",
+                  "quantity": 1
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 1
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Dorumegian Foundry",
+                  "quantity": 1
+                },
+                {
+                  "name": "Dungeon Guide",
+                  "quantity": 1
+                },
+                {
+                  "name": "Eternal Magistrate",
+                  "quantity": 1
+                },
+                {
+                  "name": "Exalted Dorumegian Throne",
+                  "quantity": 1
+                },
+                {
+                  "name": "Firetuned Automaton",
+                  "quantity": 1
+                },
+                {
+                  "name": "Furnace Drone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Harvester Mk II",
+                  "quantity": 1
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Hector, Praetorian Guard",
+                  "quantity": 1
+                },
+                {
+                  "name": "Imperious Galebind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Iron Halo, Forcefield Node",
+                  "quantity": 1
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mendcall Mercy",
+                  "quantity": 1
+                },
+                {
+                  "name": "Novice Mechanist",
+                  "quantity": 1
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 1
+                },
+                {
+                  "name": "Powered Bishop",
+                  "quantity": 1
+                },
+                {
+                  "name": "Powered Defender",
+                  "quantity": 1
+                },
+                {
+                  "name": "Production Crawldroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Rapid Deployment Nexus",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reactivate Drone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Rose, Eternal Paragon",
+                  "quantity": 1
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Shimmercloak Assassin",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 1
+                },
+                {
+                  "name": "Summon Sentinels",
+                  "quantity": 1
+                },
+                {
+                  "name": "Surprise Reveal",
+                  "quantity": 1
+                },
+                {
+                  "name": "The Eternal Kingdom",
+                  "quantity": 1
+                },
+                {
+                  "name": "Throne Sentinel",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tor, Realmwalker Colossus",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tune Up",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 1
+                },
+                {
+                  "name": "Unity's Gale",
+                  "quantity": 1
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 1
+                },
+                {
+                  "name": "Winbless Hurricane Farm",
+                  "quantity": 1
+                },
+                {
+                  "name": "Zephyr",
+                  "quantity": 1
+                }
+              ],
+              "material": [
+                {
+                  "name": "Aegis of Dawn",
+                  "quantity": 1
+                },
+                {
+                  "name": "Alliance Gearshield",
+                  "quantity": 1
+                },
+                {
+                  "name": "Archon Broadsword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Deployment Beacon",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Reciprocity, Dorumegia's Call",
+                  "quantity": 1
+                },
+                {
+                  "name": "Sentinel Fabricator",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Genesis Aegis",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Lone Mercenary",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tonoris, Might of Humanity",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Delivery Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Production Crawldroid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "18d909f76e62889deb789bd7b0266998d5a85fda9d44856a56e16dfbc11ad185"
+            },
+            {
+              "deckId": "shoutatyourdecks:bc0aea6e-4c55-4d3f-9dac-3aa972261dc3",
+              "url": "https://shoutatyourdecks.com/decks/bc0aea6e-4c55-4d3f-9dac-3aa972261dc3",
+              "title": "Lorraine Automatons",
+              "author": "HarmonicDragons709",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-08-25T15:03:54.940Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Andronika, Eternal Herald",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cell Vanguard",
+                  "quantity": 4
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Critical Recovery",
+                  "quantity": 2
+                },
+                {
+                  "name": "Dream Fairy",
+                  "quantity": 2
+                },
+                {
+                  "name": "Eternal Directive",
+                  "quantity": 2
+                },
+                {
+                  "name": "Fairy Whispers",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 3
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Rallied Advance",
+                  "quantity": 3
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 4
+                },
+                {
+                  "name": "Second Wind",
+                  "quantity": 3
+                },
+                {
+                  "name": "Shimmercloak Assassin",
+                  "quantity": 2
+                },
+                {
+                  "name": "Sun Ce, Weaponsmaster",
+                  "quantity": 2
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 4
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 3
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Huaji of Heaven's Rise",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Wandering Warrior",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Lantern",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Mirror",
+                  "quantity": 1
+                },
+                {
+                  "name": "Ornamental Greatsword",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "6f4ceb2c68520b88612870ca5332900d9954dffce3a6ba3c8c51e16dc29c86da"
+            },
+            {
+              "deckId": "shoutatyourdecks:beedf7c7-0802-40f6-a3eb-bcdbc204ee7c",
+              "url": "https://shoutatyourdecks.com/decks/beedf7c7-0802-40f6-a3eb-bcdbc204ee7c",
+              "title": "PRD Singles",
+              "author": "Matti_Mattsen",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-08-25T15:04:02.368Z",
+              "declaredMainCount": 131,
+              "main": [
+                {
+                  "name": "Aenean Cryosalvo",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Crystallization",
+                  "quantity": 2
+                },
+                {
+                  "name": "Aenean Cyclic Winds",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Cyclone",
+                  "quantity": 2
+                },
+                {
+                  "name": "Aenean Flurry of Fire",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Guttering Flames",
+                  "quantity": 1
+                },
+                {
+                  "name": "Aenean Repudiation",
+                  "quantity": 3
+                },
+                {
+                  "name": "Anointed Purifier",
+                  "quantity": 1
+                },
+                {
+                  "name": "AquaTech Shell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Augustine, Votary of Yore",
+                  "quantity": 1
+                },
+                {
+                  "name": "Bifurcating Fractal",
+                  "quantity": 3
+                },
+                {
+                  "name": "Blightheart Penitent",
+                  "quantity": 1
+                },
+                {
+                  "name": "Breath's Coloratura",
+                  "quantity": 2
+                },
+                {
+                  "name": "Breezy Looper",
+                  "quantity": 1
+                },
+                {
+                  "name": "Business Card",
+                  "quantity": 3
+                },
+                {
+                  "name": "Bygone Days",
+                  "quantity": 2
+                },
+                {
+                  "name": "Camil, Basked Abundance",
+                  "quantity": 2
+                },
+                {
+                  "name": "Cardiac Vessel",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cato, Meadow's Channeler",
+                  "quantity": 1
+                },
+                {
+                  "name": "Conductive Strike",
+                  "quantity": 1
+                },
+                {
+                  "name": "Crosswind Cuts",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cutthroat Operative",
+                  "quantity": 4
+                },
+                {
+                  "name": "Demon's Bargain",
+                  "quantity": 2
+                },
+                {
+                  "name": "Destined Encounter",
+                  "quantity": 3
+                },
+                {
+                  "name": "Edge of Tomorrow",
+                  "quantity": 1
+                },
+                {
+                  "name": "Eminence in Fury",
+                  "quantity": 1
+                },
+                {
+                  "name": "Exhilarating Plume",
+                  "quantity": 1
+                },
+                {
+                  "name": "FlameTech BladeCore",
+                  "quantity": 2
+                },
+                {
+                  "name": "Forese, Fervid Cantor",
+                  "quantity": 2
+                },
+                {
+                  "name": "Fran, Carmine Spark",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gear Haul",
+                  "quantity": 1
+                },
+                {
+                  "name": "Golden Measure Patisserie",
+                  "quantity": 3
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Hardy Veteran",
+                  "quantity": 2
+                },
+                {
+                  "name": "Hefty Hammering",
+                  "quantity": 2
+                },
+                {
+                  "name": "Incinerator Felindroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Ionizer X Ultra",
+                  "quantity": 1
+                },
+                {
+                  "name": "Ischemic Soldier",
+                  "quantity": 1
+                },
+                {
+                  "name": "Jovial Tinkerer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Judas, Claret Intercessor",
+                  "quantity": 2
+                },
+                {
+                  "name": "Lacunarity Guide",
+                  "quantity": 1
+                },
+                {
+                  "name": "Leran, Pastoral Hymns",
+                  "quantity": 2
+                },
+                {
+                  "name": "Lucca, Gateway Manager",
+                  "quantity": 2
+                },
+                {
+                  "name": "Lucia, Reclaimed Blight",
+                  "quantity": 1
+                },
+                {
+                  "name": "Martial Flowstate",
+                  "quantity": 2
+                },
+                {
+                  "name": "Musical Curator",
+                  "quantity": 3
+                },
+                {
+                  "name": "Outfitted Ravager",
+                  "quantity": 4
+                },
+                {
+                  "name": "Peer the Depths",
+                  "quantity": 1
+                },
+                {
+                  "name": "Piccarda, Night Rider",
+                  "quantity": 2
+                },
+                {
+                  "name": "Plutus, Fortune's Favor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Pure Cytosynth",
+                  "quantity": 3
+                },
+                {
+                  "name": "Refreshing Slice",
+                  "quantity": 1
+                },
+                {
+                  "name": "Rhesus Eradication",
+                  "quantity": 2
+                },
+                {
+                  "name": "Rolling Chorus",
+                  "quantity": 3
+                },
+                {
+                  "name": "Rumble Coordinator",
+                  "quantity": 2
+                },
+                {
+                  "name": "Singed Emotions",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 1
+                },
+                {
+                  "name": "Staves X Ultra",
+                  "quantity": 2
+                },
+                {
+                  "name": "Thanatotic Hemosynth",
+                  "quantity": 1
+                },
+                {
+                  "name": "Total Whiteout",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 3
+                },
+                {
+                  "name": "Triboelectric Fortification",
+                  "quantity": 2
+                },
+                {
+                  "name": "Tribute Singer",
+                  "quantity": 2
+                },
+                {
+                  "name": "Unruled Bereavement",
+                  "quantity": 3
+                },
+                {
+                  "name": "Varicose Amplification",
+                  "quantity": 4
+                },
+                {
+                  "name": "VelTech Gear Hoarder",
+                  "quantity": 1
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 2
+                },
+                {
+                  "name": "Weight of Looking Up",
+                  "quantity": 4
+                },
+                {
+                  "name": "Wicked Gildbreaker",
+                  "quantity": 1
+                },
+                {
+                  "name": "Windstrike Soldier",
+                  "quantity": 2
+                },
+                {
+                  "name": "ZENA, Echo Weaver",
+                  "quantity": 1
+                }
+              ],
+              "material": [
+                {
+                  "name": "AquaTech Blade X",
+                  "quantity": 1
+                },
+                {
+                  "name": "Battery Core X",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Extinguishing Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fanned Synchron",
+                  "quantity": 1
+                },
+                {
+                  "name": "FlameTech Manual",
+                  "quantity": 1
+                },
+                {
+                  "name": "ResonanTech Module",
+                  "quantity": 1
+                },
+                {
+                  "name": "Revoker Bell",
+                  "quantity": 1
+                },
+                {
+                  "name": "Seed of Empowerment",
+                  "quantity": 1
+                },
+                {
+                  "name": "Wind Surge Emitter",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Gray Lupindroid",
+                    "Incinerator Felindroid",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "6443a776003e885b71d359c3bbe652b5fe4abcfc869c578f0e0ec408dc4276b3"
+            },
+            {
+              "deckId": "shoutatyourdecks:cc6446ea-12bc-4e4d-aed6-19662e459f4f",
+              "url": "https://shoutatyourdecks.com/decks/cc6446ea-12bc-4e4d-aed6-19662e459f4f",
+              "title": "Wind Norm Automaton  ",
+              "author": "Ak",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-24T03:09:38.471Z",
+              "declaredMainCount": 61,
+              "main": [
+                {
+                  "name": "Armored Valkyrie",
+                  "quantity": 3
+                },
+                {
+                  "name": "Atmos Armor Type-Hermes",
+                  "quantity": 4
+                },
+                {
+                  "name": "Bedlam Borough",
+                  "quantity": 3
+                },
+                {
+                  "name": "Business Card",
+                  "quantity": 3
+                },
+                {
+                  "name": "Cellforger Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Haze Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Lucca, Gateway Manager",
+                  "quantity": 3
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Overlord Mk III",
+                  "quantity": 3
+                },
+                {
+                  "name": "Reclaim",
+                  "quantity": 3
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 3
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 3
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 4
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 3
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cell Reactor",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Lorraine, Wandering Warrior",
+                  "quantity": 1
+                },
+                {
+                  "name": "Prototype Pistol",
+                  "quantity": 1
+                },
+                {
+                  "name": "Purifying Thurible",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "SignalTech X Ultra",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Windpiercer",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellforger Droid",
+                    "Haze Droid",
+                    "Overcharged Droid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Tower of Dis",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "073847ba482844630cf8a1d71ee4945413064170df19e5bb32e547b11a6f4ea7"
+            },
+            {
+              "deckId": "shoutatyourdecks:da849d6c-7aa1-4f98-a471-f83c0ccefbcd",
+              "url": "https://shoutatyourdecks.com/decks/da849d6c-7aa1-4f98-a471-f83c0ccefbcd",
+              "title": "Discorp's Automaton",
+              "author": "dj3370",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-10-04T18:28:51.545Z",
+              "declaredMainCount": 64,
+              "main": [
+                {
+                  "name": "Cell Converter",
+                  "quantity": 1
+                },
+                {
+                  "name": "Cellwarden Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 2
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 1
+                },
+                {
+                  "name": "Croaking Webfoot",
+                  "quantity": 3
+                },
+                {
+                  "name": "Fracturize",
+                  "quantity": 4
+                },
+                {
+                  "name": "Geni, Gifted Mechanist",
+                  "quantity": 1
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Hydrocask Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Memory Invocation",
+                  "quantity": 4
+                },
+                {
+                  "name": "Ocean's Blessing",
+                  "quantity": 1
+                },
+                {
+                  "name": "Plage aux Homards",
+                  "quantity": 1
+                },
+                {
+                  "name": "Seaside Ringleader",
+                  "quantity": 4
+                },
+                {
+                  "name": "Shieldroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 1
+                },
+                {
+                  "name": "Song of Frost",
+                  "quantity": 2
+                },
+                {
+                  "name": "Spalling Cleanse",
+                  "quantity": 3
+                },
+                {
+                  "name": "Sturdy Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Throne-Keeper Bullfrog",
+                  "quantity": 3
+                },
+                {
+                  "name": "Tidestone Bovine",
+                  "quantity": 2
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 2
+                },
+                {
+                  "name": "Trained Birdroid",
+                  "quantity": 1
+                },
+                {
+                  "name": "Turbo Charge",
+                  "quantity": 2
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 2
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Beastbond Boots",
+                  "quantity": 1
+                },
+                {
+                  "name": "Candlelight Hourglass",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nefarious Timepiece",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, Wilds Whisperer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, With the Pack",
+                  "quantity": 1
+                },
+                {
+                  "name": "Smoke Bombs",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Water",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tithe Proclamation",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Cellwarden Droid",
+                    "Gray Lupindroid",
+                    "Hydrocask Droid",
+                    "Shieldroid",
+                    "Sinon, Babelia's Companion",
+                    "Sturdy Droid",
+                    "Tower of Dis",
+                    "Trained Birdroid",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "15ba8e8853fc54c9ff238c18c91801fd0fce7e31619e90773432a352c79ba899"
+            },
+            {
+              "deckId": "shoutatyourdecks:dbadecf0-f1a9-46ea-9019-2cb9d1d6a59c",
+              "url": "https://shoutatyourdecks.com/decks/dbadecf0-f1a9-46ea-9019-2cb9d1d6a59c",
+              "title": "백호 오토 다오에",
+              "author": "mongmyo",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-09-01T10:46:40.003Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Atmos Armor Type-Hermes",
+                  "quantity": 2
+                },
+                {
+                  "name": "Charged Directive",
+                  "quantity": 4
+                },
+                {
+                  "name": "Charged Mannequin",
+                  "quantity": 3
+                },
+                {
+                  "name": "Counter Interference",
+                  "quantity": 4
+                },
+                {
+                  "name": "Dawn of Ashes",
+                  "quantity": 2
+                },
+                {
+                  "name": "Delivery Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Manufacture Cell",
+                  "quantity": 4
+                },
+                {
+                  "name": "Mechanical Hare",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sinon, Babelia's Companion",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sordelle, Unmoored Exception",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sturdy Droid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Tower of Dis",
+                  "quantity": 2
+                },
+                {
+                  "name": "Trained Birdroid",
+                  "quantity": 4
+                },
+                {
+                  "name": "Unbroken Droid",
+                  "quantity": 2
+                },
+                {
+                  "name": "Uncanny Realization",
+                  "quantity": 2
+                },
+                {
+                  "name": "Virgil, Altered Future",
+                  "quantity": 4
+                },
+                {
+                  "name": "Zephyr",
+                  "quantity": 4
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Censer of Restful Peace",
+                  "quantity": 1
+                },
+                {
+                  "name": "Enfeebling Orb",
+                  "quantity": 1
+                },
+                {
+                  "name": "Fabled Emerald Fatestone",
+                  "quantity": 1
+                },
+                {
+                  "name": "Guo Jia, Chosen Disciple",
+                  "quantity": 1
+                },
+                {
+                  "name": "Mercurial Heart",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Lantern",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Mirror",
+                  "quantity": 1
+                },
+                {
+                  "name": "Safeguard Amulet",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Wind",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Viridian Protective Trinket",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Delivery Droid",
+                    "Overcharged Droid",
+                    "Sinon, Babelia's Companion",
+                    "Sturdy Droid",
+                    "Tower of Dis",
+                    "Trained Birdroid",
+                    "Unbroken Droid",
+                    "Virgil, Altered Future"
+                  ]
+                }
+              ],
+              "signature": "3fcf2a970b6b2362145e50022c512fa5fa4809cbe362893200837c0a4f1b807a"
+            }
+          ],
+          "distinctLists": 20,
+          "authorHandles": [
+            "22haste",
+            "ak",
+            "astonfurious",
+            "broon",
+            "cheri",
+            "coy",
+            "dj3370",
+            "harmonicdragons709",
+            "kindred",
+            "lemony_fresh_regret",
+            "matti_mattsen",
+            "meta",
+            "mongmyo",
+            "randyt42",
+            "rennerussia",
+            "soulcraft",
+            "yujabbey"
+          ]
+        },
+        {
+          "id": "wolf-refinement",
+          "matches": [
+            {
+              "deckId": "shoutatyourdecks:aca02419-90c7-4bd6-bc87-e96b7e356744",
+              "url": "https://shoutatyourdecks.com/decks/aca02419-90c7-4bd6-bc87-e96b7e356744",
+              "title": "Burn Down the Animal House",
+              "author": "Moses-6666",
+              "format": "UNKNOWN",
+              "formatConfidence": "unknown",
+              "fetchedAt": "2026-08-24T02:24:07.626Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Baby Red Slime",
+                  "quantity": 4
+                },
+                {
+                  "name": "Blazing Bowman",
+                  "quantity": 4
+                },
+                {
+                  "name": "Blazing Direwolf",
+                  "quantity": 3
+                },
+                {
+                  "name": "Cell Production",
+                  "quantity": 2
+                },
+                {
+                  "name": "Creative Shock",
+                  "quantity": 3
+                },
+                {
+                  "name": "Da Qiao, Cinderbinder",
+                  "quantity": 2
+                },
+                {
+                  "name": "Dire Requiem",
+                  "quantity": 4
+                },
+                {
+                  "name": "Direwolf Alpha",
+                  "quantity": 4
+                },
+                {
+                  "name": "Dungeon Guide",
+                  "quantity": 3
+                },
+                {
+                  "name": "Energetic Beastbonder",
+                  "quantity": 3
+                },
+                {
+                  "name": "Fanatical Devotee",
+                  "quantity": 3
+                },
+                {
+                  "name": "Flamewreath Call",
+                  "quantity": 3
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Gray Wolf",
+                  "quantity": 4
+                },
+                {
+                  "name": "Herd of the Hearth",
+                  "quantity": 3
+                },
+                {
+                  "name": "Lavasoul Tiger",
+                  "quantity": 2
+                },
+                {
+                  "name": "Lead with Force",
+                  "quantity": 3
+                },
+                {
+                  "name": "Oppressive Presence",
+                  "quantity": 3
+                },
+                {
+                  "name": "Suzaku's Command",
+                  "quantity": 3
+                },
+                {
+                  "name": "Vertus, Gaia's Roar",
+                  "quantity": 1
+                }
+              ],
+              "material": [
+                {
+                  "name": "Backup Charger",
+                  "quantity": 1
+                },
+                {
+                  "name": "Beastbond Boots",
+                  "quantity": 1
+                },
+                {
+                  "name": "Beastbond Ears",
+                  "quantity": 1
+                },
+                {
+                  "name": "Beastsoul Visage",
+                  "quantity": 1
+                },
+                {
+                  "name": "Grand Crusader's Ring",
+                  "quantity": 1
+                },
+                {
+                  "name": "Horn of Beastcalling",
+                  "quantity": 1
+                },
+                {
+                  "name": "Nullifying Mirror",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, Loved by All",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, Wilds Whisperer",
+                  "quantity": 1
+                },
+                {
+                  "name": "Silvie, With the Pack",
+                  "quantity": 1
+                },
+                {
+                  "name": "Spirit of Fire",
+                  "quantity": 1
+                },
+                {
+                  "name": "Tariff Ring",
+                  "quantity": 1
+                }
+              ],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Blazing Direwolf",
+                    "Direwolf Alpha",
+                    "Gray Lupindroid",
+                    "Gray Wolf"
+                  ]
+                }
+              ],
+              "signature": "77a7ff92c5fb749a825da9c8bb73c6f25c1f74ecfa6a25eaec4891c0c7595f0c"
+            },
+            {
+              "deckId": "shoutatyourdecks:bdcded54-ec0f-45b7-b174-1da17c054041",
+              "url": "https://shoutatyourdecks.com/decks/bdcded54-ec0f-45b7-b174-1da17c054041",
+              "title": "All Wolf",
+              "author": "BlacklightJedi",
+              "format": "STANDARD",
+              "formatConfidence": "inferred",
+              "fetchedAt": "2026-08-25T15:03:58.319Z",
+              "declaredMainCount": 60,
+              "main": [
+                {
+                  "name": "Automaton Beastkeeper",
+                  "quantity": 3
+                },
+                {
+                  "name": "Bedivere, Woodland Overseer",
+                  "quantity": 3
+                },
+                {
+                  "name": "Bestial Frenzy",
+                  "quantity": 3
+                },
+                {
+                  "name": "Blazing Direwolf",
+                  "quantity": 3
+                },
+                {
+                  "name": "Cell Handler",
+                  "quantity": 3
+                },
+                {
+                  "name": "Direwolf Alpha",
+                  "quantity": 4
+                },
+                {
+                  "name": "Flamelash Beastmaster",
+                  "quantity": 3
+                },
+                {
+                  "name": "Flamelash Subduer",
+                  "quantity": 3
+                },
+                {
+                  "name": "Flamewreath Call",
+                  "quantity": 3
+                },
+                {
+                  "name": "Forest Cake",
+                  "quantity": 4
+                },
+                {
+                  "name": "Geldus, Terror of Dorumegia",
+                  "quantity": 3
+                },
+                {
+                  "name": "Gray Lupindroid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Gray Wolf",
+                  "quantity": 3
+                },
+                {
+                  "name": "Herd of the Hearth",
+                  "quantity": 4
+                },
+                {
+                  "name": "Overcharged Droid",
+                  "quantity": 3
+                },
+                {
+                  "name": "Resolute Stand",
+                  "quantity": 4
+                },
+                {
+                  "name": "Sun Quan, Sealbearer",
+                  "quantity": 4
+                },
+                {
+                  "name": "Young Beastbonder",
+                  "quantity": 4
+                }
+              ],
+              "material": [],
+              "paths": [
+                {
+                  "path": 0,
+                  "cards": [
+                    "Blazing Direwolf",
+                    "Direwolf Alpha",
+                    "Gray Lupindroid",
+                    "Gray Wolf",
+                    "Overcharged Droid"
+                  ]
+                }
+              ],
+              "signature": "ab6df1c65cb1f12b5494af1d9ecbaf871fe8ebf54ee06f89693792c71592233f"
+            }
+          ],
+          "distinctLists": 2,
+          "authorHandles": [
+            "blacklightjedi",
+            "moses-6666"
+          ]
+        },
+        {
+          "id": "discorp-officer",
+          "matches": [],
+          "distinctLists": 0,
+          "authorHandles": []
+        }
+      ]
+    }
+  ]
+}
