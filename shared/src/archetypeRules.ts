@@ -1,5 +1,8 @@
+import { matchRequirementPaths, type Requirement, type RequirementCard, type Section } from './cardRequirements.js';
 import { decodeCardLines, type DeckCardIndexData } from './analysis-types.js';
 export interface ArchetypeRule {
+    /** Additional OR paths of AND requirements; legacy anyCards remains mandatory. */
+    paths?: Requirement[][];
     anyCards: string[];
     allCards: string[];
     excludeCards: string[];
@@ -26,6 +29,8 @@ export interface ReferenceArchetypes {
     definitions: ReferenceDefinition[];
 }
 export interface RuleDeck {
+    sections?: Record<Section, string[]>;
+    catalogCards?: RequirementCard[];
     deckId: string;
     cards: string[];
     elements: string[];
@@ -36,6 +41,7 @@ export interface RuleDeck {
 export function ruleDecks(index: DeckCardIndexData, catalog: readonly {
     name: string;
     types: string[];
+    subtypes?: string[];
     elements: string[];
     level: number | null;
 }[]): RuleDeck[] {
@@ -47,11 +53,18 @@ export function ruleDecks(index: DeckCardIndexData, catalog: readonly {
             for (const type of cards.get(line.name)?.types ?? [])
                 typeCounts[type] = (typeCounts[type] ?? 0) + line.quantity;
         const elements = [...new Set(mat.flatMap(line => cards.get(line.name)?.level === 0 ? cards.get(line.name)!.elements.map(e => e.toUpperCase()) : []))];
-        return { deckId: d.deckId, cards: [...new Set([...main, ...mat].map(c => c.name))].sort(), elements: elements.length ? elements : ['NORM'], typeCounts, materialEntries: mat.length, unknownCards: [...new Set([...main, ...mat].filter(c => !cards.has(c.name)).map(c => c.name))] };
+        return { sections: { main: [...new Set(main.map(c => c.name))], material: [...new Set(mat.map(c => c.name))], identity: [...new Set([...main, ...mat].map(c => c.name))] }, catalogCards: [...new Set([...main, ...mat].map(c => c.name))].flatMap(name => { const c = cards.get(name); return c ? [{ name, types: c.types, subtypes: c.subtypes }] : []; }), deckId: d.deckId, cards: [...new Set([...main, ...mat].map(c => c.name))].sort(), elements: elements.length ? elements : ['NORM'], typeCounts, materialEntries: mat.length, unknownCards: [...new Set([...main, ...mat].filter(c => !cards.has(c.name)).map(c => c.name))] };
     });
 }
 export function evaluateArchetypeRule(rule: ArchetypeRule, deck: RuleDeck) {
     const present = new Set(deck.cards), failures: string[] = [];
+    if (rule.paths) {
+        const sections = deck.sections;
+        if (!sections || !deck.catalogCards || !matchRequirementPaths(rule.paths, {
+            main: new Set(sections.main), material: new Set(sections.material), identity: new Set(sections.identity),
+        }, new Map(deck.catalogCards.map(c => [c.name, c]))).length)
+            failures.push('No complete section-aware requirement path');
+    }
     if (deck.materialEntries > 12)
         failures.push('More than 12 material entries (Fractal eligibility)');
     if (!rule.anyCards.some(c => present.has(c)))
@@ -92,7 +105,7 @@ export function validArchetypeRule(v: unknown): v is ArchetypeRule {
     if (!v || typeof v !== 'object')
         return false;
     const r = v as ArchetypeRule, strings = (x: unknown): x is string[] => Array.isArray(x) && x.every(c => typeof c === 'string' && c.trim().length > 0);
-    return strings(r.anyCards) && strings(r.allCards) && strings(r.excludeCards) && Array.isArray(r.comboGroups) && r.comboGroups.every(g => strings(g) && g.length > 0) && (r.element === null || typeof r.element === 'string') && !!r.typeCounts && typeof r.typeCounts === 'object' && !Array.isArray(r.typeCounts) && Object.values(r.typeCounts).every(n => Number.isSafeInteger(n));
+    return r.paths === undefined && strings(r.anyCards) && strings(r.allCards) && strings(r.excludeCards) && Array.isArray(r.comboGroups) && r.comboGroups.every(g => strings(g) && g.length > 0) && (r.element === null || typeof r.element === 'string') && !!r.typeCounts && typeof r.typeCounts === 'object' && !Array.isArray(r.typeCounts) && Object.values(r.typeCounts).every(n => Number.isSafeInteger(n));
 }
 export interface StrategyEvidence {
     id: string;

@@ -164,3 +164,9 @@ the curated publication path, with backward compatibility for existing rules.
 Then apply this reviewed theme definition and regenerate its visible evidence.
 Other draft families still require their own publication decisions; this result
 must not automatically promote all 15 candidates.
+
+### Publication matcher foundation
+
+Implemented a shared section-aware matcher for draft detection and curated evaluation, with exact historical parity for all 17 broader Dante matches. Boundary tests cover misplaced champions, repeated copies and duplicate lines, zero quantities, Sideboard substitution, missing section evidence, and empty paths. Existing reference rules retain their semantics.
+
+Publication remains pending: add validated import/export support and visible rule descriptions before accepting section-aware definitions, then publish the reviewed theme with regenerated evidence. The import boundary rejects the new internal field until that interface work is complete.

@@ -1,15 +1,7 @@
+import { matchRequirementPaths, type Section, type Requirement } from './cardRequirements.js';
 import { decodeCardLines, type DeckCardIndexData } from './analysis-types.js';
 
 export interface ThemeCard { name: string; types: string[]; subtypes: string[] }
-type Section = 'main' | 'material' | 'identity';
-interface Requirement {
-    section: Section;
-    minimum: number;
-    names?: string[];
-    type?: string;
-    subtypes?: string[];
-    prefix?: string;
-}
 export interface DraftTheme {
     id: string;
     name: string;
@@ -119,13 +111,7 @@ export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly Th
         const main = new Set(positive(deck.main).map(c => c.name));
         const sections = { main, material: new Set(material.map(c => c.name)), identity: new Set([...main, ...material.map(c => c.name)]) };
         for (const entry of evidence) {
-            const paths = entry.paths.flatMap((path, i) => {
-                const witnesses = path.map(condition => [...sections[condition.section]].filter(name => {
-                    const card = cards.get(name);
-                    return (!condition.names || condition.names.includes(name)) && (!condition.prefix || name.startsWith(condition.prefix)) && (!condition.type || card?.types.includes(condition.type)) && (!condition.subtypes || condition.subtypes.some(s => card?.subtypes.includes(s)));
-                }));
-                return witnesses.every((w, j) => w.length >= path[j].minimum) ? [{ path: i, cards: [...new Set(witnesses.flat())].sort() }] : [];
-            });
+            const paths = matchRequirementPaths(entry.paths, sections, cards);
             if (paths.length) entry.matches.push({ deckId: deck.deckId, paths });
         }
     }

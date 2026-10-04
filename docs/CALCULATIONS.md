@@ -3485,3 +3485,11 @@ set of definitions for comparisons; omitted definitions preserve the default
 15-label snapshot. Retained/added/removed IDs are set intersections/differences
 against the baseline. Recurrence uses the same unique-ID helper described above.
 This comparison does not alter the default draft detector or production rules.
+
+### Section-aware curated rule foundation
+
+The shared archetype evaluator now supports optional additional `paths`: alternative paths are OR, and requirements within each path are AND. Requirements count distinct positive-quantity names in Main, Material, or their identity union; Sideboard never contributes. Name, prefix, type, and subtype filters intersect, with subtype alternatives using OR. Missing catalog entries cannot satisfy type/subtype filters. Empty paths never match. Existing any-of, exclusions, parent, element, copy-based type counts, and material-entry eligibility checks still apply.
+
+Draft themes and curated evaluation share the same requirement matcher. Decoded rule decks carry section membership and relevant catalog metadata; older manually constructed rule decks fail closed when a section-aware rule needs that evidence. Historical regression coverage confirms the broader Dante definition selects the same 17 decks through either evaluator.
+
+This is an internal foundation only. Strategy backup/import validation deliberately rejects rules containing paths until the curator interface displays and validates those conditions. No published definitions or memberships change in this step.
