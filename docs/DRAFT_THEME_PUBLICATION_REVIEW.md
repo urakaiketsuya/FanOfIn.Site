@@ -304,3 +304,23 @@ Cached card text supports a shared Imbue theme: Angel Attendant gains intercept 
 Angelic Channeling is an Angel **ACTION**, and Seraphic Legion's Descent is an Angel **PHANTASIA**: neither counts as an ally. Descent searches for and banishes Angel allies, replaces cards banished from hand/memory with memory draws, and has a level-three-or-higher paid rest ability permitting activation, until end of turn, of a target card banished by it. Its eight matching submissions are a subset of the tribal baseline. **Angel Descent remains draft** pending its own package review; the broad Angels label does not require it or assert that its setup is available.
 
 Publication adds a separate reviewed definition while retaining the original draft and comparison evidence. Regression coverage checks exact historical membership, saved-artifact parity, distinct-name counting, zero quantities, section boundaries, and non-ally exclusions. No UI code changed; browser checks were not repeated for this data publication.
+
+
+## Specters publication decision — 2026-10-04
+
+Publish **Specters** as a reviewed theme requiring **three distinct positive-quantity Main-deck cards with both ALLY type and SPECTER subtype**. No champion or named support is required. Material and Sideboard cards cannot satisfy this requirement. This labels tribal membership, without asserting a single strategy, a working combo, strength, or current legality.
+
+`pipeline/scripts/review-specters.ts` reproduces the source-bound review. `data/reference/specter-review.json` retains membership witnesses, threshold comparisons, full positive Main/Material lists and signatures, and relevant cached catalog records. Duplicate deck IDs follow the detector's last-record policy.
+
+- Baseline: 489 submissions across 280 events and 337 players, including 86 returning players; largest event contributes 21 submissions; no unknown identities.
+- The baseline contains 448 distinct positive Main/Material list signatures.
+- Two distinct Main Specter allies retains all 489 and adds 2,373 submissions. Four retains 182 and adds none. Three remains a conservative curation boundary, not a statistically proven optimum.
+- The most common exact Specter subset is Evercurrent Raider, Liminal Guide, and Unyielding Wraithguard (169 submissions). Incinerated Templar, Liminal Guide, and Vengeful Paramour appears in 34; Evercurrent Raider, Liminal Guide, and Vengeful Paramour appears in 29.
+
+Cached mechanics support overlapping graveyard and ephemeral interactions. Liminal Guide returns from the graveyard on champion level-up, becomes ephemeral, and draws a card. Unyielding Wraithguard has taunt and returns on death as ephemeral. Veiled Oracle becomes ephemeral on entry and glimpses three. Lawsur instead supplies power on entry based on other Specter allies and grants awake Specter allies stealth. These effects do not justify imposing one champion or requiring every member to have Ephemerate.
+
+**Specter support remains draft.** Its 215 matches are a subset of the tribal baseline, but its anchors describe different roles: Incinerated Templar conditionally reanimates a reserve-cost-three-or-less Specter ally under Class Bonus; Lawsur supplies tribal combat support; Ticket to the Afterlife discounts Specter graveyard activations and activated abilities; Distort Reality has Alice-gated mass graveyard setup and field deployment. Within the baseline, those anchors appear in 112, 28, 105, and 11 identities respectively, with overlap. Their presence alone does not establish an executable engine or satisfy their conditions.
+
+Phantasmagoria is a **MASTERY** card in the catalog and appears in none of the reviewed Main/Material identities. The identity-only detector does not establish Mastery availability; this absence must not be interpreted as evidence that players lack access to it. A later support review should separate combat payoffs, graveyard enablers, and champion/Mastery-dependent packages before promotion. Distort Reality and Ticket to the Afterlife are non-ally Specter cards and cannot count toward the tribal ally threshold.
+
+Publication adds the fifth reviewed theme and preserves the original drafts. Regression checks cover exact historical membership, saved-artifact parity, threshold comparisons, distinct-name counting, zero quantities, section boundaries, and non-ally exclusions. No UI code changed; browser checks were not repeated for this data publication.

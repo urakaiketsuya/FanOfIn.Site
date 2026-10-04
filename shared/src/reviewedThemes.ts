@@ -35,4 +35,11 @@ export const reviewedThemes: readonly ReviewedTheme[] = [{
     status: 'reviewed',
     paths: structuredClone(draftThemes.find(theme => theme.id === 'draft-angel')!.paths),
     reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
+}, {
+    id: 'specters',
+    name: 'Specters',
+    kind: 'theme',
+    status: 'reviewed',
+    paths: structuredClone(draftThemes.find(theme => theme.id === 'draft-specter')!.paths),
+    reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
 }];
