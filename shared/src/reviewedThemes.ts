@@ -1,3 +1,4 @@
+import { themeRefinements } from './themeRefinements.js';
 import { draftThemes, elysianDanteThemeProposal, type ThemeDefinition } from './draftThemes.js';
 
 export interface ReviewedTheme extends ThemeDefinition {
@@ -60,4 +61,11 @@ export const reviewedThemes: readonly ReviewedTheme[] = [{
     id, name, kind: 'theme', status: 'reviewed',
     paths: clonePaths(draftThemes.find(theme => theme.id === `draft-${draftId}`)!.paths),
     reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
+})), ...themeRefinements.filter(theme => [
+    'memorite-blade', 'memorite-facet', 'memorite-anthem',
+    'resonator-fanclub', 'resonator-forese', 'resonator-module',
+    'specter-templar', 'specter-lawsur', 'specter-ticket', 'specter-distort', 'specter-phantasmagoria',
+].includes(theme.id)).map((theme): ReviewedTheme => ({
+    ...theme, kind: 'theme', status: 'reviewed', paths: clonePaths(theme.paths),
+    reviewDocument: 'docs/THEME_REFINEMENT_REVIEW.md',
 }))];

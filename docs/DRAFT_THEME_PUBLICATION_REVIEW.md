@@ -401,3 +401,12 @@ DisCorp support has one submission (`64888:17615`), which uses Tower of Dis. Ach
 ### Completion and verification scope
 
 All 15 original candidates now have a publication disposition: ten reviewed definitions, three deferred for refinement, and two held for additional evidence. The ten-candidate review batch is complete; the deferred follow-ups are explicit future work, not published engines. Historical evidence is source-bound and does not establish current-format legality. Regression tests cover source hashes, exact historical memberships, publication parity, and missing/duplicate/zero/Sideboard/wrong-section boundaries for every new definition. No UI code changes in this batch; mobile and desktop browser checks were not repeated for this data publication.
+
+### Follow-up refinements completed (2026-10-04)
+
+The three deferred families have now been split into eleven explicit reviewed
+membership packages. Wolves and the two DisCorp support roles were rechecked
+against a newer deck snapshot and remain held. See
+[Theme refinement review](THEME_REFINEMENT_REVIEW.md) for current counts, rules,
+publication decisions, sensitivity checks, and reopening criteria. Earlier counts
+in this document describe their original snapshots.

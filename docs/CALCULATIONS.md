@@ -3509,3 +3509,22 @@ alternative pool. Reviewed definitions remain separate from strategy and combo
 classification. Three heterogeneous support/payoff candidates remain deferred;
 Wolves and DisCorp support remain on hold. List uniqueness hashes sorted positive
 Main/Material lines; submission/event/player counts remain separate metrics.
+
+### Narrow support refinements (2026-10-04)
+
+`shared/src/themeRefinements.ts` defines fourteen follow-up candidates. Eleven are
+explicitly published as membership labels; Wolves, Tower, and Officer remain held.
+See `docs/THEME_REFINEMENT_REVIEW.md` for decisions and exact limitations.
+Memorite payoffs are split by Blade payment, Facet plus a weapon, and Anthem plus
+Vassal mastery access. Resonator roles all require Main music. Specter roles split
+Templar class/target access, Lawsur combat, Ticket support, Alice Distort, and
+Distorted Queen mastery access. Tower's named ally pool intersects DisCorp with
+Automaton; subtype arrays alone would instead match either subtype. Officer adds
+Material Ranger access. Main ally thresholds remain three distinct names.
+
+The refinement artifact hashes its index, catalog, and candidate definitions.
+Comparisons independently remove each condition and vary minima above one by ±1;
+named pools of two through eight cards also receive individual-anchor comparisons.
+Large catalog target pools are not expanded into single-anchor comparisons.
+Counts describe the current snapshot and may differ from frozen historical reviews.
+Registered class/mastery access is not an execution or active-game-state check.
