@@ -6,8 +6,8 @@ import { evaluateArchetypeRule, ruleDecks, parseStrategyStore, validArchetypeRul
 import { detectDraftThemes, elysianDanteThemeProposal } from '../../../shared/src/draftThemes.js';
 
 test('curated matcher preserves all 17 reviewed Dante memberships and fails closed without section evidence', () => {
-    const index = JSON.parse(readFileSync(new URL('../../../data/analysis/deck-card-index.json', import.meta.url), 'utf8'));
-    const catalog = JSON.parse(readFileSync(new URL('../../.cache/cards.json', import.meta.url), 'utf8')).cards;
+    const index = JSON.parse(readFileSync(new URL('./fixtures/theme-review-index.json', import.meta.url), 'utf8'));
+    const catalog = JSON.parse(readFileSync(new URL('../../../data/card-catalog.json', import.meta.url), 'utf8')).cards;
     const rule = { anyCards: ['Dante, Hematic Overdrive'], allCards: [], excludeCards: [], comboGroups: [], element: null, typeCounts: {}, paths: elysianDanteThemeProposal.paths };
     const expected = detectDraftThemes(index, catalog, [elysianDanteThemeProposal]).evidence[0].matches.map(m => m.deckId);
     const decks = ruleDecks(index, catalog);
