@@ -286,3 +286,21 @@ separately assess generators and consumers instead of equating tribe and engine.
 The reviewed artifact now contains Elysian Dante (17), Resonator music (5), and
 DisCorp (17). Draft definitions and archetype/combo counts remain unchanged.
 No UI code changed; browser layout and loading/error states were not retested.
+
+
+## Angels publication decision — 2026-10-04
+
+Publish **Angels** as a reviewed theme requiring **three distinct positive-quantity Main-deck cards with both ALLY type and ANGEL subtype**. No champion or named support card is required. Material and Sideboard allies cannot satisfy this requirement. This is a tribal membership label, not a claim of a single strategy, a working combo, strength, or current legality.
+
+`pipeline/scripts/review-angels.ts` reproduces the decision against the source-hashed index and cached catalog. `data/reference/angel-review.json` retains exact membership witnesses, threshold comparisons, full positive Main/Material lists and their signatures, and relevant catalog records. Duplicate deck IDs use the detector's last-record policy.
+
+- Baseline: 139 submissions, 104 events, 103 players, 23 returning players; largest event contributes six submissions; no unknown identities.
+- Those submissions represent 115 distinct positive Main/Material list signatures, rather than 139 unique builds.
+- Two distinct Main Angel allies retains all 139 and adds 771 submissions. Four retains only 29 and adds none. Three is the conservative curation boundary retained here, not a statistically proven optimum.
+- The most common exact Angel subset is Angel Attendant, Benediction Angel, and Fount Seraphim (56 submissions). Other combinations span multiple classes and elements; no champion gate is justified by this tribal definition.
+
+Cached card text supports a shared Imbue theme: Angel Attendant gains intercept when imbued and draws on death; Benediction Angel draws into memory and recovers two on its imbued entry; Fount Seraphim has taunt and, when imbued on entry, temporarily makes opposing allies enter rested. Archangels have different element-specific Imbue conditions. Membership does not check whether a deck can reliably satisfy those conditions. Triskit is also an Angel ally in the catalog despite lacking Imbue, so Imbue is not part of the subtype definition.
+
+Angelic Channeling is an Angel **ACTION**, and Seraphic Legion's Descent is an Angel **PHANTASIA**: neither counts as an ally. Descent searches for and banishes Angel allies, replaces cards banished from hand/memory with memory draws, and has a level-three-or-higher paid rest ability permitting activation, until end of turn, of a target card banished by it. Its eight matching submissions are a subset of the tribal baseline. **Angel Descent remains draft** pending its own package review; the broad Angels label does not require it or assert that its setup is available.
+
+Publication adds a separate reviewed definition while retaining the original draft and comparison evidence. Regression coverage checks exact historical membership, saved-artifact parity, distinct-name counting, zero quantities, section boundaries, and non-ally exclusions. No UI code changed; browser checks were not repeated for this data publication.

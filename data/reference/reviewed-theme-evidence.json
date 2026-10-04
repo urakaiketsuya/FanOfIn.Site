@@ -847,6 +847,1868 @@
           ]
         }
       ]
+    },
+    {
+      "id": "angels",
+      "name": "Angels",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "ANGEL"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "48696:5904",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Benediction Angel",
+                "Nuriel, Seraphic Paladin",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "49580:19078",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Azrael, Archangel of Materia",
+                "Benediction Angel",
+                "Cauterizing Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50176:2150",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50218:9839",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50296:2306",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50329:4685",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50499:149",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50519:17295",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50527:20025",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50528:6069",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50602:10529",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50602:128",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50602:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50614:21578",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50951:13656",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50981:21471",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Ariel, Archangel of Natura",
+                "Benediction Angel"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51252:10114",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Benediction Angel",
+                "Nuriel, Seraphic Paladin",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51252:28020",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51312:22975",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:20277",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51546:18127",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51605:197",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51657:22196",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51736:6535",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Ariel, Archangel of Natura",
+                "Raziel, Archangel of Libra",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51814:911",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Azrael, Archangel of Materia",
+                "Benediction Angel",
+                "Cauterizing Seraphim",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51918:24751",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51998:11267",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52018:24679",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin",
+                "Reverent Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52051:14004",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Cauterizing Seraphim",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52100:26018",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52181:1708",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52224:25064",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Azrael, Archangel of Materia",
+                "Benediction Angel"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52304:247",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Cauterizing Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52307:825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52348:22113",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52348:2306",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52349:20818",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52406:24751",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52445:9016",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Azrael, Archangel of Materia",
+                "Benediction Angel",
+                "Cauterizing Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52480:4597",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Raziel, Archangel of Libra",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52502:496",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52583:26018",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52587:13656",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52587:2055",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52587:825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52794:14633",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Ariel, Archangel of Natura",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53148:20510",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53256:7894",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53273:1638",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Cauterizing Seraphim",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53310:28616",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53422:14633",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Ariel, Archangel of Natura",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53423:5413",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Ariel, Archangel of Natura",
+                "Benediction Angel"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53568:14756",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53568:2302",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53568:8734",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Reverent Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53693:15880",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53836:14415",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53836:26018",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53836:9017",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53915:496",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54027:4932",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Benediction Angel",
+                "Raziel, Archangel of Libra",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54070:16398",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54212:7643",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54239:19780",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54261:12815",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54294:17278",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54294:2302",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54510:10939",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54514:10939",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54696:17278",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54696:2302",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54936:14005",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54936:24756",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55003:641",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55109:13292",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55109:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Cauterizing Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55112:21895",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55188:7521",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55246:7521",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55400:1951",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55400:496",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Fount Seraphim",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55400:960",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55450:1951",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55450:960",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55627:23615",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55777:2306",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55777:7643",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55852:21729",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55893:30182",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55893:7882",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:12222",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:13142",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:2302",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:5025",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:7643",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:9017",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56266:9017",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56328:641",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56404:14633",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56404:20025",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56404:23348",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56416:13950",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56432:2306",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56883:14375",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56883:26429",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57006:7606",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57007:7606",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57228:13213",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Ariel, Archangel of Natura",
+                "Benediction Angel"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57228:2163",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57230:23570",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57529:26603",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57564:20537",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57591:25352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57690:14449",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57694:641",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57712:27547",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57871:22243",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58227:16381",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58245:21578",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58423:26953",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Haniel, Archangel of Spectra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58745:15998",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58745:29377",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58750:16850",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58750:24289",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58750:4069",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Raziel, Archangel of Libra"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58922:6081",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59168:9385",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59334:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59730:17357",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59730:18711",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59730:24014",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:12404",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:21578",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64585:29352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64701:14913",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Benediction Angel",
+                "Raziel, Archangel of Libra",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64718:6081",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:29352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "65240:15998",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Fount Seraphim"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "status": "reviewed",
@@ -920,11 +2782,31 @@
         }
       ],
       "overlaps": []
+    },
+    {
+      "id": "angels",
+      "decks": 139,
+      "recurrence": {
+        "events": 104,
+        "players": 103,
+        "returningPlayers": 23,
+        "largestEventDecks": 6,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 139,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 139,
+          "exclusiveDecks": 139
+        }
+      ],
+      "overlaps": []
     }
   ],
   "sources": {
     "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
     "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
-    "definitionsSha256": "23ec0d165153d394a3d64bee26087c133db43995288d721d06e97773441537ae"
+    "definitionsSha256": "37d8bf483323d8d72ecbb757818777f9bc042bbfceaa591d5427df1f80d4d6c3"
   }
 }
