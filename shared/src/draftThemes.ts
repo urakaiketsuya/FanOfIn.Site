@@ -20,6 +20,26 @@ export interface DraftTheme {
 }
 export interface DraftThemeMatch { deckId: string; paths: { path: number; cards: string[] }[] }
 
+/** Historical identity coverage; repeated players can still submit the same list. */
+export function summarizeThemeRecurrence(deckIds: Iterable<string>) {
+    const events = new Map<string, number>();
+    const players = new Map<string, number>();
+    let unknownDecks = 0;
+    for (const id of new Set(deckIds)) {
+        const parts = id.split(':');
+        if (parts.length !== 2 || !parts[0] || !parts[1]) { unknownDecks++; continue; }
+        events.set(parts[0], (events.get(parts[0]) ?? 0) + 1);
+        players.set(parts[1], (players.get(parts[1]) ?? 0) + 1);
+    }
+    return {
+        events: events.size,
+        players: players.size,
+        returningPlayers: [...players.values()].filter(count => count > 1).length,
+        largestEventDecks: Math.max(0, ...events.values()),
+        unknownDecks,
+    };
+}
+
 /** Review counts describe membership only, never strategic validity or strength. */
 export function summarizeDraftThemes(evidence: readonly (DraftTheme & { matches: DraftThemeMatch[] })[]) {
     const memberships = evidence.map(entry => new Set(entry.matches.map(match => match.deckId)));
@@ -33,6 +53,7 @@ export function summarizeDraftThemes(evidence: readonly (DraftTheme & { matches:
         return {
             id: entry.id,
             decks: members.size,
+            recurrence: summarizeThemeRecurrence(members),
             exclusiveDecks: [...members].filter(id => !memberships.some((set, j) => j !== i && set.has(id))).length,
             paths: entry.paths.map((_, path) => ({
                 path,

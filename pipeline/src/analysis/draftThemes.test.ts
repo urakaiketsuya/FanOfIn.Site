@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { detectDraftThemes, summarizeDraftThemes, type DraftTheme } from '../../../shared/src/draftThemes.js';
+import { detectDraftThemes, summarizeDraftThemes, summarizeThemeRecurrence, type DraftTheme } from '../../../shared/src/draftThemes.js';
 import type { DeckCardIndexData } from '../../../shared/src/analysis-types.js';
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const catalog = read('../../.cache/cards.json').cards;
@@ -27,6 +27,7 @@ test('review summaries distinguish label overlap from alternative path overlap',
         { ...definition, id: 'empty', matches: [] },
     ]);
     assert.deepEqual(result[0], { id: 'a', decks: 3, exclusiveDecks: 2,
+        recurrence: { events: 0, players: 0, returningPlayers: 0, largestEventDecks: 0, unknownDecks: 3 },
         paths: [{ path: 0, decks: 2, exclusiveDecks: 1 }, { path: 1, decks: 2, exclusiveDecks: 1 }],
         overlaps: [{ id: 'b', decks: 1, jaccard: 0.25 }] });
     assert.equal(result[1].exclusiveDecks, 1);
@@ -49,4 +50,13 @@ test('sideboard, zero copies, duplicate names, and wrong sections cannot create 
 });
 test('missing curated anchors fail explicitly', () => {
     assert.throws(() => detectDraftThemes({ ...index, decks: [] }, []), /Missing draft-theme anchor/);
+});
+
+test('recurrence separates repeated players, event concentration, duplicates and unknown IDs', () => {
+    assert.deepEqual(summarizeThemeRecurrence(['10:a', '10:b', '11:a', '10:a', 'bad', ':a', '10:', '10:a:x']), {
+        events: 2, players: 2, returningPlayers: 1, largestEventDecks: 2, unknownDecks: 4,
+    });
+    assert.deepEqual(summarizeThemeRecurrence([]), {
+        events: 0, players: 0, returningPlayers: 0, largestEventDecks: 0, unknownDecks: 0,
+    });
 });

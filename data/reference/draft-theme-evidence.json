@@ -20480,6 +20480,13 @@
     {
       "id": "draft-resonator",
       "decks": 5,
+      "recurrence": {
+        "events": 5,
+        "players": 5,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 2,
       "paths": [
         {
@@ -20499,6 +20506,13 @@
     {
       "id": "draft-resonator-support",
       "decks": 3,
+      "recurrence": {
+        "events": 3,
+        "players": 3,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 0,
       "paths": [
         {
@@ -20518,6 +20532,13 @@
     {
       "id": "draft-discorp",
       "decks": 17,
+      "recurrence": {
+        "events": 10,
+        "players": 16,
+        "returningPlayers": 1,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 16,
       "paths": [
         {
@@ -20537,6 +20558,13 @@
     {
       "id": "draft-discorp-support",
       "decks": 1,
+      "recurrence": {
+        "events": 1,
+        "players": 1,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 0,
       "paths": [
         {
@@ -20556,6 +20584,13 @@
     {
       "id": "draft-elysian-dante",
       "decks": 13,
+      "recurrence": {
+        "events": 11,
+        "players": 10,
+        "returningPlayers": 3,
+        "largestEventDecks": 2,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 13,
       "paths": [
         {
@@ -20574,6 +20609,13 @@
     {
       "id": "draft-angel",
       "decks": 139,
+      "recurrence": {
+        "events": 104,
+        "players": 103,
+        "returningPlayers": 23,
+        "largestEventDecks": 6,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 125,
       "paths": [
         {
@@ -20613,6 +20655,13 @@
     {
       "id": "draft-angel-descent",
       "decks": 8,
+      "recurrence": {
+        "events": 8,
+        "players": 8,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 0,
       "paths": [
         {
@@ -20632,6 +20681,13 @@
     {
       "id": "draft-specter",
       "decks": 489,
+      "recurrence": {
+        "events": 280,
+        "players": 337,
+        "returningPlayers": 86,
+        "largestEventDecks": 21,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 273,
       "paths": [
         {
@@ -20656,6 +20712,13 @@
     {
       "id": "draft-specter-support",
       "decks": 215,
+      "recurrence": {
+        "events": 161,
+        "players": 156,
+        "returningPlayers": 33,
+        "largestEventDecks": 6,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 0,
       "paths": [
         {
@@ -20680,6 +20743,13 @@
     {
       "id": "draft-fairy",
       "decks": 57,
+      "recurrence": {
+        "events": 47,
+        "players": 43,
+        "returningPlayers": 2,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 1,
       "paths": [
         {
@@ -20699,6 +20769,13 @@
     {
       "id": "draft-mordred-fairy",
       "decks": 77,
+      "recurrence": {
+        "events": 59,
+        "players": 58,
+        "returningPlayers": 5,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 21,
       "paths": [
         {
@@ -20718,6 +20795,13 @@
     {
       "id": "draft-wolf",
       "decks": 1,
+      "recurrence": {
+        "events": 1,
+        "players": 1,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 0,
       "paths": [
         {
@@ -20737,6 +20821,13 @@
     {
       "id": "draft-wolf-tokens",
       "decks": 78,
+      "recurrence": {
+        "events": 51,
+        "players": 63,
+        "returningPlayers": 13,
+        "largestEventDecks": 7,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 77,
       "paths": [
         {
@@ -20756,6 +20847,13 @@
     {
       "id": "draft-memorite",
       "decks": 162,
+      "recurrence": {
+        "events": 136,
+        "players": 121,
+        "returningPlayers": 26,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 54,
       "paths": [
         {
@@ -20780,6 +20878,13 @@
     {
       "id": "draft-memorite-payoff",
       "decks": 155,
+      "recurrence": {
+        "events": 131,
+        "players": 113,
+        "returningPlayers": 25,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
       "exclusiveDecks": 47,
       "paths": [
         {

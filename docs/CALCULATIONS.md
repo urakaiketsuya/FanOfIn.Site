@@ -3429,7 +3429,7 @@ Rebuild review evidence with
 `node --import tsx pipeline/scripts/rebuild-draft-themes.ts`. The output is
 `data/reference/draft-theme-evidence.json`, deliberately outside the published
 analysis manifest. It includes source hashes, all matched deck IDs, qualifying
-cards, and the zero-based alternative rule paths. No current UI consumes it.
+cards, and the zero-based alternative rule paths. The Draft themes review page consumes this fixed snapshot.
 
 The `review` summary counts unique deck IDs per label and per alternative path.
 Label `exclusiveDecks` means no other draft label matches that deck; path
@@ -3437,8 +3437,12 @@ Label `exclusiveDecks` means no other draft label matches that deck; path
 different scopes. Pairwise overlaps count the intersection, with Jaccard equal
 to intersection divided by union. Zero intersections are omitted; overlaps sort
 by descending shared decks, then label ID. Path counts can overlap and must not
-be summed. These summaries measure membership, not recurrence across players,
-mechanical validity, or competitive strength.
+be summed. The `recurrence` field counts distinct event and player identifiers from unique
+`eventId:player` deck IDs. `returningPlayers` counts players represented at more
+than one event; `largestEventDecks` measures event concentration. Malformed IDs
+are excluded from these counts and reported as `unknownDecks`. Empty populations
+return zero counts. These are historical coverage measures, not independent
+build counts, mechanical validity, or competitive strength.
 
 Rules count distinct positive-quantity names, not copies. Subtype ally thresholds
 apply only to Main; champion gates apply to Material. Named support may use
