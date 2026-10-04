@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { detectDraftThemes, type ThemeCard } from '../../../shared/src/draftThemes.js';
 import type { DeckCardIndexData } from '../../../shared/src/analysis-types.js';
 
-const catalog: ThemeCard[] = JSON.parse(readFileSync(new URL('../../.cache/cards.json', import.meta.url), 'utf8')).cards;
+const catalog: ThemeCard[] = JSON.parse(readFileSync(new URL('../../../data/card-catalog.json', import.meta.url), 'utf8')).cards;
 const source: DeckCardIndexData = JSON.parse(readFileSync(new URL('../../../data/analysis/deck-card-index.json', import.meta.url), 'utf8'));
 const resonators = ['Breezy Looper', 'Current Groover', 'Music Aficionado'];
 const discorp = ['Biding Endroid', 'Cellforger Droid', 'Cellwarden Droid'];
