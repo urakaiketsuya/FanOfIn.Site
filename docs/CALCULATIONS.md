@@ -3556,3 +3556,24 @@ only three appearances and the combo in 75, so it is not merged. All 3,476 appea
 the five families were available. Reproduce the metadata refresh with
 `node --import tsx pipeline/scripts/refresh-diao-archetype.ts`; normal taxonomy generation
 applies the same shared rule. Rollout to other champions requires a separate card-core review.
+
+
+The remaining Diao families use the same joint >=90% naming threshold and complete-coverage,
+five-player, two-event requirements. Reviewed cores are:
+
+| Name | Required identifying core | Joint appearances at review |
+| --- | --- | --- |
+| Water Diao Chan — Fractal Burn | Fractal of Rain, Refracting Missile, Burst Asunder | 2,477 / 2,480 |
+| Fire Diao Chan — Ally Burn | Arthur, Young Heir; Red Hare, Unrivaled Stallion; Xiao Qiao, Cinderkeeper | 84 / 88 |
+| Water Diao Chan — Phantasia Control | Eventide Lure, Torpid Fractal, Frostnip Pirouette | 9 / 9 |
+| Tera Diao Chan — Flowerbud | Maiden of Waning Bloom, Full Bloom | 9 / 10 |
+
+All qualifying identities must match exactly one reviewed core; ambiguous families keep their
+generated name for review. Evidence retains the original generated name for reevaluation and
+clears reviewed identity metadata when coverage or thresholds no longer qualify. Family confidence
+is preserved, including emerging labels for small samples. These labels describe packages, not
+new clustering or per-deck assignments. Tera describes the Flowerbud payoff despite its Water spirit.
+The UI shows core cards first, supporting cards separately, and the independent Searing Rebuke
+combo only where fire-package evidence exists. Support cards do not affect naming. Each displayed
+card has observed prevalence and average copies including zeroes, using main + material only.
+Card mechanics were checked against the local catalog. No build memberships or calculated results change.

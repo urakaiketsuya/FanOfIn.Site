@@ -470,7 +470,7 @@ export default function ChampionSynergy() {
               actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
             >
               {!taxonomyData ? (
-                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><p>{taxonomyStatus.error}</p><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry archetype analysis</button></> : "Loading archetype analysis…"}</InlineState>
+                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><span className="block">{taxonomyStatus.error}</span><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry archetype analysis</button></> : "Loading archetype analysis…"}</InlineState>
               ) : championName === "Diao Chan" ? (
                 <DiaoArchetypeFamilies taxonomy={taxonomyData} catalog={catalogByName} />
               ) : engines.length === 0 ? (
