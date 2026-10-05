@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { ArchetypeTaxonomyData, Card, RelationshipEvidence } from '@gatcg/shared';
 import Section from '../../components/ui/Section';
+import Button from '../../components/ui/Button';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import { championNameToSlug } from '../../lib/championSlug';
 
@@ -10,14 +11,18 @@ function Evidence({ evidence: e }: { evidence: RelationshipEvidence }) {
   </p>;
 }
 
-export default function ChampionRelationships({ championName, taxonomy, catalog }: {
-  championName: string; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card>;
+export default function ChampionRelationships({ championName, taxonomy, catalog, error, onRetry }: {
+  championName: string; taxonomy: ArchetypeTaxonomyData | undefined; catalog: Map<string, Card>;
+  error?: string | null; onRetry: () => void;
 }) {
-  const relationships = taxonomy.reviewedRelationships?.filter(r => r.families.some(f => f.championName === championName)) ?? [];
-  const families = new Map(taxonomy.strategyArchetypes.map(f => [f.id, f]));
-  const builds = new Map(taxonomy.clusters.map(b => [b.id, b]));
+  const relationships = taxonomy?.reviewedRelationships?.filter(r => r.families.some(f => f.championName === championName)) ?? [];
+  const families = new Map(taxonomy?.strategyArchetypes.map(f => [f.id, f]));
+  const builds = new Map(taxonomy?.clusters.map(b => [b.id, b]));
   return <Section id="relationships" className="scroll-mt-48" title="Shared archetypes and packages" description="Historical decklist matches · all elements">
-    {relationships.length === 0 ? <p className="text-sm text-ctp-subtext1">{taxonomy.reviewedRelationships ? 'No reviewed card relationships found for this champion.' : 'Reviewed relationships are not available in this data release.'}</p> :
+    {!taxonomy ? <div role={error ? 'alert' : 'status'} className="text-sm text-ctp-subtext1">
+      <p>{error || 'Loading shared archetypes and packages…'}</p>
+      {error && <Button onClick={onRetry} className="mt-2">Retry shared archetypes</Button>}
+    </div> : relationships.length === 0 ? <p className="text-sm text-ctp-subtext1">{taxonomy.reviewedRelationships ? 'No reviewed card relationships found for this champion.' : 'Reviewed relationships are not available in this data release.'}</p> :
       <div className="grid items-start gap-4 lg:grid-cols-2">{relationships.map(relationship => {
         const local = relationship.families.filter(f => f.championName === championName);
         const connected = [...new Set(relationship.families.filter(f => f.championName !== championName && (f.evidence.supported || f.builds.some(b => b.evidence.supported))).map(f => f.championName))].sort();

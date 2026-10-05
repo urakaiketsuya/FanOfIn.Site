@@ -465,7 +465,7 @@ export default function ChampionSynergy() {
               {newReleaseCards.length > 4 && <Button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 min-h-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</Button>}
             </Section>
 
-            {taxonomyData && <ChampionRelationships championName={championName} taxonomy={taxonomyData} catalog={catalogByName} />}
+            <ChampionRelationships championName={championName} taxonomy={taxonomyData} catalog={catalogByName} error={taxonomyStatus.phase === "error" ? taxonomyStatus.error : undefined} onRetry={taxonomyStatus.retry} />
 
             <Section
               id="archetypes"
