@@ -4372,3 +4372,29 @@ test dates, comparisons, skipped comparisons, and mean later field coverage.
 This check uses published fields independently of user-selected dates, weights,
 and the stress toggle. Older projections without summaries show an unavailable
 message; formats with no evaluated comparisons show insufficient evidence.
+
+### Outside-range diagnostics
+
+Run `node --import tsx pipeline/scripts/diagnose-field-ranges.ts` to write
+`docs/reports/field-range-diagnostics.json`. The script first recomputes and checks
+the full window audit against current history, rejecting stale inputs. It lists
+all outside cases by distance between the nearest range endpoints, with direction,
+event counts, and per-opponent training/later scores, sample counts, and frozen
+training shares. Weighted changes are share × (raw later score − shrunken training
+score) only for jointly covered opponents. Unknown scores keep bounds and a null
+change. Mirror scores remain 0.5 without invented matches. Opponents sort by
+absolute weighted change; their later bounds must reconstruct the pooled bounds.
+These changes compare point estimates, not bootstrap endpoints: they are descriptive
+and do not establish why a range failed or separate drift from match noise.
+
+For the current 226 Standard comparisons, 34 are outside: 19 above and 15 below.
+The median endpoint gap is 2.10 percentage points; seven exceed five points.
+In 15 of the 34 cases, the opponent with the largest absolute weighted change has
+at most five later matches. The largest gap is Diana in the window starting
+2025-12-01 (12.27 points); its largest contribution is Lorraine (+9.24 weighted
+points), based on only two later matches. Ciel's 2026-04-20 gap is 8.70 points;
+its largest contribution is Guo Jia (+4.37 weighted points), based on 27 later
+matches. Small samples are therefore a concern but do not describe every case.
+Do not use these findings to widen or tune ranges on the same holdouts. A future
+uncertainty model needs separately held-out evaluation. These diagnostics remain
+an offline report; the user-facing summary and scoring are unchanged.
