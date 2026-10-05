@@ -1,3 +1,4 @@
+import ResultEvidence from './ResultEvidence';
 import AccessTimeline, { ScenarioControls, type AnalysisScenario } from './AccessTimeline';
 import { naturalCardsSeenByTurn } from '../../lib/turnToPlay';
 import { probabilityAtLeast } from '../deckbuilder/synergyReadiness';
@@ -31,6 +32,7 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       <p className="mt-1 text-sm text-ctp-subtext1">Deadline and play order carry into quick calculators. Detailed models retain their own assumptions.</p>
       <ScenarioControls value={scenario} onChange={onScenarioChange} />
       {tracked ? <><div className="mb-3">{art(tracked.name)}</div><label className="block text-sm">Card to track<select className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={tracked.name} onChange={(event) => setSelectedCard(event.target.value)}>{report.cards.map((card) => <option key={card.name}>{card.name}</option>)}</select></label>
+      <div className="mt-3"><ResultEvidence kind="calculated" basis={`${report.size} Main Deck cards · ${report.opening} opening cards. Natural draws only; no mulligans, searches, or extra draw effects.`} /></div>
       <AccessTimeline values={Array.from({ length: 8 }, (_, i) => probabilityAtLeast(report.size, tracked.quantity, Math.min(report.size, naturalCardsSeenByTurn(i + 1, report.opening, scenario.order)), 1))} label={`${tracked.name} · ${tracked.quantity} copies in ${report.size} · find 1+`} scenario={scenario} onTurnChange={(turn) => onScenarioChange({ ...scenario, turn })} />
       <Button className="mt-4" onClick={() => onExplore(tracked.name)}>Compare card access</Button></> : <p className="mt-3 text-sm">Add Main Deck cards to calculate access by turn.</p>}
     </section>
@@ -52,6 +54,7 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       {report.cards.length > 4 && <Button className="mt-3" aria-expanded={all} onClick={() => setAll(!all)}>{all ? 'Show fewer cards' : `Show all ${report.cards.length} cards`}</Button>}
     </section>
     <section className="rounded-xl border border-ctp-surface1 p-4"><h2 className="text-lg font-semibold">What supports extra draws?</h2><p className="mt-1 text-sm text-ctp-subtext1">{report.sources.length ? 'Detected printed draw effects provide a single pass estimate. Conditions, level gates, prior spending, and repeated activations are not simulated. Starting champion draws are excluded here.' : 'No supported extra draw clauses detected. Variable effects and searches may still provide access.'}</p>
+      {report.sources.length > 0 && <div className="mt-3"><ResultEvidence kind="modeled" basis="Printed draw clauses are detected from catalog text. Eligible effects are assumed to resolve once; expected bonus draws are rounded before estimating access." /></div>}
       <div className="mt-3 flex flex-wrap gap-4">{report.sources.map((source) => <div key={`${source.section}${source.name}`}>{art(source.name)}<p className="mt-1 max-w-24 text-xs">{source.section} · {source.perCopy} printed draws per copy{source.conditional ? ' · conditional' : ''}</p></div>)}</div>
       {report.sources.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">View modeled draw estimates<DisclosureChevron /></summary><p className="text-sm text-ctp-subtext1">Assumes eligible effects resolve. Rounded expected bonus draws are used for estimated access; these are not confidence bounds or exact probabilities for actual play.</p>{report.checkpoints.map((point, i) => <div className="mt-3" key={i}><h3 className="font-semibold">Turn {point.turn} · going {point.order}</h3><p className="text-sm">{point.extra.toFixed(1)} expected extra draws before deck size cap</p><ul className="mt-2 space-y-2 text-xs">{report.cards.map((line) => <li key={line.name}>{line.name}: {percent(line.checkpoints[i].natural)} natural; {percent(line.checkpoints[i].modeled)} with modeled effects</li>)}</ul></div>)}</details>}
     </section>
