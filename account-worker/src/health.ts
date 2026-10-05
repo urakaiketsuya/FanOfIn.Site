@@ -1,7 +1,7 @@
 import { databaseBatch } from "./database";
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0032";
+export const REQUIRED_SCHEMA_VERSION = "0033";
 
 export interface ServiceHealth {
   success: boolean;
@@ -35,6 +35,7 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
       env.ACCOUNT_DB.prepare("SELECT user_id, combo_id FROM combo_bookmarks LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, deck_hash, decklist_json FROM tournament_deck_favorites LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, id, saved_deck_id, provenance_kind FROM match_log_records LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, id FROM match_log_deletions LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, deck_fingerprint, deck_identity, revision FROM analysis_profiles LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT target_kind, target_id, locked FROM deck_comment_threads LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT id, parent_id, status FROM deck_comments LIMIT 0"),
