@@ -43,12 +43,12 @@ cd app && npm run lint
 
 ## UX/UI defaults — apply without prompting
 
-All new or revised user interfaces must be mobile-first, follow Material Design interaction principles, and use progressive disclosure. Treat these as standing acceptance criteria, including when a task only asks for a feature or bug fix that changes UI.
+All new or revised user interfaces must be mobile-first, follow Material Design interaction principles, and prioritize concise, visual results. Treat these as standing acceptance criteria, including when a task only asks for a feature or bug fix that changes UI.
 
 - Use card-first design for card, deck, and package experiences: show the actual game cards with the shared `CardArtTile` (or `VisualCardTile` when stats are needed) before configuration and detailed evidence. Keep readable card names visible, link known cards to their details, and provide a name fallback when art or catalog data is unavailable. Use responsive, wrapping grids; do not require hover or opening a review panel to identify the cards. Package summaries must distinguish the full card pool from an exact tested variant or required core.
 - Start with a single-column layout at 360–390px. Add desktop enhancements after the mobile flow works. Preserve the site's existing theme and shared components; this rule does not require adopting a new component library.
 - Make the user's immediate task and primary action obvious. Let users begin with minimal setup; ask for information only when the next action requires it. Preserve unfinished work and support drafts.
-- Show essential content and common actions first. Reveal optional recommendations, advanced filters, tuning, evidence, and methodology on demand through clearly labeled controls. Keep errors, required fields, and important status visible.
+- Show essential content and common actions first. Do not add explanatory disclosures, disclaimer panels, or methodology accordions. Prefer visual results and short, precise labels; keep calculation methodology in docs. Keep errors, required fields, and important status visible. Use focused controls for optional configuration.
 - Use the shared `DisclosureChevron` for dropdown/disclosure indicators (20px with consistent stroke and alignment), rather than small text glyphs.
 - Reuse `components/ui/DialogSheet` for modal sheets (focus isolation/restoration, neutral dismissal, persistent footer, and `dirty` protection for locally held edits). Use `CardResult` for browse/select/manage card surfaces; keep mutations and persistence in feature controllers. Parent-owned quantity drafts do not need a discard prompt on every card sheet.
 - Use consistent Material-style hierarchy, spacing, surfaces, and action emphasis. Prefer an inline expansion for local details and a dialog or bottom sheet for a focused secondary task. Avoid nested disclosure and competing primary buttons.

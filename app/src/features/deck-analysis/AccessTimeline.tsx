@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Button from '../../components/ui/Button';
-import DisclosureChevron from '../../components/DisclosureChevron';
 import type { PlayOrder } from '../../lib/turnToPlay';
 
 export interface AnalysisScenario { turn: number; order: PlayOrder }
@@ -17,11 +16,11 @@ export default function AccessTimeline({ values, label, scenario, onTurnChange }
   return <section className="mt-4 min-w-0 space-y-3" aria-label="Access by turn">
     <h3 className="font-semibold">Access by turn</h3>
     <p className="break-words text-sm">{label} · going {scenario.order}</p>
-    <p className="text-xs text-ctp-subtext1">Calculated · natural draws only. Access does not establish a successful play.</p>
-    <div className="space-y-1">{values.map((value, index) => <button type="button" key={index} onClick={() => onTurnChange(index + 1)} aria-pressed={scenario.turn === index + 1} aria-label={`Turn ${index + 1}: ${percent(value)}${baseline ? `; baseline ${percent(baseline.values[index])}` : ''}`} className={`flex min-h-12 w-full items-center gap-3 rounded-lg px-2 text-xs focus-visible:outline-2 focus-visible:outline-ctp-blue ${scenario.turn === index + 1 ? 'bg-ctp-blue/10 ring-1 ring-inset ring-ctp-blue' : ''}`}><span className="shrink-0">Turn {index + 1}</span><span aria-hidden="true" className="relative h-5 flex-1 overflow-hidden rounded bg-ctp-surface0"><span className="absolute left-0 top-0 h-3 rounded bg-ctp-blue transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${value * 100}%` }} />{baseline && <span className="absolute bottom-0 left-0 h-1 border-t-2 border-dashed border-ctp-text transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${baseline.values[index] * 100}%` }} />}</span><span className="w-14 text-right tabular-nums">{percent(value)}</span></button>)}</div>
-    <p role="status" className="text-sm tabular-nums">Turn {scenario.turn}: {percent(current)}{previous !== undefined && <> · baseline {percent(previous)} · {current >= previous ? '+' : ''}{((current - previous) * 100).toFixed(1)} percentage points</>}</p>
-    {baseline && <p className="break-words text-xs text-ctp-subtext1">Dashed baseline: {baseline.label} · going {baseline.order}. Both values compare the same turn.</p>}
-    <div className="flex flex-wrap gap-2"><Button onClick={() => setBaseline({ values: [...values], label, order: scenario.order })}>{baseline ? 'Replace baseline' : 'Pin baseline'}</Button>{baseline && <Button onClick={() => setBaseline(null)}>Clear baseline</Button>}</div>
-    <details className="group"><summary className="flex min-h-12 cursor-pointer items-center justify-between gap-2 text-sm">How to compare<DisclosureChevron /></summary><p className="text-sm text-ctp-subtext1">Pin a baseline, then change the selected cards, required copies, or play order. The pinned values stay fixed while you explore. Baselines last while this deck is open. A higher access chance is not necessarily a better deck.</p></details>
+    <p className="text-xs text-ctp-subtext1">Natural draw odds</p>
+    <div className="space-y-1">{values.map((value, index) => <button type="button" key={index} onClick={() => onTurnChange(index + 1)} aria-pressed={scenario.turn === index + 1} aria-label={`Turn ${index + 1}: ${percent(value)}${baseline ? `; saved comparison ${percent(baseline.values[index])}` : ''}`} className={`flex min-h-12 w-full items-center gap-3 rounded-lg px-2 text-xs focus-visible:outline-2 focus-visible:outline-ctp-blue ${scenario.turn === index + 1 ? 'bg-ctp-blue/10 ring-1 ring-inset ring-ctp-blue' : ''}`}><span className="shrink-0">Turn {index + 1}</span><span aria-hidden="true" className="relative h-5 flex-1 overflow-hidden rounded bg-ctp-surface0"><span className="absolute left-0 top-0 h-3 rounded bg-ctp-blue transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${value * 100}%` }} />{baseline && <span className="absolute bottom-0 left-0 h-1 border-t-2 border-dashed border-ctp-text transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${baseline.values[index] * 100}%` }} />}</span><span className="w-14 text-right tabular-nums">{percent(value)}</span></button>)}</div>
+    <p role="status" className="text-sm tabular-nums">Turn {scenario.turn}: {percent(current)}{previous !== undefined && <> · saved {percent(previous)} · {current >= previous ? '+' : ''}{((current - previous) * 100).toFixed(1)} percentage points</>}</p>
+    {baseline && <p className="break-words text-xs text-ctp-subtext1">Dashed line: {baseline.label} · going {baseline.order}.</p>}
+    <div className="flex flex-wrap gap-2"><Button onClick={() => setBaseline({ values: [...values], label, order: scenario.order })}>{baseline ? 'Update comparison' : 'Save for comparison'}</Button>{baseline && <Button onClick={() => setBaseline(null)}>Clear comparison</Button>}</div>
+
   </section>;
 }

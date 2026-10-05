@@ -13,7 +13,7 @@ The theme in `app/src/index.css` owns colors and typography. `--spacing-control`
 | User need | Pattern | Required behavior |
 | --- | --- | --- |
 | Identify a card or deck | Visible artwork and readable title | Name fallback; known cards link to details; do not hide identity behind expansion |
-| Inspect optional evidence or methodology | Inline details with DisclosureChevron | Clear label, keyboard access, 48px summary; no nested disclosure by default |
+| Understand a result | Visual comparison and concise labels | No explanatory disclosures or disclaimer panels; keep methodology in calculation docs |
 | Edit quantities, loans, or assignments | DialogSheet | Parent retains drafts; local drafts use dirty protection; persistent save action; failed saves keep work and show inline error |
 | Move between peer views | Tabs and TabPanel | Roving keyboard focus, selected state, panel association; preserve drafts and existing URL state |
 | Confirm successful action | Toast | Specific outcome; add Undo only when a real reversal exists; do not put essential status only in a toast |
@@ -67,8 +67,8 @@ Advanced Analysis groups questions by task and gives each a single entry. Relate
 are peer tabs under the same question, with separate-input scope stated explicitly. Keep visited
 models mounted while the deck workspace remains open so switching views cannot discard drafts.
 Card handoffs update the requested scenario without remounting the whole workspace. Lead calculated
-results with named card artwork, keep model limitations visible, and disclose supporting calculations
-on demand. Large result panels should not become sticky overlays on narrow screens.
+results with named card artwork and concise labels distinguishing calculated odds from estimates.
+Keep supporting methodology in docs/CALCULATIONS.md. Large result panels should not become sticky overlays on narrow screens.
 
 ## Card printings
 
@@ -92,6 +92,8 @@ share/text round-trips. Standard external exports disclose that they omit printi
 Deck calculator entry points start with four player questions; All calculators retains
 full topic navigation. Switching questions preserves the shared deadline, play order,
 card selections, and mounted detailed-model drafts. Results lead with the saved plan's
-named cards and prompt only for missing role pools. Failure explanations and sensitivity
-previews are optional inline disclosures. Previews never alter deck quantities or saved
+named cards and prompt only for missing role pools. Draw outcomes use labeled bars. Sensitivity
+previews use concise comparisons. Previews never alter deck quantities or saved
 roles. Catalog gaps and inherited roles needing review remain visible beside plan results.
+
+Deck analysis results use draw-count and Reserve-cost bars with visible values. Natural draws and estimated extra draws retain distinct labels. Saved access comparisons name the selected cards and play order; use “Save for comparison,” not “baseline.” Do not add methodology accordions or opening-size summaries.
