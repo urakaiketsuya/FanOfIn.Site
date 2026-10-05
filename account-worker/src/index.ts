@@ -405,14 +405,18 @@ export default {
       }
       const analysisProfileMatch = url.pathname.match(/^\/v1\/me\/analysis-profiles\/([a-z0-9]{1,64})$/i);
       if (analysisProfileMatch && request.method === "GET") return response(env, request, { profile: await getAnalysisProfile(env, user, analysisProfileMatch[1], url.searchParams.get("identity")) });
-      if (request.method === "GET" && url.pathname === "/v1/me/match-log") return response(env, request, { records: await listMatchLog(env, user, url.searchParams.get("savedDeckId")) });
+      if (request.method === "GET" && url.pathname === "/v1/me/match-log") return response(env, request, { userId: user.id, records: await listMatchLog(env, user, url.searchParams.get("savedDeckId")) });
       if (request.method === "PUT" && url.pathname === "/v1/me/match-log") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        return response(env, request, await upsertMatchLog(env, user, await jsonBody(request)));
+        const body = await jsonBody(request) as { expectedUserId?: string };
+        if (body.expectedUserId !== user.id) return response(env, request, { error: "Account changed. Refresh your match log before saving." }, 409);
+        return response(env, request, await upsertMatchLog(env, user, body));
       }
       const matchLogRecordMatch = url.pathname.match(/^\/v1\/me\/match-log\/([^/]+)$/);
       if (matchLogRecordMatch && request.method === "DELETE") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { expectedUserId?: string };
+        if (body.expectedUserId !== user.id) return response(env, request, { error: "Account changed. Refresh your match log before removing games." }, 409);
         return await deleteMatchLogRecord(env, user, decodeURIComponent(matchLogRecordMatch[1]))
           ? response(env, request, { success: true }) : response(env, request, { error: "Match record not found" }, 404);
       }

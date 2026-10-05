@@ -1,3 +1,5 @@
+import Button from "../../components/ui/Button";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useMemo } from "react";
 import { useSimulatorSummaryData } from "./data";
 import { Link } from "react-router-dom";
@@ -17,6 +19,7 @@ function formatAvg(value: number): string {
 export default function SimulatorIndex() {
   useDocumentTitle("Simulator Data", "Experimental – anonymous match telemetry from Clarent, the community Grand Archive simulator.");
   const data = useSimulatorSummaryData();
+  const status = usePublishedDataStatus("simulator-summary", "/data/simulator/summary.json");
 
   const champions = useMemo(() => [...(data?.champions ?? [])].sort((a, b) => b.games - a.games), [data]);
   const matchups = useMemo(() => [...(data?.matchups ?? [])].sort((a, b) => b.games - a.games), [data]);
@@ -43,7 +46,8 @@ export default function SimulatorIndex() {
         </p>
       </div>
 
-      {!data && <InlineState className="mt-6">Loading…</InlineState>}
+      {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-red"><p>{data ? "Showing saved data. " : ""}{status.error}</p><Button className="mt-2" onClick={status.retry}>Retry loading</Button></div>}
+      {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
 
       {data && (
         <div className="mt-6 space-y-6">
@@ -76,7 +80,7 @@ export default function SimulatorIndex() {
           <Section
             heading="dense"
             title="Champions"
-            description="Names are supplied by Clarent; its stable internal ID is retained as a fallback and for analytics joins."
+            description="Known names come from the card catalog; unmatched identities retain the name or ID supplied by Clarent."
           >
             {champions.length === 0 ? (
               <InlineState className="mt-2 text-sm">No champion data yet.</InlineState>

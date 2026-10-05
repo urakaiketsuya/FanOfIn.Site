@@ -106,3 +106,8 @@ test("match groups summarize opponents without inventing empty labels", () => {
   const groups = summarizeMatchLogGroups([base, { ...base, id: "second", result: "loss" }, { ...base, id: "empty", opponent: "" }], "opponent");
   assert.deepEqual(groups, [{ label: "Alice", games: 2, wins: 1, matchPointRate: 0.5 }]);
 });
+
+test("device storage ignores incomplete legacy entries while retaining valid games", () => {
+  const valid = previewClarentImport(JSON.stringify(submission), 1, []).previews[0].record;
+  assert.deepEqual(loadMatchLog(JSON.stringify([valid, { ...valid, notableCards: null }, { ...valid, bottlenecks: "broken" }, { version: 1, id: "partial", result: "win", provenance: { kind: "manual" } }])), [valid]);
+});

@@ -1,3 +1,4 @@
+import { validateMatchLogRecord } from "@gatcg/shared";
 import type { MatchLogRecord, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
 import { parseDecklist } from "../features/compare/parseDecklist";
 export type { MatchLogRecord, MatchOrder, MatchProvenance, MatchResult } from "@gatcg/shared";
@@ -119,7 +120,7 @@ export function loadMatchLog(raw: string | null): MatchLogRecord[] {
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((item): item is MatchLogRecord => Boolean(item && typeof item === "object" && (item as MatchLogRecord).version === 1 && typeof (item as MatchLogRecord).id === "string" && ["win", "loss", "draw"].includes((item as MatchLogRecord).result) && (item as MatchLogRecord).provenance && ["manual", "clarent"].includes((item as MatchLogRecord).provenance.kind)));
+    return parsed.flatMap((item) => { try { return [validateMatchLogRecord(item)]; } catch { return []; } });
   } catch { return []; }
 }
 

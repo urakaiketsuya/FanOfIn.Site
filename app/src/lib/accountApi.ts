@@ -83,13 +83,9 @@ export const accountApi = {
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
   analysisProfile: (fingerprint: string, identity?: string | null) => accountRequest<{ profile: AnalysisProfileSyncRecord | null }>(`/v1/me/analysis-profiles/${encodeURIComponent(fingerprint)}${identity ? `?identity=${encodeURIComponent(identity)}` : ""}`),
   saveAnalysisProfile: (profile: SyncedAnalysisProfile, identity?: string | null) => accountRequest<AnalysisProfileSyncRecord>("/v1/me/analysis-profiles", { method: "PUT", body: JSON.stringify({ identity, profile }) }),
-  matchLog: (savedDeckId?: string) => accountRequest<{ records: MatchLogRecord[] }>(`/v1/me/match-log${savedDeckId ? `?savedDeckId=${encodeURIComponent(savedDeckId)}` : ""}`),
-  saveMatchLog: async (records: MatchLogRecord[]) => {
-    let saved = 0;
-    for (let offset = 0; offset < records.length; offset += 500) saved += (await accountRequest<{ saved: number }>("/v1/me/match-log", { method: "PUT", body: JSON.stringify({ records: records.slice(offset, offset + 500) }) })).saved;
-    return { saved };
-  },
-  deleteMatchLogRecord: (id: string) => accountRequest<{ success: true }>(`/v1/me/match-log/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  matchLog: (savedDeckId?: string) => accountRequest<{ userId: string; records: MatchLogRecord[] }>(`/v1/me/match-log${savedDeckId ? `?savedDeckId=${encodeURIComponent(savedDeckId)}` : ""}`),
+  saveMatchLog: (records: MatchLogRecord[], expectedUserId: string) => accountRequest<{ saved: number }>("/v1/me/match-log", { method: "PUT", body: JSON.stringify({ records, expectedUserId }) }),
+  deleteMatchLogRecord: (id: string, expectedUserId: string) => accountRequest<{ success: true }>(`/v1/me/match-log/${encodeURIComponent(id)}`, { method: "DELETE", body: JSON.stringify({ expectedUserId }) }),
   deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}?history=summary`),
   publicDeck: (slug: string) => accountRequest<{ deck: PublicDeck }>(`/v1/decklists/${encodeURIComponent(slug)}`),
   discoverDecks: (params: URLSearchParams) => accountRequest<{ decks: PublicDeckSummary[]; nextPage: number | null }>(`/v1/discover/decklists?${params.toString()}`),

@@ -1,7 +1,7 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { SimulatorSummary } from "@gatcg/shared";
+import { enrichSimulatorNames, type SimulatorSummary } from "@gatcg/shared";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
 
 function isFiniteNonNegative(value: unknown): value is number {
@@ -142,6 +142,7 @@ export async function exportSimulatorSummary(): Promise<void> {
 
   const outputDirectory = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/simulator");
   await mkdir(outputDirectory, { recursive: true });
-  await writeJsonAtomic(path.join(outputDirectory, "summary.json"), summary);
+  const catalog = JSON.parse(await readFile(path.join(outputDirectory, "../card-catalog.json"), "utf8")) as { cards: { uuid: string; name: string }[] };
+  await writeJsonAtomic(path.join(outputDirectory, "summary.json"), enrichSimulatorNames(summary, catalog.cards));
   console.log(`simulator: published summary for ${summary.games} games`);
 }

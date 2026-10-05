@@ -72,3 +72,6 @@ export * from "./diaoArchetype.js";
 export * from "./reviewedArchetype.js";
 
 export * from "./reviewedRelationships.js";
+
+export * from "./match-log-validation.js";
+export * from "./simulator-enrichment.js";

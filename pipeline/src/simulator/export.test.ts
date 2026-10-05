@@ -133,3 +133,19 @@ test("rejects a summary missing the cardStats/weapons/turnStats arrays entirely 
   delete summary.turnStats;
   assert.throws(() => assertSummary(summary), /missing aggregate arrays/);
 });
+
+
+test("catalog enrichment resolves both matchup seats and preserves unknown identities and aggregates", async () => {
+  const { enrichSimulatorNames } = await import("@gatcg/shared");
+  const summary = validSummary();
+  summary.champions[0].championName = null;
+  summary.matchups[0].champion1Name = null;
+  assertSummary(summary);
+  const enriched = enrichSimulatorNames(summary, [{ uuid: "a", name: "Canonical A" }]);
+  assert.equal(enriched.champions[0].championName, "Canonical A");
+  assert.equal(enriched.matchups[0].champion1Name, "Canonical A");
+  assert.equal(enriched.matchups[0].champion2Name, "Champion B");
+  assert.equal(enriched.games, summary.games);
+  assert.equal(enriched.champions[0].games, summary.champions[0].games);
+  assert.equal(summary.champions[0].championName, null);
+});
