@@ -77,7 +77,7 @@ export default function CardHoverPreview({ image, backImage, backAlt, artOnly = 
         onClick={(event) => showFace(event, !showBack)}
         aria-label={`Show ${showBack ? "front" : "reverse"} face of ${alt}`}
         title={`Show ${showBack ? "front" : "reverse"} face`}
-        className={`${artOnly ? "absolute bottom-1 right-1 z-10" : "relative ml-1 align-middle"} inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-ctp-surface1 bg-ctp-base/95 px-2 text-[10px] font-semibold text-ctp-blue shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50`}
+        className={`${artOnly ? "absolute bottom-1 right-1 z-10" : "relative ml-1 align-middle"} inline-flex min-h-control min-w-control items-center justify-center rounded-md border border-ctp-surface1 bg-ctp-base/95 px-2 text-[10px] font-semibold text-ctp-blue shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50`}
       >
         <span aria-hidden="true">{showBack ? "Front" : "Flip"}</span>
       </button>}

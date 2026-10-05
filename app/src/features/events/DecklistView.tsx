@@ -2,7 +2,7 @@ import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
 import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
-import { useMemo, useState, type ReactNode } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckCollectionLine, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -81,6 +81,7 @@ export default function DecklistView({
   collectionPanel?: ReactNode;
 }) {
   const { notify } = useToast();
+  const toolbarMenuGroup = useId();
   const displayPrefs = useDecklistDisplayPrefs();
   const priceByName = useDeckPriceByName(displayPrefs.showPrices);
   const priceTrendByName = usePriceTrendByName(displayPrefs.showPrices && displayPrefs.visualPriceTrend);
@@ -193,37 +194,37 @@ export default function DecklistView({
     <div data-component="DecklistView">
       <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
       <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
-        <details className="group">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
+        <details name={toolbarMenuGroup} className="group">
+          <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
           <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
-            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-11 flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
+            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
             {displayMode === "visual" && <>
-              <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-11 rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
+              <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
               {[
                 { label: "Cost", checked: displayPrefs.visualCost, change: displayPrefs.setVisualCost },
                 { label: "Price trend", checked: displayPrefs.visualPriceTrend, change: displayPrefs.setVisualPriceTrend },
                 { label: "Tags", checked: displayPrefs.visualTags, change: displayPrefs.setVisualTags },
                 { label: "Simulator games", checked: displayPrefs.visualSimulator, change: displayPrefs.setVisualSimulator },
                 { label: "Community usage", checked: displayPrefs.visualCommunity, change: displayPrefs.setVisualCommunity },
-              ].map((field) => <label key={field.label} className="flex min-h-9 items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={field.checked} onChange={(event) => field.change(event.target.checked)} />{field.label}</label>)}
+              ].map((field) => <label key={field.label} className="flex min-h-control items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={field.checked} onChange={(event) => field.change(event.target.checked)} />{field.label}</label>)}
             </>}
             {(identity.classes.length > 0 || identity.elements.length > 0) && <p className="text-xs text-ctp-subtext0">{identity.classes.join("/")} · {identity.elements.join("/")}</p>}
-            <Link to="/settings" className="inline-flex min-h-11 items-center text-xs text-ctp-blue">More display settings →</Link>
+            <Link to="/settings" className="inline-flex min-h-control items-center text-xs text-ctp-blue">More display settings →</Link>
           </div>
         </details>
-        <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-11 rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
+        <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
         {collectionControl}
         {allLines.length > 0 && <>
-          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-11 ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
-          <details>
-            <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More</summary>
+          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+          <details name={toolbarMenuGroup}>
+            <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
               {toolbarActions}
               {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
-              <a href={clarentUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
-                  {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
-                  <a href={massEntryUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
-                  <button type="button" onClick={handleExportTts} title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
+              <a href={clarentUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
+                  {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="flex min-h-control items-center rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
+                  <a href={massEntryUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
+                  <button type="button" onClick={handleExportTts} title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="flex min-h-control items-center rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
 
             </div>
           </details>

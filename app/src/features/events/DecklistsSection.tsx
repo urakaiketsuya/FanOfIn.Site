@@ -146,7 +146,7 @@ export default function DecklistsSection({
           aria-expanded={searchOpen && search.trim() !== ""}
           aria-controls="event-deck-player-options"
           aria-activedescendant={activeSearchIndex >= 0 ? `event-deck-player-${searchMatches[activeSearchIndex]?.player}` : undefined}
-          className="w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+          className="min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
         />
         {searchOpen && search.trim() !== "" && (
           <div id="event-deck-player-options" role="listbox" className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-ctp-surface1 bg-ctp-mantle shadow-lg">
@@ -161,7 +161,7 @@ export default function DecklistsSection({
                   onMouseDown={(e) => e.preventDefault()}
                   onMouseEnter={() => setActiveSearchIndex(index)}
                   onClick={() => selectPlayer(d.player)}
-                  className={`block min-h-11 w-full px-3 py-2 text-left text-sm hover:bg-ctp-surface0 ${
+                  className={`block min-h-control w-full px-3 py-2 text-left text-sm hover:bg-ctp-surface0 ${
                     d.player === selection?.player || index === activeSearchIndex ? "bg-ctp-surface0 text-ctp-blue" : "text-ctp-text"
                   }`}
                 >

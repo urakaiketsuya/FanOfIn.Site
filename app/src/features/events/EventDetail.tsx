@@ -1,6 +1,6 @@
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type DeckFormat, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
@@ -62,6 +62,7 @@ function EventTopDecks({ eventId, format, decklists, players }: { eventId: numbe
 export default function EventDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const eventId = Number(id);
+  const [searchParams] = useSearchParams();
   const { bundle, loading, error } = useEventBundle(eventId);
   useDocumentTitle(
     bundle?.event.name,
@@ -188,7 +189,7 @@ export default function EventDetail() {
         </dl>
       </header>
 
-      {!isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+      {!(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
 
       {!secondaryActive && primaryTabs.length > 1 && (
         <div className="mt-4">
