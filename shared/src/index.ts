@@ -70,3 +70,5 @@ export * from "./cardPrintings.js";
 export * from "./diaoArchetype.js";
 
 export * from "./reviewedArchetype.js";
+
+export * from "./reviewedRelationships.js";

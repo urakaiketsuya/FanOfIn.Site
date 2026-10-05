@@ -4135,3 +4135,38 @@ in 370/923 decks across the broad family. Keep the current family and reviewed
 build plans unchanged. A future optional-package feature may show the exact
 pair separately from a flexible attack pool; that feature is outside the completed
 family naming review and must not silently promote the pool to a required core.
+
+### Reviewed overlapping champion relationships
+
+`ArchetypeTaxonomyData.reviewedRelationships` is an additive historical evidence layer,
+independent of inferred engines and family naming. Rules live in
+`shared/src/reviewedRelationships.ts`: Fractals, Preparation, Red Hare Allies,
+Suited (Rouge and Verita alternatives), Water defensive support (Paladin pair
+and Frostbind triple), and Oath Mounts. A rule's archetype/package kind describes
+its reviewed concept; matching it does not rename a family or establish that it
+is that family's primary strategy. Observations do not imply current legality.
+
+Each variant requires all named cards together in a deck, with positive quantities
+in main + material only. Relationship coverage is the union of complete variant
+matches, counting each deck once. Variants also retain independent evidence;
+matching two alternatives does not require their combined card pool.
+
+Families use the union of their builds' deck ids. Family and build evidence are
+computed independently. Support requires complete indexed coverage, at least 90%
+joint matches, five distinct supporting players, and two distinct supporting
+events. Players/events are counted only among matching decks. Missing-index decks
+remain in the denominator and exceptions. Zero-match families are omitted;
+observed families retain all builds, including zero-match exceptions. No threshold
+is relaxed for an otherwise supported parent family. Exception ids identify decks
+that do not match any complete variant (or the specific variant in variant evidence).
+
+Rules can overlap freely; there is no exclusive assignment, similarity grouping,
+or fixed three-card requirement. Stable rule and variant ids do not depend on
+membership. Existing inferred engines retain their separate three-player gate.
+The additive layer does not change any existing names, identifiers, membership,
+ordering, win rates, or inferred engine output. It is not yet used in the UI.
+
+Regenerate only this layer from committed main/material deck data with
+`node --import tsx pipeline/scripts/rebuild-reviewed-relationships.ts`.
+The normal taxonomy pipeline also produces it. The focused rebuild preserves
+existing generation timestamps because it reuses the same source snapshot.

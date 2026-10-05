@@ -724,6 +724,8 @@ export interface ArchetypeClusterTrend {
 }
 
 export interface ArchetypeTaxonomyData {
+  /** Reviewed overlapping cores; historical observations, not a legality or naming decision. */
+  reviewedRelationships?: import("./reviewedRelationships.js").ReviewedRelationship[];
   generatedAt: string;
   clusters: ArchetypeCluster[];
   /** Material progression families; these deliberately merge across Spirit choices. */

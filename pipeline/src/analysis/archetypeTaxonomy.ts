@@ -1,3 +1,4 @@
+import { evaluateReviewedRelationships } from "@gatcg/shared";
 import { applyDiaoArchetypeEvidence, applyReviewedArchetypeEvidence } from "@gatcg/shared";
 import { analyzeEngines } from "./sharedEngines.js";
 import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, shortHash, type ArchetypeCluster, type ArchetypeTaxonomyData, type DeckSighting } from "@gatcg/shared";
@@ -881,6 +882,7 @@ export function computeArchetypeTaxonomy(
     clusters,
     materialArchetypes,
     strategyArchetypes,
+    reviewedRelationships: evaluateReviewedRelationships(strategyArchetypes, clusters, allDecks),
     engineArchetypes: currentEngineArchetypes,
     historicalEngineArchetypes,
     coverage: {
