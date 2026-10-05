@@ -3732,3 +3732,25 @@ and damage scaling with controlled Fractals, respectively.
 Both use the existing 90% joint-presence, complete coverage, five-player and
 two-event thresholds, with no required optional package. IDs, membership, ordering
 and statistics are preserved; sideboards remain excluded.
+
+### Reviewed Arisanna identities
+
+All eleven Arisanna families now use the reviewed card-first presentation. The
+existing Potion Burn (53/53) and Cinderbloom Burn (26/26) cores remain unchanged.
+Additional required three-card cores and joint main/material counts:
+
+- Starcalling: Astra Sight, Cosmic Bolt, Cometfall — 1354/1419 and 19/19.
+- Razorgale: Fairy Whispers, Razorgale Calling, Veiling Breeze — 561/561.
+- Fractals: Fractal of Rain, Fracturize, Refracting Missile — 190/190 and 222/223.
+- Embersong–Rhapsody: Embersong, Erupting Rhapsody, Fiery Momentum — 55/55.
+- Astral Seal: Astral Seal, Spellshield: Astra, Cometfall — 27/27.
+- Explosive Concoction: Explosive Concoction, Cinder Geyser, Fractal of Sparks — 27/27.
+- Polaris Herbs: Polaris, Twinkling Cauldron, Horticounter, Combustible Potion — 12/12.
+
+Catalog text establishes Starcalling/glimpse spells, Razorgale damage on wind-card
+activation, Fractal-scaled damage, Astral Seal negation, Explosive Concoction's
+sacrifice damage/draw, and Polaris/Horticounter Herb sacrifice interactions.
+These describe identities, not evidence of combos actually played. Burst Asunder
+is optional Fractal sacrifice support, counted separately for each Water family.
+The existing 90% joint-presence, complete coverage, five-player and two-event
+thresholds apply; IDs, membership, ordering and statistics remain unchanged.

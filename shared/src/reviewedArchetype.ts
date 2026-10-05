@@ -50,7 +50,20 @@ export const ALICE_IDENTITIES = [
   { champion: 'Alice', name: 'Alice — Chessmen', label: 'Chessmen', core: ['Golden Bishop', 'Golden Gambit', 'Golden Pawn'], packages: [] },
 ];
 
+export const ARISANNA_IDENTITIES = [
+  { champion: 'Arisanna', name: "Astra Arisanna — Starcalling", label: "Starcalling", core: ["Astra Sight", "Cosmic Bolt", "Cometfall"], packages: [] },
+  { champion: 'Arisanna', name: "Wind Arisanna — Razorgale", label: "Razorgale", core: ["Fairy Whispers", "Razorgale Calling", "Veiling Breeze"], packages: [] },
+  { champion: 'Arisanna', name: "Water Arisanna — Fractals", label: "Fractals", core: ["Fractal of Rain", "Fracturize", "Refracting Missile"], packages: [{ key: 'burst', label: 'Burst Asunder variant', cards: ['Burst Asunder'] }] },
+  { champion: 'Arisanna', name: "Fire Arisanna — Embersong–Rhapsody", label: "Embersong\u2013Rhapsody", core: ["Embersong", "Erupting Rhapsody", "Fiery Momentum"], packages: [] },
+  { champion: 'Arisanna', name: "Astra Arisanna — Astral Seal", label: "Astral Seal", core: ["Astral Seal", "Spellshield: Astra", "Cometfall"], packages: [] },
+  { champion: 'Arisanna', name: "Fire Arisanna — Explosive Concoction", label: "Explosive Concoction", core: ["Explosive Concoction", "Cinder Geyser", "Fractal of Sparks"], packages: [] },
+  { champion: 'Arisanna', name: "Astra Arisanna — Polaris Herbs", label: "Polaris Herbs", core: ["Polaris, Twinkling Cauldron", "Horticounter", "Combustible Potion"], packages: [] },
+  { champion: 'Arisanna', name: "Fire Arisanna — Potion Burn", label: "Potion Burn", core: ["Combustible Potion", "Distilled Water", "Cinder Geyser"], packages: [] },
+  { champion: 'Arisanna', name: "Fire Arisanna — Cinderbloom Burn", label: "Cinderbloom Burn", core: ["Cinderbloom Tender", "Ignite Fate", "Kindling Flare"], packages: [] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...ARISANNA_IDENTITIES,
   ...ALLEN_IDENTITIES,
   ...ALICE_IDENTITIES,
   ...ZANDER_IDENTITIES,
@@ -60,8 +73,7 @@ export const REVIEWED_ARCHETYPE_CORES = [
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
   { champion: 'Lorraine', name: 'Fire Lorraine — Fire Sword', core: ['Blazing Throw', 'Rending Flames', 'Hone by Fire'] },
   { champion: 'Lorraine', name: 'Fire Lorraine — Embersong–Rhapsody', core: ['Embersong', 'Erupting Rhapsody', 'Fiery Momentum'] },
-  { champion: 'Arisanna', name: 'Fire Arisanna — Potion Burn', core: ['Combustible Potion', 'Distilled Water', 'Cinder Geyser'] },
-  { champion: 'Arisanna', name: 'Fire Arisanna — Cinderbloom Burn', core: ['Cinderbloom Tender', 'Ignite Fate', 'Kindling Flare'] },
+
 ];
 
 export interface ReviewedArchetypeEvidence {
@@ -109,7 +121,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
