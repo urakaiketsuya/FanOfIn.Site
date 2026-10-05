@@ -4066,3 +4066,35 @@ Verification: 19 reviewed-archetype tests pass, including a disjoint-support
 regression and component fallback. Shared and pipeline type checks pass. Browser
 checks cover mobile/desktop, all build links, keyboard expansion, 48px controls,
 no nested disclosures or overflow, and empty/loading/error states.
+
+### Ciel build-level card plans
+
+The unresolved Fire Ciel family `1g8kos9` now carries additive `reviewedBuildPlans`
+without changing its generated name, membership, order, or statistics. This pilot
+uses the existing curated Ciel cores, independently evaluated within each member
+build. A plan requires every core card at positive quantity in at least 90% of
+unique deck IDs, complete main/material coverage, five players and two events.
+Sideboards are excluded. Missing coverage or lost recurrence removes stale evidence
+on refresh. Multiple qualifying cores remain separate overlapping plans; they do
+not assert a combined core or choose a winning name.
+
+| Build | Core | Joint decklists |
+| --- | --- | --- |
+| `1mb6d7u` | Feu Awakening / Liminal Guide / Creative Shock | 55/56 |
+| `gp2oez` | Feu Awakening / Liminal Guide / Creative Shock | 10/10 |
+| `gp2oez` | Carter, Synthetic Reaper / Liminal Guide / Reduce to Ash | 9/10 |
+| `grpxrm` | Feu Awakening / Liminal Guide / Creative Shock | 240/243 |
+
+The other three builds do not qualify for any existing curated Ciel core. No
+Coup/Malice core was added: that candidate needs a separate semantic review.
+The champion page shows qualifying plans with visible named card art and their
+own build links, before the remaining-build expansion. Each build link appears
+once. Family-level reviewed naming remains 151/154 (98.1%); build evidence does
+not resolve the heterogeneous family into one identity. Lorraine still needs a
+second event and Zander a fifth player.
+
+Verification: 20 archetype tests; app, shared and pipeline type checks; app lint
+with seven existing unrelated warnings; 360px/1280px interaction checks including
+keyboard expansion, 48px summary targets, unique build links, no nested disclosures
+or horizontal overflow, and empty/loading/error states. Artifact comparison confirms
+that only this family's additive build-plan evidence changed.

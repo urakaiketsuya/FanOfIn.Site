@@ -174,6 +174,26 @@ export const REVIEWED_ARCHETYPE_CORES: { champion: string; name: string; core: s
 
 ];
 
+export interface ReviewedBuildPlan {
+  label: string;
+  core: string[];
+  coreDeckCount: number;
+  evaluatedDeckCount: number;
+}
+
+/** Ciel pilot: overlapping plans are evidence, not competing build names. */
+export function reviewedCielBuildPlans(builds: ArchetypeCluster[], cardsByDeck: ReadonlyMap<string, ReadonlyMap<string, number>>): Record<string, ReviewedBuildPlan[]> {
+  return Object.fromEntries(builds.flatMap(build => {
+    const ids = [...new Set(build.deckIds)];
+    if (!ids.length || build.playerCount < 5 || build.eventCount < 2 || ids.some(id => !cardsByDeck.has(id))) return [];
+    const plans = CIEL_IDENTITIES.flatMap(identity => {
+      const count = ids.filter(id => identity.core.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
+      return count / ids.length >= .9 ? [{ label: identity.label, core: [...identity.core], coreDeckCount: count, evaluatedDeckCount: ids.length }] : [];
+    });
+    return plans.length ? [[build.id, plans]] : [];
+  }));
+}
+
 export interface ReviewedArchetypeEvidence {
   packageDeckCounts?: Record<string, number>;
   originalName: string;
@@ -212,6 +232,11 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
       strategy.name = previous.originalName;
       delete strategy.identityCards;
       delete strategy.reviewedArchetypeEvidence;
+    }
+    delete strategy.reviewedBuildPlans;
+    if (strategy.championName === 'Ciel' && matches.length !== 1) {
+      const plans = reviewedCielBuildPlans(strategy.buildIds.flatMap(id => builds.get(id) ? [builds.get(id)!] : []), cardsByDeck);
+      if (Object.keys(plans).length) strategy.reviewedBuildPlans = plans;
     }
     if (matches.length !== 1 || evaluatedDeckCount !== ids.length || strategy.buildIds.some(id => !builds.has(id)) || strategy.playerCount < 5 || strategy.eventCount < 2) continue;
     const { identity, core, count } = matches[0];

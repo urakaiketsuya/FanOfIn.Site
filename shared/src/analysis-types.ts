@@ -655,6 +655,8 @@ export interface MaterialArchetype {
 
 /** A strategy family above one or more concrete build clusters. */
 export interface StrategyArchetype {
+  /** Independently qualifying plans within a build; never a family naming decision. */
+  reviewedBuildPlans?: Record<string, import("./reviewedArchetype.js").ReviewedBuildPlan[]>;
   /** Reviewed card identity; distinct from statistically common cards. */
   identityCards?: string[];
   reviewedArchetypeEvidence?: import("./reviewedArchetype.js").ReviewedArchetypeEvidence;

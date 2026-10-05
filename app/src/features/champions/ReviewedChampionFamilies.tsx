@@ -34,6 +34,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
   const renderFamily = (family: typeof families[number], shared: boolean) => {
     const builds = family.buildIds.flatMap(id => { const build = buildsById.get(id); return build ? [build] : []; });
     const evidence = family.reviewedArchetypeEvidence;
+    const remainingBuilds = builds.filter(build => !family.reviewedBuildPlans?.[build.id]?.length);
     const familyCore = family.identityCards ?? core;
     const packages = identity?.packages.filter(pkg => pkg.cards.length !== familyCore.length || !pkg.cards.every(name => familyCore.includes(name))).map(pkg => ({ ...pkg, count: evidence?.packageDeckCounts?.[pkg.key] ?? 0 })) ?? [{ cards: support, label: variantLabel, count: (rai ? evidence?.windPackageDeckCount : guo ? evidence?.manifestationPackageDeckCount : evidence?.waterPackageDeckCount) ?? 0 }];
     const qualifying = shared && evidence ? packages.filter(pkg => pkg.count / evidence.evaluatedDeckCount >= .9) : [];
@@ -45,6 +46,16 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
       <h4 className="mt-2 font-semibold">{shared ? hasSupport ? qualifying.map(pkg => pkg.label).join(" · ") : `${builds.length} ${coreLabel} build ${builds.length === 1 ? 'variant' : 'variants'}` : family.name}</h4>
       <p className="mt-2 text-sm text-ctp-subtext1">{family.confidence === 'emerging' ? 'Emerging · ' : ''}{family.deckCount} deck appearances · {family.playerCount} players · {family.eventCount} events · {(family.avgWinRate * 100).toFixed(0)}% win rate</p>
       {hasSupport && <p className="mt-2 text-sm text-ctp-subtext1">These supporting cards distinguish this variant and are optional for the {coreLabel} identity.</p>}
+      {builds.filter(build => family.reviewedBuildPlans?.[build.id]?.length).map(build => <section key={build.id} className="mt-4 border-t border-ctp-surface1 pt-3" aria-label={`Card plans for ${build.name}`}>
+        {family.reviewedBuildPlans![build.id].map(plan => <div key={plan.label} className="mb-3">
+          <ArchetypePreview names={plan.core} cardImages={catalog} />
+          <h5 className="mt-2 font-semibold">{plan.label} core</h5>
+          <p className="text-sm text-ctp-subtext1">All {plan.core.length} cards in {plan.coreDeckCount}/{plan.evaluatedDeckCount} decklists in this build</p>
+        </div>)}
+        {family.reviewedBuildPlans![build.id].length > 1 && <p className="text-sm text-ctp-subtext1">Overlapping card plans</p>}
+        <Link className="flex min-h-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.id}`}>{build.name}</Link>
+        <p className="text-sm text-ctp-subtext1">{build.playerCount} players · {build.eventCount} events</p>
+      </section>)}
       <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/evidence:rotate-180" /></summary>
         {shared && evidence ? <>
@@ -53,9 +64,9 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
           <p className="my-2 text-ctp-subtext1">Main and material only; sideboards excluded. The shared name requires the complete core in at least 90% of this group, complete decklist coverage, five players and two events. Card presence does not prove a combo was played.</p>
         </> : <><ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} /><p className="my-2">Common cards across this family, not an exact decklist or required core.</p></>}
       </details>
-      <details className="group/builds border-t border-ctp-surface1 text-sm">
-        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Explore {builds.length} {builds.length === 1 ? 'build' : 'builds'}<DisclosureChevron className="group-open/builds:rotate-180" /></summary>
-        {builds.map(build => {
+      {remainingBuilds.length > 0 && <details className="group/builds border-t border-ctp-surface1 text-sm">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Explore {remainingBuilds.length} {remainingBuilds.length === 1 ? 'build' : 'builds'}<DisclosureChevron className="group-open/builds:rotate-180" /></summary>
+        {remainingBuilds.map(build => {
           const fire = evidence?.firePackageByBuild?.[build.id];
           return <div key={build.id} className="border-t border-ctp-surface1 py-3">
           <ArchetypePreview names={(build.namingCards ?? build.definingCards.map(card => card.name)).slice(0, 3)} cardImages={catalog} />
@@ -67,7 +78,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
           <Link className="mt-2 flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.id}`}>{build.name}</Link>
           <p className="text-ctp-subtext1">{build.confidence === 'emerging' ? 'Emerging · ' : ''}{build.playerCount} players · {(build.avgWinRate * 100).toFixed(0)}% win rate</p>
         </div>; })}
-      </details>
+      </details>}
     </article>;
   };
   return <div className="mt-3 space-y-4">

@@ -372,3 +372,33 @@ test('Guo Jia does not pool separate component support into a combined identity'
   assert.equal(family.reviewedArchetypeEvidence, undefined);
   assert.equal(family.name, taxonomy.strategyArchetypes.find(s => s.id === family.id)!.reviewedArchetypeEvidence!.originalName);
 });
+
+test('Ciel build plans preserve the broad family and independently retain overlapping cores', () => {
+  const original = taxonomy.strategyArchetypes.find(s => s.id === '1g8kos9')!;
+  assert.equal(original.name, 'Fire Ciel');
+  assert.equal(original.reviewedArchetypeEvidence, undefined);
+  assert.deepEqual(Object.entries(original.reviewedBuildPlans!).map(([id, plans]) => [id, plans.map(p => [p.label, p.coreDeckCount, p.evaluatedDeckCount])]), [
+    ['1mb6d7u', [['Feu Awakening', 55, 56]]],
+    ['gp2oez', [['Feu Awakening', 10, 10], ['Carter', 9, 10]]],
+    ['grpxrm', [['Feu Awakening', 240, 243]]],
+  ]);
+  for (const mode of ['missing', 'players', 'events', 'zero']) {
+    const family = structuredClone(original);
+    const builds = structuredClone(taxonomy.clusters);
+    const build = builds.find(b => b.id === 'gp2oez')!;
+    const changed = new Map(cards);
+    if (mode === 'missing') changed.delete(build.deckIds[0]);
+    if (mode === 'players') build.playerCount = 4;
+    if (mode === 'events') build.eventCount = 1;
+    if (mode === 'zero') for (const id of build.deckIds) {
+      const counts = new Map(changed.get(id));
+      counts.set('Liminal Guide', 0);
+      changed.set(id, counts);
+    }
+    applyReviewedArchetypeEvidence([family], builds, changed);
+    assert.equal(family.reviewedBuildPlans?.gp2oez, undefined, mode);
+    assert.deepEqual(family.reviewedBuildPlans?.grpxrm, original.reviewedBuildPlans?.grpxrm, mode);
+    assert.equal(family.name, original.name);
+    assert.deepEqual(family.buildIds, original.buildIds);
+  }
+});
