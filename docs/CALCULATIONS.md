@@ -4086,7 +4086,7 @@ not assert a combined core or choose a winning name.
 | `grpxrm` | Feu Awakening / Liminal Guide / Creative Shock | 240/243 |
 
 The other three builds do not qualify for any existing curated Ciel core. No
-Coup/Malice core was added: that candidate needs a separate semantic review.
+Coup/Malice core was added: the completed semantic review below does not support it.
 The champion page shows qualifying plans with visible named card art and their
 own build links, before the remaining-build expansion. Each build link appears
 once. Family-level reviewed naming remains 151/154 (98.1%); build evidence does
@@ -4098,3 +4098,40 @@ with seven existing unrelated warnings; 360px/1280px interaction checks includin
 keyboard expansion, 48px summary targets, unique build links, no nested disclosures
 or horizontal overflow, and empty/loading/error states. Artifact comparison confirms
 that only this family's additive build-plan evidence changed.
+
+
+### Champion family review closeout (2026-10-05)
+
+All 154 champion families have been assessed; 151 have reviewed names (98.1%).
+The remaining three are evidence holds, not unreviewed implementation work:
+Lorraine `1ol07nl` needs a second event, Zander `ug902a` needs a fifth player,
+and Ciel `1g8kos9` remains heterogeneous. Reassess these when new deck evidence
+arrives. Existing Ciel build-level plans preserve useful evidence without forcing
+a family identity.
+
+The final Ciel assessment decoded positive main/material quantities and counted
+unique deck IDs. Beguiling Coup plus Feu Awakening recur as follows:
+
+| Build | Pair / decklists | Pair plus another attack |
+| --- | --- | --- |
+| `1rpqtdp` | 76/350 | 76/350 |
+| `grpxrm` | 239/243 | 238/243 |
+| `1q3ozrv` | 1/190 | 1/190 |
+| `181g1o9` | 2/74 | 2/74 |
+| `1mb6d7u` | 46/56 | 46/56 |
+| `gp2oez` | 6/10 | 6/10 |
+
+Catalog mechanics support a possible optional Coup/Feu package: Feu can put
+cards from the graveyard into omens; Coup can put another attack omen into the
+attacker's intent under its class bonus. Devouring Malice is an item, not an
+attack target for Coup. Its co-occurrence does not establish that direct combo.
+Another attack being present is deck composition evidence, not proof that the
+attack is an eligible target in a particular game state.
+
+No individual secondary attack meets 90% in `grpxrm`: Devastating Blow appears
+with the pair in 174/243 decks and Heavy Swing in 119/243. Do not pool these
+counts into an exact three-card core. The pair qualifies locally but only appears
+in 370/923 decks across the broad family. Keep the current family and reviewed
+build plans unchanged. A future optional-package feature may show the exact
+pair separately from a flexible attack pool; that feature is outside the completed
+family naming review and must not silently promote the pool to a required core.
