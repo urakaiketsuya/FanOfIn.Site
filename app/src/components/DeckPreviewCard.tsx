@@ -92,7 +92,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   );
   if (presentation === "cover" && view.to !== undefined) return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
-      <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="card-art-action group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
+      <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="card-art-action group flex flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
@@ -101,12 +101,12 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-2 p-4">
-          <p className="break-words text-xs text-ctp-subtext0">{label}</p>
-          {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
-          <span className="mt-auto flex min-h-12 items-center font-medium text-ctp-blue group-hover:underline">Open deck <span aria-hidden="true" className="ml-2">→</span></span>
-        </div>
       </Link>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        {leadCard ? <Link to={`/cards/${leadCard.slug}`} target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} className="flex min-h-control items-center break-words text-xs text-ctp-subtext0 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{label}</Link> : <p className="break-words text-xs text-ctp-subtext0">{label}</p>}
+        {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
+        <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} aria-label={`Open deck: ${model.title}`} className="mt-auto flex min-h-12 items-center font-medium text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Open deck <span aria-hidden="true" className="ml-2">→</span></Link>
+      </div>
     </Panel>
   );
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">

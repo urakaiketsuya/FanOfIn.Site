@@ -8,7 +8,7 @@ export function PublicDeckCard({ deck, onRemoveFavorite }: { deck: PublicDeckSum
   const decklist = "decklist" in deck ? deck.decklist : null;
   const materialPreview = "materialPreview" in deck ? deck.materialPreview : undefined;
   const preview = materialPreview?.length ? materialPreview : deck.previewCards ?? (decklist ? deckPreviewCards(decklist) : []);
-  return <DeckPreviewCard presentation={onRemoveFavorite ? "library" : "detail"} model={{
+  return <DeckPreviewCard presentation={onRemoveFavorite ? "library" : "cover"} model={{
     id: deck.publicSlug, title: deck.title, decklist, championName: deck.championName, format: deck.format,
     source: { kind: "community", label: deck.isSeed ? "Starter Library" : "Community" },
     materialPreview,
