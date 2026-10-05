@@ -129,7 +129,10 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
     }
     case 'Unwanted draws': {
       const unwantedCount = countSelectedCopies(main, unwanted);
-      result = <><Result label={`Chance of ${settings.required}+ unwanted cards · opening`} value={percent(unwanted.length ? probabilityAtLeast(size, unwantedCount, opening, settings.required) : null)} /><SmallResult label={checkpoint} value={percent(unwanted.length ? probabilityAtLeast(size, unwantedCount, seen, settings.required) : null)} /></>;
+      result = <DrawOutcomeResults label={`${settings.required}+ unwanted cards`} empty="Choose unwanted cards" rows={[
+        { label: 'Opening hand', probability: unwanted.length ? probabilityAtLeast(size, unwantedCount, opening, settings.required) : null },
+        { label: `By turn ${settings.turn}`, probability: unwanted.length ? probabilityAtLeast(size, unwantedCount, seen, settings.required) : null },
+      ]} />;
       controls = <>{pool('Unwanted cards', 'unwanted')}{numberInput('Count at least', 'required', 1, 20)}</>;
       break;
     }
@@ -137,7 +140,10 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
     case 'Recovery access': {
       const group = settings.tool === 'Pressure access' ? pressure : recovery;
       const configured = settings.tool === 'Pressure access' ? Object.keys(plan?.pressure ?? {}).length > 0 : recovery.length > 0;
-      result = <><Result label={`${settings.tool === 'Pressure access' ? 'Pressure' : 'Rebuild'} card access ${checkpoint}`} value={percent(configured ? probabilityAtLeast(size, countSelectedCopies(main, group), seen, 1) : null)} /><SmallResult label="Matching copies" value={`${countSelectedCopies(main, group)}`} /></>;
+      result = <DrawOutcomeResults label={settings.tool === 'Pressure access' ? 'Find pressure cards' : 'Find rebuild cards'} empty={settings.tool === 'Pressure access' ? 'Choose pressure cards in your plan' : 'Choose rebuild cards in your plan'} rows={[
+        { label: `By turn ${settings.turn}`, probability: configured ? probabilityAtLeast(size, countSelectedCopies(main, group), seen, 1) : null, detail: configured ? `${countSelectedCopies(main, group)} matching copies` : undefined },
+        { label: 'No matching card', probability: configured ? 1 - probabilityAtLeast(size, countSelectedCopies(main, group), seen, 1) : null },
+      ]} />;
       controls = editPlan;
       break;
     }
@@ -156,8 +162,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
     <div className="rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext1">Explore a scenario</p>
       <h2 className="mt-1 text-2xl font-bold sm:text-3xl">What would you like to understand?</h2>
-      <p className="mb-4 mt-2 text-sm text-ctp-subtext1">Quick estimate selections save on this device. Detailed scenario drafts stay while this deck is open. Your deck remains unchanged.</p>
-      <div className="grid gap-2 sm:grid-cols-2">{calculatorJourneys.map((item, index) => <Button key={item.question} aria-pressed={journey === index} onClick={() => { setJourney(index); update({ tool: item.tools[0] }); }}>{item.question}</Button>)}</div>
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">{calculatorJourneys.map((item, index) => <Button key={item.question} aria-pressed={journey === index} onClick={() => { setJourney(index); update({ tool: item.tools[0] }); }}>{item.question}</Button>)}</div>
       {journey !== null && <div className="mt-3 grid gap-2 sm:grid-cols-2" aria-label="Related calculators">{calculatorJourneys[journey].tools.map((tool) => <Button key={tool} aria-pressed={settings.tool === tool} onClick={() => update({ tool })}>{tool}</Button>)}</div>}
       <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer items-center justify-between text-sm">All calculators<DisclosureChevron className="group-open:rotate-180" /></summary>
       <Tabs tabs={calculatorGroups.map((group) => ({ key: group, label: group }))} active={info.group} onChange={(group) => { setJourney(null); update({ tool: tools.find((tool) => calculatorInfo[tool].group === group)! }); }} baseId="calculator-groups" label="Calculation topics" variant="pill" />
@@ -168,7 +173,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
     </div>
     <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold">{info.question}</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext0">{settings.tool === 'Swap comparison' ? 'Preview · access only' : settings.tool === 'Play sequence' ? 'Resource ceiling' : settings.tool === 'Level timing' ? 'Supported routes' : standalone ? 'Scenario model' : 'Access only'}</span></div>
-      {!!detailedModels[settings.tool] && !standalone && <div className="mt-4"><Tabs tabs={[{ key: 'quick', label: 'Quick estimate' }, { key: 'model', label: info.model ?? 'Detailed model' }]} active={modelActive ? 'model' : 'quick'} onChange={(view) => setModelViews((current) => ({ ...current, [settings.tool]: view === 'model' }))} baseId="calculator-mode" label="Scenario depth" variant="pill" /><p className="mt-2 text-xs text-ctp-subtext1">Detailed models keep their own timing and scenario inputs. Saved plan roles are shared where supported.</p></div>}
+      {!!detailedModels[settings.tool] && !standalone && <div className="mt-4"><Tabs tabs={[{ key: 'quick', label: 'Quick estimate' }, { key: 'model', label: info.model ?? 'Detailed model' }]} active={modelActive ? 'model' : 'quick'} onChange={(view) => setModelViews((current) => ({ ...current, [settings.tool]: view === 'model' }))} baseId="calculator-mode" label="Scenario depth" variant="pill" /></div>}
       <div hidden={modelActive} role={detailedModels[settings.tool] && !standalone ? 'tabpanel' : undefined} id="calculator-mode-panel-quick" aria-labelledby={detailedModels[settings.tool] && !standalone ? 'calculator-mode-tab-quick' : undefined}>
       {settings.tool !== 'Next draw' && <ScenarioControls value={scenario} onChange={onScenarioChange} />}
       <div className={`grid items-start gap-5 ${settings.tool === 'Plan consistency' ? '' : 'lg:grid-cols-[1fr_1fr]'}`}>
