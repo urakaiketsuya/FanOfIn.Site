@@ -1,3 +1,4 @@
+import DrawOutcomeResults from './DrawOutcomeResults';
 import PlanCheck from './PlanCheck';
 import CopyTargetResults from './CopyTargetResults';
 import SwapMetric from './SwapMetric';
@@ -105,7 +106,10 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
       controls = <><label className="text-xs text-ctp-subtext0">Add a play<select value="" disabled={validSteps.length >= 4} onChange={(event) => { if (event.target.value) update({ steps: [...validSteps, { name: event.target.value, turn: settings.turn, effectiveReserveCost: Math.max(0, catalog.get(event.target.value)?.cost_reserve ?? 0) }] }); }} className={inputClass}><option value="">Choose card</option>{main.filter((line) => catalog.get(line.name)?.cost.type === 'reserve').map((line) => <option key={line.name}>{line.name}</option>)}</select></label>{validSteps.map((step, index) => <div key={index} className="rounded-lg border border-ctp-surface1 p-3"><p className="text-sm">{step.name}</p><div className="grid grid-cols-2 gap-2"><label className="text-xs text-ctp-subtext0">Turn<input type="number" min={1} max={20} value={step.turn} onChange={(event) => update({ steps: validSteps.map((item, i) => i === index ? { ...item, turn: Math.min(20, Math.max(1, Math.floor(Number(event.target.value) || 1))) } : item) })} className={inputClass} /></label><label className="text-xs text-ctp-subtext0">Effective Reserve<input type="number" min={0} max={99} value={step.effectiveReserveCost} onChange={(event) => update({ steps: validSteps.map((item, i) => i === index ? { ...item, effectiveReserveCost: Math.min(99, Math.max(0, Math.floor(Number(event.target.value) || 0))) } : item) })} className={inputClass} /></label></div><button type="button" onClick={() => update({ steps: validSteps.filter((_, i) => i !== index) })} className="min-h-12 text-xs text-ctp-blue">Remove</button></div>)}</>;
       break;
     case 'Opening hand':
-      result = <><Result label="Opening recipe access" value={percent(recipeReady ? selectedRecipeOdds(main, recipeGroups, Math.min(opening, size)) : null)} /><SmallResult label={`Recipe access ${checkpoint}`} value={percent(recipeReady ? selectedRecipeOdds(main, recipeGroups, seen) : null)} /></>;
+      result = <DrawOutcomeResults label="Find both ingredients" empty={recipeReady ? 'Assign each card to one ingredient' : 'Choose a card for each ingredient'} rows={[
+        { label: 'Opening hand', probability: recipeReady ? selectedRecipeOdds(main, recipeGroups, Math.min(opening, size)) : null },
+        { label: `By turn ${settings.turn}`, probability: recipeReady ? selectedRecipeOdds(main, recipeGroups, seen) : null },
+      ]} />;
       controls = <>{recipeGroups.map((group, index) => <CalculatorCardPool catalog={catalog} key={index} label={`${index === 0 ? 'First' : 'Second'} ingredient · any one`} lines={main} selected={group} onChange={(value) => update({ customRecipe: true, firstIngredient: index === 0 ? value : recipeGroups[0], secondIngredient: index === 1 ? value : recipeGroups[1] })} />)}{recipeGroups[0].some((name) => recipeGroups[1].includes(name)) && <p role="alert" className="text-sm text-ctp-yellow">Assign each card to one ingredient.</p>}</>;
       break;
     case 'Plan consistency':
@@ -138,7 +142,10 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
       break;
     }
     case 'Next draw':
-      result = <Result label="Selected card on next draw" value={percent(selected.length && knownValid ? nextDraw : null)} />;
+      result = <DrawOutcomeResults label="Your next draw" empty={!selected.length ? 'Choose cards to find' : 'Check remaining deck and matching copies'} rows={[
+        { label: 'Selected cards', probability: selected.length && knownValid ? nextDraw : null, detail: selected.length && knownValid ? `${copies - settings.knownHits} matching copies remaining` : undefined },
+        { label: 'Other cards', probability: selected.length && knownValid ? 1 - nextDraw! : null, detail: selected.length && knownValid ? `${size - settings.known - copies + settings.knownHits} other cards remaining` : undefined },
+      ]} />;
       controls = <>{pool('Cards to find', 'selected')}{numberInput('Cards removed from deck', 'known', 0, size)}{numberInput('Matching copies removed', 'knownHits', 0, copies)}{!knownValid && <p role="alert" className="text-sm text-ctp-yellow">Check remaining deck and matching copies.</p>}</>;
       break;
     default:
