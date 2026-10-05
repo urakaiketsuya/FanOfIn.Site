@@ -55,6 +55,8 @@ Use independent progress bars for owned and available copies, both against the s
 
 Use the brief `state-arrive` opacity transition for transient feedback, not layout movement. Reduced motion overrides it. Persistent warnings stay visible and text labeled. Selected pill tabs include an outline as well as a tint.
 
+Keep local motion brief (150–220ms). Shared sheets animate entry and user dismissal while preserving modal isolation, discard protection and focus restoration; parent-driven completion can unmount immediately. Tabs and evidence fade without changing draft ownership or remounting inputs. Use `useChangeMotion` for committed quantity and forecast changes; keep exact numbers immediately visible. Card artwork uses brightness feedback on its existing action target, with no grid movement or stagger. Reduced motion removes animation and transition delays as well as duration; programmatic tab scrolling must respect it too.
+
 Import review uses the shared sheet, tabs, named card previews, draft protection, and a persistent confirmation action. Opening a card from an import review uses a new tab so the draft stays available. Library failures retain paste as an alternative; optional favorites failures do not hide owned builds.
 
 Goldfish keeps Draw, Next turn, Memory, and Material within reach. Its footer measures its height and reserves content and focus scrolling space. Tool sheets isolate focus and sit above the footer. The latest action is inline live feedback, not a toast for every draw.

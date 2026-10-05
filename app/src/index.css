@@ -76,8 +76,10 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
 }
@@ -107,3 +109,28 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
   min-height: var(--spacing-control);
 }
 .analysis-model :is(input, select) { max-width: 100%; }
+
+/* Short, local motion: never stagger browsing results or move focused controls. */
+@keyframes sheet-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes sheet-exit { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(12px); } }
+@keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+.motion-sheet[open] { animation: sheet-enter 200ms ease-out; }
+.motion-sheet[open]::backdrop { animation: backdrop-enter 200ms ease-out; }
+.motion-sheet[data-closing="true"] { animation: sheet-exit 160ms ease-in forwards; }
+.motion-sheet[data-closing="true"]::backdrop { animation: backdrop-exit 160ms ease-in forwards; }
+@media (min-width: 640px) {
+  @keyframes sheet-enter { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+  @keyframes sheet-exit { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(16px); } }
+}
+.motion-disclosure[open] > .motion-disclosure-content,
+.motion-tab-panel:not([hidden]) { animation: state-arrive 180ms ease-out; }
+.card-art-action [data-component="CardArtTile"] { transition: filter 150ms ease-out; }
+.card-art-action:active [data-component="CardArtTile"] { filter: brightness(0.88); }
+@media (hover: hover) {
+  .card-art-action:hover [data-component="CardArtTile"] { filter: brightness(1.06); }
+  .card-art-action:active [data-component="CardArtTile"] { filter: brightness(0.88); }
+}
+
+@keyframes quantity-arrive { from { background-color: color-mix(in srgb, var(--catppuccin-color-blue) 20%, transparent); } to { background-color: transparent; } }
+.quantity-arrive { animation: quantity-arrive 220ms ease-out; }

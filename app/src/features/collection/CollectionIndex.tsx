@@ -218,7 +218,7 @@ export default function CollectionIndex() {
     {saveProgress && <p role="status" className="my-2 text-sm">{saveProgress}</p>}
     {saveQueue.warning && <p role="alert" className="my-2 text-sm text-ctp-yellow">{saveQueue.warning}</p>}
     {saveQueue.pending && !busy && <p role="status" className="my-2 text-sm text-ctp-yellow">The last batch is unconfirmed. Retry save before editing or discarding these changes.</p>}
-    {notice && <Panel tone="info" padding="sm" className="mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
+    {notice && <Panel key={notice} tone="info" padding="sm" className="state-arrive mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
     {tracking.error && <p role="alert" className="mt-2 text-sm text-ctp-red">{tracking.error}</p>}
     {view !== "sets" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
     <div hidden={view !== "sets"}>

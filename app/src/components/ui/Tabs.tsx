@@ -39,7 +39,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
             aria-selected={selected}
             aria-controls={baseId ? `${baseId}-panel-${tab.key}` : undefined}
             tabIndex={selected ? 0 : -1}
-            onClick={(event) => { onChange(tab.key); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }}
+            onClick={(event) => { onChange(tab.key); event.currentTarget.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "nearest", inline: "center" }); }}
             onKeyDown={(e) => handleKeyDown(e, index)}
             className={variant === "pill"
               ? `mb-1 min-h-control shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ctp-blue ${selected ? "bg-ctp-blue/15 text-ctp-blue ring-1 ring-inset ring-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`
@@ -63,7 +63,7 @@ export function TabPanel<T extends string>({ baseId, tab, active, children, clas
     aria-labelledby={`${baseId}-tab-${tab}`}
     tabIndex={0}
     hidden={!selected}
-    className={className}
+    className={`motion-tab-panel ${className}`}
   >
     {children}
   </div>;

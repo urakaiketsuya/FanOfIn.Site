@@ -9,7 +9,7 @@ export default function CardResult({ card, name, editionUuid, compactOnMobile = 
   onManage?: () => void; newTab?: boolean; children?: ReactNode;
 }) {
   const content = <><CardArtTile card={card} editionUuid={editionUuid} name={name} /><span className="flex min-h-12 items-center break-words text-sm font-medium">{name}</span></>;
-  const actionClass = "block w-full rounded text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
+  const actionClass = "card-art-action block w-full rounded text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
   return <article data-component="CardResult" className={`${compactOnMobile ? "grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 sm:block" : ""} min-w-0 overflow-hidden rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : "border-ctp-surface1"}`}>
     {onSelect ? <button type="button" className={actionClass} aria-pressed={!!selected} aria-label={`${selected ? "Deselect" : "Select"} ${name}`} onClick={onSelect}>{content}<span className="flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-2 text-sm text-ctp-blue">{selected ? "✓ Selected" : "Select card"}</span></button>
       : onManage ? <button type="button" className={actionClass} aria-label={`Manage ${name}`} onClick={onManage}>{content}</button>

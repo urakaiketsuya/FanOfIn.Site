@@ -11,6 +11,26 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
   const ref = useRef<HTMLDialogElement>(null);
   const returnFocus = useRef(document.activeElement);
   const keepEditing = useRef<HTMLButtonElement>(null);
+  const [closing, setClosing] = useState(false);
+  const dismissed = useRef(false);
+  const dismissCallback = useRef(onDismiss);
+  useEffect(() => { dismissCallback.current = onDismiss; }, [onDismiss]);
+  function finishDismiss() {
+    if (dismissed.current) return;
+    dismissed.current = true;
+    dismissCallback.current();
+  }
+  useEffect(() => {
+    if (!closing) return;
+    // Fallback for interrupted animations or a stylesheet that has not loaded.
+    const timer = window.setTimeout(finishDismiss, 220);
+    return () => window.clearTimeout(timer);
+  }, [closing]);
+  function close() {
+    if (closing || dismissed.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) finishDismiss();
+    else setClosing(true);
+  }
   const [confirmDiscard, setConfirmDiscard] = useState(false);
   useEffect(() => {
     const dialog = ref.current;
@@ -28,12 +48,12 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
     else if (!ref.current?.contains(document.activeElement)) ref.current?.querySelector<HTMLButtonElement>("button")?.focus();
   }, [confirmDiscard]);
   function dismiss() {
-    if (!dismissible) return;
+    if (!dismissible || closing) return;
     if (confirmDiscard) { setConfirmDiscard(false); return; }
     if (dirty) setConfirmDiscard(true);
-    else onDismiss();
+    else close();
   }
-  return <dialog ref={ref} aria-labelledby={titleId} onKeyDown={event => {
+  return <dialog ref={ref} data-closing={closing} onAnimationEnd={event => { if (event.target === event.currentTarget && event.animationName === "sheet-exit") finishDismiss(); }} aria-labelledby={titleId} onKeyDown={event => {
       if (event.key !== "Tab" || (event.target as Element).closest("dialog") !== ref.current) return;
       const items = [...(ref.current?.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, summary, [tabindex]') ?? [])]
         .filter(item => item.tabIndex >= 0 && !item.matches(":disabled") && item.getClientRects().length > 0);
@@ -42,8 +62,8 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     }} onCancel={event => { event.preventDefault(); event.stopPropagation(); dismiss(); }}
     onClick={event => { if (event.target === event.currentTarget) dismiss(); }}
-    className="fixed inset-y-0 left-auto right-0 m-0 h-dvh max-h-dvh w-full max-w-none border-0 bg-ctp-base p-0 text-ctp-text backdrop:bg-black/60 sm:max-w-xl sm:border-l sm:border-ctp-surface1">
-    <div className="flex h-full flex-col">
+    className="motion-sheet fixed inset-y-0 left-auto right-0 m-0 h-dvh max-h-dvh w-full max-w-none border-0 bg-ctp-base p-0 text-ctp-text backdrop:bg-black/60 sm:max-w-xl sm:border-l sm:border-ctp-surface1">
+    <div inert={closing} className="flex h-full flex-col">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-ctp-surface1 bg-ctp-mantle p-3">
         <h2 id={titleId} className="text-lg font-semibold">{title}</h2>
         <Button disabled={!dismissible} onClick={dismiss}>{dismissLabel}</Button>
@@ -53,7 +73,7 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
         <p>Discard your unsaved changes?</p>
         <div className="flex flex-wrap gap-2">
           <button ref={keepEditing} type="button" onClick={() => setConfirmDiscard(false)} className="min-h-control rounded-lg bg-ctp-blue px-4 text-ctp-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Keep editing</button>
-          <Button variant="danger" onClick={onDismiss}>Discard changes</Button>
+          <Button variant="danger" onClick={close}>Discard changes</Button>
         </div>
       </div> : null}
       <div hidden={confirmDiscard} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">{children}</div>

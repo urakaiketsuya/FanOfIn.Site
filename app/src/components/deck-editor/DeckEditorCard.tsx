@@ -1,3 +1,4 @@
+import { useChangeMotion } from "../../lib/useChangeMotion";
 import DeckPrintingSheet from "./DeckPrintingSheet";
 import PrintingChoices from "../PrintingChoices";
 import PrintingSummary from "../PrintingSummary";
@@ -23,6 +24,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   onChangeQuantity: (quantity: number, printings?: CardPrintingAllocation[]) => void; onMove: (destination: DeckEditSection, quantity: number, printings?: CardPrintingAllocation[]) => void;
   onRemove: () => void; selected?: boolean; onSelect?: () => void; list?: boolean;
 }) {
+  const changeRef = useChangeMotion<HTMLElement>(`${section}:${line.quantity}:${JSON.stringify(line.printings ?? [])}`, "highlight");
   const [printingOpen, setPrintingOpen] = useState(false);
   const [reduceTo, setReduceTo] = useState<number | null>(null);
   const [movingPrintings, setMovingPrintings] = useState<CardPrintingAllocation[] | undefined>();
@@ -31,7 +33,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   const [destination, setDestination] = useState<DeckEditSection>(destinations[0]?.key ?? "maybeboard");
   const [moveQuantity, setMoveQuantity] = useState(line.quantity);
   const title = card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4 focus-visible:outline-2 focus-visible:outline-ctp-blue">{line.card}<span className="sr-only"> (card details in a new tab)</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
-  return <article className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
+  return <article ref={changeRef} className={`state-arrive min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
     <div className={list ? "flex items-start gap-3" : ""}>
       <div className={list ? "w-20 shrink-0" : ""}><CardArtTile card={card} editionUuid={line.printings?.[0]?.editionUuid} name={line.card} /></div>
       <div className="min-w-0 flex-1">{title}<CardLegalityBadge card={card} format={format} /></div>

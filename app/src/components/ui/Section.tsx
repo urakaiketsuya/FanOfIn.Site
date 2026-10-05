@@ -64,7 +64,7 @@ export default function Section({
     return <Tag data-component="Section" className={className} {...props}>
       <details
         open={defaultOpen}
-        className="group"
+        className="group motion-disclosure"
         onToggle={onOpen ? (e) => { if ((e.currentTarget as HTMLDetailsElement).open) onOpen(); } : undefined}
       >
         <summary className="mb-3 flex min-h-12 flex-wrap cursor-pointer list-none items-start justify-between gap-3 [&::-webkit-details-marker]:hidden">
@@ -75,7 +75,7 @@ export default function Section({
           {/* stopPropagation so interactive actions (links/buttons/selects) don't also toggle the details */}
           {actions && <div className="flex flex-wrap items-center gap-2" onClick={(e) => e.stopPropagation()}>{actions}</div>}
         </summary>
-        {children}
+        <div className="motion-disclosure-content">{children}</div>
       </details>
     </Tag>;
   }

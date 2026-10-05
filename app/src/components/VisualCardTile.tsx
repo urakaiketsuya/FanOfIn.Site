@@ -127,7 +127,7 @@ export function VisualCardTile({
   return (
     <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={line.card}>
       <div title={line.card}>
-        {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="block">{image}</Link> : image}
+        {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{image}</Link> : image}
         <CardStatRows
           card={card}
           quantity={line.quantity}

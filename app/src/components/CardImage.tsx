@@ -51,7 +51,7 @@ function CardImageSource({ src, alt, className }: { src: string; alt: string; cl
       loading="lazy"
       onLoad={() => setStatus("loaded")}
       onError={() => setStatus("error")}
-      className={`bg-ctp-surface0 transition-opacity duration-300 ${status === "loading" ? "opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}
+      className={`bg-ctp-surface0 transition-opacity duration-200 ${status === "loading" ? "opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}
     />
   );
 }

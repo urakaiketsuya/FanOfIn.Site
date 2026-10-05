@@ -69,7 +69,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   };
   if (presentation === "library") return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="flex min-w-0 flex-col overflow-hidden rounded-3xl">
-      {view.to !== undefined ? <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} aria-label={`Open deck: ${model.title}`} className="group block focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
+      {view.to !== undefined ? <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} aria-label={`Open deck: ${model.title}`} className="card-art-action group block focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <CardArtTile card={leadCard} name={label} artworkOnly />
         <div className="px-5 pt-5"><h2 className="break-words text-2xl font-semibold leading-tight text-ctp-text group-hover:text-ctp-blue">{model.title}</h2></div>
       </Link> : <><CardArtTile card={leadCard} name={label} artworkOnly /><h2 className="px-5 pt-5 break-words text-2xl font-semibold leading-tight text-ctp-text">{model.title}</h2></>}
@@ -87,12 +87,12 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
           <div className="flex flex-wrap gap-2 [&>a]:min-h-control [&>button]:min-h-control">{model.actions}</div>
         </details>
       </div>
-      {view.to === undefined && view.expanded && <div id={contentId} className="min-w-0 border-t border-ctp-surface1 p-4">{view.content}</div>}
+      {view.to === undefined && view.expanded && <div id={contentId} className="state-arrive min-w-0 border-t border-ctp-surface1 p-4">{view.content}</div>}
     </Panel>
   );
   if (presentation === "cover" && view.to !== undefined) return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
-      <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
+      <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="card-art-action group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
@@ -112,7 +112,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
       <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">
-        <div className="min-w-0">{leadCard ? <Link target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
+        <div className="min-w-0">{leadCard ? <Link target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} to={`/cards/${leadCard.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
           <h2 className="break-words text-xl font-bold leading-snug text-ctp-text sm:text-2xl">{model.title}</h2>
           <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
@@ -129,6 +129,6 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
         {model.actions}
       </div>
     </footer>
-    {view.to === undefined && view.expanded && <div id={contentId} className="min-w-0 border-t border-ctp-surface1 p-4">{view.content}</div>}
+    {view.to === undefined && view.expanded && <div id={contentId} className="state-arrive min-w-0 border-t border-ctp-surface1 p-4">{view.content}</div>}
   </Panel>;
 }
