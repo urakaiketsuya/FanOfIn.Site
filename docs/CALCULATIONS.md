@@ -4437,3 +4437,31 @@ because observed results establish their strength. This is too incomplete for a
 user-facing recommendation. Team Standard has no qualifying nonmirror evidence
 and produces no benchmark. Next work should establish an explicit supported
 Champion pool and display its exclusions before exposing this benchmark in UI.
+
+### Fully covered equilibrium pool
+
+`selectFieldEquilibriumPool` merges duplicate identities, ignores zero weights,
+and orders positive published weights descending, breaking ties by Champion name.
+Starting with the most represented Champion, it adds a candidate only if all its
+matchups against the current pool have valid qualifying rows. Selection depends
+on attendance and evidence availability, not win rates. This greedy rule is not
+an optimization for the largest pool or maximum attendance coverage. Exclusions
+list missing opponents against the final pool, not just the pool at rejection.
+The caller supplies already pooled, sample-thresholded matchups. Fewer than two
+included Champions is unusable. Invalid weights fail explicitly.
+
+The equilibrium report now includes this pool, retained field share, its separate
+restricted benchmark, and scores for every excluded Champion against the returned
+conservative mix. Excluded response scores preserve unknown bounds and use the
+same shrunken payoff model; they do not establish actual future performance.
+
+For Standard, 2026-07-07 through 2026-10-04, the pool includes Guo Jia, Lorraine,
+Ciel, Diao Chan, Diana, and Arisanna: 60.57% of public deck shares, all 15 pairs
+covered. Its solver gap is 0.67 percentage points and Ciel has 96.08% of the
+returned strategy. This is a restricted-pool result: excluded Rai scores
+52.59%–53.45% against that mix, Silvie 51.96%–52.37%, and Vanitas
+51.24%–55.16% (only five observed matches for Vanitas). These counterexamples
+prevent interpreting the restricted solution as an equilibrium of the full field.
+Any future UI must keep retained share, exclusions, and excluded responses visible
+alongside the mix. Team Standard still has no usable pool. No confidence or
+predictive-calibration claim follows from complete matchup coverage.

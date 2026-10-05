@@ -8,6 +8,430 @@
       "from": "2026-07-07",
       "to": "2026-10-04",
       "events": 132,
+      "pool": {
+        "included": [
+          "Guo Jia",
+          "Lorraine",
+          "Ciel",
+          "Diao Chan",
+          "Diana",
+          "Arisanna"
+        ],
+        "excluded": [
+          {
+            "champion": "Jin",
+            "share": 0.05112474437627812,
+            "missingAgainst": [
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Merlin",
+            "share": 0.04158145875937287,
+            "missingAgainst": [
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Alice",
+            "share": 0.04124062713019768,
+            "missingAgainst": [
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Silvie",
+            "share": 0.03953646898432175,
+            "missingAgainst": [
+              "Diana"
+            ]
+          },
+          {
+            "champion": "Tristan",
+            "share": 0.038173142467621,
+            "missingAgainst": [
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Zander",
+            "share": 0.03749147920927062,
+            "missingAgainst": [
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Tonoris",
+            "share": 0.03408316291751875,
+            "missingAgainst": [
+              "Diao Chan",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Rai",
+            "share": 0.026244035446489435,
+            "missingAgainst": [
+              "Diao Chan",
+              "Diana"
+            ]
+          },
+          {
+            "champion": "Kongming",
+            "share": 0.021131561008861623,
+            "missingAgainst": [
+              "Lorraine",
+              "Diao Chan",
+              "Diana"
+            ]
+          },
+          {
+            "champion": "Nico",
+            "share": 0.018404907975460124,
+            "missingAgainst": [
+              "Lorraine",
+              "Ciel",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Dante",
+            "share": 0.016359918200409,
+            "missingAgainst": [
+              "Lorraine",
+              "Ciel",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Vanitas",
+            "share": 0.015678254942058625,
+            "missingAgainst": [
+              "Guo Jia",
+              "Lorraine",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Mordred",
+            "share": 0.010906612133605999,
+            "missingAgainst": [
+              "Guo Jia",
+              "Lorraine",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Polkhawk",
+            "share": 0.0013633265167007499,
+            "missingAgainst": [
+              "Guo Jia",
+              "Lorraine",
+              "Ciel",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          },
+          {
+            "champion": "Allen",
+            "share": 0.0010224948875255625,
+            "missingAgainst": [
+              "Guo Jia",
+              "Lorraine",
+              "Ciel",
+              "Diao Chan",
+              "Diana",
+              "Arisanna"
+            ]
+          }
+        ],
+        "retainedFieldShare": 0.6056578050443081,
+        "usable": true,
+        "selection": "popularity-first-complete-coverage"
+      },
+      "supportedResult": {
+        "champions": [
+          "Arisanna",
+          "Ciel",
+          "Diana",
+          "Diao Chan",
+          "Guo Jia",
+          "Lorraine"
+        ],
+        "missingPairs": 0,
+        "totalPairs": 15,
+        "pessimistic": {
+          "rowStrategy": [
+            0.00742316027698063,
+            0.960762456125133,
+            0.004081935367408021,
+            0.004469835144019507,
+            0.007625053052530285,
+            0.015637560033925132
+          ],
+          "columnStrategy": [
+            0.007423160276980624,
+            0.9607624561251334,
+            0.004081935367408012,
+            0.004469835144019497,
+            0.007625053052530273,
+            0.015637560033924847
+          ],
+          "lower": 0.49665146622162654,
+          "upper": 0.5033485337783701,
+          "gap": 0.006697067556743541,
+          "iterations": 20000
+        },
+        "optimistic": {
+          "rowStrategy": [
+            0.007423160276980632,
+            0.960762456125133,
+            0.004081935367408019,
+            0.0044698351440195065,
+            0.007625053052530288,
+            0.015637560033925132
+          ],
+          "columnStrategy": [
+            0.007423160276980623,
+            0.9607624561251334,
+            0.0040819353674080095,
+            0.004469835144019489,
+            0.007625053052530273,
+            0.015637560033924858
+          ],
+          "lower": 0.49665146622162654,
+          "upper": 0.5033485337783701,
+          "gap": 0.006697067556743541,
+          "iterations": 20000
+        },
+        "guaranteedScore": 0.49665146622162654,
+        "possibleScore": 0.5033485337783701,
+        "strategies": [
+          {
+            "champion": "Arisanna",
+            "conservativeShare": 0.00742316027698063,
+            "optimisticShare": 0.007423160276980632
+          },
+          {
+            "champion": "Ciel",
+            "conservativeShare": 0.960762456125133,
+            "optimisticShare": 0.960762456125133
+          },
+          {
+            "champion": "Diana",
+            "conservativeShare": 0.004081935367408021,
+            "optimisticShare": 0.004081935367408019
+          },
+          {
+            "champion": "Diao Chan",
+            "conservativeShare": 0.004469835144019507,
+            "optimisticShare": 0.0044698351440195065
+          },
+          {
+            "champion": "Guo Jia",
+            "conservativeShare": 0.007625053052530285,
+            "optimisticShare": 0.007625053052530288
+          },
+          {
+            "champion": "Lorraine",
+            "conservativeShare": 0.015637560033925132,
+            "optimisticShare": 0.015637560033925132
+          }
+        ]
+      },
+      "excludedResponses": [
+        {
+          "champion": "Rai",
+          "lower": 0.5259443933434975,
+          "upper": 0.534496163854925,
+          "coverage": 0.9914482294885725,
+          "games": 25,
+          "missing": [
+            "Diana",
+            "Diao Chan"
+          ]
+        },
+        {
+          "champion": "Silvie",
+          "lower": 0.5196198796541593,
+          "upper": 0.5237018150215673,
+          "coverage": 0.995918064632592,
+          "games": 41,
+          "missing": [
+            "Diana"
+          ]
+        },
+        {
+          "champion": "Vanitas",
+          "lower": 0.5124066432667393,
+          "upper": 0.551644187141603,
+          "coverage": 0.9607624561251363,
+          "games": 5,
+          "missing": [
+            "Arisanna",
+            "Diana",
+            "Diao Chan",
+            "Guo Jia",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Jin",
+          "lower": 0.4763843457413717,
+          "upper": 0.4838075060183522,
+          "coverage": 0.9925768397230195,
+          "games": 66,
+          "missing": [
+            "Arisanna"
+          ]
+        },
+        {
+          "champion": "Zander",
+          "lower": 0.44409401161724305,
+          "upper": 0.45559910726163155,
+          "coverage": 0.9884949043556114,
+          "games": 40,
+          "missing": [
+            "Arisanna",
+            "Diana"
+          ]
+        },
+        {
+          "champion": "Alice",
+          "lower": 0.44333755820580384,
+          "upper": 0.45076071848278443,
+          "coverage": 0.9925768397230195,
+          "games": 43,
+          "missing": [
+            "Arisanna"
+          ]
+        },
+        {
+          "champion": "Tristan",
+          "lower": 0.4056569557617306,
+          "upper": 0.4130801160387112,
+          "coverage": 0.9925768397230195,
+          "games": 56,
+          "missing": [
+            "Arisanna"
+          ]
+        },
+        {
+          "champion": "Merlin",
+          "lower": 0.3727801122728169,
+          "upper": 0.38020327254979747,
+          "coverage": 0.9925768397230195,
+          "games": 51,
+          "missing": [
+            "Arisanna"
+          ]
+        },
+        {
+          "champion": "Kongming",
+          "lower": 0.3663966589496103,
+          "upper": 0.39058598949496304,
+          "coverage": 0.9758106694546473,
+          "games": 19,
+          "missing": [
+            "Diana",
+            "Diao Chan",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Tonoris",
+          "lower": 0.36569814930042,
+          "upper": 0.3775911447214202,
+          "coverage": 0.9881070045789999,
+          "games": 26,
+          "missing": [
+            "Arisanna",
+            "Diao Chan"
+          ]
+        },
+        {
+          "champion": "Mordred",
+          "lower": 0.2668784600347601,
+          "upper": 0.3061160039096239,
+          "coverage": 0.9607624561251363,
+          "games": 8,
+          "missing": [
+            "Arisanna",
+            "Diana",
+            "Diao Chan",
+            "Guo Jia",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Dante",
+          "lower": 0.004050809434156728,
+          "upper": 0.9964257563816263,
+          "coverage": 0.007625053052530311,
+          "games": 6,
+          "missing": [
+            "Arisanna",
+            "Ciel",
+            "Diana",
+            "Diao Chan",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Nico",
+          "lower": 0.003558358091180812,
+          "upper": 0.9959333050386505,
+          "coverage": 0.007625053052530311,
+          "games": 5,
+          "missing": [
+            "Arisanna",
+            "Ciel",
+            "Diana",
+            "Diao Chan",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Allen",
+          "lower": 0,
+          "upper": 1,
+          "coverage": 0,
+          "games": 0,
+          "missing": [
+            "Arisanna",
+            "Ciel",
+            "Diana",
+            "Diao Chan",
+            "Guo Jia",
+            "Lorraine"
+          ]
+        },
+        {
+          "champion": "Polkhawk",
+          "lower": 0,
+          "upper": 1,
+          "coverage": 0,
+          "games": 0,
+          "missing": [
+            "Arisanna",
+            "Ciel",
+            "Diana",
+            "Diao Chan",
+            "Guo Jia",
+            "Lorraine"
+          ]
+        }
+      ],
       "result": {
         "champions": [
           "Alice",
@@ -254,6 +678,144 @@
       "from": "2026-05-18",
       "to": "2026-08-15",
       "events": 4,
+      "pool": {
+        "included": [
+          "Guo Jia"
+        ],
+        "excluded": [
+          {
+            "champion": "Diao Chan",
+            "share": 0.18264248704663213,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Lorraine",
+            "share": 0.12435233160621761,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Ciel",
+            "share": 0.10880829015544041,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Arisanna",
+            "share": 0.10492227979274611,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Diana",
+            "share": 0.06865284974093264,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Tristan",
+            "share": 0.042746113989637305,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Merlin",
+            "share": 0.031088082901554404,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Zander",
+            "share": 0.029792746113989636,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Jin",
+            "share": 0.025906735751295335,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Tonoris",
+            "share": 0.022020725388601035,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Alice",
+            "share": 0.018134715025906734,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Nico",
+            "share": 0.012953367875647668,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Silvie",
+            "share": 0.012953367875647668,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Kongming",
+            "share": 0.010362694300518135,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Rai",
+            "share": 0.010362694300518135,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Polkhawk",
+            "share": 0.0038860103626943004,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Vanitas",
+            "share": 0.0038860103626943004,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          },
+          {
+            "champion": "Allen",
+            "share": 0.0012953367875647669,
+            "missingAgainst": [
+              "Guo Jia"
+            ]
+          }
+        ],
+        "retainedFieldShare": 0.18523316062176165,
+        "usable": false,
+        "selection": "popularity-first-complete-coverage"
+      },
+      "supportedResult": null,
+      "excludedResponses": [],
       "result": null
     }
   ]
