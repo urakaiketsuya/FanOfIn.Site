@@ -141,3 +141,10 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 
 @keyframes quantity-arrive { from { background-color: color-mix(in srgb, var(--catppuccin-color-blue) 20%, transparent); } to { background-color: transparent; } }
 .quantity-arrive { animation: quantity-arrive 220ms ease-out; }
+
+/* An isolated app keeps the fixed canvas above its base and below all content. */
+.particle-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.particle-background canvas { display: block; width: 100%; height: 100%; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .particle-background { display: none; }
+}

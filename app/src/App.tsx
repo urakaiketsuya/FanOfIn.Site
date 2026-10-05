@@ -1,3 +1,4 @@
+import ParticleBackground from "./components/ParticleBackground";
 import ConnectivityNotice from "./components/ui/toast/ConnectivityNotice";
 import ToastViewport from "./components/ui/toast/ToastViewport";
 import DisclosureChevron from "./components/DisclosureChevron";
@@ -52,7 +53,8 @@ export default function App() {
     trackPageview(location.pathname + location.search);
   }, [location.pathname, location.search]);
 
-  return <div data-component="App" className="min-h-screen bg-ctp-base text-ctp-text">
+  return <div data-component="App" className="relative isolate min-h-screen bg-ctp-base text-ctp-text">
+    <ParticleBackground />
     <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ctp-base focus:p-4 focus:text-ctp-blue">Skip to content</a>
     {location.pathname !== "/deck-builder" && <FeatureBanner />}
     <header className="sticky top-0 z-40 flex max-h-dvh flex-col border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
