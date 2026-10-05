@@ -4172,3 +4172,32 @@ The normal taxonomy pipeline also produces it. The focused rebuild preserves
 source statistics while advancing the taxonomy generation and manifest entry for cache refresh.
 
 Champion pages display these reviewed relationships with exact variant cards, family and build support, and exception counts. Cross-champion links require a supported family or build in the destination champion. Observations remain historical and do not imply current legality. The focused rebuild advances the taxonomy generation and manifest entry so cached clients refresh.
+
+## Expected-field scoring (`shared/src/expectedField.ts`)
+
+Battle Chart's **Explore a field** compares Champion identities using the published Battle Chart.
+Default relative weights are summed `deckCount` values for each unique Champion in the published
+archetype summaries. These are shares of the published population, not recent-event forecasts or
+complete attendance estimates. Named Spirits are excluded because they overlap Champion groups.
+The underlying published population retains its existing format/date scope; this feature adds no
+new time or format filtering. Draft weights survive tab switches during the mounted visit.
+
+Positive weights normalize to one. Zero excludes an opponent; empty input means zero. Negative or
+nonfinite weights invalidate the scenario. Each observed matchup scores a win as 1, a draw as 0.5,
+and a loss as 0. The score is `(wins + ties / 2 + 5) / (games + 10)`, using shared `shrinkWinRate`
+and the established default prior weight of 10. Both directions use the same record so they sum
+to 1. A Champion mirror is 0.5 by symmetry, without inventing observed matches.
+
+For known matchups, sum normalized share times adjusted score. This is the lower bound; the upper
+bound adds the total missing-opponent share (each unknown payoff could be anywhere from 0 to 1).
+Coverage includes known matchups and the symmetric mirror. Never normalize away missing opponents
+or assign them an unmarked 50% estimate. Results sort by lower bound, then coverage, then name;
+this is conservative with respect to missing matchups only, not a statistically guaranteed ranking.
+With full coverage, the bounds coincide and the UI displays a single estimated score.
+
+Ranges are **missing-data bounds, not confidence intervals**: sampling uncertainty, player skill,
+event dependence, format shifts and build variation remain unmodeled. Observed matches sum only
+qualifying non-mirror records against positive-weight opponents. Card artwork represents a Champion,
+not an exact tested list. This first slice does not infer causal card improvements, compute an
+equilibrium, or claim validated predictive accuracy. Chronological event-level backtesting and
+uncertainty calibration are required before presenting the model as a tournament forecast.

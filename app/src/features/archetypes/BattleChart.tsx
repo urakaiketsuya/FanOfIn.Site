@@ -7,15 +7,19 @@ import CardImage from "../../components/CardImage";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import ExpectedField from "./ExpectedField";
+import Button from "../../components/ui/Button";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
-type ViewTab = "matrix" | "champion" | "highlights";
+type ViewTab = "matrix" | "champion" | "highlights" | "field";
 
 const TABS: { key: ViewTab; label: string }[] = [
   { key: "champion", label: "By Champion" },
+  { key: "field", label: "Explore a field" },
   { key: "highlights", label: "Highlights" },
   { key: "matrix", label: "Full Matrix" },
 ];
@@ -67,6 +71,7 @@ function matchupsFor(champion: string, battleChart: BattleChartEntry[]): Matchup
 export default function BattleChart() {
   useDocumentTitle("Battle Chart", "Archetype-vs-archetype win rate matrix for Grand Archive TCG.");
   const data = useArchetypeData();
+  const status = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "champion");
   const [champion, setChampion] = useState<string | null>(null);
   const [showAllMatchups, setShowAllMatchups] = useState(false);
@@ -124,14 +129,16 @@ export default function BattleChart() {
     <PageLayout data-component="BattleChart" width="wide">
       <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} />
 
-      {!data && <InlineState className="mt-6">Loading…</InlineState>}
+      {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
+      {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-subtext1">{status.error} {data && "Showing cached results."} <Button onClick={status.retry}>Retry</Button></div>}
       {data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
 
       {signatures.length > 0 && (
         <>
-          <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" />
+          <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" baseId="battle-chart" variant="pill" wrap />
+          {data && <TabPanel baseId="battle-chart" tab="field" active={tab} keepMounted><ExpectedField data={data} /></TabPanel>}
 
-          {tab === "matrix" && (
+          <TabPanel baseId="battle-chart" tab="matrix" active={tab}>
             <div className="mt-6 overflow-x-auto">
               <p className="mb-2 text-xs text-ctp-subtext0">Cell color and percentage show the row Champion's win rate against the column. Stronger color means a larger, better-supported advantage; hover for the full record.</p>
               <div className="mb-3 flex flex-wrap items-center gap-2 text-[10px] text-ctp-subtext0" aria-label="Win-rate heatmap legend">
@@ -188,9 +195,10 @@ export default function BattleChart() {
                 </tbody>
               </table>
             </div>
-          )}
+          </TabPanel>
 
-          {tab === "champion" && activeChampion && (
+          <TabPanel baseId="battle-chart" tab="champion" active={tab}>
+          {activeChampion && (
             <div className="mt-6">
               <div className="flex items-start gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
                 {championImages.get(activeChampion)?.editions[0]?.image ? (
@@ -242,8 +250,9 @@ export default function BattleChart() {
               {championMatchups.length > 8 && <button type="button" onClick={() => setShowAllMatchups((value) => !value)} aria-expanded={showAllMatchups} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllMatchups ? "Show fewer matchups" : `Show all ${championMatchups.length} matchups`}</button>}
             </div>
           )}
+          </TabPanel>
 
-          {tab === "highlights" && (
+          <TabPanel baseId="battle-chart" tab="highlights" active={tab}>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               <Section heading="compact" title="Most lopsided" description="The matchups furthest from an even 50/50.">
                 <div className="mt-2 space-y-1.5 text-sm">
@@ -288,7 +297,7 @@ export default function BattleChart() {
                 </div>
               </Section>
             </div>
-          )}
+          </TabPanel>
         </>
       )}
     </PageLayout>

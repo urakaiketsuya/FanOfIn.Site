@@ -75,3 +75,4 @@ export * from "./reviewedRelationships.js";
 
 export * from "./match-log-validation.js";
 export * from "./simulator-enrichment.js";
+export * from './expectedField';
