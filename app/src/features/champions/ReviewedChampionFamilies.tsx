@@ -48,7 +48,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
       <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/evidence:rotate-180" /></summary>
         {shared && evidence ? <>
-          <p className="my-2">{evidence.coreDeckCount} of {evidence.evaluatedDeckCount} checked decklists contain all three {coreLabel} core cards: {familyCore.join(', ')}.</p>
+          <p className="my-2">{evidence.coreDeckCount} of {evidence.evaluatedDeckCount} checked decklists contain all {familyCore.length === 3 ? 'three' : familyCore.length} {coreLabel} core cards: {familyCore.join(', ')}.</p>
           {packages.map(pkg => <p key={pkg.label} className="my-2">{pkg.cards.join(', ')} appear together in {pkg.count} of {evidence.evaluatedDeckCount} decklists.</p>)}
           <p className="my-2 text-ctp-subtext1">Main and material only; sideboards excluded. The shared name requires the complete core in at least 90% of this group, complete decklist coverage, five players and two events. Card presence does not prove a combo was played.</p>
         </> : <><ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} /><p className="my-2">Common cards across this family, not an exact decklist or required core.</p></>}
@@ -74,7 +74,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
     {reviewed.length > 0 && <div className="identity-surface min-w-0 rounded-3xl p-4 sm:p-5">
       {!hasAlternateCore && <div className="max-w-lg"><ArchetypePreview names={core} cardImages={catalog} /></div>}
       <h3 className="mt-3 text-lg font-semibold">{identityName}</h3>
-      <p className="my-3 text-sm text-ctp-subtext1">One reviewed card identity across {reviewedBuildCount} preserved {reviewedBuildCount === 1 ? 'build' : 'builds'}. {hasAlternateCore ? 'Each group shows its own qualifying three-card core.' : `These three cards identify the ${coreLabel} core, not a complete decklist.`} Statistics remain separate for each original group; players and events may overlap between groups.</p>
+      <p className="my-3 text-sm text-ctp-subtext1">One reviewed card identity across {reviewedBuildCount} preserved {reviewedBuildCount === 1 ? 'build' : 'builds'}. {hasAlternateCore ? 'Each group shows its own qualifying card core.' : `These ${core.length} cards identify the ${coreLabel} core, not a complete decklist.`} Statistics remain separate for each original group; players and events may overlap between groups.</p>
       <div className="grid items-start gap-3 sm:grid-cols-2">{reviewed.map(family => renderFamily(family, true))}</div>
     </div>}
     {other.length > 0 && <><h3 className="text-lg font-semibold">Other {championName} families</h3><div className="grid items-start gap-3 sm:grid-cols-2">{other.map(family => renderFamily(family, false))}</div></>}

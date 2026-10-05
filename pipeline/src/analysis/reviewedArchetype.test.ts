@@ -124,8 +124,8 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
 
  test('Tristan cores preserve optional support and all other family data', () => {
   const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Tristan'));
-  const expected: Record<string, number> = { ux2yxk: 3834, '1vu1559': 52, '1rb0t9a': 169, '1van2rl': 210, '4mnxjk': 22, '15ytls8': 50, '1s3agra': 41 };
-  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
+  const expected: Record<string, number> = { s71lix: 29, ux2yxk: 3834, '1vu1559': 52, '1rb0t9a': 169, '1van2rl': 210, '4mnxjk': 22, '15ytls8': 50, '1s3agra': 41 };
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 9);
   const changed = new Map([...cards].map(([id, counts]) => {
     const copy = new Map(counts);
     for (const name of ['Slice and Dice', 'Oath of the Sakura', 'Dilu, Auspicious Charger', 'Verita, Queen of Hearts', 'Three of Hearts', 'Straight Flare']) copy.delete(name);
@@ -231,12 +231,12 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
 });
 
-test('Jin retains ambiguous families and restores labels when recovery evidence disappears', () => {
+test('Jin requires full combined cores and restores labels when recovery evidence disappears', () => {
   const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Jin'));
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, cards);
-  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 5);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 7);
   for (const id of ['7y24dq', '1ss7e1z']) {
-    assert.equal(families.find(s => s.id === id)!.reviewedArchetypeEvidence, undefined);
+    assert.equal(families.find(s => s.id === id)!.reviewedArchetypeEvidence!.coreDeckCount, id === '7y24dq' ? 27 : 16);
     assert.deepEqual(families.find(s => s.id === id), taxonomy.strategyArchetypes.find(s => s.id === id));
   }
   const changed = new Map([...cards].map(([id, counts]) => {
@@ -311,5 +311,43 @@ test('Majesty alternatives qualify independently, preserve primary evidence, and
       assert.equal(family.name, real.reviewedArchetypeEvidence!.originalName, mode);
       assert.equal(family.identityCards, undefined, mode);
     }
+  }
+});
+
+test('combined Jin identity requires joint union and never suppresses unrelated identities', () => {
+  const source = taxonomy.strategyArchetypes.find(s => s.id === '7y24dq')!;
+  const ids = [...new Set(source.buildIds.flatMap(id => taxonomy.clusters.find(b => b.id === id)!.deckIds))];
+  for (const mode of ['split', 'unrelated', 'missing']) {
+    const family = structuredClone(source);
+    const changed = new Map(cards);
+    ids.forEach((id, index) => {
+      const counts = new Map(cards.get(id));
+      // Each constituent still qualifies, but the six-card union falls below 90%.
+      if (mode === 'split') {
+        for (const name of family.identityCards!) counts.set(name, 1);
+        if (index < 2) counts.delete('Regal Inquisition');
+        if (index >= 2 && index < 4) counts.delete('Creative Shock');
+      }
+      if (mode === 'unrelated') { counts.set('Aesan Protector', 1); counts.set('Reclaim', 1); }
+      changed.set(id, counts);
+    });
+    if (mode === 'missing') changed.delete(ids[0]);
+    applyReviewedArchetypeEvidence([family], taxonomy.clusters, changed);
+    assert.equal(family.reviewedArchetypeEvidence, undefined, mode);
+    assert.equal(family.name, source.reviewedArchetypeEvidence!.originalName);
+  }
+});
+
+test('Ignis family has a Spirit and level-one Tristan in material, with no higher champion', () => {
+  const catalog = JSON.parse(readFileSync(new URL('../../../data/card-catalog.json', import.meta.url), 'utf8')).cards as { name: string; types: string[]; classes: string[]; level: number | null }[];
+  const byName = new Map(catalog.map(card => [card.name, card]));
+  const family = taxonomy.strategyArchetypes.find(s => s.id === 's71lix')!;
+  const ids = new Set(family.buildIds.flatMap(id => taxonomy.clusters.find(b => b.id === id)!.deckIds));
+  assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, 29);
+  for (const deck of index.decks.filter(deck => ids.has(deck.deckId))) {
+    const champions = decodeCardLines(deck.material, index.cardNames).filter(card => card.quantity > 0).map(card => byName.get(card.name)!).filter(card => card?.types.includes('CHAMPION'));
+    assert.ok(champions.some(card => card.classes.includes('SPIRIT')));
+    assert.ok(champions.some(card => card.name === 'Tristan, Underhanded' && card.level === 1));
+    assert.ok(champions.every(card => card.level !== null && card.level <= 1));
   }
 });

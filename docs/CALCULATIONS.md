@@ -3980,3 +3980,57 @@ identity ambiguity, missing coverage and zero quantities. Merlin passed 360px an
 1280px checks for exact core evidence, preserved build links, keyboard access, 48px
 disclosure targets, no nested disclosure or overflow, plus empty/loading/error at
 390px. App lint retains seven pre-existing Fast Refresh warnings.
+
+### Final hold review: Jin combinations and Ignis Tristan
+
+All seven remaining families were rechecked against positive main + material cards.
+Three now qualify, bringing reviewed naming to 150/154 families (97.4%). All 154
+families have been assessed; four remain evidence/design holds. Membership, IDs,
+ordering and statistics are unchanged, as are the previous 147 reviewed families.
+
+Jin now supports two explicitly curated combined identities. A combination must
+meet 90% joint inclusion across its **entire union**, not merely across its
+constituent triples separately. It replaces only the named constituent identities;
+any unrelated qualifying identity or competing combination still blocks naming.
+Complete coverage and the five-player/two-event requirements remain unchanged.
+
+| Family | Identity | Required cards jointly present |
+| --- | --- | --- |
+| 7y24dq | Exia Jin — Seething / Enrage Recovery | Mend Flesh, Seething Intercession, Regal Inquisition, Enrage, Creative Shock, Hemorrhaging Rend: 27/28 |
+| 1ss7e1z | Wind Jin — Hemorrhaging / Ally Reuse | Enrage, Mend Flesh, Hemorrhaging Rend, Aesan Protector, Reclaim: 16/16 |
+| s71lix | Fire Tristan — Ignis Deus | Ignis Deus, Dire Requiem, Fireball: 29/29 |
+
+All 29 Tristan material decks contain Tristan, Underhanded (level one), plus either
+Spirit of Fire (23) or Vyra, Spirit of Fire (6), with no higher-level champion.
+Catalog text confirms Ignis Deus requires a Spirit, materializes a base-level-one
+champion, and prevents later non-Spirit leveling. This is an Ignis package, not a
+claim of a normal full Tristan progression, Fireball class discount, or Dire
+Requiem class bonus. Presence does not prove the sequence was executed.
+
+Remaining holds and concrete release conditions:
+
+- Lorraine `1ol07nl`: ten decks/players but only one event. Needs a second event
+  while retaining core recurrence; do not relax the two-event rule.
+- Zander `ug902a`: six decks, four players, three events. Needs a fifth player
+  while retaining core recurrence.
+- Guo Jia `194znzn`: Ruby Fatestone / Searing Truth / Heated Vengeance qualifies
+  in 316/341 decks. Ruby's fire damage and Searing Truth support quest counters;
+  Ruby's self-damage can enable Heated Vengeance's damage-taken bonus. However,
+  this candidate also qualifies in the established Decree Burn family `m4dyqa`,
+  creating competing identities. Retain existing labels pending an explicit
+  combined-core or parent/variant design validated against both families.
+- Ciel `1g8kos9`: Manxome Armoire / Grande Sonnerie / Liminal Guide appears in
+  896/923 decks. These are broad omen/equipment/leveling support; they do not
+  establish a distinct plan for the whole family. Retain Fire Ciel pending a
+  sufficiently recurrent, specific plan or a separately scoped clustering review.
+
+The UI shows every required card and the actual core size, including five- and
+six-card Jin combinations. No partial core is presented as the full identity.
+
+Verification: all 18 reviewed-archetype tests pass, including split-union rejection,
+competing combinations, missing coverage, idempotence and Tristan's material path
+against the committed card catalog. App, shared and pipeline type checks pass;
+app lint retains seven existing Fast Refresh warnings. Jin and Tristan pass 360px
+and 1280px browser checks for headings, preserved build links, keyboard access,
+48px disclosure targets, no nested disclosure and no horizontal overflow. Jin's
+empty/loading/error states pass at 390px. Mobile/desktop screenshots were inspected.

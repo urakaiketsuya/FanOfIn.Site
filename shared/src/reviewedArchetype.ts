@@ -27,6 +27,7 @@ export const ZANDER_IDENTITIES = [
 ];
 
 export const TRISTAN_IDENTITIES = [
+  { champion: 'Tristan', name: 'Fire Tristan — Ignis Deus', label: 'Ignis Deus', core: ['Ignis Deus', 'Dire Requiem', 'Fireball'], packages: [] },
   { champion: 'Tristan', name: 'Wind Tristan — Preparation', label: 'Preparation', core: ['Surveil the Winds', 'Incapacitate', 'Shadowstrike'], packages: [
     { key: 'slice', label: 'Slice and Dice variant', cards: ['Slice and Dice'] },
   ] },
@@ -93,6 +94,8 @@ export const GUO_JIA_IDENTITIES = [
 ];
 
 export const JIN_IDENTITIES = [
+  { champion: 'Jin', name: 'Exia Jin — Seething / Enrage Recovery', label: 'Seething / Enrage Recovery', core: ['Mend Flesh', 'Seething Intercession', 'Regal Inquisition', 'Enrage', 'Creative Shock', 'Hemorrhaging Rend'], combines: ['Exia Jin — Seething Recovery', 'Jin — Enrage / Creative Shock', 'Jin — Hemorrhaging Recovery'], packages: [] },
+  { champion: 'Jin', name: 'Wind Jin — Hemorrhaging / Ally Reuse', label: 'Hemorrhaging / Ally Reuse', core: ['Enrage', 'Mend Flesh', 'Hemorrhaging Rend', 'Aesan Protector', 'Reclaim'], combines: ['Jin — Hemorrhaging Recovery', 'Wind Jin — Ally Reuse'], packages: [] },
   { champion: 'Jin', name: 'Exia Jin — Seething Recovery', label: 'Seething Recovery', core: ['Mend Flesh', 'Seething Intercession', 'Regal Inquisition'], packages: [] },
   { champion: 'Jin', name: 'Jin — Enrage / Creative Shock', label: 'Enrage / Creative Shock', core: ['Enrage', 'Mend Flesh', 'Creative Shock'], packages: [] },
   { champion: 'Jin', name: 'Jin — Hemorrhaging Recovery', label: 'Hemorrhaging Recovery', core: ['Enrage', 'Mend Flesh', 'Hemorrhaging Rend'], packages: [] },
@@ -151,7 +154,7 @@ export const REMAINING_CHAMPION_IDENTITIES = [
   {"champion": "Zander", "name": "Wind Zander — Liu Bei Ranged", "label": "Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": [{"key": "oath", "label": "Oath / Dilu variant", "cards": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"]}]},
 ];
 
-export const REVIEWED_ARCHETYPE_CORES: { champion: string; name: string; core: string[]; alternateCores?: string[][] }[] = [
+export const REVIEWED_ARCHETYPE_CORES: { champion: string; name: string; core: string[]; alternateCores?: string[][]; combines?: string[] }[] = [
   ...REMAINING_CHAMPION_IDENTITIES,
   ...JIN_IDENTITIES,
   ...GUO_JIA_IDENTITIES,
@@ -193,12 +196,16 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     const evaluatedDeckCount = ids.filter(id => cardsByDeck.has(id)).length;
     // Each complete core must independently meet recurrence. Never pool partial
     // support across alternatives; multiple distinct identities remain ambiguous.
-    const matches = candidates.flatMap(identity => {
+    const qualifyingMatches = candidates.flatMap(identity => {
       const cores = [identity.core, ...(identity.alternateCores ?? [])];
       const qualifying = cores.map(core => ({ core, count: ids.filter(id => core.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length }))
         .find(match => ids.length > 0 && match.count / ids.length >= .9);
       return qualifying ? [{ identity, ...qualifying }] : [];
     });
+    // A curated combined identity must qualify on its entire union. It can
+    // replace only its declared constituents; unrelated matches stay ambiguous.
+    const matches = qualifyingMatches.filter(match => !qualifyingMatches.some(other =>
+      other.identity.combines?.includes(match.identity.name)));
     if (previous) {
       strategy.name = previous.originalName;
       delete strategy.identityCards;
