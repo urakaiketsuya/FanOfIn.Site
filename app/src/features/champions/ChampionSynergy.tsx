@@ -327,7 +327,7 @@ export default function ChampionSynergy() {
           />
           </div>
 
-          <nav className="mb-6 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs">
+          <nav className="mb-6 mt-4 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs sm:mt-6">
             {JUMP_SECTIONS.map((s) => (
               <a key={s.id} href={`#${s.id}`} className="inline-flex min-h-control items-center rounded px-2 text-ctp-blue hover:underline focus-visible:outline-2">
                 {s.label}
