@@ -1,4 +1,5 @@
 import PlanCheck from './PlanCheck';
+import CopyTargetResults from './CopyTargetResults';
 import { useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import Tabs, { TabPanel } from '../../components/ui/Tabs';
@@ -110,7 +111,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
       controls = <><p className="text-sm text-ctp-subtext1">{plan?.name ?? 'Primary plan'}</p>{editPlan}</>;
       break;
     case 'Copies needed':
-      result = <><Result label={`Matching copies for ${settings.target}% access ${checkpoint}`} value={needed === null ? 'Unreachable' : `${needed} copies`} /><SmallResult label="Selected pool" value={`${copies} copies`} /></>;
+      result = <CopyTargetResults size={size} seen={seen} required={settings.required} target={settings.target} needed={needed} current={copies} hasSelection={selected.length > 0} turn={settings.turn} />;
       controls = <>{numberInput('Target chance (%)', 'target', 1, 100)}{numberInput('Copies to find', 'required', 1, 20)}{pool('Matching cards (optional)', 'selected')}</>;
       break;
     case 'Swap comparison': {
