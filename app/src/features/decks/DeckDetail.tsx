@@ -308,8 +308,8 @@ export default function DeckDetail() {
         {popularityStatus.phase === "error" || cardIndexStatus.phase === "error" ? <div role="alert" className="mt-10 rounded-xl border border-ctp-surface1 p-5">
           <h1 className="text-xl font-semibold">This deck couldn’t load</h1>
           <p className="mt-2 text-sm text-ctp-subtext1">Some tournament data is unavailable. Try loading it again.</p>
-          <button type="button" onClick={() => { popularityStatus.retry(); cardIndexStatus.retry(); }} className="mt-3 min-h-11 rounded-lg border border-ctp-blue px-4 text-sm text-ctp-blue">Try again</button>
-          <Link to="/decks" className="ml-4 inline-flex min-h-11 items-center text-sm text-ctp-blue">Browse decks</Link>
+          <button type="button" onClick={() => { popularityStatus.retry(); cardIndexStatus.retry(); }} className="mt-3 min-h-control rounded-lg border border-ctp-blue px-4 text-sm text-ctp-blue">Try again</button>
+          <Link to="/decks" className="ml-4 inline-flex min-h-control items-center text-sm text-ctp-blue">Browse decks</Link>
         </div> : <InlineState className="mt-10">Loading deck…</InlineState>}
       </PageLayout>
     );
@@ -486,7 +486,7 @@ export default function DeckDetail() {
         }
       />
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="relative mt-5 flex flex-wrap gap-2">
         {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
           if (favorited === null) return;
           setFavoriteBusy(true); setFavoriteNotice(null);
@@ -495,17 +495,17 @@ export default function DeckDetail() {
             decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
             sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
           }).then((result) => { setFavorited(result.favorited); notify({ message: result.favorited ? "Added to My Decks favorites." : "Removed from favorites.", key: "favorite" }); }, (reason: Error) => { setFavoriteNotice(reason.message); notify({ tone: "error", message: reason.message, key: "favorite" }); }).finally(() => setFavoriteBusy(false));
-        }} className={`min-h-11 rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Favorited" : "Favorite deck"}</button> : signedIn === false ? <Link to="/account" className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Sign in to save</Link> : <span className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
+        }} className={`min-h-control rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Favorited" : "Favorite deck"}</button> : signedIn === false ? <Link to="/account" className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Sign in to save</Link> : <span className="inline-flex min-h-control items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
         {signedIn === true && <button type="button" disabled={copyBusy} onClick={() => {
           setCopyBusy(true); setFavoriteNotice(null);
           void accountApi.saveDeck({ title: `${deck.championName ?? "Unknown Champion"} tournament build`, format: "STANDARD", championName: deck.championName, decklist, source: { provider: "manual", externalDeckId: `tournament-copy:${hash}`, label: "Tournament build" } })
             .then(({ id }) => { notify({ message: "Editable copy saved to your account." }); trackEvent("deck_copy_saved", { source: "tournament" }); navigate(`/decks/${id}`); })
             .catch((reason: unknown) => setFavoriteNotice(reason instanceof Error ? reason.message : "Could not save a copy. Please try again."))
             .finally(() => setCopyBusy(false));
-        }} className="min-h-11 rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}
-        <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link>
+        }} className="min-h-control rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}
+        <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-control items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link>
 
-        <details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
+        <details><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 

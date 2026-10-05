@@ -299,6 +299,7 @@ export default function ChampionSynergy() {
         <>
           <div className="identity-surface rounded-3xl rounded-br-lg p-5 sm:p-6">
           <PageHeader
+            spacing="contained"
             title={champ.signature}
             eyebrow={<Link to="/champions" className="inline-flex min-h-control items-center rounded focus-visible:outline-2">&larr; All Champions</Link>}
             description={

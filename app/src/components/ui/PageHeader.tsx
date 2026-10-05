@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-export default function PageHeader({ title, description, eyebrow, actions }: { title: string; description?: ReactNode; eyebrow?: ReactNode; actions?: ReactNode }) {
+export default function PageHeader({ title, description, eyebrow, actions, spacing = "page" }: { title: string; description?: ReactNode; eyebrow?: ReactNode; actions?: ReactNode; spacing?: "page" | "contained" }) {
   return (
-    <header data-component="PageHeader" className="mb-6">
+    <header data-component="PageHeader" className={spacing === "page" ? "mb-6" : undefined}>
       {eyebrow && <div className="mb-2 text-sm text-ctp-blue">{eyebrow}</div>}
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <div className="max-w-2xl">

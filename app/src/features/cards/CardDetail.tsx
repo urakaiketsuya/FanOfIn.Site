@@ -305,7 +305,7 @@ export default function CardDetail() {
         <EmptyState
           title="Card data unavailable"
           description={error}
-          action={<button type="button" onClick={() => window.location.reload()} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Try again</button>}
+          action={<button type="button" onClick={() => window.location.reload()} className="min-h-control rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Try again</button>}
         />
       </PageLayout>
     );
@@ -344,7 +344,7 @@ export default function CardDetail() {
         <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" variant="pill" />
       </div>
 
-      {tabFailure && <div role="alert" className="mt-4 rounded-xl border border-ctp-red/40 bg-ctp-red/10 p-4 text-sm text-ctp-text"><p className="font-semibold">This card analysis could not be loaded.</p><p className="mt-1 text-ctp-subtext0">{tabFailure.error}</p><button type="button" onClick={tabFailure.retry} className="mt-3 min-h-11 rounded-lg bg-ctp-red px-4 font-semibold text-ctp-base">Try again</button></div>}
+      {tabFailure && <div role="alert" className="mt-4 rounded-xl border border-ctp-red/40 bg-ctp-red/10 p-4 text-sm text-ctp-text"><p className="font-semibold">This card analysis could not be loaded.</p><p className="mt-1 text-ctp-subtext0">{tabFailure.error}</p><button type="button" onClick={tabFailure.retry} className="mt-3 min-h-control rounded-lg bg-ctp-red px-4 font-semibold text-ctp-base">Try again</button></div>}
 
       {showOverview && !tabFailure && (
         <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
