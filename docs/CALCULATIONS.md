@@ -4164,9 +4164,11 @@ Rules can overlap freely; there is no exclusive assignment, similarity grouping,
 or fixed three-card requirement. Stable rule and variant ids do not depend on
 membership. Existing inferred engines retain their separate three-player gate.
 The additive layer does not change any existing names, identifiers, membership,
-ordering, win rates, or inferred engine output. It is not yet used in the UI.
+ordering, win rates, or inferred engine output. Champion pages present this evidence separately from existing family identities.
 
 Regenerate only this layer from committed main/material deck data with
 `node --import tsx pipeline/scripts/rebuild-reviewed-relationships.ts`.
 The normal taxonomy pipeline also produces it. The focused rebuild preserves
-existing generation timestamps because it reuses the same source snapshot.
+source statistics while advancing the taxonomy generation and manifest entry for cache refresh.
+
+Champion pages display these reviewed relationships with exact variant cards, family and build support, and exception counts. Cross-champion links require a supported family or build in the destination champion. Observations remain historical and do not imply current legality. The focused rebuild advances the taxonomy generation and manifest entry so cached clients refresh.
