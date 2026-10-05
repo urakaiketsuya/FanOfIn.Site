@@ -3785,3 +3785,38 @@ The broad Fire Ciel family 1g8kos9 retains its existing label and evidence. Shar
 Manxome Armoire / Grande Sonnerie / Liminal Guide equipment is insufficiently
 specific to distinguish it from Feu and Umbra families; do not register that
 umbrella as a competing core. No optional packages are inferred in this pass.
+
+### Reviewed Diana identities
+
+All 15 Diana families use seven card identities under the existing complete-data,
+90% joint main/material core, five-player and two-event rules. Sideboards remain
+excluded. Names and evidence change; IDs, membership, order and statistics do not.
+
+| Identity | Required core | Family joint presence |
+| --- | --- | --- |
+| Water / Astra Diana — Aquamirage Aethercharge | Charge the Soul, Undercurrent Vantage, Aquamirage Whisper | we1pvk 2029/2137; l2l0d9 124/125; 1q0huar 33/33 |
+| Fire Diana — Aethercharge | Charge the Soul, Ashwound Shot, Infernal Manastreak | 1dg931e 685/686; vipumi 8/8 |
+| Diana — Tasershot Gun | Tasershot, Shadow's Twin, Dungeon Guide | 1i0uv1q 185/188; la3b0f 208/208; 1slms8l 30/30; 1l0bskq 7/7 |
+| Wind Diana — Liu Bei Ranged | Liu Bei, Oathkeeper, Skirting Step, Perse, Relentless Raptor | 1rulzi 63/68; 1gvbrzx 29/32 |
+| Water Diana — Control | Fracturize, Frostsworn Paladin, Frostbind | 1v3gm8a 82/84; 1p40056 57/58 |
+| Fire Diana — Ranged Allies | Airship Engineer, Automaton Bomber, Evasive Maneuvers | 8zaf81 32/32 |
+| Wind Diana — Ranged Allies | Skirting Step, Veiled Dash, Concealed Marksman | 1a1qqv3 13/14 |
+
+Mechanics are checked against `pipeline/.cache/cards.json`. Charge the Soul loads
+an Aetherwing; Aquamirage Whisper is that weapon type and its on-hit glimpse
+supports the Water/Astra plan. Undercurrent Vantage provides glimpse and distant.
+Weaving Manastream and the Constellation's Blessing / Guided Starlight pair are
+optional packages, avoiding competing Water and Astra identities in mixed lists.
+Fire Aethercharge uses Ashwound Shot and Infernal Manastreak as loadable spells.
+
+Tasershot loads a Gun; Shadow's Twin benefits from loading and repeats on-hit
+abilities, while Dungeon Guide supports champion progression. Gunshield / Umbral
+Tithe / Creative Shock is optional support, not a second competing identity.
+Liu Bei, Skirting Step and Perse share distant/ranged mechanics. The other Wind
+ranged family uses Concealed Marksman and Veiled Dash. Fire ranged allies use
+Airship Engineer, Automaton Bomber and Evasive Maneuvers; this is not an Automaton
+tribe, because Airship Engineer is Human. Water Control uses item/weapon removal,
+Frostsworn Paladin's interception and Frostbind's conditional negation.
+
+Supporting packages use independent joint presence and the existing 90% display
+threshold. Neither card presence nor the names establish that a combo was played.

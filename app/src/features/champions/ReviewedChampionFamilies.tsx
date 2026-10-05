@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { CIEL_IDENTITIES, ARISANNA_IDENTITIES, ALLEN_IDENTITIES, ALICE_IDENTITIES, TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
+import { DIANA_IDENTITIES, CIEL_IDENTITIES, ARISANNA_IDENTITIES, ALLEN_IDENTITIES, ALICE_IDENTITIES, TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import DisclosureChevron from '../../components/DisclosureChevron';
 
 /** Shared presentation identity, with original family statistics and build membership retained. */
-type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan' | 'Alice' | 'Allen' | 'Arisanna' | 'Ciel'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
+type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan' | 'Alice' | 'Allen' | 'Arisanna' | 'Ciel' | 'Diana'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
 export default function ReviewedChampionFamilies(props: Props) {
-  if (props.championName !== 'Zander' && props.championName !== 'Tristan' && props.championName !== 'Alice' && props.championName !== 'Allen' && props.championName !== 'Arisanna' && props.championName !== 'Ciel') return <IdentityFamilies {...props} />;
-  const identities = props.championName === 'Ciel' ? CIEL_IDENTITIES : props.championName === 'Arisanna' ? ARISANNA_IDENTITIES : props.championName === 'Allen' ? ALLEN_IDENTITIES : props.championName === 'Alice' ? ALICE_IDENTITIES : props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
+  if (props.championName !== 'Zander' && props.championName !== 'Tristan' && props.championName !== 'Alice' && props.championName !== 'Allen' && props.championName !== 'Arisanna' && props.championName !== 'Ciel' && props.championName !== 'Diana') return <IdentityFamilies {...props} />;
+  const identities = props.championName === 'Diana' ? DIANA_IDENTITIES : props.championName === 'Ciel' ? CIEL_IDENTITIES : props.championName === 'Arisanna' ? ARISANNA_IDENTITIES : props.championName === 'Allen' ? ALLEN_IDENTITIES : props.championName === 'Alice' ? ALICE_IDENTITIES : props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
   const reviewedNames = identities.map(identity => identity.name);
   const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && !reviewedNames.includes(family.name));
   const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && reviewedNames.includes(family.name));

@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Diana' ? (identity.name.includes('Aquamirage') ? 3 : identity.name.includes('Tasershot') ? 4 : identity.name.includes('Ranged Allies') ? 1 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -188,4 +188,25 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
   assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 6);
   for (const id of ['rsnhwz', '152xtyg']) assert.equal(families.find(s => s.id === id)!.reviewedArchetypeEvidence, undefined);
+});
+
+ test('Diana separates weapon plans and keeps overlapping elemental support optional', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Diana'));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, cards);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 15);
+  const mixed = families.find(s => s.id === 'l2l0d9')!;
+  assert.equal(mixed.name, 'Water / Astra Diana — Aquamirage Aethercharge');
+  assert.equal(mixed.reviewedArchetypeEvidence!.coreDeckCount, 124);
+  assert.deepEqual(mixed.reviewedArchetypeEvidence!.packageDeckCounts, { water: 124, astra: 122 });
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts); copy.delete('Deploy Gunshield'); copy.delete('Weaving Manastream'); return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 15);
+  assert.equal(families.find(s => s.id === '1slms8l')!.reviewedArchetypeEvidence!.packageDeckCounts!.gunshield, 0);
+  assert.equal(mixed.reviewedArchetypeEvidence!.packageDeckCounts!.water, 0);
+  for (const [id, counts] of changed) { const copy = new Map(counts); copy.delete('Aquamirage Whisper'); changed.set(id, copy); }
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 12);
+  assert.equal(mixed.name, 'Mixed Diana — Charge the Soul');
 });

@@ -72,7 +72,18 @@ export const CIEL_IDENTITIES = [
   { champion: 'Ciel', name: "Fire Ciel — Red Hare", label: "Red Hare", core: ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], packages: [] },
 ];
 
+export const DIANA_IDENTITIES = [
+  {"champion": "Diana", "name": "Water / Astra Diana — Aquamirage Aethercharge", "label": "Water / Astra Aquamirage Aethercharge", "core": ["Charge the Soul", "Undercurrent Vantage", "Aquamirage Whisper"], "packages": [{"key": "water", "label": "Weaving Manastream variant", "cards": ["Weaving Manastream"]}, {"key": "astra", "label": "Astra Aethercalling variant", "cards": ["Constellation's Blessing", "Guided Starlight"]}]},
+  {"champion": "Diana", "name": "Fire Diana — Aethercharge", "label": "Fire Aethercharge", "core": ["Charge the Soul", "Ashwound Shot", "Infernal Manastreak"], "packages": []},
+  {"champion": "Diana", "name": "Diana — Tasershot Gun", "label": "Tasershot Gun", "core": ["Tasershot", "Shadow's Twin", "Dungeon Guide"], "packages": [{"key": "gunshield", "label": "Gunshield / Umbral Tithe variant", "cards": ["Deploy Gunshield", "Umbral Tithe", "Creative Shock"]}]},
+  {"champion": "Diana", "name": "Wind Diana — Liu Bei Ranged", "label": "Wind Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": []},
+  {"champion": "Diana", "name": "Water Diana — Control", "label": "Water Control", "core": ["Fracturize", "Frostsworn Paladin", "Frostbind"], "packages": []},
+  {"champion": "Diana", "name": "Fire Diana — Ranged Allies", "label": "Fire Ranged Allies", "core": ["Airship Engineer", "Automaton Bomber", "Evasive Maneuvers"], "packages": []},
+  {"champion": "Diana", "name": "Wind Diana — Ranged Allies", "label": "Wind Ranged Allies", "core": ["Skirting Step", "Veiled Dash", "Concealed Marksman"], "packages": []},
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...DIANA_IDENTITIES,
   ...CIEL_IDENTITIES,
   ...ARISANNA_IDENTITIES,
   ...ALLEN_IDENTITIES,
@@ -132,7 +143,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
