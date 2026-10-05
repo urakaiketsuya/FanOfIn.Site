@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { ALICE_IDENTITIES, TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
+import { ALLEN_IDENTITIES, ALICE_IDENTITIES, TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import DisclosureChevron from '../../components/DisclosureChevron';
 
 /** Shared presentation identity, with original family statistics and build membership retained. */
-type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan' | 'Alice'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
+type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan' | 'Alice' | 'Allen'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
 export default function ReviewedChampionFamilies(props: Props) {
-  if (props.championName !== 'Zander' && props.championName !== 'Tristan' && props.championName !== 'Alice') return <IdentityFamilies {...props} />;
-  const identities = props.championName === 'Alice' ? ALICE_IDENTITIES : props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
+  if (props.championName !== 'Zander' && props.championName !== 'Tristan' && props.championName !== 'Alice' && props.championName !== 'Allen') return <IdentityFamilies {...props} />;
+  const identities = props.championName === 'Allen' ? ALLEN_IDENTITIES : props.championName === 'Alice' ? ALICE_IDENTITIES : props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
   const reviewedNames = identities.map(identity => identity.name);
   const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && !reviewedNames.includes(family.name));
   const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && reviewedNames.includes(family.name));
@@ -26,6 +26,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
   const families = taxonomy.strategyArchetypes.filter(family => family.championName === championName);
   const buildsById = new Map(taxonomy.clusters.map(build => [build.id, build]));
   const reviewed = families.filter(family => family.name === identityName && family.reviewedArchetypeEvidence);
+  const reviewedBuildCount = reviewed.reduce((sum, family) => sum + family.buildIds.length, 0);
   const other = families.filter(family => !reviewed.includes(family));
   if (!families.length && identity) return null;
   if (!families.length) return <p className="mt-3 text-sm text-ctp-subtext1">No archetype families have cleared the sample-size threshold yet.</p>;
@@ -70,7 +71,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
     {reviewed.length > 0 && <div className="identity-surface min-w-0 rounded-3xl p-4 sm:p-5">
       <div className="max-w-lg"><ArchetypePreview names={core} cardImages={catalog} /></div>
       <h3 className="mt-3 text-lg font-semibold">{identityName}</h3>
-      <p className="my-3 text-sm text-ctp-subtext1">One reviewed card identity across {reviewed.reduce((sum, family) => sum + family.buildIds.length, 0)} preserved builds. These three cards identify the {coreLabel} core, not a complete decklist. Statistics remain separate for each original group; players and events may overlap between groups.</p>
+      <p className="my-3 text-sm text-ctp-subtext1">One reviewed card identity across {reviewedBuildCount} preserved {reviewedBuildCount === 1 ? 'build' : 'builds'}. These three cards identify the {coreLabel} core, not a complete decklist. Statistics remain separate for each original group; players and events may overlap between groups.</p>
       <div className="grid items-start gap-3 sm:grid-cols-2">{reviewed.map(family => renderFamily(family, true))}</div>
     </div>}
     {other.length > 0 && <><h3 className="text-lg font-semibold">Other {championName} families</h3><div className="grid items-start gap-3 sm:grid-cols-2">{other.map(family => renderFamily(family, false))}</div></>}

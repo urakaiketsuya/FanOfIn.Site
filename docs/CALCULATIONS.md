@@ -3718,3 +3718,17 @@ Abnegation provide recovery. The Chessmen cards explicitly share the Chessman su
 and protection, sacrifice/draw and ally interactions. These names describe card identities,
 not evidence that a particular combo was played. The two elemental Chessmen groups retain
 separate statistics and their original build names.
+
+### Reviewed Allen identities
+
+Wind Allen — Slimes / Geldus requires Baby Green Slime, Limitless Slime and
+Geldus, Terror of Dorumegia (27/27 joint main/material appearances). The two
+Slimes and Geldus are Tamer allies, but Geldus is a Beast/Bull rather than a Slime.
+This descriptive card label does not assert a shared creature tribe or a played combo.
+Water Allen — Fractals requires Fractal of Rain, Fracturize and Refracting Missile
+(12/12). Catalog text establishes a Fractal object, transformation into a Fractal,
+and damage scaling with controlled Fractals, respectively.
+
+Both use the existing 90% joint-presence, complete coverage, five-player and
+two-event thresholds, with no required optional package. IDs, membership, ordering
+and statistics are preserved; sideboards remain excluded.
