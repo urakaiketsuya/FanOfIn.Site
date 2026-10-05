@@ -1,3 +1,4 @@
+import type { auditFieldWindows } from './fieldCalibration';
 import type { BattleChartEntry } from './analysis-types';
 import { publishedField, scoreExpectedField, type FieldWeight } from './expectedField';
 import { shrinkWinRate } from './winRateShrinkage';
@@ -15,6 +16,8 @@ export interface FieldHistoryData {
   minMatchups: number;
   events: FieldEvent[];
   backtests: FieldBacktest[];
+  /** Optional for older published projections. Full audit details stay offline. */
+  rangeChecks?: Omit<ReturnType<typeof auditFieldWindows>, 'windows'>[];
 }
 export interface FieldScope { format: string; from: string; to: string }
 export interface FieldBacktest {

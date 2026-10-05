@@ -4360,3 +4360,15 @@ this is a different time period and unit of comparison from the single-event aud
 improvement estimate. The outside results and remaining unknown matchups do not support a
 calibrated confidence claim. Finite later samples, field drift, and missing match-level variation
 in event resampling remain possible explanations; inspect these before changing interval settings.
+
+### Published event range check
+
+`analysis/field-history.json` includes compact `rangeChecks` summaries, generated with
+`auditFieldWindows` during every field-history build. Each format uses the latest
+336 days ending on its latest event start date, with the same 90-day training and
+28-day holdout settings as the offline report. Full window details remain in the
+report. Battle Chart → Explore a field shows inside/outside/inconclusive counts,
+test dates, comparisons, skipped comparisons, and mean later field coverage.
+This check uses published fields independently of user-selected dates, weights,
+and the stress toggle. Older projections without summaries show an unavailable
+message; formats with no evaluated comparisons show insufficient evidence.

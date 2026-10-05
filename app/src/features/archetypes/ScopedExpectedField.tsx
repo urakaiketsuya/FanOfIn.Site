@@ -23,6 +23,7 @@ export default function ScopedExpectedField({ enabled }: { enabled: boolean }) {
   const selectedEvents = useMemo(() => data?.events.filter(event => event.format === scope.format && event.date >= scope.from && event.date <= scope.to) ?? [], [data, scope]);
   const projection = useMemo(() => aggregateFieldHistory(data?.events ?? [], scope, data?.minMatchups), [data, scope]);
   const backtest = data?.backtests.find(test => test.format === format);
+  const rangeCheck = data?.rangeChecks?.find(check => check.format === format);
   const label = format === 'standard' ? 'Standard' : format === 'team-standard-3v3' ? 'Team Standard (3v3)' : format;
 
   if (!data) return <div className="mt-6" role="status">{status.phase === 'error' ? <>{status.error} <Button onClick={status.retry}>Retry field history</Button></> : 'Loading field history…'}</div>;
@@ -40,6 +41,20 @@ export default function ScopedExpectedField({ enabled }: { enabled: boolean }) {
     <p role="status" className="text-sm text-ctp-subtext1">{pending ? 'Recalculating scope…' : invalid ? 'Choose a start date on or before the end date.' : `${projection.events} events · ${scope.from} to ${scope.to}`}</p>
       </Panel>
     } />
+    <Panel>
+      <h2 className="font-semibold">Event range check · {label}</h2>
+      {rangeCheck && rangeCheck.evaluated > 0 ? <>
+        <p className="mt-1 text-sm text-ctp-subtext1">{rangeCheck.from} to {rangeCheck.to} · {rangeCheck.holdoutDays}-day test windows</p>
+        <dl className="mt-3 grid gap-3 sm:grid-cols-3">
+          {[['Inside range', rangeCheck.inside], ['Outside range', rangeCheck.outside], ['Inconclusive', rangeCheck.inconclusive]].map(([name, count]) => <div key={name} className="rounded-lg bg-ctp-base p-3">
+            <dt className="text-sm text-ctp-subtext1">{name}</dt><dd className="text-2xl font-semibold tabular-nums">{count.toLocaleString()}</dd>
+          </div>)}
+        </dl>
+        <p className="mt-2 text-sm text-ctp-subtext1">{rangeCheck.evaluated} Champion/window comparisons · {((rangeCheck.meanLaterCoverage ?? 0) * 100).toFixed(1)}% average later field coverage · {rangeCheck.skipped} skipped</p>
+        <p className="mt-1 text-xs text-ctp-subtext0">Later results compared with event-resampling ranges. Confidence calibration remains unproven.</p>
+        <p className="mt-1 text-xs text-ctp-subtext0">Published field mixes; independent of your dates, weights, and stress test.</p>
+      </> : <p className="mt-2 text-sm text-ctp-subtext1">{rangeCheck ? 'Not enough later matchup evidence to check event ranges.' : 'Event range checks are not available in this published dataset yet.'}</p>}
+    </Panel>
     {backtest && <Panel>
       <h2 className="font-semibold">Covered-matchup check · {label}</h2>
       <p className="mt-1 text-sm text-ctp-subtext1">Previous {backtest.windowDays} days per event · published shares · all available test dates</p>

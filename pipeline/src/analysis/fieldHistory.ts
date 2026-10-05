@@ -1,4 +1,4 @@
-import { backtestFieldHistory, type BattleChartEntry, type FieldEvent, type FieldHistoryData } from '@gatcg/shared';
+import { auditFieldWindows, fieldWindowStart, backtestFieldHistory, type BattleChartEntry, type FieldEvent, type FieldHistoryData } from '@gatcg/shared';
 import type { OmnidexEventBundle } from '../omnidex/cache.js';
 import type { AnalysisContext } from './context.js';
 
@@ -51,6 +51,11 @@ export function computeFieldHistory(bundles: OmnidexEventBundle[], ctx: Analysis
       battleChart: [...rows.values()].sort((a, b) => a.a.localeCompare(b.a) || a.b.localeCompare(b.b)) });
   }
   events.sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
-  return { generatedAt: new Date().toISOString(), minMatchups, events,
+  const rangeChecks = [...new Set(events.map(event => event.format))].sort().map(format => {
+    const to = events.filter(event => event.format === format).at(-1)!.date;
+    const { windows: _windows, ...summary } = auditFieldWindows(events, format, fieldWindowStart(to, 336), to, minMatchups);
+    return summary;
+  });
+  return { rangeChecks, generatedAt: new Date().toISOString(), minMatchups, events,
     backtests: [...new Set(events.map(e => e.format))].sort().map(format => backtestFieldHistory(events, format, minMatchups)) };
 }
