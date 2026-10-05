@@ -68,3 +68,40 @@ export function auditFieldRanges(events: FieldEvent[], format: string, minMatchu
     meanRangeWidth: details.length ? widthSum / details.length : null,
     meanLaterCoverage: details.length ? coverageSum / details.length : null, details };
 }
+
+/** Non-overlapping later windows, each scored against its own frozen prior field. */
+export function auditFieldWindows(events: FieldEvent[], format: string, from: string, to: string, minMatchups = 5, holdoutDays = 28) {
+  const day = 86_400_000;
+  const parseDay = (value: string) => {
+    const time = Date.parse(`${value}T00:00:00Z`);
+    if (!Number.isFinite(time) || new Date(time).toISOString().slice(0, 10) !== value) throw new Error('Invalid audit date');
+    return time;
+  };
+  const start = parseDay(from), end = parseDay(to);
+  if (end < start || !Number.isInteger(holdoutDays) || holdoutDays <= 0) throw new Error('Invalid holdout window');
+  const population = events.filter(event => event.format === format);
+  if (new Set(population.map(event => event.id)).size !== population.length) throw new Error('Duplicate event IDs');
+  let pooledId = -1;
+  while (population.some(event => event.id === pooledId)) pooledId--;
+  const windows = [];
+  // Only complete calendar windows are evaluated; the trailing partial window is omitted.
+  for (let cursor = start; cursor + (holdoutDays - 1) * day <= end; cursor += holdoutDays * day) {
+    const windowFrom = new Date(cursor).toISOString().slice(0, 10);
+    const windowTo = new Date(cursor + (holdoutDays - 1) * day).toISOString().slice(0, 10);
+    const started = population.filter(event => event.date >= windowFrom && event.date <= windowTo);
+    const later = started.filter(event => event.completedDate !== null && event.completedDate >= event.date && event.completedDate <= windowTo);
+    // Pool only the later pairings. Original training events remain separate bootstrap clusters.
+    const pooled: FieldEvent = { id: pooledId, date: windowFrom, completedDate: windowTo, format, champions: [], battleChart: later.flatMap(event => event.battleChart) };
+    const audit = auditFieldRanges([...population.filter(event => event.date < windowFrom), pooled], format, minMatchups, 1);
+    const { details, ...summary } = audit;
+    windows.push({ from: windowFrom, to: windowTo, eventIds: later.map(event => event.id).sort((a, b) => a - b), excludedEvents: started.length - later.length,
+      evaluated: summary.evaluated, inside: summary.inside, outside: summary.outside, inconclusive: summary.inconclusive, skipped: summary.skipped,
+      meanRangeWidth: summary.meanRangeWidth, meanLaterCoverage: summary.meanLaterCoverage,
+      details: details.map(({ eventId: _id, date: _date, ...row }) => row) });
+  }
+  const details = windows.flatMap(window => window.details);
+  return { format, from, to, trainingDays: 90, holdoutDays, evaluated: details.length,
+    inside: windows.reduce((sum, window) => sum + window.inside, 0), outside: windows.reduce((sum, window) => sum + window.outside, 0),
+    inconclusive: windows.reduce((sum, window) => sum + window.inconclusive, 0), skipped: windows.reduce((sum, window) => sum + window.skipped, 0),
+    meanLaterCoverage: details.length ? details.reduce((sum, row) => sum + row.laterCoverage, 0) / details.length : null, windows };
+}

@@ -4333,3 +4333,30 @@ Mean later-field coverage is 20.1%; mean resampling width is 34.0 percentage poi
 has eight targets and no evaluable comparisons. This does **not** establish calibration: sparse later
 matchups dominate the result. A broader multi-event holdout with fixed training weights is the next
 useful evaluation before making confidence claims.
+
+### Multi-event range compatibility audit
+
+The same audit command also writes `docs/reports/field-window-audit.json`. For each format it
+selects the 336 days ending on the latest event start date, solely from dates, and divides them
+into twelve non-overlapping 28-day holdouts. These settings are fixed, not optimized against the
+results. `auditFieldWindows` also accepts explicit dates and a positive integer window length;
+a trailing partial window is omitted. Empty windows remain in the report.
+
+Each window freezes the field and resampling ranges from the preceding 90 days. Training events
+must finish strictly before the window begins. Later events must both start and finish within the
+window; unknown completion dates and events crossing its end are excluded and counted. Their raw
+pairings are pooled for each matchup, retaining match-weighted scores and missing-opponent bounds.
+Training events remain separate resampling clusters. The existing single-target audit evaluates
+the pooled later pairings as one target at window start; this synthetic target never enters training.
+The report stores the actual later event IDs, window boundaries, exclusions, and Champion results.
+Later attendance does not change the frozen weights. Each evaluated Champion/window has equal
+weight in the overall summary. Successive windows can share training evidence, and an earlier
+holdout can legitimately become training for a later window once it has finished.
+
+With the 2026-10-05 source, Standard spans 2025-11-03 through 2026-10-04: 226 comparisons,
+113 inside, 34 outside, 79 inconclusive, and four skipped. Mean later-field coverage is 77.5%.
+Team Standard still has no evaluable comparisons. Broader windows provide more evidence, but
+this is a different time period and unit of comparison from the single-event audit, not a paired
+improvement estimate. The outside results and remaining unknown matchups do not support a
+calibrated confidence claim. Finite later samples, field drift, and missing match-level variation
+in event resampling remain possible explanations; inspect these before changing interval settings.
