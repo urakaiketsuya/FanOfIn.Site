@@ -80,3 +80,5 @@ export * from './fieldHistory';
 
 export * from "./fieldUncertainty";
 export * from './fieldCalibration';
+
+export * from './fieldEquilibrium';

@@ -4398,3 +4398,42 @@ matches. Small samples are therefore a concern but do not describe every case.
 Do not use these findings to widen or tune ranges on the same holdouts. A future
 uncertainty model needs separately held-out evaluation. These diagnostics remain
 an offline report; the user-facing summary and scoring are unchanged.
+
+### Equilibrium benchmark (offline)
+
+`benchmarkFieldEquilibrium` builds square Champion payoff matrices using the same
+shrunken scores as expected-field scoring. Its input chart is already pooled and
+thresholded; each pair must occur once. Both players have the same sorted unique
+Champion choices, mirrors are 0.5, and missing matchups remain [0,1]. Lower and
+upper matrices are solved separately; missing payoffs are never replaced by 0.5.
+
+`solveMatrixGame` uses simultaneous multiplicative-weights updates, uniform initial
+weights, stable log-softmax normalization, and averaged strategies over 20,000
+iterations by default. For matrix A and returned average strategies p and q, it
+reports lower = min_j (pᵀA)_j, upper = max_i (Aq)_i, and their difference as the
+numerical saddle-point gap. These directly checked bounds remain meaningful even
+when the iteration budget does not converge closely. The row player maximizes
+score; the column player minimizes it. Algorithm background: [MIT's learning in
+games notes](https://www.mit.edu/~6.7980/learning1.html).
+
+The conservative strategy guarantees the reported lower score under the lower
+matrix; the optimistic game's upper bound bounds the value of any allowed payoff
+completion. These are bounding-game strategies, not a recovered equilibrium of
+unknown matchups. In the actual symmetric constant-sum game with reciprocal
+payoffs the equilibrium value is already 0.5. Independently pessimistic/optimistic
+missing entries relax reciprocity, so the reported interval measures the limits
+of these bounding games and the conservative strategy guarantee, not uncertainty
+about that symmetric value. Numerical gaps are neither confidence intervals nor
+sampling error. Shares are randomized strategy benchmarks, not predicted field
+attendance, deck recommendations, or evidence of player adaptation.
+
+Run `node --import tsx pipeline/scripts/benchmark-field-equilibrium.ts` for
+`docs/reports/field-equilibrium.json`, using each format's latest 90-day scope and
+all published Champions. Standard currently has 146 missing pairs out of 210;
+conservative/optimistic score bounds are 11.77%–88.23%, with numerical gaps of
+0.67 percentage points. Allen and Polkhawk each receive about 23.54% conservative
+share because missing evidence makes the pessimistic game extremely harsh, not
+because observed results establish their strength. This is too incomplete for a
+user-facing recommendation. Team Standard has no qualifying nonmirror evidence
+and produces no benchmark. Next work should establish an explicit supported
+Champion pool and display its exclusions before exposing this benchmark in UI.
