@@ -4202,6 +4202,23 @@ not an exact tested list. This first slice does not infer causal card improvemen
 equilibrium, or claim validated predictive accuracy. Chronological event-level backtesting and
 uncertainty calibration are required before presenting the model as a tournament forecast.
 
+### Field sensitivity (`stressExpectedField`)
+
+The optional stress test retains 80% of the user's normalized field `p` and allows the other
+20% to redistribute arbitrarily among its positive-weight Champion identities: `q = 0.8p + 0.2r`,
+where `r` is any distribution on that support. Zero-weight opponents remain excluded; drafts are
+never modified. This is a scenario assumption, not an estimated probability of field change.
+For each candidate, the minimum lower bound is `0.8 * lower(p) + 0.2 * min(lower(opponent))`;
+the maximum upper bound and minimum coverage follow the same linear calculation with max/min.
+Linearity guarantees these extremes are attained by concentrating `r` on one opponent, including
+when unknown matchups have payoff bounds [0,1]. Opponent names identify all ties for the lowest
+bound; a missing matchup can cause that bound without evidence of an unfavorable observed matchup.
+The range combines field sensitivity and missing-data bounds, not sampling confidence.
+The ordinary coverage and match count still describe the user's original mix; minimum shifted
+coverage is separately labeled. Stress rankings sort by minimum score, minimum coverage, then name.
+This is a conservative comparison within the specified field family, not a Nash equilibrium or
+evidence of predictive improvement. Sampling uncertainty remains unmodeled.
+
 ### Event scopes and chronological evaluation (`shared/src/fieldHistory.ts`)
 
 `analysis/field-history.json` now supplies Explore a field. It contains completed events with

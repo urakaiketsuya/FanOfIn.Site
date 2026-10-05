@@ -11,6 +11,34 @@ export interface FieldResult {
   missing: string[];
 }
 
+export interface FieldStressResult extends FieldResult {
+  stressLower: number;
+  stressUpper: number;
+  stressCoverage: number;
+  worstOpponents: string[];
+}
+
+/** Keep (1 - shift) of the field; redistribute the rest among positive-weight opponents. */
+export function stressExpectedField(candidates: string[], field: FieldWeight[], chart: BattleChartEntry[], shift = 0.2): FieldStressResult[] {
+  if (!Number.isFinite(shift) || shift < 0 || shift > 1) return [];
+  const baseline = scoreExpectedField(candidates, field, chart);
+  if (!baseline.length) return [];
+  if (shift === 0) return baseline.map(row => ({ ...row, stressLower: row.lower, stressUpper: row.upper, stressCoverage: row.coverage, worstOpponents: [] }));
+  const opponents = [...new Set(field.filter(row => row.weight > 0).map(row => row.champion))].sort();
+  const endpoints = opponents.map(champion => new Map(scoreExpectedField(candidates, [{ champion, weight: 1 }], chart).map(row => [row.champion, row])));
+  return baseline.map(row => {
+    const scores = endpoints.map(endpoint => endpoint.get(row.champion)!);
+    const lowest = Math.min(...scores.map(score => score.lower));
+    return {
+      ...row,
+      stressLower: (1 - shift) * row.lower + shift * lowest,
+      stressUpper: (1 - shift) * row.upper + shift * Math.max(...scores.map(score => score.upper)),
+      stressCoverage: (1 - shift) * row.coverage + shift * Math.min(...scores.map(score => score.coverage)),
+      worstOpponents: shift === 0 ? [] : opponents.filter((_, index) => Math.abs(scores[index].lower - lowest) < 1e-12),
+    };
+  }).sort((a, b) => b.stressLower - a.stressLower || b.stressCoverage - a.stressCoverage || a.champion.localeCompare(b.champion));
+}
+
 /** Champion identities only; named Spirits overlap these populations. */
 export function publishedField(archetypes: Pick<ArchetypeSummary, 'signature' | 'deckCount'>[]): FieldWeight[] {
   const counts = new Map<string, number>();
