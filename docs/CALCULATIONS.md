@@ -4217,7 +4217,8 @@ The range combines field sensitivity and missing-data bounds, not sampling confi
 The ordinary coverage and match count still describe the user's original mix; minimum shifted
 coverage is separately labeled. Stress rankings sort by minimum score, minimum coverage, then name.
 This is a conservative comparison within the specified field family, not a Nash equilibrium or
-evidence of predictive improvement. Sampling uncertainty remains unmodeled.
+evidence of predictive improvement. Sampling uncertainty is omitted from stress ranges; the optional
+event resampling diagnostic below assesses it separately.
 
 ### Event scopes and chronological evaluation (`shared/src/fieldHistory.ts`)
 
@@ -4267,3 +4268,32 @@ not reconstructed, and the card catalog supplies Champion identity rather than h
 The normal analysis build writes this dataset atomically and registers it in the data manifest.
 `node --import tsx pipeline/scripts/rebuild-field-history.ts` refreshes only this projection and its
 manifest entry from local published event bundles and the local cached card catalog, without a crawl.
+
+### Event resampling diagnostic (`shared/src/fieldUncertainty.ts`)
+
+Explore a field optionally resamples whole events, with replacement, 300 times from the selected
+format/date scope. Each replicate draws as many events as the original scope, retaining all
+pairing aggregates within each selected event. Original user weights and candidate identities stay
+fixed; this assesses sensitivity of matchup estimates to the sampled events, not uncertainty in
+attendance or the separate 20% field stress scenario. It never changes the ranking or drafts.
+The same prior and post-pooling minimum-match threshold apply in every replicate. Matchups lost
+below the threshold remain unknown [0,1]; no replicate is dropped for missing coverage.
+
+The displayed range uses the 5th percentile of replicate lower bounds and 95th percentile of
+replicate upper bounds, with linear interpolation at `(n - 1) * p`. This combines resampling spread
+and missing-data bounds. It is a diagnostic, **not a calibrated 90% confidence interval**, and need
+not contain the original estimate. For the general percentile-resampling procedure, see the
+[SciPy bootstrap reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html).
+Whole-event clustering preserves within-event dependence, but repeated players across events,
+selection into public decklists, temporal drift, and model/prior bias remain uncorrected. Equal
+event sampling preserves event sizes internally; this does not give every event equal match weight.
+Identical event aggregates can yield a zero-width range even when match-level uncertainty exists.
+
+A candidate needs non-mirror results against positive-weight opponents in at least five distinct
+events before a range is displayed. This minimum is a display guard, not evidence of reliable
+coverage. The contributing-event count is shown even when insufficient. Empty, invalid-weight,
+mixed-format and duplicate-event inputs cannot produce spurious precision. The deterministic
+xorshift32 generator begins at `0x6d2b79f5`, with events sorted by ID, making reruns reproducible.
+The app runs the calculation only on request in a worker, cancels obsolete work, hides stale
+results during edits, and offers retry after a worker failure. Sampling calibration against later
+events remains required before any confidence or tournament-forecast claim.

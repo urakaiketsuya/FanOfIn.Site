@@ -77,3 +77,5 @@ export * from "./match-log-validation.js";
 export * from "./simulator-enrichment.js";
 export * from './expectedField';
 export * from './fieldHistory';
+
+export * from "./fieldUncertainty";

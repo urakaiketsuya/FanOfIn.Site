@@ -1,6 +1,7 @@
 import { useMemo, useState, useTransition, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { stressExpectedField, type BattleChartEntry, type FieldWeight } from '@gatcg/shared';
+import { stressExpectedField, type FieldEvent, type BattleChartEntry, type FieldWeight } from '@gatcg/shared';
+import { useFieldResampling } from './useFieldResampling';
 import CardArtTile from '../../components/CardArtTile';
 import Button from '../../components/ui/Button';
 import Panel from '../../components/ui/Panel';
@@ -9,8 +10,8 @@ import { useChampionCardImages } from '../players/useChampionCardImages';
 const EMPTY_WEIGHTS: Record<string, string> = {};
 const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 
-export default function ExpectedField({ defaults, battleChart, generatedAt, scopeKey, description, scopeControls, scopeValid = true }: {
-  defaults: FieldWeight[]; battleChart: BattleChartEntry[]; generatedAt: string; scopeKey: string; description: string; scopeControls?: ReactNode; scopeValid?: boolean;
+export default function ExpectedField({ events, minMatchups, defaults, battleChart, generatedAt, scopeKey, description, scopeControls, scopeValid = true }: {
+  events: FieldEvent[]; minMatchups: number; defaults: FieldWeight[]; battleChart: BattleChartEntry[]; generatedAt: string; scopeKey: string; description: string; scopeControls?: ReactNode; scopeValid?: boolean;
 }) {
   const [drafts, setDrafts] = useState<Record<string, Record<string, string>>>({});
   const [appliedDrafts, setAppliedDrafts] = useState<Record<string, Record<string, string>>>({});
@@ -18,11 +19,14 @@ export default function ExpectedField({ defaults, battleChart, generatedAt, scop
   const applied = appliedDrafts[scopeKey] ?? EMPTY_WEIGHTS;
   const [pending, startTransition] = useTransition();
   const [showAll, setShowAll] = useState(false);
+  const [resampling, setResampling] = useState(false);
   const [stress, setStress] = useState(false);
   const names = useMemo(() => defaults.map(row => row.champion), [defaults]);
   const cards = useChampionCardImages(names);
   const field = useMemo(() => defaults.map(row => ({ ...row, weight: Number(applied[row.champion] ?? row.weight) })), [defaults, applied]);
   const results = useMemo(() => scopeValid && battleChart.length ? stressExpectedField(names, field, battleChart, stress ? 0.2 : 0) : [], [names, field, battleChart, scopeValid, stress]);
+  const resamplingInput = useMemo(() => ({ candidates: names, field, events, minMatchups }), [names, field, events, minMatchups]);
+  const uncertainty = useFieldResampling(resampling && scopeValid && !!results.length, resamplingInput);
   const invalid = Object.values(draft).some(value => value.trim() !== '' && (!Number.isFinite(Number(value)) || Number(value) < 0));
   const total = field.reduce((sum, row) => sum + row.weight, 0);
 
@@ -46,6 +50,7 @@ export default function ExpectedField({ defaults, battleChart, generatedAt, scop
     {!invalid && <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-busy={pending}>
       {(showAll ? results : results.slice(0, 6)).map(result => {
         const card = cards.get(result.champion);
+        const sample = uncertainty.rows.get(result.champion);
         return <Panel key={result.champion} as="article" padding="sm">
           <div className="flex items-start gap-3">
             <div className="w-20 shrink-0">{card ? <Link to={`/cards/${card.slug}`} aria-label={`View ${card.name}`}><CardArtTile card={card} name={card.name} /></Link> : <CardArtTile card={undefined} name={result.champion} />}</div>
@@ -58,11 +63,21 @@ export default function ExpectedField({ defaults, battleChart, generatedAt, scop
           </div>
           <div className="mt-3 h-2 overflow-hidden rounded bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(result.coverage) }} /></div>
           {result.missing.length > 0 && <p className="mt-2 text-xs text-ctp-subtext0">Missing: {result.missing.join(', ')}</p>}
+          {sample && <div className="mt-3 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext1">
+            <p>Event resampling range: {sample.lower === null || sample.upper === null ? 'Need at least 5 contributing events' : `${percent(sample.lower)}–${percent(sample.upper)}`}</p>
+            <p>{sample.evidenceEvents} contributing events · original mix</p>
+          </div>}
           {stress && <p className="mt-2 text-xs text-ctp-subtext1">Lowest bound toward: {result.worstOpponents.join(', ')} · at least {percent(result.stressCoverage)} field covered</p>}
         </Panel>;
       })}
     </div>}
     {!invalid && results.length > 6 && <Button aria-expanded={showAll} onClick={() => setShowAll(value => !value)}>{showAll ? "Show fewer Champions" : `Show all ${results.length} Champions`}</Button>}
+    <div>
+      <Button aria-pressed={resampling} onClick={() => startTransition(() => setResampling(value => !value))}>{resampling ? 'Event resampling on' : 'Check event uncertainty'}</Button>
+      {uncertainty.pending && <p role="status" className="mt-2 text-sm">Resampling events…</p>}
+      {uncertainty.error && <p role="alert" className="mt-2 text-sm">{uncertainty.error} <Button onClick={uncertainty.retry}>Retry event resampling</Button></p>}
+      {resampling && <p className="mt-2 text-sm text-ctp-subtext1">300 event resamples · original opponent mix · includes missing matchups. Diagnostic range, not calibrated confidence.</p>}
+    </div>
     {scopeControls}
     <Panel id="expected-opponents" className="scroll-mt-24">
       <div className="flex flex-wrap items-center justify-between gap-3">

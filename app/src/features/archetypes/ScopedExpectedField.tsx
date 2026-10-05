@@ -20,6 +20,7 @@ export default function ScopedExpectedField({ enabled }: { enabled: boolean }) {
   const latest = useMemo(() => data?.events.filter(event => event.format === format).map(event => event.date).sort().at(-1) ?? '', [data, format]);
   const scope = useMemo(() => ({ format, ...(dates[format] ?? { from: latest ? fieldWindowStart(latest) : '', to: latest }) }), [dates, format, latest]);
   const invalid = !scope.from || !scope.to || scope.from > scope.to;
+  const selectedEvents = useMemo(() => data?.events.filter(event => event.format === scope.format && event.date >= scope.from && event.date <= scope.to) ?? [], [data, scope]);
   const projection = useMemo(() => aggregateFieldHistory(data?.events ?? [], scope, data?.minMatchups), [data, scope]);
   const backtest = data?.backtests.find(test => test.format === format);
   const label = format === 'standard' ? 'Standard' : format === 'team-standard-3v3' ? 'Team Standard (3v3)' : format;
@@ -28,7 +29,7 @@ export default function ScopedExpectedField({ enabled }: { enabled: boolean }) {
   if (!data.events.length) return <p className="mt-6">No completed events with public Champion decks yet.</p>;
   return <div className="mt-6 space-y-4">
     {status.phase === 'error' && <p role="alert">{status.error} Showing cached history. <Button onClick={status.retry}>Retry field history</Button></p>}
-    <ExpectedField defaults={projection.champions} battleChart={projection.battleChart} generatedAt={data.generatedAt} scopeKey={JSON.stringify(scope)} description={`${label} · ${scope.from} to ${scope.to} · public deck shares`} scopeValid={!invalid} scopeControls={
+    <ExpectedField events={selectedEvents} minMatchups={data.minMatchups} defaults={projection.champions} battleChart={projection.battleChart} generatedAt={data.generatedAt} scopeKey={JSON.stringify(scope)} description={`${label} · ${scope.from} to ${scope.to} · public deck shares`} scopeValid={!invalid} scopeControls={
       <Panel id="field-scope" className="scroll-mt-24" aria-busy={pending}>
         <h2 className="mb-3 font-semibold">Event scope</h2>
     <div className="grid gap-3 sm:grid-cols-3">
