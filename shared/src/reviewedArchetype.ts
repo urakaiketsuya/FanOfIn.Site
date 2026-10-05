@@ -92,7 +92,68 @@ export const GUO_JIA_IDENTITIES = [
   { champion: 'Guo Jia', name: 'Wind Guo Jia — Beastcaller Allies', label: 'Beastcaller Allies', core: ['Kind Beastcaller', 'Baby Green Slime', 'Longtail Grovesward'], packages: [] },
 ];
 
+export const JIN_IDENTITIES = [
+  { champion: 'Jin', name: 'Exia Jin — Seething Recovery', label: 'Seething Recovery', core: ['Mend Flesh', 'Seething Intercession', 'Regal Inquisition'], packages: [] },
+  { champion: 'Jin', name: 'Jin — Enrage / Creative Shock', label: 'Enrage / Creative Shock', core: ['Enrage', 'Mend Flesh', 'Creative Shock'], packages: [] },
+  { champion: 'Jin', name: 'Jin — Hemorrhaging Recovery', label: 'Hemorrhaging Recovery', core: ['Enrage', 'Mend Flesh', 'Hemorrhaging Rend'], packages: [] },
+  { champion: 'Jin', name: 'Wind Jin — Ally Reuse', label: 'Ally Reuse', core: ['Aesan Protector', 'Reclaim', 'Mend Flesh'], packages: [] },
+];
+
+export const REMAINING_CHAMPION_IDENTITIES = [
+  {"champion": "Kongming", "name": "Wind Kongming — Razorgale", "label": "Razorgale", "core": ["Fairy Whispers", "Razorgale Calling", "Veiling Breeze"], "packages": []},
+  {"champion": "Kongming", "name": "Water Kongming — Shifting Currents", "label": "Shifting Currents", "core": ["Tera Sight", "Hydroguard Retainer", "Coriolis Ward"], "packages": []},
+  {"champion": "Kongming", "name": "Water Kongming — Fractals", "label": "Fractals", "core": ["Fractal of Rain", "Fracturize", "Refracting Missile"], "packages": [{"key": "burst", "label": "Burst Asunder variant", "cards": ["Burst Asunder"]}]},
+  {"champion": "Kongming", "name": "Wind Kongming — Cloudstriker Allies", "label": "Cloudstriker Allies", "core": ["Ardent Cloudstriker", "Gildas, Chronicler of Aesa", "Landscape Corsair"], "packages": []},
+  {"champion": "Kongming", "name": "Water Kongming — Cloudstriker Currents", "label": "Cloudstriker Currents", "core": ["Ardent Cloudstriker", "Hydroguard Retainer", "Coriolis Ward"], "packages": []},
+  {"champion": "Lorraine", "name": "Lorraine — Pendragon / Flame Sweep", "label": "Pendragon / Flame Sweep", "core": ["Ghosts of Pendragon", "Flame Sweep", "Creative Shock"], "packages": []},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Pendragon / Windmill", "label": "Pendragon / Windmill", "core": ["Ghosts of Pendragon", "Reclaim", "Windmill Engineer"], "packages": []},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Andronika Automata", "label": "Andronika Automata", "core": ["Andronika, Eternal Herald", "Shimmercloak Assassin", "Rallied Advance"], "packages": []},
+  {"champion": "Lorraine", "name": "Fire Lorraine — Suited", "label": "Suited", "core": ["Rouge, Ace of Hearts", "Two of Hearts", "Four of Hearts"], "packages": [{"key": "verita", "label": "Verita / Straight Flare variant", "cards": ["Verita, Queen of Hearts", "Three of Hearts", "Straight Flare"]}]},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Shimmercloak Allies", "label": "Shimmercloak Allies", "core": ["Aesan Protector", "Dream Fairy", "Shimmercloak Assassin"], "packages": []},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Pendragon Cleave", "label": "Pendragon Cleave", "core": ["Ghosts of Pendragon", "Banner Knight", "Hurricane Sweep"], "packages": []},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Vanguard Allies", "label": "Vanguard Allies", "core": ["Windrider Vanguard", "Aesan Protector", "Dream Fairy"], "packages": []},
+  {"champion": "Lorraine", "name": "Water Lorraine — Control", "label": "Control", "core": ["Fracturize", "Frostsworn Paladin", "Frostbind"], "packages": [{"key": "fractals", "label": "Fractal variant", "cards": ["Fractal of Rain", "Fracturize", "Refracting Missile"]}]},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Liu Bei Ranged", "label": "Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": [{"key": "oath", "label": "Oath / Dilu variant", "cards": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"]}]},
+  {"champion": "Lorraine", "name": "Wind Lorraine — Oath Mounts", "label": "Oath Mounts", "core": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"], "packages": []},
+  {"champion": "Lorraine", "name": "Fire Lorraine — Red Hare", "label": "Red Hare", "core": ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], "packages": []},
+  {"champion": "Lorraine", "name": "Lorraine — Banner Knights", "label": "Banner Knights", "core": ["Banner Knight", "Esteemed Knight", "Honorable Vanguard"], "packages": []},
+  {"champion": "Merlin", "name": "Merlin — Majesty", "label": "Majesty", "core": ["Ghosts of Pendragon", "Incarnate Majesty", "Dungeon Guide"], "packages": [{"key": "water", "label": "Water control variant", "cards": ["Fracturize", "Frostsworn Paladin", "Frostbind"]}, {"key": "crux", "label": "Majestic Spirit / Crux Sight variant", "cards": ["Incarnate Majesty", "The Majestic Spirit", "Crux Sight"]}]},
+  {"champion": "Merlin", "name": "Fire Merlin — Red Hare", "label": "Red Hare", "core": ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], "packages": []},
+  {"champion": "Merlin", "name": "Fire Merlin — Embersong–Rhapsody", "label": "Embersong–Rhapsody", "core": ["Embersong", "Erupting Rhapsody", "Fiery Momentum"], "packages": []},
+  {"champion": "Merlin", "name": "Water Merlin — Terminus / Sheen", "label": "Terminus / Sheen", "core": ["Spirit Blade: Terminus", "Quiet Refraction", "Seep Into the Mind"], "packages": []},
+  {"champion": "Mordred", "name": "Water Mordred — Striking Tides Swords", "label": "Striking Tides Swords", "core": ["Savage Slash", "Striking Tides", "Frostsworn Paladin"], "packages": []},
+  {"champion": "Nico", "name": "Water Nico — Fractals", "label": "Fractals", "core": ["Fractal of Rain", "Fracturize", "Refracting Missile"], "packages": []},
+  {"champion": "Nico", "name": "Water Nico — Ritual", "label": "Ritual", "core": ["Fracturize", "Primordial Ritual", "Throne-Keeper Bullfrog"], "packages": []},
+  {"champion": "Nico", "name": "Water Nico — Water Allies", "label": "Water Allies", "core": ["Aquifer Seneschal", "Nia, Mistveiled Scout", "Snow White, Weiss Queen"], "packages": []},
+  {"champion": "Nico", "name": "Fire Nico — Suited", "label": "Suited", "core": ["Verita, Queen of Hearts", "Three of Hearts", "Straight Flare"], "packages": []},
+  {"champion": "Nico", "name": "Water Nico — Ravishing Finale", "label": "Ravishing Finale", "core": ["Ravishing Finale", "Aquifer Seneschal", "Storm of Thorns"], "packages": []},
+  {"champion": "Nico", "name": "Water Nico — Control", "label": "Control", "core": ["Fracturize", "Frostsworn Paladin", "Frostbind"], "packages": []},
+  {"champion": "Polkhawk", "name": "Fire Polkhawk — Flamebolt Ranged", "label": "Flamebolt Ranged", "core": ["Blazing Throw", "Flamebolt Arbalist", "Tinderflare Pivot"], "packages": []},
+  {"champion": "Silvie", "name": "Water Silvie — Fractals", "label": "Fractals", "core": ["Fractal of Rain", "Fracturize", "Refracting Missile"], "packages": []},
+  {"champion": "Silvie", "name": "Water Silvie — Melody / Harmony", "label": "Melody / Harmony", "core": ["Blissful Calling", "Empowering Harmony", "Gaia's Songbird"], "packages": []},
+  {"champion": "Tonoris", "name": "Wind Tonoris — Shimmercloak Allies", "label": "Shimmercloak Allies", "core": ["Aesan Protector", "Dream Fairy", "Shimmercloak Assassin"], "packages": []},
+  {"champion": "Tonoris", "name": "Fire Tonoris — Suited", "label": "Suited", "core": ["Rouge, Ace of Hearts", "Two of Hearts", "Four of Hearts"], "packages": [{"key": "verita", "label": "Verita / Straight Flare variant", "cards": ["Verita, Queen of Hearts", "Three of Hearts", "Straight Flare"]}]},
+  {"champion": "Tonoris", "name": "Water Tonoris — Control", "label": "Control", "core": ["Fracturize", "Frostsworn Paladin", "Frostbind"], "packages": []},
+  {"champion": "Tonoris", "name": "Wind Tonoris — Ares Tokens", "label": "Ares Tokens", "core": ["Atmos Armor Type-Ares", "Blade of Creation", "Windmill Engineer"], "packages": []},
+  {"champion": "Tonoris", "name": "Wind Tonoris — Obelisk", "label": "Obelisk", "core": ["Heavy Swing", "Into the Fray", "Smash with Obelisk"], "packages": []},
+  {"champion": "Tonoris", "name": "Fire Tonoris — Blazebearer", "label": "Blazebearer", "core": ["Arthur, Young Heir", "Blazing Charge", "Veteran Blazebearer"], "packages": []},
+  {"champion": "Tonoris", "name": "Water Tonoris — Ares Shields", "label": "Ares Shields", "core": ["Atmos Armor Type-Ares", "Diffusive Block", "Storm of Thorns"], "packages": []},
+  {"champion": "Tonoris", "name": "Wind Tonoris — Liu Bei Ranged", "label": "Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": [{"key": "oath", "label": "Oath / Dilu variant", "cards": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"]}]},
+  {"champion": "Tonoris", "name": "Fire Tonoris — Assemble the Ancients", "label": "Assemble the Ancients", "core": ["Assemble the Ancients", "Gloamspire, Black Market", "Palatial Concourse"], "packages": []},
+  {"champion": "Tonoris", "name": "Neos Tonoris — Neos Tokens", "label": "Neos Tokens", "core": ["Neos Elemental", "Neos Sight", "Hub of Innovation"], "packages": []},
+  {"champion": "Tonoris", "name": "Water Tonoris — Dawn Allies", "label": "Dawn Allies", "core": ["Dawn of Ashes", "Imperial Panzer", "Allied Warpriestess"], "packages": []},
+  {"champion": "Tristan", "name": "Wind Tristan — Shimmercloak Allies", "label": "Shimmercloak Allies", "core": ["Aesan Protector", "Dream Fairy", "Shimmercloak Assassin"], "packages": []},
+  {"champion": "Vanitas", "name": "Vanitas — Mounted Allies", "label": "Mounted Allies", "core": ["Dilu, Auspicious Charger", "Brisk Windtrotter", "Beseech the Winds"], "packages": [{"key": "redHare", "label": "Red Hare variant", "cards": ["Red Hare, Unrivaled Stallion"]}]},
+  {"champion": "Vanitas", "name": "Water Vanitas — Fractals", "label": "Fractals", "core": ["Fractal of Rain", "Fracturize", "Refracting Missile"], "packages": [{"key": "burst", "label": "Burst Asunder variant", "cards": ["Burst Asunder"]}]},
+  {"champion": "Vanitas", "name": "Wind Vanitas — Razorgale", "label": "Razorgale", "core": ["Fairy Whispers", "Razorgale Calling", "Veiling Breeze"], "packages": []},
+  {"champion": "Zander", "name": "Wind Zander — Preparation", "label": "Preparation", "core": ["Surveil the Winds", "Incapacitate", "Slice and Dice"], "packages": []},
+  {"champion": "Zander", "name": "Fire Zander — Suited", "label": "Suited", "core": ["Rouge, Ace of Hearts", "Two of Hearts", "Four of Hearts"], "packages": [{"key": "verita", "label": "Verita / Straight Flare variant", "cards": ["Verita, Queen of Hearts", "Three of Hearts", "Straight Flare"]}]},
+  {"champion": "Zander", "name": "Wind Zander — Liu Bei Ranged", "label": "Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": [{"key": "oath", "label": "Oath / Dilu variant", "cards": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"]}]},
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...REMAINING_CHAMPION_IDENTITIES,
+  ...JIN_IDENTITIES,
   ...GUO_JIA_IDENTITIES,
   ...DIANA_IDENTITIES,
   ...CIEL_IDENTITIES,
@@ -153,7 +214,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...GUO_JIA_IDENTITIES, ...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...REMAINING_CHAMPION_IDENTITIES, ...JIN_IDENTITIES, ...GUO_JIA_IDENTITIES, ...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];

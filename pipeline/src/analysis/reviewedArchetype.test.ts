@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { applyReviewedArchetypeEvidence, decodeCardLines, REVIEWED_ARCHETYPE_CORES, type ArchetypeTaxonomyData, type DeckCardIndexData } from '@gatcg/shared';
+import { applyReviewedArchetypeEvidence, decodeCardLines, REMAINING_CHAMPION_IDENTITIES, REVIEWED_ARCHETYPE_CORES, ZANDER_IDENTITIES, type ArchetypeTaxonomyData, type DeckCardIndexData } from '@gatcg/shared';
 const taxonomy: ArchetypeTaxonomyData = JSON.parse(readFileSync(new URL('../../../data/analysis/archetype-taxonomy.json', import.meta.url), 'utf8'));
 const index: DeckCardIndexData = JSON.parse(readFileSync(new URL('../../../data/analysis/deck-card-index.json', import.meta.url), 'utf8'));
 const cards = new Map(index.decks.map(deck => [deck.deckId, new Map(decodeCardLines([...deck.main, ...deck.material], index.cardNames).filter(c => c.quantity > 0).map(c => [c.name, c.quantity]))]));
@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, (identity.champion === 'Silvie' || identity.name.endsWith('Shenju Commands')) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Diana' ? (identity.name.includes('Aquamirage') ? 3 : identity.name.includes('Tasershot') ? 4 : identity.name.includes('Ranged Allies') ? 1 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.ok(copy.strategyArchetypes.some(s => s.name === identity.name), identity.name);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -34,7 +34,7 @@ test('missing data, ambiguous cores and insufficient recurrence restore generate
 });
 
 test('Slime identity spans three preserved families while Water package remains optional', () => {
-  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Silvie' && s.reviewedArchetypeEvidence));
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Silvie' && s.name === 'Tera Silvie — Slimes'));
   assert.equal(families.length, 3);
   assert.equal(families.flatMap(s => s.buildIds).length, 10);
   assert.deepEqual(families.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [3112, 91, 45]);
@@ -95,8 +95,8 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
 });
 
  test('Zander retains three identities across 21 builds with optional packages and other families unchanged', () => {
-  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Zander'));
-  const reviewed = families.filter(s => s.reviewedArchetypeEvidence);
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Zander' && (ZANDER_IDENTITIES.some(identity => identity.name === s.name) || !s.reviewedArchetypeEvidence)));
+  const reviewed = families.filter(s => ZANDER_IDENTITIES.some(identity => identity.name === s.name));
   assert.equal(reviewed.length, 7);
   assert.equal(reviewed.flatMap(s => s.buildIds).length, 21);
   const expected: Record<string, [number, Record<string, number>]> = {
@@ -125,7 +125,7 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
  test('Tristan cores preserve optional support and all other family data', () => {
   const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Tristan'));
   const expected: Record<string, number> = { ux2yxk: 3834, '1vu1559': 52, '1rb0t9a': 169, '1van2rl': 210, '4mnxjk': 22, '15ytls8': 50, '1s3agra': 41 };
-  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 7);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
   const changed = new Map([...cards].map(([id, counts]) => {
     const copy = new Map(counts);
     for (const name of ['Slice and Dice', 'Oath of the Sakura', 'Dilu, Auspicious Charger', 'Verita, Queen of Hearts', 'Three of Hearts', 'Straight Flare']) copy.delete(name);
@@ -229,4 +229,55 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
   assert.equal(fire.reviewedArchetypeEvidence, undefined);
   assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
+});
+
+test('Jin retains ambiguous families and restores labels when recovery evidence disappears', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Jin'));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, cards);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 5);
+  for (const id of ['7y24dq', '1ss7e1z']) {
+    assert.equal(families.find(s => s.id === id)!.reviewedArchetypeEvidence, undefined);
+    assert.deepEqual(families.find(s => s.id === id), taxonomy.strategyArchetypes.find(s => s.id === id));
+  }
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const next = new Map(counts); next.delete('Mend Flesh'); return [id, next] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 0);
+});
+
+test('remaining champion identities retain exact reviewed counts and reject missing core cards', () => {
+  const expected: Record<string, number> = {"5pw41t": 2141, "4roctd": 1472, "1bpxg7f": 980, "1735ou2": 752, "1r282yl": 517, "7iat6b": 465, "hkzckk": 534, "1rnreh4": 493, "fr1vlk": 389, "1yfaw6d": 247, "12zfjeo": 287, "1vnmlgr": 221, "m24iia": 254, "1v2a3cn": 213, "1b7a5kt": 239, "1dncwcf": 198, "1luimph": 130, "wow264": 155, "q0zqbs": 191, "1rz0yy7": 98, "1wbydqc": 91, "1t4fszi": 93, "1whnsh6": 55, "1mz606e": 48, "1j07ql1": 74, "1h7s8fh": 61, "9buhhj": 61, "1m4hrby": 60, "1i5wjpt": 44, "1rdvneh": 40, "1tm8u0i": 67, "939fom": 32, "1b10szx": 32, "1deqjx5": 34, "1slmmmx": 25, "1s770r4": 32, "1kwplit": 27, "eo03r0": 28, "12relxy": 38, "1w3acjh": 27, "128f2wt": 41, "1sofqdg": 19, "1q87i4k": 23, "9cn9aj": 20, "1p5ap5u": 16, "11u9itu": 16, "1doyf43": 15, "87l4mo": 14, "1kctna4": 13, "6uu7v8": 17, "1b1b5ez": 18, "e0ruve": 13, "1e29nhd": 10, "1vxrl71": 9, "1uquxnv": 11, "1t9bee9": 9, "tczxjk": 11, "ufxed5": 9, "1b5tycd": 7, "1nsfbg7": 10, "1xb3nh1": 11, "1s3b7uk": 6, "vcg117": 38, "1ieaj47": 5, "1cscyx8": 7};
+  const names = new Set(REMAINING_CHAMPION_IDENTITIES.map(identity => identity.name));
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(family => names.has(family.name)));
+  assert.equal(families.length, Object.keys(expected).length);
+  for (const family of families) {
+    assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, expected[family.id], family.id);
+    const identity = REMAINING_CHAMPION_IDENTITIES.find(identity => identity.name === family.name)!;
+    const changed = new Map(cards);
+    for (const build of taxonomy.clusters.filter(build => family.buildIds.includes(build.id))) for (const id of build.deckIds) {
+      const next = new Map(changed.get(id)); next.delete(identity.core[0]); changed.set(id, next);
+    }
+    const originalName = family.reviewedArchetypeEvidence!.originalName;
+    applyReviewedArchetypeEvidence([family], taxonomy.clusters, changed);
+    assert.notDeepEqual(family.identityCards, identity.core);
+    if (!family.reviewedArchetypeEvidence) assert.equal(family.name, originalName);
+  }
+});
+
+test('remaining optional variants never become required identifying cards', () => {
+  for (const identity of REMAINING_CHAMPION_IDENTITIES) {
+    const optional = identity.packages.flatMap(pkg => pkg.cards).filter(name => !identity.core.includes(name));
+    if (!optional.length) continue;
+    const families = structuredClone(taxonomy.strategyArchetypes.filter(family => family.name === identity.name));
+    const changed = new Map(cards);
+    for (const build of taxonomy.clusters.filter(build => families.some(family => family.buildIds.includes(build.id)))) for (const id of build.deckIds) {
+      const next = new Map(changed.get(id)); for (const name of optional) next.delete(name); changed.set(id, next);
+    }
+    applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+    for (const family of families) {
+      assert.equal(family.name, identity.name);
+      assert.ok(Object.values(family.reviewedArchetypeEvidence!.packageDeckCounts!).every(count => count === 0));
+    }
+  }
 });

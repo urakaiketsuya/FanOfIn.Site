@@ -3849,3 +3849,96 @@ and Lavaplume are damage-producing Fatestones. Avatar of Byakko supports Beast
 power and Emerald access, while Innervate Agility provides protection at a delevel
 cost. Beastcaller finds Animal/Beast allies; this mixed ally core is not one tribe.
 These are historical deck identities, not legality or deck-building recommendations.
+
+### Jin recovery identities
+
+The existing reviewed rule (at least 90% joint positive main/material presence,
+complete deck coverage, five players and two events, exactly one matching core)
+now applies to Jin. Five of seven families qualify without changing membership,
+ordering or statistics:
+
+| Identity | Required cards | Family / joint decks |
+| --- | --- | --- |
+| Exia Jin — Seething Recovery | Mend Flesh, Seething Intercession, Regal Inquisition | 175phwe 337/348 |
+| Jin — Enrage / Creative Shock | Enrage, Mend Flesh, Creative Shock | 1azpyn2 339/342; h1yzgw 215/223 |
+| Jin — Hemorrhaging Recovery | Enrage, Mend Flesh, Hemorrhaging Rend | 1stnrlq 26/26 |
+| Wind Jin — Ally Reuse | Aesan Protector, Reclaim, Mend Flesh | 1cufivv 25/25 |
+
+Catalog mechanics support recovery paired with self-damage: Mend Flesh recovers
+8, Enrage deals 4 unpreventable damage to its controller's champion and scales
+its next attack, and Seething Intercession permits activation of three banished
+cards with a self-damage cost. Regal Inquisition disrupts opposing hand/memory;
+Creative Shock filters cards. Hemorrhaging Rend gains cleave at damage 20+.
+Aesan Protector and Reclaim return friendly allies to hand; this is ally reuse,
+not a shared tribe. These are observed cores, not guaranteed combos or current
+legality recommendations.
+
+Family 7y24dq qualifies for Seething (27/28), Creative Shock (28/28), and
+Hemorrhaging (28/28); 1ss7e1z qualifies for Hemorrhaging and ally reuse (both
+16/16). Their generated labels remain unchanged under the ambiguity guard.
+A future recovery umbrella needs an explicit alternative-core design and
+validation; no priority rule or arbitrary winning label is introduced here.
+
+### Remaining champion review pass
+
+The same 90% joint-presence and recurrence rules apply. This pass covers all remaining champions; IDs, deck membership, ordering, and statistics are preserved. Optional packages do not compete with identifying cores.
+
+| Identity | Required core | Family: joint decks |
+| --- | --- | --- |
+| Wind Kongming — Razorgale | Fairy Whispers, Razorgale Calling, Veiling Breeze | 1r282yl: 517/517 |
+| Water Kongming — Shifting Currents | Tera Sight, Hydroguard Retainer, Coriolis Ward | q0zqbs: 191/192; 1slmmmx: 25/27 |
+| Water Kongming — Fractals | Fractal of Rain, Fracturize, Refracting Missile | 1rdvneh: 40/44 |
+| Wind Kongming — Cloudstriker Allies | Ardent Cloudstriker, Gildas, Chronicler of Aesa, Landscape Corsair | 1b1b5ez: 18/18 |
+| Water Kongming — Cloudstriker Currents | Ardent Cloudstriker, Hydroguard Retainer, Coriolis Ward | 1xb3nh1: 11/11 |
+| Lorraine — Pendragon / Flame Sweep | Ghosts of Pendragon, Flame Sweep, Creative Shock | 4roctd: 1472/1493; hkzckk: 534/540 |
+| Wind Lorraine — Pendragon / Windmill | Ghosts of Pendragon, Reclaim, Windmill Engineer | 1bpxg7f: 980/982 |
+| Wind Lorraine — Andronika Automata | Andronika, Eternal Herald, Shimmercloak Assassin, Rallied Advance | 7iat6b: 465/508 |
+| Fire Lorraine — Suited | Rouge, Ace of Hearts, Two of Hearts, Four of Hearts | 1vnmlgr: 221/223 |
+| Wind Lorraine — Shimmercloak Allies | Aesan Protector, Dream Fairy, Shimmercloak Assassin | m24iia: 254/257; 1rz0yy7: 98/101 |
+| Wind Lorraine — Pendragon Cleave | Ghosts of Pendragon, Banner Knight, Hurricane Sweep | 1dncwcf: 198/206 |
+| Wind Lorraine — Vanguard Allies | Windrider Vanguard, Aesan Protector, Dream Fairy | 1luimph: 130/135 |
+| Water Lorraine — Control | Fracturize, Frostsworn Paladin, Frostbind | wow264: 155/159; 1m4hrby: 60/60 |
+| Wind Lorraine — Liu Bei Ranged | Liu Bei, Oathkeeper, Skirting Step, Perse, Relentless Raptor | 1wbydqc: 91/95 |
+| Wind Lorraine — Oath Mounts | Liu Bei, Oathkeeper, Oath of the Sakura, Dilu, Auspicious Charger | 1h7s8fh: 61/61 |
+| Fire Lorraine — Red Hare | Arthur, Young Heir, Red Hare, Unrivaled Stallion, Blazing Throw | 939fom: 32/32; 1b5tycd: 7/7 |
+| Lorraine — Banner Knights | Banner Knight, Esteemed Knight, Honorable Vanguard | 1doyf43: 15/15; 1kctna4: 13/13 |
+| Merlin — Majesty | Ghosts of Pendragon, Incarnate Majesty, Dungeon Guide | 5pw41t: 2141/2306; 1yfaw6d: 247/250; 9buhhj: 61/63; 1tm8u0i: 67/68; 1deqjx5: 34/34; ufxed5: 9/9 |
+| Fire Merlin — Red Hare | Arthur, Young Heir, Red Hare, Unrivaled Stallion, Blazing Throw | 1v2a3cn: 213/215 |
+| Fire Merlin — Embersong–Rhapsody | Embersong, Erupting Rhapsody, Fiery Momentum | 1s770r4: 32/32 |
+| Water Merlin — Terminus / Sheen | Spirit Blade: Terminus, Quiet Refraction, Seep Into the Mind | 87l4mo: 14/14 |
+| Water Mordred — Striking Tides Swords | Savage Slash, Striking Tides, Frostsworn Paladin | 1i5wjpt: 44/44 |
+| Water Nico — Fractals | Fractal of Rain, Fracturize, Refracting Missile | 1735ou2: 752/769 |
+| Water Nico — Ritual | Fracturize, Primordial Ritual, Throne-Keeper Bullfrog | 1sofqdg: 19/21 |
+| Water Nico — Water Allies | Aquifer Seneschal, Nia, Mistveiled Scout, Snow White, Weiss Queen | 9cn9aj: 20/20 |
+| Fire Nico — Suited | Verita, Queen of Hearts, Three of Hearts, Straight Flare | 1t9bee9: 9/9 |
+| Water Nico — Ravishing Finale | Ravishing Finale, Aquifer Seneschal, Storm of Thorns | tczxjk: 11/11 |
+| Water Nico — Control | Fracturize, Frostsworn Paladin, Frostbind | 1s3b7uk: 6/6 |
+| Fire Polkhawk — Flamebolt Ranged | Blazing Throw, Flamebolt Arbalist, Tinderflare Pivot | 12relxy: 38/38 |
+| Water Silvie — Fractals | Fractal of Rain, Fracturize, Refracting Missile | 1kwplit: 27/27 |
+| Water Silvie — Melody / Harmony | Blissful Calling, Empowering Harmony, Gaia's Songbird | 1uquxnv: 11/11 |
+| Wind Tonoris — Shimmercloak Allies | Aesan Protector, Dream Fairy, Shimmercloak Assassin | 12zfjeo: 287/302 |
+| Fire Tonoris — Suited | Rouge, Ace of Hearts, Two of Hearts, Four of Hearts | 1b7a5kt: 239/240 |
+| Water Tonoris — Control | Fracturize, Frostsworn Paladin, Frostbind | 1t4fszi: 93/95 |
+| Wind Tonoris — Ares Tokens | Atmos Armor Type-Ares, Blade of Creation, Windmill Engineer | 1j07ql1: 74/76; e0ruve: 13/13 |
+| Wind Tonoris — Obelisk | Heavy Swing, Into the Fray, Smash with Obelisk | 1b10szx: 32/32 |
+| Fire Tonoris — Blazebearer | Arthur, Young Heir, Blazing Charge, Veteran Blazebearer | 1w3acjh: 27/27; 1nsfbg7: 10/10 |
+| Water Tonoris — Ares Shields | Atmos Armor Type-Ares, Diffusive Block, Storm of Thorns | 128f2wt: 41/43 |
+| Wind Tonoris — Liu Bei Ranged | Liu Bei, Oathkeeper, Skirting Step, Perse, Relentless Raptor | 1q87i4k: 23/23 |
+| Fire Tonoris — Assemble the Ancients | Assemble the Ancients, Gloamspire, Black Market, Palatial Concourse | 1p5ap5u: 16/16 |
+| Neos Tonoris — Neos Tokens | Neos Elemental, Neos Sight, Hub of Innovation | 1vxrl71: 9/9 |
+| Water Tonoris — Dawn Allies | Dawn of Ashes, Imperial Panzer, Allied Warpriestess | 1ieaj47: 5/5 |
+| Wind Tristan — Shimmercloak Allies | Aesan Protector, Dream Fairy, Shimmercloak Assassin | 6uu7v8: 17/17 |
+| Vanitas — Mounted Allies | Dilu, Auspicious Charger, Brisk Windtrotter, Beseech the Winds | fr1vlk: 389/401; 1cscyx8: 7/7 |
+| Water Vanitas — Fractals | Fractal of Rain, Fracturize, Refracting Missile | 1whnsh6: 55/55; 11u9itu: 16/16 |
+| Wind Vanitas — Razorgale | Fairy Whispers, Razorgale Calling, Veiling Breeze | 1mz606e: 48/48; 1e29nhd: 10/10 |
+| Wind Zander — Preparation | Surveil the Winds, Incapacitate, Slice and Dice | 1rnreh4: 493/498 |
+| Fire Zander — Suited | Rouge, Ace of Hearts, Two of Hearts, Four of Hearts | eo03r0: 28/28 |
+| Wind Zander — Liu Bei Ranged | Liu Bei, Oathkeeper, Skirting Step, Perse, Relentless Raptor | vcg117: 38/38 |
+
+Mechanics checked against `pipeline/.cache/cards.json`: Currents direction supports Kongming; Andronika buffs Automatons; Striking Tides uses floating-memory cards for Mordred; Tinderflare Pivot enables ranged attacks; Blissful Calling is a Melody and Empowering Harmony has Harmonize. Gaia’s Songbird searches Beasts but is itself an Animal/Bird. Shimmercloak, Vanguard and Cloudstriker groups are ally packages, not shared tribes. Ares summons shields, Blade of Creation rewards tokens, and Neos Elemental scales with tokens. Assemble the Ancients sacrifices domains. Obelisk requires a domain sacrifice. Ravishing Finale has a Nico-specific mill payoff but is not required across the large Fractal family. Conditional class bonuses remain conditional; these historical cores do not assert current legality or a guaranteed combo.
+
+Suited uses the Rouge/Two/Four core where supported, with Verita/Three/Straight Flare optional. Nico uses the latter as its supported core. Merlin Majesty retains Water control and Majestic Spirit/Crux Sight as optional packages. Vanitas uses the Dilu/Brisk Windtrotter/Beseech core shared by its large and small mounted families, with Red Hare optional. Lorraine’s Water control can show its Fractal variant; Burst Asunder remains optional for Kongming and Vanitas.
+
+Remaining holds: Jin 7y24dq and 1ss7e1z have competing qualifying cores; Merlin 1w1gdbj needs an alternative Majesty core that would overlap the established identity in `ufxed5`; Tristan s71lix needs Spirit/level-one champion-path validation for Ignis Deus; Lorraine 1ol07nl has only one event; Zander ug902a has only four players; Guo Jia 194znzn lacks a sufficiently recurrent tested triple; Ciel 1g8kos9 has broad equipment evidence without a specific plan. Retain all eight generated labels.
+
+Review coverage: 154/154 families assessed. Card-centered naming: 146/154 families (about 95%), including the five Diao Chan families maintained by their separate review helper. Eight evidence/design holds remain. Browser verification for this pass is pending because approval review could not run at the account usage limit.
