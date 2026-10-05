@@ -82,7 +82,18 @@ export const DIANA_IDENTITIES = [
   {"champion": "Diana", "name": "Wind Diana — Ranged Allies", "label": "Wind Ranged Allies", "core": ["Skirting Step", "Veiled Dash", "Concealed Marksman"], "packages": []},
 ];
 
+export const GUO_JIA_IDENTITIES = [
+  { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, label: 'Shenju Commands', core: GUO_JIA_COMMAND_CORE, packages: [{ key: 'manifestation', label: 'Auspicious Manifestation variant', cards: GUO_JIA_MANIFESTATION_PACKAGE }] },
+  { champion: 'Guo Jia', name: 'Water Guo Jia — Fractals', label: 'Fractals', core: ['Fractal of Rain', 'Fracturize', 'Refracting Missile'], packages: [] },
+  { champion: 'Guo Jia', name: 'Fire Guo Jia — Decree Burn', label: 'Decree Burn', core: ['Searing Truth', 'Vermilion Decree', 'Blazing Throw'], packages: [{ key: 'ruby', label: 'Ruby / Suzaku variant', cards: ['Fabled Ruby Fatestone', 'Searing Truth', "Suzaku's Command"] }] },
+  { champion: 'Guo Jia', name: 'Fire Guo Jia — Advent Fatestones', label: 'Advent Fatestones', core: ['Advent of the Shenju', 'Craggy Fatestone', 'Fatestone of Revelations'], packages: [] },
+  { champion: 'Guo Jia', name: 'Wind Guo Jia — Avatar of Byakko', label: 'Avatar of Byakko', core: ['Avatar of Byakko', "Byakko's Command", 'Innervate Agility'], packages: [] },
+  { champion: 'Guo Jia', name: 'Fire Guo Jia — Coiled / Lavaplume Fatestones', label: 'Coiled / Lavaplume Fatestones', core: ['Coiled Fatestone', 'Lavaplume Fatestone', 'Flamewreath Call'], packages: [] },
+  { champion: 'Guo Jia', name: 'Wind Guo Jia — Beastcaller Allies', label: 'Beastcaller Allies', core: ['Kind Beastcaller', 'Baby Green Slime', 'Longtail Grovesward'], packages: [] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...GUO_JIA_IDENTITIES,
   ...DIANA_IDENTITIES,
   ...CIEL_IDENTITIES,
   ...ARISANNA_IDENTITIES,
@@ -91,7 +102,6 @@ export const REVIEWED_ARCHETYPE_CORES = [
   ...ZANDER_IDENTITIES,
   ...TRISTAN_IDENTITIES,
   { champion: 'Rai', name: RAI_ARCANE_NAME, core: RAI_ARCANE_CORE },
-  { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, core: GUO_JIA_COMMAND_CORE },
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
   { champion: 'Lorraine', name: 'Fire Lorraine — Fire Sword', core: ['Blazing Throw', 'Rending Flames', 'Hone by Fire'] },
   { champion: 'Lorraine', name: 'Fire Lorraine — Embersong–Rhapsody', core: ['Embersong', 'Erupting Rhapsody', 'Fiery Momentum'] },
@@ -143,7 +153,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...GUO_JIA_IDENTITIES, ...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];

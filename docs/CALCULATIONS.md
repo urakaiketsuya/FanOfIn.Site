@@ -3820,3 +3820,32 @@ Frostsworn Paladin's interception and Frostbind's conditional negation.
 
 Supporting packages use independent joint presence and the existing 90% display
 threshold. Neither card presence nor the names establish that a combo was played.
+
+### Remaining Guo Jia card identities
+
+The same reviewed naming rule now covers nine of ten Guo Jia families under seven
+identities, preserving the three Shenju Command families and all build memberships.
+
+| Identity | Required core | Joint coverage |
+| --- | --- | --- |
+| Water Fractals | Fractal of Rain, Fracturize, Refracting Missile | 189cboj 1845/1897 |
+| Fire Decree Burn | Searing Truth, Vermilion Decree, Blazing Throw | m4dyqa 1342/1354 |
+| Fire Advent Fatestones | Advent of the Shenju, Craggy Fatestone, Fatestone of Revelations | 1ynf4s3 32/33 |
+| Wind Avatar of Byakko | Avatar of Byakko, Byakko's Command, Innervate Agility | 1kd37dt 19/19 |
+| Fire Coiled / Lavaplume Fatestones | Coiled Fatestone, Lavaplume Fatestone, Flamewreath Call | 8qhtp0 8/8 |
+| Wind Beastcaller Allies | Kind Beastcaller, Baby Green Slime, Longtail Grovesward | w5bdy7 19/19 |
+
+The Ruby package (Fabled Ruby Fatestone, Searing Truth, Suzaku's Command) appears
+in 1298/1354 Decree Burn decks. It is optional support, not a competing core.
+Manifestation remains optional for Shenju Commands; the legacy evidence field is
+retained alongside the generic package counts. The 341-deck Searing Truth family
+194znzn retains its generated label because tested three-card cores did not qualify.
+
+Catalog mechanics support these descriptions: the burn core deals damage, with
+Searing Truth also granting a Guo Jia quest counter and Blazing Throw requiring a
+weapon sacrifice. Ruby rewards fire non-combat damage; Suzaku supports Beast attacks.
+Advent recovers Fatestones; Revelations rewards Fatestone/Fatebound cards. Coiled
+and Lavaplume are damage-producing Fatestones. Avatar of Byakko supports Beast
+power and Emerald access, while Innervate Agility provides protection at a delevel
+cost. Beastcaller finds Animal/Beast allies; this mixed ally core is not one tribe.
+These are historical deck identities, not legality or deck-building recommendations.

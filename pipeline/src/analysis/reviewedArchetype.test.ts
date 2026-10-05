@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Diana' ? (identity.name.includes('Aquamirage') ? 3 : identity.name.includes('Tasershot') ? 4 : identity.name.includes('Ranged Allies') ? 1 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, (identity.champion === 'Silvie' || identity.name.endsWith('Shenju Commands')) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Diana' ? (identity.name.includes('Aquamirage') ? 3 : identity.name.includes('Tasershot') ? 4 : identity.name.includes('Ranged Allies') ? 1 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -55,7 +55,7 @@ test('Slime identity spans three preserved families while Water package remains 
 
  test('Guo Jia shares seven command builds, keeps other families separate, and does not require the support package', () => {
   const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Guo Jia'));
-  const reviewed = families.filter(s => s.reviewedArchetypeEvidence);
+  const reviewed = families.filter(s => s.name.endsWith('Shenju Commands'));
   assert.equal(reviewed.length, 3);
   assert.equal(reviewed.flatMap(s => s.buildIds).length, 7);
   assert.deepEqual(reviewed.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [1700, 829, 122]);
@@ -65,8 +65,8 @@ test('Slime identity spans three preserved families while Water package remains 
     return [id, copy] as const;
   }));
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
-  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 3);
-  for (const family of families.filter(s => s.reviewedArchetypeEvidence)) {
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 9);
+  for (const family of families.filter(s => s.name.endsWith('Shenju Commands'))) {
     assert.equal(family.name, 'Wind Guo Jia — Shenju Commands');
     assert.equal(family.reviewedArchetypeEvidence!.manifestationPackageDeckCount, 0);
   }
@@ -209,4 +209,24 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
   assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 12);
   assert.equal(mixed.name, 'Mixed Diana — Charge the Soul');
+});
+
+ test('Guo Jia adds six identities, retains the unresolved family, and treats Ruby as optional', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Guo Jia'));
+  const fire = families.find(s => s.id === 'm4dyqa')!;
+  assert.equal(fire.reviewedArchetypeEvidence!.coreDeckCount, 1342);
+  assert.equal(fire.reviewedArchetypeEvidence!.packageDeckCounts!.ruby, 1298);
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts); copy.delete('Fabled Ruby Fatestone'); copy.delete("Suzaku's Command");
+    return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 9);
+  assert.equal(fire.name, 'Fire Guo Jia — Decree Burn');
+  assert.equal(fire.reviewedArchetypeEvidence!.packageDeckCounts!.ruby, 0);
+  assert.deepEqual(families.find(s => s.id === '194znzn'), taxonomy.strategyArchetypes.find(s => s.id === '194znzn'));
+  for (const counts of changed.values()) counts.delete('Vermilion Decree');
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(fire.reviewedArchetypeEvidence, undefined);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
 });
