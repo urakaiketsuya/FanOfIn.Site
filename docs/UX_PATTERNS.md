@@ -88,3 +88,10 @@ Quantity reductions and partial moves must explicitly resolve affected printed c
 counts shown by the picker are recorded inventory, not exact-printing availability or reservations.
 Printing choices survive undo, drafts, version history, public copies, bookmarks and supported
 share/text round-trips. Standard external exports disclose that they omit printing choices.
+
+Deck calculator entry points start with four player questions; All calculators retains
+full topic navigation. Switching questions preserves the shared deadline, play order,
+card selections, and mounted detailed-model drafts. Results lead with the saved plan's
+named cards and prompt only for missing role pools. Failure explanations and sensitivity
+previews are optional inline disclosures. Previews never alter deck quantities or saved
+roles. Catalog gaps and inherited roles needing review remain visible beside plan results.

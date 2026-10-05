@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { minimumCopies, nextDrawOdds, previewCalculatorSwap, selectedRecipeOdds, countSelectedCopies } from '../src/lib/calculatorDashboard';
+import { recipeAccessBreakdown, minimumCopies, nextDrawOdds, previewCalculatorSwap, selectedRecipeOdds, countSelectedCopies } from '../src/lib/calculatorDashboard';
 
 test('copies needed returns the minimal solution and detects impossible draw requirements', () => {
   assert.equal(minimumCopies(10, 1, 1, 0.8), 8);
@@ -33,4 +33,16 @@ test('next draw conditions on known cards and rejects impossible or exhausted de
   assert.equal(nextDrawOdds(60, 4, 2, 3), null);
   assert.equal(nextDrawOdds(60, 4, 59, 0), null);
   assert.equal(nextDrawOdds(60, 4, 10, 5), null);
+});
+
+test('plan failure shares match exhaustive two-card draws and sum to one', () => {
+  const deck = [{ name: 'A', quantity: 1 }, { name: 'B', quantity: 1 }, { name: 'Other', quantity: 2 }];
+  const result = recipeAccessBreakdown(deck, [['A'], ['B']], 2)!;
+  for (const [key, expected] of Object.entries({ both: 1 / 6, missingFirst: 2 / 6, missingSecond: 2 / 6, missingBoth: 1 / 6 })) {
+    assert.ok(Math.abs(result[key as keyof typeof result] - expected) < 1e-12);
+  }
+  assert.ok(Math.abs(Object.values(result).reduce((a, b) => a + b, 0) - 1) < 1e-12);
+  assert.equal(recipeAccessBreakdown(deck, [[], ['B']], 2), null);
+  assert.equal(recipeAccessBreakdown(deck, [['A'], ['A']], 2), null);
+  assert.deepEqual(recipeAccessBreakdown(deck, [['A'], ['B']], 4), { both: 1, missingFirst: 0, missingSecond: 0, missingBoth: 0 });
 });

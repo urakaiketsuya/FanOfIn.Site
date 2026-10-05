@@ -3942,3 +3942,15 @@ Suited uses the Rouge/Two/Four core where supported, with Verita/Three/Straight 
 Remaining holds: Jin 7y24dq and 1ss7e1z have competing qualifying cores; Merlin 1w1gdbj needs an alternative Majesty core that would overlap the established identity in `ufxed5`; Tristan s71lix needs Spirit/level-one champion-path validation for Ignis Deus; Lorraine 1ol07nl has only one event; Zander ug902a has only four players; Guo Jia 194znzn lacks a sufficiently recurrent tested triple; Ciel 1g8kos9 has broad equipment evidence without a specific plan. Retain all eight generated labels.
 
 Review coverage: 154/154 families assessed. Card-centered naming: 146/154 families (about 95%), including the five Diao Chan families maintained by their separate review helper. Eight evidence/design holds remain. Verification: all 15 reviewed-archetype tests and app/pipeline/shared type checks pass. App lint reports only seven existing Fast Refresh warnings. All 12 champion pages changed in this pass passed browser checks at 360px and 1280px for reviewed headings, preserved build links, keyboard focus/Enter, 48px disclosure targets, no nested disclosure and no horizontal overflow. Jin also passed loading, empty and error states at 390px. No browser JavaScript errors were observed. Mobile and desktop screenshots were inspected. An initial approval-review usage-limit failure was resolved on the normal approved retry.
+
+### Guided plan access breakdown
+
+The guided plan check uses saved, disjoint Setup and Payoff pools and the shared natural
+cards-seen checkpoint. Let A be access to Setup, B access to Payoff, and J the existing
+joint recipe probability. Among **all** random draws, missing Setup only is B − J,
+missing Payoff only is A − J, and missing both is 1 − A − B + J. Along with J these
+partition the outcomes; they are not conditional percentages among misses. Missing pools
+produce a setup prompt, not a zero-probability verdict. Deadline and play-order previews
+recompute the same recipe without changing the scenario. No execution or affordability
+claim is made. The optional extra-copy preview holds deck size fixed, increases the
+selected matching pool by one, and does not enforce per-card legality.

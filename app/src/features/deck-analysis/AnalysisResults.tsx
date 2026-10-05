@@ -1,3 +1,4 @@
+import PlanCheck from './PlanCheck';
 import ResultEvidence from './ResultEvidence';
 import AccessTimeline, { ScenarioControls, type AnalysisScenario } from './AccessTimeline';
 import { naturalCardsSeenByTurn } from '../../lib/turnToPlay';
@@ -13,7 +14,7 @@ import type { CalculatorLine } from '../../lib/calculatorDashboard';
 import type { DeckAnalysisProfile } from '../../lib/analysisProfile';
 import { activeAnalysisPlan } from '../../lib/analysisProfile';
 const percent = (value: number | null) => value == null ? 'Unavailable' : `${(value * 100).toFixed(1)}%`;
-export default function AnalysisResults({ main, material, catalog, profile, onExplore, scenario, onScenarioChange }: { main: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; profile: DeckAnalysisProfile | null; onExplore: (card?: string) => void; scenario: AnalysisScenario; onScenarioChange: (value: AnalysisScenario) => void }) {
+export default function AnalysisResults({ main, material, catalog, profile, onExplore, onEditPlan, scenario, onScenarioChange }: { main: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; profile: DeckAnalysisProfile | null; onExplore: (card?: string) => void; onEditPlan: () => void; scenario: AnalysisScenario; onScenarioChange: (value: AnalysisScenario) => void }) {
   const report = useMemo(() => computeDeckAnalysisReport(main, material, catalog, profile ? activeAnalysisPlan(profile) : null, !!profile?.reviewedAt), [main, material, catalog, profile]);
   const plan = profile ? activeAnalysisPlan(profile) : null;
   const [selectedCard, setSelectedCard] = useState(main[0]?.name ?? '');
@@ -21,6 +22,11 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
   const [all, setAll] = useState(false);
   const art = (name: string) => { const card = catalog.get(name); const content = <><CardArtTile card={card} name={name} /><span className="mt-2 block break-words text-xs font-medium">{name}</span></>; return card ? <Link className="block w-24 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" target="_blank" rel="noopener noreferrer" to={`/cards/${card.slug}`}>{content}</Link> : <div className="w-24 shrink-0">{content}</div>; };
   return <div className="mt-4 space-y-4">
+    <section className="rounded-xl border border-ctp-surface1 p-4">
+      <h2 className="text-xl font-semibold">Will I find my plan on time?</h2>
+      <ScenarioControls value={scenario} onChange={onScenarioChange} />
+      <PlanCheck main={main} catalog={catalog} plan={plan} opening={report.opening} scenario={scenario} onEditPlan={onEditPlan} needsReview={!!profile?.inheritedFrom && !profile.reviewedAt} />
+    </section>
     <section className="identity-surface rounded-2xl border border-ctp-surface1 p-4">
       <p className="text-sm text-ctp-subtext1">Your deck at a glance</p><h2 className="mt-1 text-2xl font-bold">{report.size} cards. Your opening, explained.</h2>
       <div className="mt-4 flex flex-wrap gap-4">{material.map((line) => <div key={line.name}>{art(line.name)}</div>)}</div>
@@ -59,22 +65,6 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       {report.sources.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">View modeled draw estimates<DisclosureChevron /></summary><p className="text-sm text-ctp-subtext1">Assumes eligible effects resolve. Rounded expected bonus draws are used for estimated access; these are not confidence bounds or exact probabilities for actual play.</p>{report.checkpoints.map((point, i) => <div className="mt-3" key={i}><h3 className="font-semibold">Turn {point.turn} · going {point.order}</h3><p className="text-sm">{point.extra.toFixed(1)} expected extra draws before deck size cap</p><ul className="mt-2 space-y-2 text-xs">{report.cards.map((line) => <li key={line.name}>{line.name}: {percent(line.checkpoints[i].natural)} natural; {percent(line.checkpoints[i].modeled)} with modeled effects</li>)}</ul></div>)}</details>}
     </section>
     <section className="rounded-xl border border-ctp-surface1 p-4"><h2 className="text-lg font-semibold">Costs and champion progression</h2><p className="mt-1 text-sm text-ctp-subtext1">Printed Reserve costs by copies. These describe the list, not when cards can be paid for.</p><div className="mt-3 flex flex-wrap gap-2">{report.costs.map(([cost, count]) => <p key={cost} className="rounded-lg bg-ctp-surface0 p-3 text-sm">{cost === 'Unknown or no fixed Reserve cost' ? cost : `Reserve ${cost}`}: <strong>{count}</strong></p>)}</div><ul className="mt-4 flex flex-wrap gap-4">{report.lineage.map((line) => <li key={line.name}>{art(line.name)}<p className="mt-2 text-xs text-ctp-subtext1">Level {catalog.get(line.name)?.level ?? '?'}</p></li>)}</ul>{!report.lineage.length && <p className="mt-3 text-sm">No champion lineage identified.</p>}<p className="mt-3 text-sm text-ctp-subtext1">Progression and acceleration timing require legal lineage and payment assumptions. Explore those in Advanced calculators.</p></section>
-    <section className="rounded-xl border border-ctp-surface1 p-4">
-      <h2 className="text-lg font-semibold">Your saved plan</h2>
-      {report.plan ? <>
-        <h3 className="mt-2 break-words text-xl font-bold">{report.plan.name}</h3>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">{(['enabler', 'payoff'] as const).map((role) => <div key={role} className="rounded-xl bg-ctp-surface0/50 p-3">
-          <h4 className="font-semibold">{role === 'enabler' ? 'Setup cards' : 'Payoff cards'}</h4>
-          <ul className="mt-3 flex flex-wrap gap-3">{report.cards.filter((line) => plan?.roles[line.name] === role).map((line) => <li key={line.name}>{art(line.name)}<p className="mt-2 text-xs text-ctp-subtext1">{line.quantity} copies</p></li>)}</ul>
-        </div>)}</div>
-        <div className="identity-surface mt-4 rounded-xl border border-ctp-surface1 p-4">
-          <p className="text-4xl font-bold tracking-tight text-ctp-blue">{percent(report.plan.opening)}</p>
-          <p className="mt-1 font-medium">Opening access to setup and payoff</p>
-          <p className="mt-2 text-sm text-ctp-subtext1">At least one card from each role pool above, not every listed card. Natural draws only, without mulligans or searches. Access does not establish affordability, play order, or successful execution.</p>
-        </div>
-        <dl className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">{report.plan.checkpoints.map((value, i) => <div className="rounded-xl bg-ctp-surface0 p-3" key={i}><dt className="text-xs">Turn {report.checkpoints[i].turn} · going {report.checkpoints[i].order}</dt><dd className="mt-1 text-xl font-semibold">{percent(value)}</dd></div>)}</dl>
-      </> : <p className="mt-2 text-sm text-ctp-subtext1">Optional: define and review setup and payoff cards in analysis setup to add plan results. The report above needs no configuration.</p>}
-      <Button className="mt-3" onClick={() => onExplore()}>Open advanced calculators</Button>
-    </section>
+
   </div>;
 }

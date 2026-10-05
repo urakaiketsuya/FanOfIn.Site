@@ -44,3 +44,14 @@ export function nextDrawOdds(deckSize: number, copies: number, removed: number, 
   if (![deckSize, copies, removed, matchingRemoved].every(Number.isInteger) || deckSize < 1 || copies < 0 || copies > deckSize || removed < 0 || removed >= deckSize || matchingRemoved < 0 || matchingRemoved > copies || matchingRemoved > removed || removed - matchingRemoved > deckSize - copies) return null;
   return (copies - matchingRemoved) / (deckSize - removed);
 }
+
+/** Mutually exclusive outcomes among all draws, for two disjoint required pools. */
+export function recipeAccessBreakdown(lines: readonly CalculatorLine[], groups: readonly (readonly string[])[], seen: number) {
+  if (groups.length !== 2 || groups.some((group) => !group.length)) return null;
+  const both = selectedRecipeOdds(lines, groups, seen);
+  if (both === null) return null;
+  const size = lines.reduce((sum, line) => sum + line.quantity, 0);
+  if (!size) return null;
+  const [first, second] = groups.map((group) => probabilityAtLeast(size, countSelectedCopies(lines, group), seen, 1));
+  return { both, missingFirst: Math.max(0, second - both), missingSecond: Math.max(0, first - both), missingBoth: Math.max(0, 1 - first - second + both) };
+}

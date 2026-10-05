@@ -124,6 +124,16 @@ export default function DeckAnalysisIndex() {
     persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, roles } : plan), reviewedAt: null });
   }
 
+  function openPlanSetup() {
+    if (!setupRef.current) return;
+    setupRef.current.open = true;
+    const inner = setupRef.current.querySelector("details.group");
+    if (inner instanceof HTMLDetailsElement) inner.open = true;
+    const control = setupRef.current.querySelector<HTMLElement>('select[aria-label^="Analysis role"]');
+    control?.focus({ preventScroll: true });
+    (control ?? setupRef.current).scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
+  }
+
   function markAnalysisReviewed() {
     if (!workspace || !analysisProfile) return;
     persistAnalysisProfile({ ...analysisProfile, reviewedAt: new Date().toISOString() });
@@ -143,9 +153,9 @@ export default function DeckAnalysisIndex() {
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Results" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><AnalysisResults scenario={scenario} onScenarioChange={setScenario} key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><AnalysisResults onEditPlan={openPlanSetup} scenario={scenario} onScenarioChange={setScenario} key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
     <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
-      <CalculatorDashboard scenario={scenario} onScenarioChange={setScenario} initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} detailedModels={{
+      <CalculatorDashboard needsReview={!!analysisProfile?.inheritedFrom && !analysisProfile.reviewedAt} scenario={scenario} onScenarioChange={setScenario} initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={openPlanSetup} detailedModels={{
         "Plan consistency": <><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></>,
         "Opening hand": <><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></>,
         "Level timing": <><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,

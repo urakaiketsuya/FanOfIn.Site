@@ -17,3 +17,11 @@ export const calculatorInfo: Record<CalculatorTool, { group: CalculatorGroup; qu
   'Swap comparison': { group: 'Changes', question: 'What changes if I swap these cards?', note: 'A preview only. Saved roles stay fixed and your deck is not edited.' },
   'Sideboard comparison': { group: 'Changes', question: 'What does my sideboard change?', note: 'Preview sideboard substitutions and inspect matchup evidence without changing your saved deck.' },
 };
+
+/** Question-first navigation; detailed tools remain available without changing their inputs. */
+export const calculatorJourneys: { question: string; tools: CalculatorTool[] }[] = [
+  { question: 'Will my deck do its thing?', tools: ['Plan consistency', 'Opening hand', 'Find cards'] },
+  { question: 'When can I use these cards?', tools: ['Find cards', 'Resource timing', 'Level timing', 'Play sequence', 'Next draw'] },
+  { question: 'What should I change?', tools: ['Copies needed', 'Unwanted draws', 'Swap comparison'] },
+  { question: 'Can I handle this matchup?', tools: ['Pressure access', 'Recovery access', 'Sideboard comparison'] },
+];
