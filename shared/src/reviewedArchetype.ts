@@ -40,7 +40,13 @@ export const TRISTAN_IDENTITIES = [
   { champion: 'Tristan', name: 'Fire Tristan — Explosive Burn', label: 'Explosive Burn', core: ['Planted Explosive', 'Rococo, Explosive Maven', 'Blazing Throw'], packages: [] },
 ];
 
+export const ALICE_IDENTITIES = [
+  { champion: 'Alice', name: 'Umbra Alice — Curse Recovery', label: 'Curse Recovery', core: ['Abnegation', 'Maledictum Vitae', 'Reflected Blight'], packages: [] },
+  { champion: 'Alice', name: 'Alice — Chessmen', label: 'Chessmen', core: ['Golden Bishop', 'Golden Gambit', 'Golden Pawn'], packages: [] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...ALICE_IDENTITIES,
   ...ZANDER_IDENTITIES,
   ...TRISTAN_IDENTITIES,
   { champion: 'Rai', name: RAI_ARCANE_NAME, core: RAI_ARCANE_CORE },
@@ -97,7 +103,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];

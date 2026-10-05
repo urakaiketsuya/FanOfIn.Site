@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -142,4 +142,20 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
     const { reviewedArchetypeEvidence: _b, ...original } = published;
     assert.deepEqual(actual, original);
   }
+});
+
+
+test('Alice distinguishes Curse recovery from Chessmen and enforces the 90% boundary', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Alice'));
+  assert.deepEqual(families.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [117, 51, 27, 24, 12]);
+  const boundary = families.find(s => s.id === '5kbkr5')!;
+  const original = boundary.reviewedArchetypeEvidence!.originalName;
+  const ids = taxonomy.clusters.filter(b => boundary.buildIds.includes(b.id)).flatMap(b => b.deckIds);
+  const changed = new Map(cards);
+  const id = ids.find(id => ['Abnegation', 'Maledictum Vitae', 'Reflected Blight'].every(name => (cards.get(id)?.get(name) ?? 0) > 0))!;
+  const counts = new Map(cards.get(id)); counts.delete('Reflected Blight'); changed.set(id, counts);
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(boundary.name, original);
+  assert.equal(boundary.reviewedArchetypeEvidence, undefined);
+  for (const family of families.filter(s => s.id !== boundary.id)) assert.deepEqual(family, taxonomy.strategyArchetypes.find(s => s.id === family.id));
 });

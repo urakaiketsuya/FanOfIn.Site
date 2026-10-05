@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
+import { ALICE_IDENTITIES, TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import DisclosureChevron from '../../components/DisclosureChevron';
 
 /** Shared presentation identity, with original family statistics and build membership retained. */
-type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
+type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan' | 'Alice'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
 export default function ReviewedChampionFamilies(props: Props) {
-  if (props.championName !== 'Zander' && props.championName !== 'Tristan') return <IdentityFamilies {...props} />;
-  const identities = props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
+  if (props.championName !== 'Zander' && props.championName !== 'Tristan' && props.championName !== 'Alice') return <IdentityFamilies {...props} />;
+  const identities = props.championName === 'Alice' ? ALICE_IDENTITIES : props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
   const reviewedNames = identities.map(identity => identity.name);
   const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && !reviewedNames.includes(family.name));
   const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && reviewedNames.includes(family.name));
@@ -38,7 +38,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
     return <article key={family.id} className="min-w-0 rounded-xl bg-ctp-mantle p-4">
       {!shared && <ArchetypePreview names={family.definingCards.slice(0, 3).map(card => card.name)} cardImages={catalog} />}
       {qualifying.map(pkg => <ArchetypePreview key={pkg.label} names={pkg.cards} cardImages={catalog} />)}
-      <h4 className="mt-2 font-semibold">{shared ? hasSupport ? qualifying.map(pkg => pkg.label).join(" · ") : `${builds.length} ${coreLabel} build variants` : family.name}</h4>
+      <h4 className="mt-2 font-semibold">{shared ? hasSupport ? qualifying.map(pkg => pkg.label).join(" · ") : `${builds.length} ${coreLabel} build ${builds.length === 1 ? 'variant' : 'variants'}` : family.name}</h4>
       <p className="mt-2 text-sm text-ctp-subtext1">{family.confidence === 'emerging' ? 'Emerging · ' : ''}{family.deckCount} deck appearances · {family.playerCount} players · {family.eventCount} events · {(family.avgWinRate * 100).toFixed(0)}% win rate</p>
       {hasSupport && <p className="mt-2 text-sm text-ctp-subtext1">These supporting cards distinguish this variant and are optional for the {coreLabel} identity.</p>}
       <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">

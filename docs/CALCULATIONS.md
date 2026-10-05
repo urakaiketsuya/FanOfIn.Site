@@ -3702,3 +3702,19 @@ Incapacitate is interaction within the Preparation core, not a preparation payof
 The Clumsy Apprentice family remains unchanged pending review of its Ignis Deus/champion path;
 the Aesan Protector family remains unchanged because its common ally trio alone does not establish
 an independently named strategy. All nine families remain visible with their original builds.
+
+### Reviewed Alice identities
+
+Alice's five families share two card identities. Umbra Alice — Curse Recovery uses
+Abnegation, Maledictum Vitae and Reflected Blight (117/117, 27/30 and 24/24
+joint main/material appearances). Alice — Chessmen uses Golden Bishop, Golden Gambit
+and Golden Pawn across Water and Wind families (51/51 and 12/12). The existing
+90% joint-presence, complete coverage, five-player and two-event requirements apply.
+No optional package is required. Original IDs, builds, ordering and statistics remain intact.
+
+Catalog text supports Curse lineage and recovery interactions: Reflected Blight returns
+a graveyard card to memory and adds a Curse with self-damage; Maledictum Vitae and
+Abnegation provide recovery. The Chessmen cards explicitly share the Chessman subtype
+and protection, sacrifice/draw and ally interactions. These names describe card identities,
+not evidence that a particular combo was played. The two elemental Chessmen groups retain
+separate statistics and their original build names.
