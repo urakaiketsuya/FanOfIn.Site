@@ -1,3 +1,4 @@
+import { benchmarkFieldEquilibrium } from './fieldEquilibrium';
 import type { BattleChartEntry } from './analysis-types';
 import { scoreExpectedField, type FieldWeight } from './expectedField';
 
@@ -28,4 +29,13 @@ export function selectFieldEquilibriumPool(field: FieldWeight[], chart: BattleCh
   const includedWeight = population.filter(row => included.includes(row.champion)).reduce((sum, row) => sum + row.weight, 0);
   return { included, excluded, retainedFieldShare: total ? includedWeight / total : 0,
     usable: included.length >= 2, selection: 'popularity-first-complete-coverage' as const };
+}
+
+/** Restricted benchmark plus every excluded Champion's response to its returned mix. */
+export function analyzeCoveredField(field: FieldWeight[], chart: BattleChartEntry[]) {
+  const pool = selectFieldEquilibriumPool(field, chart);
+  const benchmark = pool.usable ? benchmarkFieldEquilibrium(pool.included, chart) : null;
+  const responses = benchmark ? scoreExpectedField(pool.excluded.map(row => row.champion),
+    benchmark.strategies.map(row => ({ champion: row.champion, weight: row.conservativeShare })), chart) : [];
+  return { pool, benchmark, responses };
 }

@@ -4465,3 +4465,22 @@ prevent interpreting the restricted solution as an equilibrium of the full field
 Any future UI must keep retained share, exclusions, and excluded responses visible
 alongside the mix. Team Standard still has no usable pool. No confidence or
 predictive-calibration claim follows from complete matchup coverage.
+
+### Interactive equilibrium benchmark
+
+Battle Chart → Explore a field → Explore equilibrium benchmark runs
+`analyzeCoveredField` in a module worker, on demand. It uses the selected format
+and date scope's published attendance, independently of custom opponent-weight
+drafts and the stress toggle. The pipeline report uses that same shared function.
+The panel shows actual Champion artwork and strategy shares, retained attendance,
+numerical gap, every excluded Champion's response bounds and sample count, and
+its missing-matchup exclusions. A visible summary flags excluded responses with
+lower bounds above 50%. No strategy is automatically applied to the user's field.
+
+Changing scope cancels the previous worker and hides results tied to a previous
+input. Tabs preserve drafts and the enabled panel. Invalid dates, empty scopes,
+insufficient coverage, loading, and calculation failure/retry have explicit
+states. The complete-feature scope is exploratory scoring, stress testing,
+event-resampling diagnostics, historical checks, and the restricted equilibrium
+benchmark. Calibration is not established; improving statistical uncertainty and
+prospective validation are separate research work, not a completed claim.

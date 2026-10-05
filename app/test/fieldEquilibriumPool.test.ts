@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { selectFieldEquilibriumPool } from '../../shared/src/fieldEquilibriumPool';
+import { analyzeCoveredField, selectFieldEquilibriumPool } from '../../shared/src/fieldEquilibriumPool';
 import { benchmarkFieldEquilibrium } from '../../shared/src/fieldEquilibrium';
 const field = [{ champion: 'A', weight: 40 }, { champion: 'B', weight: 30 }, { champion: 'C', weight: 20 }, { champion: 'D', weight: 10 }];
 const pair = (a: string, b: string) => ({ a, b, aWins: 3, bWins: 2, ties: 0, games: 5 });
@@ -29,4 +29,14 @@ test('ties use names; zero weights are excluded; no evidence is not a usable ben
 });
 test('invalid weights fail rather than silently changing the candidate pool', () => {
   for (const weight of [-1, NaN, Infinity]) assert.throws(() => selectFieldEquilibriumPool([{ champion: 'A', weight }], []));
+});
+
+test('combined analysis retains every excluded response and returns no strategy for sparse scopes', () => {
+  const result = analyzeCoveredField(field, chart);
+  assert.equal(result.benchmark!.missingPairs, 0);
+  assert.deepEqual(result.responses.map(row => row.champion), ['C']);
+  assert.deepEqual(result.responses[0].missing.sort(), ['B', 'D']);
+  assert.ok(result.responses[0].lower <= result.responses[0].upper);
+  assert.equal(analyzeCoveredField(field, []).benchmark, null);
+  assert.deepEqual(analyzeCoveredField([], []).responses, []);
 });

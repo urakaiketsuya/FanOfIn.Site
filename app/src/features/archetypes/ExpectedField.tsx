@@ -42,6 +42,7 @@ export default function ExpectedField({ events, minMatchups, defaults, battleCha
       <p className="mt-1 text-sm text-ctp-subtext1">{description} · updated {generatedAt.slice(0, 10)}</p>
       {scopeControls && <a href="#field-scope" className="mr-4 inline-flex min-h-control items-center text-sm text-ctp-blue underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Change event scope</a>}
       <a href="#expected-opponents" className="inline-flex min-h-control items-center text-sm text-ctp-blue underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Edit expected opponents</a>
+      <a href="#field-benchmark" className="ml-4 inline-flex min-h-control items-center text-sm text-ctp-blue underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Explore equilibrium</a>
       <p className="mt-1 text-sm text-ctp-subtext0">Draws count as half. Ordered by the lower score bound; ranges show {stress ? 'field shifts and missing matchups' : 'missing matchups'}, not statistical confidence.</p>
       <Button className="mt-3" aria-pressed={stress} onClick={() => startTransition(() => setStress(value => !value))}>{stress ? 'Field stress test on' : 'Stress-test the field'}</Button>
       {stress && <p className="mt-2 text-sm text-ctp-subtext1">Keep 80% of your mix; shift 20% toward any included Champion. Zero-weight opponents stay excluded.</p>}

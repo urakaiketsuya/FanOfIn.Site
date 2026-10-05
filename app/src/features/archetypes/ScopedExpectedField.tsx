@@ -4,6 +4,7 @@ import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePubl
 import Button from '../../components/ui/Button';
 import Panel from '../../components/ui/Panel';
 import ExpectedField from './ExpectedField';
+import FieldEquilibrium from './FieldEquilibrium';
 
 const control = 'mt-1 min-h-control w-full min-w-0 rounded border border-ctp-surface1 bg-ctp-base px-3 text-sm text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue';
 
@@ -41,6 +42,7 @@ export default function ScopedExpectedField({ enabled }: { enabled: boolean }) {
     <p role="status" className="text-sm text-ctp-subtext1">{pending ? 'Recalculating scope…' : invalid ? 'Choose a start date on or before the end date.' : `${projection.events} events · ${scope.from} to ${scope.to}`}</p>
       </Panel>
     } />
+    <FieldEquilibrium field={projection.champions} chart={projection.battleChart} valid={!invalid} description={`${label} · ${scope.from} to ${scope.to}`} />
     <Panel>
       <h2 className="font-semibold">Event range check · {label}</h2>
       {rangeCheck && rangeCheck.evaluated > 0 ? <>
