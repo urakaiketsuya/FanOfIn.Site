@@ -117,7 +117,7 @@ export const REMAINING_CHAMPION_IDENTITIES = [
   {"champion": "Lorraine", "name": "Wind Lorraine — Oath Mounts", "label": "Oath Mounts", "core": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"], "packages": []},
   {"champion": "Lorraine", "name": "Fire Lorraine — Red Hare", "label": "Red Hare", "core": ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], "packages": []},
   {"champion": "Lorraine", "name": "Lorraine — Banner Knights", "label": "Banner Knights", "core": ["Banner Knight", "Esteemed Knight", "Honorable Vanguard"], "packages": []},
-  {"champion": "Merlin", "name": "Merlin — Majesty", "label": "Majesty", "core": ["Ghosts of Pendragon", "Incarnate Majesty", "Dungeon Guide"], "packages": [{"key": "water", "label": "Water control variant", "cards": ["Fracturize", "Frostsworn Paladin", "Frostbind"]}, {"key": "crux", "label": "Majestic Spirit / Crux Sight variant", "cards": ["Incarnate Majesty", "The Majestic Spirit", "Crux Sight"]}]},
+  {"champion": "Merlin", "name": "Merlin — Majesty", "label": "Majesty", "core": ["Ghosts of Pendragon", "Incarnate Majesty", "Dungeon Guide"], "alternateCores": [["Incarnate Majesty", "The Majestic Spirit", "Crux Sight"]], "packages": [{"key": "water", "label": "Water control variant", "cards": ["Fracturize", "Frostsworn Paladin", "Frostbind"]}, {"key": "crux", "label": "Majestic Spirit / Crux Sight variant", "cards": ["Incarnate Majesty", "The Majestic Spirit", "Crux Sight"]}]},
   {"champion": "Merlin", "name": "Fire Merlin — Red Hare", "label": "Red Hare", "core": ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], "packages": []},
   {"champion": "Merlin", "name": "Fire Merlin — Embersong–Rhapsody", "label": "Embersong–Rhapsody", "core": ["Embersong", "Erupting Rhapsody", "Fiery Momentum"], "packages": []},
   {"champion": "Merlin", "name": "Water Merlin — Terminus / Sheen", "label": "Terminus / Sheen", "core": ["Spirit Blade: Terminus", "Quiet Refraction", "Seep Into the Mind"], "packages": []},
@@ -151,7 +151,7 @@ export const REMAINING_CHAMPION_IDENTITIES = [
   {"champion": "Zander", "name": "Wind Zander — Liu Bei Ranged", "label": "Liu Bei Ranged", "core": ["Liu Bei, Oathkeeper", "Skirting Step", "Perse, Relentless Raptor"], "packages": [{"key": "oath", "label": "Oath / Dilu variant", "cards": ["Liu Bei, Oathkeeper", "Oath of the Sakura", "Dilu, Auspicious Charger"]}]},
 ];
 
-export const REVIEWED_ARCHETYPE_CORES = [
+export const REVIEWED_ARCHETYPE_CORES: { champion: string; name: string; core: string[]; alternateCores?: string[][] }[] = [
   ...REMAINING_CHAMPION_IDENTITIES,
   ...JIN_IDENTITIES,
   ...GUO_JIA_IDENTITIES,
@@ -191,15 +191,21 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     const previous = strategy.reviewedArchetypeEvidence;
     const ids = [...new Set(strategy.buildIds.flatMap(id => builds.get(id)?.deckIds ?? []))];
     const evaluatedDeckCount = ids.filter(id => cardsByDeck.has(id)).length;
-    const matches = candidates.map(identity => ({ identity, count: ids.filter(id => identity.core.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length }))
-      .filter(match => ids.length > 0 && match.count / ids.length >= .9);
+    // Each complete core must independently meet recurrence. Never pool partial
+    // support across alternatives; multiple distinct identities remain ambiguous.
+    const matches = candidates.flatMap(identity => {
+      const cores = [identity.core, ...(identity.alternateCores ?? [])];
+      const qualifying = cores.map(core => ({ core, count: ids.filter(id => core.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length }))
+        .find(match => ids.length > 0 && match.count / ids.length >= .9);
+      return qualifying ? [{ identity, ...qualifying }] : [];
+    });
     if (previous) {
       strategy.name = previous.originalName;
       delete strategy.identityCards;
       delete strategy.reviewedArchetypeEvidence;
     }
     if (matches.length !== 1 || evaluatedDeckCount !== ids.length || strategy.buildIds.some(id => !builds.has(id)) || strategy.playerCount < 5 || strategy.eventCount < 2) continue;
-    const { identity, count } = matches[0];
+    const { identity, core, count } = matches[0];
     strategy.reviewedArchetypeEvidence = { originalName: strategy.name, evaluatedDeckCount, missingDeckCount: 0, coreDeckCount: count };
     if (identity.name === SILVIE_SLIME_NAME) {
       strategy.reviewedArchetypeEvidence.waterPackageDeckCount = ids.filter(id => SILVIE_WATER_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
@@ -217,6 +223,6 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     const configured = [...REMAINING_CHAMPION_IDENTITIES, ...JIN_IDENTITIES, ...GUO_JIA_IDENTITIES, ...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES, ...DIANA_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
-    strategy.identityCards = [...identity.core];
+    strategy.identityCards = [...core];
   }
 }

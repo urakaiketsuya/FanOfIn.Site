@@ -247,7 +247,7 @@ test('Jin retains ambiguous families and restores labels when recovery evidence 
 });
 
 test('remaining champion identities retain exact reviewed counts and reject missing core cards', () => {
-  const expected: Record<string, number> = {"5pw41t": 2141, "4roctd": 1472, "1bpxg7f": 980, "1735ou2": 752, "1r282yl": 517, "7iat6b": 465, "hkzckk": 534, "1rnreh4": 493, "fr1vlk": 389, "1yfaw6d": 247, "12zfjeo": 287, "1vnmlgr": 221, "m24iia": 254, "1v2a3cn": 213, "1b7a5kt": 239, "1dncwcf": 198, "1luimph": 130, "wow264": 155, "q0zqbs": 191, "1rz0yy7": 98, "1wbydqc": 91, "1t4fszi": 93, "1whnsh6": 55, "1mz606e": 48, "1j07ql1": 74, "1h7s8fh": 61, "9buhhj": 61, "1m4hrby": 60, "1i5wjpt": 44, "1rdvneh": 40, "1tm8u0i": 67, "939fom": 32, "1b10szx": 32, "1deqjx5": 34, "1slmmmx": 25, "1s770r4": 32, "1kwplit": 27, "eo03r0": 28, "12relxy": 38, "1w3acjh": 27, "128f2wt": 41, "1sofqdg": 19, "1q87i4k": 23, "9cn9aj": 20, "1p5ap5u": 16, "11u9itu": 16, "1doyf43": 15, "87l4mo": 14, "1kctna4": 13, "6uu7v8": 17, "1b1b5ez": 18, "e0ruve": 13, "1e29nhd": 10, "1vxrl71": 9, "1uquxnv": 11, "1t9bee9": 9, "tczxjk": 11, "ufxed5": 9, "1b5tycd": 7, "1nsfbg7": 10, "1xb3nh1": 11, "1s3b7uk": 6, "vcg117": 38, "1ieaj47": 5, "1cscyx8": 7};
+  const expected: Record<string, number> = {"1w1gdbj": 12, "5pw41t": 2141, "4roctd": 1472, "1bpxg7f": 980, "1735ou2": 752, "1r282yl": 517, "7iat6b": 465, "hkzckk": 534, "1rnreh4": 493, "fr1vlk": 389, "1yfaw6d": 247, "12zfjeo": 287, "1vnmlgr": 221, "m24iia": 254, "1v2a3cn": 213, "1b7a5kt": 239, "1dncwcf": 198, "1luimph": 130, "wow264": 155, "q0zqbs": 191, "1rz0yy7": 98, "1wbydqc": 91, "1t4fszi": 93, "1whnsh6": 55, "1mz606e": 48, "1j07ql1": 74, "1h7s8fh": 61, "9buhhj": 61, "1m4hrby": 60, "1i5wjpt": 44, "1rdvneh": 40, "1tm8u0i": 67, "939fom": 32, "1b10szx": 32, "1deqjx5": 34, "1slmmmx": 25, "1s770r4": 32, "1kwplit": 27, "eo03r0": 28, "12relxy": 38, "1w3acjh": 27, "128f2wt": 41, "1sofqdg": 19, "1q87i4k": 23, "9cn9aj": 20, "1p5ap5u": 16, "11u9itu": 16, "1doyf43": 15, "87l4mo": 14, "1kctna4": 13, "6uu7v8": 17, "1b1b5ez": 18, "e0ruve": 13, "1e29nhd": 10, "1vxrl71": 9, "1uquxnv": 11, "1t9bee9": 9, "tczxjk": 11, "ufxed5": 9, "1b5tycd": 7, "1nsfbg7": 10, "1xb3nh1": 11, "1s3b7uk": 6, "vcg117": 38, "1ieaj47": 5, "1cscyx8": 7};
   const names = new Set(REMAINING_CHAMPION_IDENTITIES.map(identity => identity.name));
   const families = structuredClone(taxonomy.strategyArchetypes.filter(family => names.has(family.name)));
   assert.equal(families.length, Object.keys(expected).length);
@@ -269,7 +269,7 @@ test('remaining optional variants never become required identifying cards', () =
   for (const identity of REMAINING_CHAMPION_IDENTITIES) {
     const optional = identity.packages.flatMap(pkg => pkg.cards).filter(name => !identity.core.includes(name));
     if (!optional.length) continue;
-    const families = structuredClone(taxonomy.strategyArchetypes.filter(family => family.name === identity.name));
+    const families = structuredClone(taxonomy.strategyArchetypes.filter(family => family.name === identity.name && !optional.some(name => family.identityCards?.includes(name))));
     const changed = new Map(cards);
     for (const build of taxonomy.clusters.filter(build => families.some(family => family.buildIds.includes(build.id)))) for (const id of build.deckIds) {
       const next = new Map(changed.get(id)); for (const name of optional) next.delete(name); changed.set(id, next);
@@ -278,6 +278,38 @@ test('remaining optional variants never become required identifying cards', () =
     for (const family of families) {
       assert.equal(family.name, identity.name);
       assert.ok(Object.values(family.reviewedArchetypeEvidence!.packageDeckCounts!).every(count => count === 0));
+    }
+  }
+});
+
+
+test('Majesty alternatives qualify independently, preserve primary evidence, and reject distinct identities', () => {
+  const identity = REMAINING_CHAMPION_IDENTITIES.find(i => i.name === 'Merlin — Majesty')!;
+  const alternate = identity.alternateCores![0];
+  const real = taxonomy.strategyArchetypes.find(f => f.id === '1w1gdbj')!;
+  assert.deepEqual(real.identityCards, alternate);
+  assert.equal(real.reviewedArchetypeEvidence!.coreDeckCount, 12);
+  assert.deepEqual(taxonomy.strategyArchetypes.find(f => f.id === 'ufxed5')!.identityCards, identity.core);
+  for (const mode of ['alternate', 'both', 'split', 'different', 'missing', 'zero']) {
+    const family = structuredClone(real);
+    const ids = [...new Set(taxonomy.clusters.filter(b => family.buildIds.includes(b.id)).flatMap(b => b.deckIds))];
+    const changed = new Map(cards);
+    ids.forEach((id, index) => {
+      const names = mode === 'both' ? [...identity.core, ...alternate] : mode === 'split' && index < ids.length / 2 ? identity.core : alternate;
+      const counts = new Map(names.map(name => [name, 1]));
+      if (mode === 'different') for (const name of ['Arthur, Young Heir', 'Red Hare, Unrivaled Stallion', 'Blazing Throw']) counts.set(name, 1);
+      if (mode === 'zero') counts.set('Incarnate Majesty', 0);
+      changed.set(id, counts);
+    });
+    if (mode === 'missing') changed.delete(ids[0]);
+    applyReviewedArchetypeEvidence([family], taxonomy.clusters, changed);
+    if (mode === 'alternate' || mode === 'both') {
+      assert.equal(family.name, identity.name);
+      assert.deepEqual(family.identityCards, mode === 'both' ? identity.core : alternate);
+      assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, ids.length);
+    } else {
+      assert.equal(family.name, real.reviewedArchetypeEvidence!.originalName, mode);
+      assert.equal(family.identityCards, undefined, mode);
     }
   }
 });

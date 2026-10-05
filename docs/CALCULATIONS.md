@@ -3954,3 +3954,29 @@ produce a setup prompt, not a zero-probability verdict. Deadline and play-order 
 recompute the same recipe without changing the scenario. No execution or affordability
 claim is made. The optional extra-copy preview holds deck size fixed, increases the
 selected matching pool by one, and does not enforce per-card legality.
+
+
+### Majesty alternate core follow-up
+
+Merlin's Majesty identity now accepts either Ghosts of Pendragon / Incarnate Majesty /
+Dungeon Guide or Incarnate Majesty / The Majestic Spirit / Crux Sight. Each complete
+triple independently requires 90% joint inclusion; the union of two sub-threshold
+cores cannot qualify. Primary core order is stable when both qualify. Distinct
+qualifying identities still block naming, including the two Jin holds. Complete
+coverage, five players, and two events remain mandatory.
+
+Family `1w1gdbj` now qualifies on the alternate core (12/12). All previously reviewed
+families retain their exact evidence, names and identity cards, including `ufxed5`.
+Membership, ordering and statistics are unchanged. Groups with alternate cores show
+the exact selected triple per family, with its own evidence count. Optional support
+cards never substitute for a required core.
+
+This resolves the Merlin hold: 147/154 families (about 95%) now have reviewed names,
+with seven holds remaining. The earlier eight-hold snapshot above records the prior pass.
+
+Verification: 16 reviewed-archetype tests pass, including independent alternate
+qualification, deterministic primary selection, split-support rejection, distinct
+identity ambiguity, missing coverage and zero quantities. Merlin passed 360px and
+1280px checks for exact core evidence, preserved build links, keyboard access, 48px
+disclosure targets, no nested disclosure or overflow, plus empty/loading/error at
+390px. App lint retains seven pre-existing Fast Refresh warnings.
