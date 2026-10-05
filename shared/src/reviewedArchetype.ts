@@ -62,7 +62,18 @@ export const ARISANNA_IDENTITIES = [
   { champion: 'Arisanna', name: "Fire Arisanna — Cinderbloom Burn", label: "Cinderbloom Burn", core: ["Cinderbloom Tender", "Ignite Fate", "Kindling Flare"], packages: [] },
 ];
 
+export const CIEL_IDENTITIES = [
+  { champion: 'Ciel', name: "Fire Ciel — Feu Awakening", label: "Feu Awakening", core: ["Feu Awakening", "Liminal Guide", "Creative Shock"], packages: [] },
+  { champion: 'Ciel', name: "Water Ciel — Water Allies", label: "Water Allies", core: ["Aquifer Seneschal", "Nia, Mistveiled Scout", "Snow White, Weiss Queen"], packages: [] },
+  { champion: 'Ciel', name: "Water Ciel — Ritual", label: "Ritual", core: ["Fracturize", "Primordial Ritual", "Throne-Keeper Bullfrog"], packages: [] },
+  { champion: 'Ciel', name: "Umbra Ciel — Carter", label: "Carter", core: ["Carter, Synthetic Reaper", "Liminal Guide", "Reduce to Ash"], packages: [] },
+  { champion: 'Ciel', name: "Umbra Ciel — Specters", label: "Specters", core: ["Liminal Guide", "Rile the Abyss", "Undying Dreams"], packages: [] },
+  { champion: 'Ciel', name: "Umbra Ciel — Omen Attacks", label: "Omen Attacks", core: ["Lamentation's Toll", "Sablier Guard", "Heavy Swing"], packages: [] },
+  { champion: 'Ciel', name: "Fire Ciel — Red Hare", label: "Red Hare", core: ["Arthur, Young Heir", "Red Hare, Unrivaled Stallion", "Blazing Throw"], packages: [] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...CIEL_IDENTITIES,
   ...ARISANNA_IDENTITIES,
   ...ALLEN_IDENTITIES,
   ...ALICE_IDENTITIES,
@@ -121,7 +132,7 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES].find(candidate => candidate.name === identity.name);
+    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES, ...ALICE_IDENTITIES, ...ALLEN_IDENTITIES, ...ARISANNA_IDENTITIES, ...CIEL_IDENTITIES].find(candidate => candidate.name === identity.name);
     if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];

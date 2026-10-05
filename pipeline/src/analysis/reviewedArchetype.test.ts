@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Alice' ? (identity.name.includes('Curse') ? 3 : 2) : identity.champion === 'Arisanna' && (identity.name.endsWith('Starcalling') || identity.name.endsWith('Fractals')) ? 2 : identity.champion === 'Ciel' && identity.name.endsWith('Feu Awakening') ? 2 : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -173,4 +173,19 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   assert.equal(water.length, 2);
   assert.deepEqual(water.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [190, 222]);
   for (const family of water) assert.equal(family.reviewedArchetypeEvidence!.packageDeckCounts!.burst, 0);
+});
+
+ test('Ciel keeps broad equipment family unchanged and separates eight specific families', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Ciel'));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, cards);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 8);
+  assert.deepEqual(families.find(s => s.id === '1g8kos9'), taxonomy.strategyArchetypes.find(s => s.id === '1g8kos9'));
+  assert.equal(families.find(s => s.id === '1g8kos9')!.reviewedArchetypeEvidence, undefined);
+  assert.deepEqual(families.filter(s => s.name.endsWith('Feu Awakening')).map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [728, 226]);
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts); copy.delete('Feu Awakening'); return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 6);
+  for (const id of ['rsnhwz', '152xtyg']) assert.equal(families.find(s => s.id === id)!.reviewedArchetypeEvidence, undefined);
 });

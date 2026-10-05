@@ -3754,3 +3754,34 @@ These describe identities, not evidence of combos actually played. Burst Asunder
 is optional Fractal sacrifice support, counted separately for each Water family.
 The existing 90% joint-presence, complete coverage, five-player and two-event
 thresholds apply; IDs, membership, ordering and statistics remain unchanged.
+
+### Reviewed Ciel identities
+
+Eight Ciel families use seven card identities under the existing complete-data,
+90% joint main/material core, five-player and two-event rules. Sideboards remain
+excluded. Family IDs, build membership, ordering and statistics are preserved.
+
+| Identity | Required core | Joint decks by family |
+| --- | --- | --- |
+| Fire Ciel — Feu Awakening | Feu Awakening, Liminal Guide, Creative Shock | rsnhwz 728/734; 152xtyg 226/229 |
+| Water Ciel — Water Allies | Aquifer Seneschal, Nia, Mistveiled Scout, Snow White, Weiss Queen | 1894vuw 298/303 |
+| Water Ciel — Ritual | Fracturize, Primordial Ritual, Throne-Keeper Bullfrog | 1ec70bu 191/191 |
+| Umbra Ciel — Carter | Carter, Synthetic Reaper, Liminal Guide, Reduce to Ash | 1xif3t0 86/90 |
+| Umbra Ciel — Specters | Liminal Guide, Rile the Abyss, Undying Dreams | 1otne29 56/56 |
+| Umbra Ciel — Omen Attacks | Lamentation's Toll, Sablier Guard, Heavy Swing | zhyyvt 32/32 |
+| Fire Ciel — Red Hare | Arthur, Young Heir, Red Hare, Unrivaled Stallion, Blazing Throw | 1dukwsd 39/39 |
+
+Mechanics checked against the cached card catalog: Feu discards hand/memory and
+creates omens; Liminal Guide returns on level-up. Rile the Abyss and Undying Dreams
+are Specter spells supporting filtering and ephemeral allies. Lamentation's Toll
+scales with omen power and Sablier Guard with distinct omen reserve costs. Ritual
+sacrifices allies and the three core cards have Floating Memory. Water Allies is
+a descriptive control package, not a shared creature tribe. Carter provides
+ally-death recovery and sacrifice support; Reduce to Ash is removal, not a claimed
+combo. Arthur supports allies and enables Red Hare through its unique Human
+condition. Class-bonus effects remain conditional.
+
+The broad Fire Ciel family 1g8kos9 retains its existing label and evidence. Shared
+Manxome Armoire / Grande Sonnerie / Liminal Guide equipment is insufficiently
+specific to distinguish it from Feu and Umbra families; do not register that
+umbrella as a competing core. No optional packages are inferred in this pass.
