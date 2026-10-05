@@ -142,7 +142,7 @@ export default function DeckAnalysisIndex() {
   if (requestedDeck.pending) return <PageLayout><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
   if (requestedDeck.error) return <PageLayout><PageHeader title="Deck Analysis" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
 
-  if (!workspace || mainTotal === 0) return <PageLayout><PageHeader title="Deck Analysis" description="Facts about how a deck behaves. Recommendations remain in Deck Review." /><Panel className="mt-6"><InlineState className="mb-4">Choose a deck to analyze. Importing here does not modify the saved original.</InlineState><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></Panel></PageLayout>;
+  if (!workspace || mainTotal === 0) return <PageLayout><PageHeader title="Deck Analysis" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
 
   return <PageLayout>
     <PageHeader title="Deck Analysis" />

@@ -21,6 +21,7 @@ import DiscordSignInButton from "../account/DiscordSignInButton";
 import PasswordSignInPanel from "../account/PasswordSignInPanel";
 import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, collectionCsv, crossDeckCollectionShortages, deckCollectionLines, missingCollectionList, setRarityCollectionLines, summarizeAtLeastChanges } from "./collectionBatch";
 import PageLayout from "../../components/layout/PageLayout";
+import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
@@ -188,7 +189,7 @@ export default function CollectionIndex() {
   }
 
   if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
-  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></PageLayout>;
+  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><PageHeader title="My Collection" description="Sign in to track your cards and build decks from what you own." /><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></PageLayout>;
 
   const collectionTools = <div className="grid gap-2"><Link to="/card-locations" className="flex min-h-12 items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Where are my cards? →</Link>{([
     ["sets", "Cards"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],

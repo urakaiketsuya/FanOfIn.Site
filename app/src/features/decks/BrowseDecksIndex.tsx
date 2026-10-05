@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import DeckSightingsView from "./DeckSightingsView";
@@ -36,14 +36,15 @@ export default function BrowseDecksIndex() {
       />
 
       <div className="mt-4">
-        <Tabs tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
+        <Tabs baseId="deck-view" variant="pill" tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
       </div>
 
-      {view === "builds" ? (
+      <TabPanel baseId="deck-view" tab="builds" active={view}>
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
-      ) : (
+      </TabPanel>
+      <TabPanel baseId="deck-view" tab="sightings" active={view}>
         <DeckSightingsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
-      )}
+      </TabPanel>
     </PageLayout>
   );
 }

@@ -1,3 +1,5 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
+import Button from "../../components/ui/Button";
 import { Link } from "react-router-dom";
 import type { ArchetypeCluster, Card, MaterialArchetype } from "@gatcg/shared";
 import ArchetypePreview from "./ArchetypePreview";
@@ -8,7 +10,7 @@ import type { DisplayRow } from "./ArchetypesIndex";
 
 
 function CompareButton({ selected, onClick, name }: { selected: boolean; onClick: () => void; name: string }) {
-  return <button type="button" onClick={onClick} aria-label={`${selected ? "Remove" : "Add"} ${name} ${selected ? "from" : "to"} comparison`} aria-pressed={selected} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-medium ${selected ? "border-ctp-green text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>{selected ? "Selected" : "Compare"}</button>;
+  return <Button size="sm" onClick={onClick} aria-label={`${selected ? "Remove" : "Add"} ${name} ${selected ? "from" : "to"} comparison`} aria-pressed={selected} className={`min-h-control rounded-lg border px-3 py-2 text-xs font-medium ${selected ? "border-ctp-green text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>{selected ? "Selected" : "Compare"}</Button>;
 }
 
 export function MaterialRouteCard({ route, childBuilds, cardImages, selected, onToggleCompare }: {
@@ -30,10 +32,10 @@ export function MaterialRouteCard({ route, childBuilds, cardImages, selected, on
       <p className="mt-1 text-sm text-ctp-subtext1">{route.playerCount.toLocaleString()} players · {route.buildIds.length} {route.buildIds.length === 1 ? "build" : "builds"}</p>
       <div className="mt-3 flex gap-2 border-t border-ctp-surface1 pt-3">
         <CompareButton selected={selected} onClick={onToggleCompare} name={route.name} />
-        {primaryBuildId && <Link to={`/archetypes/${primaryBuildId}`} className="flex min-h-10 flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90">Explore route →</Link>}
+        {primaryBuildId && <Link to={`/archetypes/${primaryBuildId}`} className="flex min-h-control flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90">Explore route →</Link>}
       </div>
       <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Route details</summary>
+        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">Route details<DisclosureChevron /></summary>
         <p className="mt-2">{route.deckCount.toLocaleString()} appearances · {route.eventCount.toLocaleString()} events · {(route.avgWinRate * 100).toFixed(0)}% win rate</p>
         {route.spiritBreakdown.length > 0 && <p className="mt-1">Spirits: {route.spiritBreakdown.map((spirit) => spirit.name).join(", ")}</p>}
         {childBuilds.length > 0 && <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">{childBuilds.slice(0, 3).map((build) => <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}</div>}
@@ -56,10 +58,10 @@ export function BuildResultCard({ build, cardImages, selected, onToggleCompare }
       <p className="mt-2 text-sm text-ctp-text">{build.playerCount.toLocaleString()} players <span className="text-ctp-subtext1">· {(build.avgWinRate * 100).toFixed(0)}% win rate</span></p>
       <div className="mt-3 flex gap-2 border-t border-ctp-surface1 pt-3">
         <CompareButton selected={selected} onClick={onToggleCompare} name={build.name} />
-        <Link to={`/archetypes/${build.id}`} className="flex min-h-10 flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90">View build →</Link>
+        <Link to={`/archetypes/${build.id}`} className="flex min-h-control flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90">View build →</Link>
       </div>
       <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Build details</summary>
+        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">Build details<DisclosureChevron /></summary>
         <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
           <span>{build.deckCount.toLocaleString()} appearances</span>
           <span>{build.eventCount.toLocaleString()} events</span>

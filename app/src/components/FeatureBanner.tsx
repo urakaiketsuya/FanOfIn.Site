@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface FeatureTip {
@@ -26,22 +26,7 @@ function tipIndexForNow(): number {
 }
 
 export default function FeatureBanner() {
-  const [index, setIndex] = useState(tipIndexForNow);
-
-  // Aligned to real minute boundaries (not just "60s after mount") so the tip is the same for
-  // every visitor during a given minute, and stays in sync even if the tab is left open for hours.
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    const scheduleNext = () => {
-      const delay = 60_000 - (Date.now() % 60_000);
-      timeoutId = setTimeout(() => {
-        setIndex(tipIndexForNow());
-        scheduleNext();
-      }, delay);
-    };
-    scheduleNext();
-    return () => clearTimeout(timeoutId);
-  }, []);
+  const [index] = useState(tipIndexForNow);
 
   const tip = FEATURE_TIPS[index];
 

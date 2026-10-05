@@ -4,7 +4,8 @@ import { useArchetypeTaxonomyData } from "./data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import LoadMore from "../../components/LoadMore";
 import StaleDataNotice from "../../components/StaleDataNotice";
-import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { InlineState } from "../../components/ui/ContentState";
@@ -191,47 +192,33 @@ export default function ArchetypesIndex() {
       <PageHeader
         title="Archetypes"
         actions={
-          <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
+          <Link to="/battle-chart" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">
             Battle chart &rarr;
           </Link>
         }
       />
-      <Link to="/archetypes/strategies" className="mr-4 inline-flex min-h-12 items-center text-ctp-blue">Reviewed strategies</Link>
-      <Link to="/archetypes/mine" className="inline-flex min-h-12 items-center text-ctp-blue">My archetypes · curate locally</Link>
-      <Link to="/archetypes/mine/themes" className="ml-4 inline-flex min-h-12 items-center text-ctp-blue">Themes · reviewed and draft</Link>
-      <DecklistCoverageNotice />
+      <nav aria-label="Archetype resources" className="flex flex-wrap gap-x-4">
+        <Link to="/archetypes/strategies" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Reviewed strategies</Link>
+        <Link to="/archetypes/mine" className="inline-flex min-h-control items-center text-sm text-ctp-blue">My archetypes</Link>
+        <Link to="/archetypes/mine/themes" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Themes</Link>
+        <Link to="/methodology#coverage" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Data coverage</Link>
+      </nav>
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
-      {data?.coverage && <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Data coverage</summary><p className="mt-1">{(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).</p></details>}
-
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-        {(["archetypes", "builds", "validation", "hurtYou"] as ViewMode[]).map((v) => (
-          <button
-            key={v}
-            type="button"
-            onClick={() => {
-              setView(v);
-              setSelectedCompareIds(new Set());
-            }}
-            aria-pressed={view === v}
-            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-              view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {v === "archetypes" ? "Archetypes" : v === "builds" ? "Builds" : v === "validation" ? "Validation" : "Cards That Hurt You"}
-          </button>
-        ))}
+      <div className="mt-4">
+        <Tabs<ViewMode> variant="pill" wrap baseId="archetype-view" label="Archetype view" active={view}
+          tabs={[{key: "archetypes", label: "Archetypes"}, {key: "builds", label: "Builds"}, {key: "validation", label: "Validation"}, {key: "hurtYou", label: "Cards That Hurt You"}]}
+          onChange={value => { setView(value); setSelectedCompareIds(new Set()); }} />
       </div>
 
-      {view === "archetypes" && (
-        <>
+      <TabPanel baseId="archetype-view" tab="archetypes" active={view}>
           <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
             <label className="sr-only" htmlFor="archetype-champion">Champion</label>
-            <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => setChampionFilter(event.target.value || null)} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+            <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => setChampionFilter(event.target.value || null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
               <option value="">All champions</option>
               {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
             </select>
             <label className="sr-only" htmlFor="archetype-confidence">Confidence</label>
-            <select id="archetype-confidence" value={confidenceFilter} onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+            <select id="archetype-confidence" value={confidenceFilter} onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
               <option value="established">Established</option>
               <option value="all">Established + emerging</option>
             </select>
@@ -249,11 +236,9 @@ export default function ArchetypesIndex() {
               );
             })}
           </div>
-        </>
-      )}
+      </TabPanel>
 
-      {view === "builds" && (
-        <>
+      <TabPanel baseId="archetype-view" tab="builds" active={view}>
       <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
         <select
           value={championFilter ?? ""}
@@ -262,7 +247,7 @@ export default function ArchetypesIndex() {
             setChampionFilter(e.target.value || null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => (
@@ -272,12 +257,12 @@ export default function ArchetypesIndex() {
           ))}
         </select>
 
-        <select value={sortMode} aria-label="Sort builds" onChange={(event) => { setSortMode(event.target.value as SortMode); setBuildVisibleCount(BUILD_PAGE_SIZE); }} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+        <select value={sortMode} aria-label="Sort builds" onChange={(event) => { setSortMode(event.target.value as SortMode); setBuildVisibleCount(BUILD_PAGE_SIZE); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
           {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
         </select>
       </div>
       <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More filters{seasonId !== null || confidenceFilter === "all" ? " · active" : ""}</summary>
+        <summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">More filters{seasonId !== null || confidenceFilter === "all" ? " · active" : ""}<DisclosureChevron /></summary>
         <div className="mt-2 flex flex-wrap gap-2">
         <select
           value={seasonId ?? ""}
@@ -286,7 +271,7 @@ export default function ArchetypesIndex() {
             setSeasonId(e.target.value ? Number(e.target.value) : null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
         >
           <option value="">All seasons</option>
           {seasonsPresent.map(([id, name]) => (
@@ -303,7 +288,7 @@ export default function ArchetypesIndex() {
             setConfidenceFilter(e.target.value as ConfidenceFilter);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
         >
           <option value="established">Established</option>
           <option value="all">Established + emerging</option>
@@ -316,7 +301,7 @@ export default function ArchetypesIndex() {
       )}
 
       {rows.length > 1 && (
-        <details className="mt-4 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Build metagame map</summary><ArchetypeMetaMap
+        <details className="mt-4 text-xs text-ctp-subtext0"><summary className="flex min-h-control cursor-pointer list-none items-center gap-2 hover:text-ctp-blue [&::-webkit-details-marker]:hidden">Build metagame map<DisclosureChevron /></summary><ArchetypeMetaMap
           builds={rows}
           scopeLabel={`${seasonId === null ? "all seasons" : seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? "selected season"}${championFilter ? ` · ${championFilter}` : ""}`}
         /></details>
@@ -338,20 +323,19 @@ export default function ArchetypesIndex() {
         onLoadMore={() => setBuildVisibleCount((count) => count + BUILD_PAGE_SIZE)}
         label="Load more builds"
       />
-        </>
-      )}
+      </TabPanel>
 
-      {view === "hurtYou" && (
+      <TabPanel baseId="archetype-view" tab="hurtYou" active={view}>
         <Suspense fallback={<p className="mt-6 text-ctp-subtext1">Loading…</p>}>
           <ArchetypeHurtYouView taxonomy={data} />
         </Suspense>
-      )}
+      </TabPanel>
 
-      {view === "validation" && (
+      <TabPanel baseId="archetype-view" tab="validation" active={view}>
         <Suspense fallback={<p className="mt-6 text-ctp-subtext1">Loading…</p>}>
           <ArchetypeValidationView />
         </Suspense>
-      )}
+      </TabPanel>
       {(view === "archetypes" || view === "builds") && <ArchetypeComparisonBar selectedIds={selectedCompareIds} kind={view} onClear={() => setSelectedCompareIds(new Set())} />}
     </PageLayout>
   );

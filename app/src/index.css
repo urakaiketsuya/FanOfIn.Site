@@ -18,6 +18,13 @@
 /* Charcoal surfaces keep Dark Forest blue for emphasis instead of tinting every panel. */
 :root {
   color-scheme: dark;
+  /* Semantic colors stay readable regardless of the operating system theme. */
+  --catppuccin-color-red: #f38ba8;
+  --catppuccin-color-red-500: #f38ba8;
+  --catppuccin-color-yellow: #f9e2af;
+  --catppuccin-color-yellow-500: #f9e2af;
+  --catppuccin-color-green: #a6e3a1;
+  --catppuccin-color-green-500: #a6e3a1;
   --catppuccin-color-blue: #a4c8e1;
   --catppuccin-color-blue-500: #a4c8e1;
   --catppuccin-color-mauve: #d2c2e8;

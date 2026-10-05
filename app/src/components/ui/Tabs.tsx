@@ -2,7 +2,7 @@ import { useRef, type KeyboardEvent, type ReactNode } from "react";
 
 export interface TabOption<T extends string> { key: T; label: string }
 
-export default function Tabs<T extends string>({ tabs, active, onChange, label = "View", baseId, variant = "underline" }: { tabs: TabOption<T>[]; active: T; onChange: (tab: T) => void; label?: string; baseId?: string; variant?: "underline" | "pill" }) {
+export default function Tabs<T extends string>({ tabs, active, onChange, label = "View", baseId, variant = "underline", wrap = false }: { tabs: TabOption<T>[]; active: T; onChange: (tab: T) => void; label?: string; baseId?: string; variant?: "underline" | "pill"; wrap?: boolean }) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
   // Roving-tabindex tabs per the WAI-ARIA pattern: only the active tab is in the tab order, and
@@ -27,7 +27,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
   }
 
   return (
-    <div data-component="Tabs" ref={tablistRef} className={`flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth ${variant === "underline" ? "border-b border-ctp-surface1" : ""}`} role="tablist" aria-label={label}>
+    <div data-component="Tabs" ref={tablistRef} className={`flex max-w-full gap-1 ${wrap ? "flex-wrap" : "overflow-x-auto overscroll-x-contain scroll-smooth"} ${variant === "underline" ? "border-b border-ctp-surface1" : ""}`} role="tablist" aria-label={label}>
       {tabs.map((tab, index) => {
         const selected = active === tab.key;
         return (

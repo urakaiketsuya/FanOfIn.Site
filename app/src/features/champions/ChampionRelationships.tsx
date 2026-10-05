@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { ArchetypeTaxonomyData, Card, RelationshipEvidence } from '@gatcg/shared';
 import Section from '../../components/ui/Section';
+import DisclosureChevron from '../../components/DisclosureChevron';
 import Button from '../../components/ui/Button';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import { championNameToSlug } from '../../lib/championSlug';
@@ -34,15 +35,25 @@ export default function ChampionRelationships({ championName, taxonomy, catalog,
             <ArchetypePreview names={variant.cards} cardImages={catalog} />
           </div>)}
           {relationship.variants.length > 1 && <p className="mb-3 text-sm text-ctp-subtext1">A match contains either complete variant. Variants can overlap.</p>}
+          <div className="space-y-2">
+            {local.filter(f => f.evidence.supported || f.builds.some(b => b.evidence.supported)).map(family => <div key={family.familyId}>
+              <h4 className="font-medium">{families.get(family.familyId)?.name ?? championName}</h4>
+              <p className="text-sm text-ctp-subtext1">{family.evidence.supported ? 'Supported family' : 'Supported build in this family'} · {family.evidence.matchingDeckCount.toLocaleString()}/{family.evidence.deckCount.toLocaleString()} decklists</p>
+            </div>)}
+            {!local.some(f => f.evidence.supported || f.builds.some(b => b.evidence.supported)) && <p className="text-sm text-ctp-subtext1">Observed only · no supported family or build</p>}
+          </div>
+          <details className="group mt-3 border-t border-ctp-surface1 pt-2">
+            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-blue [&::-webkit-details-marker]:hidden">Build evidence · {local.reduce((sum, f) => sum + f.builds.length, 0)} builds<DisclosureChevron className="group-open:rotate-180" /></summary>
           {local.map(family => <div key={family.familyId} className="mt-3 border-t border-ctp-surface1 pt-3">
             <h4 className="font-medium">{families.get(family.familyId)?.name ?? championName}</h4>
             <Evidence evidence={family.evidence} />
-            {family.variants.map((variant, index) => relationship.variants.length > 1 && <p key={variant.variantId} className="text-sm text-ctp-subtext1">Variant {index + 1}: {variant.evidence.matchingDeckCount}/{variant.evidence.deckCount} decklists · {variant.evidence.supported ? 'Supported' : 'Observed only'}</p>)}
+            {family.variants.map((variant, index) => relationship.variants.length > 1 && <p key={variant.variantId} className="text-sm text-ctp-subtext1">Variant {index + 1}: {variant.evidence.matchingDeckCount}/{variant.evidence.deckCount} decklists · {variant.evidence.supported ? 'Supported' : variant.evidence.matchingDeckCount === 0 ? 'No matches' : 'Observed only'}</p>)}
             <ul className="mt-2 space-y-2">{family.builds.map(build => <li key={build.buildId}>
               <Link className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.buildId}`}>{builds.get(build.buildId)?.name ?? 'View build'}</Link>
               <Evidence evidence={build.evidence} />
             </li>)}</ul>
           </div>)}
+          </details>
           {connected.length > 0 && <div className="mt-4 border-t border-ctp-surface1 pt-3">
             <h4 className="text-sm font-medium">Supported families or builds in other champions</h4>
             <div className="flex flex-wrap gap-x-3">{connected.map(name => <Link key={name} className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/champions/${championNameToSlug(name)}#relationships`}>{name}</Link>)}</div>
