@@ -4201,3 +4201,52 @@ qualifying non-mirror records against positive-weight opponents. Card artwork re
 not an exact tested list. This first slice does not infer causal card improvements, compute an
 equilibrium, or claim validated predictive accuracy. Chronological event-level backtesting and
 uncertainty calibration are required before presenting the model as a tournament forecast.
+
+### Event scopes and chronological evaluation (`shared/src/fieldHistory.ts`)
+
+`analysis/field-history.json` now supplies Explore a field. It contains completed events with
+public, identifiable Champion decks; each entry retains its exact source format, UTC event-start
+day, UTC completion day, Champion deck counts, and unthresholded pairing aggregates. It contains
+no player identifiers or deck contents. Events and pairing IDs are deduplicated. Only complete,
+two-player, resolved winner/loser or tied/tied pairings enter the new model. Byes, double losses,
+waiting results, unidentified Champions, and invalid start dates are excluded. An absent, invalid,
+or pre-start completion day prevents that event from contributing to backtest training.
+Existing Battle Chart tabs retain their original calculation and population.
+
+The explorer defaults to Standard and the 90 inclusive calendar days ending on the latest
+published event-start day in that format. Date controls use inclusive start-day boundaries and
+never pool different formats (including Team Standard). Both default field shares and matchup
+payoffs use the selected events. Counts pool before the published `minMatchups` threshold (default
+5) is applied. Small Champion populations stay in the expected field instead of being silently
+removed; their unsupported matchups widen the existing missing-data bounds. A format/date scope
+owns its own weight draft for the mounted visit, preserved through format and tab changes. Reset
+applies only to the current scope. This replaces the previous all-history default described above.
+
+The published historical check is independent of user weights and date controls: for each target
+event, use only the preceding 90 days of same-format events whose completion day is strictly
+before the target's start day. Same-day and overlapping multi-day events cannot supply training
+results. Historical field weights, candidates, supported opponents, and the historical-score
+baseline are all derived from that training population. Later event results never choose weights.
+
+Complete field coverage is too scarce for a full-field point-forecast evaluation. The displayed
+**covered-matchup check** therefore conditions both prediction and outcome on the Champion's
+training-supported opponents: positive training-field share plus a qualifying matchup or a
+symmetric mirror. Divide the model's known weighted score by that training-field coverage.
+Compare against the Champion's later score only in matches against those same supported opponents.
+The baseline is its pooled historical score against that same supported opponent set, shrunk
+with the same weight-10 prior. A mirror contributes two player outcomes averaging 0.5. Exclude
+Champion/event rows without historical matches or supported later outcomes from both errors.
+
+Both displayed errors are mean absolute error, equally weighted per evaluated Champion/event row,
+reported in percentage points. Publish evaluated rows, tested events, skipped rows, mean prior-field
+coverage across evaluated rows, and excluded player-match outcomes (a match can contribute two).
+Coverage describes prior-field support, not the fraction of all tournament attendance represented.
+These errors evaluate a conditional score estimate; they do not validate full-field rankings,
+winning-deck selection, an equilibrium, or causal improvement. Small event samples and dependence
+between players/events remain; no significance interval or superiority claim is made. This is a
+retrospective evaluation using currently published decklists: their historical publication time is
+not reconstructed, and the card catalog supplies Champion identity rather than historical legality.
+
+The normal analysis build writes this dataset atomically and registers it in the data manifest.
+`node --import tsx pipeline/scripts/rebuild-field-history.ts` refreshes only this projection and its
+manifest entry from local published event bundles and the local cached card catalog, without a crawl.

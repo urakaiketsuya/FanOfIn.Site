@@ -8,7 +8,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import ExpectedField from "./ExpectedField";
+import ScopedExpectedField from "./ScopedExpectedField";
 import Button from "../../components/ui/Button";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import PageLayout from "../../components/layout/PageLayout";
@@ -136,7 +136,7 @@ export default function BattleChart() {
       {signatures.length > 0 && (
         <>
           <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" baseId="battle-chart" variant="pill" wrap />
-          {data && <TabPanel baseId="battle-chart" tab="field" active={tab} keepMounted><ExpectedField data={data} /></TabPanel>}
+          {data && <TabPanel baseId="battle-chart" tab="field" active={tab} keepMounted><ScopedExpectedField enabled={tab === "field"} /></TabPanel>}
 
           <TabPanel baseId="battle-chart" tab="matrix" active={tab}>
             <div className="mt-6 overflow-x-auto">

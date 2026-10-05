@@ -1,3 +1,6 @@
+import { computeFieldHistory } from "./fieldHistory.js";
+import { writeJsonAtomic } from "../lib/atomicWrite.js";
+import { config } from "../config.js";
 import { buildHomepage } from "./homepage.js";
 import { writeReferenceArchetypes } from "./writeReferenceArchetypes.js";
 import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
@@ -160,6 +163,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     JSON.stringify({ generatedAt: new Date().toISOString(), stats: compositionWinRates }),
     "utf-8",
   );
+
+  await writeJsonAtomic(path.join(DATA_DIR, "field-history.json"), computeFieldHistory(completed, ctx, config.minBattleChartSampleSize), 0);
 
   const { archetypes, namedSpirits, battleChart } = computeArchetypeAnalysis(completed, ctx);
   await writeFile(
