@@ -4297,3 +4297,39 @@ xorshift32 generator begins at `0x6d2b79f5`, with events sorted by ID, making re
 The app runs the calculation only on request in a worker, cancels obsolete work, hides stale
 results during edits, and offers retry after a worker failure. Sampling calibration against later
 events remains required before any confidence or tournament-forecast claim.
+
+### Chronological range compatibility audit (`shared/src/fieldCalibration.ts`)
+
+Run `node --import tsx pipeline/scripts/audit-field-ranges.ts` from the repository root to regenerate
+`docs/reports/field-range-audit.json` from the published field-history artifact. This is an offline
+audit, not an app forecast or a pipeline publication. It records source generation time, settings,
+format summaries and every evaluated Champion/event comparison. No network access is required.
+
+Targets are the latest 100 events per format, selected by start date then ID before reading outcomes.
+Training uses only the prior 90 inclusive days, with completion strictly before target start day;
+same-day events, overlapping events, and other formats are excluded. Each training date's fixed
+published opponent shares feed the existing 300-resample diagnostic. Five contributing training
+events remain required per Champion. The audit evaluates Champions observed in target pairings,
+skipping those without a training range or any non-mirror later matches against training opponents.
+
+Later results are standardized to the **training** opponent shares. Known later matchup scores use
+raw `(wins + ties/2)/games`, without shrinkage; mirrors remain 0.5 and unknown opponents remain [0,1].
+Target attendance never selects weights or training eligibility. Later lower/upper bounds therefore
+represent what can be measured for the same opponent mix, rather than treating a different realized
+opponent schedule as the forecast target. No later minimum-match threshold is applied; sample
+sizes are retained explicitly, and small-sample outcome noise remains.
+
+A later range entirely inside the training range is `inside`; a disjoint range is `outside`; partial
+overlap is `inconclusive`. Comparisons use a 1e-12 floating-point tolerance. This is compatibility
+with noisy later outcomes, **not nominal confidence coverage** for an unobserved population mean.
+Do not interpret `inside / (inside + outside)` as coverage: dropping inconclusive rows selects on
+evidence availability. Mean later-field coverage and mean predicted width accompany all counts.
+Repeated players, same-day targets sharing training, and the retrospective availability of public
+lists also preclude treating these rows as independent statistical trials.
+
+The initial report (source generated 2026-10-05) covers 100 Standard targets from 2026-07-18 through
+2026-10-04: 762 evaluated comparisons, 51 inside, 0 outside, 711 inconclusive and 26 skipped.
+Mean later-field coverage is 20.1%; mean resampling width is 34.0 percentage points. Team Standard
+has eight targets and no evaluable comparisons. This does **not** establish calibration: sparse later
+matchups dominate the result. A broader multi-event holdout with fixed training weights is the next
+useful evaluation before making confidence claims.
