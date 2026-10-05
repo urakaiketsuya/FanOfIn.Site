@@ -1,6 +1,8 @@
 import { useId, useMemo, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import ElementIcon from "./ElementIcon";
+import { deckPreviewElements } from "../lib/deckPreviewElements";
 import CardArtTile from "./CardArtTile";
 import DeckCardPreview from "./DeckCardPreview";
 import DisclosureChevron from "./DisclosureChevron";
@@ -59,6 +61,8 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   const leadName = championName ?? materialLines?.[0]?.card ?? model.preview?.lines[0]?.name ?? "Champion not specified";
   const leadCard = cards.get(leadName) ?? championCard ?? representativeCards.get(leadName);
   const label = leadCard?.name ?? leadName;
+  const elements = deckPreviewElements(materialLines?.length ? materialLines.filter(line => line.quantity > 0).map(line => cards.get(line.card) ?? (leadCard?.name === line.card ? leadCard : undefined)) : [leadCard]);
+  const elementIcons = elements.length > 0 && <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Spirit and champion elements">{elements.map(element => <span key={element} className="inline-flex rounded-full bg-ctp-crust/90 p-1"><ElementIcon element={element} size={24} /></span>)}</div>;
   const art = <><CardArtTile card={leadCard} name={label} /><span className="mt-1 block break-words text-xs leading-snug text-ctp-subtext1">{label}</span></>;
   const material = materialLines?.filter(line => line.card !== label).slice(0, 3).map(line => ({ name: line.card, quantity: line.quantity }));
   const preview: DeckPreviewModel["preview"] = material?.length ? { label: "Featured material cards", lines: material } : model.preview;
@@ -74,6 +78,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
         <div className="px-5 pt-5"><h2 className="break-words text-2xl font-semibold leading-tight text-ctp-text group-hover:text-ctp-blue">{model.title}</h2></div>
       </Link> : <><CardArtTile card={leadCard} name={label} artworkOnly /><h2 className="px-5 pt-5 break-words text-2xl font-semibold leading-tight text-ctp-text">{model.title}</h2></>}
       <div className="px-5 pb-2">
+        {elementIcons}
         {leadCard ? <Link to={`/cards/${leadCard.slug}`} className="inline-flex min-h-control items-center break-words text-sm text-ctp-subtext1 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{label}</Link> : <p className="mt-2 break-words text-sm text-ctp-subtext1">{label}</p>}
         <p className="text-xs text-ctp-subtext0">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"} · {model.source.label}</p>
         {model.status}
@@ -99,6 +104,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
           <div className="relative col-start-1 row-start-1 min-w-0 self-end p-4 pt-12 text-white">
             <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</>}</p>
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
+            {elementIcons}
           </div>
         </div>
       </Link>
@@ -115,6 +121,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
         <div className="min-w-0">{leadCard ? <Link target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} to={`/cards/${leadCard.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
           <h2 className="break-words text-xl font-bold leading-snug text-ctp-text sm:text-2xl">{model.title}</h2>
+          {elementIcons}
           <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
           {model.metadata && <div className="mt-2 break-words text-xs leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
         </div>
