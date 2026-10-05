@@ -1,3 +1,4 @@
+import { buildHomepage } from "./homepage.js";
 import { writeReferenceArchetypes } from "./writeReferenceArchetypes.js";
 import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
@@ -226,6 +227,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     previousTaxonomy,
   );
   await writeFile(path.join(DATA_DIR, "archetype-taxonomy.json"), JSON.stringify(archetypeTaxonomy), "utf-8");
+
+  await writeFile(path.join(DATA_DIR, "homepage.json"), JSON.stringify(await buildHomepage(deckSightings, archetypeTaxonomy, path.dirname(DATA_DIR))), "utf-8");
 
   const achievements = computeAchievements(completed, ctx, ratings, upsets, deckScores, deckSightings);
   await writeFile(path.join(DATA_DIR, "achievements.json"), JSON.stringify(achievements), "utf-8");

@@ -32,6 +32,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-hipster", file: "analysis/hipster.json" },
   { key: "analysis-similarity", file: "analysis/similarity.json" },
   { key: "analysis-player-decks", file: "analysis/player-decks.json" },
+  { key: "analysis-homepage", file: "analysis/homepage.json" },
   { key: "analysis-deck-sightings", file: "analysis/deck-sightings.json" },
   { key: "analysis-deck-popularity-index", file: "analysis/deck-popularity-index.json" },
   { key: "analysis-deck-card-index", file: "analysis/deck-card-index.json" },

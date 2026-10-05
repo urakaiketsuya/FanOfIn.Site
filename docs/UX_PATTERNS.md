@@ -103,3 +103,15 @@ Deck analysis results use draw-count and Reserve-cost bars with visible values. 
 Use shared pill Tabs for peer browse views (cards, decks, archetypes, and event results), with TabPanel associations for newly migrated views. Underline tabs remain appropriate inside a focused task such as choosing an import source. Wrap long browse tab sets on phones instead of compressing controls. Controls remain at least 48px tall.
 
 Keep promotional messages outside sticky navigation and stable for the mounted visit. Use PageHeader for signed-out feature entry points. Import entry flows use one framing surface. Shared champion relationships show exact card variants and supported family summaries first, with one inline build-evidence disclosure per relationship; observed and zero-match details remain accessible inside it. Semantic danger, warning, and success colors are explicitly defined for the site's dark surfaces regardless of operating system theme.
+
+## Homepage discovery
+
+Keep the four task shortcuts directly below the introduction. Returning players get a
+Continue your decks link before the introduction. Homepage discovery reads the bounded
+`analysis/homepage.json` projection, regenerated with analysis: the latest sighting for
+three distinct champions (event date descending, placement ascending to break ties), plus
+three established families from different champions ordered by player count. Featured
+identity cards are a preview of each family's pool, not an exact tested combo. Link to
+the champion's Builds tab for full families and shared relationships. Show result dates,
+visible loading/error/retry and empty states; retain navigation when data is unavailable.
+Keep one interactive analysis example, with detailed assumptions in calculation docs.

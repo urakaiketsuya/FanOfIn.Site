@@ -992,3 +992,10 @@ export interface AchievementsData {
   definitions: AchievementDefinition[];
   unlocks: AchievementUnlock[];
 }
+
+/** Small landing-page projection; membership and card pools remain in the full taxonomy. */
+export interface HomepageData {
+  generatedAt: string;
+  decks: { id: string; championName: string; eventName: string; eventDate: string; placement: number | null; to: string; archetype: string; material: { card: string; quantity: number }[] }[];
+  families: { id: string; name: string; championName: string; identityCards: string[] }[];
+}
