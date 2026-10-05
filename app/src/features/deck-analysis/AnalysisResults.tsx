@@ -1,3 +1,6 @@
+import AccessTimeline, { ScenarioControls, type AnalysisScenario } from './AccessTimeline';
+import { naturalCardsSeenByTurn } from '../../lib/turnToPlay';
+import { probabilityAtLeast } from '../deckbuilder/synergyReadiness';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
@@ -9,9 +12,11 @@ import type { CalculatorLine } from '../../lib/calculatorDashboard';
 import type { DeckAnalysisProfile } from '../../lib/analysisProfile';
 import { activeAnalysisPlan } from '../../lib/analysisProfile';
 const percent = (value: number | null) => value == null ? 'Unavailable' : `${(value * 100).toFixed(1)}%`;
-export default function AnalysisResults({ main, material, catalog, profile, onExplore }: { main: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; profile: DeckAnalysisProfile | null; onExplore: (card?: string) => void }) {
+export default function AnalysisResults({ main, material, catalog, profile, onExplore, scenario, onScenarioChange }: { main: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; profile: DeckAnalysisProfile | null; onExplore: (card?: string) => void; scenario: AnalysisScenario; onScenarioChange: (value: AnalysisScenario) => void }) {
   const report = useMemo(() => computeDeckAnalysisReport(main, material, catalog, profile ? activeAnalysisPlan(profile) : null, !!profile?.reviewedAt), [main, material, catalog, profile]);
   const plan = profile ? activeAnalysisPlan(profile) : null;
+  const [selectedCard, setSelectedCard] = useState(main[0]?.name ?? '');
+  const tracked = report.cards.find((card) => card.name === selectedCard) ?? report.cards[0];
   const [all, setAll] = useState(false);
   const art = (name: string) => { const card = catalog.get(name); const content = <><CardArtTile card={card} name={name} /><span className="mt-2 block break-words text-xs font-medium">{name}</span></>; return card ? <Link className="block w-24 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" target="_blank" rel="noopener noreferrer" to={`/cards/${card.slug}`}>{content}</Link> : <div className="w-24 shrink-0">{content}</div>; };
   return <div className="mt-4 space-y-4">
@@ -20,6 +25,14 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       <div className="mt-4 flex flex-wrap gap-4">{material.map((line) => <div key={line.name}>{art(line.name)}</div>)}</div>
       <p className="mt-4 text-lg"><strong>{report.opening} cards</strong> in the modeled opening hand</p>
       <p className="mt-1 text-sm text-ctp-subtext1">{report.openingInferred ? 'Opening size detected from your starting champion.' : 'Using the default opening size because starting draw text could not be identified.'} Counts are capped at deck size.</p>
+    </section>
+    <section className="rounded-xl border border-ctp-surface1 p-4">
+      <h2 className="text-lg font-semibold">When will I find my card?</h2>
+      <p className="mt-1 text-sm text-ctp-subtext1">Deadline and play order carry into quick calculators. Detailed models retain their own assumptions.</p>
+      <ScenarioControls value={scenario} onChange={onScenarioChange} />
+      {tracked ? <><div className="mb-3">{art(tracked.name)}</div><label className="block text-sm">Card to track<select className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={tracked.name} onChange={(event) => setSelectedCard(event.target.value)}>{report.cards.map((card) => <option key={card.name}>{card.name}</option>)}</select></label>
+      <AccessTimeline values={Array.from({ length: 8 }, (_, i) => probabilityAtLeast(report.size, tracked.quantity, Math.min(report.size, naturalCardsSeenByTurn(i + 1, report.opening, scenario.order)), 1))} label={`${tracked.name} · ${tracked.quantity} copies in ${report.size} · find 1+`} scenario={scenario} onTurnChange={(turn) => onScenarioChange({ ...scenario, turn })} />
+      <Button className="mt-4" onClick={() => onExplore(tracked.name)}>Compare card access</Button></> : <p className="mt-3 text-sm">Add Main Deck cards to calculate access by turn.</p>}
     </section>
     {report.unresolved.length > 0 && <p role="status" className="rounded-xl border border-ctp-yellow/40 p-3 text-sm">Catalog data is unavailable for {report.unresolved.join(', ')}. Access odds still use listed quantities; costs, draw effects, and progression may be incomplete.</p>}
     <section className="rounded-xl border border-ctp-surface1 p-4">

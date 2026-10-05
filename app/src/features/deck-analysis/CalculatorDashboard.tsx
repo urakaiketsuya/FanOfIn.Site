@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Tabs, { TabPanel } from '../../components/ui/Tabs';
 import Button from '../../components/ui/Button';
 import DisclosureChevron from '../../components/DisclosureChevron';
+import AccessTimeline, { ScenarioControls, type AnalysisScenario } from './AccessTimeline';
 import CalculatorCardPool from './CalculatorCardPool';
 import CalculatorCardContext from './CalculatorCardContext';
 import { calculatorTools as tools, calculatorGroups, calculatorInfo, type CalculatorTool as Tool } from './calculatorTools';
@@ -34,21 +35,22 @@ function readSettings(key: string): Settings {
 }
 const percent = (value: number | null) => value === null ? '–' : `${(value * 100).toFixed(1)}%`;
 
-export default function CalculatorDashboard({ main, sideboard, material, catalog, opening, plan, storageKey, onEditPlan, initialCard, detailedModels = {} }: { main: CalculatorLine[]; sideboard: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; opening: number; plan: AnalysisPlan | null; storageKey: string; onEditPlan: () => void; initialCard?: { name: string; nonce: number }; detailedModels?: Partial<Record<Tool, ReactNode>> }) {
+export default function CalculatorDashboard({ main, sideboard, material, catalog, opening, plan, storageKey, onEditPlan, initialCard, scenario, onScenarioChange, detailedModels = {} }: { main: CalculatorLine[]; sideboard: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; opening: number; plan: AnalysisPlan | null; storageKey: string; onEditPlan: () => void; initialCard?: { name: string; nonce: number }; scenario: AnalysisScenario; onScenarioChange: (value: AnalysisScenario) => void; detailedModels?: Partial<Record<Tool, ReactNode>> }) {
   const key = `fanofin:calculator-dashboard:v1:${storageKey}`;
-  const [settings, setSettings] = useState(() => initialCard ? { ...readSettings(key), tool: 'Find cards' as Tool, selected: [initialCard.name], required: 1, turn: 3, order: 'first' as PlayOrder } : readSettings(key));
+  const [localSettings, setSettings] = useState(() => initialCard ? { ...readSettings(key), tool: 'Find cards' as Tool, selected: [initialCard.name], required: 1 } : readSettings(key));
+  const settings = useMemo(() => ({ ...localSettings, ...scenario }), [localSettings, scenario]);
   const previousRequest = useRef(initialCard);
   useEffect(() => {
     if (!initialCard || previousRequest.current === initialCard) return;
     previousRequest.current = initialCard;
-    setSettings((current) => ({ ...current, tool: 'Find cards', selected: [initialCard.name], required: 1, turn: 3, order: 'first' }));
+    setSettings((current) => ({ ...current, tool: 'Find cards', selected: [initialCard.name], required: 1 }));
     setModelViews((current) => ({ ...current, 'Find cards': false }));
   }, [initialCard]);
   const [modelViews, setModelViews] = useState<Partial<Record<Tool, boolean>>>({});
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(true);
   useEffect(() => { try { localStorage.setItem(key, JSON.stringify(settings)); setSaved(true); } catch { setSaved(false); } }, [key, settings]);
-  const update = (patch: Partial<Settings>) => startTransition(() => setSettings((current) => ({ ...current, ...patch })));
+  const update = (patch: Partial<Settings>) => { if (patch.turn !== undefined || patch.order !== undefined) onScenarioChange({ turn: patch.turn ?? scenario.turn, order: patch.order ?? scenario.order }); startTransition(() => setSettings((current) => ({ ...current, ...patch }))); };
   const size = main.reduce((sum, line) => sum + line.quantity, 0);
   const seen = Math.min(size, naturalCardsSeenByTurn(settings.turn, opening, settings.order));
   const names = new Set(main.map((line) => line.name));
@@ -152,9 +154,9 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
       <p className="mt-2 text-sm text-ctp-subtext1">{info.note}</p>
       {!!detailedModels[settings.tool] && !standalone && <div className="mt-4"><Tabs tabs={[{ key: 'quick', label: 'Quick estimate' }, { key: 'model', label: info.model ?? 'Detailed model' }]} active={modelActive ? 'model' : 'quick'} onChange={(view) => setModelViews((current) => ({ ...current, [settings.tool]: view === 'model' }))} baseId="calculator-mode" label="Scenario depth" variant="pill" /><p className="mt-2 text-xs text-ctp-subtext1">Detailed models keep their own timing and scenario inputs. Saved plan roles are shared where supported.</p></div>}
       <div hidden={modelActive} role={detailedModels[settings.tool] && !standalone ? 'tabpanel' : undefined} id="calculator-mode-panel-quick" aria-labelledby={detailedModels[settings.tool] && !standalone ? 'calculator-mode-tab-quick' : undefined}>
-      {settings.tool !== 'Next draw' && <div className="my-4 grid max-w-md grid-cols-2 gap-3"><label className="text-xs text-ctp-subtext0">Deadline<select value={settings.turn} onChange={(event) => update({ turn: Number(event.target.value) })} className={inputClass}>{Array.from({ length: 8 }, (_, i) => <option key={i} value={i + 1}>Turn {i + 1}</option>)}</select></label><label className="text-xs text-ctp-subtext0">Play order<select value={settings.order} onChange={(event) => update({ order: event.target.value as PlayOrder })} className={inputClass}><option value="first">Going first</option><option value="second">Going second</option></select></label></div>}
+      {settings.tool !== 'Next draw' && <ScenarioControls value={scenario} onChange={onScenarioChange} />}
       <div className="grid items-start gap-5 lg:grid-cols-[1fr_1fr]">
-        <div className="identity-surface min-w-0 space-y-3 rounded-2xl border border-ctp-surface1 p-4" aria-live="polite" aria-busy={pending}><CalculatorCardContext names={scenarioCards} catalog={catalog} />{result}{pending && <p className="text-xs text-ctp-subtext0">Recalculating…</p>}</div>
+        <div className="identity-surface min-w-0 space-y-3 rounded-2xl border border-ctp-surface1 p-4" aria-live="polite" aria-busy={pending}><CalculatorCardContext names={scenarioCards} catalog={catalog} />{result}{(settings.tool === 'Find cards' || settings.tool === 'Swap comparison') && selected.length > 0 && <AccessTimeline values={Array.from({ length: 8 }, (_, i) => probabilityAtLeast(size, countSelectedCopies(settings.tool === 'Swap comparison' && validSwap ? validSwap : main, selected), Math.min(size, naturalCardsSeenByTurn(i + 1, opening, settings.order)), settings.required))} label={`${selected.join(' / ')} · ${countSelectedCopies(settings.tool === 'Swap comparison' && validSwap ? validSwap : main, selected)} matching copies in ${size} · find ${settings.required}+${settings.tool === 'Swap comparison' && validSwap ? ` · preview: ${settings.quantity} ${settings.out} → ${settings.incoming}` : ''}`} scenario={scenario} onTurnChange={(turn) => onScenarioChange({ ...scenario, turn })} />}{pending && <p className="text-xs text-ctp-subtext0">Recalculating…</p>}</div>
         <InputPanel key={settings.tool} initialOpen={settings.tool === 'Opening hand' || settings.tool === 'Level timing' || settings.tool === 'Play sequence' || settings.tool === 'Next draw' || settings.tool === 'Unwanted draws' || settings.tool === 'Copies needed' || settings.tool === 'Swap comparison' || !selected.length || settings.tool === 'Plan consistency' || settings.tool === 'Pressure access' || settings.tool === 'Recovery access'}>{controls}</InputPanel>
       </div>
       <details className="mt-4 border-t border-ctp-surface1 pt-2"><summary className="flex min-h-12 cursor-pointer items-center justify-between py-3 text-xs text-ctp-subtext0">Calculation assumptions<DisclosureChevron /></summary><p className="text-xs leading-5 text-ctp-subtext0">{size} Main Deck cards · {opening} opening cards · {seen} cards seen by turn {settings.turn}. Natural draws without replacement. No mulligans or extra draw effects. {info.note} {settings.tool === 'Opening hand' && 'Ingredient pools must be disjoint so one physical card cannot satisfy both requirements.'} {settings.tool === 'Level timing' && 'Fragmented Spirit inspection uses a fixed depth of 12 cards in this quick estimate.'}</p></details>

@@ -21,6 +21,7 @@ import SideboardImpact from "../deckbuilder/SideboardImpact";
 import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
+import type { AnalysisScenario } from "./AccessTimeline";
 import AnalysisResults from "./AnalysisResults";
 
 import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
@@ -44,6 +45,12 @@ export default function DeckAnalysisIndex() {
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
   const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
+  const [scenario, setScenario] = useState<AnalysisScenario>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(`fanofin:calculator-dashboard:v1:${profileStorageKey}`) ?? 'null');
+      return { turn: Number.isInteger(saved?.turn) && saved.turn >= 1 && saved.turn <= 8 ? saved.turn : 3, order: saved?.order === 'second' ? 'second' : 'first' };
+    } catch { return { turn: 3, order: 'first' }; }
+  });
   const profileIdentity = workspace?.deckIdentity ?? workspace?.title ?? workspace?.sourceLabel ?? null;
   const [analysisProfile, setAnalysisProfile] = useState<DeckAnalysisProfile | null>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null);
   const [profileSync, setProfileSync] = useState<"local" | "syncing" | "synced" | "offline">("local");
@@ -98,6 +105,7 @@ export default function DeckAnalysisIndex() {
     saveActiveDeckWorkspace(sessionStorage, next);
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
     setCalculatorCard(undefined);
+    setScenario({ turn: 3, order: "first" });
     setTab("summary");
   }
 
@@ -135,9 +143,9 @@ export default function DeckAnalysisIndex() {
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Results" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    <TabPanel baseId="deck-analysis" tab="summary" active={tab}><AnalysisResults key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><AnalysisResults scenario={scenario} onScenarioChange={setScenario} key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
     <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
-      <CalculatorDashboard initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} detailedModels={{
+      <CalculatorDashboard scenario={scenario} onScenarioChange={setScenario} initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} detailedModels={{
         "Plan consistency": <><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></>,
         "Opening hand": <><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></>,
         "Level timing": <><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
