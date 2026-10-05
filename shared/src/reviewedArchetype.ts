@@ -84,6 +84,8 @@ export const DIANA_IDENTITIES = [
 ];
 
 export const GUO_JIA_IDENTITIES = [
+  { champion: 'Guo Jia', name: 'Fire Guo Jia — Ruby Vengeance / Decree Burn', label: 'Ruby Vengeance / Decree Burn', core: ['Fabled Ruby Fatestone', 'Searing Truth', 'Heated Vengeance', 'Vermilion Decree', 'Blazing Throw'], combines: ['Fire Guo Jia — Ruby Vengeance', 'Fire Guo Jia — Decree Burn'], packages: [{ key: 'ruby', label: 'Ruby / Suzaku variant', cards: ['Fabled Ruby Fatestone', 'Searing Truth', "Suzaku's Command"] }] },
+  { champion: 'Guo Jia', name: 'Fire Guo Jia — Ruby Vengeance', label: 'Ruby Vengeance', core: ['Fabled Ruby Fatestone', 'Searing Truth', 'Heated Vengeance'], packages: [] },
   { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, label: 'Shenju Commands', core: GUO_JIA_COMMAND_CORE, packages: [{ key: 'manifestation', label: 'Auspicious Manifestation variant', cards: GUO_JIA_MANIFESTATION_PACKAGE }] },
   { champion: 'Guo Jia', name: 'Water Guo Jia — Fractals', label: 'Fractals', core: ['Fractal of Rain', 'Fracturize', 'Refracting Missile'], packages: [] },
   { champion: 'Guo Jia', name: 'Fire Guo Jia — Decree Burn', label: 'Decree Burn', core: ['Searing Truth', 'Vermilion Decree', 'Blazing Throw'], packages: [{ key: 'ruby', label: 'Ruby / Suzaku variant', cards: ['Fabled Ruby Fatestone', 'Searing Truth', "Suzaku's Command"] }] },

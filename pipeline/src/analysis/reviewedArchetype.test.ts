@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.ok(copy.strategyArchetypes.some(s => s.name === identity.name), identity.name);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.ok(copy.strategyArchetypes.some(s => s.name === identity.name || REVIEWED_ARCHETYPE_CORES.find(core => core.name === s.name)?.combines?.includes(identity.name)), identity.name);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -65,7 +65,7 @@ test('Slime identity spans three preserved families while Water package remains 
     return [id, copy] as const;
   }));
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
-  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 9);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 10);
   for (const family of families.filter(s => s.name.endsWith('Shenju Commands'))) {
     assert.equal(family.name, 'Wind Guo Jia — Shenju Commands');
     assert.equal(family.reviewedArchetypeEvidence!.manifestationPackageDeckCount, 0);
@@ -211,11 +211,15 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   assert.equal(mixed.name, 'Mixed Diana — Charge the Soul');
 });
 
- test('Guo Jia adds six identities, retains the unresolved family, and treats Ruby as optional', () => {
+ test('Guo Jia distinguishes the Ruby Vengeance core and full Decree union, with component fallback', () => {
   const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Guo Jia'));
   const fire = families.find(s => s.id === 'm4dyqa')!;
-  assert.equal(fire.reviewedArchetypeEvidence!.coreDeckCount, 1342);
+  assert.equal(fire.name, 'Fire Guo Jia — Ruby Vengeance / Decree Burn');
+  assert.equal(fire.reviewedArchetypeEvidence!.coreDeckCount, 1303);
   assert.equal(fire.reviewedArchetypeEvidence!.packageDeckCounts!.ruby, 1298);
+  const ruby = families.find(s => s.id === '194znzn')!;
+  assert.equal(ruby.name, 'Fire Guo Jia — Ruby Vengeance');
+  assert.equal(ruby.reviewedArchetypeEvidence!.coreDeckCount, 316);
   const changed = new Map([...cards].map(([id, counts]) => {
     const copy = new Map(counts); copy.delete('Fabled Ruby Fatestone'); copy.delete("Suzaku's Command");
     return [id, copy] as const;
@@ -224,7 +228,8 @@ test('Arisanna Fractals retain their identity without optional Burst Asunder', (
   assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 9);
   assert.equal(fire.name, 'Fire Guo Jia — Decree Burn');
   assert.equal(fire.reviewedArchetypeEvidence!.packageDeckCounts!.ruby, 0);
-  assert.deepEqual(families.find(s => s.id === '194znzn'), taxonomy.strategyArchetypes.find(s => s.id === '194znzn'));
+  assert.equal(ruby.reviewedArchetypeEvidence, undefined);
+  assert.equal(ruby.name, 'Fire Guo Jia — Searing Truth');
   for (const counts of changed.values()) counts.delete('Vermilion Decree');
   applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
   assert.equal(fire.reviewedArchetypeEvidence, undefined);
@@ -350,4 +355,20 @@ test('Ignis family has a Spirit and level-one Tristan in material, with no highe
     assert.ok(champions.some(card => card.name === 'Tristan, Underhanded' && card.level === 1));
     assert.ok(champions.every(card => card.level !== null && card.level <= 1));
   }
+});
+
+
+test('Guo Jia does not pool separate component support into a combined identity', () => {
+  const family = structuredClone(taxonomy.strategyArchetypes.find(s => s.id === 'm4dyqa')!);
+  const ids = [...new Set(taxonomy.clusters.filter(b => family.buildIds.includes(b.id)).flatMap(b => b.deckIds))];
+  const union = ['Fabled Ruby Fatestone', 'Searing Truth', 'Heated Vengeance', 'Vermilion Decree', 'Blazing Throw'];
+  const split = new Map(ids.map((id, position) => {
+    const counts = new Map(union.map(name => [name, 1]));
+    if (position < 100) counts.delete('Fabled Ruby Fatestone');
+    else if (position < 200) counts.delete('Vermilion Decree');
+    return [id, counts] as const;
+  }));
+  applyReviewedArchetypeEvidence([family], taxonomy.clusters, split);
+  assert.equal(family.reviewedArchetypeEvidence, undefined);
+  assert.equal(family.name, taxonomy.strategyArchetypes.find(s => s.id === family.id)!.reviewedArchetypeEvidence!.originalName);
 });

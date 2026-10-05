@@ -4034,3 +4034,35 @@ app lint retains seven existing Fast Refresh warnings. Jin and Tristan pass 360p
 and 1280px browser checks for headings, preserved build links, keyboard access,
 48px disclosure targets, no nested disclosure and no horizontal overflow. Jin's
 empty/loading/error states pass at 390px. Mobile/desktop screenshots were inspected.
+
+### Guo Jia Ruby Vengeance overlap resolved
+
+Reviewed naming now covers 151/154 families (98.1%); all 154 have been assessed.
+The remaining holds are Lorraine's second event, Zander's fifth player, and Ciel's
+lack of a recurrent plan-specific core. This update changes only `194znzn` and
+`m4dyqa`; membership, IDs, ordering and statistics remain unchanged.
+
+- `194znzn`: **Fire Guo Jia — Ruby Vengeance**, requiring Fabled Ruby Fatestone,
+  Searing Truth and Heated Vengeance jointly in 316/341 decks (92.7%).
+- `m4dyqa`: **Fire Guo Jia — Ruby Vengeance / Decree Burn**, requiring those three
+  cards plus Vermilion Decree and Blazing Throw jointly in 1303/1354 decks (96.2%).
+  Its optional Ruby / Suzaku package remains 1298/1354; Suzaku's Command is not
+  required by the combined identity.
+
+The committed catalog confirms Ruby can damage its controller's champion at
+recollection, enabling Heated Vengeance's damage-taken power bonus. Searing Truth
+and the burn actions support Ruby's fire non-combat damage quest trigger. This
+identifies a card plan, not proof that a sequence was executed or that a Warrior
+class bonus applies.
+
+The existing combined-core rule resolves only its two declared constituents.
+Both triples individually passing 90% is insufficient: the full five-card union
+must pass independently. Without Ruby, Decree Burn can still qualify; without
+sufficient joint evidence and with competing constituents, the generated label
+is restored. In `194znzn`, Decree Burn is only 243/341 and the union 241/341,
+so the smaller Ruby Vengeance core is the sole qualifying identity.
+
+Verification: 19 reviewed-archetype tests pass, including a disjoint-support
+regression and component fallback. Shared and pipeline type checks pass. Browser
+checks cover mobile/desktop, all build links, keyboard expansion, 48px controls,
+no nested disclosures or overflow, and empty/loading/error states.
