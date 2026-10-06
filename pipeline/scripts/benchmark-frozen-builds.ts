@@ -5,6 +5,7 @@ import { buildCardIndex, type CardSignature } from '../src/cards/catalog.js';
 import { createAnalysisContext } from '../src/analysis/context.js';
 import { computeBuildField, UNASSIGNED_BUILD } from '../src/analysis/buildField.js';
 import { freezeExactBuilds, freezeSimilarBuilds } from '../src/analysis/frozenBuilds.js';
+import { buildAssignmentDiagnostic, buildOutcomeCoverage } from '../src/analysis/buildCoverage.js';
 import { writeJsonAtomic } from '../src/lib/atomicWrite.js';
 import type { OmnidexEventBundle } from '../src/omnidex/cache.js';
 
@@ -56,6 +57,16 @@ for (let window = 0; window < (similar ? 3 : 1); window++) {
   const evaluated = results.reduce((sum, row) => sum + row.laterGames, 0);
   const publicDecks = holdout.field.reduce((sum, row) => sum + row.weight, 0);
   const assignedDecks = holdout.field.filter(row => row.champion !== UNASSIGNED_BUILD).reduce((sum, row) => sum + row.weight, 0);
+  const diagnose = buildAssignmentDiagnostic(frozen.definitions, similar ? 0.7 : 1);
+  const assignmentCoverage = { missingChampion: 0, unseenMaterial: 0, mainBelowThreshold: 0, assigned: 0 };
+  const seen = new Set<number>();
+  for (const event of test) {
+    if (seen.has(event.id) || event.event.status !== 'complete' || 'error' in event.decklists) continue;
+    seen.add(event.id);
+    for (const deck of ctx.getEventSignatures(event).values()) assignmentCoverage[diagnose(deck)]++;
+  }
+  const outcomeCoverage = buildOutcomeCoverage(fit.conditioned.battleChart, holdout.conditioned.battleChart, holdout.validPairings * 2, history.minMatchups);
+  if (assignmentCoverage.assigned !== assignedDecks || outcomeCoverage.evaluated !== evaluated) throw new Error('Coverage diagnostics disagree with benchmark');
   const evaluatedBuildIds = new Set(results.map(row => choices.get(row.choice)!.buildId));
   const recurringIds = new Set(holdout.field.filter(row => row.champion !== UNASSIGNED_BUILD).map(row => row.champion));
   const report = {
@@ -71,11 +82,12 @@ for (let window = 0; window < (similar ? 3 : 1); window++) {
       outcomeCoverage: holdout.validPairings ? evaluated / (holdout.validPairings * 2) : 0 },
     accuracy: { buildMeanSquaredError: evaluated ? results.reduce((sum, row) => sum + row.buildSquaredError, 0) / evaluated : null,
       championMeanSquaredError: evaluated ? results.reduce((sum, row) => sum + row.championSquaredError, 0) / evaluated : null },
+    coverageDiagnostics: { assignment: assignmentCoverage, outcomes: outcomeCoverage },
     trainingEventIds: training.map(event => event.id), laterEventIds: testing.map(event => event.id),
     reportedDefinitions: frozen.definitions.filter(build => (similar ? evaluatedBuildIds : recurringIds).has(build.id)).map(build => ({ id: build.id, sections: JSON.parse(build.key) })), results,
   };
   reports.push(report);
-  console.log(JSON.stringify({ scope: report.scope, population: report.population, accuracy: report.accuracy }, null, 2));
+  console.log(JSON.stringify({ scope: report.scope, population: report.population, accuracy: report.accuracy, coverageDiagnostics: report.coverageDiagnostics }, null, 2));
 
 }
 await writeJsonAtomic(fileURLToPath(new URL(similar ? 'docs/reports/frozen-similar-build-holdouts.json' : 'docs/reports/frozen-build-holdout.json', root)), similar ? reports : reports[0], 2);

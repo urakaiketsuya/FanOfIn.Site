@@ -4629,7 +4629,55 @@ Initial results (2026):
 
 Only 21 of 1,856 eligible participant perspectives could be scored (1.13%).
 Lower error on this tiny selected subset is not evidence of reliable superiority.
-The experiment does not yet support expected-field rankings or recommended deck
-mixes. Next work should diagnose how much coverage is lost to exact material
-identity, novel main decks, and the five-match threshold before proposing a
-predeclared broader grouping and testing on additional untouched periods.
+The experiment does not support expected-field rankings or recommended deck
+mixes. The coverage audit below completes the release decision for this candidate.
+
+### Build coverage audit and release decision
+
+The benchmark reports two exhaustive partitions. Assignment diagnostics examine
+signatures in the same completed, deduplicated, readable events as the field
+calculation. Signatures without an identified Champion are counted separately
+and excluded from the public-deck denominator. Among the remaining signatures,
+`unseenMaterial` means no frozen seed has that exact material section;
+`mainBelowThreshold` means material matches exist but none passes the main-deck
+threshold; `assigned` means at least one qualifies. These are hierarchical
+reasons, not causal estimates of what relaxing either rule would recover.
+
+Outcome diagnostics partition eligible participant perspectives into unassigned
+build, no prior directed matchup cell, one to four prior matches, and at least
+five prior matches (evaluated). They use all prior cells before the five-match
+filter. Counts reconcile with the existing assignment and evaluation totals;
+the benchmark fails if they disagree. These diagnostics do not change grouping,
+predictions, or the original evaluation population.
+
+| Later period | Unseen material | Main below threshold | Assigned decks | Unassigned perspectives | No prior cell | 1–4 prior matches | Evaluated |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| July 13–August 9 | 484 | 113 | 450 | 461 | 263 | 105 | 17 |
+| August 10–September 6 | 164 | 40 | 61 | 152 | 17 | 13 | 2 |
+| September 7–October 4 | 920 | 135 | 161 | 708 | 76 | 40 | 2 |
+
+Across these windows, 1,568 of 2,528 public decks (62.0%) have unseen material
+sections, 288 (11.4%) fail main similarity, and 672 (26.6%) assign. Four additional
+signatures lack an identified Champion. Of 1,856 eligible perspectives, 1,321
+have unassigned builds, 356 have no prior cell, 158 have insufficient prior
+matches, and 21 qualify. Even removing the five-match minimum would only make
+179 perspectives (9.6%) scoreable from observed prior cells under this grouping.
+Lowering that minimum alone cannot fix the coverage problem.
+
+**Decision: do not release card-build recommendations from this candidate.**
+The frozen-group evaluation and coverage diagnosis are complete, but reliable
+predictive benefit and decision value have not been demonstrated. Keep the
+existing Champion field exploration available; the build experiment remains
+offline. There is no validated card-level upgrade recommendation or causal
+card effect, and no build recommendation UI is warranted by these results.
+
+Any subsequent candidate is a new research iteration: predeclare a broader
+material-identity rule using catalog-verified identities, retain actual main
+cards and copy counts, and freeze its parameters before evaluating additional
+untouched periods. Do not describe these three already-inspected windows as new
+validation after tuning. Require useful coverage, uncertainty-aware improvement
+over the Champion baseline, and supported within-Champion decisions before
+starting a recommendation UI. Numerical release thresholds and the target user
+population must be fixed before that evaluation; this audit does not establish
+them. Additional independent evidence is the remaining blocker to productizing
+card-build recommendations, not unfinished work on the present candidate.

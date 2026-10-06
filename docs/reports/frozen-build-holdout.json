@@ -27,6 +27,20 @@
     "buildMeanSquaredError": null,
     "championMeanSquaredError": null
   },
+  "coverageDiagnostics": {
+    "assignment": {
+      "missingChampion": 1,
+      "unseenMaterial": 920,
+      "mainBelowThreshold": 285,
+      "assigned": 11
+    },
+    "outcomes": {
+      "unassignedBuild": 817,
+      "noPriorMatchup": 8,
+      "insufficientPriorMatches": 1,
+      "evaluated": 0
+    }
+  },
   "trainingEventIds": [
     51206,
     55109,

@@ -28,6 +28,20 @@
       "buildMeanSquaredError": 0.24055555555555555,
       "championMeanSquaredError": 0.29300865544651056
     },
+    "coverageDiagnostics": {
+      "assignment": {
+        "missingChampion": 1,
+        "unseenMaterial": 920,
+        "mainBelowThreshold": 135,
+        "assigned": 161
+      },
+      "outcomes": {
+        "unassignedBuild": 708,
+        "noPriorMatchup": 76,
+        "insufficientPriorMatches": 40,
+        "evaluated": 2
+      }
+    },
     "trainingEventIds": [
       51206,
       55109,
@@ -600,6 +614,20 @@
     "accuracy": {
       "buildMeanSquaredError": 0.12342259156663592,
       "championMeanSquaredError": 0.19850859186507597
+    },
+    "coverageDiagnostics": {
+      "assignment": {
+        "missingChampion": 2,
+        "unseenMaterial": 164,
+        "mainBelowThreshold": 40,
+        "assigned": 61
+      },
+      "outcomes": {
+        "unassignedBuild": 152,
+        "noPriorMatchup": 17,
+        "insufficientPriorMatches": 13,
+        "evaluated": 2
+      }
     },
     "trainingEventIds": [
       51534,
@@ -1276,6 +1304,20 @@
     "accuracy": {
       "buildMeanSquaredError": 0.1875059170856015,
       "championMeanSquaredError": 0.2145155906582756
+    },
+    "coverageDiagnostics": {
+      "assignment": {
+        "missingChampion": 1,
+        "unseenMaterial": 484,
+        "mainBelowThreshold": 113,
+        "assigned": 450
+      },
+      "outcomes": {
+        "unassignedBuild": 461,
+        "noPriorMatchup": 263,
+        "insufficientPriorMatches": 105,
+        "evaluated": 17
+      }
     },
     "trainingEventIds": [
       48695,
