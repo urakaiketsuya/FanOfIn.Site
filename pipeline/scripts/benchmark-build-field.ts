@@ -55,3 +55,29 @@ console.log(JSON.stringify({ scope: report.scope, population: report.population,
   retainedFullFieldShare: report.restrictedBenchmark.retainedFullFieldShare,
   pool: report.restrictedBenchmark.buildLabels,
   topFullFieldResults: results.slice(0, 5) }, null, 2));
+
+const conditioned = projection.conditioned;
+const choiceById = new Map(conditioned.choices.map(choice => [choice.id, choice]));
+const conditionedScores = scoreExpectedField(conditioned.choices.map(choice => choice.id), conditioned.field, conditioned.battleChart);
+const groups = [...new Set(conditioned.choices.map(choice => choice.champion))].sort().map(champion => {
+  const results = conditionedScores.filter(score => choiceById.get(score.champion)!.champion === champion).map(score => {
+    const choice = choiceById.get(score.champion)!;
+    return { ...score, ...choice, build: describe(choice.buildId) };
+  });
+  return { champion, results, separatedPairs: results.flatMap(a => results.filter(b => a.id !== b.id && a.lower > b.upper)
+    .map(b => ({ higher: a.id, lower: b.id }))) };
+});
+const conditionedReport = {
+  sourceGeneratedAt: report.sourceGeneratedAt, scope: report.scope,
+  interpretation: 'Retrospective Champion-conditioned builds versus opponent Champions. Opponent builds are pooled, including unassigned builds. Own-Champion opponents require observed matches; no automatic mirror payoff. Threshold applies to each directed build+Champion versus Champion cell. Card summaries describe all-date taxonomy, not causal card effects. Missing-matchup bounds exclude sampling uncertainty. Separated bounds are descriptive, not statistical evidence of superiority. No temporal validation.',
+  population: { ...report.population, conditionedChoices: conditioned.choices.length,
+    qualifyingDirectedCells: conditioned.battleChart.length,
+    championsWithMultipleBuilds: groups.filter(group => group.results.length > 1).length,
+    choicesCoveringHalfField: conditionedScores.filter(score => score.coverage >= 0.5).length,
+    choicesCoveringFourFifths: conditionedScores.filter(score => score.coverage >= 0.8).length,
+    separatedPairs: groups.reduce((sum, group) => sum + group.separatedPairs.length, 0) },
+  field: conditioned.field, battleChart: conditioned.battleChart, groups,
+};
+await writeJsonAtomic(fileURLToPath(new URL('docs/reports/conditioned-build-field-experiment.json', root)), conditionedReport, 2);
+console.log(JSON.stringify({ conditionedPopulation: conditionedReport.population,
+  bestCoverage: [...conditionedScores].sort((a, b) => b.coverage - a.coverage).slice(0, 5) }, null, 2));

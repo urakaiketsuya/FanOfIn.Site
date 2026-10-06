@@ -4525,3 +4525,36 @@ A useful next experiment is Champion-conditioned build-versus-Champion scoring t
 retain more opponent evidence, followed by temporal validation with frozen training
 membership. This sacrifices opponent-build resolution and must be labeled accordingly.
 The current all-date taxonomy must not be treated as an out-of-time training partition.
+
+### Champion-conditioned build experiment
+
+The same benchmark command also writes
+`docs/reports/conditioned-build-field-experiment.json`. Each choice is a distinct
+(build ID, actual deck Champion) pair, so a taxonomy cluster spanning Champions does
+not pool the player's Champion choices. Opponents are aggregated by their actual
+Champion, including public decks without taxonomy membership. The field denominator
+is all public Champion signatures in the selected events, as in the build experiment.
+
+Each valid pairing contributes one directed observation for each assigned participant.
+An unassigned opponent still supplies evidence for the assigned participant. Event,
+pairing, outcome, and format validation are shared with the build experiment. Apply
+the minimum-match threshold after pooling each directed choice-versus-Champion cell.
+Choice IDs and opponent IDs use disjoint JSON tuple namespaces, so even same-Champion
+opponents require observed evidence rather than receiving the scorer's automatic 50%
+mirror payoff. A match can contribute to two choices; these are not independent samples.
+
+The shared expected-field scorer supplies the ten-game 50% prior, field weighting,
+and missing-matchup bounds. Results are grouped by the player's Champion. A separated
+pair requires one choice's lower bound to exceed another's upper bound; this diagnostic
+ignores sampling uncertainty and is not a significance test or causal card comparison.
+No equilibrium is inferred from these asymmetric choice and opponent populations.
+
+In the July 7–October 4, 2026 window, 124 conditioned choices produce 73 qualifying
+directed cells. Seventeen Champions have multiple builds. Six choices cover at least
+50% of the field; none covers 80%. Best coverage is 77.4% (Diao Chan Fractal of
+Refreshment / Frostsworn Paladin and Lorraine Lost Providence / Sword of Seeking).
+Their missing-matchup bounds are respectively 38.3–60.8% and 39.8–62.4%. No within-Champion
+pair has separated bounds. Opponent pooling retains substantially more evidence but
+does not yet resolve a build recommendation. The experiment remains offline; all-date
+taxonomy membership prevents interpreting it as a predictive backtest. Next work is
+frozen-training membership and later-event validation before any recommendation UI.

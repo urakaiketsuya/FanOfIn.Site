@@ -20,6 +20,9 @@ export function computeBuildField(bundles: OmnidexEventBundle[], ctx: AnalysisCo
   }
   const counts = new Map<string, number>();
   const rows = new Map<string, BattleChartEntry>();
+  const championCounts = new Map<string, number>();
+  const choices = new Map<string, { id: string; buildId: string; champion: string; sightings: number }>();
+  const directed = new Map<string, BattleChartEntry>();
   const seenEvents = new Set<number>();
   const formats = new Set<string>();
   let validPairings = 0, assignedPairings = 0;
@@ -28,9 +31,21 @@ export function computeBuildField(bundles: OmnidexEventBundle[], ctx: AnalysisCo
     seenEvents.add(bundle.id);
     formats.add(bundle.event.format.trim().toLowerCase());
     if (formats.size > 1) throw new Error('Build field must use one format');
-    const publicPlayers = new Map([...ctx.getEventSignatures(bundle)].filter(([, sig]) => sig.championName)
+    const signatures = ctx.getEventSignatures(bundle);
+    const publicPlayers = new Map([...signatures].filter(([, sig]) => sig.championName)
       .map(([player]) => [player, membership.get(`${bundle.id}:${player}`) ?? UNASSIGNED_BUILD]));
     for (const id of publicPlayers.values()) counts.set(id, (counts.get(id) ?? 0) + 1);
+    const choiceFor = (player: number) => JSON.stringify(['build', publicPlayers.get(player), signatures.get(player)!.championName]);
+    for (const [player, buildId] of publicPlayers) {
+      const champion = signatures.get(player)!.championName!;
+      const opponentId = JSON.stringify(['champion', champion]);
+      championCounts.set(opponentId, (championCounts.get(opponentId) ?? 0) + 1);
+      if (buildId === UNASSIGNED_BUILD) continue;
+      const id = choiceFor(player);
+      const choice = choices.get(id) ?? { id, buildId, champion, sightings: 0 };
+      choice.sightings++;
+      choices.set(id, choice);
+    }
     const seenPairs = new Set<number>();
     for (const round of bundle.pairingsByRound) {
       if ('error' in round) continue;
@@ -46,6 +61,17 @@ export function computeBuildField(bundles: OmnidexEventBundle[], ctx: AnalysisCo
         const rightWin = right.status === 'winner' && left.status === 'loser';
         if (!draw && !leftWin && !rightWin) continue;
         validPairings++;
+        for (const [player, opponent, won] of [[left.id, right.id, leftWin], [right.id, left.id, rightWin]] as const) {
+          if (publicPlayers.get(player) === UNASSIGNED_BUILD) continue;
+          const a = choiceFor(player), b = JSON.stringify(['champion', signatures.get(opponent)!.championName]);
+          const key = JSON.stringify([a, b]);
+          const row = directed.get(key) ?? { a, b, aWins: 0, bWins: 0, ties: 0, games: 0 };
+          row.games++;
+          if (draw) row.ties++;
+          else if (won) row.aWins++;
+          else row.bWins++;
+          directed.set(key, row);
+        }
         if (aId === UNASSIGNED_BUILD || bId === UNASSIGNED_BUILD) continue;
         assignedPairings++;
         const forward = aId <= bId;
@@ -62,7 +88,13 @@ export function computeBuildField(bundles: OmnidexEventBundle[], ctx: AnalysisCo
   }
   const field: FieldWeight[] = [...counts].map(([champion, weight]) => ({ champion, weight }))
     .sort((a, b) => a.champion.localeCompare(b.champion));
-  return { field, events: seenEvents.size, validPairings, assignedPairings,
+  const conditioned = {
+    choices: [...choices.values()].sort((a, b) => a.id.localeCompare(b.id)),
+    field: [...championCounts].map(([champion, weight]) => ({ champion, weight })).sort((a, b) => a.champion.localeCompare(b.champion)),
+    battleChart: [...directed.values()].filter(row => row.games >= minMatchups)
+      .sort((a, b) => a.a.localeCompare(b.a) || a.b.localeCompare(b.b)),
+  };
+  return { conditioned, field, events: seenEvents.size, validPairings, assignedPairings,
     battleChart: [...rows.values()].filter(row => row.games >= minMatchups)
       .sort((a, b) => a.a.localeCompare(b.a) || a.b.localeCompare(b.b)) };
 }

@@ -43,3 +43,33 @@ test('canonical pair orientation preserves wins for the actual build', () => {
   assert.equal(scores[0].champion, 'z');
   assert.ok(Math.abs(scores[0].lower + scores[1].lower - 1) < 1e-12);
 });
+
+test('conditioned builds retain unknown-build opponents and require evidence against their own Champion', () => {
+  const result = computeBuildField([bundle(1), bundle(1), bundle(2)], ctx, builds, 4).conditioned;
+  const a = JSON.stringify(['build', 'a', 'Same Champion']);
+  const opponent = JSON.stringify(['champion', 'Same Champion']);
+  assert.deepEqual(result.field, [{ champion: opponent, weight: 6 }]);
+  assert.deepEqual(result.battleChart, [
+    { a, b: opponent, aWins: 4, bWins: 0, ties: 2, games: 6 },
+    { a: JSON.stringify(['build', 'b', 'Same Champion']), b: opponent, aWins: 0, bWins: 2, ties: 2, games: 4 },
+  ]);
+  const score = scoreExpectedField([a], result.field, result.battleChart)[0];
+  assert.equal(score.coverage, 1);
+  assert.equal(score.lower, 10 / 16);
+  const sparse = computeBuildField([bundle(1)], ctx, builds, 4).conditioned;
+  assert.equal(scoreExpectedField([a], sparse.field, sparse.battleChart)[0].coverage, 0);
+});
+
+test('one taxonomy build spanning Champions produces separate choices and directed outcomes', () => {
+  const mixed: AnalysisContext = { ...ctx, getEventSignatures: () => new Map([
+    [1, { championName: 'Alpha' } as DeckSignature],
+    [2, { championName: 'Beta' } as DeckSignature],
+    [3, { championName: 'Beta' } as DeckSignature],
+  ]) };
+  const result = computeBuildField([bundle(1)], mixed, [{ id: 'shared', deckIds: ['1:1', '1:2'] }], 1).conditioned;
+  assert.equal(result.choices.length, 2);
+  assert.deepEqual(result.choices.map(choice => choice.champion), ['Alpha', 'Beta']);
+  assert.deepEqual(result.battleChart.map(row => [row.aWins, row.bWins, row.ties, row.games]), [[2, 0, 1, 3], [0, 1, 1, 2]]);
+  assert.deepEqual(result.field.map(row => row.weight), [1, 2]);
+  assert.equal(result.choices.reduce((sum, choice) => sum + choice.sightings, 0), 2);
+});
