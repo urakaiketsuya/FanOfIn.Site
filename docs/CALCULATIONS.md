@@ -4484,3 +4484,44 @@ states. The complete-feature scope is exploratory scoring, stress testing,
 event-resampling diagnostics, historical checks, and the restricted equilibrium
 benchmark. Calibration is not established; improving statistical uncertainty and
 prospective validation are separate research work, not a completed claim.
+
+## Named-build field experiment
+
+`pipeline/scripts/benchmark-build-field.ts` writes the offline research artifact
+`docs/reports/build-field-experiment.json`. Run with
+`node --import tsx pipeline/scripts/benchmark-build-field.ts` from the repository root.
+It uses the latest 90-day Standard window in published field history and the existing
+named-build taxonomy. This is a retrospective feasibility experiment, not a published
+recommendation feature or predictive backtest.
+
+`computeBuildField` joins public Champion deck signatures to taxonomy membership using
+`${eventId}:${player}`. Build membership groups similar main+material lists, excludes
+sideboards, and can span Champions. It rejects overlapping membership and mixed formats.
+Complete two-player win/loss or tie/tie pairings are counted once per event/pairing ID;
+byes, unfinished pairings, self-pairings, ambiguous outcomes and nonpublic opponents do
+not contribute. Matchups are pooled before the five-match threshold. Unknown builds
+remain in the field denominator, with unknown payoffs, and cannot become model choices.
+
+The existing shared field scorer and 20% stress test operate on build IDs. Known
+nonmirror scores retain the ten-game 50% prior; same-build mirrors use 50% under a
+symmetric within-build sampling assumption. This does not imply every member list is
+equally strong. Missing matchups remain [0,1]. The popularity-first covered pool is
+selected only from assigned builds; its report includes retained share of the full
+public field, including unassigned decks. Numerical solver certificates are not
+statistical confidence. Characteristic cards and Champion breakdowns describe the
+all-date taxonomy; example deck IDs are drawn from the selected window. These are
+neither exact tested packages nor causal estimates for card substitutions.
+
+The initial July 7–October 4, 2026 window contains 132 events and 2,934 public decks:
+2,030 assigned to 124 active builds, with 543 of 1,070 valid public pairings joining
+builds on both sides. Only nine distinct nonmirror build pairs reach five matches.
+The greedy covered pool contains three builds (Diao Chan Fractal of Refreshment /
+Frostsworn Paladin, Lorraine Lost Providence / Sword of Seeking, and Ciel Umbra Sight /
+Folded Shadows), representing 16.3% of the full public field. Even the highest
+lower-bound full-field result covers only 26.0% of the field and spans approximately
+12.2–86.2%. These broad bounds do not support a general deck recommendation.
+
+A useful next experiment is Champion-conditioned build-versus-Champion scoring to
+retain more opponent evidence, followed by temporal validation with frozen training
+membership. This sacrifices opponent-build resolution and must be labeled accordingly.
+The current all-date taxonomy must not be treated as an out-of-time training partition.
