@@ -1,0 +1,1705 @@
+{
+  "sourceGeneratedAt": "2026-10-05T23:21:17.357Z",
+  "scope": {
+    "format": "standard",
+    "from": "2026-06-10",
+    "cutoff": "2026-09-07",
+    "to": "2026-10-04",
+    "trainingEvents": 172,
+    "laterEvents": 55,
+    "minMatchups": 5
+  },
+  "interpretation": "Single chronological holdout with exact main+material definitions frozen from earlier completed events. Sideboards excluded. This is an exact-list baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
+  "population": {
+    "frozenBuilds": 3771,
+    "publicLaterDecks": 1216,
+    "assignedLaterDecks": 11,
+    "exactListRetention": 0.009046052631578948,
+    "validLaterPairings": 413,
+    "eligibleLaterPerspectives": 826,
+    "evaluatedPerspectives": 0,
+    "evaluatedCells": 0,
+    "outcomeCoverage": 0
+  },
+  "accuracy": {
+    "buildMeanSquaredError": null,
+    "championMeanSquaredError": null
+  },
+  "trainingEventIds": [
+    51206,
+    55109,
+    50602,
+    50603,
+    50799,
+    51596,
+    51612,
+    51658,
+    53422,
+    53535,
+    54084,
+    54131,
+    54696,
+    55010,
+    55386,
+    55549,
+    55714,
+    55777,
+    55911,
+    51446,
+    52895,
+    53423,
+    53593,
+    54078,
+    55096,
+    55685,
+    55717,
+    55830,
+    55852,
+    55855,
+    56060,
+    54688,
+    55110,
+    56279,
+    56467,
+    50936,
+    53148,
+    53367,
+    53395,
+    53947,
+    53960,
+    54077,
+    54514,
+    56345,
+    56392,
+    56414,
+    56415,
+    56432,
+    56461,
+    56484,
+    51573,
+    54317,
+    54510,
+    56403,
+    51588,
+    55027,
+    55111,
+    50176,
+    50604,
+    50680,
+    51605,
+    52018,
+    52795,
+    53702,
+    54452,
+    55382,
+    56124,
+    56265,
+    56764,
+    56781,
+    56883,
+    56887,
+    56992,
+    54027,
+    55466,
+    56266,
+    56568,
+    57041,
+    56204,
+    57006,
+    51657,
+    52051,
+    52845,
+    53273,
+    57007,
+    57088,
+    57383,
+    57404,
+    52100,
+    53908,
+    56404,
+    56885,
+    57529,
+    57564,
+    57591,
+    57228,
+    57252,
+    50119,
+    51662,
+    52583,
+    55881,
+    55893,
+    56328,
+    57717,
+    57751,
+    57754,
+    57871,
+    57964,
+    51706,
+    51976,
+    53055,
+    54597,
+    55003,
+    55882,
+    57395,
+    57679,
+    57690,
+    57712,
+    57902,
+    57229,
+    58245,
+    51312,
+    51851,
+    53836,
+    55353,
+    55381,
+    57189,
+    57346,
+    57471,
+    57694,
+    58262,
+    58269,
+    58423,
+    50519,
+    53061,
+    58125,
+    58230,
+    58504,
+    57230,
+    50614,
+    54070,
+    54261,
+    55112,
+    58745,
+    58750,
+    58922,
+    50218,
+    51562,
+    56116,
+    57804,
+    58227,
+    58232,
+    58946,
+    59135,
+    57231,
+    59232,
+    55627,
+    59168,
+    59187,
+    59334,
+    56416,
+    59531,
+    60363,
+    60368,
+    60488,
+    61285,
+    61549,
+    62100,
+    62295,
+    61722,
+    62146,
+    62266
+  ],
+  "laterEventIds": [
+    62484,
+    63065,
+    61723,
+    62616,
+    63680,
+    63732,
+    63763,
+    64220,
+    64530,
+    63897,
+    64201,
+    64272,
+    64294,
+    64495,
+    64585,
+    64596,
+    64622,
+    64701,
+    64718,
+    64741,
+    63849,
+    64253,
+    64329,
+    64411,
+    64533,
+    64648,
+    64760,
+    64791,
+    64827,
+    64846,
+    64922,
+    64888,
+    64967,
+    64974,
+    65021,
+    64463,
+    64496,
+    64578,
+    64635,
+    64770,
+    64788,
+    64905,
+    64911,
+    64930,
+    64936,
+    64994,
+    65105,
+    65169,
+    65240,
+    64320,
+    64335,
+    64657,
+    64957,
+    65101,
+    65299
+  ],
+  "recurringDefinitions": [
+    {
+      "id": "exact-218",
+      "sections": [
+        [
+          [
+            "Abnegation",
+            4
+          ],
+          [
+            "Angel Attendant",
+            4
+          ],
+          [
+            "Bandersnatch, Frumious Foe",
+            2
+          ],
+          [
+            "Benediction Angel",
+            4
+          ],
+          [
+            "Dynastic Whirlpool",
+            4
+          ],
+          [
+            "Engulf",
+            4
+          ],
+          [
+            "Fount Seraphim",
+            4
+          ],
+          [
+            "Fracturize",
+            4
+          ],
+          [
+            "Maledictum Vitae",
+            4
+          ],
+          [
+            "Pearled Prayer",
+            4
+          ],
+          [
+            "Reflected Blight",
+            4
+          ],
+          [
+            "Regal Inquisition",
+            3
+          ],
+          [
+            "Resolute Stand",
+            2
+          ],
+          [
+            "Rictus Tiding",
+            4
+          ],
+          [
+            "Song of Frost",
+            2
+          ],
+          [
+            "Turbo Charge",
+            1
+          ],
+          [
+            "Umbra Sight",
+            4
+          ],
+          [
+            "Umbral Tithe",
+            2
+          ]
+        ],
+        [
+          [
+            "Alice, Distorted Queen",
+            1
+          ],
+          [
+            "Alice, Phantom Monarch",
+            1
+          ],
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Bauble of Abundance",
+            1
+          ],
+          [
+            "Chalice of Blood",
+            1
+          ],
+          [
+            "Ducal Seal",
+            1
+          ],
+          [
+            "Lost Providence",
+            1
+          ],
+          [
+            "Nullifying Lantern",
+            1
+          ],
+          [
+            "Oneiric Key",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Spirit of Water",
+            1
+          ],
+          [
+            "Tariff Ring",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-322",
+      "sections": [
+        [
+          [
+            "Acolyte of Cultivation",
+            4
+          ],
+          [
+            "Aenean Flurry of Fire",
+            3
+          ],
+          [
+            "Aenean Guttering Flames",
+            4
+          ],
+          [
+            "Aenean Pointed Flare",
+            4
+          ],
+          [
+            "Aenean Scorching Comet",
+            4
+          ],
+          [
+            "Aenean Spark Alight",
+            4
+          ],
+          [
+            "Arthur, Young Heir",
+            4
+          ],
+          [
+            "ChannelTech Charm S",
+            4
+          ],
+          [
+            "Creative Shock",
+            4
+          ],
+          [
+            "Creative Tinder",
+            3
+          ],
+          [
+            "Dazzling Courtesan",
+            3
+          ],
+          [
+            "Demolition",
+            2
+          ],
+          [
+            "Epicurean Institute",
+            4
+          ],
+          [
+            "Liminal Guide",
+            4
+          ],
+          [
+            "Peppered Chef",
+            3
+          ],
+          [
+            "Reduce to Ash",
+            2
+          ],
+          [
+            "Singed Emotions",
+            4
+          ]
+        ],
+        [
+          [
+            "Censer of Restful Peace",
+            1
+          ],
+          [
+            "Dante, Prodigal Swain",
+            1
+          ],
+          [
+            "Everflame Staff",
+            1
+          ],
+          [
+            "Fanned Synchron",
+            1
+          ],
+          [
+            "FlameTech Manual",
+            1
+          ],
+          [
+            "Grand Crusader's Ring",
+            1
+          ],
+          [
+            "Nullifying Mirror",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Spirit of Fire",
+            1
+          ],
+          [
+            "Tariff Ring",
+            1
+          ],
+          [
+            "Water Resonance Bauble",
+            1
+          ],
+          [
+            "Wind Resonance Bauble",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-510",
+      "sections": [
+        [
+          [
+            "Acquiescing Rejection",
+            4
+          ],
+          [
+            "Burst Asunder",
+            4
+          ],
+          [
+            "Fluffy Shopkeep",
+            1
+          ],
+          [
+            "Fractal of Insight",
+            4
+          ],
+          [
+            "Fractal of Rain",
+            4
+          ],
+          [
+            "Fractal of Refreshment",
+            4
+          ],
+          [
+            "Fractal of Snow",
+            4
+          ],
+          [
+            "Fracturize",
+            4
+          ],
+          [
+            "Frostbind",
+            2
+          ],
+          [
+            "Frostsworn Paladin",
+            4
+          ],
+          [
+            "Glimmering Refusal",
+            4
+          ],
+          [
+            "Hydrating Fractal",
+            4
+          ],
+          [
+            "Refracting Missile",
+            4
+          ],
+          [
+            "Return to the Archive",
+            3
+          ],
+          [
+            "Shimmering Refraction",
+            4
+          ],
+          [
+            "Unstable Fractal",
+            2
+          ],
+          [
+            "Zhang Jiao, Way of Peace",
+            4
+          ]
+        ],
+        [
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Diao Chan, Enchantress",
+            1
+          ],
+          [
+            "Enfeebling Orb",
+            1
+          ],
+          [
+            "Fire Resonance Bauble",
+            1
+          ],
+          [
+            "Portentous Tanggu",
+            1
+          ],
+          [
+            "Prismspire Scepter",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Scepter of Fascination",
+            1
+          ],
+          [
+            "Spirit of Water",
+            1
+          ],
+          [
+            "The Looking Glass",
+            1
+          ],
+          [
+            "Water Resonance Bauble",
+            1
+          ],
+          [
+            "Wind Resonance Bauble",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-1523",
+      "sections": [
+        [
+          [
+            "Aella, Zephyr's Hand",
+            4
+          ],
+          [
+            "Aesan Protector",
+            4
+          ],
+          [
+            "Blanche, Sheltering Saint",
+            2
+          ],
+          [
+            "Calming Breeze",
+            2
+          ],
+          [
+            "Displace",
+            3
+          ],
+          [
+            "Dream Fairy",
+            2
+          ],
+          [
+            "Dungeon Guide",
+            4
+          ],
+          [
+            "Escape the Wreckage",
+            2
+          ],
+          [
+            "Fairy Whispers",
+            4
+          ],
+          [
+            "Fluffy Shopkeep",
+            4
+          ],
+          [
+            "Ghosts of Pendragon",
+            4
+          ],
+          [
+            "Imperial Countermeasure",
+            4
+          ],
+          [
+            "Imperious Galebind",
+            4
+          ],
+          [
+            "Reclaim",
+            4
+          ],
+          [
+            "Sabela, Gossamer Penance",
+            3
+          ],
+          [
+            "Spirit Blade: Retribution",
+            1
+          ],
+          [
+            "Tempestuous Seraphim",
+            2
+          ],
+          [
+            "Veiling Breeze",
+            3
+          ],
+          [
+            "Windmill Engineer",
+            4
+          ]
+        ],
+        [
+          [
+            "Clarent, Reimagined",
+            1
+          ],
+          [
+            "Clarent, Sword of Peace",
+            1
+          ],
+          [
+            "Drawn Blade",
+            1
+          ],
+          [
+            "Lorraine, Blademaster",
+            1
+          ],
+          [
+            "Lorraine, Spirit Ruler",
+            1
+          ],
+          [
+            "Lorraine, Wandering Warrior",
+            1
+          ],
+          [
+            "Lost Providence",
+            1
+          ],
+          [
+            "Palvor Sword",
+            1
+          ],
+          [
+            "Purifying Thurible",
+            1
+          ],
+          [
+            "Spirit of Wind",
+            1
+          ],
+          [
+            "Sword of Seeking",
+            1
+          ],
+          [
+            "Vorpal Sword",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-1536",
+      "sections": [
+        [
+          [
+            "Aella, Zephyr's Hand",
+            4
+          ],
+          [
+            "Atmos Armor Type-Ares",
+            4
+          ],
+          [
+            "Beseech the Winds",
+            2
+          ],
+          [
+            "Blade of Creation",
+            4
+          ],
+          [
+            "Calming Breeze",
+            4
+          ],
+          [
+            "Camelot, Impenetrable",
+            1
+          ],
+          [
+            "Chamber of Reflections",
+            4
+          ],
+          [
+            "Exalted Dorumegian Throne",
+            1
+          ],
+          [
+            "Fairy Whispers",
+            4
+          ],
+          [
+            "Hub of Innovation",
+            4
+          ],
+          [
+            "Iron Halo, Forcefield Node",
+            1
+          ],
+          [
+            "Mad Tea Party",
+            1
+          ],
+          [
+            "Neos Sight",
+            4
+          ],
+          [
+            "Scatter Essence",
+            2
+          ],
+          [
+            "Scout the Land",
+            4
+          ],
+          [
+            "Stifling Gyre",
+            4
+          ],
+          [
+            "The Eternal Kingdom",
+            1
+          ],
+          [
+            "Turbo Charge",
+            1
+          ],
+          [
+            "Veiling Breeze",
+            2
+          ],
+          [
+            "Wool Brook",
+            4
+          ],
+          [
+            "Zephyr",
+            4
+          ]
+        ],
+        [
+          [
+            "Archon Broadsword",
+            1
+          ],
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Chalice of Blood",
+            1
+          ],
+          [
+            "Ducal Seal",
+            1
+          ],
+          [
+            "Purifying Thurible",
+            1
+          ],
+          [
+            "Reciprocity, Dorumegia's Call",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Spirit of Wind",
+            1
+          ],
+          [
+            "The Looking Glass",
+            1
+          ],
+          [
+            "Tonoris, Genesis Aegis",
+            1
+          ],
+          [
+            "Tonoris, Lone Mercenary",
+            1
+          ],
+          [
+            "Tonoris, Might of Humanity",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-2010",
+      "sections": [
+        [
+          [
+            "Aetheric Calibration",
+            4
+          ],
+          [
+            "Ashwound Shot",
+            4
+          ],
+          [
+            "Backstep",
+            4
+          ],
+          [
+            "Blazing Throw",
+            4
+          ],
+          [
+            "Burning Aethercharge",
+            4
+          ],
+          [
+            "Charge the Soul",
+            4
+          ],
+          [
+            "Evasive Positioning",
+            3
+          ],
+          [
+            "Flickering Cinder",
+            4
+          ],
+          [
+            "Ignis Deus",
+            4
+          ],
+          [
+            "Ignition Draw",
+            4
+          ],
+          [
+            "Incendiary Shot",
+            3
+          ],
+          [
+            "Infernal Manastreak",
+            4
+          ],
+          [
+            "Manaflare Barrage",
+            4
+          ],
+          [
+            "Prudent Nock",
+            4
+          ],
+          [
+            "Reposition",
+            4
+          ],
+          [
+            "Singeing Leap",
+            2
+          ]
+        ],
+        [
+          [
+            "Contraband Revolver",
+            1
+          ],
+          [
+            "Diana, Aether Dilettante",
+            1
+          ],
+          [
+            "Flash Grenade",
+            1
+          ],
+          [
+            "Grand Crusader's Ring",
+            1
+          ],
+          [
+            "Infernal Vessel",
+            1
+          ],
+          [
+            "Quickdraw Piercer",
+            1
+          ],
+          [
+            "Quickstep Treads",
+            1
+          ],
+          [
+            "Ranger Boots",
+            1
+          ],
+          [
+            "Seeker's Aetherwing",
+            1
+          ],
+          [
+            "Smoke Bombs",
+            1
+          ],
+          [
+            "Spirit of Fire",
+            1
+          ],
+          [
+            "Trivariate Dream",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-2394",
+      "sections": [
+        [
+          [
+            "Angel Attendant",
+            4
+          ],
+          [
+            "Backstep",
+            4
+          ],
+          [
+            "Benediction Angel",
+            2
+          ],
+          [
+            "Creative Shock",
+            4
+          ],
+          [
+            "Cremation Ritual",
+            1
+          ],
+          [
+            "Demon's Aim",
+            2
+          ],
+          [
+            "Diana, Haunt Reminiscence",
+            2
+          ],
+          [
+            "False Step",
+            2
+          ],
+          [
+            "Focusing Round",
+            4
+          ],
+          [
+            "Gentle Respite",
+            1
+          ],
+          [
+            "Idle Thoughts",
+            2
+          ],
+          [
+            "Malevolent Vow",
+            4
+          ],
+          [
+            "Mob Vantage",
+            4
+          ],
+          [
+            "Nightmare Coil",
+            4
+          ],
+          [
+            "Nox, Final Release",
+            2
+          ],
+          [
+            "Profane Bindings",
+            4
+          ],
+          [
+            "Reflected Blight",
+            4
+          ],
+          [
+            "Reposition",
+            4
+          ],
+          [
+            "Slip Away",
+            2
+          ],
+          [
+            "Umbra Sight",
+            4
+          ]
+        ],
+        [
+          [
+            "Bauble of Abundance",
+            1
+          ],
+          [
+            "Diana, Deadly Duelist",
+            1
+          ],
+          [
+            "Diana, Duskstalker",
+            1
+          ],
+          [
+            "Diana, Keen Huntress",
+            1
+          ],
+          [
+            "Plated Bullet",
+            1
+          ],
+          [
+            "Punishing Cartridge",
+            1
+          ],
+          [
+            "Quickstep Treads",
+            1
+          ],
+          [
+            "Seeker's Rifle",
+            1
+          ],
+          [
+            "Shadow's Twin",
+            1
+          ],
+          [
+            "Spirit of Fire",
+            1
+          ],
+          [
+            "Tariff Ring",
+            1
+          ],
+          [
+            "Tasershot",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-2615",
+      "sections": [
+        [
+          [
+            "Angelic Channeling",
+            4
+          ],
+          [
+            "Creative Shock",
+            4
+          ],
+          [
+            "Dungeon Guide",
+            4
+          ],
+          [
+            "Excalibur, Cleansing Light",
+            3
+          ],
+          [
+            "Exploit Vulnerability",
+            4
+          ],
+          [
+            "Gentle Respite",
+            4
+          ],
+          [
+            "Gleaming Cut",
+            4
+          ],
+          [
+            "Incapacitate",
+            4
+          ],
+          [
+            "Lightweaver's Assault",
+            4
+          ],
+          [
+            "Luxem Sight",
+            4
+          ],
+          [
+            "Optical Control",
+            1
+          ],
+          [
+            "Planted Explosive",
+            2
+          ],
+          [
+            "Regal Inquisition",
+            2
+          ],
+          [
+            "Resolute Stand",
+            2
+          ],
+          [
+            "Return to the Archive",
+            2
+          ],
+          [
+            "Striking Illuminance",
+            1
+          ],
+          [
+            "Thieving Cut",
+            2
+          ],
+          [
+            "Topsy Decree",
+            2
+          ],
+          [
+            "Turbo Charge",
+            1
+          ],
+          [
+            "Uncover the Plot",
+            2
+          ],
+          [
+            "Vel-ocity Punch",
+            4
+          ]
+        ],
+        [
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Chalice of Blood",
+            1
+          ],
+          [
+            "Ducal Seal",
+            1
+          ],
+          [
+            "Insignia of the Corhazi",
+            1
+          ],
+          [
+            "Lost Providence",
+            1
+          ],
+          [
+            "Luxera's Map",
+            1
+          ],
+          [
+            "Mercenary's Blade",
+            1
+          ],
+          [
+            "Nefarious Timepiece",
+            1
+          ],
+          [
+            "Spirit of Serene Fire",
+            1
+          ],
+          [
+            "Zander, Blinding Steel",
+            1
+          ],
+          [
+            "Zander, Deft Executor",
+            1
+          ],
+          [
+            "Zander, Prepared Scout",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-2851",
+      "sections": [
+        [
+          [
+            "Arthur, Young Heir",
+            4
+          ],
+          [
+            "Blazing Throw",
+            2
+          ],
+          [
+            "Cinder Geyser",
+            4
+          ],
+          [
+            "Dazzling Courtesan",
+            2
+          ],
+          [
+            "Embercrypt Burn",
+            4
+          ],
+          [
+            "Fanatical Devotee",
+            4
+          ],
+          [
+            "Firebloom Flourish",
+            4
+          ],
+          [
+            "Fractal of Sparks",
+            4
+          ],
+          [
+            "Gildas, Chronicler of Aesa",
+            4
+          ],
+          [
+            "Heated Vengeance",
+            4
+          ],
+          [
+            "Red Hare, Unrivaled Stallion",
+            4
+          ],
+          [
+            "Rococo, Explosive Maven",
+            4
+          ],
+          [
+            "Scathing Seminary",
+            4
+          ],
+          [
+            "Searing Rebuke",
+            4
+          ],
+          [
+            "Vermilion Decree",
+            4
+          ],
+          [
+            "Xiao Qiao, Cinderkeeper",
+            4
+          ]
+        ],
+        [
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Censer of Restful Peace",
+            1
+          ],
+          [
+            "Diao Chan, Enchantress",
+            1
+          ],
+          [
+            "Enfeebling Orb",
+            1
+          ],
+          [
+            "Everflame Staff",
+            1
+          ],
+          [
+            "Grand Crusader's Ring",
+            1
+          ],
+          [
+            "Impact Hammer",
+            1
+          ],
+          [
+            "Infernal Vessel",
+            1
+          ],
+          [
+            "Scepter of Fascination",
+            1
+          ],
+          [
+            "Smoke Bombs",
+            1
+          ],
+          [
+            "Spirit of Fire",
+            1
+          ],
+          [
+            "Viridian Protective Trinket",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-3087",
+      "sections": [
+        [
+          [
+            "Avatar of Suzaku",
+            4
+          ],
+          [
+            "Blazing Throw",
+            2
+          ],
+          [
+            "Cinder Geyser",
+            2
+          ],
+          [
+            "Coiled Fatestone",
+            2
+          ],
+          [
+            "Creative Shock",
+            4
+          ],
+          [
+            "Crystallized Destiny",
+            2
+          ],
+          [
+            "Demolition",
+            4
+          ],
+          [
+            "Embercrypt Burn",
+            3
+          ],
+          [
+            "Fiery Interference",
+            4
+          ],
+          [
+            "Heated Vengeance",
+            3
+          ],
+          [
+            "Ignite Fate",
+            4
+          ],
+          [
+            "Intensified Pyre",
+            2
+          ],
+          [
+            "Peppered Chef",
+            4
+          ],
+          [
+            "Restorative Flame",
+            2
+          ],
+          [
+            "Searing Truth",
+            4
+          ],
+          [
+            "Shatter the Brittle",
+            2
+          ],
+          [
+            "Smoke Out",
+            2
+          ],
+          [
+            "Suzaku's Command",
+            4
+          ],
+          [
+            "Undeniable Truth",
+            2
+          ],
+          [
+            "Vermilion Decree",
+            4
+          ]
+        ],
+        [
+          [
+            "Censer of Restful Peace",
+            1
+          ],
+          [
+            "Enfeebling Orb",
+            1
+          ],
+          [
+            "Fabled Ruby Fatestone",
+            1
+          ],
+          [
+            "Grand Crusader's Ring",
+            1
+          ],
+          [
+            "Guo Jia, Chosen Disciple",
+            1
+          ],
+          [
+            "Impact Hammer",
+            1
+          ],
+          [
+            "Infernal Vessel",
+            1
+          ],
+          [
+            "Portentous Tanggu",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Smoke Bombs",
+            1
+          ],
+          [
+            "Spirit of Fire",
+            1
+          ],
+          [
+            "Tariff Ring",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "exact-3485",
+      "sections": [
+        [
+          [
+            "Burst Asunder",
+            4
+          ],
+          [
+            "Fluffy Shopkeep",
+            1
+          ],
+          [
+            "Fractal of Insight",
+            4
+          ],
+          [
+            "Fractal of Rain",
+            4
+          ],
+          [
+            "Fractal of Refreshment",
+            2
+          ],
+          [
+            "Fractal of Snow",
+            4
+          ],
+          [
+            "Fracturize",
+            4
+          ],
+          [
+            "Frostbind",
+            1
+          ],
+          [
+            "Frostsworn Paladin",
+            3
+          ],
+          [
+            "Glimmering Refusal",
+            4
+          ],
+          [
+            "Hydrating Fractal",
+            4
+          ],
+          [
+            "Memory Invocation",
+            3
+          ],
+          [
+            "Refracting Missile",
+            4
+          ],
+          [
+            "Return to the Archive",
+            3
+          ],
+          [
+            "Shimmering Refraction",
+            4
+          ],
+          [
+            "Spalling Cleanse",
+            3
+          ],
+          [
+            "Tidal Fractal",
+            2
+          ],
+          [
+            "Unstable Fractal",
+            2
+          ],
+          [
+            "Zhang Jiao, Way of Peace",
+            4
+          ]
+        ],
+        [
+          [
+            "Backup Charger",
+            1
+          ],
+          [
+            "Crystalline Mirror",
+            1
+          ],
+          [
+            "Diao Chan, Enchantress",
+            1
+          ],
+          [
+            "Fire Resonance Bauble",
+            1
+          ],
+          [
+            "Nullifying Mirror",
+            1
+          ],
+          [
+            "Safeguard Amulet",
+            1
+          ],
+          [
+            "Scepter of Fascination",
+            1
+          ],
+          [
+            "Spirit of Water",
+            1
+          ],
+          [
+            "The Looking Glass",
+            1
+          ],
+          [
+            "Wand of Frost",
+            1
+          ],
+          [
+            "Water Resonance Bauble",
+            1
+          ],
+          [
+            "Wind Resonance Bauble",
+            1
+          ]
+        ]
+      ]
+    }
+  ],
+  "results": []
+}

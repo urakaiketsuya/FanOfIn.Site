@@ -4558,3 +4558,36 @@ pair has separated bounds. Opponent pooling retains substantially more evidence 
 does not yet resolve a build recommendation. The experiment remains offline; all-date
 taxonomy membership prevents interpreting it as a predictive backtest. Next work is
 frozen-training membership and later-event validation before any recommendation UI.
+
+### Frozen exact-list chronological baseline
+
+`pipeline/scripts/benchmark-frozen-builds.ts` writes
+`docs/reports/frozen-build-holdout.json`. This is a separate exact-list baseline;
+it does not validate the similarity taxonomy. The latest 28 inclusive days are
+held out. Training uses the 90-day inclusive window ending on the cutoff,
+excludes the cutoff itself, and requires both start and recorded completion
+before that cutoff.
+Definitions contain canonical main and material sections with aggregated card
+copy counts; section identity matters and sideboards do not. Only training lists
+create definitions. Later unseen lists remain unassigned, and later assignment
+never modifies the frozen lookup. IDs are local to this training partition.
+The report saves event IDs and recurring definitions for inspection.
+
+Build+Champion versus opponent-Champion cells need five training matches.
+Predictions use `(wins + 0.5 * ties + 5) / (games + 10)`. The comparison pools
+all training exact builds by own Champion and opponent Champion, with the same
+prior, and evaluates both predictions on identical later participant outcomes.
+Mean squared error weights each win, loss, or draw individually, with targets
+1, 0, and 0.5. Both perspectives of a match may count and are correlated.
+Coverage divides scored perspectives by twice the valid later pairing count.
+No scored outcomes yields null accuracy, never zero error. This conditional
+matchup test does not validate expected-field rankings or causal card effects.
+
+The initial split trained on 172 events from June 10 through September 6, 2026,
+and tested 55 events from September 7 through October 4. It froze 3,771 exact
+lists. Only 11 of 1,216 later public lists recurred (0.9%); none of the 826
+eligible later match perspectives had five qualifying prior matches. Accuracy
+is therefore unmeasurable for this baseline. The next experiment needs frozen
+similarity-based assignment, followed by multiple chronological holdouts.
+Current catalog normalization and retrospectively collected data are still
+used; this is not a reconstruction of data availability at the historical time.
