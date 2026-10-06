@@ -1,0 +1,2668 @@
+[
+  {
+    "sourceGeneratedAt": "2026-10-05T23:21:17.357Z",
+    "definitionScope": "Only builds with evaluated later outcomes",
+    "assignment": "Frozen nearest main-deck seed, weighted Jaccard >= 0.7, exact material section; experimental groups distinct from published taxonomy",
+    "scope": {
+      "format": "standard",
+      "from": "2026-06-10",
+      "cutoff": "2026-09-07",
+      "to": "2026-10-04",
+      "trainingEvents": 172,
+      "laterEvents": 55,
+      "minMatchups": 5
+    },
+    "interpretation": "Chronological holdout with main+material definitions frozen from earlier completed events. Sideboards excluded. This is an offline baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
+    "population": {
+      "frozenBuilds": 2448,
+      "publicLaterDecks": 1216,
+      "assignedLaterDecks": 161,
+      "assignedListShare": 0.13240131578947367,
+      "validLaterPairings": 413,
+      "eligibleLaterPerspectives": 826,
+      "evaluatedPerspectives": 2,
+      "evaluatedCells": 2,
+      "outcomeCoverage": 0.002421307506053269
+    },
+    "accuracy": {
+      "buildMeanSquaredError": 0.24055555555555555,
+      "championMeanSquaredError": 0.29300865544651056
+    },
+    "trainingEventIds": [
+      51206,
+      55109,
+      50602,
+      50603,
+      50799,
+      51596,
+      51612,
+      51658,
+      53422,
+      53535,
+      54084,
+      54131,
+      54696,
+      55010,
+      55386,
+      55549,
+      55714,
+      55777,
+      55911,
+      51446,
+      52895,
+      53423,
+      53593,
+      54078,
+      55096,
+      55685,
+      55717,
+      55830,
+      55852,
+      55855,
+      56060,
+      54688,
+      55110,
+      56279,
+      56467,
+      50936,
+      53148,
+      53367,
+      53395,
+      53947,
+      53960,
+      54077,
+      54514,
+      56345,
+      56392,
+      56414,
+      56415,
+      56432,
+      56461,
+      56484,
+      51573,
+      54317,
+      54510,
+      56403,
+      51588,
+      55027,
+      55111,
+      50176,
+      50604,
+      50680,
+      51605,
+      52018,
+      52795,
+      53702,
+      54452,
+      55382,
+      56124,
+      56265,
+      56764,
+      56781,
+      56883,
+      56887,
+      56992,
+      54027,
+      55466,
+      56266,
+      56568,
+      57041,
+      56204,
+      57006,
+      51657,
+      52051,
+      52845,
+      53273,
+      57007,
+      57088,
+      57383,
+      57404,
+      52100,
+      53908,
+      56404,
+      56885,
+      57529,
+      57564,
+      57591,
+      57228,
+      57252,
+      50119,
+      51662,
+      52583,
+      55881,
+      55893,
+      56328,
+      57717,
+      57751,
+      57754,
+      57871,
+      57964,
+      51706,
+      51976,
+      53055,
+      54597,
+      55003,
+      55882,
+      57395,
+      57679,
+      57690,
+      57712,
+      57902,
+      57229,
+      58245,
+      51312,
+      51851,
+      53836,
+      55353,
+      55381,
+      57189,
+      57346,
+      57471,
+      57694,
+      58262,
+      58269,
+      58423,
+      50519,
+      53061,
+      58125,
+      58230,
+      58504,
+      57230,
+      50614,
+      54070,
+      54261,
+      55112,
+      58745,
+      58750,
+      58922,
+      50218,
+      51562,
+      56116,
+      57804,
+      58227,
+      58232,
+      58946,
+      59135,
+      57231,
+      59232,
+      55627,
+      59168,
+      59187,
+      59334,
+      56416,
+      59531,
+      60363,
+      60368,
+      60488,
+      61285,
+      61549,
+      62100,
+      62295,
+      61722,
+      62146,
+      62266
+    ],
+    "laterEventIds": [
+      62484,
+      63065,
+      61723,
+      62616,
+      63680,
+      63732,
+      63763,
+      64220,
+      64530,
+      63897,
+      64201,
+      64272,
+      64294,
+      64495,
+      64585,
+      64596,
+      64622,
+      64701,
+      64718,
+      64741,
+      63849,
+      64253,
+      64329,
+      64411,
+      64533,
+      64648,
+      64760,
+      64791,
+      64827,
+      64846,
+      64922,
+      64888,
+      64967,
+      64974,
+      65021,
+      64463,
+      64496,
+      64578,
+      64635,
+      64770,
+      64788,
+      64905,
+      64911,
+      64930,
+      64936,
+      64994,
+      65105,
+      65169,
+      65240,
+      64320,
+      64335,
+      64657,
+      64957,
+      65101,
+      65299
+    ],
+    "reportedDefinitions": [
+      {
+        "id": "exact-3630",
+        "sections": [
+          [
+            [
+              "Cerulean Decree",
+              4
+            ],
+            [
+              "Conniving Plans",
+              3
+            ],
+            [
+              "Engulf",
+              3
+            ],
+            [
+              "Excalibur, Cleansing Light",
+              1
+            ],
+            [
+              "Fractal of Polar Depths",
+              4
+            ],
+            [
+              "Fractal of Rain",
+              4
+            ],
+            [
+              "Fracturize",
+              4
+            ],
+            [
+              "Frostsworn Paladin",
+              4
+            ],
+            [
+              "Gentle Respite",
+              3
+            ],
+            [
+              "Primordial Ritual",
+              2
+            ],
+            [
+              "Refracting Missile",
+              4
+            ],
+            [
+              "Resonating Fugue",
+              4
+            ],
+            [
+              "Seaside Ringleader",
+              4
+            ],
+            [
+              "Shademist Priestess",
+              1
+            ],
+            [
+              "Song of Frost",
+              2
+            ],
+            [
+              "Spalling Cleanse",
+              2
+            ],
+            [
+              "Strategem of Myriad Ice",
+              2
+            ],
+            [
+              "Throne-Keeper Bullfrog",
+              2
+            ],
+            [
+              "Tidal Lock",
+              2
+            ],
+            [
+              "Tidestone Bovine",
+              4
+            ],
+            [
+              "Unbroken Mustang",
+              2
+            ]
+          ],
+          [
+            [
+              "Diamond Ribbon",
+              1
+            ],
+            [
+              "Enfeebling Orb",
+              1
+            ],
+            [
+              "Fabled Sapphire Fatestone",
+              1
+            ],
+            [
+              "Grand Crusader's Ring",
+              1
+            ],
+            [
+              "Guo Jia, Blessed Scion",
+              1
+            ],
+            [
+              "Guo Jia, Chosen Disciple",
+              1
+            ],
+            [
+              "Guo Jia, Heaven's Favored",
+              1
+            ],
+            [
+              "Portentous Tanggu",
+              1
+            ],
+            [
+              "Safeguard Amulet",
+              1
+            ],
+            [
+              "Smoke Bombs",
+              1
+            ],
+            [
+              "Spirit of Water",
+              1
+            ],
+            [
+              "Tabula of Salvage",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-1743",
+        "sections": [
+          [
+            [
+              "Aesan Protector",
+              3
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Dream Fairy",
+              3
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Ensnaring Fumes",
+              1
+            ],
+            [
+              "Fairy Whispers",
+              3
+            ],
+            [
+              "Incapacitate",
+              4
+            ],
+            [
+              "Innervate Agility",
+              2
+            ],
+            [
+              "Mastermind Scheme",
+              2
+            ],
+            [
+              "Reclaim",
+              2
+            ],
+            [
+              "Sadi, Blood Harvester",
+              4
+            ],
+            [
+              "Shadowstrike",
+              3
+            ],
+            [
+              "Slice and Dice",
+              3
+            ],
+            [
+              "Stifling Gyre",
+              2
+            ],
+            [
+              "Stifling Trap",
+              2
+            ],
+            [
+              "Surveil the Winds",
+              4
+            ],
+            [
+              "Topsy Decree",
+              4
+            ],
+            [
+              "Turbo Charge",
+              1
+            ],
+            [
+              "Veiling Breeze",
+              2
+            ],
+            [
+              "Winbless Lookout",
+              4
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ],
+            [
+              "Zephyr",
+              2
+            ]
+          ],
+          [
+            [
+              "Assassin's Ripper",
+              1
+            ],
+            [
+              "Backup Charger",
+              1
+            ],
+            [
+              "Censer of Restful Peace",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Shadow's Claw",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Tristan, Hired Blade",
+              1
+            ],
+            [
+              "Tristan, Shadowdancer",
+              1
+            ],
+            [
+              "Tristan, Shadowreaver",
+              1
+            ],
+            [
+              "Tristan, Underhanded",
+              1
+            ],
+            [
+              "Windwalker Boots",
+              1
+            ]
+          ]
+        ]
+      }
+    ],
+    "results": [
+      {
+        "choice": "[\"build\",\"exact-1743\",\"Tristan\"]",
+        "opponent": "[\"champion\",\"Lorraine\"]",
+        "trainingGames": 5,
+        "laterGames": 1,
+        "predicted": 0.6,
+        "championBaseline": 0.4696969696969697,
+        "observed": 1,
+        "buildSquaredError": 0.16000000000000003,
+        "championSquaredError": 0.28122130394857664
+      },
+      {
+        "choice": "[\"build\",\"exact-3630\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Arisanna\"]",
+        "trainingGames": 5,
+        "laterGames": 1,
+        "predicted": 0.5666666666666667,
+        "championBaseline": 0.5520833333333334,
+        "observed": 0,
+        "buildSquaredError": 0.32111111111111107,
+        "championSquaredError": 0.3047960069444445
+      }
+    ]
+  },
+  {
+    "sourceGeneratedAt": "2026-10-05T23:21:17.357Z",
+    "definitionScope": "Only builds with evaluated later outcomes",
+    "assignment": "Frozen nearest main-deck seed, weighted Jaccard >= 0.7, exact material section; experimental groups distinct from published taxonomy",
+    "scope": {
+      "format": "standard",
+      "from": "2026-05-13",
+      "cutoff": "2026-08-10",
+      "to": "2026-09-06",
+      "trainingEvents": 311,
+      "laterEvents": 11,
+      "minMatchups": 5
+    },
+    "interpretation": "Chronological holdout with main+material definitions frozen from earlier completed events. Sideboards excluded. This is an offline baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
+    "population": {
+      "frozenBuilds": 4153,
+      "publicLaterDecks": 265,
+      "assignedLaterDecks": 61,
+      "assignedListShare": 0.23018867924528302,
+      "validLaterPairings": 92,
+      "eligibleLaterPerspectives": 184,
+      "evaluatedPerspectives": 2,
+      "evaluatedCells": 2,
+      "outcomeCoverage": 0.010869565217391304
+    },
+    "accuracy": {
+      "buildMeanSquaredError": 0.12342259156663592,
+      "championMeanSquaredError": 0.19850859186507597
+    },
+    "trainingEventIds": [
+      51534,
+      52304,
+      52502,
+      53606,
+      53786,
+      51473,
+      51616,
+      51676,
+      51741,
+      51918,
+      52032,
+      52224,
+      52232,
+      52366,
+      52415,
+      52445,
+      52794,
+      52978,
+      53417,
+      53714,
+      53773,
+      53791,
+      50452,
+      51545,
+      51551,
+      51834,
+      52170,
+      52626,
+      52898,
+      53107,
+      53693,
+      53814,
+      53881,
+      51632,
+      53425,
+      52305,
+      53915,
+      54069,
+      50099,
+      50234,
+      50333,
+      50884,
+      51572,
+      51835,
+      52129,
+      52370,
+      52493,
+      53344,
+      53373,
+      53429,
+      53582,
+      53594,
+      53701,
+      53820,
+      53845,
+      54075,
+      54238,
+      54241,
+      54260,
+      50374,
+      50432,
+      50484,
+      50986,
+      51514,
+      51547,
+      51848,
+      52306,
+      52425,
+      53167,
+      53913,
+      54239,
+      53426,
+      52307,
+      50232,
+      50951,
+      51142,
+      51636,
+      52123,
+      53034,
+      53119,
+      53369,
+      53568,
+      53868,
+      53986,
+      54185,
+      54305,
+      54434,
+      54465,
+      54521,
+      54644,
+      54698,
+      54741,
+      54761,
+      54763,
+      54812,
+      54876,
+      54906,
+      51423,
+      51512,
+      51571,
+      51593,
+      51609,
+      52049,
+      53392,
+      54275,
+      54301,
+      54460,
+      54610,
+      55016,
+      51577,
+      52348,
+      52799,
+      53427,
+      51560,
+      55108,
+      55400,
+      50592,
+      52319,
+      52397,
+      52480,
+      52697,
+      52782,
+      53256,
+      53540,
+      53739,
+      54212,
+      54279,
+      54294,
+      54358,
+      54447,
+      54936,
+      54997,
+      55232,
+      55246,
+      55278,
+      55307,
+      55450,
+      50329,
+      51608,
+      51679,
+      51724,
+      51828,
+      52451,
+      52896,
+      53911,
+      55172,
+      55188,
+      55272,
+      55520,
+      53428,
+      51206,
+      55109,
+      50602,
+      50603,
+      50799,
+      51596,
+      51612,
+      51658,
+      53422,
+      53535,
+      54084,
+      54131,
+      54696,
+      55010,
+      55386,
+      55549,
+      55714,
+      55777,
+      55911,
+      51446,
+      52895,
+      53423,
+      53593,
+      54078,
+      55096,
+      55685,
+      55717,
+      55830,
+      55852,
+      55855,
+      56060,
+      54688,
+      55110,
+      56279,
+      56467,
+      50936,
+      53148,
+      53367,
+      53395,
+      53947,
+      53960,
+      54077,
+      54514,
+      56345,
+      56392,
+      56414,
+      56415,
+      56432,
+      56461,
+      56484,
+      51573,
+      54317,
+      54510,
+      56403,
+      51588,
+      55027,
+      55111,
+      50176,
+      50604,
+      50680,
+      51605,
+      52018,
+      52795,
+      53702,
+      54452,
+      55382,
+      56124,
+      56265,
+      56764,
+      56781,
+      56883,
+      56887,
+      56992,
+      54027,
+      55466,
+      56266,
+      56568,
+      57041,
+      56204,
+      57006,
+      51657,
+      52051,
+      52845,
+      53273,
+      57007,
+      57088,
+      57383,
+      57404,
+      52100,
+      53908,
+      56404,
+      56885,
+      57529,
+      57564,
+      57591,
+      57228,
+      57252,
+      50119,
+      51662,
+      52583,
+      55881,
+      55893,
+      56328,
+      57717,
+      57751,
+      57754,
+      57871,
+      57964,
+      51706,
+      51976,
+      53055,
+      54597,
+      55003,
+      55882,
+      57395,
+      57679,
+      57690,
+      57712,
+      57902,
+      57229,
+      58245,
+      51312,
+      51851,
+      53836,
+      55353,
+      55381,
+      57189,
+      57346,
+      57471,
+      57694,
+      58262,
+      58269,
+      58423,
+      50519,
+      53061,
+      58125,
+      58230,
+      58504,
+      57230,
+      50614,
+      54070,
+      54261,
+      55112,
+      58745,
+      58750,
+      58922,
+      50218,
+      51562,
+      56116,
+      57804,
+      58227,
+      58232,
+      58946,
+      59135,
+      57231,
+      59232,
+      55627,
+      59168,
+      59187,
+      59334,
+      56416
+    ],
+    "laterEventIds": [
+      59531,
+      60363,
+      60368,
+      60488,
+      61285,
+      61549,
+      62100,
+      62295,
+      61722,
+      62146,
+      62266
+    ],
+    "reportedDefinitions": [
+      {
+        "id": "exact-1933",
+        "sections": [
+          [
+            [
+              "Aella, Zephyr's Hand",
+              3
+            ],
+            [
+              "Aesan Protector",
+              2
+            ],
+            [
+              "Benediction Angel",
+              1
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Condemning Evisceration",
+              2
+            ],
+            [
+              "Crux Sight",
+              3
+            ],
+            [
+              "Displace",
+              2
+            ],
+            [
+              "Dream Fairy",
+              3
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Escape the Wreckage",
+              3
+            ],
+            [
+              "Fairy Whispers",
+              4
+            ],
+            [
+              "Fluffy Shopkeep",
+              4
+            ],
+            [
+              "Ghosts of Pendragon",
+              4
+            ],
+            [
+              "Heavenly Guide",
+              1
+            ],
+            [
+              "Imperious Galebind",
+              3
+            ],
+            [
+              "Reclaim",
+              4
+            ],
+            [
+              "Scout the Land",
+              1
+            ],
+            [
+              "Spirit Blade: Ascension",
+              3
+            ],
+            [
+              "Spirit Blade: Retribution",
+              2
+            ],
+            [
+              "Turbo Charge",
+              2
+            ],
+            [
+              "Veiling Breeze",
+              3
+            ],
+            [
+              "Verdigris Decree",
+              2
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ]
+          ],
+          [
+            [
+              "Backup Charger",
+              1
+            ],
+            [
+              "Clarent, Reimagined",
+              1
+            ],
+            [
+              "Clarent, Sword of Peace",
+              1
+            ],
+            [
+              "Drawn Blade",
+              1
+            ],
+            [
+              "Lorraine, Blademaster",
+              1
+            ],
+            [
+              "Lorraine, Spirit Ruler",
+              1
+            ],
+            [
+              "Lorraine, Wandering Warrior",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Prismatic Edge",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Sword of Seeking",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-3088",
+        "sections": [
+          [
+            [
+              "Aesan Protector",
+              3
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Dream Fairy",
+              3
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Ensnaring Fumes",
+              1
+            ],
+            [
+              "Fairy Whispers",
+              3
+            ],
+            [
+              "Incapacitate",
+              4
+            ],
+            [
+              "Innervate Agility",
+              2
+            ],
+            [
+              "Mastermind Scheme",
+              2
+            ],
+            [
+              "Reclaim",
+              2
+            ],
+            [
+              "Sadi, Blood Harvester",
+              4
+            ],
+            [
+              "Shadowstrike",
+              3
+            ],
+            [
+              "Slice and Dice",
+              3
+            ],
+            [
+              "Stifling Gyre",
+              2
+            ],
+            [
+              "Stifling Trap",
+              2
+            ],
+            [
+              "Surveil the Winds",
+              4
+            ],
+            [
+              "Topsy Decree",
+              4
+            ],
+            [
+              "Turbo Charge",
+              1
+            ],
+            [
+              "Veiling Breeze",
+              2
+            ],
+            [
+              "Winbless Lookout",
+              4
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ],
+            [
+              "Zephyr",
+              2
+            ]
+          ],
+          [
+            [
+              "Assassin's Ripper",
+              1
+            ],
+            [
+              "Backup Charger",
+              1
+            ],
+            [
+              "Censer of Restful Peace",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Shadow's Claw",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Tristan, Hired Blade",
+              1
+            ],
+            [
+              "Tristan, Shadowdancer",
+              1
+            ],
+            [
+              "Tristan, Shadowreaver",
+              1
+            ],
+            [
+              "Tristan, Underhanded",
+              1
+            ],
+            [
+              "Windwalker Boots",
+              1
+            ]
+          ]
+        ]
+      }
+    ],
+    "results": [
+      {
+        "choice": "[\"build\",\"exact-1933\",\"Lorraine\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 9,
+        "laterGames": 1,
+        "predicted": 0.631578947368421,
+        "championBaseline": 0.5288461538461539,
+        "observed": 1,
+        "buildSquaredError": 0.1357340720221607,
+        "championSquaredError": 0.22198594674556213
+      },
+      {
+        "choice": "[\"build\",\"exact-3088\",\"Tristan\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 8,
+        "laterGames": 1,
+        "predicted": 0.6666666666666666,
+        "championBaseline": 0.5816326530612245,
+        "observed": 1,
+        "buildSquaredError": 0.11111111111111113,
+        "championSquaredError": 0.17503123698458978
+      }
+    ]
+  },
+  {
+    "sourceGeneratedAt": "2026-10-05T23:21:17.357Z",
+    "definitionScope": "Only builds with evaluated later outcomes",
+    "assignment": "Frozen nearest main-deck seed, weighted Jaccard >= 0.7, exact material section; experimental groups distinct from published taxonomy",
+    "scope": {
+      "format": "standard",
+      "from": "2026-04-15",
+      "cutoff": "2026-07-13",
+      "to": "2026-08-09",
+      "trainingEvents": 373,
+      "laterEvents": 42,
+      "minMatchups": 5
+    },
+    "interpretation": "Chronological holdout with main+material definitions frozen from earlier completed events. Sideboards excluded. This is an offline baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
+    "population": {
+      "frozenBuilds": 5263,
+      "publicLaterDecks": 1047,
+      "assignedLaterDecks": 450,
+      "assignedListShare": 0.4297994269340974,
+      "validLaterPairings": 423,
+      "eligibleLaterPerspectives": 846,
+      "evaluatedPerspectives": 17,
+      "evaluatedCells": 10,
+      "outcomeCoverage": 0.02009456264775414
+    },
+    "accuracy": {
+      "buildMeanSquaredError": 0.1875059170856015,
+      "championMeanSquaredError": 0.2145155906582756
+    },
+    "trainingEventIds": [
+      48695,
+      49810,
+      50533,
+      51024,
+      50983,
+      48696,
+      50291,
+      50296,
+      50623,
+      50684,
+      51252,
+      51279,
+      51301,
+      51319,
+      51753,
+      51950,
+      51969,
+      51998,
+      49580,
+      50170,
+      50290,
+      50641,
+      51087,
+      51578,
+      51672,
+      51736,
+      51745,
+      51803,
+      51981,
+      52088,
+      50984,
+      52218,
+      51050,
+      48697,
+      50893,
+      51239,
+      51377,
+      51529,
+      51853,
+      52318,
+      50088,
+      50924,
+      50946,
+      51086,
+      51237,
+      51353,
+      51549,
+      51589,
+      51592,
+      51917,
+      52180,
+      52262,
+      52508,
+      52514,
+      52548,
+      52573,
+      50927,
+      51174,
+      51554,
+      51718,
+      51854,
+      52090,
+      52187,
+      52254,
+      52255,
+      52325,
+      52349,
+      52512,
+      52580,
+      52638,
+      51126,
+      50985,
+      51814,
+      52375,
+      50516,
+      52981,
+      52303,
+      52777,
+      52888,
+      52976,
+      53142,
+      50904,
+      51394,
+      51574,
+      51581,
+      51943,
+      52181,
+      52238,
+      52406,
+      52587,
+      52661,
+      52664,
+      52731,
+      53033,
+      53149,
+      53186,
+      53208,
+      50284,
+      51546,
+      51564,
+      51692,
+      51857,
+      52915,
+      53310,
+      53314,
+      53424,
+      51534,
+      52304,
+      52502,
+      53606,
+      53786,
+      51473,
+      51616,
+      51676,
+      51741,
+      51918,
+      52032,
+      52224,
+      52232,
+      52366,
+      52415,
+      52445,
+      52794,
+      52978,
+      53417,
+      53714,
+      53773,
+      53791,
+      50452,
+      51545,
+      51551,
+      51834,
+      52170,
+      52626,
+      52898,
+      53107,
+      53693,
+      53814,
+      53881,
+      51632,
+      53425,
+      52305,
+      53915,
+      54069,
+      50099,
+      50234,
+      50333,
+      50884,
+      51572,
+      51835,
+      52129,
+      52370,
+      52493,
+      53344,
+      53373,
+      53429,
+      53582,
+      53594,
+      53701,
+      53820,
+      53845,
+      54075,
+      54238,
+      54241,
+      54260,
+      50374,
+      50432,
+      50484,
+      50986,
+      51514,
+      51547,
+      51848,
+      52306,
+      52425,
+      53167,
+      53913,
+      54239,
+      53426,
+      52307,
+      50232,
+      50951,
+      51142,
+      51636,
+      52123,
+      53034,
+      53119,
+      53369,
+      53568,
+      53868,
+      53986,
+      54185,
+      54305,
+      54434,
+      54465,
+      54521,
+      54644,
+      54698,
+      54741,
+      54761,
+      54763,
+      54812,
+      54876,
+      54906,
+      51423,
+      51512,
+      51571,
+      51593,
+      51609,
+      52049,
+      53392,
+      54275,
+      54301,
+      54460,
+      54610,
+      55016,
+      51577,
+      52348,
+      52799,
+      53427,
+      51560,
+      55108,
+      55400,
+      50592,
+      52319,
+      52397,
+      52480,
+      52697,
+      52782,
+      53256,
+      53540,
+      53739,
+      54212,
+      54279,
+      54294,
+      54358,
+      54447,
+      54936,
+      54997,
+      55232,
+      55246,
+      55278,
+      55307,
+      55450,
+      50329,
+      51608,
+      51679,
+      51724,
+      51828,
+      52451,
+      52896,
+      53911,
+      55172,
+      55188,
+      55272,
+      55520,
+      53428,
+      51206,
+      55109,
+      50602,
+      50603,
+      50799,
+      51596,
+      51612,
+      51658,
+      53422,
+      53535,
+      54084,
+      54131,
+      54696,
+      55010,
+      55386,
+      55549,
+      55714,
+      55777,
+      55911,
+      51446,
+      52895,
+      53423,
+      53593,
+      54078,
+      55096,
+      55685,
+      55717,
+      55830,
+      55852,
+      55855,
+      56060,
+      54688,
+      55110,
+      56279,
+      56467,
+      50936,
+      53148,
+      53367,
+      53395,
+      53947,
+      53960,
+      54077,
+      54514,
+      56345,
+      56392,
+      56414,
+      56415,
+      56432,
+      56461,
+      56484,
+      51573,
+      54317,
+      54510,
+      56403,
+      51588,
+      55027,
+      55111,
+      50176,
+      50604,
+      50680,
+      51605,
+      52018,
+      52795,
+      53702,
+      54452,
+      55382,
+      56124,
+      56265,
+      56764,
+      56781,
+      56883,
+      56887,
+      56992,
+      54027,
+      55466,
+      56266,
+      56568,
+      57041,
+      56204,
+      57006,
+      51657,
+      52051,
+      52845,
+      53273,
+      57007,
+      57088,
+      57383,
+      57404,
+      52100,
+      53908,
+      56404,
+      56885,
+      57529,
+      57564,
+      57591,
+      57228,
+      57252,
+      50119,
+      51662,
+      52583,
+      55881,
+      55893,
+      56328,
+      57717,
+      57751,
+      57754,
+      57871,
+      57964,
+      51706,
+      53055,
+      54597,
+      55882,
+      57395,
+      57679,
+      57690,
+      57712,
+      57902
+    ],
+    "laterEventIds": [
+      57229,
+      58245,
+      51312,
+      51851,
+      53836,
+      55353,
+      55381,
+      57189,
+      57346,
+      57471,
+      57694,
+      58262,
+      58269,
+      58423,
+      50519,
+      53061,
+      58125,
+      58230,
+      58504,
+      57230,
+      50614,
+      54070,
+      54261,
+      55112,
+      58745,
+      58750,
+      58922,
+      50218,
+      51562,
+      56116,
+      57804,
+      58227,
+      58232,
+      58946,
+      59135,
+      57231,
+      59232,
+      55627,
+      59168,
+      59187,
+      59334,
+      56416
+    ],
+    "reportedDefinitions": [
+      {
+        "id": "exact-7151",
+        "sections": [
+          [
+            [
+              "Avatar of Suzaku",
+              4
+            ],
+            [
+              "Blazing Throw",
+              2
+            ],
+            [
+              "Cinder Geyser",
+              2
+            ],
+            [
+              "Coiled Fatestone",
+              2
+            ],
+            [
+              "Creative Shock",
+              4
+            ],
+            [
+              "Crystallized Destiny",
+              2
+            ],
+            [
+              "Demolition",
+              4
+            ],
+            [
+              "Embercrypt Burn",
+              3
+            ],
+            [
+              "Fiery Interference",
+              4
+            ],
+            [
+              "Heated Vengeance",
+              3
+            ],
+            [
+              "Ignite Fate",
+              4
+            ],
+            [
+              "Intensified Pyre",
+              2
+            ],
+            [
+              "Peppered Chef",
+              4
+            ],
+            [
+              "Restorative Flame",
+              2
+            ],
+            [
+              "Searing Truth",
+              4
+            ],
+            [
+              "Shatter the Brittle",
+              2
+            ],
+            [
+              "Smoke Out",
+              2
+            ],
+            [
+              "Suzaku's Command",
+              4
+            ],
+            [
+              "Undeniable Truth",
+              2
+            ],
+            [
+              "Vermilion Decree",
+              4
+            ]
+          ],
+          [
+            [
+              "Censer of Restful Peace",
+              1
+            ],
+            [
+              "Enfeebling Orb",
+              1
+            ],
+            [
+              "Fabled Ruby Fatestone",
+              1
+            ],
+            [
+              "Grand Crusader's Ring",
+              1
+            ],
+            [
+              "Guo Jia, Chosen Disciple",
+              1
+            ],
+            [
+              "Impact Hammer",
+              1
+            ],
+            [
+              "Infernal Vessel",
+              1
+            ],
+            [
+              "Portentous Tanggu",
+              1
+            ],
+            [
+              "Safeguard Amulet",
+              1
+            ],
+            [
+              "Smoke Bombs",
+              1
+            ],
+            [
+              "Spirit of Fire",
+              1
+            ],
+            [
+              "Tariff Ring",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-8372",
+        "sections": [
+          [
+            [
+              "Cerulean Decree",
+              4
+            ],
+            [
+              "Conniving Plans",
+              3
+            ],
+            [
+              "Engulf",
+              3
+            ],
+            [
+              "Excalibur, Cleansing Light",
+              1
+            ],
+            [
+              "Fractal of Polar Depths",
+              4
+            ],
+            [
+              "Fractal of Rain",
+              4
+            ],
+            [
+              "Fracturize",
+              4
+            ],
+            [
+              "Frostsworn Paladin",
+              4
+            ],
+            [
+              "Gentle Respite",
+              3
+            ],
+            [
+              "Primordial Ritual",
+              2
+            ],
+            [
+              "Refracting Missile",
+              4
+            ],
+            [
+              "Resonating Fugue",
+              4
+            ],
+            [
+              "Seaside Ringleader",
+              4
+            ],
+            [
+              "Shademist Priestess",
+              1
+            ],
+            [
+              "Song of Frost",
+              2
+            ],
+            [
+              "Spalling Cleanse",
+              2
+            ],
+            [
+              "Strategem of Myriad Ice",
+              2
+            ],
+            [
+              "Throne-Keeper Bullfrog",
+              2
+            ],
+            [
+              "Tidal Lock",
+              2
+            ],
+            [
+              "Tidestone Bovine",
+              4
+            ],
+            [
+              "Unbroken Mustang",
+              2
+            ]
+          ],
+          [
+            [
+              "Diamond Ribbon",
+              1
+            ],
+            [
+              "Enfeebling Orb",
+              1
+            ],
+            [
+              "Fabled Sapphire Fatestone",
+              1
+            ],
+            [
+              "Grand Crusader's Ring",
+              1
+            ],
+            [
+              "Guo Jia, Blessed Scion",
+              1
+            ],
+            [
+              "Guo Jia, Chosen Disciple",
+              1
+            ],
+            [
+              "Guo Jia, Heaven's Favored",
+              1
+            ],
+            [
+              "Portentous Tanggu",
+              1
+            ],
+            [
+              "Safeguard Amulet",
+              1
+            ],
+            [
+              "Smoke Bombs",
+              1
+            ],
+            [
+              "Spirit of Water",
+              1
+            ],
+            [
+              "Tabula of Salvage",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-2464",
+        "sections": [
+          [
+            [
+              "Aella, Zephyr's Hand",
+              3
+            ],
+            [
+              "Aesan Protector",
+              3
+            ],
+            [
+              "Alizarin Longbowman",
+              2
+            ],
+            [
+              "Benediction Angel",
+              2
+            ],
+            [
+              "Beseech the Winds",
+              2
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Crux Sight",
+              4
+            ],
+            [
+              "Displace",
+              2
+            ],
+            [
+              "Dream Fairy",
+              2
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Fairy Whispers",
+              4
+            ],
+            [
+              "Fluffy Shopkeep",
+              4
+            ],
+            [
+              "Ghosts of Pendragon",
+              4
+            ],
+            [
+              "Rally the Peasants",
+              2
+            ],
+            [
+              "Reclaim",
+              4
+            ],
+            [
+              "Scout the Land",
+              2
+            ],
+            [
+              "Spirit Blade: Ascension",
+              4
+            ],
+            [
+              "Spirit Blade: Retribution",
+              2
+            ],
+            [
+              "Stifling Trap",
+              2
+            ],
+            [
+              "Veiling Breeze",
+              2
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ]
+          ],
+          [
+            [
+              "Clarent, Reimagined",
+              1
+            ],
+            [
+              "Clarent, Sword of Peace",
+              1
+            ],
+            [
+              "Drawn Blade",
+              1
+            ],
+            [
+              "Lorraine, Blademaster",
+              1
+            ],
+            [
+              "Lorraine, Spirit Ruler",
+              1
+            ],
+            [
+              "Lorraine, Wandering Warrior",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Palvor Sword",
+              1
+            ],
+            [
+              "Prismatic Edge",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Sword of Seeking",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-3703",
+        "sections": [
+          [
+            [
+              "Aesan Protector",
+              3
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Dream Fairy",
+              3
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Ensnaring Fumes",
+              1
+            ],
+            [
+              "Fairy Whispers",
+              3
+            ],
+            [
+              "Incapacitate",
+              4
+            ],
+            [
+              "Innervate Agility",
+              2
+            ],
+            [
+              "Mastermind Scheme",
+              2
+            ],
+            [
+              "Reclaim",
+              2
+            ],
+            [
+              "Sadi, Blood Harvester",
+              4
+            ],
+            [
+              "Shadowstrike",
+              3
+            ],
+            [
+              "Slice and Dice",
+              3
+            ],
+            [
+              "Stifling Gyre",
+              2
+            ],
+            [
+              "Stifling Trap",
+              2
+            ],
+            [
+              "Surveil the Winds",
+              4
+            ],
+            [
+              "Topsy Decree",
+              4
+            ],
+            [
+              "Turbo Charge",
+              1
+            ],
+            [
+              "Veiling Breeze",
+              2
+            ],
+            [
+              "Winbless Lookout",
+              4
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ],
+            [
+              "Zephyr",
+              2
+            ]
+          ],
+          [
+            [
+              "Assassin's Ripper",
+              1
+            ],
+            [
+              "Backup Charger",
+              1
+            ],
+            [
+              "Censer of Restful Peace",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Shadow's Claw",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Tristan, Hired Blade",
+              1
+            ],
+            [
+              "Tristan, Shadowdancer",
+              1
+            ],
+            [
+              "Tristan, Shadowreaver",
+              1
+            ],
+            [
+              "Tristan, Underhanded",
+              1
+            ],
+            [
+              "Windwalker Boots",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-8356",
+        "sections": [
+          [
+            [
+              "Cerulean Decree",
+              4
+            ],
+            [
+              "Conniving Plans",
+              3
+            ],
+            [
+              "Engulf",
+              3
+            ],
+            [
+              "Excalibur, Cleansing Light",
+              1
+            ],
+            [
+              "Fractal of Polar Depths",
+              4
+            ],
+            [
+              "Fractal of Rain",
+              4
+            ],
+            [
+              "Fracturize",
+              4
+            ],
+            [
+              "Frostsworn Paladin",
+              4
+            ],
+            [
+              "Frozen Dismissal",
+              2
+            ],
+            [
+              "Primordial Ritual",
+              3
+            ],
+            [
+              "Refracting Missile",
+              3
+            ],
+            [
+              "Resonating Fugue",
+              4
+            ],
+            [
+              "Seaside Ringleader",
+              4
+            ],
+            [
+              "Shademist Priestess",
+              1
+            ],
+            [
+              "Song of Frost",
+              2
+            ],
+            [
+              "Spalling Cleanse",
+              2
+            ],
+            [
+              "Strategem of Myriad Ice",
+              1
+            ],
+            [
+              "Throne-Keeper Bullfrog",
+              3
+            ],
+            [
+              "Tidal Lock",
+              2
+            ],
+            [
+              "Tidestone Bovine",
+              4
+            ],
+            [
+              "Unbroken Mustang",
+              2
+            ]
+          ],
+          [
+            [
+              "Enfeebling Orb",
+              1
+            ],
+            [
+              "Fabled Sapphire Fatestone",
+              1
+            ],
+            [
+              "Grand Crusader's Ring",
+              1
+            ],
+            [
+              "Guo Jia, Blessed Scion",
+              1
+            ],
+            [
+              "Guo Jia, Chosen Disciple",
+              1
+            ],
+            [
+              "Guo Jia, Heaven's Favored",
+              1
+            ],
+            [
+              "Portentous Tanggu",
+              1
+            ],
+            [
+              "Safeguard Amulet",
+              1
+            ],
+            [
+              "Smoke Bombs",
+              1
+            ],
+            [
+              "Spirit of Water",
+              1
+            ],
+            [
+              "Tabula of Salvage",
+              1
+            ],
+            [
+              "Tariff Ring",
+              1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "exact-2374",
+        "sections": [
+          [
+            [
+              "Aella, Zephyr's Hand",
+              3
+            ],
+            [
+              "Aesan Protector",
+              2
+            ],
+            [
+              "Benediction Angel",
+              1
+            ],
+            [
+              "Calming Breeze",
+              2
+            ],
+            [
+              "Condemning Evisceration",
+              2
+            ],
+            [
+              "Crux Sight",
+              3
+            ],
+            [
+              "Displace",
+              2
+            ],
+            [
+              "Dream Fairy",
+              3
+            ],
+            [
+              "Dungeon Guide",
+              4
+            ],
+            [
+              "Escape the Wreckage",
+              3
+            ],
+            [
+              "Fairy Whispers",
+              4
+            ],
+            [
+              "Fluffy Shopkeep",
+              4
+            ],
+            [
+              "Ghosts of Pendragon",
+              4
+            ],
+            [
+              "Heavenly Guide",
+              1
+            ],
+            [
+              "Imperious Galebind",
+              3
+            ],
+            [
+              "Reclaim",
+              4
+            ],
+            [
+              "Scout the Land",
+              1
+            ],
+            [
+              "Spirit Blade: Ascension",
+              3
+            ],
+            [
+              "Spirit Blade: Retribution",
+              2
+            ],
+            [
+              "Turbo Charge",
+              2
+            ],
+            [
+              "Veiling Breeze",
+              3
+            ],
+            [
+              "Verdigris Decree",
+              2
+            ],
+            [
+              "Windmill Engineer",
+              4
+            ]
+          ],
+          [
+            [
+              "Backup Charger",
+              1
+            ],
+            [
+              "Clarent, Reimagined",
+              1
+            ],
+            [
+              "Clarent, Sword of Peace",
+              1
+            ],
+            [
+              "Drawn Blade",
+              1
+            ],
+            [
+              "Lorraine, Blademaster",
+              1
+            ],
+            [
+              "Lorraine, Spirit Ruler",
+              1
+            ],
+            [
+              "Lorraine, Wandering Warrior",
+              1
+            ],
+            [
+              "Lost Providence",
+              1
+            ],
+            [
+              "Prismatic Edge",
+              1
+            ],
+            [
+              "Purifying Thurible",
+              1
+            ],
+            [
+              "Spirit of Wind",
+              1
+            ],
+            [
+              "Sword of Seeking",
+              1
+            ]
+          ]
+        ]
+      }
+    ],
+    "results": [
+      {
+        "choice": "[\"build\",\"exact-2374\",\"Lorraine\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 5,
+        "laterGames": 4,
+        "predicted": 0.5666666666666667,
+        "championBaseline": 0.4861111111111111,
+        "observed": 0.875,
+        "buildSquaredError": 0.5677777777777778,
+        "championSquaredError": 0.7924382716049382
+      },
+      {
+        "choice": "[\"build\",\"exact-2464\",\"Lorraine\"]",
+        "opponent": "[\"champion\",\"Diana\"]",
+        "trainingGames": 6,
+        "laterGames": 1,
+        "predicted": 0.375,
+        "championBaseline": 0.4567901234567901,
+        "observed": 1,
+        "buildSquaredError": 0.390625,
+        "championSquaredError": 0.2950769699740893
+      },
+      {
+        "choice": "[\"build\",\"exact-2464\",\"Lorraine\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 12,
+        "laterGames": 2,
+        "predicted": 0.6136363636363636,
+        "championBaseline": 0.4861111111111111,
+        "observed": 0.5,
+        "buildSquaredError": 0.02582644628099174,
+        "championSquaredError": 0.00038580246913580283
+      },
+      {
+        "choice": "[\"build\",\"exact-3703\",\"Tristan\"]",
+        "opponent": "[\"champion\",\"Lorraine\"]",
+        "trainingGames": 7,
+        "laterGames": 1,
+        "predicted": 0.5882352941176471,
+        "championBaseline": 0.41,
+        "observed": 1,
+        "buildSquaredError": 0.1695501730103806,
+        "championSquaredError": 0.3481000000000001
+      },
+      {
+        "choice": "[\"build\",\"exact-7151\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Diana\"]",
+        "trainingGames": 6,
+        "laterGames": 1,
+        "predicted": 0.5,
+        "championBaseline": 0.49683544303797467,
+        "observed": 1,
+        "buildSquaredError": 0.25,
+        "championSquaredError": 0.25317457138279126
+      },
+      {
+        "choice": "[\"build\",\"exact-8356\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Diana\"]",
+        "trainingGames": 8,
+        "laterGames": 1,
+        "predicted": 0.5277777777777778,
+        "championBaseline": 0.49683544303797467,
+        "observed": 1,
+        "buildSquaredError": 0.22299382716049382,
+        "championSquaredError": 0.25317457138279126
+      },
+      {
+        "choice": "[\"build\",\"exact-8356\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 9,
+        "laterGames": 3,
+        "predicted": 0.39473684210526316,
+        "championBaseline": 0.5,
+        "observed": 0.3333333333333333,
+        "buildSquaredError": 0.6779778393351801,
+        "championSquaredError": 0.75
+      },
+      {
+        "choice": "[\"build\",\"exact-8372\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Arisanna\"]",
+        "trainingGames": 11,
+        "laterGames": 1,
+        "predicted": 0.5952380952380952,
+        "championBaseline": 0.5514018691588785,
+        "observed": 1,
+        "buildSquaredError": 0.16383219954648526,
+        "championSquaredError": 0.201240282994148
+      },
+      {
+        "choice": "[\"build\",\"exact-8372\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Diana\"]",
+        "trainingGames": 17,
+        "laterGames": 1,
+        "predicted": 0.5370370370370371,
+        "championBaseline": 0.49683544303797467,
+        "observed": 1,
+        "buildSquaredError": 0.21433470507544577,
+        "championSquaredError": 0.25317457138279126
+      },
+      {
+        "choice": "[\"build\",\"exact-8372\",\"Guo Jia\"]",
+        "opponent": "[\"champion\",\"Guo Jia\"]",
+        "trainingGames": 21,
+        "laterGames": 2,
+        "predicted": 0.5483870967741935,
+        "championBaseline": 0.5,
+        "observed": 0.5,
+        "buildSquaredError": 0.5046826222684704,
+        "championSquaredError": 0.5
+      }
+    ]
+  }
+]

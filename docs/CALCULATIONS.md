@@ -4591,3 +4591,45 @@ is therefore unmeasurable for this baseline. The next experiment needs frozen
 similarity-based assignment, followed by multiple chronological holdouts.
 Current catalog normalization and retrospectively collected data are still
 used; this is not a reconstruction of data availability at the historical time.
+
+### Frozen similar-list chronological experiment
+
+Run `pipeline/scripts/benchmark-frozen-builds.ts --similar` to produce
+`docs/reports/frozen-similar-build-holdouts.json`. Three adjacent, non-overlapping
+28-day test periods each rebuild their own earlier training partition. Training
+periods overlap, so the three results are not independent replications.
+
+This experimental grouping does not use published taxonomy membership. Unique
+training main+material lists are ordered by deck sightings, then canonical list
+key. A list becomes a fixed seed if no existing seed with the identical material
+section has main-deck weighted Jaccard similarity at least 0.7. Similarity uses
+copy counts: sum of pairwise minima divided by sum of pairwise maxima. Seeds
+remain actual training decks and are never averaged or updated by later decks.
+After seed selection, both training and later decks are assigned to their
+nearest qualifying seed, with canonical-key tie breaking. Sideboards are ignored;
+material section changes cannot join a seed. The threshold was fixed before
+examining these results; it is an experimental choice, not a validated optimum.
+Every seed may exist as a group, but predictions still require five prior matches
+for its own-Champion versus opponent-Champion cell. IDs are partition-local.
+
+The Champion comparison uses **all** training public decks, including decks
+that would not belong to a selected similar group. It is evaluated on exactly
+the same later outcomes as each build prediction. Both use the ten-game prior
+and the squared-error definition above. Definitions included in the similar-list
+report are limited to groups with evaluated later outcomes, with training and
+test event IDs retained. No holdout result changes seed selection or threshold.
+
+Initial results (2026):
+
+| Later period | Assigned public decks | Scored perspectives / eligible | Build mean squared error | Champion mean squared error |
+| --- | --- | --- | --- | --- |
+| July 13–August 9 | 450 / 1,047 | 17 / 846 | 0.18751 | 0.21452 |
+| August 10–September 6 | 61 / 265 | 2 / 184 | 0.12342 | 0.19851 |
+| September 7–October 4 | 161 / 1,216 | 2 / 826 | 0.24056 | 0.29301 |
+
+Only 21 of 1,856 eligible participant perspectives could be scored (1.13%).
+Lower error on this tiny selected subset is not evidence of reliable superiority.
+The experiment does not yet support expected-field rankings or recommended deck
+mixes. Next work should diagnose how much coverage is lost to exact material
+identity, novel main decks, and the five-match threshold before proposing a
+predeclared broader grouping and testing on additional untouched periods.

@@ -1,5 +1,7 @@
 {
   "sourceGeneratedAt": "2026-10-05T23:21:17.357Z",
+  "definitionScope": "All recurring builds",
+  "assignment": "Exact main+material list",
   "scope": {
     "format": "standard",
     "from": "2026-06-10",
@@ -9,12 +11,12 @@
     "laterEvents": 55,
     "minMatchups": 5
   },
-  "interpretation": "Single chronological holdout with exact main+material definitions frozen from earlier completed events. Sideboards excluded. This is an exact-list baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
+  "interpretation": "Chronological holdout with main+material definitions frozen from earlier completed events. Sideboards excluded. This is an offline baseline, not validation of the published similarity taxonomy. Later unknown lists remain unassigned. Predictions use observed opponent Champion cells, with a ten-game 50% prior, compared on the same later outcomes with pooled own-Champion versus opponent-Champion predictions. A match can contribute both participant perspectives; these are correlated, not independent samples. Squared error treats draws as 0.5. Selection, pilot skill, retrospective data availability, and sampling uncertainty remain uncontrolled. No recommendation or causal card effect is established.",
   "population": {
     "frozenBuilds": 3771,
     "publicLaterDecks": 1216,
     "assignedLaterDecks": 11,
-    "exactListRetention": 0.009046052631578948,
+    "assignedListShare": 0.009046052631578948,
     "validLaterPairings": 413,
     "eligibleLaterPerspectives": 826,
     "evaluatedPerspectives": 0,
@@ -256,7 +258,7 @@
     65101,
     65299
   ],
-  "recurringDefinitions": [
+  "reportedDefinitions": [
     {
       "id": "exact-218",
       "sections": [
