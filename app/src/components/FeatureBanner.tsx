@@ -31,11 +31,13 @@ export default function FeatureBanner() {
 
   return (
     <div data-component="FeatureBanner" className="border-b border-ctp-surface0 bg-ctp-mauve/10">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-1.5 text-center text-xs text-ctp-subtext1 sm:text-sm">
-        <span aria-hidden="true">💡</span>
-        <span>{tip.message}</span>
-        <Link to={tip.to} className="inline-flex min-h-control min-w-0 max-w-full items-center justify-center rounded font-medium text-ctp-mauve hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-mauve">
-          {tip.cta} &rarr;
+      <div className="mx-auto max-w-5xl px-4 text-center text-xs text-ctp-subtext1 sm:text-sm">
+        <Link to={tip.to} className="flex min-h-control items-center justify-center rounded py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-mauve group">
+          <span>
+            <span aria-hidden="true" className="mr-2">💡</span>
+            {tip.message}{" "}
+            <span className="inline-block font-medium text-ctp-mauve group-hover:underline">{tip.cta} &rarr;</span>
+          </span>
         </Link>
       </div>
     </div>
