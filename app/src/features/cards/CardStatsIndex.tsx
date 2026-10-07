@@ -11,7 +11,7 @@ import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
-import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
+import { getPublishedPackageMembership as getCardPackageMembership } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
 import { useCardCatalog } from "./useCardCatalog";

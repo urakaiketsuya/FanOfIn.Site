@@ -4681,3 +4681,31 @@ starting a recommendation UI. Numerical release thresholds and the target user
 population must be fixed before that evaluation; this audit does not establish
 them. Additional independent evidence is the remaining blocker to productizing
 card-build recommendations, not unfinished work on the present candidate.
+
+## Published package catalog v1
+
+`shared/src/publishedPackages.ts` is the reviewed, serializable site catalog. Schema version 1,
+catalog revision 1 migrates the four existing registered definitions without promoting mined or
+experimental findings. It ships with the application release and is available to pipeline consumers;
+it is not a separately refreshed statistical artifact. Increment a package revision when changing
+its membership, activation, or protection; increment the catalog revision for any published change.
+Stable package IDs preserve existing links and browser-saved registered source references.
+
+Every section-specific requirement is AND; its minimum counts distinct positive-quantity names.
+Sideboards cannot satisfy a published rule. The Clarent rule retains its existing positive Material
+Lorraine-name context check. This is construction recognition, not a full game-state or legality
+validator. Full pools retain alternatives: Shopkeep needs two distinct baubles; Argus needs one
+named fuel. Pool membership does not mean every option is required or currently present.
+
+Publication and Builder protection are separate fields. A published rule with protection `none`
+can match a deck without protecting any cards. Existing rules retain their protection policy:
+Shopkeep protects only present baubles, while Argus, Turbo/Charger and Clarent protect their
+present participants after their complete conditions pass. App-local approvals remain in their
+feature controller; card-level membership reads only the shared catalog.
+
+Evidence references record why the original definitions were registered. Shopkeep's 804/57,713
+count is retained historical evidence, not a fresh usage estimate. No new win-rate claim, current
+format claim, automatic approval, or experimental promotion is introduced by this migration.
+The next catalog expansion requires reviewing the construction shortlist and refreshing its source
+snapshots before publishing additional definitions. Public browsing and research-view separation
+remain a subsequent UI change.

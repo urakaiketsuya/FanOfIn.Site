@@ -12,7 +12,7 @@ import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
 import { useIntentCards } from "./useIntentCards";
-import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
+import { getPublishedPackageMembership as getCardPackageMembership } from "@gatcg/shared";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
