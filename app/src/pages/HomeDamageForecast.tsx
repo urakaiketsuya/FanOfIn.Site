@@ -4,13 +4,14 @@ import CardImage from "../components/CardImage";
 import { ForecastChart } from "../components/ui/ForecastVisual";
 
 // Snapshot from computeAggressionForecast for the real Water Diao Chan list at /decks/8qjzzs.
-// Recomputed from its 60-card Main Deck and pipeline/.cache/cards.json on 2026-09-22.
-// The lower bound is zero because Burst Asunder's Fractal scaling is conditional.
+// Recomputed from its 60-card Main Deck and pipeline/.cache/cards.json on 2026-10-07.
+// Exact co-draw distributions include Burst Asunder, Refracting Missile, and Shimmering Refraction.
+// Object deployment is assumed only for the optimistic ceiling.
 const POINTS = [
-  { seen: 7, expectedMin: 0, expectedMax: 3.2, medianMin: 0, medianMax: 2, low: 0, high: 4 },
-  { seen: 10, expectedMin: 0, expectedMax: 6, medianMin: 0, medianMax: 7, low: 0, high: 9 },
-  { seen: 15, expectedMin: 0, expectedMax: 12.5, medianMin: 0, medianMax: 13, low: 0, high: 15 },
-  { seen: 20, expectedMin: 0, expectedMax: 21.3, medianMin: 0, medianMax: 21, low: 0, high: 25 },
+  { seen: 7, expectedMin: 0, expectedMax: 5.2, medianMin: 0, medianMax: 5, low: 0, high: 11 },
+  { seen: 10, expectedMin: 0, expectedMax: 9.9, medianMin: 0, medianMax: 10, low: 0, high: 18 },
+  { seen: 15, expectedMin: 0, expectedMax: 20.5, medianMin: 0, medianMax: 20, low: 0, high: 32 },
+  { seen: 20, expectedMin: 0, expectedMax: 34.1, medianMin: 0, medianMax: 34, low: 0, high: 49 },
 ] as const;
 
 export default function HomeDamageForecast() {
@@ -25,7 +26,7 @@ export default function HomeDamageForecast() {
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-blue">Printed direct damage access</p>
         <h3 id="home-damage-heading" className="mt-3 text-xl font-bold text-ctp-text sm:text-2xl">How much printed damage might you find?</h3>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ctp-subtext1 sm:text-base">This Water Diao Chan list has four Burst Asunders and 18 Fractal cards. The forecast estimates access to their printed damage. Actual damage depends on the game state and whether effects resolve.</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ctp-subtext1 sm:text-base">This Water Diao Chan list pairs Burst Asunder, Refracting Missile, and Shimmering Refraction with its Fractals and other phantasias. The forecast calculates their chances of appearing together. The ceiling assumes those objects can be deployed.</p>
 
         <div className="mt-6 grid gap-6 rounded-2xl bg-ctp-mantle p-5 sm:grid-cols-[120px_minmax(0,1fr)] sm:p-7 sm:gap-8">
           <Link to="/decks/8qjzzs?tab=performance" className="hidden h-fit w-fit rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue sm:block" aria-label="Open the Water Diao Chan deck analysis">
@@ -44,7 +45,7 @@ export default function HomeDamageForecast() {
               {POINTS.map((point, index) => <button key={point.seen} type="button" aria-pressed={index === selectedIndex} onClick={() => setSelectedIndex(index)} className={`min-h-12 rounded-lg border px-1.5 py-2 text-xs font-semibold sm:text-sm ${index === selectedIndex ? "border-ctp-blue bg-forest-surface text-ctp-blue" : "border-ctp-surface1 bg-ctp-base text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}><span className="block">{checkpointLabel(point.seen)}</span><span className="block text-[10px] font-normal">{point.seen} seen</span></button>)}
             </div>
             <div className="mt-5"><ForecastChart values={POINTS.map((point) => (point.expectedMin + point.expectedMax) / 2)} low={POINTS.map((point) => point.low)} high={POINTS.map((point) => point.high)} selectedIndex={selectedIndex} height={90} /></div>
-            <details className="mt-4 border-t border-ctp-surface0 pt-3 text-xs text-ctp-subtext1"><summary className="min-h-12 cursor-pointer py-2 font-semibold text-ctp-blue">Where the damage comes from</summary><p className="pb-2 leading-relaxed"><span className="font-medium text-ctp-text">4× Burst Asunder</span> supplies the modeled ceiling from Fractal scaling. Shimmering Refraction and Refracting Missile are detected but excluded from the number because their variable damage needs live game state.</p><p className="pb-2 leading-relaxed">The conservative floor remains zero; combat damage, costs, legal targets, and effect resolution are not modeled.</p></details>
+            <details className="mt-4 border-t border-ctp-surface0 pt-3 text-xs text-ctp-subtext1"><summary className="min-h-12 cursor-pointer py-2 font-semibold text-ctp-blue">Where the damage comes from</summary><p className="pb-2 leading-relaxed"><span className="font-medium text-ctp-text">4× each: Burst Asunder, Refracting Missile, and Shimmering Refraction.</span> Damage uses the support cards in each possible draw. Each Fractal can be sacrificed once; drawing a payoff without support never receives an average combo bonus.</p><p className="pb-2 leading-relaxed">The conservative floor remains zero; combat damage, costs, legal targets, and effect resolution are not modeled.</p></details>
             <Link to="/decks/8qjzzs?tab=performance" className="mt-5 inline-flex min-h-12 items-center rounded-lg border border-ctp-blue/60 px-5 py-2 text-sm font-semibold text-ctp-blue hover:bg-forest-surface/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Explore the full damage forecast <span aria-hidden="true" className="ml-2">→</span></Link>
           </div>
         </div>

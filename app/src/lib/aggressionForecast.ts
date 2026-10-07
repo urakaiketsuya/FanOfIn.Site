@@ -5,10 +5,13 @@ import {
   hasUnquantifiedChampionDamage,
   isSymmetricChampionDamage,
   parseRecurringChampionDamage,
-  parseSubtypeScalingDamage,
 } from "./deckIdentity";
 
+import { damageDistribution, type DamageGroup } from "./damageDistribution";
+
 export interface AggressionForecastPoint {
+  /** Present only when a complex joint state space requires bounded draw sampling. */
+  sampleSize?: number;
   seen: number;
   expectedMin: number;
   expectedMax: number;
@@ -38,6 +41,7 @@ export interface DamageAuditEntry {
 
 export interface AggressionForecast {
   deckSize: number;
+  detectedDamageCopies: number;
   fixedDamageCopies: number;
   variableDamageCopies: number;
   /** Copies whose damage scales with a subtype-sacrifice combo (e.g. Burst Asunder off Fractals) – folded into `expectedMax`/`high`/the "Max" chance columns as an optimistic estimate sized off this deck's own fodder count, never into the guaranteed `Min` side. */
@@ -50,7 +54,7 @@ export interface AggressionForecast {
   awakeningBloomComboCopies: number;
   /** Of `fixedDamageCopies`, how many also hit the deck's own champion (e.g. Embercrypt Burn's "each champion") – informational only, doesn't change any guaranteed value. */
   symmetricDamageCopies: number;
-  /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn – so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
+  /** Potential recurring rate after materialization and champion-bonus enablement; never added to draw totals. */
   recurringDamagePerTurn: number;
   /** Per-card coverage ledger used to expose likely parser gaps instead of silently omitting them. */
   audit: DamageAuditEntry[];
@@ -58,283 +62,253 @@ export interface AggressionForecast {
 }
 
 const CHECKPOINTS = [7, 10, 15, 20] as const;
-const ADVANCED_ELEMENT_READY_SEEN = 10;
 const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
-
-function isAdvancedElementCard(card: Card): boolean {
-  return (card.elements ?? []).some((element) => !BASIC_ELEMENTS.has(element));
-}
-
-function choose(n: number, k: number): number {
-  if (k < 0 || k > n) return 0;
-  const r = Math.min(k, n - k);
-  let result = 1;
-  for (let i = 1; i <= r; i++) result = (result * (n - r + i)) / i;
-  return result;
-}
-
-/** Exact damage distribution for drawing `seen` cards without replacement. */
-function damageDistribution(groups: { copies: number; damage: number; unlockSeen?: number }[], deckSize: number, seen: number): Map<number, number> {
-  groups = groups.map((group) => seen >= (group.unlockSeen ?? 0) ? group : { ...group, damage: 0 });
-  const draws = Math.min(seen, deckSize);
-  const accountedFor = groups.reduce((sum, group) => sum + group.copies, 0);
-  const allGroups = [...groups];
-  if (accountedFor < deckSize) allGroups.push({ copies: deckSize - accountedFor, damage: 0 });
-
-  let states: Map<number, number>[] = Array.from({ length: draws + 1 }, () => new Map<number, number>());
-  states[0].set(0, 1);
-  let processed = 0;
-  for (const group of allGroups) {
-    const next: Map<number, number>[] = Array.from({ length: draws + 1 }, () => new Map<number, number>());
-    for (let alreadyDrawn = 0; alreadyDrawn <= Math.min(draws, processed); alreadyDrawn++) {
-      for (const [damage, ways] of states[alreadyDrawn]) {
-        const maxFromGroup = Math.min(group.copies, draws - alreadyDrawn);
-        for (let count = 0; count <= maxFromGroup; count++) {
-          const nextDrawn = alreadyDrawn + count;
-          const nextDamage = damage + count * group.damage;
-          next[nextDrawn].set(nextDamage, (next[nextDrawn].get(nextDamage) ?? 0) + ways * choose(group.copies, count));
-        }
-      }
-    }
-    processed += group.copies;
-    states = next;
-  }
-
-  const totalWays = choose(deckSize, draws);
-  return new Map(Array.from(states[draws]).map(([damage, ways]) => [damage, totalWays > 0 ? ways / totalWays : 0]));
-}
 
 function expected(distribution: Map<number, number>): number {
   return Array.from(distribution).reduce((sum, [damage, probability]) => sum + damage * probability, 0);
 }
-
 function quantile(distribution: Map<number, number>, target: number): number {
   let cumulative = 0;
   for (const [damage, probability] of Array.from(distribution).sort((a, b) => a[0] - b[0])) {
     cumulative += probability;
-    if (cumulative + Number.EPSILON >= target) return damage;
+    if (cumulative + 1e-12 >= target) return damage;
   }
   return 0;
 }
-
 function chanceAtLeast(distribution: Map<number, number>, threshold: number): number {
   return Array.from(distribution).reduce((sum, [damage, probability]) => sum + (damage >= threshold ? probability : 0), 0);
 }
-
 function round(value: number, digits = 1): number {
   const scale = 10 ** digits;
   return Math.round(value * scale) / scale;
 }
 
 const NUMBER_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8 };
-
 function opponentFlowerbudsSummoned(card: Card): number {
-  const match = (card.effect ?? "").match(/opponent[^.]*\bsummons?\s+(one|two|three|four|five|six|seven|eight|\d+)\s+Flowerbud tokens?/i);
-  if (!match) return 0;
-  return /^\d+$/.test(match[1]) ? Number(match[1]) : (NUMBER_WORDS[match[1].toLowerCase()] ?? 0);
+  const match = (card.effect ?? "").replace(/\*\*/g, "").match(/opponent[^.]*\bsummons?\s+(one|two|three|four|five|six|seven|eight|\d+)\s+Flowerbud tokens?/i);
+  return match ? Number(match[1]) || NUMBER_WORDS[match[1].toLowerCase()] || 0 : 0;
 }
 
-function chanceToSeeAtLeastOne(deckSize: number, copies: number, seen: number): number {
-  if (copies <= 0 || seen <= 0) return 0;
-  const draws = Math.min(seen, deckSize);
-  return 1 - choose(deckSize - Math.min(copies, deckSize), draws) / choose(deckSize, draws);
+/** Only damage-bearing blocks are checked, so a separate Class Bonus cost reduction is not a gate. */
+function damageConditions(card: Card): string | null {
+  const text = (card.effect ?? "").replace(/\*\*/g, "");
+  const blocks = text.split(/\n\s*\n/).filter((block) => /\bdeal\b.*\bdamage\b/is.test(block));
+  const conditional = blocks.some((block) => /\[[^\]]+\]|\bif\b|\bwhenever\b|\bat the beginning\b|\bon (?:death|attack|hit|kill|sacrifice)\b/i.test(block));
+  return conditional || /as an additional cost[^.]*\b(?:sacrifice|discard|banish)\b/i.test(text)
+    ? "Printed trigger/board conditions are not determined by draw access; ceiling only" : null;
 }
 
 export function computeAggressionForecast(
   mainLines: { name: string; quantity: number }[],
   cardsByName: Map<string, Card>,
   materialLines: { name: string; quantity: number }[] = [],
+  playOrder: "first" | "second" = "first",
 ): AggressionForecast {
-  const listedTotal = mainLines.reduce((sum, line) => sum + line.quantity, 0);
-  const deckSize = Math.max(60, listedTotal);
-  const minGroups: { copies: number; damage: number; unlockSeen?: number }[] = [];
-  const maxGroups: { copies: number; damage: number; unlockSeen?: number }[] = [];
-  let fixedDamageCopies = 0;
-  let variableDamageCopies = 0;
-  let scalingDamageCopies = 0;
-  let ambiguousDamageCopies = 0;
-  let awakeningBloomComboCopies = 0;
-  let symmetricDamageCopies = 0;
-  const modeledReasons = new Map<string, string[]>();
-  const partialReasons = new Map<string, string>();
-  const markModeled = (name: string, reason: string) => modeledReasons.set(name, [...(modeledReasons.get(name) ?? []), reason]);
-
-  let recurringDamagePerTurn = 0;
-  const hasScepterOfAwakening = materialLines.some((line) => line.quantity > 0 && line.name === "Scepter of Awakening");
-  const hasDiaoChan = materialLines.some((line) => line.quantity > 0 && line.name.startsWith("Diao Chan,"));
-  for (const line of materialLines) {
+  // Merge repeated import lines so one physical copy cannot enter multiple draw categories.
+  const merge = (lines: typeof mainLines) => {
+    const quantities = new Map<string, number>();
+    for (const line of lines) if (Number.isFinite(line.quantity) && line.quantity > 0) quantities.set(line.name, (quantities.get(line.name) ?? 0) + Math.floor(line.quantity));
+    return Array.from(quantities, ([name, quantity]) => ({ name, quantity }));
+  };
+  const main = merge(mainLines);
+  const material = merge(materialLines);
+  const deckSize = Math.max(60, main.reduce((sum, line) => sum + line.quantity, 0));
+  const minGroups: DamageGroup[] = [];
+  const maxGroups: DamageGroup[] = [];
+  const audit: DamageAuditEntry[] = [];
+  let fixedDamageCopies = 0, variableDamageCopies = 0, scalingDamageCopies = 0, ambiguousDamageCopies = 0;
+  let awakeningBloomComboCopies = 0, symmetricDamageCopies = 0, recurringDamagePerTurn = 0, detectedDamageCopies = 0;
+  const hasChampion = (name: string) => material.some((line) => line.name.startsWith(`${name},`));
+  const hasDiao = hasChampion("Diao Chan");
+  const hasScepter = hasDiao && material.some((line) => line.name === "Scepter of Awakening");
+  const advancedReadySeen = playOrder === "first" ? 10 : 11;
+  const champions = material.flatMap((line) => {
     const card = cardsByName.get(line.name);
-    if (!card) continue;
+    return card?.types.includes("CHAMPION") ? [card] : [];
+  });
+  const classes = new Set(champions.flatMap((card) => card.classes ?? []));
+  const levels = new Set(champions.flatMap((card) => typeof card.level === "number" ? [card.level] : []));
+  let lineageLevel = 0;
+  while (levels.has(lineageLevel + 1)) lineageLevel++;
+  const bonusAvailable = (card: Card, effect?: string) => {
+    const text = (effect ?? card.effect ?? "").replace(/\*\*/g, "");
+    const block = effect ?? text.split(/\n\s*\n/).find((part) => /\bdeal\b.*\bdamage\b/is.test(part)) ?? "";
+    const bonuses = [...block.matchAll(/\[([^\]]+) Bonus\]/gi)].map((match) => match[1]);
+    return bonuses.every((bonus) => bonus === "Class"
+      ? (card.classes ?? card.subtypes).some((value) => classes.has(value))
+      : bonus === "Element" || hasChampion(bonus));
+  };
+  const bonusReadySeen = (card: Card) => {
+    const block = (card.effect ?? "").replace(/\*\*/g, "").split(/\n\s*\n/).find((part) => /\bdeal\b.*\bdamage\b/is.test(part)) ?? "";
+    const bonuses = [...block.matchAll(/\[([^\]]+) Bonus\]/gi)].map((match) => match[1]).filter((bonus) => bonus !== "Element");
+    let requiredLevel = Number(block.match(/\[Level (\d+)\+\]/i)?.[1] ?? 0);
+    for (const bonus of bonuses) {
+      const eligible = champions.filter((champion) => bonus === "Class"
+        ? (card.classes ?? card.subtypes).some((value) => champion.classes?.includes(value))
+        : champion.name.startsWith(`${bonus},`));
+      requiredLevel = Math.max(requiredLevel, Math.min(...eligible.map((champion) => champion.level ?? Infinity)));
+    }
+    if (requiredLevel > lineageLevel) return Infinity;
+    return requiredLevel > 0 ? requiredLevel + (playOrder === "first" ? 7 : 8) : 0;
+  };
+  const witherSupply = (card: Card): number => {
+    const text = (card.effect ?? "").replace(/\*\*/g, "");
+    const block = text.split(/\n\s*\n/).find((part) => /put (?:a|one|two|three|four|\d+) wither counters? on target non-champion/i.test(part));
+    if (!block || /\b(?:if|whenever|at the beginning)\b/i.test(block.replace(/\([^)]*\)/g, "")) || !bonusAvailable(card, block)) return 0;
+    const amount = block.match(/put (a|one|two|three|four|\d+) wither/i)?.[1]?.toLowerCase();
+    return amount === "a" ? 1 : Number(amount) || NUMBER_WORDS[amount ?? ""] || 0;
+  };
+  const materialWither = material.map((line) => ({ ...line, card: cardsByName.get(line.name) })).filter((line) => line.card && witherSupply(line.card) > 0);
+
+  for (const line of material) {
+    const card = cardsByName.get(line.name);
+    if (!card) {
+      audit.push({ ...line, section: "Material", status: "review", classification: "Missing card data", reason: "Card data unavailable." });
+      continue;
+    }
     const recurring = parseRecurringChampionDamage(card);
     if (recurring !== null) {
-      recurringDamagePerTurn += recurring * line.quantity;
-      markModeled(line.name, `${recurring} recurring champion damage per turn`);
-    }
-  }
-  if (hasScepterOfAwakening && hasDiaoChan) markModeled("Scepter of Awakening", "animates the strongest non-Ally phantasia seen");
-
-  // Real subtype vocabulary for this deck's own cards, gating `parseSubtypeScalingDamage` the same
-  // way `cardIntent.ts`'s subtype detection is gated – see that function's doc comment.
-  const knownSubtypes = new Set<string>();
-  for (const card of cardsByName.values()) for (const s of card.subtypes) knownSubtypes.add(s.toLowerCase());
-
-  // How much of each subtype this specific deck actually runs – the fodder count a scaling combo's
-  // ceiling estimate is sized off, so a deck with 0 Fractals gets 0 bonus and one built around them
-  // gets a realistic one.
-  const subtypeCopyCounts = new Map<string, number>();
-  for (const line of mainLines) {
-    const card = cardsByName.get(line.name);
-    if (!card) continue;
-    for (const s of card.subtypes) {
-      const key = s.toLowerCase();
-      subtypeCopyCounts.set(key, (subtypeCopyCounts.get(key) ?? 0) + line.quantity);
+      const available = bonusAvailable(card);
+      const active = available;
+      if (active) recurringDamagePerTurn += recurring * line.quantity;
+      audit.push({ ...line, section: "Material", status: "partial", classification: "Recurring potential", reason: active ? `${recurring} per turn once materialized with its bonus active; separate from draw totals` : "Required champion/class bonus is absent from Material" });
+    } else if (line.name === "Scepter of Awakening" && hasScepter) {
+      audit.push({ ...line, section: "Material", status: "partial", classification: "Scepter attack", reason: "Ceiling requires four drawn phantasias; one eligible attack including its buff counter, subject to payment and attack readiness" });
+    } else if (witherSupply(card) > 0) {
+      audit.push({ ...line, section: "Material", status: "partial", classification: "Wither support", reason: `${witherSupply(card)} counters after materialization, with a legal opposing target; shared once` });
+    } else if (/\bdamage\b/i.test(card.effect ?? "")) {
+      audit.push({ ...line, section: "Material", status: "review", classification: "Unmodeled damage text", reason: "Material ability needs a supported activation scenario." });
     }
   }
 
-  const scalingSources: { copies: number; perUnitDamage: number; fodderCopies: number; unlockSeen: number }[] = [];
-  const scepterTargets: { copies: number; power: number; unlockSeen: number }[] = [];
-  const flowerbudSources: { copies: number; flowerbuds: number; unlockSeen: number }[] = [];
-  const fullBloomCopies = hasDiaoChan ? (mainLines.find((line) => line.name === "Full Bloom")?.quantity ?? 0) : 0;
-  const fullBloomUnlockSeen = fullBloomCopies > 0 ? ADVANCED_ELEMENT_READY_SEEN : 0;
-
-  for (const line of mainLines) {
+  for (const line of main) {
     const card = cardsByName.get(line.name);
-    if (!card) continue;
-    const unlockSeen = isAdvancedElementCard(card) ? ADVANCED_ELEMENT_READY_SEEN : 0;
-    const timingReason = unlockSeen > 0 ? "; advanced element held until turn 4 (10 cards seen)" : "";
-    if (hasDiaoChan && line.name === "Full Bloom") {
-      awakeningBloomComboCopies += line.quantity;
-      // Four Flowerbuds trigger Full Bloom for 8 On Enter damage. If Scepter is available, it
-      // then gives Full Bloom a 7-power body for the ceiling's same-turn attack.
-      const comboUnlockSeen = Math.max(unlockSeen, ADVANCED_ELEMENT_READY_SEEN);
-      minGroups.push({ copies: line.quantity, damage: 8, unlockSeen: comboUnlockSeen });
-      maxGroups.push({ copies: line.quantity, damage: hasScepterOfAwakening ? 15 : 8, unlockSeen: comboUnlockSeen });
-      markModeled(line.name, `${hasScepterOfAwakening ? "8 Flowerbud-trigger damage plus a 7-power Scepter attack ceiling" : "8 damage from four Flowerbud triggers"}${timingReason}`);
+    if (!card) {
+      audit.push({ ...line, section: "Main", status: "review", classification: "Missing card data", reason: "Card data unavailable." });
       continue;
     }
-    if (hasDiaoChan && hasScepterOfAwakening && card.types.includes("PHANTASIA") && !card.types.includes("ALLY") && typeof card.cost_reserve === "number" && card.cost_reserve > 0) {
-      scepterTargets.push({ copies: line.quantity, power: card.cost_reserve, unlockSeen: Math.max(unlockSeen, ADVANCED_ELEMENT_READY_SEEN) });
-      awakeningBloomComboCopies += line.quantity;
-      markModeled(line.name, `Scepter attack candidate at ${card.cost_reserve} power`);
-    }
-    const flowerbuds = hasDiaoChan ? opponentFlowerbudsSummoned(card) : 0;
-    if (flowerbuds > 0) {
-      flowerbudSources.push({ copies: line.quantity, flowerbuds, unlockSeen });
-      awakeningBloomComboCopies += line.quantity;
-      markModeled(line.name, `${flowerbuds} opponent Flowerbuds can trigger Full Bloom for ${flowerbuds * 2} damage`);
-    }
-    const range = fixedChampionDamageRange(card);
-    if (range) {
-      fixedDamageCopies += line.quantity;
-      if (isSymmetricChampionDamage(card)) symmetricDamageCopies += line.quantity;
-      minGroups.push({ copies: line.quantity, damage: range.min, unlockSeen });
-      maxGroups.push({ copies: line.quantity, damage: range.max, unlockSeen });
-      markModeled(line.name, `fixed champion damage ${range.min === range.max ? range.min : `${range.min}–${range.max}`}${timingReason}`);
-      continue;
-    }
-
-    const scaling = parseSubtypeScalingDamage(card, knownSubtypes);
-    if (scaling) {
-      scalingDamageCopies += line.quantity;
-      // Base clause targets the ambiguous "unit" bucket (may hit an ally instead), so it's not
-      // guaranteed – 0 on the Min side, its printed value on the Max side, same as the rest of this
-      // group's combinatorics. The fodder-scaled bonus on top is handled separately below.
-      minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
-      maxGroups.push({ copies: line.quantity, damage: scaling.baseDamage, unlockSeen });
-      scalingSources.push({ copies: line.quantity, perUnitDamage: scaling.perUnitDamage, fodderCopies: subtypeCopyCounts.get(scaling.subtype) ?? 0, unlockSeen });
-      markModeled(line.name, `scaling ${scaling.subtype} damage ceiling`);
-      continue;
-    }
-
-    const ambiguous = ambiguousFixedChampionDamage(card);
-    if (ambiguous !== null) {
-      ambiguousDamageCopies += line.quantity;
-      // Not guaranteed – could land on an ally instead of the champion, or (for a modal card) never
-      // get chosen at all – so 0 on the Min side, its printed value on the Max side.
-      minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
-      maxGroups.push({ copies: line.quantity, damage: ambiguous, unlockSeen });
-      markModeled(line.name, `${ambiguous} conditional or modal damage ceiling`);
-      continue;
-    }
-
-    if (hasUnquantifiedChampionDamage(card)) {
+    const unlockSeen = (card.elements ?? []).some((element) => !BASIC_ELEMENTS.has(element)) ? advancedReadySeen : 0;
+    const low: DamageGroup = { copies: line.quantity, damage: 0, unlockSeen };
+    const high: DamageGroup = { ...low };
+    let reason = "", status: DamageAuditEntry["status"] = "modeled", classification = "Included";
+    const formulas = ["Fireball", "Essence of Blizzards", "Refracting Missile", "Shimmering Refraction", "Glowering Conflagration", "Decaying Reproach", "Burst Asunder", "Potion Infusion: Volatility"];
+    if (formulas.includes(line.name)) {
       variableDamageCopies += line.quantity;
-      partialReasons.set(line.name, `damage is detected, but its variable amount needs game state${timingReason}`);
-    } else if (/\bdeal damage\b[^.]*\bequal to\b/i.test(card.effect ?? "")) {
-      variableDamageCopies += line.quantity;
-      partialReasons.set(line.name, `damage is variable and depends on game state${timingReason}`);
+      switch (line.name) {
+        case "Fireball": high.damage = 1; high.levelDamage = 1; reason = "1 + natural champion-level ceiling from the Material lineage at this checkpoint"; break;
+        case "Essence of Blizzards":
+          high.damage = 1; high.levelDamage = 1;
+          status = "partial";
+          reason = "1 base damage; 1 + Material-lineage level ceiling if the target is rested (opponent state unknown)";
+          break;
+        case "Refracting Missile": high.damage = 1; high.missile = 1; reason = "1 + Fractal objects in the same draw; objects assumed deployed for the ceiling"; break;
+        case "Shimmering Refraction": high.refraction = 1; reason = "Phantasia objects in the same draw; objects assumed deployed for the ceiling"; break;
+        case "Glowering Conflagration": low.damage = high.damage = 1; high.refraction = 1; reason = "1 + Phantasia objects in the same draw; objects assumed deployed for the ceiling"; break;
+        case "Decaying Reproach": high.damage = 3; high.reproach = 4; status = "partial"; reason = "3 + twice counters from supported wither sources in the same draw and Material; at most 4 per copy, each counter spent once; opposing target required"; break;
+        case "Burst Asunder":
+          high.damage = 2; high.burst = 2;
+          scalingDamageCopies += line.quantity; variableDamageCopies -= line.quantity;
+          reason = "2 per copy + 2 per Fractal object in the same draw; each Fractal sacrificed once";
+          break;
+        case "Potion Infusion: Volatility": high.volatility = 1; reason = "5–10 per paired drawn Potion with a sacrifice ability that does not require resting; each Potion used once"; break;
+      }
+    } else if (line.name === "Full Bloom") {
+      awakeningBloomComboCopies += line.quantity;
+      if (hasDiao) {
+        low.bloom = high.bloom = 1;
+        low.unlockSeen = high.unlockSeen = advancedReadySeen;
+        reason = "8 from four Flowerbuds; one active Full Bloom";
+      } else {
+        status = "partial"; reason = "Requires Diao Chan in Material";
+      }
+    } else {
+      const range = fixedChampionDamageRange(card);
+      const ambiguous = ambiguousFixedChampionDamage(card);
+      const conditions = damageConditions(card);
+      const available = bonusAvailable(card);
+      if (range || ambiguous !== null) {
+        if (range) {
+          fixedDamageCopies += line.quantity;
+          low.damage = range.min; high.damage = range.max;
+          if (isSymmetricChampionDamage(card)) symmetricDamageCopies += line.quantity;
+        } else {
+          ambiguousDamageCopies += line.quantity;
+          high.damage = ambiguous!;
+        }
+        reason = `${low.damage}–${high.damage} printed champion-reach damage`;
+        if (conditions) {
+          high.unlockSeen = Math.max(unlockSeen, bonusReadySeen(card));
+          low.damage = 0;
+          if (!available) high.damage = 0;
+          status = "partial";
+          reason += available ? `; ${conditions}` : "; required champion/class bonus absent from Material";
+        }
+        if (hasUnquantifiedChampionDamage(card) || /\b(?:LV|D6)\b/.test((card.effect ?? "").replace(/\*\*/g, ""))) {
+          status = "partial"; reason += "; additional variable clause is not modeled";
+        }
+      } else if (hasUnquantifiedChampionDamage(card) || /\bdeal damage\b[^.]*\bequal to\b/i.test(card.effect ?? "")) {
+        variableDamageCopies += line.quantity;
+        status = "partial"; classification = "Variable damage"; reason = "Needs an additional supported game-state formula";
+      }
     }
+
+    const flowerbuds = hasDiao && line.name !== "Full Bloom" ? opponentFlowerbudsSummoned(card) : 0;
+    const scepterCandidate = hasScepter && card.types.includes("PHANTASIA") && !card.types.includes("ALLY") && typeof card.cost_reserve === "number" && card.cost_reserve >= 0;
+    if (flowerbuds > 0 || scepterCandidate) {
+      if (line.name !== "Full Bloom") awakeningBloomComboCopies += line.quantity;
+      if (flowerbuds > 0) {
+        high.flowerbuds = flowerbuds;
+        reason += `${reason ? "; " : ""}${flowerbuds} Flowerbuds trigger a drawn Full Bloom`;
+      }
+      if (scepterCandidate) {
+        high.scepter = card.cost_reserve! + 1;
+        reason += `${reason ? "; " : ""}Scepter candidate at ${high.scepter} power, strongest only after four phantasias are drawn`;
+      }
+    }
+    // Sources and enablers occupy the same physical draw category: no independent-product approximation.
+    if (card.types.includes("PHANTASIA")) {
+      high.phantasias = 1;
+      if (card.subtypes.includes("FRACTAL")) high.fractals = 1;
+      if (card.types.includes("UNIQUE")) high.uniqueObject = card.name;
+    }
+    const clean = (card.effect ?? "").replace(/\*\*/g, "");
+    const sacrificeCost = clean.split(/\n/).find((part) => /sacrifice[^:]+:/i.test(part))?.split(":")[0];
+    if (card.subtypes.includes("POTION") && sacrificeCost && !/\[REST\]/i.test(sacrificeCost)) high.potions = 1;
+    high.wither = witherSupply(card);
+    if (reason) {
+      detectedDamageCopies += line.quantity;
+      if (unlockSeen > 0) reason += "; advanced element held until turn 4";
+      audit.push({ ...line, section: "Main", status, classification, reason });
+    } else if (/\bdamage\b/i.test(card.effect ?? "")) {
+      // An ally can also have ability damage; do not hide unrecognized text behind Combat damage.
+      audit.push({ ...line, section: "Main", status: "review", classification: "Unmodeled damage text", reason: "Damage text needs review; ordinary attacks use the combat forecast." });
+    } else if (card.types.includes("ALLY") || typeof card.power === "number") {
+      audit.push({ ...line, section: "Main", status: "excluded", classification: "Combat damage", reason: "Regular attacks belong to the separate combat forecast." });
+    }
+    minGroups.push(low);
+    maxGroups.push(high);
   }
-
-  const audit = [...mainLines.map((line) => ({ ...line, section: "Main" as const })), ...materialLines.map((line) => ({ ...line, section: "Material" as const }))].map((line): DamageAuditEntry | null => {
-    const card = cardsByName.get(line.name);
-    const reasons = modeledReasons.get(line.name);
-    if (reasons?.length) return { name: line.name, quantity: line.quantity, section: line.section, status: "modeled", classification: "Included", reason: reasons.join("; ") };
-    const partial = partialReasons.get(line.name);
-    if (partial) return { name: line.name, quantity: line.quantity, section: line.section, status: "partial", classification: "Variable damage", reason: partial };
-    if (!card) return { name: line.name, quantity: line.quantity, section: line.section, status: "review", classification: "Missing card data", reason: "The card could not be resolved, so its damage contribution was not inspected." };
-    if (card.types.includes("ALLY") || typeof card.power === "number") return { name: line.name, quantity: line.quantity, section: line.section, status: "excluded", classification: "Combat damage", reason: "Regular attacks belong to the separate combat forecast." };
-    if (/\bdamage\b/i.test(card.effect ?? "")) return { name: line.name, quantity: line.quantity, section: line.section, status: "review", classification: "Unmodeled damage text", reason: "The rules text mentions damage, but no current calculation classified it." };
-    return null;
-  }).filter((entry): entry is DamageAuditEntry => entry !== null);
-
-  const points = CHECKPOINTS.map((seen) => {
-    const minDistribution = damageDistribution(minGroups, deckSize, seen);
-    const maxDistribution = damageDistribution(maxGroups, deckSize, seen);
-
-    // Expected extra damage from subtype-sacrifice combos (e.g. Burst Asunder off Fractals) at this
-    // checkpoint: each source's own expected copies seen so far, times its per-unit bonus, times the
-    // expected copies of its fodder subtype seen so far – the same closed-form hypergeometric-mean
-    // approximation `drawEffects.ts`'s `expectedExtraDraws` uses (`copies * seen / deckSize`), not an
-    // exact joint distribution: it treats the source and its fodder as independently drawn, and
-    // doesn't model turn sequencing or fodder shared across multiple combo sources competing for the
-    // same sacrifices. Ceiling-only – never added to `expectedMin`/`low`.
-    const scalingBonus = scalingSources.reduce((sum, source) => {
-      if (seen < source.unlockSeen) return sum;
-      const sourceSeen = (source.copies * Math.min(seen, deckSize)) / deckSize;
-      const fodderSeen = (source.fodderCopies * Math.min(seen, deckSize)) / deckSize;
-      return sum + sourceSeen * source.perUnitDamage * fodderSeen;
-    }, 0);
-    // Scepter can rest once, so use the expected strongest eligible phantasia seen rather than
-    // adding every phantasia's reserve cost. Full Bloom is already modeled exactly above.
-    const maxScepterPower = Math.max(0, ...scepterTargets.map((target) => target.power));
-    let scepterBonus = 0;
-    for (let power = 1; power <= maxScepterPower; power++) {
-      const qualifyingCopies = scepterTargets.filter((target) => target.power >= power && seen >= target.unlockSeen).reduce((sum, target) => sum + target.copies, 0);
-      scepterBonus += chanceToSeeAtLeastOne(deckSize, qualifyingCopies, seen);
-    }
-    // Other Flowerbud generators only deal damage while Full Bloom is also available. This is a
-    // joint-draw ceiling estimate; Full Bloom's own four tokens are already in its 8-damage group.
-    const bloomSeen = seen < fullBloomUnlockSeen ? 0 : (fullBloomCopies * Math.min(seen, deckSize)) / deckSize;
-    const flowerbudBonus = flowerbudSources.reduce((sum, source) => seen < source.unlockSeen ? sum : sum + bloomSeen * ((source.copies * Math.min(seen, deckSize)) / deckSize) * source.flowerbuds * 2, 0);
-    const comboBonus = scepterBonus + flowerbudBonus;
-    const roundedBonus = Math.round(scalingBonus + comboBonus);
-
+  const points = CHECKPOINTS.map((seen): AggressionForecastPoint => {
+    const turn = Math.max(1, seen - (playOrder === "first" ? 6 : 7));
+    const context = {
+      // Starting Lv 0 is placed before turn one; its materialize phase is skipped.
+      // https://rules.gatcg.com/general-rules/general-rules-starting-the-game
+      level: Math.min(lineageLevel, Math.max(0, turn - 1)),
+      materialWither: turn < 2 ? 0 : materialWither.reduce((sum, line) => {
+        const advanced = line.card!.elements.some((element) => !BASIC_ELEMENTS.has(element));
+        return sum + (advanced && seen < advancedReadySeen ? 0 : line.quantity * witherSupply(line.card!));
+      }, 0),
+      scepterAvailable: seen >= advancedReadySeen,
+    };
+    const min = damageDistribution(minGroups, deckSize, seen);
+    const max = damageDistribution(maxGroups, deckSize, seen, context);
     return {
-      seen,
-      expectedMin: round(expected(minDistribution)),
-      expectedMax: round(expected(maxDistribution) + scalingBonus + comboBonus),
-      medianMin: quantile(minDistribution, 0.5),
-      medianMax: quantile(maxDistribution, 0.5) + roundedBonus,
-      low: quantile(minDistribution, 0.1),
-      high: quantile(maxDistribution, 0.9) + roundedBonus,
-      chanceAtLeastFiveMin: round(chanceAtLeast(minDistribution, 5), 3),
-      chanceAtLeastFiveMax: round(chanceAtLeast(maxDistribution, Math.max(0, 5 - roundedBonus)), 3),
-      chanceAtLeastTenMin: round(chanceAtLeast(minDistribution, 10), 3),
-      chanceAtLeastTenMax: round(chanceAtLeast(maxDistribution, Math.max(0, 10 - roundedBonus)), 3),
+      seen, ...(min.sampleSize || max.sampleSize ? { sampleSize: Math.max(min.sampleSize ?? 0, max.sampleSize ?? 0) } : {}),
+      expectedMin: round(expected(min)), expectedMax: round(expected(max)),
+      medianMin: quantile(min, 0.5), medianMax: quantile(max, 0.5), low: quantile(min, 0.1), high: quantile(max, 0.9),
+      chanceAtLeastFiveMin: round(chanceAtLeast(min, 5), 3), chanceAtLeastFiveMax: round(chanceAtLeast(max, 5), 3),
+      chanceAtLeastTenMin: round(chanceAtLeast(min, 10), 3), chanceAtLeastTenMax: round(chanceAtLeast(max, 10), 3),
     };
   });
-
-  return {
-    deckSize,
-    fixedDamageCopies,
-    variableDamageCopies,
-    scalingDamageCopies,
-    ambiguousDamageCopies,
-    awakeningBloomComboCopies,
-    symmetricDamageCopies,
-    recurringDamagePerTurn,
-    audit,
-    points,
-  };
+  return { deckSize, detectedDamageCopies, fixedDamageCopies, variableDamageCopies, scalingDamageCopies, ambiguousDamageCopies, awakeningBloomComboCopies, symmetricDamageCopies, recurringDamagePerTurn, audit, points };
 }

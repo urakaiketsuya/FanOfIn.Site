@@ -225,7 +225,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     <>
       <Panel>
         {hasDamageForecast ? (
-          <AggressionForecast forecast={aggressionForecast} />
+          <AggressionForecast forecast={aggressionForecast} mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
         ) : breakthroughVsAverage.attackerCount > 0 ? (
           <div data-component="BreakthroughDamageFallback">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>

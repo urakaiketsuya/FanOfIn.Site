@@ -1,0 +1,472 @@
+[
+  {
+    "name": "Aphotic Ruin",
+    "effect": "[Diao Chan Bonus] **Efficiency**\nPut four **wither** counters on target non-champion object. *(At the beginning of a player's main phase, if they control one or more objects with **wither** counters on them, for each of those objects, they sacrifice it unless they pay (1) for each **wither** counter on it, then remove **wither** counters.)*",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": 6,
+    "level": null
+  },
+  {
+    "name": "Ashwick Cremator",
+    "effect": "[Class Bonus] At the beginning of your end phase, if you have no cards in your hand, deal 2 damage to each champion.",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "HUMAN"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "power": 2,
+    "cost_reserve": 2,
+    "level": null
+  },
+  {
+    "name": "Burst Asunder",
+    "effect": "[Class Bonus] This card costs 2 less to activate.\n\nDeal 2 damage to target unit. Then you may sacrifice any amount of Fractals. For each Fractal sacrificed this way, deal an additional 2 damage to that unit.",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC",
+      "MAGE"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": 4,
+    "level": null
+  },
+  {
+    "name": "Decaying Reproach",
+    "effect": "As an additional cost to activate this card, remove up to four **wither** counters from objects you don't control.\n\nDeal 3+**X** damage to target unit, where **X** is twice the amount of **wither** counters removed.\n\n[Diao Chan Bonus] (2)**, Discard this card from your hand:** Draw a card into your memory and **recover 2**.",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "TERA"
+    ],
+    "power": null,
+    "cost_reserve": 2,
+    "level": null
+  },
+  {
+    "name": "Diao Chan, Enchantress",
+    "effect": "**On Enter**: Put two **glimmer** counters on CARDNAME.\n\n**Inherited Effect** \u2014 [REST]: Activate a Reaction Spell card from your memory. Pay its reserve cost only by removing that many **glimmer** counters from CARDNAME. Activate this ability only during an opponent's turn.",
+    "types": [
+      "CHAMPION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "HUMAN"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": 1
+  },
+  {
+    "name": "Essence of Blizzards",
+    "effect": "**Brew** \u2014 One Adjuvant, One Catalyst *(You may sacrifice the listed objects rather than pay this card's reserve cost.)*\n\n**Sacrifice CARDNAME:** Deal 1 damage to target unit. If that unit is rested, deal 1+**LV** damage to it instead. Until end of turn, allies enter the field rested.",
+    "types": [
+      "ITEM"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "POTION"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": 4,
+    "level": null
+  },
+  {
+    "name": "Explosive Concoction",
+    "effect": "**Brew** \u2014 One Leaf, One Herb *(You may sacrifice the listed objects rather than pay this card's reserve cost.)*\n\n**Hindered** *(This object enters the field rested.)*\n\n[REST], **Sacrifice Explosive Concoction**: Deal 4 damage to target champion. Draw a card.",
+    "types": [
+      "ITEM"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "POTION"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "power": null,
+    "cost_reserve": 7,
+    "level": null
+  },
+  {
+    "name": "Fabled Ruby Fatestone",
+    "effect": "**Immortality**, **Spellshroud**\n\n[Guo Jia Bonus] At the beginning of your recollection phase, deal 1 damage to each champion.\n\n[Guo Jia Bonus] Whenever non-combat damage is dealt to one or more units by a fire element source you control, put a **quest** counter on your champion.\n\n[REST]: You may remove seven **quest** counters from your champion. If you do, wake up and transform CARDNAME.",
+    "types": [
+      "REGALIA",
+      "ITEM"
+    ],
+    "subtypes": [
+      "TAMER",
+      "FATESTONE"
+    ],
+    "classes": [
+      "TAMER"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": null
+  },
+  {
+    "name": "Fireball",
+    "effect": "[Class Bonus] This card costs 2 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*\n\nDeal 1+**LV** damage to target unit. *(**LV** refers to your champion's level.)*",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "power": null,
+    "cost_reserve": 4,
+    "level": null
+  },
+  {
+    "name": "Fractal of Waves",
+    "effect": "Whenever your champion levels up into a champion with base level 3, you may sacrifice CARDNAME. If you do, draw two cards into your memory.\n\n**Reservable** *(While paying for a reserve cost, you may rest this object to pay for 1 of that cost.)*",
+    "types": [
+      "PHANTASIA"
+    ],
+    "subtypes": [
+      "MAGE",
+      "FRACTAL"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": 3,
+    "level": null
+  },
+  {
+    "name": "Frostlorn Caress",
+    "effect": "[Diao Chan Bonus] This card costs 3 less to activate.\n\nPut four **wither** counters on target non-champion object. *(At the beginning of a player's main phase, if they control one or more objects with **wither** counters on them, for each of those objects, they sacrifice it unless they pay (1) for each **wither** counter on it, then remove **wither** counters.)*",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL",
+      "REACTION"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": 5,
+    "level": null
+  },
+  {
+    "name": "Full Bloom",
+    "effect": "[Diao Chan Bonus] **On Enter:** Target opponent **summons** four Flowerbud tokens.\n\n[Diao Chan Bonus] Whenever an opponent **summons** a Flowerbud token, deal 2 damage to each champion that opponent controls and you **recover 2**.",
+    "types": [
+      "UNIQUE",
+      "PHANTASIA"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "ULTIMATE",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "TERA"
+    ],
+    "power": null,
+    "cost_reserve": 7,
+    "level": null
+  },
+  {
+    "name": "Glowering Conflagration",
+    "effect": "[Class Bonus] **Kindle 3** *(You may banish up to three fire element cards from your graveyard as you activate this card. Each one pays for (1) of this card's cost.)*\n\nDeal 1+**X** damage to target champion, where **X** is the amount of phantasias you control.",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "power": null,
+    "cost_reserve": 3,
+    "level": null
+  },
+  {
+    "name": "Guo Jia, Blessed Scion",
+    "effect": "**Guo Jia Lineage**\n\n**On Enter:** You may put two **quest** counters on CARDNAME. If you don't, draw a card.\n\n**Lineage Release** \u2014 **Negate** target activation or trigger that targets a Fatestone or Fatebound object you control.",
+    "types": [
+      "CHAMPION"
+    ],
+    "subtypes": [
+      "TAMER",
+      "HUMAN"
+    ],
+    "classes": [
+      "TAMER"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": 2
+  },
+  {
+    "name": "Guo Jia, Heaven's Favored",
+    "effect": "As long as you control a Shenju ally, this card costs 3 less to materialize.\n\n**Guo Jia Lineage**\n\n**On Enter:** You may put three **quest** counters on CARDNAME. If you don't, **recover 3**.",
+    "types": [
+      "CHAMPION"
+    ],
+    "subtypes": [
+      "TAMER",
+      "HUMAN"
+    ],
+    "classes": [
+      "TAMER"
+    ],
+    "elements": [
+      "LUXEM"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": 3
+  },
+  {
+    "name": "Hairpin of Transience",
+    "effect": "[Class Bonus] **Banish Hairpin of Transience**: Put three **wither** counters on target non-champion object. *(At the beginning of a player's main phase, if they control one or more objects with **wither** counters on them, for each of those objects, they sacrifice it unless they pay (1) for each **wither** counter on it, then remove **wither** counters.)*",
+    "types": [
+      "REGALIA",
+      "ITEM"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "ACCESSORY"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": null
+  },
+  {
+    "name": "Maiden of Waning Bloom",
+    "effect": "[Diao Chan Bonus] **On Enter: **Up to one target opponent **summons** two Flowerbud tokens. *(Apply this effect only if your champion is Diao Chan.)*\n\n[Diao Chan Bonus] **On Attack:** The defending player sacrifices a Flowerbud. If they do, they **summon** your choice of an Acerbica, Floodbloom, Nightshade, or Washuru token.",
+    "types": [
+      "PHANTASIA",
+      "ALLY"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "HUMAN"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "TERA"
+    ],
+    "power": 3,
+    "cost_reserve": 2,
+    "level": null
+  },
+  {
+    "name": "Potion Infusion: Volatility",
+    "effect": "[Arisanna Bonus] **Efficiency**\n\nRest target Potion. If you do, it gains \"**On Sacrifice:** Deal 4+**D6** damage to each champion you don't control\" until end of turn. *(Roll a six-sided die to determine each instance of **D6** as this effect resolves.)*",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": 7,
+    "level": null
+  },
+  {
+    "name": "Potion of Healing",
+    "effect": "**Brew** \u2014 Two Herbs *(You may sacrifice the listed objects rather than pay this card's reserve cost.)* \n\n**Sacrifice CARDNAME: Recover 5.** *(To **recover**, remove that many damage counters from your champion.)*",
+    "types": [
+      "ITEM"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "POTION"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": 3,
+    "level": null
+  },
+  {
+    "name": "Refracting Missile",
+    "effect": "Deal damage to target unit equal to the amount of Fractal objects you control plus 1.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "power": null,
+    "cost_reserve": 3,
+    "level": null
+  },
+  {
+    "name": "Scepter of Awakening",
+    "effect": "[Diao Chan Bonus] As long as you control four or more phantasias, you may activate this card from your material deck.\n\n*(2)*, [REST]: Target phantasia you control becomes an ally in addition to its other types with base power and life equal to its reserve cost until end of turn. Put a **buff** counter on it.",
+    "types": [
+      "REGALIA",
+      "ITEM"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SCEPTER"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "TERA"
+    ],
+    "power": null,
+    "cost_reserve": null,
+    "level": null
+  },
+  {
+    "name": "Shimmering Refraction",
+    "effect": "Deal **X** damage to target unit, where **X** is the amount of phantasias you control. \n\n[Diao Chan Bonus] If Shimmering Refraction was activated from your memory, draw a card into your memory.",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL",
+      "REACTION"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": 2,
+    "level": null
+  },
+  {
+    "name": "Withering Grasp",
+    "effect": "Put a **wither** counter on target non-champion object. *(At the beginning of a player's main phase, if they control one or more objects with **wither** counters on them, for each of those objects, they sacrifice it unless they pay (1) for each **wither** counter on it, then remove **wither** counters.)*\n\n[Diao Chan Bonus] Draw a card into your memory.",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "power": null,
+    "cost_reserve": 2,
+    "level": null
+  }
+]

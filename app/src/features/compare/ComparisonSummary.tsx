@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { formatUsd } from "../../lib/format";
@@ -80,7 +80,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
   const pantheonOnly = formats.size === 1 && formats.has("PANTHEON");
   const baselineDeck = baselineIndex >= 0 ? decks[baselineIndex] : undefined;
   const baselineStats = baselineIndex >= 0 ? deckStats[baselineIndex] : undefined;
-  const forecastDecks = decks.map((deck) => {
+  const forecastDecks = useMemo(() => mode !== "forecasts" ? [] : decks.map((deck) => {
     const list = decklists.get(deck.key);
     if (!list) return { deck, list: null, mainLines: [], materialLines: [], damageForecast: null, breakthroughVsAverage: null };
     const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
@@ -90,7 +90,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       || damageForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
     const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
     return { deck, list, mainLines, materialLines, damageForecast: hasDamageForecast ? damageForecast : null, breakthroughVsAverage };
-  });
+  }), [mode, decks, decklists, cardsByName]);
   const [forecastSeen, setForecastSeen] = useState(10);
 
   if (decks.length < 2) return <InlineState className="text-sm">Add at least one more deck to see an analysis.</InlineState>;
@@ -147,10 +147,10 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
 
       <Section heading="dense" title="Damage forecasts" description="Compare access to printed direct damage at the same checkpoint. These values do not claim the effects resolve.">
         <div className="grid items-start gap-4 md:grid-cols-2">
-          {forecastDecks.map(({ deck, list, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
+          {forecastDecks.map(({ deck, list, mainLines, materialLines, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
             <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : damageForecast ? (
-              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
+              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
               <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortDeckLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div></Panel>
             ) : (

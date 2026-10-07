@@ -5,7 +5,7 @@ import { computeAggressionForecast } from "../src/lib/aggressionForecast";
 
 const card = (name: string, effect: string, fields: Partial<Card> = {}): Card => ({ name, effect, subtypes: [], types: [], ...fields } as unknown as Card);
 
-test("Full Bloom and Scepter of Awakening forecast 8 to 15 same-turn damage", () => {
+test("Full Bloom and Scepter of Awakening require four drawn phantasias before adding a Scepter attack", () => {
   const cards = new Map<string, Card>([
     ["Full Bloom", card("Full Bloom", "Target opponent summons four Flowerbud tokens. Whenever an opponent summons a Flowerbud token, deal 2 damage to each champion that opponent controls.", { types: ["UNIQUE", "PHANTASIA"], cost_reserve: 7 })],
     ["Scepter of Awakening", card("Scepter of Awakening", "Target phantasia becomes an ally with base power and life equal to its reserve cost until end of turn.")],
@@ -22,13 +22,13 @@ test("Full Bloom and Scepter of Awakening forecast 8 to 15 same-turn damage", ()
   assert.equal(forecast.points[0].chanceAtLeastTenMin, 0);
   assert.equal(forecast.points[0].chanceAtLeastTenMax, 0);
   assert.equal(forecast.points[1].expectedMin, 1.3);
-  assert.equal(forecast.points[1].expectedMax, 2.5);
+  assert.equal(forecast.points[1].expectedMax, 1.3);
 });
 
 test("Full Bloom does not receive the combo ceiling without both Material pieces", () => {
   const cards = new Map([["Full Bloom", card("Full Bloom", "Whenever an opponent summons a Flowerbud token, deal 2 damage to each champion that opponent controls.")]]);
   const forecast = computeAggressionForecast([{ name: "Full Bloom", quantity: 1 }], cards);
-  assert.equal(forecast.awakeningBloomComboCopies, 0);
+  assert.equal(forecast.awakeningBloomComboCopies, 1);
   assert.ok(forecast.points[0].expectedMax < 1.8);
 });
 
@@ -73,7 +73,7 @@ test("damage coverage audit flags unresolved damage text instead of silently dro
     section: "Main",
     status: "review",
     classification: "Unmodeled damage text",
-    reason: "The rules text mentions damage, but no current calculation classified it.",
+    reason: "Damage text needs review; ordinary attacks use the combat forecast.",
   });
 });
 
@@ -86,8 +86,8 @@ test("damage audit omits no-signal cards and classifies variable and combat card
   const forecast = computeAggressionForecast(Array.from(cards.keys(), (name) => ({ name, quantity: 1 })), cards);
 
   assert.equal(forecast.audit.some((entry) => entry.name === "Plain Utility"), false);
-  assert.equal(forecast.audit.find((entry) => entry.name === "Refracting Missile")?.classification, "Variable damage");
-  assert.equal(forecast.audit.find((entry) => entry.name === "Shademist Priestess")?.classification, "Combat damage");
+  assert.equal(forecast.audit.find((entry) => entry.name === "Refracting Missile")?.classification, "Included");
+  assert.equal(forecast.audit.find((entry) => entry.name === "Shademist Priestess")?.classification, "Unmodeled damage text");
 });
 
 test("advanced-element damage waits until the turn-four checkpoint", () => {
