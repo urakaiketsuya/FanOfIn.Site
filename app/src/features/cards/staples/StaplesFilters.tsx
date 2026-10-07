@@ -8,8 +8,8 @@ export function FilterField({ label, children }: { label: string; children: Reac
   return <label className="flex min-w-0 flex-col gap-1 text-sm text-ctp-subtext1"><span>{label}</span>{children}</label>;
 }
 
-export default function StaplesFilters({ data, filters, champion, format, period, onChange, onDismiss }: {
-  data: CardStaplesData | undefined; filters: StapleFilters; champion: string; format: string; period: string;
+export default function StaplesFilters({ community, data, filters, champion, format, period, onChange, onDismiss }: {
+  community: boolean; data: CardStaplesData | undefined; filters: StapleFilters; champion: string; format: string; period: string;
   onChange: (key: string, value: string | string[]) => void; onDismiss: () => void;
 }) {
   const [keywordSearch, setKeywordSearch] = useState("");
@@ -22,7 +22,7 @@ export default function StaplesFilters({ data, filters, champion, format, period
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FilterField label="Format"><select className={fieldClass} value={format} onChange={e => onChange("format", e.target.value)}><option value="">All formats</option>{formats.map(value => <option key={value} value={value}>{titleCase(value)}</option>)}</select></FilterField>
-        <FilterField label="Results period"><select className={fieldClass} value={period} onChange={e => onChange("period", e.target.value)}><option value="90">Last 90 days</option><option value="30">Last 30 days</option><option value="all">All recorded results</option></select></FilterField>
+        {!community && <FilterField label="Results period"><select className={fieldClass} value={period} onChange={e => onChange("period", e.target.value)}><option value="90">Last 90 days</option><option value="30">Last 30 days</option><option value="all">All recorded results</option></select></FilterField>}
       </div>
       <FilterField label="Champion decks"><select className={fieldClass} value={champion} onChange={event => onChange("champion", event.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</select></FilterField>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

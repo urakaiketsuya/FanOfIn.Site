@@ -18,6 +18,37 @@ export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<s
   const completed = [...events.values()].filter(b => b.event.status === "complete" && Number.isFinite(Date.parse(b.event.date)))
     .sort((a, b) => a.id - b.id);
   const reference = completed.length ? Math.max(...completed.map(b => Date.parse(b.event.date))) : null;
+  const observations: StapleObservation[] = [];
+  for (const bundle of completed) {
+    if ("error" in bundle.decklists) continue;
+    const wins = new Map<number, number>();
+    if (!("error" in bundle.standings)) for (const result of bundle.standings.standings) {
+      const total = result.statsWins + result.statsLosses + result.statsTies;
+      if (result.id !== undefined && total > 0) wins.set(result.id, (result.statsWins + result.statsTies * 0.5) / total);
+    }
+    const age = (reference! - Date.parse(bundle.event.date)) / DAY;
+    const periods: StaplePeriod[] = ["all", ...(age < 90 ? ["90" as const] : []), ...(age < 30 ? ["30" as const] : [])];
+    // One event/player observation, even if the response repeats that player's entry.
+    const entries = new Map(bundle.decklists.map(e => [e.player, e]));
+    for (const entry of entries.values()) {
+      if (entry.visible === false) continue;
+      const raw = entry.decklist;
+      if (!raw) continue;
+      observations.push({ raw, format: bundle.event.format || "Unknown format", periods, win: wins.get(entry.player) });
+    }
+  }
+  return aggregateStaples(observations, catalog, generatedAt, reference === null ? null : new Date(reference).toISOString().slice(0, 10));
+}
+
+export interface StapleObservation {
+  raw: Partial<Record<StapleSection, { card: string; quantity: number }[]>>;
+  format: string;
+  periods: StaplePeriod[];
+  win?: number;
+}
+
+/** Common section counting for tournament observations and unique community lists. */
+export function aggregateStaples(observations: StapleObservation[], catalog: Map<string, CardSignature>, generatedAt: string, throughDate: string | null): CardStaplesData {
   const cards: StapleCard[] = [];
   const cardIds = new Map<string, number>();
   const buckets = new Map<string, Bucket>();
@@ -45,45 +76,29 @@ export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<s
     }
     return result;
   }
-  for (const bundle of completed) {
-    if ("error" in bundle.decklists) continue;
-    const wins = new Map<number, number>();
-    if (!("error" in bundle.standings)) for (const result of bundle.standings.standings) {
-      const total = result.statsWins + result.statsLosses + result.statsTies;
-      if (result.id !== undefined && total > 0) wins.set(result.id, (result.statsWins + result.statsTies * 0.5) / total);
-    }
-    const age = (reference! - Date.parse(bundle.event.date)) / DAY;
-    const periods: StaplePeriod[] = ["all", ...(age < 90 ? ["90" as const] : []), ...(age < 30 ? ["30" as const] : [])];
-    // One event/player observation, even if the response repeats that player's entry.
-    const entries = new Map(bundle.decklists.map(e => [e.player, e]));
-    for (const entry of entries.values()) {
-      if (entry.visible === false) continue;
-      const raw = entry.decklist;
-      if (!raw) continue;
-      const signature = buildDeckSignature(entry.player, { main: raw.main ?? [], material: raw.material ?? [], sideboard: raw.sideboard ?? [] }, catalog);
-      const champion = signature.championName ?? "Unknown champion";
-      const targets = periods.flatMap(period => [null, bundle.event.format || "Unknown format"].flatMap(format =>
-        [null, champion].map(name => bucket(period, format, name))));
-      for (const target of targets) target.cohort.decks++;
-      for (const section of STAPLE_SECTIONS) {
-        // Absent is unknown; an explicit [] is a reported empty section.
-        if (!Array.isArray(raw[section])) continue;
-        const copies = new Map<number, number>();
-        for (const line of raw[section]) {
-          if (!Number.isInteger(line.quantity) || line.quantity <= 0) continue;
-          const id = cardNumber(line.card);
-          copies.set(id, (copies.get(id) ?? 0) + line.quantity);
-        }
-        for (const target of targets) {
-          target.cohort.sections[section].decks++;
-          for (const [id, quantity] of copies) {
-            let a = target.cards[section].get(id);
-            if (!a) { a = { decks: 0, copies: 0, quantities: new Map(), winSum: 0, winN: 0 }; target.cards[section].set(id, a); }
-            a.decks++; a.copies += quantity;
-            a.quantities.set(quantity, (a.quantities.get(quantity) ?? 0) + 1);
-            const win = wins.get(entry.player);
-            if (win !== undefined) { a.winSum += win; a.winN++; }
-          }
+  for (const { raw, format, periods, win } of observations) {
+    const signature = buildDeckSignature(0, { main: raw.main ?? [], material: raw.material ?? [], sideboard: raw.sideboard ?? [] }, catalog);
+    const champion = signature.championName ?? "Unknown champion";
+    const targets = periods.flatMap(period => [null, format].flatMap(format =>
+      [null, champion].map(name => bucket(period, format, name))));
+    for (const target of targets) target.cohort.decks++;
+    for (const section of STAPLE_SECTIONS) {
+      // Absent is unknown; an explicit [] is a reported empty section.
+      if (!Array.isArray(raw[section])) continue;
+      const copies = new Map<number, number>();
+      for (const line of raw[section]) {
+        if (!Number.isInteger(line.quantity) || line.quantity <= 0) continue;
+        const id = cardNumber(line.card);
+        copies.set(id, (copies.get(id) ?? 0) + line.quantity);
+      }
+      for (const target of targets) {
+        target.cohort.sections[section].decks++;
+        for (const [id, quantity] of copies) {
+          let a = target.cards[section].get(id);
+          if (!a) { a = { decks: 0, copies: 0, quantities: new Map(), winSum: 0, winN: 0 }; target.cards[section].set(id, a); }
+          a.decks++; a.copies += quantity;
+          a.quantities.set(quantity, (a.quantities.get(quantity) ?? 0) + 1);
+          if (win !== undefined) { a.winSum += win; a.winN++; }
         }
       }
     }
@@ -96,5 +111,5 @@ export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<s
     }).sort((a, b) => b[1] - a[1] || cards[a[0]].name.localeCompare(cards[b[0]].name));
     return cohort;
   });
-  return { generatedAt, throughDate: reference === null ? null : new Date(reference).toISOString().slice(0, 10), cards, cohorts };
+  return { generatedAt, throughDate, cards, cohorts };
 }

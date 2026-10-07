@@ -1,3 +1,5 @@
+import { computeCommunityCardStaples } from "./communityCardStaples.js";
+import { loadCommunityStaples } from "./loadCommunityStaples.js";
 import { computeFieldHistory } from "./fieldHistory.js";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
 import { config } from "../config.js";
@@ -85,6 +87,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
 
   await mkdir(DATA_DIR, { recursive: true });
   await writeJsonAtomic(path.join(DATA_DIR, "card-staples.json"), computeCardStaples(allBundles, cardIndex), 0);
+  await writeJsonAtomic(path.join(DATA_DIR, "community-card-staples.json"), computeCommunityCardStaples(await loadCommunityStaples(), cardIndex), 0);
 
   // Each of these is fast and independent of deck similarity (the one slow, champion-scoped
   // step below) — writing them out as soon as they're computed means a kill/crash during the

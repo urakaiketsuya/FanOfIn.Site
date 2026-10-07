@@ -20,6 +20,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-rivals", file: "analysis/rivals.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
   { key: "analysis-card-staples", file: "analysis/card-staples.json" },
+  { key: "analysis-community-card-staples", file: "analysis/community-card-staples.json" },
   { key: "analysis-keyword-stats", file: "analysis/keyword-stats.json" },
   { key: "analysis-card-quantity-stats", file: "analysis/card-quantity-stats.json" },
   { key: "analysis-card-stats-by-champion", file: "analysis/card-stats-by-champion.json" },

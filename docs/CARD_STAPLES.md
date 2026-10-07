@@ -66,3 +66,28 @@ failure/retry, and no-result states remain visible without discarding filters.
 
 Trend, cross-champion breadth, price, and printed level-requirement extraction are follow-up
 metrics, not inferred from current totals or the champion-level field.
+
+## Community source
+
+The Deck source selector switches between tournament results and community decklists. The
+community projection is `analysis/community-card-staples.json`, built from full published
+ShoutAtYourDecks, Sleeved, and TcgArchitect lists by analysis and the targeted rebuild. The
+community blend also republishes it from its current accepted full lists after a harvest.
+The compact community search index cannot supply section quantities or sideboards.
+Existing source-specific acceptance filters apply; empty main/material lists are excluded.
+
+Community uses the same canonical cards, champion identity, facets, section denominators,
+quantity mode, and ordering logic as tournament Staples. Latest source + deck ID snapshots
+win. Exact canonical lists collapse across authors and sources after repeated lines merge.
+The fingerprint includes format, main, material, sideboard, and Pantheon boon quantities;
+missing sections remain distinct from explicit empty arrays. Lists with different sideboards
+remain different observations in this projection. This fingerprint does not change the
+site's main + material deck grouping identity.
+
+Tournament and community populations are selectable rather than pooled: a community copy
+of a tournament list cannot inflate tournament inclusion or performance. Community counts
+are unique registered lists, not players or tournament entries. There are no community
+match outcomes, so win-rate controls and metrics are hidden. All community cohorts use the
+full archive; fetchedAt selects snapshots but is never treated as a play or creation date.
+Switching sources preserves card filters and remembers tournament period/performance choices;
+community resolves those choices to full archive/most played. Clear filters preserves source.
