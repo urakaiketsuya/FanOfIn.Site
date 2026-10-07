@@ -1,15 +1,24 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readReviewedSnapshot } from './fixtures/reviewedSnapshot.js';
 import { applyReviewedArchetypeEvidence, decodeCardLines, REMAINING_CHAMPION_IDENTITIES, REVIEWED_ARCHETYPE_CORES, ZANDER_IDENTITIES, type ArchetypeTaxonomyData, type DeckCardIndexData } from '@gatcg/shared';
-const taxonomy: ArchetypeTaxonomyData = JSON.parse(readFileSync(new URL('../../../data/analysis/archetype-taxonomy.json', import.meta.url), 'utf8'));
-const index: DeckCardIndexData = JSON.parse(readFileSync(new URL('../../../data/analysis/deck-card-index.json', import.meta.url), 'utf8'));
+const taxonomy: ArchetypeTaxonomyData = JSON.parse(readReviewedSnapshot('taxonomy'));
+const index: DeckCardIndexData = JSON.parse(readReviewedSnapshot('deck-index'));
 const cards = new Map(index.decks.map(deck => [deck.deckId, new Map(decodeCardLines([...deck.main, ...deck.material], index.cardNames).filter(c => c.quantity > 0).map(c => [c.name, c.quantity]))]));
-test('published families retain all memberships and stats, and refresh is idempotent', () => {
+test('historically reviewed families retain all memberships and stats, and refresh is idempotent', () => {
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
   for (const identity of REVIEWED_ARCHETYPE_CORES) assert.ok(copy.strategyArchetypes.some(s => s.name === identity.name || REVIEWED_ARCHETYPE_CORES.find(core => core.name === s.name)?.combines?.includes(identity.name)), identity.name);
+});
+test('current published families reproduce their evidence without changing memberships or stats', () => {
+  const published: ArchetypeTaxonomyData = JSON.parse(readFileSync(new URL('../../../data/analysis/archetype-taxonomy.json', import.meta.url), 'utf8'));
+  const currentIndex: DeckCardIndexData = JSON.parse(readFileSync(new URL('../../../data/analysis/deck-card-index.json', import.meta.url), 'utf8'));
+  const currentCards = new Map(currentIndex.decks.map(deck => [deck.deckId, new Map(decodeCardLines([...deck.main, ...deck.material], currentIndex.cardNames).filter(c => c.quantity > 0).map(c => [c.name, c.quantity]))]));
+  const refreshed = structuredClone(published);
+  applyReviewedArchetypeEvidence(refreshed.strategyArchetypes, refreshed.clusters, currentCards);
+  assert.deepEqual(refreshed, published);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -344,7 +353,7 @@ test('combined Jin identity requires joint union and never suppresses unrelated 
 });
 
 test('Ignis family has a Spirit and level-one Tristan in material, with no higher champion', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../../../data/card-catalog.json', import.meta.url), 'utf8')).cards as { name: string; types: string[]; classes: string[]; level: number | null }[];
+  const catalog = JSON.parse(readReviewedSnapshot('card-catalog')).cards as { name: string; types: string[]; classes: string[]; level: number | null }[];
   const byName = new Map(catalog.map(card => [card.name, card]));
   const family = taxonomy.strategyArchetypes.find(s => s.id === 's71lix')!;
   const ids = new Set(family.buildIds.flatMap(id => taxonomy.clusters.find(b => b.id === id)!.deckIds));

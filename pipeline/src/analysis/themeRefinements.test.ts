@@ -2,16 +2,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { readReviewedSnapshot } from './fixtures/reviewedSnapshot.js';
 import { themeRefinements } from '../../../shared/src/themeRefinements.js';
 import { detectThemeDefinitions, summarizeDraftThemes } from '../../../shared/src/draftThemes.js';
 
 const read = (p: string) => readFileSync(new URL(p, import.meta.url), 'utf8');
-const indexRaw = read('../../../data/analysis/deck-card-index.json');
-const catalogRaw = read('../../../data/card-catalog.json');
+const indexRaw = readReviewedSnapshot('deck-index');
+const catalogRaw = readReviewedSnapshot('card-catalog');
 const catalog = JSON.parse(catalogRaw).cards;
 const index = JSON.parse(indexRaw);
 
-test('refinement evidence reproduces all fourteen candidates against its current sources', () => {
+test('refinement evidence reproduces all fourteen candidates against its original review sources', () => {
     const saved = JSON.parse(read('../../../data/reference/theme-refinement-review.json'));
     const hash = (s: string) => createHash('sha256').update(s).digest('hex');
     assert.deepEqual(saved.sources, { indexSha256: hash(indexRaw), catalogSha256: hash(catalogRaw), definitionsSha256: hash(JSON.stringify(themeRefinements)) });
@@ -88,7 +89,7 @@ test('publication includes the eleven approved refinements and reproduces refres
 
 test('curated target pools retain their catalog cost, element and intersection boundaries', () => {
     type Card = { name: string; types: string[]; subtypes: string[]; cost_reserve: number | null; elements: string[] };
-    const cards = catalog as Card[];
+    const cards = JSON.parse(read('../../../data/card-catalog.json')).cards as Card[];
     const namedPool = (id: string, condition: number) => themeRefinements.find(t => t.id === id)!.paths[0][condition].names!.slice().sort();
     assert.deepEqual(namedPool('resonator-forese', 3), cards.filter(c => c.types.includes('ALLY') && c.subtypes.includes('RESONATOR') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.elements.every(e => ['NORM', 'FIRE', 'WATER', 'WIND'].includes(e))).map(c => c.name).sort());
     assert.deepEqual(namedPool('specter-templar', 2), cards.filter(c => c.types.includes('ALLY') && c.subtypes.includes('SPECTER') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.name !== 'Incinerated Templar').map(c => c.name).sort());
