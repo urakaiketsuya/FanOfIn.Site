@@ -44,5 +44,8 @@
     "release:check": "node scripts/release-check.mjs",
     "release:data": "node --import tsx scripts/check-release-data.ts",
     "release:smoke": "node scripts/smoke-release.mjs"
+  },
+  "overrides": {
+    "sharp": "0.35.5"
   }
 }
