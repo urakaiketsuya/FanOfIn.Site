@@ -1,3 +1,4 @@
+import ChampionIdentity from "./ChampionIdentity";
 import ChampionRelationships from "./ChampionRelationships";
 import ReviewedChampionFamilies from "./ReviewedChampionFamilies";
 import DiaoArchetypeFamilies from "./DiaoArchetypeFamilies";
@@ -327,6 +328,8 @@ export default function ChampionSynergy() {
             actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Full stats &amp; season history &rarr;</Link>}
           />
           </div>
+
+          <ChampionIdentity championName={championName} fallbackNames={champ.topCards.material.map((card) => card.name)} />
 
           <nav className="mb-6 mt-4 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs sm:mt-6">
             {JUMP_SECTIONS.map((s) => (

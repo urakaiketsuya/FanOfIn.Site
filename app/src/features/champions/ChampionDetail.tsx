@@ -3,7 +3,7 @@ import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Button from "../../components/ui/Button";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import ChampionDecks from "./ChampionDecks";
-import CardArtTile from "../../components/CardArtTile";
+import ChampionIdentity from "./ChampionIdentity";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { slugToChampionName } from "../../lib/championSlug";
@@ -19,7 +19,6 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
@@ -164,8 +163,6 @@ export default function ChampionDetail() {
       .sort((a, b) => b.playerCount - a.playerCount);
   }, [taxonomyData, championName]);
 
-  const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
-  const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
   const bonus = useChampionBonusCards(champion ? championName : null);
   const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, moreTab === "regions" && surface === "more");
 
@@ -259,21 +256,7 @@ export default function ChampionDetail() {
             description={<span className="flex flex-wrap gap-2"><span>{champion.classes.join(" / ")}</span><span aria-hidden="true">·</span><span>{champion.elements.join(" / ")}</span></span>}
           />
 
-          {cutouts.length > 0 && (
-            <section aria-label={`${championName} card portraits`} className="identity-surface mb-4 rounded-3xl border border-ctp-surface1 p-4">
-              <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-4 lg:grid-cols-6">
-                {cutouts.map((c) => {
-                  const card = cutoutCards.get(c.cardName);
-                  const content = <><CardArtTile card={card} name={c.cardName} /><span className="mt-2 block text-sm font-medium text-ctp-text">{c.cardName}</span></>;
-                  return card?.slug ? (
-                    <Link key={c.cardName} to={`/cards/${card.slug}`} className="min-w-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue hover:text-ctp-blue">
-                      {content}
-                    </Link>
-                  ) : <div key={c.cardName} className="min-w-0">{content}</div>;
-                })}
-              </div>
-            </section>
-          )}
+          <ChampionIdentity championName={championName} fallbackNames={champion.topCards.material.map((card) => card.name)} />
 
           <details className="group mb-6 rounded-2xl border border-ctp-surface1 bg-ctp-mantle px-4">
             <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue">
