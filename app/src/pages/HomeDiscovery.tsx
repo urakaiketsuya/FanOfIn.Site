@@ -14,7 +14,8 @@ export default function HomeDiscovery() {
   const recent = data?.decks ?? [];
   const families = data?.families ?? [];
   const cards = useCardsByNames([...families.flatMap(family => family.identityCards), ...recent.flatMap(deck => deck.material.map(line => line.card))]);
-  return <div className="mx-auto max-w-5xl space-y-10 px-4 py-8 sm:px-8 sm:py-10">
+  return <div className="px-4 py-8 sm:px-8 sm:py-10">
+    <div className="mx-auto max-w-5xl space-y-10">
     <section aria-labelledby="home-decks-heading">
       <div className="flex flex-wrap items-center justify-between gap-x-4">
         <h2 id="home-decks-heading" className="text-2xl font-bold">Fresh from the tables</h2>
@@ -45,5 +46,6 @@ export default function HomeDiscovery() {
         <Link to={`/champions/${encodeURIComponent(family.championName.replaceAll(" ", "-"))}?tab=builds`} className={linkClass}>Explore champion families →</Link>
       </article>)}</div>
     </section>
+    </div>
   </div>;
 }
