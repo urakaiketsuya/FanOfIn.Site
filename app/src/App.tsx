@@ -17,7 +17,7 @@ interface NavFlatLink { kind: "link"; to: string; label: string }
 type NavEntry = NavGroup | NavFlatLink;
 
 const NAV_ENTRIES: NavEntry[] = [
-  { kind: "group", label: "Cards", paths: ["/cards"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Top Cards" }, { to: "/cards/packages", label: "Card Packages" }] },
+  { kind: "group", label: "Cards", paths: ["/cards"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/staples", label: "Card Staples" }, { to: "/cards/stats", label: "Top Cards" }, { to: "/cards/packages", label: "Card Packages" }] },
   { kind: "link", to: "/champions", label: "Top Champions" },
   { kind: "group", label: "Decks", paths: ["/decks", "/pantheon/decks", "/official-decks"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/pantheon/decks", label: "Pantheon Decks" }, { to: "/decks/shared", label: "Shared Decks" }, { to: "/official-decks", label: "Official Product Decks" }] },
   { kind: "group", label: "Competition", paths: ["/events", "/seasons", "/players", "/teams", "/timelines", "/regions"], links: [{ to: "/events", label: "Browse Events" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }, { to: "/regions", label: "Regional Analysis" }] },

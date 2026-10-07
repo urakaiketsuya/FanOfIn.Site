@@ -13,6 +13,7 @@ import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/ca
 import { computeEloRatings } from "./elo.js";
 import { computeRivals } from "./rivals.js";
 import { computeCardStats } from "./cardStats.js";
+import { computeCardStaples } from "./cardStaples.js";
 import { computeKeywordStats } from "./keywordStats.js";
 import { computeCardQuantityStats } from "./cardQuantityStats.js";
 import { computeCardStatsByChampion } from "./cardStatsByChampion.js";
@@ -83,6 +84,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   }
 
   await mkdir(DATA_DIR, { recursive: true });
+  await writeJsonAtomic(path.join(DATA_DIR, "card-staples.json"), computeCardStaples(allBundles, cardIndex), 0);
 
   // Each of these is fast and independent of deck similarity (the one slow, champion-scoped
   // step below) — writing them out as soon as they're computed means a kill/crash during the

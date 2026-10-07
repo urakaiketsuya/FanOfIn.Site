@@ -81,6 +81,7 @@ const CardTagging = lazy(() => import("./features/cards/CardTagging"));
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
 const CardDetail = lazy(() => import("./features/cards/CardDetail"));
 const CardStatsIndex = lazy(() => import("./features/cards/CardStatsIndex"));
+const CardStaples = lazy(() => import("./features/cards/staples/CardStaples"));
 const PackagesIndex = lazy(() => import("./features/cards/PackagesIndex"));
 const ThemaLeaderboard = lazy(() => import("./features/thema/ThemaLeaderboard"));
 const ThemaHistory = lazy(() => import("./features/thema/ThemaHistory"));
@@ -181,6 +182,7 @@ export default function AppRoutes() {
         <Route path="/" element={<About />} />
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
+        <Route path="/cards/staples" element={<CardStaples />} />
         <Route path="/cards/packages" element={<PackagesIndex />} />
         <Route path="/cards/tags" element={<TagGallery />} />
         <Route path="/cards/tags/:tag" element={<TagGallery />} />

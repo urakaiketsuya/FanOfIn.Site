@@ -127,6 +127,7 @@ export default function CardsBrowse() {
         title="Cards"
         actions={
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <Link to="/cards/staples" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Card staples &rarr;</Link>
             <Link to="/cards/tags" className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Tag galleries</Link>
             <Link to="/cards/packages" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline">
               Packages &rarr;
