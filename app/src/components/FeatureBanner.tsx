@@ -7,18 +7,17 @@ interface FeatureTip {
   cta: string;
 }
 
-// Hand-picked, not every page on the site – favors features a first-time visitor is unlikely to
-// stumble onto from the nav alone (e.g. the Deck Builder's cut suggestions, the simulator/tournament
-// data split) over ones already obvious from top-level nav labels.
+// Keep tips concise and stable for the mounted visit.
 const FEATURE_TIPS: FeatureTip[] = [
-  { message: "Quickly import your public decks from other sites:", to: "/decks/edit", cta: "Build Now" },
-  { message: "New to deck building? We have free tools:", to: "/deck-builder", cta: "Get Started" },
-  { message: "Card Impact shows which cards move win rate the most within an archetype.", to: "/cards/stats", cta: "See Card Stats" },
-  { message: "Compare multiple decks at once:", to: "/compare", cta: "Compare Decks" },
-  { message: "Get cards from the latest set recommended based on your decklist:", to: "card-discovery", cta: "See New Cards"},
-  { message: "Official livestream data at a glance:", to: "/timelines", cta: "See Play-by-Plays" },
-  { message: "Travelling to play?", to: "/regions", cta: "See what's hot in another region" },
-  { message: "Track your cards across decks:", to: "/collection", cta: "Add to Collection" },
+  { message: "Meet your champion. Explore their cards and builds.", to: "/champions", cta: "Explore champions" },
+  { message: "Bring your decklist. Keep building from there.", to: "/decks/edit", cta: "Import a deck" },
+  { message: "Start your next deck with guided tools.", to: "/deck-builder", cta: "Build a deck" },
+  { message: "Explore card results from recorded tournaments.", to: "/cards/stats", cta: "See card stats" },
+  { message: "Spot the differences between decklists.", to: "/compare", cta: "Compare decks" },
+  { message: "Find new cards for your deck.", to: "/card-discovery", cta: "Discover cards" },
+  { message: "Follow recorded livestream matches, play by play.", to: "/timelines", cta: "Explore matches" },
+  { message: "See what players bring in another region.", to: "/regions", cta: "Explore regions" },
+  { message: "Keep track of your cards across decks.", to: "/collection", cta: "Manage collection" },
 ];
 
 function tipIndexForNow(): number {
@@ -35,7 +34,7 @@ export default function FeatureBanner() {
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-1.5 text-center text-xs text-ctp-subtext1 sm:text-sm">
         <span aria-hidden="true">💡</span>
         <span>{tip.message}</span>
-        <Link to={tip.to} className="inline-flex min-h-control min-w-0 max-w-full items-center justify-center font-medium text-ctp-mauve hover:underline">
+        <Link to={tip.to} className="inline-flex min-h-control min-w-0 max-w-full items-center justify-center rounded font-medium text-ctp-mauve hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-mauve">
           {tip.cta} &rarr;
         </Link>
       </div>
