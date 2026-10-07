@@ -18,7 +18,7 @@ export interface DeckPackageCatalogEntry extends ActiveDeckPackage {
 type PackageCard = PackageDeckCard;
 
 export function getRegisteredDeckPackageCatalog(cards: PackageCard[] = []): DeckPackageCatalogEntry[] {
-  return PUBLISHED_PACKAGE_CATALOG.packages.map((definition) => {
+  return PUBLISHED_PACKAGE_CATALOG.packages.filter(definition => definition.protection.mode !== "none").map((definition) => {
     const { active, protectedCards } = evaluatePublishedPackage(definition, cards);
     return { id: definition.id, label: definition.label, explanation: definition.explanation,
       activation: definition.activation, observedSupport: definition.observedSupport,

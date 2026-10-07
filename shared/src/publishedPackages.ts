@@ -39,7 +39,7 @@ export const PUBLISHED_PACKAGE_CATALOG: {
   packages: readonly PublishedCardPackage[];
 } = {
   schemaVersion: 1,
-  revision: 1,
+  revision: 2,
   packages: [
     {
       id: "fluffy-shopkeep-resonance-baubles", revision: 1,
@@ -82,6 +82,37 @@ export const PUBLISHED_PACKAGE_CATALOG: {
       materialChampionPrefix: "Lorraine,",
       protection: { mode: "present-members", cards: clarents },
       evidence: [{ path: "docs/experiments/package-construction.md", note: "Repeated construction finding. Cached Clarent, Reimagined text explicitly names Sword of Peace under Lorraine Bonus." }],
+    },
+
+    {
+      id: "return-to-archive-looking-glass", revision: 1,
+      label: "Return to the Archive + The Looking Glass",
+      explanation: "The Looking Glass can begin on the field from your starting Material deck. Return to the Archive can sacrifice it to recover 2 and draw a card; you give up its Distortion elemental access while it is gone.",
+      activation: "Return to the Archive in Main and The Looking Glass in Material. The Glass must be on the field to sacrifice it.",
+      memberCards: ["Return to the Archive", "The Looking Glass"],
+      requirements: [{ section: "main", cards: ["Return to the Archive"], minimum: 1 }, { section: "material", cards: ["The Looking Glass"], minimum: 1 }],
+      protection: { mode: "none" },
+      evidence: [{ path: "docs/CALCULATIONS.md", note: "Catalog revision 2 publication review: official card API and September 14 B&R checked 2026-10-07. Exact construction core repeated in 39/47 later cohort decks; no win-rate claim or alternative-regalia pool." }],
+    },
+    {
+      id: "numinous-monk-capacitance", revision: 1,
+      label: "Numinous Monk + Capacitance X Psycho",
+      explanation: "With both on the field, keep Capacitance X Psycho awake and rest another regalia using Numinous Monk's granted ability to deal 2 damage. Resting Capacitance itself turns off its damage increase. Playing the pair requires access to Crux and Arcane; Capacitance's special Material activation also requires Lorraine Bonus and six Arcane cards in banishment, and enters rested.",
+      activation: "Numinous Monk in Main and Capacitance X Psycho in Material. The damage interaction needs both on the field, Capacitance awake, and another awake regalia.",
+      memberCards: ["Numinous Monk", "Capacitance X Psycho"],
+      requirements: [{ section: "main", cards: ["Numinous Monk"], minimum: 1 }, { section: "material", cards: ["Capacitance X Psycho"], minimum: 1 }],
+      protection: { mode: "none" },
+      evidence: [{ path: "docs/CALCULATIONS.md", note: "Catalog revision 2 publication review: official card API and September 14 B&R checked 2026-10-07. Exact core repeated in 12/21 later cohort decks. Deck presence does not establish elemental access or awake/field state." }],
+    },
+    {
+      id: "prototype-pistol-windpiercer", revision: 1,
+      label: "Prototype Pistol + Windpiercer",
+      explanation: "Rest Windpiercer to load an unloaded Prototype Pistol on the field. Windpiercer adds its On Attack effect when used as ammunition. You need Wind access for Windpiercer; the Pistol's On Enter power bonus requires Ranger Class Bonus.",
+      activation: "Prototype Pistol and Windpiercer in Material. Put both on the field, with Windpiercer awake and the Pistol unloaded, before loading.",
+      memberCards: ["Prototype Pistol", "Windpiercer"],
+      requirements: [{ section: "material", cards: ["Prototype Pistol", "Windpiercer"], minimum: 2 }],
+      protection: { mode: "none" },
+      evidence: [{ path: "docs/CALCULATIONS.md", note: "Catalog revision 2 publication review: official card API and September 14 B&R checked 2026-10-07. Exact core repeated in 13/31 later cohort decks. Other Guns are not inferred members." }],
     },
   ],
 };

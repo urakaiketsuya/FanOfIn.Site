@@ -4749,3 +4749,45 @@ Recurrence establishes construction reuse, not causal synergy or a win-rate adva
 No new rules or Builder protections were approved in this review. Before expanding
 publication, refresh card legality and align the remaining experiment inputs; resolve
 exact cores versus alternatives and contextual conditions for the three candidates.
+
+### Catalog revision 2 publication review (2026-10-07)
+
+The three candidates above are now published as exact two-card pools, with
+`protection.mode = "none"`: Return to the Archive / The Looking Glass,
+Numinous Monk / Capacitance X Psycho, and Prototype Pistol / Windpiercer.
+No alternatives were inferred from type compatibility or from associated options.
+Their section requirements match the refreshed construction report's exact cores.
+The published descriptions include the necessary field-state context and tradeoffs;
+the evaluator's `active` means deck requirements match, not immediate playability.
+
+Current text, types, and elements were read directly from the official card API on
+2026-10-07: [Return](https://api.gatcg.com/cards/return-to-the-archive),
+[Glass](https://api.gatcg.com/cards/the-looking-glass),
+[Monk](https://api.gatcg.com/cards/numinous-monk),
+[Capacitance](https://api.gatcg.com/cards/capacitance-x-psycho),
+[Pistol](https://api.gatcg.com/cards/prototype-pistol), and
+[Windpiercer](https://api.gatcg.com/cards/windpiercer). The API returned null legality
+for these six cards; null was not treated as affirmative legal status. The official
+[September 14 Standard B&R](https://www.gatcg.com/article/ban-and-restricted-september-14th-2026)
+was checked separately, including its seasonal bans: none of these six cards appears.
+This is a dated publication review, not a live legality guarantee or a full catalog refresh.
+
+- Return sacrifices the Glass already on the field, exchanging its ongoing Distortion
+  access for recovery and a draw. Other regalia remain outside this published core.
+- Monk grants regalia a rest-cost damage ability. Capacitance's modifier requires it
+  to remain awake, so the stated 2-damage interaction uses another awake regalia.
+  Crux/Arcane access and its conditional Lorraine Material activation are stated
+  explicitly; the six-card banishment threshold and entering rested are not modeled
+  as satisfied merely because the two cards occur in a deck.
+- Windpiercer loads an unloaded Gun on the field. The published exact pair does not
+  imply other Guns were tested, or grant Ranger Class Bonus to a non-Ranger champion.
+
+Builder's registered catalog filters out browse-only publications before constructing
+registered review rules. This prevents publication from labeling these pairs as
+approved protection or presenting them as active protected packages. Card membership
+and public browse still include them. Existing manual browser approvals remain independent.
+The four previously protected packages keep their identifiers, ordering, and behavior.
+
+Validation: targeted tests cover published membership, section failures, and absence
+from Builder's registry/active protections. The broader evidence refresh and full-site
+release remain separate work; this review does not make a performance claim.

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { PUBLISHED_PACKAGE_CATALOG, evaluatePublishedPackage, getPublishedPackageMembership, type PackageDeckCard } from "@gatcg/shared";
-import { getRegisteredDeckPackageCatalog } from "../src/features/deckbuilder/packageGuardrails";
+import { getRegisteredDeckPackageCatalog, findActiveDeckPackages } from "../src/features/deckbuilder/packageGuardrails";
 
 const card = (cardName: string, section: PackageDeckCard["section"], quantity = 1): PackageDeckCard => ({ cardName, section, quantity });
 const fixtures = [
@@ -12,7 +12,7 @@ const fixtures = [
 ];
 
 test("shared catalog preserves registered identities, activation, and card membership", () => {
-  assert.deepEqual(PUBLISHED_PACKAGE_CATALOG.packages.map(p => p.id), fixtures.map(f => f.id));
+  assert.deepEqual(getRegisteredDeckPackageCatalog().map(p => p.id), fixtures.map(f => f.id));
   for (const fixture of fixtures) {
     const definition = PUBLISHED_PACKAGE_CATALOG.packages.find(p => p.id === fixture.id)!;
     assert.deepEqual(evaluatePublishedPackage(definition, fixture.cards), { active: true, protectedCards: fixture.protected });
@@ -57,4 +57,29 @@ test("alternative protection preserves original deck order after the required an
   const shopkeep = PUBLISHED_PACKAGE_CATALOG.packages[0];
   assert.deepEqual(evaluatePublishedPackage(shopkeep, [card("Wind Resonance Bauble", "material"), card("Fire Resonance Bauble", "material"), card("Fluffy Shopkeep", "main")]).protectedCards,
     ["Wind Resonance Bauble", "Fire Resonance Bauble"]);
+});
+
+
+test("reviewed browse-only pairs appear on cards but never register Builder protection", () => {
+  const pairs = [
+    { id: "return-to-archive-looking-glass", cards: [card("Return to the Archive", "main"), card("The Looking Glass", "material")] },
+    { id: "numinous-monk-capacitance", cards: [card("Numinous Monk", "main"), card("Capacitance X Psycho", "material")] },
+    { id: "prototype-pistol-windpiercer", cards: [card("Prototype Pistol", "material"), card("Windpiercer", "material")] },
+  ];
+  assert.equal(PUBLISHED_PACKAGE_CATALOG.revision, 2);
+  assert.equal(PUBLISHED_PACKAGE_CATALOG.packages.length, fixtures.length + pairs.length);
+  for (const pair of pairs) {
+    const definition = PUBLISHED_PACKAGE_CATALOG.packages.find(p => p.id === pair.id)!;
+    assert.deepEqual(evaluatePublishedPackage(definition, pair.cards), { active: true, protectedCards: [] });
+    assert.deepEqual(findActiveDeckPackages(pair.cards), []);
+    assert.ok(!getRegisteredDeckPackageCatalog(pair.cards).some(p => p.id === pair.id));
+    for (const member of pair.cards) assert.ok(getPublishedPackageMembership(member.cardName).some(p => p.id === pair.id));
+    for (let i = 0; i < pair.cards.length; i++) {
+      for (const section of ["sideboard", pair.cards[i].section === "main" ? "material" : "main"] as const) {
+        assert.equal(evaluatePublishedPackage(definition, pair.cards.map((c, index) => index === i ? { ...c, section } : c)).active, false);
+      }
+      assert.equal(evaluatePublishedPackage(definition, pair.cards.filter((_, index) => index !== i)).active, false);
+    }
+  }
+  assert.deepEqual(getPublishedPackageMembership("Inert Sword"), []);
 });
