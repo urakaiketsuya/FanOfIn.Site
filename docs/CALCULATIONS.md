@@ -4709,3 +4709,43 @@ format claim, automatic approval, or experimental promotion is introduced by thi
 The next catalog expansion requires reviewing the construction shortlist and refreshing its source
 snapshots before publishing additional definitions. Public browsing and research-view separation
 remain a subsequent UI change.
+
+### Public package browse and construction review (2026-10-07)
+
+`/cards/packages` now defaults to the released shared catalog. It shows the full card
+pool, section-aware required/alternative captions, and the complete activation setup.
+It does not present historical audit counts as current usage or imply win-rate benefit.
+Card names and setup remain available without the artwork catalog. Known cards link
+to card details; cached Standard bans are shown when available.
+
+The former testing surface is available at `/cards/packages?review=1`; legacy research
+hashes still open it. Published package hashes open the public entries. Research is
+loaded on demand and stays mounted after first visit so switching back to browsing
+preserves locally held review drafts. Browser approvals do not publish catalog entries.
+
+The construction audit was rerun against deck index and sightings from 2026-10-04,
+taxonomy from 2026-10-05, and cached card text/legality from 2026-09-28 (exact source
+timestamps are in `data/experiments/package-construction.json`). This is a refresh
+against the available local snapshot, not a fresh crawl or a synchronized rerun of
+all package experiments. Discovery selected 10 of 109 nominations from 191 cohorts;
+7 repeated, 2 did not repeat, and 1 had insufficient later data.
+
+Publication review of the selected exact cores:
+
+| Core | Decision | Basis / remaining work |
+| --- | --- | --- |
+| Clarent, Reimagined + Clarent, Sword of Peace | Retain published | Named Material cost interaction; Lorraine context remains required. 36/51 later decks. |
+| Turbo Charge + Backup Charger | Retain published | Powercell producer and sacrifice cost verified in cached text. 74/98 later decks. |
+| Return to the Archive + The Looking Glass | Candidate for browse-only publication | Sacrificable regalia with starting-field access; 39/47 later decks. Review sacrifice tradeoff and whether other regalia belong in an alternative pool before specifying a rule. |
+| Numinous Monk + Capacitance X Psycho | Candidate for browse-only publication | Granted 1-damage abilities can interact with the awake damage modifier; 12/21 later decks. Requires explicit awake/field context; Material activation additionally has Lorraine and six banished arcane cards as conditions. Do not label deck presence an immediately playable combo. |
+| Prototype Pistol + Windpiercer | Candidate for browse-only publication | Gun and loading interaction; 13/31 later decks. Review alternative Gun pool and class/element context before authorizing protection. |
+| Spirit Blade: Ascension + Prismatic Edge | Keep in research/archive | Repeated, but Spirit Blade is banned in Standard in the cached catalog. |
+| Unmake Duality + The Looking Glass | Keep in research/archive | Repeated, but Unmake Duality is banned in Standard in the cached catalog. |
+| Fractal of Mana + Nascent Blast | Keep in research | Did not repeat: 2/223 later decks. |
+| Cheshire Cat + Inert Sword + Sword of Shadows + The Looking Glass | Keep in research | Did not repeat: 7/23 later decks; the four-card pool needs decomposition. |
+| Return to the Archive + Inert Sword + The Looking Glass | Keep in research | Insufficient later data: 6/14 decks, 3 players. |
+
+Recurrence establishes construction reuse, not causal synergy or a win-rate advantage.
+No new rules or Builder protections were approved in this review. Before expanding
+publication, refresh card legality and align the remaining experiment inputs; resolve
+exact cores versus alternatives and contextual conditions for the three candidates.
