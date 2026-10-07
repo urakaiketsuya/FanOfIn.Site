@@ -1487,9 +1487,9 @@ from card data alone:
   level N" field (confirmed directly — this is always a manual input in the UI), but the *pace* of
   reaching a level is a real, checkable rule: leveling happens by materializing the next-level
   champion print during the Materialize Phase, and "the materialize phase is skipped on each
-  player's first turn." So a champion starts at level 1 and, with no acceleration, first reaches
-  level N on turn N. `naturalLevelByTurn`/`earliestLevelTurn` model exactly this, plus one extra
-  level per turn for every checked "level up your champion" accelerant the deck runs (see below).
+  player's first turn." The [starting champion is level 0](https://rules.gatcg.com/general-rules/general-rules-starting-the-game),
+  so without acceleration level N is first reachable on turn N + 1 (level 3 on turn 4). `naturalLevelByTurn`/`earliestLevelTurn` model exactly this, plus one extra
+  level for every checked "level up your champion" accelerant the deck runs (see below).
 - **The card's own Reserve cost.** Reserve costs are paid by moving that many cards from hand into
   memory (the "Costs and Memory" rules page) — a real, checkable resource question, unlike a Memory
   cost (see below). `earliestReserveCostTurn` uses a disclosed heuristic hand-size ceiling

@@ -31,12 +31,11 @@ const MAX_TURN = 20;
  * verified against the official comprehensive rules (rules.gatcg.com, "Leveling Up" and
  * "Materialize Phase" sections): leveling happens "as a result of materializing a champion card
  * during the materialize phase," only a Champion/Regalia can be materialized that way, and "the
- * materialize phase is skipped on each player's first turn." So a champion starts the game at
- * level 1 and, with no acceleration, first reaches level N on turn N (the materialize phase on
- * turn 2 is the first chance to reach level 2, turn 3 for level 3, and so on).
+ * materialize phase is skipped on each player's first turn." The starting champion is
+ * level 0, so without acceleration level N is first reachable on turn N + 1 (level 1 on turn 2, level 2 on turn 3, and level 3 on turn 4).
  */
 export function naturalLevelByTurn(turn: number): number {
-  return 1 + Math.max(0, turn - 1);
+  return Math.max(0, turn - 1);
 }
 
 /**
@@ -49,7 +48,7 @@ export function naturalLevelByTurn(turn: number): number {
  * calculator.
  */
 export function earliestLevelTurn(requiredLevel: number, accelerantAvailableTurns: number[] = []): number {
-  if (requiredLevel <= 1) return 1;
+  if (requiredLevel <= 0) return 1;
   for (let turn = 1; turn <= MAX_TURN; turn++) {
     const fired = accelerantAvailableTurns.filter((t) => t <= turn).length;
     if (naturalLevelByTurn(turn) + fired >= requiredLevel) return turn;

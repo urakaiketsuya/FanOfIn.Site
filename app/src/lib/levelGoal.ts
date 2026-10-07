@@ -1,6 +1,6 @@
 import type { Card } from "@gatcg/shared";
 import { probabilityOfRecipe } from "./comboOdds";
-import { earliestReserveCostTurn, inferStartingHandSize, isSimpleLevelUpAccelerant, naturalCardsSeenByTurn, naturalLevelByTurn, type PlayOrder } from "./turnToPlay";
+import { earliestLevelTurn, earliestReserveCostTurn, inferStartingHandSize, isSimpleLevelUpAccelerant, naturalCardsSeenByTurn, naturalLevelByTurn, type PlayOrder } from "./turnToPlay";
 
 export interface LevelGoalConfig {
   targetLevel: number;
@@ -60,7 +60,7 @@ export function computeLevelGoalAnalysis(main: Line[], material: Line[], cardsBy
   const directCopies = copies(directLines);
   const paymentCopies = copies(paymentLines);
   const fractalCopies = copies(fractalLines);
-  const naturalTurn = Math.max(1, config.targetLevel);
+  const naturalTurn = earliestLevelTurn(config.targetLevel);
   const levelWithoutAcceleration = naturalLevelByTurn(config.targetTurn);
   const accelerantsNeeded = Math.max(0, config.targetLevel - levelWithoutAcceleration);
   const seenAtTarget = Math.min(deckSize, naturalCardsSeenByTurn(config.targetTurn, startingHandSize, config.playOrder));
