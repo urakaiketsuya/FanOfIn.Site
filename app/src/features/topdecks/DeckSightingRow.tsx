@@ -42,7 +42,7 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
       archetypeLabel: browseCard ? archetypeLabel : undefined,
       decklist, format, championName: sighting.championName,
       source: { kind: "event", label: "Tournament" },
-      metadata: browseCard ? <p>{playerName} · {sighting.placement ? `#${sighting.placement}` : "Unranked"}<span className="mt-1 block text-xs text-ctp-subtext0">{sighting.eventName}</span></p> : <>
+      metadata: browseCard ? <p>{playerName} · {sighting.placement ? `#${sighting.placement}` : "Unranked"}<span className="mt-1 block text-xs text-ctp-subtext0">{sighting.price === null ? "Price unavailable" : `Estimated price ${formatUsd(sighting.price)}`}</span><span className="mt-1 block text-xs text-ctp-subtext0">{sighting.eventName}</span></p> : <>
         <PlayerLink id={sighting.player} username={playerName} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" />
         <p>{sighting.placement ? `#${sighting.placement}` : "Unranked"} · {sighting.wins}–{sighting.losses}–{sighting.ties}{sighting.winner ? " · Winner" : sighting.topCut ? " · Top Cut" : ""}</p>
         <Link to={`/events/${sighting.eventId}`} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{sighting.eventName}</Link>

@@ -1,3 +1,4 @@
+import { balancedSort } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
@@ -101,15 +102,11 @@ export default function TournamentBuildsView({
       if (mode === "mostRecent") return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
       return b.playerCount - a.playerCount;
     };
-    return [...filtered].sort((a, b) => {
-      const primary = compare(sortMode, a, b);
-      if (primary !== 0) return primary;
-      if (secondarySortMode) {
-        const secondary = compare(secondarySortMode, a, b);
-        if (secondary !== 0) return secondary;
-      }
-      return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
-    });
+    const primary = (a: (typeof filtered)[number], b: (typeof filtered)[number]) => compare(sortMode, a, b);
+    const fallback = (a: Parameters<typeof primary>[0], b: Parameters<typeof primary>[0]) => b.lastPlayedDate.localeCompare(a.lastPlayedDate);
+    return secondarySortMode
+      ? balancedSort(filtered, primary, (a, b) => compare(secondarySortMode, a, b), fallback)
+      : [...filtered].sort((a, b) => primary(a, b) || fallback(a, b));
   }, [filtered, sortMode, secondarySortMode, contentFilters, cardsByName]);
 
   useEffect(() => {
@@ -151,7 +148,7 @@ export default function TournamentBuildsView({
         <select
           value={sortMode}
           aria-label="Sort builds"
-          onChange={(e) => setSortMode(e.target.value as BuildSortMode)}
+          onChange={(e) => { const value = e.target.value as BuildSortMode; startTransition(() => setSortMode(value)); }}
           className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
           {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
@@ -161,10 +158,10 @@ export default function TournamentBuildsView({
       </div>
 
       <details className="group mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
-        <label className="mt-2 flex items-center gap-2">
-          <span>Then sort by</span>
-          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />Balance two priorities</summary>
+        <label className="mt-2 flex flex-wrap items-center gap-2">
+          <span>Balance with</span>
+          <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as BuildSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
             <option value="">None</option>
             {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== sortMode && (mode !== "relevance" || deckContentFilterCount(contentFilters) > 0)).map((mode) => <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>)}
           </select>

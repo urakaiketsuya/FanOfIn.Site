@@ -1,7 +1,8 @@
+import { balancedSort } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { decodeCardLines, EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import LoadMore from "../../components/LoadMore";
 import { InlineState } from "../../components/ui/ContentState";
@@ -72,6 +73,7 @@ export default function DeckSightingsView({
   const [keyword, setKeyword] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<Outcome>("all");
+  const [isPending, startTransition] = useTransition();
   const [sortMode, setSortMode] = useState<SightingSortMode>("date");
   const [secondarySortMode, setSecondarySortMode] = useState<SightingSortMode | null>(null);
   const [query, setQuery] = useState("");
@@ -160,21 +162,17 @@ export default function DeckSightingsView({
       }
       if (mode === "duplicated") return b.duplicateCount - a.duplicateCount;
       if (mode === "cheapest") {
-        const aPrice = a.price ?? Infinity;
-        const bPrice = b.price ?? Infinity;
+        const aPrice = a.price === null ? Infinity : Number(a.price.toFixed(2));
+        const bPrice = b.price === null ? Infinity : Number(b.price.toFixed(2));
         return aPrice === bPrice ? 0 : aPrice - bPrice;
       }
       return b.eventDate.localeCompare(a.eventDate);
     };
-    return [...rows].sort((a, b) => {
-      const primary = compare(sortMode, a, b);
-      if (primary !== 0) return primary;
-      if (secondarySortMode) {
-        const secondary = compare(secondarySortMode, a, b);
-        if (secondary !== 0) return secondary;
-      }
-      return b.eventDate.localeCompare(a.eventDate);
-    });
+    const primary = (a: (typeof rows)[number], b: (typeof rows)[number]) => compare(sortMode, a, b);
+    const fallback = (a: Parameters<typeof primary>[0], b: Parameters<typeof primary>[0]) => b.eventDate.localeCompare(a.eventDate);
+    return secondarySortMode
+      ? balancedSort(rows, primary, (a, b) => compare(secondarySortMode, a, b), fallback)
+      : [...rows].sort((a, b) => primary(a, b) || fallback(a, b));
   }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, secondarySortMode, query, playerName]);
 
   useEffect(() => {
@@ -224,7 +222,7 @@ export default function DeckSightingsView({
         <select
           value={sortMode}
           aria-label="Sort tournament results"
-          onChange={(e) => setSortMode(e.target.value as SightingSortMode)}
+          onChange={(e) => { const value = e.target.value as SightingSortMode; startTransition(() => setSortMode(value)); }}
           className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="date">Newest</option>
@@ -237,10 +235,10 @@ export default function DeckSightingsView({
       </div>
 
       <details className="group mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
-        <label className="mt-2 flex items-center gap-2">
-          <span>Then sort by</span>
-          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />Balance two priorities</summary>
+        <label className="mt-2 flex flex-wrap items-center gap-2">
+          <span>Balance with</span>
+          <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as SightingSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
             <option value="">None</option>
             {sortMode !== "date" && <option value="date">Newest</option>}
             {sortMode !== "best" && <option value="best">Best results</option>}
@@ -302,7 +300,7 @@ export default function DeckSightingsView({
       {sightingsData && !contentFiltersLoading && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
       {sightingsData && !contentFiltersLoading && filtered.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
-          Showing {visible.length.toLocaleString()} of {filtered.length.toLocaleString()} result{filtered.length === 1 ? "" : "s"}
+          Showing {visible.length.toLocaleString()} of {filtered.length.toLocaleString()} result{filtered.length === 1 ? "" : "s"}{isPending && " · Recalculating…"}
         </p>
       )}
 

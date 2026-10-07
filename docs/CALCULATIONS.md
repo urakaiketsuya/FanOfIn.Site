@@ -4791,3 +4791,17 @@ The four previously protected packages keep their identifiers, ordering, and beh
 Validation: targeted tests cover published membership, section failures, and absence
 from Builder's registry/active protections. The broader evidence refresh and full-site
 release remain separate work; this review does not make a performance claim.
+
+### Balanced deck browsing priorities
+
+Tournament results and tournament builds retain strict ordering when one sort is selected.
+Selecting “Balance with” gives both choices equal weight within the currently filtered pool.
+For each choice, sort preferred values first and assign zero-based midranks (a tied group
+occupying positions i through j receives (i+j)/2). Order by the sum of the two ranks,
+ascending. This is equivalent to averaging percentile ranks for the same pool, without
+mixing currency, placement, dates, or performance-score units. Equal sums use the first
+choice, then the second, then newest date and stable input order. Results can change when
+filters change the comparison pool. Unknown price/placement ranks last for that criterion;
+prices compare at the same two-decimal precision shown in the interface. Relevance retains
+its existing five-percentage-point bands. This is a browsing preference, not an estimate
+of win probability or a change to underlying deck statistics.
