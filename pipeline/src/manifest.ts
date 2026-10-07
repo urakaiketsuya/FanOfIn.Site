@@ -66,16 +66,23 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
 
 /**
  * Reads just the first ~200 bytes of a published dataset to pull out its `generatedAt` value,
- * rather than JSON.parse-ing the whole file — some of these are 90MB+, and every dataset writer
- * always emits `generatedAt` as the first key, so a small prefix read is enough.
+ * avoiding a full parse for large datasets that put the timestamp first. Older or
+ * differently ordered artifacts fall back to reading the top-level JSON property.
  */
-async function readGeneratedAt(filePath: string): Promise<string | null> {
+export async function readGeneratedAt(filePath: string): Promise<string | null> {
   try {
     const handle = await open(filePath, "r");
-    const buf = Buffer.alloc(200);
-    const { bytesRead } = await handle.read(buf, 0, 200, 0);
-    await handle.close();
-    return buf.subarray(0, bytesRead).toString("utf-8").match(/"generatedAt"\s*:\s*"([^"]+)"/)?.[1] ?? null;
+    try {
+      const buf = Buffer.alloc(200);
+      const { bytesRead } = await handle.read(buf, 0, 200, 0);
+      const prefix = buf.subarray(0, bytesRead).toString("utf-8");
+      const firstProperty = prefix.match(/^\s*\{\s*"generatedAt"\s*:\s*"([^"]+)"/);
+      if (firstProperty) return firstProperty[1];
+    } finally {
+      await handle.close();
+    }
+    const data = JSON.parse(await readFile(filePath, "utf8"));
+    return typeof data.generatedAt === "string" ? data.generatedAt : null;
   } catch {
     return null;
   }
