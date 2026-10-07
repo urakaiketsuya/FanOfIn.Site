@@ -1,4 +1,6 @@
-import { balancedSort } from "@gatcg/shared";
+import DeckDateRangeFilter from "./DeckDateRangeFilter";
+import { deckDateInRange } from "./deckDateRange";
+import { balancedSort, type SortPriority } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
@@ -76,6 +78,9 @@ export default function DeckSightingsView({
   const [isPending, startTransition] = useTransition();
   const [sortMode, setSortMode] = useState<SightingSortMode>("date");
   const [secondarySortMode, setSecondarySortMode] = useState<SightingSortMode | null>(null);
+  const [sortPriority, setSortPriority] = useState<SortPriority>("equal");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(SIGHTINGS_PAGE_SIZE);
 
@@ -137,6 +142,7 @@ export default function DeckSightingsView({
     if (!sightingsData) return [];
     const rows = sightingsData.sightings.filter(
       (s) =>
+        deckDateInRange(s.eventDate, dateFrom, dateTo) &&
         (!category || s.eventCategory === category) &&
         (seasonId === null || s.seasonId === seasonId) &&
         (!championName || s.championName === championName) &&
@@ -171,9 +177,9 @@ export default function DeckSightingsView({
     const primary = (a: (typeof rows)[number], b: (typeof rows)[number]) => compare(sortMode, a, b);
     const fallback = (a: Parameters<typeof primary>[0], b: Parameters<typeof primary>[0]) => b.eventDate.localeCompare(a.eventDate);
     return secondarySortMode
-      ? balancedSort(rows, primary, (a, b) => compare(secondarySortMode, a, b), fallback)
+      ? balancedSort(rows, primary, (a, b) => compare(secondarySortMode, a, b), fallback, sortPriority)
       : [...rows].sort((a, b) => primary(a, b) || fallback(a, b));
-  }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, secondarySortMode, query, playerName]);
+  }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, secondarySortMode, sortPriority, dateFrom, dateTo, query, playerName]);
 
   useEffect(() => {
     if (secondarySortMode === sortMode) setSecondarySortMode(null);
@@ -184,11 +190,12 @@ export default function DeckSightingsView({
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
-  }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, secondarySortMode, query]);
+  }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, secondarySortMode, sortPriority, dateFrom, dateTo, query]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
+  const activeFilterCount = (dateFrom || dateTo ? 1 : 0) + (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
   const activeFilterLabels = [
+    ...(dateFrom || dateTo ? [`Event dates: ${dateFrom || "Any start"} – ${dateTo || "Any end"}`] : []),
     ...(championName ? [`Champion: ${championName}`] : []),
     ...(category ? [EVENT_CATEGORY_LABELS[category] ?? category] : []),
     ...(seasonId !== null ? [seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? `Season ${seasonId}`] : []),
@@ -235,9 +242,9 @@ export default function DeckSightingsView({
       </div>
 
       <details className="group mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />Balance two priorities</summary>
+        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
         <label className="mt-2 flex flex-wrap items-center gap-2">
-          <span>Balance with</span>
+          <span>Second choice</span>
           <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as SightingSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
             <option value="">None</option>
             {sortMode !== "date" && <option value="date">Newest</option>}
@@ -248,9 +255,17 @@ export default function DeckSightingsView({
             {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
           </select>
         </label>
+        {secondarySortMode && <label className="mt-2 flex flex-wrap items-center gap-2">
+          <span>Priority</span>
+          <select value={sortPriority} onChange={(e) => { const value = e.target.value as SortPriority; startTransition(() => setSortPriority(value)); }} className="min-h-control min-w-0 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+            <option value="equal">Equal balance</option>
+            <option value="favor-first">Favor first (2× weight)</option>
+            <option value="tie-break">First choice; second breaks ties</option>
+          </select>
+        </label>}
       </details>
 
-      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
+      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setDateFrom(""); setDateTo(""); setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
         <FilterGroup label="Season">
           <select
@@ -291,6 +306,7 @@ export default function DeckSightingsView({
       )}
         <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...MAX_PRICE_OPTIONS.map((value) => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={(value) => setMaxPrice(value || null)} />
         <SegmentedFilter label="Outcome" options={(Object.keys(OUTCOME_LABELS) as Outcome[]).map((value) => ({ value, label: OUTCOME_LABELS[value] }))} value={outcome} onChange={setOutcome} />
+        <DeckDateRangeFilter label="Event dates" from={dateFrom} to={dateTo} onFrom={value => startTransition(() => setDateFrom(value))} onTo={value => startTransition(() => setDateTo(value))} />
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 

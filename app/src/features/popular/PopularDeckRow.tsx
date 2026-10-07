@@ -1,3 +1,4 @@
+import { formatUsd } from "../../lib/format";
 import { useDeckArchetypeLabel } from "../decks/useDeckArchetypeLabel";
 import { useMemo } from "react";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
@@ -9,9 +10,11 @@ import DeckPreviewCard from "../../components/DeckPreviewCard";
 export default function PopularDeckRow({
   deck,
   championCard,
+  price,
 }: {
   deck: PopularDeck;
   championCard: Card | undefined;
+  price?: number | null;
 }) {
 
   const archetypeLabel = useDeckArchetypeLabel(deck.deckIds);
@@ -32,6 +35,7 @@ export default function PopularDeckRow({
     championName: deck.championName, sideboardCount: null,
     source: { kind: "event", label: "Tournament build" },
     metadata: <>
+      {price !== undefined && <p>{price === null ? "Price unavailable" : `Estimated price ${formatUsd(price)}`}</p>}
       <p>{deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}{deck.bestPlacement !== null && ` · Best #${deck.bestPlacement}`}</p>
     </>,
   }} view={{ to: `/decks/${shortHash(deck.signature)}` }} />;

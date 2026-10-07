@@ -4795,13 +4795,27 @@ release remain separate work; this review does not make a performance claim.
 ### Balanced deck browsing priorities
 
 Tournament results and tournament builds retain strict ordering when one sort is selected.
-Selecting “Balance with” gives both choices equal weight within the currently filtered pool.
-For each choice, sort preferred values first and assign zero-based midranks (a tied group
-occupying positions i through j receives (i+j)/2). Order by the sum of the two ranks,
-ascending. This is equivalent to averaging percentile ranks for the same pool, without
+Selecting a second choice enables three priority modes within the currently filtered pool.
+“Equal balance” gives both choices equal weight. “Favor first” uses twice the first
+choice’s rank plus the second choice’s rank (2:1). “First choice; second breaks ties”
+uses strict lexicographic ordering: the second criterion only orders ties in the first.
+For either rank-based mode, sort preferred values first and assign zero-based midranks (a tied group
+occupying positions i through j receives (i+j)/2). Order by the weighted sum of the two ranks,
+ascending. Equal balance is equivalent to averaging percentile ranks for the same pool, without
 mixing currency, placement, dates, or performance-score units. Equal sums use the first
 choice, then the second, then newest date and stable input order. Results can change when
 filters change the comparison pool. Unknown price/placement ranks last for that criterion;
 prices compare at the same two-decimal precision shown in the interface. Relevance retains
 its existing five-percentage-point bands. This is a browsing preference, not an estimate
 of win probability or a change to underlying deck statistics.
+
+Deck browse date ranges include both boundary calendar dates. Tournament Results filters
+each sighting’s event date; Unique Builds filters the build’s last-played date. Either
+bound can be omitted. An inverted range shows validation and no results. Filtering does
+not recompute a build’s lifetime player counts or performance statistics.
+
+Unique Builds supports minimum distinct-player counts of 1, 2, 5, 10, or 25 and
+maximum-price filters. Estimated prices reuse a known published tournament sighting
+for the same exact main+material build; sideboards remain excluded. Unknown prices
+sort last for price and do not qualify for a budget cap. Best placement uses the
+build's best known finish; Best results uses its mean weighted performance score.
