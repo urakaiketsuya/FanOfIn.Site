@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-10-05T13:39:18.673Z",
+  "generatedAt": "2026-10-07T12:40:55.929Z",
   "games": 19,
   "firstPlayer": {
     "games": 19,
@@ -20,7 +20,7 @@
     },
     {
       "championId": "j6dkdoxyqt",
-      "championName": null,
+      "championName": "Guo Jia, Chosen Disciple",
       "element": "NORM",
       "games": 4,
       "wins": 2,
@@ -44,7 +44,7 @@
     },
     {
       "championId": "2TCyILvBYa",
-      "championName": null,
+      "championName": "Merlin, Brilliant Vestige",
       "element": "CRUX",
       "games": 2,
       "wins": 0,
@@ -52,7 +52,7 @@
     },
     {
       "championId": "6R8XmWoKLn",
-      "championName": null,
+      "championName": "Merlin, Memorite Vassal",
       "element": "NORM",
       "games": 2,
       "wins": 1,
@@ -108,7 +108,7 @@
     },
     {
       "championId": "GiQxfpKTUC",
-      "championName": null,
+      "championName": "Alice, Distorted Queen",
       "element": "NORM",
       "games": 1,
       "wins": 0,
@@ -116,7 +116,7 @@
     },
     {
       "championId": "LMyKyVC2O9",
-      "championName": null,
+      "championName": "Spirit of Fire",
       "element": "FIRE",
       "games": 1,
       "wins": 0,
@@ -124,7 +124,7 @@
     },
     {
       "championId": "RfPP8h16Wv",
-      "championName": null,
+      "championName": "Silvie, Wilds Whisperer",
       "element": "NORM",
       "games": 1,
       "wins": 1,
@@ -172,7 +172,7 @@
     },
     {
       "championId": "v3vfjtwm7g",
-      "championName": null,
+      "championName": "Diana, Moonpiercer",
       "element": "ASTRA",
       "games": 1,
       "wins": 1,
@@ -180,7 +180,7 @@
     },
     {
       "championId": "yvn1uoy5tt",
-      "championName": null,
+      "championName": "Fragmented Spirit of Fire",
       "element": "FIRE",
       "games": 1,
       "wins": 1,
@@ -208,18 +208,18 @@
     },
     {
       "champion1": "2TCyILvBYa",
-      "champion1Name": null,
+      "champion1Name": "Merlin, Brilliant Vestige",
       "champion2": "00xbh8oc00",
-      "champion2Name": null,
+      "champion2Name": "Diao Chan, Enchantress",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     },
     {
       "champion1": "2TCyILvBYa",
-      "champion1Name": null,
+      "champion1Name": "Merlin, Brilliant Vestige",
       "champion2": "j6dkdoxyqt",
-      "champion2Name": null,
+      "champion2Name": "Guo Jia, Chosen Disciple",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
@@ -235,36 +235,36 @@
     },
     {
       "champion1": "4FtNBFaOJp",
-      "champion1Name": null,
+      "champion1Name": "Dante, Hemomancer",
       "champion2": "DpHDGaX2Pn",
-      "champion2Name": null,
+      "champion2Name": "Lorraine, Wandering Warrior",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     },
     {
       "champion1": "6R8XmWoKLn",
-      "champion1Name": null,
+      "champion1Name": "Merlin, Memorite Vassal",
       "champion2": "j6dkdoxyqt",
-      "champion2Name": null,
+      "champion2Name": "Guo Jia, Chosen Disciple",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     },
     {
       "champion1": "GiQxfpKTUC",
-      "champion1Name": null,
+      "champion1Name": "Alice, Distorted Queen",
       "champion2": "RfPP8h16Wv",
-      "champion2Name": null,
+      "champion2Name": "Silvie, Wilds Whisperer",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     },
     {
       "champion1": "LMyKyVC2O9",
-      "champion1Name": null,
+      "champion1Name": "Spirit of Fire",
       "champion2": "yvn1uoy5tt",
-      "champion2Name": null,
+      "champion2Name": "Fragmented Spirit of Fire",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
@@ -280,9 +280,9 @@
     },
     {
       "champion1": "dPP9I4nVn0",
-      "champion1Name": null,
+      "champion1Name": "Merlin, Amethyst's Glow",
       "champion2": "j6dkdoxyqt",
-      "champion2Name": null,
+      "champion2Name": "Guo Jia, Chosen Disciple",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
@@ -316,27 +316,27 @@
     },
     {
       "champion1": "tafqldAGRF",
-      "champion1Name": null,
+      "champion1Name": "Spirit of Water",
       "champion2": "6R8XmWoKLn",
-      "champion2Name": null,
+      "champion2Name": "Merlin, Memorite Vassal",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     },
     {
       "champion1": "tafqldAGRF",
-      "champion1Name": null,
+      "champion1Name": "Spirit of Water",
       "champion2": "apVtyt48u3",
-      "champion2Name": null,
+      "champion2Name": "Dante, Prodigal Swain",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
     },
     {
       "champion1": "tafqldAGRF",
-      "champion1Name": null,
+      "champion1Name": "Spirit of Water",
       "champion2": "tafqldAGRF",
-      "champion2Name": null,
+      "champion2Name": "Spirit of Water",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
@@ -352,9 +352,9 @@
     },
     {
       "champion1": "v3vfjtwm7g",
-      "champion1Name": null,
+      "champion1Name": "Diana, Moonpiercer",
       "champion2": "j6dkdoxyqt",
-      "champion2Name": null,
+      "champion2Name": "Guo Jia, Chosen Disciple",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
