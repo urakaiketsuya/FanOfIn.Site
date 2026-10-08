@@ -1,19 +1,18 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { ArchetypeSummary, Card } from "@gatcg/shared";
-import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
+import { useArchetypeData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { championNameToSlug } from "../../lib/championSlug";
-import ChampionMetaMap from "./ChampionMetaMap";
+import { useOmnidexIndex, useOmnidexIndexStatus } from "../tournaments/data";
 import PageHeader from "../../components/ui/PageHeader";
 import ElementIcon from "../../components/ElementIcon";
 import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Section from "../../components/ui/Section";
 
@@ -49,11 +48,11 @@ function ChampionDirectoryCard({ summary, card, classes }: {
 }
 
 export default function ChampionsIndex() {
-  useDocumentTitle("Champions", "Grand Archive TCG Champion performance stats and season trends.");
+  useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
   const data = useArchetypeData();
-  const trendsData = useChampionTrendsData();
+  const seasonIndex = useOmnidexIndex();
+  const seasonStatus = useOmnidexIndexStatus();
   const dataStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
-  const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
   // Several distinct draft-only identities all share the literal signature "Nameless Champion"
   // (different classes/elements), so dedupe by signature or React sees duplicate keys.
   const archetypes = useMemo(() => {
@@ -66,28 +65,25 @@ export default function ChampionsIndex() {
   }, [data]);
   const championImages = useChampionCardImages(archetypes?.map((c) => c.signature) ?? []);
   const namedSpiritImages = useCardsByNames(data?.namedSpirits?.map((s) => s.signature) ?? []);
-  const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
+  const now = Date.now();
+  const currentSeason = seasonIndex?.seasons.filter(season => Date.parse(season.dateStart) <= now && Date.parse(season.dateEnd) >= now)
+    .sort((a, b) => b.dateStart.localeCompare(a.dateStart))[0];
 
   return (
     <PageLayout width="wide" data-component="ChampionsIndex">
       <PageHeader title="Find your champion" eyebrow="Champions" description="Explore a champion’s cards, decks and tournament results. Statistics summarize recorded decks; they are not predictions for your next match." />
 
       <PublishedSourceStatus label="Champion statistics" status={dataStatus} hasData={!!data} />
-      <PublishedSourceStatus label="Season trends" status={trendStatus} hasData={!!trendsData} />
+      <PublishedSourceStatus label="Seasons" status={seasonStatus} hasData={!!seasonIndex} />
 
-      {archetypes && trendsData && <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
-          Explore the season metagame
-          <DisclosureChevron className="group-open:rotate-180" />
-        </summary>
-        <div className="px-3 pb-3">
-          {latestSeasonName && <p className="text-sm text-ctp-subtext1">Season: {latestSeasonName}</p>}
-          <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />
-        </div>
-      </details>}
+      <Link to={currentSeason ? `/seasons/${currentSeason.slug}` : "/seasons"}
+        className="inline-flex min-h-control items-center gap-2 rounded-lg px-3 text-sm font-medium text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+        {currentSeason ? `Current season: ${currentSeason.name}` : "Browse seasons"}
+        <span aria-hidden="true">→</span>
+      </Link>
 
       {archetypes?.length === 0 && <p className="mt-6 rounded-xl border border-ctp-surface1 p-4 text-ctp-subtext1">No champion statistics have been published yet. Champions will appear when tournament decks are available.</p>}
-      {archetypes && archetypes.length > 0 && <p className="mt-6 text-sm text-ctp-subtext1">{archetypes.length} champions · Deck and event counts cover the published tournament sample. Trends compare {latestSeasonName ?? "the latest season"} with the prior season.</p>}
+      {archetypes && archetypes.length > 0 && <p className="mt-6 text-sm text-ctp-subtext1">{archetypes.length} champions · Deck and event counts cover the published tournament sample.</p>}
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {archetypes?.map((champion) => (
