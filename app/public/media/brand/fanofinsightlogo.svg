@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="224px" height="149px" viewBox="0 0 224 149" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Frame</title>
+    <g id="Frame" stroke="none" fill="none" fill-rule="evenodd" stroke-width="3">
+        <rect id="Rectangle" stroke="#A4C8E1" fill="#FFFFFF" transform="translate(60.7618, 87.2816) rotate(-48) translate(-60.7618, -87.2816)" x="29.761848" y="36.2815637" width="62" height="102" rx="7"></rect>
+        <rect id="Rectangle" stroke="#A4C8E1" fill="#FFFFFF" transform="translate(162.9469, 89.0965) rotate(48) translate(-162.9469, -89.0965)" x="134.446884" y="35.5965281" width="57" height="107" rx="7"></rect>
+        <rect id="Rectangle" stroke="#A4C8E1" fill="#FFFFFF" transform="translate(140.5136, 75.0235) rotate(28) translate(-140.5136, -75.0235)" x="104.513564" y="16.023513" width="72" height="118" rx="7"></rect>
+        <rect id="Rectangle" stroke="#A4C8E1" fill="#FFFFFF" transform="translate(80.5136, 75.0235) rotate(-28) translate(-80.5136, -75.0235)" x="44.5135643" y="16.023513" width="72" height="118" rx="7"></rect>
+        <rect id="Rectangle" stroke="#A4C8E1" fill="#FFFFFF" x="72.5" y="1.5" width="78" height="128" rx="7"></rect>
+    </g>
+</svg>

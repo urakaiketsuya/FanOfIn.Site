@@ -6,8 +6,9 @@ import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const root = new URL('../', import.meta.url);
-const embed = async (path) => `data:image/jpeg;base64,${(await readFile(new URL(path, root))).toString('base64')}`;
+const embed = async (path, mime = 'image/jpeg') => `data:${mime};base64,${(await readFile(new URL(path, root))).toString('base64')}`;
 const background = await embed('app/public/media/products/PRD/banner.jpg');
+const logo = await embed('app/public/media/brand/fanofinsightlogo.svg', 'image/svg+xml');
 const card = async (file, x, y, angle) => `<image href="${await embed(`scripts/assets/social/${file}.jpg`)}" x="${x}" y="${y}" width="230" height="322" transform="rotate(${angle} ${x + 115} ${y + 161})"/>`;
 const points = [[7, 5.2], [10, 9.9], [15, 20.5], [20, 34.1]];
 const px = (seen) => 792 + (seen - 7) / 13 * 332;
@@ -17,11 +18,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 <defs><linearGradient id="shade"><stop stop-color="#101214" stop-opacity=".92"/><stop offset=".54" stop-color="#101214" stop-opacity=".5"/><stop offset="1" stop-color="#101214" stop-opacity=".12"/></linearGradient></defs>
 <image href="${background}" width="1200" height="630" preserveAspectRatio="xMidYMid slice"/>
 <path fill="url(#shade)" d="M0 0h1200v630H0z"/>
-<g fill="#17191b" stroke="#a4c8e1" stroke-width="2.8">
-<rect x="48" y="88" width="28" height="42" rx="3" transform="rotate(-24 62 109)"/>
-<rect x="78" y="88" width="28" height="42" rx="3" transform="rotate(24 92 109)"/>
-<rect x="63" y="80" width="28" height="45" rx="3"/>
-</g>
+<image href="${logo}" x="42" y="80" width="72" height="48"/>
 <g font-family="Arial, sans-serif" fill="#f0f0f0">
 <text x="128" y="120" font-size="42" font-weight="700">Fan of Insight</text>
 <text x="46" y="248" font-size="55" font-weight="700">Your next deck</text>
