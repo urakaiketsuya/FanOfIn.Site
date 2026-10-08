@@ -1,3 +1,4 @@
+import { loadCommunityStaples } from "../analysis/loadCommunityStaples.js";
 import { computeCommunityCardStaples } from "../analysis/communityCardStaples.js";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -150,11 +151,7 @@ export async function runCommunityBlend(): Promise<void> {
   const catalog = await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);
   await mkdir(path.join(DATA_DIR, "../analysis"), { recursive: true });
-  await writeJsonAtomic(path.join(DATA_DIR, "../analysis/community-card-staples.json"), computeCommunityCardStaples([
-    ...saydDecks.map(deck => ({ source: "shoutatyourdecks" as const, deck })),
-    ...sleevedDecks.map(deck => ({ source: "sleeved" as const, deck })),
-    ...tcgaDecks.map(deck => ({ source: "tcgarchitect" as const, deck })),
-  ], cardIndex), 0);
+  await writeJsonAtomic(path.join(DATA_DIR, "../analysis/community-card-staples.json"), computeCommunityCardStaples(await loadCommunityStaples(), cardIndex), 0);
 
 
   await mkdir(DATA_DIR, { recursive: true });

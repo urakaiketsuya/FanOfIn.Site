@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { selectStapleRows, type StapleFilters } from "@gatcg/shared";
+import { staplePopulation, selectStapleRows, type StapleFilters } from "@gatcg/shared";
 import { computeCardStaples } from "./cardStaples.js";
 import { buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
@@ -69,5 +69,45 @@ test("quantity mode ties choose the lower quantity and ordering is deterministic
   const two = deck(2); two.decklist.main = [{ card: "Shared", quantity: 4 }];
   const data = computeCardStaples([bundle(1, "2026-10-01", [one, two])], catalog);
   assert.equal(data.cohorts[0].sections.main.rows[0][3], 1);
-  assert.deepEqual(computeCardStaples([], catalog, "fixed"), { generatedAt: "fixed", throughDate: null, cards: [], cohorts: [] });
+  assert.deepEqual(computeCardStaples([], catalog, "fixed"), { generatedAt: "fixed", throughDate: null, cards: [], cohorts: [], sectionPatterns: [] });
+});
+
+test("filtered populations count overlapping matching decks once and ignore ranking thresholds", () => {
+  const index = buildCardIndex([
+    card("Arcane A", { elements: ["ARCANE"], effect: "**Vigor**", cost_reserve: 1 }),
+    card("Arcane B", { elements: ["ARCANE", "WATER"], effect: "**Stealth**", cost_reserve: 3 }),
+    card("Fire", { elements: ["FIRE"], effect: "**Vigor**" }),
+    card("Alice, Champion", { types: ["CHAMPION"], level: 2 }),
+  ]);
+  const entry = (player: number, names: string[], sideboard?: string[]) => ({ player, decklist: {
+    main: names.map(card => ({ card, quantity: 4 })),
+    material: [{ card: "Alice, Champion", quantity: 1 }],
+    ...(sideboard === undefined ? {} : { sideboard: sideboard.map(card => ({ card, quantity: 1 })) }),
+  } });
+  const data = computeCardStaples([bundle(1, "2026-10-01", [
+    entry(1, ["Arcane A", "Arcane B"], ["Arcane B"]),
+    entry(2, ["Arcane A"], []), entry(3, ["Fire"]),
+  ])], index);
+  const stats = data.cohorts[0].sections.main;
+  const arcane = { ...filters, elements: ["ARCANE"] };
+  assert.equal(staplePopulation(data, stats, filters), 3);
+  assert.equal(staplePopulation(data, stats, arcane), 2);
+  const selected = selectStapleRows(data.cards, stats.rows, arcane);
+  assert.deepEqual(selected.map(row => row[1] / staplePopulation(data, stats, arcane)!), [1, 0.5]);
+  assert.equal(staplePopulation(data, stats, { ...arcane, elements: ["ARCANE", "WATER"] }), 2);
+  assert.equal(staplePopulation(data, stats, { ...arcane, keywords: ["Stealth"] }), 1);
+  assert.equal(staplePopulation(data, stats, { ...arcane, keywords: ["Stealth", "Vigor"], keywordMode: "all" }), 0);
+  assert.equal(staplePopulation(data, stats, { ...arcane, minDecks: 50, sort: "winning" }), 2);
+  assert.equal(staplePopulation(data, stats, { ...arcane, maxCost: "1" }), 2);
+  assert.equal(staplePopulation(data, stats, { ...filters, search: "Arcane B" }), 1);
+  assert.equal(staplePopulation(data, stats, { ...arcane, cardClass: "WARRIOR" }), 0);
+  assert.equal(staplePopulation(data, stats, { ...arcane, type: "ALLY" }), 0);
+  assert.equal(staplePopulation(data, data.cohorts[0].sections.material, { ...filters, level: "2" }), 3);
+  assert.equal(staplePopulation(data, data.cohorts[0].sections.sideboard, filters), 2);
+  assert.equal(staplePopulation(data, data.cohorts[0].sections.sideboard, arcane), 1);
+  assert.equal(staplePopulation({ ...data, sectionPatterns: undefined }, stats, arcane), null);
+  assert.equal(staplePopulation({ ...data, sectionPatterns: undefined }, stats, filters), 3);
+  for (const cohort of data.cohorts) for (const section of Object.values(cohort.sections)) {
+    assert.equal(section.populations!.reduce((n, [, count]) => n + count, 0), section.decks);
+  }
 });

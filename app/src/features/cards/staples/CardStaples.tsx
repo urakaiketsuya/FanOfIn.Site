@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
+import { staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
 import CardArtTile from "../../../components/CardArtTile";
 import PublishedSourceStatus from "../../../components/PublishedSourceStatus";
 import PageLayout from "../../../components/layout/PageLayout";
@@ -52,6 +52,7 @@ export default function CardStaples() {
   const cohort = data?.cohorts.find(c => c.period === period && c.format === (format || null) && c.champion === (champion || null));
   const stats = cohort?.sections[section];
   const rows = useMemo(() => selectStapleRows(data?.cards ?? [], stats?.rows ?? [], filters), [data, stats, filters]);
+  const population = useMemo(() => data && stats ? staplePopulation(data, stats, filters) : null, [data, stats, filters]);
   const count = pagination.key === key ? pagination.count : PAGE_SIZE;
   const visible = rows.slice(0, count);
   const art = useCardsByNames(visible.map(row => data!.cards[row[0]].name));
@@ -101,7 +102,7 @@ export default function CardStaples() {
     <PublishedSourceStatus label={community ? "Community staples" : "Card staples"} status={status} hasData={!!data} />
     <TabPanel baseId="staples" tab={section} active={section} className="mt-5 focus-visible:outline-2 focus-visible:outline-ctp-blue">
       <div aria-live="polite" className="mb-4 text-sm text-ctp-subtext1">
-        {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${(stats?.decks ?? 0).toLocaleString()} reported ${section} sections${champion ? ` · ${champion}` : ""}` : ""}
+        {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${champion}` : ""}` : ""}
         {data && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
         {data && community && <span className="mt-1 block text-xs text-ctp-subtext0">ShoutAtYourDecks · Sleeved · TcgArchitect{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} lists report a sideboard` : ""}</span>}
         {data?.throughDate && <span className="mt-1 block text-xs text-ctp-subtext0">Results through {data.throughDate}{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} decks report a sideboard` : ""}</span>}
@@ -114,8 +115,8 @@ export default function CardStaples() {
           return <article key={card.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3" aria-label={card.name}>
             {card.slug ? <Link to={`/cards/${card.slug}`} className="flex gap-3 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{identity}</Link> : <div className="flex gap-3">{identity}</div>}
             {card.keywords.length > 0 && <p className="mt-3 break-words text-xs text-ctp-subtext1">{card.keywords.join(" · ")}</p>}
-            <div className="mt-3 flex items-baseline justify-between gap-2"><strong className="text-xl text-ctp-blue">{percent(row[1] / (stats?.decks || 1))}</strong><span className="text-xs text-ctp-subtext1">{row[1].toLocaleString()} {community ? "unique lists" : "decks"}</span></div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(row[1] / (stats?.decks || 1)) }} /></div>
+            <div className="mt-3 flex items-baseline justify-between gap-2"><strong className="text-xl text-ctp-blue">{population === null ? "—" : percent(population ? row[1] / population : 0)}</strong><span className="text-xs text-ctp-subtext1">{row[1].toLocaleString()} {community ? "unique lists" : "decks"}</span></div>
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(population ? row[1] / population : 0) }} /></div>
             <p className="mt-2 text-xs text-ctp-subtext1">Usually {row[3]} {row[3] === 1 ? "copy" : "copies"} · {(row[2] / row[1]).toFixed(1)} average</p>
             {!community && <p className="mt-1 text-xs text-ctp-subtext0">{row[5] === null ? "No recorded match results" : `${percent(row[5])} adjusted deck win rate · ${row[4].toLocaleString()} decks`}</p>}
           </article>;

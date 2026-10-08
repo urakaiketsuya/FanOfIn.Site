@@ -16,7 +16,11 @@ export interface StapleCard {
 }
 /** Dictionary indexes keep the published projection small. Rates are fractions, not percents. */
 export type StapleRow = [card: number, decks: number, copies: number, typicalCopies: number, resultDecks: number, adjustedWinRate: number | null];
-export interface StapleSectionStats { decks: number; rows: StapleRow[] }
+export interface StapleSectionStats {
+  decks: number; rows: StapleRow[];
+  /** Counts of reported sections by card-presence pattern (quantities do not matter). */
+  populations?: [pattern: number, decks: number][];
+}
 export interface StapleCohort {
   period: StaplePeriod;
   /** null denotes the aggregate, never a missing format/champion label. */
@@ -30,6 +34,8 @@ export interface CardStaplesData {
   throughDate: string | null;
   cards: StapleCard[];
   cohorts: StapleCohort[];
+  /** Shared dictionary of distinct card-index sets across sections and cohorts. */
+  sectionPatterns?: number[][];
 }
 export interface StapleFilters {
   search: string;
@@ -44,20 +50,35 @@ export interface StapleFilters {
   minDecks: number;
   sort: "usage" | "winning" | "quantity";
 }
+/** Card predicates shared by visible rows and their filtered deck denominator. */
+export function matchesStapleCard(card: StapleCard, filters: StapleFilters): boolean {
+  if (!card.name.toLowerCase().includes(filters.search.trim().toLowerCase())) return false;
+  if (filters.elements.length && !filters.elements.some(element => card.elements.includes(element))) return false;
+  if (filters.keywords.length && !(filters.keywordMode === "all"
+    ? filters.keywords.every(keyword => card.keywords.includes(keyword))
+    : filters.keywords.some(keyword => card.keywords.includes(keyword)))) return false;
+  if (filters.type && !card.types.includes(filters.type)) return false;
+  if (filters.cardClass && !card.classes.includes(filters.cardClass)) return false;
+  if (filters.level && card.championLevel !== Number(filters.level)) return false;
+  const cost = filters.costKind === "memory" ? card.memoryCost : card.reserveCost;
+  return filters.maxCost === "" || (cost !== null && cost <= Number(filters.maxCost));
+}
+
+/** Union of decks with a matching card in this section, never a sum of card counts.
+ * Ranking, pagination and minimum sample size do not change the population.
+ * Old cached projections cannot supply a filtered denominator: report unavailable.
+ */
+export function staplePopulation(data: CardStaplesData, stats: StapleSectionStats, filters: StapleFilters): number | null {
+  if (!filters.search.trim() && !filters.elements.length && !filters.keywords.length && !filters.type && !filters.cardClass && !filters.level && filters.maxCost === "") return stats.decks;
+  if (!data.sectionPatterns || !stats.populations) return null;
+  const matching = new Set(data.cards.flatMap((card, index) => matchesStapleCard(card, filters) ? [index] : []));
+  return stats.populations.reduce((total, [pattern, decks]) => total + (data.sectionPatterns![pattern].some(card => matching.has(card)) ? decks : 0), 0);
+}
+
 export function selectStapleRows(cards: StapleCard[], rows: StapleRow[], filters: StapleFilters): StapleRow[] {
-  const search = filters.search.trim().toLowerCase();
   return rows.filter(row => {
     const card = cards[row[0]];
-    if (!card || row[1] < filters.minDecks || !card.name.toLowerCase().includes(search)) return false;
-    if (filters.elements.length && !filters.elements.some(element => card.elements.includes(element))) return false;
-    if (filters.keywords.length && !(filters.keywordMode === "all"
-      ? filters.keywords.every(keyword => card.keywords.includes(keyword))
-      : filters.keywords.some(keyword => card.keywords.includes(keyword)))) return false;
-    if (filters.type && !card.types.includes(filters.type)) return false;
-    if (filters.cardClass && !card.classes.includes(filters.cardClass)) return false;
-    if (filters.level && card.championLevel !== Number(filters.level)) return false;
-    const cost = filters.costKind === "memory" ? card.memoryCost : card.reserveCost;
-    if (filters.maxCost !== "" && (cost === null || cost > Number(filters.maxCost))) return false;
+    if (!card || row[1] < filters.minDecks || !matchesStapleCard(card, filters)) return false;
     // An absent result isn't a 50% performance observation.
     return filters.sort !== "winning" || (row[5] !== null && row[4] >= Math.max(5, filters.minDecks));
   }).sort((a, b) => {

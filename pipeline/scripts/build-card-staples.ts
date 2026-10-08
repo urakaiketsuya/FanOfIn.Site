@@ -7,7 +7,7 @@ import type { OmnidexEventBundle } from "../src/omnidex/cache.js";
 import { computeCardStaples } from "../src/analysis/cardStaples.js";
 import { writeJsonAtomic } from "../src/lib/atomicWrite.js";
 const root = new URL("../../", import.meta.url);
-const catalog = JSON.parse(await readFile(new URL("pipeline/.cache/cards.json", root), "utf8")) as { cards: CardSignature[] };
+const catalog = JSON.parse(await readFile(new URL("data/card-catalog.json", root), "utf8")) as { cards: CardSignature[] };
 const directory = new URL("data/omnidex/events/", root);
 const bundles: OmnidexEventBundle[] = [];
 for (const file of (await readdir(directory)).filter(file => file.endsWith(".json")).sort()) bundles.push(JSON.parse(await readFile(new URL(file, directory), "utf8")));

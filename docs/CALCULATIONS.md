@@ -4833,3 +4833,37 @@ maximum-price filters. Estimated prices reuse a known published tournament sight
 for the same exact main+material build; sideboards remain excluded. Unknown prices
 sort last for price and do not qualify for a budget cap. Best placement uses the
 build's best known finish; Best results uses its mean weighted performance score.
+
+## Filter-relative Card Staples usage
+
+Card Staples selects its source, period, format, champion, and section first.
+Without card filters, usage is `decks containing the card / reported sections`,
+including explicitly empty sections and excluding unreported sections.
+
+With name, element, keyword, type, class, champion-level, or cost filters, the
+usage denominator is the number of cohort decks containing **at least one card
+matching all active card predicates in the selected section**. Element selections
+use OR; keywords use the selected any/all mode. A deck with several matching cards
+counts once. For example, if two decks contain Arcane cards, one contains A and B,
+and the other contains A, their filtered usage is A = 100%, B = 50%. A Fire-only
+deck contributes to neither the filtered denominator nor numerator. This measures
+observed card presence, not element access inferred from a champion or Spirit.
+
+The numerator remains the card's section-level deck count: every occurrence of a
+matching card necessarily belongs to the filtered population. Copy averages and
+adjusted win rates retain their existing per-card evidence. Ranking, pagination,
+minimum deck count, and eligibility for win-rate ranking only affect row display;
+they do not redefine the denominator.
+
+The published projection stores a shared dictionary of sorted card-presence sets
+(`sectionPatterns`) and each cohort section's `[pattern, deckCount]` populations.
+Quantities do not affect these sets; canonical card aliases merge before counting.
+Tournament observations retain one event/player occurrence, while community data
+retains the existing cross-source exact-list deduplication. The same calculation
+serves both sources. Old cached projections lacking population data show an
+unavailable filtered percentage until refreshed, rather than a misleading global
+percentage. An empty filtered population renders no matching rows.
+
+Both the analysis refresh and community blend rebuild Staples from the full
+published source lists via `loadCommunityStaples`. An absent or partial crawler
+cache must not overwrite the published Staples population with a smaller subset.

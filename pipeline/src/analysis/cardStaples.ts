@@ -5,7 +5,7 @@ import { buildDeckSignature } from "./decklists.js";
 import { config } from "../config.js";
 
 type Accum = { decks: number; copies: number; quantities: Map<number, number>; winSum: number; winN: number };
-type Bucket = { cohort: StapleCohort; cards: Record<StapleSection, Map<number, Accum>> };
+type Bucket = { populations: Record<StapleSection, Map<number, number>>; cohort: StapleCohort; cards: Record<StapleSection, Map<number, Accum>> };
 const DAY = 86_400_000;
 
 export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<string, CardSignature>, generatedAt = new Date().toISOString()): CardStaplesData {
@@ -52,6 +52,8 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
   const cards: StapleCard[] = [];
   const cardIds = new Map<string, number>();
   const buckets = new Map<string, Bucket>();
+  const sectionPatterns: number[][] = [];
+  const patternIds = new Map<string, number>();
   function cardNumber(raw: string): number {
     const card = resolveCard(catalog, raw);
     const id = card?.slug ?? `unknown:${normalizeCardKey(raw)}`;
@@ -70,7 +72,7 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
     const key = JSON.stringify([period, format, champion]);
     let result = buckets.get(key);
     if (!result) {
-      result = { cohort: { period, format, champion, decks: 0, sections: { main: { decks: 0, rows: [] }, material: { decks: 0, rows: [] }, sideboard: { decks: 0, rows: [] } } },
+      result = { populations: { main: new Map(), material: new Map(), sideboard: new Map() }, cohort: { period, format, champion, decks: 0, sections: { main: { decks: 0, rows: [] }, material: { decks: 0, rows: [] }, sideboard: { decks: 0, rows: [] } } },
         cards: { main: new Map(), material: new Map(), sideboard: new Map() } };
       buckets.set(key, result);
     }
@@ -91,7 +93,16 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
         const id = cardNumber(line.card);
         copies.set(id, (copies.get(id) ?? 0) + line.quantity);
       }
+      const pattern = [...copies.keys()].sort((a, b) => a - b);
+      const key = JSON.stringify(pattern);
+      let patternId = patternIds.get(key);
+      if (patternId === undefined) {
+        patternId = sectionPatterns.length;
+        patternIds.set(key, patternId);
+        sectionPatterns.push(pattern);
+      }
       for (const target of targets) {
+        target.populations[section].set(patternId, (target.populations[section].get(patternId) ?? 0) + 1);
         target.cohort.sections[section].decks++;
         for (const [id, quantity] of copies) {
           let a = target.cards[section].get(id);
@@ -103,7 +114,8 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
       }
     }
   }
-  const cohorts = [...buckets.values()].map(({ cohort, cards: sections }) => {
+  const cohorts = [...buckets.values()].map(({ cohort, cards: sections, populations }) => {
+    for (const section of STAPLE_SECTIONS) cohort.sections[section].populations = [...populations[section]];
     for (const section of STAPLE_SECTIONS) cohort.sections[section].rows = [...sections[section]].map(([id, a]): StapleRow => {
       const typical = [...a.quantities].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0];
       const rate = a.winN ? shrinkWinRate(a.winSum, a.winN, config.winRateShrinkagePriorWeight).adjustedWinRate : null;
@@ -111,5 +123,5 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
     }).sort((a, b) => b[1] - a[1] || cards[a[0]].name.localeCompare(cards[b[0]].name));
     return cohort;
   });
-  return { generatedAt, throughDate, cards, cohorts };
+  return { generatedAt, throughDate, cards, cohorts, sectionPatterns };
 }
