@@ -39,6 +39,12 @@ export function validateDeck(
   const unverified = new Set(cardIssues.filter(issue => issue.code === "unverified").map(issue => issue.card)).size;
   const incomplete: string[] = format === "UNKNOWN" ? ["Choose a format to verify legality."] : unverified ? [`Legality unverified for ${unverified} card${unverified === 1 ? "" : "s"} without a catalog ${format} record.`] : [];
   const all = [...sections.main, ...sections.material, ...sections.sideboard];
+  // Guo Jia's Fatestone plan can put regalia directly onto the field from Material
+  // (Chosen Disciple), without materializing them through their printed element.
+  const hasGuoJia = sections.material.some(line => {
+    const card = cardsByName.get(line.cardName);
+    return line.quantity > 0 && card?.types.includes("CHAMPION") && card.name.split(",")[0].trim() === "Guo Jia";
+  });
   const effectiveIdentityElements = new Set(identityElements);
   for (const line of sections.material) {
     const identityCard = cardsByName.get(line.cardName);
@@ -59,7 +65,10 @@ export function validateDeck(
     const copyLimit = formatLimit ?? (format === "PANTHEON" ? 1 : 4);
     const label = format === "PANTHEON" ? "Pantheon" : "Standard";
     if (format !== "UNKNOWN" && formatLimit !== 0 && quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy ${label} limit.`);
-    if (!card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
+    const materialFatestone = hasGuoJia && card.types.includes("REGALIA") && card.subtypes.includes("FATESTONE") &&
+      sections.material.some(line => line.cardName === name && line.quantity > 0) &&
+      ![...sections.main, ...sections.sideboard].some(line => line.cardName === name && line.quantity > 0);
+    if (!materialFatestone && !card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
         !card.elements.some((element) => element === "NORM" || effectiveIdentityElements.has(element))) {
       illegal.push(`${name} is outside the Champion/Spirit element identity.`);
     }

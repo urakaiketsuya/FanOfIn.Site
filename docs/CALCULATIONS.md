@@ -2959,6 +2959,20 @@ with-versus-without removal advice, quantity optimization, or Champion-scoped si
 UI always shows total recorded games, the number of catalog-resolved qualifying cards, and a warning
 that an empty simulator sample leaves the community shell unchanged.
 
+## Guo Jia Material Fatestones (`app/src/features/deckbuilder/validateDeck.ts`)
+
+A positive-quantity Guo Jia Champion in Material allows Fatestone **Regalia** in that
+section without matching the Spirit/Champion's printed elements. This covers every
+catalog card with both the `REGALIA` type and `FATESTONE` subtype, including Emerald,
+Ruby, Sapphire, and Azurite. Guo Jia, Chosen Disciple's catalog text puts a Fatestone
+regalia directly onto the field from Material; it does not materialize it through
+normal element access. Its lowest-memory-cost condition governs resolution, not
+whether a Fatestone can be included in the deck.
+
+This exception does not grant the deck additional elements, exempt Main or Sideboard
+copies, or exempt non-Regalia Fatestones. Bans, copy limits, and section sizes still
+apply. Zero-quantity Champion entries do not enable the exception.
+
 ## Sideboard point budget (`app/src/features/deckbuilder/validateDeck.ts`)
 
 Standard's sideboard construction rule (2026 rework, per explicit direction — the design goal is to
