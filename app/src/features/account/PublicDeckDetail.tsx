@@ -73,7 +73,7 @@ export default function PublicDeckDetail() {
       {!social && <Link to="/account" className="text-sm text-ctp-blue hover:underline">Sign in for deck actions</Link>}
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
-    <UserDecklistPanel decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} />
+    <UserDecklistPanel deckTitle={deck.title} decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} />
     <div className="mt-10"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
     <TabPanel baseId="public-deck" tab="performance" active={tab}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
     <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>

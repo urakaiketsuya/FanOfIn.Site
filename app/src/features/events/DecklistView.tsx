@@ -1,3 +1,4 @@
+import DeckImageExport from "../../components/deck-export/DeckImageExport";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
 import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
@@ -43,6 +44,7 @@ export const buildEditableDeckText = (deck: OmnidexDecklist) => buildDecklistTex
 
 export default function DecklistView({
   decklist,
+  deckTitle,
   cardsByName,
   showThumbnails = false,
   deckId,
@@ -59,6 +61,7 @@ export default function DecklistView({
   collectionPanel,
 }: {
   decklist: OmnidexDecklist;
+  deckTitle?: string;
   cardsByName: Map<string, Card>;
   showThumbnails?: boolean;
   /** `${eventId}:${player}` – when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box, and (with the "Win rate" display preference on) this specific sighting's own match record. Omit for a pasted/custom decklist with no real deckId – `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false, and the win-rate section simply doesn't render. */
@@ -219,6 +222,7 @@ export default function DecklistView({
           <details name={toolbarMenuGroup}>
             <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
+              <DeckImageExport title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
               {toolbarActions}
               {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
               <a href={clarentUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>

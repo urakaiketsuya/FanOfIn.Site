@@ -1,3 +1,4 @@
+import DeckImageExport from "../../../components/deck-export/DeckImageExport";
 import { useToast } from "../../../components/ui/toast/ToastContext";
 import { buildEditableDeckText } from "../../events/DecklistView";
 import Button from "../../../components/ui/Button";
@@ -62,6 +63,7 @@ export default function BuilderCopyPanel({
         {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
       </div>
       <div className="flex flex-wrap gap-2">
+        <DeckImageExport title={saveTitle.trim() || `${championName ?? "Untitled"} deck`} cardsByName={catalogByName} sections={[{ title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }]} />
         {!hideFullDeckOption && <button
           type="button"
           onClick={() => onCopy(false)}
