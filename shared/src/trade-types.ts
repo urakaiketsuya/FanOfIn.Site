@@ -1,3 +1,4 @@
+import type { CardFinish } from "./collection-types.js";
 export type BinderItemKind = "available" | "wanted";
 export type TradeMethod = "local" | "shipping" | "either";
 export type TradeStatus = "sent" | "countered" | "accepted" | "sender_sent" | "recipient_sent" | "both_sent" | "completed" | "declined" | "cancelled" | "disputed";
@@ -8,6 +9,7 @@ export interface BinderItem {
   cardUuid: string;
   cardName: string;
   editionUuid: string | null;
+  finish?: CardFinish;
   setPrefix: string | null;
   collectorNumber: string | null;
   quantity: number;
@@ -38,6 +40,7 @@ export interface TradeLine {
   cardUuid: string;
   cardName: string;
   editionUuid: string | null;
+  finish?: CardFinish;
   setPrefix: string | null;
   collectorNumber: string | null;
   quantity: number;

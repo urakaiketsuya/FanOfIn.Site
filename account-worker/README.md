@@ -91,3 +91,13 @@ the Silvie tag import. The full card catalog is intentionally not fetched by sub
   Silvie imports are never rewritten, so local corrections survive future scrapes.
 - Deploy the migration, validation artifact, and Worker before the frontend. If the
   account service is unavailable, galleries use imported data and show a retry notice.
+
+
+## Collection and binder finishes
+
+Apply `0034_collection_finishes.sql` before deploying the account Worker and frontend.
+The Worker health check requires schema `0034`. The migration preserves existing inventory,
+listings, transaction history, and accepted trade reservations as unspecified finish.
+Foil, nonfoil, and unspecified are separate quantities within each printing (including
+unspecified printing). CSV imports without a finish remain unspecified. Wants may accept
+any finish, but listings and completed transfers use an exact finish pool.

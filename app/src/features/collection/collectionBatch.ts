@@ -1,3 +1,4 @@
+import { collectionEntryKey, isCardFinish, type CardFinish } from "@gatcg/shared";
 import { collectionTotalsByCard, type Card, type CollectionEntry, type CollectionUpdateLine, type OmnidexDecklist, type SavedDeck } from "@gatcg/shared";
 
 export { RARITY_LABELS as COLLECTION_RARITY_LABELS } from "../cards/rarities";
@@ -15,7 +16,7 @@ export const DEFAULT_SET_RARITY_QUANTITIES: Record<number, number> = {
 };
 
 export function collectionCsv(entries: CollectionEntry[]): string {
-  return ["card_uuid,card_name,edition_uuid,set_prefix,collector_number,owned_quantity,proxy_quantity", ...entries.map((entry) => [entry.cardUuid, JSON.stringify(entry.cardName), entry.editionUuid ?? "", entry.setPrefix ?? "", entry.collectorNumber ?? "", entry.ownedQuantity, entry.proxyQuantity].join(","))].join("\n");
+  return ["card_uuid,card_name,edition_uuid,set_prefix,collector_number,owned_quantity,proxy_quantity,finish", ...entries.map((entry) => [entry.cardUuid, '"' + entry.cardName.replaceAll('"', '""') + '"', entry.editionUuid ?? "", entry.setPrefix ?? "", entry.collectorNumber ?? "", entry.ownedQuantity, entry.proxyQuantity, entry.finish ?? "unspecified"].join(","))].join("\n");
 }
 
 export function missingCollectionList(lines: { card: string; missing: number }[]): string {
@@ -145,4 +146,30 @@ export function summarizeAtLeastChanges(lines: CollectionUpdateLine[], entries: 
     else { affectedCards += 1; addedCopies += line.quantity - current; }
   }
   return { affectedCards, addedCopies, coveredCards };
+}
+
+/** Read current exports and legacy card-level CSV without guessing finish. */
+export function parseCollectionCsv(text: string, cards: Card[]): { lines: CollectionUpdateLine[]; unresolved: string[] } {
+  const byName = new Map(cards.map(card => [card.name.toLocaleLowerCase("en-US"), card]));
+  const byUuid = new Map(cards.map(card => [card.uuid, card]));
+  const merged = new Map<string, CollectionUpdateLine>();
+  const unresolved: string[] = [];
+  for (const [index, raw] of text.split(/\r?\n/).entries()) {
+    if (!raw.trim() || (index === 0 && /card|quantity/i.test(raw))) continue;
+    const columns = raw.match(/(?:"([^"]*(?:""[^"]*)*)"|([^,]*))(?:,|$)/g)?.map(part => part.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"').trim()) ?? [];
+    const exported = byUuid.has(columns[0]);
+    const modern = exported && columns.length >= 7;
+    const card = exported ? byUuid.get(columns[0]) : byName.get((columns[1] ?? "").toLocaleLowerCase("en-US"));
+    const quantity = Number(columns[modern ? 5 : exported ? 2 : 0]);
+    const proxyQuantity = Number(columns[modern ? 6 : exported ? 3 : 2] || 0);
+    const finish = (modern ? columns[7] || "unspecified" : "unspecified") as CardFinish;
+    const editionUuid = modern ? columns[2] || undefined : undefined;
+    const edition = card?.editions.find(row => row.uuid === editionUuid);
+    if (!card || !Number.isInteger(quantity) || quantity < 0 || quantity > 9999 || !Number.isInteger(proxyQuantity) || proxyQuantity < 0 || proxyQuantity > 9999 || !isCardFinish(finish) || (editionUuid && !edition)) { unresolved.push(raw); continue; }
+    const line: CollectionUpdateLine = { cardUuid: card.uuid, cardName: card.name, editionUuid, setPrefix: edition?.set.prefix, collectorNumber: edition?.collector_number, finish, quantity, proxyQuantity };
+    const key = collectionEntryKey(line), existing = merged.get(key);
+    if (existing) { existing.quantity += quantity; existing.proxyQuantity = (existing.proxyQuantity ?? 0) + proxyQuantity; }
+    else merged.set(key, line);
+  }
+  return { lines: [...merged.values()], unresolved };
 }

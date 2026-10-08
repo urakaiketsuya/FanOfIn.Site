@@ -1,3 +1,4 @@
+import { collectionEntryKey } from "./collection-types.js";
 import type { BinderItem } from './trade-types.js';
 import type { CollectionEntry, CollectionCardTracking } from './collection-types.js';
 import { cardLocationState } from './cardLocations.js';
@@ -15,17 +16,24 @@ export function tradeAvailability(cardUuid: string, entries: CollectionEntry[], 
 export function effectiveBinderItems(entries: CollectionEntry[], records: CollectionCardTracking[], items: BinderItem[]): BinderItem[] {
   const remaining = new Map<string,number>();
   const pools = new Map<string,number>();
-  const key = (uuid: string, edition?: string|null) => JSON.stringify([uuid,edition ?? null]);
-  for(const entry of entries) pools.set(key(entry.cardUuid,entry.editionUuid),entry.ownedQuantity);
+  for(const entry of entries) pools.set(collectionEntryKey(entry),entry.ownedQuantity);
   for(const item of items) if(item.kind==='available') {
     if(!remaining.has(item.cardUuid)) remaining.set(item.cardUuid,tradeAvailability(item.cardUuid,entries,records.find(r=>r.cardUuid===item.cardUuid),items).free);
-    const k=key(item.cardUuid,item.editionUuid); pools.set(k,Math.max(0,(pools.get(k)??0)-item.reservedQuantity));
+    const k=collectionEntryKey(item); pools.set(k,Math.max(0,(pools.get(k)??0)-item.reservedQuantity));
   }
   return [...items].sort((a,b)=>a.id.localeCompare(b.id)).map(item=>{
     if(item.kind!=='available') return item;
-    const k=key(item.cardUuid,item.editionUuid);
+    const k=collectionEntryKey(item);
     const free=Math.max(0,Math.min(item.quantity-item.reservedQuantity,remaining.get(item.cardUuid)??0,pools.get(k)??0));
     remaining.set(item.cardUuid,(remaining.get(item.cardUuid)??0)-free); pools.set(k,(pools.get(k)??0)-free);
     return {...item,quantity:item.reservedQuantity+free};
   });
+}
+
+/** Wants may accept any finish; available unspecified copies never imply a known finish. */
+export function binderItemsMatch(available: BinderItem, wanted: BinderItem): boolean {
+  return available.kind === "available" && wanted.kind === "wanted"
+    && available.cardUuid === wanted.cardUuid && available.quantity > available.reservedQuantity
+    && ((wanted.finish ?? "unspecified") === "unspecified" || available.finish === wanted.finish)
+    && (!wanted.editionUuid || wanted.acceptsAlternatives || available.editionUuid === wanted.editionUuid);
 }

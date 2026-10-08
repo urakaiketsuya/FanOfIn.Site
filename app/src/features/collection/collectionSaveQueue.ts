@@ -1,3 +1,4 @@
+import { isCardFinish } from "@gatcg/shared";
 import type { CollectionUpdateLine } from "@gatcg/shared";
 export const COLLECTION_BATCH_SIZE = 100;
 export type CollectionDrafts = Record<string, CollectionUpdateLine>;
@@ -41,7 +42,7 @@ export async function sendCollectionBatch(send: () => Promise<unknown>, pause = 
 export function parseCollectionQueue(value: unknown): CollectionSaveQueue {
   function validDrafts(value: unknown): value is CollectionDrafts {
     return !!value && typeof value==='object' && !Array.isArray(value) && Object.values(value).every(line =>
-      line && typeof line.cardUuid==='string' && typeof line.cardName==='string' && Number.isInteger(line.quantity) && line.quantity>=0 && line.quantity<=9999 &&
+      line && (line.finish === undefined || isCardFinish(line.finish)) && typeof line.cardUuid==='string' && typeof line.cardName==='string' && Number.isInteger(line.quantity) && line.quantity>=0 && line.quantity<=9999 &&
       (line.proxyQuantity===undefined || (Number.isInteger(line.proxyQuantity) && line.proxyQuantity>=0 && line.proxyQuantity<=9999)));
   }
   const queue=value as CollectionSaveQueue | null;

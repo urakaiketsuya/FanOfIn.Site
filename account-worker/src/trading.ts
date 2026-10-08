@@ -1,6 +1,6 @@
 import type { AuthUser, Env } from "./auth";
 import type { BinderItem, BinderItemKind, BinderSettings, PublicBinder, Trade, TradeLine, TradeMethod, TradeStatus } from "@gatcg/shared";
-import { effectiveBinderItems, tradeAvailability } from "@gatcg/shared";
+import { effectiveBinderItems, binderItemsMatch, tradeAvailability, isCardFinish, type CardFinish } from "@gatcg/shared";
 import { listCollectionTracking } from "./collectionTracking";
 import { ApiError, badRequest } from "./errors";
 
@@ -19,12 +19,12 @@ async function reservations(env: Env): Promise<Map<string, number>> {
 }
 
 function mapItem(row: Record<string, unknown>, reserved: number): BinderItem {
-  return { id: String(row.id), kind: row.kind as BinderItemKind, cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: Number(row.quantity), reservedQuantity: reserved, condition: String(row.condition), language: String(row.language), acceptsAlternatives: Boolean(row.accepts_alternatives), updatedAt: String(row.updated_at) };
+  return { id: String(row.id), kind: row.kind as BinderItemKind, cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, finish: (row.finish ?? "unspecified") as CardFinish, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: Number(row.quantity), reservedQuantity: reserved, condition: String(row.condition), language: String(row.language), acceptsAlternatives: Boolean(row.accepts_alternatives), updatedAt: String(row.updated_at) };
 }
 
 async function inventory(env: Env, userId: string) {
-  const rows = await env.ACCOUNT_DB.prepare(`SELECT card_uuid,card_name,owned_quantity,proxy_quantity,NULL edition_uuid FROM collection_entries WHERE user_id=? UNION ALL SELECT card_uuid,card_name,owned_quantity,proxy_quantity,edition_uuid FROM collection_printing_entries WHERE user_id=?`).bind(userId,userId).all<{card_uuid:string;card_name:string;owned_quantity:number;proxy_quantity:number;edition_uuid:string|null}>();
-  return rows.results.map(row=>({cardUuid:row.card_uuid,cardName:row.card_name,ownedQuantity:row.owned_quantity,proxyQuantity:row.proxy_quantity,editionUuid:row.edition_uuid ?? undefined,updatedAt:""}));
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT card_uuid,card_name,owned_quantity,proxy_quantity,finish,NULL edition_uuid FROM collection_entries WHERE user_id=? UNION ALL SELECT card_uuid,card_name,owned_quantity,proxy_quantity,finish,edition_uuid FROM collection_printing_entries WHERE user_id=?`).bind(userId,userId).all<{card_uuid:string;card_name:string;owned_quantity:number;proxy_quantity:number;edition_uuid:string|null;finish:CardFinish}>();
+  return rows.results.map(row=>({cardUuid:row.card_uuid,cardName:row.card_name,ownedQuantity:row.owned_quantity,proxyQuantity:row.proxy_quantity,editionUuid:row.edition_uuid ?? undefined,finish:row.finish,updatedAt:""}));
 }
 
 async function itemsForUser(env: Env, userId: string, effective = false): Promise<BinderItem[]> {
@@ -64,17 +64,18 @@ function parseItem(value: unknown): Omit<BinderItem, "id" | "reservedQuantity" |
   const cardUuid = typeof input?.cardUuid === "string" ? input.cardUuid.trim() : "";
   const cardName = typeof input?.cardName === "string" ? input.cardName.trim().replace(/\s+/g, " ") : "";
   if (!input || !["available", "wanted"].includes(String(kind)) || !cardUuid || !cardName || !Number.isInteger(input.quantity) || input.quantity! < 1 || input.quantity! > 999) throw badRequest("Invalid binder item");
-  return { kind: kind!, cardUuid, cardName, editionUuid: typeof input.editionUuid === "string" && input.editionUuid ? input.editionUuid : null, setPrefix: typeof input.setPrefix === "string" ? input.setPrefix.slice(0, 40) : null, collectorNumber: typeof input.collectorNumber === "string" ? input.collectorNumber.slice(0, 80) : null, quantity: input.quantity!, condition: typeof input.condition === "string" ? input.condition.trim().slice(0, 40) || "Any" : "Any", language: typeof input.language === "string" ? input.language.trim().slice(0, 40) || "Any" : "Any", acceptsAlternatives: input.acceptsAlternatives !== false };
+  if (input.finish !== undefined && !isCardFinish(input.finish)) throw badRequest("Invalid card finish");
+  return { finish: input.finish ?? "unspecified", kind: kind!, cardUuid, cardName, editionUuid: typeof input.editionUuid === "string" && input.editionUuid ? input.editionUuid : null, setPrefix: typeof input.setPrefix === "string" ? input.setPrefix.slice(0, 40) : null, collectorNumber: typeof input.collectorNumber === "string" ? input.collectorNumber.slice(0, 80) : null, quantity: input.quantity!, condition: typeof input.condition === "string" ? input.condition.trim().slice(0, 40) || "Any" : "Any", language: typeof input.language === "string" ? input.language.trim().slice(0, 40) || "Any" : "Any", acceptsAlternatives: input.acceptsAlternatives !== false };
 }
 
 async function assertOwned(env: Env, userId: string, item: ReturnType<typeof parseItem>, excludeId?: string): Promise<void> {
   if (item.kind !== "available") return;
   const owned = item.editionUuid
-    ? await env.ACCOUNT_DB.prepare("SELECT owned_quantity FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(userId, item.editionUuid).first<{ owned_quantity: number }>()
-    : await env.ACCOUNT_DB.prepare("SELECT owned_quantity FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(userId, item.cardUuid).first<{ owned_quantity: number }>();
+    ? await env.ACCOUNT_DB.prepare("SELECT owned_quantity FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ? AND finish = ?").bind(userId, item.editionUuid, item.finish).first<{ owned_quantity: number }>()
+    : await env.ACCOUNT_DB.prepare("SELECT owned_quantity FROM collection_entries WHERE user_id = ? AND card_uuid = ? AND finish = ?").bind(userId, item.cardUuid, item.finish).first<{ owned_quantity: number }>();
   const published = item.editionUuid
-    ? await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND edition_uuid=? AND id != ?").bind(userId, item.editionUuid, excludeId ?? "").first<{ total: number }>()
-    : await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND card_uuid=? AND edition_uuid IS NULL AND id != ?").bind(userId, item.cardUuid, excludeId ?? "").first<{ total: number }>();
+    ? await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND edition_uuid=? AND finish=? AND id != ?").bind(userId, item.editionUuid, item.finish, excludeId ?? "").first<{ total: number }>()
+    : await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND card_uuid=? AND edition_uuid IS NULL AND finish=? AND id != ?").bind(userId, item.cardUuid, item.finish, excludeId ?? "").first<{ total: number }>();
   if ((owned?.owned_quantity ?? 0) < item.quantity + Number(published?.total ?? 0)) throw badRequest("Published availability cannot exceed your collection quantity");
   const available = tradeAvailability(item.cardUuid, await inventory(env,userId), (await listCollectionTracking(env,{id:userId} as AuthUser)).find(row=>row.cardUuid===item.cardUuid), (await itemsForUser(env,userId)).filter(row=>row.id!==excludeId));
   if (item.quantity > available.listable) throw badRequest("Release deck assignments or return loans before listing these copies; existing listings also use this availability.");
@@ -87,15 +88,15 @@ async function assertOwned(env: Env, userId: string, item: ReturnType<typeof par
 export async function createBinderItem(env: Env, user: AuthUser, value: unknown): Promise<{ id: string }> {
   const item = parseItem(value); await assertOwned(env, user.id, item);
   const id = crypto.randomUUID(), now = new Date().toISOString();
-  await env.ACCOUNT_DB.prepare(`INSERT INTO binder_items (id, user_id, kind, card_uuid, card_name, edition_uuid, set_prefix, collector_number, quantity, condition, language, accepts_alternatives, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(id, user.id, item.kind, item.cardUuid, item.cardName, item.editionUuid, item.setPrefix, item.collectorNumber, item.quantity, item.condition, item.language, item.acceptsAlternatives ? 1 : 0, now).run();
+  await env.ACCOUNT_DB.prepare(`INSERT INTO binder_items (id, user_id, kind, card_uuid, card_name, edition_uuid, set_prefix, collector_number, quantity, condition, language, accepts_alternatives, updated_at, finish)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(id, user.id, item.kind, item.cardUuid, item.cardName, item.editionUuid, item.setPrefix, item.collectorNumber, item.quantity, item.condition, item.language, item.acceptsAlternatives ? 1 : 0, now, item.finish).run();
   return { id };
 }
 
 export async function updateBinderItem(env: Env, user: AuthUser, id: string, value: unknown): Promise<void> {
   const item = parseItem(value); await assertOwned(env, user.id, item, id);
-  const result = await env.ACCOUNT_DB.prepare(`UPDATE binder_items SET kind = ?, card_uuid = ?, card_name = ?, edition_uuid = ?, set_prefix = ?, collector_number = ?, quantity = ?, condition = ?, language = ?, accepts_alternatives = ?, updated_at = ? WHERE id = ? AND user_id = ?`)
-    .bind(item.kind, item.cardUuid, item.cardName, item.editionUuid, item.setPrefix, item.collectorNumber, item.quantity, item.condition, item.language, item.acceptsAlternatives ? 1 : 0, new Date().toISOString(), id, user.id).run();
+  const result = await env.ACCOUNT_DB.prepare(`UPDATE binder_items SET kind = ?, card_uuid = ?, card_name = ?, edition_uuid = ?, set_prefix = ?, collector_number = ?, quantity = ?, condition = ?, language = ?, accepts_alternatives = ?, updated_at = ?, finish = ? WHERE id = ? AND user_id = ?`)
+    .bind(item.kind, item.cardUuid, item.cardName, item.editionUuid, item.setPrefix, item.collectorNumber, item.quantity, item.condition, item.language, item.acceptsAlternatives ? 1 : 0, new Date().toISOString(), item.finish, id, user.id).run();
   if (result.meta.changes !== 1) throw new ApiError("Binder item not found", 404, "binder_item_not_found");
 }
 
@@ -114,7 +115,7 @@ export async function binderMatches(env: Env, user: AuthUser): Promise<PublicBin
   const result: PublicBinder[] = [];
   for (const profile of profiles.results) {
     const binder = await publicBinder(env, profile.profile_slug);
-    if (binder && binder.items.some((item) => (item.kind === "available" && wanted.has(item.cardUuid) && item.quantity > item.reservedQuantity) || (item.kind === "wanted" && available.has(item.cardUuid)))) result.push(binder);
+    if (binder && binder.items.some(item => mine.some(own => binderItemsMatch(item, own) || binderItemsMatch(own, item)))) result.push(binder);
   }
   return result.slice(0, 50);
 }
@@ -136,7 +137,7 @@ async function snapshotLines(env: Env, senderId: string, recipientId: string, ra
     const effective = cached.get(ownerId)!.find(item=>item.id===row.id);
     const free = (effective?.quantity ?? 0) - (reserved.get(String(row.id)) ?? 0);
     if (request.quantity > free) throw badRequest(`${String(row.card_name)} no longer has enough available copies`);
-    lines.push({ direction: String(row.user_id) === senderId ? "sender_gives" : "recipient_gives", binderItemId: String(row.id), cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: request.quantity });
+    lines.push({ direction: String(row.user_id) === senderId ? "sender_gives" : "recipient_gives", binderItemId: String(row.id), cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, finish: (row.finish ?? "unspecified") as CardFinish, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: request.quantity });
   }
   return lines;
 }
@@ -217,7 +218,7 @@ export async function updateTradeStatus(env: Env, user: AuthUser, id: string, ne
     }
     const original = JSON.parse(revision!.lines_json) as TradeLine[];
     const fresh = await snapshotLines(env, String(trade.sender_user_id), String(trade.recipient_user_id), original.map(line => ({ binderItemId: line.binderItemId, quantity: line.quantity })));
-    if (fresh.some((line,index)=>line.cardUuid!==original[index].cardUuid || line.editionUuid!==original[index].editionUuid || line.direction!==original[index].direction)) throw badRequest("An offered printing changed. Create a new offer.");
+    if (fresh.some((line,index)=>line.cardUuid!==original[index].cardUuid || line.editionUuid!==original[index].editionUuid || (line.finish ?? "unspecified") !== (original[index].finish ?? "unspecified") || line.direction!==original[index].direction)) throw badRequest("An offered printing changed. Create a new offer.");
   }
   const now = new Date().toISOString();
   if (status === "completed") { await applyCompletedTrade(env, trade, user.id, now); return; }
@@ -237,7 +238,7 @@ async function applyCompletedTrade(env: Env, trade: Record<string, unknown>, act
     const giver = line.direction === "sender_gives" ? String(trade.sender_user_id) : String(trade.recipient_user_id);
     const receiver = line.direction === "sender_gives" ? String(trade.recipient_user_id) : String(trade.sender_user_id);
     for (const userId of [giver, receiver]) {
-      const key = JSON.stringify([userId, line.editionUuid ? "printing" : "canonical", line.editionUuid ?? line.cardUuid]);
+      const key = JSON.stringify([userId, line.editionUuid ? "printing" : "canonical", line.editionUuid ?? line.cardUuid, line.finish ?? "unspecified"]);
       const balance = balances.get(key) ?? { userId, line, incoming: 0, outgoing: 0 };
       if (userId === giver) balance.outgoing += line.quantity;
       else balance.incoming += line.quantity;
@@ -257,7 +258,7 @@ async function applyCompletedTrade(env: Env, trade: Record<string, unknown>, act
     const table = line.editionUuid ? "collection_printing_entries" : "collection_entries";
     const keyColumn = line.editionUuid ? "edition_uuid" : "card_uuid";
     const key = line.editionUuid ?? line.cardUuid;
-    const row = await env.ACCOUNT_DB.prepare(`SELECT owned_quantity, proxy_quantity FROM ${table} WHERE user_id=? AND ${keyColumn}=?`).bind(userId, key).first<{ owned_quantity: number; proxy_quantity: number }>();
+    const row = await env.ACCOUNT_DB.prepare(`SELECT owned_quantity, proxy_quantity FROM ${table} WHERE user_id=? AND ${keyColumn}=? AND finish=?`).bind(userId, key, line.finish ?? "unspecified").first<{ owned_quantity: number; proxy_quantity: number }>();
     const before = row?.owned_quantity ?? 0, proxy = row?.proxy_quantity ?? 0;
     const after = before - outgoing + incoming;
     if (before < outgoing || after > 9999) {
@@ -265,23 +266,23 @@ async function applyCompletedTrade(env: Env, trade: Record<string, unknown>, act
       throw badRequest(`${line.cardName} cannot be transferred with the current collection quantities`);
     }
     if (row) {
-      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND NOT EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=? AND owned_quantity=? AND proxy_quantity=?)`).bind(eventId, userId, key, before, proxy));
+      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND NOT EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=? AND finish=? AND owned_quantity=? AND proxy_quantity=?)`).bind(eventId, userId, key, line.finish ?? "unspecified", before, proxy));
     } else {
-      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=?)`).bind(eventId, userId, key));
+      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=? AND finish=?)`).bind(eventId, userId, key, line.finish ?? "unspecified"));
     }
     if (line.editionUuid) {
-      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at)
-        SELECT ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE ${claimed}
-        ON CONFLICT(user_id, edition_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
-        .bind(userId, line.cardUuid, line.cardName, key, line.setPrefix, line.collectorNumber, after, proxy, now, eventId));
+      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at, finish)
+        SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE ${claimed}
+        ON CONFLICT(user_id, edition_uuid, finish) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
+        .bind(userId, line.cardUuid, line.cardName, key, line.setPrefix, line.collectorNumber, after, proxy, now, line.finish ?? "unspecified", eventId));
     } else {
-      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at)
-        SELECT ?, ?, ?, ?, ?, ? WHERE ${claimed}
-        ON CONFLICT(user_id, card_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
-        .bind(userId, line.cardUuid, line.cardName, after, proxy, now, eventId));
+      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at, finish)
+        SELECT ?, ?, ?, ?, ?, ?, ? WHERE ${claimed}
+        ON CONFLICT(user_id, card_uuid, finish) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
+        .bind(userId, line.cardUuid, line.cardName, after, proxy, now, line.finish ?? "unspecified", eventId));
     }
     const list = changes.get(userId) ?? [];
-    list.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid ?? undefined, setPrefix: line.setPrefix ?? undefined, collectorNumber: line.collectorNumber ?? undefined, beforeOwned: before, beforeProxy: proxy, afterOwned: after, afterProxy: proxy });
+    list.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid ?? undefined, finish: line.finish, setPrefix: line.setPrefix ?? undefined, collectorNumber: line.collectorNumber ?? undefined, beforeOwned: before, beforeProxy: proxy, afterOwned: after, afterProxy: proxy });
     changes.set(userId, list);
   }
   for (const line of lines) {

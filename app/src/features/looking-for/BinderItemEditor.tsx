@@ -1,3 +1,4 @@
+import { CARD_FINISHES, finishLabel, type CardFinish } from "@gatcg/shared";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { BinderItem, Card, CollectionEntry } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
@@ -15,6 +16,7 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
   const [query, setQuery] = useState("");
   const [chosen, setChosen] = useState<{ uuid: string; name: string } | null>(item ? { uuid: item.cardUuid, name: item.cardName } : null);
   const [editionUuid, setEditionUuid] = useState(item?.editionUuid ?? "");
+  const [finish, setFinish] = useState<CardFinish>(item?.finish ?? "unspecified");
   const [quantity, setQuantity] = useState(item?.quantity ?? 1);
   const [condition, setCondition] = useState(item?.condition ?? "Any");
   const [language, setLanguage] = useState(item?.language ?? "Any");
@@ -30,13 +32,14 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
     : cards.map(card => ({ uuid: card.uuid, name: card.name })), [cards, collection, kind]);
   const results = useMemo(() => options.filter(card => card.name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 12), [options, query]);
   const card = cards.find(card => card.uuid === chosen?.uuid);
-  function choose(value: { uuid: string; name: string }) { setChosen(value); setEditionUuid(kind === "available" ? collection.find(row => row.cardUuid === value.uuid && row.ownedQuantity > 0)?.editionUuid ?? "" : ""); setOpen(false); setSaved(false); setQuery(value.name); setDirty(true); }
+  const ownedPool = collection.find(row => row.cardUuid === chosen?.uuid && (row.editionUuid ?? "") === editionUuid && (row.finish ?? "unspecified") === finish);
+  function choose(value: { uuid: string; name: string }) { setChosen(value); setFinish(kind === "available" ? collection.find(row => row.cardUuid === value.uuid && row.ownedQuantity > 0)?.finish ?? "unspecified" : "unspecified"); setEditionUuid(kind === "available" ? collection.find(row => row.cardUuid === value.uuid && row.ownedQuantity > 0)?.editionUuid ?? "" : ""); setOpen(false); setSaved(false); setQuery(value.name); setDirty(true); }
   async function save() {
     if (!chosen) return;
     setBusy(true); setError("");
     const edition = card?.editions.find(row => row.uuid === editionUuid);
-    const source = collection.find(row => row.cardUuid === chosen.uuid && (row.editionUuid ?? "") === editionUuid);
-    const value = { kind, cardUuid: chosen.uuid, cardName: chosen.name, editionUuid: editionUuid || null,
+    const source = collection.find(row => row.cardUuid === chosen.uuid && (row.editionUuid ?? "") === editionUuid && (row.finish ?? "unspecified") === finish);
+    const value = { finish, kind, cardUuid: chosen.uuid, cardName: chosen.name, editionUuid: editionUuid || null,
       setPrefix: edition?.set.prefix ?? source?.setPrefix ?? (editionUuid === item?.editionUuid ? item.setPrefix : null),
       collectorNumber: edition?.collector_number ?? source?.collectorNumber ?? (editionUuid === item?.editionUuid ? item.collectorNumber : null),
       quantity, condition, language, acceptsAlternatives: alternatives };
@@ -44,16 +47,16 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
       if (item) await accountApi.updateBinderItem(item.id, value); else await accountApi.addBinderItem(value);
       onSaved();
       if (item) onDismiss();
-      else { setChosen(null); setQuery(""); setEditionUuid(""); setQuantity(1); setDirty(false); setSaved(true); setError(""); search.current?.focus(); }
+      else { setChosen(null); setQuery(""); setEditionUuid(""); setQuantity(1); setFinish("unspecified"); setDirty(false); setSaved(true); setError(""); search.current?.focus(); }
     } catch (error) { setError(error instanceof Error ? error.message : "Could not save. Try again."); }
     finally { setBusy(false); }
   }
   return <DialogSheet title={item ? "Edit listing" : "Add card"} onDismiss={onDismiss} dirty={dirty} dismissible={!busy} footer={<>
     {saved && <p role="status" className="mb-2 text-sm">Card added. Search for another card.</p>}
     {error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error}</p>}
-    <Button disabled={busy || !chosen || !Number.isInteger(quantity) || quantity < Math.max(1, item?.reservedQuantity ?? 0) || quantity > 999} onClick={() => void save()}>{busy ? "Saving…" : item ? "Save listing" : "Add card"}</Button>
+    <Button disabled={busy || !chosen || !Number.isInteger(quantity) || quantity < Math.max(1, item?.reservedQuantity ?? 0) || quantity > 999 || (kind === "available" && quantity > (ownedPool?.ownedQuantity ?? 0))} onClick={() => void save()}>{busy ? "Saving…" : item ? "Save listing" : "Add card"}</Button>
   </>}><fieldset disabled={busy} onChange={() => setDirty(true)} className="min-w-0 space-y-4">
-    {!item && <label className="block text-sm">List<select className={inputClass} value={kind} onChange={event => { setKind(event.target.value as typeof kind); setChosen(null); setQuery(""); setEditionUuid(""); }}><option value="available">Available</option><option value="wanted">Wanted</option></select></label>}
+    {!item && <label className="block text-sm">List<select className={inputClass} value={kind} onChange={event => { setKind(event.target.value as typeof kind); setChosen(null); setQuery(""); setEditionUuid(""); setFinish("unspecified"); }}><option value="available">Available</option><option value="wanted">Wanted</option></select></label>}
     {!item && <div><label htmlFor={id} className="text-sm">Search {kind === "available" ? "owned cards" : "cards"}</label>
       <input ref={search} id={id} role="combobox" aria-autocomplete="list" aria-expanded={open} aria-controls={`${id}-results`} aria-activedescendant={open && results[active] ? `${id}-${active}` : undefined} autoComplete="off" className={inputClass} value={query} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)} onChange={event => { setQuery(event.target.value); setOpen(true); setActive(0); setChosen(null); }} onKeyDown={event => {
         if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); setOpen(false); }
@@ -65,9 +68,11 @@ export default function BinderItemEditor({ cards, collection, item, onDismiss, o
         {!results.length && <p role="status" className="p-3 text-sm">{options.length ? "No matching cards." : kind === "available" ? "No owned cards recorded. Add copies in your collection first." : "Card catalog unavailable. Sync cards and try again."}</p>}
       </div>}
     </div>}
-    {chosen && <><CardResult compactOnMobile card={card} name={chosen.name} editionUuid={editionUuid || undefined} newTab><p className="text-sm">{kind === "wanted" ? "Wanted" : "Available"}</p></CardResult>
+    {chosen && <><CardResult compactOnMobile card={card} name={chosen.name} editionUuid={editionUuid || undefined} newTab><p className="text-sm">{kind === "wanted" ? "Wanted" : "Available"} · {finish === "unspecified" && kind === "wanted" ? "Any finish" : finishLabel(finish)}</p></CardResult>
+      <label className="block text-sm">Finish<select className={inputClass} value={finish} onChange={event => setFinish(event.target.value as CardFinish)}>{CARD_FINISHES.map(value => <option key={value} value={value}>{kind === "wanted" && value === "unspecified" ? "Any finish" : finishLabel(value)}</option>)}</select></label>
       <label className="block text-sm">Quantity<input type="number" min={Math.max(1, item?.reservedQuantity ?? 0)} max={999} className={inputClass} value={quantity} onChange={event => setQuantity(Number(event.target.value))} /></label>
-      {card && <div><h3 className="mb-2 text-sm font-semibold">{kind === "wanted" ? "Preferred printing · unspecified means any" : "Owned printing"}</h3><PrintingChoices card={kind === "wanted" ? card : { ...card, editions: card.editions.filter(edition => collection.some(row => row.cardUuid === card.uuid && row.editionUuid === edition.uuid && row.ownedQuantity > 0) || edition.uuid === item?.editionUuid) }} entries={kind === "available" ? collection : undefined} allowSplit={false} quantity={Number.isInteger(quantity) && quantity > 0 ? quantity : 1} value={editionUuid ? [{ editionUuid, quantity: Number.isInteger(quantity) && quantity > 0 ? quantity : 1 }] : []} onChange={value => { setEditionUuid(value[0]?.editionUuid ?? ""); setDirty(true); }} /></div>}
+      {card && <div><h3 className="mb-2 text-sm font-semibold">{kind === "wanted" ? "Preferred printing · unspecified means any" : "Owned printing"}</h3><PrintingChoices card={kind === "wanted" ? card : { ...card, editions: card.editions.filter(edition => collection.some(row => row.cardUuid === card.uuid && row.editionUuid === edition.uuid && (row.finish ?? "unspecified") === finish && row.ownedQuantity > 0) || edition.uuid === item?.editionUuid) }} entries={kind === "available" ? collection.filter(entry => (entry.finish ?? "unspecified") === finish) : undefined} allowSplit={false} quantity={Number.isInteger(quantity) && quantity > 0 ? quantity : 1} value={editionUuid ? [{ editionUuid, quantity: Number.isInteger(quantity) && quantity > 0 ? quantity : 1 }] : []} onChange={value => { setEditionUuid(value[0]?.editionUuid ?? ""); setDirty(true); }} /></div>}
+      {kind === "available" && <p role="status" className="text-sm text-ctp-subtext1">{ownedPool?.ownedQuantity ?? 0} recorded owned in this printing and finish.</p>}
       {kind === "wanted" && <label className="flex min-h-12 items-center gap-3 text-sm"><input type="checkbox" checked={alternatives} onChange={event => setAlternatives(event.target.checked)} />Accept alternative printings</label>}
       <label className="block text-sm">Condition<select className={inputClass} value={condition} onChange={event => setCondition(event.target.value)}>{[...new Set([item?.condition ?? "Any", "Any", "Near mint", "Lightly played", "Moderately played", "Heavily played", "Damaged"])].map(value => <option key={value}>{value}</option>)}</select></label>
       <label className="block text-sm">Language<select className={inputClass} value={language} onChange={event => setLanguage(event.target.value)}>{[...new Set([item?.language ?? "Any", "Any", "English", "Japanese", "Chinese", "Korean"])].map(value => <option key={value}>{value}</option>)}</select></label>

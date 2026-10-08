@@ -75,7 +75,12 @@ Keep supporting methodology in docs/CALCULATIONS.md. Large result panels should 
 Use the shared `PrintingChoices` inside the existing sheet, with explicit edition artwork,
 readable set/collector labels and a persistent Apply action. Phones use artwork-and-details
 rows; desktop uses a wrapping grid. Selecting an edition never implies foil/nonfoil finish.
-Keep unspecified copies valid, including legacy inventory and imported lists.
+Keep unspecified copies valid, including legacy inventory and imported lists. Collection and
+binder finish is independent of printing: Unspecified finish, Nonfoil, or Foil. Existing
+records remain unspecified. Wants may use Any finish; available listings identify an exact
+finish pool. Show finish beside quantities in collection review, listings, and offers.
+Identify finishes redistributes copies within each printing without changing owned totals or
+proxies. Printing identification operates within a selected finish and preserves other finishes.
 
 Collection **Add copies** changes ownership. **Identify existing copies** redistributes the
 existing total across printing pools and preserves proxies. Keep all pools for a card in one

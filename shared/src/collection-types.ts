@@ -1,10 +1,21 @@
 import type { OmnidexDecklist } from "./omnidex-types.js";
 
+export type CardFinish = "unspecified" | "nonfoil" | "foil";
+export const CARD_FINISHES: readonly CardFinish[] = ["unspecified", "nonfoil", "foil"];
+export function isCardFinish(value: unknown): value is CardFinish {
+  return value === "unspecified" || value === "nonfoil" || value === "foil";
+}
+export function finishLabel(finish?: CardFinish): string {
+  return finish === "foil" ? "Foil" : finish === "nonfoil" ? "Nonfoil" : "Unspecified finish";
+}
+
 export interface CollectionEntry {
   cardUuid: string;
   cardName: string;
   /** Printing UUID. Omitted for the legacy/canonical card-level pool. */
   editionUuid?: string;
+  /** Omitted legacy values mean unspecified, never nonfoil. */
+  finish?: CardFinish;
   setPrefix?: string;
   collectorNumber?: string;
   ownedQuantity: number;
@@ -21,6 +32,8 @@ export interface CollectionUpdateLine {
   cardUuid: string;
   cardName: string;
   editionUuid?: string;
+  /** Omitted legacy values mean unspecified, never nonfoil. */
+  finish?: CardFinish;
   setPrefix?: string;
   collectorNumber?: string;
   quantity: number;
@@ -29,8 +42,8 @@ export interface CollectionUpdateLine {
 
 export type CollectionInventoryMode = "canonical" | "edition";
 
-export function collectionEntryKey(entry: Pick<CollectionEntry, "cardUuid" | "editionUuid">): string {
-  return `${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`;
+export function collectionEntryKey(entry: { cardUuid: string; editionUuid?: string | null; finish?: CardFinish }): string {
+  return `${entry.cardUuid}:${entry.editionUuid ?? "canonical"}${entry.finish && entry.finish !== "unspecified" ? `:${entry.finish}` : ""}`;
 }
 
 /** Pool every printing with the legacy canonical quantity. Deck recipes identify cards, not printings. */
@@ -147,7 +160,7 @@ export function collectionCompletionLines(required: CollectionUpdateLine[], entr
     const owned = totals.get(collectionKey(line.cardName))?.ownedQuantity ?? 0;
     const shortfall = Math.max(0, line.quantity - owned);
     if (!shortfall) return [];
-    const canonical = entries.find(entry => entry.cardUuid === line.cardUuid && !entry.editionUuid);
+    const canonical = entries.find(entry => entry.cardUuid === line.cardUuid && !entry.editionUuid && (!entry.finish || entry.finish === "unspecified"));
     return [{ cardUuid: line.cardUuid, cardName: line.cardName, quantity: (canonical?.ownedQuantity ?? 0) + shortfall, proxyQuantity: canonical?.proxyQuantity ?? 0 }];
   });
 }

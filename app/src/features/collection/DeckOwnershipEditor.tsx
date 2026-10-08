@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { collectionEntryKey, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
+import { collectionEntryKey, finishLabel, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import CardResult from "../../components/CardResult";
 import DialogSheet from "../../components/ui/DialogSheet";
 import Button from "../../components/ui/Button";
@@ -19,8 +19,8 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
   const [error, setError] = useState<string | null>(null);
   const rows = useMemo(() => required.map(line => {
     const saved = baseline.filter(entry => entry.cardUuid === line.cardUuid);
-    const canonical = saved.find(entry => !entry.editionUuid) ?? { cardUuid: line.cardUuid, cardName: line.cardName, ownedQuantity: 0, proxyQuantity: 0, updatedAt: "" };
-    return { required: line, entries: [canonical, ...saved.filter(entry => entry.editionUuid)] };
+    const canonical = saved.find(entry => !entry.editionUuid && (!entry.finish || entry.finish === "unspecified")) ?? { cardUuid: line.cardUuid, cardName: line.cardName, ownedQuantity: 0, proxyQuantity: 0, updatedAt: "" };
+    return { required: line, entries: [canonical, ...saved.filter(entry => entry.editionUuid || (entry.finish && entry.finish !== "unspecified"))] };
   }), [baseline, required]);
   const value = (entry: CollectionEntry) => quantities[collectionEntryKey(entry)] ?? String(entry.ownedQuantity);
   const changed = rows.flatMap(row => row.entries.filter(entry => value(entry) !== String(entry.ownedQuantity)));
@@ -35,13 +35,13 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
       && (!element || cardsByName.get(row.required.cardName)?.elements.includes(element));
   });
   function field(entry: CollectionEntry, label: string) {
-    return <label key={collectionEntryKey(entry)} className="mt-2 block text-xs text-ctp-subtext1">{label}<input aria-label={`${label} for ${entry.cardName}`} type="number" min={0} max={9999} step={1} inputMode="numeric" disabled={busy} value={value(entry)} onChange={event => setQuantities(current => ({ ...current, [collectionEntryKey(entry)]: event.target.value }))} className="mt-1 min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>;
+    return <label key={collectionEntryKey(entry)} className="mt-2 block text-xs text-ctp-subtext1">{label} · {finishLabel(entry.finish)}<input aria-label={`${label} · ${finishLabel(entry.finish)} for ${entry.cardName}`} type="number" min={0} max={9999} step={1} inputMode="numeric" disabled={busy} value={value(entry)} onChange={event => setQuantities(current => ({ ...current, [collectionEntryKey(entry)]: event.target.value }))} className="mt-1 min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>;
   }
   async function save() {
     if (!changed.length || invalid || busy) return;
     setBusy(true); setError(null);
     try {
-      const saved = await onSave(changed.map(entry => ({ cardUuid: entry.cardUuid, cardName: entry.cardName, editionUuid: entry.editionUuid, setPrefix: entry.setPrefix, collectorNumber: entry.collectorNumber, quantity: Number(value(entry)), proxyQuantity: entry.proxyQuantity })));
+      const saved = await onSave(changed.map(entry => ({ cardUuid: entry.cardUuid, cardName: entry.cardName, editionUuid: entry.editionUuid, finish: entry.finish, setPrefix: entry.setPrefix, collectorNumber: entry.collectorNumber, quantity: Number(value(entry)), proxyQuantity: entry.proxyQuantity })));
       if (saved) onDismiss();
       else setError("Your changes have not been confirmed. Try saving again; your draft is still here.");
     } catch { setError("Could not save ownership. Your draft is still here; try again."); }

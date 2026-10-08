@@ -10,23 +10,23 @@ import { priceKey, type CardPriceEntry } from "./pricing.js";
  */
 export const TCGPLAYER_MARKETPLACE_NET_RATE = 1 - 0.1075 - 0.025;
 
-/** Market estimate adjusted to likely standard-Marketplace seller proceeds. Finish/condition are not tracked in collection inventory. */
+/** Market estimate adjusted to likely standard-Marketplace seller proceeds. Finish is respected; unspecified finish retains the normal-price estimate. */
 export function computeCollectionValue(entries: CollectionEntry[], cards: Card[], prices: ReadonlyMap<string, CardPriceEntry>) {
   const valid = (value: number | null | undefined): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
-  const market = (price: CardPriceEntry | undefined) => valid(price?.normal?.market) ? price.normal.market : undefined;
+  const market = (price: CardPriceEntry | undefined, foil = false) => { const quote = foil ? price?.foil : price?.normal; return valid(quote?.market) ? quote.market : undefined; };
   const normalize = (name: string) => name.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US");
   const cheapest = new Map<string, number>();
-  for (const price of prices.values()) {
-    const value = market(price);
-    const name = normalize(price.cardName);
+  for (const foil of [false, true]) for (const price of prices.values()) {
+    const value = market(price, foil);
+    const name = `${foil}:${normalize(price.cardName)}`;
     if (value !== undefined && value < (cheapest.get(name) ?? Infinity)) cheapest.set(name, value);
   }
   const byUuid = new Map(cards.map(card => [card.uuid, card]));
   const cardPrices = new Map<string, number>();
   for (const card of cards) {
-    for (const edition of card.editions) {
-      const value = market(prices.get(priceKey(edition.set.prefix, edition.collector_number)));
-      if (value !== undefined && value < (cardPrices.get(card.uuid) ?? Infinity)) cardPrices.set(card.uuid, value);
+    for (const foil of [false, true]) for (const edition of card.editions) {
+      const value = market(prices.get(priceKey(edition.set.prefix, edition.collector_number)), foil);
+      if (value !== undefined && value < (cardPrices.get(`${foil}:${card.uuid}`) ?? Infinity)) cardPrices.set(`${foil}:${card.uuid}`, value);
     }
   }
   let cents = 0, ownedCopies = 0, pricedCopies = 0, unspecifiedCopies = 0;
@@ -40,8 +40,8 @@ export function computeCollectionValue(entries: CollectionEntry[], cards: Card[]
     const number = edition?.collector_number ?? entry.collectorNumber;
     // Never substitute a cheaper printing for an unpriced exact printing.
     const value = entry.editionUuid
-      ? (set && number ? market(prices.get(priceKey(set, number))) : undefined)
-      : (cardPrices.get(entry.cardUuid) ?? cheapest.get(normalize(card?.name ?? entry.cardName)));
+      ? (set && number ? market(prices.get(priceKey(set, number)), entry.finish === "foil") : undefined)
+      : (cardPrices.get(`${entry.finish === "foil"}:${entry.cardUuid}`) ?? cheapest.get(`${entry.finish === "foil"}:${normalize(card?.name ?? entry.cardName)}`));
     if (!entry.editionUuid) unspecifiedCopies += quantity;
     if (value !== undefined) { cents += Math.round(value * 100) * quantity; pricedCopies += quantity; }
   }

@@ -19,12 +19,12 @@ export function CollectionValueDisplay({ value, updatedAt, loading, error, retry
     <div className="space-y-2 rounded-lg bg-ctp-mantle p-3 text-xs leading-relaxed text-ctp-subtext1">
       <p>Estimated proceeds after TCGplayer’s standard 13.25% Marketplace percentage fees (10.75% commission + 2.5% transaction processing). Includes cards in decks and lent out; excludes proxies and cards marked only as “might own”.</p>
       {value.marketTotal !== null && <p>Market-price total: {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value.marketTotal)} · estimated percentage fees: {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value.feeEstimate!)}. The $0.30 fixed fee per checkout, shipping, tax, condition, and any other seller fees are not estimated.</p>}
-      <p>Exact printings use their matching price. Unspecified copies use the cheapest priced printing. Only nonfoil market prices are used. Missing nonfoil prices are excluded; finish and condition aren’t tracked.</p>
+      <p>Exact printings use their matching price. Unspecified copies use the cheapest priced printing. Foil copies use foil prices. Unspecified finish uses a nonfoil estimate; missing prices are excluded. Condition is not priced.</p>
       {available && <p>{value.pricedCopies} of {value.ownedCopies} copies priced · {value.unspecifiedCopies} copies with unspecified printing. Prices updated {new Date(updatedAt!).toLocaleDateString()}.</p>}
       {error && <p role="status">{available ? "Showing cached prices. " : ""}{error} <button type="button" onClick={retry} disabled={loading} className="min-h-12 rounded-lg px-3 text-ctp-blue focus-visible:outline-2">{loading ? "Refreshing…" : "Retry prices"}</button></p>}
     </div>
   </details>
-    {available && value.missingCopies > 0 && <p className="text-xs text-ctp-subtext1">Partial estimate · {value.missingCopies} copies have no nonfoil price.</p>}
+    {available && value.missingCopies > 0 && <p className="text-xs text-ctp-subtext1">Partial estimate · {value.missingCopies} copies have no matching price.</p>}
     {error && available && <p className="text-xs text-ctp-subtext1">Using cached prices; refresh unavailable.</p>}
   </div>;
 }

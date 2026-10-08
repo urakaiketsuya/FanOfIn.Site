@@ -1,7 +1,7 @@
 import { databaseBatch } from "./database";
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0033";
+export const REQUIRED_SCHEMA_VERSION = "0034";
 
 export interface ServiceHealth {
   success: boolean;
@@ -23,8 +23,8 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
       user_decks.revision, user_decks.moderation_status, user_decks.primer_markdown, user_decks.tags_json, user_decks.published_title, user_decks.maybeboard_json
       FROM users CROSS JOIN user_decks LIMIT 0`),
       env.ACCOUNT_DB.prepare("SELECT id FROM deck_reports LIMIT 0"),
-      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, owned_quantity, proxy_quantity FROM collection_entries LIMIT 0"),
-      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, owned_quantity, proxy_quantity FROM collection_printing_entries LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, finish, owned_quantity, proxy_quantity FROM collection_entries LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, finish, owned_quantity, proxy_quantity FROM collection_printing_entries LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, card_name FROM shared_card_watches LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, might_own, loans_json, assignments_json, revision FROM collection_card_tracking LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, provider, provider_subject FROM auth_identities LIMIT 0"),
@@ -39,9 +39,9 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
       env.ACCOUNT_DB.prepare("SELECT user_id, deck_fingerprint, deck_identity, revision FROM analysis_profiles LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT target_kind, target_id, locked FROM deck_comment_threads LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT id, parent_id, status FROM deck_comments LIMIT 0"),
-      env.ACCOUNT_DB.prepare("SELECT user_id, kind, card_uuid, edition_uuid, quantity FROM binder_items LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, kind, card_uuid, edition_uuid, finish, quantity FROM binder_items LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT id, status, current_revision, sender_received, recipient_received FROM trades LIMIT 0"),
-      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, binder_item_id, quantity FROM trade_card_reservations LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, finish, binder_item_id, quantity FROM trade_card_reservations LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid FROM trade_capacity_conflicts LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, request_id, request_hash FROM collection_update_receipts LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT id, user_id, name_key, revision, mutation_token FROM deck_folders LIMIT 0"),

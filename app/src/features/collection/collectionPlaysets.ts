@@ -24,7 +24,7 @@ export function completePlaysetLine(card: Card, entries: CollectionEntry[]): Col
   const owned = ownEntries.reduce((sum, entry) => sum + Math.max(0, entry.ownedQuantity), 0);
   const shortfall = Math.max(0, target - owned);
   if (!shortfall) return null;
-  const canonical = ownEntries.find(entry => !entry.editionUuid);
+  const canonical = ownEntries.find(entry => !entry.editionUuid && (!entry.finish || entry.finish === "unspecified"));
   return { cardUuid: card.uuid, cardName: card.name, quantity: (canonical?.ownedQuantity ?? 0) + shortfall, proxyQuantity: canonical?.proxyQuantity ?? 0 };
 }
 

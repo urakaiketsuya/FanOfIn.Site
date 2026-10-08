@@ -21,7 +21,7 @@ export default function PrintingChoices({ card, quantity, value, onChange, entri
   return <div className="space-y-3">
     <div className="identity-surface rounded-2xl p-4">
       <p className="text-2xl font-semibold tabular-nums">{specified} of {quantity} identified</p>
-      <p className="mt-1 text-sm text-ctp-subtext1">{Math.max(0, quantity - specified)} unspecified · Edition and artwork only; finish is not tracked.</p>
+      <p className="mt-1 text-sm text-ctp-subtext1">{Math.max(0, quantity - specified)} unspecified · Edition and artwork; finish is recorded separately.</p>
     </div>
     {specified > quantity && <p role="alert" className="text-sm text-ctp-red">Choose printings for at most {quantity} copies.</p>}
     <div className="flex flex-wrap gap-2"><Button disabled={disabled || !value.length} onClick={() => onChange([])}>Use unspecified copies</Button>{allowSplit && <Button aria-pressed={split} onClick={() => setSplit(!split)}>{split ? "Choose one printing" : "Split copies"}</Button>}</div>
@@ -31,7 +31,7 @@ export default function PrintingChoices({ card, quantity, value, onChange, entri
     {!!card.editions.length && !editions.length && <p role="status">No printings match. Try another set or number.</p>}
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">{editions.map(edition => {
       const count = value.find(item => item.editionUuid === edition.uuid)?.quantity ?? 0;
-      const owned = entries?.find(entry => entry.cardUuid === card.uuid && entry.editionUuid === edition.uuid)?.ownedQuantity ?? 0;
+      const owned = entries?.filter(entry => entry.cardUuid === card.uuid && entry.editionUuid === edition.uuid).reduce((sum, entry) => sum + entry.ownedQuantity, 0) ?? 0;
       return <CardResult compactOnMobile key={edition.uuid} card={card} editionUuid={edition.uuid} name={card.name} selected={count > 0} newTab>
         <p className="mt-2 break-words text-sm font-medium">{printingLabel(edition)}</p>
         <p className="text-xs text-ctp-subtext1">{rarityLabel(edition.rarity)}{entries ? ` · ${owned} recorded owned` : ""}</p>

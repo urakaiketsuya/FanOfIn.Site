@@ -1,3 +1,4 @@
+import { collectionEntryKey, finishLabel } from "@gatcg/shared";
 import type { Card, CollectionEntry, CollectionUpdateLine } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardArtTile from "../../components/CardArtTile";
@@ -13,7 +14,7 @@ export default function CollectionChangesReview({ drafts, savedEntries, cards, b
 
     {!rows.length ? <p role="status">No unsaved changes remain.</p> : <>
       <div className="space-y-3">{rows.map(([key, line]) => {
-        const saved = savedEntries.find(entry => entry.cardUuid === line.cardUuid && (entry.editionUuid ?? null) === (line.editionUuid ?? null));
+        const saved = savedEntries.find(entry => collectionEntryKey(entry) === collectionEntryKey(line));
         const original = cards.find(card => card.uuid === line.cardUuid);
         const edition = original?.editions.find(edition => edition.uuid === line.editionUuid);
         const card = original && edition ? {...original, editions:[edition]} : original;
@@ -22,7 +23,7 @@ export default function CollectionChangesReview({ drafts, savedEntries, cards, b
         return <article key={key} className="flex gap-3 rounded-xl border border-ctp-surface1 p-3">
           <div className="w-20 shrink-0">{card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`Card details: ${line.cardName} (opens in a new tab)`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={card} name={line.cardName}/></Link> : <CardArtTile card={undefined} name={line.cardName}/>}</div>
           <div className="min-w-0 flex-1"><h3 className="break-words text-sm font-semibold">{line.cardName}</h3>
-            <p className="mt-1 break-words text-xs text-ctp-subtext1">{line.editionUuid ? `${edition?.set.prefix ?? line.setPrefix ?? saved?.setPrefix ?? "Specific printing"} #${edition?.collector_number ?? line.collectorNumber ?? saved?.collectorNumber ?? "?"}` : "Unspecified printing"}</p>
+            <p className="mt-1 break-words text-xs text-ctp-subtext1">{line.editionUuid ? `${edition?.set.prefix ?? line.setPrefix ?? saved?.setPrefix ?? "Specific printing"} #${edition?.collector_number ?? line.collectorNumber ?? saved?.collectorNumber ?? "?"}` : "Unspecified printing"} · {finishLabel(line.finish)}</p>
             <dl className="mt-3 space-y-1 text-sm"><div><dt className="inline">Owned: </dt><dd className="inline font-semibold">{before} → {after}</dd>{before !== after && <span className="ml-2 text-xs">({after > before ? "+" : ""}{after - before})</span>}</div>
               {(beforeProxy !== afterProxy || beforeProxy > 0) && <div><dt className="inline">Proxies: </dt><dd className="inline font-semibold">{beforeProxy} → {afterProxy}</dd></div>}
             </dl>

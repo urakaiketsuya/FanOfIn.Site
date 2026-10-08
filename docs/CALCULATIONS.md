@@ -3314,11 +3314,11 @@ Quick completion adds only that shortfall to the unspecified-printing entry, pre
 
 ## Collection value (`shared/src/collectionValue.ts`)
 
-Estimated USD value sums each physical inventory row's owned quantity × market price, rounded to cents per unit. Canonical and exact-printing pools are separate inventory, so both count once. Proxies, uncertainty flags and deck recipes add no value; assigned and lent copies remain part of owned inventory. Exact printings join by set prefix and collector number (catalog edition UUID first, stored metadata fallback); missing prices never fall back to another printing. Unspecified copies use the cheapest available printing by normalized card name. Each printing uses normal market price only; missing normal prices are excluded rather than replaced with foil prices; collection inventory does not track finish or condition. Invalid/negative prices are excluded, zero is valid. Unpriced copies are reported separately; an entirely unpriced nonempty collection returns null, an empty collection returns zero. Quantity drafts update the estimate and are labeled unsaved. The UI shows the published price timestamp, cached-refresh failures, and partial coverage.
+Estimated USD value sums each physical inventory row's owned quantity × market price, rounded to cents per unit. Canonical and exact-printing pools are separate inventory, so both count once. Proxies, uncertainty flags and deck recipes add no value; assigned and lent copies remain part of owned inventory. Exact printings join by set prefix and collector number (catalog edition UUID first, stored metadata fallback); missing prices never fall back to another printing. Unspecified copies use the cheapest available printing by normalized card name. Foil pools use foil market prices; nonfoil and unspecified-finish pools use normal market prices (the latter is an estimate). Unspecified-printing pools choose the cheapest price within the applicable finish. A missing finish quote is excluded rather than substituted with another finish. Condition is not priced. Invalid/negative prices are excluded, zero is valid. Unpriced copies are reported separately; an entirely unpriced nonempty collection returns null, an empty collection returns zero. Quantity drafts update the estimate and are labeled unsaved. The UI shows the published price timestamp, cached-refresh failures, and partial coverage.
 
 ### Card locations and loan returns
 
-`/card-locations` manages physical allocation independently of collection quantities. Matching saved decklists do not reserve copies until the user saves a location. Loans remain owned but cannot also be allocated to a deck. Releasing assigned copies to lend them requires an explicit draft action followed by save. Partial returns split a loan into an outstanding row and a returned-history row, conserving the original copy total; only the returned portion becomes available again. Existing per-card revision checks and atomic tracking writes remain in use. No additional inventory or finish-tracking fields are introduced.
+`/card-locations` manages physical allocation independently of collection quantities. Matching saved decklists do not reserve copies until the user saves a location. Loans remain owned but cannot also be allocated to a deck. Releasing assigned copies to lend them requires an explicit draft action followed by save. Partial returns split a loan into an outstanding row and a returned-history row, conserving the original copy total; only the returned portion becomes available again. Existing per-card revision checks and atomic tracking writes remain in use. Locations remain card-level; collection inventory separately tracks printing and finish pools.
 
 
 ### Collection and trading binder availability
@@ -4867,3 +4867,21 @@ percentage. An empty filtered population renders no matching rows.
 Both the analysis refresh and community blend rebuild Staples from the full
 published source lists via `loadCommunityStaples`. An absent or partial crawler
 cache must not overwrite the published Staples population with a smaller subset.
+
+
+### Collection and binder finishes
+
+Inventory identity is card + optional edition + finish (`unspecified`, `nonfoil`, `foil`).
+Omitted legacy finishes mean unspecified. Each pool has independent physical and proxy
+quantities; deck coverage and location availability sum all pools without double counting.
+Quantity drafts and CSV round-trips preserve finish. Re-identifying finish conserves ownership
+within each printing and retains proxies in their original pools. All of a card's pending pools
+remain in one atomic save batch with snapshot checks and retry receipts.
+
+Binder availability is capped by the exact printing/finish pool and card-level free quantity.
+An unspecified available finish is its own recorded pool, not permission to use foil/nonfoil
+copies. An unspecified wanted finish means any finish. Known finish wants match only that
+finish; edition alternatives do not relax finish requirements. Accepted revisions reserve the
+snapshotted finish. Acceptance rejects changed finishes, and completed trades transfer and
+record only that finish, preserving unrelated pools. Migration 0034 retains legacy rows,
+reservations, and transaction history as unspecified finish.

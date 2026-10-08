@@ -1,3 +1,4 @@
+import { collectionEntryKey } from "@gatcg/shared";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
@@ -12,14 +13,14 @@ import CardLocationSummary from "./CardLocationSummary";
 import CollectionBrowser from "./CollectionBrowser";
 import Button from "../../components/ui/Button";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { collectionTotalsByCard, type AccountUser, type Card, type CollectionEntry, type CollectionTransaction, type CollectionUpdateLine, type CollectionUpdateMode, type SavedDeck } from "@gatcg/shared";
+import { collectionTotalsByCard, type AccountUser, type CollectionEntry, type CollectionTransaction, type CollectionUpdateLine, type CollectionUpdateMode, type SavedDeck } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "../account/GoogleSignInButton";
 import DiscordSignInButton from "../account/DiscordSignInButton";
 import PasswordSignInPanel from "../account/PasswordSignInPanel";
-import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, collectionCsv, crossDeckCollectionShortages, deckCollectionLines, missingCollectionList, setRarityCollectionLines, summarizeAtLeastChanges } from "./collectionBatch";
+import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, collectionCsv, parseCollectionCsv, crossDeckCollectionShortages, deckCollectionLines, missingCollectionList, setRarityCollectionLines, summarizeAtLeastChanges } from "./collectionBatch";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
@@ -40,35 +41,6 @@ function downloadMissingList(lines: { card: string; missing: number }[]) {
   const anchor = document.createElement("a"); anchor.href = url; anchor.download = "fanofin-missing-cards.txt"; anchor.click(); URL.revokeObjectURL(url);
 }
 
-function parseCsv(text: string, cards: Card[]): { lines: CollectionUpdateLine[]; unresolved: string[] } {
-  const byName = new Map(cards.map((card) => [card.name.toLocaleLowerCase("en-US"), card]));
-  const byUuid = new Map(cards.map((card) => [card.uuid, card]));
-  const lines: CollectionUpdateLine[] = []; const unresolved: string[] = [];
-  for (const [index, raw] of text.split(/\r?\n/).entries()) {
-    if (!raw.trim() || (index === 0 && /card|quantity/i.test(raw))) continue;
-    const columns = raw.match(/(?:"([^"]*(?:""[^"]*)*)"|([^,]*))(?:,|$)/g)?.map((part) => part.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"').trim()) ?? [];
-    let card: Card | undefined; let quantity = 0; let proxyQuantity = 0;
-    if (columns.length >= 3 && byUuid.has(columns[0])) {
-      card = byUuid.get(columns[0]);
-      const edition = card?.editions.find((item) => item.uuid === columns[2]);
-      if (columns.length >= 7) { quantity = Number(columns[5]); proxyQuantity = Number(columns[6] ?? 0); }
-      else { quantity = Number(columns[2]); proxyQuantity = Number(columns[3] ?? 0); }
-      if (edition) lines.push({ cardUuid: card!.uuid, cardName: card!.name, editionUuid: edition.uuid, setPrefix: edition.set.prefix, collectorNumber: edition.collector_number, quantity, proxyQuantity: Number.isInteger(proxyQuantity) && proxyQuantity >= 0 ? proxyQuantity : 0 });
-      if (edition) continue;
-    }
-    else { quantity = Number(columns[0]); card = byName.get((columns[1] ?? "").toLocaleLowerCase("en-US")); proxyQuantity = Number(columns[2] ?? 0); }
-    if (!card || !Number.isInteger(quantity) || quantity < 0) { unresolved.push(raw); continue; }
-    lines.push({ cardUuid: card.uuid, cardName: card.name, quantity, proxyQuantity: Number.isInteger(proxyQuantity) && proxyQuantity >= 0 ? proxyQuantity : 0 });
-  }
-  const merged = new Map<string, CollectionUpdateLine>();
-  for (const line of lines) {
-    const key = `${line.cardUuid}:${line.editionUuid ?? "canonical"}`;
-    const current = merged.get(key);
-    if (current) { current.quantity += line.quantity; current.proxyQuantity = (current.proxyQuantity ?? 0) + (line.proxyQuantity ?? 0); }
-    else merged.set(key, { ...line });
-  }
-  return { lines: Array.from(merged.values()), unresolved };
-}
 
 export default function CollectionIndex() {
   useDocumentTitle("My Collection", "Track cards you own and see which decks you can build.");
@@ -93,7 +65,7 @@ export default function CollectionIndex() {
   const savingRef = useRef(false);
   const [saveProgress,setSaveProgress] = useState("");
   const entries = useMemo(() => {
-    const merged = new Map(savedEntries.map(entry => [`${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`, entry]));
+    const merged = new Map(savedEntries.map(entry => [collectionEntryKey(entry), entry]));
     for (const [key, line] of Object.entries(drafts)) merged.set(key, { ...line, ownedQuantity: line.quantity, proxyQuantity: line.proxyQuantity ?? 0, updatedAt: "" });
     return [...merged.values()];
   }, [savedEntries, drafts]);
@@ -170,7 +142,7 @@ export default function CollectionIndex() {
         setSaveProgress(`Saving ${saved + 1}–${saved + Object.keys(batch.lines).length} of ${pendingCount} changes…`);
         await sendCollectionBatch(()=>accountApi.updateCollection({requestId:batch.requestId, mode:"set",source:"Collection quantity edits",lines:Object.values(batch.lines)}));
         setEntries(current => {
-          const merged = new Map(current.map(entry => [`${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`, entry]));
+          const merged = new Map(current.map(entry => [collectionEntryKey(entry), entry]));
           for (const [key,line] of Object.entries(batch.lines)) merged.set(key, {...line,ownedQuantity:line.quantity,proxyQuantity:line.proxyQuantity ?? 0,updatedAt:new Date().toISOString()});
           return [...merged.values()];
         });
@@ -234,7 +206,7 @@ export default function CollectionIndex() {
     </div>
     <div hidden={view !== "import"} className="[&_button]:min-h-12 [&_select]:min-h-12">
 <button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button>
-    <Panel className="mt-5"><h2 className="font-semibold">Import CSV or a quantity list</h2><p className="mt-1 text-xs text-ctp-subtext1">Accepts exported CSV or lines like <code>4,Dungeon Guide</code>. You’ll see unresolved rows before anything is saved.</p><textarea aria-label="Collection import text" rows={6} value={csv} onChange={(event) => setCsv(event.target.value)} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /><div className="mt-2 flex flex-wrap gap-2"><select aria-label="Import quantity mode" value={mode} onChange={(event) => setMode(event.target.value as CollectionUpdateMode)} className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-sm"><option value="at-least">Set to at least</option><option value="add">Add quantities</option><option value="set">Replace quantities</option></select><button disabled={busy || !csv.trim()} onClick={() => { const parsed = parseCsv(csv, cards); if (parsed.unresolved.length) { setNotice(`${parsed.unresolved.length} row${parsed.unresolved.length === 1 ? "" : "s"} could not be resolved. Fix them before importing: ${parsed.unresolved.slice(0, 3).join(" | ")}`); return; } const copies = parsed.lines.reduce((sum, line) => sum + line.quantity, 0); if (!parsed.lines.length || !window.confirm(`${mode === "add" ? "Add" : mode === "set" ? "Set" : "Set to at least"} ${copies} copies across ${parsed.lines.length} cards?`)) return; void update(parsed.lines, "CSV import", mode).then(() => setCsv("")); }} className="rounded bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Preview and import</button></div></Panel>
+    <Panel className="mt-5"><h2 className="font-semibold">Import CSV or a quantity list</h2><p className="mt-1 text-xs text-ctp-subtext1">Accepts exported CSV or lines like <code>4,Dungeon Guide</code>. You’ll see unresolved rows before anything is saved.</p><textarea aria-label="Collection import text" rows={6} value={csv} onChange={(event) => setCsv(event.target.value)} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /><div className="mt-2 flex flex-wrap gap-2"><select aria-label="Import quantity mode" value={mode} onChange={(event) => setMode(event.target.value as CollectionUpdateMode)} className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-sm"><option value="at-least">Set to at least</option><option value="add">Add quantities</option><option value="set">Replace quantities</option></select><button disabled={busy || !csv.trim()} onClick={() => { const parsed = parseCollectionCsv(csv, cards); if (parsed.unresolved.length) { setNotice(`${parsed.unresolved.length} row${parsed.unresolved.length === 1 ? "" : "s"} could not be resolved. Fix them before importing: ${parsed.unresolved.slice(0, 3).join(" | ")}`); return; } const copies = parsed.lines.reduce((sum, line) => sum + line.quantity, 0); if (!parsed.lines.length || !window.confirm(`${mode === "add" ? "Add" : mode === "set" ? "Set" : "Set to at least"} ${copies} copies across ${parsed.lines.length} cards?`)) return; void update(parsed.lines, "CSV import", mode).then(() => setCsv("")); }} className="rounded bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Preview and import</button></div></Panel>
     </div>
     <div hidden={view !== "coverage"}>
     <Link to="/card-locations" className="mt-4 inline-flex min-h-12 items-center text-ctp-blue underline">Manage deck locations and loans →</Link>

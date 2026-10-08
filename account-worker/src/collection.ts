@@ -1,3 +1,4 @@
+import { collectionEntryKey, isCardFinish, type CardFinish } from "@gatcg/shared";
 import { assetJson } from "./assets";
 import type { PrintingCatalog } from "./printing-catalog";
 import type { CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, SharedCardWatch } from "@gatcg/shared";
@@ -13,6 +14,7 @@ interface StoredChange {
   cardUuid: string;
   cardName: string;
   editionUuid?: string;
+  finish?: CardFinish;
   setPrefix?: string;
   collectorNumber?: string;
   beforeOwned: number;
@@ -31,14 +33,15 @@ function parseLines(value: unknown): CollectionUpdateLine[] {
     const cardName = typeof line.cardName === "string" ? line.cardName.trim().replace(/\s+/g, " ") : "";
     const editionUuid = typeof line.editionUuid === "string" ? line.editionUuid.trim() : undefined;
     if (line.editionUuid !== undefined && (typeof line.editionUuid !== "string" || !/^[a-zA-Z0-9_-]{1,200}$/.test(editionUuid ?? ""))) throw badRequest("Invalid printing ID");
-    const key = `${cardUuid}:${editionUuid ?? "canonical"}`;
+    if (line.finish !== undefined && !isCardFinish(line.finish)) throw badRequest("Invalid card finish");
+    const key = collectionEntryKey({ cardUuid, editionUuid, finish: line.finish });
     if (!cardUuid || cardUuid.length > 200 || !cardName || cardName.length > 200 || (editionUuid?.length ?? 0) > 200 || seen.has(key)) throw badRequest("Invalid or duplicate collection card");
     if (!Number.isInteger(line.quantity) || line.quantity! < 0 || line.quantity! > MAX_QUANTITY) throw badRequest("Invalid collection quantity");
     const proxyQuantity = line.proxyQuantity ?? 0;
     if (!Number.isInteger(proxyQuantity) || proxyQuantity < 0 || proxyQuantity > MAX_QUANTITY) throw badRequest("Invalid proxy quantity");
     for (const value of [line.expectedOwnedQuantity, line.expectedProxyQuantity]) if (value !== undefined && (!Number.isSafeInteger(value) || value < 0 || value > MAX_QUANTITY)) throw badRequest("Invalid collection snapshot");
     seen.add(key);
-    return { expectedOwnedQuantity: line.expectedOwnedQuantity, expectedProxyQuantity: line.expectedProxyQuantity, cardUuid, cardName, editionUuid, setPrefix: typeof line.setPrefix === "string" ? line.setPrefix.trim().slice(0, 40) : undefined, collectorNumber: typeof line.collectorNumber === "string" ? line.collectorNumber.trim().slice(0, 80) : undefined, quantity: line.quantity!, proxyQuantity };
+    return { expectedOwnedQuantity: line.expectedOwnedQuantity, expectedProxyQuantity: line.expectedProxyQuantity, cardUuid, cardName, editionUuid, finish: line.finish, setPrefix: typeof line.setPrefix === "string" ? line.setPrefix.trim().slice(0, 40) : undefined, collectorNumber: typeof line.collectorNumber === "string" ? line.collectorNumber.trim().slice(0, 80) : undefined, quantity: line.quantity!, proxyQuantity };
   });
 }
 
@@ -50,8 +53,8 @@ export async function listCollection(env: Env, user: AuthUser): Promise<{ entrie
   ]);
   return {
     entries: [
-      ...entries.results.map((row) => ({ cardUuid: String(row.card_uuid), cardName: String(row.card_name), ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
-      ...printings.results.map((row) => ({ cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: String(row.edition_uuid), setPrefix: row.set_prefix ? String(row.set_prefix) : undefined, collectorNumber: row.collector_number ? String(row.collector_number) : undefined, ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
+      ...entries.results.map((row) => ({ finish: (row.finish ?? "unspecified") as CardFinish, cardUuid: String(row.card_uuid), cardName: String(row.card_name), ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
+      ...printings.results.map((row) => ({ finish: (row.finish ?? "unspecified") as CardFinish, cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: String(row.edition_uuid), setPrefix: row.set_prefix ? String(row.set_prefix) : undefined, collectorNumber: row.collector_number ? String(row.collector_number) : undefined, ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
     ],
     transactions: transactions.results.map((row) => ({ id: row.id!, source: row.source!, lineCount: (JSON.parse(row.changes_json!) as unknown[]).length, createdAt: row.created_at!, undoneAt: row.undone_at })),
   };
@@ -86,22 +89,22 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
     }
   }
   const [canonical, printings] = await Promise.all([
-    env.ACCOUNT_DB.prepare("SELECT card_uuid, owned_quantity, proxy_quantity FROM collection_entries WHERE user_id=? AND card_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>!line.editionUuid).map(line=>line.cardUuid))).all<{card_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
-    env.ACCOUNT_DB.prepare("SELECT edition_uuid, owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id=? AND edition_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>line.editionUuid).map(line=>line.editionUuid))).all<{edition_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
+    env.ACCOUNT_DB.prepare("SELECT card_uuid, finish, owned_quantity, proxy_quantity FROM collection_entries WHERE user_id=? AND card_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>!line.editionUuid).map(line=>line.cardUuid))).all<{card_uuid:string;finish:CardFinish;owned_quantity:number;proxy_quantity:number}>(),
+    env.ACCOUNT_DB.prepare("SELECT edition_uuid, finish, owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id=? AND edition_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>line.editionUuid).map(line=>line.editionUuid))).all<{edition_uuid:string;finish:CardFinish;owned_quantity:number;proxy_quantity:number}>(),
   ]);
-  const canonicalById = new Map(canonical.results.map(row=>[row.card_uuid,row]));
-  const printingById = new Map(printings.results.map(row=>[row.edition_uuid,row]));
+  const canonicalById = new Map(canonical.results.map(row=>[JSON.stringify([row.card_uuid, row.finish]),row]));
+  const printingById = new Map(printings.results.map(row=>[JSON.stringify([row.edition_uuid, row.finish]),row]));
   const changes: StoredChange[] = [];
   const expected: StoredChange[] = [];
   for (const line of lines) {
-    const current = line.editionUuid ? printingById.get(line.editionUuid) : canonicalById.get(line.cardUuid);
+    const current = line.editionUuid ? printingById.get(JSON.stringify([line.editionUuid, line.finish ?? "unspecified"])) : canonicalById.get(JSON.stringify([line.cardUuid, line.finish ?? "unspecified"]));
     const beforeOwned = Number(current?.owned_quantity ?? 0);
     const beforeProxy = Number(current?.proxy_quantity ?? 0);
     if ((line.expectedOwnedQuantity !== undefined && line.expectedOwnedQuantity !== beforeOwned) || (line.expectedProxyQuantity !== undefined && line.expectedProxyQuantity !== beforeProxy)) throw new ApiError("This collection changed since your draft began. Reload and review the quantities before saving.", 409, "collection_draft_conflict");
     const afterOwned = mode === "add" ? Math.min(MAX_QUANTITY, beforeOwned + line.quantity) : mode === "at-least" ? Math.max(beforeOwned, line.quantity) : line.quantity;
     const afterProxy = mode === "add" ? Math.min(MAX_QUANTITY, beforeProxy + (line.proxyQuantity ?? 0)) : mode === "at-least" ? Math.max(beforeProxy, line.proxyQuantity ?? 0) : (line.proxyQuantity ?? 0);
     expected.push({...line,beforeOwned,beforeProxy,afterOwned,afterProxy});
-    if (afterOwned !== beforeOwned || afterProxy !== beforeProxy || !current) changes.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid, setPrefix: line.setPrefix, collectorNumber: line.collectorNumber, beforeOwned, beforeProxy, afterOwned, afterProxy });
+    if (afterOwned !== beforeOwned || afterProxy !== beforeProxy || !current) changes.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid, finish: line.finish, setPrefix: line.setPrefix, collectorNumber: line.collectorNumber, beforeOwned, beforeProxy, afterOwned, afterProxy });
   }
   const transactionId = changes.length ? crypto.randomUUID() : "";
   const now = new Date().toISOString();
@@ -109,19 +112,19 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
     env.ACCOUNT_DB.prepare("INSERT INTO collection_update_receipts (user_id,request_id,request_hash,transaction_id,changed,expected_json,created_at) VALUES (?,?,?,?,?,?,?)").bind(user.id,requestId,hash,transactionId,changes.length,JSON.stringify(expected),now),
     ...[...changes].sort((a, b) => (b.afterOwned - b.beforeOwned) - (a.afterOwned - a.beforeOwned)).map((change) => change.editionUuid
       ? change.afterOwned === 0 && change.afterProxy === 0
-        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
+        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ? AND finish = ?").bind(user.id, change.editionUuid, change.finish ?? "unspecified")
         : env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries
-          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-          ON CONFLICT(user_id, edition_uuid) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
+          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at, finish) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(user_id, edition_uuid, finish) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
           collector_number = excluded.collector_number, owned_quantity = excluded.owned_quantity, proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
-          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.afterOwned, change.afterProxy, now)
+          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.afterOwned, change.afterProxy, now, change.finish ?? "unspecified")
       : change.afterOwned === 0 && change.afterProxy === 0
-      ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, change.cardUuid)
+      ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ? AND finish = ?").bind(user.id, change.cardUuid, change.finish ?? "unspecified")
       : env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries
-        (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-        ON CONFLICT(user_id, card_uuid) DO UPDATE SET card_name = excluded.card_name, owned_quantity = excluded.owned_quantity,
+        (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at, finish) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(user_id, card_uuid, finish) DO UPDATE SET card_name = excluded.card_name, owned_quantity = excluded.owned_quantity,
         proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
-        .bind(user.id, change.cardUuid, change.cardName, change.afterOwned, change.afterProxy, now)),
+        .bind(user.id, change.cardUuid, change.cardName, change.afterOwned, change.afterProxy, now, change.finish ?? "unspecified")),
     ...(changes.length ? [env.ACCOUNT_DB.prepare("INSERT INTO collection_transactions (id, user_id, source, changes_json, created_at) VALUES (?, ?, ?, ?, ?)")
       .bind(transactionId, user.id, source, JSON.stringify(changes), now)] : []),
   ]); } catch (error) {
@@ -169,19 +172,19 @@ export async function undoCollectionTransaction(env: Env, user: AuthUser, transa
   await env.ACCOUNT_DB.batch([
     ...changes.map((change) => change.editionUuid
       ? change.beforeOwned === 0 && change.beforeProxy === 0
-        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
+        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ? AND finish = ?").bind(user.id, change.editionUuid, change.finish ?? "unspecified")
         : env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries
-          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-          ON CONFLICT(user_id, edition_uuid) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
+          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at, finish) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(user_id, edition_uuid, finish) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
           collector_number = excluded.collector_number, owned_quantity = excluded.owned_quantity, proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
-          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.beforeOwned, change.beforeProxy, now)
+          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.beforeOwned, change.beforeProxy, now, change.finish ?? "unspecified")
       : change.beforeOwned === 0 && change.beforeProxy === 0
-      ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, change.cardUuid)
+      ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ? AND finish = ?").bind(user.id, change.cardUuid, change.finish ?? "unspecified")
       : env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries
-        (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-        ON CONFLICT(user_id, card_uuid) DO UPDATE SET card_name = excluded.card_name, owned_quantity = excluded.owned_quantity,
+        (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at, finish) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(user_id, card_uuid, finish) DO UPDATE SET card_name = excluded.card_name, owned_quantity = excluded.owned_quantity,
         proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
-        .bind(user.id, change.cardUuid, change.cardName, change.beforeOwned, change.beforeProxy, now)),
+        .bind(user.id, change.cardUuid, change.cardName, change.beforeOwned, change.beforeProxy, now, change.finish ?? "unspecified")),
     env.ACCOUNT_DB.prepare("UPDATE collection_transactions SET undone_at = ? WHERE id = ? AND user_id = ? AND undone_at IS NULL").bind(now, transactionId, user.id),
   ]);
   return true;
