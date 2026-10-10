@@ -58,12 +58,23 @@ npm run pipeline:syd:metadata   # cheap HTTP pass over every harvested deck
 npm run pipeline:syd:decklists  # browser pass, filtered decks only
 npm run pipeline:syd:build      # cache -> data/shoutatyourdecks/
 npm run pipeline:syd:analytics  # separate Standard/Pantheon community analytics
+npm run pipeline:syd:pantheon-boons # recover missing Boon sections and refresh Pantheon previews
 ```
 
 All resumable — `harvest.ts` picks up from `harvest-meta.json`'s last completed page, and
-`metadata`/`decklists` only ever process cache entries still missing that phase's data. `GATCG_FAST_MODE=1`
+`metadata`/`decklists` process cache entries missing that phase's data. Decklist fetching
+also revisits legacy Pantheon lists missing `pantheonDeck`, while a checked empty array
+is complete. Blank or incomplete exports fail without replacing cached data. `GATCG_FAST_MODE=1`
 caps each phase to a small sample (`config.sydFastModePageLimit`, default 3 pages ≈ 72 decks) for
 local iteration.
+
+The Pantheon boon backfill reads only lists missing `pantheonDeck`, preserves their other
+sections, and updates both published files and any existing cache records. It refreshes
+`analytics/pantheon/decks.json` and its data-manifest entry directly, without rebuilding
+unrelated analytics, so returning browsers invalidate their cached previews. An empty
+array means the source export was checked and contained no boons; failed reads remain
+missing and are retried on the next run. It uses two browser workers by default;
+`GATCG_SYD_BROWSER_CONCURRENCY` supports one to four workers.
 
 **Known flakiness**: local testing surfaced a real timing race in the site's own Blazor rendering —
 occasionally a "next page" click settles on content that's stable (by `waitForStablePageContent`'s

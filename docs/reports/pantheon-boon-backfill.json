@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-10-10T18:17:56.191205+00:00",
+  "source": "ShoutAtYourDecks",
+  "updatedDeckFiles": 328,
+  "indexedDecks": 341,
+  "beforeWithBoons": 7,
+  "coverage": {
+    "withBoons": 273,
+    "confirmedEmpty": 60,
+    "unchecked": 8
+  },
+  "unavailable": [
+    {
+      "id": "2200320a-22ee-4d76-be37-2fbc90114e5e",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/2200320a-22ee-4d76-be37-2fbc90114e5e"
+    },
+    {
+      "id": "2513b236-8add-4618-b403-823c3502358e",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/2513b236-8add-4618-b403-823c3502358e"
+    },
+    {
+      "id": "288f0fec-7cf3-451e-97e0-bf85f3adb624",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/288f0fec-7cf3-451e-97e0-bf85f3adb624"
+    },
+    {
+      "id": "2f25a684-67fa-412c-a442-daacdf8fdb09",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/2f25a684-67fa-412c-a442-daacdf8fdb09"
+    },
+    {
+      "id": "4c771a90-5325-4335-b52d-7224ab3ae5b0",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/4c771a90-5325-4335-b52d-7224ab3ae5b0"
+    },
+    {
+      "id": "96654d3e-acd3-4201-84f6-32b297ea1747",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/96654d3e-acd3-4201-84f6-32b297ea1747"
+    },
+    {
+      "id": "c5022abe-17ab-495e-ac22-65ab28afa5fd",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/c5022abe-17ab-495e-ac22-65ab28afa5fd"
+    },
+    {
+      "id": "cb14aa50-48e3-4284-b2eb-dbb67a7a376a",
+      "sourceStatus": "does-not-exist",
+      "url": "https://shoutatyourdecks.com/decks/cb14aa50-48e3-4284-b2eb-dbb67a7a376a"
+    }
+  ]
+}

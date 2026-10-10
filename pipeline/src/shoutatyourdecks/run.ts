@@ -4,7 +4,7 @@ import { listCachedDecks, writeCachedDeck, writeProgress, hydrateCacheFromPublis
 import { harvestDeckUrls } from "./harvest.js";
 import { fetchDeckSummary } from "./metadataFetch.js";
 import { shouldKeepDeck } from "./filter.js";
-import { fetchDecklists } from "./decklistFetch.js";
+import { fetchDecklists, needsDecklistRefresh } from "./decklistFetch.js";
 import { buildShoutAtYourDecksIndex, writeShoutAtYourDecksData } from "./build.js";
 import { isShuttingDown } from "./shutdown.js";
 
@@ -62,7 +62,7 @@ export async function runMetadataFetch(): Promise<void> {
 /** Fetches full decklists (Phase 3, browser-driven) only for decks that already passed the filter. */
 export async function runDecklistFetch(): Promise<void> {
   const all = await listCachedDecks();
-  const targets = all.filter((r) => r.summary && shouldKeepDeck(r.summary) && !r.deck).map((r) => r.summary!);
+  const targets = all.filter((r) => r.summary && shouldKeepDeck(r.summary) && needsDecklistRefresh(r.summary, r.deck)).map((r) => r.summary!);
   const capped = config.fastMode ? targets.slice(0, config.sydFastModePageLimit * 24) : targets;
   console.log(`shoutatyourdecks: fetching full decklists for ${capped.length} filtered decks`);
 

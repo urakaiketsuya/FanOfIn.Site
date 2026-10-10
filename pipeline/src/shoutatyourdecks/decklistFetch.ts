@@ -1,6 +1,7 @@
 import type { Browser, Page } from "playwright";
 import { chromium } from "playwright";
 import type { DeckLine, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary } from "@gatcg/shared";
+import { classifyDeckFormat } from "./format.js";
 import { config } from "../config.js";
 import { sleep } from "../lib/http.js";
 import { isShuttingDown, PLAYWRIGHT_LAUNCH_OPTIONS } from "./shutdown.js";
@@ -41,7 +42,16 @@ export function parseOmnidexExportText(text: string): Pick<ShoutAtYourDecksDeck,
     if (match) current.push({ quantity: Number(match[1]), name: match[2] });
   }
 
+  if (result.mainDeck.length === 0 || result.materialDeck.length === 0) {
+    throw new Error("Incomplete deck export; preserving cached data");
+  }
   return result;
+}
+
+/** Missing differs from an explicitly checked, empty Pantheon section. */
+export function needsDecklistRefresh(summary: ShoutAtYourDecksDeckSummary, deck: ShoutAtYourDecksDeck | null): boolean {
+  if (!deck) return true;
+  return classifyDeckFormat(summary, deck).format === "PANTHEON" && !Array.isArray(deck.pantheonDeck);
 }
 
 async function fetchOneDecklist(page: Page, url: string): Promise<Pick<ShoutAtYourDecksDeck, "materialDeck" | "pantheonDeck" | "mainDeck" | "sideDeck">> {
@@ -100,7 +110,7 @@ export async function fetchDecklists(
       // A single deck's fetch failing (site 502, a page crash, a selector timeout) must not take
       // down an hours-long run over thousands of decks — same lesson as metadataFetch's retry loop,
       // learned the hard way when a bare 502 killed a 21k-deck metadata run at 79% done. Skip and
-      // move on; the deck stays without a `deck` field so a future run retries it naturally.
+      // move on; the missing deck or missing Pantheon section remains retryable on the next run.
       let result;
       try {
         result = await fetchDecklist(browser, summary);
