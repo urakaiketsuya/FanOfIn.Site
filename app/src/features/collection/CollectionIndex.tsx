@@ -3,6 +3,7 @@ import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import CollectionChangesReview from "./CollectionChangesReview";
+import CollectionGoalPanel, { type CollectionSaveReceipt } from "./CollectionGoalPanel";
 import CollectionValueSummary from "./CollectionValueSummary";
 import { useCollectionSaveQueue } from "./useCollectionSaveQueue";
 import { sendCollectionBatch } from "./collectionSaveQueue";
@@ -77,6 +78,8 @@ export default function CollectionIndex() {
     return () => window.removeEventListener("beforeunload", warn);
   }, [pendingCount]);
   const [transactions, setTransactions] = useState<CollectionTransaction[]>([]);
+  const [saveReceipt, setSaveReceipt] = useState<CollectionSaveReceipt | null>(null);
+  const [decksError, setDecksError] = useState<string | null>(null);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [csv, setCsv] = useState("");
   const [mode, setMode] = useState<CollectionUpdateMode>("at-least");
@@ -90,7 +93,8 @@ export default function CollectionIndex() {
     const [collectionResult, deckResult] = await Promise.allSettled([accountApi.collection(), accountApi.decks()]);
     if (revision !== readRevision.current) return;
     if (collectionResult.status === "fulfilled") { setEntries(collectionResult.value.entries); setTransactions(collectionResult.value.transactions); setCollectionReady(true); setCollectionError(null); }
-    if (deckResult.status === "fulfilled") setDecks(deckResult.value.decks);
+    if (deckResult.status === "fulfilled") { setDecks(deckResult.value.decks); setDecksError(null); }
+    else setDecksError("Saved decks could not refresh. Retry loading your collection.");
     if (collectionResult.status === "rejected") { setCollectionError("Could not load your collection. Your progress is unavailable until it loads."); throw collectionResult.reason; }
   }
   useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh().catch(() => undefined); }).catch(() => setUser(null)); }, []);
@@ -135,21 +139,26 @@ export default function CollectionIndex() {
     savingRef.current=true;
     setBusy(true); setNotice(null);
     let saved=0;
+    const before = savedEntries;
+    let confirmedEntries = savedEntries;
     try {
       for (;;) {
         const batch=saveQueue.prepare();
         if(!batch) break;
         setSaveProgress(`Saving ${saved + 1}–${saved + Object.keys(batch.lines).length} of ${pendingCount} changes…`);
         await sendCollectionBatch(()=>accountApi.updateCollection({requestId:batch.requestId, mode:"set",source:"Collection quantity edits",lines:Object.values(batch.lines)}));
-        setEntries(current => {
+        const applyBatch = (current: CollectionEntry[]) => {
           const merged = new Map(current.map(entry => [collectionEntryKey(entry), entry]));
           for (const [key,line] of Object.entries(batch.lines)) merged.set(key, {...line,ownedQuantity:line.quantity,proxyQuantity:line.proxyQuantity ?? 0,updatedAt:new Date().toISOString()});
           return [...merged.values()];
-        });
+        };
+        confirmedEntries = applyBatch(confirmedEntries);
+        setEntries(applyBatch);
         saved+=Object.keys(batch.lines).length;
         saveQueue.acknowledge(batch.requestId);
       }
       setNotice("Quantities saved.");
+      if (saved > 0) setSaveReceipt({ before, after: confirmedEntries });
       await refresh().catch(() => setNotice("Quantities saved. Reload to refresh collection details."));
     } catch (reason) {
       const status=typeof reason === "object" && reason !== null && "status" in reason ? Number(reason.status) : undefined;
@@ -178,6 +187,8 @@ export default function CollectionIndex() {
       <p className="mt-3 max-w-2xl text-sm text-ctp-subtext1">Lent a card? Use the same cards across decks? Track your copies and find which ones are available to use.</p>
       <div className="mt-4 flex flex-wrap gap-2"><Button variant="primary" onClick={() => setView("import")}>Import cards</Button><Link to="/card-locations" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Find your copies</Link></div>
     </section>
+    <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />
+    {decksError && <Button className="mt-2" disabled={busy} onClick={() => void refresh().catch(() => undefined)}>Retry collection and decks</Button>}
     {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} blocked={shoppingBlocked} onDismiss={() => setShopping(false)} onAdd={() => {
       if (busy || shoppingBlocked) return;
       const lines = collectionCompletionLines(crossDeckRequired, entries);

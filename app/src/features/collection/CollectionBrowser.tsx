@@ -1,5 +1,6 @@
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import CardResult from "../../components/CardResult";
 import CollectionCardSheet from "./CollectionCardSheet";
@@ -16,6 +17,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
   cards: Card[]; entries: CollectionEntry[]; busy?: boolean; preview?: boolean;
   onUpdate?: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
 }) {
+  const location = useLocation();
   const [filter, setFilter] = useState(() => entries.some(entry => entry.ownedQuantity > 0) ? "owned" : "all");
   const [editing, setEditing] = useState<string | null>(null);
   const [limit, setLimit] = useState(24);
@@ -25,7 +27,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
     if (!focusCardUuid || !focusedCardName) return;
     setFilter("all"); setCardFilters({ ...emptyFilterState(), name: focusedCardName });
     setEditing(focusCardUuid); setLimit(24);
-  }, [focusCardUuid, focusedCardName]);
+  }, [focusCardUuid, focusedCardName, location.key]);
   const [sort, setSort] = useState("name");
   const quantities = useMemo(() => {
     const result = new Map<string, number>();

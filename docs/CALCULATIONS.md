@@ -4885,3 +4885,19 @@ finish; edition alternatives do not relax finish requirements. Accepted revision
 snapshotted finish. Acceptance rejects changed finishes, and completed trades transfer and
 record only that finish, preserving unrelated pools. Migration 0034 retains legacy rows,
 reservations, and transaction history as unspecified finish.
+
+### Pinned collection goals
+
+One goal reference (set family or saved deck ID) is stored per account in this browser.
+Set goals use the family membership and physical ownership rules above, targeting one copy
+of each card. Deck goals use the current saved main and material list, aggregate normalized
+card names through `deckCardRequirements`, and exclude sideboard. Unresolved catalog names
+remain missing requirements; an empty goal is never complete. Covered copies are capped at
+each requirement. Draft quantities and proxies do not contribute. Progress is unavailable
+until catalog sync and collection reads succeed (and deck reads succeed for deck goals).
+
+Completion feedback requires a successful quantity-save operation whose confirmed before
+and after ownership crosses the goal threshold. Initial loads and choosing already complete
+goals do not celebrate. Corrections and undo reduce current progress; no permanent achievement
+is awarded. Goal storage uses one atomic local replacement, with a visible error on failure;
+other tabs follow the most recent replacement. Goals do not sync between devices.
