@@ -35,8 +35,9 @@ export default function PopularDeckRow({
     championName: deck.championName, sideboardCount: null,
     source: { kind: "event", label: "Tournament build" },
     metadata: <>
+      <p className="font-semibold text-ctp-text">Played by {deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}</p>
+      {deck.bestPlacement !== null && <p>Best finish #{deck.bestPlacement}</p>}
       {price !== undefined && <p>{price === null ? "Price unavailable" : `Estimated price ${formatUsd(price)}`}</p>}
-      <p>{deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}{deck.bestPlacement !== null && ` · Best #${deck.bestPlacement}`}</p>
     </>,
   }} view={{ to: `/decks/${shortHash(deck.signature)}` }} />;
 }

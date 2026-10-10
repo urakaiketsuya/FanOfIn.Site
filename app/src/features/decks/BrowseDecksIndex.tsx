@@ -14,7 +14,7 @@ type ViewMode = "all" | "builds" | "sightings";
 const VIEW_TABS: readonly ViewMode[] = ["all", "builds", "sightings"];
 const VIEW_LABELS: Record<ViewMode, string> = {
   all: "All Decks",
-  builds: "Tournament Builds",
+  builds: "Most Played",
   sightings: "Tournament Results",
 };
 

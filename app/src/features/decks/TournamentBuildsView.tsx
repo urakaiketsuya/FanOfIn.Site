@@ -28,7 +28,7 @@ type BuildSortMode = "mostPlayed" | "bestPerforming" | "mostRecent" | "relevance
 const BUILD_SORT_LABELS: Record<BuildSortMode, string> = {
   cheapest: "Lowest price",
   placement: "Best placement",
-  mostPlayed: "Most played build",
+  mostPlayed: "Most players",
   bestPerforming: "Best results",
   mostRecent: "Newest",
   relevance: "Relevance",
@@ -50,7 +50,7 @@ export default function TournamentBuildsView({
   const [minPlayers, setMinPlayers] = useState<number>(searchParams.get("minPlayers") === "any" ? 1 : 2);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [elementFilter, setElementFilter] = useState<string[]>([]);
-  const [sortMode, setSortMode] = useState<BuildSortMode>("mostRecent");
+  const [sortMode, setSortMode] = useState<BuildSortMode>("mostPlayed");
   const [secondarySortMode, setSecondarySortMode] = useState<BuildSortMode | null>(null);
   const [sortPriority, setSortPriority] = useState<SortPriority>("equal");
   const [dateFrom, setDateFrom] = useState("");
@@ -134,7 +134,7 @@ export default function TournamentBuildsView({
   useEffect(() => {
     if (secondarySortMode === sortMode) setSecondarySortMode(null);
     if (deckContentFilterCount(contentFilters) > 0) return;
-    if (sortMode === "relevance") setSortMode("mostRecent");
+    if (sortMode === "relevance") setSortMode("mostPlayed");
     if (secondarySortMode === "relevance") setSecondarySortMode(null);
   }, [sortMode, secondarySortMode, contentFilters]);
 
@@ -171,7 +171,7 @@ export default function TournamentBuildsView({
         </select>
         <select
           value={sortMode}
-          aria-label="Sort builds"
+          aria-label="Sort most played decks"
           onChange={(e) => { const value = e.target.value as BuildSortMode; startTransition(() => setSortMode(value)); }}
           className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
@@ -209,10 +209,10 @@ export default function TournamentBuildsView({
       </FilterPanel>
 
       <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(sightingsData)} />
-      <PublishedSourceStatus label="Tournament build results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
-      <PublishedSourceStatus label="Tournament build lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
+      <PublishedSourceStatus label="Most played deck results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
+      <PublishedSourceStatus label="Most played deck lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
       {loading && popularityStatus.phase !== "error" && cardIndexStatus.phase !== "error" && <DeckResultsSkeleton />}
-      {!loading && sorted.length === 0 && <EmptyState className="mt-6" title="No matching tournament builds" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
+      {!loading && sorted.length === 0 && <EmptyState className="mt-6" title="No matching decks" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}
