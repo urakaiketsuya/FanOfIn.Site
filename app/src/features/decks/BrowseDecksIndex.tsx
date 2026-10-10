@@ -5,14 +5,16 @@ import PageHeader from "../../components/ui/PageHeader";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import CombinedDecksView from "./CombinedDecksView";
 import DeckSightingsView from "./DeckSightingsView";
 import TournamentBuildsView from "./TournamentBuildsView";
 import { emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
-type ViewMode = "builds" | "sightings";
-const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings"];
+type ViewMode = "all" | "builds" | "sightings";
+const VIEW_TABS: readonly ViewMode[] = ["all", "builds", "sightings"];
 const VIEW_LABELS: Record<ViewMode, string> = {
-  builds: "Unique Builds",
+  all: "All Decks",
+  builds: "Tournament Builds",
   sightings: "Tournament Results",
 };
 
@@ -22,7 +24,7 @@ export default function BrowseDecksIndex() {
     "Browse Grand Archive TCG decklists – grouped into distinct builds or as individual tournament results – filterable by Champion, element, cards, season, and outcome.",
   );
   const [searchParams] = useSearchParams();
-  const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "sightings");
+  const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "all");
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
   const [contentFilters, setContentFilters] = useState<DeckContentFilterState>(emptyDeckContentFilters);
 
@@ -36,9 +38,10 @@ export default function BrowseDecksIndex() {
       />
 
       <div className="mt-4">
-        <Tabs baseId="deck-view" variant="pill" tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
+        <Tabs wrap baseId="deck-view" variant="pill" tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
       </div>
 
+      <TabPanel baseId="deck-view" tab="all" active={view}><CombinedDecksView /></TabPanel>
       <TabPanel baseId="deck-view" tab="builds" active={view}>
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       </TabPanel>

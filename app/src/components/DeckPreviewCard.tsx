@@ -23,13 +23,13 @@ export interface DeckPreviewModel {
   decklist: OmnidexDecklist | null;
   championName?: string | null;
   format?: DeckFormat;
-  source: { kind: "official" | "event" | "community"; label: string };
+  source?: { kind: "official" | "event" | "community"; label: string };
   metadata?: ReactNode;
   actions?: ReactNode;
   materialPreview?: OmnidexDecklist["material"];
   mainCount?: number | null;
   sideboardCount?: number | null;
-  preview?: { section?: "main"; label: string; lines: { name: string; quantity?: number }[] };
+  preview?: { section?: "main" | "boons"; label: string; lines: { name: string; quantity?: number }[] };
   status?: ReactNode;
 }
 
@@ -65,14 +65,14 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   const elementIcons = elements.length > 0 && <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Spirit and champion elements">{elements.map(element => <span key={element} className="inline-flex rounded-full bg-ctp-crust/90 p-1"><ElementIcon element={element} size={24} /></span>)}</div>;
   const art = <><CardArtTile card={leadCard} name={label} /><span className="mt-1 block break-words text-xs leading-snug text-ctp-subtext1">{label}</span></>;
   const material = materialLines?.filter(line => line.card !== label).slice(0, 3).map(line => ({ name: line.card, quantity: line.quantity }));
-  const preview: DeckPreviewModel["preview"] = material?.length ? { label: "Featured material cards", lines: material } : model.preview;
+  const preview: DeckPreviewModel["preview"] = model.preview?.section === "boons" ? model.preview : material?.length ? { label: "Featured material cards", lines: material } : model.preview;
   const count = (section: "main" | "sideboard") => {
     const supplied = section === "main" ? model.mainCount : model.sideboardCount;
     if (supplied !== undefined) return supplied;
     return model.decklist?.[section].reduce((sum, line) => sum + line.quantity, 0);
   };
   if (presentation === "library") return (
-    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="flex min-w-0 flex-col overflow-hidden rounded-3xl">
+    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source?.kind} data-deck-id={model.id} className="flex min-w-0 flex-col overflow-hidden rounded-3xl">
       {view.to !== undefined ? <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} aria-label={`Open deck: ${model.title}`} className="card-art-action group block focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <CardArtTile card={leadCard} name={label} artworkOnly />
         <div className="px-5 pt-5"><h2 className="break-words text-2xl font-semibold leading-tight text-ctp-text group-hover:text-ctp-blue">{model.title}</h2></div>
@@ -80,7 +80,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
       <div className="px-5 pb-2">
         {elementIcons}
         {leadCard ? <Link to={`/cards/${leadCard.slug}`} className="inline-flex min-h-control items-center break-words text-sm text-ctp-subtext1 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{label}</Link> : <p className="mt-2 break-words text-sm text-ctp-subtext1">{label}</p>}
-        <p className="text-xs text-ctp-subtext0">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"} · {model.source.label}</p>
+        <p className="text-xs text-ctp-subtext0">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}{model.source && ` · ${model.source.label}`}</p>
         {model.status}
       </div>
       <div className="px-5 pb-4">
@@ -96,13 +96,13 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
     </Panel>
   );
   if (presentation === "cover" && view.to !== undefined) return (
-    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
+    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source?.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
       <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="card-art-action group flex flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
           <div className="relative col-start-1 row-start-1 min-w-0 self-end p-4 pt-12 text-white">
-            <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</>}</p>
+            <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source?.label}{model.format && `${model.source ? " · " : ""}${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</>}</p>
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
             {elementIcons}
           </div>
@@ -115,18 +115,18 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
       </div>
     </Panel>
   );
-  return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
+  return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source?.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
       <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">
         <div className="min-w-0">{leadCard ? <Link target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} to={`/cards/${leadCard.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
           <h2 className="break-words text-xl font-bold leading-snug text-ctp-text sm:text-2xl">{model.title}</h2>
           {elementIcons}
-          <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
+          <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span>{model.source && <span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span>}</div>
           {model.metadata && <div className="mt-2 break-words text-xs leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
         </div>
       </div>
-      {preview && preview.lines.length > 0 && <section aria-label={preview.label}><p className="mb-2 text-xs text-ctp-subtext0">{preview.label}</p><DeckCardPreview newTab={cardLinksNewTab} compact groupByElement={preview.section === "main"} lines={preview.lines.slice(0, 3)} cardsByName={cards} /></section>}
+      {preview && preview.lines.length > 0 && <section aria-label={preview.label}><p className="mb-2 text-xs text-ctp-subtext0">{preview.label}</p><DeckCardPreview newTab={cardLinksNewTab} compact groupByElement={preview.section === "main"} lines={preview.section === "boons" ? preview.lines : preview.lines.slice(0, 3)} cardsByName={cards} /></section>}
       <dl className="flex flex-wrap gap-x-6 gap-y-2 border-t border-ctp-surface1/60 pt-3">{(["main", "sideboard"] as const).map(section => <div key={section} className="flex flex-col-reverse gap-0.5"><dt className="text-xs text-ctp-subtext1">{section === "main" ? "Main deck" : "Sideboard"}</dt><dd className="text-lg font-semibold tabular-nums text-ctp-text">{count(section) ?? "Unknown"}</dd></div>)}</dl>
       {model.status}
     </div>
