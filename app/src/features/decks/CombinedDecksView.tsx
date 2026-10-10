@@ -1,6 +1,8 @@
 import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { PublicDeckSummary } from "@gatcg/shared";
+import DeckSightingsView from "./DeckSightingsView";
+import type { DeckContentFilterState } from "./deckContentFilters";
 import { accountApi } from "../../lib/accountApi";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
@@ -12,9 +14,14 @@ import { useDeckSightingsData } from "../topdecks/data";
 import DeckSightingRow from "../topdecks/DeckSightingRow";
 import { usePlayerNameById } from "../tournaments/data";
 
-export default function CombinedDecksView() {
+export default function CombinedDecksView({ contentFilters, setContentFilters }: {
+  contentFilters: DeckContentFilterState;
+  setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
+}) {
   const [params, setParams] = useSearchParams();
   const source = params.get("source") ?? "all";
+  const [visitedTournament, setVisitedTournament] = useState(source === "tournament");
+  useEffect(() => { if (source === "tournament") setVisitedTournament(true); }, [source]);
   const query = params.get("q") ?? "";
   const deferredQuery = useDeferredValue(query);
   const format = params.get("format") ?? "";
@@ -60,9 +67,15 @@ export default function CombinedDecksView() {
   const waiting = (source !== "tournament" && loading) || (source !== "shared" && format !== "PANTHEON" && !sightings && status.phase !== "error");
   const failed = (source !== "tournament" && Boolean(error)) || (source !== "shared" && format !== "PANTHEON" && !sightings && status.phase === "error");
   return <>
-    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-      <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} className="min-w-0" />
+    <div className="mt-4">
       <Select aria-label="Deck source" value={source} onChange={e => update("source", e.target.value)}><option value="all">All sources</option><option value="shared">Shared decks</option><option value="tournament">Tournament decks</option></Select>
+    </div>
+    {(source === "tournament" || visitedTournament) && <div hidden={source !== "tournament"}>
+      <DeckSightingsView championName={champion || null} setChampionName={value => update("champion", value ?? "")} query={query} setQuery={value => update("q", value)} contentFilters={contentFilters} setContentFilters={setContentFilters} />
+    </div>}
+    {source !== "tournament" && <>
+    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} className="min-w-0" />
       <Select aria-label="Champion" value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</Select>
       <Select aria-label="Deck format" value={format} onChange={e => update("format", e.target.value)}><option value="">All formats</option><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></Select>
     </div>
@@ -73,5 +86,6 @@ export default function CombinedDecksView() {
     {!rows.length && !waiting && !failed && <InlineState className="mt-4">No decks match these filters.</InlineState>}
     <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <PublicDeckCard key={`shared:${row.id}`} deck={row.deck} /> : <DeckSightingRow key={`tournament:${row.id}`} sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard />)}</div>
     {rows.length > visibleCount && <Button className="mt-4" onClick={() => setVisibleCount(value => value + 30)}>Load more</Button>}
+    </>}
   </>;
 }

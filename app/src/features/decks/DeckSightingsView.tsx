@@ -40,9 +40,13 @@ const MAX_PRICE_OPTIONS = [25, 50, 100, 250];
 export default function DeckSightingsView({
   championName,
   setChampionName,
+  query,
+  setQuery,
   contentFilters,
   setContentFilters,
 }: {
+  query: string;
+  setQuery: (value: string) => void;
   championName: string | null;
   setChampionName: (v: string | null) => void;
   contentFilters: DeckContentFilterState;
@@ -81,7 +85,6 @@ export default function DeckSightingsView({
   const [sortPriority, setSortPriority] = useState<SortPriority>("equal");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
-  const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(SIGHTINGS_PAGE_SIZE);
 
   const classesByChampion = useMemo(() => {

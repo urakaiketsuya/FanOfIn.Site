@@ -6,16 +6,14 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import CombinedDecksView from "./CombinedDecksView";
-import DeckSightingsView from "./DeckSightingsView";
 import TournamentBuildsView from "./TournamentBuildsView";
 import { emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
-type ViewMode = "all" | "builds" | "sightings";
-const VIEW_TABS: readonly ViewMode[] = ["all", "builds", "sightings"];
+type ViewMode = "all" | "builds";
+const VIEW_TABS: readonly ViewMode[] = ["all", "builds"];
 const VIEW_LABELS: Record<ViewMode, string> = {
   all: "All Decks",
   builds: "Most Played",
-  sightings: "Tournament Results",
 };
 
 export default function BrowseDecksIndex() {
@@ -31,6 +29,13 @@ export default function BrowseDecksIndex() {
   // Preserve links from the brief period when Pantheon search lived as a third tab here.
   if (searchParams.get("view") === "pantheon") return <Navigate to="/pantheon/decks" replace />;
 
+  if (searchParams.get("view") === "sightings") {
+    const next = new URLSearchParams(searchParams);
+    next.delete("view");
+    next.set("source", "tournament");
+    return <Navigate to={`/decks?${next}`} replace />;
+  }
+
   return (
     <PageLayout data-component="BrowseDecksIndex" width="wide">
       <PageHeader
@@ -41,12 +46,9 @@ export default function BrowseDecksIndex() {
         <Tabs wrap baseId="deck-view" variant="pill" tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
       </div>
 
-      <TabPanel baseId="deck-view" tab="all" active={view}><CombinedDecksView /></TabPanel>
+      <TabPanel baseId="deck-view" tab="all" active={view}><CombinedDecksView contentFilters={contentFilters} setContentFilters={setContentFilters} /></TabPanel>
       <TabPanel baseId="deck-view" tab="builds" active={view}>
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
-      </TabPanel>
-      <TabPanel baseId="deck-view" tab="sightings" active={view}>
-        <DeckSightingsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       </TabPanel>
     </PageLayout>
   );
