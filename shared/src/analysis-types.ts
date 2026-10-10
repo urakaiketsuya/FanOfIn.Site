@@ -347,6 +347,12 @@ export interface DeckSightingKeyword {
   count: number;
 }
 
+/** Price-only projection; entries retain sighting order and unknown prices. */
+export interface DeckPriceIndexData {
+  generatedAt: string;
+  entries: [deckId: string, price: number | null][];
+}
+
 export interface DeckSightingsData {
   generatedAt: string;
   sightings: DeckSighting[];

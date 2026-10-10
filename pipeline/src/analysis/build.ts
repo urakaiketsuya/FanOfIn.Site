@@ -1,3 +1,4 @@
+import { buildDeckPriceIndex } from "./deckPriceIndex.js";
 import { computeCommunityCardStaples } from "./communityCardStaples.js";
 import { loadCommunityStaples } from "./loadCommunityStaples.js";
 import { computeFieldHistory } from "./fieldHistory.js";
@@ -197,6 +198,12 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     path.join(DATA_DIR, "deck-sightings.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), sightings: deckSightings }),
     "utf-8",
+  );
+
+  await writeJsonAtomic(
+    path.join(DATA_DIR, "deck-price-index.json"),
+    buildDeckPriceIndex(deckSightings, new Date().toISOString()),
+    0,
   );
 
   // Lean projection for useDeckPopularity.ts (Popular Decks / All Decks) and TopDecksList's

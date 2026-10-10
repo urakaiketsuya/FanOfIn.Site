@@ -17,7 +17,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
-import { useDeckSightingsData, useDeckPopularityIndexData } from "../topdecks/data";
+import { useDeckPriceIndexData, useDeckPopularityIndexData } from "../topdecks/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
 import { deckContentFilterCount, deckContentFilterLabels, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
@@ -68,12 +68,12 @@ export default function TournamentBuildsView({
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
 
-  const sightingsData = useDeckSightingsData();
-  const priceStatus = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
+  const priceIndexData = useDeckPriceIndexData();
+  const priceStatus = usePublishedDataStatus("analysis-deck-price-index", "/data/analysis/deck-price-index.json");
   const priceBySignature = useMemo(() => {
-    const byDeck = new Map((sightingsData?.sightings ?? []).map(s => [s.deckId, s.price]));
+    const byDeck = new Map(priceIndexData?.entries ?? []);
     return new Map(allDecks.map(deck => [deck.signature, deck.deckIds.map(id => byDeck.get(id)).find(price => price != null) ?? null]));
-  }, [allDecks, sightingsData]);
+  }, [allDecks, priceIndexData]);
   const decks = useMemo(
     () => allDecks.filter((d) => d.playerCount >= minPlayers),
     [allDecks, minPlayers],
@@ -207,7 +207,7 @@ export default function TournamentBuildsView({
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 
-      <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(sightingsData)} />
+      <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(priceIndexData)} />
       <PublishedSourceStatus label="Most played deck results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
       <PublishedSourceStatus label="Most played deck lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
       {error && <div role="alert" className="mt-4"><p>{error}</p><Button onClick={retry}>Try again</Button></div>}

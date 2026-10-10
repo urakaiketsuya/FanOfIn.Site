@@ -4831,7 +4831,9 @@ not recompute a build’s lifetime player counts or performance statistics.
 Unique Builds supports minimum distinct-player counts of 1, 2, 5, 10, or 25 and
 maximum-price filters. Estimated prices reuse a known published tournament sighting
 for the same exact main+material build; sideboards remain excluded. Unknown prices
-sort last for price and do not qualify for a budget cap. Best placement uses the
+sort last for price and do not qualify for a budget cap. Most Played reads the price-only
+`deck-price-index.json` projection, regenerated with analysis from the same sightings.
+It preserves sighting order, null prices, and the first known price in each build’s deck-ID order. Best placement uses the
 build's best known finish; Best results uses its mean weighted performance score.
 
 ## Filter-relative Card Staples usage
