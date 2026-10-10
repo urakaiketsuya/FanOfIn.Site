@@ -1,16 +1,21 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 
 export { buildPopularDeck, canonicalSignature, type PopularDeck } from "./popularityAggregation";
-import { getPopularDecks, type PopularDeck } from "./popularityAggregation";
+import { type PopularDeck } from "./popularityAggregation";
+import { loadPopularDecks, popularityKey } from "./popularityWorkerClient";
+import { POPULARITY_ERROR } from "./popularityWorkerProtocol";
+const EMPTY_DECKS: PopularDeck[] = [];
 
 const MIN_PLAYERS = 2;
 
 interface PopularityResult {
   decks: PopularDeck[];
   loading: boolean;
+  error: string | undefined;
+  retry: () => void;
 }
 
 /**
@@ -38,14 +43,23 @@ export function useDeckPopularity(
   const sightingsData = useDeckPopularityIndexData(enabled);
   const cardCatalog = useCardCatalog(enabled);
 
-  // Build the expensive all-decks aggregation once per published dataset. Champion and minimum-
-  // player filters are applied afterward so changing either control does not decode and regroup
-  // the entire 20MB+ card index again.
-  const allDecks = useMemo(() => {
-    if (!enabled || !cardIndexData || !sightingsData) return [];
-
-    return getPopularDecks(cardIndexData, sightingsData, cardCatalog);
-  }, [enabled, cardIndexData, sightingsData, cardCatalog]);
+  const input = useMemo(() => cardIndexData && sightingsData
+    ? { cardIndex: cardIndexData, sightings: sightingsData, catalog: cardCatalog } : null,
+  [cardIndexData, sightingsData, cardCatalog]);
+  const key = useMemo(() => input ? popularityKey(input) : null, [input]);
+  const [attempt, setAttempt] = useState(0);
+  const [state, setState] = useState<{ key: string; decks: PopularDeck[]; error?: string } | null>(null);
+  useEffect(() => {
+    if (!enabled || !input || key === null) return;
+    let active = true;
+    loadPopularDecks(input, key).then(
+      decks => { if (active) setState({ key, decks }); },
+      () => { if (active) setState({ key, decks: EMPTY_DECKS, error: POPULARITY_ERROR }); },
+    );
+    return () => { active = false; };
+  }, [enabled, input, key, attempt]);
+  const result = enabled && key !== null && state?.key === key ? state : null;
+  const allDecks = result?.decks ?? EMPTY_DECKS;
 
   const decks = useMemo(
     () =>
@@ -55,5 +69,6 @@ export function useDeckPopularity(
     [allDecks, championFilter, minPlayers],
   );
 
-  return { decks, loading: enabled && (!cardIndexData || !sightingsData) };
+  return { decks, loading: enabled && !result, error: result?.error,
+    retry: () => { setState(null); setAttempt(value => value + 1); } };
 }

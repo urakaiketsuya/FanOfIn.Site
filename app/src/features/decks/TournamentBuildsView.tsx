@@ -56,12 +56,11 @@ export default function TournamentBuildsView({
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
-  // Every filter here re-runs a synchronous decode over the (20MB+) deck-card-index dataset –
-  // wrapped in a transition so inputs stay responsive and the page can show a "recalculating"
-  // state instead of appearing to hang.
+  // Filtering and sorting the cached builds can still be expensive. Transitions let
+  // controls update first while the results show their recalculating state.
   const [isPending, startTransition] = useTransition();
 
-  const { decks: allDecks, loading } = useDeckPopularity(championName, 1);
+  const { decks: allDecks, loading, error, retry } = useDeckPopularity(championName, 1);
   const cardIndexData = useDeckCardIndexData();
   const popularityIndexData = useDeckPopularityIndexData();
   const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
@@ -211,8 +210,9 @@ export default function TournamentBuildsView({
       <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(sightingsData)} />
       <PublishedSourceStatus label="Most played deck results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
       <PublishedSourceStatus label="Most played deck lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
+      {error && <div role="alert" className="mt-4"><p>{error}</p><Button onClick={retry}>Try again</Button></div>}
       {loading && popularityStatus.phase !== "error" && cardIndexStatus.phase !== "error" && <DeckResultsSkeleton />}
-      {!loading && sorted.length === 0 && <EmptyState className="mt-6" title="No matching decks" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
+      {!loading && !error && sorted.length === 0 && <EmptyState className="mt-6" title="No matching decks" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}

@@ -26,6 +26,7 @@ import UserDecklistPanel from "../account/UserDecklistPanel";
 import UserDeckStats, { type DeckStatsTab } from "../account/UserDeckStats";
 import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import PageLayout from "../../components/layout/PageLayout";
+import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import MethodologyNote from "../../components/ui/MethodologyNote";
@@ -119,7 +120,7 @@ export default function DeckDetail() {
 
   // Only group the full universe for related builds or a legacy-data fallback.
   const needsFullUniverse = tab === "related" || (fallback && matchingSightings !== null && matchingSightings.length === 0);
-  const { decks, loading: fullUniverseLoading } = useDeckPopularity(null, 1, needsFullUniverse);
+  const { decks, loading: fullUniverseLoading, error: fullUniverseError, retry: retryFullUniverse } = useDeckPopularity(null, 1, needsFullUniverse);
   const deck = fastDeck ?? decks.find((d) => shortHash(d.signature) === hash);
   const loading =
     matchingSightings === null || (matchingSightings.length > 0 && !fastDeck) || (!fastDeck && needsFullUniverse && fullUniverseLoading);
@@ -302,13 +303,13 @@ export default function DeckDetail() {
       .slice(0, 5);
   }, [deck, similarityData, deckIdToSignature, decks]);
 
-  if (loading) {
+  if (loading || (!deck && fullUniverseError)) {
     return (
       <PageLayout data-component="DeckDetail">
-        {popularityStatus.phase === "error" || cardIndexStatus.phase === "error" ? <div role="alert" className="mt-10 rounded-xl border border-ctp-surface1 p-5">
+        {fullUniverseError || popularityStatus.phase === "error" || cardIndexStatus.phase === "error" ? <div role="alert" className="mt-10 rounded-xl border border-ctp-surface1 p-5">
           <h1 className="text-xl font-semibold">This deck couldn’t load</h1>
-          <p className="mt-2 text-sm text-ctp-subtext1">Some tournament data is unavailable. Try loading it again.</p>
-          <button type="button" onClick={() => { popularityStatus.retry(); cardIndexStatus.retry(); }} className="mt-3 min-h-control rounded-lg border border-ctp-blue px-4 text-sm text-ctp-blue">Try again</button>
+          <p className="mt-2 text-sm text-ctp-subtext1">{fullUniverseError ?? "Some tournament data is unavailable. Try loading it again."}</p>
+          <button type="button" onClick={() => { popularityStatus.retry(); cardIndexStatus.retry(); retryFullUniverse(); }} className="mt-3 min-h-control rounded-lg border border-ctp-blue px-4 text-sm text-ctp-blue">Try again</button>
           <Link to="/decks" className="ml-4 inline-flex min-h-control items-center text-sm text-ctp-blue">Browse decks</Link>
         </div> : <InlineState className="mt-10">Loading deck…</InlineState>}
       </PageLayout>
@@ -521,7 +522,7 @@ export default function DeckDetail() {
       </TabPanel>
 
       <TabPanel baseId="deck-detail" tab="related" active={tab}>
-        <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />{similarityStatus.phase === "error" ? <div role="alert"><p>Similar decks could not load.</p><button type="button" className="min-h-12 px-3 text-ctp-blue" onClick={similarityStatus.retry}>Retry similar decks</button></div> : fullUniverseLoading || !similarityData ? <InlineState>Loading similar decks…</InlineState> : <SimilarDecksSection decks={similarDecks} />}</div>
+        <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />{fullUniverseError ? <div role="alert"><p>{fullUniverseError}</p><Button onClick={retryFullUniverse}>Retry similar decks</Button></div> : similarityStatus.phase === "error" ? <div role="alert"><p>Similar decks could not load.</p><button type="button" className="min-h-12 px-3 text-ctp-blue" onClick={similarityStatus.retry}>Retry similar decks</button></div> : fullUniverseLoading || !similarityData ? <InlineState>Loading similar decks…</InlineState> : <SimilarDecksSection decks={similarDecks} />}</div>
       </TabPanel>
       <TabPanel baseId="deck-detail" tab="discussion" active={tab}><DeckComments target={{ kind: "tournament", id: hash }} /></TabPanel>
     </PageLayout>
