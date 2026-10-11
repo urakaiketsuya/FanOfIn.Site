@@ -1,15 +1,23 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-10-10T11:56:56.704Z",
-  "games": 23,
+  "generatedAt": "2026-10-11T12:08:35.962Z",
+  "games": 24,
   "firstPlayer": {
-    "games": 23,
-    "wins": 13,
-    "winRate": 0.5652173913043478
+    "games": 24,
+    "wins": 14,
+    "winRate": 0.5833333333333334
   },
-  "avgTurns": 4.826086956521739,
+  "avgTurns": 4.708333333333333,
   "champions": [
+    {
+      "championId": "tafqldAGRF",
+      "championName": "Spirit of Water",
+      "element": "WATER",
+      "games": 6,
+      "wins": 2,
+      "winRate": 0.3333333333333333
+    },
     {
       "championId": "4FtNBFaOJp",
       "championName": "Dante, Hemomancer",
@@ -17,14 +25,6 @@
       "games": 5,
       "wins": 1,
       "winRate": 0.2
-    },
-    {
-      "championId": "tafqldAGRF",
-      "championName": "Spirit of Water",
-      "element": "WATER",
-      "games": 5,
-      "wins": 2,
-      "winRate": 0.4
     },
     {
       "championId": "j6dkdoxyqt",
@@ -70,6 +70,14 @@
       "championId": "7x2v4tdop1",
       "championName": "Kongming, Fel Eidolon",
       "element": "TERA",
+      "games": 2,
+      "wins": 1,
+      "winRate": 0.5
+    },
+    {
+      "championId": "LMyKyVC2O9",
+      "championName": "Spirit of Fire",
+      "element": "FIRE",
       "games": 2,
       "wins": 1,
       "winRate": 0.5
@@ -126,14 +134,6 @@
       "championId": "GiQxfpKTUC",
       "championName": "Alice, Distorted Queen",
       "element": "NORM",
-      "games": 1,
-      "wins": 0,
-      "winRate": 0
-    },
-    {
-      "championId": "LMyKyVC2O9",
-      "championName": "Spirit of Fire",
-      "element": "FIRE",
       "games": 1,
       "wins": 0,
       "winRate": 0
@@ -292,6 +292,15 @@
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
+    },
+    {
+      "champion1": "LMyKyVC2O9",
+      "champion1Name": "Spirit of Fire",
+      "champion2": "tafqldAGRF",
+      "champion2Name": "Spirit of Water",
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
     },
     {
       "champion1": "LMyKyVC2O9",
@@ -604,6 +613,20 @@
       "lethalHits": 0
     },
     {
+      "cardId": "eifnz0fgm3",
+      "games": 5,
+      "avgDrawn": 1.6,
+      "avgDrawnToMemory": 0,
+      "avgMaterialized": 0.8,
+      "avgReserved": 1.8,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.8,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
       "cardId": "fp773yotth",
       "games": 5,
       "avgDrawn": 1.4,
@@ -748,12 +771,12 @@
   "turnStats": [
     {
       "turn": 1,
-      "games": 22,
-      "avgCardsPlayed": 1.0909090909090908,
+      "games": 23,
+      "avgCardsPlayed": 1.065217391304348,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.909090909090909,
-      "avgDamageDealt": 0.29545454545454547,
-      "avgDamageTaken": 0.09090909090909091,
+      "avgReserveSpent": 2.847826086956522,
+      "avgDamageDealt": 0.2826086956521739,
+      "avgDamageTaken": 0.08695652173913043,
       "avgHealed": 0,
       "avgLevel": 0,
       "avgHp": 15
