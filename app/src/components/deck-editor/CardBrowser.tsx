@@ -18,7 +18,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   format?: DeckFormat;
   renderStats?: (name: string) => ReactNode; statsControls?: ReactNode;
   query: string; onQuery: (query: string) => void;
-  destination: "automatic" | "sideboard" | "maybeboard"; onDestination: (value: "automatic" | "sideboard" | "maybeboard") => void;
+  destination: "automatic" | "main" | "material" | "sideboard" | "maybeboard"; onDestination: (value: "automatic" | "main" | "material" | "sideboard" | "maybeboard") => void;
   names: string[]; catalog: Map<string, Card>; deck: EditableDeck; onEdit: (edit: DeckEdit) => void; onAdded?: () => void;
   owned?: ReadonlyMap<string, number>; collectionStatus?: string; identityElements?: ReadonlySet<string>;
   sourceControl?: ReactNode; suppressResults?: boolean; suggestedNames?: string[]; evidence?: ReadonlyMap<string, string>;
@@ -60,7 +60,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     <CardResultsToolbar query={query} onQuery={onQuery} onSubmit={() => { if (matches.includes(query)) toggleSelection(query); }}>
     <div className={`grid w-full items-center gap-2 ${sourceControl ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
       {sourceControl}
-      <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
+      <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck (automatic)</option><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
       <button type="button" aria-expanded={filterOpen} aria-haspopup="dialog" onClick={event=>{event.currentTarget.focus();setFilterOpen(open=>!open);}} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Options{active.length ? ` (${active.length})` : ""}<DisclosureChevron /></button>
     </div>
     </CardResultsToolbar>

@@ -1,3 +1,4 @@
+import Button from "../ui/Button";
 import type { CardPrintingAllocation } from "@gatcg/shared";
 import DeckLegalityWarning from "./DeckLegalityWarning";
 import type { DeckFormat } from "@gatcg/shared";
@@ -38,10 +39,10 @@ export function MaybeboardCardTile({ format, line, card, onPrintings, onChangeQu
 
 type SelectedCard = { section: DeckSectionKey; name: string };
 
-export function EditableDecklistGrid({ format, decklist, cardsByName, onPrintings, onChangeQuantity, onAdjustSelected, onSetSelected, onMoveSelected, onRemoveSelected, onMove, onRemove }: { format: DeckFormat; decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onPrintings: (section: DeckSectionKey, name: string, printings: CardPrintingAllocation[]) => void; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onAdjustSelected: (cards: SelectedCard[], delta: number) => void; onSetSelected: (cards: SelectedCard[], quantity: number) => void; onMoveSelected: (cards: SelectedCard[], destination: DeckCardDestination) => void; onRemoveSelected: (cards: SelectedCard[]) => void; onMove: (from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
+export function EditableDecklistGrid({ format, decklist, cardsByName, onPrintings, onChangeQuantity, onAdjustSelected, onSetSelected, onMoveSelected, onRemoveSelected, onMove, onRemove, onAdd }: { onAdd?: (section: DeckSectionKey) => void; format: DeckFormat; decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onPrintings: (section: DeckSectionKey, name: string, printings: CardPrintingAllocation[]) => void; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onAdjustSelected: (cards: SelectedCard[], delta: number) => void; onSetSelected: (cards: SelectedCard[], quantity: number) => void; onMoveSelected: (cards: SelectedCard[], destination: DeckCardDestination) => void; onRemoveSelected: (cards: SelectedCard[]) => void; onMove: (from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const [bulkMode, setBulkMode] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
-  const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => section.lines.length > 0);
+  const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => onAdd || section.lines.length > 0);
   const keyFor = (section: DeckSectionKey, name: string) => `${section}\u0000${name}`;
   const selectedCards = sections.flatMap((section) => section.lines.filter((line) => selected.has(keyFor(section.key, line.card))).map((line) => ({ section: section.key, name: line.card })));
   useEffect(() => {
@@ -69,7 +70,9 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onPrinting
     </div></details>
     {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
     <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><DisclosureChevron className="text-ctp-subtext0 group-open:rotate-180" /></span></summary>
+    {onAdd && <Button onClick={() => onAdd(section.key)} className="mt-3">Add to {section.title}</Button>}
     <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <DeckEditorCard format={format} key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={bulkMode ? () => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; }) : undefined} onPrintings={printings => onPrintings(section.key, line.card, printings)} onChangeQuantity={(quantity, printings) => onChangeQuantity(section.key, line.card, quantity, printings)} onMove={(destination, quantity, printings) => onMove(section.key, destination, line.card, quantity, printings)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
+    {onAdd && section.lines.length > 0 && <Button onClick={() => onAdd(section.key)} className="mt-3">Add to {section.title}</Button>}
   </details>)}</div>;
 }
 

@@ -14,8 +14,14 @@ test("a burst stays bounded and keeps the currently visible notification", () =>
   assert.equal(queue[0].id, "0");
   assert.equal(queue.at(-1)?.id, "11");
 });
-test("errors and actions persist; ordinary confirmations have a readable timeout", () => {
+test("errors persist; confirmations and undo actions expire", () => {
   assert.equal(makeToast({ message: "Saved" }, "1", "editor").duration, 6000);
   assert.equal(makeToast({ message: "Failed", tone: "error", duration: 1 }, "1", "editor").duration, null);
-  assert.equal(makeToast({ message: "Removed", action: { label: "Undo", onClick: () => {} } }, "1", "editor").duration, null);
+  assert.equal(makeToast({ message: "Removed", action: { label: "Undo", onClick: () => {} } }, "1", "editor").duration, 8000);
+});
+
+test("explicit action durations are respected", () => {
+  const action = { label: "Undo", onClick: () => {} };
+  assert.equal(makeToast({ message: "Removed", action, duration: 12000 }, "1", "editor").duration, 12000);
+  assert.equal(makeToast({ message: "Review", action, duration: null }, "2", "editor").duration, null);
 });

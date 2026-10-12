@@ -120,3 +120,13 @@ identity cards are a preview of each family's pool, not an exact tested combo. L
 the champion's Builds tab for full families and shared relationships. Show result dates,
 visible loading/error/retry and empty states; retain navigation when data is unavailable.
 Keep one interactive analysis example, with detailed assumptions in calculation docs.
+
+## Deck editing reachability
+
+Offer section-specific Add actions above and below populated card lists, with one Add
+action for empty sections. Open search with that exact destination selected; keep
+section eligibility checks and never silently reroute an addition. Keep Undo/Redo
+reachable while scrolling (Builder toolbar or My Decks save bar). Routine feedback
+expires after six seconds, or eight seconds with an action; pause while hovered,
+focused, hidden, or running an action. Errors and explicitly persistent notices remain
+until dismissed. Editor history remains available after an Undo notification expires.

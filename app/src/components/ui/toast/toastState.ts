@@ -3,7 +3,7 @@ export type ToastAction = { label: string; onClick: () => void | Promise<void> }
 export interface ToastInput { message: string; tone?: ToastTone; action?: ToastAction; key?: string; duration?: number | null }
 export interface Toast extends ToastInput { id: string; owner: string; tone: ToastTone; duration: number | null }
 export function makeToast(input: ToastInput, id: string, owner: string): Toast {
-  return { ...input, id, owner, tone: input.tone ?? "success", duration: input.action || input.tone === "error" ? null : input.duration === undefined ? 6000 : input.duration };
+  return { ...input, id, owner, tone: input.tone ?? "success", duration: input.tone === "error" ? null : input.duration === undefined ? (input.action ? 8000 : 6000) : input.duration };
 }
 /** One visible toast and at most four waiting. Repeated operations replace their own feedback. */
 export function enqueueToast(queue: Toast[], toast: Toast): Toast[] {
