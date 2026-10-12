@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import type { ArchetypeSummary, Card } from "@gatcg/shared";
-import { useArchetypeData } from "../archetypes/data";
+import type { ArchetypeSummary, Card, ChampionTrend } from "@gatcg/shared";
+import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -16,11 +16,17 @@ import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Section from "../../components/ui/Section";
 
-function ChampionDirectoryCard({ summary, card, classes }: {
+const TREND_LABELS = { rising: "Rising", falling: "Falling", stable: "Stable", new: "New this season", absent: "Absent this season", "insufficient-data": "Not enough data to compare" };
+
+function ChampionDirectoryCard({ summary, card, classes, trend, showTrend = false }: {
   summary: ArchetypeSummary;
   card: Card | undefined;
   classes?: string[];
+  trend?: ChampionTrend;
+  showTrend?: boolean;
 }) {
+  const latest = trend?.seasons.at(-1);
+  const delta = trend?.trendDeltaPct == null ? null : Number(trend.trendDeltaPct.toFixed(1));
   return (
     <article className="min-w-0" data-component="ChampionGalleryCard">
       <CardHoverPreview image={card?.editions[0]?.image} alt={card?.name ?? summary.signature}>
@@ -40,6 +46,11 @@ function ChampionDirectoryCard({ summary, card, classes }: {
               <span className="tabular-nums">{summary.deckCount.toLocaleString()} decks</span>
               <span className="tabular-nums">{(summary.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
             </div>
+            {showTrend && <div className="mt-3 border-t border-ctp-surface1 pt-3 text-xs text-ctp-subtext1">
+              <p className="font-semibold text-ctp-text">{trend ? TREND_LABELS[trend.trend] : "Season trend unavailable"}</p>
+              {latest && <p className="mt-1 tabular-nums">{(latest.shareOfSeason * 100).toFixed(1)}% weighted result share</p>}
+              {trend && trend.trend !== "insufficient-data" && delta !== null && <p className="mt-1 tabular-nums">{delta > 0 ? "+" : ""}{delta.toFixed(1)} percentage points vs. previous season</p>}
+            </div>}
           </div>
         </Link>
       </CardHoverPreview>
@@ -50,6 +61,9 @@ function ChampionDirectoryCard({ summary, card, classes }: {
 export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
   const data = useArchetypeData();
+  const trendsData = useChampionTrendsData();
+  const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
+  const trendByName = useMemo(() => new Map(trendsData?.champions.map((trend) => [trend.championName, trend])), [trendsData]);
   const seasonIndex = useOmnidexIndex();
   const seasonStatus = useOmnidexIndexStatus();
   const dataStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
@@ -74,6 +88,7 @@ export default function ChampionsIndex() {
       <PageHeader title="Find your champion" eyebrow="Champions" description="Explore a champion’s cards, decks and tournament results. Statistics summarize recorded decks; they are not predictions for your next match." />
 
       <PublishedSourceStatus label="Champion statistics" status={dataStatus} hasData={!!data} />
+      <PublishedSourceStatus label="Champion trends" status={trendStatus} hasData={!!trendsData} />
       <PublishedSourceStatus label="Seasons" status={seasonStatus} hasData={!!seasonIndex} />
 
       <Link to={currentSeason ? `/seasons/${currentSeason.slug}` : "/seasons"}
@@ -85,9 +100,11 @@ export default function ChampionsIndex() {
       {archetypes?.length === 0 && <p className="mt-6 rounded-xl border border-ctp-surface1 p-4 text-ctp-subtext1">No champion statistics have been published yet. Champions will appear when tournament decks are available.</p>}
       {archetypes && archetypes.length > 0 && <p className="mt-6 text-sm text-ctp-subtext1">{archetypes.length} champions · Deck and event counts cover the published tournament sample.</p>}
 
+      {trendsData && <p className="mt-2 text-sm text-ctp-subtext1">{trendsData.seasonOrder.length > 1 ? `Season trends: ${trendsData.seasonOrder.at(-1)} compared with ${trendsData.seasonOrder.at(-2)}.` : "Season trends need two seasons of results to compare."}</p>}
+
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {archetypes?.map((champion) => (
-          <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} classes={champion.classes} />
+          <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} classes={champion.classes} trend={trendByName.get(champion.signature)} showTrend={!!trendsData} />
         ))}
       </div>
 
