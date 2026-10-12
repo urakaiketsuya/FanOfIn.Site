@@ -1,9 +1,10 @@
+import MenuDetails from "../../components/ui/MenuDetails";
 import DeckImageExport from "../../components/deck-export/DeckImageExport";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
 import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckCollectionLine, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -84,7 +85,6 @@ export default function DecklistView({
   collectionPanel?: ReactNode;
 }) {
   const { notify } = useToast();
-  const toolbarMenuGroup = useId();
   const displayPrefs = useDecklistDisplayPrefs();
   const priceByName = useDeckPriceByName(displayPrefs.showPrices);
   const priceTrendByName = usePriceTrendByName(displayPrefs.showPrices && displayPrefs.visualPriceTrend);
@@ -197,7 +197,7 @@ export default function DecklistView({
     <div data-component="DecklistView">
       <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
       <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
-        <details name={toolbarMenuGroup} className="group">
+        <MenuDetails className="group">
           <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
           <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
             <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
@@ -214,12 +214,12 @@ export default function DecklistView({
             {(identity.classes.length > 0 || identity.elements.length > 0) && <p className="text-xs text-ctp-subtext0">{identity.classes.join("/")} · {identity.elements.join("/")}</p>}
             <Link to="/settings" className="inline-flex min-h-control items-center text-xs text-ctp-blue">More display settings →</Link>
           </div>
-        </details>
+        </MenuDetails>
         <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
         {collectionControl}
         {allLines.length > 0 && <>
           <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
-          <details name={toolbarMenuGroup}>
+          <MenuDetails>
             <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
               <DeckImageExport title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
@@ -231,7 +231,7 @@ export default function DecklistView({
                   <button type="button" onClick={handleExportTts} title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="flex min-h-control items-center rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
 
             </div>
-          </details>
+          </MenuDetails>
         </>}
       </div>
       {displayPrefs.showPrices && <div className="mb-3 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Estimated price: {formatUsd(deckPrice.total + sideboardPrice.total)}</span><span className="ml-2 text-xs">Main + Material {formatUsd(deckPrice.total)} · Sideboard {formatUsd(sideboardPrice.total)}</span>{missingCount > 0 && <span className="ml-2 text-xs">{missingCount} card{missingCount === 1 ? "" : "s"} without prices</span>}</div>}

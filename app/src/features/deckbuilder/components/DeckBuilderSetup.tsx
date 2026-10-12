@@ -1,3 +1,4 @@
+import MenuDetails from "../../../components/ui/MenuDetails";
 import DisclosureChevron from "../../../components/DisclosureChevron";
 import Button from "../../../components/ui/Button";
 import CardArtTile from "../../../components/CardArtTile";
@@ -31,12 +32,12 @@ export function DeckBuilderHeader() {
       <label className="col-span-2 min-w-0 sm:col-span-1"><span className="sr-only">Deck name</span><input aria-label="Deck name" value={c.saveTitle} onChange={event=>c.setSaveTitle(event.target.value)} placeholder={b.championName ? `${b.championName} deck` : "Untitled deck"} maxLength={160} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-base" /></label>
 
       <Button variant="primary" disabled={!c.saveCopyCount || c.saveState === "saving" || c.saveState === "saved"} onClick={()=>void c.handleSaveToMyDecks()}>{saveLabel}</Button>
-      <details className="relative"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-1 rounded-lg border border-ctp-surface1 px-3 text-sm" aria-label="Deck actions">More<DisclosureChevron /></summary><div className="absolute right-0 top-full z-30 mt-1 w-56 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2 shadow-xl" onClick={event=>{if((event.target as HTMLElement).closest("button,a"))event.currentTarget.closest("details")?.removeAttribute("open");}}>
+      <MenuDetails className="relative"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-1 rounded-lg border border-ctp-surface1 px-3 text-sm" aria-label="Deck actions">More<DisclosureChevron /></summary><div className="absolute right-0 top-full z-30 mt-1 w-56 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2 shadow-xl">
         <button type="button" onClick={()=>b.setTab("copy")} className="block w-full rounded-lg px-3 text-left text-sm">Export & share</button>
         <button type="button" onClick={()=>b.setTab("log")} className="block w-full rounded-lg px-3 text-left text-sm">Change history</button>
         <Link to="/deck-analysis" className="flex min-h-12 items-center rounded-lg px-3 text-sm">Analyze this deck</Link>
         <Link to="/deck-review" className="flex min-h-12 items-center rounded-lg px-3 text-sm">Review this deck</Link>
-      </div></details>
+      </div></MenuDetails>
     </div>
     <div className="mt-2 flex items-center gap-3">
       <label><span className="sr-only">Deck format</span><select aria-label="Deck format" value={b.deckFormat} onChange={event=>{const format=event.target.value as "STANDARD"|"PANTHEON";b.setDeckFormat(format);if(format==="PANTHEON")b.setPopulationSource("community");const next=new URLSearchParams(b.searchParams);if(format==="PANTHEON")next.set("format","pantheon");else next.delete("format");b.setSearchParams(next,{replace:true});}} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-9 text-sm"><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></select></label>

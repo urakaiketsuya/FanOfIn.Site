@@ -1,3 +1,4 @@
+import MenuDetails from "../../components/ui/MenuDetails";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState } from "react";
@@ -506,7 +507,7 @@ export default function DeckDetail() {
         }} className="min-h-control rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}
         <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-control items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link>
 
-        <details><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
+        <MenuDetails><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></MenuDetails>
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 

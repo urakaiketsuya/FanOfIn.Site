@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import ToastViewport from "./toast/ToastViewport";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Button from "./Button";
@@ -53,7 +54,7 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
     if (dirty) setConfirmDiscard(true);
     else close();
   }
-  return <dialog ref={ref} data-closing={closing} onAnimationEnd={event => { if (event.target === event.currentTarget && event.animationName === "sheet-exit") finishDismiss(); }} aria-labelledby={titleId} onKeyDown={event => {
+  return createPortal(<dialog ref={ref} data-closing={closing} onAnimationEnd={event => { if (event.target === event.currentTarget && event.animationName === "sheet-exit") finishDismiss(); }} aria-labelledby={titleId} onKeyDown={event => {
       if (event.key !== "Tab" || (event.target as Element).closest("dialog") !== ref.current) return;
       const items = [...(ref.current?.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, summary, [tabindex]') ?? [])]
         .filter(item => item.tabIndex >= 0 && !item.matches(":disabled") && item.getClientRects().length > 0);
@@ -79,5 +80,5 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
       <div hidden={confirmDiscard} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">{children}</div>
       {footer && !confirmDiscard && <footer className="shrink-0 border-t border-ctp-surface1 bg-ctp-base p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">{footer}</footer>}
     </div>
-  </dialog>;
+  </dialog>, document.body);
 }

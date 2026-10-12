@@ -1,3 +1,4 @@
+import MenuDetails from "../ui/MenuDetails";
 import AddDeckCard from "./AddDeckCard";
 import type { CardPrintingAllocation } from "@gatcg/shared";
 import DeckLegalityWarning from "./DeckLegalityWarning";
@@ -56,7 +57,7 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onPrinting
       {selectedCards.length > 0 && <button type="button" onClick={() => setSelected(new Set())} className="min-h-12 rounded-lg px-2.5 text-xs text-ctp-subtext1">Clear</button>}
       <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, -1)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-text disabled:opacity-40">−1 each</button>
       <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, 1)} className="min-h-12 rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base disabled:opacity-40">+1 each</button>
-      <details className="relative">
+      <MenuDetails className="relative">
         <summary className="flex min-h-12 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More <DisclosureChevron className="ml-1" /></summary>
         <div className="absolute right-0 top-full z-30 mt-2 w-60 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Selection</p>
@@ -66,7 +67,7 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onPrinting
           <label className="mt-3 block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move selected<select disabled={selectedCards.length === 0} defaultValue="" onChange={(event) => { if (event.target.value) { onMoveSelected(selectedCards, event.target.value as DeckCardDestination); event.target.value = ""; } }} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-normal normal-case text-ctp-text disabled:opacity-40"><option value="">Choose section…</option><DestinationOptions cards={selectedCards.map((selectedCard) => cardsByName.get(selectedCard.name))} /></select></label>
           <button type="button" disabled={selectedCards.length === 0} onClick={() => { if (window.confirm(`Remove ${selectedCards.length} selected card${selectedCards.length === 1 ? "" : "s"}?`)) { onRemoveSelected(selectedCards); setSelected(new Set()); } }} className="mt-3 min-h-12 w-full rounded-lg border border-ctp-red/50 text-xs text-ctp-red disabled:opacity-40">Remove selected</button>
         </div>
-      </details>
+      </MenuDetails>
     </div></details>
     {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
     <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><DisclosureChevron className="text-ctp-subtext0 group-open:rotate-180" /></span></summary>

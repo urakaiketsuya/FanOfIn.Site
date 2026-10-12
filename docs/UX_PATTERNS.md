@@ -131,3 +131,13 @@ reachable while scrolling (Builder toolbar or My Decks save bar). Routine feedba
 expires after six seconds, or eight seconds with an action; pause while hovered,
 focused, hidden, or running an action. Errors and explicitly persistent notices remain
 until dismissed. Editor history remains available after an Undo notification expires.
+
+## Action menus
+
+Use `MenuDetails` for floating navigation, display, and deck action menus. Open by
+click or keyboard; selecting an action or display value closes the menu. Opening
+another menu, clicking outside, moving focus out, navigating, or pressing Escape
+also dismisses it. Escape and selections restore focus to the trigger. Keep menu
+children mounted so launched tasks retain their state; `DialogSheet` renders in
+the document body so closing a parent menu cannot hide its dialog. Keep ordinary
+section disclosures separate from action menus.

@@ -1,3 +1,4 @@
+import MenuDetails from "./components/ui/MenuDetails";
 import AuroraBackground from "./components/AuroraBackground";
 import ConnectivityNotice from "./components/ui/toast/ConnectivityNotice";
 import ToastViewport from "./components/ui/toast/ToastViewport";
@@ -40,10 +41,14 @@ function linkIsActive(pathname: string, search: string, to: string) {
 export default function App() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const location = useLocation();
   const isActive = (to: string) => linkIsActive(location.pathname, location.search, to);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setMobileGroup(null);
+  }, [location.key]);
 
   useEffect(() => {
     initAnalytics();
@@ -77,14 +82,13 @@ export default function App() {
               }
               const group = entry;
               const active = group.paths.some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
-              const open = openGroup === group.label;
-              const menuId = `nav-links-${group.label.toLowerCase()}`;
-              return <div key={group.label} className="relative" onMouseEnter={() => setOpenGroup(group.label)} onMouseLeave={() => setOpenGroup(null)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenGroup(null); }} onKeyDown={(event) => { if (event.key === "Escape") { setOpenGroup(null); event.currentTarget.querySelector("button")?.focus(); } }}>
-                <button type="button" aria-expanded={open} aria-controls={menuId} onClick={() => setOpenGroup(open ? null : group.label)} className={`min-h-control rounded-lg px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<DisclosureChevron className={`ml-1 ${open ? "rotate-180" : ""}`} /></button>
-                <div id={menuId} className={`absolute right-0 top-full z-50 min-w-52 pt-2 transition-opacity duration-150 ${open ? "visible opacity-100" : "invisible opacity-0"}`}>
-                  <div className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-1.5 shadow-xl shadow-black/20">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => setOpenGroup(null)}>{link.label}</Link>)}</div>
+              return <MenuDetails key={group.label} className="relative group/nav">
+                <summary className={`flex min-h-control min-w-control cursor-pointer list-none items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<DisclosureChevron className="ml-1 group-open/nav:rotate-180" /></summary>
+                <div className="absolute right-0 top-full z-50 min-w-52 pt-2">
+                  <div className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-1.5 shadow-xl shadow-black/20">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))}>{link.label}</Link>)}</div>
                 </div>
-              </div>;
+              </MenuDetails>;
+
             })}
           </nav>
           <div className="flex items-center gap-2">
@@ -100,7 +104,7 @@ export default function App() {
           if (entry.kind === "link") {
             return (
               <section key={entry.to} className="border-b border-ctp-surface0 pb-1 last:border-0">
-                <Link to={entry.to} aria-current={isActive(entry.to) ? "page" : undefined} className="flex min-h-control items-center rounded px-3 py-2 text-sm font-semibold text-ctp-text hover:bg-ctp-base" onClick={() => setMenuOpen(false)}>{entry.label}</Link>
+                <Link to={entry.to} aria-current={isActive(entry.to) ? "page" : undefined} className="flex min-h-control items-center rounded px-3 py-2 text-sm font-semibold text-ctp-text hover:bg-ctp-base" onClick={() => { setMenuOpen(false); setMobileGroup(null); menuButtonRef.current?.focus(); }}>{entry.label}</Link>
               </section>
             );
           }
@@ -109,7 +113,7 @@ export default function App() {
           const groupId = `mobile-links-${group.label.toLowerCase()}`;
           return <section key={group.label} className="border-b border-ctp-surface0 pb-1 last:border-0">
             <h2><button type="button" aria-expanded={open} aria-controls={groupId} onClick={() => setMobileGroup(open ? null : group.label)} className="flex min-h-control w-full items-center justify-between rounded px-3 py-2 text-left text-sm font-semibold text-ctp-text"><span>{group.label}</span><DisclosureChevron className={open ? "rotate-180" : ""} /></button></h2>
-            {open && <div id={groupId} className="grid gap-1 pb-2">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => setMenuOpen(false)}>{link.label}</Link>)}</div>}
+            {open && <div id={groupId} className="grid gap-1 pb-2">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => { setMenuOpen(false); setMobileGroup(null); menuButtonRef.current?.focus(); }}>{link.label}</Link>)}</div>}
           </section>;
         })}</div>
       </nav>}
