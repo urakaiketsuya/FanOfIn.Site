@@ -142,6 +142,11 @@ children mounted so launched tasks retain their state; `DialogSheet` renders in
 the document body so closing a parent menu cannot hide its dialog. Keep ordinary
 section disclosures separate from action menus.
 
+Run child click actions before dismissing their menu. A blur with no next focus
+target must not hide menu contents: Safari can emit it when tapping a button,
+before delivering the click. Outside-pointer dismissal and keyboard focus moves
+to a known outside target still close the menu.
+
 Deck image exports show a PNG preview with native touch-and-hold image actions
 available, plus a named PNG download. Offer native file sharing only when the
 browser reports support for that PNG file. Keep the preview available after a

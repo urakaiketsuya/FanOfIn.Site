@@ -20,7 +20,11 @@ export default function MenuDetails({ children, className }: { children: ReactNo
     return () => document.removeEventListener("pointerdown", outside, true);
   }, []);
   return <details ref={ref} name="site-action-menu" data-action-menu className={className}
-    onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close(); }}
+    onBlur={event => {
+      // Safari can blur the trigger without focusing a tapped button. Hiding the
+      // menu here would remove that button before its click can run.
+      if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node)) close();
+    }}
     onKeyDown={event => {
       if ((event.target as Element).closest("dialog")) return;
       if (event.key === "Escape" && event.currentTarget.open) {
@@ -35,10 +39,14 @@ export default function MenuDetails({ children, className }: { children: ReactNo
         document.querySelectorAll<HTMLDetailsElement>("details[data-action-menu][open]").forEach(menu => {
           if (menu !== ref.current) menu.open = false;
         });
-      } else if (target.closest("button:not(:disabled), a[href]")) {
-        // Focus the persistent trigger before a child action mounts its dialog.
-        close(true);
       }
+    }}
+    onClick={event => {
+      const target = event.target as Element;
+      if (target.closest("dialog, summary")) return;
+      // Let the child action run first, then focus the persistent trigger before
+      // React mounts a requested dialog and captures its return-focus target.
+      if (target.closest("button:not(:disabled), a[href]")) close(true);
     }}
     onChange={event => { if (!(event.target as Element).closest("dialog")) close(true); }}
   >{children}</details>;
