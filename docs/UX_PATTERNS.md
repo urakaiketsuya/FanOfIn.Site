@@ -123,8 +123,9 @@ Keep one interactive analysis example, with detailed assumptions in calculation 
 
 ## Deck editing reachability
 
-Offer section-specific Add actions above and below populated card lists, with one Add
-action for empty sections. Open search with that exact destination selected; keep
+Offer section-specific plus tiles as the first and last items inside populated card
+grids, with one tile for empty sections. Use an image-free card silhouette with an
+Add cards label and a section-specific accessible name; use a compact row in list mode. Open search with that exact destination selected; keep
 section eligibility checks and never silently reroute an addition. Keep Undo/Redo
 reachable while scrolling (Builder toolbar or My Decks save bar). Routine feedback
 expires after six seconds, or eight seconds with an action; pause while hovered,
