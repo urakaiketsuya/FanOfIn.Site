@@ -221,10 +221,10 @@ export default function DecklistView({
         {collectionControl}
         {allLines.length > 0 && <>
           <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+          <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
           <MenuDetails>
             <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
-              <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
               {toolbarActions}
               {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
               <a href={clarentUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>

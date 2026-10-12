@@ -147,6 +147,8 @@ target must not hide menu contents: Safari can emit it when tapping a button,
 before delivering the click. Outside-pointer dismissal and keyboard focus moves
 to a known outside target still close the menu.
 
+Keep Export deck image directly in the deck toolbar, outside the More disclosure,
+so opening the export sheet does not depend on a floating menu's event lifecycle.
 Deck image exports show a PNG preview with native touch-and-hold image actions
 available, plus a named PNG download. Offer native file sharing only when the
 browser reports support for that PNG file. Keep the preview available after a
