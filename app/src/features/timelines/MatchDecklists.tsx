@@ -152,6 +152,7 @@ function PlayerDecklistSlot({
       {selectedEntry && (
         <div className="mt-2">
           <DecklistView
+            deckOwner={selectedPlayer?.username}
             decklist={selectedEntry.decklist}
             cardsByName={cardsByName}
             deckId={`${eventId}:${selectedEntry.player}`}

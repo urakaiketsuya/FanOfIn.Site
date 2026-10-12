@@ -43,7 +43,7 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, width: number): s
   return lines;
 }
 
-export async function renderDeckImage(title: string, sections: DeckImageSection[], cards: Map<string, Card>, signal: AbortSignal, onProgress: (done: number, total: number) => void) {
+export async function renderDeckImage(title: string, sections: DeckImageSection[], cards: Map<string, Card>, signal: AbortSignal, onProgress: (done: number, total: number) => void, ownerName?: string) {
   const groups = deckImageSections(sections, cards);
   if (!groups.length) throw new Error("Add cards before exporting an image.");
   const canvas = document.createElement("canvas");
@@ -53,7 +53,9 @@ export async function renderDeckImage(title: string, sections: DeckImageSection[
   const ctx = context;
   ctx.font = "bold 52px Arial";
   const titleLines = wrapText(ctx, title.trim() || "Decklist", 1680);
-  const header = 116 + titleLines.length * 62;
+  ctx.font = "32px Arial";
+  const ownerLines = ownerName?.trim() ? wrapText(ctx, `By ${ownerName.trim()}`, 1680) : [];
+  const header = 116 + titleLines.length * 62 + ownerLines.length * 42;
   const tileWidth = 275, artHeight = 385, rowHeight = 466, gap = 12, margin = 45;
   const height = header + groups.reduce((sum, group) => sum + 78 + Math.ceil(group.tiles.length / 6) * rowHeight, 0) + 38;
   // Bound memory on mobile; never silently omit cards from a large draft.
@@ -62,6 +64,8 @@ export async function renderDeckImage(title: string, sections: DeckImageSection[
   ctx.fillStyle = "#1e1e2e"; ctx.fillRect(0, 0, canvas.width, height);
   ctx.fillStyle = "#cdd6f4"; ctx.textAlign = "center"; ctx.font = "bold 52px Arial";
   titleLines.forEach((line, index) => ctx.fillText(line, 900, 70 + index * 62));
+  ctx.font = "32px Arial"; ctx.fillStyle = "#cdd6f4";
+  ownerLines.forEach((line, index) => ctx.fillText(line, 900, 70 + titleLines.length * 62 + index * 42));
   ctx.font = "26px Arial"; ctx.fillStyle = "#a4c8e1";
   ctx.fillText("Fan of Insight · fanofin.site", 900, header - 36);
   const jobs: { tile: DeckImageTile; x: number; y: number }[] = [];

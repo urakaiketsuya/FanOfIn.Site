@@ -141,3 +141,12 @@ also dismisses it. Escape and selections restore focus to the trigger. Keep menu
 children mounted so launched tasks retain their state; `DialogSheet` renders in
 the document body so closing a parent menu cannot hide its dialog. Keep ordinary
 section disclosures separate from action menus.
+
+Deck image exports show a PNG preview with native touch-and-hold image actions
+available, plus a named PNG download. Offer native file sharing only when the
+browser reports support for that PNG file. Keep the preview available after a
+share cancellation or failure; only report actual errors, and never claim that
+opening the share sheet saved the image to Photos.
+Include the saved deck title and, when known, its owner's display name or the
+recorded tournament player's name in the PNG header. Wrap long names before the
+card sections. Do not attribute grouped tournament builds to a single player.

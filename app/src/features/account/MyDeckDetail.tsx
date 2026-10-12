@@ -47,6 +47,12 @@ const DECK_TAB_KEYS: DeckTab[] = DECK_TABS.map(({ key }) => key);
 
 export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
+  const [exportOwner, setExportOwner] = useState<string>();
+  useEffect(() => {
+    let active = true;
+    void accountApi.session().then(session => { if (active) setExportOwner(session.user?.displayName); }).catch(() => {});
+    return () => { active = false; };
+  }, []);
   const [deck, setDeck] = useState<SavedDeckDetail | null>();
   const [error, setError] = useState<string | null>(null);
   const [loadAttempt, setLoadAttempt] = useState(0);
@@ -347,7 +353,7 @@ export default function MyDeckDetail() {
       </div>
     </section>}
     {tab === "performance" && <section id="owned-deck-panel-performance" role="tabpanel" aria-labelledby="owned-deck-tab-performance" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /><DeckMatchLogSummary deckId={deck.id} /></section>}
-    {tab === "decklist" && <section id="owned-deck-panel-decklist" role="tabpanel" aria-labelledby="owned-deck-tab-decklist" tabIndex={0}><UserDecklistPanel deckTitle={deck.title} decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false} showAnalysis={false}>
+    {tab === "decklist" && <section id="owned-deck-panel-decklist" role="tabpanel" aria-labelledby="owned-deck-tab-decklist" tabIndex={0}><UserDecklistPanel deckTitle={deck.title} deckOwner={exportOwner} decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false} showAnalysis={false}>
       {editing ? <div className="mt-3">
         <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Use −/+ for one card, or tap several card images and update them together.</p></div>
         <div className="flex flex-wrap items-center justify-between gap-2"><EditorModeSwitch value={editorMode} onChange={setEditorMode} label="Deck editing mode" /><button type="button" onClick={() => { setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>

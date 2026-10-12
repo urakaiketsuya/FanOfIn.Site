@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { accountApi } from "../../../lib/accountApi";
 import DeckImageExport from "../../../components/deck-export/DeckImageExport";
 import { useToast } from "../../../components/ui/toast/ToastContext";
 import { buildEditableDeckText } from "../../events/DecklistView";
@@ -47,6 +49,12 @@ export default function BuilderCopyPanel({
   hideFullDeckOption?: boolean;
 }) {
   const { notify } = useToast();
+  const [exportOwner, setExportOwner] = useState<string>();
+  useEffect(() => {
+    let active = true;
+    void accountApi.session().then(session => { if (active) setExportOwner(session.user?.displayName); }).catch(() => {});
+    return () => { active = false; };
+  }, []);
   return (
     <div data-component="BuilderCopyPanel" role="region" aria-label="Save and export deck" className="mt-4">
       <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
@@ -63,7 +71,7 @@ export default function BuilderCopyPanel({
         {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
       </div>
       <div className="flex flex-wrap gap-2">
-        <DeckImageExport title={saveTitle.trim() || `${championName ?? "Untitled"} deck`} cardsByName={catalogByName} sections={[{ title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }]} />
+        <DeckImageExport ownerName={exportOwner} title={saveTitle.trim() || `${championName ?? "Untitled"} deck`} cardsByName={catalogByName} sections={[{ title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }]} />
         {!hideFullDeckOption && <button
           type="button"
           onClick={() => onCopy(false)}

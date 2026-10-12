@@ -1,3 +1,4 @@
+import { usePlayerNameById } from "../tournaments/data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexEventSummary } from "@gatcg/shared";
@@ -11,6 +12,7 @@ import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 
 export default function PlayerEventDecklistRow({ event, playerId }: { event: OmnidexEventSummary; playerId: number }) {
+  const playerName = usePlayerNameById();
   const [expanded, setExpanded] = useState(false);
   const { loading, decklist, error } = usePlayerDecklist(event.id, playerId, expanded);
   const deckId = `${event.id}:${playerId}`;
@@ -62,7 +64,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
                   )}
                 </div>
               )}
-              <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deckId} showThumbnails />
+              <DecklistView deckOwner={playerName(playerId)} decklist={decklist} cardsByName={cardsByName} deckId={deckId} showThumbnails />
             </>
           )}
         </div>

@@ -205,7 +205,7 @@ export default function DecklistsSection({
       {selected && (
         <div className="mt-3">
           <p className="sr-only" aria-live="polite">Showing deck for {playerName(selected.player)}</p>
-          <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={selection?.deckId} showThumbnails />
+          <DecklistView deckOwner={playerName(selected.player)} decklist={selected.decklist} cardsByName={cardsByName} deckId={selection?.deckId} showThumbnails />
         </div>
       )}
       {similarDecks && similarDecks.topMatches.length > 0 && (
