@@ -29,14 +29,14 @@ export function initAnalytics(): void {
   const script = document.createElement("script");
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
-  document.head.appendChild(script);
-
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer!.push(args);
+  window.gtag = function gtag() {
+    // gtag.js recognizes Arguments command objects; rest-parameter arrays are not equivalent.
+    window.dataLayer!.push(arguments);
   };
   window.gtag("js", new Date());
   window.gtag("config", MEASUREMENT_ID, { send_page_view: false });
+  document.head.appendChild(script);
 }
 
 export function trackPageview(path: string): void {
