@@ -32,7 +32,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run api:typecheck
-      - run: node --import tsx --test pipeline/src/public-api/snapshot.test.ts
+      - run: node --import tsx --test pipeline/src/public-api/snapshot.test.ts pipeline/src/public-api/catalogSnapshot.test.ts
       - name: Publish validated snapshot to production D1
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_PUBLIC_API_TOKEN }}
@@ -43,3 +43,9 @@ jobs:
             exit 1
           fi
           npm run pipeline:api:publish -- --remote --production
+      - name: Publish validated private card catalog
+        if: vars.TRADEBINDER_CATALOG_ENABLED == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_PUBLIC_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npm run pipeline:catalog:publish -- --remote --production

@@ -43,7 +43,8 @@
     "pipeline:packages:construction": "node --import tsx pipeline/src/analysis/constructionPackageAudit.ts",
     "release:check": "node scripts/release-check.mjs",
     "release:data": "node --import tsx scripts/check-release-data.ts",
-    "release:smoke": "node scripts/smoke-release.mjs"
+    "release:smoke": "node scripts/smoke-release.mjs",
+    "pipeline:catalog:publish": "node --import tsx pipeline/src/public-api/publishCatalog.ts"
   },
   "overrides": {
     "sharp": "0.35.5"

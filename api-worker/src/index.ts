@@ -1,7 +1,8 @@
+import { catalogFeed } from "./catalog";
 import type { PublicApiMetadata } from "@gatcg/shared";
 import specification from "./openapi.json";
 
-interface Env { PUBLIC_DB: D1Database }
+interface Env { PUBLIC_DB: D1Database; TRADEBINDER_CATALOG_TOKEN?: string }
 interface Cursor { version: string; kind: string; after: string }
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -30,6 +31,7 @@ function conditional(response: Response, request: Request): Response {
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    if (new URL(request.url).pathname.startsWith("/v1/catalog/")) return catalogFeed(request, env);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers });
     if (!["GET", "HEAD"].includes(request.method)) return json({ error: { code: "method_not_allowed", message: "This API is read-only" } }, 405, { Allow: "GET, HEAD, OPTIONS" });
     const url = new URL(request.url);
