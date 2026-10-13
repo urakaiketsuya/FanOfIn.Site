@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { Card, CollectionEntry } from "@gatcg/shared";
-import { completePlaysetLine, playsetProgress, playsetMilestone, playsetTarget } from "../src/features/collection/collectionPlaysets";
-const card = { uuid: "a", name: "A" } as Card;
+import { completePlaysetLine, playsetProgress, playsetMilestone, playsetTarget, supportsPlayset } from "../src/features/collection/collectionPlaysets";
+const card = { uuid: "a", name: "A", types: ["ACTION"], cost_memory: null, cost_reserve: 2 } as Card;
 const entry = (ownedQuantity: number, proxyQuantity = 0, editionUuid?: string) => ({ cardUuid: "a", ownedQuantity, proxyQuantity, editionUuid }) as CollectionEntry;
 test("quick completion tops up mixed physical printings and preserves proxies", () => {
  const entries = [entry(1, 3), entry(2, 4, "first-edition")];
@@ -17,7 +17,7 @@ test("empty and proxy-only collections need the entire target", () => {
  assert.equal(completePlaysetLine(card, [entry(0, 4)])?.quantity, 4);
 });
 test("surplus copies cannot complete other playsets and progress regresses", () => {
- const cards = [card, { uuid: "b" } as Card];
+ const cards = [card, { ...card, uuid: "b", name: "B" }];
  assert.deepEqual(playsetProgress(cards, new Map([["a", 20],["b", 3]])), { complete: 1, total: 2, missingCopies: 1, percent: 50 });
  assert.equal(playsetProgress(cards, new Map([["a", 3]])).complete, 0);
  assert.equal(playsetProgress([], new Map()).percent, 0);
@@ -37,5 +37,15 @@ test("memory costs, including zero, need one copy; reserve cards need four", () 
  assert.equal(completePlaysetLine({ ...card, cost_memory: 0 }, [])?.quantity, 1);
  assert.equal(completePlaysetLine({ ...card, cost_memory: 0 }, [entry(1)]), null);
  const material = { ...card, cost_memory: 0 };
- assert.equal(playsetProgress([material, { uuid: "b" } as Card], new Map([["a",1],["b",4]])).complete, 2);
+ assert.equal(playsetProgress([material, { ...card, uuid: "b", name: "B" }], new Map([["a",1],["b",4]])).complete, 2);
+});
+
+test("Material card types never offer quick playset completion", () => {
+  for (const types of [["CHAMPION"], ["REGALIA"], ["REGALIA", "ITEM"]]) {
+    const material = { ...card, types, cost_memory: 0, cost_reserve: null };
+    assert.equal(supportsPlayset(material), false);
+    assert.equal(completePlaysetLine(material, []), null);
+    assert.equal(completePlaysetLine(material, [entry(0, 4)]), null);
+  }
+  assert.equal(supportsPlayset(card), true);
 });

@@ -87,11 +87,22 @@ test('publication includes the eleven approved refinements and reproduces refres
     }
 });
 
-test('curated target pools retain their catalog cost, element and intersection boundaries', () => {
+test('curated target pools retain their reviewed catalog boundaries and remain valid today', () => {
     type Card = { name: string; types: string[]; subtypes: string[]; cost_reserve: number | null; elements: string[] };
-    const cards = JSON.parse(read('../../../data/card-catalog.json')).cards as Card[];
-    const namedPool = (id: string, condition: number) => themeRefinements.find(t => t.id === id)!.paths[0][condition].names!.slice().sort();
-    assert.deepEqual(namedPool('resonator-forese', 3), cards.filter(c => c.types.includes('ALLY') && c.subtypes.includes('RESONATOR') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.elements.every(e => ['NORM', 'FIRE', 'WATER', 'WIND'].includes(e))).map(c => c.name).sort());
-    assert.deepEqual(namedPool('specter-templar', 2), cards.filter(c => c.types.includes('ALLY') && c.subtypes.includes('SPECTER') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.name !== 'Incinerated Templar').map(c => c.name).sort());
-    assert.deepEqual(namedPool('discorp-tower', 0), cards.filter(c => c.types.includes('ALLY') && c.subtypes.includes('DISCORP') && c.subtypes.includes('AUTOMATON')).map(c => c.name).sort());
+    const reviewedCards = catalog as Card[];
+    const currentCards = JSON.parse(read('../../../data/card-catalog.json')).cards as Card[];
+    const pools: [string, number, (card: Card) => boolean][] = [
+        ['resonator-forese', 3, c => c.types.includes('ALLY') && c.subtypes.includes('RESONATOR') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.elements.every(e => ['NORM', 'FIRE', 'WATER', 'WIND'].includes(e))],
+        ['specter-templar', 2, c => c.types.includes('ALLY') && c.subtypes.includes('SPECTER') && c.cost_reserve !== null && c.cost_reserve <= 3 && c.name !== 'Incinerated Templar'],
+        ['discorp-tower', 0, c => c.types.includes('ALLY') && c.subtypes.includes('DISCORP') && c.subtypes.includes('AUTOMATON')],
+    ];
+    for (const [id, condition, eligible] of pools) {
+        const names = themeRefinements.find(t => t.id === id)!.paths[0][condition].names!.slice().sort();
+        // Exact membership belongs to the immutable review, not the daily catalog.
+        assert.deepEqual(names, reviewedCards.filter(eligible).map(c => c.name).sort(), id);
+        for (const name of names) {
+            const current = currentCards.find(card => card.name === name);
+            assert.ok(current && eligible(current), `${id}: ${name} no longer meets the reviewed criteria`);
+        }
+    }
 });
