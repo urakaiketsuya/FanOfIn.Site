@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "decklist-display-prefs-v1";
 
-export type DeckDisplayMode = "compact" | "visual" | "detailed";
+export type DeckDisplayMode = "visual" | "detailed";
 
 export type VisualCardSize = "large" | "medium" | "compact";
 
@@ -44,9 +44,9 @@ function load(): DecklistDisplayPrefs {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULTS;
-    const parsed = JSON.parse(raw) as Partial<DecklistDisplayPrefs>;
+    const parsed = JSON.parse(raw) as Partial<Omit<DecklistDisplayPrefs, "displayMode">> & { displayMode?: string };
     return {
-      displayMode: ["compact", "visual", "detailed"].includes(parsed.displayMode ?? "") ? parsed.displayMode! : null,
+      displayMode: parsed.displayMode === "compact" ? "visual" : parsed.displayMode === "visual" || parsed.displayMode === "detailed" ? parsed.displayMode : null,
       showPrices: parsed.showPrices === true,
       tuningEvidence: parsed.tuningEvidence ?? DEFAULTS.tuningEvidence,
       metaGaps: parsed.metaGaps ?? DEFAULTS.metaGaps,

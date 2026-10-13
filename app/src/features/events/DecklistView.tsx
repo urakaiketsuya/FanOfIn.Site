@@ -24,7 +24,7 @@ import { extractProducedTokens } from "../../lib/cardIntent";
 import { useDecklistDisplayPrefs, type DeckDisplayMode } from "../../lib/decklistDisplayPrefs";
 import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
-import { CompactDeckSection as CompactSection, DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
+import { DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines – round-trips with the Compare tool's paste parser. */
 export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = [], includePrintings = false): string {
@@ -95,7 +95,7 @@ export default function DecklistView({
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const displayMode = displayPrefs.displayMode ?? (defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
+  const displayMode = displayPrefs.displayMode ?? (defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "visual" : defaultDisplayMode);
   const setDisplayMode = displayPrefs.setDisplayMode;
   const [showMissingOnly, setShowMissingOnly] = useState(false);
 
@@ -202,7 +202,7 @@ export default function DecklistView({
         <MenuDetails className="group">
           <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
           <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
-            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
+            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
             {displayMode === "visual" && <>
               <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
               {[
@@ -247,7 +247,6 @@ export default function DecklistView({
         </div>
       </div> : !collectionPanel && <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>)}
       {ownershipByName && showMissingOnly && missingCopies > 0 && <p className="mb-3 text-xs text-ctp-subtext1">Showing only cards your collection does not fully cover. Section totals reflect this filtered view.</p>}
-      {displayMode === "compact" && <div className="space-y-5">{[...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing].map((section) => <CompactSection priceByName={displayPrefs.showPrices ? priceByName : undefined} key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} ownershipByName={ownershipByName} />)}</div>}
       {displayMode === "visual" && (() => {
         const sections = [...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing];
         const fields: VisualFieldVisibility = {

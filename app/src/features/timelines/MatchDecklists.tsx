@@ -157,7 +157,7 @@ function PlayerDecklistSlot({
             cardsByName={cardsByName}
             deckId={`${eventId}:${selectedEntry.player}`}
             showThumbnails
-            defaultDisplayMode="compact"
+            defaultDisplayMode="visual"
           />
         </div>
       )}
