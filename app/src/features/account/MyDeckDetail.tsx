@@ -13,7 +13,7 @@ import { automaticDeckSection, editDeck, type DeckEdit, type EditableDeck } from
 import CardBrowser from "../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { useLocation, Link, useParams } from "react-router-dom";
+import { useLocation, Navigate, Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
@@ -127,7 +127,7 @@ export default function MyDeckDetail() {
   async function saveMaybeboard() {
     const maybeboard = maybeboardLines;
     await run(async () => {
-      await accountApi.updateDeckMetadata(deckId, { maybeboard });
+      await accountApi.updateDeckMetadata(deck!.id, { maybeboard });
       setDeck((current) => current ? { ...current, maybeboard } : current);
       setNotice("Maybeboard saved.");
     });
@@ -169,7 +169,7 @@ export default function MyDeckDetail() {
   }
 
   useEffect(() => {
-    if (deck?.id === deckId && !loadingDeck && location.state?.edit && openedEdit.current !== location.key) {
+    if ((deck?.publicSlug ? deck.publicSlug === deckId : deck?.id === deckId) && !loadingDeck && location.state?.edit && openedEdit.current !== location.key) {
       openedEdit.current = location.key;
       startEditing();
     }
@@ -311,6 +311,7 @@ export default function MyDeckDetail() {
   }
 
   if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (deck?.publicSlug && location.pathname !== `/decks/${deck.publicSlug}/edit`) return <Navigate to={{ pathname: `/decks/${deck.publicSlug}/edit`, search: location.search, hash: location.hash }} replace state={location.state} />;
   if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<div className="flex flex-wrap items-center justify-center gap-3"><Button variant="primary" disabled={loadingDeck} onClick={() => setLoadAttempt((attempt) => attempt + 1)}>{loadingDeck ? "Retrying…" : "Retry loading deck"}</Button><Link to="/decks/edit" className="inline-flex min-h-control items-center text-ctp-blue hover:underline">Back to My Decks</Link></div>} /></PageLayout>;
   const editingValidation = validateDeck({ main: editedDecklist.main.map((line) => ({ cardName: line.card, quantity: line.quantity })), material: editedDecklist.material.map((line) => ({ cardName: line.card, quantity: line.quantity })), sideboard: editedDecklist.sideboard.map((line) => ({ cardName: line.card, quantity: line.quantity })) }, catalogByName, new Set(["NORM"]), deck.format);
   const comparePath = `/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;

@@ -222,6 +222,7 @@ export default function AppRoutes() {
         <Route path="/decks/shared" element={<SharedDecksIndex />} />
         <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
         <Route path="/decks/edit" element={<MyDecksIndex />} />
+        <Route path="/decks/:id/edit" element={<MyDeckDetail />} />
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
         <Route path="/pantheon/decks" element={<PantheonDecksIndex />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />

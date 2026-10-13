@@ -147,6 +147,13 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
 }
 
 export async function getDeck(env: Env, user: AuthUser, deckId: string, compactHistory = true): Promise<SavedDeckDetail | null> {
+  // Shared IDs also identify the owner's editor; never resolve another user's deck.
+  if (/^[a-f0-9]{32}$/.test(deckId)) {
+    const owned = await env.ACCOUNT_DB.prepare("SELECT id FROM user_decks WHERE public_slug = ? AND owner_user_id = ?")
+      .bind(deckId, user.id).first<{ id: string }>();
+    if (!owned) return null;
+    deckId = owned.id;
+  }
   const results = await databaseBatch<DeckHeaderRow | SourceRow | VersionRow>(env.ACCOUNT_DB, "deck.detail", [
     env.ACCOUNT_DB.prepare(`SELECT ud.*, sd.identity_hash, (SELECT COUNT(*) FROM deck_versions WHERE deck_id = ud.id) AS version_count
       FROM user_decks ud JOIN saved_decks sd ON sd.id = ud.id WHERE ud.id = ? AND ud.owner_user_id = ?`).bind(deckId, user.id),
