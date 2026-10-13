@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import { beginLoading, endLoading } from "./lib/useGlobalLoading";
@@ -138,29 +138,26 @@ const AccountIndex = lazy(() => import("./features/account/AccountIndex"));
 const VerifyEmailPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.VerifyEmailPage })));
 const ResetPasswordPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.ResetPasswordPage })));
 const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
-const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"));
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
 const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfile"));
 const CardLocationsPage = lazy(() => import("./features/collection/CardLocationsPage"));
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
-// /decks/:id serves tournament decks, publicly shared decks, and a signed-in user's own saved
-// decks from one flat namespace, dispatching to whichever one actually owns the id – no network
-// probe needed, since the three id spaces never overlap in shape. Tournament hashes (`shortHash()`,
-// shared/src/hash.ts) are base-36 of a 32-bit int, at most 7 lowercase alphanumeric characters, and
-// never contain a dash. Shared-deck slugs (account-worker/src/decks.ts) are `crypto.randomUUID()`
-// with dashes stripped – always exactly 32 lowercase hex characters, also never a dash. A saved
-// deck's own id is that same `crypto.randomUUID()` with its dashes intact, so it's the only one of
-// the three that ever matches a dash-containing pattern. Ownership itself is still enforced
-// server-side (account-worker's getDeck scopes every lookup to the signed-in user), so a saved-deck
-// id belonging to someone else just renders MyDeckDetail's own "not found" state, not a data leak.
+// Saved deck IDs and shared slugs use the same owner-aware page. The server
+// decides ownership; visitors receive only the published snapshot.
 const PUBLIC_SLUG_PATTERN = /^[0-9a-f]{32}$/;
 const SAVED_DECK_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function DeckOrPublicDeckDetail() {
   const { id = "" } = useParams<{ id: string }>();
-  if (SAVED_DECK_ID_PATTERN.test(id)) return <MyDeckDetail />;
-  return PUBLIC_SLUG_PATTERN.test(id) ? <PublicDeckDetail /> : <DeckDetail />;
+  return SAVED_DECK_ID_PATTERN.test(id) || PUBLIC_SLUG_PATTERN.test(id)
+    ? <MyDeckDetail key={id} /> : <DeckDetail />;
+}
+
+function DeckEditRedirect() {
+  const { id = "" } = useParams<{ id: string }>();
+  const location = useLocation();
+  return <Navigate to={{ pathname: `/decks/${encodeURIComponent(id)}`, search: location.search, hash: location.hash }} replace state={location.state} />;
 }
 
 function RouteFallback() {
@@ -222,7 +219,7 @@ export default function AppRoutes() {
         <Route path="/decks/shared" element={<SharedDecksIndex />} />
         <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
         <Route path="/decks/edit" element={<MyDecksIndex />} />
-        <Route path="/decks/:id/edit" element={<MyDeckDetail />} />
+        <Route path="/decks/:id/edit" element={<DeckEditRedirect />} />
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
         <Route path="/pantheon/decks" element={<PantheonDecksIndex />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
