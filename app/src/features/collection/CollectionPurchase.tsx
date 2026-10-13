@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
-import { playsetTarget } from "./collectionPlaysets";
+import { playsetTarget, supportsPlayset } from "./collectionPlaysets";
 import CollectionBinderReview from "./CollectionBinderReview";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
@@ -47,8 +47,8 @@ export default function CollectionPurchase({ cards, catalog = cards, quantities 
     {binderKind && <CollectionBinderReview kind={binderKind} choices={choices} cards={catalog} onDismiss={()=>setBinderKind(null)}/>}
     {review && <EditorDialog title="Review purchase" doneLabel="Back to cards" onDismiss={() => setReview(false)}>
       <p className="text-sm text-ctp-subtext1">Choose quantities, then open TCGplayer. Printing and condition are chosen there.</p>
-      <div className="my-2 flex flex-wrap gap-2"><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).map(([id, choice]) => [id, {...choice, quantity: 1}])))}>One of each</button><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).flatMap(([id, choice]) => { const card = catalog.find(card => card.uuid === id); const quantity = card ? Math.max(0, playsetTarget(card) - (quantities.get(id) ?? 0)) : choice.quantity; return quantity ? [[id, {...choice, quantity}]] : []; })))}>Fill missing playset copies</button></div>
-      <p className="text-xs text-ctp-subtext1">Fill playsets uses your physical ownership and removes cards already complete.</p>
+      <div className="my-2 flex flex-wrap gap-2"><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).map(([id, choice]) => [id, {...choice, quantity: 1}])))}>One of each</button>{catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).flatMap(([id, choice]) => { const card = catalog.find(card => card.uuid === id); if (!card || !supportsPlayset(card)) return [[id, choice]]; const quantity = Math.max(0, playsetTarget(card) - (quantities.get(id) ?? 0)); return quantity ? [[id, {...choice, quantity}]] : []; })))}>Fill missing playset copies</button>}</div>
+      {catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <p className="text-xs text-ctp-subtext1">Fill playsets uses your physical ownership and removes main-deck cards already complete.</p>}
       <div className="my-3 divide-y divide-ctp-surface1">{Object.entries(choices).map(([id, choice]) => <div key={id} className="flex flex-wrap items-center gap-2 py-3">
         <div className="w-16 shrink-0"><CardArtTile card={catalog.find(card => card.uuid === id)} name={choice.name}/></div><span className="min-w-0 flex-1 text-sm">{choice.name}</span>
         <input type="number" min={0} max={99} aria-label={`Buy quantity for ${choice.name}`} value={choice.quantity} onChange={event => choose(id, choice.name, Math.max(0, Math.min(99, Math.floor(Number(event.target.value) || 0))))} className="min-h-12 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2" />

@@ -1,5 +1,11 @@
 import type { Card, CollectionEntry, CollectionUpdateLine } from "@gatcg/shared";
 
+import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
+
+export function supportsPlayset(card: Card): boolean {
+  return !deckDestinationEligibility(card, "material").allowed;
+}
+
 export function playsetTarget(card: Card): number {
   return card.cost_memory != null || card.cost?.type === "memory" ? 1 : 4;
 }
@@ -19,6 +25,7 @@ export function playsetProgress(cards: Card[], quantities: ReadonlyMap<string, n
 
 /** Add only the shortfall to unspecified copies; exact printing and proxy quantities survive. */
 export function completePlaysetLine(card: Card, entries: CollectionEntry[]): CollectionUpdateLine | null {
+  if (!supportsPlayset(card)) return null;
   const target = playsetTarget(card);
   const ownEntries = entries.filter(entry => entry.cardUuid === card.uuid);
   const owned = ownEntries.reduce((sum, entry) => sum + Math.max(0, entry.ownedQuantity), 0);

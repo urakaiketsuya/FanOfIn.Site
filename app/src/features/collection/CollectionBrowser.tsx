@@ -9,7 +9,7 @@ import CollectionCardSheet from "./CollectionCardSheet";
 import CollectionPurchase from "./CollectionPurchase";
 import CollectionCardFilters from "./CollectionCardFilters";
 import { emptyFilterState, filterCards, matchesEdition } from "../cards/filters";
-import { completePlaysetLine, playsetProgress, playsetTarget } from "./collectionPlaysets";
+import { completePlaysetLine, playsetProgress, playsetTarget, supportsPlayset } from "./collectionPlaysets";
 
 export default function CollectionBrowser({ cards, entries, savedEntries = entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus, focusCardUuid, onReviewDraft }: {
   focusCardUuid?: string | null; onReviewDraft?: () => void;
@@ -61,10 +61,10 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
 
 
       {shopping.controls}
-      {!preview && shopping.active && onUpdate && <Button disabled={busy || !cards.some(card => shopping.choices[card.uuid] && completePlaysetLine(card, entries))} onClick={() => {
+      {!preview && shopping.active && onUpdate && cards.some(card => shopping.choices[card.uuid] && supportsPlayset(card)) && <Button disabled={busy || !cards.some(card => shopping.choices[card.uuid] && completePlaysetLine(card, entries))} onClick={() => {
         const lines = cards.filter(card => shopping.choices[card.uuid]).flatMap(card => { const line = completePlaysetLine(card, entries); return line ? [line] : []; });
         if (lines.length) void onUpdate(lines, "Complete selected playsets");
-      }}>Complete selected playsets ({Object.keys(shopping.choices).length})</Button>}
+      }}>Complete selected playsets ({cards.filter(card => shopping.choices[card.uuid] && supportsPlayset(card)).length})</Button>}
     </CollectionCardFilters>
     {!preview && Boolean(cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size || cardFilters.rarities?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><span className="text-xs">Any physical printing counts</span></div>}
       {!preview && !entries.some(entry => entry.ownedQuantity > 0) && <p className="my-2 text-sm text-ctp-subtext1">Start with a card below. Add copies, then save your quantities together.</p>}
@@ -75,11 +75,11 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
         const canonical = entries.find(entry => entry.cardUuid === card.uuid && !entry.editionUuid && (!entry.finish || entry.finish === "unspecified"));
         const update = (owned: number, proxies = canonical?.proxyQuantity ?? 0) => onUpdate?.([{ cardUuid: card.uuid, cardName: card.name, quantity: Math.max(0, owned), proxyQuantity: proxies }], "Collection adjustment");
         return <CardResult key={card.uuid} card={art(card)} name={card.name} selected={shopping.active && !!shopping.choices[card.uuid]} onSelect={shopping.active ? () => shopping.choose(card.uuid, card.name, shopping.choices[card.uuid] ? 0 : 1) : undefined} onManage={!preview ? () => setEditing(card.uuid) : undefined}>
-          {!preview && <p key={quantity} className="quantity-arrive mt-1 rounded text-xs text-ctp-subtext1">{quantity} / {playsetTarget(card)} owned{complete ? " · ✓ Playset" : ""}</p>}
+          {!preview && <p key={quantity} className="quantity-arrive mt-1 rounded text-xs text-ctp-subtext1">{quantity} / {playsetTarget(card)} owned{complete && supportsPlayset(card) ? " · ✓ Playset" : ""}</p>}
           {!preview && entries.some(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0) && <p className="mt-1 text-xs text-ctp-subtext1">{entries.filter(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0).length} identified pools · {entries.filter(entry => entry.cardUuid === card.uuid && entry.finish === "foil").reduce((sum, entry) => sum + entry.ownedQuantity, 0)} foil</p>}
           {!preview && renderStatus?.(card.uuid)}
           {!preview && !shopping.active && <>
-            {onUpdate && !complete && <Button className="mt-2 w-full" disabled={busy} aria-label={`Complete playset of ${card.name}`} onClick={() => { const line = completePlaysetLine(card, entries); if (line) void onUpdate([line], `Complete playset: ${card.name}`); }}>Playset +{playsetTarget(card) - quantity}</Button>}
+            {onUpdate && supportsPlayset(card) && !complete && <Button className="mt-2 w-full" disabled={busy} aria-label={`Complete playset of ${card.name}`} onClick={() => { const line = completePlaysetLine(card, entries); if (line) void onUpdate([line], `Complete playset: ${card.name}`); }}>Playset +{playsetTarget(card) - quantity}</Button>}
             <div className="mt-2 flex items-center gap-2"><button type="button" disabled={busy || !quantity} aria-label={`Remove one ${card.name}`} onClick={() => { if (entries.some(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0)) setEditing(card.uuid); else void update((canonical?.ownedQuantity ?? 0) - 1); }} className="min-h-12 min-w-12 flex-1 rounded-lg border border-ctp-surface1 disabled:opacity-40">−</button><button type="button" disabled={busy} aria-label={`Add one ${card.name}`} onClick={() => void update((canonical?.ownedQuantity ?? 0) + 1)} className="min-h-12 min-w-12 flex-1 rounded-lg border border-ctp-surface1">+</button></div>
           </>}
         </CardResult>;
