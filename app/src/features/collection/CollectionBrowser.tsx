@@ -8,7 +8,7 @@ import CollectionCardSheet from "./CollectionCardSheet";
 import CollectionPurchase from "./CollectionPurchase";
 import CollectionCardFilters from "./CollectionCardFilters";
 import { emptyFilterState, filterCards, matchesEdition } from "../cards/filters";
-import { playsetProgress, playsetTarget } from "./collectionPlaysets";
+import { completePlaysetLine, playsetProgress, playsetTarget } from "./collectionPlaysets";
 
 export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus, focusCardUuid, onReviewDraft }: {
   focusCardUuid?: string | null; onReviewDraft?: () => void;
@@ -52,8 +52,8 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
   return <section className="mt-3 [&_button]:min-h-12 [&_button]:min-w-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-ctp-blue">
     <CollectionPurchase catalog={cards} quantities={quantities} cards={matchingCards} preview={preview}>{shopping => <>
     <CollectionCardFilters  cards={pool} filters={cardFilters} onChange={value => { setCardFilters(value); setLimit(24); }}>
-      <div className="grid gap-2">            <select aria-label="Sort cards" value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 w-20 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="name">A–Z</option><option value="name-desc">Z–A</option>{!preview && <option value="owned">Most owned</option>}</select></div>
-      {!preview && <select aria-label="Ownership filter" value={filter} onChange={event => { setFilter(event.target.value); setLimit(24); }} className="min-h-12 w-24 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="owned">Owned</option><option value="all">All cards</option><option value="missing">Missing</option><option value="playsets">Playsets complete</option><option value="incomplete">Needs copies</option></select>}
+      <div className="grid gap-2">            <select aria-label="Sort cards" value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="name">A–Z</option><option value="name-desc">Z–A</option>{!preview && <option value="owned">Most owned</option>}</select></div>
+      {!preview && <select aria-label="Ownership filter" value={filter} onChange={event => { setFilter(event.target.value); setLimit(24); }} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="owned">Owned</option><option value="all">All cards</option><option value="missing">Missing</option><option value="playsets">Playsets complete</option><option value="incomplete">Needs copies</option></select>}
 
       {shopping.controls}
     </CollectionCardFilters>
@@ -70,6 +70,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
           {!preview && entries.some(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0) && <p className="mt-1 text-xs text-ctp-subtext1">{entries.filter(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0).length} identified pools · {entries.filter(entry => entry.cardUuid === card.uuid && entry.finish === "foil").reduce((sum, entry) => sum + entry.ownedQuantity, 0)} foil</p>}
           {!preview && renderStatus?.(card.uuid)}
           {!preview && !shopping.active && <>
+            {onUpdate && !complete && <Button className="mt-2 w-full" disabled={busy} aria-label={`Complete playset of ${card.name}`} onClick={() => { const line = completePlaysetLine(card, entries); if (line) void onUpdate([line], `Complete playset: ${card.name}`); }}>Playset +{playsetTarget(card) - quantity}</Button>}
             <div className="mt-2 flex items-center gap-2"><button type="button" disabled={busy || !quantity} aria-label={`Remove one ${card.name}`} onClick={() => { if (entries.some(entry => entry.cardUuid === card.uuid && (entry.editionUuid || (entry.finish && entry.finish !== "unspecified")) && entry.ownedQuantity > 0)) setEditing(card.uuid); else void update((canonical?.ownedQuantity ?? 0) - 1); }} className="min-h-12 min-w-12 flex-1 rounded-lg border border-ctp-surface1 disabled:opacity-40">−</button><button type="button" disabled={busy} aria-label={`Add one ${card.name}`} onClick={() => void update((canonical?.ownedQuantity ?? 0) + 1)} className="min-h-12 min-w-12 flex-1 rounded-lg border border-ctp-surface1">+</button></div>
           </>}
         </CardResult>;

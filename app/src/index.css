@@ -61,6 +61,22 @@ h1, h2, h3, h4, h5, h6 {
 button, a, select, summary { @apply transition-colors duration-150; }
 
 select { @apply rounded-lg border border-ctp-overlay0 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text shadow-sm; }
+/* Native single selects use the same 20px geometry as DisclosureChevron.
+   Reserve a text gutter even when a utility supplies horizontal padding. */
+select:not([multiple]):not([size]), select[size="1"] {
+  appearance: none;
+  padding-inline-end: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23888da8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 20px 20px;
+  min-height: 3rem;
+}
+select:dir(rtl) { background-position: left 0.75rem center; }
+@media (forced-colors: active) {
+  select:not([multiple]):not([size]), select[size="1"] { appearance: auto; background-image: none; }
+}
+
 
 :is(input, textarea, select).border-ctp-surface1 { border-color: var(--catppuccin-color-overlay0); }
 
