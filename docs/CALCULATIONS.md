@@ -4903,3 +4903,17 @@ and after ownership crosses the goal threshold. Initial loads and choosing alrea
 goals do not celebrate. Corrections and undo reduce current progress; no permanent achievement
 is awarded. Goal storage uses one atomic local replacement, with a visible error on failure;
 other tabs follow the most recent replacement. Goals do not sync between devices.
+
+## Deck stats section ratios
+
+`app/src/lib/deckSectionStats.ts` supplies the shared Deck stats panel in deck lists,
+Builder, and Deck Analysis. Main is the default; Material is a separate view.
+Sideboard and Maybeboard do not enter these statistics or their denominators.
+
+Type, element, and subtype counts reuse `computeDeckComposition`, weighted by copies.
+Each percentage is the category count divided by **all copies in the selected section**,
+including unresolved cards. Missing catalog details are reported explicitly. A card with
+multiple types contributes to each type, so categories can overlap and percentages need
+not sum to 100%. Independent bars use the section total as their scale. Empty sections
+have no ratios. Cost curves reuse the documented memory/reserve calculations, scoped
+to the same selected section. Editing quantities recomputes the panel from the live list.

@@ -1,3 +1,4 @@
+import DeckStats from "../../components/DeckStats";
 import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +7,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import CardImage from "../../components/CardImage";
+import CardArtTile from "../../components/CardArtTile";
 import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
@@ -147,8 +148,9 @@ export default function DeckAnalysisIndex() {
   return <PageLayout>
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
+    <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
+    <DeckStats decklist={collectionDecklist} cardsByName={catalogByName} />
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
-      <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
@@ -186,11 +188,11 @@ function total(lines: { quantity: number }[] | undefined) { return lines?.reduce
 function DeckArtworkPreview({ material, main, catalogByName }: { material: { name: string; quantity: number }[]; main: { name: string; quantity: number }[]; catalogByName: Map<string, Card> }) {
   return <section aria-labelledby="analysis-deck-heading" className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm">
     <div className="flex items-center justify-between gap-2"><h2 id="analysis-deck-heading" className="text-sm font-semibold text-ctp-text">Deck at a glance</h2><span className="text-xs text-ctp-subtext0">{main.reduce((sum, line) => sum + line.quantity, 0)} main</span></div>
-    <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1">
+    <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-7">
       {[...material, ...main].slice(0, 14).map((line, index) => {
         const card = catalogByName.get(line.name);
-        const tile = <div className={`relative aspect-[5/7] w-20 shrink-0 snap-start overflow-hidden rounded-lg bg-ctp-surface0 ${index < material.length ? "ring-1 ring-ctp-blue/60" : ""}`}>{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.name} className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center p-2 text-center text-[10px] text-ctp-subtext0">{line.name}</span>}<span className="absolute right-1 top-1 rounded-full bg-ctp-base/90 px-1.5 py-0.5 text-[10px] font-medium text-ctp-text">{line.quantity}x</span></div>;
-        return card ? <Link key={`${line.name}:${index}`} to={`/cards/${card.slug}`} title={line.name}>{tile}</Link> : <div key={`${line.name}:${index}`}>{tile}</div>;
+        const tile = <><CardArtTile card={card} name={line.name} cornerBadge={`${line.quantity}x`} /><span className="mt-1 block break-words text-xs">{line.name}</span></>;
+        return card ? <Link className="min-w-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" key={`${line.name}:${index}`} to={`/cards/${card.slug}`}>{tile}</Link> : <div className="min-w-0" key={`${line.name}:${index}`}>{tile}</div>;
       })}
     </div>
   </section>;
