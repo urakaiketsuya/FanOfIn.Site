@@ -219,12 +219,12 @@ export default function DecklistView({
         </MenuDetails>
         <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
         {collectionControl}
-        {allLines.length > 0 && <>
-          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+        {allLines.length > 0 && <div className="flex w-full flex-wrap items-center justify-end gap-1 sm:ml-auto sm:w-auto">
+          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+          <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
           <MenuDetails>
             <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
-              <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
               {toolbarActions}
               {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
               <a href={clarentUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
@@ -234,7 +234,7 @@ export default function DecklistView({
 
             </div>
           </MenuDetails>
-        </>}
+        </div>}
       </div>
       {displayPrefs.showPrices && <div className="mb-3 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Estimated price: {formatUsd(deckPrice.total + sideboardPrice.total)}</span><span className="ml-2 text-xs">Main + Material {formatUsd(deckPrice.total)} · Sideboard {formatUsd(sideboardPrice.total)}</span>{missingCount > 0 && <span className="ml-2 text-xs">{missingCount} card{missingCount === 1 ? "" : "s"} without prices</span>}</div>}
       {collectionPanel && <div className="mb-3">{collectionPanel}</div>}
