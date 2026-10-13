@@ -157,3 +157,15 @@ opening the share sheet saved the image to Photos.
 Include the saved deck title and, when known, its owner's display name or the
 recorded tournament player's name in the PNG header. Wrap long names before the
 card sections. Do not attribute grouped tournament builds to a single player.
+
+## Collection shortcuts
+
+Use the collection's existing Select mode for bulk playset completion. Stage only missing
+physical copies and preserve printings, finishes, proxies, filters, and selected cards.
+Keep Save quantities directly available; reviewing ordinary additions is optional.
+Missing-card acquisition stays in its current view and keeps acquired cards visible with
+an Owned or Added to draft label. Deck acquisitions save through the existing retryable
+ownership operation; collection acquisitions join the parent quantity draft.
+Saved deck cards expose Edit deck and Playtest before secondary details. Edit opens the
+existing editor and retains its draft-resume behavior; Playtest carries the saved title,
+format, deck identifier, and full list.

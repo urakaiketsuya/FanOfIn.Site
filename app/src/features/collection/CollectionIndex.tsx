@@ -189,11 +189,15 @@ export default function CollectionIndex() {
     </section>
     <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />
     {decksError && <Button className="mt-2" disabled={busy} onClick={() => void refresh().catch(() => undefined)}>Retry collection and decks</Button>}
-    {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} blocked={shoppingBlocked} onDismiss={() => setShopping(false)} onAdd={() => {
+    {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} onAcquire={name => {
       if (busy || shoppingBlocked) return;
+      const lines = collectionCompletionLines(crossDeckRequired.filter(line => line.cardName === name), entries);
+      setDrafts(current => stageCollectionQuantities(current, savedEntries, lines, "at-least"));
+    }} blocked={shoppingBlocked} onDismiss={() => setShopping(false)} onAdd={() => {
+      if (busy || saveQueue.pending || shoppingBlocked) return;
       const lines = collectionCompletionLines(crossDeckRequired, entries);
       setDrafts(current => stageCollectionQuantities(current, savedEntries, lines, "at-least"));
-      setShopping(false); setReviewChanges(true); setNotice(null);
+      setNotice("Missing copies added to your draft. Save quantities when ready.");
     }} />}
     {toolsOpen && <EditorDialog title="Collection tools" doneLabel="Done" onDismiss={() => setToolsOpen(false)}>{collectionTools}</EditorDialog>}
     {collectionReady && !collectionError && <CollectionValueSummary entries={entries} cards={cards} pending={pendingCount > 0} />}

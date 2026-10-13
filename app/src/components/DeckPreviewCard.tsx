@@ -26,6 +26,7 @@ export interface DeckPreviewModel {
   source?: { kind: "official" | "event" | "community"; label: string };
   metadata?: ReactNode;
   actions?: ReactNode;
+  primaryActions?: ReactNode;
   materialPreview?: OmnidexDecklist["material"];
   mainCount?: number | null;
   sideboardCount?: number | null;
@@ -85,6 +86,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
       </div>
       <div className="px-5 pb-4">
         {view.to !== undefined ? <Link to={view.to} target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} className={`${deckPreviewActionClass} -ml-3 text-ctp-blue`} aria-label={`Open deck: ${model.title}`}>Open deck <span aria-hidden="true">→</span></Link> : <Button variant="ghost" onClick={view.onToggle} aria-expanded={view.expanded} aria-controls={contentId}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</Button>}
+        {model.primaryActions && <div className="mb-3 flex flex-wrap gap-2">{model.primaryActions}</div>}
         <details className="group border-t border-ctp-surface1/60">
           <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-subtext1 focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden" aria-label={`Details and actions for ${model.title}`}>Details and actions<DisclosureChevron className="group-open:rotate-180" /></summary>
           <p className="mb-3 text-sm text-ctp-subtext1">{count("main") ?? "Unknown"} main · {count("sideboard") ?? "Unknown"} sideboard</p>

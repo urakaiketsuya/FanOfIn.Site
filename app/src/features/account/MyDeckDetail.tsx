@@ -13,7 +13,7 @@ import { automaticDeckSection, editDeck, type DeckEdit, type EditableDeck } from
 import CardBrowser from "../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
@@ -47,6 +47,8 @@ const DECK_TAB_KEYS: DeckTab[] = DECK_TABS.map(({ key }) => key);
 
 export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
+  const location = useLocation();
+  const openedEdit = useRef<string | null>(null);
   const [exportOwner, setExportOwner] = useState<string>();
   useEffect(() => {
     let active = true;
@@ -165,6 +167,13 @@ export default function MyDeckDetail() {
     setEditing(true);
     setTab("decklist");
   }
+
+  useEffect(() => {
+    if (deck?.id === deckId && !loadingDeck && location.state?.edit && openedEdit.current !== location.key) {
+      openedEdit.current = location.key;
+      startEditing();
+    }
+  });
 
   function cancelEditing() {
     if (hasUnsavedChanges && !window.confirm(`Discard ${editedCardChangeCount || "the"} unsaved deck change${editedCardChangeCount === 1 ? "" : "s"}?`)) return;

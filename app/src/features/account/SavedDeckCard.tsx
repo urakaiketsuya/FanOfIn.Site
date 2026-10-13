@@ -12,9 +12,12 @@ export default function SavedDeckCard({ deck, onRename, onDelete, onFolders, fol
     id: deck.id, title: deck.title, decklist: deck.decklist, championName: deck.championName, format: deck.format,
     source: { kind: "community", label: "Editable build" },
     metadata: <><p>{material} material · {deck.sources.length} source{deck.sources.length === 1 ? "" : "s"} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>{folderNames.length > 0 && <p className="mt-2">Folders: {folderNames.join(" · ")}</p>}</>,
+    primaryActions: <>
+      <Link className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`} to={`${deckPath}?tab=decklist`} state={{ edit: true }}>Edit deck</Link>
+      <Link className={`${deckPreviewActionClass} border border-ctp-surface1`} to={`/goldfish?deck=${encodeURIComponent(deck.id)}&custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`}>Playtest</Link>
+    </>,
     actions: <>
       {onFolders && <Button disabled={!foldersReady} onClick={onFolders}>Folders{folderNames.length ? ` · ${folderNames.length}` : ""}</Button>}
-      <Link className={deckPreviewActionClass} to={`${deckPath}?tab=decklist`}>Edit deck</Link>
       <Link className={deckPreviewActionClass} to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`}>Analyze deck</Link>
       <Link className={deckPreviewActionClass} to={`/deck-review?deck=${encodeURIComponent(deck.id)}`}>Review suggestions</Link>
       <Link className={deckPreviewActionClass} to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`}>Tune in builder</Link>

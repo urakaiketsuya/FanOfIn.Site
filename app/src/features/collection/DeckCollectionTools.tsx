@@ -1,3 +1,4 @@
+import CardResult from "../../components/CardResult";
 import DeckReadinessSummary from "./DeckReadinessSummary";
 import { useCardLocations } from "./useCardLocations";
 import { deckLocationSummary } from "@gatcg/shared";
@@ -29,6 +30,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   const [includeSideboard, setIncludeSideboard] = useState(true);
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [acquiredNames, setAcquiredNames] = useState<Set<string>>(new Set());
   const [shopping, setShopping] = useState(false);
   const { notify, dismiss } = useToast();
   const updateToast = useRef("");
@@ -103,6 +105,11 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
       return false;
     } finally { mutationBusy.current = false; setBusy(false); }
   }
+  async function acquired(cardName: string) {
+    if (!collection || busy) return;
+    const lines = collectionCompletionLines(required.filter(line => line.cardName === cardName), collection);
+    if (lines.length && await update("at-least", lines)) setAcquiredNames(current => new Set([...current, cardName]));
+  }
   async function ownAll() {
     if (!collection || unresolved || busy) return;
     const lines = collectionCompletionLines(required, collection);
@@ -140,13 +147,13 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">{unresolved} card{unresolved === 1 ? " is" : "s are"} still unavailable in the catalog. You can edit resolved cards; marking the whole deck owned is unavailable until all cards resolve.</p>}
 
     {(error || loadError) && <div className="mt-3"><p role="alert" className="text-sm text-ctp-red">{error || loadError}</p><Button className="mt-2" disabled={busy} onClick={() => void retry()}>Refresh ownership</Button></div>}
-    {missingLines.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{missingLines.map(line => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
+    {(missingLines.length > 0 || acquiredNames.size > 0) && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{status.lines.filter(line => line.missing > 0 || acquiredNames.has(line.card)).map(line => <li key={line.card}><CardResult compactOnMobile card={cardsByName.get(line.card)} name={line.card}><p className="text-sm">{line.missing}× missing</p><Button className="mt-2 w-full" disabled={busy || !line.missing || !required.some(requiredLine => requiredLine.cardName === line.card)} aria-label={`Acquired missing copies of ${line.card}`} onClick={() => void acquired(line.card)}>{line.missing ? `Acquired ${line.missing}` : "✓ Owned"}</Button></CardResult></li>)}</ul></details>}
     <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">More collection actions<DisclosureChevron className="group-open:rotate-180" /></summary><p className="my-2 text-xs text-ctp-subtext1">Add another full copy of this deck to your existing inventory{includeSideboard ? ", including sideboard" : ""}.</p><Button disabled={busy || !!unresolved || !required.length} onClick={() => void update("add", required)}>Add another copy of this deck</Button></details>
     {ownerDeckId && <SavedDeckLocations decklist={decklist} deckId={ownerDeckId} cards={[...cardsByName.values()]} locations={locations} />}
     {editing && <DeckOwnershipEditor required={required} entries={collection} cardsByName={cardsByName} onSave={lines => update("set", lines)} onDismiss={() => setEditing(false)} />}
-    {shopping && <MissingCardsReview lines={missingLines} cardsByName={cardsByName} estimatedCost={missingCost} onDismiss={() => setShopping(false)} busy={busy} error={error}
+    {shopping && <MissingCardsReview lines={missingLines} cardsByName={cardsByName} estimatedCost={missingCost} onAcquire={name => void acquired(name)} onDismiss={() => setShopping(false)} busy={busy} error={error}
       blocked={unresolved ? "Some cards are unavailable in the catalog. You can shop now; adding is available when every card resolves." : undefined}
-      onAdd={() => { void ownAll().then(saved => { if (saved) setShopping(false); }); }} />}
+      onAdd={() => { void ownAll(); }} />}
 
   </Panel>;
 }

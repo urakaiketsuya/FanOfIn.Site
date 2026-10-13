@@ -61,6 +61,10 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
 
 
       {shopping.controls}
+      {!preview && shopping.active && onUpdate && <Button disabled={busy || !cards.some(card => shopping.choices[card.uuid] && completePlaysetLine(card, entries))} onClick={() => {
+        const lines = cards.filter(card => shopping.choices[card.uuid]).flatMap(card => { const line = completePlaysetLine(card, entries); return line ? [line] : []; });
+        if (lines.length) void onUpdate(lines, "Complete selected playsets");
+      }}>Complete selected playsets ({Object.keys(shopping.choices).length})</Button>}
     </CollectionCardFilters>
     {!preview && Boolean(cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size || cardFilters.rarities?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><span className="text-xs">Any physical printing counts</span></div>}
       {!preview && !entries.some(entry => entry.ownedQuantity > 0) && <p className="my-2 text-sm text-ctp-subtext1">Start with a card below. Add copies, then save your quantities together.</p>}
