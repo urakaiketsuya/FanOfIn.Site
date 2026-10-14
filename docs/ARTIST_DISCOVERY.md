@@ -1095,18 +1095,18 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A071 — TEDDYPOCKY
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-identified X account; updated 2026-10-14.
 - **Exact credits:** `"TEDDYPOCKY"`.
-- **Identity:** Individual candidate: TEDDY / TEDDYPOCKY. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** TEDDY / TEDDYPOCKY, artist ID a071. The user identified @TEDDYPOCKY as this artist on 2026-10-14.
 - **Credited example:** Trump Set; Promotional 2026; #019; edition `Zz8Gwi9qGw`. [Publisher edition reference](https://index.gatcg.com/edition/trump-set-p26) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"TEDDYPOCKY" artist`; `"TEDDYPOCKY" "Grand Archive"`.
 - **Findings:** Opened the [same-name Patreon](https://www.patreon.com/teddypocky/about), which self-identifies a freelance game artist. Direct X returned 403. No inspected primary material connects this artist to Trump Set. **Browser follow-up:** X now readable as TEDDY with artist role and official work links; no inspected Trump Set connection. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Find a primary Trump Set commission or publisher collaboration tag before verifying accounts.
+- **Next action:** Retain the user-identified X account; an original Trump Set commission would independently strengthen the catalog match. Patreon remains a candidate.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
 | Patreon | [TeddyPocky](https://www.patreon.com/teddypocky/about) | Candidate | [Evidence](https://www.patreon.com/teddypocky/about): Readable same-name game-artist page; exact Grand Archive commission not established. | 2026-10-14 |
-| X | [@TEDDYPOCKY](https://x.com/TEDDYPOCKY) | Candidate | [Evidence](https://x.com/TEDDYPOCKY): Browser follow-up read the original account/page. X now readable as TEDDY with artist role and official work links; no inspected Trump Set connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| X | [@TEDDYPOCKY](https://x.com/TEDDYPOCKY) | User-identified | [Evidence](https://x.com/TEDDYPOCKY): Browser follow-up read the original account/page. X now readable as TEDDY with artist role and official work links; no inspected Trump Set connection. Published following the user’s identification on 2026-10-14; no independent Trump Set artwork match is claimed. | 2026-10-14 |
 
 ### A072 — 十尾t
 
@@ -1611,3 +1611,10 @@ Marker-removal verification: four artist tests and diff checks pass. At 360px an
 Added [@tori_mcct](https://x.com/tori_mcct) to a073 following the user’s likely identification, supported by the earlier exact-name profile and reciprocal [artist hub](https://lit.link/en/toritaro) inspection. Current direct X text retrieval returns 403. This is a user-supported association rather than an independently matched Bubble Mage commission. The Tori reading remains estimated; the account identification does not confirm a spoken reading. No portrait or additional accounts added. Current totals: 65 identities, 49 account URLs across 24 linked identities, 24 portraits.
 
 Verification: all four artist regression tests and diff checks pass. The account link appears at 360px and 1280px with no horizontal overflow and a 48px target; keyboard navigation reaches the card search with visible focus. Loading was observed. Error/retry, empty results and printing selection were not repeated for this account-data change. Next: publish this account update when requested and verify production. Artist Pages remains approximately 95% complete for the first release, with release verification and real transport recovery outstanding; identity research remains open-ended.
+
+
+### TEDDYPOCKY account update 2026-10-14
+
+Added [@TEDDYPOCKY](https://x.com/TEDDYPOCKY) to a071 following the user’s identification. Earlier original-profile inspection supports the artist role and work links; an independent Trump Set commission match remains unestablished. Removed the language query from the canonical URL. Patreon remains unpublished and no portrait was added. Current totals: 65 identities, 50 account URLs across 25 linked identities, 24 portraits.
+
+Verification: all four artist tests and diff checks pass. At 360px and 1280px, the X link is visible with no horizontal overflow; its touch target is 48px and keyboard navigation reaches search with visible focus. Loading observed; error/retry and empty states were not repeated for this account-only data change. Next: publish the account updates when requested and verify production. Artist Pages remains approximately 95% complete for its first release, based on completed local features with release checks and real transport recovery outstanding. Identity research remains open-ended.

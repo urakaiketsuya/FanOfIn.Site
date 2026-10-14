@@ -1183,11 +1183,19 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a071",
     "slug": "a071-teddypocky",
     "name": "TEDDYPOCKY",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "TEDDYPOCKY"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@TEDDYPOCKY",
+        "url": "https://x.com/TEDDYPOCKY",
+        "evidence": "https://x.com/TEDDYPOCKY",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a073",
