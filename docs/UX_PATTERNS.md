@@ -182,3 +182,5 @@ Studio logos may use contained portrait images with padding to preserve their co
 User-selected champion avatars may frame an original card image within the portrait circle. Preserve the original file and record its card source and representative-image status in discovery notes. The avatar does not change artist credit attribution.
 
 Wide artist images may specify an explicit portrait focal position to keep the subject visible within the circular avatar. Preserve the original downloaded image.
+
+Supplied portrait screenshots may specify a CSS scale to exclude surrounding screenshot borders while preserving the original image file.

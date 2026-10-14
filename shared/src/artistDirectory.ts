@@ -81,12 +81,25 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a005",
     "slug": "a005-十尾",
     "name": "十尾",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "十尾",
       "十尾t"
     ],
-    "links": [],
+    "links": [{
+      "platform": "Pixiv",
+      "label": "十尾",
+      "url": "https://www.pixiv.net/en/users/1048340",
+      "evidence": "https://www.pixiv.net/en/users/1048340",
+      "verifiedAt": "2026-10-14"
+    }],
+    "portrait": {
+      "src": "/images/artists/a005.png",
+      "sourceUrl": "https://www.pixiv.net/en/users/1048340",
+      "imageUrl": "/images/artists/a005.png",
+      "scale": 1.2,
+      "verifiedAt": "2026-10-14"
+    },
     "slugAliases": [
       "a072-十尾t"
     ]

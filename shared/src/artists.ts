@@ -24,6 +24,7 @@ export interface ArtistIdentity {
     fit?: 'cover' | 'contain';
     framing?: 'card-art';
     position?: string;
+    scale?: number;
     sourceUrl: string;
     imageUrl: string;
     verifiedAt: string;
