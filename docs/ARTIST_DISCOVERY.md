@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 13 verified credit entries representing 12 identities; 25 no-link outcomes; 38 needing identity review. There are 26 unique verified URLs. The portrait pass below covers all 75 curated identities, with 10 verified images and 65 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 13 verified credit entries representing 12 identities; 24 no-link outcomes; 39 needing identity review. There are 26 unique verified URLs. The portrait pass below covers all 75 curated identities, with 10 verified images and 65 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -97,7 +97,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A044 | DragonArt Tris | 4 | 4 | Needs identity review |
 | A045 | fuzichoco | 4 | 5 | Reviewed with verified links |
 | A046 | Taki | 4 | 7 | Reviewed with no verified links found |
-| A047 | YOHAKU | 4 | 8 | Reviewed with no verified links found |
+| A047 | YOHAKU | 4 | 8 | Needs identity review |
 | A048 | ZERONEXT | 4 | 7 | Needs identity review |
 | A049 | ジェゼ一 | 4 | 9 | Needs identity review |
 | A050 | 白霜茶 | 4 | 7 | Needs identity review |
@@ -764,15 +764,18 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A047 — YOHAKU
 
-- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Status/date:** Needs identity review; researched 2026-10-14.
 - **Exact credits:** `"YOHAKU"`.
-- **Identity:** Unknown; retain YOHAKU. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual candidate: YOHAKU / 여백, @YH_0w0; Grand Archive credit connection unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Alice, Distorted Queen; Phantom Monarchs; #002; edition `QOTMVyjCSK`. [Publisher edition reference](https://index.gatcg.com/edition/alice-distorted-queen-ptm) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"YOHAKU" "Grand Archive" illustrator`; `"YOHAKU" "Alice" illustrator`.
-- **Findings:** Game-specific and Alice illustrator searches did not establish an official account. Unrelated artists and the Japanese art term are insufficient evidence.
-- **Next action:** Keep an account-free identity; seek an original Alice, Distorted Queen or Lu Bu commission post.
+- **Findings:** The user supplied @YH_0w0 as a possible match. Browser inspection reads YOHAKU / 여백 and the illustrator role on the original X profile. Its linked POTOFU hub identifies Illustrator YOHAKU, repeats the professional contact identity, and links back to the same X account. Inspected posts show other illustration projects; no Grand Archive commission or exact artwork match was established. The account cluster is attributable to this illustrator, but the connection to the catalog credit remains a candidate.
+- **Next action:** Compare Alice, Distorted Queen, Conduit of the Mad Mage, Lu Bu, Indomitable Titan, or Merlin, Memory Thief against this artist’s portfolio, or obtain a publisher cross-link. Keep the public page account-free until that connection is established.
 
-**Links:** none verified; no attributable account URL established in this pass.
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@YH_0w0](https://x.com/YH_0w0) | Candidate | User-supplied lead; readable illustrator profile links POTOFU, which reciprocally links this account. Grand Archive commission connection remains unresolved. | 2026-10-14 |
+| POTOFU | [YOHAKU](https://potofu.me/yohaku0w0) | Candidate | Direct profile link and matching artist/contact identity; inspected hub lists illustration work without a Grand Archive credit. | 2026-10-14 |
 
 ### A048 — ZERONEXT
 
