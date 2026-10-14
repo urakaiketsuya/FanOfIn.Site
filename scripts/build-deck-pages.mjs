@@ -2,6 +2,7 @@ import { readdir, readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { canonicalSiteUrl } from '../shared/src/seo.ts';
 import { decodeCardLines } from '../shared/src/analysis-types.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -39,7 +40,7 @@ export function collectDeckPages(partitions) {
 export function renderDeckPage(shell, build, catalog = new Map()) {
   const title = `${build.champion} deck · Fan of Insight`;
   const description = `A popular ${build.champion} decklist, independently played by ${build.players.size} players.`;
-  const url = `https://fanofin.site/decks/${build.hash}`;
+  const url = canonicalSiteUrl(`/decks/${build.hash}`);
   // The readable initial root is replaced by React on startup. Assets and the
   // protected source app/index.html remain untouched.
   let html = shell.replace(/<title>[\s\S]*?<\/title>/i, () => `<title>${escape(title)}</title>`);
@@ -54,6 +55,36 @@ export function renderDeckPage(shell, build, catalog = new Map()) {
   }
   html = html.replace(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi, '');
   html = html.replace('</head>', `<link rel="canonical" href="${url}" />\n</head>`);
+  const championCard = build.sections.filter(section => section.name === 'Material')
+    .flatMap(section => section.lines).map(line => catalog.get(line.name))
+    .filter(card => card?.types?.includes('CHAMPION'))
+    .sort((a, b) => (b.level ?? 0) - (a.level ?? 0) || a.name.localeCompare(b.name))[0];
+  const artworkPath = championCard?.editions?.[0]?.image;
+  const image = /^\/cards\/images\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/.test(artworkPath ?? '')
+    ? `https://api.gatcg.com${artworkPath}` : undefined;
+  if (image) {
+    for (const [attribute, name, value] of [
+      ['property', 'og:image', image], ['name', 'twitter:image', image],
+      ['property', 'og:image:alt', championCard.name], ['name', 'twitter:image:alt', championCard.name],
+    ]) {
+      html = html.replace(new RegExp(`<meta\\b[^>]*\\b${attribute}=["']${name}["'][^>]*>`, 'gi'), '');
+      html = html.replace('</head>', () => `<meta ${attribute}="${name}" content="${escape(value)}" />\n</head>`);
+    }
+    // The catalog card is portrait art, not the default site's landscape image.
+    html = html.replace(/<meta\b[^>]*\bproperty=["']og:image:(width|height|type)["'][^>]*>/gi, '');
+  }
+  const structured = {
+    '@context': 'https://schema.org', '@type': 'WebPage', url, name: title, description,
+    ...(image ? { image } : {}),
+    mainEntity: {
+      '@type': 'ItemList', name: `${build.champion} deck cards`,
+      itemListElement: build.sections.flatMap(section => section.lines.map(line => ({
+        '@type': 'ListItem', name: `${section.name}: ${line.quantity} × ${line.name}`,
+        ...(catalog.get(line.name)?.slug ? { url: `https://fanofin.site/cards/${encodeURIComponent(catalog.get(line.name).slug)}` } : {}),
+      }))).map((item, index) => ({ ...item, position: index + 1 })),
+    },
+  };
+  html = html.replace('</head>', () => `<script id="deck-structured-data" data-canonical="${url}" type="application/ld+json">${JSON.stringify(structured).replace(/</g, '\\u003c')}</script>\n</head>`);
   const sections = build.sections.map(section => `<section><h2>${section.name} · ${section.lines.reduce((sum, line) => sum + line.quantity, 0)}</h2><ul>${section.lines.map(line => {
     const card = catalog.get(line.name);
     const label = `${line.quantity} × ${escape(line.name)}`;
@@ -76,6 +107,11 @@ export async function buildDeckPages({ dataDir = path.join(root, 'data'), outDir
   const shell = await readFile(path.join(outDir, 'index.html'), 'utf8');
   // Render before removing old output so malformed inputs fail without partial output.
   const rendered = pages.map(build => ({ hash: build.hash, html: renderDeckPage(shell, build, catalog) }));
+  // Read the pipeline sitemap source each time, so rebuilding cannot retain stale decks.
+  const sitemapSource = await readFile(path.join(root, 'app/public/sitemap.xml'), 'utf8');
+  if (!sitemapSource.includes('</urlset>')) throw new Error('Invalid source sitemap');
+  const sitemap = sitemapSource.replace('</urlset>', `${pages.map(build => `  <url><loc>${canonicalSiteUrl(`/decks/${build.hash}`)}</loc></url>`).join('\n')}\n</urlset>`);
+  if ((sitemap.match(/<loc>/g) ?? []).length > 50000) throw new Error('Sitemap exceeds URL limit');
   const output = path.join(outDir, 'decks');
   await rm(output, { recursive: true, force: true });
   for (const page of rendered) {
@@ -83,6 +119,7 @@ export async function buildDeckPages({ dataDir = path.join(root, 'data'), outDir
     await mkdir(directory, { recursive: true });
     await writeFile(path.join(directory, 'index.html'), page.html);
   }
+  await writeFile(path.join(outDir, 'sitemap.xml'), sitemap);
   console.log(`Deck entry pages: ${pages.length} independently played tournament builds`);
   return pages.length;
 }

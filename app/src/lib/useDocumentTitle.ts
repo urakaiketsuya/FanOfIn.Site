@@ -1,8 +1,8 @@
+import { canonicalSiteUrl } from "@gatcg/shared";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const SITE_NAME = "Fan of Insight";
-const SITE_URL = "https://fanofin.site";
 
 function setMetaByAttr(attr: "name" | "property", key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -14,26 +14,20 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
   el.setAttribute("content", content);
 }
 
-/**
- * Sets `document.title`, the meta description, and the canonical link tag for the current route
- * – this is a fully client-rendered SPA with one static `index.html`, so these can't be baked in
- * server-side per page. Googlebot renders JS and picks up client-set title/meta/canonical tags
- * (a documented, widely-used pattern for SPAs without SSR); non-JS crawlers and social-media link
- * unfurlers won't see these regardless of how they're set, which is why index.html's static
- * defaults exist as the fallback for those.
- *
- * `title`/`description` are optional so a component can call this before its data has loaded
- * (e.g. `useDocumentTitle(card?.name)`) without flashing an empty title – a falsy value just
- * skips updating that field for this render, leaving whatever was there already.
- */
+/** Keep client navigation aligned with metadata in generated entry pages. */
 export function useDocumentTitle(title?: string | null, description?: string | null) {
   const location = useLocation();
 
   useEffect(() => {
-    if (title) document.title = `${title} · ${SITE_NAME}`;
+    if (title) {
+      document.title = `${title} · ${SITE_NAME}`;
+      setMetaByAttr("property", "og:title", document.title);
+      setMetaByAttr("name", "twitter:title", document.title);
+    }
     if (description) {
       setMetaByAttr("name", "description", description);
       setMetaByAttr("property", "og:description", description);
+      setMetaByAttr("name", "twitter:description", description);
     }
   }, [title, description]);
 
@@ -44,6 +38,18 @@ export function useDocumentTitle(title?: string | null, description?: string | n
       link.setAttribute("rel", "canonical");
       document.head.appendChild(link);
     }
-    link.setAttribute("href", `${SITE_URL}${location.pathname}`);
+    const canonical = canonicalSiteUrl(location.pathname);
+    link.setAttribute("href", canonical);
+    setMetaByAttr("property", "og:url", canonical);
+    // Initial structured data must not describe a different route after SPA navigation.
+    const structured = document.getElementById("deck-structured-data");
+    if (structured && structured.getAttribute("data-canonical") !== canonical) {
+      structured.remove();
+      const fallback = "https://fanofin.site/media/social/fan-of-insight-v1.jpg";
+      setMetaByAttr("property", "og:image", fallback);
+      setMetaByAttr("name", "twitter:image", fallback);
+      setMetaByAttr("property", "og:image:alt", SITE_NAME);
+      setMetaByAttr("name", "twitter:image:alt", SITE_NAME);
+    }
   }, [location.pathname]);
 }

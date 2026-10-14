@@ -23,7 +23,7 @@ test('metadata is escaped, canonical is unique, and app assets and root survive'
   const html = renderDeckPage(shell, { hash: 'abc', champion: '<Silvie> & "friends" $&', players: new Set([1, 2]), sections: [{ name: 'Main', lines: [{ name: '<Test> & Card', quantity: 4 }] }, { name: 'Material', lines: [] }] }, new Map([['<Test> & Card', { slug: 'test-card' }]]));
   assert.match(html, /&lt;Silvie&gt; &amp; &quot;friends&quot; \$&amp;/);
   assert.equal((html.match(/rel="canonical"/g) || []).length, 1);
-  assert.match(html, /href="https:\/\/fanofin.site\/decks\/abc"/);
+  assert.match(html, /href="https:\/\/fanofin.site\/decks\/abc\/"/);
   assert.match(html, /independently played by 2 players/);
   assert.ok(html.includes('<script type="module" src="/assets/app.js"></script>'));
   assert.match(html, /<div id="root"><style>/);
@@ -58,6 +58,9 @@ test('build regenerates routes, removes stale output and leaves unknown decks ab
     const page = await readFile(path.join(outDir, 'decks/abc/index.html'), 'utf8');
     assert.match(page, /Silvie deck · Fan of Insight/);
     assert.match(page, /<li>4 × Test Card<\/li>/);
+    const sitemap = await readFile(path.join(outDir, 'sitemap.xml'), 'utf8');
+    assert.match(sitemap, /https:\/\/fanofin.site\/decks\/abc\//);
+    assert.doesNotMatch(sitemap, /\/decks\/(def|stale)/);
     assert.equal(await readFile(path.join(outDir, 'index.html'), 'utf8'), shell);
     await rm(path.join(source, 'ff.json'));
     await assert.rejects(buildDeckPages({ dataDir, outDir }), /Expected 256/);
@@ -73,4 +76,35 @@ test('invalid dictionary references and quantities fail before publishing', () =
     data.cards.decks[0].main = [line];
     assert.throws(() => collectDeckPages([data]), /Invalid card lines/);
   }
+});
+
+ test('canonical variants agree and structured data cannot escape its script', async () => {
+  const { canonicalSiteUrl } = await import('../../shared/src/seo.ts');
+  for (const path of ['/decks/abc', '/decks/abc/', '/decks/abc/?share=1']) {
+    assert.equal(canonicalSiteUrl(path), 'https://fanofin.site/decks/abc/');
+  }
+  assert.equal(canonicalSiteUrl('/decks/' + 'a'.repeat(32) + '/'), 'https://fanofin.site/decks/' + 'a'.repeat(32));
+  const { readFile } = await import('node:fs/promises');
+  const shell = await readFile(new URL('../../app/index.html', import.meta.url), 'utf8');
+  const build = collectDeckPages([partition([sighting('a', 1), sighting('b', 2)])])[0];
+  build.sections[1].lines[0].name = '</script><script>alert(1)</script>';
+  const html = renderDeckPage(shell, build);
+  const json = html.match(/type="application\/ld\+json">(.*?)<\/script>/)[1];
+  assert.ok(!json.includes('<'));
+  const data = JSON.parse(json);
+  assert.equal(data.url, canonicalSiteUrl('/decks/abc'));
+  assert.equal(data.mainEntity.itemListElement[0].name, 'Main: 4 × </script><script>alert(1)</script>');
+});
+
+test('social art comes from the highest material champion; unsafe and missing art keep the fallback', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const shell = await readFile(new URL('../../app/index.html', import.meta.url), 'utf8');
+  const build = collectDeckPages([partition([sighting('a', 1), sighting('b', 2)])])[0];
+  build.sections[0].lines = [{ name: 'Low', quantity: 1 }, { name: 'High', quantity: 1 }];
+  const catalog = new Map(['Low', 'High'].map((name, level) => [name, { name, level, types: ['CHAMPION'], editions: [{ image: `/cards/images/${name}.jpg` }] }]));
+  const html = renderDeckPage(shell, build, catalog);
+  assert.match(html, /twitter:image" content="https:\/\/api.gatcg.com\/cards\/images\/High.jpg/);
+  assert.doesNotMatch(html, /og:image:width/);
+  catalog.get('High').editions[0].image = 'https://evil.example/image.jpg';
+  assert.doesNotMatch(renderDeckPage(shell, build, catalog), /evil.example/);
 });

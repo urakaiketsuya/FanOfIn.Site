@@ -14,7 +14,9 @@ all 256 published deck-detail partitions and emits `decks/<hash>/index.html` for
 builds recorded for at least two distinct players. Repeat sightings by one player
 do not qualify. Pages retain the built app entry and assets, with deck-specific
 title, description, canonical URL and X/Open Graph text. No author is inferred
-for these grouped builds. The image remains the site's default social image.
+for these grouped builds. Social metadata uses the highest-level champion present in Material, selected from the
+published catalog. Missing or invalid art keeps the site's default image. Community
+sharing retains its existing title-and-author spotlight composition.
 
 This is an incremental rollout: 1,895 of 49,016 tournament builds qualified in the
 October 14, 2026 snapshot. The existing deployment already contains approximately
@@ -32,10 +34,22 @@ Material sections, quantities,
 section totals and links to catalog cards. React replaces this compact text fallback
 with the existing interactive card-art view on startup. Sideboards remain in the
 app's separately attributed tournament view; they are not merged into the grouped
-build. Unknown catalog names remain readable text. Sitemap entries are not yet added.
-The 1,895 generated pages total approximately 15.6 MB with card content.
+build. Unknown catalog names remain readable text. The production build adds exactly these
+eligible routes to sitemap.xml, starting from the pipeline sitemap on each build so
+removed decks cannot linger. Tournament canonical URLs end in `/` to match directory
+serving; community identifiers retain slashless URLs. Client navigation uses the same
+canonical helper and updates Open Graph/X text, removing stale initial structured data
+and artwork when leaving a generated deck page.
 
-Local verification: production build and 15 release-tooling tests pass. The text
+Initial JSON-LD describes a WebPage and ItemList of the visible Main/Material cards,
+including quantities and known catalog links. It makes no inferred authorship, ratings,
+product, or rich-result claims. JSON is escaped against script termination.
+The 1,895 generated pages total approximately 23.1 MB with card content and structured data.
+
+Local verification: production build and 17 release-tooling tests pass. All 1,895 generated pages
+have matching canonical, sitemap and JSON-LD URLs and catalog champion artwork; the
+combined sitemap contains 6,775 URLs. Shared and app typechecks and targeted lint pass. Browser navigation confirms
+that leaving a generated deck restores default artwork and removes stale JSON-LD. The text
 fallback was checked at 390px and 1280px, with no horizontal overflow, 48px link
 heights and visible keyboard focus. React startup replaces the fallback; production
 deployment and the full data-loaded app flow remain to be verified for this step.
@@ -46,13 +60,44 @@ deployment and the full data-loaded app flow remain to be verified for this step
 2. Finish page delivery: establish live community deck HTML on the main domain,
    with current publication/privacy checks and real missing-page status responses;
    decide full tournament coverage within the hosting size budget.
-3. Extend card-based metadata and champion artwork to canonical deck pages, without
-   adding the removed labels to spotlight artwork.
-4. Extend initial card content to community pages; add accurate structured data
-   and sitemap entries for eligible public pages.
+3. Extend the completed tournament metadata/artwork approach to live community canonical pages.
+4. Extend initial card content, structured data and sitemap coverage to eligible community pages.
    Preserve grouped Main/Material identity and separately attributed Sideboards.
 5. Verify indexing, canonical variants, withdrawal and duplicate behavior in Search
    Console, and measure coverage after deployment.
 
 References: [GitHub Pages file delivery](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site),
 [Google JavaScript SEO](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics).
+
+## October 14 follow-up and rollout gates
+
+Tournament sitemap, canonical normalization, catalog champion social artwork and
+structured data are implemented locally. No hosting change or deployment is included.
+The next infrastructure decision is an edge proxy for `/decks/*` while retaining Pages,
+or moving the main site to a server-capable host. Do not snapshot community pages into
+Pages: withdrawal and moderation must take effect on the next request. Preserve unlisted
+access with noindex; private/withdrawn/moderated decks must return a real 404. Public
+sitemap eligibility must reuse discovery restrictions, including discoverable profiles
+and seed-discovery settings, rather than visibility alone. Unknown upstream failures
+must return a retryable 5xx rather than a cached missing response.
+
+Full historical tournament output still needs a delivery/size decision. The current
+independent-player threshold intentionally limits the static rollout; sitemap coverage
+must always match actual entry pages.
+
+After deployment, verify a generated URL with and without its trailing slash and with
+a query string; compare canonical, og:url and JSON-LD URL before/after React startup.
+Check a missing hash, one public community deck, one unlisted deck, and a withdrawn deck.
+Use a dedicated test deck for withdrawal, not a real user's published content. Confirm
+that stale URLs disappear from the next sitemap and that no unavailable content remains
+in CDN caches.
+
+In Search Console, submit `/sitemap.xml`, inspect representative tournament/community
+URLs, and record submitted/indexed totals, Google-selected canonical, soft-404 exclusions
+and last crawl date. Review again after crawling; sitemap submission does not guarantee
+indexing. Actual X composer rendering and Search Console verification require signed-in
+access, which is not currently available in the browser session.
+
+Canonical/sitemap alignment follows [Google's canonical guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls).
+Structured data describes visible content and does not promise a special search result;
+see [Google's structured data introduction](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
