@@ -22,6 +22,7 @@ export interface ArtistIdentity {
   portrait?: {
     src: string;
     fit?: 'cover' | 'contain';
+    framing?: 'card-art';
     sourceUrl: string;
     imageUrl: string;
     verifiedAt: string;

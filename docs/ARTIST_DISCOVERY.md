@@ -1411,3 +1411,12 @@ Added the original transparent 140×69 PNG displayed as the brand logo in the he
 Next: publish the logo and studio navigation, then complete the production journey verification. Artist Pages remains approximately 95% complete for the first release, pending production and real transport recovery checks. Identity discovery remains open-ended.
 
 Verification: app typecheck, all four artist tests, and diff checks pass. The original 140px-wide logo loads with contain fit at 360px on the studio page and 1280px in the directory; visual checks confirm the full logo on the dark surface and no horizontal overflow. Loading and empty card-search states were observed. Keyboard/touch controls retain the preceding studio-navigation checks. Error/retry and production checks were not repeated for this image change.
+
+
+## Silvie champion avatar 2026-10-14
+
+At the user’s request, the artist identity a040 silvie uses the level 1 champion Silvie, Wilds Whisperer (Dawn of Ashes First Edition, FlBjgrJPx7) as its avatar. The original card image is stored at app/public/images/artists/a040.jpg; CSS framing focuses the circular avatar on the champion’s face. The card is credited to Kumai. This is a user-selected representative image, not an artist-owned profile portrait or new identity evidence. Artist credits, links, and gallery remain unchanged. Image coverage is 18/66 identities, including this representative card avatar and the earlier user-supplied 砂木烟 derivative.
+
+Next: publish and verify the avatar in production, then resume artist discovery. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks. Identity discovery remains open-ended.
+
+Verification: app typecheck, all four artist tests, and diff checks pass. The 500px-wide source loads in the mobile 360px artist avatar and desktop 1280px directory avatar; visual checks confirm face-focused framing without card text or page overflow. Loading and empty search states were observed. Search is 48px high with visible keyboard focus. Error/retry and production were not repeated for this image change.

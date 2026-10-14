@@ -178,3 +178,5 @@ Curated spelling variants share one directory entry and combined card gallery wh
 Studio artist pages show a responsive grid of credited artists with portraits or initials and card counts when the catalog is available. Each artist links to their own gallery and back to the studio. Relationships are explicit curated catalog associations, not claims of current employment. Studio artwork counts continue to describe the studio’s own credited gallery.
 
 Studio logos may use contained portrait images with padding to preserve their complete mark. Transparent portraits use the avatar surface behind the image so fallback initials do not show through.
+
+User-selected champion avatars may frame an original card image within the portrait circle. Preserve the original file and record its card source and representative-image status in discovery notes. The avatar does not change artist credit attribution.

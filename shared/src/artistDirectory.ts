@@ -663,7 +663,14 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "silvie"
     ],
-    "links": []
+    "links": [],
+    "portrait": {
+      "src": "/images/artists/a040.jpg",
+      "sourceUrl": "https://index.gatcg.com/edition/silvie-wilds-whisperer-doa1e",
+      "imageUrl": "https://api.gatcg.com/cards/images/FlBjgrJPx7.jpg",
+      "verifiedAt": "2026-10-14",
+      "framing": "card-art"
+    }
   },
   {
     "id": "a041",

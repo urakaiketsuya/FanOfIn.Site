@@ -22,7 +22,7 @@ function ArtistPortrait({ artist, large = false }: { artist: ArtistIdentity; lar
   const initials = artist.name.trim().split(/\s+/).slice(0, 2).map(word => Array.from(word)[0]).join('').toLocaleUpperCase();
   return <span aria-hidden="true" className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-ctp-surface1 bg-ctp-surface0 font-semibold text-ctp-lavender ${large ? 'h-20 w-20 text-2xl' : 'h-14 w-14 text-lg'}`}>
     {initials}
-    {src && failedSrc !== src && <img src={src} alt="" width={large ? 80 : 56} height={large ? 80 : 56} loading={large ? 'eager' : 'lazy'} decoding="async" onError={() => setFailedSrc(src)} className={`absolute inset-0 h-full w-full bg-ctp-surface0 ${artist.portrait?.fit === 'contain' ? 'object-contain p-2' : 'object-cover'}`} />}
+    {src && failedSrc !== src && <img src={src} alt="" width={large ? 80 : 56} height={large ? 80 : 56} loading={large ? 'eager' : 'lazy'} decoding="async" onError={() => setFailedSrc(src)} className={`absolute inset-0 h-full w-full bg-ctp-surface0 ${artist.portrait?.fit === 'contain' ? 'object-contain p-2' : artist.portrait?.framing === 'card-art' ? 'object-cover object-top origin-top scale-200 -translate-y-1/4' : 'object-cover'}`} />}
   </span>;
 }
 
