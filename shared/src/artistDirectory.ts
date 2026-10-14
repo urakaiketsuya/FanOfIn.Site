@@ -1152,11 +1152,33 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a067",
     "slug": "a067-polar-engine",
     "name": "Polar Engine",
-    "kind": "unknown",
+    "kind": "studio",
     "credits": [
       "Polar Engine"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Website",
+        "label": "Polar Engine Studio",
+        "url": "https://polarengine.com/",
+        "evidence": "https://polarengine.com/",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "ArtStation",
+        "label": "Polar Engine",
+        "url": "https://www.artstation.com/polarengine",
+        "evidence": "https://www.artstation.com/polarengine",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Instagram",
+        "label": "@polar_engine",
+        "url": "https://www.instagram.com/polar_engine/",
+        "evidence": "https://www.instagram.com/polar_engine/",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a069",

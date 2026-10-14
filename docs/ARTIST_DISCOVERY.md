@@ -1043,17 +1043,19 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A067 — Polar Engine
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-identified studio and accounts; updated 2026-10-14.
 - **Exact credits:** `"Polar Engine"`.
-- **Identity:** Studio candidate: Polar Engine Studio. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Polar Engine Studio, artist ID a067. The user identified the studio and its website, ArtStation and Instagram on 2026-10-14.
 - **Credited example:** City Protector; Mercurial Heart; #046; edition `c9a8c16bn5`. [Publisher edition reference](https://index.gatcg.com/edition/city-protector-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"Polar Engine" art studio`; `"Polar Engine" "Grand Archive"`.
 - **Findings:** Opened the [studio website](https://polarengine.com/) and [contact page](https://polarengine.com/contact). They identify the studio, but inspected text does not attribute City Protector or Grand Archive work. Social-media headings did not expose account URLs in extracted content.
-- **Next action:** Locate City Protector in the studio portfolio before verifying catalog affiliation; inspect actual social links rather than inventing handles.
+- **Next action:** Retain the three user-identified accounts. A City Protector portfolio entry would independently strengthen the catalog match.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| Website | [Polar Engine Studio](https://polarengine.com/) | Candidate | [Evidence](https://polarengine.com/contact): Readable same-name studio site/contact; exact catalog commission remains unverified. | 2026-10-14 |
+| Website | [Polar Engine Studio](https://polarengine.com/) | User-identified | [Evidence](https://polarengine.com/contact): Readable same-name studio site/contact; exact catalog commission remains unverified. | 2026-10-14 |
+| ArtStation | [Polar Engine](https://www.artstation.com/polarengine) | User-identified | User supplied this exact studio-account association. | 2026-10-14 |
+| Instagram | [@polar_engine](https://www.instagram.com/polar_engine/) | User-identified | User supplied this exact studio-account association; language query removed. | 2026-10-14 |
 
 ### A068 — Primea studio
 
@@ -1633,3 +1635,10 @@ Verification: all four artist tests and diff checks pass. The Instagram link dis
 Added [X @rubimeoww_draws](https://x.com/rubimeoww_draws) alongside Instagram following the user’s identification. This supersedes the previous candidate-only X status. Current totals: 65 identities, 52 account URLs across 26 linked identities, 24 portraits.
 
 Verification: all four artist tests and diff checks pass. Both links display at 360px and 1280px without overflow, with 48px touch targets. Keyboard navigation moves from X to Instagram with visible focus. Empty/error recovery checks were not repeated for this additional account-data entry. Next: publish account updates when requested and verify production. Artist Pages remains approximately 95% complete for the first release, with release verification and real transport recovery outstanding; identity research remains open-ended.
+
+
+### Polar Engine studio update 2026-10-14
+
+Classified a067 as a studio and added the user-identified [website](https://polarengine.com/), [ArtStation](https://www.artstation.com/polarengine) and [Instagram](https://www.instagram.com/polar_engine/). The website identifies Polar Engine Studio. Direct ArtStation extraction shows only site chrome and Instagram retrieval failed; these accounts rely on the user’s identification and earlier studio research. No independent City Protector artwork match, studio-member relationships or portrait added. Current totals: 65 identities, 55 account URLs across 27 linked identities, 24 portraits.
+
+Verification: all four artist tests and diff checks pass. All three links display at 360px and 1280px without overflow, with 48px touch targets. Keyboard navigation moves from website to ArtStation; loading observed. Empty/error recovery was not repeated for this studio/account data update. Next: publish account updates when requested and verify production. Artist Pages remains approximately 95% complete for the first release, based on completed local features with release verification and real transport recovery outstanding; identity research remains open-ended.
