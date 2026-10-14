@@ -200,3 +200,12 @@ Added the user-supplied [Pixiv profile 62728045](https://www.pixiv.net/en/users/
 Published coverage is 29 URLs across 14 identities: 28 independently supported URLs plus this user-attributed destination. Portrait coverage remains 11/75. Next is the preserved YOHAKU account update under the broader identity standard. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery verification; full identity coverage remains uncertain.
 
 Verification: app typecheck and all three artist regression tests pass. The exact Pixiv link appears at 360px and 1280px without horizontal overflow; its mobile target is 48px high, and keyboard tabbing reaches card search with visible focus. Initial loading was observed; empty and failure states were not forced again for this data-only update. Pixiv inspection and production behavior remain unverified.
+
+
+### 砂木烟 supplied portrait 2026-10-14
+
+Added the user-supplied cat-in-witch-costume profile image to 砂木烟’s page. The second, unobscured screenshot was cleaned with the built-in image editor to remove the surrounding screenshot border, then resized for the avatar. The unedited screenshot is preserved beside the derived asset for provenance. No additional Pixiv access was attempted. Portrait coverage is now 12/75 (16%).
+
+Artist Pages remains approximately 95% complete for the first release: local implementation is complete, with production journey and real transport recovery checks outstanding. Next is the preserved YOHAKU account update; further identity coverage remains open-ended.
+
+Verification: app typecheck, all three artist regression tests, and diff checks pass. The 400px avatar loads on 360px and 1280px artist pages with no horizontal overflow. This asset-only change does not alter controls; keyboard/touch and empty/error/retry behavior retain the preceding account-update checks and earlier release checks. Production behavior remains unverified.

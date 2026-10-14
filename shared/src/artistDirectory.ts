@@ -73,6 +73,12 @@ export const artistDirectory: ArtistIdentity[] = [
     "slug": "a006-砂木烟",
     "name": "砂木烟",
     "kind": "unknown",
+    "portrait": {
+      "src": "/images/artists/a006.jpg",
+      "sourceUrl": "https://www.pixiv.net/en/users/62728045",
+      "imageUrl": "/images/artists/a006-source.png",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "砂木烟"
     ],

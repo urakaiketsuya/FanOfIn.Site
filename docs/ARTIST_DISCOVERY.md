@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 14 independently supported credit entries representing 13 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 38 needing identity review. There are 29 published URLs: 28 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 11 verified images and 64 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 14 independently supported credit entries representing 13 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 38 needing identity review. There are 29 published URLs: 28 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 12 images (11 independently sourced and one user-supplied derivative) and 63 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -220,7 +220,7 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 - **Credited example:** Academy Attendant; Alchemical Revolution; #041; edition `fiszdne4n3`. [Publisher edition reference](https://index.gatcg.com/edition/academy-attendant-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"砂木烟" artist`; `"砂木烟" 微博`.
 - **Findings:** The user supplied Pixiv profile 62728045 as the account for 砂木烟. Published on that user attribution under the agreed broader identity standard. Independent inspection was not possible: web retrieval failed, indexed searches did not corroborate the relationship, and the browser site-safety policy rejected the exact supplied URL. No alternate access or bypass was attempted. This is not an independently verified profile match.
-- **Next action:** Retain the user-attributed Pixiv link and initials. Add a portrait or independent corroboration when accessible evidence becomes available.
+- **Next action:** Retain the user-attributed Pixiv link and supplied portrait. Add independent corroboration when accessible evidence becomes available.
 
 | Platform | Account / canonical URL | Status | Attribution evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
@@ -1348,3 +1348,8 @@ Additional primary follow-ups:
 | A074 蝦蝦 | `"蝦蝦" "Library Witch" artist` | No new verified account connection; previous status retained. |
 | A075 道漫? | `"道漫?" "Astra Sight" artist` | No new verified account connection; previous status retained. |
 | A076 阿冰 | `"阿冰" "Backstab" artist` | No new verified account connection; previous status retained. |
+
+
+## 砂木烟 supplied portrait 2026-10-14
+
+The user supplied a screenshot of the profile image for 砂木烟: a gray-and-white cat wearing a witch hat and cloak. The second screenshot replaces the earlier text-obscured screenshot. The built-in image editor removed the dark screenshot surround and produced a cleaned, enlarged derivative; this is not a direct download from Pixiv. The derivative is stored at `app/public/images/artists/a006.jpg` and the unedited supplied screenshot at `app/public/images/artists/a006-source.png`. The portrait metadata points to that local source image and records the user-attributed Pixiv profile as its source page. Pixiv was not revisited. Coverage is now 12/75 portraits (16%), comprising 11 independently sourced images and one user-supplied derivative; 63 pages retain initials.
