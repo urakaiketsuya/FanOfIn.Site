@@ -20,7 +20,7 @@ function ArtistName({ artist, name = artist.name }: { artist: ArtistIdentity; na
   const reading = artist.pronunciation;
   const start = reading ? name.indexOf(reading.nativeText) : -1;
   if (!reading || start < 0) return <>{name}</>;
-  return <>{name.slice(0, start)}<ruby className="[ruby-position:over]">{reading.nativeText}<rp> (</rp><rt lang={reading.lang} className="text-[0.6em] font-normal tracking-normal text-ctp-subtext1">{reading.text}{reading.basis === 'estimated' && <span title="Estimated pronunciation" aria-label="estimated pronunciation">?</span>}</rt><rp>)</rp></ruby>{name.slice(start + reading.nativeText.length)}</>;
+  return <>{name.slice(0, start)}<ruby className="[ruby-position:over]">{reading.nativeText}<rp> (</rp><rt lang={reading.lang} className="text-[0.6em] font-normal tracking-normal text-ctp-subtext1">{reading.text}</rt><rp>)</rp></ruby>{name.slice(start + reading.nativeText.length)}</>;
 }
 
 function ArtistPortrait({ artist, large = false }: { artist: ArtistIdentity; large?: boolean }) {

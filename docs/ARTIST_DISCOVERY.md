@@ -1597,3 +1597,10 @@ At the user's request, replaced the tentative kana annotations with romaji: 南�
 Next: confirm the four estimated readings and verify production when published. Artist Pages remains approximately 95% complete for its first release, based on completed local features with production journeys and real transport recovery checks outstanding.
 
 Romaji verification: app typecheck, all four artist tests, and diff checks pass. Browser checks at 360px and 1280px confirm visible romaji estimates, no horizontal overflow, and successful macron-free yuki/jeze searches. Loading observed. Touch/keyboard, empty, error/retry and expanded states retain prior checks and were not repeated for this label-only update.
+
+
+## Reading marker preference — 2026-10-14
+
+At the user’s request, removed visible question marks from pronunciation annotations. Estimated provenance remains in metadata and research notes; the displayed readings are otherwise unchanged. This supersedes earlier instructions to show uncertainty markers. Next: publish and verify production. Artist Pages remains approximately 95% complete for its first release, with production journeys and real transport recovery checks outstanding.
+
+Marker-removal verification: four artist tests and diff checks pass. At 360px and 1280px, Minami Yūki displays without a question mark and without overflow. Loading observed; other interaction states retain the preceding checks and were not repeated for this text removal. Typecheck was not repeated for deletion of the marker-only JSX.

@@ -189,6 +189,6 @@ Artist names may use semantic ruby annotations in the directory, profile heading
 
 Scope each artist pronunciation to an explicit nativeText substring. Latin studio prefixes, handles, and suffixes remain outside the ruby element, and reading text excludes those Latin portions. A display variant without that substring falls back to the plain name.
 
-When the user authorizes tentative readings, mark their provenance as estimated and show a visible question mark with an accessible explanation. Replace estimates with artist-confirmed readings when available. Tentative pronunciation does not establish an account identity or alias.
+When the user authorizes tentative readings, retain estimated provenance in curated metadata and research records. Per user preference, pronunciation labels do not display question marks. Replace estimates with artist-confirmed readings when available. Tentative pronunciation does not establish an account identity or alias.
 
-Artist pronunciation annotations target English speakers: display Japanese readings in romaji (ja-Latn), with macrons for long vowels, and Chinese fallbacks in pinyin. Preserve native-script-only ruby scope and estimated-reading markers. Search ignores Latin diacritics.
+Artist pronunciation annotations target English speakers: display Japanese readings in romaji (ja-Latn), with macrons for long vowels, and Chinese fallbacks in pinyin. Preserve native-script-only ruby scope. Search ignores Latin diacritics.
