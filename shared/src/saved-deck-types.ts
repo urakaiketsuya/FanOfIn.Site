@@ -97,7 +97,12 @@ export interface ProfileAppearance {
   portraitCardId?: string;
 }
 
-export interface ProfileShowcase extends ProfileAppearance {
+export interface ProfileFavorites {
+  favoriteArtistIds?: string[];
+  favoriteSetIds?: string[];
+}
+
+export interface ProfileShowcase extends ProfileAppearance, ProfileFavorites {
   cardIds: string[];
   deckSlugs: string[];
   tournamentHashes?: string[];
@@ -105,7 +110,7 @@ export interface ProfileShowcase extends ProfileAppearance {
   revision: number;
 }
 
-export interface PublicProfile extends ProfileAppearance {
+export interface PublicProfile extends ProfileAppearance, ProfileFavorites {
   displayName: string;
   profileSlug: string;
   decks: PublicDeckSummary[];

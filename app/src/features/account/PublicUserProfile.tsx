@@ -1,3 +1,4 @@
+import { ProfileFavoritesDisplay } from "./ProfileFavorites";
 import ProfileHeader from "./ProfileHeader";
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -54,6 +55,7 @@ export default function PublicUserProfile() {
         {viewerProfileSlug === profile.profileSlug && <Button variant="ghost" onClick={() => navigate("/account")}>Edit profile</Button>}
       </div>
     </ProfileHeader></div>
+    <ProfileFavoritesDisplay value={profile} />
     {!!profile.favoriteCardIds?.length && <section className="mt-8">
       <h2 className="text-xl font-semibold">Favorite cards</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{profile.favoriteCardIds.map((id, index) => <CardResult key={id} card={cards?.[index]} name={cards?.[index]?.name ?? "Card unavailable"} />)}</div>

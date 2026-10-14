@@ -206,3 +206,7 @@ identification; preserve parent quantity drafts when switching Cards/Progress or
 Use Filter goal for optional category combinations, with one selection per additional category. Apply changes to the current view and preserve quantity drafts. Show selected filter names on details and pinned goals. Pinning a combination creates a separate goal; existing pins retain their scope. Empty combinations offer a clear no-match state.
 
 Account goal saves preserve prior pins until confirmed and offer retry on failure. Offer an explicit import for legacy device goals, retaining the device data until the account save succeeds. Refresh account goals when the window regains focus.
+
+### Profile favorite artists and sets
+
+Edit profile offers up to six curated artist identities and six expansion set families. Search and removal controls edit the same protected draft as cards and decks; Save profile persists the complete showcase atomically with revision conflict and retry handling. Favorites are catalog references, not user-authored labels. Public profiles link selected artists to their galleries and sets to card browsing, omit empty sections, and retain existing profile visibility rules. First and Alter editions share a set-family choice. No database migration is needed.

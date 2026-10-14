@@ -20,3 +20,6 @@ export function setFamily(set: { prefix: string; name: string }) {
 export function setFamilyPrefix(prefix: string): string {
   return aliases.get(prefix)?.prefix ?? prefix;
 }
+
+/** Expansion families available for profile favorites. */
+export const profileSetOptions = families.map(([id, name]) => ({ id, name }));

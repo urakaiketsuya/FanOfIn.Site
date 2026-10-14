@@ -1,5 +1,5 @@
 import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
-import { PROFILE_ELEMENTS, type ProfileElement, type ProfileShowcase } from "@gatcg/shared";
+import { parseProfileFavorites, PROFILE_ELEMENTS, type ProfileElement, type ProfileShowcase } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
 import { assetJson } from "./assets";
@@ -21,7 +21,9 @@ export function parseShowcase(value: unknown): ProfileShowcase {
   if (deckOrder && (deckOrder.length !== selected.length || deckOrder.some(id => !selected.includes(id)))) throw badRequest("Deck order must contain every selected deck exactly once");
   if (input.element !== undefined && !PROFILE_ELEMENTS.includes(input.element as ProfileElement)) throw badRequest("Choose a supported element");
   if (input.portraitCardId !== undefined && (typeof input.portraitCardId !== "string" || !/^[a-zA-Z0-9-]{1,80}$/.test(input.portraitCardId))) throw badRequest("Invalid portrait card");
-  return { ...(input.element ? { element: input.element as ProfileElement } : {}), ...(input.portraitCardId ? { portraitCardId: input.portraitCardId as string } : {}), ...(deckOrder ? { deckOrder } : {}), ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
+  let favorites;
+  try { favorites = parseProfileFavorites(input); } catch (error) { throw badRequest((error as Error).message); }
+  return { ...favorites, ...(input.element ? { element: input.element as ProfileElement } : {}), ...(input.portraitCardId ? { portraitCardId: input.portraitCardId as string } : {}), ...(deckOrder ? { deckOrder } : {}), ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
 }
 export async function getShowcase(env: Env, userId: string): Promise<ProfileShowcase> {
   const row = await env.ACCOUNT_DB.prepare("SELECT payload, revision FROM profile_showcases WHERE user_id = ?").bind(userId).first<{ payload: string; revision: number }>();
@@ -37,7 +39,7 @@ export async function saveShowcase(env: Env, user: AuthUser, value: unknown): Pr
   }
   const hashes = input.tournamentHashes ?? [];
   if (hashes.length && (await resolveProfileTournamentDecks(env, hashes)).length !== hashes.length) throw badRequest("Choose tournament decks available in the published data");
-  const payloadOf = (value: ProfileShowcase) => JSON.stringify({ ...(value.element ? { element: value.element } : {}), ...(value.portraitCardId ? { portraitCardId: value.portraitCardId } : {}), ...(value.deckOrder ? { deckOrder: value.deckOrder } : {}), cardIds: value.cardIds, deckSlugs: value.deckSlugs, ...(value.tournamentHashes?.length ? { tournamentHashes: value.tournamentHashes } : {}) });
+  const payloadOf = (value: ProfileShowcase) => JSON.stringify({ ...(value.favoriteArtistIds?.length ? { favoriteArtistIds: value.favoriteArtistIds } : {}), ...(value.favoriteSetIds?.length ? { favoriteSetIds: value.favoriteSetIds } : {}), ...(value.element ? { element: value.element } : {}), ...(value.portraitCardId ? { portraitCardId: value.portraitCardId } : {}), ...(value.deckOrder ? { deckOrder: value.deckOrder } : {}), cardIds: value.cardIds, deckSlugs: value.deckSlugs, ...(value.tournamentHashes?.length ? { tournamentHashes: value.tournamentHashes } : {}) });
   const payload = payloadOf(input);
   // Public visibility is checked inside the write, including when a deck is unpublished concurrently.
   const result = await env.ACCOUNT_DB.prepare(`INSERT INTO profile_showcases (user_id, payload, revision)

@@ -1,3 +1,4 @@
+import { ProfileFavoritesEditor } from "./ProfileFavorites";
 import ProfileHeader from "./ProfileHeader";
 import ProfileAppearanceEditor from "./ProfileAppearanceEditor";
 import { Link } from "react-router-dom";
@@ -82,6 +83,7 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
       <p className="mt-4 text-sm text-ctp-subtext1">Choose what visitors see. Your other favorites remain private. Use Earlier and Later to set the order visitors see.</p>
       {!user.profileDiscoverable && <InlineState className="mt-3">Your profile is hidden. Enable profile discovery in Account to share your showcase.</InlineState>}
       <p role="status" className="sr-only">{announcement}</p>
+      <ProfileFavoritesEditor value={draft} onChange={favorites => setDraft({ ...draft, ...favorites })} />
       <h3 className="mt-5 text-lg font-semibold">Favorite cards</h3>
       <div className="mt-3 grid grid-cols-2 gap-3">{draft.cardIds.map((id, index) => { const card = catalog?.find(item => item.uuid === id); return <CardResult key={id} card={card} name={card?.name ?? "Card unavailable"} selected onSelect={() => toggle("cardIds", id, 6)}><p className="text-xs text-ctp-subtext1">Position {index + 1} of {draft.cardIds.length}</p>{orderControls("cardIds", id, card?.name ?? "Unavailable card", index, draft.cardIds.length)}{card && <Link className="flex min-h-control items-center text-sm text-ctp-blue underline" to={`/cards/${card.slug}`} target="_blank" rel="noreferrer">Card details<span className="sr-only"> in a new tab</span></Link>}</CardResult>; })}</div>
       <label className="mt-3 block text-sm">Find a card<input className="mt-1 min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search card names" /></label>

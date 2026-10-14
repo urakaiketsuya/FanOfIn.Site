@@ -36,9 +36,12 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     } } } as unknown as Env;
     globalThis.fetch = async () => Response.json({ cards: [{ uuid: "known" }] });
     const slug = String(db.prepare("SELECT public_slug FROM user_decks LIMIT 1").get()!.public_slug);
-    const input = { cardIds: ["known"], deckSlugs: [slug], element: "WATER" as const, portraitCardId: "known", revision: 0 };
+    const input = { cardIds: ["known"], deckSlugs: [slug], element: "WATER" as const, portraitCardId: "known", favoriteArtistIds: ["a001"], favoriteSetIds: ["DOA"], revision: 0 };
     const saved = await saveShowcase(env, user, input);
     assert.equal(saved.revision, 1);
+    assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.favoriteArtistIds, ["a001"]);
+    assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.favoriteSetIds, ["DOA"]);
+    await assert.rejects(saveShowcase(env, user, { ...saved, favoriteSetIds: ["invented"] }), /catalog/);
     assert.equal((await getPublicProfile(env, "a".repeat(24)))!.element, "WATER");
     assert.equal((await getPublicProfile(env, "a".repeat(24)))!.portraitCardId, "known");
     await assert.rejects(saveShowcase(env, user, { ...saved, portraitCardId: "unknown" }), /published catalog/);
@@ -61,6 +64,8 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     const tournamentInput = { cardIds: [], deckSlugs: [slug], tournamentHashes: ["abc"], deckOrder: ["abc", slug], revision: saved.revision };
     const tournamentSaved = await saveShowcase(env, user, tournamentInput);
     assert.equal((await getShowcase(env, user.id)).element, undefined);
+    assert.equal((await getShowcase(env, user.id)).favoriteArtistIds, undefined);
+    assert.equal((await getPublicProfile(env, "a".repeat(24)))!.favoriteSetIds, undefined);
     assert.equal((await getPublicProfile(env, "a".repeat(24)))!.portraitCardId, undefined);
     assert.deepEqual(await saveShowcase(env, user, tournamentInput), tournamentSaved);
     assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredDeckOrder, ["abc", slug]);
@@ -95,4 +100,12 @@ test("appearance rejects unsupported elements and malformed portraits", () => {
   for (const element of ["blue", "fire", null, 5, {}]) assert.throws(() => parseShowcase({ ...base, element }));
   for (const portraitCardId of ["", "../card", null, 5]) assert.throws(() => parseShowcase({ ...base, portraitCardId }));
   assert.deepEqual(parseShowcase(base), base);
+});
+
+test("profile favorites reject unknown, duplicate and oversized catalog selections", () => {
+  const base = { cardIds: [], deckSlugs: [], revision: 0 };
+  for (const key of ["favoriteArtistIds", "favoriteSetIds"]) {
+    for (const value of [null, "DOA", ["unknown"], ["a001", "a001"], Array(7).fill("DOA")]) assert.throws(() => parseShowcase({ ...base, [key]: value }));
+  }
+  assert.deepEqual(parseShowcase({ ...base, favoriteArtistIds: [], favoriteSetIds: [] }), base);
 });
