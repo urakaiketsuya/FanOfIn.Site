@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export default function PageHeader({ title, description, eyebrow, actions, spacing = "page" }: { title: string; description?: ReactNode; eyebrow?: ReactNode; actions?: ReactNode; spacing?: "page" | "contained" }) {
+export default function PageHeader({ title, description, eyebrow, actions, spacing = "page" }: { title: ReactNode; description?: ReactNode; eyebrow?: ReactNode; actions?: ReactNode; spacing?: "page" | "contained" }) {
   return (
     <header data-component="PageHeader" className={spacing === "page" ? "mb-6" : undefined}>
       {eyebrow && <div className="mb-2 text-sm text-ctp-blue">{eyebrow}</div>}

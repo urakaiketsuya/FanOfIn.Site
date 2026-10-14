@@ -32,6 +32,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a002",
+    "pronunciation": { "text": "Mù yè", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a002-木叶",
     "name": "木叶",
     "kind": "unknown",
@@ -42,6 +43,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a003",
+    "pronunciation": { "text": "Dào màn", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a003-道漫",
     "name": "道漫",
     "kind": "unknown",
@@ -85,6 +87,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a005",
+    "pronunciation": { "text": "Shí wěi", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a005-十尾",
     "name": "十尾",
     "kind": "individual",
@@ -112,6 +115,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a006",
+    "pronunciation": { "text": "Shā mù yān", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a006-砂木烟",
     "name": "砂木烟",
     "kind": "unknown",
@@ -412,6 +416,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a018",
+    "pronunciation": { "text": "Níng méng jiā xīn bǐng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a018-檸檬夾心餅",
     "name": "檸檬夾心餅",
     "kind": "unknown",
@@ -432,6 +437,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a020",
+    "pronunciation": { "text": "Běi fēi fēi", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a020-北飞飞",
     "name": "北飞飞",
     "kind": "unknown",
@@ -500,6 +506,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a024",
+    "pronunciation": { "text": "Fāng qiáo yè bó", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a024-坊橋夜泊",
     "name": "坊橋夜泊",
     "kind": "individual",
@@ -570,6 +577,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a028",
+    "pronunciation": { "text": "Háng zhōu xīn yì zú", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a028-杭州新艺族",
     "name": "杭州新艺族",
     "kind": "unknown",
@@ -715,6 +723,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a039",
+    "pronunciation": { "text": "Huì lái", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a039-繪來",
     "name": "繪來",
     "kind": "unknown",
@@ -752,6 +761,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a042",
+    "pronunciation": { "text": "Ā qīng Roro", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a042-阿清roro",
     "name": "阿清Roro",
     "kind": "individual",
@@ -928,6 +938,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a052",
+    "pronunciation": { "text": "Cāng cāng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a052-dragonart-倉倉",
     "name": "DragonArt 倉倉",
     "kind": "unknown",
@@ -949,6 +960,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a054",
+    "pronunciation": { "text": "Bái dì", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a054-白帝",
     "name": "白帝",
     "kind": "unknown",
@@ -1071,6 +1083,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a063",
+    "pronunciation": { "text": "Bái shuāng chá", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a063-dragonart-白霜搽",
     "name": "Dragonart 白霜搽",
     "kind": "combined",
@@ -1102,6 +1115,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a064",
+    "pronunciation": { "text": "Ài tóng A-Ton", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a064-dragonart-艾瞳a-ton",
     "name": "DragonArt 艾瞳A-Ton",
     "kind": "unknown",
@@ -1143,6 +1157,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a069",
+    "pronunciation": { "text": "Rubi lù bǐ miāo", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a069-rubi露比喵",
     "name": "Rubi露比喵",
     "kind": "unknown",
@@ -1183,6 +1198,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a074",
+    "pronunciation": { "text": "Xiā xiā", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a074-蝦蝦",
     "name": "蝦蝦",
     "kind": "unknown",
@@ -1193,6 +1209,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a076",
+    "pronunciation": { "text": "Ā bīng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a076-阿冰",
     "name": "阿冰",
     "kind": "unknown",

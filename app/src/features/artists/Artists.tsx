@@ -16,6 +16,11 @@ function artworkCounts(cards: number, printings: number) {
 
 const linkClass = 'inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 
+function ArtistName({ artist, name = artist.name }: { artist: ArtistIdentity; name?: string }) {
+  if (!artist.pronunciation) return <>{name}</>;
+  return <ruby className="[ruby-position:over]">{name}<rp> (</rp><rt lang={artist.pronunciation.lang} className="text-[0.6em] font-normal tracking-normal text-ctp-subtext1">{artist.pronunciation.text}</rt><rp>)</rp></ruby>;
+}
+
 function ArtistPortrait({ artist, large = false }: { artist: ArtistIdentity; large?: boolean }) {
   const [failedSrc, setFailedSrc] = useState<string>();
   const src = artist.portrait?.src;
@@ -72,11 +77,12 @@ export default function Artists() {
     setRetryError(false);
     try { await syncCards(); setRetrySucceeded(true); } catch { setRetryError(true); } finally { setRetrying(false); }
   }
-  const visibleArtists = galleries.filter(candidate => candidate.credits.some(credit => credit.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())) || candidate.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const artistSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
+  const visibleArtists = galleries.filter(candidate => [...candidate.credits, candidate.name, candidate.pronunciation?.text ?? ''].some(value => artistSearch(value).includes(artistSearch(query))));
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
   return <PageLayout width="full">
     <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
-    <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity?.name ?? (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
+    <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity ? <ArtistName artist={identity} /> : (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
@@ -88,7 +94,7 @@ export default function Artists() {
           const gallery = galleries.find(candidate => candidate.id === member.id);
           const name = member.name.replace(/^DragonArt\s+/i, '');
           return <Link key={member.id} to={`/artists/${encodeURIComponent(member.slug)}`} className="flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
-            <ArtistPortrait artist={member} /><div className="min-w-0"><h3 className="break-words font-semibold">{name}</h3>{gallery && <p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(gallery.cards.length, gallery.printingCount)}</p>}</div>
+            <ArtistPortrait artist={member} /><div className="min-w-0"><h3 className="break-words font-semibold"><ArtistName artist={member} name={name} /></h3>{gallery && <p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(gallery.cards.length, gallery.printingCount)}</p>}</div>
           </Link>;
         })}</div>
       </section>}
@@ -104,7 +110,7 @@ export default function Artists() {
       <label className="mt-5 block max-w-lg text-sm">Search artists<input type="search" value={query} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
       {galleries.length > 0 && <p role="status" className="mt-4 text-sm text-ctp-subtext1">{visibleArtists.length} {visibleArtists.length === 1 ? 'artist' : 'artists'}</p>}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleArtists.map(candidate => <Link key={candidate.id} to={`/artists/${encodeURIComponent(candidate.slug)}`} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
-        <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold">{candidate.name}</h2><p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
+        <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold"><ArtistName artist={candidate} /></h2><p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
         <div className="grid grid-cols-3 gap-2">{candidate.cards.slice(0, 3).map(entry => <div key={entry.card.uuid} className="min-w-0"><CardArtTile card={entry.card} name={entry.card.name} editionUuid={entry.editions[0].uuid} artworkOnly /><p className="mt-1 break-words text-xs text-ctp-subtext1">{entry.card.name}</p></div>)}</div>
 
       </Link>)}</div>

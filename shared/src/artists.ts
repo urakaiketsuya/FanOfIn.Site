@@ -14,6 +14,13 @@ export interface ArtistIdentity {
   /** Previous directory URLs retained after a curated identity merge. */
   slugAliases?: string[];
   name: string;
+  /** Curated pronunciation of the native-script name, never an identity alias. */
+  pronunciation?: {
+    text: string;
+    lang: 'zh-Latn-pinyin' | 'ja';
+    basis: 'standard-mandarin' | 'artist-confirmed';
+    sourceUrl?: string;
+  };
   kind: 'individual' | 'studio' | 'combined' | 'unknown';
   /** Studio named in this artist’s catalog credits; does not imply current employment. */
   studioId?: string;

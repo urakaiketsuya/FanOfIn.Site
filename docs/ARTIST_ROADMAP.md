@@ -359,3 +359,8 @@ Verification: app typecheck, all four artist tests, and diff checks pass. At 360
 Reviewed every current identity without published accounts: 42/42, individually logged in ARTIST_DISCOVERY.md with queries, candidates, and no-verified-profile outcomes. No new account met the publication standard. Current coverage: 65 identities, 23 with published links (35%), 48 URLs, 24 images. Candidate profiles remain separate from confirmed accounts; exact-card matching is optional when other identity evidence is sufficient.
 
 Next: pursue publisher/native-name cross-links for recorded candidates, starting with 代々 / daidai_kasame; stronger user identifications can also resolve candidates. The search pass is complete, while identity resolution remains open-ended. Artist Pages first release remains approximately 95% complete: local directory/profile implementation is done; production journeys and real transport recovery checks remain. Documentation-only validation checked all 42 IDs and coverage totals; no UI or application checks repeated.
+
+
+## Pronunciation support — 2026-10-14
+
+Names now support ruby pronunciation in directory entries, page headings, and studio members. Added 17 standard Mandarin pinyin fallbacks and tone-insensitive pronunciation search. Artist-confirmed readings take precedence; ambiguous Japanese kanji readings remain blank pending confirmation. Next: verify narrow mobile rendering (browser viewport override did not take effect) and curate confirmed Japanese readings. Artist Pages remains about 95% complete for its first release, based on completed local features with mobile pronunciation, production journey, and real transport recovery verification outstanding.
