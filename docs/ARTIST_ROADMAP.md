@@ -4,7 +4,7 @@ Make Grand Archive illustrators discoverable through dedicated artist pages, cre
 
 ## Scope and current progress
 
-Planning and the discovery queue are established. Discovery is 0/76 entries reviewed, covering 84 exact catalog credit strings after consolidating surrounding whitespace. Page implementation has not started. Artist Pages is approximately 10% complete: the existing foundation and delivery plan are ready; identity discovery, directory data, UI, and launch verification remain. Discovery effort depends on account visibility and ambiguous credits.
+Planning and the discovery queue are established. Discovery has been attempted for 1/76 entries, with A001 awaiting identity review and 0/76 resolved, covering 84 exact catalog credit strings after consolidating surrounding whitespace. Page implementation has not started. Artist Pages is approximately 10% complete: the existing foundation and delivery plan are ready; identity discovery, directory data, UI, and launch verification remain. Discovery effort depends on account visibility and ambiguous credits.
 
 The first release includes a searchable artist directory, dedicated artist pages, galleries of the printings credited to each artist, and verified external links. All credited artists remain eligible for pages even when no official links are found. Biographies, social feeds, artist-managed profiles, and direct artist outreach are outside this release.
 
@@ -68,4 +68,4 @@ Catalog refreshes should surface new credits without overwriting curated researc
 
 ## Next work
 
-Research A001, Primea Studio, and create its evidence record. No blocker prevents beginning discovery. The main uncertainty is whether each credit can be connected to a publicly verifiable identity and official accounts.
+Research A002, 木叶, next. A001, Primea Studio, has an evidence record but needs primary evidence connecting its credited identity to official accounts; no links are verified. This does not block other entries. The main uncertainty is whether each credit can be connected to a publicly verifiable identity and official accounts.
