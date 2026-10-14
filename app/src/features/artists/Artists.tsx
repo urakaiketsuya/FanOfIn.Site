@@ -55,6 +55,8 @@ export default function Artists() {
   const galleries = useMemo(() => buildArtistGalleries(cards), [cards]);
   const artist = galleries.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
   const identity = artist ?? artistDirectory.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
+  const studio = artistDirectory.find(candidate => candidate.id === identity?.studioId);
+  const studioArtists = artistDirectory.filter(candidate => identity && candidate.studioId === identity.id);
   const cardSearch = query;
   function setSearch(value: string) {
     const next = new URLSearchParams(params);
@@ -79,6 +81,17 @@ export default function Artists() {
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
       {identity && identity.links.length > 0 && <nav aria-label={`${identity.name} official accounts`} className="mt-4 flex flex-wrap gap-2">{identity.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className={`${linkClass} max-w-full break-words border border-ctp-surface1`}>{link.platform} · {link.label} ↗</a>)}</nav>}
+      {studio && <p className="mt-4 text-sm text-ctp-subtext1">Credited with <Link className={linkClass} to={`/artists/${encodeURIComponent(studio.slug)}`}>{studio.name}</Link></p>}
+      {studioArtists.length > 0 && <section aria-labelledby="studio-artists-heading" className="mt-6">
+        <h2 id="studio-artists-heading" className="text-xl font-semibold">Studio artists</h2>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{studioArtists.map(member => {
+          const gallery = galleries.find(candidate => candidate.id === member.id);
+          const name = member.name.replace(/^DragonArt\s+/i, '');
+          return <Link key={member.id} to={`/artists/${encodeURIComponent(member.slug)}`} className="flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
+            <ArtistPortrait artist={member} /><div className="min-w-0"><h3 className="break-words font-semibold">{name}</h3>{gallery && <p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(gallery.cards.length, gallery.printingCount)}</p>}</div>
+          </Link>;
+        })}</div>
+      </section>}
       {artist && <>
         <p className="mt-4 text-ctp-subtext1">{artworkCounts(artist.cards.length, artist.printingCount)}</p>
         <label className="mt-5 block max-w-lg text-sm">Search cards<input type="search" value={cardSearch} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>

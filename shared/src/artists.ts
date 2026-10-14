@@ -15,6 +15,8 @@ export interface ArtistIdentity {
   slugAliases?: string[];
   name: string;
   kind: 'individual' | 'studio' | 'combined' | 'unknown';
+  /** Studio named in this artist’s catalog credits; does not imply current employment. */
+  studioId?: string;
   credits: string[];
   links: ArtistLink[];
   portrait?: {

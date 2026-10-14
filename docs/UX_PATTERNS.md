@@ -174,3 +174,5 @@ format, deck identifier, and full list.
 ## Artist identity aliases
 
 Curated spelling variants share one directory entry and combined card gallery while preserving every original printing credit. Former artist URLs continue to resolve through explicit slug aliases. Search matches all credited spellings. Merge case or spacing variants deliberately; ambiguous names require identity evidence or user confirmation.
+
+Studio artist pages show a responsive grid of credited artists with portraits or initials and card counts when the catalog is available. Each artist links to their own gallery and back to the studio. Relationships are explicit curated catalog associations, not claims of current employment. Studio artwork counts continue to describe the studio’s own credited gallery.

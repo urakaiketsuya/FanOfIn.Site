@@ -527,7 +527,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": [],
     "slugAliases": [
       "a037-dragonart-chu"
-    ]
+    ],
+    "studioId": "a004"
   },
   {
     "id": "a031",
@@ -573,7 +574,8 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://lit.link/en/TaroTarou",
         "verifiedAt": "2026-10-14"
       }
-    ]
+    ],
+    "studioId": "a004"
   },
   {
     "id": "a032",
@@ -709,7 +711,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": [],
     "slugAliases": [
       "a044-dragonart-tris"
-    ]
+    ],
+    "studioId": "a004"
   },
   {
     "id": "a045",
@@ -849,7 +852,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "DragonArt 倉倉"
     ],
-    "links": []
+    "links": [],
+    "studioId": "a004"
   },
   {
     "id": "a053",
@@ -947,7 +951,8 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://www.dragon-art.tw/gallery",
         "verifiedAt": "2026-10-14"
       }
-    ]
+    ],
+    "studioId": "a004"
   },
   {
     "id": "a061",
@@ -957,7 +962,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "Dragonart KS"
     ],
-    "links": []
+    "links": [],
+    "studioId": "a004"
   },
   {
     "id": "a062",
@@ -967,7 +973,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "DragonArt Zhang Iris"
     ],
-    "links": []
+    "links": [],
+    "studioId": "a004"
   },
   {
     "id": "a063",
@@ -997,7 +1004,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "slugAliases": [
       "a025-dragonart-白霜茶",
       "a050-白霜茶"
-    ]
+    ],
+    "studioId": "a004"
   },
   {
     "id": "a064",
@@ -1007,7 +1015,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "DragonArt 艾瞳A-Ton"
     ],
-    "links": []
+    "links": [],
+    "studioId": "a004"
   },
   {
     "id": "a065",

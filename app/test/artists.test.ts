@@ -52,3 +52,18 @@ test('curated identities have unique slugs and credits and HTTPS evidence', () =
   }
   assert.ok(catalog.flatMap(card => card.editions).filter(edition => edition.illustrator?.trim()).every(edition => !artistForCredit(edition.illustrator!).id.startsWith('credit-')));
 });
+
+test('studio relationships follow credited artists without merging their galleries', () => {
+  const studio = artistForCredit('Dragon Art');
+  const members = artistDirectory.filter(artist => artist.studioId === studio.id);
+  assert.equal(members.length, 9);
+  assert.ok(members.some(artist => artist.id === artistForCredit('TaroTarou').id));
+  for (const member of members) {
+    assert.notEqual(member.id, studio.id);
+    assert.ok(member.credits.some(credit => /^Dragonart /i.test(credit)));
+  }
+  for (const artist of artistDirectory.filter(artist => artist.studioId)) {
+    assert.equal(artistDirectory.find(studio => studio.id === artist.studioId)?.kind, 'studio');
+  }
+  assert.equal(artistForCredit('Hanh Chu').studioId, undefined);
+});
