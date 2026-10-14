@@ -42,6 +42,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Install artist preview fonts
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
       - name: Verify release candidate
         run: npm run release:check
         env:

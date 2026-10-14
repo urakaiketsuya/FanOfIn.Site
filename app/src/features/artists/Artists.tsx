@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { artistDirectory, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import ArtistAccountIcon from './ArtistAccountIcon';
+import { artistSharePreview } from './artistSharePreview';
 import PageLayout from '../../components/layout/PageLayout';
 import Button from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
@@ -73,7 +74,7 @@ export default function Artists() {
     setParams(next, { replace: true });
   }
   const metadata = artistPageMetadata(identity, artist);
-  useDocumentTitle(slug && !identity ? 'Artist not found' : metadata.title, metadata.description, identity || !slug ? metadata.path : undefined);
+  useDocumentTitle(slug && !identity ? 'Artist not found' : metadata.title, metadata.description, identity || !slug ? metadata.path : undefined, identity || !slug ? artistSharePreview(identity) : undefined);
   useEffect(() => {
     if (!slug || identity) return;
     const robots = document.createElement('meta');

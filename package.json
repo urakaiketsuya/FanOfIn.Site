@@ -48,5 +48,8 @@
   },
   "overrides": {
     "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "sharp": "0.35.5"
   }
 }

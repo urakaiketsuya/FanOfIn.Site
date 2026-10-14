@@ -4,6 +4,8 @@ import { mkdtemp, mkdir, writeFile, readFile, rm, access } from 'node:fs/promise
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { renderArtistPage, buildArtistPages } from '../build-artist-pages.mjs';
+import sharp from 'sharp';
+import { artistSocialImagePath } from '../../shared/src/artistSeo.ts';
 import { canonicalSiteUrl } from '../../shared/src/seo.ts';
 import { artistDirectory } from '../../shared/src/artistDirectory.ts';
 const shell = await readFile(new URL('../../app/index.html',import.meta.url),'utf8');
@@ -18,6 +20,9 @@ test('directory initial HTML has artwork and crawlable artist links with matchin
  assert.match(html,/api.gatcg.com\/cards\/images\/edition.jpg/);
  assert.match(html,/Grand Archive Artist Directory/);
  assert.equal(graph(html)[0]['@type'],'CollectionPage');
+ assert.equal(graph(html)[0].image,`https://fanofin.site${artistSocialImagePath(undefined,undefined,[gallery])}`);
+ assert.match(html,/og:image:width" content="1200/);
+ assert.match(html,/og:image:height" content="630/);
  assert.equal(graph(html)[0].mainEntity.itemListElement[0].url,'https://fanofin.site/artists/test/');
  assert.equal((html.match(/rel="canonical"/g)??[]).length,1);
  assert.ok(html.includes('<div id="root"><style>'));
@@ -47,6 +52,8 @@ test('build emits every profile, alias redirect and canonical-only sitemap; repe
   await buildArtistPages({dataDir,outDir});
   for(const artist of artistDirectory){
    await access(path.join(outDir,'artists',artist.slug,'index.html'));
+   const social=await sharp(path.join(outDir,artistSocialImagePath(artist))).metadata();
+   assert.equal(social.width,1200);assert.equal(social.height,630);assert.equal(social.format,'jpeg');
    for(const alias of artist.slugAliases??[]){
     const html=await readFile(path.join(outDir,'artists',alias,'index.html'),'utf8');
     assert.ok(html.includes(`https://fanofin.site/artists/${encodeURIComponent(artist.slug)}/`));

@@ -15,8 +15,10 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
 }
 
 /** Keep client navigation aligned with metadata in generated entry pages. */
-export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string) {
+export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string, social?: { src: string; alt: string }) {
   const location = useLocation();
+  const socialSrc = social?.src;
+  const socialAlt = social?.alt;
 
   useEffect(() => {
     if (title) {
@@ -43,13 +45,18 @@ export function useDocumentTitle(title?: string | null, description?: string | n
     setMetaByAttr("property", "og:url", canonical);
     // Initial structured data must not describe a different route after SPA navigation.
     const structured = document.querySelector("script[data-canonical]");
-    if (structured && structured.getAttribute("data-canonical") !== canonical) {
-      structured.remove();
-      const fallback = "https://fanofin.site/media/social/fan-of-insight-v1.jpg";
-      setMetaByAttr("property", "og:image", fallback);
-      setMetaByAttr("name", "twitter:image", fallback);
-      setMetaByAttr("property", "og:image:alt", SITE_NAME);
-      setMetaByAttr("name", "twitter:image:alt", SITE_NAME);
+    const staleStructured = structured && structured.getAttribute("data-canonical") !== canonical;
+    if (staleStructured) structured.remove();
+    if (socialSrc || !structured || staleStructured) {
+      const image = socialSrc ?? "https://fanofin.site/media/social/fan-of-insight-v1.jpg";
+      setMetaByAttr("property", "og:image", image);
+      setMetaByAttr("name", "twitter:image", image);
+      setMetaByAttr("property", "og:image:alt", socialAlt ?? SITE_NAME);
+      setMetaByAttr("name", "twitter:image:alt", socialAlt ?? SITE_NAME);
+      setMetaByAttr("property", "og:image:width", "1200");
+      setMetaByAttr("property", "og:image:height", "630");
+      setMetaByAttr("property", "og:image:type", "image/jpeg");
+      setMetaByAttr("name", "twitter:card", "summary_large_image");
     }
-  }, [location.pathname, canonicalPath]);
+  }, [location.pathname, canonicalPath, socialSrc, socialAlt]);
 }

@@ -3,7 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { artistDirectory } from '../shared/src/artistDirectory.ts';
 import { buildArtistGalleries } from '../shared/src/artists.ts';
-import { artistPageMetadata, artistPagePath } from '../shared/src/artistSeo.ts';
+import { artistPageMetadata, artistPagePath, artistSocialImagePath, artistSocialImageAlt } from '../shared/src/artistSeo.ts';
+import { buildArtistSocialImages } from './build-artist-social-images.mjs';
 import { canonicalSiteUrl } from '../shared/src/seo.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -15,20 +16,21 @@ export function renderArtistPage(shell, artist, gallery, galleries = []) {
   const meta = artistPageMetadata(artist, gallery);
   const url = canonicalSiteUrl(meta.path);
   const title = `${meta.title} · Fan of Insight`;
-  const image = artist?.portrait?.src && !artist.portrait.framing ? absolute(artist.portrait.src) : 'https://fanofin.site/media/social/fan-of-insight-v1.jpg';
+  const image = absolute(artistSocialImagePath(artist, gallery, galleries));
   let html = shell.replace(/<title>[\s\S]*?<\/title>/i, () => `<title>${escape(title)}</title>`);
   for (const [attr, key, value] of [
     ['name','description',meta.description], ['property','og:title',title],
     ['property','og:description',meta.description], ['property','og:url',url],
     ['name','twitter:title',title], ['name','twitter:description',meta.description],
     ['property','og:image',image], ['name','twitter:image',image],
-    ['property','og:image:alt',artist?.name ?? 'Grand Archive artists'],
-    ['name','twitter:image:alt',artist?.name ?? 'Grand Archive artists'],
+    ['property','og:image:alt',artistSocialImageAlt(artist)],
+    ['name','twitter:image:alt',artistSocialImageAlt(artist)],
   ]) {
     html = html.replace(new RegExp(`<meta\\b[^>]*\\b${attr}=["']${key}["'][^>]*>`, 'gi'), '');
     html = html.replace('</head>', () => `<meta ${attr}="${key}" content="${escape(value)}">\n</head>`);
   }
   html = html.replace(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi, '').replace(/<meta\b[^>]*\bproperty=["']og:image:(width|height|type)["'][^>]*>/gi, '');
+  html = html.replace('</head>', '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/jpeg"></head>');
   const entity = artist && ['individual','studio'].includes(artist.kind) ? {
     '@type': artist.kind === 'studio' ? 'Organization' : 'Person', '@id': `${url}#artist`,
     name: artist.name, url, sameAs: artist.links.map(link => link.url),
@@ -36,7 +38,7 @@ export function renderArtistPage(shell, artist, gallery, galleries = []) {
     alternateName: artist.credits.filter(name => name !== artist.name),
   } : undefined;
   const structured = { '@context':'https://schema.org', '@graph': [
-    { '@type': artist ? 'WebPage' : 'CollectionPage', '@id':url, url, name:title, description:meta.description, ...(entity ? {about:entity} : {}), mainEntity: {
+    { '@type': artist ? 'WebPage' : 'CollectionPage', '@id':url, url, name:title, description:meta.description, image, ...(entity ? {about:entity} : {}), mainEntity: {
       '@type':'ItemList', itemListElement: artist ? (gallery?.cards ?? []).map((entry, i) => ({'@type':'ListItem',position:i+1,name:entry.card.name,url:absolute(`/cards/${encodeURIComponent(entry.card.slug)}`)})) : galleries.map((entry,i)=>({'@type':'ListItem',position:i+1,name:entry.name,url:absolute(artistPagePath(entry))})),
     } },
     { '@type':'BreadcrumbList', itemListElement:[{'@type':'ListItem',position:1,name:'Fan of Insight',item:absolute('/')},{'@type':'ListItem',position:2,name:'Artists',item:absolute('/artists/')}, ...(artist ? [{'@type':'ListItem',position:3,name:artist.name,item:url}] : [])] },
@@ -82,6 +84,7 @@ export async function buildArtistPages({dataDir=path.join(root,'data'),outDir=pa
   if(!source.includes('</urlset>')) throw new Error('Invalid sitemap');
   const sitemap=source.replace(/\s*<url>\s*<loc>https:\/\/fanofin\.site\/artists(?:\/[^<]*)?<\/loc>[\s\S]*?<\/url>/g,'').replace(/\s*<\/urlset>/,`\n${[undefined,...identities].map(a=>`<url><loc>${canonicalSiteUrl(artistPagePath(a))}</loc></url>`).join('\n')}\n</urlset>`);
   if((sitemap.match(/<loc>/g)??[]).length>50000) throw new Error('Sitemap exceeds URL limit');
+  await buildArtistSocialImages({ identities, galleries, outDir });
   await rm(path.join(outDir,'artists'),{recursive:true,force:true});
   for(const page of pages) {
     const directory=path.join(outDir,'artists',page.slug);
