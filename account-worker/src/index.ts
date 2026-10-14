@@ -10,7 +10,7 @@ import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNo
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
-import { discoverDecks, discoverProfiles, getPublicProfile } from "./discovery";
+import { discoverDeckSitemap, discoverDecks, discoverProfiles, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
 import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
@@ -217,6 +217,7 @@ export default {
       if (request.method === "POST" && url.pathname === "/v1/auth/logout") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroySession(request, env) });
       if (request.method === "POST" && url.pathname === "/v1/auth/logout-all") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroyAllSessions(request, env) });
 
+      if (request.method === "GET" && url.pathname === "/v1/discover/deck-sitemap") return response(env, request, await discoverDeckSitemap(env));
       const publicDeckMatch = url.pathname.match(/^\/v1\/decklists\/([a-f0-9]{32})$/);
       if (publicDeckMatch && request.method === "GET") {
         const deck = await getPublicDeck(env, publicDeckMatch[1]);

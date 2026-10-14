@@ -37,3 +37,14 @@ test('preview hosts remain noindex even for public decks', async () => {
   const response = await routeDeckRequest(new Request(`https://preview.workers.dev/decks/${slug}`), async () => new Response('html', { headers: { 'X-Deck-Indexable': '1' } }));
   assert.equal(response.headers.get('X-Robots-Tag'), 'noindex');
 });
+test('community sitemap uses fixed live endpoint and never forwards query or cookies', async () => {
+  const response = await routeDeckRequest(new Request('https://fanofin.site/decks/sitemap.xml?target=evil', { headers: { Cookie: 'secret' } }), async (input, init) => {
+    assert.equal(input, 'https://accounts.fanofin.site/render/deck-sitemap.xml');
+    assert.equal(new Headers(init.headers).get('Cookie'), null);
+    return new Response('<urlset/>', { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+  });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  assert.equal(response.headers.get('Content-Type'), 'application/xml; charset=utf-8');
+  assert.equal(await response.text(), '<urlset/>');
+});

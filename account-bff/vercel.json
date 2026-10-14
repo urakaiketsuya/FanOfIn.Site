@@ -15,6 +15,10 @@
   },
   "rewrites": [
     {
+      "source": "/render/deck-sitemap.xml",
+      "destination": "/api/deck-sitemap"
+    },
+    {
       "source": "/render/decks/:slug",
       "destination": "/api/deck-page?slug=:slug"
     },

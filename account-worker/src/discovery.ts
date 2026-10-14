@@ -45,6 +45,8 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
   };
 }
 
+const DISCOVERABLE = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1", "(ud.is_seed = 0 OR ud.seed_discoverable = 1)"];
+
 const SELECT = `SELECT ud.is_seed, ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
   ud.published_tags_json, ud.published_at,
   users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json,
@@ -61,7 +63,7 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
   if (format && format !== "STANDARD" && format !== "PANTHEON" && format !== "UNKNOWN") throw badRequest("Invalid deck format");
   const page = Number(params.get("page") ?? "1");
   if (!Number.isInteger(page) || page < 1 || page > 100) throw badRequest("Invalid page");
-  const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1", "(ud.is_seed = 0 OR ud.seed_discoverable = 1)"];
+  const where = [...DISCOVERABLE];
   const bindings: unknown[] = [];
   if (query) { where.push("(ud.published_title LIKE ? ESCAPE '\\' OR ud.published_tags_json LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped, escaped); }
   if (format) { where.push("cb.format = ?"); bindings.push(format); }
@@ -82,4 +84,16 @@ export async function getPublicProfile(env: Env, slug: string): Promise<PublicPr
   const featured = showcase.deckSlugs.length ? await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ud.public_slug IN (SELECT value FROM json_each(?)) AND ud.visibility = 'public' AND ud.moderation_status = 'active' AND users.profile_discoverable = 1`).bind(JSON.stringify(showcase.deckSlugs)).all<Record<string, string | number | null>>() : { results: [] };
   const bySlug = new Map(featured.results.map(row => [String(row.public_slug), summary(row)]));
   return { ...(showcase.element ? { element: showcase.element } : {}), ...(showcase.portraitCardId ? { portraitCardId: showcase.portraitCardId } : {}), ...(showcase.deckOrder ? { featuredDeckOrder: showcase.deckOrder } : {}), displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredTournamentDecks: await resolveProfileTournamentDecks(env, showcase.tournamentHashes ?? []), featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
+}
+
+/** One bounded, live query: never truncate a sitemap silently. */
+export async function discoverDeckSitemap(env: Env): Promise<{ slugs: string[] }> {
+  const rows = await databaseAll<{ public_slug: string }>("deck.sitemap", env.ACCOUNT_DB.prepare(`SELECT ud.public_slug
+    FROM user_decks ud
+    JOIN users ON users.id = ud.owner_user_id
+    JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
+    JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
+    WHERE ${DISCOVERABLE.join(" AND ")} ORDER BY ud.public_slug LIMIT 50001`));
+  if (rows.results.length > 50000) throw new Error("Community sitemap requires partitioning");
+  return { slugs: rows.results.map(row => row.public_slug) };
 }

@@ -1,18 +1,19 @@
-/** Only community deck documents use live rendering. All other paths retain their origin. */
+/** Community deck documents and their sitemap use live delivery. All other paths retain their origin. */
 export async function routeDeckRequest(request, fetcher = fetch) {
   const url = new URL(request.url);
   const match = url.pathname.match(/^\/decks\/([a-f0-9]{32})\/?$/);
-  if (!match) return fetcher(request);
+  const sitemap = url.pathname === '/decks/sitemap.xml';
+  if (!match && !sitemap) return fetcher(request);
   const headers = { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'X-Content-Type-Options': 'nosniff' };
   if (!['GET', 'HEAD'].includes(request.method)) return new Response('Method not allowed', { status: 405, headers: { ...headers, Allow: 'GET, HEAD' } });
-  if (url.pathname.endsWith('/')) {
+  if (match && url.pathname.endsWith('/')) {
     return new Response(null, { status: 308, headers: { ...headers, Location: `/decks/${match[1]}${url.search}` } });
   }
   try {
     // Fixed destination and no forwarded headers: cookies and caller-supplied targets never reach the service.
-    const upstream = await fetcher(`https://accounts.fanofin.site/render/decks/${match[1]}`, {
+    const upstream = await fetcher(sitemap ? 'https://accounts.fanofin.site/render/deck-sitemap.xml' : `https://accounts.fanofin.site/render/decks/${match[1]}`, {
       method: request.method, redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(15000),
-      headers: { Accept: 'text/html' },
+      headers: { Accept: sitemap ? 'application/xml' : 'text/html' },
     });
     if (![200, 404].includes(upstream.status)) console.warn('Deck page upstream status', upstream.status);
     if (![200, 404].includes(upstream.status)) return new Response(request.method === 'HEAD' ? null : 'Deck temporarily unavailable. Please try again.', { status: 503, headers });

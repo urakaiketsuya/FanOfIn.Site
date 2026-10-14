@@ -56,3 +56,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://fanofin.site/sitemap.xml
+
+Sitemap: https://fanofin.site/decks/sitemap.xml
