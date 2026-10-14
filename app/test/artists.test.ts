@@ -68,3 +68,13 @@ test('studio relationships follow credited artists without merging their galleri
   }
   assert.equal(artistForCredit('Hanh Chu').studioId, undefined);
 });
+
+test('artist cards rank by tournament deck usage with alphabetical ties and missing-data fallback', () => {
+  const cards = ['Zulu', 'Alpha', 'Beta', 'Gamma'].map((name, index) => ({ ...catalog[0], uuid: `pop-${index}`, slug: name.toLowerCase(), name, editions: [{ ...catalog[0].editions[0], uuid: `print-${index}`, illustrator: 'Popularity Fixture' }] }));
+  const stats = [{name:'Old Zulu Name',slug:'zulu',deckCount:100},{name:'Beta',slug:null,deckCount:10},{name:'Alpha',slug:'alpha',deckCount:10}];
+  const gallery = buildArtistGalleries(cards, stats)[0];
+  assert.deepEqual(gallery.cards.map(entry=>entry.card.name), ['Zulu','Alpha','Beta','Gamma']);
+  assert.equal(gallery.printingCount,4);
+  assert.deepEqual(buildArtistGalleries(cards)[0].cards.map(entry=>entry.card.name), ['Alpha','Beta','Gamma','Zulu']);
+  assert.deepEqual(cards.map(card=>card.name), ['Zulu','Alpha','Beta','Gamma']);
+});

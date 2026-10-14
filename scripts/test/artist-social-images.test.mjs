@@ -39,7 +39,8 @@ test('preview cache keys change with visible content; credited edition selection
 
 test('browser manifest uses the build catalog rather than older cached browser counts', async()=>{
  const catalog=JSON.parse(await readFile(new URL('../../data/card-catalog.json',import.meta.url),'utf8'));
- const galleries=buildArtistGalleries(catalog.cards);
+ const stats=JSON.parse(await readFile(new URL('../../data/analysis/cards.json',import.meta.url),'utf8'));
+ const galleries=buildArtistGalleries(catalog.cards,stats.cards);
  const manifest=artistSocialManifest();
  assert.equal(manifest.directory,artistSocialImagePath(undefined,undefined,galleries));
  const studio=galleries.find(artist=>artist.id==='a004');

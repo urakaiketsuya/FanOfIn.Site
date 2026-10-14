@@ -7,6 +7,8 @@ import { artistSharePreview } from './artistSharePreview';
 import PageLayout from '../../components/layout/PageLayout';
 import Button from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
+import { useCardStatsData } from '../archetypes/data';
+import { usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import { useCardCatalog } from '../cards/useCardCatalog';
 import { useSyncProgress } from '../../lib/sync/SyncProvider';
 import { syncCards } from '../../lib/sync/cards';
@@ -55,13 +57,15 @@ function ArtistArtwork({ entry }: { entry: ArtistCard }) {
 export default function Artists() {
   const { slug } = useParams<{ slug: string }>();
   const cards = useCardCatalog();
+  const popularity = useCardStatsData();
+  const popularityStatus = usePublishedDataStatus('analysis-cards', '/data/analysis/cards.json');
   const progress = useSyncProgress();
   const [retrying, setRetrying] = useState(false);
   const [retryError, setRetryError] = useState(false);
   const [retrySucceeded, setRetrySucceeded] = useState(false);
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
-  const galleries = useMemo(() => buildArtistGalleries(cards), [cards]);
+  const galleries = useMemo(() => buildArtistGalleries(cards, popularity?.cards), [cards, popularity]);
   const artist = galleries.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
   const identity = artist ?? artistDirectory.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
   const studio = artistDirectory.find(candidate => candidate.id === identity?.studioId);
@@ -113,6 +117,7 @@ export default function Artists() {
       </section>}
       {artist && <>
         <p className="mt-4 text-ctp-subtext1">{artworkCounts(artist.cards.length, artist.printingCount)}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-ctp-subtext1"><p role="status">{popularity ? 'Most played first' : popularityStatus.phase === 'error' ? 'Popularity unavailable · Name A–Z' : 'Loading popularity…'}</p>{!popularity && popularityStatus.phase === 'error' && <Button onClick={popularityStatus.retry}>Retry popularity</Button>}</div>
         <label className="mt-5 block max-w-lg text-sm">Search cards<input type="search" value={cardSearch} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">{visibleCards.map(entry => <ArtistArtwork key={entry.card.uuid} entry={entry} />)}</div>
         {!visibleCards.length && <p role="status" className="mt-6">No cards match your search.</p>}

@@ -29,8 +29,7 @@ export function artistSocialImageAlt(artist?: ArtistIdentity): string {
 /** Exact credited editions used by both the offline image cache and sharing metadata. */
 export function artistSocialEditions(gallery?: ArtistGallery) {
   const entries = gallery?.cards ?? [];
-  const preferred = gallery?.id === 'a004' ? ['fcng06fi6r', 'uDX4LsaLl3'] : [];
-  const selected = preferred.flatMap(uuid => entries.flatMap(entry => entry.editions.filter(edition => edition.uuid === uuid)));
+  const selected: ArtistGallery['cards'][number]['editions'] = [];
   for (const entry of entries) {
     if (selected.length >= 2) break;
     if (!selected.some(edition => entry.editions.some(candidate => candidate.uuid === edition.uuid))) selected.push(entry.editions[0]);

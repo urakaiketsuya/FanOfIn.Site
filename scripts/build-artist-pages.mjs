@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { artistDirectory } from '../shared/src/artistDirectory.ts';
-import { buildArtistGalleries } from '../shared/src/artists.ts';
+import { readArtistGalleries } from './artist-gallery-data.mjs';
 import { artistPageMetadata, artistPagePath, artistSocialImagePath, artistSocialImageAlt } from '../shared/src/artistSeo.ts';
 import { buildArtistSocialImages } from './build-artist-social-images.mjs';
 import { canonicalSiteUrl } from '../shared/src/seo.ts';
@@ -65,8 +65,7 @@ export function renderArtistPage(shell, artist, gallery, galleries = []) {
 }
 
 export async function buildArtistPages({dataDir=path.join(root,'data'),outDir=path.join(root,'app/dist')}={}) {
-  const catalog=JSON.parse(await readFile(path.join(dataDir,'card-catalog.json'),'utf8'));
-  const galleries=buildArtistGalleries(catalog.cards);
+  const galleries=readArtistGalleries(dataDir);
   const identities=[...artistDirectory,...galleries.filter(gallery=>!artistDirectory.some(artist=>artist.id===gallery.id))];
   const shell=await readFile(path.join(outDir,'index.html'),'utf8');
   const pages=[{slug:'',html:renderArtistPage(shell,undefined,undefined,galleries)}];

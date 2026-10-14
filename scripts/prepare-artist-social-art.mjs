@@ -1,16 +1,15 @@
 // Manual refresh only. The normal production build reads these local thumbnails offline.
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import sharp from 'sharp';
-import { buildArtistGalleries } from '../shared/src/artists.ts';
+import { readArtistGalleries } from './artist-gallery-data.mjs';
 import { artistSocialEditions as artistSocialArt } from '../shared/src/artistSeo.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const directory = path.join(root, 'scripts/assets/artist-social');
 await mkdir(directory, { recursive: true });
-const catalog = JSON.parse(await readFile(path.join(root, 'data/card-catalog.json'), 'utf8'));
-const editions = [...new Map(buildArtistGalleries(catalog.cards).flatMap(artistSocialArt).map(edition => [edition.uuid, edition])).values()];
+const editions = [...new Map(readArtistGalleries().flatMap(artistSocialArt).map(edition => [edition.uuid, edition])).values()];
 let index = 0;
 const sources = {};
 await Promise.all(Array.from({ length: 4 }, async () => {
@@ -33,5 +32,9 @@ await Promise.all(Array.from({ length: 4 }, async () => {
     await sharp(Buffer.from(downloaded)).rotate().resize({ width: 480, withoutEnlargement: true }).jpeg({ quality: 78, mozjpeg: true }).toFile(target);
   }
 }));
+if (process.argv.includes('--prune')) {
+  const active = new Set(editions.map(edition => `${edition.uuid}.jpg`));
+  for (const file of await readdir(directory)) if (file.endsWith('.jpg') && !active.has(file)) await unlink(path.join(directory, file));
+}
 await writeFile(path.join(directory, 'sources.json'), JSON.stringify(Object.fromEntries(Object.entries(sources).sort()), null, 2) + '\n');
 console.log(`Prepared ${editions.length} credited printing thumbnails`);

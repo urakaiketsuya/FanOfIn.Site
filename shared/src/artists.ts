@@ -1,4 +1,5 @@
 import type { Card, CardEdition } from './api-types';
+import type { CardStat } from './analysis-types';
 import { artistDirectory } from './artistDirectory';
 
 export interface ArtistLink {
@@ -58,7 +59,7 @@ export function artistForCredit(credit: string): ArtistIdentity {
   return { id, slug: id, name, kind: 'unknown', credits: [name], links: [] };
 }
 
-export function buildArtistGalleries(cards: readonly Card[]): ArtistGallery[] {
+export function buildArtistGalleries(cards: readonly Card[], popularity: readonly Pick<CardStat, 'name' | 'slug' | 'deckCount'>[] = []): ArtistGallery[] {
   const artists = new Map<string, ArtistGallery>();
   for (const card of cards) {
     const editionsByArtist = new Map<string, CardEdition[]>();
@@ -76,6 +77,9 @@ export function buildArtistGalleries(cards: readonly Card[]): ArtistGallery[] {
       artist.printingCount += editions.length;
     }
   }
-  for (const artist of artists.values()) artist.cards.sort((a, b) => a.card.name.localeCompare(b.card.name));
+  const bySlug = new Map(popularity.filter(stat => stat.slug).map(stat => [stat.slug, stat.deckCount]));
+  const byName = new Map(popularity.map(stat => [stat.name, stat.deckCount]));
+  const usage = (entry: ArtistCard) => bySlug.get(entry.card.slug) ?? byName.get(entry.card.name) ?? 0;
+  for (const artist of artists.values()) artist.cards.sort((a, b) => usage(b) - usage(a) || a.card.name.localeCompare(b.card.name));
   return [...artists.values()].sort((a, b) => b.cards.length - a.cards.length || a.name.localeCompare(b.name));
 }

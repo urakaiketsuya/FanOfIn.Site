@@ -390,3 +390,16 @@ Verification: image and page-generation tests cover all 66 outputs, dimensions, 
 Next: publish and inspect fresh previews on sharing platforms and in Search Console. Artist sharing previews are approximately 90% complete for this bounded pass: implementation and local checks are complete, with deployment and external preview validation outstanding. Artist Pages remains approximately 98% complete for the original release, with real transport recovery testing outstanding; identity discovery remains open-ended.
 
 Final sharing-preview validation: production build and app typecheck pass. All 66 generated JPEG paths match both page metadata and the browser’s compiled image manifest; every image is 1200×630 JPEG. App lint has only its seven existing Fast Refresh warnings. Bump the `artist-share-v1` composition version when changing the design or replacing cached source pixels without a catalog identity/URL change. Actual sharing-platform previews and deployment remain unverified until publication.
+
+
+## Artist artwork popularity order 2026-10-14
+
+Artist galleries now rank cards by the existing tournament card-stat deckCount, highest first. This counts main/material deck inclusion across recorded tournaments; it does not measure sales or demand for a particular printing. Matching uses canonical card slug with exact-name fallback. Tied and missing counts use alphabetical order. Without popularity data the gallery remains available alphabetically, with a loading or unavailable status and retry control. Artist ordering in the directory and credited-printing attribution are unchanged.
+
+The shared gallery builder supplies the same card order to the app, directory thumbnails, generated HTML, sharing-image selection and compiled sharing manifest. Removed the special Dragonart artwork picks so previews follow ranking as well. The offline cache was refreshed for 117 selected printings; the preparation script can prune obsolete thumbnails with --prune.
+
+Verification: five artist tests cover usage ordering, renamed slug matching, name fallback, ties, missing stats, input immutability and preserved printing counts. Sharing-image/manifest tests and artist/deck static-generation tests pass. App lint reports only its seven existing Fast Refresh warnings. At 360px and 1280px, Dragonart begins with Creative Shock, Censer of Restful Peace, Stifling Trap, Fairy Whispers and Reclaim; search/empty results, 48px controls, keyboard focus, no overflow and alternate Creative Shock printing links are checked. Loading observed. Forced popularity-network failure/retry was not browser-tested; missing-data ordering is covered by the regression fixture.
+
+Next: publish and verify the live order and previews. Artist Pages remains approximately 98% complete for the original release, with publication checks and real transport recovery testing outstanding; broader identity discovery remains open-ended.
+
+Final popularity-order checks: production build and app typecheck pass. Generated Dragonart HTML/structured data starts with Creative Shock, Censer of Restful Peace and Stifling Trap, and all 66 sharing image URLs resolve to generated local files.
