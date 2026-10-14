@@ -550,11 +550,23 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a027",
     "slug": "a027-t-blence",
     "name": "T_Blence",
-    "kind": "unknown",
+    "kind": "individual",
+    "portrait": {
+      "src": "/images/artists/a027.jpg",
+      "sourceUrl": "https://x.com/T_blence",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1626885465986179076/77iqHwzL_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "T_Blence"
     ],
-    "links": []
+    "links": [{
+      "platform": "X",
+      "label": "@T_blence",
+      "url": "https://x.com/T_blence",
+      "evidence": "https://x.com/T_blence",
+      "verifiedAt": "2026-10-14"
+    }]
   },
   {
     "id": "a028",
