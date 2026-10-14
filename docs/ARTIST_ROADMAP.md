@@ -227,3 +227,11 @@ Verification: three artist regression tests and diff checks pass. At 360px and 1
 Next: reassess SiriufLong’s artist-owned account cluster. Artist Pages remains approximately 95% complete for the first release, with local implementation complete and production journey/recovery checks outstanding. Full identity discovery has no fixed completion scope; 17/75 identities have published links.
 
 Sineia portrait follow-up: closing the login overlay revealed the public digital creator profile and original illustrated avatar. Added the unmodified downloaded avatar and individual kind. Portrait coverage is 15/75 (20%). The catalog match remains user-attributed. App typecheck and artist tests pass; the 480px avatar loads at 360px and 1280px without horizontal overflow.
+
+### SalmonTea account lead 2026-10-14
+
+Added the user-supplied likely X match, its directly linked Pixiv account 98907368, and original profile portrait. Matching name and illustration posts support an inferred catalog connection; an independent Grand Archive commission was not established. Research records retain user-attributed status. Pixiv was not navigated. Coverage is 40 URLs across 18 identities, including four URLs across three user-attributed identities; portraits 16/75.
+
+Next: reassess SiriufLong’s artist-owned account cluster. Artist Pages remains approximately 95% complete for first release, pending production journey and real transport recovery checks. Full identity discovery remains open-ended; 18/75 identities have links.
+
+Verification: app typecheck, all three artist regression tests, and diff checks pass. The 400px portrait loads at 360px and 1280px, with no horizontal overflow. Both mobile account targets are 48px high; keyboard focus reaches Pixiv with a visible outline. Initial loading was observed. Empty/error/retry states retain previous release checks and were not repeated for this data-only update. Production and Pixiv destination content remain unverified.

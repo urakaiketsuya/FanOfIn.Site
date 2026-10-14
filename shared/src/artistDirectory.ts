@@ -567,11 +567,32 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a033",
     "slug": "a033-salmontea",
     "name": "SalmonTea",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "SalmonTea"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@SalmonTea0601",
+        "url": "https://x.com/SalmonTea0601",
+        "evidence": "https://x.com/SalmonTea0601",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "SalmonTea",
+        "url": "https://www.pixiv.net/en/users/98907368",
+        "evidence": "https://x.com/SalmonTea0601",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "portrait": {
+      "src": "/images/artists/a033.jpg",
+      "sourceUrl": "https://x.com/SalmonTea0601",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1747808407527264256/d2vVxlBU_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a035",

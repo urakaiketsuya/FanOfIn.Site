@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 16 independently supported credit entries representing 15 identities, plus two user-attributed credit entries/identities; 22 no-link outcomes; 36 needing identity review. There are 38 published URLs: 36 independently supported and two user-attributed. The portrait pass below covers all 75 curated identities, with 15 images (14 independently sourced and one user-supplied derivative) and 60 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 16 independently supported credit entries representing 15 identities, plus three user-attributed credit entries/identities; 22 no-link outcomes; 35 needing identity review. There are 40 published URLs: 36 independently supported and four user-attributed. The portrait pass below covers all 75 curated identities, with 16 images (15 independently sourced and one user-supplied derivative) and 59 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -83,7 +83,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A030 | DragonArt Chu | 13 | 15 | Needs identity review |
 | A031 | DragonArt TaroTarou | 13 | 16 | Reviewed with verified links |
 | A032 | NR | 12 | 20 | Reviewed with no verified links found |
-| A033 | SalmonTea | 10 | 12 | Needs identity review |
+| A033 | SalmonTea | 10 | 12 | Reviewed with user attribution |
 | A034 | TaroTarou | 10 | 12 | Reviewed with verified links |
 | A035 | AquaGirl | 9 | 12 | Reviewed with no verified links found |
 | A036 | D Lam | 9 | 19 | Reviewed with no verified links found |
@@ -587,15 +587,15 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A033 — SalmonTea
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** Reviewed with user attribution; researched 2026-10-14.
 - **Exact credits:** `"SalmonTea"`.
-- **Identity:** Unknown; SalmonTea illustrator account not established. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual: SalmonTea, @SalmonTea0601. Stable identity a033 and existing slug a033-salmontea; no unlisted aliases are approved.
 - **Credited example:** Fling Food; .asphodel/paradise; #117; edition `Kjx4gCoVVO`. [Publisher edition reference](https://index.gatcg.com/edition/fling-food-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"SalmonTea" illustrator`; `"SalmonTea" twitter art`.
 - **Findings:** Exact-name illustrator and social searches found repost-board attribution, but the [source-board page](https://www.safebooru.org/index.php?id=4562051&page=post&s=view) could not be opened to inspect its original-source link. No handle is inferred from the repost tag.
-- **Next action:** Recover an original artist source from a readable attribution and connect it to Fling Food or another credited printing.
+- **Next action:** Seek an independent catalog connection when available; published attribution remains inferred from the user lead, matching name, illustration posts, and artist-owned Pixiv link.
 
-**Links:** none verified; no attributable account URL established in this pass.
+**Links:** [X @SalmonTea0601](https://x.com/SalmonTea0601) and [Pixiv 98907368](https://www.pixiv.net/en/users/98907368), linked directly in the original X bio. Original profile inspected 2026-10-14; matching SalmonTea name and original illustration posts support the user’s tentative identification. No Grand Archive commission was established. Pixiv ownership is supported by the bio; destination content was not inspected. Saved the original X profile portrait. Earlier no-link findings describe the initial search.
 
 ### A034 — TaroTarou
 
