@@ -433,6 +433,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a022",
+    "portrait": {
+      "src": "/images/artists/a022.jpg",
+      "sourceUrl": "https://x.com/siriuflong",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1884988578369056769/KIZEzT2l_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "a022-siriuf-long",
     "name": "Siriuf Long",
     "kind": "individual",

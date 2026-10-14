@@ -1440,3 +1440,10 @@ The user confirms Siriuf Long’s X (https://x.com/siriuflong), Instagram (https
 Coverage: 65 curated identities, 44 account URLs across 20 identities, and 19 images. Next: publish pending changes and verify production; discovery remains open-ended. Artist Pages is approximately 95% complete for its first release, with production journeys and real transport recovery checks still outstanding.
 
 Verification: all four artist tests, app typecheck, and diff checks pass. At 360px Siriuf Long’s three links are 48px high and wrap without overflow; the retired Chu URL shows DragonArt Chu with 23 cards / 27 printings including Clover Treehouse. Desktop 1280px galleries fit without overflow; social links show visible keyboard focus. Loading was observed. Empty/error/retry and expanded printing states were not repeated for this metadata change; production remains unverified.
+
+
+## Siriuf Long profile portrait — 2026-10-14
+
+The public X profile https://x.com/siriuflong was readable in the browser and identifies Siriuf Long, linking the previously researched Carrd hub. Downloaded its original 400×400 avatar from https://pbs.twimg.com/profile_images/1884988578369056769/KIZEzT2l_400x400.jpg to app/public/images/artists/a022.jpg. The existing circular portrait rendering is used without editing the image. This supersedes the preceding no-portrait status and unreadable-X observation; Instagram and Pixiv were not reverified. Image coverage is now 20/65 identities.
+
+Verification: app typecheck, all four artist tests, and diff checks pass. The original 400px avatar loads at 360px on the artist page and 1280px in the directory; visual inspection confirms clear face framing and no overflow. Loading was observed. Keyboard/touch behavior retains the preceding account-link checks; empty/error/retry states were not repeated for this decorative update. Production remains unverified. Next: publish pending artist changes and verify deployment. Artist Pages remains approximately 95% complete for the first release, pending production journeys and real transport recovery checks; identity discovery is open-ended.
