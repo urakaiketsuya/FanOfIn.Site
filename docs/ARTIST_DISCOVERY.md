@@ -1069,17 +1069,18 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A069 — Rubi露比喵
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-identified Instagram account; updated 2026-10-14.
 - **Exact credits:** `"Rubi露比喵"`.
-- **Identity:** Individual candidate: Rubi / 露比喵, @rubimeoww_draws. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Rubi / 露比喵, artist ID a069. The user identified Instagram @rubimeoww_draws on 2026-10-14.
 - **Credited example:** Jinzhuo, Bands of Virtue; Proxia's Vault; #013; edition `Erzdq9c6Hp`. [Publisher edition reference](https://index.gatcg.com/edition/jinzhuo-bands-of-virtue-prxy) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"Rubi露比喵"`; `"rubimeoww_draws" "Grand Archive"` (no indexed results).
 - **Findings:** Exact-credit search surfaced a [mirrored post](https://www.sotwe.com/sonsona__) naming 露比喵 Rubi and this handle. Handle-plus-game search returned no results and direct X failed to fetch. **Browser follow-up:** X now readable as 露比喵 Rubi; no inspected Jinzhuo commission connection. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Find an original Jinzhuo, Bands of Virtue statement before mapping the catalog credit.
+- **Next action:** Retain the user-identified Instagram account. An original Jinzhuo, Bands of Virtue commission would independently strengthen the catalog match; X remains a candidate.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
 | X | [@rubimeoww_draws](https://x.com/rubimeoww_draws) | Candidate | [Evidence](https://x.com/rubimeoww_draws): Browser follow-up read the original account/page. X now readable as 露比喵 Rubi; no inspected Jinzhuo commission connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Instagram | [@rubimeoww_draws](https://www.instagram.com/rubimeoww_draws/) | User-identified | User supplied the exact artist-account association on 2026-10-14. Direct text retrieval unavailable; no independent Jinzhuo artwork match claimed. | 2026-10-14 |
 
 ### A070 — Sunny
 
@@ -1618,3 +1619,10 @@ Verification: all four artist regression tests and diff checks pass. The account
 Added [@TEDDYPOCKY](https://x.com/TEDDYPOCKY) to a071 following the user’s identification. Earlier original-profile inspection supports the artist role and work links; an independent Trump Set commission match remains unestablished. Removed the language query from the canonical URL. Patreon remains unpublished and no portrait was added. Current totals: 65 identities, 50 account URLs across 25 linked identities, 24 portraits.
 
 Verification: all four artist tests and diff checks pass. At 360px and 1280px, the X link is visible with no horizontal overflow; its touch target is 48px and keyboard navigation reaches search with visible focus. Loading observed; error/retry and empty states were not repeated for this account-only data change. Next: publish the account updates when requested and verify production. Artist Pages remains approximately 95% complete for its first release, based on completed local features with release checks and real transport recovery outstanding. Identity research remains open-ended.
+
+
+### Rubi露比喵 Instagram update 2026-10-14
+
+Added [Instagram @rubimeoww_draws](https://www.instagram.com/rubimeoww_draws/) to a069 following the user’s identification. The earlier same-name X research remains supporting context, not confirmation of additional accounts. X remains unpublished; no portrait added. Current totals: 65 identities, 51 account URLs across 26 linked identities, 24 portraits.
+
+Verification: all four artist tests and diff checks pass. The Instagram link displays at 360px and 1280px without horizontal overflow, with a 48px touch target and keyboard access to search with visible focus. Loading observed; empty and error/retry states were not repeated for this account-only data update. Next: publish the account updates when requested and verify production. Artist Pages remains approximately 95% complete for the first release, with release verification and real transport recovery outstanding; identity research remains open-ended.

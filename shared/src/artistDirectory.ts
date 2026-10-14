@@ -1163,11 +1163,19 @@ export const artistDirectory: ArtistIdentity[] = [
     "pronunciation": { "nativeText": "露比喵", "text": "Lù bǐ miāo", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "a069-rubi露比喵",
     "name": "Rubi露比喵",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "Rubi露比喵"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Instagram",
+        "label": "@rubimeoww_draws",
+        "url": "https://www.instagram.com/rubimeoww_draws/",
+        "evidence": "https://www.instagram.com/rubimeoww_draws/",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a070",
