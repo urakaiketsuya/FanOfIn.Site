@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-10-13T13:36:33.430Z",
-  "games": 24,
+  "generatedAt": "2026-10-14T11:13:19.160Z",
+  "games": 25,
   "firstPlayer": {
-    "games": 24,
+    "games": 25,
     "wins": 14,
-    "winRate": 0.5833333333333334
+    "winRate": 0.56
   },
-  "avgTurns": 4.708333333333333,
+  "avgTurns": 4.6,
   "champions": [
     {
       "championId": "tafqldAGRF",
       "championName": "Spirit of Water",
       "element": "WATER",
-      "games": 6,
+      "games": 7,
       "wins": 2,
-      "winRate": 0.3333333333333333
+      "winRate": 0.2857142857142857
     },
     {
       "championId": "4FtNBFaOJp",
@@ -51,6 +51,14 @@
       "winRate": 0.3333333333333333
     },
     {
+      "championId": "LMyKyVC2O9",
+      "championName": "Spirit of Fire",
+      "element": "FIRE",
+      "games": 3,
+      "wins": 2,
+      "winRate": 0.6666666666666666
+    },
+    {
       "championId": "2TCyILvBYa",
       "championName": "Merlin, Brilliant Vestige",
       "element": "CRUX",
@@ -70,14 +78,6 @@
       "championId": "7x2v4tdop1",
       "championName": "Kongming, Fel Eidolon",
       "element": "TERA",
-      "games": 2,
-      "wins": 1,
-      "winRate": 0.5
-    },
-    {
-      "championId": "LMyKyVC2O9",
-      "championName": "Spirit of Fire",
-      "element": "FIRE",
       "games": 2,
       "wins": 1,
       "winRate": 0.5
@@ -379,6 +379,15 @@
       "champion1Name": "Spirit of Water",
       "champion2": "6R8XmWoKLn",
       "champion2Name": "Merlin, Memorite Vassal",
+      "games": 1,
+      "champion1Wins": 0,
+      "champion2Wins": 1
+    },
+    {
+      "champion1": "tafqldAGRF",
+      "champion1Name": "Spirit of Water",
+      "champion2": "LMyKyVC2O9",
+      "champion2Name": "Spirit of Fire",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
@@ -771,27 +780,27 @@
   "turnStats": [
     {
       "turn": 1,
-      "games": 23,
-      "avgCardsPlayed": 1.065217391304348,
+      "games": 24,
+      "avgCardsPlayed": 1.0208333333333333,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.847826086956522,
-      "avgDamageDealt": 0.2826086956521739,
-      "avgDamageTaken": 0.08695652173913043,
+      "avgReserveSpent": 2.7291666666666665,
+      "avgDamageDealt": 0.2708333333333333,
+      "avgDamageTaken": 0.08333333333333333,
       "avgHealed": 0,
       "avgLevel": 0,
       "avgHp": 15
     },
     {
       "turn": 2,
-      "games": 22,
-      "avgCardsPlayed": 1.7317073170731707,
-      "avgMemorySpent": 0.4146341463414634,
-      "avgReserveSpent": 3.8292682926829267,
-      "avgDamageDealt": 1.2926829268292683,
-      "avgDamageTaken": 0.926829268292683,
-      "avgHealed": 0.12195121951219512,
-      "avgLevel": 0.7073170731707317,
-      "avgHp": 17.902439024390244
+      "games": 23,
+      "avgCardsPlayed": 1.6904761904761905,
+      "avgMemorySpent": 0.40476190476190477,
+      "avgReserveSpent": 3.738095238095238,
+      "avgDamageDealt": 1.2619047619047619,
+      "avgDamageTaken": 0.9047619047619048,
+      "avgHealed": 0.11904761904761904,
+      "avgLevel": 0.6904761904761905,
+      "avgHp": 17.833333333333332
     },
     {
       "turn": 3,
