@@ -18,7 +18,7 @@ function tests(workspace, folder, env = {}) {
 for (const workspace of ['shared', 'pipeline', 'worker', 'account-worker', 'account-bff', 'api-worker']) {
   run(`${workspace} typecheck`, 'npx', ['--no-install', 'tsc', '--noEmit', '-p', '.'], workspace);
 }
-run('release tooling tests', process.execPath, ['--test', 'scripts/test/smoke-release.test.mjs', 'scripts/test/build-deck-pages.test.mjs']);
+run('release tooling tests', process.execPath, ['--test', 'scripts/test/smoke-release.test.mjs', 'scripts/test/build-deck-pages.test.mjs', 'scripts/test/deck-edge.test.mjs']);
 run('dependency audit', 'npm', ['audit', '--audit-level=high']);
 run('app lint', 'npm', ['run', 'lint', '-w', 'app']);
 tests('app', 'test', { TSX_TSCONFIG_PATH: 'tsconfig.app.json' });

@@ -116,3 +116,20 @@ General bounded response reading is separated from spotlight rendering.
 Verification: account BFF typecheck and all 10 BFF tests pass, including withdrawal
 followed by republishing, unlisted access, malformed responses, signed cookie-free
 reads, and old image URLs. No visible UI or hosting configuration changed.
+
+### Live community delivery — October 14 rollout
+
+`account-bff/api/deck-page.ts` serves `/render/decks/:slug` using the live publication reader and the deployed `/index.html` app shell. It adds the canonical URL, X/Open Graph spotlight, description, Main/Material content and WebPage/ItemList JSON-LD. React replaces the initial content using the existing hashed assets. Missing publications return 404; service/shell failures stay temporary errors. Responses are never cached. The account-service copy is always noindex; unlisted decks also carry noindex in their HTML.
+
+`deck-edge/index.mjs` routes only 32-character community deck IDs to that fixed endpoint, without visitor credentials or user-selected upstreams. Tournament paths pass through to GitHub Pages. Redirect responses from the service are rejected, with Workers-compatible `redirect: manual`. Only successful public pages on the canonical hostname lose the noindex response header; preview hosts retain it. A trailing slash redirects to the canonical slashless community URL.
+
+Deployment:
+- Account service deployed to `accounts.fanofin.site`, Vercel deployment `dpl_BGT3ykG2eTzk47QzsX1fgXixUfFf`.
+- Preview: `https://fanofin-deck-edge.fanofin-match-ingestion-worker.workers.dev`.
+- Production: `npx wrangler deploy --config deck-edge/wrangler.jsonc --env production`; route `fanofin.site/decks/*`, version `1ddd27a0-562e-4759-a7ef-e6bb2c466b1f`.
+- Enabled proxying for the four apex A records, retaining GitHub's `185.199.108.153` through `185.199.111.153` targets. Other records unchanged. Prior DNS TTL was 14,400 seconds; authoritative DNS now returns Cloudflare addresses, while recursive caches may temporarily retain GitHub addresses.
+- Rollback: remove this Worker route in Cloudflare to restore GitHub Pages handling. To also remove the proxy layer, return those four A records to DNS-only with their existing targets. No deck data migration is involved.
+
+Verification: account-service typecheck; account-service/edge regression suite; real deployed public page and missing-deck responses; initial HTML at 390px and 1280px with no overflow, 48px link target and keyboard focus; existing React startup successfully replaced initial content. Direct requests pinned to authoritative Cloudflare DNS verified homepage/index 200, community page 200 with metadata and no-store, and missing community page 404/noindex. Tournament routes retain the current origin behavior (the new tournament build is still unpushed). Live mutation of a user's deck was not used for testing; withdrawal/unlisted/failure handling is covered with fixtures. No new interactive controls were added.
+
+Remaining initiative work: community discovery sitemap, push/deploy the pending tournament build, signed-in X preview and Search Console validation. The live canonical delivery layer is now deployed; global DNS convergence is still pending immediately after activation.

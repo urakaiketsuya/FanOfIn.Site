@@ -8,9 +8,16 @@
     "api/deck-share.ts": {
       "maxDuration": 30,
       "includeFiles": "assets/**"
+    },
+    "api/deck-page.ts": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
+    {
+      "source": "/render/decks/:slug",
+      "destination": "/api/deck-page?slug=:slug"
+    },
     {
       "source": "/share/decks/:slug/image.png",
       "destination": "/api/deck-share?slug=:slug&image=1"

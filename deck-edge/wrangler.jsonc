@@ -1,0 +1,14 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "fanofin-deck-edge",
+  "main": "index.mjs",
+  "compatibility_date": "2026-10-14",
+  "workers_dev": true,
+  "env": {
+    "production": {
+      "name": "fanofin-deck-edge-production",
+      "workers_dev": false,
+      "routes": [{ "pattern": "fanofin.site/decks/*", "zone_name": "fanofin.site" }]
+    }
+  }
+}
