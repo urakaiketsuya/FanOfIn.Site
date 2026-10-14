@@ -626,6 +626,16 @@ progressive disclosure for lightweight sharing and old links.
 
 ## Suggested delivery slices
 
+### Artist pages and official accounts
+
+Follow the [Artist Pages roadmap](ARTIST_ROADMAP.md) and the
+[artist discovery tracker](ARTIST_DISCOVERY.md). Review each of the 76 trimmed catalog credits
+individually, retaining all 84 original credit strings and evidence for official accounts. Then
+establish curated identities, build the directory and credited-printing galleries, and verify the
+mobile and desktop journeys before release. Planning is established; discovery is 0/76 reviewed
+and implementation has not started. The initiative is approximately 10% complete, with research
+effort dependent on ambiguous identities and account visibility.
+
 ### Slice A — Usability release
 
 Deck-row spacing and move destinations, illustrator visibility, card-tab skeletons, and backside support.
