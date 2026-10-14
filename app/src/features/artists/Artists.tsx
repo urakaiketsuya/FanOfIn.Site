@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { artistDirectory, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
+import { artistDirectory, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import ArtistAccountIcon from './ArtistAccountIcon';
 import PageLayout from '../../components/layout/PageLayout';
@@ -72,7 +72,15 @@ export default function Artists() {
     else next.delete('q');
     setParams(next, { replace: true });
   }
-  useDocumentTitle(slug ? identity?.name ?? 'Artist' : 'Artists', 'Discover Grand Archive artists, their card artwork, and official accounts.');
+  const metadata = artistPageMetadata(identity, artist);
+  useDocumentTitle(slug && !identity ? 'Artist not found' : metadata.title, metadata.description, identity || !slug ? metadata.path : undefined);
+  useEffect(() => {
+    if (!slug || identity) return;
+    const robots = document.createElement('meta');
+    robots.name = 'robots'; robots.content = 'noindex';
+    document.head.appendChild(robots);
+    return () => robots.remove();
+  }, [slug, identity]);
   const loading = !cards.length && (retrying || progress.phase === 'idle' || progress.phase === 'syncing');
   const failed = retryError || (!retrySucceeded && progress.phase === 'error');
   async function retry() {
@@ -85,10 +93,11 @@ export default function Artists() {
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
   return <PageLayout width="full">
     <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
-    <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity ? <ArtistName artist={identity} /> : (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
+    <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity ? <ArtistName artist={identity} /> : (loading ? 'Artist' : 'Artist not found') : 'Grand Archive artists'} /></div></div>
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
+      {identity && <p className="mt-4 max-w-3xl text-ctp-subtext1">{metadata.description}</p>}
       {identity && identity.links.length > 0 && <nav aria-label={`${identity.name} official accounts`} className="mt-4 flex flex-wrap gap-2">{identity.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className={`${linkClass} max-w-full gap-2 border border-ctp-surface1 py-2`}><ArtistAccountIcon platform={link.platform} /><span className="min-w-0 break-words">{link.platform} · {link.label}</span><span aria-hidden="true" className="shrink-0">↗</span></a>)}</nav>}
       {studio && <p className="mt-4 text-sm text-ctp-subtext1">Credited with <Link className={linkClass} to={`/artists/${encodeURIComponent(studio.slug)}`}>{studio.name}</Link></p>}
       {studioArtists.length > 0 && <section aria-labelledby="studio-artists-heading" className="mt-6">
@@ -109,11 +118,11 @@ export default function Artists() {
       </>}
       {!loading && !artist && <p className="mt-5 text-ctp-subtext1">{identity ? 'No credited artwork is available in the current catalog.' : 'This artist is not in the current catalog.'} <Link className={linkClass} to="/artists">Browse artists</Link></p>}
     </> : <>
-      <p className="mt-3 text-ctp-subtext1">Explore the artists behind Grand Archive.</p>
+      <p className="mt-3 text-ctp-subtext1">Browse Grand Archive artists and studios, explore their credited card artwork, and find official accounts.</p>
       <label className="mt-5 block max-w-lg text-sm">Search artists<input type="search" value={query} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
       {galleries.length > 0 && <p role="status" className="mt-4 text-sm text-ctp-subtext1">{visibleArtists.length} {visibleArtists.length === 1 ? 'artist' : 'artists'}</p>}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleArtists.map(candidate => <Link key={candidate.id} to={`/artists/${encodeURIComponent(candidate.slug)}`} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
-        <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold"><ArtistName artist={candidate} /></h2><p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
+        <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold"><ArtistName artist={candidate} /></h2>{candidate.kind === 'studio' && <p className="mt-1 text-xs text-ctp-subtext1">Studio</p>}<p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
         <div className="grid grid-cols-3 gap-2">{candidate.cards.slice(0, 3).map(entry => <div key={entry.card.uuid} className="min-w-0"><CardArtTile card={entry.card} name={entry.card.name} editionUuid={entry.editions[0].uuid} artworkOnly /><p className="mt-1 break-words text-xs text-ctp-subtext1">{entry.card.name}</p></div>)}</div>
 
       </Link>)}</div>

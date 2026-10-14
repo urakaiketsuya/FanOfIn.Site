@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node ../scripts/build-deck-pages.mjs",
+    "build": "tsc -b && vite build && node ../scripts/build-deck-pages.mjs && node --import tsx ../scripts/build-artist-pages.mjs",
     "lint": "oxlint",
     "test": "tsx --tsconfig tsconfig.app.json --test test/**/*.test.ts",
     "preview": "vite preview"

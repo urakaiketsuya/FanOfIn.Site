@@ -15,7 +15,7 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
 }
 
 /** Keep client navigation aligned with metadata in generated entry pages. */
-export function useDocumentTitle(title?: string | null, description?: string | null) {
+export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string) {
   const location = useLocation();
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export function useDocumentTitle(title?: string | null, description?: string | n
       link.setAttribute("rel", "canonical");
       document.head.appendChild(link);
     }
-    const canonical = canonicalSiteUrl(location.pathname);
+    const canonical = canonicalSiteUrl(canonicalPath ?? location.pathname);
     link.setAttribute("href", canonical);
     setMetaByAttr("property", "og:url", canonical);
     // Initial structured data must not describe a different route after SPA navigation.
-    const structured = document.getElementById("deck-structured-data");
+    const structured = document.querySelector("script[data-canonical]");
     if (structured && structured.getAttribute("data-canonical") !== canonical) {
       structured.remove();
       const fallback = "https://fanofin.site/media/social/fan-of-insight-v1.jpg";
@@ -51,5 +51,5 @@ export function useDocumentTitle(title?: string | null, description?: string | n
       setMetaByAttr("property", "og:image:alt", SITE_NAME);
       setMetaByAttr("name", "twitter:image:alt", SITE_NAME);
     }
-  }, [location.pathname]);
+  }, [location.pathname, canonicalPath]);
 }

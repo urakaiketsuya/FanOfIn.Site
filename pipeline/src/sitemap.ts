@@ -2,7 +2,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Card, ArchetypeTaxonomyData, ChampionTrendsData, OmnidexIndexData } from "@gatcg/shared";
-import { buildArtistGalleries } from "@gatcg/shared";
+import { buildArtistGalleries, canonicalSiteUrl } from "@gatcg/shared";
 import { loadCardCatalog } from "./cards/catalog.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../data");
@@ -56,11 +56,11 @@ async function readJson<T>(file: string): Promise<T | null> {
  * isn't otherwise published as a standalone list. See docs/CALCULATIONS.md.
  */
 export async function writeSitemap(): Promise<void> {
-  const urls = STATIC_ROUTES.map((route) => `${SITE_URL}${route}`);
+  const urls = STATIC_ROUTES.map((route) => canonicalSiteUrl(route));
 
   const catalog = await loadCardCatalog();
   const fullCatalog = await readJson<{ cards: Card[] }>("card-catalog.json");
-  for (const artist of buildArtistGalleries(fullCatalog?.cards ?? [])) urls.push(`${SITE_URL}/artists/${encodeURIComponent(artist.slug)}`);
+  for (const artist of buildArtistGalleries(fullCatalog?.cards ?? [])) urls.push(canonicalSiteUrl(`/artists/${encodeURIComponent(artist.slug)}`));
   for (const card of catalog) urls.push(`${SITE_URL}/cards/${card.slug}`);
 
   const index = await readJson<OmnidexIndexData>("omnidex/index.json");
