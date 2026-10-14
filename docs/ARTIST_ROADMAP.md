@@ -6,7 +6,7 @@ Make Grand Archive illustrators discoverable through dedicated artist pages, cre
 
 The public-web discovery pass covers all 76 entries and 84 exact catalog credit strings. Eleven credit entries have verified links (ten supported artist/studio identities; A031/A034 share TaroTarou), 25 have no verified links found, and 40 need identity review with explicit next actions. There are 24 unique verified URLs, including eleven social-network profiles. These totals describe research coverage, not full identity resolution or account coverage.
 
-The first implementation is ready locally: `/artists` provides searchable artwork previews, and `/artists/:slug` provides verified accounts, card search, counts, and exact credited-printing galleries. The 76 discovery entries resolve to 75 pages because the supported TaroTarou credits share one identity. Artist Pages is approximately 80% complete: planning, initial research, curated data, and the main UI are implemented; release checks, deployment, production verification, and deferred identity research remain. Research scope remains uncertain because it depends on public evidence and account access.
+The first implementation is ready locally: `/artists` provides searchable artwork previews, and `/artists/:slug` provides verified accounts, card search, counts, and exact credited-printing galleries. The 76 discovery entries resolve to 75 pages because the supported TaroTarou credits share one identity. Artist Pages is approximately 90% complete: the core pages, initial account and portrait discovery, and local UI checks are complete; pre-release account review, deployment, production verification, and deferred identity research remain. Research scope remains uncertain because it depends on public evidence and account access.
 
 The first release includes a searchable artist directory, dedicated artist pages, galleries of the printings credited to each artist, and verified external links. All credited artists remain eligible for pages even when no official links are found. Biographies, social feeds, artist-managed profiles, and direct artist outreach are outside this release.
 
@@ -58,8 +58,8 @@ Keep curated identities and account links separate from the refreshed card catal
 
 - [x] Add artist URLs and directory navigation to the sitemap and appropriate page metadata.
 - [x] Check filtering, aliases, counts, deep links, unresolved identities, and printing-selection behavior with representative data.
-- [ ] Verify the main flow at 360–390px and desktop, keyboard access, 48px controls, focus, text enlargement, and overflow.
-- [ ] Exercise loading, empty, error/retry, long/non-Latin names, missing artwork, unknown slugs, and no-social-link states.
+- [x] Verify the main flow at 360–390px and desktop, keyboard access, 48px controls, focus, text enlargement, and overflow.
+- [x] Exercise loading, empty, error/retry, long/non-Latin names, missing artwork, unknown slugs, and no-social-link states.
 - [x] Run checks appropriate to changed app/shared/pipeline boundaries and record any verification limitations.
 - [ ] Recheck published links before release; remove or withhold accounts whose ownership remains unresolved.
 - [x] Record implementation completion separately from deployment and production verification.
@@ -82,7 +82,7 @@ Verified locally: directory search, card search and empty results; social and no
 
 ## Next work
 
-Finish the remaining release-state and enlarged-text checks, review the local pages, then deploy when requested and verify the production directory → artist → printing journey. No implementation blocker remains. Keep identity research deferred as requested: 白霜茶/白霜搽, Primea/Parhelion, and malformed A072/A075 credits remain separate follow-ups. Uncertain identities do not block pages, and their candidate accounts remain unpublished. Artist Pages is approximately 80% complete on the basis above; production verification and research duration remain uncertain.
+Review the verified account destinations before release, then deploy when requested and verify the production directory → artist → printing journey. Local failure-state checks are complete; full offline transport recovery remains a production/integration check. Keep identity research deferred as requested: 白霜茶/白霜搽, Primea/Parhelion, and malformed A072/A075 credits remain separate follow-ups. Uncertain identities do not block pages, and their candidate accounts remain unpublished. Artist Pages is approximately 90% complete: core pages, initial discovery, and local UI verification are finished; account review, deployment, and production verification remain. Further identity research depends on public evidence.
 
 ### Profile images — 2026-10-14
 
@@ -125,3 +125,12 @@ Reviewed every remaining identity and recorded the full 75-identity outcome tabl
 Artist Pages is approximately 85% complete: the core pages and initial account/portrait passes are complete, while integrated release checks, deployment, and production verification remain. Full portrait coverage remains uncertain and is not required for useful artist pages.
 
 Verification: app typecheck, all three artist regression tests, and diff checks pass. All three new avatars load on 360px artist pages and in 1280px directory results without horizontal overflow. New official links measure 48px high; keyboard tabbing reaches the X link with a visible focus outline. Directory search, no-match results, loading, and initials for unresolved artists were checked. Forced image failure, text enlargement, network-error/retry, and production behavior were not rechecked in this data-and-asset pass. Local browser counts use its cached catalog and can differ from the committed discovery snapshot; no catalog refresh was included.
+
+
+### Local release checks 2026-10-14
+
+Artist headings now wrap beside the portrait when space is insufficient, fixing a 3px horizontal overflow at 360px with the root text size doubled. The artist page and directory fit at 360px and 1280px with 200% root text size. Account links, search, and printing controls retain their minimum touch size, and keyboard navigation from search to artwork shows a visible focus outline.
+
+An isolated Vite preview rendered the actual artist page and shared card components against two real catalog cards. It substituted catalog/loading hooks and the sync result, and deliberately served missing image URLs. Checks passed for portrait-to-initials recovery, named missing-art fallback, loading, an empty directory, an initial catalog error, a failed retry, and a subsequent successful retry that restores artwork and clears the error. These checks cover the page's response to sync outcomes; they do not exercise the real network transport or IndexedDB recovery. Temporary preview files were removed.
+
+App typecheck and all three artist regression tests pass. Deployment, production journeys, and a complete pre-release account-destination review remain outstanding. Artist Pages is approximately 90% complete based on the implemented features, completed initial discovery, and local acceptance checks; continuing identity research has uncertain duration.

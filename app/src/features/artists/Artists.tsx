@@ -74,7 +74,7 @@ export default function Artists() {
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
   return <PageLayout width="full">
     <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
-    <div className="flex min-w-0 items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity?.name ?? (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
+    <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity?.name ?? (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
