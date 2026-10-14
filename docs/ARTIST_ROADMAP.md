@@ -96,3 +96,10 @@ Verification: app typecheck and existing three artist regression tests pass. Mob
 Added Rachel Liu's portrait from her official [About page](https://www.liurachel.com/about-1), using its published 300px image variant as a local WebP asset. Verified portrait coverage is now 3 of 75 identities; 72 remain without a verified portrait. Hanh Chu's Wix landing page contains a banner and account icons, Pinakes' homepage contains portfolio artwork, and Hanh Chu's ArtStation portfolio could not be retrieved for image inspection. None supplied a sufficiently clear additional profile image in this pass.
 
 Rachel Liu's mobile artist header (360px) and desktop directory result (1280px) display the portrait correctly without visible overflow. App typecheck and all three artist regression tests pass. This data-only addition introduces no controls; keyboard, forced image failure, and enlarged text were not rechecked. Remaining release checks above still apply. Artist Pages remains approximately 80% complete: core implementation is finished, while production verification and broader portrait discovery remain, with research scope uncertain.
+
+
+### Fuzichoco profile image — 2026-10-14
+
+Added fuzichoco's illustrated avatar from the [official FANBOX profile](https://fuzichoco.fanbox.cc/), linked directly by the [official website](https://www.fuzichoco.com/). The displayed 160px user icon is stored locally with source metadata. Portrait coverage is now 4 of 75 identities; 71 remain without a verified image. Dragonart's gallery provides artwork and a wide wordmark, while Fuzichoco's website biography is text-only; those assets were not selected as portraits.
+
+The portrait displays correctly in the 360px artist page and 1280px directory, with no visible overflow. App typecheck and all three artist regression tests pass. No interaction code changed; keyboard, forced image failure, and enlarged text were not rechecked. Artist Pages remains approximately 80% complete: core pages work, with broader discovery and release verification remaining; discovery scope is uncertain.

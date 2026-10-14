@@ -566,6 +566,12 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a045",
     "slug": "a045-fuzichoco",
     "name": "fuzichoco",
+    "portrait": {
+      "src": "/images/artists/a045.jpg",
+      "sourceUrl": "https://fuzichoco.fanbox.cc/",
+      "imageUrl": "https://pixiv.pximg.net/c/160x160_90_a2_g5/fanbox/public/images/user/27517/icon/v3bpZWy9D7puvVqzBiMBhIQR.jpeg",
+      "verifiedAt": "2026-10-14"
+    },
     "kind": "individual",
     "credits": [
       "fuzichoco"
