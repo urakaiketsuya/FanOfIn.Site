@@ -7,8 +7,12 @@ Review each credited artist or studio individually to establish identity and dis
 - Catalog snapshot: `data/card-catalog.json`, generated 2026-10-13T14:05:29.628Z.
 - 2,535 cards; 5,031 printings; 30 printings without a usable illustrator credit.
 - 84 exact credit strings form 76 discovery entries after trimming surrounding whitespace only.
-- Discovery attempted: 1/76; resolved: 0/76; Needs identity review: 1/76. Verified links: 0. The remaining 75 entries are Not started.
+- Public-web first pass reviewed: 76/76. Outcomes: 10 Reviewed with verified links; 25 Reviewed with no verified links found; 41 Needs identity review. Verified unique URLs: 21 across 10 credit entries (9 supported identities; A031/A034 share an artist). No entries remain Not started or In progress.
 - Counts describe this snapshot. Unique-card counts overlap when different artists illustrate different printings of one card.
+
+The first pass covers the catalog snapshot, not every possible account or unindexed platform. All new records were researched on 2026-10-14. Many extraction requests failed, but browser follow-ups verified several original profiles. Remaining candidates are withheld. Pixiv browser navigation was rejected by the site-safety policy; no workaround was attempted. A no-link outcome records completed searches, not a resolved real-world identity or proof that no account exists. No outreach, runtime alias changes, production directory edits, or UI changes were performed. A031/A034 now have a supported shared identity in these research notes.
+
+Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Dragonart, TaroTarou (A031/A034), Antilous, and the exact Dragonart 白霜搽 credit. The 21 unique verified URLs include 10 social-network profiles, plus websites, portfolios, and artist link hubs. Repeated TaroTarou URLs across two credit entries are counted once.
 
 ## Work through one entry at a time
 
@@ -41,81 +45,81 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | ID | Trimmed catalog credit | Unique cards | Printings | Status |
 | --- | --- | ---: | ---: | --- |
 | A001 | Primea Studio | 685 | 934 | Needs identity review |
-| A002 | 木叶 | 451 | 683 | Not started |
-| A003 | 道漫 | 398 | 1056 | Not started |
-| A004 | Dragonart | 323 | 422 | Not started |
-| A005 | 十尾 | 120 | 237 | Not started |
-| A006 | 砂木烟 | 110 | 177 | Not started |
-| A007 | Hanh Chu | 97 | 197 | Not started |
-| A008 | Parhelion Studio Co. | 72 | 96 | Not started |
-| A009 | Alkaid | 63 | 89 | Not started |
-| A010 | Gyool | 46 | 66 | Not started |
-| A011 | Pinakes | 38 | 71 | Not started |
-| A012 | 代々 | 34 | 73 | Not started |
-| A013 | KHΩA | 33 | 39 | Not started |
-| A014 | Kaze | 32 | 45 | Not started |
-| A015 | Rachel Liu | 30 | 38 | Not started |
-| A016 | Sineia | 29 | 41 | Not started |
-| A017 | Faicha | 28 | 50 | Not started |
-| A018 | 檸檬夾心餅 | 26 | 44 | Not started |
-| A019 | Pekoe | 25 | 30 | Not started |
-| A020 | 北飞飞 | 23 | 44 | Not started |
-| A021 | Marchon | 21 | 25 | Not started |
-| A022 | Siriuf Long | 20 | 34 | Not started |
-| A023 | Yui | 20 | 28 | Not started |
-| A024 | 坊橋夜泊 | 20 | 45 | Not started |
-| A025 | DragonArt 白霜茶 | 18 | 22 | Not started |
-| A026 | Kumai | 17 | 39 | Not started |
-| A027 | T_Blence | 16 | 27 | Not started |
-| A028 | 杭州新艺族 | 16 | 21 | Not started |
-| A029 | Hori | 15 | 55 | Not started |
-| A030 | DragonArt Chu | 13 | 15 | Not started |
-| A031 | DragonArt TaroTarou | 13 | 16 | Not started |
-| A032 | NR | 12 | 20 | Not started |
-| A033 | SalmonTea | 10 | 12 | Not started |
-| A034 | TaroTarou | 10 | 12 | Not started |
-| A035 | AquaGirl | 9 | 12 | Not started |
-| A036 | D Lam | 9 | 19 | Not started |
-| A037 | Dragonart Chu | 8 | 9 | Not started |
-| A038 | Parhelion Studio | 7 | 7 | Not started |
-| A039 | 繪來 | 7 | 7 | Not started |
-| A040 | silvie | 6 | 6 | Not started |
-| A041 | Gendo | 5 | 13 | Not started |
-| A042 | 阿清Roro | 5 | 8 | Not started |
-| A043 | Dragonart Tris | 4 | 5 | Not started |
-| A044 | DragonArt Tris | 4 | 4 | Not started |
-| A045 | fuzichoco | 4 | 5 | Not started |
-| A046 | Taki | 4 | 7 | Not started |
-| A047 | YOHAKU | 4 | 8 | Not started |
-| A048 | ZERONEXT | 4 | 7 | Not started |
-| A049 | ジェゼ一 | 4 | 9 | Not started |
-| A050 | 白霜茶 | 4 | 7 | Not started |
-| A051 | Deeya Chaturvedi | 3 | 6 | Not started |
-| A052 | DragonArt 倉倉 | 3 | 4 | Not started |
-| A053 | Leviathan | 3 | 3 | Not started |
-| A054 | 白帝 | 3 | 11 | Not started |
-| A055 | Andrew Yang | 2 | 5 | Not started |
-| A056 | Chu | 2 | 3 | Not started |
-| A057 | SODA | 2 | 7 | Not started |
-| A058 | 南佑希 | 2 | 2 | Not started |
-| A059 | Dragon Art | 1 | 1 | Not started |
-| A060 | Dragonart Antilous | 1 | 3 | Not started |
-| A061 | Dragonart KS | 1 | 2 | Not started |
-| A062 | DragonArt Zhang Iris | 1 | 1 | Not started |
-| A063 | Dragonart 白霜搽 | 1 | 1 | Not started |
-| A064 | DragonArt 艾瞳A-Ton | 1 | 1 | Not started |
-| A065 | Ge-B | 1 | 1 | Not started |
-| A066 | HYONEE | 1 | 1 | Not started |
-| A067 | Polar Engine | 1 | 1 | Not started |
-| A068 | Primea studio | 1 | 1 | Not started |
-| A069 | Rubi露比喵 | 1 | 1 | Not started |
-| A070 | Sunny | 1 | 2 | Not started |
-| A071 | TEDDYPOCKY | 1 | 1 | Not started |
-| A072 | 十尾t | 1 | 1 | Not started |
-| A073 | 桃李タロ | 1 | 2 | Not started |
-| A074 | 蝦蝦 | 1 | 1 | Not started |
-| A075 | 道漫? | 1 | 1 | Not started |
-| A076 | 阿冰 | 1 | 2 | Not started |
+| A002 | 木叶 | 451 | 683 | Reviewed with no verified links found |
+| A003 | 道漫 | 398 | 1056 | Needs identity review |
+| A004 | Dragonart | 323 | 422 | Reviewed with verified links |
+| A005 | 十尾 | 120 | 237 | Reviewed with no verified links found |
+| A006 | 砂木烟 | 110 | 177 | Reviewed with no verified links found |
+| A007 | Hanh Chu | 97 | 197 | Reviewed with verified links |
+| A008 | Parhelion Studio Co. | 72 | 96 | Needs identity review |
+| A009 | Alkaid | 63 | 89 | Needs identity review |
+| A010 | Gyool | 46 | 66 | Reviewed with verified links |
+| A011 | Pinakes | 38 | 71 | Reviewed with verified links |
+| A012 | 代々 | 34 | 73 | Needs identity review |
+| A013 | KHΩA | 33 | 39 | Needs identity review |
+| A014 | Kaze | 32 | 45 | Reviewed with no verified links found |
+| A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
+| A016 | Sineia | 29 | 41 | Reviewed with no verified links found |
+| A017 | Faicha | 28 | 50 | Needs identity review |
+| A018 | 檸檬夾心餅 | 26 | 44 | Reviewed with no verified links found |
+| A019 | Pekoe | 25 | 30 | Reviewed with no verified links found |
+| A020 | 北飞飞 | 23 | 44 | Reviewed with no verified links found |
+| A021 | Marchon | 21 | 25 | Reviewed with no verified links found |
+| A022 | Siriuf Long | 20 | 34 | Needs identity review |
+| A023 | Yui | 20 | 28 | Reviewed with no verified links found |
+| A024 | 坊橋夜泊 | 20 | 45 | Needs identity review |
+| A025 | DragonArt 白霜茶 | 18 | 22 | Needs identity review |
+| A026 | Kumai | 17 | 39 | Reviewed with no verified links found |
+| A027 | T_Blence | 16 | 27 | Needs identity review |
+| A028 | 杭州新艺族 | 16 | 21 | Reviewed with no verified links found |
+| A029 | Hori | 15 | 55 | Reviewed with no verified links found |
+| A030 | DragonArt Chu | 13 | 15 | Needs identity review |
+| A031 | DragonArt TaroTarou | 13 | 16 | Reviewed with verified links |
+| A032 | NR | 12 | 20 | Reviewed with no verified links found |
+| A033 | SalmonTea | 10 | 12 | Needs identity review |
+| A034 | TaroTarou | 10 | 12 | Reviewed with verified links |
+| A035 | AquaGirl | 9 | 12 | Reviewed with no verified links found |
+| A036 | D Lam | 9 | 19 | Reviewed with no verified links found |
+| A037 | Dragonart Chu | 8 | 9 | Needs identity review |
+| A038 | Parhelion Studio | 7 | 7 | Needs identity review |
+| A039 | 繪來 | 7 | 7 | Reviewed with no verified links found |
+| A040 | silvie | 6 | 6 | Needs identity review |
+| A041 | Gendo | 5 | 13 | Reviewed with no verified links found |
+| A042 | 阿清Roro | 5 | 8 | Needs identity review |
+| A043 | Dragonart Tris | 4 | 5 | Needs identity review |
+| A044 | DragonArt Tris | 4 | 4 | Needs identity review |
+| A045 | fuzichoco | 4 | 5 | Reviewed with verified links |
+| A046 | Taki | 4 | 7 | Reviewed with no verified links found |
+| A047 | YOHAKU | 4 | 8 | Reviewed with no verified links found |
+| A048 | ZERONEXT | 4 | 7 | Needs identity review |
+| A049 | ジェゼ一 | 4 | 9 | Needs identity review |
+| A050 | 白霜茶 | 4 | 7 | Needs identity review |
+| A051 | Deeya Chaturvedi | 3 | 6 | Needs identity review |
+| A052 | DragonArt 倉倉 | 3 | 4 | Needs identity review |
+| A053 | Leviathan | 3 | 3 | Reviewed with no verified links found |
+| A054 | 白帝 | 3 | 11 | Needs identity review |
+| A055 | Andrew Yang | 2 | 5 | Needs identity review |
+| A056 | Chu | 2 | 3 | Needs identity review |
+| A057 | SODA | 2 | 7 | Reviewed with no verified links found |
+| A058 | 南佑希 | 2 | 2 | Needs identity review |
+| A059 | Dragon Art | 1 | 1 | Needs identity review |
+| A060 | Dragonart Antilous | 1 | 3 | Reviewed with verified links |
+| A061 | Dragonart KS | 1 | 2 | Needs identity review |
+| A062 | DragonArt Zhang Iris | 1 | 1 | Needs identity review |
+| A063 | Dragonart 白霜搽 | 1 | 1 | Reviewed with verified links |
+| A064 | DragonArt 艾瞳A-Ton | 1 | 1 | Needs identity review |
+| A065 | Ge-B | 1 | 1 | Needs identity review |
+| A066 | HYONEE | 1 | 1 | Needs identity review |
+| A067 | Polar Engine | 1 | 1 | Needs identity review |
+| A068 | Primea studio | 1 | 1 | Needs identity review |
+| A069 | Rubi露比喵 | 1 | 1 | Needs identity review |
+| A070 | Sunny | 1 | 2 | Reviewed with no verified links found |
+| A071 | TEDDYPOCKY | 1 | 1 | Needs identity review |
+| A072 | 十尾t | 1 | 1 | Needs identity review |
+| A073 | 桃李タロ | 1 | 2 | Needs identity review |
+| A074 | 蝦蝦 | 1 | 1 | Reviewed with no verified links found |
+| A075 | 道漫? | 1 | 1 | Needs identity review |
+| A076 | 阿冰 | 1 | 2 | Reviewed with no verified links found |
 
 ## Whitespace variants retained for matching
 
@@ -148,10 +152,1009 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 | Twitter | [@zeklewaaa](https://twitter.com/zeklewaaa) | Unavailable | Directly linked by the Carrd page; destination fetch failed with cache miss. Personal account lead only; studio ownership/affiliation unverified. | 2026-10-14 |
 | Pixiv | [Zeklewa profile lead](https://www.pixiv.net/en/users/74928328) | Unavailable | Directly linked by Carrd; destination could not be opened. Personal account lead only; studio ownership/affiliation unverified. | 2026-10-14 |
 
-**Decisions and next actions:** Publish no links for A001 yet. Do not substitute a possible director's personal accounts for studio accounts. Similar search results for Primate Studio, Prime Studio, Prime 1 Studio, and Primea Design Studio lack evidence connecting them to this credit and are excluded. A Vietnamese company-directory result with the same name also lacks an artwork/publisher connection and does not establish identity. Seek a publicly readable studio-owned portfolio, publisher attribution linking the studio, or a primary statement establishing Zeklewa's role before resolving membership or the A068 spelling. No outreach performed. Continue next with A002, 木叶; retain A001 as an explicit follow-up.
+**Decisions and next actions:** Publish no links for A001 yet. Do not substitute a possible director's personal accounts for studio accounts. Similar search results for Primate Studio, Prime Studio, Prime 1 Studio, and Primea Design Studio lack evidence connecting them to this credit and are excluded. A Vietnamese company-directory result with the same name also lacks an artwork/publisher connection and does not establish identity. Seek a publicly readable studio-owned portfolio, publisher attribution linking the studio, or a primary statement establishing Zeklewa's role before resolving membership or the A068 spelling. No outreach performed. The remaining queue now has first-pass outcomes; retain A001 as an explicit follow-up.
+
+### A002 — 木叶
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"木叶"`, `" 木叶"`.
+- **Identity:** Unknown; retain 木叶 as the credited display name. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Acerbica; Abyssal Heaven; #201; edition `pa4zg0ppmv`. [Publisher edition reference](https://index.gatcg.com/edition/acerbica-hvn) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"木叶" "Grand Archive" artist`; `"木叶" 画师 推特 Grand Archive`; `"木叶" 插画师 pixiv`; `"木叶" "Grand Archive" twitter`; `"木叶" "Acerbica" artist`.
+- **Findings:** Exact-name, game-specific, native-script illustrator, and representative-card searches did not establish an artist-owned account. Naruto-related results and the longer name 阿梗木叶笔记 do not establish this credit’s identity.
+- **Next action:** Keep an account-free identity; revisit if a publisher or artist portfolio links the exact credit to Acerbica or another credited printing.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A003 — 道漫
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"道漫"`, `" 道漫"`.
+- **Identity:** Unknown; retain 道漫; related A075 is not merged. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Accepted Contract; Dawn of Ashes Alter Edition; #069; edition `gvcgdmoyde`. [Publisher edition reference](https://index.gatcg.com/edition/accepted-contract-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"道漫" artist Grand Archive`; `"道漫" 画师 插画`; `"道漫" 插画师`; `"道漫" artstation`; `"道漫" twitter pixiv artist`.
+- **Findings:** Game-specific and native-script searches surfaced credits but no attributable account. A075 adds a question mark to the same base spelling; that is a catalog ambiguity, not a supported alias.
+- **Next action:** Compare the A075 Astra Sight printing with its other editions and seek publisher credit clarification before merging.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A004 — Dragonart
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Dragonart"`, `"Dragonart\n"`.
+- **Identity:** Studio: 龍族數位 / Dragonart. A059’s particular credit mapping is still unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Absolving Flames; Mortal Ambition; #094; edition `fcng06fi6r`. [Publisher edition reference](https://index.gatcg.com/edition/absolving-flames-amb) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `Dragonart Grand Archive official studio`; `"Dragonart" "Grand Archive" studio artstation`; `"龍族數位" "Grand Archive"`.
+- **Findings:** Browser inspection exposed the gallery’s real social destinations. The [studio roster](https://www.dragon-art.tw/7th) links TaroTarou, whose readable [original post](https://x.com/TaroTarou_Art/status/1791654715933258183) describes making Grand Archive cards with the Dragon Art team. Antilous’ linked Instagram reciprocally names DragonArt and its website. This establishes the studio connection beyond the fan-art training exercise.
+- **Next action:** Use the verified studio website. Preserve member accounts under their individual/combined identities; resolve A059 separately.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [龍族數位 Dragonart](https://www.dragon-art.tw/) | Verified | [Evidence](https://x.com/TaroTarou_Art/status/1791654715933258183): Primary member post describes Grand Archive card work with the studio; the studio roster links that member, and the studio gallery links Antilous’ reciprocal profile. | 2026-10-14 |
+
+### A005 — 十尾
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"十尾"`, `"十尾 "`.
+- **Identity:** Individual; publisher-supported alternate name Juubi for 十尾. A072 remains unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Academy Guide; Promotional 2024; #120; edition `x99w8eraxx`. [Publisher edition reference](https://index.gatcg.com/edition/academy-guide-p24) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"十尾" Grand Archive artist`; `"十尾" "Juubi" artist twitter`; `"十尾" 画师 pixiv`; `"Juubi" "Grand Archive" illustrator social`.
+- **Findings:** The publisher-hosted [Ascent Akihabara checklist](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf?updated_at=2025-11-14T13%3A33%3A49.872Z) names 十尾 (Juubi) as a guest illustrator. Searches using the credit and Juubi did not establish an official account. Naruto/ten-tails results are excluded.
+- **Next action:** Retain Juubi as supported display-name evidence; investigate A072 separately and add accounts only when directly attributable.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A006 — 砂木烟
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"砂木烟"`.
+- **Identity:** Unknown; retain 砂木烟. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Academy Attendant; Alchemical Revolution; #041; edition `fiszdne4n3`. [Publisher edition reference](https://index.gatcg.com/edition/academy-attendant-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"砂木烟" artist`; `"砂木烟" 微博`.
+- **Findings:** Exact-name artist and Weibo searches returned card-credit material without an attributable artist-owned profile.
+- **Next action:** Keep an account-free identity; use Academy Attendant or another exact printing to evaluate future portfolio leads.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A007 — Hanh Chu
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Hanh Chu"`.
+- **Identity:** Individual: Hanh Chu; do not merge the separate Chu credit (A056). Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aethercloak Sentinel; Distorted Reflections; #195; edition `dv7zz5n8h7`. [Publisher edition reference](https://index.gatcg.com/edition/aethercloak-sentinel-dtr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Hanh Chu" Grand Archive artist`; `"Hanh Chu" official twitter`.
+- **Findings:** The [artist website](https://raartist3.wixsite.com/hanhchu) explicitly lists Grand Archive work. The [publisher’s event article](https://www.gatcg.com/article/anime-expo-2023) independently names Hanh Chu. The readable ArtStation portfolio matches the artist identity and lists Grand Archive commissions. Browser inspection exposed the website’s Twitter link; the readable HanhChu profile matches the artist identity and links a Carrd hub with reciprocal portfolio links. An individual ArtStation project returned a sign-in shell; that does not affect verification of the readable portfolio.
+- **Next action:** Use the verified website, ArtStation, Carrd hub, and X profile. Pixiv remains withheld because its inspection is blocked; keep A056 separate.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Hanh Chu](https://raartist3.wixsite.com/hanhchu) | Verified | [Evidence](https://raartist3.wixsite.com/hanhchu): Readable self-identification, illustrator role, and explicit Grand Archive client credit; publisher event article corroborates the credited name. | 2026-10-14 |
+| ArtStation | [Hanh Chu](https://rokudo_aurora.artstation.com/) | Verified | [Evidence](https://rokudo_aurora.artstation.com/): Readable portfolio identifies Hanh Chu, matches the website’s contact identity, and lists named Grand Archive commissions. | 2026-10-14 |
+| X | [@Hanh_R_A](https://x.com/Hanh_R_A) | Verified | [Evidence](https://raartist3.wixsite.com/hanhchu): Direct official-site social link; browser redirected to this readable HanhChu profile with matching artist/contact identity. | 2026-10-14 |
+| Carrd | [Hanh Chu](https://hanhchu.carrd.co/) | Verified | [Evidence](https://x.com/Hanh_R_A): Readable hub linked by verified X profile, with reciprocal established portfolio and social links. | 2026-10-14 |
+| Pixiv | [Profile 4680672](https://www.pixiv.net/en/users/4680672) | Unavailable | [Evidence](https://hanhchu.carrd.co/): Official hub link preserved; not opened after the browser site-safety policy blocked Pixiv inspection. | 2026-10-14 |
+
+### A008 — Parhelion Studio Co.
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Parhelion Studio Co."`.
+- **Identity:** Studio candidate: Parhelion Studio Co.; A038 is related but not merged. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Abnegation; Phantom Monarchs; #178; edition `4MLJvZNYeu`. [Publisher edition reference](https://index.gatcg.com/edition/abnegation-ptm) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Parhelion Studio" official`; `"Parhelion" "Grand Archive" art studio website`.
+- **Findings:** Opened [parhelion.gg](https://parhelion.gg/), which uses Parhelion Studio in its body and Parhelion Studio Co. in its copyright, and the [company LinkedIn](https://www.linkedin.com/company/parhelion-studio-co). Both describe anime/game work; neither inspected page establishes the Grand Archive commission. The architectural visualization studio at parhelionstudio.com is excluded.
+- **Next action:** Obtain primary Grand Archive portfolio/client evidence before attaching these accounts or merging A038.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Parhelion Studio](https://parhelion.gg/) | Candidate | [Evidence](https://parhelion.gg/): Both studio name forms occur on one readable site; catalog affiliation is not independently established. | 2026-10-14 |
+| LinkedIn | [Parhelion Studio Co.](https://www.linkedin.com/company/parhelion-studio-co) | Candidate | [Evidence](https://parhelion.gg/): Readable anime/game company profile, but no inspected direct website cross-link or Grand Archive credit. | 2026-10-14 |
+
+### A009 — Alkaid
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Alkaid"`.
+- **Identity:** Unknown; Alkaid Studios is a candidate, not an established expansion of Alkaid. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Arcane Renunciation; Radiant Origins First Edition; #299; edition `c3curBLx32`. [Publisher edition reference](https://index.gatcg.com/edition/arcane-renunciation-rdo1e) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Alkaid" "Grand Archive" artist`; `"Alkaid" illustrator artstation`.
+- **Findings:** Opened [Alkaid Studios’ ArtStation portfolio](https://alkaidstudios.artstation.com/projects). It describes an outsourcing studio and other game projects; inspected material does not establish the Grand Archive credit.
+- **Next action:** Seek Arcane Renunciation or another catalog-matching commission on an artist-owned portfolio before selecting an individual or studio identity.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| ArtStation | [Alkaid Studios](https://alkaidstudios.artstation.com/projects) | Candidate | [Evidence](https://alkaidstudios.artstation.com/projects): Readable portfolio; name resemblance alone cannot map a bare Alkaid credit to this studio. | 2026-10-14 |
+
+### A010 — Gyool
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Gyool"`.
+- **Identity:** Individual: Gyool. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Alice, Trifle's Royalty; Radiant Origins; #011; edition `dmiigIubVp`. [Publisher edition reference](https://index.gatcg.com/edition/alice-trifles-royalty-rdo) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Gyool" artist Grand Archive`; `"Gyool" "fruitysandwich" official`.
+- **Findings:** The [artist website](https://www.gyool.info/) identifies Gyool and explicitly lists Weebs of the Shore / Grand Archive. Browser inspection read the X profile and its original Grand Archive card-work post; the profile-linked Linktree reciprocally links the verified website and account. This primary ownership chain supersedes the earlier extraction failure.
+- **Next action:** Use the verified website, X profile, and Linktree. Pixiv inspection remains blocked.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Gyool](https://www.gyool.info/) | Verified | [Evidence](https://www.gyool.info/): Readable artist self-identification and explicit publisher/game client credit. | 2026-10-14 |
+| X | [@fruitysandwich](https://x.com/fruitysandwich) | Verified | [Evidence](https://x.com/fruitysandwich/status/2004553787005083893): Readable original artist post identifies their Grand Archive card work; profile-linked Linktree reciprocally links the verified website. Earlier 403 was specific to extraction. | 2026-10-14 |
+| Linktree | [Gyool](https://linktr.ee/gyool) | Verified | [Evidence](https://x.com/fruitysandwich): Readable artist-linked hub with reciprocal website and X destinations. | 2026-10-14 |
+| Pixiv | [Profile 91426279](https://www.pixiv.net/users/91426279) | Unavailable | [Evidence](https://linktr.ee/gyool): Direct artist-hub link; not opened after the Pixiv browser-policy block. | 2026-10-14 |
+
+### A011 — Pinakes
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Pinakes"`.
+- **Identity:** Individual: Pinakes / ピナケス; official portfolio and X profile reciprocally linked. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Beseech the Winds; Promotional 2024; #052; edition `a45b4b4Plo`. [Publisher edition reference](https://index.gatcg.com/edition/beseech-the-winds-p24) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Pinakes" Grand Archive illustrator`; `"Pinakes" artist twitter`; `"PinaxPinakes" "Grand Archive"`.
+- **Findings:** Browser inspection read the original X profile and followed its portfolio to [pinakes.me](https://www.pinakes.me/). The portfolio links back to the same X account. Its [Diao Chan artwork](https://www.pinakes.me/s/GA_HVN_DiaoChanLv1.jpg) was visually matched to the [publisher image](https://api.gatcg.com/cards/images/0ueslsle3w.jpg): Diao Chan, Enchantress, HVN #004, edition `0ueslsle3w`, printed with the Pinakes credit. This supplies an artwork identity connection beyond mirrored posts.
+- **Next action:** Use the verified portfolio and X account; retain the portfolio-linked Pixiv as unavailable until permitted inspection is possible.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Pinakes](https://www.pinakes.me/) | Verified | [Evidence](https://www.pinakes.me/s/GA_HVN_DiaoChanLv1.jpg): Portfolio artwork visually matches publisher-credited Diao Chan, Enchantress edition 0ueslsle3w; exact name and reciprocal X links establish ownership. | 2026-10-14 |
+| X | [@PinaxPinakes](https://x.com/PinaxPinakes) | Verified | [Evidence](https://www.pinakes.me/): Readable original profile links this portfolio, which links back to the same account. | 2026-10-14 |
+| Pixiv | [Profile 1629467](https://www.pixiv.net/users/1629467) | Unavailable | [Evidence](https://www.pinakes.me/): Direct official portfolio link; not opened after the Pixiv site-safety block. | 2026-10-14 |
+
+### A012 — 代々
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"代々"`.
+- **Identity:** Individual candidate: 代々 / Daidai; alternate name remains a lead. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Alice, Golden Queen; Distorted Reflections; #004; edition `ggliackmst`. [Publisher edition reference](https://index.gatcg.com/edition/alice-golden-queen-dtr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"代々" "Grand Archive" artist`; `"Daidai" "Grand Archive" artist twitter`.
+- **Findings:** [Event coverage](https://gafreak.com/2025/09/20/ascent-taipei-report/) and other search results pair 代々 with Daidai at Ascent Taipei. No artist-owned account was established; do not select an unrelated Daidai profile.
+- **Next action:** Inspect the publisher’s Taipei guest-artist material for a direct account or native-name cross-link.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A013 — KHΩA
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"KHΩA"`.
+- **Identity:** Individual candidate: KHΩA / KhoaPhan96. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aenean Cyclic Winds; .asphodel/paradise; #172; edition `PPfoEDev3P`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-cyclic-winds-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"KHΩA" illustrator`; `"KhoaPhan96" "Grand Archive"` (no indexed results).
+- **Findings:** Opened the [commission page](https://khoaphan96.carrd.co/); indexed text includes the distinctive KHΩA spelling. It identifies an illustrator, but the inspected page does not establish a Grand Archive commission. A handle-plus-game search returned no results, and X returned 403. **Browser follow-up:** X now readable as KHΩA; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find an artist-owned Aenean Cyclic Winds or other credited-card post before adopting the handle.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Carrd | [KhoaPhan96](https://khoaphan96.carrd.co/) | Candidate | [Evidence](https://khoaphan96.carrd.co/): Readable illustrator commission page; game/catalog connection unresolved. | 2026-10-14 |
+| X | [@KhoaPhan96](https://x.com/KhoaPhan96) | Candidate | [Evidence](https://x.com/KhoaPhan96): Browser follow-up read the original account/page. X now readable as KHΩA; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A014 — Kaze
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Kaze"`.
+- **Identity:** Unknown; retain Kaze. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aenean Flux Generator; .asphodel/paradise; #174; edition `vRRhxJiKNT`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-flux-generator-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Kaze" "Grand Archive" artist`; `"Kaze" "Aenean Flux Generator"`.
+- **Findings:** Game-specific and Aenean Flux Generator searches did not connect the illustrator credit to an official account. A player named Kaze is not evidence of artist identity.
+- **Next action:** Keep an account-free identity; require a matching artwork or publisher link for any later Kaze lead.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A015 — Rachel Liu
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Rachel Liu"`.
+- **Identity:** Individual: Rachel Liu; do not conflate with the separate storyboard artist at rliuportfolio.com. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Bandage Wound; Mercurial Heart; #039; edition `aqv0lut479`. [Publisher edition reference](https://index.gatcg.com/edition/bandage-wound-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Rachel Liu" illustrator`.
+- **Findings:** The readable [TCG portfolio](https://www.liurachel.com/tcg) explicitly identifies work for Grand Archive and shows named project-image labels. It is linked from the same-name homepage.
+- **Next action:** Use the verified website; derive no personal social account from names alone.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Rachel Liu](https://www.liurachel.com/) | Verified | [Evidence](https://www.liurachel.com/tcg): Readable same-site professional portfolio explicitly attributes illustrations to Grand Archive. | 2026-10-14 |
+
+### A016 — Sineia
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Sineia"`.
+- **Identity:** Unknown; retain Sineia. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Break Apart; Promotional 2026; #014; edition `pJJckOK8Cr`. [Publisher edition reference](https://index.gatcg.com/edition/break-apart-p26) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Sineia" Grand Archive artist`; `"Sineia" artstation`.
+- **Findings:** Game-specific search and an ArtStation search did not establish an artist-owned account. A [TCGplayer collaboration article](https://seller.tcgplayer.com/blog/get-your-exclusive-grand-archive-tcg-break-apart-promo-card) is a useful card-credit lead, not an artist account. Unrelated Sineia businesses and artists are excluded.
+- **Next action:** Keep an account-free identity; use the Break Apart collaboration to seek a primary artist cross-link.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A017 — Faicha
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Faicha"`.
+- **Identity:** Individual candidate: Faicha. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Angelic Channeling; Radiant Origins First Edition; #044A; edition `c7NbYXzcGS`. [Publisher edition reference](https://index.gatcg.com/edition/angelic-channeling-rdo1ea) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Faicha" artist`; `"Faicha" "Grand Archive" twitter`.
+- **Findings:** Opened [Faicha’s Patreon](https://www.patreon.com/faicha/about), which self-identifies an illustrator and links Pixiv. It does not establish Grand Archive work in the inspected text. A [commission client’s playmat listing](https://redzonerogue.com/products/katsumi-astral-sword-saint-official-red-zone-rogue-playmat-preorder) names Faicha and Corhazi Courier but no inspected account ownership chain was completed.
+- **Next action:** Follow a publisher or commissioning-client account link, or locate a readable credited-card portfolio post.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Patreon | [Faicha](https://www.patreon.com/faicha/about) | Candidate | [Evidence](https://www.patreon.com/faicha/about): Readable illustrator profile; catalog connection not yet established. | 2026-10-14 |
+| Pixiv | [Profile 14263721](https://www.pixiv.net/users/14263721) | Unavailable | [Evidence](https://www.patreon.com/faicha/about): Directly linked by the candidate Patreon; destination could not be opened. Canonical profile URL retains its linked numeric ID. | 2026-10-14 |
+
+### A018 — 檸檬夾心餅
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"檸檬夾心餅"`.
+- **Identity:** Unknown; retain 檸檬夾心餅. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Accompanying Guard; Alchemical Revolution Alter Edition; #215; edition `fsw85dhmfq`. [Publisher edition reference](https://index.gatcg.com/edition/accompanying-guard-alc-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"檸檬夾心餅" 繪師`; `"檸檬夾心餅" pixiv twitter`.
+- **Findings:** Native-script illustrator and Pixiv/Twitter searches were dominated by literal biscuit products and recipes; no attributable account was established.
+- **Next action:** Keep an account-free identity; use Accompanying Guard or a publisher artist spotlight for disambiguation.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A019 — Pekoe
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Pekoe"`.
+- **Identity:** Unknown; retain Pekoe. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Abiding Figures; Distorted Reflections Alter Edition; #223; edition `bkvMpzvU54`. [Publisher edition reference](https://index.gatcg.com/edition/abiding-figures-dtr-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Pekoe" "Grand Archive" artist`; `"Pekoe" illustrator artstation`.
+- **Findings:** Game-specific and illustrator/ArtStation searches did not establish an official account. A same-name Ko-fi and game-asset portfolios lacked a connection to this credit and were excluded from publication.
+- **Next action:** Revisit with an Abiding Figures artwork match; do not attach the same-name Ko-fi on name alone.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A020 — 北飞飞
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"北飞飞"`.
+- **Identity:** Unknown; retain 北飞飞. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Avalon, Cursed Isle; Dawn of Ashes Alter Edition; #160; edition `b31xa7n2jn`. [Publisher edition reference](https://index.gatcg.com/edition/avalon-cursed-isle-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"北飞飞" 画师`; `"北飞飞" pixiv 微博`.
+- **Findings:** Native-script artist and Pixiv/Weibo searches did not establish an official account. Same-name interactive-fiction author results do not establish the credited illustrator.
+- **Next action:** Keep an account-free identity; seek an Avalon, Cursed Isle portfolio or publisher cross-link.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A021 — Marchon
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Marchon"`.
+- **Identity:** Unknown; retain Marchon. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Cinderbloom Tender; Supporter Pack 4; #005; edition `tW8S8UaUe4`. [Publisher edition reference](https://index.gatcg.com/edition/cinderbloom-tender-sp4) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Marchon" "Grand Archive" artist`; `"Marchon" illustrator artstation`.
+- **Findings:** Game-specific and illustrator/ArtStation searches did not establish an official account. Hannah Marchon and eyewear-business results lack a connection to the catalog credit.
+- **Next action:** Keep an account-free identity and use Cinderbloom Tender as a future disambiguation example.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A022 — Siriuf Long
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Siriuf Long"`.
+- **Identity:** Individual candidate: Siriuf Long. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aenean Frozen Shunt; .asphodel/paradise; #142; edition `KnzTPB8w0t`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-frozen-shunt-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Siriuf Long"`; `"Siriuf Long" "Grand Archive"`.
+- **Findings:** [Post-mirror results](https://buhitter.com/author/siriuflong) identify a same-name illustrator and Carrd. The Carrd and Patreon failed to fetch, and X returned 403. No inspected primary source connects these profiles to the credited cards. **Browser follow-up:** X and Carrd now readable with matching name and reciprocal hub links; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Recheck the landing page and locate a credited-card statement or matching portfolio work.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Carrd | [Siriuf Long](https://siriuflong.carrd.co/) | Candidate | [Evidence](https://siriuflong.carrd.co/): Browser follow-up read the original account/page. X and Carrd now readable with matching name and reciprocal hub links; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| X | [@siriuflong](https://x.com/siriuflong) | Candidate | [Evidence](https://x.com/siriuflong): Browser follow-up read the original account/page. X and Carrd now readable with matching name and reciprocal hub links; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Patreon | [Siriuf - the bunny man](https://www.patreon.com/siriufthebunnyman/about) | Unavailable | [Evidence](https://www.patreon.com/siriufthebunnyman/about): Same-name artist in indexed result; direct fetch failed. Grand Archive affiliation unverified. | 2026-10-14 |
+
+### A023 — Yui
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Yui"`.
+- **Identity:** Unknown; retain Yui. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aenean Crystallization; .asphodel/paradise; #140; edition `tUgkLl3SPi`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-crystallization-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Yui" "Grand Archive" artist`; `"Yui" "Aenean Crystallization" artist`.
+- **Findings:** Game-specific and Aenean Crystallization searches produced no attributable artist-owned account. The short name is not enough to choose among illustrators.
+- **Next action:** Keep an account-free identity; require a matching credited-card portfolio or publisher tag.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A024 — 坊橋夜泊
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"坊橋夜泊"`, `" 坊橋夜泊"`.
+- **Identity:** Individual candidate: 坊橋夜泊 / Fang. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Auspicious Feast; Abyssal Heaven; #033; edition `5ajxcgg238`. [Publisher edition reference](https://index.gatcg.com/edition/auspicious-feast-hvn) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"坊橋夜泊" artist`; `"fang410693029" "Grand Archive"`.
+- **Findings:** Opened the [same-name Patreon](https://www.patreon.com/cw/fang410693029). [Mirrored posts](https://buhitter.com/author/fang410693029) mention Grand Archive commissions and a publisher guest-artist tag, but direct X returned 403. The Patreon alone does not complete the game-to-account ownership chain. **Browser follow-up:** X now readable and cross-links Patreon; the original commission permalink returned a browser error, so catalog-to-account verification is still incomplete. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Inspect a readable publisher guest-artist link or artist-owned Grand Archive post before publishing the accounts.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Patreon | [坊橋夜泊](https://www.patreon.com/cw/fang410693029) | Candidate | [Evidence](https://buhitter.com/author/fang410693029): Readable same-name creator page; primary catalog/account connection still needed. | 2026-10-14 |
+| X | [@fang410693029](https://x.com/fang410693029) | Candidate | [Evidence](https://x.com/fang410693029): Browser follow-up read the original account/page. X now readable and cross-links Patreon; the original commission permalink returned a browser error, so catalog-to-account verification is still incomplete. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A025 — DragonArt 白霜茶
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt 白霜茶"`.
+- **Identity:** Combined studio/member credit; related A050 and A063 remain separate. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Airship Cruiser; Alchemical Revolution; #121; edition `yrd9a9c26b`. [Publisher edition reference](https://index.gatcg.com/edition/airship-cruiser-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt" "白霜茶"`; `"白霜茶" twitter`.
+- **Findings:** The publisher-hosted [guest-artist checklist](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf?updated_at=2025-11-14T13%3A33%3A49.872Z) names DragonArt 白霜茶. Dragonart’s [roster](https://www.dragon-art.tw/7th) instead spells a member 白霜搽 and links social accounts. Neither spelling is silently corrected.
+- **Next action:** Find a primary statement connecting 白霜茶 and 白霜搽 before sharing accounts across A025/A050/A063. See A063 for roster account leads.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A026 — Kumai
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Kumai"`.
+- **Identity:** Unknown; retain Kumai. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Atmos Armor Type-Ares; Mercurial Heart; #170; edition `548otyjsr2`. [Publisher edition reference](https://index.gatcg.com/edition/atmos-armor-type-ares-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Kumai" "Grand Archive" illustrator`; `"Kumai" illustrator artstation`.
+- **Findings:** Game-specific and illustrator/ArtStation searches did not establish an official account. Tadashi Kumai results are not evidence for this credit.
+- **Next action:** Keep an account-free identity; search for an artist-owned Atmos Armor Type-Ares portfolio when new evidence appears.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A027 — T_Blence
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"T_Blence"`.
+- **Identity:** Individual candidate: T_Blence / @T_blence. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aella, Zephyr's Hand; Radiant Origins; #252; edition `OX21mHMuGf`. [Publisher edition reference](https://index.gatcg.com/edition/aella-zephyrs-hand-rdo) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"T_Blence"`; `"T_blence" "GrandArchive"` (no indexed results).
+- **Findings:** An [indexed X profile](https://x.com/T_blence/with_replies) identifies an artist with this distinctive name. A handle-plus-GrandArchive search returned no results, and direct profile access returned 403. **Browser follow-up:** X now readable as T_blence; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Locate a primary Aella, Zephyr’s Hand commission statement or publisher tag before attaching this account.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@T_blence](https://x.com/T_blence) | Candidate | [Evidence](https://x.com/T_blence): Browser follow-up read the original account/page. X now readable as T_blence; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A028 — 杭州新艺族
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"杭州新艺族"`.
+- **Identity:** Unknown; studio/company classification remains provisional for 杭州新艺族. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Camelot, Impenetrable; Dawn of Ashes Alter Edition; #204; edition `zzioxgugw9`. [Publisher edition reference](https://index.gatcg.com/edition/camelot-impenetrable-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"杭州新艺族" 插画`; `"杭州新艺族" 官网`.
+- **Findings:** Exact-name illustration and official-site searches surfaced catalog credits and a company-name listing but no attributable art portfolio or social account. A business-name match does not prove commissioned-art identity.
+- **Next action:** Keep the exact credit without a legal entity or account; seek a Camelot, Impenetrable portfolio/client link.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A029 — Hori
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Hori"`.
+- **Identity:** Unknown; retain Hori. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Empowering Harmony; GenSeCha; #002; edition `Ofeg5iXC2B`. [Publisher edition reference](https://index.gatcg.com/edition/empowering-harmony-gsc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Hori" "Grand Archive" illustrator`; `"Hori" "Lorraine" illustrator`.
+- **Findings:** Game-specific and Lorraine illustrator searches did not establish an attributable account. Other Hori designers and unrelated Lorraine results are excluded.
+- **Next action:** Keep an account-free identity; require publisher or artwork evidence for any future profile.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A030 — DragonArt Chu
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt Chu"`.
+- **Identity:** Combined studio/member credit: DragonArt Chu; related A037 and A056 are unmerged. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Airship Cannoneer; Alchemical Revolution; #093; edition `n32l8lbewe`. [Publisher edition reference](https://index.gatcg.com/edition/airship-cannoneer-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt Chu" artist`; `"Dragonart" "Chu" illustrator twitter`.
+- **Findings:** Exact-credit and Dragonart/Chu illustrator searches returned credit material without a personal ownership chain. Hanh Chu’s verified portfolio does not establish that the shorter Chu or studio-member credit refers to Hanh.
+- **Next action:** Obtain a studio roster or matching member portfolio before merging either case variant or the bare Chu credit.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A031 — DragonArt TaroTarou
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"DragonArt TaroTarou"`.
+- **Identity:** Combined credit DragonArt TaroTarou; supported shared artist identity with A034 (TaroTarou / 芋太郎). Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Battlefield Spotter; Alchemical Revolution; #154; edition `sphwpisznn`. [Publisher edition reference](https://index.gatcg.com/edition/battlefield-spotter-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt TaroTarou"`.
+- **Findings:** Publisher guest-artist checklist names the combined credit; the studio roster links the artist hub/account. Browser inspection read the hub’s explicit GrandArchive card-illustration role and the [original artist post](https://x.com/TaroTarou_Art/status/1791654715933258183) describing card work with the Dragon Art team. These primary sources support sharing the personal identity/accounts while retaining the combined raw credit.
+- **Next action:** Map A031/A034 to one artist in the future curated dataset, preserving both exact credits and the studio relationship; do not merge that person into the studio identity.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Lit.Link | [芋太郎 / TaroTarou](https://lit.link/en/TaroTarou) | Verified | [Evidence](https://www.dragon-art.tw/7th): Browser read the studio-linked artist hub: it explicitly lists GrandArchive card illustration, the personal name, and social links. | 2026-10-14 |
+| X | [@TaroTarou_Art](https://x.com/TaroTarou_Art) | Verified | [Evidence](https://lit.link/en/TaroTarou): Readable profile names Dragonart/GA, links back to the hub, and original posts describe Grand Archive card work and studio membership. | 2026-10-14 |
+| Instagram | [@tarotarou_art](https://www.instagram.com/tarotarou_art/) | Verified | [Evidence](https://lit.link/en/TaroTarou): Direct hub link; readable profile names 芋太郎 TaroTarou and links back to the same hub. | 2026-10-14 |
+| Facebook | [芋太郎 TaroTarou](https://www.facebook.com/TaroTarou.art) | Verified | [Evidence](https://lit.link/en/TaroTarou): Direct hub link; readable public artist page has matching name/contact and reciprocal hub link. Login prompt was dismissed without signing in. | 2026-10-14 |
+| Pixiv | [Profile 66490629](https://www.pixiv.net/users/66490629) | Unavailable | [Evidence](https://lit.link/en/TaroTarou): Direct artist-hub link. Browser site-safety policy rejected navigation; no workaround attempted. | 2026-10-14 |
+
+### A032 — NR
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"NR"`.
+- **Identity:** Unknown; retain NR. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Banner Knight; Promotional 2022; #007; edition `ZeyLj8pYOB`. [Publisher edition reference](https://index.gatcg.com/edition/banner-knight-p22) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"NR" "Grand Archive" artist twitter`; `"NR" "Nico" "Grand Archive" artist`.
+- **Findings:** Game/artist/Twitter and Nico-specific searches produced card credits without an attributable official account.
+- **Next action:** Keep an account-free identity; use a Nico or Banner Knight commission post to disambiguate future candidates.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A033 — SalmonTea
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"SalmonTea"`.
+- **Identity:** Unknown; SalmonTea illustrator account not established. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Fling Food; .asphodel/paradise; #117; edition `Kjx4gCoVVO`. [Publisher edition reference](https://index.gatcg.com/edition/fling-food-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"SalmonTea" illustrator`; `"SalmonTea" twitter art`.
+- **Findings:** Exact-name illustrator and social searches found repost-board attribution, but the [source-board page](https://www.safebooru.org/index.php?id=4562051&page=post&s=view) could not be opened to inspect its original-source link. No handle is inferred from the repost tag.
+- **Next action:** Recover an original artist source from a readable attribution and connect it to Fling Food or another credited printing.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A034 — TaroTarou
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"TaroTarou"`.
+- **Identity:** Individual: TaroTarou / 芋太郎; shared artist identity with A031 is supported. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aenean Cyclone; .asphodel/paradise; #173; edition `WEqwy7sSB3`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-cyclone-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"TaroTarou" artist`; `"TaroTarou_Art" official`.
+- **Findings:** See A031 for the publisher/studio/artist evidence chain. The browser read the artist hub and original X profile, then the linked Instagram and Facebook profiles; each matches the hub’s identity. Pixiv inspection was blocked. The second Facebook numeric-profile link on the hub was not separately inspected and is withheld.
+- **Next action:** Use the shared artist account set below; preserve the combined studio credit as an alias/history relationship when implementing the directory.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Lit.Link | [芋太郎 / TaroTarou](https://lit.link/en/TaroTarou) | Verified | [Evidence](https://www.dragon-art.tw/7th): Browser read the studio-linked artist hub: it explicitly lists GrandArchive card illustration, the personal name, and social links. | 2026-10-14 |
+| X | [@TaroTarou_Art](https://x.com/TaroTarou_Art) | Verified | [Evidence](https://lit.link/en/TaroTarou): Readable profile names Dragonart/GA, links back to the hub, and original posts describe Grand Archive card work and studio membership. | 2026-10-14 |
+| Instagram | [@tarotarou_art](https://www.instagram.com/tarotarou_art/) | Verified | [Evidence](https://lit.link/en/TaroTarou): Direct hub link; readable profile names 芋太郎 TaroTarou and links back to the same hub. | 2026-10-14 |
+| Facebook | [芋太郎 TaroTarou](https://www.facebook.com/TaroTarou.art) | Verified | [Evidence](https://lit.link/en/TaroTarou): Direct hub link; readable public artist page has matching name/contact and reciprocal hub link. Login prompt was dismissed without signing in. | 2026-10-14 |
+| Pixiv | [Profile 66490629](https://www.pixiv.net/users/66490629) | Unavailable | [Evidence](https://lit.link/en/TaroTarou): Direct artist-hub link. Browser site-safety policy rejected navigation; no workaround attempted. | 2026-10-14 |
+
+### A035 — AquaGirl
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"AquaGirl"`.
+- **Identity:** Unknown; retain AquaGirl. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Apothecary's Harvest; Radiant Origins; #254; edition `ovuWxG8NMi`. [Publisher edition reference](https://index.gatcg.com/edition/apothecarys-harvest-rdo) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"AquaGirl" "Grand Archive" artist`; `"AquaGirl" illustrator twitter`.
+- **Findings:** Game-specific and illustrator/Twitter searches did not establish an attributable account. Same-name gaming-profile results are excluded.
+- **Next action:** Keep an account-free identity; require an Apothecary’s Harvest or other credited-art portfolio connection.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A036 — D Lam
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"D Lam"`.
+- **Identity:** Unknown; retain D Lam. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Aesan Protector; Dawn of Ashes Alter Edition; #198; edition `437wrwhqq1`. [Publisher edition reference](https://index.gatcg.com/edition/aesan-protector-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"D Lam" "Grand Archive" artist`; `"D Lam" illustrator artstation`.
+- **Findings:** Game-specific and illustrator/ArtStation searches produced no attributable artist-owned account. A same-name employee-directory result is not evidence for this card credit.
+- **Next action:** Keep an account-free identity; use Aesan Protector to disambiguate future portfolio leads.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A037 — Dragonart Chu
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Dragonart Chu"`.
+- **Identity:** Combined credit Dragonart Chu; case relationship to A030 remains unapproved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Arcane Blast; Supporter Pack 1; #001; edition `if7mf9ipdd`. [Publisher edition reference](https://index.gatcg.com/edition/arcane-blast-sp1) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragonart Chu" twitter`.
+- **Findings:** Exact-credit/Twitter searches and A030’s studio/member searches did not establish a personal account or a primary alias statement. Search engines collapse capitalization, so returned results cannot by themselves settle the case variants.
+- **Next action:** Review studio roster/artwork evidence for A030/A037 together; retain A056 and Hanh Chu separately.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A038 — Parhelion Studio
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Parhelion Studio"`.
+- **Identity:** Studio candidate Parhelion Studio; related A008. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Armed Squallguard; Distorted Reflections; #170; edition `zwk2nrweto`. [Publisher edition reference](https://index.gatcg.com/edition/armed-squallguard-dtr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Parhelion Studio" "Grand Archive"`.
+- **Findings:** Exact-credit/game search returned credit material. The opened [parhelion.gg](https://parhelion.gg/) site uses both name forms; see A008 for candidate website/LinkedIn evidence and the missing Grand Archive connection.
+- **Next action:** Resolve the catalog affiliation first, then explicitly document whether A008/A038 share an identity. No link is independently verified here.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A039 — 繪來
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"繪來"`.
+- **Identity:** Unknown; retain 繪來. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Bedlam Borough; .asphodel/paradise; #032; edition `ibHfzHS45Q`. [Publisher edition reference](https://index.gatcg.com/edition/bedlam-borough-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"繪來" illustrator`; `"繪來" "Grand Archive"`.
+- **Findings:** Exact-name illustrator and game-specific searches did not establish an artist-owned account. Generic uses of these characters are not artist identity evidence.
+- **Next action:** Keep an account-free identity; seek a Bedlam Borough or Chamber of Reflections portfolio.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A040 — silvie
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"silvie"`.
+- **Identity:** Unknown; silvie may be a fictional/pseudonymous credit and is not assumed to be the fan-blog author. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Embertail Squirrel; Supporter Pack 1; #022; edition `q2b21w97nc`. [Publisher edition reference](https://index.gatcg.com/edition/embertail-squirrel-sp1) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"silvie" "Grand Archive" illustrator`; `"silvie" illustrator "Embertail Squirrel"`.
+- **Findings:** Representative-card search surfaced a [doodle-art article](https://blog.silvie.org/doodle-art) attributing humorous artwork to Silvie. This is a secondary interpretation and does not identify a real illustrator or account. The fan blog’s title is not an ownership chain.
+- **Next action:** Inspect publisher materials for the doodle-art attribution and retain a separate unresolved identity meanwhile.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A041 — Gendo
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Gendo"`.
+- **Identity:** Unknown; retain Gendo. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Ignite the Soul; Dawn of Ashes Alter Edition; #140; edition `fqsuo6qb0x`. [Publisher edition reference](https://index.gatcg.com/edition/ignite-the-soul-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Gendo" "Grand Archive" artist`; `"Gendo" "Ignite the Soul" artist`.
+- **Findings:** Game-specific and Ignite the Soul searches produced credits but no attributable artist account. Evangelion-related results do not establish identity.
+- **Next action:** Keep an account-free identity; seek an original credited-card portfolio or publisher artist tag.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A042 — 阿清Roro
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"阿清Roro"`.
+- **Identity:** Individual candidate: 阿清 / Roro Wu, @abab40116. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Claude, Fated Visionary; Alchemical Revolution; #182; edition `56djg0bo2f`. [Publisher edition reference](https://index.gatcg.com/edition/claude-fated-visionary-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"阿清Roro"`; `"abab40116" "Grand Archive"` (no indexed results).
+- **Findings:** [Mirror profile](https://twoucan.com/profile/abab40116) pairs 阿清 and Roro Wu and links a Pixiv profile. The handle-plus-game search returned no results. X returned 403 and Pixiv could not be opened. **Browser follow-up:** X now readable as 阿清 / Roro Wu; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Locate a readable Claude, Fated Visionary or Reconstructive Surgery commission statement before mapping the catalog credit.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@abab40116](https://x.com/abab40116) | Candidate | [Evidence](https://x.com/abab40116): Browser follow-up read the original account/page. X now readable as 阿清 / Roro Wu; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Pixiv | [Profile 3849392](https://www.pixiv.net/users/3849392) | Unavailable | [Evidence](https://twoucan.com/profile/abab40116): Numeric ID comes from mirror profile; direct page could not be opened. | 2026-10-14 |
+
+### A043 — Dragonart Tris
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Dragonart Tris"`.
+- **Identity:** Combined credit Dragonart Tris; related A044, no approved merge. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Fractured Crown; Fractured Crown; #024; edition `j3e15ioh3z`. [Publisher edition reference](https://index.gatcg.com/edition/fractured-crown-ftc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragonart Tris"`.
+- **Findings:** Separate exact-credit searches for both capitalization forms produced card-credit material but no artist-owned account. Search normalization does not establish that both forms share a member identity.
+- **Next action:** Find a studio/member roster or portfolio covering Fractured Crown and Atmos Shield before merging A043/A044.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A044 — DragonArt Tris
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt Tris"`.
+- **Identity:** Combined credit DragonArt Tris; related A043. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Atmos Shield; Mercurial Heart; #171; edition `571itod02g`. [Publisher edition reference](https://index.gatcg.com/edition/atmos-shield-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt Tris" artist`.
+- **Findings:** Reviewed this exact form separately; no attributable account was established. See A043 for the capitalization ambiguity and the paired research.
+- **Next action:** Retain this credit separately until a primary roster or portfolio supports the merge; do not publish a generic studio account as a personal account.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A045 — fuzichoco
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"fuzichoco"`.
+- **Identity:** Individual: fuzichoco / 藤ちょこ, explicitly paired on the artist’s official site. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Auspicious Feast; Promotional 2026; #063; edition `YFi0XyBeNj`. [Publisher edition reference](https://index.gatcg.com/edition/auspicious-feast-p26) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"fuzichoco" official website`; `"fuzichoco" "Grand Archive" site:gatcg.com` (no indexed results).
+- **Findings:** Opened the [official website](https://www.fuzichoco.com/) and its profile, which pair both names. The site directly links Twitter and Facebook. Browser inspection read the Facebook artist page and its reciprocal fuzichoco.com link, verifying that account. Twitter showed an error page in the browser and remains unavailable.
+- **Next action:** Use the verified website and Facebook page; recheck Twitter before publication.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [fuzichoco / 藤ちょこ](https://www.fuzichoco.com/) | Verified | [Evidence](https://www.fuzichoco.com/): Readable official artist site self-identifies both names; exact distinctive illustrator name matches the catalog credit. | 2026-10-14 |
+| Twitter | [@fuzichoco](https://twitter.com/fuzichoco) | Unavailable | [Evidence](https://www.fuzichoco.com/): Direct official-site link; destination returned 403. Ownership cross-link retained, availability/content inspection incomplete. | 2026-10-14 |
+| Facebook | [藤ちょこ (fuzichoco)](https://www.facebook.com/fuzichoco) | Verified | [Evidence](https://www.fuzichoco.com/): Direct official-site link; browser read a matching public artist page with reciprocal official website link. Login prompt dismissed without signing in. | 2026-10-14 |
+
+### A046 — Taki
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Taki"`.
+- **Identity:** Unknown; retain Taki. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Banner Knight; Mortal Ambition Starter Decks; #024; edition `7714p4k4ku`. [Publisher edition reference](https://index.gatcg.com/edition/banner-knight-ambsd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Taki" "Grand Archive" illustrator`; `"Taki" "Freydis" artist twitter`.
+- **Findings:** Game-specific and Freydis artist/Twitter searches produced credits without an attributable official account.
+- **Next action:** Keep an account-free identity; require a publisher tag or matching Freydis/Banner Knight portfolio rather than a short-name match.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A047 — YOHAKU
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"YOHAKU"`.
+- **Identity:** Unknown; retain YOHAKU. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Alice, Distorted Queen; Phantom Monarchs; #002; edition `QOTMVyjCSK`. [Publisher edition reference](https://index.gatcg.com/edition/alice-distorted-queen-ptm) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"YOHAKU" "Grand Archive" illustrator`; `"YOHAKU" "Alice" illustrator`.
+- **Findings:** Game-specific and Alice illustrator searches did not establish an official account. Unrelated artists and the Japanese art term are insufficient evidence.
+- **Next action:** Keep an account-free identity; seek an original Alice, Distorted Queen or Lu Bu commission post.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A048 — ZERONEXT
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"ZERONEXT"`.
+- **Identity:** Individual candidate: Zeronext / zeronext.bsky.social; catalog relationship unverified. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Frostsworn Paladin; Dawn of Ashes Alter Edition; #278; edition `e54zcaq5mq`. [Publisher edition reference](https://index.gatcg.com/edition/frostsworn-paladin-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"ZERONEXT" artist`; `"ZERONEXT" pixiv twitter`; `"ZERONEXT" illustrator bluesky`.
+- **Findings:** Opened the [Bluesky profile](https://bsky.app/profile/zeronext.bsky.social), which lists a same-name contact and Pixiv ID. The Pixiv destination could not be opened. Same-name software/AI companies are excluded.
+- **Next action:** Find a primary Frostsworn Paladin or other credited-card statement before attaching the profiles.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Bluesky | [@zeronext.bsky.social](https://bsky.app/profile/zeronext.bsky.social) | Candidate | [Evidence](https://bsky.app/profile/zeronext.bsky.social): Readable name/contact and portfolio link, but no inspected Grand Archive connection. | 2026-10-14 |
+| Pixiv | [Profile 3449131](https://www.pixiv.net/users/3449131) | Unavailable | [Evidence](https://bsky.app/profile/zeronext.bsky.social): Direct profile link; destination could not be opened. | 2026-10-14 |
+
+### A049 — ジェゼ一
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"ジェゼ一"`.
+- **Identity:** Individual candidate: ジェゼ一 / @ArtsJeze. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Bushwhack Bandit; Dawn of Ashes Alter Edition; #203; edition `1fz2bix6xo`. [Publisher edition reference](https://index.gatcg.com/edition/bushwhack-bandit-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"ジェゼ一"`; `"ArtsJeze" "Grand Archive"` (no indexed results).
+- **Findings:** [Mirror profile](https://twoucan.com/profile/ArtsJeze) uses the exact distinctive credit and lists an illustrator. Handle-plus-game search returned no results. Direct X returned 403. **Browser follow-up:** X now readable as ジェゼ一; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Seek a readable Bushwhack Bandit or other catalog-card post or publisher link before adopting the handle.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@ArtsJeze](https://x.com/ArtsJeze) | Candidate | [Evidence](https://x.com/ArtsJeze): Browser follow-up read the original account/page. X now readable as ジェゼ一; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A050 — 白霜茶
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"白霜茶"`.
+- **Identity:** Individual credit 白霜茶; related combined credits A025/A063. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Cato, Meadow's Channeler; .asphodel/paradise; #183; edition `Cs1ihx2Kav`. [Publisher edition reference](https://index.gatcg.com/edition/cato-meadows-channeler-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"白霜茶" 繪師`.
+- **Findings:** Searches did not establish an independent account. The publisher checklist names DragonArt 白霜茶 while the studio roster uses 白霜搽; see A025/A063.
+- **Next action:** Resolve the spelling/person relationship before sharing any roster-linked account with this bare credit.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A051 — Deeya Chaturvedi
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Deeya Chaturvedi"`.
+- **Identity:** Individual candidate: Deeya Chaturvedi. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Bombard Flarecannon; Alchemical Revolution; #031; edition `23ijp6tdoa`. [Publisher edition reference](https://index.gatcg.com/edition/bombard-flarecannon-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Deeya Chaturvedi" artist`; `"Deeya Chaturvedi" "Grand Archive"`.
+- **Findings:** An [interview](https://www.asiansinanimation.org/blog/meet-deeya-chaturvedi-former-aia-artistic-supervisor-and-game-artist) search result points to the same-name website. Website access failed, LinkedIn returned 999, and Bluesky failed to fetch. No inspected primary portfolio establishes Grand Archive work. Browser follow-up successfully read the website, which describes a game UI designer and links Behance/social profiles. No inspected Grand Archive commission was present; identity remains a candidate.
+- **Next action:** Recheck the portfolio for Bombard Flarecannon or another credited work, then follow its social links.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Deeya Chaturvedi](https://www.deeyachaturvedi.com/) | Candidate | [Evidence](https://www.asiansinanimation.org/blog/meet-deeya-chaturvedi-former-aia-artistic-supervisor-and-game-artist): Browser follow-up read the same-name game-design portfolio; catalog commission connection remains unresolved. | 2026-10-14 |
+| LinkedIn | [Deeya Chaturvedi](https://www.linkedin.com/in/deeya-chaturvedi) | Unavailable | [Evidence](https://www.linkedin.com/in/deeya-chaturvedi): Indexed same-name game artist; direct account returned 999. | 2026-10-14 |
+| Bluesky | [@reindeeya.bsky.social](https://bsky.app/profile/reindeeya.bsky.social) | Unavailable | [Evidence](https://bsky.app/profile/reindeeya.bsky.social): Indexed same-name artist; direct fetch failed and catalog connection is unverified. | 2026-10-14 |
+
+### A052 — DragonArt 倉倉
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt 倉倉"`.
+- **Identity:** Combined credit DragonArt 倉倉; member identity remains unconfirmed. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Andronika, Eternal Herald; Mercurial Heart; #134; edition `91nmnxS9wZ`. [Publisher edition reference](https://index.gatcg.com/edition/andronika-eternal-herald-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt 倉倉"`; `"倉倉" "Dragonart" twitter`.
+- **Findings:** Exact combined-name and studio/member/Twitter searches returned credit material without an attributable member account.
+- **Next action:** Find a studio roster or Andronika, Eternal Herald portfolio before attaching accounts or translating the member name.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A053 — Leviathan
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Leviathan"`, `"Leviathan "`.
+- **Identity:** Unknown; retain Leviathan and its whitespace variant. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Academy Guide; Alchemical Revolution; #042; edition `2l8lbewemh`. [Publisher edition reference](https://index.gatcg.com/edition/academy-guide-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Leviathan" "Grand Archive" illustrator`; `"Leviathan" "Academy Guide" artstation`.
+- **Findings:** Game-specific and Academy Guide/ArtStation searches produced card listings but no attributable artist-owned account. The common handle is not enough to choose a profile.
+- **Next action:** Keep an account-free identity; require an exact credited-artwork connection.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A054 — 白帝
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"白帝"`.
+- **Identity:** Individual candidate: 白帝 / WhiteM, @WhiteM2020. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Esteemed Knight; Dawn of Ashes Alter Edition; #085; edition `73f4k8gkhp`. [Publisher edition reference](https://index.gatcg.com/edition/esteemed-knight-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"白帝" "Grand Archive" artist`; `"白帝" illustrator pixiv`.
+- **Findings:** [Mirrored profile](https://www6.twstalker.com/WhiteM2020) pairs these names and a Pixiv ID, but direct X returned 403 and Pixiv could not be opened. No inspected source establishes the Esteemed Knight commission. **Browser follow-up:** X now readable as 白帝 / WhiteM; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find a primary card-work statement before accepting WhiteM as an alias or attaching accounts.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@WhiteM2020](https://x.com/WhiteM2020) | Candidate | [Evidence](https://x.com/WhiteM2020): Browser follow-up read the original account/page. X now readable as 白帝 / WhiteM; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Pixiv | [Profile 3342095](https://www.pixiv.net/users/3342095) | Unavailable | [Evidence](https://www6.twstalker.com/WhiteM2020): ID from mirrored profile; primary page could not be opened. | 2026-10-14 |
+
+### A055 — Andrew Yang
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Andrew Yang"`.
+- **Identity:** Individual credited as Andrew Yang; account identity not established. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Imperial Recruit; Alchemical Revolution Starter Decks; #049; edition `460isnc01f`. [Publisher edition reference](https://index.gatcg.com/edition/imperial-recruit-alcsd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Andrew Yang" "Grand Archive" artist`; `"Andrew Yang" artist Parhelion`.
+- **Findings:** A [Rachel Liu commission page](https://www.artstation.com/artwork/4NdeR8) is indexed with Andrew Yang as art director, and the opened [Parhelion company profile](https://www.linkedin.com/company/parhelion-studio-co) lists an employee of that name. Neither inspected evidence gives a verified personal artist account.
+- **Next action:** Seek a primary personal portfolio/client link for the Imperial Recruit or Prismatic Edge credits; avoid unrelated public figures with this name.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A056 — Chu
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Chu"`.
+- **Identity:** Unknown; bare Chu is not merged with A007/A030/A037. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Clover Treehouse; Distorted Reflections Alter Edition; #230; edition `FgM4sPWZOF`. [Publisher edition reference](https://index.gatcg.com/edition/clover-treehouse-dtr-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Chu" "Grand Archive" illustrator`; `"Chu" "Clover Treehouse" artist`.
+- **Findings:** Game-specific and Clover Treehouse searches did not establish an account. Results for Hanh Chu and Dragonart Chu are not proof that the bare credit shares either identity.
+- **Next action:** Resolve the exact Clover Treehouse/other printing attribution through an artist portfolio or publisher statement before merging.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A057 — SODA
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"SODA"`.
+- **Identity:** Unknown; retain SODA. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Fishing Accident; Dawn of Ashes Alter Edition; #168; edition `wl0px1y6is`. [Publisher edition reference](https://index.gatcg.com/edition/fishing-accident-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"SODA" "Grand Archive" illustrator`; `"SODA" "Fishing Accident" artist`.
+- **Findings:** Game-specific and Fishing Accident searches did not establish an official account. Game-character and beverage results are excluded.
+- **Next action:** Keep an account-free identity; seek an original credited-card portfolio post.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A058 — 南佑希
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"南佑希"`.
+- **Identity:** Individual candidate: 南佑希 / minamixdrops. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Enchanted Fete; GenSeCha; #007; edition `EkzNUQpm5f`. [Publisher edition reference](https://index.gatcg.com/edition/enchanted-fete-gsc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"南佑希"`; `"minamixdrops" official`.
+- **Findings:** Opened the [Foriio profile](https://www.foriio.com/minamixdrops), which explicitly pairs these names and includes a Grand Archive category. Indexed related works include Grand Archive chibi pieces, but no exact commissioned Enchanted Fete printing was established. The category timed out and an individual work page was inaccessible.
+- **Next action:** Inspect the Grand Archive category for the catalog-matching commission before verifying the portfolio as belonging to the credited artist.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Foriio | [南佑希 (minamixdrops)](https://www.foriio.com/minamixdrops) | Candidate | [Evidence](https://www.foriio.com/minamixdrops): Readable artist self-identification and game category; commissioned-card connection remains unverified. | 2026-10-14 |
+
+### A059 — Dragon Art
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Dragon Art"`.
+- **Identity:** Studio credit Dragon Art; possible relationship to A004 remains unapproved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Mary Ann, Maladroit Maid; Event Packs; #018; edition `cOxkoukLEJ`. [Publisher edition reference](https://index.gatcg.com/edition/mary-ann-maladroit-maid-evp-csr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragon Art" "Grand Archive" artist`.
+- **Findings:** Exact-credit/game search did not establish an independent account. A004’s Dragonart site is a related lead, but a spaced-name similarity does not resolve this printing.
+- **Next action:** Match Mary Ann, Maladroit Maid to a primary studio portfolio or publisher attribution before merging A059/A004.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A060 — Dragonart Antilous
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Dragonart Antilous"`.
+- **Identity:** Individual: 駿恆 / Antilous, with Dragonart studio relationship; retain combined credit. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** The Majestic Spirit; Radiant Origins; #034; edition `QLVS5YdfjR`. [Publisher edition reference](https://index.gatcg.com/edition/the-majestic-spirit-rdo) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragonart Antilous"`; `"Antilous" "Grand Archive"`.
+- **Findings:** Browser read the studio gallery, which labels Antilous’ portfolio and directly links social accounts. The linked X profile identifies 駿恆Antilous and links the same Facebook page; the linked Instagram identifies the artist and explicitly names DragonArt with its website. TaroTarou’s [original Grand Archive event/card-work post](https://x.com/TaroTarou_Art/status/1791654715933258183) includes the Antilous media tag, corroborating the team context.
+- **Next action:** Use the verified gallery, X and Instagram links. The gallery also exposes Facebook, ArtStation, Twitch and YouTube destinations; inspect those individually before adding them. Pixiv remains blocked.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Portfolio | [Antilous gallery](https://www.dragon-art.tw/gallery) | Verified | [Evidence](https://www.dragon-art.tw/gallery): Readable studio portfolio explicitly labels 駿恆 / Antilous and links the personal accounts. | 2026-10-14 |
+| X | [@antilous](https://x.com/antilous) | Verified | [Evidence](https://www.dragon-art.tw/gallery): Direct gallery link; browser read the matching artist profile, which links the same Facebook identity. | 2026-10-14 |
+| Instagram | [@antilous_chao](https://www.instagram.com/antilous_chao/) | Verified | [Evidence](https://www.dragon-art.tw/gallery): Direct gallery link; readable profile matches the artist and reciprocally names DragonArt with its website. | 2026-10-14 |
+
+### A061 — Dragonart KS
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Dragonart KS"`.
+- **Identity:** Combined credit Dragonart KS; member identity unknown. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Orb of Regret; Promotional 2023; #013; edition `aloqk1c7wj`. [Publisher edition reference](https://index.gatcg.com/edition/orb-of-regret-p23) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragonart KS"`; `"KS" "Orb of Regret" artist`.
+- **Findings:** Exact-credit and Orb of Regret searches produced card listings but no attributable account. The initials KS do not identify a member without a studio/publisher source.
+- **Next action:** Seek a studio roster or Orb of Regret commission post; retain a separate combined-credit identity.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A062 — DragonArt Zhang Iris
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt Zhang Iris"`.
+- **Identity:** Combined credit DragonArt Zhang Iris; same-name illustrator Linktree is a candidate. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Portside Pirate; Mercurial Heart; #124; edition `0arragp8m7`. [Publisher edition reference](https://index.gatcg.com/edition/portside-pirate-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt Zhang Iris"`; `"Zhang Iris" illustrator`.
+- **Findings:** Opened [Zhang Iris’ Linktree](https://linktr.ee/ZhangIris), which self-identifies an illustrator and lists social destinations. Its inspected text does not establish Dragonart membership or the Portside Pirate commission.
+- **Next action:** Establish the catalog-to-portfolio connection before accepting this link hub or its social accounts.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Linktree | [Zhang Iris](https://linktr.ee/ZhangIris) | Candidate | [Evidence](https://linktr.ee/ZhangIris): Readable same-name illustrator landing page; studio and Grand Archive connections remain unverified. | 2026-10-14 |
+
+### A063 — Dragonart 白霜搽
+
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
+- **Exact credits:** `"Dragonart 白霜搽"`.
+- **Identity:** Combined credit Dragonart 白霜搽; roster-supported personal account. Relationship to 白霜茶 remains unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Blazing Bowman; Fractured Crown; #050; edition `5ioh3z0y2s`. [Publisher edition reference](https://index.gatcg.com/edition/blazing-bowman-ftc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Dragonart 白霜搽"`; `"白霜搽" "Blazing Bowman"`; `"shuangchabai" "Grand Archive"` (no indexed results).
+- **Findings:** The studio roster directly links Instagram for the exact member spelling 白霜搽, also used on the studio homepage and in this catalog credit. Browser follow-up read that Instagram profile with the matching name. This verifies A063’s account without resolving the different 白霜茶 spelling in A025/A050.
+- **Next action:** Use the verified Instagram only for A063; do not propagate it to A025/A050 until spelling/identity evidence supports that relationship. The roster’s Facebook share link remains unavailable.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Instagram | [@shuangchabai](https://www.instagram.com/shuangchabai/) | Verified | [Evidence](https://www.dragon-art.tw/7th): Direct studio-member roster link plus readable browser profile identifying the same exact member name. Tracking query removed. | 2026-10-14 |
+| Facebook | [Roster share link](https://www.facebook.com/share/AnTPVUxMrGAj5qMQ/) | Unavailable | [Evidence](https://www.dragon-art.tw/7th): Extraction fetch failed; canonical account identity could not be recovered, so this share link remains withheld. | 2026-10-14 |
+
+### A064 — DragonArt 艾瞳A-Ton
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"DragonArt 艾瞳A-Ton"`.
+- **Identity:** Combined credit DragonArt 艾瞳A-Ton; @aton2503 is a member-name lead. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Winbless Forecaster; Mercurial Heart; #157; edition `mijilb6bwe`. [Publisher edition reference](https://index.gatcg.com/edition/winbless-forecaster-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"DragonArt 艾瞳A-Ton"`; `"艾瞳A-Ton"`.
+- **Findings:** [Mirrored artwork](https://twiman.net/user/857923182342230017/illust/1662082303315832834) pairs 艾瞳A-Ton with aton2503. Direct X returned 403; no inspected primary source confirms the Winbless Forecaster commission or studio relationship. **Browser follow-up:** X now readable as 艾瞳A-Ton; no inspected card-specific/studio connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find a readable artist-owned credited-card post or direct studio roster before adopting the account.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@aton2503](https://x.com/aton2503) | Candidate | [Evidence](https://x.com/aton2503): Browser follow-up read the original account/page. X now readable as 艾瞳A-Ton; no inspected card-specific/studio connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A065 — Ge-B
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Ge-B"`.
+- **Identity:** Individual candidate: Ge-B / gebdraws. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Mire Reparation; Distorted Reflections; #156; edition `tsyrw26gsm`. [Publisher edition reference](https://index.gatcg.com/edition/mire-reparation-dtr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Ge-B" illustrator`; `"Ge-B" "Grand Archive"`.
+- **Findings:** Opened the [Bluesky profile](https://bsky.app/profile/gebdraws.bsky.social), which self-identifies Ge-B and links other personal art accounts. No inspected primary material connects it to Mire Reparation.
+- **Next action:** Find a card-specific commission post before adopting this personal identity or its cross-linked handles.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Bluesky | [@gebdraws.bsky.social](https://bsky.app/profile/gebdraws.bsky.social) | Candidate | [Evidence](https://bsky.app/profile/gebdraws.bsky.social): Readable Ge-B illustrator profile; Grand Archive affiliation unresolved. | 2026-10-14 |
+
+### A066 — HYONEE
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"HYONEE"`.
+- **Identity:** Individual candidate: HYONEE / @JinHyeon929. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Lorraine, Blademaster; Kickstarter Promotional; #001; edition `CP1q0DCtyI`. [Publisher edition reference](https://index.gatcg.com/edition/lorraine-blademaster-ksp) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"HYONEE" illustrator`; `"HYONEE" "Grand Archive"`.
+- **Findings:** [Artist-profile coverage](https://acg17.com/73687.html) pairs HYONEE with the X handle and Pixiv ID. Direct X returned no readable profile content, and Pixiv could not be opened. Catalog credit confirms only the name, not these accounts. **Browser follow-up:** X now readable as HyoNee/RAUM with the same Pixiv ID; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Seek a readable Lorraine, Blademaster commission post or publisher link before verifying accounts.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@JinHyeon929](https://x.com/JinHyeon929) | Candidate | [Evidence](https://x.com/JinHyeon929): Browser follow-up read the original account/page. X now readable as HyoNee/RAUM with the same Pixiv ID; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Pixiv | [Profile 15457033](https://www.pixiv.net/users/15457033) | Unavailable | [Evidence](https://acg17.com/73687.html): Third-party profile ID; primary destination could not be opened. | 2026-10-14 |
+
+### A067 — Polar Engine
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Polar Engine"`.
+- **Identity:** Studio candidate: Polar Engine Studio. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** City Protector; Mercurial Heart; #046; edition `c9a8c16bn5`. [Publisher edition reference](https://index.gatcg.com/edition/city-protector-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Polar Engine" art studio`; `"Polar Engine" "Grand Archive"`.
+- **Findings:** Opened the [studio website](https://polarengine.com/) and [contact page](https://polarengine.com/contact). They identify the studio, but inspected text does not attribute City Protector or Grand Archive work. Social-media headings did not expose account URLs in extracted content.
+- **Next action:** Locate City Protector in the studio portfolio before verifying catalog affiliation; inspect actual social links rather than inventing handles.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Website | [Polar Engine Studio](https://polarengine.com/) | Candidate | [Evidence](https://polarengine.com/contact): Readable same-name studio site/contact; exact catalog commission remains unverified. | 2026-10-14 |
+
+### A068 — Primea studio
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Primea studio"`.
+- **Identity:** Primea studio; case variant of A001 is suspected but unapproved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Blazing Lunge; Mortal Ambition; #096; edition `rj87jd0g7l`. [Publisher edition reference](https://index.gatcg.com/edition/blazing-lunge-amb) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Primea studio" "Blazing Lunge"`.
+- **Findings:** Blazing Lunge searches show the lowercase credit in some card listings and normalized capitalization elsewhere. A001 still lacks a verified studio identity/account, so capitalization differences are not silently merged.
+- **Next action:** Resolve the A001 studio identity and confirm this specific printing attribution; retain its exact raw credit.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A069 — Rubi露比喵
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"Rubi露比喵"`.
+- **Identity:** Individual candidate: Rubi / 露比喵, @rubimeoww_draws. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Jinzhuo, Bands of Virtue; Proxia's Vault; #013; edition `Erzdq9c6Hp`. [Publisher edition reference](https://index.gatcg.com/edition/jinzhuo-bands-of-virtue-prxy) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Rubi露比喵"`; `"rubimeoww_draws" "Grand Archive"` (no indexed results).
+- **Findings:** Exact-credit search surfaced a [mirrored post](https://www.sotwe.com/sonsona__) naming 露比喵 Rubi and this handle. Handle-plus-game search returned no results and direct X failed to fetch. **Browser follow-up:** X now readable as 露比喵 Rubi; no inspected Jinzhuo commission connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find an original Jinzhuo, Bands of Virtue statement before mapping the catalog credit.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@rubimeoww_draws](https://x.com/rubimeoww_draws) | Candidate | [Evidence](https://x.com/rubimeoww_draws): Browser follow-up read the original account/page. X now readable as 露比喵 Rubi; no inspected Jinzhuo commission connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A070 — Sunny
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"Sunny"`.
+- **Identity:** Unknown; retain Sunny. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Map of Hidden Passage; Dawn of Ashes Alter Edition; #042; edition `uq20gvcgdm`. [Publisher edition reference](https://index.gatcg.com/edition/map-of-hidden-passage-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"Sunny" "Grand Archive" illustrator`; `"Sunny" "Map of Hidden Passage" artist`.
+- **Findings:** Game-specific and Map of Hidden Passage searches produced credits without an attributable artist-owned account. Unrelated Sunny artists are excluded.
+- **Next action:** Keep an account-free identity; require an exact credited-work portfolio or publisher link.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A071 — TEDDYPOCKY
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"TEDDYPOCKY"`.
+- **Identity:** Individual candidate: TEDDY / TEDDYPOCKY. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Trump Set; Promotional 2026; #019; edition `Zz8Gwi9qGw`. [Publisher edition reference](https://index.gatcg.com/edition/trump-set-p26) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"TEDDYPOCKY" artist`; `"TEDDYPOCKY" "Grand Archive"`.
+- **Findings:** Opened the [same-name Patreon](https://www.patreon.com/teddypocky/about), which self-identifies a freelance game artist. Direct X returned 403. No inspected primary material connects this artist to Trump Set. **Browser follow-up:** X now readable as TEDDY with artist role and official work links; no inspected Trump Set connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find a primary Trump Set commission or publisher collaboration tag before verifying accounts.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Patreon | [TeddyPocky](https://www.patreon.com/teddypocky/about) | Candidate | [Evidence](https://www.patreon.com/teddypocky/about): Readable same-name game-artist page; exact Grand Archive commission not established. | 2026-10-14 |
+| X | [@TEDDYPOCKY](https://x.com/TEDDYPOCKY) | Candidate | [Evidence](https://x.com/TEDDYPOCKY): Browser follow-up read the original account/page. X now readable as TEDDY with artist role and official work links; no inspected Trump Set connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A072 — 十尾t
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"十尾t"`.
+- **Identity:** Unresolved 十尾t; do not automatically strip the final t or merge A005. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Kongming, Ascetic Vice; Radiant Origins Pantheon Decks; #011; edition `DALCOGJu0U`. [Publisher edition reference](https://index.gatcg.com/edition/kongming-ascetic-vice-rdopd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"十尾t"`.
+- **Findings:** Exact-credit search identifies the Kongming, Ascetic Vice Pantheon printing with 十尾t. A005’s publisher-supported Juubi alias does not by itself establish that this extra character is a catalog error.
+- **Next action:** Compare the printing/artwork with A005’s Kongming editions and seek corrected publisher attribution before merging.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A073 — 桃李タロ
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"桃李タロ"`.
+- **Identity:** Individual candidate: 桃李タロ / @tori_mcct; unrelated to TaroTarou until proven otherwise. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Bubble Mage; Dawn of Ashes Alter Edition; #163; edition `ltv5klszvf`. [Publisher edition reference](https://index.gatcg.com/edition/bubble-mage-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"桃李タロ"`; `"tori_mcct" "Grand Archive"` (no indexed results).
+- **Findings:** Exact-name results include [post mirrors](https://twstalker.com/daifukuyasann) and a same-name artist’s book listing. Handle-plus-game search returned no results and direct X returned 403. **Browser follow-up:** X and its linked https://lit.link/en/toritaro hub are readable with reciprocal social links; no inspected Bubble Mage commission connection. Earlier extraction failures do not describe current browser availability.
+- **Next action:** Find an original Bubble Mage commission statement before adopting the handle; retain A031/A034 separately.
+
+| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| X | [@tori_mcct](https://x.com/tori_mcct) | Candidate | [Evidence](https://x.com/tori_mcct): Browser follow-up read the original account/page. X and its linked https://lit.link/en/toritaro hub are readable with reciprocal social links; no inspected Bubble Mage commission connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+### A074 — 蝦蝦
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"蝦蝦"`.
+- **Identity:** Unknown; retain 蝦蝦. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Library Witch; Kickstarter Promotional; #008; edition `zoRhMrDa0y`. [Publisher edition reference](https://index.gatcg.com/edition/library-witch-ksp) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"蝦蝦" "Grand Archive"`; `"蝦蝦" "Library Witch"`.
+- **Findings:** Game-specific and Library Witch searches produced credits but no attributable account. Dragonart’s roster member 蝦餅 is a different name and is not substituted.
+- **Next action:** Keep an account-free identity; require a primary Library Witch portfolio or publisher tag.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A075 — 道漫?
+
+- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Exact credits:** `"道漫?"`.
+- **Identity:** Unresolved 道漫?; related A003. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Astra Sight; Radiant Origins Pantheon Decks; #183; edition `4lhMCPDwMP`. [Publisher edition reference](https://index.gatcg.com/edition/astra-sight-rdopd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"道漫?" "Grand Archive"`; `"道漫" "Astra Sight" illustrator`.
+- **Findings:** Exact-credit/game and Astra Sight searches retain the question mark for the Radiant Origins Pantheon printing while other editions use 道漫. Search results cannot determine whether this was an editorial uncertainty or typo.
+- **Next action:** Compare the edition artwork and obtain a publisher correction or explicit attribution; do not remove the question mark in the mapping yet.
+
+**Links:** none verified; no attributable account URL established in this pass.
+
+### A076 — 阿冰
+
+- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Exact credits:** `"阿冰"`.
+- **Identity:** Unknown; retain 阿冰. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Credited example:** Backstab; Dawn of Ashes Alter Edition; #070; edition `lfpwkkbbu0`. [Publisher edition reference](https://index.gatcg.com/edition/backstab-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
+- **Searches:** `"阿冰" "Grand Archive"`; `"阿冰" "Backstab" artist`.
+- **Findings:** Game-specific and Backstab searches produced credits without an attributable official account. The common name is insufficient for profile selection.
+- **Next action:** Keep an account-free identity; revisit with a primary Backstab commission source.
+
+**Links:** none verified; no attributable account URL established in this pass.
 
 ## Unresolved identity decisions
 
-Review related spellings and attributions during discovery, including Primea Studio/Primea studio, Dragon Art/Dragonart and their member credits, Parhelion Studio/Parhelion Studio Co., 十尾/十尾t, 道漫/道漫?, and 白霜茶/Dragonart 白霜搽. These are research questions, not approved aliases or merges.
+The 41 Needs identity review entries above each state a next action. Prioritize the unresolved 白霜茶/白霜搽 relationship (A025/A050 versus verified A063), Primea and Parhelion studio identities, and malformed credits A072/A075. Then revisit readable same-name account candidates for card-specific evidence. Verified entries can still contain separately withheld links; each table records that distinction.
+
+Primea Studio/Primea studio, Dragon Art/Dragonart (A059/A004) and unresolved member credits, Parhelion Studio/Parhelion Studio Co., 十尾/十尾t, 道漫/道漫?, and 白霜茶/Dragonart 白霜搽 remain unmerged in the catalog mapping. A031/A034 share a supported TaroTarou identity; retain the studio-prefixed raw credit when implementing that mapping. Juubi for 十尾 and 藤ちょこ for fuzichoco have explicit naming evidence; this does not resolve the separate malformed catalog strings. No names were romanized or translated merely to create a slug.
 
 The 30 printings with missing credits are a separate catalog-quality follow-up. Do not infer their artists from similar artwork.

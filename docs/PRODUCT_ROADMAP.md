@@ -632,9 +632,12 @@ Follow the [Artist Pages roadmap](ARTIST_ROADMAP.md) and the
 [artist discovery tracker](ARTIST_DISCOVERY.md). Review each of the 76 trimmed catalog credits
 individually, retaining all 84 original credit strings and evidence for official accounts. Then
 establish curated identities, build the directory and credited-printing galleries, and verify the
-mobile and desktop journeys before release. Planning is established; discovery is attempted for 1/76 entries (A001 needs identity review; 0 resolved)
-and implementation has not started. The initiative is approximately 10% complete, with research
-effort dependent on ambiguous identities and account visibility.
+mobile and desktop journeys before release. The initial public-web pass covers 76/76 entries:
+10 credit entries have verified links, 25 have no verified links found, and 41 need identity review.
+There are 21 unique verified URLs across nine supported identities, including ten social profiles.
+Implementation has not started. Artist Pages is approximately 25% complete: planning and initial
+discovery are ready; identity follow-ups, directory data, pages, and launch checks remain. Further
+research effort depends on ambiguous identities and account visibility.
 
 ### Slice A — Usability release
 

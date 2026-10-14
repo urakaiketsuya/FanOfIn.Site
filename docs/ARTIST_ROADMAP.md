@@ -4,23 +4,27 @@ Make Grand Archive illustrators discoverable through dedicated artist pages, cre
 
 ## Scope and current progress
 
-Planning and the discovery queue are established. Discovery has been attempted for 1/76 entries, with A001 awaiting identity review and 0/76 resolved, covering 84 exact catalog credit strings after consolidating surrounding whitespace. Page implementation has not started. Artist Pages is approximately 10% complete: the existing foundation and delivery plan are ready; identity discovery, directory data, UI, and launch verification remain. Discovery effort depends on account visibility and ambiguous credits.
+The public-web discovery pass covers all 76 entries and 84 exact catalog credit strings. Ten credit entries have verified links (nine supported artist/studio identities; A031/A034 share TaroTarou), 25 have no verified links found, and 41 need identity review with explicit next actions. There are 21 unique verified URLs, including ten social-network profiles. These totals describe research coverage, not full identity resolution or account coverage.
+
+Page implementation has not started. Artist Pages is approximately 25% complete: planning and the initial discovery pass are ready; unresolved identities, curated directory data, UI, and launch verification remain. The estimate is approximate because further identity research depends on public evidence and account access.
 
 The first release includes a searchable artist directory, dedicated artist pages, galleries of the printings credited to each artist, and verified external links. All credited artists remain eligible for pages even when no official links are found. Biographies, social feeds, artist-managed profiles, and direct artist outreach are outside this release.
 
 ## Milestone 1 Complete artist discovery
 
-Work sequentially through the tracker. Begin with A001, Primea Studio, then continue in queue order. Finish and record each entry's outcome before starting the next; an unresolved identity can be recorded as Needs identity review so it does not block unrelated artists.
+The initial queue has a recorded outcome for every entry. Continue follow-up research one identity at a time, prioritizing the tracker’s unresolved decisions. An unresolved identity stays Needs identity review with a next action so it does not block unrelated artists.
 
 - [x] Inventory all current credit strings and create the discovery queue.
 - [x] Define research outcomes and the evidence required for official links.
-- [ ] Research every entry individually, including individuals, studios, and combined credits.
+- [x] Research every entry individually, including individuals, studios, and combined credits; initial public-web pass complete.
 - [ ] Resolve supported aliases and studio/member relationships without assuming that similar names identify the same artist.
-- [ ] Record official websites, portfolios, and social profiles with ownership evidence and verification dates.
-- [ ] Record no-result searches and identity blockers explicitly.
+- [x] Record discovered official websites, portfolios, and social profiles with ownership evidence and verification dates; withheld candidates remain separate.
+- [x] Record no-result searches and identity blockers explicitly.
 - [ ] Reconcile the completed queue with a fresh catalog snapshot and add newly encountered credits.
 
 **Acceptance:** every queue entry has a reviewed outcome and evidence record; no entry remains Not started or In progress. Needs identity review entries have explicit next actions and remain unresolved. Report research coverage and verified-link coverage separately: discovery does not require finding a social account for every artist.
+
+The snapshot’s initial-pass acceptance is met. Keep this milestone open for unresolved alias decisions and reconciliation against a fresh upstream catalog. The local snapshot was rechecked for queue coverage; no upstream refresh was run. Extraction failures were sometimes resolved through browser inspection; remaining inaccessible accounts, including Pixiv profiles blocked by browser policy, remain withheld.
 
 ## Milestone 2 Establish the curated directory
 
@@ -68,4 +72,4 @@ Catalog refreshes should surface new credits without overwriting curated researc
 
 ## Next work
 
-Research A002, 木叶, next. A001, Primea Studio, has an evidence record but needs primary evidence connecting its credited identity to official accounts; no links are verified. This does not block other entries. The main uncertainty is whether each credit can be connected to a publicly verifiable identity and official accounts.
+Resolve the 白霜茶/白霜搽 relationship for A025/A050 before sharing A063’s verified Instagram account across those credits, then revisit Primea/Parhelion and malformed credits A072/A075. Prepare the curated directory with verified URLs and explicit unresolved identities; preserve all exact credit strings and the supported A031/A034 TaroTarou relationship. No implementation blocker prevents that data work, but uncertain identities and uninspected accounts must remain withheld. Page implementation is a separate remaining step.
