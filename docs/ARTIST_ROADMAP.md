@@ -4,7 +4,7 @@ Make Grand Archive illustrators discoverable through dedicated artist pages, cre
 
 ## Scope and current progress
 
-The public-web discovery pass covers all 76 entries and 84 exact catalog credit strings. Eleven credit entries have verified links (ten supported artist/studio identities; A031/A034 share TaroTarou), 25 have no verified links found, and 40 need identity review with explicit next actions. There are 24 unique verified URLs, including eleven social-network profiles. These totals describe research coverage, not full identity resolution or account coverage.
+The public-web discovery pass covers all 76 entries and 84 exact catalog credit strings. Twelve credit entries have verified links (eleven supported artist/studio identities; A031/A034 share TaroTarou), 25 have no verified links found, and 39 need identity review with explicit next actions. There are 25 unique verified URLs, including twelve social-network profiles. These totals describe research coverage, not full identity resolution or account coverage.
 
 The first implementation is ready locally: `/artists` provides searchable artwork previews, and `/artists/:slug` provides verified accounts, card search, counts, and exact credited-printing galleries. The 76 discovery entries resolve to 75 pages because the supported TaroTarou credits share one identity. Artist Pages is approximately 95% complete for the first release: the core pages, initial account and portrait discovery, local UI checks, and account-destination review are complete; deployment and production verification remain. Deferred identity research continues separately. Research scope remains uncertain because it depends on public evidence and account access.
 
@@ -72,7 +72,7 @@ Catalog refreshes should surface new credits without overwriting curated researc
 
 ## Local implementation and verification — 2026-10-14
 
-The curated source is `shared/src/artistDirectory.ts` (mapping version 1), separate from refreshed card data. Surrounding credit whitespace is normalized; case, punctuation, studio/member distinctions, and non-Latin spellings remain exact. Only A031/A034 merge. The directory includes all 24 verified URLs with evidence and review dates. Candidates, blocked accounts, and uncertain aliases remain withheld in the discovery tracker. New credits receive stable fallback pages without inherited accounts; the catalog coverage regression check flags missing curated mappings for discovery. Published slugs must be preserved; add explicit redirects before any future rename or merge. No previously published artist URL needs migration in this initial release.
+The curated source is `shared/src/artistDirectory.ts` (mapping version 1), separate from refreshed card data. Surrounding credit whitespace is normalized; case, punctuation, studio/member distinctions, and non-Latin spellings remain exact. Only A031/A034 merge. The directory includes all 25 verified URLs with evidence and review dates. Candidates, blocked accounts, and uncertain aliases remain withheld in the discovery tracker. New credits receive stable fallback pages without inherited accounts; the catalog coverage regression check flags missing curated mappings for discovery. Published slugs must be preserved; add explicit redirects before any future rename or merge. No previously published artist URL needs migration in this initial release.
 
 Shared gallery logic groups each card once per artist and retains every credited printing. The printing selector updates both artwork and card link. Card details now accept `?edition=<uuid>` and preserve that selection while changing tabs; absent/unknown edition values fall back to the first printing. Card credits and Cards navigation lead to the artist pages. The sitemap source and future pipeline generation include artist URLs.
 
@@ -157,3 +157,12 @@ Key ownership sources remain the [Hanh Chu account hub](https://hanhchu.carrd.co
 Artist Pages is approximately 95% complete for the first release: implementation, initial discovery, local acceptance checks, and account-destination review are complete. Next is deployment when requested, followed by the production directory → artist → exact printing → artist/account journey and real transport recovery checks. Broader identity resolution remains a separate backlog with uncertain duration.
 
 Release validation: the app production build passes, including TypeScript compilation and 1,895 generated deck entry pages. The reviewed directory still contains 24 unique account URLs across ten identities. No application code or curated account data changed in this review.
+
+
+### Primea studio account 2026-10-14
+
+Added [Primea Studio’s X account](https://x.com/primeastudio), identified by the user and explicitly linked from [Zeklewa’s Art Director biography](https://x.com/Zeklewaaa). Zeklewa’s personal account remains evidence rather than a studio link or portrait. The studio’s zero-post profile has no selected custom avatar, so its page retains initials. The separate A068 credit remains unmerged. Coverage is now 25 verified URLs across eleven identities; portrait coverage remains 9/75.
+
+The user reports deployment complete. Production journey verification remains outstanding, and this follow-up requires the next release to appear publicly. Artist Pages remains approximately 95% complete for the first release; further identity discovery is an open-ended backlog. Next research priority is Parhelion, followed by specific portfolio candidates.
+
+Verification: app typecheck and all three artist regression tests pass. The studio link is present at 360px and 1280px with no horizontal page overflow; its mobile target is 48px high. Keyboard tabbing from the link reaches card search with visible focus. No interaction code changed; loading, empty, and failure states retain the preceding release-check coverage. Browser counts use the local cached catalog, so printing totals can differ from the committed research snapshot.

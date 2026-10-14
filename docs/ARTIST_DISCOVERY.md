@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 11 verified credit entries representing 10 identities; 25 no-link outcomes; 40 needing identity review. There are 24 unique verified URLs. The portrait pass below covers all 75 curated identities, with 9 verified images and 66 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 12 verified credit entries representing 11 identities; 25 no-link outcomes; 39 needing identity review. There are 25 unique verified URLs. The portrait pass below covers all 75 curated identities, with 9 verified images and 66 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -51,7 +51,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 
 | ID | Trimmed catalog credit | Unique cards | Printings | Status |
 | --- | --- | ---: | ---: | --- |
-| A001 | Primea Studio | 685 | 934 | Needs identity review |
+| A001 | Primea Studio | 685 | 934 | Reviewed with verified links |
 | A002 | 木叶 | 451 | 683 | Reviewed with no verified links found |
 | A003 | 道漫 | 398 | 1056 | Needs identity review |
 | A004 | Dragonart | 323 | 422 | Reviewed with verified links |
@@ -146,20 +146,21 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A001 — Primea Studio
 
-- **Status/date:** Needs identity review; researched 2026-10-14. No official studio links verified.
+- **Status/date:** Reviewed with verified links; researched 2026-10-14. Studio X account verified through its art director’s profile and the user’s identification.
 - **Exact credits:** `"Primea Studio"`, `"Primea Studio\n"`, `"Primea Studio "`. A068 (`"Primea studio"`) remains separate pending evidence.
-- **Identity:** Primea Studio is the publisher's credited name. Studio is a provisional classification from the credit; legal entity, membership, native name, and supported aliases remain unconfirmed. Stable ID/slug deferred until identity review.
+- **Identity:** Primea Studio; studio identity `a001`, slug `a001-primea-studio`. The user identified Zeklewa as director and supplied the studio account. Browser inspection of [Zeklewa’s profile](https://x.com/Zeklewaaa) confirms an explicit Art Director role linking directly to [@primeastudio](https://x.com/primeastudio). Other membership, legal entity, native name, and A068 alias remain unconfirmed.
 - **Credited examples:** Accursed Strength, Mercurial Heart Alter Edition, #192, edition `OAlyCUd1Nc`; Obscuring Threads, Promotional 2025, #061, edition `Ki2T3oBdUr`. Both match the local catalog. The [publisher's Obscuring Threads listing](https://index.gatcg.com/edition/obscuring-threads-p25) is indexed with this credit; direct page extraction returned only its title. The [Accursed Strength listing](https://index.gatcg.com/edition/accursed-strength-mrc-alter) likewise returned only a title.
-- **Searches:** `Primea Studio Grand Archive official artist social`; `Primea Studio official art studio`; `"Primea Studio" "Grand Archive"`; `"Primea" "artstation"`; `"Primea Studio" artist twitter`; `"Primea Studio" -site:ebay.* -site:mypcards.com -site:sumaholitcg.com social`; `"Primea Studio" site:artstation.com`; `"Primea Studio" site:gatcg.com`; `"Primea Studio" instagram OR twitter OR pixiv OR weibo`; `Zeklewa "Primea"`; `"PRIMEA STUDIO" art director`; `Zeklewa official website`; `"Zeklewa"`. No studio-owned account with an ownership chain was established.
-- **Identity lead:** A search-indexed passage on the [SynthV community wiki](https://synthv.fandom.com/wiki/Official_Illustrators) calls Zeklewa the studio's art director. Direct access failed, so its cited reference could not be inspected. Treat this as a lead, not established membership. [Coloso's instructor page](https://coloso.global/en/products/illustrator-zeklewa-us) identifies Zeklewa as an illustrator but does not establish the Grand Archive/studio connection in the inspected material.
+- **Searches:** `Primea Studio Grand Archive official artist social`; `Primea Studio official art studio`; `"Primea Studio" "Grand Archive"`; `"Primea" "artstation"`; `"Primea Studio" artist twitter`; `"Primea Studio" -site:ebay.* -site:mypcards.com -site:sumaholitcg.com social`; `"Primea Studio" site:artstation.com`; `"Primea Studio" site:gatcg.com`; `"Primea Studio" instagram OR twitter OR pixiv OR weibo`; `Zeklewa "Primea"`; `"PRIMEA STUDIO" art director`; `Zeklewa official website`; `"Zeklewa"`. These initial searches did not establish an ownership chain; the user-supplied account and browser follow-up below resolve that gap.
+- **Identity lead:** A search-indexed passage on the [SynthV community wiki](https://synthv.fandom.com/wiki/Official_Illustrators) calls Zeklewa the studio's art director. Direct access failed, so its cited reference could not be inspected. That indirect lead is now superseded by the director’s explicit X biography below. [Coloso's instructor page](https://coloso.global/en/products/illustrator-zeklewa-us) identifies Zeklewa as an illustrator but does not establish the Grand Archive/studio connection in the inspected material.
 
 | Platform | Account label / URL | Status | Evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
 | Carrd | [Zeklewa](https://zeklewa.carrd.co/) | Candidate | Opened personal landing page, which links Twitter and Pixiv. No studio or Grand Archive connection appears in its extracted text; not eligible as a studio link. | 2026-10-14 |
-| Twitter | [@zeklewaaa](https://twitter.com/zeklewaaa) | Unavailable | Directly linked by the Carrd page; destination fetch failed with cache miss. Personal account lead only; studio ownership/affiliation unverified. | 2026-10-14 |
-| Pixiv | [Zeklewa profile lead](https://www.pixiv.net/en/users/74928328) | Unavailable | Directly linked by Carrd; destination could not be opened. Personal account lead only; studio ownership/affiliation unverified. | 2026-10-14 |
+| X | [@Zeklewaaa](https://x.com/Zeklewaaa) | Verified affiliation evidence | Browser-read biography says Art Director and links @primeastudio. The user confirms the director relationship. Retained as evidence; personal account is not published as the studio account. | 2026-10-14 |
+| X | [@primeastudio](https://x.com/primeastudio) | Verified | User-supplied studio identification plus the director’s explicit profile link. Destination identifies primeastudio, lists a Zeklewa contact address, and has zero posts. | 2026-10-14 |
+| Pixiv | [Zeklewa profile lead](https://www.pixiv.net/en/users/74928328) | Unavailable | Directly linked by Carrd; destination could not be opened. Personal account lead only; not a studio account and not published. | 2026-10-14 |
 
-**Decisions and next actions:** Publish no links for A001 yet. Do not substitute a possible director's personal accounts for studio accounts. Similar search results for Primate Studio, Prime Studio, Prime 1 Studio, and Primea Design Studio lack evidence connecting them to this credit and are excluded. A Vietnamese company-directory result with the same name also lacks an artwork/publisher connection and does not establish identity. Seek a publicly readable studio-owned portfolio, publisher attribution linking the studio, or a primary statement establishing Zeklewa's role before resolving membership or the A068 spelling. No outreach performed. The remaining queue now has first-pass outcomes; retain A001 as an explicit follow-up.
+**Decisions and next actions:** Publish only the studio X link for A001, with the director’s profile as evidence. Keep Zeklewa’s personal accounts separate and retain initials: the studio profile does not provide a selected custom avatar. The studio profile lists `zeklewa@primea.studio`; the director lists `zeklewa@primeastudio.com`. These are observed contact strings, not verified website destinations. Do not infer websites from either email domain. The user’s identification connects this studio to the catalog; no separate Grand Archive commission post was found in the inspected profiles. A068 remains separate until its specific printing attribution is supported. No outreach performed.
 
 ### A002 — 木叶
 
@@ -1161,7 +1162,7 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ## Unresolved identity decisions
 
-The 40 Needs identity review entries above each state a next action. Prioritize the unresolved 白霜茶/白霜搽 relationship (A025/A050 versus verified A063), Primea and Parhelion studio identities, and malformed credits A072/A075. Then revisit readable same-name account candidates for card-specific evidence. Verified entries can still contain separately withheld links; each table records that distinction.
+The 39 Needs identity review entries above each state a next action. Prioritize the unresolved 白霜茶/白霜搽 relationship (A025/A050 versus verified A063), the remaining Primea credit variant, Parhelion studio identity, and malformed credits A072/A075. Then revisit readable same-name account candidates for card-specific evidence. Verified entries can still contain separately withheld links; each table records that distinction.
 
 Primea Studio/Primea studio, Dragon Art/Dragonart (A059/A004) and unresolved member credits, Parhelion Studio/Parhelion Studio Co., 十尾/十尾t, 道漫/道漫?, and 白霜茶/Dragonart 白霜搽 remain unmerged in the catalog mapping. A031/A034 share a supported TaroTarou identity; retain the studio-prefixed raw credit when implementing that mapping. Juubi for 十尾 and 藤ちょこ for fuzichoco have explicit naming evidence; this does not resolve the separate malformed catalog strings. No names were romanized or translated merely to create a slug.
 
@@ -1254,3 +1255,8 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A074 | 蝦蝦 | Initials; account identity unresolved | `"蝦蝦" "Library Witch"` |
 | A075 | 道漫? | Initials; account identity unresolved | `"道漫?" "Astra Sight"` |
 | A076 | 阿冰 | Initials; account identity unresolved | `"阿冰" "Grand Archive" artist` |
+
+
+## Primea studio follow up 2026-10-14
+
+The user supplied Primea’s director and studio X accounts. The director’s readable biography explicitly links the studio in the Art Director role, resolving A001’s account blocker. The studio account has zero posts and no selected portrait; its lack of posts does not invalidate the ownership link. Current portrait coverage remains 9/75, with 64 account-to-credit connections still unresolved and two verified studios retaining initials. The earlier complete portrait-pass table records the outcomes at the time of that pass.

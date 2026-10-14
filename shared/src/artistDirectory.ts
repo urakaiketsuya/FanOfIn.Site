@@ -6,11 +6,19 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a001",
     "slug": "a001-primea-studio",
     "name": "Primea Studio",
-    "kind": "unknown",
+    "kind": "studio",
     "credits": [
       "Primea Studio"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@primeastudio",
+        "url": "https://x.com/primeastudio",
+        "evidence": "https://x.com/Zeklewaaa",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a002",
