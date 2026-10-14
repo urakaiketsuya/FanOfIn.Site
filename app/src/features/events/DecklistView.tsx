@@ -203,6 +203,10 @@ export default function DecklistView({
           <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
           <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
             <div className="flex gap-1" role="group" aria-label="Decklist display">{(["visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
+            <div className="flex flex-wrap items-center gap-1">
+              <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
+              {collectionControl}
+            </div>
             {displayMode === "visual" && <>
               <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
               {[
@@ -217,8 +221,6 @@ export default function DecklistView({
             <Link to="/settings" className="inline-flex min-h-control items-center text-xs text-ctp-blue">More display settings →</Link>
           </div>
         </MenuDetails>
-        <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
-        {collectionControl}
         {allLines.length > 0 && <div className="flex w-full flex-wrap items-center justify-end gap-1 sm:ml-auto sm:w-auto">
           <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
           <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
