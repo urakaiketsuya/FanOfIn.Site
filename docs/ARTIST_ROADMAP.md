@@ -191,3 +191,12 @@ Added the user-supplied X and Pixiv accounts for 阿清Roro and the X profile av
 Coverage is now 28 official URLs across 13 identities and 11 portraits across 75 pages. Next recommended work is applying the same broader standard to the preserved YOHAKU lead. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks; further identity coverage remains uncertain.
 
 Verification: app typecheck, all three artist regression tests, and diff checks pass. At 360px and 1280px the avatar loads and the page has no horizontal overflow; both mobile account links are 48px high, and keyboard navigation reaches Pixiv with visible focus. Initial loading was observed. Empty and failure/retry states were not forced again for this data-only update and retain the prior release-check coverage. Pixiv destination content and production behavior remain unverified.
+
+
+### 砂木烟 user attribution 2026-10-14
+
+Added the user-supplied [Pixiv profile 62728045](https://www.pixiv.net/en/users/62728045) to 砂木烟’s page using the agreed allowance for direct user identification. This account is user-attributed, not independently verified: web retrieval failed, searches supplied no corroboration, and browser inspection was rejected by the site-safety policy. No workaround was attempted. The page retains initials because no profile image was inspected.
+
+Published coverage is 29 URLs across 14 identities: 28 independently supported URLs plus this user-attributed destination. Portrait coverage remains 11/75. Next is the preserved YOHAKU account update under the broader identity standard. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery verification; full identity coverage remains uncertain.
+
+Verification: app typecheck and all three artist regression tests pass. The exact Pixiv link appears at 360px and 1280px without horizontal overflow; its mobile target is 48px high, and keyboard tabbing reaches card search with visible focus. Initial loading was observed; empty and failure states were not forced again for this data-only update. Pixiv inspection and production behavior remain unverified.

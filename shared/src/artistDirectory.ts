@@ -76,7 +76,15 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "砂木烟"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Pixiv",
+        "label": "砂木烟",
+        "url": "https://www.pixiv.net/en/users/62728045",
+        "evidence": "https://www.pixiv.net/en/users/62728045",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a007",

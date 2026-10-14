@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 14 verified credit entries representing 13 identities; 24 no-link outcomes; 38 needing identity review. There are 28 unique verified URLs. The portrait pass below covers all 75 curated identities, with 11 verified images and 64 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 14 independently supported credit entries representing 13 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 38 needing identity review. There are 29 published URLs: 28 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 11 verified images and 64 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -56,7 +56,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A003 | 道漫 | 398 | 1056 | Needs identity review |
 | A004 | Dragonart | 323 | 422 | Reviewed with verified links |
 | A005 | 十尾 | 120 | 237 | Reviewed with no verified links found |
-| A006 | 砂木烟 | 110 | 177 | Reviewed with no verified links found |
+| A006 | 砂木烟 | 110 | 177 | Reviewed with user attribution |
 | A007 | Hanh Chu | 97 | 197 | Reviewed with verified links |
 | A008 | Parhelion Studio Co. | 72 | 96 | Needs identity review |
 | A009 | Alkaid | 63 | 89 | Needs identity review |
@@ -214,15 +214,17 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A006 — 砂木烟
 
-- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Status/date:** Reviewed with user attribution; researched 2026-10-14.
 - **Exact credits:** `"砂木烟"`.
 - **Identity:** Unknown; retain 砂木烟. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Academy Attendant; Alchemical Revolution; #041; edition `fiszdne4n3`. [Publisher edition reference](https://index.gatcg.com/edition/academy-attendant-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"砂木烟" artist`; `"砂木烟" 微博`.
-- **Findings:** Exact-name artist and Weibo searches returned card-credit material without an attributable artist-owned profile.
-- **Next action:** Keep an account-free identity; use Academy Attendant or another exact printing to evaluate future portfolio leads.
+- **Findings:** The user supplied Pixiv profile 62728045 as the account for 砂木烟. Published on that user attribution under the agreed broader identity standard. Independent inspection was not possible: web retrieval failed, indexed searches did not corroborate the relationship, and the browser site-safety policy rejected the exact supplied URL. No alternate access or bypass was attempted. This is not an independently verified profile match.
+- **Next action:** Retain the user-attributed Pixiv link and initials. Add a portrait or independent corroboration when accessible evidence becomes available.
 
-**Links:** none verified; no attributable account URL established in this pass.
+| Platform | Account / canonical URL | Status | Attribution evidence and limitation | Checked |
+| --- | --- | --- | --- | --- |
+| Pixiv | [砂木烟](https://www.pixiv.net/en/users/62728045) | User-attributed; published | User explicitly supplied this profile for 砂木烟. Destination contents, display name, and ownership were not independently inspected. The curated evidence URL identifies the supplied destination, not independent corroboration. | 2026-10-14 |
 
 ### A007 — Hanh Chu
 
