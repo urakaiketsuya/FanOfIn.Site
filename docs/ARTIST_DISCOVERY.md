@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 14 independently supported credit entries representing 13 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 38 needing identity review. There are 29 published URLs: 28 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 12 images (11 independently sourced and one user-supplied derivative) and 63 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 16 independently supported credit entries representing 15 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 36 needing identity review. There are 37 published URLs: 36 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 14 images (13 independently sourced and one user-supplied derivative) and 61 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -63,7 +63,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A010 | Gyool | 46 | 66 | Reviewed with verified links |
 | A011 | Pinakes | 38 | 71 | Reviewed with verified links |
 | A012 | 代々 | 34 | 73 | Needs identity review |
-| A013 | KHΩA | 33 | 39 | Needs identity review |
+| A013 | KHΩA | 33 | 39 | Reviewed with verified links |
 | A014 | Kaze | 32 | 45 | Reviewed with no verified links found |
 | A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
 | A016 | Sineia | 29 | 41 | Reviewed with no verified links found |
@@ -97,7 +97,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A044 | DragonArt Tris | 4 | 4 | Needs identity review |
 | A045 | fuzichoco | 4 | 5 | Reviewed with verified links |
 | A046 | Taki | 4 | 7 | Reviewed with no verified links found |
-| A047 | YOHAKU | 4 | 8 | Needs identity review |
+| A047 | YOHAKU | 4 | 8 | Reviewed with verified links |
 | A048 | ZERONEXT | 4 | 7 | Needs identity review |
 | A049 | ジェゼ一 | 4 | 9 | Needs identity review |
 | A050 | 白霜茶 | 4 | 7 | Needs identity review |
@@ -322,7 +322,7 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 - **Status/date:** Needs identity review; researched 2026-10-14.
 - **Exact credits:** `"KHΩA"`.
-- **Identity:** Individual candidate: KHΩA / KhoaPhan96. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual: KHΩA / KhoaPhan96. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Aenean Cyclic Winds; .asphodel/paradise; #172; edition `PPfoEDev3P`. [Publisher edition reference](https://index.gatcg.com/edition/aenean-cyclic-winds-prd) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"KHΩA" illustrator`; `"KhoaPhan96" "Grand Archive"` (no indexed results).
 - **Findings:** Opened the [commission page](https://khoaphan96.carrd.co/); indexed text includes the distinctive KHΩA spelling. It identifies an illustrator, but the inspected page does not establish a Grand Archive commission. A handle-plus-game search returned no results, and X returned 403. **Browser follow-up:** X now readable as KHΩA; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
@@ -330,8 +330,10 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| Carrd | [KhoaPhan96](https://khoaphan96.carrd.co/) | Candidate | [Evidence](https://khoaphan96.carrd.co/): Readable illustrator commission page; game/catalog connection unresolved. | 2026-10-14 |
-| X | [@KhoaPhan96](https://x.com/KhoaPhan96) | Candidate | [Evidence](https://x.com/KhoaPhan96): Browser follow-up read the original account/page. X now readable as KHΩA; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Carrd | [KhoaPhan96](https://khoaphan96.carrd.co/) | Verified | [Evidence](https://khoaphan96.carrd.co/): Readable illustrator commission page; game/catalog connection unresolved. | 2026-10-14 |
+| X | [@KhoaPhan96](https://x.com/KhoaPhan96) | Verified | [Evidence](https://x.com/KhoaPhan96): Browser follow-up read the original account/page. X now readable as KHΩA; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+
+**2026-10-14 resolution:** Published using the user identification, matching professional profile, and artist-owned links. This supersedes the candidate status and card-match requirement above. Catalog attribution is inferred from those signals; no exact Grand Archive artwork match is claimed. Original profile/hub inspected again today. Account ownership is supported by the artist profile; linked destination contents were not all independently inspected.
 
 ### A014 — Kaze
 
@@ -768,7 +770,7 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 - **Status/date:** Needs identity review; researched 2026-10-14.
 - **Exact credits:** `"YOHAKU"`.
-- **Identity:** Individual candidate: YOHAKU / 여백, @YH_0w0; Grand Archive credit connection unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual: YOHAKU / 여백, @YH_0w0; Grand Archive credit connection unresolved. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Alice, Distorted Queen; Phantom Monarchs; #002; edition `QOTMVyjCSK`. [Publisher edition reference](https://index.gatcg.com/edition/alice-distorted-queen-ptm) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"YOHAKU" "Grand Archive" illustrator`; `"YOHAKU" "Alice" illustrator`.
 - **Findings:** The user supplied @YH_0w0 as a possible match. Browser inspection reads YOHAKU / 여백 and the illustrator role on the original X profile. Its linked POTOFU hub identifies Illustrator YOHAKU, repeats the professional contact identity, and links back to the same X account. Inspected posts show other illustration projects; no Grand Archive commission or exact artwork match was established. The account cluster is attributable to this illustrator, but the connection to the catalog credit remains a candidate.
@@ -776,8 +778,10 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| X | [@YH_0w0](https://x.com/YH_0w0) | Candidate | User-supplied lead; readable illustrator profile links POTOFU, which reciprocally links this account. Grand Archive commission connection remains unresolved. | 2026-10-14 |
-| POTOFU | [YOHAKU](https://potofu.me/yohaku0w0) | Candidate | Direct profile link and matching artist/contact identity; inspected hub lists illustration work without a Grand Archive credit. | 2026-10-14 |
+| X | [@YH_0w0](https://x.com/YH_0w0) | Verified | User-supplied lead; readable illustrator profile links POTOFU, which reciprocally links this account. Grand Archive commission connection remains unresolved. | 2026-10-14 |
+| POTOFU | [YOHAKU](https://potofu.me/yohaku0w0) | Verified | Direct profile link and matching artist/contact identity; inspected hub lists illustration work without a Grand Archive credit. | 2026-10-14 |
+
+**2026-10-14 resolution:** Published using the user identification, matching professional profile, and artist-owned links. This supersedes the candidate status and card-match requirement above. Catalog attribution is inferred from those signals; no exact Grand Archive artwork match is claimed. Original profile/hub inspected again today. Account ownership is supported by the artist profile; linked destination contents were not all independently inspected.
 
 ### A048 — ZERONEXT
 
@@ -1353,3 +1357,7 @@ Additional primary follow-ups:
 ## 砂木烟 supplied portrait 2026-10-14
 
 The user supplied a screenshot of the profile image for 砂木烟: a gray-and-white cat wearing a witch hat and cloak. The second screenshot replaces the earlier text-obscured screenshot. The built-in image editor removed the dark screenshot surround and produced a cleaned, enlarged derivative; this is not a direct download from Pixiv. The derivative is stored at `app/public/images/artists/a006.jpg` and the unedited supplied screenshot at `app/public/images/artists/a006-source.png`. The portrait metadata points to that local source image and records the user-attributed Pixiv profile as its source page. Pixiv was not revisited. Coverage is now 12/75 portraits (16%), comprising 11 independently sourced images and one user-supplied derivative; 63 pages retain initials.
+
+## YOHAKU and KHΩA publication 2026-10-14
+
+Applied the agreed broader identity standard to the user-identified YOHAKU / 여백 and KHΩA / KhoaPhan96 profiles. YOHAKU’s POTOFU hub supports X, Pixiv 16331597, YouTube @Y0HAKU, Weibo 7264532085, and FANBOX. KHΩA’s original X profile supports VGen KhoaPhan96. Published these eight URLs and the two original profile portraits, preserving stable credits and slugs. No Pixiv navigation or card-match claim was made. Coverage: 37 URLs across 16 identities; 14/75 portraits (18.7%).

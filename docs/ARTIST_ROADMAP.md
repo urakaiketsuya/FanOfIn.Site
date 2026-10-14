@@ -209,3 +209,11 @@ Added the user-supplied cat-in-witch-costume profile image to 砂木烟’s page
 Artist Pages remains approximately 95% complete for the first release: local implementation is complete, with production journey and real transport recovery checks outstanding. Next is the preserved YOHAKU account update; further identity coverage remains open-ended.
 
 Verification: app typecheck, all three artist regression tests, and diff checks pass. The 400px avatar loads on 360px and 1280px artist pages with no horizontal overflow. This asset-only change does not alter controls; keyboard/touch and empty/error/retry behavior retain the preceding account-update checks and earlier release checks. Production behavior remains unverified.
+
+### YOHAKU and KHΩA identities 2026-10-14
+
+Published YOHAKU’s six artist-owned hub/account links and KHΩA’s X and linked VGen, using the user identifications plus matching professional profiles. Added both original profile portraits. Catalog mapping is inferred from these signals, without an exact artwork-match claim. Coverage is 37 URLs across 16 identities and 14/75 portraits.
+
+Verification: app typecheck, three artist regression tests, and diff checks pass. Both artist pages show loaded portraits at 360px and 1280px without horizontal overflow. All eight account targets are 48px high on mobile; keyboard navigation reaches VGen with visible focus. Loading was observed. Empty/error/retry states retain earlier release checks and were not forced for this data-only update. Production and real transport recovery remain unverified.
+
+Next: reassess SiriufLong’s linked artist account cluster under the broader identity standard. Artist Pages is approximately 95% complete for the first release, with local implementation complete and production journey/recovery checks remaining. Identity discovery is open-ended; 16/75 identities now have published links.

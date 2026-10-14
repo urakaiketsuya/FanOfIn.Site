@@ -240,11 +240,32 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a013",
     "slug": "a013-khωa",
     "name": "KHΩA",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "KHΩA"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@KhoaPhan96",
+        "url": "https://x.com/KhoaPhan96",
+        "evidence": "https://x.com/KhoaPhan96",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "VGen",
+        "label": "KHΩA",
+        "url": "https://vgen.co/KhoaPhan96",
+        "evidence": "https://x.com/KhoaPhan96",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "portrait": {
+      "src": "/images/artists/a013.jpg",
+      "sourceUrl": "https://x.com/KhoaPhan96",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1685288378399629312/nX_kuAgc_400x400.png",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a014",
@@ -704,11 +725,60 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a047",
     "slug": "a047-yohaku",
     "name": "YOHAKU",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "YOHAKU"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Website",
+        "label": "YOHAKU",
+        "url": "https://potofu.me/yohaku0w0",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "X",
+        "label": "@YH_0w0",
+        "url": "https://x.com/YH_0w0",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "YOHAKU",
+        "url": "https://www.pixiv.net/en/users/16331597",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "YouTube",
+        "label": "@Y0HAKU",
+        "url": "https://www.youtube.com/@Y0HAKU",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Weibo",
+        "label": "YOHAKU",
+        "url": "https://weibo.com/u/7264532085",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "FANBOX",
+        "label": "YOHAKU",
+        "url": "https://yohaku.fanbox.cc/",
+        "evidence": "https://potofu.me/yohaku0w0",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "portrait": {
+      "src": "/images/artists/a047.jpg",
+      "sourceUrl": "https://potofu.me/yohaku0w0",
+      "imageUrl": "https://contents.potofu.me/images/0IO5Cxt9sLVr.jpg",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a048",
