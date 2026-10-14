@@ -16,7 +16,10 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 
 ## Implementation handoff — 2026-10-14
 
-Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. All 21 verified URLs are curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
+Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
+
+
+Current follow-up totals (2026-10-14): 11 verified credit entries representing 10 identities; 25 no-link outcomes; 40 needing identity review. There are 24 unique verified URLs. The portrait pass below covers all 75 curated identities, with 9 verified images and 66 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -71,7 +74,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A021 | Marchon | 21 | 25 | Reviewed with no verified links found |
 | A022 | Siriuf Long | 20 | 34 | Needs identity review |
 | A023 | Yui | 20 | 28 | Reviewed with no verified links found |
-| A024 | 坊橋夜泊 | 20 | 45 | Needs identity review |
+| A024 | 坊橋夜泊 | 20 | 45 | Reviewed with verified links |
 | A025 | DragonArt 白霜茶 | 18 | 22 | Needs identity review |
 | A026 | Kumai | 17 | 39 | Reviewed with no verified links found |
 | A027 | T_Blence | 16 | 27 | Needs identity review |
@@ -458,18 +461,19 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A024 — 坊橋夜泊
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
 - **Exact credits:** `"坊橋夜泊"`, `" 坊橋夜泊"`.
-- **Identity:** Individual candidate: 坊橋夜泊 / Fang. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
-- **Credited example:** Auspicious Feast; Abyssal Heaven; #033; edition `5ajxcgg238`. [Publisher edition reference](https://index.gatcg.com/edition/auspicious-feast-hvn) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
-- **Searches:** `"坊橋夜泊" artist`; `"fang410693029" "Grand Archive"`.
-- **Findings:** Opened the [same-name Patreon](https://www.patreon.com/cw/fang410693029). [Mirrored posts](https://buhitter.com/author/fang410693029) mention Grand Archive commissions and a publisher guest-artist tag, but direct X returned 403. The Patreon alone does not complete the game-to-account ownership chain. **Browser follow-up:** X now readable and cross-links Patreon; the original commission permalink returned a browser error, so catalog-to-account verification is still incomplete. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Inspect a readable publisher guest-artist link or artist-owned Grand Archive post before publishing the accounts.
+- **Identity:** Individual: 坊橋夜泊; curated identity a024. No other credits merged.
+- **Credited examples:** Auspicious Feast, HVN #033, edition `5ajxcgg238`; Topsy Decree, PTM, edition `X6UGiWHVIo`. Both use this credit in the local catalog.
+- **Searches:** `"坊橋夜泊" artist`; `"fang410693029" "Grand Archive"`; `"坊橋夜泊" "Grand Archive"`.
+- **Findings:** The artist-owned [Topsy Decree post](https://home.gamer.com.tw/artwork.php?sn=6272205) explicitly states that they drew the card for Grand Archive's Phantom Monarchs set. Browser inspection read the post, followed its author profile, and recovered its direct X and Patreon destinations from the outbound links. X displays the same name and links Patreon; Patreon displays the same name and links back to X. This resolves the earlier missing commission-to-account connection. The X avatar is visibly used beside the artist's name and is stored locally.
+- **Next action:** Keep other outbound accounts withheld until their destinations are inspected. No outreach performed.
 
-| Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
+| Platform | Account / canonical URL | Status | Ownership evidence | Checked |
 | --- | --- | --- | --- | --- |
-| Patreon | [坊橋夜泊](https://www.patreon.com/cw/fang410693029) | Candidate | [Evidence](https://buhitter.com/author/fang410693029): Readable same-name creator page; primary catalog/account connection still needed. | 2026-10-14 |
-| X | [@fang410693029](https://x.com/fang410693029) | Candidate | [Evidence](https://x.com/fang410693029): Browser follow-up read the original account/page. X now readable and cross-links Patreon; the original commission permalink returned a browser error, so catalog-to-account verification is still incomplete. Withheld pending catalog identity evidence. | 2026-10-14 |
+| Portfolio | [坊橋夜泊](https://home.gamer.com.tw/f410693029) | Verified | [Original commission post](https://home.gamer.com.tw/artwork.php?sn=6272205) names Topsy Decree and links this author profile. | 2026-10-14 |
+| X | [@fang410693029](https://x.com/fang410693029) | Verified | Direct outbound link from the same commission post; readable profile identifies the artist and links Patreon. | 2026-10-14 |
+| Patreon | [坊橋夜泊](https://www.patreon.com/cw/fang410693029) | Verified | Direct outbound link from the commission post and X; readable destination names the artist and links back to X. | 2026-10-14 |
 
 ### A025 — DragonArt 白霜茶
 
@@ -1157,8 +1161,96 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ## Unresolved identity decisions
 
-The 41 Needs identity review entries above each state a next action. Prioritize the unresolved 白霜茶/白霜搽 relationship (A025/A050 versus verified A063), Primea and Parhelion studio identities, and malformed credits A072/A075. Then revisit readable same-name account candidates for card-specific evidence. Verified entries can still contain separately withheld links; each table records that distinction.
+The 40 Needs identity review entries above each state a next action. Prioritize the unresolved 白霜茶/白霜搽 relationship (A025/A050 versus verified A063), Primea and Parhelion studio identities, and malformed credits A072/A075. Then revisit readable same-name account candidates for card-specific evidence. Verified entries can still contain separately withheld links; each table records that distinction.
 
 Primea Studio/Primea studio, Dragon Art/Dragonart (A059/A004) and unresolved member credits, Parhelion Studio/Parhelion Studio Co., 十尾/十尾t, 道漫/道漫?, and 白霜茶/Dragonart 白霜搽 remain unmerged in the catalog mapping. A031/A034 share a supported TaroTarou identity; retain the studio-prefixed raw credit when implementing that mapping. Juubi for 十尾 and 藤ちょこ for fuzichoco have explicit naming evidence; this does not resolve the separate malformed catalog strings. No names were romanized or translated merely to create a slug.
 
 The 30 printings with missing credits are a separate catalog-quality follow-up. Do not infer their artists from similar artwork.
+
+## Complete portrait discovery pass 2026-10-14
+
+All 75 curated identities have a recorded portrait outcome. This pass searched the 66 identities that had no verified account at its start, inspected the remaining verified Pinakes and 白霜搽 profiles, and retained the earlier Dragonart website finding. Search results were screened for attributable official profiles; a matching name or third-party card listing alone was insufficient. New primary leads were inspected for 坊橋夜泊 and 南佑希. Existing portrait sources remain recorded in the curated directory and roadmap.
+
+Added Pinakes' profile logo from [X](https://x.com/PinaxPinakes), 坊橋夜泊's illustrated avatar from [X](https://x.com/fang410693029), and Dragonart 白霜搽's illustrated avatar from [Instagram](https://www.instagram.com/shuangchabai/). The Instagram image is assigned only to A063; the 白霜茶 spellings remain unresolved. All images are local assets with source-page, original-image URL, and verification date metadata.
+
+The [南佑希 portfolio work](https://www.foriio.com/minamixdrops/wk_Aaj1jmOjoGdZ9F8iXyAdFGfwqFR6WxR5Ybairb_5JAkKqLZh_A) and profile are now readable and show Grand Archive chibi pieces, but inspected material still does not identify the credited Enchanted Fete printing. That account and avatar remain withheld. Yui search results included a different full-name artist's proxy commission; it does not establish the short catalog credit. Dragonart's earlier inspected site provides artwork and a wide wordmark, with no selected profile avatar.
+
+Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lack an established account-to-credit connection and one verified studio lacks a selected avatar. The first portrait pass is complete; further images depend on new identity evidence or a usable official image, not an unprocessed queue. Existing identity-specific next actions remain in the evidence records above. No account login, outreach, alias changes, or inferred portrait assignments were performed.
+
+| ID | Artist | Portrait outcome | Search or inspected source |
+| --- | --- | --- | --- |
+| A001 | Primea Studio | Initials; account identity unresolved | `"Primea Studio" official profile avatar artist` |
+| A002 | 木叶 | Initials; account identity unresolved | `"木叶" "Grand Archive" artist profile` |
+| A003 | 道漫 | Initials; account identity unresolved | `"道漫" "Grand Archive" artist profile` |
+| A004 | Dragonart | Initials; no selected studio avatar | [Website reviewed earlier](https://www.dragon-art.tw/) |
+| A005 | 十尾 | Initials; account identity unresolved | `"十尾" Juubi illustrator official profile` |
+| A006 | 砂木烟 | Initials; account identity unresolved | `"砂木烟" 画师 主页` |
+| A007 | Hanh Chu | Verified image already added | [Official profile](https://www.artstation.com/rokudo_aurora) |
+| A008 | Parhelion Studio Co. | Initials; account identity unresolved | `"Parhelion Studio" "Grand Archive" portfolio` |
+| A009 | Alkaid | Initials; account identity unresolved | `"Alkaid" "Grand Archive" artist portfolio` |
+| A010 | Gyool | Verified image already added | [Official profile](https://www.gyool.info/) |
+| A011 | Pinakes | Added in this pass | [Official profile](https://x.com/PinaxPinakes) |
+| A012 | 代々 | Initials; account identity unresolved | `"代々" "Grand Archive" artist profile` |
+| A013 | KHΩA | Initials; account identity unresolved | `"KHΩA" "Grand Archive" illustration` |
+| A014 | Kaze | Initials; account identity unresolved | `"Kaze" "Grand Archive" artist portfolio` |
+| A015 | Rachel Liu | Verified image already added | [Official profile](https://www.liurachel.com/about-1) |
+| A016 | Sineia | Initials; account identity unresolved | `"Sineia" "Grand Archive" artist portfolio` |
+| A017 | Faicha | Initials; account identity unresolved | `"Faicha" "Grand Archive" artist profile` |
+| A018 | 檸檬夾心餅 | Initials; account identity unresolved | `"檸檬夾心餅" 画师 主页` |
+| A019 | Pekoe | Initials; account identity unresolved | `"Pekoe" "Grand Archive" illustrator social` |
+| A020 | 北飞飞 | Initials; account identity unresolved | `"北飞飞" 画师 主页` |
+| A021 | Marchon | Initials; account identity unresolved | `"Marchon" "Grand Archive" artist` |
+| A022 | Siriuf Long | Initials; account identity unresolved | `"Siriuf Long" official portfolio Grand Archive` |
+| A023 | Yui | Initials; account identity unresolved | `"Yui" "Grand Archive" illustrator profile` |
+| A024 | 坊橋夜泊 | Added in this pass | [Official profile](https://x.com/fang410693029) |
+| A025 | DragonArt 白霜茶 | Initials; account identity unresolved | `"DragonArt 白霜茶" profile` |
+| A026 | Kumai | Initials; account identity unresolved | `"Kumai" "Grand Archive" illustrator profile` |
+| A027 | T_Blence | Initials; account identity unresolved | `"T_Blence" "Grand Archive" artist` |
+| A028 | 杭州新艺族 | Initials; account identity unresolved | `"杭州新艺族" 插画 主页` |
+| A029 | Hori | Initials; account identity unresolved | `"Hori" "Grand Archive" illustrator profile` |
+| A030 | DragonArt Chu | Initials; account identity unresolved | `"DragonArt Chu" illustrator profile` |
+| A031 | TaroTarou | Verified image already added | [Official profile](https://lit.link/en/TaroTarou) |
+| A032 | NR | Initials; account identity unresolved | `"NR" "Grand Archive" illustrator profile` |
+| A033 | SalmonTea | Initials; account identity unresolved | `"SalmonTea" illustrator profile` |
+| A035 | AquaGirl | Initials; account identity unresolved | `"AquaGirl" "Grand Archive" artist profile` |
+| A036 | D Lam | Initials; account identity unresolved | `"D Lam" "Grand Archive" artist profile` |
+| A037 | Dragonart Chu | Initials; account identity unresolved | `"Dragonart Chu" artist official` |
+| A038 | Parhelion Studio | Initials; account identity unresolved | `"Parhelion Studio" official artist logo` |
+| A039 | 繪來 | Initials; account identity unresolved | `"繪來" "Grand Archive" artist` |
+| A040 | silvie | Initials; account identity unresolved | `"silvie" "Grand Archive" illustrator profile` |
+| A041 | Gendo | Initials; account identity unresolved | `"Gendo" "Grand Archive" illustrator` |
+| A042 | 阿清Roro | Initials; account identity unresolved | `"阿清Roro" "Grand Archive"` |
+| A043 | Dragonart Tris | Initials; account identity unresolved | `"Dragonart Tris" profile` |
+| A044 | DragonArt Tris | Initials; account identity unresolved | `"DragonArt Tris" illustrator official` |
+| A045 | fuzichoco | Verified image already added | [Official profile](https://fuzichoco.fanbox.cc/) |
+| A046 | Taki | Initials; account identity unresolved | `"Taki" "Grand Archive" illustrator profile` |
+| A047 | YOHAKU | Initials; account identity unresolved | `"YOHAKU" "Grand Archive" illustrator` |
+| A048 | ZERONEXT | Initials; account identity unresolved | `"ZERONEXT" "Grand Archive" illustrator` |
+| A049 | ジェゼ一 | Initials; account identity unresolved | `"ジェゼ一" "Grand Archive"` |
+| A050 | 白霜茶 | Initials; account identity unresolved | `"白霜茶" 画师 主页` |
+| A051 | Deeya Chaturvedi | Initials; account identity unresolved | `"Deeya Chaturvedi" "Grand Archive"` |
+| A052 | DragonArt 倉倉 | Initials; account identity unresolved | `"DragonArt 倉倉" artist` |
+| A053 | Leviathan | Initials; account identity unresolved | `"Leviathan" "Grand Archive" illustrator profile` |
+| A054 | 白帝 | Initials; account identity unresolved | `"白帝" "Esteemed Knight"` |
+| A055 | Andrew Yang | Initials; account identity unresolved | `"Andrew Yang" "Grand Archive" illustrator portfolio` |
+| A056 | Chu | Initials; account identity unresolved | `"Chu" "Clover Treehouse" artist` |
+| A057 | SODA | Initials; account identity unresolved | `"SODA" "Fishing Accident" illustrator` |
+| A058 | 南佑希 | Initials; account identity unresolved | `"南佑希" "Grand Archive"` |
+| A059 | Dragon Art | Initials; account identity unresolved | `"Dragon Art" "Grand Archive" artist profile` |
+| A060 | Dragonart Antilous | Verified image already added | [Official profile](https://www.artstation.com/antilous) |
+| A061 | Dragonart KS | Initials; account identity unresolved | `"Dragonart KS" illustrator` |
+| A062 | DragonArt Zhang Iris | Initials; account identity unresolved | `"DragonArt Zhang Iris" illustrator` |
+| A063 | Dragonart 白霜搽 | Added in this pass | [Official profile](https://www.instagram.com/shuangchabai/) |
+| A064 | DragonArt 艾瞳A-Ton | Initials; account identity unresolved | `"DragonArt 艾瞳A-Ton" illustrator` |
+| A065 | Ge-B | Initials; account identity unresolved | `"Ge-B" "Mire Reparation"` |
+| A066 | HYONEE | Initials; account identity unresolved | `"HYONEE" "Grand Archive" artist` |
+| A067 | Polar Engine | Initials; account identity unresolved | `"Polar Engine" "City Protector"` |
+| A068 | Primea studio | Initials; account identity unresolved | `"Primea studio" "Blazing Lunge" profile` |
+| A069 | Rubi露比喵 | Initials; account identity unresolved | `"Rubi露比喵" artist` |
+| A070 | Sunny | Initials; account identity unresolved | `"Sunny" "Map of Hidden Passage" artist` |
+| A071 | TEDDYPOCKY | Initials; account identity unresolved | `"TEDDYPOCKY" "Trump Set"` |
+| A072 | 十尾t | Initials; account identity unresolved | `"十尾t" artist profile` |
+| A073 | 桃李タロ | Initials; account identity unresolved | `"桃李タロ" "Bubble Mage"` |
+| A074 | 蝦蝦 | Initials; account identity unresolved | `"蝦蝦" "Library Witch"` |
+| A075 | 道漫? | Initials; account identity unresolved | `"道漫?" "Astra Sight"` |
+| A076 | 阿冰 | Initials; account identity unresolved | `"阿冰" "Grand Archive" artist` |

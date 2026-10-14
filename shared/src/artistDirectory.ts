@@ -196,7 +196,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://www.pinakes.me/",
         "verifiedAt": "2026-10-14"
       }
-    ]
+    ],
+    "portrait": {
+      "src": "/images/artists/a011.jpg",
+      "sourceUrl": "https://x.com/PinaxPinakes",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1998946770043453440/YxwGV8zB_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a012",
@@ -336,11 +342,39 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a024",
     "slug": "a024-坊橋夜泊",
     "name": "坊橋夜泊",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "坊橋夜泊"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Portfolio",
+        "label": "坊橋夜泊",
+        "url": "https://home.gamer.com.tw/f410693029",
+        "evidence": "https://home.gamer.com.tw/artwork.php?sn=6272205",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "X",
+        "label": "@fang410693029",
+        "url": "https://x.com/fang410693029",
+        "evidence": "https://home.gamer.com.tw/artwork.php?sn=6272205",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Patreon",
+        "label": "坊橋夜泊",
+        "url": "https://www.patreon.com/cw/fang410693029",
+        "evidence": "https://home.gamer.com.tw/artwork.php?sn=6272205",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "portrait": {
+      "src": "/images/artists/a024.jpg",
+      "sourceUrl": "https://x.com/fang410693029",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1510599670799605761/fDVlwtkI_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a025",
@@ -813,7 +847,13 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://www.dragon-art.tw/7th",
         "verifiedAt": "2026-10-14"
       }
-    ]
+    ],
+    "portrait": {
+      "src": "/images/artists/a063.jpg",
+      "sourceUrl": "https://www.instagram.com/shuangchabai/",
+      "imageUrl": "https://scontent.cdninstagram.com/v/t51.2885-19/325607621_8504014226340315_293610467092929294_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=102&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=Nx2A7uxnRs8Q7kNvwFt1Pk3&_nc_oc=AdqmzK6GqPhKCi8W0xpyp1cR4sj2mdkksnTiddbKAXlYzNUFu0xwfpmVYkpKAjOqgjJ9zMIoKElmrna53mXRLDpA&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_ss=7b689&oh=00_AQMStQ9qocnze3_WKUZpk7ot7J0bisH-ikaumbTPx6VVZA&oe=6AD56AB3",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a064",
