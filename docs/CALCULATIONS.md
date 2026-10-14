@@ -2355,11 +2355,31 @@ non-advanced Harmony/Melody found. Unknown memory cards are excluded. Forese's
 revealed misses go to the bottom before this search; Scavenge stops at its first
 hit. The additional song contributes its supported effect and activation triggers,
 under the existing assumption that found cards are payable. Neither ally wakes
-Forese. Already-drawn allies' On Enter abilities and repeat Musicbox activations
-remain outside this estimate. Forese's
+Forese. Already-drawn allies' On Enter abilities remain outside this estimate.
+The optional Musicbox scenario below permits one paid replay when explicitly ready. Forese's
 reported mean contribution is the found ally's boosted power (zero on misses), already included
 in the total. Full-list pairwise breakthrough comparisons retain their explicitly labeled
 all-allies ceiling. Neither combat view is added to direct-damage access probabilities.
+
+### Optional Musicbox replay in ally attack access
+
+`shared/src/musicboxReplay.ts` gates the optional Musicbox scenario. The UI defaults
+it off because Hindered means Clockwork Musicbox enters rested. Enabling it asserts
+that the listed Musicbox is now awake; the Reserve input is the remaining budget
+for its replay after other plays. The highest-level listed champion must share its
+Tamer class to store songs activated from hand. Drawn songs and a Forese-deployed
+Curator's found song qualify; Tribute Singer's direct activation does not.
+
+For each sample, try each distinct qualifying Harmony/Melody once, using its full
+numeric printed Reserve cost. Exclude unknown/variable/memory costs and explicit
+additional costs. Recompute the supported boosts and choose at most one replay
+that maximizes attack power. This preserves Performance Enthusiast's once-only
+counter and counts another Fanclub Leader trigger. Forese remains rested, so this
+does not grant another deployment. The reported Musicbox contribution is the
+change from the same sampled board without replay, already included in total
+boosted power. No prior-turn stored songs, cost discounts, additional wakes,
+element timing, or complete game-state affordability are inferred.
+
 
 ### Scavenge and Deluge forecasts (`app/src/lib/keywordForecast.ts`)
 

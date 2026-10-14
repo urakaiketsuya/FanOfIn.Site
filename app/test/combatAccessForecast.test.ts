@@ -33,3 +33,23 @@ test("rested Forese cannot attack or absorb a targeted combat boost", () => {
  assert.equal(r.boostedPower,10);
  assert.equal(r.foreseDeploymentChance,0);
 });
+
+test("Musicbox adds one paid replay without another Forese deployment", () => {
+ const main = [{name:"Fanclub Leader",quantity:1},{name:"Breath's Coloratura",quantity:1},{name:"Forese, Fervid Cantor",quantity:1}];
+ const material = [{name:"Clockwork Musicbox",quantity:1},{name:"Allen, Beast Beckoner",quantity:1}];
+ const baseline = computeCombatAccessForecast(main,material,cards,60,1);
+ const replay = computeCombatAccessForecast(main,material,cards,60,1,{ready:true,reserve:10});
+ assert.equal(baseline.musicboxAddedPower,0);
+ assert.equal(replay.musicboxAddedPower,2); // Leader activation and Coloratura counter.
+ assert.equal(replay.boostedPower,baseline.boostedPower+2);
+ assert.equal(replay.foreseDeploymentChance,baseline.foreseDeploymentChance);
+ assert.equal(computeCombatAccessForecast(main,material,cards,60,1,{ready:false,reserve:10}).boostedPower,baseline.boostedPower);
+});
+
+test("Musicbox chooses one best replay and does not repeat Enthusiast's initial counter", () => {
+ const main = [{name:"Fanclub Leader",quantity:1},{name:"Performance Enthusiast",quantity:1},{name:"Breath's Coloratura",quantity:1},{name:"Wuthering Sforzando",quantity:1}];
+ const material = [{name:"Clockwork Musicbox",quantity:1},{name:"Allen, Beast Beckoner",quantity:1}];
+ const replay = computeCombatAccessForecast(main,material,cards,60,1,{ready:true,reserve:10});
+ assert.equal(replay.musicboxAddedPower,8); // Sforzando +6 and Leader +1 per Resonator.
+ assert.equal(replay.sources.find(s=>s.name === "Performance Enthusiast")?.addedPower,1);
+});
