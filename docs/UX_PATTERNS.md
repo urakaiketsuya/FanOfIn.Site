@@ -192,3 +192,13 @@ Scope each artist pronunciation to an explicit nativeText substring. Latin studi
 When the user authorizes tentative readings, retain estimated provenance in curated metadata and research records. Per user preference, pronunciation labels do not display question marks. Replace estimates with artist-confirmed readings when available. Tentative pronunciation does not establish an account identity or alias.
 
 Artist pronunciation annotations target English speakers: display Japanese readings in romaji (ja-Latn), with macrons for long vowels, and Chinese fallbacks in pinyin. Preserve native-script-only ruby scope. Search ignores Latin diacritics.
+
+## Collection category goals
+
+Collection Progress offers Set, Rarity, Artist, Champion and Keyword groups with card previews,
+readable names and separate progress bars. Multiple category goals can be pinned on this device.
+Artist and rarity goals require matching catalog printings; set goals offer any-printing card
+coverage or each matching printing. Champion groups include champion cards only. Show saved
+ownership separately from draft changes, and Needs identification when unknown printing pools
+might cover missing editions. Use the existing collection card sheet for acquisitions and
+identification; preserve parent quantity drafts when switching Cards/Progress or goal filters.

@@ -1,4 +1,4 @@
-import type { Card, CollectionEntry, CollectionUpdateLine } from "@gatcg/shared";
+import { collectionPlaysetTarget, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
 
@@ -7,7 +7,7 @@ export function supportsPlayset(card: Card): boolean {
 }
 
 export function playsetTarget(card: Card): number {
-  return card.cost_memory != null || card.cost?.type === "memory" ? 1 : 4;
+  return collectionPlaysetTarget(card);
 }
 
 /** Collection goals are independent of deck legality and pool physical printings only. */

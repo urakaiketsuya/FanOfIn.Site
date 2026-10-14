@@ -5031,3 +5031,29 @@ to the same selected section. Editing quantities recomputes the panel from the l
 The optional full-archive blend pools tournament entries and unique community lists,
 with filter-relative populations and tournament-only outcomes. See
 [CARD_STAPLES_BLEND.md](CARD_STAPLES_BLEND.md) for formulas and source limitations.
+
+## Collection category progress
+
+`shared/src/collectionProgress.ts` builds independent set-family, rarity, artist, champion,
+and keyword groups. Set families use the existing explicit mapping. Artist identities use
+curated credit aliases; rarity and artist membership belongs to the exact catalog edition.
+Champion groups contain only CHAMPION cards, grouped by the name before the first comma;
+support cards and tournament usage do not establish membership. Keywords use the existing
+shared bold ability-keyword patterns, including their existing exclusions.
+
+One-of-each goals count distinct card UUIDs with physical ownership across any printing.
+Playsets use the existing collection targets (one for memory-cost cards, otherwise four),
+and completion counts fully covered cards, not pooled copies. Each-matching-printing goals
+count distinct card/edition pairs; this is mandatory for artist and rarity goals and optional
+for sets. All finishes of an exact edition pool together. Unspecified or unknown editions
+never satisfy exact-printing goals; missing editions of those cards show Needs identification.
+These goals collect catalog printings, not distinct illustrations or finish variants.
+
+Percentage is floor(100 × completed requirements / total requirements); extra copies and
+proxies cannot complete other requirements. Empty catalogs and failed loads do not produce
+completion claims. Groups overlap and must not be summed into a collection total. Lent,
+assigned and reserved physical copies remain owned. Confirmed progress uses saved inventory;
+quantity drafts show separate previews and reuse the existing atomic collection save flow.
+Multiple category goals are stored per user on this device, independently of the existing
+single set/deck goal. Storage failures retain previous goals. New catalog additions may lower
+completion; this feature shows current coverage, not historical acquisition progress.

@@ -102,3 +102,4 @@ export * from './artists';
 export * from './artistDirectory';
 
 export * from './artistSeo';
+export * from "./collectionProgress.js";

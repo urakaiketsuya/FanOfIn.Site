@@ -12,6 +12,9 @@ import DisclosureChevron from "../../components/DisclosureChevron";
 import { useCardLocations } from "./useCardLocations";
 import CardLocationSummary from "./CardLocationSummary";
 import CollectionBrowser from "./CollectionBrowser";
+import CollectionProgressView from "./CollectionProgressView";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import Button from "../../components/ui/Button";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { collectionTotalsByCard, type AccountUser, type CollectionEntry, type CollectionTransaction, type CollectionUpdateLine, type CollectionUpdateMode, type SavedDeck } from "@gatcg/shared";
@@ -49,11 +52,12 @@ export default function CollectionIndex() {
   const [searchParams] = useSearchParams();
   const focusCardUuid = searchParams.get("card");
   const cards = useCardCatalog();
+  const { phase: catalogPhase } = useSyncProgress();
   const [shopping, setShopping] = useState(false);
   const cardsByName = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
   const [reviewChanges, setReviewChanges] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [view, setView] = useState<"sets" | "add" | "import" | "coverage" | "history">("sets");
+  const [view, setView] = useState<"sets" | "progress" | "add" | "import" | "coverage" | "history">("sets");
   const [user, setUser] = useState<AccountUser | null | undefined>();
   const tracking = useCardLocations(Boolean(user));
   const openLocations = (uuid: string) => navigate(`/card-locations?card=${encodeURIComponent(uuid)}`);
@@ -173,7 +177,7 @@ export default function CollectionIndex() {
   if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><PageHeader title="My Collection" description="Sign in to track your cards and build decks from what you own." /><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></PageLayout>;
 
   const collectionTools = <div className="grid gap-2"><Link to="/card-locations" className="flex min-h-12 items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Where are my cards? →</Link>{([
-    ["sets", "Cards"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],
+    ["sets", "Cards"], ["progress", "Progress"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],
   ] as const).map(([destination, label]) => <button key={destination} type="button" onClick={() => {setView(destination); setToolsOpen(false);}} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-left text-sm">{label}</button>)}</div>;
 
   return <PageLayout data-component="CollectionIndex" width="wide">
@@ -187,7 +191,7 @@ export default function CollectionIndex() {
       <p className="mt-3 max-w-2xl text-sm text-ctp-subtext1">Lent a card? Use the same cards across decks? Track your copies and find which ones are available to use.</p>
       <div className="mt-4 flex flex-wrap gap-2"><Button variant="primary" onClick={() => setView("import")}>Import cards</Button><Link to="/card-locations" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Find your copies</Link></div>
     </section>
-    <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />
+    {view !== "progress" && <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />}
     {decksError && <Button className="mt-2" disabled={busy} onClick={() => void refresh().catch(() => undefined)}>Retry collection and decks</Button>}
     {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} onAcquire={name => {
       if (busy || shoppingBlocked) return;
@@ -208,10 +212,14 @@ export default function CollectionIndex() {
     {saveQueue.pending && !busy && <p role="status" className="my-2 text-sm text-ctp-yellow">The last batch is unconfirmed. Retry save before editing or discarding these changes.</p>}
     {notice && <Panel key={notice} tone="info" padding="sm" className="state-arrive mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
     {tracking.error && <p role="alert" className="mt-2 text-sm text-ctp-red">{tracking.error}</p>}
-    {view !== "sets" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
-    <div hidden={view !== "sets"}>
+    {view !== "sets" && view !== "progress" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
+    {(view === "sets" || view === "progress") && <div className="mt-4"><Tabs baseId="collection-browse" label="Collection view" variant="pill" wrap tabs={[{ key: "sets", label: "Cards" }, { key: "progress", label: "Progress" }]} active={view === "progress" ? "progress" : "sets"} onChange={setView} /></div>}
+    <TabPanel baseId="collection-browse" tab="progress" active={view} keepMounted>
+      <CollectionProgressView key={user.id} userId={user.id} cards={cards} entries={entries} savedEntries={savedEntries} available={collectionReady && !collectionError && catalogPhase === "done" && cards.length > 0} error={collectionError ?? (catalogPhase === "error" ? "Card data could not load. Retry to refresh progress." : catalogPhase === "done" && !cards.length ? "No card catalog is available. Retry to refresh progress." : undefined)} onRetry={() => { if (catalogPhase === "error" || !cards.length) window.location.reload(); else void refresh().catch(() => undefined); }} busy={busy || !!saveQueue.pending} onUpdate={update} />
+    </TabPanel>
+    <TabPanel baseId="collection-browse" tab="sets" active={view} keepMounted>
       {collectionError ? <div role="alert" className="mt-4 text-sm text-ctp-yellow"><p>{collectionError}</p><button type="button" onClick={() => void refresh().catch(() => undefined)} className="min-h-12 text-ctp-blue">Retry</button></div> : !collectionReady ? <p role="status" className="mt-4">Loading collection progress…</p> : <CollectionBrowser focusCardUuid={focusCardUuid} onReviewDraft={() => { setNotice(null); setReviewChanges(true); }} renderTracking={uuid => <Link to={`/card-locations?card=${encodeURIComponent(uuid)}`} target="_blank" rel="noreferrer" aria-label="Locations and loans, opens in a new tab" className="flex min-h-12 items-center text-sm text-ctp-blue">Locations & loans ↗</Link>} renderStatus={uuid => trackingById.has(uuid) ? <CardLocationSummary cardUuid={uuid} record={trackingById.get(uuid)} entries={savedEntries} decks={decks} disabled={!tracking.ready || pendingCount>0} onClick={()=>openLocations(uuid)}/> : null} cards={cards} entries={entries} savedEntries={savedEntries} busy={busy || !!saveQueue.pending} onUpdate={update} />}
-    </div>
+    </TabPanel>
     <div hidden={view !== "add"}>
 
     <details className="mt-6 rounded-xl border border-ctp-surface1 p-3"><summary className="flex min-h-12 cursor-pointer items-center justify-between font-semibold">Add a deck or set<DisclosureChevron /></summary><p className="mt-1 text-xs text-ctp-subtext1">Build your collection from a deck or a set. Review your quantities, then save them together. Saved batches appear in Recent changes and can be undone.</p><div className="mt-4 grid gap-4 lg:grid-cols-2">
