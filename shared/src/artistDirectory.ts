@@ -180,7 +180,14 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "slugAliases": [
       "a038-parhelion-studio"
-    ]
+    ],
+    "portrait": {
+      "src": "/images/artists/a008.jpg",
+      "sourceUrl": "https://parhelion.gg/",
+      "imageUrl": "https://parhelion.gg/img/slider-bg.jpg",
+      "verifiedAt": "2026-10-14",
+      "position": "right center"
+    }
   },
   {
     "id": "a009",

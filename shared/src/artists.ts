@@ -23,6 +23,7 @@ export interface ArtistIdentity {
     src: string;
     fit?: 'cover' | 'contain';
     framing?: 'card-art';
+    position?: string;
     sourceUrl: string;
     imageUrl: string;
     verifiedAt: string;

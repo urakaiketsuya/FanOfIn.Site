@@ -1420,3 +1420,12 @@ At the user’s request, the artist identity a040 silvie uses the level 1 champi
 Next: publish and verify the avatar in production, then resume artist discovery. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks. Identity discovery remains open-ended.
 
 Verification: app typecheck, all four artist tests, and diff checks pass. The 500px-wide source loads in the mobile 360px artist avatar and desktop 1280px directory avatar; visual checks confirm face-focused framing without card text or page overflow. Loading and empty search states were observed. Search is 48px high with visible keyboard focus. Error/retry and production were not repeated for this image change.
+
+
+## Parhelion selected artwork avatar 2026-10-14
+
+At the user’s request, a008 uses the original https://parhelion.gg/img/slider-bg.jpg illustration from the studio website as its avatar. Saved the unmodified 1298×700 image as app/public/images/artists/a008.jpg; a right-aligned CSS focal point keeps the characters visible inside the portrait circle. The shared portrait supports an optional object position. This is studio-site artwork selected by the user, not a newly discovered social avatar. Gallery credits and links remain unchanged. Image coverage is 19/66 identities.
+
+Next: publish the Parhelion and Silvie avatar updates, then finish production verification. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks. Identity discovery remains open-ended.
+
+Verification: app typecheck, all four artist tests, and diff checks pass. The original 1298px-wide image loads at 360px on the artist page and 1280px in the directory, with the right-aligned crop visible and no horizontal overflow. The directory card is keyboard reachable with a solid focus outline. Loading was observed. Touch controls and empty/error/retry behavior retain earlier checks; they were not repeated for this decorative image update. Production remains unverified.

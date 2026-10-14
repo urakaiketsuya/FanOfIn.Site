@@ -180,3 +180,5 @@ Studio artist pages show a responsive grid of credited artists with portraits or
 Studio logos may use contained portrait images with padding to preserve their complete mark. Transparent portraits use the avatar surface behind the image so fallback initials do not show through.
 
 User-selected champion avatars may frame an original card image within the portrait circle. Preserve the original file and record its card source and representative-image status in discovery notes. The avatar does not change artist credit attribution.
+
+Wide artist images may specify an explicit portrait focal position to keep the subject visible within the circular avatar. Preserve the original downloaded image.
