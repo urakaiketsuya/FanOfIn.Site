@@ -1,0 +1,18 @@
+# Account BFF deployment keeps workspace source and manifests for npm and types.
+# Large site artifacts and local-only files do not belong in the server build.
+data
+node_modules
+**/node_modules
+**/dist
+**/.cache
+**/.wrangler
+**/.vercel
+.vercel
+.git
+.claude
+.codex
+.agents
+**/.env*
+**/.dev.vars*
+**/*.tsbuildinfo
+app/public

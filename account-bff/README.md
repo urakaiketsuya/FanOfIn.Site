@@ -2,13 +2,15 @@
 
 Vercel proxy for `https://accounts.fanofin.site/api/*`. It keeps the GitHub Pages frontend while making account cookies same-site and JavaScript-inaccessible.
 
-Create a Vercel project with this directory as its root and configure:
+Create a Vercel project with `account-bff` as its Root Directory and **Include source files outside of the Root Directory in the Build Step** enabled, and configure:
 
 - `ACCOUNT_WORKER_URL=https://fanofin-accounts-production.fanofin-match-ingestion-worker.workers.dev`
 - `BFF_SHARED_SECRET=<a random secret also stored with Wrangler for the account Worker>`
 - `ALLOWED_ORIGIN=https://fanofin.site`
 
 Attach `accounts.fanofin.site` to the project. The frontend sends credentialed requests to `/api/v1/*`; this function validates the origin, attaches the private Worker credential, forwards the session cookie, and relays the response.
+
+Run CLI deployments from the **repository root**, not from `account-bff`. Link the repository root to the existing `fanofin-account-bff` project (or set `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` for that project), then run `vercel deploy --prod`. The root `.vercelignore` includes the BFF, shared sources, and workspace manifests while excluding large site datasets and local-only files. This preserves the relative shared type imports and the root dependency lockfile. The configured build command runs the BFF typecheck and fails deployment if those imports are missing.
 
 ## Deck social previews
 

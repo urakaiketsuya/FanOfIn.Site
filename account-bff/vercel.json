@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run typecheck",
   "functions": {
     "api/index.ts": {
       "maxDuration": 30
