@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 16 independently supported credit entries representing 15 identities, plus one user-attributed credit entry/identity; 23 no-link outcomes; 36 needing identity review. There are 37 published URLs: 36 independently supported and one supplied by the user without independent inspection. The portrait pass below covers all 75 curated identities, with 14 images (13 independently sourced and one user-supplied derivative) and 61 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 16 independently supported credit entries representing 15 identities, plus two user-attributed credit entries/identities; 22 no-link outcomes; 36 needing identity review. There are 38 published URLs: 36 independently supported and two user-attributed. The portrait pass below covers all 75 curated identities, with 15 images (14 independently sourced and one user-supplied derivative) and 60 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -66,7 +66,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A013 | KHΩA | 33 | 39 | Reviewed with verified links |
 | A014 | Kaze | 32 | 45 | Reviewed with no verified links found |
 | A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
-| A016 | Sineia | 29 | 41 | Reviewed with no verified links found |
+| A016 | Sineia | 29 | 41 | Reviewed with user attribution |
 | A017 | Faicha | 28 | 50 | Reviewed with verified links |
 | A018 | 檸檬夾心餅 | 26 | 44 | Reviewed with no verified links found |
 | A019 | Pekoe | 25 | 30 | Reviewed with no verified links found |
@@ -363,15 +363,15 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A016 — Sineia
 
-- **Status/date:** Reviewed with no verified links found; researched 2026-10-14.
+- **Status/date:** Reviewed with user attribution; researched 2026-10-14.
 - **Exact credits:** `"Sineia"`.
-- **Identity:** Unknown; retain Sineia. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Unknown; retain Sineia. Stable identity a016, slug a016-sineia; no unlisted aliases are approved.
 - **Credited example:** Break Apart; Promotional 2026; #014; edition `pJJckOK8Cr`. [Publisher edition reference](https://index.gatcg.com/edition/break-apart-p26) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"Sineia" Grand Archive artist`; `"Sineia" artstation`.
 - **Findings:** Game-specific search and an ArtStation search did not establish an artist-owned account. A [TCGplayer collaboration article](https://seller.tcgplayer.com/blog/get-your-exclusive-grand-archive-tcg-break-apart-promo-card) is a useful card-credit lead, not an artist account. Unrelated Sineia businesses and artists are excluded.
-- **Next action:** Keep an account-free identity; use the Break Apart collaboration to seek a primary artist cross-link.
+- **Next action:** Retain the supplied Facebook link; seek a public profile portrait or artist-owned cross-link when available.
 
-**Links:** none verified; no attributable account URL established in this pass.
+**Links:** [Facebook — Sineia Yu](https://www.facebook.com/imstupidegg/), user-attributed 2026-10-14. Browser-visible name matches; login overlay prevents full profile inspection. Earlier no-link findings describe the initial search.
 
 ### A017 — Faicha
 
@@ -1361,3 +1361,11 @@ The user supplied a screenshot of the profile image for 砂木烟: a gray-and-wh
 ## YOHAKU and KHΩA publication 2026-10-14
 
 Applied the agreed broader identity standard to the user-identified YOHAKU / 여백 and KHΩA / KhoaPhan96 profiles. YOHAKU’s POTOFU hub supports X, Pixiv 16331597, YouTube @Y0HAKU, Weibo 7264532085, and FANBOX. KHΩA’s original X profile supports VGen KhoaPhan96. Published these eight URLs and the two original profile portraits, preserving stable credits and slugs. No Pixiv navigation or card-match claim was made. Coverage: 37 URLs across 16 identities; 14/75 portraits (18.7%).
+
+## Sineia Facebook identification 2026-10-14
+
+The user identified https://www.facebook.com/imstupidegg/ as Sineia. Original browser inspection shows “Sineia Yu | Facebook” and “See more from Sineia Yu,” with a login overlay limiting inspection. Published the Facebook link for stable identity a016 using direct user attribution plus the matching visible profile name. This supersedes A016’s earlier no-link outcome. The artist role, card attribution, profile content, and portrait were not independently inspected; retain unknown kind and initials. Web extraction failed. No login or outreach was performed. Coverage is 38 URLs across 17 identities, including two user-attributed identities; 14/75 portraits.
+
+### Sineia portrait follow-up
+
+Dismissing the non-binding login overlay revealed the public profile, including a digital creator role, illustration commission bio, and the black-and-white illustrated profile portrait. Saved the original public avatar as a016.jpg with its observed CDN URL; no login or image generation was needed. Individual kind is now supported by the public profile. This supersedes the inspection/portrait limitations above, while catalog mapping remains user-attributed. Portrait coverage is 15/75 (20%).

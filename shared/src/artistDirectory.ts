@@ -305,11 +305,25 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a016",
     "slug": "a016-sineia",
     "name": "Sineia",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "Sineia"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Facebook",
+        "label": "Sineia Yu",
+        "url": "https://www.facebook.com/imstupidegg/",
+        "evidence": "https://www.facebook.com/imstupidegg/",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "portrait": {
+      "src": "/images/artists/a016.jpg",
+      "sourceUrl": "https://www.facebook.com/imstupidegg/",
+      "imageUrl": "https://scontent.fric1-1.fna.fbcdn.net/v/t1.6435-1/37769246_1590189384443869_823083314947555328_n.jpg?stp=dst-jpg_tt6&cstp=mx1890x1890&ctp=s480x480&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=1d2534&_nc_ohc=ZZwkd4AGc3AQ7kNvwHA8Sx_&_nc_oc=AdpjHuzd7PKLdIWjEdnzOBf75Uyb3BOM3-WcgDvkZ0pIljUfa6pJxekZbAbZ5bQPBwPqCYGe6Dm1UVqVzn0AlOYY&_nc_zt=24&_nc_ht=scontent.fric1-1.fna&_nc_gid=YpvKw4TO6Uvpe2d33j5Oog&_nc_ss=7b289&oh=00_AQMYTyjxCsb_PI8j8zY9AevUW7myng79pLjqVSJWlrxJdw&oe=6AF71A7E",
+      "verifiedAt": "2026-10-14"
+    }
   },
   {
     "id": "a017",

@@ -217,3 +217,13 @@ Published YOHAKU’s six artist-owned hub/account links and KHΩA’s X and link
 Verification: app typecheck, three artist regression tests, and diff checks pass. Both artist pages show loaded portraits at 360px and 1280px without horizontal overflow. All eight account targets are 48px high on mobile; keyboard navigation reaches VGen with visible focus. Loading was observed. Empty/error/retry states retain earlier release checks and were not forced for this data-only update. Production and real transport recovery remain unverified.
 
 Next: reassess SiriufLong’s linked artist account cluster under the broader identity standard. Artist Pages is approximately 95% complete for the first release, with local implementation complete and production journey/recovery checks remaining. Identity discovery is open-ended; 16/75 identities now have published links.
+
+### Sineia Facebook 2026-10-14
+
+Added the user-identified Facebook imstupidegg account. The original destination shows Sineia Yu, but a login overlay limits independent inspection; attribution is recorded as user-supplied. Retained initials. Coverage: 38 URLs across 17 identities; 14 portraits.
+
+Verification: three artist regression tests and diff checks pass. At 360px and 1280px, the exact Facebook link appears without horizontal overflow. Mobile link height is 48px; keyboard navigation reaches search with visible focus. Loading was observed. Empty/error/retry states were not repeated for this data-only change; prior checks apply. Production remains unverified.
+
+Next: reassess SiriufLong’s artist-owned account cluster. Artist Pages remains approximately 95% complete for the first release, with local implementation complete and production journey/recovery checks outstanding. Full identity discovery has no fixed completion scope; 17/75 identities have published links.
+
+Sineia portrait follow-up: closing the login overlay revealed the public digital creator profile and original illustrated avatar. Added the unmodified downloaded avatar and individual kind. Portrait coverage is 15/75 (20%). The catalog match remains user-attributed. App typecheck and artist tests pass; the 480px avatar loads at 360px and 1280px without horizontal overflow.
