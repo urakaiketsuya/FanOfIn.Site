@@ -981,11 +981,32 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a058",
     "slug": "a058-南佑希",
     "name": "南佑希",
-    "kind": "unknown",
+    "kind": "individual",
+    "portrait": {
+      "src": "/images/artists/a058.png",
+      "sourceUrl": "https://www.foriio.com/minamixdrops",
+      "imageUrl": "https://img.foriio.com/profiles/106933/avatar/thumb2x/c64cf94f99c8",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "南佑希"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Foriio",
+        "label": "南佑希 (minamixdrops)",
+        "url": "https://www.foriio.com/minamixdrops",
+        "evidence": "https://www.foriio.com/minamixdrops/wk_Aaj1jmOjoGdZ9F8iXyAdFGfwqFR6WxR5Ybairb_5JAkKqLZh_A",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "X",
+        "label": "@minamixdrops",
+        "url": "https://x.com/minamixdrops",
+        "evidence": "https://www.foriio.com/minamixdrops",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a060",
