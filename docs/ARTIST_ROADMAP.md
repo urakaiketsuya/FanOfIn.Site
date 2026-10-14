@@ -248,3 +248,14 @@ Verification: all three artist tests pass, including exact printing preservation
 Next: resolve the remaining ambiguous spellings before continuing SiriufLong discovery. Artist Pages remains approximately 95% complete for the first release, with production journey and real transport recovery checks outstanding. Identity discovery remains open-ended.
 
 App typecheck passed. Directory search returns one Tris entry, and an unmatched query shows the empty state.
+
+
+## Further spelling consolidation 2026-10-14
+
+Parhelion Studio and Parhelion Studio Co. now share a008. The original [studio website](https://parhelion.gg/) uses Parhelion Studio in its introduction and Parhelion Studio Co. in its copyright. Added the website under the broader identity standard: the matching studio names and anime artwork business support the catalog mapping, though the website does not identify a specific Grand Archive commission. No studio-member identities were merged.
+
+Resolved two malformed credits using the publisher's printed card images. The [Kongming RDOPD page](https://index.gatcg.com/edition/kongming-ascetic-vice-rdopd) still says 十尾t, but its [printed card](https://api.gatcg.com/cards/images/DALCOGJu0U.jpg) credits 十尾. The [Astra Sight RDOPD page](https://index.gatcg.com/edition/astra-sight-rdopd) still says 道漫?, but its [printed card](https://api.gatcg.com/cards/images/4lhMCPDwMP.jpg) credits 道漫. These primary printed credits support merging a072 into a005 and a075 into a003. Raw catalog strings remain unchanged; former URLs resolve through slug aliases. This supersedes the earlier unresolved status for all three groups.
+
+Coverage is 66 identities, 41 URLs across 19 linked identities, and 16 portraits. Generic Chu, Hanh Chu, and Dragonart Chu remain distinct; no new evidence resolves their relationship. Next: continue SiriufLong discovery. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks; identity discovery remains open-ended.
+
+Verification: app typecheck, all three artist regression tests, and diff checks pass. Old Parhelion and 十尾t URLs open their combined galleries at 360px (79 cards / 102 printings and 117 / 231 respectively); the old 道漫? URL opens the combined 398-card / 1057-printing gallery at 1280px. No horizontal overflow. The website target is 48px high and keyboard search focus is visible. Loading was observed; empty/error/retry states retain earlier checks and were not repeated for this data-only update. Production remains unverified.

@@ -40,9 +40,13 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "道漫",
     "kind": "unknown",
     "credits": [
-      "道漫"
+      "道漫",
+      "道漫?"
     ],
-    "links": []
+    "links": [],
+    "slugAliases": [
+      "a075-道漫"
+    ]
   },
   {
     "id": "a004",
@@ -72,9 +76,13 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "十尾",
     "kind": "unknown",
     "credits": [
-      "十尾"
+      "十尾",
+      "十尾t"
     ],
-    "links": []
+    "links": [],
+    "slugAliases": [
+      "a072-十尾t"
+    ]
   },
   {
     "id": "a006",
@@ -149,11 +157,23 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a008",
     "slug": "a008-parhelion-studio-co",
     "name": "Parhelion Studio Co.",
-    "kind": "unknown",
+    "kind": "studio",
     "credits": [
-      "Parhelion Studio Co."
+      "Parhelion Studio Co.",
+      "Parhelion Studio"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Website",
+        "label": "Parhelion Studio",
+        "url": "https://parhelion.gg/",
+        "evidence": "https://parhelion.gg/",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
+    "slugAliases": [
+      "a038-parhelion-studio"
+    ]
   },
   {
     "id": "a009",
@@ -617,16 +637,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": []
   },
   {
-    "id": "a038",
-    "slug": "a038-parhelion-studio",
-    "name": "Parhelion Studio",
-    "kind": "unknown",
-    "credits": [
-      "Parhelion Studio"
-    ],
-    "links": []
-  },
-  {
     "id": "a039",
     "slug": "a039-繪來",
     "name": "繪來",
@@ -1060,16 +1070,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": []
   },
   {
-    "id": "a072",
-    "slug": "a072-十尾t",
-    "name": "十尾t",
-    "kind": "unknown",
-    "credits": [
-      "十尾t"
-    ],
-    "links": []
-  },
-  {
     "id": "a073",
     "slug": "a073-桃李タロ",
     "name": "桃李タロ",
@@ -1086,16 +1086,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "kind": "unknown",
     "credits": [
       "蝦蝦"
-    ],
-    "links": []
-  },
-  {
-    "id": "a075",
-    "slug": "a075-道漫",
-    "name": "道漫?",
-    "kind": "unknown",
-    "credits": [
-      "道漫?"
     ],
     "links": []
   },
