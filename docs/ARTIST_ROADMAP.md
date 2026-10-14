@@ -103,3 +103,9 @@ Rachel Liu's mobile artist header (360px) and desktop directory result (1280px) 
 Added fuzichoco's illustrated avatar from the [official FANBOX profile](https://fuzichoco.fanbox.cc/), linked directly by the [official website](https://www.fuzichoco.com/). The displayed 160px user icon is stored locally with source metadata. Portrait coverage is now 4 of 75 identities; 71 remain without a verified image. Dragonart's gallery provides artwork and a wide wordmark, while Fuzichoco's website biography is text-only; those assets were not selected as portraits.
 
 The portrait displays correctly in the 360px artist page and 1280px directory, with no visible overflow. App typecheck and all three artist regression tests pass. No interaction code changed; keyboard, forced image failure, and enlarged text were not rechecked. Artist Pages remains approximately 80% complete: core pages work, with broader discovery and release verification remaining; discovery scope is uncertain.
+
+### Hanh Chu profile image — 2026-10-14
+
+Added the illustrated avatar displayed beside Hanh Chu's name on the [ArtStation profile](https://www.artstation.com/rokudo_aurora). The profile links back to the already verified Wix website and ArtStation portfolio, confirming the identity. The published 72px avatar is stored locally with source metadata. This resolves the earlier ArtStation image-inspection gap. Portrait coverage is now 5 of 75 identities; 70 remain without a verified image.
+
+The avatar loads correctly on the artist page at 360px and 1280px without horizontal overflow. App typecheck and all three artist regression tests pass. No controls changed; keyboard, forced image failure, and enlarged text were not rechecked. Artist Pages remains approximately 80% complete: core implementation is finished, with broader discovery and release verification remaining; discovery scope is uncertain.

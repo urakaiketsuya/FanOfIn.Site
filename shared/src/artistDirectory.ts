@@ -75,6 +75,12 @@ export const artistDirectory: ArtistIdentity[] = [
     "slug": "a007-hanh-chu",
     "name": "Hanh Chu",
     "kind": "individual",
+    "portrait": {
+      "src": "/images/artists/a007.jpg",
+      "sourceUrl": "https://www.artstation.com/rokudo_aurora",
+      "imageUrl": "https://cdna.artstation.com/p/users/avatars/000/058/784/medium/86da8291dab5dac4de447af596cee95d.jpg?1670552973",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "Hanh Chu"
     ],
