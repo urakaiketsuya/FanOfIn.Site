@@ -224,6 +224,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a015",
+    "portrait": {
+      "src": "/images/artists/a015.webp",
+      "sourceUrl": "https://www.liurachel.com/about-1",
+      "imageUrl": "https://images.squarespace-cdn.com/content/v1/642a3833cdf19824d1337ed9/8f708b54-e5e1-4a8d-857b-ca0dbe88dcdd/IMG_6445.jpg?format=300w",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "a015-rachel-liu",
     "name": "Rachel Liu",
     "kind": "individual",
