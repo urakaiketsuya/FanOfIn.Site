@@ -19,7 +19,7 @@ export interface ArtistIdentity {
     /** Exact native-script substring to annotate; excludes Latin prefixes and suffixes. */
     nativeText: string;
     text: string;
-    lang: 'zh-Latn-pinyin' | 'ja' | 'en';
+    lang: 'zh-Latn-pinyin' | 'ja-Latn' | 'en';
     basis: 'standard-mandarin' | 'artist-confirmed' | 'estimated';
     sourceUrl?: string;
   };

@@ -1588,3 +1588,12 @@ The user requests an attempt at the four unresolved readings. Added them with ba
 Focused searches also used `"南佑希" "みなみ"`, `"桃李タロ" "toritaro"`, and `"ジェゼ一" "Jeze"`; none supplied explicit artist confirmation. Reading coverage is 21/65 identities: 17 Mandarin fallbacks and four estimates. Confirmed readings should replace estimates when evidence arrives.
 
 Verification: app typecheck, all four artist tests, and diff checks pass. At 360px, 南佑希's kana search returns its card with a visible estimated marker, a 48px search field, and no overflow; 桃李 alone is the ruby base for とり. At 1280px, Daidai search finds 代々 with its visible marker and no overflow. Loading observed. Existing keyboard focus, empty search, and profile checks from the scoping fix remain applicable; error/retry and expanded printing were not repeated for this metadata/marker change. Next: confirm these estimates, then publish and verify production when requested. Artist Pages remains approximately 95% complete for its first release, with production journeys and real transport recovery checks outstanding; pronunciation accuracy remains provisional for these four names.
+
+
+## English-reader pronunciation display — 2026-10-14
+
+At the user's request, replaced the tentative kana annotations with romaji: 南佑希 → Minami Yūki?, 桃李 → Tori? (タロ remains outside the annotation), and ジェゼ一 → Jezē?. 代々 remains Daidai? and Chinese readings remain pinyin. Japanese annotations use ja-Latn. All four estimates retain their uncertainty markers; romanization does not add new identity evidence. Tone/diacritic-insensitive search also finds Yūki from yuki and Jezē from jeze. This supersedes the earlier kana display decision.
+
+Next: confirm the four estimated readings and verify production when published. Artist Pages remains approximately 95% complete for its first release, based on completed local features with production journeys and real transport recovery checks outstanding.
+
+Romaji verification: app typecheck, all four artist tests, and diff checks pass. Browser checks at 360px and 1280px confirm visible romaji estimates, no horizontal overflow, and successful macron-free yuki/jeze searches. Loading observed. Touch/keyboard, empty, error/retry and expanded states retain prior checks and were not repeated for this label-only update.

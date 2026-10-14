@@ -919,7 +919,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a049",
-    "pronunciation": { "nativeText": "ジェゼ一", "text": "じぇぜー", "lang": "ja", "basis": "estimated" },
+    "pronunciation": { "nativeText": "ジェゼ一", "text": "Jezē", "lang": "ja-Latn", "basis": "estimated" },
     "slug": "a049-ジェゼ一",
     "name": "ジェゼ一",
     "kind": "unknown",
@@ -993,7 +993,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a058",
-    "pronunciation": { "nativeText": "南佑希", "text": "みなみ ゆうき", "lang": "ja", "basis": "estimated" },
+    "pronunciation": { "nativeText": "南佑希", "text": "Minami Yūki", "lang": "ja-Latn", "basis": "estimated" },
     "slug": "a058-南佑希",
     "name": "南佑希",
     "kind": "individual",
@@ -1191,7 +1191,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a073",
-    "pronunciation": { "nativeText": "桃李", "text": "とり", "lang": "ja", "basis": "estimated" },
+    "pronunciation": { "nativeText": "桃李", "text": "Tori", "lang": "ja-Latn", "basis": "estimated" },
     "slug": "a073-桃李タロ",
     "name": "桃李タロ",
     "kind": "unknown",
