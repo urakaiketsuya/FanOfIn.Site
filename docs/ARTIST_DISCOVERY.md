@@ -14,6 +14,10 @@ The first pass covers the catalog snapshot, not every possible account or uninde
 
 Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Dragonart, TaroTarou (A031/A034), Antilous, and the exact Dragonart 白霜搽 credit. The 21 unique verified URLs include 10 social-network profiles, plus websites, portfolios, and artist link hubs. Repeated TaroTarou URLs across two credit entries are counted once.
 
+## Implementation handoff — 2026-10-14
+
+Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. All 21 verified URLs are curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
+
 ## Work through one entry at a time
 
 1. Take the next Not started entry and mark it In progress. The initial queue orders by unique-card count, then name; keep assigned IDs stable as work continues.

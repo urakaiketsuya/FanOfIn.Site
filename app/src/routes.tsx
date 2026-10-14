@@ -78,6 +78,7 @@ function MyDeckDetailRedirect() {
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const TagGallery = lazy(() => import("./features/cards/TagGallery"));
 const CardTagging = lazy(() => import("./features/cards/CardTagging"));
+const Artists = lazy(() => import("./features/artists/Artists"));
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
 const CardDetail = lazy(() => import("./features/cards/CardDetail"));
 const CardStatsIndex = lazy(() => import("./features/cards/CardStatsIndex"));
@@ -177,6 +178,8 @@ export default function AppRoutes() {
     <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<About />} />
+        <Route path="/artists" element={<Artists />} />
+        <Route path="/artists/:slug" element={<Artists />} />
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
         <Route path="/cards/staples" element={<CardStaples />} />

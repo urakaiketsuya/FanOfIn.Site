@@ -1,7 +1,8 @@
 import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { ArchetypeTaxonomyData, ChampionTrendsData, OmnidexIndexData } from "@gatcg/shared";
+import type { Card, ArchetypeTaxonomyData, ChampionTrendsData, OmnidexIndexData } from "@gatcg/shared";
+import { buildArtistGalleries } from "@gatcg/shared";
 import { loadCardCatalog } from "./cards/catalog.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../data");
@@ -11,6 +12,7 @@ const SITE_URL = "https://fanofin.site";
 const STATIC_ROUTES = [
   "/",
   "/cards",
+  "/artists",
   "/cards/stats",
   "/sets",
   "/thema",
@@ -57,6 +59,8 @@ export async function writeSitemap(): Promise<void> {
   const urls = STATIC_ROUTES.map((route) => `${SITE_URL}${route}`);
 
   const catalog = await loadCardCatalog();
+  const fullCatalog = await readJson<{ cards: Card[] }>("card-catalog.json");
+  for (const artist of buildArtistGalleries(fullCatalog?.cards ?? [])) urls.push(`${SITE_URL}/artists/${encodeURIComponent(artist.slug)}`);
   for (const card of catalog) urls.push(`${SITE_URL}/cards/${card.slug}`);
 
   const index = await readJson<OmnidexIndexData>("omnidex/index.json");

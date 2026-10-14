@@ -98,3 +98,5 @@ export * from "./foreseForecast.js";
 export * from "./combatAccessForecast.js";
 
 export * from "./seo.js";
+export * from './artists';
+export * from './artistDirectory';

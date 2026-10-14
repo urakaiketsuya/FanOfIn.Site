@@ -143,6 +143,8 @@ export default function CardsBrowse() {
         <Tabs variant="pill" tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
       </div>
 
+      <Link to="/artists" className="mt-3 inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">Browse artists ↗</Link>
+
       {tab === "sets" ? (
         <div className="mt-6 space-y-8">
           <p className="text-sm text-ctp-subtext1">Browse expansions and the cards printed in each one.</p>

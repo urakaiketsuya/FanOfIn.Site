@@ -6,7 +6,7 @@ Make Grand Archive illustrators discoverable through dedicated artist pages, cre
 
 The public-web discovery pass covers all 76 entries and 84 exact catalog credit strings. Ten credit entries have verified links (nine supported artist/studio identities; A031/A034 share TaroTarou), 25 have no verified links found, and 41 need identity review with explicit next actions. There are 21 unique verified URLs, including ten social-network profiles. These totals describe research coverage, not full identity resolution or account coverage.
 
-Page implementation has not started. Artist Pages is approximately 25% complete: planning and the initial discovery pass are ready; unresolved identities, curated directory data, UI, and launch verification remain. The estimate is approximate because further identity research depends on public evidence and account access.
+The first implementation is ready locally: `/artists` provides searchable artwork previews, and `/artists/:slug` provides verified accounts, card search, counts, and exact credited-printing galleries. The 76 discovery entries resolve to 75 pages because the supported TaroTarou credits share one identity. Artist Pages is approximately 80% complete: planning, initial research, curated data, and the main UI are implemented; release checks, deployment, production verification, and deferred identity research remain. Research scope remains uncertain because it depends on public evidence and account access.
 
 The first release includes a searchable artist directory, dedicated artist pages, galleries of the printings credited to each artist, and verified external links. All credited artists remain eligible for pages even when no official links are found. Biographies, social feeds, artist-managed profiles, and direct artist outreach are outside this release.
 
@@ -30,39 +30,39 @@ The snapshot’s initial-pass acceptance is met. Keep this milestone open for un
 
 Keep curated identities and account links separate from the refreshed card catalog. Research records retain candidates and rejected accounts; the public directory contains verified links only.
 
-- [ ] Define shared artist identity, alias, link, and credited-printing types.
-- [ ] Create a curated directory with stable IDs/slugs, display names, individual/studio/combined identity, exact credit aliases, and verified links.
-- [ ] Retain per-link platform, label, canonical HTTPS URL, evidence source, and verification date.
-- [ ] Establish a versioned mapping from exact catalog credits to artist identities; preserve unresolved credits under their own identity rather than losing their artwork.
-- [ ] Derive card membership and counts from edition credits using shared logic; keep unique cards distinct from printings.
-- [ ] Validate duplicate IDs/slugs, conflicting aliases, URLs, missing credits, and refresh behavior. Report unmapped new credits for discovery.
+- [x] Define shared artist identity, alias, link, and credited-printing types.
+- [x] Create a curated directory with stable IDs/slugs, display names, individual/studio/combined identity, exact credit aliases, and verified links.
+- [x] Retain per-link platform, label, canonical HTTPS URL, evidence source, and verification date.
+- [x] Establish a versioned mapping from exact catalog credits to artist identities; preserve unresolved credits under their own identity rather than losing their artwork.
+- [x] Derive card membership and counts from edition credits using shared logic; keep unique cards distinct from printings.
+- [x] Validate duplicate IDs/slugs, conflicting aliases, URLs, missing credits, and refresh behavior. Report unmapped new credits for discovery.
 - [ ] Establish redirects when a supported merge changes a published artist URL.
 
 **Acceptance:** every credited printing resolves to a curated or unresolved identity, the same credit cannot silently map to competing identities, and catalog refreshes retain curated accounts. Regression fixtures cover whitespace/case variants, non-Latin names, studio/member distinctions, missing credits, and one card illustrated by multiple artists across printings.
 
 ## Milestone 3 Build artist pages and discovery
 
-- [ ] Add `/artists` with search, artist names, representative credited artwork, and unique-card counts.
-- [ ] Add `/artists/:slug` with the credited name, official links, visible counts, and a responsive card gallery.
-- [ ] Use `CardArtTile` or `VisualCardTile`; show the exact artist-credited printing and readable card name. Group multiple credited printings of a card with explicit printing choices rather than hiding their artwork.
-- [ ] Link artwork to the card details with the corresponding printing selected, extending the existing selection URL contract if needed.
-- [ ] Replace the CardHero artist-filter link with the relevant artist page; preserve `/cards?artist=...` browsing behavior for existing links.
-- [ ] Add artist discovery to the Cards navigation and contextual browsing entry points.
-- [ ] Show named, accessible external links and omit the links region when none are verified.
-- [ ] Reuse shared controls and existing theme; maintain 48px touch targets, visible keyboard focus, and wrapping layouts beginning at 360–390px.
-- [ ] Provide loading, empty, failure/retry, unknown-artist, and missing-art states without hiding useful navigation.
+- [x] Add `/artists` with search, artist names, representative credited artwork, and unique-card counts.
+- [x] Add `/artists/:slug` with the credited name, official links, visible counts, and a responsive card gallery.
+- [x] Use `CardArtTile` or `VisualCardTile`; show the exact artist-credited printing and readable card name. Group multiple credited printings of a card with explicit printing choices rather than hiding their artwork.
+- [x] Link artwork to the card details with the corresponding printing selected, extending the existing selection URL contract if needed.
+- [x] Replace the CardHero artist-filter link with the relevant artist page; preserve `/cards?artist=...` browsing behavior for existing links.
+- [x] Add artist discovery to the Cards navigation and contextual browsing entry points.
+- [x] Show named, accessible external links and omit the links region when none are verified.
+- [x] Reuse shared controls and existing theme; maintain 48px touch targets, visible keyboard focus, and wrapping layouts beginning at 360–390px.
+- [x] Provide loading, empty, failure/retry, unknown-artist, and missing-art states without hiding useful navigation.
 
 **Acceptance:** a player can open an artist from a specific card printing, identify their other credited artwork, and follow a verified account on mobile and desktop. Artists without accounts still have useful pages. No gallery presents another artist's default printing as the credited artwork.
 
 ## Milestone 4 Verify and release
 
-- [ ] Add artist URLs and directory navigation to the sitemap and appropriate page metadata.
-- [ ] Check filtering, aliases, counts, deep links, unresolved identities, and printing-selection behavior with representative data.
+- [x] Add artist URLs and directory navigation to the sitemap and appropriate page metadata.
+- [x] Check filtering, aliases, counts, deep links, unresolved identities, and printing-selection behavior with representative data.
 - [ ] Verify the main flow at 360–390px and desktop, keyboard access, 48px controls, focus, text enlargement, and overflow.
 - [ ] Exercise loading, empty, error/retry, long/non-Latin names, missing artwork, unknown slugs, and no-social-link states.
-- [ ] Run checks appropriate to changed app/shared/pipeline boundaries and record any verification limitations.
+- [x] Run checks appropriate to changed app/shared/pipeline boundaries and record any verification limitations.
 - [ ] Recheck published links before release; remove or withhold accounts whose ownership remains unresolved.
-- [ ] Record implementation completion separately from deployment and production verification.
+- [x] Record implementation completion separately from deployment and production verification.
 
 **Acceptance:** the integrated site meets the UI and data criteria, only verified accounts are published, and deployment plus the production artist-to-card-to-account journey are verified. Unresolved identities and unavailable accounts remain explicit research follow-ups and do not become invented official links.
 
@@ -70,6 +70,16 @@ Keep curated identities and account links separate from the refreshed card catal
 
 Catalog refreshes should surface new credits without overwriting curated research. When an account changes, record fresh evidence and the review date; broken or uncertain links are withheld until reverified. Keep redirect history for renamed or merged artists. Future recurring checks or notifications require a separate scheduling request.
 
+## Local implementation and verification — 2026-10-14
+
+The curated source is `shared/src/artistDirectory.ts` (mapping version 1), separate from refreshed card data. Surrounding credit whitespace is normalized; case, punctuation, studio/member distinctions, and non-Latin spellings remain exact. Only A031/A034 merge. The directory includes all 21 verified URLs with evidence and review dates. Candidates, blocked accounts, and uncertain aliases remain withheld in the discovery tracker. New credits receive stable fallback pages without inherited accounts; the catalog coverage regression check flags missing curated mappings for discovery. Published slugs must be preserved; add explicit redirects before any future rename or merge. No previously published artist URL needs migration in this initial release.
+
+Shared gallery logic groups each card once per artist and retains every credited printing. The printing selector updates both artwork and card link. Card details now accept `?edition=<uuid>` and preserve that selection while changing tabs; absent/unknown edition values fall back to the first printing. Card credits and Cards navigation lead to the artist pages. The sitemap source and future pipeline generation include artist URLs.
+
+Validation: the production build passes, including generated deck entry pages. All three focused artist regression tests pass; app/shared/pipeline TypeScript checks pass; app lint reports only its seven existing Fast Refresh warnings. Curated URLs exactly match the discovery tracker’s verified URL set, and all 75 artist routes plus the directory are included in the sitemap.
+
+Verified locally: directory search, card search and empty results; social and no-social pages; 390px/360px and 1280px layouts; no horizontal overflow; 48px search, printing and account controls; keyboard focus from search to artwork; printing change → exact card edition → artist link. Loading was observed during navigation. Unknown slugs retain a directory recovery link. Catalog regression fixtures verify every credited edition, counts, whitespace, non-Latin credits, supported merges, unmerged ambiguous names, and new-credit fallback behavior. Full network failure/retry, an entirely empty catalog, forced missing-art failures, and enlarged text have not been browser-tested; these remain release checks. Existing shared CardImage handles unavailable artwork with a named fallback.
+
 ## Next work
 
-Resolve the 白霜茶/白霜搽 relationship for A025/A050 before sharing A063’s verified Instagram account across those credits, then revisit Primea/Parhelion and malformed credits A072/A075. Prepare the curated directory with verified URLs and explicit unresolved identities; preserve all exact credit strings and the supported A031/A034 TaroTarou relationship. No implementation blocker prevents that data work, but uncertain identities and uninspected accounts must remain withheld. Page implementation is a separate remaining step.
+Finish the remaining release-state and enlarged-text checks, review the local pages, then deploy when requested and verify the production directory → artist → printing journey. No implementation blocker remains. Keep identity research deferred as requested: 白霜茶/白霜搽, Primea/Parhelion, and malformed A072/A075 credits remain separate follow-ups. Uncertain identities do not block pages, and their candidate accounts remain unpublished. Artist Pages is approximately 80% complete on the basis above; production verification and research duration remain uncertain.

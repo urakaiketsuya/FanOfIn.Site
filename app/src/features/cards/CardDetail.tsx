@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
@@ -76,7 +76,16 @@ export default function CardDetail() {
       card.effect ? ` – ${card.effect.replace(/\s+/g, " ").slice(0, 140)}` : ""
     }`,
   );
-  const [editionIndex, setEditionIndex] = useState(0);
+  const [printingParams, setPrintingParams] = useSearchParams();
+  const requestedEdition = printingParams.get("edition");
+  const editionIndex = Math.max(0, card?.editions.findIndex(edition => edition.uuid === requestedEdition) ?? 0);
+  function setEditionIndex(index: number) {
+    const next = new URLSearchParams(printingParams);
+    const edition = card?.editions[index];
+    if (edition) next.set("edition", edition.uuid);
+    else next.delete("edition");
+    setPrintingParams(next, { replace: true });
+  }
   const [editionsExpanded, setEditionsExpanded] = useState(false);
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "info");
   const surface: CardSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";

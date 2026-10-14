@@ -635,9 +635,10 @@ establish curated identities, build the directory and credited-printing gallerie
 mobile and desktop journeys before release. The initial public-web pass covers 76/76 entries:
 10 credit entries have verified links, 25 have no verified links found, and 41 need identity review.
 There are 21 unique verified URLs across nine supported identities, including ten social profiles.
-Implementation has not started. Artist Pages is approximately 25% complete: planning and initial
-discovery are ready; identity follow-ups, directory data, pages, and launch checks remain. Further
-research effort depends on ambiguous identities and account visibility.
+The curated directory and artist pages are implemented locally: 75 identities preserve all 76
+discovery credits, with verified accounts, search, and exact credited-printing galleries. Artist
+Pages is approximately 80% complete: remaining work is release-state checks, deployment and
+production verification, plus deferred identity follow-ups. Research duration remains uncertain.
 
 ### Slice A — Usability release
 
