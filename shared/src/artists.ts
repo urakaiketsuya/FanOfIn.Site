@@ -19,8 +19,8 @@ export interface ArtistIdentity {
     /** Exact native-script substring to annotate; excludes Latin prefixes and suffixes. */
     nativeText: string;
     text: string;
-    lang: 'zh-Latn-pinyin' | 'ja';
-    basis: 'standard-mandarin' | 'artist-confirmed';
+    lang: 'zh-Latn-pinyin' | 'ja' | 'en';
+    basis: 'standard-mandarin' | 'artist-confirmed' | 'estimated';
     sourceUrl?: string;
   };
   kind: 'individual' | 'studio' | 'combined' | 'unknown';

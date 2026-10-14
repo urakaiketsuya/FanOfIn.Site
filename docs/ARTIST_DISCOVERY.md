@@ -1572,3 +1572,19 @@ Reviewed the remaining Japanese or mixed-script credits for explicit artist-conf
 | ジェゼ一 | Search `"ジェゼ一" 読み方`; earlier @ArtsJeze profile evidence | No explicit pronunciation found. Preserve the exact catalog string: its final character is ideographic 一, not automatically normalized to the prolonged sound mark ー. No inferred reading or alias. |
 
 Current reading coverage remains 17/65 identities (26%), all explicitly marked standard Mandarin fallback rather than artist-confirmed pronunciation. No application data or UI changed in this follow-up. Verification: documentation diff checks only; prior typecheck and mobile/desktop pronunciation checks continue to apply. Next: collect an explicit self-written reading or user confirmation for these four entries; no outreach is authorized. Artist Pages remains approximately 95% complete for the first release, based on completed local implementation with production journeys and real transport recovery checks outstanding. Reading research remains open-ended.
+
+
+## User-authorized tentative readings — 2026-10-14
+
+The user requests an attempt at the four unresolved readings. Added them with basis=estimated, displayed with a visible question mark and an accessible “estimated pronunciation” label. They are deliberately not artist-confirmed, and do not authorize account publication, aliases, merges, or nationality claims. This supersedes the preceding decision to leave these annotations blank.
+
+| Name | Tentative annotation | Basis and uncertainty |
+| --- | --- | --- |
+| 南佑希 | みなみ ゆうき? | Common Japanese readings of 南 and 佑希, consistent with the minamixdrops handle; full reading remains unconfirmed. |
+| 桃李タロ | とり? above 桃李 only | Inferred from the previously inspected artist-owned toritaro hub and tori_mcct handle. タロ stays outside the ruby; catalog account mapping and preferred reading remain unconfirmed. |
+| 代々 | Daidai? | Event material pairs the credited artist with Daidai; the same-name candidate account also uses daidai. Keep Latin spelling without invented tone marks or a Japanese-nationality inference. Search: `"代々" "Daidai" artist`; event booklet reproduction https://fliphtml5.com/nzyxf/gatd/2025Ascent_Taipei/17/. |
+| ジェゼ一 | じぇぜー? | Tentative spoken reading treating final ideographic 一 as a stylized long-vowel mark. @ArtsJeze supports the Jeze lead, but neither this long vowel nor catalog account association is verified. Preserve original 一 in the base name. |
+
+Focused searches also used `"南佑希" "みなみ"`, `"桃李タロ" "toritaro"`, and `"ジェゼ一" "Jeze"`; none supplied explicit artist confirmation. Reading coverage is 21/65 identities: 17 Mandarin fallbacks and four estimates. Confirmed readings should replace estimates when evidence arrives.
+
+Verification: app typecheck, all four artist tests, and diff checks pass. At 360px, 南佑希's kana search returns its card with a visible estimated marker, a 48px search field, and no overflow; 桃李 alone is the ruby base for とり. At 1280px, Daidai search finds 代々 with its visible marker and no overflow. Loading observed. Existing keyboard focus, empty search, and profile checks from the scoping fix remain applicable; error/retry and expanded printing were not repeated for this metadata/marker change. Next: confirm these estimates, then publish and verify production when requested. Artist Pages remains approximately 95% complete for its first release, with production journeys and real transport recovery checks outstanding; pronunciation accuracy remains provisional for these four names.

@@ -188,3 +188,5 @@ Supplied portrait screenshots may specify a CSS scale to exclude surrounding scr
 Artist names may use semantic ruby annotations in the directory, profile heading, and studio member list. Curate readings explicitly: prefer artist-confirmed pronunciation, then standard Mandarin pinyin for clearly Chinese names. Never infer a Japanese name reading from kanji or a romanized handle alone. Keep pronunciation separate from identity aliases and raw credits. Search accepts pronunciation with or without Latin tone marks.
 
 Scope each artist pronunciation to an explicit nativeText substring. Latin studio prefixes, handles, and suffixes remain outside the ruby element, and reading text excludes those Latin portions. A display variant without that substring falls back to the plain name.
+
+When the user authorizes tentative readings, mark their provenance as estimated and show a visible question mark with an accessible explanation. Replace estimates with artist-confirmed readings when available. Tentative pronunciation does not establish an account identity or alias.
