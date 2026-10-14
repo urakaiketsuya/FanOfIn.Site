@@ -1,11 +1,23 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/**/*.ts": {
+    "api/index.ts": {
       "maxDuration": 30
+    },
+    "api/deck-share.ts": {
+      "maxDuration": 30,
+      "includeFiles": "assets/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/share/decks/:slug/image.png",
+      "destination": "/api/deck-share?slug=:slug&image=1"
+    },
+    {
+      "source": "/share/decks/:slug",
+      "destination": "/api/deck-share?slug=:slug"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api?_path=:path*"

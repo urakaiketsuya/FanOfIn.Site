@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { createHash, createHmac, randomUUID } from "node:crypto";
+import { signWorkerRequest } from "../lib/worker-signature.js";
 
 interface VercelRequest extends IncomingMessage {
   body?: unknown;
@@ -11,19 +11,6 @@ const SHARED_SECRET = process.env.BFF_SHARED_SECRET;
 const MAX_BODY_BYTES = 1_048_576;
 
 type BufferedBody = string | Uint8Array<ArrayBuffer>;
-
-function signWorkerRequest(method: string, path: string, body: BufferedBody | undefined): Record<string, string> {
-  const timestamp = Date.now().toString();
-  const requestId = randomUUID();
-  const bytes = body === undefined ? Buffer.alloc(0) : Buffer.from(body);
-  const bodyHash = createHash("sha256").update(bytes).digest("hex");
-  const canonical = `${method}\n${path}\n${bodyHash}\n${timestamp}\n${requestId}`;
-  return {
-    "X-Fanofin-BFF-Timestamp": timestamp,
-    "X-Fanofin-BFF-Request-ID": requestId,
-    "X-Fanofin-BFF-Signature": createHmac("sha256", SHARED_SECRET!).update(canonical).digest("hex"),
-  };
-}
 
 class PayloadTooLargeError extends Error {}
 class InvalidRequestBodyError extends Error {}
@@ -128,7 +115,7 @@ export default async function handler(request: VercelRequest, response: ServerRe
   }
 
   const upstreamPath = `${workerPath}${incomingUrl.search}`;
-  for (const [name, value] of Object.entries(signWorkerRequest(request.method ?? "GET", upstreamPath, body))) headers.set(name, value);
+  for (const [name, value] of Object.entries(signWorkerRequest(SHARED_SECRET, request.method ?? "GET", upstreamPath, body))) headers.set(name, value);
 
   try {
     const upstream = await fetch(`${WORKER_URL}${upstreamPath}`, {

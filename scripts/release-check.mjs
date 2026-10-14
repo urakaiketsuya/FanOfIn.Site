@@ -24,6 +24,7 @@ run('app lint', 'npm', ['run', 'lint', '-w', 'app']);
 tests('app', 'test', { TSX_TSCONFIG_PATH: 'tsconfig.app.json' });
 tests('pipeline', 'src');
 tests('account-worker', 'test');
+tests('account-bff', 'test');
 run('ingestion tests', 'npm', ['run', 'worker:test']);
 run('public API tests', 'npm', ['run', 'api:test']);
 run('published artifacts', process.execPath, ['--import', 'tsx', 'scripts/check-release-data.ts']);
