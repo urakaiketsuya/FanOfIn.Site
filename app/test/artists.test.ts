@@ -25,12 +25,13 @@ test('every credited printing stays with its artist and counts unique cards sepa
 test('only supported aliases merge and new credits remain distinct', () => {
   assert.equal(artistForCredit(' Hanh Chu\n').id, artistForCredit('Hanh Chu').id);
   assert.equal(artistForCredit('TaroTarou').id, artistForCredit('DragonArt TaroTarou').id);
-  for (const [a,b] of [['Dragonart Chu','Hanh Chu'],['Chu','Dragonart Chu'],['Chu','Hanh Chu']]) assert.notEqual(artistForCredit(a).id, artistForCredit(b).id);
-  for (const [a, b] of [['Parhelion Studio Co.', 'Parhelion Studio'], ['十尾', '十尾t'], ['道漫', '道漫?'], ['Primea Studio', 'Primea studio'], ['Dragonart', 'Dragon Art'], ['DragonArt Chu', 'Dragonart Chu'], ['Dragonart Tris', 'DragonArt Tris'], ['DragonArt 白霜茶', 'Dragonart 白霜搽'], ['白霜茶', 'Dragonart 白霜搽']]) {
+  for (const [a,b] of [['Dragonart Chu','Hanh Chu'],['Chu','Hanh Chu']]) assert.notEqual(artistForCredit(a).id, artistForCredit(b).id);
+  for (const [a, b] of [['Chu', 'Dragonart Chu'], ['Parhelion Studio Co.', 'Parhelion Studio'], ['十尾', '十尾t'], ['道漫', '道漫?'], ['Primea Studio', 'Primea studio'], ['Dragonart', 'Dragon Art'], ['DragonArt Chu', 'Dragonart Chu'], ['Dragonart Tris', 'DragonArt Tris'], ['DragonArt 白霜茶', 'Dragonart 白霜搽'], ['白霜茶', 'Dragonart 白霜搽']]) {
     assert.equal(artistForCredit(a).id, artistForCredit(b).id);
   }
   const slugs = artistDirectory.flatMap(artist => [artist.slug, ...(artist.slugAliases ?? [])]);
   assert.equal(new Set(slugs).size, slugs.length);
+  assert.ok(artistForCredit('Chu').slugAliases?.includes('a056-chu'));
   assert.ok(artistForCredit('DragonArt Tris').slugAliases?.includes('a044-dragonart-tris'));
   assert.ok(artistForCredit('白霜茶').portrait);
   assert.ok(artistForCredit('十尾t').slugAliases?.includes('a072-十尾t'));
@@ -44,7 +45,7 @@ test('curated identities have unique slugs and credits and HTTPS evidence', () =
   assert.equal(new Set(artistDirectory.map(artist => artist.slug)).size, artistDirectory.length);
   const credits = artistDirectory.flatMap(artist => artist.credits);
   assert.equal(new Set(credits).size, credits.length);
-  assert.equal(artistDirectory.flatMap(artist => artist.links).length, 41);
+  assert.equal(artistDirectory.flatMap(artist => artist.links).length, 44);
   for (const link of artistDirectory.flatMap(artist => artist.links)) {
     assert.equal(new URL(link.url).protocol, 'https:');
     assert.equal(new URL(link.evidence).protocol, 'https:');

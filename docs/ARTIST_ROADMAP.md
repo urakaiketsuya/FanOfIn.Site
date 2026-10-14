@@ -295,3 +295,14 @@ At the user’s request, a008 uses the original https://parhelion.gg/img/slider-
 Next: publish the Parhelion and Silvie avatar updates, then finish production verification. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks. Identity discovery remains open-ended.
 
 Verification: app typecheck, all four artist tests, and diff checks pass. The original 1298px-wide image loads at 360px on the artist page and 1280px in the directory, with the right-aligned crop visible and no horizontal overflow. The directory card is keyboard reachable with a solid focus outline. Loading was observed. Touch controls and empty/error/retry behavior retain earlier checks; they were not repeated for this decorative image update. Production remains unverified.
+
+
+## Chu consolidation and Siriuf Long accounts — 2026-10-14
+
+The user identifies Chu and Dragonart Chu as likely the same artist. Provisionally consolidated the bare Chu credit (a056) into a030 DragonArt Chu, retaining a056-chu as a route alias and every original printed credit. This is a user-suggested identity merge, not an independently verified match; revisit if contrary evidence appears. Hanh Chu remains separate. The studio member entry now includes the bare Chu gallery. This supersedes earlier instructions to keep a056 separate.
+
+The user confirms Siriuf Long’s X (https://x.com/siriuflong), Instagram (https://www.instagram.com/siriuflong/), and Pixiv (https://www.pixiv.net/en/users/6414018). Published these three accounts on a022. Earlier research established the same-name X/Carrd artist cluster; this user attribution resolves the catalog association without requiring an exact card match. Current direct web inspection returned no readable X content and failed to fetch Instagram/Pixiv, so these links are user-confirmed rather than independently reverified. No new portrait was obtained. This supersedes the earlier withheld-account status.
+
+Coverage: 65 curated identities, 44 account URLs across 20 identities, and 19 images. Next: publish pending changes and verify production; discovery remains open-ended. Artist Pages is approximately 95% complete for its first release, with production journeys and real transport recovery checks still outstanding.
+
+Verification: all four artist tests, app typecheck, and diff checks pass. At 360px Siriuf Long’s three links are 48px high and wrap without overflow; the retired Chu URL shows DragonArt Chu with 23 cards / 27 printings including Clover Treehouse. Desktop 1280px galleries fit without overflow; social links show visible keyboard focus. Loading was observed. Empty/error/retry and expanded printing states were not repeated for this metadata change; production remains unverified.

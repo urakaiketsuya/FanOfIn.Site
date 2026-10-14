@@ -435,11 +435,33 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a022",
     "slug": "a022-siriuf-long",
     "name": "Siriuf Long",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "Siriuf Long"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@siriuflong",
+        "url": "https://x.com/siriuflong",
+        "evidence": "https://x.com/siriuflong",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Instagram",
+        "label": "@siriuflong",
+        "url": "https://www.instagram.com/siriuflong/",
+        "evidence": "https://www.instagram.com/siriuflong/",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "Siriuf Long",
+        "url": "https://www.pixiv.net/en/users/6414018",
+        "evidence": "https://www.pixiv.net/en/users/6414018",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a023",
@@ -536,11 +558,13 @@ export const artistDirectory: ArtistIdentity[] = [
     "kind": "unknown",
     "credits": [
       "DragonArt Chu",
-      "Dragonart Chu"
+      "Dragonart Chu",
+      "Chu"
     ],
     "links": [],
     "slugAliases": [
-      "a037-dragonart-chu"
+      "a037-dragonart-chu",
+      "a056-chu"
     ],
     "studioId": "a004"
   },
@@ -903,16 +927,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "kind": "unknown",
     "credits": [
       "Andrew Yang"
-    ],
-    "links": []
-  },
-  {
-    "id": "a056",
-    "slug": "a056-chu",
-    "name": "Chu",
-    "kind": "unknown",
-    "credits": [
-      "Chu"
     ],
     "links": []
   },
