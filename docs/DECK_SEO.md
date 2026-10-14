@@ -27,8 +27,18 @@ materialized here, so publication or privacy state cannot be frozen in this outp
 Directory index files let GitHub Pages serve these routes directly (possibly after
 its directory-slash redirect), instead of the site's 404-to-JavaScript redirect.
 Live HTTP behavior must be verified after deployment. Unselected and unknown routes
-retain the existing fallback. This step does not yet render the card list in initial
-HTML: it still requires the app's JavaScript. It also does not add sitemap entries.
+retain the existing fallback. The initial HTML now includes readable Main and
+Material sections, quantities,
+section totals and links to catalog cards. React replaces this compact text fallback
+with the existing interactive card-art view on startup. Sideboards remain in the
+app's separately attributed tournament view; they are not merged into the grouped
+build. Unknown catalog names remain readable text. Sitemap entries are not yet added.
+The 1,895 generated pages total approximately 15.6 MB with card content.
+
+Local verification: production build and 15 release-tooling tests pass. The text
+fallback was checked at 390px and 1280px, with no horizontal overflow, 48px link
+heights and visible keyboard focus. React startup replaces the fallback; production
+deployment and the full data-loaded app flow remain to be verified for this step.
 
 ## Remaining milestones
 
@@ -38,8 +48,8 @@ HTML: it still requires the app's JavaScript. It also does not add sitemap entri
    decide full tournament coverage within the hosting size budget.
 3. Extend card-based metadata and champion artwork to canonical deck pages, without
    adding the removed labels to spotlight artwork.
-4. Render readable sections, card names, quantities and card links in initial HTML;
-   add accurate structured data and sitemap entries for eligible public pages.
+4. Extend initial card content to community pages; add accurate structured data
+   and sitemap entries for eligible public pages.
    Preserve grouped Main/Material identity and separately attributed Sideboards.
 5. Verify indexing, canonical variants, withdrawal and duplicate behavior in Search
    Console, and measure coverage after deployment.
