@@ -68,7 +68,14 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "slugAliases": [
       "a059-dragon-art"
-    ]
+    ],
+    "portrait": {
+      "src": "/images/artists/a004.png",
+      "sourceUrl": "https://www.dragon-art.tw/",
+      "imageUrl": "https://static.wixstatic.com/media/decc1e_2ad751e2b8d84dd38be1611535627218~mv2.png/v1/fill/w_140,h_69,al_c,lg_1,q_95,enc_avif,quality_auto/logo.png",
+      "verifiedAt": "2026-10-14",
+      "fit": "contain"
+    }
   },
   {
     "id": "a005",

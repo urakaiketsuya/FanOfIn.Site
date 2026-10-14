@@ -268,3 +268,12 @@ Added explicit studio relationships from the nine Dragonart-prefixed artist cred
 Verification: four artist regression tests pass, including studio references, nine expected credited relationships, and preserved separate identities. At 360px all nine links are 82px high with no horizontal overflow; all three available member portraits load and keyboard focus is visible. At 1280px the links use three columns without overflow. Studio → Tris → studio navigation works. Loading was observed and empty card search retains the studio links. New error/retry simulation was not performed; existing release checks apply. Deployment verification of the previously pushed commit was interrupted while publishing and remains outstanding. This change is local pending publication.
 
 Next: publish and verify the studio journey in production, then resume identity discovery. Artist Pages remains approximately 95% complete for the first release; implementation and local journey checks are complete, with production and real transport recovery checks outstanding. Identity discovery remains open-ended.
+
+
+## Dragonart official logo 2026-10-14
+
+Added the original transparent 140×69 PNG displayed as the brand logo in the header of https://www.dragon-art.tw/ to a004. Saved it as app/public/images/artists/a004.png with the observed Wix image URL in portrait provenance. The shared portrait supports an optional contain fit with padding, preserving the complete logo on the existing dark circular surface. The image surface hides fallback initials beneath transparent areas. No image generation or logo alteration was used. Portrait coverage is now 17/66 identities.
+
+Next: publish the logo and studio navigation, then complete the production journey verification. Artist Pages remains approximately 95% complete for the first release, pending production and real transport recovery checks. Identity discovery remains open-ended.
+
+Verification: app typecheck, all four artist tests, and diff checks pass. The original 140px-wide logo loads with contain fit at 360px on the studio page and 1280px in the directory; visual checks confirm the full logo on the dark surface and no horizontal overflow. Loading and empty card-search states were observed. Keyboard/touch controls retain the preceding studio-navigation checks. Error/retry and production checks were not repeated for this image change.

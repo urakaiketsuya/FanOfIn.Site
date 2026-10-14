@@ -21,6 +21,7 @@ export interface ArtistIdentity {
   links: ArtistLink[];
   portrait?: {
     src: string;
+    fit?: 'cover' | 'contain';
     sourceUrl: string;
     imageUrl: string;
     verifiedAt: string;
