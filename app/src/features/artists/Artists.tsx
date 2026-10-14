@@ -17,8 +17,10 @@ function artworkCounts(cards: number, printings: number) {
 const linkClass = 'inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 
 function ArtistName({ artist, name = artist.name }: { artist: ArtistIdentity; name?: string }) {
-  if (!artist.pronunciation) return <>{name}</>;
-  return <ruby className="[ruby-position:over]">{name}<rp> (</rp><rt lang={artist.pronunciation.lang} className="text-[0.6em] font-normal tracking-normal text-ctp-subtext1">{artist.pronunciation.text}</rt><rp>)</rp></ruby>;
+  const reading = artist.pronunciation;
+  const start = reading ? name.indexOf(reading.nativeText) : -1;
+  if (!reading || start < 0) return <>{name}</>;
+  return <>{name.slice(0, start)}<ruby className="[ruby-position:over]">{reading.nativeText}<rp> (</rp><rt lang={reading.lang} className="text-[0.6em] font-normal tracking-normal text-ctp-subtext1">{reading.text}</rt><rp>)</rp></ruby>{name.slice(start + reading.nativeText.length)}</>;
 }
 
 function ArtistPortrait({ artist, large = false }: { artist: ArtistIdentity; large?: boolean }) {

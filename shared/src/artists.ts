@@ -16,6 +16,8 @@ export interface ArtistIdentity {
   name: string;
   /** Curated pronunciation of the native-script name, never an identity alias. */
   pronunciation?: {
+    /** Exact native-script substring to annotate; excludes Latin prefixes and suffixes. */
+    nativeText: string;
     text: string;
     lang: 'zh-Latn-pinyin' | 'ja';
     basis: 'standard-mandarin' | 'artist-confirmed';

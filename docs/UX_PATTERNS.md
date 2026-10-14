@@ -186,3 +186,5 @@ Wide artist images may specify an explicit portrait focal position to keep the s
 Supplied portrait screenshots may specify a CSS scale to exclude surrounding screenshot borders while preserving the original image file.
 
 Artist names may use semantic ruby annotations in the directory, profile heading, and studio member list. Curate readings explicitly: prefer artist-confirmed pronunciation, then standard Mandarin pinyin for clearly Chinese names. Never infer a Japanese name reading from kanji or a romanized handle alone. Keep pronunciation separate from identity aliases and raw credits. Search accepts pronunciation with or without Latin tone marks.
+
+Scope each artist pronunciation to an explicit nativeText substring. Latin studio prefixes, handles, and suffixes remain outside the ruby element, and reading text excludes those Latin portions. A display variant without that substring falls back to the plain name.
