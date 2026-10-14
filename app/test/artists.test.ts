@@ -78,3 +78,12 @@ test('artist cards rank by tournament deck usage with alphabetical ties and miss
   assert.deepEqual(buildArtistGalleries(cards)[0].cards.map(entry=>entry.card.name), ['Alpha','Beta','Gamma','Zulu']);
   assert.deepEqual(cards.map(card=>card.name), ['Zulu','Alpha','Beta','Gamma']);
 });
+
+test('artist URLs omit IDs while every previous canonical URL remains an alias', () => {
+  for (const artist of artistDirectory) {
+    assert.doesNotMatch(artist.slug, /^a\d+-/);
+    assert.ok(artist.slugAliases?.includes(`${artist.id}-${artist.slug}`), artist.id);
+  }
+  assert.equal(artistForCredit('Hanh Chu').slug, 'hanh-chu');
+  assert.ok(artistForCredit('Hanh Chu').slugAliases?.includes('a007-hanh-chu'));
+});

@@ -10,7 +10,7 @@ export const artistDirectory: ArtistIdentity[] = [
       "imageUrl": "https://pbs.twimg.com/profile_images/1698215898509869056/55dARgFW_400x400.jpg",
       "verifiedAt": "2026-10-14"
     },
-    "slug": "a001-primea-studio",
+    "slug": "primea-studio",
     "name": "Primea Studio",
     "kind": "studio",
     "credits": [
@@ -27,13 +27,15 @@ export const artistDirectory: ArtistIdentity[] = [
       }
     ],
     "slugAliases": [
+      "a001-primea-studio",
       "a068-primea-studio"
     ]
   },
   {
     "id": "a002",
     "pronunciation": { "nativeText": "木叶", "text": "Mù yè", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a002-木叶",
+    "slug": "木叶",
+    "slugAliases": ["a002-木叶"],
     "name": "木叶",
     "kind": "unknown",
     "credits": [
@@ -44,7 +46,7 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a003",
     "pronunciation": { "nativeText": "道漫", "text": "Dào màn", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a003-道漫",
+    "slug": "道漫",
     "name": "道漫",
     "kind": "unknown",
     "credits": [
@@ -53,12 +55,13 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "links": [],
     "slugAliases": [
+      "a003-道漫",
       "a075-道漫"
     ]
   },
   {
     "id": "a004",
-    "slug": "a004-dragonart",
+    "slug": "dragonart",
     "name": "Dragonart",
     "kind": "studio",
     "credits": [
@@ -75,6 +78,7 @@ export const artistDirectory: ArtistIdentity[] = [
       }
     ],
     "slugAliases": [
+      "a004-dragonart",
       "a059-dragon-art"
     ],
     "portrait": {
@@ -88,7 +92,7 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a005",
     "pronunciation": { "nativeText": "十尾", "text": "Shí wěi", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a005-十尾",
+    "slug": "十尾",
     "name": "十尾",
     "kind": "individual",
     "credits": [
@@ -110,13 +114,15 @@ export const artistDirectory: ArtistIdentity[] = [
       "verifiedAt": "2026-10-14"
     },
     "slugAliases": [
+      "a005-十尾",
       "a072-十尾t"
     ]
   },
   {
     "id": "a006",
     "pronunciation": { "nativeText": "砂木烟", "text": "Shā mù yān", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a006-砂木烟",
+    "slug": "砂木烟",
+    "slugAliases": ["a006-砂木烟"],
     "name": "砂木烟",
     "kind": "unknown",
     "portrait": {
@@ -140,7 +146,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a007",
-    "slug": "a007-hanh-chu",
+    "slug": "hanh-chu",
+    "slugAliases": ["a007-hanh-chu"],
     "name": "Hanh Chu",
     "kind": "individual",
     "portrait": {
@@ -185,7 +192,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a008",
-    "slug": "a008-parhelion-studio-co",
+    "slug": "parhelion-studio-co",
     "name": "Parhelion Studio Co.",
     "kind": "studio",
     "credits": [
@@ -202,6 +209,7 @@ export const artistDirectory: ArtistIdentity[] = [
       }
     ],
     "slugAliases": [
+      "a008-parhelion-studio-co",
       "a038-parhelion-studio"
     ],
     "portrait": {
@@ -214,7 +222,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a009",
-    "slug": "a009-alkaid",
+    "slug": "alkaid",
+    "slugAliases": ["a009-alkaid"],
     "name": "Alkaid",
     "kind": "unknown",
     "credits": [
@@ -230,7 +239,8 @@ export const artistDirectory: ArtistIdentity[] = [
       "imageUrl": "https://static.wixstatic.com/media/db150b_9c82ce9d15784d97a3448d38657103ce~mv2.jpg/v1/fill/w_194,h_194,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/illust_131731262_20250807_164545_edited_.jpg",
       "verifiedAt": "2026-10-14"
     },
-    "slug": "a010-gyool",
+    "slug": "gyool",
+    "slugAliases": ["a010-gyool"],
     "name": "Gyool",
     "kind": "individual",
     "credits": [
@@ -262,7 +272,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a011",
-    "slug": "a011-pinakes",
+    "slug": "pinakes",
+    "slugAliases": ["a011-pinakes"],
     "name": "Pinakes",
     "kind": "individual",
     "credits": [
@@ -294,7 +305,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a012",
     "pronunciation": { "nativeText": "代々", "text": "Daidai", "lang": "en", "basis": "estimated" },
-    "slug": "a012-代々",
+    "slug": "代々",
+    "slugAliases": ["a012-代々"],
     "name": "代々",
     "kind": "unknown",
     "credits": [
@@ -304,7 +316,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a013",
-    "slug": "a013-khωa",
+    "slug": "khωa",
+    "slugAliases": ["a013-khωa"],
     "name": "KHΩA",
     "kind": "individual",
     "credits": [
@@ -335,7 +348,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a014",
-    "slug": "a014-kaze",
+    "slug": "kaze",
+    "slugAliases": ["a014-kaze"],
     "name": "Kaze",
     "kind": "unknown",
     "credits": [
@@ -351,7 +365,8 @@ export const artistDirectory: ArtistIdentity[] = [
       "imageUrl": "https://images.squarespace-cdn.com/content/v1/642a3833cdf19824d1337ed9/8f708b54-e5e1-4a8d-857b-ca0dbe88dcdd/IMG_6445.jpg?format=300w",
       "verifiedAt": "2026-10-14"
     },
-    "slug": "a015-rachel-liu",
+    "slug": "rachel-liu",
+    "slugAliases": ["a015-rachel-liu"],
     "name": "Rachel Liu",
     "kind": "individual",
     "credits": [
@@ -369,7 +384,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a016",
-    "slug": "a016-sineia",
+    "slug": "sineia",
+    "slugAliases": ["a016-sineia"],
     "name": "Sineia",
     "kind": "individual",
     "credits": [
@@ -393,7 +409,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a017",
-    "slug": "a017-faicha",
+    "slug": "faicha",
+    "slugAliases": ["a017-faicha"],
     "name": "Faicha",
     "kind": "individual",
     "portrait": {
@@ -418,7 +435,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a018",
     "pronunciation": { "nativeText": "檸檬夾心餅", "text": "Níng méng jiā xīn bǐng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a018-檸檬夾心餅",
+    "slug": "檸檬夾心餅",
+    "slugAliases": ["a018-檸檬夾心餅"],
     "name": "檸檬夾心餅",
     "kind": "unknown",
     "credits": [
@@ -428,7 +446,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a019",
-    "slug": "a019-pekoe",
+    "slug": "pekoe",
+    "slugAliases": ["a019-pekoe"],
     "name": "Pekoe",
     "kind": "unknown",
     "credits": [
@@ -439,7 +458,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a020",
     "pronunciation": { "nativeText": "北飞飞", "text": "Běi fēi fēi", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a020-北飞飞",
+    "slug": "北飞飞",
+    "slugAliases": ["a020-北飞飞"],
     "name": "北飞飞",
     "kind": "unknown",
     "credits": [
@@ -449,7 +469,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a021",
-    "slug": "a021-marchon",
+    "slug": "marchon",
+    "slugAliases": ["a021-marchon"],
     "name": "Marchon",
     "kind": "unknown",
     "credits": [
@@ -465,7 +486,8 @@ export const artistDirectory: ArtistIdentity[] = [
       "imageUrl": "https://pbs.twimg.com/profile_images/1884988578369056769/KIZEzT2l_400x400.jpg",
       "verifiedAt": "2026-10-14"
     },
-    "slug": "a022-siriuf-long",
+    "slug": "siriuf-long",
+    "slugAliases": ["a022-siriuf-long"],
     "name": "Siriuf Long",
     "kind": "individual",
     "credits": [
@@ -497,7 +519,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a023",
-    "slug": "a023-yui",
+    "slug": "yui",
+    "slugAliases": ["a023-yui"],
     "name": "Yui",
     "kind": "unknown",
     "credits": [
@@ -508,7 +531,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a024",
     "pronunciation": { "nativeText": "坊橋夜泊", "text": "Fāng qiáo yè bó", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a024-坊橋夜泊",
+    "slug": "坊橋夜泊",
+    "slugAliases": ["a024-坊橋夜泊"],
     "name": "坊橋夜泊",
     "kind": "individual",
     "credits": [
@@ -546,7 +570,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a026",
-    "slug": "a026-kumai",
+    "slug": "kumai",
+    "slugAliases": ["a026-kumai"],
     "name": "Kumai",
     "kind": "unknown",
     "credits": [
@@ -556,7 +581,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a027",
-    "slug": "a027-t-blence",
+    "slug": "t-blence",
+    "slugAliases": ["a027-t-blence"],
     "name": "T_Blence",
     "kind": "individual",
     "portrait": {
@@ -579,7 +605,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a028",
     "pronunciation": { "nativeText": "杭州新艺族", "text": "Háng zhōu xīn yì zú", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a028-杭州新艺族",
+    "slug": "杭州新艺族",
+    "slugAliases": ["a028-杭州新艺族"],
     "name": "杭州新艺族",
     "kind": "unknown",
     "credits": [
@@ -589,7 +616,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a029",
-    "slug": "a029-hori",
+    "slug": "hori",
+    "slugAliases": ["a029-hori"],
     "name": "Hori",
     "kind": "unknown",
     "credits": [
@@ -599,7 +627,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a030",
-    "slug": "a030-dragonart-chu",
+    "slug": "dragonart-chu",
     "name": "DragonArt Chu",
     "kind": "unknown",
     "credits": [
@@ -609,6 +637,7 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "links": [],
     "slugAliases": [
+      "a030-dragonart-chu",
       "a037-dragonart-chu",
       "a056-chu"
     ],
@@ -622,7 +651,8 @@ export const artistDirectory: ArtistIdentity[] = [
       "imageUrl": "https://prd.resource-api.lit.link/v1/images/resized?image_url=images/creator/79691476-4c51-4f00-b93c-4d4ba9e206aa/d0cd66bc-6e5c-4b6a-aae6-dde72d3eacc4.jpg&width=240",
       "verifiedAt": "2026-10-14"
     },
-    "slug": "a031-tarotarou",
+    "slug": "tarotarou",
+    "slugAliases": ["a031-tarotarou"],
     "name": "TaroTarou",
     "kind": "individual",
     "credits": [
@@ -663,7 +693,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a032",
-    "slug": "a032-nr",
+    "slug": "nr",
+    "slugAliases": ["a032-nr"],
     "name": "NR",
     "kind": "unknown",
     "credits": [
@@ -673,7 +704,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a033",
-    "slug": "a033-salmontea",
+    "slug": "salmontea",
+    "slugAliases": ["a033-salmontea"],
     "name": "SalmonTea",
     "kind": "individual",
     "credits": [
@@ -704,7 +736,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a035",
-    "slug": "a035-aquagirl",
+    "slug": "aquagirl",
+    "slugAliases": ["a035-aquagirl"],
     "name": "AquaGirl",
     "kind": "unknown",
     "credits": [
@@ -714,7 +747,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a036",
-    "slug": "a036-d-lam",
+    "slug": "d-lam",
+    "slugAliases": ["a036-d-lam"],
     "name": "D Lam",
     "kind": "unknown",
     "credits": [
@@ -725,7 +759,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a039",
     "pronunciation": { "nativeText": "繪來", "text": "Huì lái", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a039-繪來",
+    "slug": "繪來",
+    "slugAliases": ["a039-繪來"],
     "name": "繪來",
     "kind": "unknown",
     "credits": [
@@ -735,7 +770,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a040",
-    "slug": "a040-silvie",
+    "slug": "silvie",
+    "slugAliases": ["a040-silvie"],
     "name": "silvie",
     "kind": "unknown",
     "credits": [
@@ -752,7 +788,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a041",
-    "slug": "a041-gendo",
+    "slug": "gendo",
+    "slugAliases": ["a041-gendo"],
     "name": "Gendo",
     "kind": "unknown",
     "credits": [
@@ -763,7 +800,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a042",
     "pronunciation": { "nativeText": "阿清", "text": "Ā qīng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a042-阿清roro",
+    "slug": "阿清roro",
+    "slugAliases": ["a042-阿清roro"],
     "name": "阿清Roro",
     "kind": "individual",
     "portrait": {
@@ -794,7 +832,7 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a043",
-    "slug": "a043-dragonart-tris",
+    "slug": "dragonart-tris",
     "name": "Dragonart Tris",
     "kind": "unknown",
     "credits": [
@@ -803,13 +841,15 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "links": [],
     "slugAliases": [
+      "a043-dragonart-tris",
       "a044-dragonart-tris"
     ],
     "studioId": "a004"
   },
   {
     "id": "a045",
-    "slug": "a045-fuzichoco",
+    "slug": "fuzichoco",
+    "slugAliases": ["a045-fuzichoco"],
     "name": "fuzichoco",
     "portrait": {
       "src": "/images/artists/a045.jpg",
@@ -840,7 +880,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a046",
-    "slug": "a046-taki",
+    "slug": "taki",
+    "slugAliases": ["a046-taki"],
     "name": "Taki",
     "kind": "unknown",
     "credits": [
@@ -850,7 +891,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a047",
-    "slug": "a047-yohaku",
+    "slug": "yohaku",
+    "slugAliases": ["a047-yohaku"],
     "name": "YOHAKU",
     "kind": "individual",
     "credits": [
@@ -909,7 +951,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a048",
-    "slug": "a048-zeronext",
+    "slug": "zeronext",
+    "slugAliases": ["a048-zeronext"],
     "name": "ZERONEXT",
     "kind": "unknown",
     "credits": [
@@ -920,7 +963,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a049",
     "pronunciation": { "nativeText": "ジェゼ一", "text": "Jezē", "lang": "ja-Latn", "basis": "estimated" },
-    "slug": "a049-ジェゼ一",
+    "slug": "ジェゼ一",
+    "slugAliases": ["a049-ジェゼ一"],
     "name": "ジェゼ一",
     "kind": "unknown",
     "credits": [
@@ -930,7 +974,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a051",
-    "slug": "a051-deeya-chaturvedi",
+    "slug": "deeya-chaturvedi",
+    "slugAliases": ["a051-deeya-chaturvedi"],
     "name": "Deeya Chaturvedi",
     "kind": "unknown",
     "credits": [
@@ -941,7 +986,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a052",
     "pronunciation": { "nativeText": "倉倉", "text": "Cāng cāng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a052-dragonart-倉倉",
+    "slug": "dragonart-倉倉",
+    "slugAliases": ["a052-dragonart-倉倉"],
     "name": "DragonArt 倉倉",
     "kind": "unknown",
     "credits": [
@@ -952,7 +998,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a053",
-    "slug": "a053-leviathan",
+    "slug": "leviathan",
+    "slugAliases": ["a053-leviathan"],
     "name": "Leviathan",
     "kind": "unknown",
     "credits": [
@@ -963,7 +1010,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a054",
     "pronunciation": { "nativeText": "白帝", "text": "Bái dì", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a054-白帝",
+    "slug": "白帝",
+    "slugAliases": ["a054-白帝"],
     "name": "白帝",
     "kind": "unknown",
     "credits": [
@@ -973,7 +1021,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a055",
-    "slug": "a055-andrew-yang",
+    "slug": "andrew-yang",
+    "slugAliases": ["a055-andrew-yang"],
     "name": "Andrew Yang",
     "kind": "unknown",
     "credits": [
@@ -983,7 +1032,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a057",
-    "slug": "a057-soda",
+    "slug": "soda",
+    "slugAliases": ["a057-soda"],
     "name": "SODA",
     "kind": "unknown",
     "credits": [
@@ -994,7 +1044,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a058",
     "pronunciation": { "nativeText": "南佑希", "text": "Minami Yūki", "lang": "ja-Latn", "basis": "estimated" },
-    "slug": "a058-南佑希",
+    "slug": "南佑希",
+    "slugAliases": ["a058-南佑希"],
     "name": "南佑希",
     "kind": "individual",
     "portrait": {
@@ -1025,7 +1076,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a060",
-    "slug": "a060-dragonart-antilous",
+    "slug": "dragonart-antilous",
+    "slugAliases": ["a060-dragonart-antilous"],
     "portrait": {
       "src": "/images/artists/a060.jpg",
       "sourceUrl": "https://www.artstation.com/antilous",
@@ -1064,7 +1116,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a061",
-    "slug": "a061-dragonart-ks",
+    "slug": "dragonart-ks",
+    "slugAliases": ["a061-dragonart-ks"],
     "name": "Dragonart KS",
     "kind": "unknown",
     "credits": [
@@ -1075,7 +1128,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a062",
-    "slug": "a062-dragonart-zhang-iris",
+    "slug": "dragonart-zhang-iris",
+    "slugAliases": ["a062-dragonart-zhang-iris"],
     "name": "DragonArt Zhang Iris",
     "kind": "unknown",
     "credits": [
@@ -1087,7 +1141,7 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a063",
     "pronunciation": { "nativeText": "白霜搽", "text": "Bái shuāng chá", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a063-dragonart-白霜搽",
+    "slug": "dragonart-白霜搽",
     "name": "Dragonart 白霜搽",
     "kind": "combined",
     "credits": [
@@ -1111,6 +1165,7 @@ export const artistDirectory: ArtistIdentity[] = [
       "verifiedAt": "2026-10-14"
     },
     "slugAliases": [
+      "a063-dragonart-白霜搽",
       "a025-dragonart-白霜茶",
       "a050-白霜茶"
     ],
@@ -1119,7 +1174,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a064",
     "pronunciation": { "nativeText": "艾瞳", "text": "Ài tóng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a064-dragonart-艾瞳a-ton",
+    "slug": "dragonart-艾瞳a-ton",
+    "slugAliases": ["a064-dragonart-艾瞳a-ton"],
     "name": "DragonArt 艾瞳A-Ton",
     "kind": "unknown",
     "credits": [
@@ -1130,7 +1186,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a065",
-    "slug": "a065-ge-b",
+    "slug": "ge-b",
+    "slugAliases": ["a065-ge-b"],
     "name": "Ge-B",
     "kind": "unknown",
     "credits": [
@@ -1140,7 +1197,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a066",
-    "slug": "a066-hyonee",
+    "slug": "hyonee",
+    "slugAliases": ["a066-hyonee"],
     "name": "HYONEE",
     "kind": "unknown",
     "credits": [
@@ -1150,7 +1208,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a067",
-    "slug": "a067-polar-engine",
+    "slug": "polar-engine",
+    "slugAliases": ["a067-polar-engine"],
     "name": "Polar Engine",
     "kind": "studio",
     "credits": [
@@ -1183,7 +1242,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a069",
     "pronunciation": { "nativeText": "露比喵", "text": "Lù bǐ miāo", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a069-rubi露比喵",
+    "slug": "rubi露比喵",
+    "slugAliases": ["a069-rubi露比喵"],
     "name": "Rubi露比喵",
     "kind": "individual",
     "credits": [
@@ -1208,7 +1268,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a070",
-    "slug": "a070-sunny",
+    "slug": "sunny",
+    "slugAliases": ["a070-sunny"],
     "name": "Sunny",
     "kind": "unknown",
     "credits": [
@@ -1218,7 +1279,8 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a071",
-    "slug": "a071-teddypocky",
+    "slug": "teddypocky",
+    "slugAliases": ["a071-teddypocky"],
     "name": "TEDDYPOCKY",
     "kind": "individual",
     "credits": [
@@ -1237,7 +1299,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a073",
     "pronunciation": { "nativeText": "桃李", "text": "Tori", "lang": "ja-Latn", "basis": "estimated" },
-    "slug": "a073-桃李タロ",
+    "slug": "桃李タロ",
+    "slugAliases": ["a073-桃李タロ"],
     "name": "桃李タロ",
     "kind": "individual",
     "credits": [
@@ -1256,7 +1319,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a074",
     "pronunciation": { "nativeText": "蝦蝦", "text": "Xiā xiā", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a074-蝦蝦",
+    "slug": "蝦蝦",
+    "slugAliases": ["a074-蝦蝦"],
     "name": "蝦蝦",
     "kind": "unknown",
     "credits": [
@@ -1267,7 +1331,8 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a076",
     "pronunciation": { "nativeText": "阿冰", "text": "Ā bīng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
-    "slug": "a076-阿冰",
+    "slug": "阿冰",
+    "slugAliases": ["a076-阿冰"],
     "name": "阿冰",
     "kind": "unknown",
     "credits": [

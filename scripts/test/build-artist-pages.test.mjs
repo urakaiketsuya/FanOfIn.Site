@@ -62,6 +62,8 @@ test('build emits every profile, alias redirect and canonical-only sitemap; repe
   }
   const sitemap=await readFile(path.join(outDir,'sitemap.xml'),'utf8');
   assert.equal((sitemap.match(/<loc>https:\/\/fanofin.site\/artists/g)??[]).length,artistDirectory.length+1);
+  assert.doesNotMatch(sitemap,/artists\/a\d+-/);
+  assert.match(sitemap,/artists\/hanh-chu\//);
   assert.doesNotMatch(sitemap,/artists\/old/);assert.match(sitemap,/decks\/abc/);
   await buildArtistPages({dataDir,outDir});
   assert.equal(await readFile(path.join(outDir,'sitemap.xml'),'utf8'),sitemap);

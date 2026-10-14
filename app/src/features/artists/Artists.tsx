@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { artistDirectory, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
+import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { artistDirectory, artistPagePath, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import ArtistAccountIcon from './ArtistAccountIcon';
 import { artistSharePreview } from './artistSharePreview';
@@ -56,6 +56,7 @@ function ArtistArtwork({ entry }: { entry: ArtistCard }) {
 
 export default function Artists() {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const cards = useCardCatalog();
   const popularity = useCardStatsData();
   const popularityStatus = usePublishedDataStatus('analysis-cards', '/data/analysis/cards.json');
@@ -96,6 +97,9 @@ export default function Artists() {
   const artistSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
   const visibleArtists = galleries.filter(candidate => [...candidate.credits, candidate.name, candidate.pronunciation?.text ?? ''].some(value => artistSearch(value).includes(artistSearch(query))));
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
+  if (identity && slug !== identity.slug) {
+    return <Navigate replace to={`${artistPagePath(identity)}${location.search}${location.hash}`} />;
+  }
   return <PageLayout width="full">
     <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
     <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity ? <ArtistName artist={identity} /> : (loading ? 'Artist' : 'Artist not found') : 'Grand Archive artists'} /></div></div>
