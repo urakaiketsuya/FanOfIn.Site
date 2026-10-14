@@ -1122,17 +1122,17 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A073 — 桃李タロ
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-supported account match; updated 2026-10-14.
 - **Exact credits:** `"桃李タロ"`.
-- **Identity:** Individual candidate: 桃李タロ / @tori_mcct; unrelated to TaroTarou until proven otherwise. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** 桃李タロ / @tori_mcct, artist ID a073. The user identifies this account as the likely artist, consistent with the previously inspected exact-name profile and reciprocal artist hub. Keep separate from TaroTarou.
 - **Credited example:** Bubble Mage; Dawn of Ashes Alter Edition; #163; edition `ltv5klszvf`. [Publisher edition reference](https://index.gatcg.com/edition/bubble-mage-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"桃李タロ"`; `"tori_mcct" "Grand Archive"` (no indexed results).
 - **Findings:** Exact-name results include [post mirrors](https://twstalker.com/daifukuyasann) and a same-name artist’s book listing. Handle-plus-game search returned no results and direct X returned 403. **Browser follow-up:** X and its linked https://lit.link/en/toritaro hub are readable with reciprocal social links; no inspected Bubble Mage commission connection. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Find an original Bubble Mage commission statement before adopting the handle; retain A031/A034 separately.
+- **Next action:** Retain the user-supported X link. An original Bubble Mage commission statement would independently strengthen the catalog match; retain A031/A034 separately.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| X | [@tori_mcct](https://x.com/tori_mcct) | Candidate | [Evidence](https://x.com/tori_mcct): Browser follow-up read the original account/page. X and its linked https://lit.link/en/toritaro hub are readable with reciprocal social links; no inspected Bubble Mage commission connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| X | [@tori_mcct](https://x.com/tori_mcct) | User-supported | [Evidence](https://x.com/tori_mcct): Browser follow-up read the original account/page. X and its linked https://lit.link/en/toritaro hub are readable with reciprocal social links; no inspected Bubble Mage commission connection. Published following the user’s likely identification on 2026-10-14; no independent Bubble Mage artwork match is claimed. | 2026-10-14 |
 
 ### A074 — 蝦蝦
 
@@ -1604,3 +1604,10 @@ Romaji verification: app typecheck, all four artist tests, and diff checks pass.
 At the user’s request, removed visible question marks from pronunciation annotations. Estimated provenance remains in metadata and research notes; the displayed readings are otherwise unchanged. This supersedes earlier instructions to show uncertainty markers. Next: publish and verify production. Artist Pages remains approximately 95% complete for its first release, with production journeys and real transport recovery checks outstanding.
 
 Marker-removal verification: four artist tests and diff checks pass. At 360px and 1280px, Minami Yūki displays without a question mark and without overflow. Loading observed; other interaction states retain the preceding checks and were not repeated for this text removal. Typecheck was not repeated for deletion of the marker-only JSX.
+
+
+### 桃李タロ account update 2026-10-14
+
+Added [@tori_mcct](https://x.com/tori_mcct) to a073 following the user’s likely identification, supported by the earlier exact-name profile and reciprocal [artist hub](https://lit.link/en/toritaro) inspection. Current direct X text retrieval returns 403. This is a user-supported association rather than an independently matched Bubble Mage commission. The Tori reading remains estimated; the account identification does not confirm a spoken reading. No portrait or additional accounts added. Current totals: 65 identities, 49 account URLs across 24 linked identities, 24 portraits.
+
+Verification: all four artist regression tests and diff checks pass. The account link appears at 360px and 1280px with no horizontal overflow and a 48px target; keyboard navigation reaches the card search with visible focus. Loading was observed. Error/retry, empty results and printing selection were not repeated for this account-data change. Next: publish this account update when requested and verify production. Artist Pages remains approximately 95% complete for the first release, with release verification and real transport recovery outstanding; identity research remains open-ended.

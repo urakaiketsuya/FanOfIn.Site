@@ -1194,11 +1194,19 @@ export const artistDirectory: ArtistIdentity[] = [
     "pronunciation": { "nativeText": "桃李", "text": "Tori", "lang": "ja-Latn", "basis": "estimated" },
     "slug": "a073-桃李タロ",
     "name": "桃李タロ",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "桃李タロ"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@tori_mcct",
+        "url": "https://x.com/tori_mcct",
+        "evidence": "https://lit.link/en/toritaro",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a074",
