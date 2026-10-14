@@ -6,6 +6,7 @@ interface CardImageProps {
   alt: string;
   rounded?: boolean;
   className?: string;
+  loading?: "eager" | "lazy";
 }
 
 /**
@@ -16,12 +17,12 @@ interface CardImageProps {
  * until loaded, same as before this change – give those an explicit `aspect-*` class if a
  * placeholder shape matters there.
  */
-export default function CardImage({ image, alt, rounded, className }: CardImageProps) {
+export default function CardImage({ image, alt, rounded, className, loading = "lazy" }: CardImageProps) {
   const src = gatcgApi.imageUrl(image, rounded);
-  return <CardImageSource key={src} src={src} alt={alt} className={className} />;
+  return <CardImageSource key={src} src={src} alt={alt} className={className} loading={loading} />;
 }
 
-function CardImageSource({ src, alt, className }: { src: string; alt: string; className?: string }) {
+function CardImageSource({ src, alt, className, loading }: { src: string; alt: string; className?: string; loading: "eager" | "lazy" }) {
   const imageRef = useRef<HTMLImageElement>(null);
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
   // Cached images can finish before React observes their load event. Never reset
@@ -48,7 +49,7 @@ function CardImageSource({ src, alt, className }: { src: string; alt: string; cl
       ref={imageRef}
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={loading}
       onLoad={() => setStatus("loaded")}
       onError={() => setStatus("error")}
       className={`bg-ctp-surface0 transition-opacity duration-200 ${status === "loading" ? "opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}

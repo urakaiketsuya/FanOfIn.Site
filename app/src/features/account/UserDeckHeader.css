@@ -1,0 +1,33 @@
+/* Bound the illustration so a deck keeps its identity without hiding its cards.
+   The shared art tile crops away the printed title and rules; fade into the
+   existing identity surface instead of placing essential text over artwork. */
+.deck-panorama {
+  position: relative;
+  isolation: isolate;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.deck-panorama-art {
+  position: relative;
+  height: 8rem;
+  overflow: hidden;
+}
+
+.deck-panorama-crop {
+  position: absolute;
+  inset: 0;
+  max-width: 42rem;
+  margin-inline: auto;
+  mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
+}
+
+.deck-panorama-crop > [data-component="CardArtTile"] {
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+@media (min-width: 640px) {
+  .deck-panorama-art { height: 11rem; }
+}

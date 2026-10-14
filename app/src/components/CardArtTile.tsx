@@ -18,7 +18,9 @@ export default function CardArtTile({
   tags,
   artworkOnly = false,
   editionUuid,
+  loading,
 }: {
+  loading?: "eager" | "lazy";
   editionUuid?: string;
   card: Card | undefined;
   name: string;
@@ -31,7 +33,7 @@ export default function CardArtTile({
   return (
     <div data-component="CardArtTile" className={`relative overflow-hidden rounded bg-ctp-surface0 ${artworkOnly ? "aspect-[16/10]" : "aspect-[5/7]"}`}>
       {card?.editions[0] ? (
-        <CardImage image={card.editions[0].image} alt={name} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
+        <CardImage image={card.editions[0].image} alt={name} loading={loading} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
       ) : (
         <span className={`flex h-full items-center justify-center text-center text-ctp-subtext0 ${artworkOnly ? "p-6 text-sm" : "p-1 text-[9px]"}`}>{name}</span>
       )}

@@ -474,7 +474,7 @@ export default function DeckDetail() {
         &larr; Browse Decks
       </Link>
 
-      <UserDeckHeader
+      <UserDeckHeader decklist={decklist}
         title={deck.championName ?? "Unknown champion"}
         championName={deck.championName}
         format="STANDARD"
