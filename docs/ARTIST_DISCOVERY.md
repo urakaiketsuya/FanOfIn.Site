@@ -19,14 +19,14 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 13 verified credit entries representing 12 identities; 24 no-link outcomes; 39 needing identity review. There are 26 unique verified URLs. The portrait pass below covers all 75 curated identities, with 10 verified images and 65 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 14 verified credit entries representing 13 identities; 24 no-link outcomes; 38 needing identity review. There are 28 unique verified URLs. The portrait pass below covers all 75 curated identities, with 11 verified images and 64 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
 1. Take the next Not started entry and mark it In progress. The initial queue orders by unique-card count, then name; keep assigned IDs stable as work continues.
 2. Inspect its credited cards and printings. Search the exact credit, Grand Archive, and any supported native-script or alternate names. Record queries and the date searched.
 3. Establish whether the credit identifies an individual, studio, or combined attribution. Search publisher artist credits and artist-owned sites, then follow their links to portfolios and social profiles.
-4. Open each candidate account and the source supporting ownership. A username match, search snippet, fan page, or repost alone cannot verify identity. Record the direct evidence URL and a short description of what connects the account to the credited artist.
+4. Open each candidate account and the source supporting ownership. A username match, search snippet, fan page, or repost alone cannot verify identity. An exact card-art match is sufficient but not mandatory: a user-supplied identification supported by matching professional/native names and artist-owned account cross-links can establish a strong identity match. Record when the catalog connection is inferred from this evidence rather than demonstrated by a commission post. Verify account ownership separately from destination readability; an artist-owned link can establish ownership even if that platform cannot be inspected. Record the direct evidence URL and a short description of what connects the account to the credited artist.
 5. Record each link as Verified, Candidate, Rejected, or Unavailable. Keep candidate/rejected evidence in research records; publish only Verified links. A studio account does not automatically establish a member's personal account.
 6. Resolve the entry as Reviewed with verified links, Reviewed with no verified links found, or Needs identity review. Record unsuccessful searches and remaining questions. No verified links found means discovery was performed, not that no account exists.
 7. Update the totals and select the next entry. If an earlier entry has already established the same identity, reference its evidence and explicitly resolve this credit rather than repeating the search or silently merging names.
@@ -92,7 +92,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A039 | 繪來 | 7 | 7 | Reviewed with no verified links found |
 | A040 | silvie | 6 | 6 | Needs identity review |
 | A041 | Gendo | 5 | 13 | Reviewed with no verified links found |
-| A042 | 阿清Roro | 5 | 8 | Needs identity review |
+| A042 | 阿清Roro | 5 | 8 | Reviewed with verified links |
 | A043 | Dragonart Tris | 4 | 5 | Needs identity review |
 | A044 | DragonArt Tris | 4 | 4 | Needs identity review |
 | A045 | fuzichoco | 4 | 5 | Reviewed with verified links |
@@ -697,18 +697,18 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A042 — 阿清Roro
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
 - **Exact credits:** `"阿清Roro"`.
-- **Identity:** Individual candidate: 阿清 / Roro Wu, @abab40116. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
-- **Credited example:** Claude, Fated Visionary; Alchemical Revolution; #182; edition `56djg0bo2f`. [Publisher edition reference](https://index.gatcg.com/edition/claude-fated-visionary-alc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
-- **Searches:** `"阿清Roro"`; `"abab40116" "Grand Archive"` (no indexed results).
-- **Findings:** [Mirror profile](https://twoucan.com/profile/abab40116) pairs 阿清 and Roro Wu and links a Pixiv profile. The handle-plus-game search returned no results. X returned 403 and Pixiv could not be opened. **Browser follow-up:** X now readable as 阿清 / Roro Wu; no inspected card-specific connection. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Locate a readable Claude, Fated Visionary or Reconstructive Surgery commission statement before mapping the catalog credit.
+- **Identity:** Individual: 阿清 / Roro Wu, @abab40116. Preserve the existing a042 identity, credited display name, and slug.
+- **Credited example:** Claude, Fated Visionary; Alchemical Revolution; #182; edition `56djg0bo2f`. [Publisher edition reference](https://index.gatcg.com/edition/claude-fated-visionary-alc) records the catalog credit.
+- **Searches:** `"阿清Roro"`; `"abab40116" "Grand Archive"`; `"abab40116" Roro`; user-supplied X and Pixiv accounts.
+- **Findings:** The user proposed RoroWU and these two accounts. The original X profile reads 阿清 | Roro Wu and identifies an illustrator. An [original Bahamut artwork post](https://forum.gamer.com.tw/C.php?bsn=7650&snA=1021234), authored by 阿清 / abab40116, self-identifies as 阿清 and explicitly lists Twitter @abab40116 and Pixiv user 3849392 as personal accounts. The combined native and professional names, original account cross-links, and user lead support a strong catalog identity match under the agreed broader standard. This mapping is an inference; no exact Grand Archive artwork match was established. The X avatar is saved locally with source metadata. Pixiv content remains uninspected: web retrieval failed and the prior browser-policy restriction was not bypassed; ownership is supported by the original artist post.
+- **Next action:** Publish the two supplied official accounts and X avatar. Preserve the credited name; other personal or collective accounts in the post were not added.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| X | [@abab40116](https://x.com/abab40116) | Candidate | [Evidence](https://x.com/abab40116): Browser follow-up read the original account/page. X now readable as 阿清 / Roro Wu; no inspected card-specific connection. Withheld pending catalog identity evidence. | 2026-10-14 |
-| Pixiv | [Profile 3849392](https://www.pixiv.net/users/3849392) | Unavailable | [Evidence](https://twoucan.com/profile/abab40116): Numeric ID comes from mirror profile; direct page could not be opened. | 2026-10-14 |
+| X | [@abab40116](https://x.com/abab40116) | Verified | [Artist post](https://forum.gamer.com.tw/C.php?bsn=7650&snA=1021234) explicitly links this personal account; readable profile combines 阿清 and Roro Wu. Catalog identity inferred as described above. | 2026-10-14 |
+| Pixiv | [Roro Wu](https://www.pixiv.net/en/users/3849392) | Verified ownership | [Artist post](https://forum.gamer.com.tw/C.php?bsn=7650&snA=1021234) explicitly links numeric profile 3849392, matching the user-supplied account. Destination content not inspected. | 2026-10-14 |
 
 ### A043 — Dragonart Tris
 

@@ -598,11 +598,32 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a042",
     "slug": "a042-阿清roro",
     "name": "阿清Roro",
-    "kind": "unknown",
+    "kind": "individual",
+    "portrait": {
+      "src": "/images/artists/a042.jpg",
+      "sourceUrl": "https://x.com/abab40116",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1267004911524253702/h2xoSLPE_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "阿清Roro"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@abab40116",
+        "url": "https://x.com/abab40116",
+        "evidence": "https://forum.gamer.com.tw/C.php?bsn=7650&snA=1021234",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Pixiv",
+        "label": "Roro Wu",
+        "url": "https://www.pixiv.net/en/users/3849392",
+        "evidence": "https://forum.gamer.com.tw/C.php?bsn=7650&snA=1021234",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a043",

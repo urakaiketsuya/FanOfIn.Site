@@ -182,3 +182,12 @@ Verification: app typecheck, all three artist regression tests, and diff checks 
 ### YOHAKU candidate 2026-10-14
 
 Saved the user-supplied [@YH_0w0](https://x.com/YH_0w0) lead under A047. The readable profile and its reciprocal [POTOFU hub](https://potofu.me/yohaku0w0) establish an illustrator named YOHAKU / 여백, but inspected material does not establish the Grand Archive credit connection. No public account or portrait was added. Next is an exact match against one of the four credited cards or a publisher cross-link. Current totals remain 26 verified URLs across 12 identities and 10 portraits; research statuses are 13 verified credit entries, 24 no-link outcomes, and 39 needing identity review. Artist Pages remains approximately 95% complete for its first release, pending production journey and real transport recovery checks; broader identity resolution has uncertain duration. Documentation-only change; verified the original profile and hub in the browser and checked the diff.
+
+
+### Roro Wu identity 2026-10-14
+
+Added the user-supplied X and Pixiv accounts for 阿清Roro and the X profile avatar. The original profile combines 阿清 and Roro Wu, while an original Bahamut artwork post by 阿清 explicitly lists both supplied accounts as personal links. The catalog identity is a strong inference from this name/account evidence and the user lead; an exact card match is no longer mandatory. Pixiv ownership is supported by the original post, but destination content remains uninspected because retrieval failed and the prior browser restriction was respected.
+
+Coverage is now 28 official URLs across 13 identities and 11 portraits across 75 pages. Next recommended work is applying the same broader standard to the preserved YOHAKU lead. Artist Pages remains approximately 95% complete for the first release, pending production journey and real transport recovery checks; further identity coverage remains uncertain.
+
+Verification: app typecheck, all three artist regression tests, and diff checks pass. At 360px and 1280px the avatar loads and the page has no horizontal overflow; both mobile account links are 48px high, and keyboard navigation reaches Pixiv with visible focus. Initial loading was observed. Empty and failure/retry states were not forced again for this data-only update and retain the prior release-check coverage. Pixiv destination content and production behavior remain unverified.
