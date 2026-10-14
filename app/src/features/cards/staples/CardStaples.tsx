@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
+import { blendCardStaples, staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
 import CardArtTile from "../../../components/CardArtTile";
 import PublishedSourceStatus from "../../../components/PublishedSourceStatus";
 import PageLayout from "../../../components/layout/PageLayout";
@@ -22,14 +22,15 @@ export default function CardStaples() {
   useDocumentTitle("Card Staples", "Discover the most played cards by deck section, element, keyword, and champion.");
   const [params, setParams] = useSearchParams();
   const community = params.get("source") === "community";
+  const blended = params.get("source") === "blended";
   // Keep each published-data subscription bound to a stable key. Only the selected
   // source loads, and switching preserves keyboard focus and URL-owned selections.
   const tournamentData = usePublishedData<CardStaplesData>("analysis-card-staples", "/data/analysis/card-staples.json", !community);
-  const communityData = usePublishedData<CardStaplesData>("analysis-community-card-staples", "/data/analysis/community-card-staples.json", community);
+  const communityData = usePublishedData<CardStaplesData>("analysis-community-card-staples", "/data/analysis/community-card-staples.json", community || blended);
   const tournamentStatus = usePublishedDataStatus("analysis-card-staples", "/data/analysis/card-staples.json", !community);
-  const communityStatus = usePublishedDataStatus("analysis-community-card-staples", "/data/analysis/community-card-staples.json", community);
-  const data = community ? communityData : tournamentData;
-  const status = community ? communityStatus : tournamentStatus;
+  const communityStatus = usePublishedDataStatus("analysis-community-card-staples", "/data/analysis/community-card-staples.json", community || blended);
+  const blend = useMemo(() => blended && tournamentData && communityData ? blendCardStaples(tournamentData, communityData) : undefined, [blended, tournamentData, communityData]);
+  const data = blended ? blend : community ? communityData : tournamentData;
   const [pending, startTransition] = useTransition();
   const requestedParams = useRef(params);
   useEffect(() => { if (!pending) requestedParams.current = params; }, [params, pending]);
@@ -37,7 +38,7 @@ export default function CardStaples() {
   const [pagination, setPagination] = useState({ key: "", count: PAGE_SIZE });
   const key = params.toString();
   const section: StapleSection = params.get("section") === "material" ? "material" : params.get("section") === "sideboard" ? "sideboard" : "main";
-  const period: StaplePeriod = community || params.get("period") === "all" ? "all" : params.get("period") === "30" ? "30" : "90";
+  const period: StaplePeriod = community || blended || params.get("period") === "all" ? "all" : params.get("period") === "30" ? "30" : "90";
   const format = params.get("format") ?? "standard";
   const champion = params.get("champion") ?? "";
   const filters = useMemo<StapleFilters>(() => ({
@@ -85,7 +86,7 @@ export default function CardStaples() {
   }
   return <PageLayout width="wide" data-component="CardStaples">
     <PageHeader title="Card Staples" description="Find the cards players return to, across tournament and community decks." actions={<Link to="/cards/stats" className={linkClass}>Detailed card stats →</Link>} />
-    <div className="mb-4 max-w-sm"><FilterField label="Deck source"><select className={fieldClass} value={community ? "community" : "tournament"} onChange={e => change("source", e.target.value)}><option value="tournament">Tournament results</option><option value="community">Community decklists</option></select></FilterField></div>
+    <div className="mb-4 max-w-sm"><FilterField label="Deck source"><select className={fieldClass} value={blended ? "blended" : community ? "community" : "tournament"} onChange={e => change("source", e.target.value)}><option value="tournament">Tournament results</option><option value="community">Community decklists</option><option value="blended">Blended · Tournament + community</option></select></FilterField></div>
     <Tabs tabs={sections} active={section} onChange={value => change("section", value)} baseId="staples" label="Deck section" variant="pill" wrap />
     <div className="mt-4 flex items-end gap-3">
       <div className="min-w-0 flex-1"><FilterField label="Find a card"><input type="search" className={fieldClass} value={filters.search} onChange={e => change("q", e.target.value)} placeholder="Card name" /></FilterField></div>
@@ -99,11 +100,12 @@ export default function CardStaples() {
       {chips.map(chip => <Button size="sm" key={`${chip.key}:${chip.value}`} aria-label={`Remove ${chip.label} filter`} onClick={() => change(chip.key, ["element", "keyword"].includes(chip.key) ? params.getAll(chip.key).filter(value => value !== chip.value) : "")}>{chip.label} ×</Button>)}
       <Button variant="ghost" onClick={clearFilters}>Clear filters</Button>
     </div>}
-    <PublishedSourceStatus label={community ? "Community staples" : "Card staples"} status={status} hasData={!!data} />
+    {!community && <PublishedSourceStatus label="Tournament staples" status={tournamentStatus} hasData={!!tournamentData} />}
+    {(community || blended) && <PublishedSourceStatus label="Community staples" status={communityStatus} hasData={!!communityData} />}
     <TabPanel baseId="staples" tab={section} active={section} className="mt-5 focus-visible:outline-2 focus-visible:outline-ctp-blue">
       <div aria-live="polite" className="mb-4 text-sm text-ctp-subtext1">
         {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${champion}` : ""}` : ""}
-        {data && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
+        {data && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {blended ? "Tournament entries + unique community lists · Full archive" : community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
         {data && community && <span className="mt-1 block text-xs text-ctp-subtext0">ShoutAtYourDecks · Sleeved · TcgArchitect{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} lists report a sideboard` : ""}</span>}
         {data?.throughDate && <span className="mt-1 block text-xs text-ctp-subtext0">Results through {data.throughDate}{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} decks report a sideboard` : ""}</span>}
       </div>
@@ -117,13 +119,13 @@ export default function CardStaples() {
             {card.keywords.length > 0 && <p className="mt-3 break-words text-xs text-ctp-subtext1">{card.keywords.join(" · ")}</p>}
             <div className="mt-3 flex items-baseline justify-between gap-2"><strong className="text-xl text-ctp-blue">{population === null ? "—" : percent(population ? row[1] / population : 0)}</strong><span className="text-xs text-ctp-subtext1">{row[1].toLocaleString()} {community ? "unique lists" : "decks"}</span></div>
             <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(population ? row[1] / population : 0) }} /></div>
-            <p className="mt-2 text-xs text-ctp-subtext1">Usually {row[3]} {row[3] === 1 ? "copy" : "copies"} · {(row[2] / row[1]).toFixed(1)} average</p>
-            {!community && <p className="mt-1 text-xs text-ctp-subtext0">{row[5] === null ? "No recorded match results" : `${percent(row[5])} adjusted deck win rate · ${row[4].toLocaleString()} decks`}</p>}
+            <p className="mt-2 text-xs text-ctp-subtext1">{!blended && <>Usually {row[3]} {row[3] === 1 ? "copy" : "copies"} · </>}{(row[2] / row[1]).toFixed(1)} average</p>
+            {!community && <p className="mt-1 text-xs text-ctp-subtext0">{row[5] === null ? "No recorded match results" : `${percent(row[5])} adjusted tournament win rate · ${row[4].toLocaleString()} decks`}</p>}
           </article>;
         })}
       </div>
       {rows.length > count && <Button className="mt-5 w-full" onClick={() => setPagination({ key, count: count + PAGE_SIZE })}>Show more cards</Button>}
     </TabPanel>
-    {showFilters && <StaplesFilters community={community} data={data} filters={filters} champion={champion} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
+    {showFilters && <StaplesFilters community={community || blended} data={data} filters={filters} champion={champion} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
   </PageLayout>;
 }

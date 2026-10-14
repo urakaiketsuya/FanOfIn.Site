@@ -4997,3 +4997,9 @@ multiple types contributes to each type, so categories can overlap and percentag
 not sum to 100%. Independent bars use the section total as their scale. Empty sections
 have no ratios. Cost curves reuse the documented memory/reserve calculations, scoped
 to the same selected section. Editing quantities recomputes the panel from the live list.
+
+### Blended staples source
+
+The optional full-archive blend pools tournament entries and unique community lists,
+with filter-relative populations and tournament-only outcomes. See
+[CARD_STAPLES_BLEND.md](CARD_STAPLES_BLEND.md) for formulas and source limitations.

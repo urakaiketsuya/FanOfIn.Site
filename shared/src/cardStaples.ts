@@ -87,3 +87,45 @@ export function selectStapleRows(cards: StapleCard[], rows: StapleRow[], filters
     return score || b[1] - a[1] || cards[a[0]].name.localeCompare(cards[b[0]].name);
   });
 }
+
+/** Pool full-archive observations, preserving source-local populations and tournament results.
+ * Sources do not expose cross-source identities or copy histograms: typical copies are
+ * unavailable in the blend (zero sentinel; callers show average copies instead).
+ */
+export function blendCardStaples(tournament: CardStaplesData, community: CardStaplesData): CardStaplesData {
+  const cards: StapleCard[] = [];
+  const indexes = new Map<string, number>();
+  const sectionPatterns: number[][] = [];
+  const cohorts = new Map<string, StapleCohort>();
+  for (const source of [tournament, community]) {
+    const remap = source.cards.map(card => {
+      let index = indexes.get(card.id);
+      if (index === undefined) { index = cards.length; indexes.set(card.id, index); cards.push(card); }
+      return index;
+    });
+    const offset = sectionPatterns.length;
+    sectionPatterns.push(...(source.sectionPatterns ?? []).map(pattern => pattern.map(index => remap[index])));
+    for (const cohort of source.cohorts.filter(value => value.period === "all")) {
+      const key = JSON.stringify([cohort.format, cohort.champion]);
+      let target = cohorts.get(key);
+      if (!target) {
+        target = { ...cohort, decks: 0, sections: { main: { decks: 0, rows: [], populations: [] }, material: { decks: 0, rows: [], populations: [] }, sideboard: { decks: 0, rows: [], populations: [] } } };
+        cohorts.set(key, target);
+      }
+      target.decks += cohort.decks;
+      for (const section of STAPLE_SECTIONS) {
+        const input = cohort.sections[section], output = target.sections[section];
+        output.decks += input.decks;
+        if (!source.sectionPatterns || !input.populations) output.populations = undefined;
+        else output.populations?.push(...input.populations.map(([pattern, count]): [number, number] => [pattern + offset, count]));
+        const rows = new Map(output.rows.map(row => [row[0], row]));
+        for (const row of input.rows) {
+          const index = remap[row[0]], previous = rows.get(index);
+          if (previous) { previous[1] += row[1]; previous[2] += row[2]; }
+          else { const added: StapleRow = [index, row[1], row[2], 0, source === tournament ? row[4] : 0, source === tournament ? row[5] : null]; output.rows.push(added); rows.set(index, added); }
+        }
+      }
+    }
+  }
+  return { generatedAt: [tournament.generatedAt, community.generatedAt].sort()[0], throughDate: tournament.throughDate, cards, cohorts: [...cohorts.values()], sectionPatterns };
+}
