@@ -280,11 +280,25 @@ export const artistDirectory: ArtistIdentity[] = [
     "id": "a017",
     "slug": "a017-faicha",
     "name": "Faicha",
-    "kind": "unknown",
+    "kind": "individual",
+    "portrait": {
+      "src": "/images/artists/a017.jpg",
+      "sourceUrl": "https://x.com/faicha2010",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1468824189083607040/o-Krslvm_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "credits": [
       "Faicha"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@faicha2010",
+        "url": "https://x.com/faicha2010",
+        "evidence": "https://redzonerogue.com/products/katsumi-astral-sword-saint-official-red-zone-rogue-playmat-preorder",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a018",

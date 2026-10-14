@@ -19,7 +19,7 @@ Verified coverage includes Hanh Chu, Gyool, Pinakes, Rachel Liu, fuzichoco, Drag
 Identity follow-ups are deferred while artist pages are built, as requested. The initial public directory uses 75 identities for these 76 entries: only A031/A034 share a page. The initial 21 verified URLs were curated separately in `shared/src/artistDirectory.ts`; uncertain spellings and studio/member credits remain separate. Candidate/unavailable links stay withheld. The unresolved decisions and next actions below remain the research backlog; they do not block useful card galleries. See the [implementation roadmap](ARTIST_ROADMAP.md) for verification and release status.
 
 
-Current follow-up totals (2026-10-14): 12 verified credit entries representing 11 identities; 25 no-link outcomes; 39 needing identity review. There are 25 unique verified URLs. The portrait pass below covers all 75 curated identities, with 9 verified images and 66 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
+Current follow-up totals (2026-10-14): 13 verified credit entries representing 12 identities; 25 no-link outcomes; 38 needing identity review. There are 26 unique verified URLs. The portrait pass below covers all 75 curated identities, with 10 verified images and 65 initials fallbacks. These follow-up totals supersede the initial-pass totals for current coverage.
 
 ## Work through one entry at a time
 
@@ -67,7 +67,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A014 | Kaze | 32 | 45 | Reviewed with no verified links found |
 | A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
 | A016 | Sineia | 29 | 41 | Reviewed with no verified links found |
-| A017 | Faicha | 28 | 50 | Needs identity review |
+| A017 | Faicha | 28 | 50 | Reviewed with verified links |
 | A018 | 檸檬夾心餅 | 26 | 44 | Reviewed with no verified links found |
 | A019 | Pekoe | 25 | 30 | Reviewed with no verified links found |
 | A020 | 北飞飞 | 23 | 44 | Reviewed with no verified links found |
@@ -371,16 +371,17 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A017 — Faicha
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** Reviewed with verified links; researched 2026-10-14.
 - **Exact credits:** `"Faicha"`.
 - **Identity:** Individual candidate: Faicha. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Angelic Channeling; Radiant Origins First Edition; #044A; edition `c7NbYXzcGS`. [Publisher edition reference](https://index.gatcg.com/edition/angelic-channeling-rdo1ea) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"Faicha" artist`; `"Faicha" "Grand Archive" twitter`.
-- **Findings:** Opened [Faicha’s Patreon](https://www.patreon.com/faicha/about), which self-identifies an illustrator and links Pixiv. It does not establish Grand Archive work in the inspected text. A [commission client’s playmat listing](https://redzonerogue.com/products/katsumi-astral-sword-saint-official-red-zone-rogue-playmat-preorder) names Faicha and Corhazi Courier but no inspected account ownership chain was completed.
-- **Next action:** Follow a publisher or commissioning-client account link, or locate a readable credited-card portfolio post.
+- **Findings:** The commissioning client’s [Katsumi listing](https://redzonerogue.com/products/katsumi-astral-sword-saint-official-red-zone-rogue-playmat-preorder) explicitly names Faicha as the Corhazi Courier illustrator and links @faicha2010. Browser inspection reads the illustrator profile as 啡茶 and its original [Resolute Stand commission post](https://x.com/faicha2010/status/2096115366082887863), plus Grand Archive event and Zhang Fei artwork posts. This supplies a primary client-to-account connection. The account’s illustrated profile avatar is saved locally with source metadata. The separate Patreon remains a candidate because no inspected cross-link connects it to the verified X profile.
+- **Next action:** Publish the verified X account and avatar. Keep Patreon and Pixiv withheld until their ownership chain is established.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
+| X | [@faicha2010](https://x.com/faicha2010) | Verified | [Client evidence](https://redzonerogue.com/products/katsumi-astral-sword-saint-official-red-zone-rogue-playmat-preorder): Names the Grand Archive Corhazi Courier illustrator and links this account; readable original profile posts corroborate Grand Archive work. | 2026-10-14 |
 | Patreon | [Faicha](https://www.patreon.com/faicha/about) | Candidate | [Evidence](https://www.patreon.com/faicha/about): Readable illustrator profile; catalog connection not yet established. | 2026-10-14 |
 | Pixiv | [Profile 14263721](https://www.pixiv.net/users/14263721) | Unavailable | [Evidence](https://www.patreon.com/faicha/about): Directly linked by the candidate Patreon; destination could not be opened. Canonical profile URL retains its linked numeric ID. | 2026-10-14 |
 
@@ -1260,3 +1261,85 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 ## Primea studio follow up 2026-10-14
 
 The user supplied Primea’s director and studio X accounts. The director’s readable biography explicitly links the studio in the Art Director role, resolving A001’s account blocker. The studio account has zero posts and no selected portrait; its lack of posts does not invalidate the ownership link. Current portrait coverage remains 9/75, with 64 account-to-credit connections still unresolved and two verified studios retaining initials. The earlier complete portrait-pass table records the outcomes at the time of that pass.
+
+
+## Remaining credit artwork search 2026-10-14
+
+All 64 credit entries without a verified account at the start of this follow-up received an exact-credit plus representative-card search. Results were screened individually; card databases, retailers, unrelated namesakes, and reposts did not establish account ownership. The table records each query and its outcome. This completes this search pass, while 63 credit entries still lack a verified account.
+
+Faicha is the new verified identity, bringing current coverage to 26 unique verified URLs across 12 identities (13 credit entries), including 13 social-network profiles. Portrait coverage is 10/75 (13.3%); 65 identities retain initials, comprising 63 without an account connection and two verified studios without a selected avatar. No aliases were merged.
+
+Additional primary follow-ups:
+
+- **Parhelion / Ge-B:** [Parhelion](https://parhelion.gg/) still describes anime/game work without a Grand Archive client reference. [Ge-B’s X biography](https://x.com/MightyKow) identifies an illustrator at Parhelion Studio and links an Echoes of Astra Kickstarter in its pinned post. This establishes a useful studio/member research lead; it does not connect either catalog credit to specific Grand Archive work. Keep A008, A038, and A065 separate and account-free.
+- **Deeya Chaturvedi:** [Artist website](https://www.deeyachaturvedi.com/) links [Behance](https://www.behance.net/deeyachaturvedi1), X @reindeeya, LinkedIn, and Instagram. The inspected portfolio shows Claws & Chaos and Grimlight projects, without a Grand Archive commission. Keep these as candidates for A051; Bombard Flarecannon remains the artwork target.
+- **Siriuf Long:** [DeviantArt](https://www.deviantart.com/siriuflong) identifies Siriuf Long and links [X](https://x.com/siriuflong). That readable profile links [Carrd](https://siriuflong.carrd.co/) and Patreon. These pages establish an artist-owned account cluster, but inspected posts and portfolio content do not identify the credited Aenean Frozen Shunt work. Keep the accounts and avatar withheld for A022.
+- **KHΩA:** [X](https://x.com/KhoaPhan96) remains readable and links VGen. Inspected portfolio and recent posts show other illustration work without a Grand Archive commission. The distinctive name is a lead; A013 remains unresolved.
+- **南佑希 and ambiguous credit variants:** The exact Enchanted Fete search supplied no new account evidence. A025/A050/A063, A005/A072, A003/A075, A001/A068, and the Dragonart spelling variants retain their previous decisions; third-party credit repetitions do not authorize merges.
+
+| Credit | Artwork query | Outcome |
+| --- | --- | --- |
+| A002 木叶 | `"木叶" "Acerbica" artist` | No new verified account connection; previous status retained. |
+| A003 道漫 | `"道漫" "Accepted Contract" artist` | No new verified account connection; previous status retained. |
+| A005 十尾 | `"十尾" "Academy Guide" artist` | No new verified account connection; previous status retained. |
+| A006 砂木烟 | `"砂木烟" "Academy Attendant" artist` | No new verified account connection; previous status retained. |
+| A008 Parhelion Studio Co. | `"Parhelion Studio Co." "Abnegation" artist` | No new verified account connection; previous status retained. |
+| A009 Alkaid | `"Alkaid" "Arcane Renunciation" artist` | No new verified account connection; previous status retained. |
+| A012 代々 | `"代々" "Alice, Golden Queen" artist` | No new verified account connection; previous status retained. |
+| A013 KHΩA | `"KHΩA" "Aenean Cyclic Winds" artist` | No new verified account connection; previous status retained. |
+| A014 Kaze | `"Kaze" "Aenean Flux Generator" artist` | No new verified account connection; previous status retained. |
+| A016 Sineia | `"Sineia" "Break Apart" artist` | No new verified account connection; previous status retained. |
+| A017 Faicha | `"Faicha" "Angelic Channeling" artist` | Verified X through commissioning-client evidence and original posts. |
+| A018 檸檬夾心餅 | `"檸檬夾心餅" "Accompanying Guard" artist` | No new verified account connection; previous status retained. |
+| A019 Pekoe | `"Pekoe" "Abiding Figures" artist` | No new verified account connection; previous status retained. |
+| A020 北飞飞 | `"北飞飞" "Avalon, Cursed Isle" artist` | No new verified account connection; previous status retained. |
+| A021 Marchon | `"Marchon" "Cinderbloom Tender" artist` | No new verified account connection; previous status retained. |
+| A022 Siriuf Long | `"Siriuf Long" "Aenean Frozen Shunt" artist` | No new verified account connection; previous status retained. |
+| A023 Yui | `"Yui" "Aenean Crystallization" artist` | No new verified account connection; previous status retained. |
+| A025 DragonArt 白霜茶 | `"DragonArt 白霜茶" "Airship Cruiser" artist` | No new verified account connection; previous status retained. |
+| A026 Kumai | `"Kumai" "Atmos Armor Type-Ares" artist` | No new verified account connection; previous status retained. |
+| A027 T_Blence | `"T_Blence" "Aella, Zephyr's Hand" artist` | No new verified account connection; previous status retained. |
+| A028 杭州新艺族 | `"杭州新艺族" "Camelot, Impenetrable" artist` | No new verified account connection; previous status retained. |
+| A029 Hori | `"Hori" "Empowering Harmony" artist` | No new verified account connection; previous status retained. |
+| A030 DragonArt Chu | `"DragonArt Chu" "Airship Cannoneer" artist` | No new verified account connection; previous status retained. |
+| A032 NR | `"NR" "Banner Knight" artist` | No new verified account connection; previous status retained. |
+| A033 SalmonTea | `"SalmonTea" "Fling Food" artist` | No new verified account connection; previous status retained. |
+| A035 AquaGirl | `"AquaGirl" "Apothecary's Harvest" artist` | No new verified account connection; previous status retained. |
+| A036 D Lam | `"D Lam" "Aesan Protector" artist` | No new verified account connection; previous status retained. |
+| A037 Dragonart Chu | `"Dragonart Chu" "Arcane Blast" artist` | No new verified account connection; previous status retained. |
+| A038 Parhelion Studio | `"Parhelion Studio" "Armed Squallguard" artist` | No new verified account connection; previous status retained. |
+| A039 繪來 | `"繪來" "Bedlam Borough" artist` | No new verified account connection; previous status retained. |
+| A040 silvie | `"silvie" "Embertail Squirrel" artist` | No new verified account connection; previous status retained. |
+| A041 Gendo | `"Gendo" "Ignite the Soul" artist` | No new verified account connection; previous status retained. |
+| A042 阿清Roro | `"阿清Roro" "Claude, Fated Visionary" artist` | No new verified account connection; previous status retained. |
+| A043 Dragonart Tris | `"Dragonart Tris" "Fractured Crown" artist` | No new verified account connection; previous status retained. |
+| A044 DragonArt Tris | `"DragonArt Tris" "Atmos Shield" artist` | No new verified account connection; previous status retained. |
+| A046 Taki | `"Taki" "Banner Knight" artist` | No new verified account connection; previous status retained. |
+| A047 YOHAKU | `"YOHAKU" "Alice, Distorted Queen" artist` | No new verified account connection; previous status retained. |
+| A048 ZERONEXT | `"ZERONEXT" "Frostsworn Paladin" artist` | No new verified account connection; previous status retained. |
+| A049 ジェゼ一 | `"ジェゼ一" "Bushwhack Bandit" artist` | No new verified account connection; previous status retained. |
+| A050 白霜茶 | `"白霜茶" "Cato, Meadow's Channeler" artist` | No new verified account connection; previous status retained. |
+| A051 Deeya Chaturvedi | `"Deeya Chaturvedi" "Bombard Flarecannon" artist` | No new verified account connection; previous status retained. |
+| A052 DragonArt 倉倉 | `"DragonArt 倉倉" "Andronika, Eternal Herald" artist` | No new verified account connection; previous status retained. |
+| A053 Leviathan | `"Leviathan" "Academy Guide" artist` | No new verified account connection; previous status retained. |
+| A054 白帝 | `"白帝" "Esteemed Knight" artist` | No new verified account connection; previous status retained. |
+| A055 Andrew Yang | `"Andrew Yang" "Imperial Recruit" artist` | No new verified account connection; previous status retained. |
+| A056 Chu | `"Chu" "Clover Treehouse" artist` | No new verified account connection; previous status retained. |
+| A057 SODA | `"SODA" "Fishing Accident" artist` | No new verified account connection; previous status retained. |
+| A058 南佑希 | `"南佑希" "Enchanted Fete" artist` | No new verified account connection; previous status retained. |
+| A059 Dragon Art | `"Dragon Art" "Mary Ann, Maladroit Maid" artist` | No new verified account connection; previous status retained. |
+| A061 Dragonart KS | `"Dragonart KS" "Orb of Regret" artist` | No new verified account connection; previous status retained. |
+| A062 DragonArt Zhang Iris | `"DragonArt Zhang Iris" "Portside Pirate" artist` | No new verified account connection; previous status retained. |
+| A064 DragonArt 艾瞳A-Ton | `"DragonArt 艾瞳A-Ton" "Winbless Forecaster" artist` | No new verified account connection; previous status retained. |
+| A065 Ge-B | `"Ge-B" "Mire Reparation" artist` | No new verified account connection; previous status retained. |
+| A066 HYONEE | `"HYONEE" "Lorraine, Blademaster" artist` | No new verified account connection; previous status retained. |
+| A067 Polar Engine | `"Polar Engine" "City Protector" artist` | No new verified account connection; previous status retained. |
+| A068 Primea studio | `"Primea studio" "Blazing Lunge" artist` | No new verified account connection; previous status retained. |
+| A069 Rubi露比喵 | `"Rubi露比喵" "Jinzhuo, Bands of Virtue" artist` | No new verified account connection; previous status retained. |
+| A070 Sunny | `"Sunny" "Map of Hidden Passage" artist` | No new verified account connection; previous status retained. |
+| A071 TEDDYPOCKY | `"TEDDYPOCKY" "Trump Set" artist` | No new verified account connection; previous status retained. |
+| A072 十尾t | `"十尾t" "Kongming, Ascetic Vice" artist` | No new verified account connection; previous status retained. |
+| A073 桃李タロ | `"桃李タロ" "Bubble Mage" artist` | No new verified account connection; previous status retained. |
+| A074 蝦蝦 | `"蝦蝦" "Library Witch" artist` | No new verified account connection; previous status retained. |
+| A075 道漫? | `"道漫?" "Astra Sight" artist` | No new verified account connection; previous status retained. |
+| A076 阿冰 | `"阿冰" "Backstab" artist` | No new verified account connection; previous status retained. |

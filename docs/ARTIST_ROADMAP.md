@@ -166,3 +166,14 @@ Added [Primea Studio’s X account](https://x.com/primeastudio), identified by t
 The user reports deployment complete. Production journey verification remains outstanding, and this follow-up requires the next release to appear publicly. Artist Pages remains approximately 95% complete for the first release; further identity discovery is an open-ended backlog. Next research priority is Parhelion, followed by specific portfolio candidates.
 
 Verification: app typecheck and all three artist regression tests pass. The studio link is present at 360px and 1280px with no horizontal page overflow; its mobile target is 48px high. Keyboard tabbing from the link reaches card search with visible focus. No interaction code changed; loading, empty, and failure states retain the preceding release-check coverage. Browser counts use the local cached catalog, so printing totals can differ from the committed research snapshot.
+
+
+### Remaining artist discovery follow up 2026-10-14
+
+Completed representative-artwork searches for all 64 remaining credit entries and inspected the strongest portfolio leads. Added Faicha’s [official X account](https://x.com/faicha2010) and its illustrated profile avatar after the commissioning client explicitly connected the account to Corhazi Courier; original Grand Archive posts corroborate that relationship. Patreon remains withheld without a verified cross-link.
+
+Current coverage: 26 verified URLs across 12 identities, 10 portraits across 75 pages, and 63 credit entries still without verified accounts. Parhelion/Ge-B, Deeya Chaturvedi, Siriuf Long, and KHΩA have preserved primary leads but still need a specific Grand Archive commission connection. The discovery tracker records all 64 artwork queries and outcomes.
+
+Artist Pages remains approximately 95% complete for the first release: implementation and local acceptance work are complete, while production journey and real transport recovery verification remain. This follow-up search pass is complete; full identity coverage remains open-ended, with only 12/75 identities (16%) having verified accounts. Next is an artwork match for the preserved portfolio leads, or additional publisher/user attribution evidence.
+
+Verification: app typecheck, all three artist regression tests, and diff checks pass. Faicha’s avatar loads at 360px and 1280px without horizontal overflow; the official account link is 48px high, and keyboard tabbing reaches card search with visible focus. Loading was observed during initial page load; empty, image-failure, and retry states retain the prior release-check coverage and were not forced again for this data-only change. Production behavior remains unverified.
