@@ -131,6 +131,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a010",
+    "portrait": {
+      "src": "/images/artists/a010.jpg",
+      "sourceUrl": "https://www.gyool.info/",
+      "imageUrl": "https://static.wixstatic.com/media/db150b_9c82ce9d15784d97a3448d38657103ce~mv2.jpg/v1/fill/w_194,h_194,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/illust_131731262_20250807_164545_edited_.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "a010-gyool",
     "name": "Gyool",
     "kind": "individual",
@@ -386,6 +392,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a031",
+    "portrait": {
+      "src": "/images/artists/a031.webp",
+      "sourceUrl": "https://lit.link/en/TaroTarou",
+      "imageUrl": "https://prd.resource-api.lit.link/v1/images/resized?image_url=images/creator/79691476-4c51-4f00-b93c-4d4ba9e206aa/d0cd66bc-6e5c-4b6a-aae6-dde72d3eacc4.jpg&width=240",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "a031-tarotarou",
     "name": "TaroTarou",
     "kind": "individual",

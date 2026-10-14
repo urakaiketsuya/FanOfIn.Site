@@ -83,3 +83,9 @@ Verified locally: directory search, card search and empty results; social and no
 ## Next work
 
 Finish the remaining release-state and enlarged-text checks, review the local pages, then deploy when requested and verify the production directory → artist → printing journey. No implementation blocker remains. Keep identity research deferred as requested: 白霜茶/白霜搽, Primea/Parhelion, and malformed A072/A075 credits remain separate follow-ups. Uncertain identities do not block pages, and their candidate accounts remain unpublished. Artist Pages is approximately 80% complete on the basis above; production verification and research duration remain uncertain.
+
+### Profile images — 2026-10-14
+
+Directory results and artist headers now show a circular identity image with initials when no image is verified or an image fails. Initial images are Gyool's square profile image from https://www.gyool.info/ and TaroTarou's explicitly labeled profile icon from https://lit.link/en/TaroTarou. Small local assets avoid depending on external image hosts during visits. Original image URL, source page, and verification date live with each curated identity; this records provenance, not a reuse license. No generic portfolio artwork or uncertain identities were assigned as portraits.
+
+Verification: app typecheck and existing three artist regression tests pass. Mobile (360px) directory and profile checked; desktop (1280px) profile checked. Existing text-only fallback remains available for all other artists. Forced image failure and enlarged text remain unverified. Remaining portrait discovery covers 73 identities, alongside the previously recorded release checks; overall Artist Pages estimate remains roughly 80%, with portrait coverage now an expandable follow-up.

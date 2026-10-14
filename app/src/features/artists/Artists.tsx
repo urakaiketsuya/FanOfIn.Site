@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { artistDirectory, buildArtistGalleries, type ArtistCard } from '@gatcg/shared';
+import { artistDirectory, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import PageLayout from '../../components/layout/PageLayout';
 import Button from '../../components/ui/Button';
@@ -15,6 +15,16 @@ function artworkCounts(cards: number, printings: number) {
 }
 
 const linkClass = 'inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue';
+
+function ArtistPortrait({ artist, large = false }: { artist: ArtistIdentity; large?: boolean }) {
+  const [failedSrc, setFailedSrc] = useState<string>();
+  const src = artist.portrait?.src;
+  const initials = artist.name.trim().split(/\s+/).slice(0, 2).map(word => Array.from(word)[0]).join('').toLocaleUpperCase();
+  return <span aria-hidden="true" className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-ctp-surface1 bg-ctp-surface0 font-semibold text-ctp-lavender ${large ? 'h-20 w-20 text-2xl' : 'h-14 w-14 text-lg'}`}>
+    {initials}
+    {src && failedSrc !== src && <img src={src} alt="" width={large ? 80 : 56} height={large ? 80 : 56} loading={large ? 'eager' : 'lazy'} decoding="async" onError={() => setFailedSrc(src)} className="absolute inset-0 h-full w-full object-cover" />}
+  </span>;
+}
 
 function ArtistArtwork({ entry }: { entry: ArtistCard }) {
   const [selected, setSelected] = useState(entry.editions[0].uuid);
@@ -64,7 +74,7 @@ export default function Artists() {
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
   return <PageLayout width="full">
     <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
-    <div className="[&_h1]:break-words"><PageHeader title={slug ? identity?.name ?? (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div>
+    <div className="flex min-w-0 items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity?.name ?? (loading ? 'Artist' : 'Artist not found') : 'Artists'} /></div></div>
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
@@ -81,8 +91,9 @@ export default function Artists() {
       <label className="mt-5 block max-w-lg text-sm">Search artists<input type="search" value={query} onChange={event => setSearch(event.target.value)} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>
       {galleries.length > 0 && <p role="status" className="mt-4 text-sm text-ctp-subtext1">{visibleArtists.length} {visibleArtists.length === 1 ? 'artist' : 'artists'}</p>}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleArtists.map(candidate => <Link key={candidate.id} to={`/artists/${encodeURIComponent(candidate.slug)}`} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
+        <div className="mb-3 flex min-w-0 items-center gap-3"><ArtistPortrait artist={candidate} /><div className="min-w-0"><h2 className="break-words text-lg font-semibold">{candidate.name}</h2><p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p></div></div>
         <div className="grid grid-cols-3 gap-2">{candidate.cards.slice(0, 3).map(entry => <div key={entry.card.uuid} className="min-w-0"><CardArtTile card={entry.card} name={entry.card.name} editionUuid={entry.editions[0].uuid} artworkOnly /><p className="mt-1 break-words text-xs text-ctp-subtext1">{entry.card.name}</p></div>)}</div>
-        <h2 className="mt-3 break-words text-lg font-semibold">{candidate.name}</h2><p className="mt-1 text-sm text-ctp-subtext1">{artworkCounts(candidate.cards.length, candidate.printingCount)}</p>
+
       </Link>)}</div>
       {!loading && !visibleArtists.length && <p role="status" className="mt-6">{galleries.length ? 'No artists match your search.' : 'No credited artwork is available.'}</p>}
     </>}

@@ -15,6 +15,12 @@ export interface ArtistIdentity {
   kind: 'individual' | 'studio' | 'combined' | 'unknown';
   credits: string[];
   links: ArtistLink[];
+  portrait?: {
+    src: string;
+    sourceUrl: string;
+    imageUrl: string;
+    verifiedAt: string;
+  };
 }
 export interface ArtistCard {
   card: Card;
