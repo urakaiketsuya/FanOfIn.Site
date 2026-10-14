@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { artistDirectory, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
+import ArtistAccountIcon from './ArtistAccountIcon';
 import PageLayout from '../../components/layout/PageLayout';
 import Button from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
@@ -88,7 +89,7 @@ export default function Artists() {
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}
     {slug ? <>
-      {identity && identity.links.length > 0 && <nav aria-label={`${identity.name} official accounts`} className="mt-4 flex flex-wrap gap-2">{identity.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className={`${linkClass} max-w-full break-words border border-ctp-surface1`}>{link.platform} · {link.label} ↗</a>)}</nav>}
+      {identity && identity.links.length > 0 && <nav aria-label={`${identity.name} official accounts`} className="mt-4 flex flex-wrap gap-2">{identity.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className={`${linkClass} max-w-full gap-2 border border-ctp-surface1 py-2`}><ArtistAccountIcon platform={link.platform} /><span className="min-w-0 break-words">{link.platform} · {link.label}</span><span aria-hidden="true" className="shrink-0">↗</span></a>)}</nav>}
       {studio && <p className="mt-4 text-sm text-ctp-subtext1">Credited with <Link className={linkClass} to={`/artists/${encodeURIComponent(studio.slug)}`}>{studio.name}</Link></p>}
       {studioArtists.length > 0 && <section aria-labelledby="studio-artists-heading" className="mt-6">
         <h2 id="studio-artists-heading" className="text-xl font-semibold">Studio artists</h2>
