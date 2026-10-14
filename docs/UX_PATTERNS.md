@@ -88,7 +88,8 @@ atomic save batch and revert that card's pending pools together. Draft saves car
 quantities; conflicts retain the draft for review instead of overwriting newer inventory.
 
 Deck printings are optional, section-aware allocations saved with each owner's version, outside
-canonical gameplay identity. Selected artwork and mixed-printing summaries appear in deck views.
+canonical gameplay identity. Deck views show each selected printing directly with its allocated copy count; unspecified
+copies use the default artwork. Keep section totals and gameplay identity unchanged.
 Quantity reductions and partial moves must explicitly resolve affected printed copies. Ownership
 counts shown by the picker are recorded inventory, not exact-printing availability or reservations.
 Printing choices survive undo, drafts, version history, public copies, bookmarks and supported
