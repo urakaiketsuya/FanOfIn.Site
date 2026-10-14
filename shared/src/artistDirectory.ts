@@ -1169,6 +1169,13 @@ export const artistDirectory: ArtistIdentity[] = [
     ],
     "links": [
       {
+        "platform": "X",
+        "label": "@rubimeoww_draws",
+        "url": "https://x.com/rubimeoww_draws",
+        "evidence": "https://x.com/rubimeoww_draws",
+        "verifiedAt": "2026-10-14"
+      },
+      {
         "platform": "Instagram",
         "label": "@rubimeoww_draws",
         "url": "https://www.instagram.com/rubimeoww_draws/",
