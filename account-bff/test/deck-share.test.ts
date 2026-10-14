@@ -6,7 +6,9 @@ import test from "node:test";
 import sharp from "sharp";
 import type { Card, PublicDeck } from "../../shared/src/index.ts";
 import handler from "../api/deck-share.ts";
-import { championArtwork, championEdition, readBytes, renderSpotlight, spotlightHtml, spotlightRevision } from "../lib/deck-spotlight.ts";
+import { championArtwork, championEdition, renderSpotlight, spotlightHtml, spotlightRevision } from "../lib/deck-spotlight.ts";
+
+import { readBytes } from "../lib/http-response.ts";
 
 const slug = "a".repeat(32);
 const deck = { publicSlug: slug, visibility: "public", title: 'Water <Diao> & "Friends"', description: 'My deck <script>alert(1)</script>', owner: { displayName: 'Avery & Co', profileSlug: 'b'.repeat(24) }, championName: 'Diao Chan', format: 'STANDARD', versionNumber: 3, publishedAt: '2026-10-13T12:00:00Z', decklist: { main: [], material: [{ card: 'Diao Chan, Dreaming Wish', quantity: 1 }, { card: 'Diao Chan, Idyll Corsage', quantity: 1, printings: [{ editionUuid: 'chosen', quantity: 1 }] }], sideboard: [] } } as PublicDeck;

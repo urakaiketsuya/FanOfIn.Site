@@ -101,3 +101,18 @@ access, which is not currently available in the browser session.
 Canonical/sitemap alignment follows [Google's canonical guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls).
 Structured data describes visible content and does not promise a special search result;
 see [Google's structured data introduction](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
+
+## Live community delivery preparation
+
+The account BFF now uses a reusable `readPublishedDeck` boundary for current
+publication reads. It signs requests without visitor cookies, disables fetch caching,
+bounds response size and time, preserves unlisted visibility, and returns 404 for
+withdrawn/private or mismatched decks. Upstream failures and malformed successful
+responses return retryable 502 errors; missing configuration returns 503. The share
+HTML and images use this boundary today. Canonical community HTML and sitemap
+delivery are still pending the hosting choice; this helper does not make them live.
+General bounded response reading is separated from spotlight rendering.
+
+Verification: account BFF typecheck and all 10 BFF tests pass, including withdrawal
+followed by republishing, unlisted access, malformed responses, signed cookie-free
+reads, and old image URLs. No visible UI or hosting configuration changed.

@@ -4,6 +4,8 @@ import sharp, { type OverlayOptions } from "sharp";
 import type { Card } from "../../shared/src/api-types.js";
 import type { PublicDeck } from "../../shared/src/saved-deck-types.js";
 
+import { readBytes } from "./http-response.js";
+
 const FONT = fileURLToPath(new URL("../assets/Inter.ttf", import.meta.url));
 export const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
 export const cleanText = (value: string, limit: number): string => {
@@ -19,23 +21,6 @@ export function spotlightText(deck: PublicDeck) {
 }
 export function spotlightRevision(deck: PublicDeck): string {
   return createHash("sha256").update(JSON.stringify(["spotlight-v1", spotlightText(deck), deck.championName, deck.decklist.material, deck.publishedAt])).digest("hex").slice(0, 20);
-}
-
-/** Bounded reads also cover chunked responses without a Content-Length header. */
-export async function readBytes(response: Response, maximum: number): Promise<Buffer> {
-  if (!response.ok || !response.body) throw new Error("Preview source unavailable");
-  if (Number(response.headers.get("content-length")) > maximum) { await response.body.cancel(); throw new Error("Preview source too large"); }
-  const reader = response.body.getReader();
-  const chunks: Buffer[] = [];
-  let length = 0;
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    length += value.byteLength;
-    if (length > maximum) { await reader.cancel(); throw new Error("Preview source too large"); }
-    chunks.push(Buffer.from(value));
-  }
-  return Buffer.concat(chunks);
 }
 
 export function championEdition(deck: PublicDeck, cards: Card[]): string | undefined {
