@@ -5054,8 +5054,10 @@ proxies cannot complete other requirements. Empty catalogs and failed loads do n
 completion claims. Groups overlap and must not be summed into a collection total. Lent,
 assigned and reserved physical copies remain owned. Confirmed progress uses saved inventory;
 quantity drafts show separate previews and reuse the existing atomic collection save flow.
-Multiple category goals are stored per user on this device, independently of the existing
-single set/deck goal. Storage failures retain previous goals. New catalog additions may lower
+Multiple category goals are stored per account, independently of the existing
+single set/deck goal. Failed account saves retain previous goals and retry the intended pin/unpin command. New catalog additions may lower
 completion; this feature shows current coverage, not historical acquisition progress.
 
 Combined goal filters intersect card UUIDs and edition UUIDs across all selected categories. Artist or rarity filters require exact-printing targets. Other filtered goals retain any-printing ownership for card/playset targets. Filter order does not change goal identity; old unfiltered pins remain valid. Empty intersections show zero requirements without claiming completion.
+
+Account goals use a unique user/goal key. Commands insert or delete only specified goals; imports run as atomic batches. Concurrent writes to different goals are preserved, while writes to the same goal follow database execution order. Retry repeats the intended state, never a toggle. Legacy device goals migrate only through explicit import, in batches of at most 100. Goal references contain catalog identifiers, not user-authored display text.

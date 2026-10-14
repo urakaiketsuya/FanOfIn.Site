@@ -1,7 +1,7 @@
 import { databaseBatch } from "./database";
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0034";
+export const REQUIRED_SCHEMA_VERSION = "0035";
 
 export interface ServiceHealth {
   success: boolean;
@@ -51,6 +51,7 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
       env.ACCOUNT_DB.prepare("SELECT user_id, request_id, expected_revision, result_json FROM deck_save_receipts LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, payload, revision FROM profile_showcases LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT id, printings_json FROM deck_versions LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id, goal_key, goal_json FROM collection_progress_goals LIMIT 0"),
     ]);
     return {
       success: true,

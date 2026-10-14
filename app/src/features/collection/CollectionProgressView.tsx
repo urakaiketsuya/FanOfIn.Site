@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
-import { collectionGoalRequiresPrinting, resolveCollectionProgressGroup, buildCollectionProgressGroups, collectionGroupProgress, collectionProgressKey, defaultProgressTarget, parseCollectionProgressGoals, type Card, type CollectionEntry, type CollectionProgressGoal, type CollectionProgressGroup, type CollectionProgressKind, type CollectionUpdateLine } from '@gatcg/shared';
+import { useCollectionProgressGoals } from './useCollectionProgressGoals';
+import { useMemo, useState, useTransition } from 'react';
+import { collectionGoalRequiresPrinting, resolveCollectionProgressGroup, buildCollectionProgressGroups, collectionGroupProgress, collectionProgressKey, defaultProgressTarget, type Card, type CollectionEntry, type CollectionProgressGoal, type CollectionProgressGroup, type CollectionProgressKind, type CollectionUpdateLine } from '@gatcg/shared';
 import CardResult from '../../components/CardResult';
 import Button from '../../components/ui/Button';
 import Panel from '../../components/ui/Panel';
@@ -21,9 +22,7 @@ export default function CollectionProgressView({ userId, cards, entries, savedEn
   const [kind, setKind] = useState<CollectionProgressKind>('set');
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<CollectionProgressGoal | null>(null);
-  const [pins, setPins] = useState<CollectionProgressGoal[]>([]);
-  const [pinsReady, setPinsReady] = useState(false);
-  const [pinError, setPinError] = useState('');
+  const { pins, deviceGoals, pinsReady, pinError, pinBusy, retry, togglePin, importGoals } = useCollectionProgressGoals(userId);
   const [limit, setLimit] = useState(12);
   const [filter, setFilter] = useState('missing');
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -31,26 +30,6 @@ export default function CollectionProgressView({ userId, cards, entries, savedEn
   const [card, setCard] = useState<Card | null>(null);
   const [edited, setEdited] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();
-  const key = `collection-progress-goals:${userId}`;
-  const readPins = useCallback(() => {
-    try { setPins(parseCollectionProgressGoals(localStorage.getItem(key))); setPinsReady(true); setPinError(''); }
-    catch { setPinsReady(false); setPinError('Saved goals could not load. Retry to keep your existing goals.'); }
-  }, [key]);
-  useEffect(() => {
-    readPins();
-    const sync = (event: StorageEvent) => { if (event.key === key || event.key === null) readPins(); };
-    window.addEventListener('storage', sync);
-    return () => window.removeEventListener('storage', sync);
-  }, [key, readPins]);
-  function togglePin(goal: CollectionProgressGoal) {
-    try {
-      // Read latest device state before an atomic replacement; failed storage keeps current pins.
-      const current = parseCollectionProgressGoals(localStorage.getItem(key));
-      const exists = current.some(item => collectionProgressKey(item) === collectionProgressKey(goal));
-      const next = exists ? current.filter(item => collectionProgressKey(item) !== collectionProgressKey(goal)) : [...current, goal];
-      localStorage.setItem(key, JSON.stringify(next)); setPins(next); setPinError('');
-    } catch { setPinError('Could not save goals on this device. Your previous goals are kept. Try again.'); }
-  }
   const groups = useMemo(() => buildCollectionProgressGroups(cards), [cards]);
   const summaries = useMemo(() => groups.map(group => {
     const goal = { kind: group.kind, id: group.id, target: defaultProgressTarget(group.kind) } satisfies CollectionProgressGoal;
@@ -79,8 +58,10 @@ export default function CollectionProgressView({ userId, cards, entries, savedEn
   const rows = progress?.rows.filter(row => (filter === 'all' || (filter === 'owned' ? row.missing === 0 : row.missing > 0 || edited.has(row.card.uuid)))) ?? [];
   return <section className="mt-5 min-w-0 [overflow-wrap:anywhere]" aria-label="Collection progress">
     <h2 className="text-2xl font-semibold">Collection progress</h2>
-    <p className="mt-1 text-sm text-ctp-subtext1">Saved ownership · Goals stay on this device</p>
-    {pinError && <div role="alert" className="mt-3"><p>{pinError}</p><Button onClick={readPins}>Retry goals</Button></div>}
+    <p className="mt-1 text-sm text-ctp-subtext1">Saved ownership · Goals sync with your account</p>
+    {pinError && <div role="alert" className="mt-3"><p>{pinError}</p><Button disabled={pinBusy} onClick={retry}>Retry goals</Button></div>}
+    {pinBusy && <p role="status" className="mt-2 text-sm">Syncing goals…</p>}
+    {deviceGoals.length > 0 && <Button className="mt-3" disabled={!pinsReady} onClick={importGoals}>Save device goals to account ({deviceGoals.length})</Button>}
     {!available ? <div role={error ? 'alert' : 'status'} className="mt-4"><p>{error || 'Loading collection and card data…'}</p>{error && <Button onClick={onRetry}>Retry progress</Button>}</div> : <>
       <p role="status" className="mt-2 text-sm">{pending ? 'Recalculating…' : ''}</p>
       {selected && group && progress ? <>
@@ -111,7 +92,7 @@ export default function CollectionProgressView({ userId, cards, entries, savedEn
       </> : <>
         {pins.length > 0 && <><h3 className="mb-3 text-lg font-semibold">Pinned goals</h3><div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{pins.map(pin => {
           const item = resolveCollectionProgressGroup(groups, pin);
-          return item ? summary(item, pin) : <Panel key={collectionProgressKey(pin)}><p>This goal is unavailable in the current catalog.</p><Button onClick={() => togglePin(pin)}>Unpin unavailable goal</Button></Panel>;
+          return item ? summary(item, pin) : <Panel key={collectionProgressKey(pin)}><p>This goal is unavailable in the current catalog.</p><Button disabled={!pinsReady} onClick={() => togglePin(pin)}>Unpin unavailable goal</Button></Panel>;
         })}</div></>}
         <div className="mt-5"><Tabs baseId="progress-category" label="Track collection by" wrap variant="pill" tabs={categories} active={kind} onChange={value => startTransition(() => { setKind(value); setQuery(''); setLimit(12); })} /></div>
         <label className="my-3 block text-sm">Find a group<input className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={query} onChange={event => { setQuery(event.target.value); setLimit(12); }} /></label>

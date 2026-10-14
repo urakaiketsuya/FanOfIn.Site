@@ -196,7 +196,7 @@ Artist pronunciation annotations target English speakers: display Japanese readi
 ## Collection category goals
 
 Collection Progress offers Set, Rarity, Artist, Champion and Keyword groups with card previews,
-readable names and separate progress bars. Multiple category goals can be pinned on this device.
+readable names and separate progress bars. Multiple category goals can be pinned to the signed-in account.
 Artist and rarity goals require matching catalog printings; set goals offer any-printing card
 coverage or each matching printing. Champion groups include champion cards only. Show saved
 ownership separately from draft changes, and Needs identification when unknown printing pools
@@ -204,3 +204,5 @@ might cover missing editions. Use the existing collection card sheet for acquisi
 identification; preserve parent quantity drafts when switching Cards/Progress or goal filters.
 
 Use Filter goal for optional category combinations, with one selection per additional category. Apply changes to the current view and preserve quantity drafts. Show selected filter names on details and pinned goals. Pinning a combination creates a separate goal; existing pins retain their scope. Empty combinations offer a clear no-match state.
+
+Account goal saves preserve prior pins until confirmed and offer retry on failure. Offer an explicit import for legacy device goals, retaining the device data until the account save succeeds. Refresh account goals when the window regains focus.

@@ -1,3 +1,4 @@
+import type { CollectionProgressGoal } from "@gatcg/shared";
 import type { DeckLinkPreview } from "@gatcg/shared";
 import type { ProfileShowcase } from "@gatcg/shared";
 import type { SavedDeckVersion } from "@gatcg/shared";
@@ -52,6 +53,9 @@ async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> 
 }
 
 export const accountApi = {
+  collectionProgressGoals: () => accountRequest<{ userId: string; goals: CollectionProgressGoal[] }>("/v1/me/collection/goals"),
+  saveCollectionProgressGoals: (expectedUserId: string, goals: CollectionProgressGoal[], pinned: boolean) => accountRequest<{ userId: string; goals: CollectionProgressGoal[] }>("/v1/me/collection/goals", { method: "POST", body: JSON.stringify({ expectedUserId, goals, pinned }) }),
+
   cardTagOverrides: () => accountRequest<{ overrides: TagOverride[] }>("/v1/card-tags"),
   tagProposals: (review = false, offset = 0) => accountRequest<TagProposalList>(`/v1/me/card-tag-proposals?review=${review ? 1 : 0}&offset=${offset}`),
   submitTagProposal: (input: TagProposalInput) => accountRequest<{ proposal: TagProposal }>("/v1/me/card-tag-proposals", { method: "POST", body: JSON.stringify(input) }),

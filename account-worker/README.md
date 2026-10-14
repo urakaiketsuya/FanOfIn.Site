@@ -101,3 +101,7 @@ listings, transaction history, and accepted trade reservations as unspecified fi
 Foil, nonfoil, and unspecified are separate quantities within each printing (including
 unspecified printing). CSV imports without a finish remain unspecified. Wants may accept
 any finish, but listings and completed transfers use an exact finish pool.
+
+## Collection progress goals
+
+Apply `0035_collection_progress_goals.sql` before deploying the Worker and frontend. Health checks require schema `0035`. Authenticated GET/POST `/v1/me/collection/goals` reads goals or applies `{ expectedUserId, goals, pinned }`. Each command updates only its named goals, atomically, with retry-safe insert/delete semantics. Account export includes goals; deleting an account cascades to its goals. Existing device pins can be explicitly imported from Collection Progress.
