@@ -1,6 +1,7 @@
 import type { Card } from "./api-types.js";
 import { applyAllyAttackBoosts, type CombatAlly } from "./allyAttackBoosts.js";
-import { FORESE_NAME, isForeseTarget } from "./foreseForecast.js";
+import { FORESE_NAME } from "./foreseForecast.js";
+import { resolveForeseEntryChain } from "./foreseEntryChain.js";
 type Line = { name: string; quantity: number };
 export interface CombatAccessForecast {
   seen: number;
@@ -20,7 +21,8 @@ function toLines(names: string[]): Line[] {
 /** Deterministic sampling of card access, not a turn/affordability simulator.
  * Forese's first song can put one eligible revealed ally into play. The source
  * rests and is excluded from the attack; a newly found source misses that song's
- * activation trigger. Other on-enter chains and repeat activations are omitted. */
+ * activation trigger. Curator/Singer may find one follow-up song. Repeat
+ * activations requiring a wake or an existing banished card are omitted. */
 export function computeCombatAccessForecast(main: Line[], material: Line[], cards: Map<string, Card>, cardsSeen: number, samples = 1024): CombatAccessForecast {
   const deck = main.flatMap(l => Array.from({length: Math.max(0, Math.floor(l.quantity))}, () => l.name));
   while (deck.length < 60) deck.push("");
@@ -50,10 +52,9 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
     if (forese >= 0 && song) attackers.splice(forese, 1);
     let arrival: number | undefined;
     if (forese >= 0 && song) {
-      const hit = shuffled.slice(seen, seen + 5).find(name => {
-        const card = cards.get(name);
-        return !!card && isForeseTarget(card) && !(card.types.includes("UNIQUE") && unique.has(name));
-      });
+      const level = Math.max(0, ...material.map(line => cards.get(line.name)?.level ?? 0));
+      const { ally: hit, song: followupSong } = resolveForeseEntryChain(shuffled.slice(seen), cards, level, unique, random);
+      if (followupSong) lines.push({ name: followupSong, quantity: 1 });
       if (hit) {
         arrival = attackers.length;
         const card = cards.get(hit)!;

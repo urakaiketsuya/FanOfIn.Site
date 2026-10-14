@@ -2348,7 +2348,15 @@ then inspect the next five remaining cards. Put the first eligible Resonator ont
 board, if any, and include its supported power interactions. Newly deployed Fanclub Leader or
 Performance Enthusiast misses the first song's activation trigger. Existing allies' trigger
 abilities may resolve after Forese's deployment; global spell buffs resolve after that trigger.
-There are no recursive Tribute Singer/Curator chains or repeat Musicbox activations. Forese's
+A Forese-deployed Musical Curator now searches the remaining top 12 for one song,
+choosing the more numerous remaining Harmony/Melody subtype (Melody on ties).
+A deployed Tribute Singer at champion level 1+ reveals five and activates the first
+non-advanced Harmony/Melody found. Unknown memory cards are excluded. Forese's
+revealed misses go to the bottom before this search; Scavenge stops at its first
+hit. The additional song contributes its supported effect and activation triggers,
+under the existing assumption that found cards are payable. Neither ally wakes
+Forese. Already-drawn allies' On Enter abilities and repeat Musicbox activations
+remain outside this estimate. Forese's
 reported mean contribution is the found ally's boosted power (zero on misses), already included
 in the total. Full-list pairwise breakthrough comparisons retain their explicitly labeled
 all-allies ceiling. Neither combat view is added to direct-damage access probabilities.
