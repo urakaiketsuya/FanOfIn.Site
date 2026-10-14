@@ -5057,3 +5057,5 @@ quantity drafts show separate previews and reuse the existing atomic collection 
 Multiple category goals are stored per user on this device, independently of the existing
 single set/deck goal. Storage failures retain previous goals. New catalog additions may lower
 completion; this feature shows current coverage, not historical acquisition progress.
+
+Combined goal filters intersect card UUIDs and edition UUIDs across all selected categories. Artist or rarity filters require exact-printing targets. Other filtered goals retain any-printing ownership for card/playset targets. Filter order does not change goal identity; old unfiltered pins remain valid. Empty intersections show zero requirements without claiming completion.

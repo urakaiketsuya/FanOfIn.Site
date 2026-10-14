@@ -202,3 +202,5 @@ coverage or each matching printing. Champion groups include champion cards only.
 ownership separately from draft changes, and Needs identification when unknown printing pools
 might cover missing editions. Use the existing collection card sheet for acquisitions and
 identification; preserve parent quantity drafts when switching Cards/Progress or goal filters.
+
+Use Filter goal for optional category combinations, with one selection per additional category. Apply changes to the current view and preserve quantity drafts. Show selected filter names on details and pinned goals. Pinning a combination creates a separate goal; existing pins retain their scope. Empty combinations offer a clear no-match state.

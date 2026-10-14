@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCollectionProgressGroups, collectionGroupProgress, parseCollectionProgressGoals, type Card, type CollectionEntry } from '@gatcg/shared';
+import { collectionProgressKey, resolveCollectionProgressGroup, buildCollectionProgressGroups, collectionGroupProgress, parseCollectionProgressGoals, type Card, type CollectionEntry } from '@gatcg/shared';
 const card = (uuid: string, overrides = {}) => ({ uuid, name: uuid, types: [], effect: '**Stealth**', cost_memory: null, editions: [
   { uuid: `${uuid}-a`, rarity: 1, illustrator: 'Artist A', set: { prefix: 'ALC', name: 'Alchemical Revolution' } },
   { uuid: `${uuid}-b`, rarity: 3, illustrator: 'Artist B', set: { prefix: 'ALC 1st', name: 'Alchemical Revolution First Edition' } },
@@ -43,4 +43,25 @@ test('goal parsing validates targets and preserves multiple distinct pins', () =
  assert.deepEqual(parseCollectionProgressGoals(JSON.stringify([...goals, goals[0]])), goals);
  for (const value of ['{}', '[null]', '[{"kind":"artist","id":"a","target":"single"}]', 'broken']) assert.throws(() => parseCollectionProgressGoals(value));
  assert.deepEqual(parseCollectionProgressGoals(null), []);
+});
+
+test('combined goals intersect the same edition and preserve card-level coverage', () => {
+ const groups = buildCollectionProgressGroups([card('A'), card('B')]);
+ const artist = groups.find(g => g.kind === 'artist' && g.title === 'Artist A')!;
+ const goal = { kind: 'set', id: 'ALC', target: 'printing', filters: [{ kind: 'artist', id: artist.id }, { kind: 'rarity', id: '3' }] } as const;
+ const empty = resolveCollectionProgressGroup(groups, { ...goal, filters: [...goal.filters] })!;
+ assert.equal(empty.members.length, 0);
+ const matching = resolveCollectionProgressGroup(groups, { ...goal, filters: [goal.filters[0]] })!;
+ assert.equal(collectionGroupProgress(matching, 'printing', [entry('A', 4, 'A-b')]).complete, 0);
+ assert.equal(collectionGroupProgress(matching, 'printing', [entry('A', 1, 'A-a')]).complete, 1);
+ const keyword = resolveCollectionProgressGroup(groups, { kind: 'set', id: 'ALC', target: 'playset', filters: [{ kind: 'keyword', id: 'Stealth' }] })!;
+ assert.equal(collectionGroupProgress(keyword, 'playset', [entry('A', 4)]).complete, 1);
+ assert.equal(resolveCollectionProgressGroup(groups, { ...goal, filters: [{ kind: 'artist', id: 'gone' }] }), undefined);
+});
+test('combined pins round trip, deduplicate reordered filters and reject invalid scope', () => {
+ const goal = { kind: 'set', id: 'ALC', target: 'printing', filters: [{ kind: 'artist', id: 'a' }, { kind: 'rarity', id: '1' }] };
+ assert.deepEqual(parseCollectionProgressGoals(JSON.stringify([goal, { ...goal, filters: [...goal.filters].reverse() }])), [goal]);
+ const parsed = parseCollectionProgressGoals(JSON.stringify([goal]))[0];
+ assert.notEqual(collectionProgressKey(parsed), collectionProgressKey({ kind: 'set', id: 'ALC', target: 'printing' }));
+ for (const invalid of [{ ...goal, target: 'single' }, { ...goal, filters: [goal.filters[0], goal.filters[0]] }, { ...goal, filters: null }, { ...goal, filters: [{ kind: 'set', id: 'ALC' }] }]) assert.throws(() => parseCollectionProgressGoals(JSON.stringify([invalid])));
 });

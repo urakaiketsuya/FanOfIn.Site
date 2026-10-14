@@ -9,6 +9,7 @@ export interface CollectionProgressGoal {
   kind: CollectionProgressKind;
   id: string;
   target: 'single' | 'playset' | 'printing';
+  filters?: { kind: CollectionProgressKind; id: string }[];
 }
 export interface CollectionProgressMember { card: Card; editions: CardEdition[] }
 export interface CollectionProgressGroup {
@@ -18,7 +19,7 @@ export interface CollectionProgressGroup {
   members: CollectionProgressMember[];
 }
 export const COLLECTION_PROGRESS_KINDS: CollectionProgressKind[] = ['set', 'rarity', 'artist', 'champion', 'keyword'];
-export const collectionProgressKey = (goal: CollectionProgressGoal) => JSON.stringify([goal.kind, goal.id, goal.target]);
+export const collectionProgressKey = (goal: CollectionProgressGoal) => JSON.stringify([goal.kind, goal.id, goal.target, ...(goal.filters?.length ? [[...goal.filters].sort((a, b) => a.kind.localeCompare(b.kind)).map(filter => [filter.kind, filter.id])] : [])]);
 export const defaultProgressTarget = (kind: CollectionProgressKind) => kind === 'artist' || kind === 'rarity' ? 'printing' : 'single';
 
 export function collectionPlaysetTarget(card: Card): number {
@@ -56,6 +57,25 @@ export function buildCollectionProgressGroups(cards: readonly Card[]): Collectio
     .sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }));
 }
 
+/** Intersect editions as well as cards, so filters must match the same printing. */
+export function resolveCollectionProgressGroup(groups: readonly CollectionProgressGroup[], goal: CollectionProgressGoal): CollectionProgressGroup | undefined {
+  const base = groups.find(group => group.kind === goal.kind && group.id === goal.id);
+  if (!base) return undefined;
+  let members = base.members;
+  for (const filter of goal.filters ?? []) {
+    const match = groups.find(group => group.kind === filter.kind && group.id === filter.id);
+    if (!match) return undefined;
+    const editions = new Map(match.members.map(member => [member.card.uuid, new Set(member.editions.map(edition => edition.uuid))]));
+    members = members.map(member => ({ ...member, editions: member.editions.filter(edition => editions.get(member.card.uuid)?.has(edition.uuid)) }))
+      .filter(member => member.editions.length > 0);
+  }
+  return { ...base, members };
+}
+
+export function collectionGoalRequiresPrinting(goal: CollectionProgressGoal): boolean {
+  return [goal, ...(goal.filters ?? [])].some(filter => filter.kind === 'artist' || filter.kind === 'rarity');
+}
+
 /** Exact editions pool finishes, but never borrow unidentified or differently printed copies. */
 export function collectionGroupProgress(group: CollectionProgressGroup, target: CollectionProgressGoal['target'], entries: readonly CollectionEntry[]) {
   const inventory = new Map<string, CollectionEntry[]>();
@@ -88,6 +108,17 @@ export function parseCollectionProgressGoals(value: string | null): CollectionPr
   for (const item of data) {
     if (!item || typeof item !== 'object' || !COLLECTION_PROGRESS_KINDS.includes(item.kind) || typeof item.id !== 'string' || !item.id || item.id.length > 200 || !['single', 'printing', 'playset'].includes(item.target) || ((item.kind === 'artist' || item.kind === 'rarity') && item.target !== 'printing')) throw new Error('Invalid collection goal');
     const goal: CollectionProgressGoal = { kind: item.kind, id: item.id, target: item.target };
+    if (item.filters !== undefined) {
+      if (!Array.isArray(item.filters) || item.filters.length > 4) throw new Error('Invalid collection filters');
+      const kinds = new Set([goal.kind]);
+      goal.filters = item.filters.map((filter: { kind: CollectionProgressKind; id: string }) => {
+        if (!filter || !COLLECTION_PROGRESS_KINDS.includes(filter.kind) || kinds.has(filter.kind) || typeof filter.id !== 'string' || !filter.id || filter.id.length > 200) throw new Error('Invalid collection filter');
+        kinds.add(filter.kind);
+        return { kind: filter.kind, id: filter.id };
+      });
+      if (collectionGoalRequiresPrinting(goal) && goal.target !== 'printing') throw new Error('Invalid collection target');
+      if (!goal.filters?.length) delete goal.filters;
+    }
     if (!result.some(existing => collectionProgressKey(existing) === collectionProgressKey(goal))) result.push(goal);
   }
   return result;
