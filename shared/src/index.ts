@@ -90,3 +90,9 @@ export * from "./cardStaples.js";
 export * from "./publishedPackages.js";
 
 export * from "./balancedSort.js";
+
+export * from "./allyAttackBoosts.js";
+
+export * from "./foreseForecast.js";
+
+export * from "./combatAccessForecast.js";

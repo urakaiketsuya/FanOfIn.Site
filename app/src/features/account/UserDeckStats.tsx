@@ -1,3 +1,4 @@
+import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -9,7 +10,6 @@ import {
 } from "../../lib/deckIdentity";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
-import BreakthroughDamagePanel from "../compare/BreakthroughDamagePanel";
 import { computeDelugeForecasts, computeScavengeForecasts } from "../../lib/keywordForecast";
 import { DelugeForecastList, ScavengeForecastList } from "../../components/KeywordForecastPanels";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
@@ -45,7 +45,7 @@ function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
   return quantities;
 }
 
-export default function UserDeckStats({ decklist, championName, format, title, ownerDeckId, previousDecklist, extraTabs = [] }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist; extraTabs?: DeckStatsTab[] }) {
+export default function UserDeckStats({ decklist, championName, format, ownerDeckId, previousDecklist, extraTabs = [] }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist; extraTabs?: DeckStatsTab[] }) {
   const namedSections = useMemo(() => ({
     main: decklist.main.map((line) => ({ name: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ name: line.card, quantity: line.quantity })),
@@ -230,7 +230,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
           <div data-component="BreakthroughDamageFallback">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
             <div className="mt-3">
-              <BreakthroughDamagePanel attackerLabel={title} defenderLabel="an average deck" result={breakthroughVsAverage} />
+              <CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
             </div>
           </div>
         ) : (
@@ -239,10 +239,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       </Panel>
       {allyPower.allyCopies > 0 && hasDamageForecast && (
         <Panel className="mt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat potential</h3>
-          <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
-            {allyPower.allyCopies} all{allyPower.allyCopies === 1 ? "y" : "ies"} averaging {formatAllyPower(allyPower)} power.
-          </p>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
+          <div className="mt-3"><CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} /></div>
         </Panel>
       )}
       {scavengeForecasts.length > 0 && (

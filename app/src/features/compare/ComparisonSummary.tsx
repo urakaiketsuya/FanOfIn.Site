@@ -1,3 +1,4 @@
+import CombatAccessForecast from "../decks/CombatAccessForecast";
 import { useMemo, useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -88,7 +89,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
     const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
     const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.awakeningBloomComboCopies > 0 || damageForecast.recurringDamagePerTurn > 0
       || damageForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
-    const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
+    const breakthroughVsAverage = computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
     return { deck, list, mainLines, materialLines, damageForecast: hasDamageForecast ? damageForecast : null, breakthroughVsAverage };
   }), [mode, decks, decklists, cardsByName]);
   const [forecastSeen, setForecastSeen] = useState(10);
@@ -152,10 +153,11 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : damageForecast ? (
               <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
-              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortDeckLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div></Panel>
+              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} /></div></Panel>
             ) : (
               <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></Panel>
             )}
+            {list && damageForecast && breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 && <Panel className="mt-4"><CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} /></Panel>}
           </section>)}
         </div>
       </Section>
@@ -177,8 +179,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
             return <div key={deck.key}>
               <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{shortDeckLabel(baselineDeck.label)} vs. {shortDeckLabel(deck.label)}</p>
               <div className="mt-2 grid gap-3 sm:grid-cols-2">
-                <BreakthroughDamagePanel attackerLabel={shortDeckLabel(baselineDeck.label)} defenderLabel={shortDeckLabel(deck.label)} result={baselineIntoTarget} />
-                <BreakthroughDamagePanel attackerLabel={shortDeckLabel(deck.label)} defenderLabel={shortDeckLabel(baselineDeck.label)} result={targetIntoBaseline} />
+                <BreakthroughDamagePanel cardsByName={cardsByName} attackerLabel={shortDeckLabel(baselineDeck.label)} defenderLabel={shortDeckLabel(deck.label)} result={baselineIntoTarget} />
+                <BreakthroughDamagePanel cardsByName={cardsByName} attackerLabel={shortDeckLabel(deck.label)} defenderLabel={shortDeckLabel(baselineDeck.label)} result={targetIntoBaseline} />
               </div>
             </div>;
           })}

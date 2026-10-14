@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import { applyAllyAttackBoosts, type AttackBoostEvidence, type Card } from "@gatcg/shared";
 
 interface NamedLine {
   name: string;
@@ -21,12 +21,12 @@ function isIntercept(card: Card): boolean {
   return /intercept/i.test(card.effect ?? "");
 }
 
-function expandAllyPower(lines: NamedLine[], cardsByName: Map<string, Card>): { power: number; unblockable: boolean }[] {
-  const instances: { power: number; unblockable: boolean }[] = [];
+function expandAllyPower(lines: NamedLine[], cardsByName: Map<string, Card>): { name: string; power: number; unblockable: boolean }[] {
+  const instances: { name: string; power: number; unblockable: boolean }[] = [];
   for (const line of lines) {
     const card = cardsByName.get(line.name);
     if (!card || !card.types.includes("ALLY") || card.power === null) continue;
-    for (let i = 0; i < line.quantity; i++) instances.push({ power: card.power, unblockable: isUnblockable(card) });
+    for (let i = 0; i < line.quantity; i++) instances.push({ name: line.name, power: card.power, unblockable: isUnblockable(card) });
   }
   return instances;
 }
@@ -44,6 +44,8 @@ export interface BreakthroughDamageResult {
   /** Total power that reaches the defending champion: Unblockable attackers' power plus whatever
    * interceptable attackers exceeded the defender's Intercept-ally count. The headline number. */
   breakthroughTotal: number;
+  boosted?: { breakthroughTotal: number; totalAttackPower: number; interceptedPower: number };
+  boosts?: AttackBoostEvidence[];
   /** Portion of `breakthroughTotal` that got through purely because it can't be intercepted at
    * all, independent of how many Intercept allies the defender has. */
   unblockablePower: number;
@@ -112,7 +114,7 @@ export const AVERAGE_DECK_INTERCEPT_ALLY_COUNT = 4;
 export function computeBreakthroughDamage(attackerLines: NamedLine[], defenderLines: NamedLine[], cardsByName: Map<string, Card>): BreakthroughDamageResult {
   const attackers = expandAllyPower(attackerLines, cardsByName);
   const interceptAllyCount = countIntercept(defenderLines, cardsByName);
-  return computeBreakthroughDamageCore(attackers, interceptAllyCount);
+  return withBoosts(attackers, interceptAllyCount, attackerLines, cardsByName);
 }
 
 /**
@@ -125,5 +127,11 @@ export function computeBreakthroughDamage(attackerLines: NamedLine[], defenderLi
  */
 export function computeBreakthroughDamageVsAverage(attackerLines: NamedLine[], cardsByName: Map<string, Card>): BreakthroughDamageResult {
   const attackers = expandAllyPower(attackerLines, cardsByName);
-  return computeBreakthroughDamageCore(attackers, AVERAGE_DECK_INTERCEPT_ALLY_COUNT);
+  return withBoosts(attackers, AVERAGE_DECK_INTERCEPT_ALLY_COUNT, attackerLines, cardsByName);
+}
+
+function withBoosts(attackers: { name: string; power: number; unblockable: boolean }[], interceptCount: number, lines: NamedLine[], cards: Map<string, Card>): BreakthroughDamageResult {
+  const base = computeBreakthroughDamageCore(attackers, interceptCount);
+  const boosted = applyAllyAttackBoosts(attackers, lines, cards);
+  return { ...base, boosted: computeBreakthroughDamageCore(boosted.attackers, interceptCount), boosts: boosted.evidence };
 }

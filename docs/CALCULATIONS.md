@@ -2273,6 +2273,86 @@ data, while the median is robust to it. This is explicitly a rough stand-in, not
 average deck" is a real, well-defined thing — wherever an actual second decklist is available
 (Compare, once a baseline is picked), the real `computeBreakthroughDamage` figure is shown instead.
 
+### Ally attack boosts in combat forecasts
+
+The printed-power combat baseline remains unchanged. A separate **With supported attack boosts**
+scenario uses `shared/src/allyAttackBoosts.ts`, an explicit registry verified against the committed
+card catalog. It applies fixed anthems, one-shot team buffs, buff-counter grants and targeted boosts
+once per listed source copy, then reruns the same Intercept ordering on the resulting attacks.
+The value is an all-allies board scenario, never added to the hypergeometric direct-damage total.
+It assumes the listed sources resolve together; draws, activation costs, survival, token creation,
+upkeep and play timing are not simulated. Main + Material are included; Sideboard is excluded.
+
+For a source giving +P, the contribution is P times the number of eligible targets, repeated for
+its source copies. “Other” excludes the individual source copy, not every ally with that name.
+Subtype/element restrictions and target-count limits are applied before summing. Each targeted
+application prefers unblockable allies, then the lowest current power, then stable input order;
+this is a deterministic allocation, not an optimizer or a claim of maximum achievable damage.
+Unique persistent sources contribute once even if multiple copies are listed. The inherited
+printed-power baseline still counts every listed ally copy, including unique allies.
+
+Class and level gates use the highest printed-level champion in the supplied list. Class-gated
+boosts require a matching class on that champion; absent or insufficient champion information
+leaves them inactive. This assumes that champion has been reached and does not grant temporary
+levels. A Class Bonus that discounts a card's cost does not gate its separate unconditional buff
+(e.g. Phalanx Captain, Reinforcing Air, Winds of Retribution). Advanced-element access and timing
+remain outside this board scenario. Effects dependent on rested sources, graveyards, counters,
+combat triggers or unsupported templates are shown as not counted rather than treated as active.
+
+Each source exposes its card art, name, modeled power contribution, or unmet/unsupported state.
+Reminder text is removed when finding unsupported power effects so Retort's reminder and ordinary
+buff-counter definitions cannot inflate attacks. Combat forecasts remain visible beside direct
+spell damage on deck and comparison pages. Real-catalog regression fixtures cover stacking,
+self-exclusion, class/level and subtype gates, target limits, unique source caps, empty boards,
+unsupported effects and reapplication of Intercept after buffs.
+
+**Resonator triggers.** Fanclub Leader applies +1 to each listed Resonator for each listed
+Melody/Harmony activation and each Leader copy. A card bearing both subtypes counts once.
+This is the same all-sources-resolve board scenario, not a per-turn forecast: the supplied Allen
+example has 22 such activations. Performance Enthusiast receives only one initial buff counter,
+before the other modeled buff-counter effects resolve; it cannot repeatedly grow from more songs
+while it has a buff counter. Breath's Coloratura applies one counter per copy to existing Humans;
+its Fast Activation class bonus does not gate the counter. Future entrants are not separately added.
+
+**Forese deployment.** `shared/src/foreseForecast.ts` separately models the first use of Forese,
+Fervid Cantor at 7/10/15/20 cards seen. Targets are non-advanced-element Resonator Allies with a
+printed reserve cost ≤3. Main only, with a minimum deck size of 60, is partitioned into disjoint
+Forese copies F, Melody/Harmony copies S, targets T and other cards O. For each possible drawn
+composition (f,s,t,o) totaling n, weight is C(F,f)C(S,s)C(T,t)C(O,o)/C(N,n).
+Access sums weights with f≥1 and s≥1. Deployment sums those same weights multiplied by
+1−C(N−n−(T−t), min(5,N−n))/C(N−n,min(5,N−n)); an empty remaining deck has zero hit chance.
+Thus targets already drawn cannot also be scavenged. Missing catalog entries or overlapping
+categories disable the forecast instead of silently treating them as misses.
+
+This measures access plus an eligible first Scavenge hit, conditional on being able to put Forese
+in play awake and activate a song. Forese rests for the ability, the chosen ally goes onto the
+field instead of into hand, and there is at most one deployment in this model. It does not assume
+that the ally can attack immediately, model costs or repeated wakes/triggers, or add another copy
+to the all-allies combat total (where that listed ally was already counted). In the user's Allen
+Dual Fate Stone Resonators list, the 14 eligible copies are Fanclub Leader (4), Musical Curator
+(4), Performance Enthusiast (2) and Tribute Singer (4); Music Aficionado and ZENA are excluded by
+cost. Regression tests verify the joint access probability against inclusion–exclusion and a
+small closed-form first-trigger case, plus depletion, exhaustion and unsupported catalog states.
+
+**Cards-seen attack access.** Deck pages and per-deck Compare forecasts use
+`shared/src/combatAccessForecast.ts` instead of leading with the all-copies combat ceiling.
+A fixed-seed 1,024-sample Fisher–Yates draw from the Main deck (minimum 60) estimates mean printed
+ally power and mean power with supported boosts at the selected 7/10/15/20 cards seen. Material
+support is treated as available, and unique allies are capped at one on the modeled board.
+Each drawn supported action resolves once; only drawn Melody/Harmony cards trigger Fanclub
+Leader. The result is labeled sampled access before Intercept, not guaranteed resolved damage.
+Costs, element timing, readiness and removal remain outside the estimate.
+
+If a sample has Forese and a song, remove Forese from the attacking/boost-target pool (it rests),
+then inspect the next five remaining cards. Put the first eligible Resonator onto the modeled
+board, if any, and include its supported power interactions. Newly deployed Fanclub Leader or
+Performance Enthusiast misses the first song's activation trigger. Existing allies' trigger
+abilities may resolve after Forese's deployment; global spell buffs resolve after that trigger.
+There are no recursive Tribute Singer/Curator chains or repeat Musicbox activations. Forese's
+reported mean contribution is the found ally's boosted power (zero on misses), already included
+in the total. Full-list pairwise breakthrough comparisons retain their explicitly labeled
+all-allies ceiling. Neither combat view is added to direct-damage access probabilities.
+
 ### Scavenge and Deluge forecasts (`app/src/lib/keywordForecast.ts`)
 
 A deck's Analysis tab (`UserDeckStats.tsx`, "Forecasts") shows a compact per-card readout for two
