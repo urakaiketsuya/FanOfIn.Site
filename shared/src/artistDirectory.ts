@@ -4,6 +4,12 @@ export const ARTIST_DIRECTORY_VERSION = 1;
 export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a001",
+    "portrait": {
+      "src": "/images/artists/a001.jpg",
+      "sourceUrl": "https://x.com/primeastudio",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1698215898509869056/55dARgFW_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "a001-primea-studio",
     "name": "Primea Studio",
     "kind": "studio",
