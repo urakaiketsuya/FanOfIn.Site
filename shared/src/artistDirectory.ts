@@ -8,7 +8,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "Primea Studio",
     "kind": "studio",
     "credits": [
-      "Primea Studio"
+      "Primea Studio",
+      "Primea studio"
     ],
     "links": [
       {
@@ -18,6 +19,9 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://x.com/Zeklewaaa",
         "verifiedAt": "2026-10-14"
       }
+    ],
+    "slugAliases": [
+      "a068-primea-studio"
     ]
   },
   {
@@ -46,7 +50,8 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "Dragonart",
     "kind": "studio",
     "credits": [
-      "Dragonart"
+      "Dragonart",
+      "Dragon Art"
     ],
     "links": [
       {
@@ -56,6 +61,9 @@ export const artistDirectory: ArtistIdentity[] = [
         "evidence": "https://x.com/TaroTarou_Art/status/1791654715933258183",
         "verifiedAt": "2026-10-14"
       }
+    ],
+    "slugAliases": [
+      "a059-dragon-art"
     ]
   },
   {
@@ -448,16 +456,6 @@ export const artistDirectory: ArtistIdentity[] = [
     }
   },
   {
-    "id": "a025",
-    "slug": "a025-dragonart-白霜茶",
-    "name": "DragonArt 白霜茶",
-    "kind": "unknown",
-    "credits": [
-      "DragonArt 白霜茶"
-    ],
-    "links": []
-  },
-  {
     "id": "a026",
     "slug": "a026-kumai",
     "name": "Kumai",
@@ -503,9 +501,13 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "DragonArt Chu",
     "kind": "unknown",
     "credits": [
-      "DragonArt Chu"
+      "DragonArt Chu",
+      "Dragonart Chu"
     ],
-    "links": []
+    "links": [],
+    "slugAliases": [
+      "a037-dragonart-chu"
+    ]
   },
   {
     "id": "a031",
@@ -615,16 +617,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": []
   },
   {
-    "id": "a037",
-    "slug": "a037-dragonart-chu",
-    "name": "Dragonart Chu",
-    "kind": "unknown",
-    "credits": [
-      "Dragonart Chu"
-    ],
-    "links": []
-  },
-  {
     "id": "a038",
     "slug": "a038-parhelion-studio",
     "name": "Parhelion Studio",
@@ -701,19 +693,13 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "Dragonart Tris",
     "kind": "unknown",
     "credits": [
-      "Dragonart Tris"
-    ],
-    "links": []
-  },
-  {
-    "id": "a044",
-    "slug": "a044-dragonart-tris",
-    "name": "DragonArt Tris",
-    "kind": "unknown",
-    "credits": [
+      "Dragonart Tris",
       "DragonArt Tris"
     ],
-    "links": []
+    "links": [],
+    "slugAliases": [
+      "a044-dragonart-tris"
+    ]
   },
   {
     "id": "a045",
@@ -836,16 +822,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": []
   },
   {
-    "id": "a050",
-    "slug": "a050-白霜茶",
-    "name": "白霜茶",
-    "kind": "unknown",
-    "credits": [
-      "白霜茶"
-    ],
-    "links": []
-  },
-  {
     "id": "a051",
     "slug": "a051-deeya-chaturvedi",
     "name": "Deeya Chaturvedi",
@@ -926,16 +902,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "links": []
   },
   {
-    "id": "a059",
-    "slug": "a059-dragon-art",
-    "name": "Dragon Art",
-    "kind": "unknown",
-    "credits": [
-      "Dragon Art"
-    ],
-    "links": []
-  },
-  {
     "id": "a060",
     "slug": "a060-dragonart-antilous",
     "portrait": {
@@ -999,7 +965,9 @@ export const artistDirectory: ArtistIdentity[] = [
     "name": "Dragonart 白霜搽",
     "kind": "combined",
     "credits": [
-      "Dragonart 白霜搽"
+      "Dragonart 白霜搽",
+      "DragonArt 白霜茶",
+      "白霜茶"
     ],
     "links": [
       {
@@ -1015,7 +983,11 @@ export const artistDirectory: ArtistIdentity[] = [
       "sourceUrl": "https://www.instagram.com/shuangchabai/",
       "imageUrl": "https://scontent.cdninstagram.com/v/t51.2885-19/325607621_8504014226340315_293610467092929294_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=102&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=Nx2A7uxnRs8Q7kNvwFt1Pk3&_nc_oc=AdqmzK6GqPhKCi8W0xpyp1cR4sj2mdkksnTiddbKAXlYzNUFu0xwfpmVYkpKAjOqgjJ9zMIoKElmrna53mXRLDpA&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_ss=7b689&oh=00_AQMStQ9qocnze3_WKUZpk7ot7J0bisH-ikaumbTPx6VVZA&oe=6AD56AB3",
       "verifiedAt": "2026-10-14"
-    }
+    },
+    "slugAliases": [
+      "a025-dragonart-白霜茶",
+      "a050-白霜茶"
+    ]
   },
   {
     "id": "a064",
@@ -1054,16 +1026,6 @@ export const artistDirectory: ArtistIdentity[] = [
     "kind": "unknown",
     "credits": [
       "Polar Engine"
-    ],
-    "links": []
-  },
-  {
-    "id": "a068",
-    "slug": "a068-primea-studio",
-    "name": "Primea studio",
-    "kind": "unknown",
-    "credits": [
-      "Primea studio"
     ],
     "links": []
   },

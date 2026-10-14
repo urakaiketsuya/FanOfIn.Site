@@ -53,8 +53,8 @@ export default function Artists() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
   const galleries = useMemo(() => buildArtistGalleries(cards), [cards]);
-  const artist = galleries.find(candidate => candidate.slug === slug);
-  const identity = artist ?? artistDirectory.find(candidate => candidate.slug === slug);
+  const artist = galleries.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
+  const identity = artist ?? artistDirectory.find(candidate => (candidate.slug === slug || candidate.slugAliases?.includes(slug ?? '')));
   const cardSearch = query;
   function setSearch(value: string) {
     const next = new URLSearchParams(params);

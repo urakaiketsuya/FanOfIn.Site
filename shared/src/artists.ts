@@ -11,6 +11,8 @@ export interface ArtistLink {
 export interface ArtistIdentity {
   id: string;
   slug: string;
+  /** Previous directory URLs retained after a curated identity merge. */
+  slugAliases?: string[];
   name: string;
   kind: 'individual' | 'studio' | 'combined' | 'unknown';
   credits: string[];

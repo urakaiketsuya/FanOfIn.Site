@@ -1369,3 +1369,16 @@ The user identified https://www.facebook.com/imstupidegg/ as Sineia. Original br
 ### Sineia portrait follow-up
 
 Dismissing the non-binding login overlay revealed the public profile, including a digital creator role, illustration commission bio, and the black-and-white illustrated profile portrait. Saved the original public avatar as a016.jpg with its observed CDN URL; no login or image generation was needed. Individual kind is now supported by the public profile. This supersedes the inspection/portrait limitations above, while catalog mapping remains user-attributed. Portrait coverage is 15/75 (20%).
+
+
+## Artist spelling consolidation 2026-10-14
+
+The user confirmed that DragonArt 白霜茶, 白霜茶, and Dragonart 白霜搽 refer to the same artist and that Dragonart Tris / DragonArt Tris are one person. Consolidated those credits into a063 and a043 respectively. The shared 白霜搽 page retains its verified Instagram account and original portrait. Also consolidated case-only Primea Studio / Primea studio (a001), case-only DragonArt Chu / Dragonart Chu (a030), and spacing-only Dragonart / Dragon Art (a004). These are explicit curated aliases; no automatic fuzzy matching is applied to new credits.
+
+All original catalog credit strings remain intact. Removed directory entries are represented by slug aliases, so former artist URLs resolve to the combined gallery. Generic Chu remains separate from Hanh Chu and Dragonart Chu; Parhelion Studio / Parhelion Studio Co., 十尾 / 十尾t, and 道漫 / 道漫? remain unresolved. This supersedes earlier instructions to keep the five confirmed groups separate. Coverage is 69 identities, 40 account URLs across 18 identities, and 16 portraits.
+
+Verification: all three artist tests pass, including exact printing preservation, merged identities, retained URL aliases, and distinct uncertain credits. Mobile 360px and desktop 1280px checks show the old 白霜茶 URL with Instagram, portrait, and 23 cards / 30 printings; the old Tris URL shows 8 cards / 9 printings. No horizontal overflow; the Instagram target is 48px high and keyboard search focus is visible. Loading was observed. Error/retry coverage remains from prior release checks; it was not repeated for this consolidation. Production remains unverified.
+
+Next: resolve the remaining ambiguous spellings before continuing SiriufLong discovery. Artist Pages remains approximately 95% complete for the first release, with production journey and real transport recovery checks outstanding. Identity discovery remains open-ended.
+
+App typecheck passed. Directory search returns one Tris entry, and an unmatched query shows the empty state.

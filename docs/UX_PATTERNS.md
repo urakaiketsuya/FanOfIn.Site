@@ -170,3 +170,7 @@ ownership operation; collection acquisitions join the parent quantity draft.
 Saved deck cards expose Edit deck and Playtest before secondary details. Edit opens the
 existing editor and retains its draft-resume behavior; Playtest carries the saved title,
 format, deck identifier, and full list.
+
+## Artist identity aliases
+
+Curated spelling variants share one directory entry and combined card gallery while preserving every original printing credit. Former artist URLs continue to resolve through explicit slug aliases. Search matches all credited spellings. Merge case or spacing variants deliberately; ambiguous names require identity evidence or user confirmation.
