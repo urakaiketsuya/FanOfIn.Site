@@ -109,3 +109,9 @@ The portrait displays correctly in the 360px artist page and 1280px directory, w
 Added the illustrated avatar displayed beside Hanh Chu's name on the [ArtStation profile](https://www.artstation.com/rokudo_aurora). The profile links back to the already verified Wix website and ArtStation portfolio, confirming the identity. The published 72px avatar is stored locally with source metadata. This resolves the earlier ArtStation image-inspection gap. Portrait coverage is now 5 of 75 identities; 70 remain without a verified image.
 
 The avatar loads correctly on the artist page at 360px and 1280px without horizontal overflow. App typecheck and all three artist regression tests pass. No controls changed; keyboard, forced image failure, and enlarged text were not rechecked. Artist Pages remains approximately 80% complete: core implementation is finished, with broader discovery and release verification remaining; discovery scope is uncertain.
+
+### Antilous profile image — 2026-10-14
+
+Added Dragonart Antilous's blue dragon avatar from the [ArtStation profile](https://www.artstation.com/antilous). Its Instagram link matches the already verified account, and the profile also links to Dragonart. The published 72px avatar is stored locally with source metadata. Portrait coverage is now 6 of 75 identities; 69 remain without a verified image.
+
+The avatar loads correctly at 360px and 1280px with no horizontal overflow. App typecheck and all three artist regression tests pass. No controls changed; keyboard, forced image failure, and enlarged text were not rechecked. Artist Pages remains approximately 80% complete: core pages work, with broader discovery and release verification remaining; discovery scope is uncertain.

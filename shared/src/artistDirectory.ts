@@ -742,6 +742,12 @@ export const artistDirectory: ArtistIdentity[] = [
   {
     "id": "a060",
     "slug": "a060-dragonart-antilous",
+    "portrait": {
+      "src": "/images/artists/a060.jpg",
+      "sourceUrl": "https://www.artstation.com/antilous",
+      "imageUrl": "https://cdna.artstation.com/p/users/avatars/000/152/240/medium/c0fa91b3ab698dbbdaf4b2ac37cf2a88.jpg?1528887152",
+      "verifiedAt": "2026-10-14"
+    },
     "name": "Dragonart Antilous",
     "kind": "combined",
     "credits": [
