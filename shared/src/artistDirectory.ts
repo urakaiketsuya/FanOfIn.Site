@@ -1199,11 +1199,40 @@ export const artistDirectory: ArtistIdentity[] = [
     "slug": "dragonart-艾瞳a-ton",
     "slugAliases": ["a064-dragonart-艾瞳a-ton"],
     "name": "DragonArt 艾瞳A-Ton",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "DragonArt 艾瞳A-Ton"
     ],
-    "links": [],
+    "links": [
+      {
+        "platform": "X",
+        "label": "@aton2503",
+        "url": "https://x.com/aton2503",
+        "evidence": "https://x.com/aton2503",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Facebook",
+        "label": "aton2503",
+        "url": "https://www.facebook.com/aton2503/",
+        "evidence": "https://www.facebook.com/aton2503/",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "YouTube",
+        "label": "@a-ton4795",
+        "url": "https://www.youtube.com/@a-ton4795",
+        "evidence": "https://www.youtube.com/@a-ton4795",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "ArtStation",
+        "label": "A-Ton",
+        "url": "https://www.artstation.com/user-824f9435e554869b",
+        "evidence": "https://www.artstation.com/user-824f9435e554869b",
+        "verifiedAt": "2026-10-14"
+      }
+    ],
     "studioId": "a004"
   },
   {

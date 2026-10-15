@@ -114,7 +114,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A061 | Dragonart KS | 1 | 2 | Needs identity review |
 | A062 | DragonArt Zhang Iris | 1 | 1 | Needs identity review |
 | A063 | Dragonart 白霜搽 | 1 | 1 | Reviewed with verified links |
-| A064 | DragonArt 艾瞳A-Ton | 1 | 1 | Needs identity review |
+| A064 | DragonArt 艾瞳A-Ton | 1 | 1 | User-confirmed accounts |
 | A065 | Ge-B | 1 | 1 | Needs identity review |
 | A066 | HYONEE | 1 | 1 | Needs identity review |
 | A067 | Polar Engine | 1 | 1 | Needs identity review |
@@ -1000,17 +1000,20 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A064 — DragonArt 艾瞳A-Ton
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-confirmed accounts; updated 2026-10-14.
 - **Exact credits:** `"DragonArt 艾瞳A-Ton"`.
-- **Identity:** Combined credit DragonArt 艾瞳A-Ton; @aton2503 is a member-name lead. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual artist 艾瞳A-Ton, ID a064, credited with Dragonart. The user confirmed the four accounts below on 2026-10-14.
 - **Credited example:** Winbless Forecaster; Mercurial Heart; #157; edition `mijilb6bwe`. [Publisher edition reference](https://index.gatcg.com/edition/winbless-forecaster-mrc) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"DragonArt 艾瞳A-Ton"`; `"艾瞳A-Ton"`.
 - **Findings:** [Mirrored artwork](https://twiman.net/user/857923182342230017/illust/1662082303315832834) pairs 艾瞳A-Ton with aton2503. Direct X returned 403; no inspected primary source confirms the Winbless Forecaster commission or studio relationship. **Browser follow-up:** X now readable as 艾瞳A-Ton; no inspected card-specific/studio connection. Earlier extraction failures do not describe current browser availability.
-- **Next action:** Find a readable artist-owned credited-card post or direct studio roster before adopting the account.
+- **Follow-up:** Published the four accounts on the user’s explicit confirmation. Current text fetches were unavailable; no independent Winbless Forecaster artwork match is claimed.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
-| X | [@aton2503](https://x.com/aton2503) | Candidate | [Evidence](https://x.com/aton2503): Browser follow-up read the original account/page. X now readable as 艾瞳A-Ton; no inspected card-specific/studio connection. Withheld pending catalog identity evidence. | 2026-10-14 |
+| X | [@aton2503](https://x.com/aton2503) | User-confirmed | User supplied this exact artist-account association. | 2026-10-14 |
+| Facebook | [aton2503](https://www.facebook.com/aton2503/) | User-confirmed | User supplied this exact artist-account association. | 2026-10-14 |
+| YouTube | [@a-ton4795](https://www.youtube.com/@a-ton4795) | User-confirmed | User supplied this exact artist-account association. | 2026-10-14 |
+| ArtStation | [A-Ton](https://www.artstation.com/user-824f9435e554869b) | User-confirmed | User supplied this exact artist-account association. | 2026-10-14 |
 
 ### A065 — Ge-B
 
