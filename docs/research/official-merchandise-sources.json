@@ -2,14 +2,15 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-10-15",
   "status": "research-incomplete-not-production-catalog",
-  "scope": "Non-card physical merchandise in the five located official Ascent store catalogs. Card products, jumbo cards, uncut sheets and service tickets excluded. Event admission and prize-only merchandise still need separate review.",
+  "scope": "Non-card physical merchandise in the six located official Ascent store catalogs. Card products, jumbo cards, uncut sheets and service tickets excluded. Event admission and prize-only merchandise still need separate review.",
   "coverageNotes": [
     "All 255 articles returned by the public official article endpoint were checked for direct PDF links; none of the Ascent article bodies contained them. This is not proof no catalog exists.",
-    "Five image-based PDFs were downloaded, cover dates checked, and all eight store catalog pages rendered and visually reviewed. Plain PDF text extraction returned no text.",
+    "Six official PDFs were downloaded, cover dates checked, and all ten store catalog pages rendered and visually reviewed. The first five PDFs returned no text during plain PDF extraction.",
     "Labels are source observations, not unique products. Repeated labels, spelling differences and art variants must be reconciled before import.",
     "No artist, set, release date or exclusivity is inferred from an event appearance.",
     "London and Los Angeles filenames contain 2025, but their covers explicitly date the events to 2026.",
-    "The official upload-file index returned HTTP 403. No access-restricted index was used."
+    "The official upload-file index returned HTTP 403. No access-restricted index was used.",
+    "Melbourne 2026 was resolved through a public social-mirror short link and verified on the official asset host. Its assortment differs from earlier catalogs; event listings must not be assumed identical."
   ],
   "sources": [
     {
@@ -490,6 +491,99 @@
           "note": "Sizes unspecified."
         }
       ]
+    },
+    {
+      "id": "melbourne-2026",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf",
+      "eventStart": "2026-09-12",
+      "eventEnd": "2026-09-13",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        16,
+        17
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "120a209711542b453014976b778a00230fbfa8bc43b88f6b237f011cfa141c68",
+      "discovery": {
+        "mirrorUrl": "https://mobile.twstalker.com/grandarchivetcg",
+        "shortUrl": "https://t.co/nbT0yizVXi",
+        "note": "Public social mirror exposed the shortened guide link; its redirect resolved to the official asset host. Catalog verified directly from that PDF."
+      },
+      "groups": [
+        {
+          "page": 16,
+          "productType": "playmat",
+          "sourceLabels": [
+            "SP4 Cosmic Bolt",
+            "SP4 Expel the Departed",
+            "SP4 Lily, Marine Castellan",
+            "Fluffy Shopkeep PR",
+            "Dungeon Guide PR",
+            "Divine Comedy, Inferno",
+            "Dante, Aenean Initiate",
+            "Lorraine, Honed Operative",
+            "Enfeebling Orb PR"
+          ],
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity."
+        },
+        {
+          "page": 16,
+          "productType": "compact-deck-box",
+          "sourceLabels": [
+            "Avatar of Byakko",
+            "Avatar of Genbu",
+            "Avatar of Suzaku"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "double-deck-box",
+          "sourceLabels": [
+            "Alice, Trifle’s Royalty"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "sleeves",
+          "sourceLabels": [
+            "Dragon Shield Sleeves"
+          ],
+          "note": "No specific designs named or pictured; category observation only, not an identifiable collectible."
+        },
+        {
+          "page": 17,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Merlin, Amethyst’s Glow"
+          ],
+          "note": "Merlin figure shown separately from the chibi figures."
+        },
+        {
+          "page": 17,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Arisanna",
+            "Silvie"
+          ],
+          "note": "Chibi Figures"
+        },
+        {
+          "page": 17,
+          "productType": "plush",
+          "sourceLabels": [
+            "Tristan",
+            "Guo Jia",
+            "Silvie"
+          ]
+        },
+        {
+          "page": 17,
+          "productType": "wall-scroll",
+          "sourceLabels": [
+            "Horizon’s Reprise Key Visual Wall Scroll"
+          ]
+        }
+      ]
     }
   ],
   "additionalLeads": [
@@ -502,12 +596,6 @@
       ],
       "verification": "third-party-mirror-text-only",
       "note": "Guide states September 13–14, 2025. Official original URL and page images remain unverified. Includes additional deckbox labels Guan Yu, Dian Wei, Ciel and Diana; not merged into verified groups."
-    },
-    {
-      "id": "melbourne-2026",
-      "url": "https://twstalker.com/grandarchivetcg",
-      "verification": "social-mirror-lead-only",
-      "note": "Search excerpt mentions an event guide, but the direct PDF URL could not be resolved. Mirror snapshots vary; confirm against official social post."
     },
     {
       "id": "horizons-reprise",
@@ -734,5 +822,22 @@
     "Reconcile source observations into stable products and explicit variants, preserving source/page evidence and uncertain matches.",
     "Source usable product images and verified artist/set relationships.",
     "Implement merchandise ownership and progress tracking after catalog validation."
-  ]
+  ],
+  "searchFollowUp": {
+    "reviewedAt": "2026-10-15",
+    "resolved": [
+      "melbourne-2026"
+    ],
+    "unresolvedSearches": [
+      "Seattle",
+      "Boston",
+      "Utrecht",
+      "Niagara Falls",
+      "Kuala Lumpur",
+      "Santa Clara",
+      "Toronto",
+      "Auckland"
+    ],
+    "note": "Additional event-guide/catalog web searches did not surface verified guide URLs for these events. This does not establish that no guides exist; Taipei mirror and historical/social-only sources remain open."
+  }
 }
