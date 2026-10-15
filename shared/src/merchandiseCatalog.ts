@@ -1237,5 +1237,149 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Merlin, Amethyst's Glow"
     }
   ]
+},
+{
+  "id": "ascent-design-t-shirt-tristan",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Tristan",
+  "title": "Tristan · T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-tristan",
+      "type": "t-shirt",
+      "name": "Tristan"
+    }
+  ]
+},
+{
+  "id": "ascent-design-double-deck-box-alice-phantom-monarch",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Phantom Monarch · Double deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-double-deck-box-alice-phantom-monarch",
+      "type": "double-deck-box",
+      "name": "Alice, Phantom Monarch"
+    }
+  ]
+},
+{
+  "id": "ascent-design-compact-deck-box-snow-white-weiss-queen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Snow White, Weiss Queen · Compact deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-compact-deck-box-snow-white-weiss-queen",
+      "type": "compact-deck-box",
+      "name": "Snow White, Weiss Queen"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-merlin",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin · T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-merlin",
+      "type": "t-shirt",
+      "name": "Merlin"
+    }
+  ]
+},
+{
+  "id": "ascent-design-figurine-kongming",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Kongming",
+  "title": "Kongming · Figure",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-figurine-kongming",
+      "type": "figurine",
+      "name": "Kongming"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-ciel",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Ciel",
+  "title": "Ciel · T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-ciel",
+      "type": "t-shirt",
+      "name": "Ciel"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-nico",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Nico",
+  "title": "Nico · T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-nico",
+      "type": "t-shirt",
+      "name": "Nico"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-silvie",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Silvie",
+  "title": "Silvie · T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-silvie",
+      "type": "t-shirt",
+      "name": "Silvie"
+    }
+  ]
+},
+{
+  "id": "ascent-design-compact-deck-box-spirelle-schwartz-queen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Spirelle, Schwartz Queen · Compact deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-compact-deck-box-spirelle-schwartz-queen",
+      "type": "compact-deck-box",
+      "name": "Spirelle, Schwartz Queen"
+    }
+  ]
 }
 ];

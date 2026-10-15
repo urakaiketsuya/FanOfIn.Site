@@ -493,6 +493,87 @@
       "sourceLabel": "Merlin, Amethyst’s Glow",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-tristan",
+      "candidateId": "merch-candidate-27ded2c89fcd837c",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Tristan",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-double-deck-box-alice-phantom-monarch",
+      "candidateId": "merch-candidate-281077dd51bd6844",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Alice, Phantom Monarch",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-compact-deck-box-snow-white-weiss-queen",
+      "candidateId": "merch-candidate-4311cf88b0314809",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Snow White, Weiss Queen",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-merlin",
+      "candidateId": "merch-candidate-6241603cda139a65",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Merlin",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-figurine-kongming",
+      "candidateId": "merch-candidate-82c282fa32e0c943",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Kongming",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-ciel",
+      "candidateId": "merch-candidate-b59bd9203a7bf153",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Ciel",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-nico",
+      "candidateId": "merch-candidate-c272c0de03bb8b56",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Nico",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-silvie",
+      "candidateId": "merch-candidate-d7aae098c293bfe6",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Silvie",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-compact-deck-box-spirelle-schwartz-queen",
+      "candidateId": "merch-candidate-f246431ed0debcb9",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Spirelle, Schwartz Queen",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }
