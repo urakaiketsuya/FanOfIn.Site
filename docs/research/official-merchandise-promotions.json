@@ -574,6 +574,114 @@
       "sourceLabel": "Spirelle, Schwartz Queen",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-kongming",
+      "candidateId": "merch-candidate-033074f98c79df86",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Kong Ming",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-tristan",
+      "candidateId": "merch-candidate-357c5964dd683124",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Tristan",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-diana",
+      "candidateId": "merch-candidate-3e921503eadc5895",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Diana",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-jin",
+      "candidateId": "merch-candidate-4562d9712ad26985",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Jin",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-arisanna",
+      "candidateId": "merch-candidate-57ff8578e3997203",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Arisanna",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-coaster-lorraine",
+      "candidateId": "merch-candidate-7b2217b76af8002f",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Lorraine",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-coaster-arisanna",
+      "candidateId": "merch-candidate-9a62fb3b6e0aae56",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Arisanna",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-silvie",
+      "candidateId": "merch-candidate-9aaad8ba9f567217",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Silvie",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-coaster-kongming",
+      "candidateId": "merch-candidate-bceec12bd123a226",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Kong Ming",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-lorraine",
+      "candidateId": "merch-candidate-c388ffd2a7cbf357",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Lorraine",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-double-deck-box-lu-bu",
+      "candidateId": "merch-candidate-cb00759539e0b313",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Lu Bu",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-standee-merlin",
+      "candidateId": "merch-candidate-e567dd7136d10641",
+      "sourceId": "las-vegas-2026",
+      "page": 16,
+      "sourceLabel": "Merlin",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }

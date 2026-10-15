@@ -1381,5 +1381,197 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Spirelle, Schwartz Queen"
     }
   ]
+},
+{
+  "id": "ascent-design-acrylic-standee-kongming",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Kongming",
+  "title": "Kong Ming · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-kongming",
+      "type": "acrylic-standee",
+      "name": "Kong Ming"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-tristan",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Tristan",
+  "title": "Tristan · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-tristan",
+      "type": "acrylic-standee",
+      "name": "Tristan"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-diana",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-diana",
+      "type": "acrylic-standee",
+      "name": "Diana"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-jin",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Jin",
+  "title": "Jin · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-jin",
+      "type": "acrylic-standee",
+      "name": "Jin"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-arisanna",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Arisanna",
+  "title": "Arisanna · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-arisanna",
+      "type": "acrylic-standee",
+      "name": "Arisanna"
+    }
+  ]
+},
+{
+  "id": "ascent-design-coaster-lorraine",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Lorraine",
+  "title": "Lorraine · Coaster",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-coaster-lorraine",
+      "type": "coaster",
+      "name": "Lorraine"
+    }
+  ]
+},
+{
+  "id": "ascent-design-coaster-arisanna",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Arisanna",
+  "title": "Arisanna · Coaster",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-coaster-arisanna",
+      "type": "coaster",
+      "name": "Arisanna"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-silvie",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Silvie",
+  "title": "Silvie · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-silvie",
+      "type": "acrylic-standee",
+      "name": "Silvie"
+    }
+  ]
+},
+{
+  "id": "ascent-design-coaster-kongming",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Kongming",
+  "title": "Kong Ming · Coaster",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-coaster-kongming",
+      "type": "coaster",
+      "name": "Kong Ming"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-lorraine",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Lorraine",
+  "title": "Lorraine · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-lorraine",
+      "type": "acrylic-standee",
+      "name": "Lorraine"
+    }
+  ]
+},
+{
+  "id": "ascent-design-double-deck-box-lu-bu",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Lu Bu · Double deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-double-deck-box-lu-bu",
+      "type": "double-deck-box",
+      "name": "Lu Bu"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-standee-merlin",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin · Acrylic standee",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-standee-merlin",
+      "type": "acrylic-standee",
+      "name": "Merlin"
+    }
+  ]
 }
 ];
