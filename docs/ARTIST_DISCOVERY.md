@@ -1258,7 +1258,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A064 | DragonArt 艾瞳A-Ton | Initials; account identity unresolved | `"DragonArt 艾瞳A-Ton" illustrator` |
 | A065 | Ge-B | Initials; account identity unresolved | `"Ge-B" "Mire Reparation"` |
 | A066 | HYONEE | Initials; account identity unresolved | `"HYONEE" "Grand Archive" artist` |
-| A067 | Polar Engine | Initials; account identity unresolved | `"Polar Engine" "City Protector"` |
+| A067 | Polar Engine | Instagram profile portrait added 2026-10-14 | `"Polar Engine" "City Protector"` |
 | A068 | Primea studio | Initials; account identity unresolved | `"Primea studio" "Blazing Lunge" profile` |
 | A069 | Rubi露比喵 | Initials; account identity unresolved | `"Rubi露比喵" artist` |
 | A070 | Sunny | Initials; account identity unresolved | `"Sunny" "Map of Hidden Passage" artist` |
@@ -1652,3 +1652,8 @@ Inspected the original [X profile](https://x.com/TEDDYPOCKY) and its profile-pho
 ### 桃李タロ portrait update 2026-10-14
 
 Inspected the original [X profile](https://x.com/tori_mcct) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a073.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a073.
+
+
+### Polar Engine portrait update 2026-10-14
+
+Inspected the original [Instagram profile](https://www.instagram.com/polar_engine/) and its profile-photo image. Added the unchanged JPEG locally at `app/public/images/artists/a067.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a067.

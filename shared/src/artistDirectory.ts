@@ -1230,6 +1230,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a067",
+    "portrait": {
+      "src": "/images/artists/a067.jpg",
+      "sourceUrl": "https://www.instagram.com/polar_engine/",
+      "imageUrl": "https://scontent.cdninstagram.com/v/t51.2885-19/12142009_139039063121316_92387054_a.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=110&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy45NjAuQzMifQ%3D%3D&_nc_ohc=AlTpFMPDD3oQ7kNvwE7w_If&_nc_oc=AdqJTtE5mf2HpAZVViwWefP6vBoCSKqsHPdR754wbcrU7USBmj9GepSbzlNRTPnuktF4fJn4CbYyPbLXB3ZE-XNC&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_ss=7b689&oh=00_AQOk1uK9lu_Uudw_S8-NrwA1upZLefzGIPbvPgjXIkm54Q&oe=6AD5EE23",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "polar-engine",
     "slugAliases": ["a067-polar-engine"],
     "name": "Polar Engine",
