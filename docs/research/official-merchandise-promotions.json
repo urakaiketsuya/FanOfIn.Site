@@ -142,6 +142,123 @@
       "sourceLabel": "Silvie",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-sp4-cosmic-bolt",
+      "candidateId": "merch-candidate-0913d00586ae3b81",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "SP4 Cosmic Bolt",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-divine-comedy-inferno",
+      "candidateId": "merch-candidate-256124e08b0ebec0",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Divine Comedy, Inferno",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-dungeon-guide-pr",
+      "candidateId": "merch-candidate-2e02dc38dddb285b",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Dungeon Guide PR",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-enfeebling-orb-pr",
+      "candidateId": "merch-candidate-379dac205a64e134",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Enfeebling Orb PR",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-byakko",
+      "candidateId": "merch-candidate-3b9dc20332890ce8",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Avatar of Byakko",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-suzaku",
+      "candidateId": "merch-candidate-438023ac5a832874",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Avatar of Suzaku",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-double-deck-box-alice-trifle-s-royalty",
+      "candidateId": "merch-candidate-45be01edfc8b216d",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Alice, Trifle’s Royalty",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-sp4-expel-the-departed",
+      "candidateId": "merch-candidate-4950c1743ee2e18c",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "SP4 Expel the Departed",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-sp4-lily-marine-castellan",
+      "candidateId": "merch-candidate-8534a5bb5df35571",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "SP4 Lily, Marine Castellan",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-genbu",
+      "candidateId": "merch-candidate-9f982c960873f6b2",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Avatar of Genbu",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-lorraine-honed-operative",
+      "candidateId": "merch-candidate-cce8462c3705c3e2",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Lorraine, Honed Operative",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-fluffy-shopkeep-pr",
+      "candidateId": "merch-candidate-cf575f9576b49af9",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Fluffy Shopkeep PR",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-dante-aenean-initiate",
+      "candidateId": "merch-candidate-f33c20092959b5af",
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Dante, Aenean Initiate",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }

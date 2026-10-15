@@ -613,5 +613,213 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Silvie"
     }
   ]
+},
+{
+  "id": "ascent-design-playmat-sp4-cosmic-bolt",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "SP4 Cosmic Bolt · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-sp4-cosmic-bolt",
+      "type": "playmat",
+      "name": "SP4 Cosmic Bolt"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-divine-comedy-inferno",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Divine Comedy, Inferno · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-divine-comedy-inferno",
+      "type": "playmat",
+      "name": "Divine Comedy, Inferno"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-dungeon-guide-pr",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Dungeon Guide PR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-dungeon-guide-pr",
+      "type": "playmat",
+      "name": "Dungeon Guide PR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-enfeebling-orb-pr",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Enfeebling Orb PR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-enfeebling-orb-pr",
+      "type": "playmat",
+      "name": "Enfeebling Orb PR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-compact-deck-box-avatar-of-byakko",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Avatar of Byakko · Compact deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-compact-deck-box-avatar-of-byakko",
+      "type": "compact-deck-box",
+      "name": "Avatar of Byakko"
+    }
+  ]
+},
+{
+  "id": "ascent-design-compact-deck-box-avatar-of-suzaku",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Avatar of Suzaku · Compact deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-compact-deck-box-avatar-of-suzaku",
+      "type": "compact-deck-box",
+      "name": "Avatar of Suzaku"
+    }
+  ]
+},
+{
+  "id": "ascent-design-double-deck-box-alice-trifle-s-royalty",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Trifle's Royalty · Double deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-double-deck-box-alice-trifle-s-royalty",
+      "type": "double-deck-box",
+      "name": "Alice, Trifle's Royalty"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-sp4-expel-the-departed",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "SP4 Expel the Departed · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-sp4-expel-the-departed",
+      "type": "playmat",
+      "name": "SP4 Expel the Departed"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-sp4-lily-marine-castellan",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Lily",
+  "title": "SP4 Lily, Marine Castellan · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-sp4-lily-marine-castellan",
+      "type": "playmat",
+      "name": "SP4 Lily, Marine Castellan"
+    }
+  ]
+},
+{
+  "id": "ascent-design-compact-deck-box-avatar-of-genbu",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Avatar of Genbu · Compact deck box",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-compact-deck-box-avatar-of-genbu",
+      "type": "compact-deck-box",
+      "name": "Avatar of Genbu"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-lorraine-honed-operative",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Lorraine",
+  "title": "Lorraine, Honed Operative · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-lorraine-honed-operative",
+      "type": "playmat",
+      "name": "Lorraine, Honed Operative"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-fluffy-shopkeep-pr",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Fluffy Shopkeep PR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-fluffy-shopkeep-pr",
+      "type": "playmat",
+      "name": "Fluffy Shopkeep PR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-dante-aenean-initiate",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Dante",
+  "title": "Dante, Aenean Initiate · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=16",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-dante-aenean-initiate",
+      "type": "playmat",
+      "name": "Dante, Aenean Initiate"
+    }
+  ]
 }
 ];
