@@ -442,7 +442,15 @@ export const artistDirectory: ArtistIdentity[] = [
     "credits": [
       "檸檬夾心餅"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Instagram",
+        "label": "@lemon_kokoro",
+        "url": "https://www.instagram.com/lemon_kokoro/",
+        "evidence": "https://www.instagram.com/lemon_kokoro/",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a019",
