@@ -1262,7 +1262,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A068 | Primea studio | Initials; account identity unresolved | `"Primea studio" "Blazing Lunge" profile` |
 | A069 | Rubi露比喵 | Initials; account identity unresolved | `"Rubi露比喵" artist` |
 | A070 | Sunny | Initials; account identity unresolved | `"Sunny" "Map of Hidden Passage" artist` |
-| A071 | TEDDYPOCKY | Initials; account identity unresolved | `"TEDDYPOCKY" "Trump Set"` |
+| A071 | TEDDYPOCKY | X profile portrait added 2026-10-14 | `"TEDDYPOCKY" "Trump Set"` |
 | A072 | 十尾t | Initials; account identity unresolved | `"十尾t" artist profile` |
 | A073 | 桃李タロ | Initials; account identity unresolved | `"桃李タロ" "Bubble Mage"` |
 | A074 | 蝦蝦 | Initials; account identity unresolved | `"蝦蝦" "Library Witch"` |
@@ -1642,3 +1642,8 @@ Verification: all four artist tests and diff checks pass. Both links display at 
 Classified a067 as a studio and added the user-identified [website](https://polarengine.com/), [ArtStation](https://www.artstation.com/polarengine) and [Instagram](https://www.instagram.com/polar_engine/). The website identifies Polar Engine Studio. Direct ArtStation extraction shows only site chrome and Instagram retrieval failed; these accounts rely on the user’s identification and earlier studio research. No independent City Protector artwork match, studio-member relationships or portrait added. Current totals: 65 identities, 55 account URLs across 27 linked identities, 24 portraits.
 
 Verification: all four artist tests and diff checks pass. All three links display at 360px and 1280px without overflow, with 48px touch targets. Keyboard navigation moves from website to ArtStation; loading observed. Empty/error recovery was not repeated for this studio/account data update. Next: publish account updates when requested and verify production. Artist Pages remains approximately 95% complete for the first release, based on completed local features with release verification and real transport recovery outstanding; identity research remains open-ended.
+
+
+### TEDDYPOCKY portrait update 2026-10-14
+
+Inspected the original [X profile](https://x.com/TEDDYPOCKY) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a071.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a071.

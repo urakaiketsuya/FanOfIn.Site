@@ -1301,6 +1301,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a071",
+    "portrait": {
+      "src": "/images/artists/a071.jpg",
+      "sourceUrl": "https://x.com/TEDDYPOCKY",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1683825564929642497/gQZmqBjw_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "teddypocky",
     "slugAliases": ["a071-teddypocky"],
     "name": "TEDDYPOCKY",
