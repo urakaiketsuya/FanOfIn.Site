@@ -1,3 +1,4 @@
+import MerchandiseCollection from "./MerchandiseCollection";
 import { collectionEntryKey } from "@gatcg/shared";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -57,7 +58,7 @@ export default function CollectionIndex() {
   const cardsByName = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
   const [reviewChanges, setReviewChanges] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [view, setView] = useState<"sets" | "progress" | "add" | "import" | "coverage" | "history">("sets");
+  const [view, setView] = useState<"sets" | "progress" | "merchandise" | "add" | "import" | "coverage" | "history">("sets");
   const [user, setUser] = useState<AccountUser | null | undefined>();
   const tracking = useCardLocations(Boolean(user));
   const openLocations = (uuid: string) => navigate(`/card-locations?card=${encodeURIComponent(uuid)}`);
@@ -177,21 +178,21 @@ export default function CollectionIndex() {
   if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><PageHeader title="My Collection" description="Sign in to track your cards and build decks from what you own." /><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></PageLayout>;
 
   const collectionTools = <div className="grid gap-2"><Link to="/card-locations" className="flex min-h-12 items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Where are my cards? →</Link>{([
-    ["sets", "Cards"], ["progress", "Progress"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],
+    ["sets", "Cards"], ["progress", "Progress"], ["merchandise", "Merchandise"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],
   ] as const).map(([destination, label]) => <button key={destination} type="button" onClick={() => {setView(destination); setToolsOpen(false);}} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-left text-sm">{label}</button>)}</div>;
 
   return <PageLayout data-component="CollectionIndex" width="wide">
     <section className="identity-surface rounded-2xl border border-ctp-surface1 p-4 sm:p-6" aria-labelledby="collection-title">
-      <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-sm text-ctp-subtext1">Your cards, ready for your next deck</p><h1 id="collection-title" className="mt-1 text-3xl font-bold text-ctp-text sm:text-4xl">My Collection</h1></div><Button onClick={() => setToolsOpen(true)}>Collection tools</Button></div>
-      {collectionReady && !collectionError && <dl className="mt-5 grid grid-cols-2 gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-sm text-ctp-subtext1">Your cards and collectibles</p><h1 id="collection-title" className="mt-1 text-3xl font-bold text-ctp-text sm:text-4xl">My Collection</h1></div><Button onClick={() => setToolsOpen(true)}>Collection tools</Button></div>
+      {view !== "merchandise" && collectionReady && !collectionError && <dl className="mt-5 grid grid-cols-2 gap-3">
         <div><dt className="text-sm text-ctp-subtext1">Unique cards owned</dt><dd className="mt-1 text-3xl font-semibold tabular-nums">{uniqueOwnedCount}</dd></div>
         <div><dt className="text-sm text-ctp-subtext1">Physical copies owned</dt><dd className="mt-1 text-3xl font-semibold tabular-nums">{entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)}</dd></div>
       </dl>}
       {pendingCount > 0 && <p className="mt-3 text-sm text-ctp-yellow">Overview includes your unsaved quantity changes.</p>}
-      <p className="mt-3 max-w-2xl text-sm text-ctp-subtext1">Lent a card? Use the same cards across decks? Track your copies and find which ones are available to use.</p>
-      <div className="mt-4 flex flex-wrap gap-2"><Button variant="primary" onClick={() => setView("import")}>Import cards</Button><Link to="/card-locations" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Find your copies</Link></div>
+      <div hidden={view === "merchandise"}><p className="mt-3 max-w-2xl text-sm text-ctp-subtext1">Lent a card? Use the same cards across decks? Track your copies and find which ones are available to use.</p>
+      <div className="mt-4 flex flex-wrap gap-2"><Button variant="primary" onClick={() => setView("import")}>Import cards</Button><Link to="/card-locations" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Find your copies</Link></div></div>
     </section>
-    {view !== "progress" && <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />}
+    <div hidden={view === "merchandise"}>{view !== "progress" && <CollectionGoalPanel key={user.id} userId={user.id} cards={cards} decks={decks} entries={savedEntries} ready={collectionReady && !collectionError} decksError={decksError} busy={busy} receipt={saveReceipt} onReviewCard={() => setView("sets")} />}</div>
     {decksError && <Button className="mt-2" disabled={busy} onClick={() => void refresh().catch(() => undefined)}>Retry collection and decks</Button>}
     {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} onAcquire={name => {
       if (busy || shoppingBlocked) return;
@@ -204,7 +205,7 @@ export default function CollectionIndex() {
       setNotice("Missing copies added to your draft. Save quantities when ready.");
     }} />}
     {toolsOpen && <EditorDialog title="Collection tools" doneLabel="Done" onDismiss={() => setToolsOpen(false)}>{collectionTools}</EditorDialog>}
-    {collectionReady && !collectionError && <CollectionValueSummary entries={entries} cards={cards} pending={pendingCount > 0} />}
+    {view !== "merchandise" && collectionReady && !collectionError && <CollectionValueSummary entries={entries} cards={cards} pending={pendingCount > 0} />}
     {pendingCount > 0 && <div role="status" className="sticky top-2 z-20 my-3 flex flex-wrap items-center gap-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg"><button type="button" disabled={busy} onClick={() => {setNotice(null); setReviewChanges(true);}} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue underline underline-offset-4">Preview {pendingCount} unsaved {pendingCount === 1 ? "change" : "changes"}</button><button type="button" disabled={busy} onClick={() => void saveQuantities()} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">{busy ? "Saving…" : saveQueue.pending ? "Retry save" : "Save quantities"}</button><button type="button" disabled={busy || !!saveQueue.pending} onClick={() => setDrafts({})} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Discard changes</button></div>}
     {reviewChanges && <CollectionChangesReview drafts={drafts} savedEntries={savedEntries} cards={cards} busy={busy} locked={!!saveQueue.pending} notice={saveProgress || notice} onDismiss={() => setReviewChanges(false)} onSave={() => void saveQuantities()} onRevert={key => {setDrafts(current => {const next = {...current}; const cardUuid = next[key]?.cardUuid; for (const [entryKey, line] of Object.entries(next)) if (line.cardUuid === cardUuid) delete next[entryKey]; return next;}); setNotice(null);}} />}
     {saveProgress && <p role="status" className="my-2 text-sm">{saveProgress}</p>}
@@ -212,8 +213,11 @@ export default function CollectionIndex() {
     {saveQueue.pending && !busy && <p role="status" className="my-2 text-sm text-ctp-yellow">The last batch is unconfirmed. Retry save before editing or discarding these changes.</p>}
     {notice && <Panel key={notice} tone="info" padding="sm" className="state-arrive mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
     {tracking.error && <p role="alert" className="mt-2 text-sm text-ctp-red">{tracking.error}</p>}
-    {view !== "sets" && view !== "progress" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
-    {(view === "sets" || view === "progress") && <div className="mt-4"><Tabs baseId="collection-browse" label="Collection view" variant="pill" wrap tabs={[{ key: "sets", label: "Cards" }, { key: "progress", label: "Progress" }]} active={view === "progress" ? "progress" : "sets"} onChange={setView} /></div>}
+    {view !== "sets" && view !== "progress" && view !== "merchandise" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
+    {(view === "sets" || view === "progress" || view === "merchandise") && <div className="mt-4"><Tabs baseId="collection-browse" label="Collection view" variant="pill" wrap tabs={[{ key: "sets", label: "Cards" }, { key: "progress", label: "Progress" }, { key: "merchandise", label: "Merchandise" }]} active={view} onChange={setView} /></div>}
+    <TabPanel baseId="collection-browse" tab="merchandise" active={view} keepMounted>
+      <MerchandiseCollection key={user.id} userId={user.id} />
+    </TabPanel>
     <TabPanel baseId="collection-browse" tab="progress" active={view} keepMounted>
       <CollectionProgressView key={user.id} userId={user.id} cards={cards} entries={entries} savedEntries={savedEntries} available={collectionReady && !collectionError && catalogPhase === "done" && cards.length > 0} error={collectionError ?? (catalogPhase === "error" ? "Card data could not load. Retry to refresh progress." : catalogPhase === "done" && !cards.length ? "No card catalog is available. Retry to refresh progress." : undefined)} onRetry={() => { if (catalogPhase === "error" || !cards.length) window.location.reload(); else void refresh().catch(() => undefined); }} busy={busy || !!saveQueue.pending} onUpdate={update} />
     </TabPanel>

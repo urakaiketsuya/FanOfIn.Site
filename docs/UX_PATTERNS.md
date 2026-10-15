@@ -215,3 +215,5 @@ The profile artist picker and directory share curated credit/reading search. Bas
 letters match tone marks and macrons; spaces and punctuation are optional. A save response
 that drops artist or set favorites keeps the local draft and reports an error, retaining the
 returned revision for retry instead of announcing success.
+
+Merchandise collection uses individual verified items as the progress denominator. Bundle overview images must be labeled as overviews; owning one component never implies a full bundle. Merchandise releases are distinct from card sets. Saved progress excludes drafts, and unknown product identities stay outside totals. Quantity drafts survive view changes and failed saves. An unconfirmed save must be retried before editing; a conflict retains edits while loading newer saved quantities for explicit review and resubmission.

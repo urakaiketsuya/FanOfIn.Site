@@ -1,3 +1,4 @@
+import { listMerchandise, saveMerchandise } from "./merchandise";
 import { listCollectionProgressGoals, saveCollectionProgressGoals } from "./collection-progress-goals";
 import { previewDeckLink } from "./deck-links";
 import { getShowcase, saveShowcase } from "./profile-showcase";
@@ -422,6 +423,11 @@ export default {
         return await deleteMatchLogRecord(env, user, decodeURIComponent(matchLogRecordMatch[1]))
           ? response(env, request, { success: true }) : response(env, request, { error: "Match record not found" }, 404);
       }
+      if (request.method === "GET" && url.pathname === "/v1/me/collection/merchandise") return response(env, request, await listMerchandise(env, user));
+      if (request.method === "PUT" && url.pathname === "/v1/me/collection/merchandise") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await saveMerchandise(env, user, await jsonBody(request)));
+      }
       if (request.method === "GET" && url.pathname === "/v1/me/collection/goals") return response(env, request, await listCollectionProgressGoals(env, user));
       if (request.method === "POST" && url.pathname === "/v1/me/collection/goals") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
@@ -461,7 +467,7 @@ export default {
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
         const comments = await env.ACCOUNT_DB.prepare("SELECT id, target_kind, target_id, parent_id, body, status, created_at, updated_at FROM deck_comments WHERE author_user_id=? ORDER BY created_at").bind(user.id).all();
-        return response(env, request, { exportedAt: new Date().toISOString(), showcase: await getShowcase(env, user.id), user, profiles: profiles.results, decks, deckFolders: await listDeckFolders(env, user), combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), collectionProgressGoals: (await listCollectionProgressGoals(env, user)).goals, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
+        return response(env, request, { exportedAt: new Date().toISOString(), showcase: await getShowcase(env, user.id), user, profiles: profiles.results, decks, deckFolders: await listDeckFolders(env, user), combos: await listCombos(env, user), collection: collection.entries, merchandise: await listMerchandise(env, user), collectionTracking: await listCollectionTracking(env, user), collectionProgressGoals: (await listCollectionProgressGoals(env, user)).goals, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

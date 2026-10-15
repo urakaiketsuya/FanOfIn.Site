@@ -1,3 +1,4 @@
+import type { MerchandiseCollection, MerchandiseSaveInput } from "@gatcg/shared";
 import type { CollectionProgressGoal } from "@gatcg/shared";
 import type { DeckLinkPreview } from "@gatcg/shared";
 import type { ProfileShowcase } from "@gatcg/shared";
@@ -53,6 +54,8 @@ async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> 
 }
 
 export const accountApi = {
+  merchandise: () => accountRequest<MerchandiseCollection>("/v1/me/collection/merchandise"),
+  saveMerchandise: (input: MerchandiseSaveInput) => accountRequest<MerchandiseCollection>("/v1/me/collection/merchandise", { method: "PUT", body: JSON.stringify(input) }),
   collectionProgressGoals: () => accountRequest<{ userId: string; goals: CollectionProgressGoal[] }>("/v1/me/collection/goals"),
   saveCollectionProgressGoals: (expectedUserId: string, goals: CollectionProgressGoal[], pinned: boolean) => accountRequest<{ userId: string; goals: CollectionProgressGoal[] }>("/v1/me/collection/goals", { method: "POST", body: JSON.stringify({ expectedUserId, goals, pinned }) }),
 

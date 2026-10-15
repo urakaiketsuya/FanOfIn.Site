@@ -105,3 +105,5 @@ export * from './artistSeo';
 export * from "./collectionProgress.js";
 
 export * from "./profileFavorites.js";
+
+export * from "./merchandise";
