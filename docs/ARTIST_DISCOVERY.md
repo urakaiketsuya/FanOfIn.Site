@@ -68,7 +68,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
 | A016 | Sineia | 29 | 41 | Reviewed with user attribution |
 | A017 | Faicha | 28 | 50 | Reviewed with verified links |
-| A018 | 檸檬夾心餅 | 26 | 44 | User-confirmed Instagram |
+| A018 | 檸檬夾心餅 | 26 | 44 | User-confirmed Instagram, Facebook, and Threads |
 | A019 | Pekoe | 25 | 30 | Reviewed with no verified links found |
 | A020 | 北飞飞 | 23 | 44 | Reviewed with no verified links found |
 | A021 | Marchon | 21 | 25 | Reviewed with no verified links found |
@@ -391,15 +391,15 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A018 — 檸檬夾心餅
 
-- **Status/date:** User-confirmed Instagram; updated 2026-10-14.
+- **Status/date:** User-confirmed Instagram, Facebook, and Threads; updated 2026-10-14.
 - **Exact credits:** `"檸檬夾心餅"`.
 - **Identity:** Unknown; retain 檸檬夾心餅. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
 - **Credited example:** Accompanying Guard; Alchemical Revolution Alter Edition; #215; edition `fsw85dhmfq`. [Publisher edition reference](https://index.gatcg.com/edition/accompanying-guard-alc-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"檸檬夾心餅" 繪師`; `"檸檬夾心餅" pixiv twitter`.
 - **Findings:** Native-script illustrator and Pixiv/Twitter searches were dominated by literal biscuit products and recipes; no attributable account was established.
-- **Follow-up:** On 2026-10-14, the user explicitly identified Instagram `@lemon_kokoro` as this artist. Published on that confirmation; the profile could not be independently fetched during this update.
+- **Follow-up:** On 2026-10-14, the user explicitly identified Instagram `@lemon_kokoro`, Facebook `lemonkokoro`, and Threads `@lemon_kokoro` as this artist. Published on those confirmations; the profiles could not be independently fetched during these updates.
 
-**Links:** [Instagram @lemon_kokoro](https://www.instagram.com/lemon_kokoro/) — user-confirmed 2026-10-14.
+**Links:** [Instagram @lemon_kokoro](https://www.instagram.com/lemon_kokoro/), [Facebook lemonkokoro](https://www.facebook.com/lemonkokoro/), [Threads @lemon_kokoro](https://www.threads.com/@lemon_kokoro) — user-confirmed 2026-10-14.
 
 ### A019 — Pekoe
 

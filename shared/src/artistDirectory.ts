@@ -449,6 +449,20 @@ export const artistDirectory: ArtistIdentity[] = [
         "url": "https://www.instagram.com/lemon_kokoro/",
         "evidence": "https://www.instagram.com/lemon_kokoro/",
         "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Facebook",
+        "label": "lemonkokoro",
+        "url": "https://www.facebook.com/lemonkokoro/",
+        "evidence": "https://www.facebook.com/lemonkokoro/",
+        "verifiedAt": "2026-10-14"
+      },
+      {
+        "platform": "Threads",
+        "label": "@lemon_kokoro",
+        "url": "https://www.threads.com/@lemon_kokoro",
+        "evidence": "https://www.threads.com/@lemon_kokoro",
+        "verifiedAt": "2026-10-14"
       }
     ]
   },
