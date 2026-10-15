@@ -8,8 +8,9 @@ export interface MerchandiseGroup {
   champion: string;
   sourceUrl: string;
   overviewImageUrl?: string;
+  productImageUrl?: string;
   title?: string;
-  sourceKind?: "catalog";
+  sourceKind?: "catalog" | "product";
   items: { id: string; type: string; name: string }[];
 }
 
@@ -1875,6 +1876,312 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "id": "merch-ascent-playmat-labyrinth-jeweled-opus",
       "type": "playmat",
       "name": "Labyrinth Jeweled Opus"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16186",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Lorraine",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-lorraine-arclight-saber-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16186-GA100-MATTE-DUAL-ART-LORRAINE-box_sleeve_flat.png?v=1787052343",
+  "title": "Lorraine, Arclight Saber - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16186",
+      "type": "sleeves",
+      "name": "Lorraine, Arclight Saber - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16185",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Dante",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-dante-hemomancer",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16185-GA100-MATTE-DUAL-ART-DANTE-box_sleeve_flat.png?v=1787038168",
+  "title": "Dante, Hemomancer - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16185",
+      "type": "sleeves",
+      "name": "Dante, Hemomancer - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16182",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-raziel-archangel-of-libra-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16182-GA100-MATTE-DUAL-ART-RAZIEL-box_sleeve_flat.png?v=1775651536",
+  "title": "Raziel, Archangel of Libra - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16182",
+      "type": "sleeves",
+      "name": "Raziel, Archangel of Libra - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16181",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-azrael-archangel-of-materia-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16181-GA100-MATTE-DUAL-ART-AZRAEL-box_sleeve_flat.png?v=1775651349",
+  "title": "Azrael, Archangel of Materia - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16181",
+      "type": "sleeves",
+      "name": "Azrael, Archangel of Materia - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16180",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-haniel-archangel-of-spectra-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16180-GA100-MATTE-DUAL-ART-HANIEL-box_sleeve_flat.png?v=1775651020",
+  "title": "Haniel, Archangel of Spectra - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16180",
+      "type": "sleeves",
+      "name": "Haniel, Archangel of Spectra - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16179",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-ariel-archangel-of-natura-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16179-GA100-MATTE-DUAL-ART-ARIEL-box_sleeve_flat.png?v=1775648833",
+  "title": "Ariel, Archangel of Natura - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16179",
+      "type": "sleeves",
+      "name": "Ariel, Archangel of Natura - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16114",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Silvie",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/silvie-slime-sovereign-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/box_sleeve_flat-dCsMWyeD.png?v=1773377912",
+  "title": "Silvie, Slime Sovereign - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16114",
+      "type": "sleeves",
+      "name": "Silvie, Slime Sovereign - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16126",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Jin",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-jin-fate-defiant-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16126-GA100-MATTE-Yoq4vud7.png?v=1773377816",
+  "title": "Jin: Fate Defiant - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16126",
+      "type": "sleeves",
+      "name": "Jin: Fate Defiant - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16127",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Kongming",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-kongming-wayward-maven-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16127-GA100-MATTE-pvPXikQc.png?v=1773377800",
+  "title": "Kongming: Wayward Maven - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16127",
+      "type": "sleeves",
+      "name": "Kongming: Wayward Maven - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16113",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Merlin",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/merlin-kingslayer-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/box_sleeve_flat-OWkhpscu.png?v=1773377784",
+  "title": "Merlin, Kingslayer - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16113",
+      "type": "sleeves",
+      "name": "Merlin, Kingslayer - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16128",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-guo-jia-heaven-s-favored-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16128_GA100-MATTE-9dm3AolX.png?v=1773377736",
+  "title": "Guo Jia: Heaven s Favored - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16128",
+      "type": "sleeves",
+      "name": "Guo Jia: Heaven s Favored - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16170",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-chronowarp-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16170-GA100-MATTE-UUfUz0oK.png?v=1773377615",
+  "title": "Chronowarp - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16170",
+      "type": "sleeves",
+      "name": "Chronowarp - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16168",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Merlin",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-merlin-veritor-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16168-GA100-MATTE-sDsX0han.png?v=1773377609",
+  "title": "Merlin Veritor - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16168",
+      "type": "sleeves",
+      "name": "Merlin Veritor - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16139",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-diao-chan-idyll-corsage-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16139_GA100-MATTE-UUfrvKt4.png?v=1773377238",
+  "title": "Diao Chan: Idyll Corsage - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16139",
+      "type": "sleeves",
+      "name": "Diao Chan: Idyll Corsage - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16131",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Diana",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-diana-moonpiercer-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16131_GA100-MATTE-TGwwGmi.png?v=1773377091",
+  "title": "Diana, Moonpiercer - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16131",
+      "type": "sleeves",
+      "name": "Diana, Moonpiercer - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16115",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Tristan",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/tristan-shadowdancer-matte-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/box_sleeve_flat-eaBTpGpf.png?v=1773376218",
+  "title": "Tristan, Shadowdancer - Matte Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16115",
+      "type": "sleeves",
+      "name": "Tristan, Shadowdancer - Matte Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16130",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Ciel",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-ciel-mirages-grave-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16130_GA100-MATTE-fWXInZf0.png?v=1773376129",
+  "title": "Ciel, Mirage's Grave - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16130",
+      "type": "sleeves",
+      "name": "Ciel, Mirage's Grave - Matte Dual Art Sleeves · 100-sleeve pack"
+    }
+  ]
+},
+{
+  "id": "dragon-shield-at-16169",
+  "releaseId": "dragon-shield-grand-archive",
+  "releaseName": "Dragon Shield · Grand Archive",
+  "champion": "Alice",
+  "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-alice-orleane-matte-dual-art-sleeves",
+  "sourceKind": "product",
+  "productImageUrl": "https://cdn.shopify.com/s/files/1/0947/5008/1411/files/AT-16169-GA100-MATTE-AE8euWou.png?v=1773375698",
+  "title": "Alice Orleane - Matte Dual Art Sleeves",
+  "items": [
+    {
+      "id": "merch-dragon-shield-at-16169",
+      "type": "sleeves",
+      "name": "Alice Orleane - Matte Dual Art Sleeves · 100-sleeve pack"
     }
   ]
 }

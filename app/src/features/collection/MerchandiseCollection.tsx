@@ -17,10 +17,10 @@ function readDraft(key: string): Draft {
     return value;
   } catch { return { edits: {} }; }
 }
-function Overview({ url, name }: { url: string; name: string }) {
+function MerchandiseImage({ url, name, overview = false }: { url: string; name: string; overview?: boolean }) {
   const [failed, setFailed] = useState(false);
   return failed ? <p className="rounded-lg bg-ctp-surface0 p-6 text-sm">{name} · image unavailable</p>
-    : <img src={url} alt={`${name} bundle overview`} loading="lazy" onError={() => setFailed(true)} className="max-h-80 w-full rounded-lg bg-ctp-base object-contain" />;
+    : <img src={url} alt={overview ? `${name} bundle overview` : name} loading="lazy" onError={() => setFailed(true)} className="max-h-80 w-full rounded-lg bg-ctp-base object-contain" />;
 }
 
 export default function MerchandiseCollection({ userId }: { userId: string }) {
@@ -118,12 +118,13 @@ export default function MerchandiseCollection({ userId }: { userId: string }) {
           const owned = merchandiseProgress(items.map(item => item.id), saved.quantities);
           const title = bundle.title ?? `${bundle.champion} · ${bundle.releaseName}`;
           return <article key={bundle.id} className="min-w-0 rounded-xl border border-ctp-surface1 p-3">
-            {bundle.overviewImageUrl && <Overview url={bundle.overviewImageUrl} name={title} />}
-            <h3 className="mt-3 font-semibold">{title}</h3><p className="text-xs text-ctp-subtext1">{bundle.sourceKind === "catalog" ? "Catalog design" : "Bundle overview"} · {owned.owned}/{owned.total} matching items owned</p>
+            {bundle.overviewImageUrl && <MerchandiseImage url={bundle.overviewImageUrl} name={title} overview />}
+            {bundle.productImageUrl && <MerchandiseImage url={bundle.productImageUrl} name={title} />}
+            <h3 className="mt-3 font-semibold">{title}</h3><p className="text-xs text-ctp-subtext1">{bundle.sourceKind === "product" ? "100-sleeve pack" : bundle.sourceKind === "catalog" ? "Catalog design" : "Bundle overview"} · {owned.owned}/{owned.total} matching items owned</p>
             <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2">Edit item quantities<DisclosureChevron className="group-open:rotate-180" /></summary>
               <div className="space-y-2">{items.map(item => <label key={item.id} className="flex items-center justify-between gap-3 rounded-lg bg-ctp-surface0/40 p-2"><span className="text-sm">{item.name}</span><input aria-label={`${title}: ${item.name} quantity`} type="number" min={0} max={999} step={1} disabled={busy || !!draft.pending || conflict} value={quantities[item.id] ?? 0} onChange={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value >= 0 && value <= 999) edit(item.id, value); }} className="min-h-12 w-20 shrink-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-center" /></label>)}</div>
             </details>
-            <a href={bundle.sourceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-12 items-center text-sm text-ctp-blue underline">{bundle.sourceKind === "catalog" ? "Official catalog ↗" : "Official release ↗"}</a>
+            <a href={bundle.sourceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-12 items-center text-sm text-ctp-blue underline">{bundle.sourceKind === "product" ? "Official product ↗" : bundle.sourceKind === "catalog" ? "Official catalog ↗" : "Official release ↗"}</a>
           </article>;
         })}
       </div>

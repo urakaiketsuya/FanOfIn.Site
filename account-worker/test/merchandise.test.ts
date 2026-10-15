@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { merchandiseItems, merchandiseProgress, parseMerchandiseQuantities } from "@gatcg/shared";
+import { merchandiseBundles, merchandiseItems, merchandiseProgress, parseMerchandiseQuantities } from "@gatcg/shared";
 import { databaseFixture } from "./helpers/database";
 import { listMerchandise, saveMerchandise } from "../src/merchandise";
 import { serviceHealth } from "../src/health";
@@ -56,7 +56,7 @@ test("invalid catalog IDs and quantities never mutate; progress counts distinct 
       await assert.rejects(saveMerchandise(f.env, f.user, { ...input, quantities }), /Invalid/);
     }
     assert.equal((await listMerchandise(f.env, f.user)).revision, 0);
-    assert.equal(new Set(merchandiseItems.map(item => item.id)).size, 150);
+    assert.equal(new Set(merchandiseItems.map(item => item.id)).size, 168);
     assert.deepEqual(merchandiseProgress([id, id, other, "unknown"], { [id]: 4 }), { owned: 1, total: 2 });
     assert.equal((await serviceHealth(f.env)).success, true);
     f.db.exec("DROP TABLE merchandise_collections");
@@ -81,4 +81,28 @@ test("Ascent ownership entries retain exact reviewed evidence and quantity units
   const quantities = Object.fromEntries(ascent.map(item => [item.id, 2]));
   assert.deepEqual(parseMerchandiseQuantities(quantities), quantities);
   assert.deepEqual(merchandiseProgress(ascent.map(item => item.id), quantities), { owned: 94, total: 94 });
+});
+
+test("manufacturer products have unique SKUs, source images and explicit pack quantities", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const evidence = JSON.parse(await readFile(new URL("../../docs/research/official-merchandise-manufacturer-products.json", import.meta.url), "utf8"));
+  const products = merchandiseBundles.filter(group => group.sourceKind === "product");
+  assert.equal(products.length, 18);
+  assert.equal(new Set(evidence.items.map((item: { productNumber: string }) => item.productNumber)).size, 18);
+  assert.deepEqual(products.flatMap(group => group.items.map(item => item.id)).sort(), evidence.items.map((item: { ownershipId: string }) => item.ownershipId).sort());
+  for (const item of evidence.items) {
+    const group = products.find(group => group.items[0].id === item.ownershipId)!;
+    assert.equal(group.items[0].id, `merch-dragon-shield-${item.productNumber.toLowerCase()}`);
+    assert.equal(group.title, item.displayTitle);
+    assert.equal(group.sourceUrl, item.sourceUrl);
+    assert.equal(group.productImageUrl, item.productImageUrl);
+    assert.equal(group.overviewImageUrl, undefined);
+    assert.equal(item.sleevesPerPack, 100);
+    assert.equal(group.items[0].name, `${item.displayTitle} · ${item.quantityUnit}`);
+    assert.equal(group.items[0].type, "sleeves");
+  }
+  const ids = products.flatMap(group => group.items.map(item => item.id));
+  const quantities = { [ids[0]]: 3 };
+  assert.deepEqual(parseMerchandiseQuantities(quantities), quantities);
+  assert.deepEqual(merchandiseProgress(ids, quantities), { owned: 1, total: 18 });
 });
