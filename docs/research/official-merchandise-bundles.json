@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "status": "research-bundles-not-production-catalog",
+  "policy": [
+    "Release IDs identify these merchandise releases, not trading-card expansion sets. Artist and card-set relationships are not inferred.",
+    "A bundle and its components are separate ownership concepts. Owning one component must not imply owning the full bundle; avoid counting both toward the same progress denominator.",
+    "Component lists describe the article contents, not independently verified SKUs or quantities. A tube is included with the playmat where explicitly stated.",
+    "Overview images are official article links and have not been visually reviewed or cropped into individual product images.",
+    "Announced production units are historical article claims, not verified production totals or rarity classifications.",
+    "Do not merge these components with similarly named Ascent merchandise without design evidence."
+  ],
+  "bundles": [
+    {
+      "id": "seaside-splash-2026-merlin",
+      "releaseId": "seaside-splash-2026",
+      "releaseName": "Seaside Splash",
+      "champion": "Merlin",
+      "sourceUrl": "https://www.gatcg.com/article/seaside-splash-merchandise-set",
+      "announcedAt": "2026-08-26",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Summer_Merch_Set_Merlin_b91425562e.png?updated_at=2026-08-26T16:12:34.176Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 800,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "seaside-splash-2026-nico",
+      "releaseId": "seaside-splash-2026",
+      "releaseName": "Seaside Splash",
+      "champion": "Nico",
+      "sourceUrl": "https://www.gatcg.com/article/seaside-splash-merchandise-set",
+      "announcedAt": "2026-08-26",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Summer_Merch_Set_Nico_4ea88485ef.png?updated_at=2026-08-26T16:12:34.800Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 800,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "seaside-splash-2026-tonoris",
+      "releaseId": "seaside-splash-2026",
+      "releaseName": "Seaside Splash",
+      "champion": "Tonoris",
+      "sourceUrl": "https://www.gatcg.com/article/seaside-splash-merchandise-set",
+      "announcedAt": "2026-08-26",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Summer_Merch_Set_Tony_7972ba98d1.png?updated_at=2026-08-26T16:12:34.192Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 400,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "lunar-blessings-2026-lorraine",
+      "releaseId": "lunar-blessings-2026",
+      "releaseName": "Lunar Blessings",
+      "champion": "Lorraine",
+      "sourceUrl": "https://www.gatcg.com/article/lunar-blessings-merchandise-set",
+      "announcedAt": "2026-01-20",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Lorraine_Lunar_1_cc5bec611e.png?updated_at=2026-01-16T22:31:56.375Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 600,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "lunar-blessings-2026-rai",
+      "releaseId": "lunar-blessings-2026",
+      "releaseName": "Lunar Blessings",
+      "champion": "Rai",
+      "sourceUrl": "https://www.gatcg.com/article/lunar-blessings-merchandise-set",
+      "announcedAt": "2026-01-20",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Rai_Lunar_1_16329b265f.png?updated_at=2026-01-16T22:31:57.332Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 400,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "lunar-blessings-2026-tristan",
+      "releaseId": "lunar-blessings-2026",
+      "releaseName": "Lunar Blessings",
+      "champion": "Tristan",
+      "sourceUrl": "https://www.gatcg.com/article/lunar-blessings-merchandise-set",
+      "announcedAt": "2026-01-20",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Tristan_Lunar_1_2f2eaab500.png?updated_at=2026-01-16T22:31:56.545Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 600,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "lunar-blessings-2026-arisanna",
+      "releaseId": "lunar-blessings-2026",
+      "releaseName": "Lunar Blessings",
+      "champion": "Arisanna",
+      "sourceUrl": "https://www.gatcg.com/article/lunar-blessings-merchandise-set",
+      "announcedAt": "2026-01-20",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ari_Lunar_1_00114c73e7.png?updated_at=2026-01-16T22:31:54.646Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": 600,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat with Tube",
+          "includedAccessory": "Tube"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker-sheet",
+          "sourceLabel": "Sticker Sheet"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "over",
+            "count": 1000
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "nonFoil": 4,
+        "foil": 1,
+        "note": "Non-foil promos match the selected bundle; foil is randomly selected across the release. Do not infer ownership of a specific foil."
+      }
+    },
+    {
+      "id": "yuletide-cheer-2024-kongming",
+      "releaseId": "yuletide-cheer-2024",
+      "releaseName": "Kongming, Yuletide Cheer",
+      "champion": "Kongming",
+      "sourceUrl": "https://www.gatcg.com/article/kongming-yuletide-cheer-merchandise-set",
+      "announcedAt": "2024-12-24",
+      "verification": "official-article-text-reviewed",
+      "image": {
+        "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/1211_02_0730788569.jpg?updated_at=2024-12-23T23:06:30.792Z",
+        "role": "bundle-overview",
+        "verification": "official-article-link-image-not-visually-reviewed"
+      },
+      "announcedProductionUnits": null,
+      "components": [
+        {
+          "productType": "playmat",
+          "sourceLabel": "Playmat"
+        },
+        {
+          "productType": "compact-deck-box",
+          "sourceLabel": "Compact Deck Box"
+        },
+        {
+          "productType": "acrylic-standee",
+          "sourceLabel": "Acrylic Standee"
+        },
+        {
+          "productType": "keychain",
+          "sourceLabel": "Acrylic Keychain"
+        },
+        {
+          "productType": "tapestry",
+          "sourceLabel": "B2 Tapestry"
+        },
+        {
+          "productType": "sticker",
+          "sourceLabel": "Waterproof Sticker"
+        },
+        {
+          "productType": "storage-box",
+          "sourceLabel": "Storage box",
+          "advertisedCardCapacity": {
+            "comparison": "up-to",
+            "count": 1200
+          }
+        }
+      ],
+      "excludedCardContents": {
+        "name": "Revitalizing Cleanse",
+        "nonFoil": 3,
+        "foil": 1,
+        "note": "Foil may be CPR; card contents belong in the card catalog."
+      }
+    }
+  ]
+}

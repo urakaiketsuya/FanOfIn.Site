@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "status": "incomplete-historical-coverage",
+  "sourceFile": "docs/research/official-merchandise-sources.json",
+  "policy": [
+    "This is an inventory of known events from the recorded official article inventory plus verified PDFs, not proof of every Ascent ever held.",
+    "Missing catalog means not located in this research; it does not mean no merchandise or no guide existed.",
+    "Future events are tracked separately from historical gaps. All event dates are relative to reviewedAt.",
+    "Article and recap coverage does not count as a verified merchandise catalog.",
+    "Broad web searches for event guide and catalog terms produced no additional verified PDFs in this pass. Follow original organizer/social links instead of repeating those searches."
+  ],
+  "events": [
+    {
+      "id": "akihabara-2025",
+      "event": "Ascent Akihabara 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-aki-2025"
+      ],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "akihabara-2025",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf"
+    },
+    {
+      "id": "auckland-2023",
+      "event": "Ascent Auckland 2023",
+      "articleUrls": [
+        "https://www.gatcg.com/article/recap-ascent-auckland-2023"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "auckland-2025",
+      "event": "Ascent Auckland 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-auckland-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "auckland-2027",
+      "event": "Ascent Auckland 2027",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-auckland-2027"
+      ],
+      "status": "future-event-catalog-not-located",
+      "announcedStartDate": "2027-01-22"
+    },
+    {
+      "id": "boston-2025",
+      "event": "Ascent Boston 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-boston-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "chicago-2024",
+      "event": "Ascent Chicago 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Chicago-2024-Recap",
+        "https://www.gatcg.com/article/ascent-chicago-2024"
+      ],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "chicago-2024",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Chicago_Event_Guide_8b13a626be.pdf"
+    },
+    {
+      "id": "christchurch-2024",
+      "event": "Ascent Christchurch 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Christchurch-2024-Recap",
+        "https://www.gatcg.com/article/ascent-christchurch-2024"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "dallas-2026",
+      "event": "Ascent Dallas 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-dallas-2026"
+      ],
+      "status": "future-event-catalog-not-located",
+      "announcedStartDate": "2026-12-04"
+    },
+    {
+      "id": "houston-2023",
+      "event": "Ascent Houston 2023",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-houston-2023-event-structure-and-packages"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "kaohsiung-2027",
+      "event": "Ascent Kaohsiung 2027",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-kaohsiung-2027"
+      ],
+      "status": "future-event-catalog-not-located",
+      "announcedStartDate": "2027-02-27"
+    },
+    {
+      "id": "kuala-lumpur-2025",
+      "event": "Ascent Kuala Lumpur 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Kuala-Lumpur-2025-Recap",
+        "https://www.gatcg.com/article/ascent-kuala-lumpur-20254"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "las-vegas-2026",
+      "event": "Ascent Las Vegas 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-lasvegas-2026"
+      ],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "las-vegas-2026",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf"
+    },
+    {
+      "id": "london-2026",
+      "event": "Ascent London 2026",
+      "articleUrls": [],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "london-2026",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_London_2025_Event_Guide_e170e2c5de.pdf"
+    },
+    {
+      "id": "los-angeles-2026",
+      "event": "Ascent Los Angeles 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-losangeles-2026"
+      ],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "los-angeles-2026",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf"
+    },
+    {
+      "id": "melbourne-2025",
+      "event": "Ascent Melbourne 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Melbourne-2025-Recap",
+        "https://www.gatcg.com/article/ascent-melbourne-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "melbourne-2026",
+      "event": "Ascent Melbourne 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/recap-ascent-melbourne-2026",
+        "https://www.gatcg.com/article/ascent-melbourne-2026"
+      ],
+      "status": "catalog-visually-reviewed",
+      "sourceId": "melbourne-2026",
+      "catalogUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf"
+    },
+    {
+      "id": "niagara-falls-2025",
+      "event": "Ascent Niagara Falls 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-niagara-falls-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "ontario-2024",
+      "event": "Ascent Ontario 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-ontario-2024"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "osaka-2026",
+      "event": "Ascent Osaka 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-osaka-2026"
+      ],
+      "status": "future-event-catalog-not-located",
+      "announcedStartDate": "2026-10-31"
+    },
+    {
+      "id": "santa-clara-2024",
+      "event": "Ascent Santa Clara 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/recap-ascent-santa-clara-2024",
+        "https://www.gatcg.com/article/ascent-santa-clara"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "seattle-2025",
+      "event": "Ascent Seattle 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Seattle-2025-Recap",
+        "https://www.gatcg.com/article/ascent-seattle-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "singapore-2024",
+      "event": "Ascent Singapore 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Singapore-2024-Recap",
+        "https://www.gatcg.com/article/ascent-singapore-2024"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "taipei-2024",
+      "event": "Ascent Taipei 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-taipei-announcement"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "taipei-2025",
+      "event": "Ascent Taipei 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/ascent-taipei-2025"
+      ],
+      "status": "unverified-mirror",
+      "leadUrl": "https://fliphtml5.com/nzyxf/gatd/2025Ascent_Taipei/"
+    },
+    {
+      "id": "toronto-2024",
+      "event": "Ascent Toronto 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Toronto-2024-Recap",
+        "https://www.gatcg.com/article/ascent-toronto-2024"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "utrecht-2025",
+      "event": "Ascent Utrecht 2025",
+      "articleUrls": [
+        "https://www.gatcg.com/article/Ascent-Utrecht-2025-Recap",
+        "https://www.gatcg.com/article/ascent-utrecht-2025"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "worlds-2024",
+      "event": "Ascent Worlds 2024",
+      "articleUrls": [
+        "https://www.gatcg.com/article/cosplay-details"
+      ],
+      "status": "catalog-not-located"
+    },
+    {
+      "id": "worlds-2026",
+      "event": "Ascent Worlds 2026",
+      "articleUrls": [
+        "https://www.gatcg.com/article/recap-worlds-2026",
+        "https://www.gatcg.com/article/ascent-worlds-2026"
+      ],
+      "status": "guide-announcement-link-unresolved",
+      "leadUrl": "https://platform.twstalker.com/krow_dolce",
+      "note": "Search-indexed repost of the official guide announcement; original PDF link not recovered. Mirror page retrieval failed."
+    }
+  ],
+  "unassignedArticles": [
+    {
+      "title": "Ascent Side Event & Prize Wall Updates",
+      "url": "https://www.gatcg.com/article/side-event-and-prize-wall-updates",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Pantheon On‑Demand: A New Way to Play at Ascents",
+      "url": "https://www.gatcg.com/article/pantheon-on-demand",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Worlds Ticket Packages & Location",
+      "url": "https://www.gatcg.com/article/ascent-worlds-ticket-packages-and-location",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Worlds Update: Worlds Ascent Team Standard Format",
+      "url": "https://www.gatcg.com/article/worlds-update-worlds-ascent-team-standard-format",
+      "directPdfLinkFound": false
+    }
+  ],
+  "remainingWork": [
+    "Recover original Taipei 2025 and Worlds 2026 guide links, then visually review merchandise pages.",
+    "Find missing historical guides from organizer archives or official social attachments.",
+    "Review admission and prize-only merchandise separately from store inventory.",
+    "Review Horizons Reprise social catalog images and individual bundle product images.",
+    "Resolve product identities before generating a production catalog and ownership records."
+  ]
+}
