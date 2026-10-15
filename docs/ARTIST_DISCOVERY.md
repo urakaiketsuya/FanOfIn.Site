@@ -98,7 +98,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A045 | fuzichoco | 4 | 5 | Reviewed with verified links |
 | A046 | Taki | 4 | 7 | Reviewed with no verified links found |
 | A047 | YOHAKU | 4 | 8 | Reviewed with verified links |
-| A048 | ZERONEXT | 4 | 7 | Needs identity review |
+| A048 | ZERONEXT | 4 | 7 | User-confirmed Instagram |
 | A049 | ジェゼ一 | 4 | 9 | Needs identity review |
 | A050 | 白霜茶 | 4 | 7 | Needs identity review |
 | A051 | Deeya Chaturvedi | 3 | 6 | Needs identity review |
@@ -785,18 +785,19 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A048 — ZERONEXT
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-confirmed Instagram; updated 2026-10-14.
 - **Exact credits:** `"ZERONEXT"`.
-- **Identity:** Individual candidate: Zeronext / zeronext.bsky.social; catalog relationship unverified. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual artist ZERONEXT, ID a048. User confirmed Instagram @szknai; the original profile displays zeronext.
 - **Credited example:** Frostsworn Paladin; Dawn of Ashes Alter Edition; #278; edition `e54zcaq5mq`. [Publisher edition reference](https://index.gatcg.com/edition/frostsworn-paladin-doa-alter) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"ZERONEXT" artist`; `"ZERONEXT" pixiv twitter`; `"ZERONEXT" illustrator bluesky`.
 - **Findings:** Opened the [Bluesky profile](https://bsky.app/profile/zeronext.bsky.social), which lists a same-name contact and Pixiv ID. The Pixiv destination could not be opened. Same-name software/AI companies are excluded.
-- **Next action:** Find a primary Frostsworn Paladin or other credited-card statement before attaching the profiles.
+- **Follow-up:** Published Instagram on the user’s confirmation and inspected its profile photo. Saved the unchanged 150×150 JPEG as `app/public/images/artists/a048.jpg`. The profile also names Pixiv ID 3449131; other accounts remain unpublished. No independent credited-card match is claimed.
 
 | Platform | Account / canonical URL | Status | Ownership evidence and limitation | Checked |
 | --- | --- | --- | --- | --- |
 | Bluesky | [@zeronext.bsky.social](https://bsky.app/profile/zeronext.bsky.social) | Candidate | [Evidence](https://bsky.app/profile/zeronext.bsky.social): Readable name/contact and portfolio link, but no inspected Grand Archive connection. | 2026-10-14 |
 | Pixiv | [Profile 3449131](https://www.pixiv.net/users/3449131) | Unavailable | [Evidence](https://bsky.app/profile/zeronext.bsky.social): Direct profile link; destination could not be opened. | 2026-10-14 |
+| Instagram | [@szknai](https://www.instagram.com/szknai/) | User-confirmed | Original profile displays zeronext; profile picture inspected. | 2026-10-14 |
 
 ### A049 — ジェゼ一
 
@@ -1242,7 +1243,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A045 | fuzichoco | Verified image already added | [Official profile](https://fuzichoco.fanbox.cc/) |
 | A046 | Taki | Initials; account identity unresolved | `"Taki" "Grand Archive" illustrator profile` |
 | A047 | YOHAKU | Initials; account identity unresolved | `"YOHAKU" "Grand Archive" illustrator` |
-| A048 | ZERONEXT | Initials; account identity unresolved | `"ZERONEXT" "Grand Archive" illustrator` |
+| A048 | ZERONEXT | Instagram profile portrait added 2026-10-14 | `"ZERONEXT" "Grand Archive" illustrator` |
 | A049 | ジェゼ一 | Initials; account identity unresolved | `"ジェゼ一" "Grand Archive"` |
 | A050 | 白霜茶 | Initials; account identity unresolved | `"白霜茶" 画师 主页` |
 | A051 | Deeya Chaturvedi | Initials; account identity unresolved | `"Deeya Chaturvedi" "Grand Archive"` |

@@ -973,14 +973,28 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a048",
+    "portrait": {
+      "src": "/images/artists/a048.jpg",
+      "sourceUrl": "https://www.instagram.com/szknai/",
+      "imageUrl": "https://scontent.cdninstagram.com/v/t51.2885-19/355840915_1421090625378272_7212075729838306469_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=110&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4zMjAuQzMifQ%3D%3D&_nc_ohc=Zj3mpFzDQdQQ7kNvwEZCgES&_nc_oc=AdrO3nclL-hhRiAB0PtsIPRaswsEnMdnnOt0f_61-gx-rOlcfC3rlF-isbyMFRzfseirC1ycsUDedhqtpb1lxyGr&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_ss=7b689&oh=00_AQNyMEEl47lDXRe2hipddQPdFsY-EvI-8y8mw7gGd30X1g&oe=6AD6030D",
+      "verifiedAt": "2026-10-14"
+    },
     "slug": "zeronext",
     "slugAliases": ["a048-zeronext"],
     "name": "ZERONEXT",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "ZERONEXT"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Instagram",
+        "label": "@szknai",
+        "url": "https://www.instagram.com/szknai/",
+        "evidence": "https://www.instagram.com/szknai/",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a049",
