@@ -79,6 +79,69 @@
       "sourceLabel": "Diana",
       "identityScope": "design across sizes and production runs",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-plush-silvie",
+      "candidateId": "merch-candidate-26461f11b6f6e438",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Silvie",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-figurine-arisanna-chibi",
+      "candidateId": "merch-candidate-3b6aec4efd4ffae9",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Arisanna",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-wall-scroll-horizon-s-reprise-key-visual-wall-scroll",
+      "candidateId": "merch-candidate-6c41125ef5a681f9",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Horizon’s Reprise Key Visual Wall Scroll",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-plush-guo-jia",
+      "candidateId": "merch-candidate-94cae98dce9b853a",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Guo Jia",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-plush-tristan",
+      "candidateId": "merch-candidate-bba9d0daef219164",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Tristan",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-figurine-merlin-amethyst-s-glow",
+      "candidateId": "merch-candidate-c388fbd283159978",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Merlin, Amethyst’s Glow",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-figurine-silvie-chibi",
+      "candidateId": "merch-candidate-fcac1b1cbc7f8dce",
+      "sourceId": "melbourne-2026",
+      "page": 17,
+      "sourceLabel": "Silvie",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }

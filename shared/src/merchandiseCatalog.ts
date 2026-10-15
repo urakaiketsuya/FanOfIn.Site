@@ -501,5 +501,117 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Diana"
     }
   ]
+},
+{
+  "id": "ascent-design-plush-silvie",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Silvie",
+  "title": "Silvie · Plush",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-plush-silvie",
+      "type": "plush",
+      "name": "Silvie"
+    }
+  ]
+},
+{
+  "id": "ascent-design-figurine-arisanna-chibi",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Arisanna",
+  "title": "Arisanna · Chibi figure",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-figurine-arisanna-chibi",
+      "type": "figurine",
+      "name": "Arisanna"
+    }
+  ]
+},
+{
+  "id": "ascent-design-wall-scroll-horizon-s-reprise-key-visual-wall-scroll",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Horizon's Reprise Key Visual Wall Scroll · Wall scroll",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-wall-scroll-horizon-s-reprise-key-visual-wall-scroll",
+      "type": "wall-scroll",
+      "name": "Horizon's Reprise Key Visual Wall Scroll"
+    }
+  ]
+},
+{
+  "id": "ascent-design-plush-guo-jia",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Guo Jia · Plush",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-plush-guo-jia",
+      "type": "plush",
+      "name": "Guo Jia"
+    }
+  ]
+},
+{
+  "id": "ascent-design-plush-tristan",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Tristan",
+  "title": "Tristan · Plush",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-plush-tristan",
+      "type": "plush",
+      "name": "Tristan"
+    }
+  ]
+},
+{
+  "id": "ascent-design-figurine-merlin-amethyst-s-glow",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin, Amethyst's Glow · Figure",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-figurine-merlin-amethyst-s-glow",
+      "type": "figurine",
+      "name": "Merlin, Amethyst's Glow"
+    }
+  ]
+},
+{
+  "id": "ascent-design-figurine-silvie-chibi",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Silvie",
+  "title": "Silvie · Chibi figure",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Melbourne_Event_Guide_9a45ea3f96.pdf#page=17",
+  "items": [
+    {
+      "id": "merch-ascent-figurine-silvie-chibi",
+      "type": "figurine",
+      "name": "Silvie"
+    }
+  ]
 }
 ];
