@@ -83,3 +83,13 @@ export function buildArtistGalleries(cards: readonly Card[], popularity: readonl
   for (const artist of artists.values()) artist.cards.sort((a, b) => usage(b) - usage(a) || a.card.name.localeCompare(b.card.name));
   return [...artists.values()].sort((a, b) => b.cards.length - a.cards.length || a.name.localeCompare(b.name));
 }
+
+/** Match curated names and readings using plain letters, with optional spacing. */
+export function normalizeArtistSearch(value: string): string {
+  return value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[\s\p{P}]+/gu, '');
+}
+
+export function matchesArtistSearch(artist: Pick<ArtistIdentity, 'id' | 'name' | 'credits' | 'pronunciation'>, query: string): boolean {
+  const needle = normalizeArtistSearch(query);
+  return [artist.id, artist.name, ...artist.credits, artist.pronunciation?.text ?? ''].some(value => normalizeArtistSearch(value).includes(needle));
+}

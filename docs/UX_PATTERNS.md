@@ -210,3 +210,8 @@ Account goal saves preserve prior pins until confirmed and offer retry on failur
 ### Profile favorite artists and sets
 
 Edit profile offers up to six curated artist identities and six expansion set families. Search and removal controls edit the same protected draft as cards and decks; Save profile persists the complete showcase atomically with revision conflict and retry handling. Favorites are catalog references, not user-authored labels. Public profiles link selected artists to their galleries and sets to card browsing, omit empty sections, and retain existing profile visibility rules. First and Alter editions share a set-family choice. No database migration is needed.
+
+The profile artist picker and directory share curated credit/reading search. Basic Latin
+letters match tone marks and macrons; spaces and punctuation are optional. A save response
+that drops artist or set favorites keeps the local draft and reports an error, retaining the
+returned revision for retry instead of announcing success.

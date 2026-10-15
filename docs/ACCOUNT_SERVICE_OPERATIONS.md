@@ -125,3 +125,12 @@ COMMIT;
 ```
 
 To dismiss reports without hiding the deck, update those reports to `dismissed` and set `updated_at`. To restore a deck after appeal, set `moderation_status = 'active'`. Record the reason and operator in the private incident log because the current schema stores status and time, not a complete moderator audit trail.
+
+### Profile favorites release dependency
+
+The favorite artists/sets UI requires the account Worker implementation from `176417aac`
+or later. GitHub Pages deployment does not deploy that Worker. The production Worker
+last deployed on 2026-10-14 at 18:42 UTC predates that change (19:04 UTC), so it can accept
+showcase saves while discarding those fields. Deploy the account Worker through the release
+checklist above; no additional migration is needed for favorites. Verify artist/set choices
+survive save and reopening the editor, and remain visible on a discoverable public profile.

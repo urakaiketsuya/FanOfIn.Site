@@ -1,3 +1,4 @@
+import { verifyShowcaseFavorites } from "../../lib/profileShowcaseSave";
 import { ProfileFavoritesEditor } from "./ProfileFavorites";
 import ProfileHeader from "./ProfileHeader";
 import ProfileAppearanceEditor from "./ProfileAppearanceEditor";
@@ -69,7 +70,17 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
   async function save() {
     if (!draft) return;
     setBusy(true); setError(undefined);
-    try { const result = await accountApi.saveShowcase(draft); setSaved(result.showcase); setDraft(result.showcase); notify({ tone: "success", message: "Profile saved." }); }
+    try {
+      const result = await accountApi.saveShowcase(draft);
+      try { verifyShowcaseFavorites(draft, result.showcase); }
+      catch (reason) {
+        // The server may have committed other fields; retry against that revision.
+        setDraft({ ...draft, revision: result.showcase.revision });
+        throw reason;
+      }
+      setSaved(result.showcase); setDraft(result.showcase);
+      notify({ tone: "success", message: "Profile saved." });
+    }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Your showcase could not be saved. Your selections are kept."); }
     finally { setBusy(false); }
   }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { artistDirectory, artistPagePath, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
+import { matchesArtistSearch, artistDirectory, artistPagePath, artistPageMetadata, buildArtistGalleries, type ArtistIdentity, type ArtistCard } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import ArtistAccountIcon from './ArtistAccountIcon';
 import { artistSharePreview } from './artistSharePreview';
@@ -94,8 +94,7 @@ export default function Artists() {
     setRetryError(false);
     try { await syncCards(); setRetrySucceeded(true); } catch { setRetryError(true); } finally { setRetrying(false); }
   }
-  const artistSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
-  const visibleArtists = galleries.filter(candidate => [...candidate.credits, candidate.name, candidate.pronunciation?.text ?? ''].some(value => artistSearch(value).includes(artistSearch(query))));
+  const visibleArtists = galleries.filter(candidate => matchesArtistSearch(candidate, query));
   const visibleCards = artist?.cards.filter(entry => entry.card.name.toLocaleLowerCase().includes(cardSearch.trim().toLocaleLowerCase())) ?? [];
   if (identity && slug !== identity.slug) {
     return <Navigate replace to={`${artistPagePath(identity)}${location.search}${location.hash}`} />;

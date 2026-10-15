@@ -3,7 +3,7 @@ import { profileSetOptions } from './setFamilies.js';
 import type { ProfileFavorites } from './saved-deck-types.js';
 
 export const PROFILE_FAVORITES_LIMIT = 6;
-export const profileArtistOptions = artistDirectory.map(({ id, name, slug }) => ({ id, name, slug })).sort((a, b) => a.name.localeCompare(b.name));
+export const profileArtistOptions = artistDirectory.map(({ id, name, slug, credits, pronunciation }) => ({ id, name, slug, credits, pronunciation })).sort((a, b) => a.name.localeCompare(b.name));
 
 /** These are trusted catalog references, never user-authored display text. */
 export function parseProfileFavorites(input: Record<string, unknown>): ProfileFavorites {

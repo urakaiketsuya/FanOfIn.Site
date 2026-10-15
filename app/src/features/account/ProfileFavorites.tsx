@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { PROFILE_FAVORITES_LIMIT, profileArtistOptions, profileSetOptions, type ProfileFavorites as Favorites } from "@gatcg/shared";
+import { matchesArtistSearch, PROFILE_FAVORITES_LIMIT, profileArtistOptions, profileSetOptions, type ProfileFavorites as Favorites } from "@gatcg/shared";
 import Button from "../../components/ui/Button";
 
 const groups = [
@@ -20,7 +20,7 @@ export function ProfileFavoritesEditor({ value, onChange }: { value: Favorites; 
   return <>{groups.map(group => {
     const selected = value[group.key] ?? [];
     const query = queries[group.key];
-    const matches = group.options.filter(option => !selected.includes(option.id) && `${option.name} ${option.id}`.toLowerCase().includes(query.trim().toLowerCase()));
+    const matches = group.options.filter(option => !selected.includes(option.id) && ("credits" in option ? matchesArtistSearch(option, query) : `${option.name} ${option.id}`.toLowerCase().includes(query.trim().toLowerCase())));
     return <section key={group.key} className="mt-6">
       <h3 className="text-lg font-semibold">{group.title} <span className="text-sm font-normal">{selected.length}/{PROFILE_FAVORITES_LIMIT}</span></h3>
       <div className="mt-2 flex flex-wrap gap-2">{selected.map(id => <Button key={id} className="max-w-full whitespace-normal text-left" aria-label={`Remove ${group.options.find(option => option.id === id)?.name ?? id}`} onClick={() => onChange({ ...value, [group.key]: selected.filter(item => item !== id) })}>{group.options.find(option => option.id === id)?.name ?? id} · Remove</Button>)}</div>
