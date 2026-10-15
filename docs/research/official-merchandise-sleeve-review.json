@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "status": "research-comparisons-not-ownership-links",
+  "policy": [
+    "All nine nongeneric Ascent sleeve label groups are reviewed here; their observations remain unresolved.",
+    "Possible products are comparison targets, not confirmed equivalences or additional collectibles.",
+    "Two labels can point to the same comparison target without merging their observations.",
+    "Existing manufacturer ownership IDs remain unchanged; this review does not change collection progress."
+  ],
+  "items": [
+    {
+      "candidateId": "merch-candidate-150c910262d646e7",
+      "label": "Raziel",
+      "status": "unresolved-product-identity",
+      "comparison": "character-name-only",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Raziel"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Raziel"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16182",
+        "productNumber": "AT-16182",
+        "sourceTitle": "Grand Archive - Raziel, Archangel of Libra - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-raziel-archangel-of-libra-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-57f3424691584e06",
+      "label": "Ariel",
+      "status": "unresolved-product-identity",
+      "comparison": "character-name-only",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ariel"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Ariel"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16179",
+        "productNumber": "AT-16179",
+        "sourceTitle": "Grand Archive - Ariel, Archangel of Natura - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-ariel-archangel-of-natura-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-5dacee1a27606df1",
+      "label": "Haniel",
+      "status": "unresolved-product-identity",
+      "comparison": "character-name-only",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Haniel"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Haniel"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16180",
+        "productNumber": "AT-16180",
+        "sourceTitle": "Grand Archive - Haniel, Archangel of Spectra - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-haniel-archangel-of-spectra-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-63028892412bfd60",
+      "label": "Ciel",
+      "status": "unresolved-product-identity",
+      "comparison": "character-name-only",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ciel"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16130",
+        "productNumber": "AT-16130",
+        "sourceTitle": "Grand Archive - Ciel, Mirage's Grave - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-ciel-mirages-grave-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-69e609342d92e266",
+      "label": "Ciel, Mirage's Grave",
+      "status": "unresolved-product-identity",
+      "comparison": "full-art-title-agrees",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Mirage’s Grave"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16130",
+        "productNumber": "AT-16130",
+        "sourceTitle": "Grand Archive - Ciel, Mirage's Grave - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-ciel-mirages-grave-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-87779b24ebc97b68",
+      "label": "Azrael",
+      "status": "unresolved-product-identity",
+      "comparison": "character-name-only",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Azrael"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Azrael"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16181",
+        "productNumber": "AT-16181",
+        "sourceTitle": "Grand Archive - Azrael, Archangel of Materia - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-azrael-archangel-of-materia-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    },
+    {
+      "candidateId": "merch-candidate-bc5caee756f60852",
+      "label": "Tonoris, Genesis Aegis",
+      "status": "unresolved-product-identity",
+      "comparison": "no-verified-manufacturer-product",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tonoris, Genesis Aegis"
+        }
+      ],
+      "evidenceNeeded": "An official manufacturer product record or identifiable packaging for this historical design. Absence from the current collection does not establish that the product never existed."
+    },
+    {
+      "candidateId": "merch-candidate-d52ee3a0929d3f4e",
+      "label": "Arisanna, Astral Zenith",
+      "status": "unresolved-product-identity",
+      "comparison": "no-verified-manufacturer-product",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Arisanna, Astral Zenith"
+        }
+      ],
+      "evidenceNeeded": "An official manufacturer product record or identifiable packaging for this historical design. Absence from the current collection does not establish that the product never existed."
+    },
+    {
+      "candidateId": "merch-candidate-f78f98f24a69be09",
+      "label": "Diana, Moonpiercer",
+      "status": "unresolved-product-identity",
+      "comparison": "full-art-title-agrees",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Diana, Moonpiercer"
+        }
+      ],
+      "possibleProduct": {
+        "ownershipId": "merch-dragon-shield-at-16131",
+        "productNumber": "AT-16131",
+        "sourceTitle": "Grand Archive - Diana, Moonpiercer - Matte Dual Art Sleeves",
+        "sourceUrl": "https://www.dragonshield.com/en-eu/products/grand-archive-diana-moonpiercer-matte-dual-art-sleeves"
+      },
+      "evidenceNeeded": "Event product packaging or an individually identified sleeve photograph confirming artwork and finish. Matching names alone do not establish the manufacturer product number."
+    }
+  ]
+}

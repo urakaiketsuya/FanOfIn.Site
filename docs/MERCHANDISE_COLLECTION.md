@@ -26,6 +26,12 @@ The queue retains the source, page, caption, existing ownership ID where promote
 
 Regenerate with `node pipeline/scripts/build-merchandise-review-queue.mjs`; use `--check` to verify the committed queue. The generator rejects unknown evidence, duplicate promotions and incomplete observation accounting. Historical event coverage remains tracked separately in `official-merchandise-coverage.json`. Next research should seek packaging or individually captioned official images for unresolved designs and original catalogs for coverage gaps.
 
+### Sleeve identity review
+
+`official-merchandise-sleeve-review.json` compares all nine nongeneric sleeve label groups against the verified manufacturer records. Seven labels have comparison targets: Raziel (AT-16182), Ariel (AT-16179), Haniel (AT-16180), Azrael (AT-16181), Ciel and Ciel, Mirage’s Grave (both AT-16130), and Diana, Moonpiercer (AT-16131). Only the two full art titles agree at title level; the five shortened labels identify characters only. None supplies a manufacturer product number or confirms the finish in the event guide.
+
+Chicago’s Arisanna, Astral Zenith and Tonoris, Genesis Aegis have no verified manufacturer record in the current evidence. A targeted search for official manufacturer pages did not locate one; this does not establish that these historical products never existed. Packaging or individually identified official sleeve images remain necessary. The comparisons preserve exact source observations and existing ownership IDs without adding duplicates or changing collection progress.
+
 ### Remaining unpromoted labels
 
 | Product type | Label groups | Evidence still needed |
