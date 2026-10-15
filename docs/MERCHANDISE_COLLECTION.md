@@ -2,7 +2,7 @@
 
 The Collection page includes a Merchandise tab with quantities, saved progress, and filters for merchandise release, champion, product type, search and ownership. Merchandise stays separate from trading cards, card-set completion, valuation, deck readiness and trade reservations.
 
-The initial catalog contains 56 article-confirmed components from eight bundles: Seaside Splash (Merlin, Nico, Tonoris), Lunar Blessings (Lorraine, Rai, Tristan, Arisanna), and Kongming Yuletide Cheer. Official bundle overview images are explicitly labeled as overviews, with readable names if an image fails. The source article is linked on each bundle. Tube accessories stay with their playmats. Promo cards and bundle packaging do not create extra progress entries; the explicitly listed storage boxes do.
+The catalog contains 64 entries: eight Ascent catalog designs and 56 article-confirmed components from eight bundles: Seaside Splash (Merlin, Nico, Tonoris), Lunar Blessings (Lorraine, Rai, Tristan, Arisanna), and Kongming Yuletide Cheer. Official bundle overview images are explicitly labeled as overviews, with readable names if an image fails. The source article is linked on each bundle. Tube accessories stay with their playmats. Promo cards and bundle packaging do not create extra progress entries; the explicitly listed storage boxes do.
 
 ## Identity and evidence
 
@@ -10,7 +10,7 @@ The initial catalog contains 56 article-confirmed components from eight bundles:
 
 The supporting article evidence is in `docs/research/official-merchandise-bundles.json`. No artist, card-set affiliation, merchandise rarity, size, or production-run identity is inferred. Merchandise release filters are distinct from trading-card expansion sets.
 
-The six visually reviewed Ascent catalogs, 148 candidate label groups, artwork comparisons, and event coverage checklist remain in `docs/research/official-merchandise-*.json`. They are research evidence, not ownership IDs. Unresolved Ascent identities and unavailable catalogs are excluded from totals. This initial catalog is not a complete historical merchandise checklist.
+The six visually reviewed Ascent catalogs, 148 candidate label groups, artwork comparisons, and event coverage checklist remain in `docs/research/official-merchandise-*.json`. Promotions into stable ownership IDs are recorded separately in `official-merchandise-promotions.json`, with exact source observations and quantity units. The first eight are the four named acrylic art pieces, Merlin tote bag, silver counter boxed set, and Alice/Diana shirt designs listed on Akihabara page 24. Shirt sizes and manufacturing runs share one design entry; counter quantities count boxed sets. “Ascent catalog designs” is a browsing group, not a claimed release or event exclusivity. Catalog entries without verified individual art show readable names and the official source link. Unpromoted candidates remain research evidence. Unresolved Ascent identities and unavailable catalogs are excluded from totals. This initial catalog is not a complete historical merchandise checklist.
 
 ## Persistence
 

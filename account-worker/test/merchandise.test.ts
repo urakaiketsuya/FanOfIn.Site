@@ -56,10 +56,29 @@ test("invalid catalog IDs and quantities never mutate; progress counts distinct 
       await assert.rejects(saveMerchandise(f.env, f.user, { ...input, quantities }), /Invalid/);
     }
     assert.equal((await listMerchandise(f.env, f.user)).revision, 0);
-    assert.equal(new Set(merchandiseItems.map(item => item.id)).size, 56);
+    assert.equal(new Set(merchandiseItems.map(item => item.id)).size, 64);
     assert.deepEqual(merchandiseProgress([id, id, other, "unknown"], { [id]: 4 }), { owned: 1, total: 2 });
     assert.equal((await serviceHealth(f.env)).success, true);
     f.db.exec("DROP TABLE merchandise_collections");
     assert.equal((await serviceHealth(f.env)).success, false);
   } finally { f.db.close(); }
+});
+
+test("Ascent ownership entries retain exact reviewed evidence and quantity units", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const read = async (name: string) => JSON.parse(await readFile(new URL(`../../docs/research/official-merchandise-${name}.json`, import.meta.url), "utf8"));
+  const [promotions, candidates] = await Promise.all([read("promotions"), read("candidates")]);
+  const ascent = merchandiseItems.filter(item => item.releaseId === "ascent-catalog-designs");
+  assert.deepEqual(ascent.map(item => item.id).sort(), promotions.items.map((item: { ownershipId: string }) => item.ownershipId).sort());
+  for (const promotion of promotions.items) {
+    const item = ascent.find(item => item.id === promotion.ownershipId)!;
+    const candidate = candidates.candidates.find((candidate: { id: string }) => candidate.id === promotion.candidateId);
+    assert.equal(item.type, candidate.productType);
+    assert.equal(item.name, candidate.label);
+    assert(candidate.observations.some((o: { sourceId: string; page: number; sourceLabel: string }) => o.sourceId === promotion.sourceId && o.page === promotion.page && o.sourceLabel === promotion.sourceLabel));
+    assert.equal(promotion.quantityUnit, item.type === "metal-counters" ? "boxed set" : "physical item");
+  }
+  const quantities = Object.fromEntries(ascent.map(item => [item.id, 2]));
+  assert.deepEqual(parseMerchandiseQuantities(quantities), quantities);
+  assert.deepEqual(merchandiseProgress(ascent.map(item => item.id), quantities), { owned: 8, total: 8 });
 });

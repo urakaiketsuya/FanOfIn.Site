@@ -1,6 +1,19 @@
 // Stable ownership IDs. Never rename or recycle IDs when catalog labels change.
-// Article-confirmed bundle components; overview images depict the whole bundle.
-export const merchandiseBundles = [
+// Bundle components and explicitly reviewed catalog designs. See docs/research/official-merchandise-promotions.json.
+// Overview images depict the whole bundle. Catalog designs do not imply event exclusivity.
+export interface MerchandiseGroup {
+  id: string;
+  releaseId: string;
+  releaseName: string;
+  champion: string;
+  sourceUrl: string;
+  overviewImageUrl?: string;
+  title?: string;
+  sourceKind?: "catalog";
+  items: { id: string; type: string; name: string }[];
+}
+
+export const merchandiseBundles: MerchandiseGroup[] = [
   {
     "id": "seaside-splash-2026-merlin",
     "releaseId": "seaside-splash-2026",
@@ -360,5 +373,133 @@ export const merchandiseBundles = [
         "name": "Storage box"
       }
     ]
-  }
-] as const;
+  },
+{
+  "id": "ascent-design-acrylic-art-alice-golden-queen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Golden Queen \u00b7 Acrylic art",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-art-alice-golden-queen",
+      "type": "acrylic-art",
+      "name": "Alice, Golden Queen"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-art-the-looking-glass",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "The Looking Glass \u00b7 Acrylic art",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-art-the-looking-glass",
+      "type": "acrylic-art",
+      "name": "The Looking Glass"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-art-cheshire-cat",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Cheshire Cat \u00b7 Acrylic art",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-art-cheshire-cat",
+      "type": "acrylic-art",
+      "name": "Cheshire Cat"
+    }
+  ]
+},
+{
+  "id": "ascent-design-acrylic-art-fractured-memories",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Fractured Memories \u00b7 Acrylic art",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-acrylic-art-fractured-memories",
+      "type": "acrylic-art",
+      "name": "Fractured Memories"
+    }
+  ]
+},
+{
+  "id": "ascent-design-tote-bag-merlin",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin \u00b7 Tote bag",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-tote-bag-merlin",
+      "type": "tote-bag",
+      "name": "Merlin"
+    }
+  ]
+},
+{
+  "id": "ascent-design-metal-counters-silver",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Silver Metal Counters \u00b7 Boxed set",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-metal-counters-silver",
+      "type": "metal-counters",
+      "name": "Silver Metal Counters"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-alice",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice \u00b7 T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-alice",
+      "type": "t-shirt",
+      "name": "Alice"
+    }
+  ]
+},
+{
+  "id": "ascent-design-t-shirt-diana",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana \u00b7 T-shirt",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=24",
+  "items": [
+    {
+      "id": "merch-ascent-t-shirt-diana",
+      "type": "t-shirt",
+      "name": "Diana"
+    }
+  ]
+}
+];

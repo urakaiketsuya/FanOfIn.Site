@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "policy": [
+    "Only the cited observation is promoted; other appearances are not automatically equated.",
+    "Ascent catalog designs is a browsing group, not a release, edition, or event-exclusive claim.",
+    "Shirt sizes do not create additional completion entries; counter quantities count boxed sets.",
+    "Acrylic art names are explicit in the official catalog; no artwork image or champion is inferred for unnamed characters."
+  ],
+  "items": [
+    {
+      "ownershipId": "merch-ascent-acrylic-art-alice-golden-queen",
+      "candidateId": "merch-candidate-31fbcaee779feb48",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Alice, Golden Queen",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-art-the-looking-glass",
+      "candidateId": "merch-candidate-09ca0fd7ee696ac7",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "The Looking Glass",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-art-cheshire-cat",
+      "candidateId": "merch-candidate-99155ec88e4100de",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Cheshire Cat",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-acrylic-art-fractured-memories",
+      "candidateId": "merch-candidate-363c6b617abeb84a",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Fractured Memories",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-tote-bag-merlin",
+      "candidateId": "merch-candidate-84d10a5de67e0d9b",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Merlin",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-metal-counters-silver",
+      "candidateId": "merch-candidate-abd4e1e1d3d22ae2",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Silver Metal Counters",
+      "identityScope": "named catalog design; production runs not distinguished",
+      "quantityUnit": "boxed set"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-alice",
+      "candidateId": "merch-candidate-de53b6bf769b3a74",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Alice",
+      "identityScope": "design across sizes and production runs",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-t-shirt-diana",
+      "candidateId": "merch-candidate-9ed5d995a646ac6a",
+      "sourceId": "akihabara-2025",
+      "page": 24,
+      "sourceLabel": "Diana",
+      "identityScope": "design across sizes and production runs",
+      "quantityUnit": "physical item"
+    }
+  ]
+}

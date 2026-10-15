@@ -82,7 +82,7 @@ export default function MerchandiseCollection({ userId }: { userId: string }) {
   }
   const quantities = { ...saved?.quantities, ...draft.edits };
   const filtered = merchandiseItems.filter(item => (!release || item.releaseId === release) && (!champion || item.champion === champion) && (!type || item.type === type)
-    && `${item.champion} ${item.releaseName} ${item.name}`.toLowerCase().includes(search.toLowerCase())
+    && `${item.champion} ${item.releaseName} ${item.type} ${label(item.type)} ${item.name}`.toLowerCase().includes(search.toLowerCase())
     && (!ownership || (ownership === "owned" ? (quantities[item.id] ?? 0) > 0 : !(quantities[item.id] ?? 0))));
   const progress = merchandiseProgress(filtered.map(item => item.id), saved?.quantities ?? {});
   const releases = [...new Map(merchandiseBundles.map(bundle => [bundle.releaseId, bundle.releaseName])).entries()];
@@ -104,8 +104,8 @@ export default function MerchandiseCollection({ userId }: { userId: string }) {
       <div className="rounded-xl border border-ctp-surface1 p-4"><p className="font-semibold">{progress.owned} / {progress.total} matching items owned</p><progress className="mt-2 w-full accent-ctp-blue" aria-label="Saved merchandise progress" value={progress.owned} max={progress.total || 1} /><p className="text-xs text-ctp-subtext1">Saved progress · individual items, excluding cards</p></div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <label className="text-sm">Search<input value={search} onChange={e => setSearch(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" /></label>
-        <label className="text-sm">Release<select aria-label="Release" value={release} onChange={e => setRelease(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All releases</option>{releases.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
-        <label className="text-sm">Champion<select aria-label="Champion" value={champion} onChange={e => setChampion(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All champions</option>{[...new Set(merchandiseBundles.map(bundle => bundle.champion))].sort().map(name => <option key={name}>{name}</option>)}</select></label>
+        <label className="text-sm">Release / catalog<select aria-label="Release" value={release} onChange={e => setRelease(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All releases and catalogs</option>{releases.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
+        <label className="text-sm">Champion<select aria-label="Champion" value={champion} onChange={e => setChampion(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All champions</option>{[...new Set(merchandiseBundles.map(bundle => bundle.champion).filter(Boolean))].sort().map(name => <option key={name}>{name}</option>)}</select></label>
         <label className="text-sm">Product type<select aria-label="Product type" value={type} onChange={e => setType(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All types</option>{types.map(value => <option key={value} value={value}>{label(value)}</option>)}</select></label>
         <label className="text-sm">Ownership<select aria-label="Ownership" value={ownership} onChange={e => setOwnership(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="">All items</option><option value="owned">Owned</option><option value="missing">Missing</option></select></label>
       </div>
@@ -116,14 +116,14 @@ export default function MerchandiseCollection({ userId }: { userId: string }) {
           const items = filtered.filter(item => item.bundleId === bundle.id);
           if (!items.length) return null;
           const owned = merchandiseProgress(items.map(item => item.id), saved.quantities);
-          const title = `${bundle.champion} · ${bundle.releaseName}`;
+          const title = bundle.title ?? `${bundle.champion} · ${bundle.releaseName}`;
           return <article key={bundle.id} className="min-w-0 rounded-xl border border-ctp-surface1 p-3">
-            <Overview url={bundle.overviewImageUrl} name={title} />
-            <h3 className="mt-3 font-semibold">{title}</h3><p className="text-xs text-ctp-subtext1">Bundle overview · {owned.owned}/{owned.total} matching items owned</p>
+            {bundle.overviewImageUrl && <Overview url={bundle.overviewImageUrl} name={title} />}
+            <h3 className="mt-3 font-semibold">{title}</h3><p className="text-xs text-ctp-subtext1">{bundle.sourceKind === "catalog" ? "Catalog design" : "Bundle overview"} · {owned.owned}/{owned.total} matching items owned</p>
             <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2">Edit item quantities<DisclosureChevron className="group-open:rotate-180" /></summary>
               <div className="space-y-2">{items.map(item => <label key={item.id} className="flex items-center justify-between gap-3 rounded-lg bg-ctp-surface0/40 p-2"><span className="text-sm">{item.name}</span><input aria-label={`${title}: ${item.name} quantity`} type="number" min={0} max={999} step={1} disabled={busy || !!draft.pending || conflict} value={quantities[item.id] ?? 0} onChange={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value >= 0 && value <= 999) edit(item.id, value); }} className="min-h-12 w-20 shrink-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-center" /></label>)}</div>
             </details>
-            <a href={bundle.sourceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-12 items-center text-sm text-ctp-blue underline">Official release ↗</a>
+            <a href={bundle.sourceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-12 items-center text-sm text-ctp-blue underline">{bundle.sourceKind === "catalog" ? "Official catalog ↗" : "Official release ↗"}</a>
           </article>;
         })}
       </div>
