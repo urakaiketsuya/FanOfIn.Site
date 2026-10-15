@@ -259,6 +259,141 @@
       "sourceLabel": "Dante, Aenean Initiate",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-ciel-loyal-valet",
+      "candidateId": "merch-candidate-0abc787744a73dc2",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Ciel, Loyal Valet",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-cheshire-cat",
+      "candidateId": "merch-candidate-12e4ea88ae1ede9f",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Cheshire Cat",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-the-looking-glass",
+      "candidateId": "merch-candidate-202d34ff38d65146",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "The Looking Glass",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-ciel-mirage-s-grave",
+      "candidateId": "merch-candidate-237107175e2412a4",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Ciel, Mirage’s Grave",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-diana-moonpiercer",
+      "candidateId": "merch-candidate-2ae23bc661ed8bd5",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Diana, Moonpiercer",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-malevolent-vow",
+      "candidateId": "merch-candidate-348927b1ec13b17e",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Malevolent Vow",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-chamber-of-reflections",
+      "candidateId": "merch-candidate-4ca429c476283b1a",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Chamber of Reflections",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-diana-judgment-s-arrow",
+      "candidateId": "merch-candidate-5542e8231fb263ca",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Diana, Judgment’s Arrow",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-golden-queen",
+      "candidateId": "merch-candidate-5b0f136e117353f3",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Alice, Golden Queen",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-diana-aether-dilettante",
+      "candidateId": "merch-candidate-6429316e8c791c5e",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Diana, Aether Dilettante",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-profane-bindings",
+      "candidateId": "merch-candidate-8045b704d970cf1f",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Profane Bindings",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-excalibur-reflected-glass",
+      "candidateId": "merch-candidate-82fb1647cbd43bd6",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Excalibur, Reflected Glass",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-ashen-riffle",
+      "candidateId": "merch-candidate-a9f70486409bafa9",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Ashen Riffle",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-ciel-omenbringer",
+      "candidateId": "merch-candidate-ae9dd7f98e1c9a82",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Ciel, Omenbringer",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-chronowarp",
+      "candidateId": "merch-candidate-affc1b27e03bd626",
+      "sourceId": "akihabara-2025",
+      "page": 23,
+      "sourceLabel": "Chronowarp",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }

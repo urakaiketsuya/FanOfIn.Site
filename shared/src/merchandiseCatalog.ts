@@ -821,5 +821,245 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Dante, Aenean Initiate"
     }
   ]
+},
+{
+  "id": "ascent-design-playmat-ciel-loyal-valet",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Ciel",
+  "title": "Ciel, Loyal Valet · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-ciel-loyal-valet",
+      "type": "playmat",
+      "name": "Ciel, Loyal Valet"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-cheshire-cat",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Cheshire Cat · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-cheshire-cat",
+      "type": "playmat",
+      "name": "Cheshire Cat"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-the-looking-glass",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "The Looking Glass · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-the-looking-glass",
+      "type": "playmat",
+      "name": "The Looking Glass"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-ciel-mirage-s-grave",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Ciel",
+  "title": "Ciel, Mirage's Grave · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-ciel-mirage-s-grave",
+      "type": "playmat",
+      "name": "Ciel, Mirage's Grave"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-diana-moonpiercer",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana, Moonpiercer · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-diana-moonpiercer",
+      "type": "playmat",
+      "name": "Diana, Moonpiercer"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-malevolent-vow",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Malevolent Vow · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-malevolent-vow",
+      "type": "playmat",
+      "name": "Malevolent Vow"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-chamber-of-reflections",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Chamber of Reflections · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-chamber-of-reflections",
+      "type": "playmat",
+      "name": "Chamber of Reflections"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-diana-judgment-s-arrow",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana, Judgment's Arrow · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-diana-judgment-s-arrow",
+      "type": "playmat",
+      "name": "Diana, Judgment's Arrow"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-golden-queen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Golden Queen · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-golden-queen",
+      "type": "playmat",
+      "name": "Alice, Golden Queen"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-diana-aether-dilettante",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana, Aether Dilettante · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-diana-aether-dilettante",
+      "type": "playmat",
+      "name": "Diana, Aether Dilettante"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-profane-bindings",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Profane Bindings · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-profane-bindings",
+      "type": "playmat",
+      "name": "Profane Bindings"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-excalibur-reflected-glass",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Excalibur, Reflected Glass · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-excalibur-reflected-glass",
+      "type": "playmat",
+      "name": "Excalibur, Reflected Glass"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-ashen-riffle",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Ashen Riffle · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-ashen-riffle",
+      "type": "playmat",
+      "name": "Ashen Riffle"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-ciel-omenbringer",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Ciel",
+  "title": "Ciel, Omenbringer · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-ciel-omenbringer",
+      "type": "playmat",
+      "name": "Ciel, Omenbringer"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-chronowarp",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Chronowarp · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf#page=23",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-chronowarp",
+      "type": "playmat",
+      "name": "Chronowarp"
+    }
+  ]
 }
 ];
