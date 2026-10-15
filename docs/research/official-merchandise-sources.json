@@ -1,0 +1,738 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "status": "research-incomplete-not-production-catalog",
+  "scope": "Non-card physical merchandise in the five located official Ascent store catalogs. Card products, jumbo cards, uncut sheets and service tickets excluded. Event admission and prize-only merchandise still need separate review.",
+  "coverageNotes": [
+    "All 255 articles returned by the public official article endpoint were checked for direct PDF links; none of the Ascent article bodies contained them. This is not proof no catalog exists.",
+    "Five image-based PDFs were downloaded, cover dates checked, and all eight store catalog pages rendered and visually reviewed. Plain PDF text extraction returned no text.",
+    "Labels are source observations, not unique products. Repeated labels, spelling differences and art variants must be reconciled before import.",
+    "No artist, set, release date or exclusivity is inferred from an event appearance.",
+    "London and Los Angeles filenames contain 2025, but their covers explicitly date the events to 2026.",
+    "The official upload-file index returned HTTP 403. No access-restricted index was used."
+  ],
+  "sources": [
+    {
+      "id": "chicago-2024",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Chicago_Event_Guide_8b13a626be.pdf",
+      "eventStart": "2024-08-03",
+      "eventEnd": "2024-08-04",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        12
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "5063525d0410ac7e85e12d9eb9855df6938ad747e1e19cd3bde42f8a06e475f4",
+      "groups": [
+        {
+          "page": 12,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Baby Blue Slime",
+            "Diablerie",
+            "Final Stroke",
+            "Mechanical Hare",
+            "Retold Fortune",
+            "Shadow Resonance",
+            "Nico, Whiplash Allure",
+            "Polkhawk, Bombastic Shot",
+            "Vanitas, Obliviate Schemer",
+            "Vanitas, Convergent Ruin",
+            "Tristan, Underhanded",
+            "Tristan, Hired Blade",
+            "Tristan, Shadowdancer",
+            "Tristan, Shadowweaver",
+            "Silvie, Slime Sovereign",
+            "Eternal Kingdom"
+          ]
+        },
+        {
+          "page": 12,
+          "productType": "table-mat",
+          "sourceLabels": [
+            "ALC 6FT Table Mat"
+          ]
+        },
+        {
+          "page": 12,
+          "productType": "sleeves",
+          "sourceLabels": [
+            "Arisanna, Astral Zenith",
+            "Tonoris, Genesis Aegis"
+          ],
+          "note": "Dragon Shield"
+        },
+        {
+          "page": 12,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Silvie"
+          ]
+        },
+        {
+          "page": 12,
+          "productType": "poster",
+          "sourceLabels": [
+            "Posters"
+          ],
+          "note": "Designs unspecified; do not create a single generic collectible from this listing."
+        }
+      ]
+    },
+    {
+      "id": "akihabara-2025",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Akihabara_Checklist_1db5e11780.pdf",
+      "eventStart": "2025-11-22",
+      "eventEnd": "2025-11-23",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        23,
+        24
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "23acbacf172ce7b680aef7fa20066b466d08450a49104612f774deae0a05206e",
+      "groups": [
+        {
+          "page": 23,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Ciel, Loyal Valet",
+            "Ciel, Omenbringer",
+            "Ciel, Mirage’s Grave",
+            "Diana, Aether Dilettante",
+            "Diana, Judgment’s Arrow",
+            "Diana, Moonpiercer",
+            "Alice, Golden Queen",
+            "Ashen Riffle",
+            "Chamber of Reflections",
+            "Cheshire Cat",
+            "Chronowarp",
+            "Excalibur, Reflected Glass",
+            "Malevolent Vow",
+            "Profane Bindings",
+            "The Looking Glass"
+          ]
+        },
+        {
+          "page": 23,
+          "productType": "sleeves",
+          "sourceLabels": [
+            "Diana, Moonpiercer",
+            "Ciel, Mirage’s Grave"
+          ],
+          "note": "Dragon Shield"
+        },
+        {
+          "page": 24,
+          "productType": "compact-deck-box",
+          "sourceLabels": [
+            "Spirelle, Schwartz Queen",
+            "Snow White, Weiss Queen"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "double-deck-box",
+          "sourceLabels": [
+            "Alice, Phantom Monarch"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "acrylic-art",
+          "sourceLabels": [
+            "Alice, Golden Queen",
+            "The Looking Glass",
+            "Cheshire Cat",
+            "Fractured Memories"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Kongming",
+            "Silvie"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "plush",
+          "sourceLabels": [
+            "Silvie"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "tote-bag",
+          "sourceLabels": [
+            "Merlin"
+          ]
+        },
+        {
+          "page": 24,
+          "productType": "metal-counters",
+          "sourceLabels": [
+            "Silver Metal Counters"
+          ],
+          "note": "Pictured as a boxed set; individual designs not named."
+        },
+        {
+          "page": 24,
+          "productType": "t-shirt",
+          "sourceLabels": [
+            "Alice",
+            "Diana"
+          ],
+          "note": "Sizes unspecified."
+        }
+      ]
+    },
+    {
+      "id": "london-2026",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_London_2025_Event_Guide_e170e2c5de.pdf",
+      "eventStart": "2026-01-24",
+      "eventEnd": "2026-01-25",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        15
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "e36395a4c1ebb6f05b87faadf7424f81b29d60bd805b8549a8383e482ad59ab2",
+      "groups": [
+        {
+          "page": 15,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Merlin, Memorite Vassal",
+            "Merlin, Amethyst Glow",
+            "Merlin, Brilliant Vestige",
+            "Alice, Whim’s Monarch",
+            "Alice, Phantom Monarch",
+            "Alice, Phantom Monarch CUR",
+            "Topsy Decree",
+            "Infinite Scintillation",
+            "Diana, Haunt Reminisense",
+            "Excalibur, Reflected Edge",
+            "Fluffy Shopkeeper",
+            "PR- Conniving Plans",
+            "PR- Smoke Bombs",
+            "PR- Heavenly Guide"
+          ],
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing."
+        },
+        {
+          "page": 15,
+          "productType": "compact-deck-box",
+          "sourceLabels": [
+            "Snow White",
+            "Spirelle"
+          ]
+        },
+        {
+          "page": 15,
+          "productType": "double-deck-box",
+          "sourceLabels": [
+            "Alice, Phantom Monarch"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "los-angeles-2026",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf",
+      "eventStart": "2026-03-27",
+      "eventEnd": "2026-03-29",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        21,
+        22
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "86f5cffa4bbfd2f0ca9ca1651179cc13fd000540ec194aa07fdddaaf6f454da1",
+      "groups": [
+        {
+          "page": 21,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Merlin, Memorite Vassal",
+            "Merlin, Amethyst’s Glow",
+            "Merlin, Brilliant Vestige",
+            "Alice, Distorted Queen",
+            "Alice, Whim’s Monarch",
+            "Alice, Phantom Monarch (CSR)",
+            "Alice, Phantom Monarch (CUR)",
+            "Alice, Trifle’s Royalty",
+            "Arcane Blast",
+            "Diana, Haunt Reminiscence",
+            "Embrace Noir",
+            "Flickering Afterglow",
+            "Labyrinth Jeweled Opus",
+            "Peer Into Mana",
+            "Spirit Blade: Terminus"
+          ]
+        },
+        {
+          "page": 21,
+          "productType": "sleeves",
+          "sourceLabels": [
+            "Ariel",
+            "Azrael",
+            "Haniel",
+            "Raziel"
+          ],
+          "note": "Dragon Shield; art titles unspecified."
+        },
+        {
+          "page": 22,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Arisanna, Master Alchemist",
+            "Arisanna, Lucent Arbiter",
+            "Lorraine, Wandering Warrior",
+            "Zander, Corhazi’s Chosen",
+            "Kongming, Fei Eidolon"
+          ]
+        },
+        {
+          "page": 22,
+          "productType": "compact-deck-box",
+          "sourceLabels": [
+            "Spirelle",
+            "Lu Bu",
+            "Yuan Shao",
+            "Zhang Fei",
+            "Liu Bei"
+          ]
+        },
+        {
+          "page": 22,
+          "productType": "double-deck-box",
+          "sourceLabels": [
+            "Alice",
+            "Lu Bu"
+          ]
+        },
+        {
+          "page": 22,
+          "productType": "plush",
+          "sourceLabels": [
+            "Silvie"
+          ]
+        },
+        {
+          "page": 22,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Kongming"
+          ]
+        },
+        {
+          "page": 22,
+          "productType": "t-shirt",
+          "sourceLabels": [
+            "Alice",
+            "Diana"
+          ],
+          "note": "Sizes unspecified."
+        },
+        {
+          "page": 22,
+          "productType": "keychain",
+          "sourceLabels": [
+            "Avatar of Gaia",
+            "Naia",
+            "Blue Slime",
+            "Baby Grey",
+            "Heavenly Guide",
+            "Dungeon Guide",
+            "Academy Guide",
+            "The Majestic Spirit"
+          ],
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration."
+        },
+        {
+          "page": 22,
+          "productType": "acrylic-standee",
+          "sourceLabels": [
+            "Arisanna",
+            "Lorraine",
+            "Diana",
+            "Merlin",
+            "Jin",
+            "Silvie",
+            "Kongming",
+            "Tristan"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "las-vegas-2026",
+      "url": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf",
+      "eventStart": "2026-05-09",
+      "eventEnd": "2026-05-10",
+      "dateEvidence": "PDF cover",
+      "catalogPages": [
+        15,
+        16
+      ],
+      "verification": "catalog-pages-visually-reviewed",
+      "sha256": "afe79788ead8577b507e302deca7515a321657694281fff5eeddcedd8dcd6370",
+      "groups": [
+        {
+          "page": 15,
+          "productType": "playmat",
+          "sourceLabels": [
+            "Alice, Trifle’s Royalty CUR",
+            "Alice, Golden Queen",
+            "Ciel, Mirage’s Grave",
+            "Diana, Aether Dilettante",
+            "Merlin, Amethyst’s Glow",
+            "Diao Chan, Dreaming Wish",
+            "Lu Bu, Wrath Incarnate",
+            "Mordred, Aurelian Regent",
+            "Angelic Channeling",
+            "Auspicious Manifestation",
+            "Celestial Navigation",
+            "Iridescent Resurgence",
+            "Nuriel, Seraphic Paladin",
+            "Nox, Final Release"
+          ]
+        },
+        {
+          "page": 15,
+          "productType": "sleeves",
+          "sourceLabels": [
+            "Ariel",
+            "Azrael",
+            "Haniel",
+            "Raziel",
+            "Ciel"
+          ],
+          "note": "Dragon Shield; art titles unspecified."
+        },
+        {
+          "page": 16,
+          "productType": "figurine",
+          "sourceLabels": [
+            "Kongming"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "keychain",
+          "sourceLabels": [
+            "Avatar of Gaia",
+            "Naia",
+            "Blue Slime",
+            "Baby Gray Slime",
+            "Heavenly Guide",
+            "Dungeon Guide",
+            "Academy Guide",
+            "The Majestic Spirit"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "acrylic-standee",
+          "sourceLabels": [
+            "Arisanna",
+            "Lorraine",
+            "Diana",
+            "Merlin",
+            "Jin",
+            "Silvie",
+            "Kong Ming",
+            "Tristan"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "coaster",
+          "sourceLabels": [
+            "Kong Ming",
+            "Arisanna",
+            "Lorraine"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "compact-deck-box",
+          "sourceLabels": [
+            "Spirelle",
+            "Lu Bu",
+            "Da Qiao",
+            "Yuan Shao",
+            "Zhang Fei"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "double-deck-box",
+          "sourceLabels": [
+            "Lu Bu",
+            "Alice"
+          ]
+        },
+        {
+          "page": 16,
+          "productType": "t-shirt",
+          "sourceLabels": [
+            "Tristan",
+            "Nico",
+            "Silvie",
+            "Merlin",
+            "Diana",
+            "Alice",
+            "Ciel"
+          ],
+          "note": "Sizes unspecified."
+        }
+      ]
+    }
+  ],
+  "additionalLeads": [
+    {
+      "id": "taipei-2025",
+      "url": "https://fliphtml5.com/nzyxf/gatd/2025Ascent_Taipei/",
+      "catalogPages": [
+        15,
+        16
+      ],
+      "verification": "third-party-mirror-text-only",
+      "note": "Guide states September 13–14, 2025. Official original URL and page images remain unverified. Includes additional deckbox labels Guan Yu, Dian Wei, Ciel and Diana; not merged into verified groups."
+    },
+    {
+      "id": "melbourne-2026",
+      "url": "https://twstalker.com/grandarchivetcg",
+      "verification": "social-mirror-lead-only",
+      "note": "Search excerpt mentions an event guide, but the direct PDF URL could not be resolved. Mirror snapshots vary; confirm against official social post."
+    },
+    {
+      "id": "horizons-reprise",
+      "url": "https://www.facebook.com/gatcg/posts/take-a-look-at-the-upcoming-horizons-reprise-merchandise-catalog-featuring-all-y/1023274413552207/",
+      "verification": "unreadable",
+      "note": "User-supplied official social post. Images not verified."
+    }
+  ],
+  "officialAscentArticleInventory": [
+    {
+      "title": "Recap: Ascent Melbourne 2026",
+      "url": "https://www.gatcg.com/article/recap-ascent-melbourne-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Kaohsiung 2027",
+      "url": "https://www.gatcg.com/article/ascent-kaohsiung-2027",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Auckland 2027",
+      "url": "https://www.gatcg.com/article/ascent-auckland-2027",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Worlds 2026 & Ascent Worlds 2026",
+      "url": "https://www.gatcg.com/article/recap-worlds-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Dallas 2026",
+      "url": "https://www.gatcg.com/article/ascent-dallas-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Side Event & Prize Wall Updates",
+      "url": "https://www.gatcg.com/article/side-event-and-prize-wall-updates",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Osaka 2026",
+      "url": "https://www.gatcg.com/article/ascent-osaka-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Melbourne 2026",
+      "url": "https://www.gatcg.com/article/ascent-melbourne-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Pantheon On‑Demand: A New Way to Play at Ascents",
+      "url": "https://www.gatcg.com/article/pantheon-on-demand",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Worlds 2026 - Singapore",
+      "url": "https://www.gatcg.com/article/ascent-worlds-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Las Vegas 2026",
+      "url": "https://www.gatcg.com/article/ascent-lasvegas-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Los Angeles 2026",
+      "url": "https://www.gatcg.com/article/ascent-losangeles-2026",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Auckland 2025",
+      "url": "https://www.gatcg.com/article/ascent-auckland-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Niagara Falls 2025",
+      "url": "https://www.gatcg.com/article/ascent-niagara-falls-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Kuala Lumpur 2025",
+      "url": "https://www.gatcg.com/article/Ascent-Kuala-Lumpur-2025-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Taipei 2025",
+      "url": "https://www.gatcg.com/article/ascent-taipei-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Akihabara 2025",
+      "url": "https://www.gatcg.com/article/ascent-aki-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Seattle 2025",
+      "url": "https://www.gatcg.com/article/Ascent-Seattle-2025-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Melbourne 2025",
+      "url": "https://www.gatcg.com/article/Ascent-Melbourne-2025-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Boston 2025",
+      "url": "https://www.gatcg.com/article/ascent-boston-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Utrecht 2025",
+      "url": "https://www.gatcg.com/article/Ascent-Utrecht-2025-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Santa Clara 2024",
+      "url": "https://www.gatcg.com/article/recap-ascent-santa-clara-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Kuala Lumpur 2025",
+      "url": "https://www.gatcg.com/article/ascent-kuala-lumpur-20254",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Seattle 2025",
+      "url": "https://www.gatcg.com/article/ascent-seattle-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Melbourne 2025",
+      "url": "https://www.gatcg.com/article/ascent-melbourne-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Christchurch 2024",
+      "url": "https://www.gatcg.com/article/Ascent-Christchurch-2024-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Singapore 2024",
+      "url": "https://www.gatcg.com/article/Ascent-Singapore-2024-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Toronto 2024",
+      "url": "https://www.gatcg.com/article/Ascent-Toronto-2024-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Utrecht 2025",
+      "url": "https://www.gatcg.com/article/ascent-utrecht-2025",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Santa Clara 2024",
+      "url": "https://www.gatcg.com/article/ascent-santa-clara",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Chicago 2024",
+      "url": "https://www.gatcg.com/article/Ascent-Chicago-2024-Recap",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Toronto 2024",
+      "url": "https://www.gatcg.com/article/ascent-toronto-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Christchurch 2024",
+      "url": "https://www.gatcg.com/article/ascent-christchurch-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Singapore 2024",
+      "url": "https://www.gatcg.com/article/ascent-singapore-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Chicago 2024",
+      "url": "https://www.gatcg.com/article/ascent-chicago-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Taipei 2024",
+      "url": "https://www.gatcg.com/article/ascent-taipei-announcement",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Worlds 2024: Cosplay Contest!",
+      "url": "https://www.gatcg.com/article/cosplay-details",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Recap: Ascent Auckland 2023",
+      "url": "https://www.gatcg.com/article/recap-ascent-auckland-2023",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Ontario 2024",
+      "url": "https://www.gatcg.com/article/ascent-ontario-2024",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Worlds Ticket Packages & Location",
+      "url": "https://www.gatcg.com/article/ascent-worlds-ticket-packages-and-location",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Worlds Update: Worlds Ascent Team Standard Format",
+      "url": "https://www.gatcg.com/article/worlds-update-worlds-ascent-team-standard-format",
+      "directPdfLinkFound": false
+    },
+    {
+      "title": "Ascent Houston 2023 Event Structure & Packages",
+      "url": "https://www.gatcg.com/article/ascent-houston-2023-event-structure-and-packages",
+      "directPdfLinkFound": false
+    }
+  ],
+  "nextSteps": [
+    "Locate missing guides through official social posts or organizer-provided links; do not mark historical coverage complete.",
+    "Verify the Taipei mirror against its original and review catalog images.",
+    "Reconcile source observations into stable products and explicit variants, preserving source/page evidence and uncertain matches.",
+    "Source usable product images and verified artist/set relationships.",
+    "Implement merchandise ownership and progress tracking after catalog validation."
+  ]
+}
