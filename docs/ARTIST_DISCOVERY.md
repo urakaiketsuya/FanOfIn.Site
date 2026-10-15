@@ -62,7 +62,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A009 | Alkaid | 63 | 89 | Needs identity review |
 | A010 | Gyool | 46 | 66 | Reviewed with verified links |
 | A011 | Pinakes | 38 | 71 | Reviewed with verified links |
-| A012 | 代々 | 34 | 73 | Needs identity review |
+| A012 | 代々 | 34 | 73 | User-confirmed Instagram |
 | A013 | KHΩA | 33 | 39 | Reviewed with verified links |
 | A014 | Kaze | 32 | 45 | Reviewed with no verified links found |
 | A015 | Rachel Liu | 30 | 38 | Reviewed with verified links |
@@ -308,15 +308,15 @@ Only surrounding whitespace has been consolidated. JSON string notation exposes 
 
 ### A012 — 代々
 
-- **Status/date:** Needs identity review; researched 2026-10-14.
+- **Status/date:** User-confirmed Instagram; updated 2026-10-14.
 - **Exact credits:** `"代々"`.
-- **Identity:** Individual candidate: 代々 / Daidai; alternate name remains a lead. Stable artist ID/slug deferred to curated-directory implementation; no unlisted aliases are approved.
+- **Identity:** Individual artist 代々, ID a012. User confirmed Instagram @daidai_kasame; the original profile displays 代々 and identifies an illustrator. The existing pronunciation remains estimated.
 - **Credited example:** Alice, Golden Queen; Distorted Reflections; #004; edition `ggliackmst`. [Publisher edition reference](https://index.gatcg.com/edition/alice-golden-queen-dtr) derived from the local catalog; this link is a credit reference, not evidence of account ownership.
 - **Searches:** `"代々" "Grand Archive" artist`; `"Daidai" "Grand Archive" artist twitter`.
 - **Findings:** [Event coverage](https://gafreak.com/2025/09/20/ascent-taipei-report/) and other search results pair 代々 with Daidai at Ascent Taipei. No artist-owned account was established; do not select an unrelated Daidai profile.
-- **Next action:** Inspect the publisher’s Taipei guest-artist material for a direct account or native-name cross-link.
+- **Follow-up:** Published Instagram on the user’s confirmation and inspected its profile photo. Saved the unchanged 150×150 JPEG as `app/public/images/artists/a012.jpg`, with source metadata in the directory. Removed the supplied language query from the canonical account URL.
 
-**Links:** none verified; no attributable account URL established in this pass.
+**Links:** [Instagram @daidai_kasame](https://www.instagram.com/daidai_kasame/) — user-confirmed and original profile inspected 2026-10-14.
 
 ### A013 — KHΩA
 
@@ -1208,7 +1208,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A009 | Alkaid | Initials; account identity unresolved | `"Alkaid" "Grand Archive" artist portfolio` |
 | A010 | Gyool | Verified image already added | [Official profile](https://www.gyool.info/) |
 | A011 | Pinakes | Added in this pass | [Official profile](https://x.com/PinaxPinakes) |
-| A012 | 代々 | Initials; account identity unresolved | `"代々" "Grand Archive" artist profile` |
+| A012 | 代々 | Instagram profile portrait added 2026-10-14 | `"代々" "Grand Archive" artist profile` |
 | A013 | KHΩA | Initials; account identity unresolved | `"KHΩA" "Grand Archive" illustration` |
 | A014 | Kaze | Initials; account identity unresolved | `"Kaze" "Grand Archive" artist portfolio` |
 | A015 | Rachel Liu | Verified image already added | [Official profile](https://www.liurachel.com/about-1) |

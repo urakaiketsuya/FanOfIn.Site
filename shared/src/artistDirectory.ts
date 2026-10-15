@@ -304,15 +304,29 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a012",
+    "portrait": {
+      "src": "/images/artists/a012.jpg",
+      "sourceUrl": "https://www.instagram.com/daidai_kasame/",
+      "imageUrl": "https://scontent-iad6-1.cdninstagram.com/v/t51.2885-19/292860884_1432460197254809_6712303676771485440_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=109&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=STo6hEj04Q0Q7kNvwFGAqzh&_nc_oc=AdopsYDPfrmtNBVExTLfV8xKFBC8uO2CQbDf06jqeI-3XalAkbOWOZUjS-adpn_rl7o&_nc_zt=24&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_ss=7b689&oh=00_AQPYEYcmw6_KydnAIa1aE2SsyGda2fFSXv9lzdjBZyknrw&oe=6AD5ED58",
+      "verifiedAt": "2026-10-14"
+    },
     "pronunciation": { "nativeText": "代々", "text": "Daidai", "lang": "en", "basis": "estimated" },
     "slug": "代々",
     "slugAliases": ["a012-代々"],
     "name": "代々",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "代々"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "Instagram",
+        "label": "@daidai_kasame",
+        "url": "https://www.instagram.com/daidai_kasame/",
+        "evidence": "https://www.instagram.com/daidai_kasame/",
+        "verifiedAt": "2026-10-14"
+      }
+    ]
   },
   {
     "id": "a013",
