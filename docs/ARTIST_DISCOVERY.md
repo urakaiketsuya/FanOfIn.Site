@@ -1264,7 +1264,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A070 | Sunny | Initials; account identity unresolved | `"Sunny" "Map of Hidden Passage" artist` |
 | A071 | TEDDYPOCKY | X profile portrait added 2026-10-14 | `"TEDDYPOCKY" "Trump Set"` |
 | A072 | 十尾t | Initials; account identity unresolved | `"十尾t" artist profile` |
-| A073 | 桃李タロ | Initials; account identity unresolved | `"桃李タロ" "Bubble Mage"` |
+| A073 | 桃李タロ | X profile portrait added 2026-10-14 | `"桃李タロ" "Bubble Mage"` |
 | A074 | 蝦蝦 | Initials; account identity unresolved | `"蝦蝦" "Library Witch"` |
 | A075 | 道漫? | Initials; account identity unresolved | `"道漫?" "Astra Sight"` |
 | A076 | 阿冰 | Initials; account identity unresolved | `"阿冰" "Grand Archive" artist` |
@@ -1647,3 +1647,8 @@ Verification: all four artist tests and diff checks pass. All three links displa
 ### TEDDYPOCKY portrait update 2026-10-14
 
 Inspected the original [X profile](https://x.com/TEDDYPOCKY) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a071.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a071.
+
+
+### 桃李タロ portrait update 2026-10-14
+
+Inspected the original [X profile](https://x.com/tori_mcct) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a073.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a073.

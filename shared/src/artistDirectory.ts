@@ -1326,6 +1326,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a073",
+    "portrait": {
+      "src": "/images/artists/a073.jpg",
+      "sourceUrl": "https://x.com/tori_mcct",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1909310440049721344/FIc4MAZ1_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "pronunciation": { "nativeText": "桃李", "text": "Tori", "lang": "ja-Latn", "basis": "estimated" },
     "slug": "桃李タロ",
     "slugAliases": ["a073-桃李タロ"],
