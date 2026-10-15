@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-15",
+  "status": "visual-research-not-production-identity",
+  "candidateFile": "docs/research/official-merchandise-candidates.json",
+  "sourceFile": "docs/research/official-merchandise-sources.json",
+  "policy": [
+    "Findings come from visual comparison of the rendered official catalog pages. Evidence references preserve source labels and pages.",
+    "A matching catalog illustration establishes a depicted design match only, not identical dimensions, materials, edition, manufacturing run or retail SKU.",
+    "Partial findings apply only to the source appearances explicitly named in the finding. Do not merge entire candidate groups from partial matches.",
+    "No ownership IDs or candidate merges are introduced by this review. Text-only appearances remain unresolved."
+  ],
+  "reviews": [
+    {
+      "candidateIds": [
+        "merch-candidate-45845cbf754890ab",
+        "merch-candidate-fdfb48317d8ed782"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "London lists Merlin, Amethyst Glow as text only. Los Angeles and Las Vegas show the same seated Merlin artwork for Amethyst’s Glow, but this does not establish the London design.",
+      "evidence": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Amethyst Glow"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Amethyst’s Glow"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Merlin, Amethyst’s Glow"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-2760ce6ef3bd605e",
+        "merch-candidate-92c5d5bccfb7715d"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "London lists Diana, Haunt Reminisense without a product image. Los Angeles shows Haunt Reminiscence; the probable spelling correction is not a verified artwork match.",
+      "evidence": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Diana, Haunt Reminisense"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Diana, Haunt Reminiscence"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-94619c9a4542fa8a",
+        "merch-candidate-5e559df4ae337c9e",
+        "merch-candidate-6c4e22fab211fcbc"
+      ],
+      "status": "partially-resolved-distinct-artwork",
+      "finding": "Los Angeles explicitly pictures Phantom Monarch CSR as a dark monochrome composition and CUR as a light blue composition. These are distinct artwork designs. London’s unqualified Phantom Monarch listing has no image and remains unresolved.",
+      "evidence": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Phantom Monarch (CSR)"
+        },
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch CUR"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Phantom Monarch (CUR)"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-51d22bfcfd41d62e",
+        "merch-candidate-ea2bd2d352b10fca"
+      ],
+      "status": "resolved-distinct-artwork",
+      "finding": "Los Angeles shows unqualified Trifle’s Royalty with Alice seated in a blue outfit beside a small crowned character. Las Vegas labels Trifle’s Royalty CUR and shows a different composition with Alice in a pale outfit extending her arm. Preserve separate artwork designs.",
+      "evidence": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Trifle’s Royalty"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Trifle’s Royalty CUR"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-354893f77e374c70",
+        "merch-candidate-cf575f9576b49af9"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "London lists Fluffy Shopkeeper as text only. Melbourne pictures Fluffy Shopkeep PR with a horned shopkeeper behind a counter; London cannot be matched from this catalog.",
+      "evidence": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Fluffy Shopkeeper"
+        },
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Fluffy Shopkeep PR"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-1704abccd60a8a32",
+        "merch-candidate-f246431ed0debcb9"
+      ],
+      "status": "partially-resolved-matching-artwork",
+      "finding": "Akihabara’s Spirelle, Schwartz Queen compact box and the pictured Spirelle boxes in Los Angeles and Las Vegas share the purple and pink character design. London’s shortened listing has no product image.",
+      "evidence": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Spirelle"
+        },
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Spirelle"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Spirelle"
+        },
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Spirelle, Schwartz Queen"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-6683a291de35f70a",
+        "merch-candidate-4311cf88b0314809"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "Akihabara pictures the pale blue Snow White, Weiss Queen compact box. London lists Snow White without a product image.",
+      "evidence": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Snow White"
+        },
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Snow White, Weiss Queen"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-781ca262dca3c977",
+        "merch-candidate-281077dd51bd6844",
+        "merch-candidate-45be01edfc8b216d"
+      ],
+      "status": "partially-resolved-matching-and-distinct-artwork",
+      "finding": "Akihabara’s Alice, Phantom Monarch double box has a lavender exterior with blue line art matching the Alice double boxes pictured in Los Angeles and Las Vegas. Melbourne’s Alice, Trifle’s Royalty has a cyan exterior and a different line-art design and interior illustration. London’s named listing has no product image.",
+      "evidence": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Alice"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Alice"
+        },
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Alice, Phantom Monarch"
+        },
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch"
+        },
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Alice, Trifle’s Royalty"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-4f5c7ba2780f6987",
+        "merch-candidate-01854a701589ba1f"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "Los Angeles shows an assortment of keychains without individual image labels; Las Vegas has text names only. Baby Grey cannot be securely paired to an individual pictured keychain or equated to Baby Gray Slime.",
+      "evidence": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Baby Grey"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Baby Gray Slime"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-f466c994d9c5225f",
+        "merch-candidate-033074f98c79df86"
+      ],
+      "status": "resolved-matching-artwork",
+      "finding": "Los Angeles and Las Vegas use the same eight-standee arrangement. Kongming / Kong Ming is the green and white robed character in the third position of the lower row. The artwork and stand shape match.",
+      "evidence": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Kongming"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Kong Ming"
+        }
+      ]
+    },
+    {
+      "candidateIds": [
+        "merch-candidate-63028892412bfd60",
+        "merch-candidate-69e609342d92e266"
+      ],
+      "status": "unresolved-no-product-image",
+      "finding": "Akihabara lists Ciel, Mirage’s Grave sleeves and Las Vegas lists Ciel sleeves, both without sleeve product images. A nearby Ciel playmat image is not evidence of the sleeve artwork.",
+      "evidence": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ciel"
+        },
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Mirage’s Grave"
+        }
+      ]
+    }
+  ],
+  "additionalFindings": [
+    {
+      "status": "conflicting-labels-and-illustration",
+      "evidence": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16
+        }
+      ],
+      "finding": "The compact-box photographs repeat the same five designs, while Los Angeles lists Liu Bei and Las Vegas lists Da Qiao. Neither page pairs every name with an individual box. Do not infer product identity or image assignment from list order."
+    }
+  ],
+  "nextEvidenceNeeded": [
+    "Product photographs or official product sheets for the London text-only listings.",
+    "Individually labeled keychain and sleeve artwork.",
+    "Official clarification of the Liu Bei / Da Qiao compact-box listing discrepancy.",
+    "Physical specifications and edition information before finalizing ownership identities."
+  ]
+}
