@@ -1258,7 +1258,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A061 | Dragonart KS | Initials; account identity unresolved | `"Dragonart KS" illustrator` |
 | A062 | DragonArt Zhang Iris | Initials; account identity unresolved | `"DragonArt Zhang Iris" illustrator` |
 | A063 | Dragonart 白霜搽 | Added in this pass | [Official profile](https://www.instagram.com/shuangchabai/) |
-| A064 | DragonArt 艾瞳A-Ton | Initials; account identity unresolved | `"DragonArt 艾瞳A-Ton" illustrator` |
+| A064 | DragonArt 艾瞳A-Ton | X profile portrait added 2026-10-14 | `"DragonArt 艾瞳A-Ton" illustrator` |
 | A065 | Ge-B | Initials; account identity unresolved | `"Ge-B" "Mire Reparation"` |
 | A066 | HYONEE | Initials; account identity unresolved | `"HYONEE" "Grand Archive" artist` |
 | A067 | Polar Engine | Instagram profile portrait added 2026-10-14 | `"Polar Engine" "City Protector"` |
@@ -1665,3 +1665,8 @@ Inspected the original [Instagram profile](https://www.instagram.com/polar_engin
 ### Rubi露比喵 portrait update 2026-10-14
 
 Inspected the original [X profile](https://x.com/rubimeoww_draws) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a069.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a069.
+
+
+### A-Ton portrait update 2026-10-14
+
+Inspected the original [X profile](https://x.com/aton2503) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a064.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a064.

@@ -1195,6 +1195,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a064",
+    "portrait": {
+      "src": "/images/artists/a064.jpg",
+      "sourceUrl": "https://x.com/aton2503",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1771232508027498497/zP3krXqD_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "pronunciation": { "nativeText": "艾瞳", "text": "Ài tóng", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "dragonart-艾瞳a-ton",
     "slugAliases": ["a064-dragonart-艾瞳a-ton"],
