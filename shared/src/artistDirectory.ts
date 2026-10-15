@@ -1024,14 +1024,35 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a051",
+    "portrait": {
+      "src": "/images/artists/a051.jpg",
+      "sourceUrl": "https://x.com/reindeeya",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1658160444509499427/f-UV768v_400x400.jpg",
+      "verifiedAt": "2026-10-15"
+    },
     "slug": "deeya-chaturvedi",
     "slugAliases": ["a051-deeya-chaturvedi"],
     "name": "Deeya Chaturvedi",
-    "kind": "unknown",
+    "kind": "individual",
     "credits": [
       "Deeya Chaturvedi"
     ],
-    "links": []
+    "links": [
+      {
+        "platform": "X",
+        "label": "@reindeeya",
+        "url": "https://x.com/reindeeya",
+        "evidence": "https://x.com/reindeeya",
+        "verifiedAt": "2026-10-15"
+      },
+      {
+        "platform": "Instagram",
+        "label": "@reindeeya",
+        "url": "https://www.instagram.com/reindeeya/",
+        "evidence": "https://www.instagram.com/reindeeya/",
+        "verifiedAt": "2026-10-15"
+      }
+    ]
   },
   {
     "id": "a052",

@@ -101,7 +101,7 @@ An entry can have verified links and unresolved candidates at the same time. Kee
 | A048 | ZERONEXT | 4 | 7 | User-confirmed Instagram |
 | A049 | ジェゼ一 | 4 | 9 | Needs identity review |
 | A050 | 白霜茶 | 4 | 7 | Needs identity review |
-| A051 | Deeya Chaturvedi | 3 | 6 | Needs identity review |
+| A051 | Deeya Chaturvedi | 3 | 6 | User-confirmed accounts |
 | A052 | DragonArt 倉倉 | 3 | 4 | Needs identity review |
 | A053 | Leviathan | 3 | 3 | Reviewed with no verified links found |
 | A054 | 白帝 | 3 | 11 | Needs identity review |
@@ -1246,7 +1246,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A048 | ZERONEXT | Instagram profile portrait added 2026-10-14 | `"ZERONEXT" "Grand Archive" illustrator` |
 | A049 | ジェゼ一 | Initials; account identity unresolved | `"ジェゼ一" "Grand Archive"` |
 | A050 | 白霜茶 | Initials; account identity unresolved | `"白霜茶" 画师 主页` |
-| A051 | Deeya Chaturvedi | Initials; account identity unresolved | `"Deeya Chaturvedi" "Grand Archive"` |
+| A051 | Deeya Chaturvedi | X profile portrait added 2026-10-15 | `"Deeya Chaturvedi" "Grand Archive"` |
 | A052 | DragonArt 倉倉 | Initials; account identity unresolved | `"DragonArt 倉倉" artist` |
 | A053 | Leviathan | Initials; account identity unresolved | `"Leviathan" "Grand Archive" illustrator profile` |
 | A054 | 白帝 | Initials; account identity unresolved | `"白帝" "Esteemed Knight"` |
@@ -1671,3 +1671,8 @@ Inspected the original [X profile](https://x.com/rubimeoww_draws) and its profil
 ### A-Ton portrait update 2026-10-14
 
 Inspected the original [X profile](https://x.com/aton2503) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a064.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a064.
+
+
+### Deeya Chaturvedi account and portrait update 2026-10-15
+
+Added user-confirmed [X @reindeeya](https://x.com/reindeeya) and [Instagram @reindeeya](https://www.instagram.com/reindeeya/). Both original profiles display Deeya Chaturvedi. Instagram states “moved → @worksofdeegy”; retained the exact requested account and did not substitute an uninspected destination. Added the unchanged 400×400 X profile JPEG at `app/public/images/artists/a051.jpg`, with source metadata in the directory. These confirmations supersede the earlier account-free recommendation; no independent Grand Archive commission match is claimed.
