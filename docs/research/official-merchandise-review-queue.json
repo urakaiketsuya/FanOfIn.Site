@@ -1,0 +1,3081 @@
+{
+  "schemaVersion": 1,
+  "status": "research-review-queue-not-ownership-catalog",
+  "policy": [
+    "Only exact promoted observations are complete. Other appearances of the same label still require review.",
+    "Visual findings are research context, not permission to merge ownership IDs.",
+    "Unpromoted label groups are not a count of missing unique products.",
+    "Historical catalog coverage gaps remain in official-merchandise-coverage.json."
+  ],
+  "counts": {
+    "candidateLabelGroups": 148,
+    "groupsWithPromotions": 94,
+    "unpromotedLabelGroups": 54,
+    "promotedObservations": 94,
+    "observationsNeedingReview": 98,
+    "excludedGenericObservations": 2,
+    "totalSourceObservations": 194
+  },
+  "entries": [
+    {
+      "candidateId": "merch-candidate-01854a701589ba1f",
+      "productType": "keychain",
+      "label": "Baby Gray Slime",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Baby Gray Slime",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Los Angeles shows an assortment of keychains without individual image labels; Las Vegas has text names only. Baby Grey cannot be securely paired to an individual pictured keychain or equated to Baby Gray Slime.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Baby Grey"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Baby Gray Slime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-033074f98c79df86",
+      "productType": "acrylic-standee",
+      "label": "Kong Ming",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Kong Ming",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-kongming"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "resolved-matching-artwork",
+          "finding": "Los Angeles and Las Vegas use the same eight-standee arrangement. Kongming / Kong Ming is the green and white robed character in the third position of the lower row. The artwork and stand shape match.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Kongming"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Kong Ming"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-064106a500f51c44",
+      "productType": "keychain",
+      "label": "Blue Slime",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Blue Slime",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Blue Slime",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-0913d00586ae3b81",
+      "productType": "playmat",
+      "label": "SP4 Cosmic Bolt",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "SP4 Cosmic Bolt",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-sp4-cosmic-bolt"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-09ca0fd7ee696ac7",
+      "productType": "acrylic-art",
+      "label": "The Looking Glass",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "The Looking Glass",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-art-the-looking-glass"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-0abc787744a73dc2",
+      "productType": "playmat",
+      "label": "Ciel, Loyal Valet",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Loyal Valet",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-ciel-loyal-valet"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-0afcd44e2ba7f39c",
+      "productType": "keychain",
+      "label": "Avatar of Gaia",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Avatar of Gaia",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Avatar of Gaia",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-0be470e4e144d65d",
+      "productType": "playmat",
+      "label": "Mordred, Aurelian Regent",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Mordred, Aurelian Regent",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-mordred-aurelian-regent"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-11acd06b15d11818",
+      "productType": "keychain",
+      "label": "The Majestic Spirit",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "The Majestic Spirit",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "The Majestic Spirit",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-12e4ea88ae1ede9f",
+      "productType": "playmat",
+      "label": "Cheshire Cat",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Cheshire Cat",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-cheshire-cat"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-150c910262d646e7",
+      "productType": "sleeves",
+      "label": "Raziel",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Raziel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Raziel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-1704abccd60a8a32",
+      "productType": "compact-deck-box",
+      "label": "Spirelle",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Spirelle",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Spirelle",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Spirelle",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-matching-artwork",
+          "finding": "Akihabara’s Spirelle, Schwartz Queen compact box and the pictured Spirelle boxes in Los Angeles and Las Vegas share the purple and pink character design. London’s shortened listing has no product image.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Spirelle, Schwartz Queen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-202d34ff38d65146",
+      "productType": "playmat",
+      "label": "The Looking Glass",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "The Looking Glass",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-the-looking-glass"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-237107175e2412a4",
+      "productType": "playmat",
+      "label": "Ciel, Mirage's Grave",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Mirage’s Grave",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-ciel-mirage-s-grave"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ciel, Mirage’s Grave",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-2422790bd8ba4d36",
+      "productType": "compact-deck-box",
+      "label": "Da Qiao",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Da Qiao",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-256124e08b0ebec0",
+      "productType": "playmat",
+      "label": "Divine Comedy, Inferno",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Divine Comedy, Inferno",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-divine-comedy-inferno"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-26461f11b6f6e438",
+      "productType": "plush",
+      "label": "Silvie",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Silvie",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Silvie",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Silvie",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-plush-silvie"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-2760ce6ef3bd605e",
+      "productType": "playmat",
+      "label": "Diana, Haunt Reminisense",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Diana, Haunt Reminisense",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Diana, Haunt Reminisense without a product image. Los Angeles shows Haunt Reminiscence; the probable spelling correction is not a verified artwork match.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Diana, Haunt Reminisense"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Diana, Haunt Reminiscence"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-27ded2c89fcd837c",
+      "productType": "t-shirt",
+      "label": "Tristan",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Tristan",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-tristan"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-281077dd51bd6844",
+      "productType": "double-deck-box",
+      "label": "Alice, Phantom Monarch",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Alice, Phantom Monarch",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-double-deck-box-alice-phantom-monarch"
+        },
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-matching-and-distinct-artwork",
+          "finding": "Akihabara’s Alice, Phantom Monarch double box has a lavender exterior with blue line art matching the Alice double boxes pictured in Los Angeles and Las Vegas. Melbourne’s Alice, Trifle’s Royalty has a cyan exterior and a different line-art design and interior illustration. London’s named listing has no product image.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "melbourne-2026",
+              "page": 16,
+              "sourceLabel": "Alice, Trifle’s Royalty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-286528be9e0a0d56",
+      "productType": "playmat",
+      "label": "Nuriel, Seraphic Paladin",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Nuriel, Seraphic Paladin",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-nuriel-seraphic-paladin"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-29acc3e0c465027d",
+      "productType": "playmat",
+      "label": "Auspicious Manifestation",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Auspicious Manifestation",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-auspicious-manifestation"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-29c609dc16bfa0b3",
+      "productType": "compact-deck-box",
+      "label": "Lu Bu",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Lu Bu",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Lu Bu",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-2ae23bc661ed8bd5",
+      "productType": "playmat",
+      "label": "Diana, Moonpiercer",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Diana, Moonpiercer",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-diana-moonpiercer"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-2e02dc38dddb285b",
+      "productType": "playmat",
+      "label": "Dungeon Guide PR",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Dungeon Guide PR",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-dungeon-guide-pr"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-31d0c1bdc0084ef0",
+      "productType": "playmat",
+      "label": "Nico, Whiplash Allure",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Nico, Whiplash Allure",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-31fbcaee779feb48",
+      "productType": "acrylic-art",
+      "label": "Alice, Golden Queen",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Alice, Golden Queen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-art-alice-golden-queen"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-3252b39a94541f4a",
+      "productType": "playmat",
+      "label": "Zander, Corhazi's Chosen",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Zander, Corhazi’s Chosen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-zander-corhazi-s-chosen"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-33e9d3f39286fe71",
+      "productType": "playmat",
+      "label": "Eternal Kingdom",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Eternal Kingdom",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-348927b1ec13b17e",
+      "productType": "playmat",
+      "label": "Malevolent Vow",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Malevolent Vow",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-malevolent-vow"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-354893f77e374c70",
+      "productType": "playmat",
+      "label": "Fluffy Shopkeeper",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Fluffy Shopkeeper",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Fluffy Shopkeeper as text only. Melbourne pictures Fluffy Shopkeep PR with a horned shopkeeper behind a counter; London cannot be matched from this catalog.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Fluffy Shopkeeper"
+            },
+            {
+              "sourceId": "melbourne-2026",
+              "page": 16,
+              "sourceLabel": "Fluffy Shopkeep PR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-357c5964dd683124",
+      "productType": "acrylic-standee",
+      "label": "Tristan",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Tristan",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-tristan"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Tristan",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-363c6b617abeb84a",
+      "productType": "acrylic-art",
+      "label": "Fractured Memories",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Fractured Memories",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-art-fractured-memories"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-379dac205a64e134",
+      "productType": "playmat",
+      "label": "Enfeebling Orb PR",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Enfeebling Orb PR",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-enfeebling-orb-pr"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-38c34c348861f491",
+      "productType": "playmat",
+      "label": "Arisanna, Lucent Arbiter",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Arisanna, Lucent Arbiter",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-arisanna-lucent-arbiter"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-3b6aec4efd4ffae9",
+      "productType": "figurine",
+      "label": "Arisanna",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Arisanna",
+          "note": "Chibi Figures",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-figurine-arisanna-chibi"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-3b9dc20332890ce8",
+      "productType": "compact-deck-box",
+      "label": "Avatar of Byakko",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Avatar of Byakko",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-compact-deck-box-avatar-of-byakko"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-3e921503eadc5895",
+      "productType": "acrylic-standee",
+      "label": "Diana",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Diana",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-diana"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Diana",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-42a9e3243b132488",
+      "productType": "playmat",
+      "label": "Arcane Blast",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Arcane Blast",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-arcane-blast"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4311cf88b0314809",
+      "productType": "compact-deck-box",
+      "label": "Snow White, Weiss Queen",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Snow White, Weiss Queen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-compact-deck-box-snow-white-weiss-queen"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Akihabara pictures the pale blue Snow White, Weiss Queen compact box. London lists Snow White without a product image.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Snow White"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Snow White, Weiss Queen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-438023ac5a832874",
+      "productType": "compact-deck-box",
+      "label": "Avatar of Suzaku",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Avatar of Suzaku",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-compact-deck-box-avatar-of-suzaku"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-45423db6a87e3df2",
+      "productType": "keychain",
+      "label": "Naia",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Naia",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Naia",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4562d9712ad26985",
+      "productType": "acrylic-standee",
+      "label": "Jin",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Jin",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-jin"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Jin",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-45845cbf754890ab",
+      "productType": "playmat",
+      "label": "Merlin, Amethyst Glow",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Amethyst Glow",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Merlin, Amethyst Glow as text only. Los Angeles and Las Vegas show the same seated Merlin artwork for Amethyst’s Glow, but this does not establish the London design.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Merlin, Amethyst Glow"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Merlin, Amethyst’s Glow"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Merlin, Amethyst’s Glow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-45be01edfc8b216d",
+      "productType": "double-deck-box",
+      "label": "Alice, Trifle's Royalty",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Alice, Trifle’s Royalty",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-double-deck-box-alice-trifle-s-royalty"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-matching-and-distinct-artwork",
+          "finding": "Akihabara’s Alice, Phantom Monarch double box has a lavender exterior with blue line art matching the Alice double boxes pictured in Los Angeles and Las Vegas. Melbourne’s Alice, Trifle’s Royalty has a cyan exterior and a different line-art design and interior illustration. London’s named listing has no product image.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "melbourne-2026",
+              "page": 16,
+              "sourceLabel": "Alice, Trifle’s Royalty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4950c1743ee2e18c",
+      "productType": "playmat",
+      "label": "SP4 Expel the Departed",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "SP4 Expel the Departed",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-sp4-expel-the-departed"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4ca429c476283b1a",
+      "productType": "playmat",
+      "label": "Chamber of Reflections",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Chamber of Reflections",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-chamber-of-reflections"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4e8bd758056b8933",
+      "productType": "playmat",
+      "label": "Tristan, Hired Blade",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tristan, Hired Blade",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4f5c7ba2780f6987",
+      "productType": "keychain",
+      "label": "Baby Grey",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Baby Grey",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Los Angeles shows an assortment of keychains without individual image labels; Las Vegas has text names only. Baby Grey cannot be securely paired to an individual pictured keychain or equated to Baby Gray Slime.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Baby Grey"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Baby Gray Slime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-4fcaf54f6c6d9d47",
+      "productType": "keychain",
+      "label": "Academy Guide",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Academy Guide",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Academy Guide",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-51d22bfcfd41d62e",
+      "productType": "playmat",
+      "label": "Alice, Trifle's Royalty",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Trifle’s Royalty",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-trifle-s-royalty"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "resolved-distinct-artwork",
+          "finding": "Los Angeles shows unqualified Trifle’s Royalty with Alice seated in a blue outfit beside a small crowned character. Las Vegas labels Trifle’s Royalty CUR and shows a different composition with Alice in a pale outfit extending her arm. Preserve separate artwork designs.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Trifle’s Royalty"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Trifle’s Royalty CUR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5542e8231fb263ca",
+      "productType": "playmat",
+      "label": "Diana, Judgment's Arrow",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Diana, Judgment’s Arrow",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-diana-judgment-s-arrow"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-57f3424691584e06",
+      "productType": "sleeves",
+      "label": "Ariel",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ariel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Ariel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-57ff8578e3997203",
+      "productType": "acrylic-standee",
+      "label": "Arisanna",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Arisanna",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-arisanna"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Arisanna",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-58cbcff3150321cb",
+      "productType": "playmat",
+      "label": "Topsy Decree",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Topsy Decree",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5b0f136e117353f3",
+      "productType": "playmat",
+      "label": "Alice, Golden Queen",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Alice, Golden Queen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-golden-queen"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Golden Queen",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5d7b6e4c3412388c",
+      "productType": "compact-deck-box",
+      "label": "Liu Bei",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Liu Bei",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5dacee1a27606df1",
+      "productType": "sleeves",
+      "label": "Haniel",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Haniel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Haniel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5e559df4ae337c9e",
+      "productType": "playmat",
+      "label": "Alice, Phantom Monarch CSR",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Phantom Monarch (CSR)",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-phantom-monarch-csr"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-distinct-artwork",
+          "finding": "Los Angeles explicitly pictures Phantom Monarch CSR as a dark monochrome composition and CUR as a light blue composition. These are distinct artwork designs. London’s unqualified Phantom Monarch listing has no image and remains unresolved.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CSR)"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch CUR"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CUR)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-5ea18eace159892c",
+      "productType": "playmat",
+      "label": "Tristan, Shadowdancer",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tristan, Shadowdancer",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-60ed779e53ce84c6",
+      "productType": "playmat",
+      "label": "Spirit Blade: Terminus",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Spirit Blade: Terminus",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-spirit-blade-terminus"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6241603cda139a65",
+      "productType": "t-shirt",
+      "label": "Merlin",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Merlin",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-merlin"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-63028892412bfd60",
+      "productType": "sleeves",
+      "label": "Ciel",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Ciel",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Akihabara lists Ciel, Mirage’s Grave sleeves and Las Vegas lists Ciel sleeves, both without sleeve product images. A nearby Ciel playmat image is not evidence of the sleeve artwork.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Ciel"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 23,
+              "sourceLabel": "Ciel, Mirage’s Grave"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6429316e8c791c5e",
+      "productType": "playmat",
+      "label": "Diana, Aether Dilettante",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Diana, Aether Dilettante",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-diana-aether-dilettante"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Diana, Aether Dilettante",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6683a291de35f70a",
+      "productType": "compact-deck-box",
+      "label": "Snow White",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Snow White",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Akihabara pictures the pale blue Snow White, Weiss Queen compact box. London lists Snow White without a product image.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Snow White"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Snow White, Weiss Queen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-69e609342d92e266",
+      "productType": "sleeves",
+      "label": "Ciel, Mirage's Grave",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Mirage’s Grave",
+          "note": "Dragon Shield",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "Akihabara lists Ciel, Mirage’s Grave sleeves and Las Vegas lists Ciel sleeves, both without sleeve product images. A nearby Ciel playmat image is not evidence of the sleeve artwork.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Ciel"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 23,
+              "sourceLabel": "Ciel, Mirage’s Grave"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6c41125ef5a681f9",
+      "productType": "wall-scroll",
+      "label": "Horizon's Reprise Key Visual Wall Scroll",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Horizon’s Reprise Key Visual Wall Scroll",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-wall-scroll-horizon-s-reprise-key-visual-wall-scroll"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6c4e22fab211fcbc",
+      "productType": "playmat",
+      "label": "Alice, Phantom Monarch CUR",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch CUR",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Phantom Monarch (CUR)",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-phantom-monarch-cur"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-distinct-artwork",
+          "finding": "Los Angeles explicitly pictures Phantom Monarch CSR as a dark monochrome composition and CUR as a light blue composition. These are distinct artwork designs. London’s unqualified Phantom Monarch listing has no image and remains unresolved.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CSR)"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch CUR"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CUR)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6d3beaa8b640c06e",
+      "productType": "playmat",
+      "label": "Lu Bu, Wrath Incarnate",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Lu Bu, Wrath Incarnate",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-lu-bu-wrath-incarnate"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6e438062d7914c05",
+      "productType": "playmat",
+      "label": "Baby Blue Slime",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Baby Blue Slime",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-6f4aafbaea5a1e14",
+      "productType": "playmat",
+      "label": "Polkhawk, Bombastic Shot",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Polkhawk, Bombastic Shot",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-77c209fb0d035a58",
+      "productType": "playmat",
+      "label": "Merlin, Memorite Vassal",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Memorite Vassal",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Merlin, Memorite Vassal",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-merlin-memorite-vassal"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-781ca262dca3c977",
+      "productType": "double-deck-box",
+      "label": "Alice",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Alice",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Alice",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-matching-and-distinct-artwork",
+          "finding": "Akihabara’s Alice, Phantom Monarch double box has a lavender exterior with blue line art matching the Alice double boxes pictured in Los Angeles and Las Vegas. Melbourne’s Alice, Trifle’s Royalty has a cyan exterior and a different line-art design and interior illustration. London’s named listing has no product image.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Alice"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "melbourne-2026",
+              "page": 16,
+              "sourceLabel": "Alice, Trifle’s Royalty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-7b2217b76af8002f",
+      "productType": "coaster",
+      "label": "Lorraine",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Lorraine",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-coaster-lorraine"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-7e869f0cb36c727c",
+      "productType": "playmat",
+      "label": "PR- Heavenly Guide",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "PR- Heavenly Guide",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-8045b704d970cf1f",
+      "productType": "playmat",
+      "label": "Profane Bindings",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Profane Bindings",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-profane-bindings"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-82c282fa32e0c943",
+      "productType": "figurine",
+      "label": "Kongming",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Kongming",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-figurine-kongming"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Kongming",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Kongming",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-82fb1647cbd43bd6",
+      "productType": "playmat",
+      "label": "Excalibur, Reflected Glass",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Excalibur, Reflected Glass",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-excalibur-reflected-glass"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-83c5efb22694f854",
+      "productType": "playmat",
+      "label": "Peer Into Mana",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Peer Into Mana",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-peer-into-mana"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-84d10a5de67e0d9b",
+      "productType": "tote-bag",
+      "label": "Merlin",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Merlin",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-tote-bag-merlin"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-8534a5bb5df35571",
+      "productType": "playmat",
+      "label": "SP4 Lily, Marine Castellan",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "SP4 Lily, Marine Castellan",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-sp4-lily-marine-castellan"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-87779b24ebc97b68",
+      "productType": "sleeves",
+      "label": "Azrael",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Azrael",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Azrael",
+          "note": "Dragon Shield; art titles unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-87c9e2434a2aaf6e",
+      "productType": "playmat",
+      "label": "Silvie, Slime Sovereign",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Silvie, Slime Sovereign",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-8bea3a5bfe0f6cb6",
+      "productType": "table-mat",
+      "label": "ALC 6FT Table Mat",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "ALC 6FT Table Mat",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-92c5d5bccfb7715d",
+      "productType": "playmat",
+      "label": "Diana, Haunt Reminiscence",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Diana, Haunt Reminiscence",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-diana-haunt-reminiscence"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Diana, Haunt Reminisense without a product image. Los Angeles shows Haunt Reminiscence; the probable spelling correction is not a verified artwork match.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Diana, Haunt Reminisense"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Diana, Haunt Reminiscence"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-94619c9a4542fa8a",
+      "productType": "playmat",
+      "label": "Alice, Phantom Monarch",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Phantom Monarch",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-distinct-artwork",
+          "finding": "Los Angeles explicitly pictures Phantom Monarch CSR as a dark monochrome composition and CUR as a light blue composition. These are distinct artwork designs. London’s unqualified Phantom Monarch listing has no image and remains unresolved.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CSR)"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Phantom Monarch CUR"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Phantom Monarch (CUR)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-94cae98dce9b853a",
+      "productType": "plush",
+      "label": "Guo Jia",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Guo Jia",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-plush-guo-jia"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-99155ec88e4100de",
+      "productType": "acrylic-art",
+      "label": "Cheshire Cat",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Cheshire Cat",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-art-cheshire-cat"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-992ae58b31aab650",
+      "productType": "playmat",
+      "label": "Mechanical Hare",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Mechanical Hare",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9949b0cc918b2fa6",
+      "productType": "playmat",
+      "label": "Alice, Distorted Queen",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Distorted Queen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-distorted-queen"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9a62fb3b6e0aae56",
+      "productType": "coaster",
+      "label": "Arisanna",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Arisanna",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-coaster-arisanna"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9aaad8ba9f567217",
+      "productType": "acrylic-standee",
+      "label": "Silvie",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Silvie",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-silvie"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Silvie",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9af73e8f66eb738d",
+      "productType": "playmat",
+      "label": "Angelic Channeling",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Angelic Channeling",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-angelic-channeling"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9c58c1dedb8531ca",
+      "productType": "playmat",
+      "label": "Merlin, Brilliant Vestige",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Brilliant Vestige",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Merlin, Brilliant Vestige",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-merlin-brilliant-vestige"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9e1a6ef2b4c147d0",
+      "productType": "playmat",
+      "label": "Embrace Noir",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Embrace Noir",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-embrace-noir"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9ed5d995a646ac6a",
+      "productType": "t-shirt",
+      "label": "Diana",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Diana",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-diana"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Diana",
+          "note": "Sizes unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Diana",
+          "note": "Sizes unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-9f982c960873f6b2",
+      "productType": "compact-deck-box",
+      "label": "Avatar of Genbu",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Avatar of Genbu",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-compact-deck-box-avatar-of-genbu"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-a1bc096da81de6c7",
+      "productType": "playmat",
+      "label": "PR- Smoke Bombs",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "PR- Smoke Bombs",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-a308696842616844",
+      "productType": "playmat",
+      "label": "Final Stroke",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Final Stroke",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-a93458637164073b",
+      "productType": "playmat",
+      "label": "Celestial Navigation",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Celestial Navigation",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-celestial-navigation"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-a9f70486409bafa9",
+      "productType": "playmat",
+      "label": "Ashen Riffle",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ashen Riffle",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-ashen-riffle"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-abd4e1e1d3d22ae2",
+      "productType": "metal-counters",
+      "label": "Silver Metal Counters",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Silver Metal Counters",
+          "note": "Pictured as a boxed set; individual designs not named.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-metal-counters-silver"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ac4f6afa8a935f5e",
+      "productType": "playmat",
+      "label": "Iridescent Resurgence",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Iridescent Resurgence",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-iridescent-resurgence"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-add1908aeabb5ccb",
+      "productType": "playmat",
+      "label": "Infinite Scintillation",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Infinite Scintillation",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ae9dd7f98e1c9a82",
+      "productType": "playmat",
+      "label": "Ciel, Omenbringer",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Ciel, Omenbringer",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-ciel-omenbringer"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-affc1b27e03bd626",
+      "productType": "playmat",
+      "label": "Chronowarp",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Chronowarp",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-chronowarp"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-b129bf697e23589f",
+      "productType": "playmat",
+      "label": "Vanitas, Convergent Ruin",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Vanitas, Convergent Ruin",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-b59bd9203a7bf153",
+      "productType": "t-shirt",
+      "label": "Ciel",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Ciel",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-ciel"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-b61e60a83096f4e2",
+      "productType": "keychain",
+      "label": "Dungeon Guide",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Dungeon Guide",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Dungeon Guide",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-b8a8dff69e06cee2",
+      "productType": "playmat",
+      "label": "Nox, Final Release",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Nox, Final Release",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-nox-final-release"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-b90cdbfe53956a9d",
+      "productType": "playmat",
+      "label": "Kongming, Fei Eidolon",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Kongming, Fei Eidolon",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-kongming-fei-eidolon"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-bba9d0daef219164",
+      "productType": "plush",
+      "label": "Tristan",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Tristan",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-plush-tristan"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-bc5caee756f60852",
+      "productType": "sleeves",
+      "label": "Tonoris, Genesis Aegis",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tonoris, Genesis Aegis",
+          "note": "Dragon Shield",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-bceec12bd123a226",
+      "productType": "coaster",
+      "label": "Kong Ming",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Kong Ming",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-coaster-kongming"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-bd62479734e7f4f3",
+      "productType": "playmat",
+      "label": "Excalibur, Reflected Edge",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Excalibur, Reflected Edge",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-c272c0de03bb8b56",
+      "productType": "t-shirt",
+      "label": "Nico",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Nico",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-nico"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-c28a9cf4873a0f36",
+      "productType": "compact-deck-box",
+      "label": "Yuan Shao",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Yuan Shao",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Yuan Shao",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-c388fbd283159978",
+      "productType": "figurine",
+      "label": "Merlin, Amethyst's Glow",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Merlin, Amethyst’s Glow",
+          "note": "Merlin figure shown separately from the chibi figures.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-figurine-merlin-amethyst-s-glow"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-c388ffd2a7cbf357",
+      "productType": "acrylic-standee",
+      "label": "Lorraine",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Lorraine",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-lorraine"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Lorraine",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-c7eab225664f0cc9",
+      "productType": "playmat",
+      "label": "Alice, Whim's Monarch",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Whim’s Monarch",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Alice, Whim’s Monarch",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-whim-s-monarch"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ca960b596b19e237",
+      "productType": "playmat",
+      "label": "PR- Conniving Plans",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "london-2026",
+          "page": 15,
+          "sourceLabel": "PR- Conniving Plans",
+          "note": "Source spellings preserved; do not infer an artwork variant for the unqualified Phantom Monarch listing.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-cb00759539e0b313",
+      "productType": "double-deck-box",
+      "label": "Lu Bu",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Lu Bu",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-double-deck-box-lu-bu"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Lu Bu",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-cce8462c3705c3e2",
+      "productType": "playmat",
+      "label": "Lorraine, Honed Operative",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Lorraine, Honed Operative",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-lorraine-honed-operative"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-cdc199fbfec6ab27",
+      "productType": "playmat",
+      "label": "Tristan, Underhanded",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tristan, Underhanded",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-cf575f9576b49af9",
+      "productType": "playmat",
+      "label": "Fluffy Shopkeep PR",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Fluffy Shopkeep PR",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-fluffy-shopkeep-pr"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Fluffy Shopkeeper as text only. Melbourne pictures Fluffy Shopkeep PR with a horned shopkeeper behind a counter; London cannot be matched from this catalog.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Fluffy Shopkeeper"
+            },
+            {
+              "sourceId": "melbourne-2026",
+              "page": 16,
+              "sourceLabel": "Fluffy Shopkeep PR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d52ee3a0929d3f4e",
+      "productType": "sleeves",
+      "label": "Arisanna, Astral Zenith",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Arisanna, Astral Zenith",
+          "note": "Dragon Shield",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d53e993360a0d936",
+      "productType": "playmat",
+      "label": "Tristan, Shadowweaver",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Tristan, Shadowweaver",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d558e1e19d119f19",
+      "productType": "playmat",
+      "label": "Vanitas, Obliviate Schemer",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Vanitas, Obliviate Schemer",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d63f6974f294619c",
+      "productType": "playmat",
+      "label": "Retold Fortune",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Retold Fortune",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d7aae098c293bfe6",
+      "productType": "t-shirt",
+      "label": "Silvie",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Silvie",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-silvie"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-d9292abcd342a735",
+      "productType": "playmat",
+      "label": "Diablerie",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Diablerie",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-daf8ed5ca7dcec92",
+      "productType": "playmat",
+      "label": "Lorraine, Wandering Warrior",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Lorraine, Wandering Warrior",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-lorraine-wandering-warrior"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-dd7ea9d1929f6644",
+      "productType": "playmat",
+      "label": "Arisanna, Master Alchemist",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Arisanna, Master Alchemist",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-arisanna-master-alchemist"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-de53b6bf769b3a74",
+      "productType": "t-shirt",
+      "label": "Alice",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Alice",
+          "note": "Sizes unspecified.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-t-shirt-alice"
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Alice",
+          "note": "Sizes unspecified.",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Alice",
+          "note": "Sizes unspecified.",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-e0ff408af3e312a3",
+      "productType": "playmat",
+      "label": "Flickering Afterglow",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Flickering Afterglow",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-flickering-afterglow"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-e567dd7136d10641",
+      "productType": "acrylic-standee",
+      "label": "Merlin",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Merlin",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-acrylic-standee-merlin"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Merlin",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ea2bd2d352b10fca",
+      "productType": "playmat",
+      "label": "Alice, Trifle's Royalty CUR",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Alice, Trifle’s Royalty CUR",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-alice-trifle-s-royalty-cur"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "resolved-distinct-artwork",
+          "finding": "Los Angeles shows unqualified Trifle’s Royalty with Alice seated in a blue outfit beside a small crowned character. Las Vegas labels Trifle’s Royalty CUR and shows a different composition with Alice in a pale outfit extending her arm. Preserve separate artwork designs.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Alice, Trifle’s Royalty"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Alice, Trifle’s Royalty CUR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ef6e1819b427f14d",
+      "productType": "playmat",
+      "label": "Shadow Resonance",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Shadow Resonance",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f1367355bf4f0805",
+      "productType": "playmat",
+      "label": "Diao Chan, Dreaming Wish",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Diao Chan, Dreaming Wish",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-diao-chan-dreaming-wish"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f246431ed0debcb9",
+      "productType": "compact-deck-box",
+      "label": "Spirelle, Schwartz Queen",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Spirelle, Schwartz Queen",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-compact-deck-box-spirelle-schwartz-queen"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "partially-resolved-matching-artwork",
+          "finding": "Akihabara’s Spirelle, Schwartz Queen compact box and the pictured Spirelle boxes in Los Angeles and Las Vegas share the purple and pink character design. London’s shortened listing has no product image.",
+          "evidence": [
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Spirelle"
+            },
+            {
+              "sourceId": "akihabara-2025",
+              "page": 24,
+              "sourceLabel": "Spirelle, Schwartz Queen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f33c20092959b5af",
+      "productType": "playmat",
+      "label": "Dante, Aenean Initiate",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "melbourne-2026",
+          "page": 16,
+          "sourceLabel": "Dante, Aenean Initiate",
+          "note": "Printed SP4 and PR labels retained to distinguish artwork variants; not treated as merchandise rarity.",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-dante-aenean-initiate"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f466c994d9c5225f",
+      "productType": "acrylic-standee",
+      "label": "Kongming",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Kongming",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "resolved-matching-artwork",
+          "finding": "Los Angeles and Las Vegas use the same eight-standee arrangement. Kongming / Kong Ming is the green and white robed character in the third position of the lower row. The artwork and stand shape match.",
+          "evidence": [
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 22,
+              "sourceLabel": "Kongming"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 16,
+              "sourceLabel": "Kong Ming"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f78f98f24a69be09",
+      "productType": "sleeves",
+      "label": "Diana, Moonpiercer",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 23,
+          "sourceLabel": "Diana, Moonpiercer",
+          "note": "Dragon Shield",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-f7dfdd6ca475611f",
+      "productType": "playmat",
+      "label": "Labyrinth Jeweled Opus",
+      "status": "all-observations-promoted",
+      "observations": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Labyrinth Jeweled Opus",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-labyrinth-jeweled-opus"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-fc2b6b1bb23db5fc",
+      "productType": "compact-deck-box",
+      "label": "Zhang Fei",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Zhang Fei",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Zhang Fei",
+          "status": "needs-review"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-fcac1b1cbc7f8dce",
+      "productType": "figurine",
+      "label": "Silvie",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "akihabara-2025",
+          "page": 24,
+          "sourceLabel": "Silvie",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "chicago-2024",
+          "page": 12,
+          "sourceLabel": "Silvie",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "melbourne-2026",
+          "page": 17,
+          "sourceLabel": "Silvie",
+          "note": "Chibi Figures",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-figurine-silvie-chibi"
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-fdfb48317d8ed782",
+      "productType": "playmat",
+      "label": "Merlin, Amethyst's Glow",
+      "status": "additional-appearances-need-review",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 15,
+          "sourceLabel": "Merlin, Amethyst’s Glow",
+          "status": "promoted",
+          "ownershipId": "merch-ascent-playmat-merlin-amethyst-s-glow"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 21,
+          "sourceLabel": "Merlin, Amethyst’s Glow",
+          "status": "needs-review"
+        }
+      ],
+      "visualFindings": [
+        {
+          "status": "unresolved-no-product-image",
+          "finding": "London lists Merlin, Amethyst Glow as text only. Los Angeles and Las Vegas show the same seated Merlin artwork for Amethyst’s Glow, but this does not establish the London design.",
+          "evidence": [
+            {
+              "sourceId": "london-2026",
+              "page": 15,
+              "sourceLabel": "Merlin, Amethyst Glow"
+            },
+            {
+              "sourceId": "las-vegas-2026",
+              "page": 15,
+              "sourceLabel": "Merlin, Amethyst’s Glow"
+            },
+            {
+              "sourceId": "los-angeles-2026",
+              "page": 21,
+              "sourceLabel": "Merlin, Amethyst’s Glow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "merch-candidate-ffbbf091a702d1ed",
+      "productType": "keychain",
+      "label": "Heavenly Guide",
+      "status": "unpromoted",
+      "observations": [
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16,
+          "sourceLabel": "Heavenly Guide",
+          "status": "needs-review"
+        },
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22,
+          "sourceLabel": "Heavenly Guide",
+          "note": "Text lists eight names but the illustration shows more keychains. Do not infer additional named products from the illustration.",
+          "status": "needs-review"
+        }
+      ]
+    }
+  ],
+  "additionalVisualFindings": [
+    {
+      "status": "conflicting-labels-and-illustration",
+      "evidence": [
+        {
+          "sourceId": "los-angeles-2026",
+          "page": 22
+        },
+        {
+          "sourceId": "las-vegas-2026",
+          "page": 16
+        }
+      ],
+      "finding": "The compact-box photographs repeat the same five designs, while Los Angeles lists Liu Bei and Las Vegas lists Da Qiao. Neither page pairs every name with an individual box. Do not infer product identity or image assignment from list order."
+    }
+  ],
+  "excludedObservations": [
+    {
+      "sourceId": "chicago-2024",
+      "page": 12,
+      "sourceLabel": "Posters",
+      "note": "Designs unspecified; do not create a single generic collectible from this listing.",
+      "productType": "poster",
+      "reason": "No identifiable design specified."
+    },
+    {
+      "sourceId": "melbourne-2026",
+      "page": 16,
+      "sourceLabel": "Dragon Shield Sleeves",
+      "note": "No specific designs named or pictured; category observation only, not an identifiable collectible.",
+      "productType": "sleeves",
+      "reason": "No identifiable design specified."
+    }
+  ]
+}
