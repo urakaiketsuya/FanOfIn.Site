@@ -1269,6 +1269,12 @@ export const artistDirectory: ArtistIdentity[] = [
   },
   {
     "id": "a069",
+    "portrait": {
+      "src": "/images/artists/a069.jpg",
+      "sourceUrl": "https://x.com/rubimeoww_draws",
+      "imageUrl": "https://pbs.twimg.com/profile_images/1985695350573973508/pdFGnjFM_400x400.jpg",
+      "verifiedAt": "2026-10-14"
+    },
     "pronunciation": { "nativeText": "露比喵", "text": "Lù bǐ miāo", "lang": "zh-Latn-pinyin", "basis": "standard-mandarin" },
     "slug": "rubi露比喵",
     "slugAliases": ["a069-rubi露比喵"],

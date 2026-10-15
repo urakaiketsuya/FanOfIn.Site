@@ -1260,7 +1260,7 @@ Portrait coverage is 9/75 (12%). The other 66 identities retain initials: 65 lac
 | A066 | HYONEE | Initials; account identity unresolved | `"HYONEE" "Grand Archive" artist` |
 | A067 | Polar Engine | Instagram profile portrait added 2026-10-14 | `"Polar Engine" "City Protector"` |
 | A068 | Primea studio | Initials; account identity unresolved | `"Primea studio" "Blazing Lunge" profile` |
-| A069 | Rubi露比喵 | Initials; account identity unresolved | `"Rubi露比喵" artist` |
+| A069 | Rubi露比喵 | X profile portrait added 2026-10-14 | `"Rubi露比喵" artist` |
 | A070 | Sunny | Initials; account identity unresolved | `"Sunny" "Map of Hidden Passage" artist` |
 | A071 | TEDDYPOCKY | X profile portrait added 2026-10-14 | `"TEDDYPOCKY" "Trump Set"` |
 | A072 | 十尾t | Initials; account identity unresolved | `"十尾t" artist profile` |
@@ -1657,3 +1657,8 @@ Inspected the original [X profile](https://x.com/tori_mcct) and its profile-phot
 ### Polar Engine portrait update 2026-10-14
 
 Inspected the original [Instagram profile](https://www.instagram.com/polar_engine/) and its profile-photo image. Added the unchanged JPEG locally at `app/public/images/artists/a067.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a067.
+
+
+### Rubi露比喵 portrait update 2026-10-14
+
+Inspected the original [X profile](https://x.com/rubimeoww_draws) and its profile-photo image. Added the unchanged 400×400 JPEG locally at `app/public/images/artists/a069.jpg`, with the source account, original image URL, and verification date in the directory. This replaces the initials fallback for a069.
