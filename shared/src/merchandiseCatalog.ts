@@ -1573,5 +1573,309 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Merlin"
     }
   ]
+},
+{
+  "id": "ascent-design-playmat-zander-corhazi-s-chosen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Zander",
+  "title": "Zander, Corhazi's Chosen · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=22",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-zander-corhazi-s-chosen",
+      "type": "playmat",
+      "name": "Zander, Corhazi's Chosen"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-arisanna-lucent-arbiter",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Arisanna",
+  "title": "Arisanna, Lucent Arbiter · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=22",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-arisanna-lucent-arbiter",
+      "type": "playmat",
+      "name": "Arisanna, Lucent Arbiter"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-arcane-blast",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Arcane Blast · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-arcane-blast",
+      "type": "playmat",
+      "name": "Arcane Blast"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-trifle-s-royalty",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Trifle's Royalty · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-trifle-s-royalty",
+      "type": "playmat",
+      "name": "Alice, Trifle's Royalty"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-phantom-monarch-csr",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Phantom Monarch CSR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-phantom-monarch-csr",
+      "type": "playmat",
+      "name": "Alice, Phantom Monarch CSR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-spirit-blade-terminus",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Spirit Blade: Terminus · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-spirit-blade-terminus",
+      "type": "playmat",
+      "name": "Spirit Blade: Terminus"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-phantom-monarch-cur",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Phantom Monarch CUR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-phantom-monarch-cur",
+      "type": "playmat",
+      "name": "Alice, Phantom Monarch CUR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-merlin-memorite-vassal",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin, Memorite Vassal · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-merlin-memorite-vassal",
+      "type": "playmat",
+      "name": "Merlin, Memorite Vassal"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-peer-into-mana",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Peer Into Mana · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-peer-into-mana",
+      "type": "playmat",
+      "name": "Peer Into Mana"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-diana-haunt-reminiscence",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Diana",
+  "title": "Diana, Haunt Reminiscence · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-diana-haunt-reminiscence",
+      "type": "playmat",
+      "name": "Diana, Haunt Reminiscence"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-distorted-queen",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Distorted Queen · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-distorted-queen",
+      "type": "playmat",
+      "name": "Alice, Distorted Queen"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-merlin-brilliant-vestige",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin, Brilliant Vestige · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-merlin-brilliant-vestige",
+      "type": "playmat",
+      "name": "Merlin, Brilliant Vestige"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-embrace-noir",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Embrace Noir · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-embrace-noir",
+      "type": "playmat",
+      "name": "Embrace Noir"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-kongming-fei-eidolon",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Kongming",
+  "title": "Kongming, Fei Eidolon · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=22",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-kongming-fei-eidolon",
+      "type": "playmat",
+      "name": "Kongming, Fei Eidolon"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-whim-s-monarch",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Whim's Monarch · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-whim-s-monarch",
+      "type": "playmat",
+      "name": "Alice, Whim's Monarch"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-lorraine-wandering-warrior",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Lorraine",
+  "title": "Lorraine, Wandering Warrior · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=22",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-lorraine-wandering-warrior",
+      "type": "playmat",
+      "name": "Lorraine, Wandering Warrior"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-arisanna-master-alchemist",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Arisanna",
+  "title": "Arisanna, Master Alchemist · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=22",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-arisanna-master-alchemist",
+      "type": "playmat",
+      "name": "Arisanna, Master Alchemist"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-flickering-afterglow",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Flickering Afterglow · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-flickering-afterglow",
+      "type": "playmat",
+      "name": "Flickering Afterglow"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-labyrinth-jeweled-opus",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Labyrinth Jeweled Opus · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Los_Angeles_2025_Event_Guide_ad759e2e53.pdf#page=21",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-labyrinth-jeweled-opus",
+      "type": "playmat",
+      "name": "Labyrinth Jeweled Opus"
+    }
+  ]
 }
 ];

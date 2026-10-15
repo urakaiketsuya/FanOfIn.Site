@@ -682,6 +682,177 @@
       "sourceLabel": "Merlin",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-zander-corhazi-s-chosen",
+      "candidateId": "merch-candidate-3252b39a94541f4a",
+      "sourceId": "los-angeles-2026",
+      "page": 22,
+      "sourceLabel": "Zander, Corhazi’s Chosen",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-arisanna-lucent-arbiter",
+      "candidateId": "merch-candidate-38c34c348861f491",
+      "sourceId": "los-angeles-2026",
+      "page": 22,
+      "sourceLabel": "Arisanna, Lucent Arbiter",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-arcane-blast",
+      "candidateId": "merch-candidate-42a9e3243b132488",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Arcane Blast",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-trifle-s-royalty",
+      "candidateId": "merch-candidate-51d22bfcfd41d62e",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Alice, Trifle’s Royalty",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-phantom-monarch-csr",
+      "candidateId": "merch-candidate-5e559df4ae337c9e",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Alice, Phantom Monarch (CSR)",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-spirit-blade-terminus",
+      "candidateId": "merch-candidate-60ed779e53ce84c6",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Spirit Blade: Terminus",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-phantom-monarch-cur",
+      "candidateId": "merch-candidate-6c4e22fab211fcbc",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Alice, Phantom Monarch (CUR)",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-merlin-memorite-vassal",
+      "candidateId": "merch-candidate-77c209fb0d035a58",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Merlin, Memorite Vassal",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-peer-into-mana",
+      "candidateId": "merch-candidate-83c5efb22694f854",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Peer Into Mana",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-diana-haunt-reminiscence",
+      "candidateId": "merch-candidate-92c5d5bccfb7715d",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Diana, Haunt Reminiscence",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-distorted-queen",
+      "candidateId": "merch-candidate-9949b0cc918b2fa6",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Alice, Distorted Queen",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-merlin-brilliant-vestige",
+      "candidateId": "merch-candidate-9c58c1dedb8531ca",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Merlin, Brilliant Vestige",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-embrace-noir",
+      "candidateId": "merch-candidate-9e1a6ef2b4c147d0",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Embrace Noir",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-kongming-fei-eidolon",
+      "candidateId": "merch-candidate-b90cdbfe53956a9d",
+      "sourceId": "los-angeles-2026",
+      "page": 22,
+      "sourceLabel": "Kongming, Fei Eidolon",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-whim-s-monarch",
+      "candidateId": "merch-candidate-c7eab225664f0cc9",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Alice, Whim’s Monarch",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-lorraine-wandering-warrior",
+      "candidateId": "merch-candidate-daf8ed5ca7dcec92",
+      "sourceId": "los-angeles-2026",
+      "page": 22,
+      "sourceLabel": "Lorraine, Wandering Warrior",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-arisanna-master-alchemist",
+      "candidateId": "merch-candidate-dd7ea9d1929f6644",
+      "sourceId": "los-angeles-2026",
+      "page": 22,
+      "sourceLabel": "Arisanna, Master Alchemist",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-flickering-afterglow",
+      "candidateId": "merch-candidate-e0ff408af3e312a3",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Flickering Afterglow",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-labyrinth-jeweled-opus",
+      "candidateId": "merch-candidate-f7dfdd6ca475611f",
+      "sourceId": "los-angeles-2026",
+      "page": 21,
+      "sourceLabel": "Labyrinth Jeweled Opus",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }
