@@ -1061,5 +1061,181 @@ export const merchandiseBundles: MerchandiseGroup[] = [
       "name": "Chronowarp"
     }
   ]
+},
+{
+  "id": "ascent-design-playmat-mordred-aurelian-regent",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Mordred, Aurelian Regent · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-mordred-aurelian-regent",
+      "type": "playmat",
+      "name": "Mordred, Aurelian Regent"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-nuriel-seraphic-paladin",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Nuriel, Seraphic Paladin · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-nuriel-seraphic-paladin",
+      "type": "playmat",
+      "name": "Nuriel, Seraphic Paladin"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-auspicious-manifestation",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Auspicious Manifestation · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-auspicious-manifestation",
+      "type": "playmat",
+      "name": "Auspicious Manifestation"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-lu-bu-wrath-incarnate",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Lu Bu, Wrath Incarnate · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-lu-bu-wrath-incarnate",
+      "type": "playmat",
+      "name": "Lu Bu, Wrath Incarnate"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-angelic-channeling",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Angelic Channeling · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-angelic-channeling",
+      "type": "playmat",
+      "name": "Angelic Channeling"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-celestial-navigation",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Celestial Navigation · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-celestial-navigation",
+      "type": "playmat",
+      "name": "Celestial Navigation"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-iridescent-resurgence",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Iridescent Resurgence · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-iridescent-resurgence",
+      "type": "playmat",
+      "name": "Iridescent Resurgence"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-nox-final-release",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Nox, Final Release · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-nox-final-release",
+      "type": "playmat",
+      "name": "Nox, Final Release"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-alice-trifle-s-royalty-cur",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Alice",
+  "title": "Alice, Trifle's Royalty CUR · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-alice-trifle-s-royalty-cur",
+      "type": "playmat",
+      "name": "Alice, Trifle's Royalty CUR"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-diao-chan-dreaming-wish",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "",
+  "title": "Diao Chan, Dreaming Wish · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-diao-chan-dreaming-wish",
+      "type": "playmat",
+      "name": "Diao Chan, Dreaming Wish"
+    }
+  ]
+},
+{
+  "id": "ascent-design-playmat-merlin-amethyst-s-glow",
+  "releaseId": "ascent-catalog-designs",
+  "releaseName": "Ascent catalog designs",
+  "champion": "Merlin",
+  "title": "Merlin, Amethyst's Glow · Playmat",
+  "sourceKind": "catalog",
+  "sourceUrl": "https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/Ascent_Las_Vegas_f7061f5a2c.pdf#page=15",
+  "items": [
+    {
+      "id": "merch-ascent-playmat-merlin-amethyst-s-glow",
+      "type": "playmat",
+      "name": "Merlin, Amethyst's Glow"
+    }
+  ]
 }
 ];

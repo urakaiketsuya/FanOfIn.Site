@@ -394,6 +394,105 @@
       "sourceLabel": "Chronowarp",
       "identityScope": "pictured catalog design; production runs not distinguished",
       "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-mordred-aurelian-regent",
+      "candidateId": "merch-candidate-0be470e4e144d65d",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Mordred, Aurelian Regent",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-nuriel-seraphic-paladin",
+      "candidateId": "merch-candidate-286528be9e0a0d56",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Nuriel, Seraphic Paladin",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-auspicious-manifestation",
+      "candidateId": "merch-candidate-29acc3e0c465027d",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Auspicious Manifestation",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-lu-bu-wrath-incarnate",
+      "candidateId": "merch-candidate-6d3beaa8b640c06e",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Lu Bu, Wrath Incarnate",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-angelic-channeling",
+      "candidateId": "merch-candidate-9af73e8f66eb738d",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Angelic Channeling",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-celestial-navigation",
+      "candidateId": "merch-candidate-a93458637164073b",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Celestial Navigation",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-iridescent-resurgence",
+      "candidateId": "merch-candidate-ac4f6afa8a935f5e",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Iridescent Resurgence",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-nox-final-release",
+      "candidateId": "merch-candidate-b8a8dff69e06cee2",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Nox, Final Release",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-alice-trifle-s-royalty-cur",
+      "candidateId": "merch-candidate-ea2bd2d352b10fca",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Alice, Trifle’s Royalty CUR",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-diao-chan-dreaming-wish",
+      "candidateId": "merch-candidate-f1367355bf4f0805",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Diao Chan, Dreaming Wish",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
+    },
+    {
+      "ownershipId": "merch-ascent-playmat-merlin-amethyst-s-glow",
+      "candidateId": "merch-candidate-fdfb48317d8ed782",
+      "sourceId": "las-vegas-2026",
+      "page": 15,
+      "sourceLabel": "Merlin, Amethyst’s Glow",
+      "identityScope": "pictured catalog design; production runs not distinguished",
+      "quantityUnit": "physical item"
     }
   ]
 }
