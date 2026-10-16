@@ -56,7 +56,9 @@ export function buildStoreDirectory(events: readonly OmnidexEventSummary[], geoc
       ...(coordinates && validStoreCoordinates(coordinates) ? { coordinates: { lat: coordinates.lat, lng: coordinates.lng } } : {}),
       addressEventId: addressEvent.id, addressDate: addressEvent.date, lastEventDate: latest.date,
       eventCount: new Set(group.map(e => e.id)).size,
-      weeklyEvidence: [...new Map(group.filter(e => e.category === 'regular' && e.hostAddress === address && !/release|launch|championship|regional|ascent|worlds|national|qualifier|celebration/i.test(e.name)).map(e => [e.id, { id: e.id, date: e.date }])).values()].slice(0, 100),
+      // Bind recurrence evidence to the latest event's source address. A reviewed override may
+      // correct its spelling/locality without changing the physical venue represented by events.
+      weeklyEvidence: [...new Map(group.filter(e => e.category === 'regular' && e.hostAddress === addressEvent.hostAddress && !/release|launch|championship|regional|ascent|worlds|national|qualifier|celebration/i.test(e.name)).map(e => [e.id, { id: e.id, date: e.date }])).values()].slice(0, 100),
       recentEvents: [...new Map(group.map(e => [e.id, { id: e.id, name: e.name, date: e.date }])).values()].slice(0, 12),
     } satisfies StoreRecord;
   }).sort((a, b) => a.name.localeCompare(b.name) || a.id - b.id);
