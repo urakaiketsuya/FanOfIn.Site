@@ -45,6 +45,15 @@
     "sourceCollectedAt": "2026-10-16T15:37:21Z"
   },
   {
+    "hostId": 16,
+    "address": "781 E El Camino Real Suite 100, Sunnyvale, CA 94087, USA",
+    "lat": 37.3574954,
+    "lng": -122.0183866,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/3ab95077-12e6-44db-a3cc-7444b1622309",
+    "sourceAddress": "781 East El Camino Real, Suite 100, Sunnyvale, CA, 94087, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 26,
     "address": "5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA",
     "lat": 36.1596979,

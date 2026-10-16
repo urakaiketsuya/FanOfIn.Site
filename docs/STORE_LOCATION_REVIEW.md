@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 39 reviewed (10.6% of this checklist); 330 pending. 17 mapped, 22 need further evidence. Map coverage: 322/674 (47.8%); 352 unmapped.
+Progress: first 40 reviewed (10.8% of this checklist); 329 pending. 18 mapped, 22 need further evidence. Map coverage: 323/674 (47.9%); 351 unmapped.
 
-Next: #40 CardArt. Revisit Needs evidence entries after the initial pass.
+Next: #41 Flagship Games. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -50,7 +50,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 37 | 462 | HASUYA | JP | Japan, 〒556-0011 Osaka, Naniwa Ward, Nanbanaka, 2-chōme−2−１５ 高砂ビル 5F | Mapped | Reviewed 2026-10-16: [Official HASUYA store page](https://hasuya.jp/user_data/shop) confirms Takasago Building 5F, 2-2-15 Nanbanaka. [Pokémon publisher locator](https://map.pokemon-card.com/map/13177) confirms the exact store/floor and links coordinates 34.663059, 135.503239. Imported publisher pin and classified as store. Official site's embedded map viewport center was not used; other retailers occupy different floors in this building. Latest Omnidex event 2026-10-15; existing recurrence logic supports Thursdays starting 10-22 and Saturdays starting 10-17 for the next four weeks. |
 | 38 | 140 | CoreTCG | US | 770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA | Mapped | Reviewed 2026-10-16: [Official website](https://coretcg.com/) confirms 770 South Arroyo Parkway #110 and physical TCG retail. [Lorcana publisher store record](https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43) and its event records agree on 34.13254, -118.146938 at that suite. Imported verified coordinates and classified as store. Latest Omnidex event 2026-09-29; current Grand Archive evidence does not satisfy weekly recurrence requirements, so no upcoming estimates. |
 | 39 | 50 | Go For Game | CA | 478 Dundas St W Second Floor, Toronto, ON M5T 1G9, Canada | Mapped | Reviewed 2026-10-16: [Official website](https://goforgame.ca/pages/contact) confirms 478 Dundas Street West, second floor. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/6c2e77b7-c9e8-407f-a369-d4ddf044255c) and its events agree on 43.6534144, -79.3970248. Imported verified point and classified as store. Latest Omnidex event 2026-10-13; existing Grand Archive recurrence checks return no qualifying future dates. Publisher Wednesday listings are for Riftbound and were not imported as Grand Archive events. |
-| 40 | 16 | CardArt | US | 781 E El Camino Real Suite 100, Sunnyvale, CA 94087, USA | Pending |  |
+| 40 | 16 | CardArt | US | 781 E El Camino Real Suite 100, Sunnyvale, CA 94087, USA | Mapped | Reviewed 2026-10-16: [Official store website](https://www.svcardart.com/about) confirms 781 East El Camino Real, Suite 100, Sunnyvale and physical hobby retail. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/3ab95077-12e6-44db-a3cc-7444b1622309) and embedded map agree on 37.3574954, -122.0183866 for that address. Imported verified point and classified as store. Latest Omnidex event 2026-09-20 is outside the recurrence freshness window; no upcoming weekly estimates. |
 | 41 | 547 | Flagship Games | SG | 214 Bishan St. 23, Block 214, Singapore 570214 | Pending |  |
 | 42 | 100 | Good Games Box Hill | AU | g1/975 Whitehorse Rd, Box Hill VIC 3128, Australia | Pending |  |
 | 43 | 463 | Card Lab | HK | Flat B1 4/F, Summit Building, 30 Man Yue Street, Hong Kong; Hong Kong | Pending |  |
