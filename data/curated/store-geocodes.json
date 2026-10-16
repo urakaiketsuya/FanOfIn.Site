@@ -180,6 +180,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:06.576897+00:00"
   },
   {
+    "hostId": 217,
+    "address": "Szeged, Szeged Jókai utca 7-9 Aradi tér felől, az utcaszinten, 6720 Hungary",
+    "lat": 46.2481675,
+    "lng": 20.1463309,
+    "sourceUrl": "https://pottyoszebra.hu/",
+    "sourceAddress": "6720, Szeged, Jókai u. 7-9. psz. 2.",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 226,
     "address": "525 Woodland Square Blvd #130, Conroe, TX 77384, USA",
     "lat": 30.2253567,

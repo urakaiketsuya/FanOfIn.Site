@@ -56,5 +56,9 @@
   "280": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branch website](https://www.catfootprint.com/貓腳印-新莊店) confirms 100 Fuguo Road, seventh floor, Xinzhuang and links its retail shop. Its Google Maps directions link identifies the named storefront feature at 25.0252371, 121.4213552; viewport center 25.0252419, 121.4168759 was not used. Imported feature point and classified as store. Latest Omnidex event 2026-03-30 is stale for recurrence; no upcoming weekly estimates."
+  },
+  "217": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://pottyoszebra.hu/) confirms the Jókai 7–9 shop and separately lists Pöttyös Zebra 2 at Hajós 28. Its directions link between the two named branches publishes the Jókai origin feature at 46.2481675, 20.1463309; imported this point and classified as store. [Publisher locator](https://locator.riftbound.uvsgames.com/stores/48b2f3db-2289-462e-903f-2211fe771c74) refers to Hajós 28, so its point must not be substituted for the recorded Jókai venue. Latest Omnidex event 2026-10-10; current evidence does not qualify for weekly projections. Confirm branch on future event updates."
   }
 }
