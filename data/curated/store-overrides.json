@@ -288,5 +288,9 @@
   "71": {
     "kind": "store",
     "evidence": "2026-10-16: [GA championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/ALC_Season_Store_Championship_List_3_14_ALC_Store_Championships_List_Updated_3_18_d27d16a25c.pdf) repeats Taman Masjaya, but [Bandai retailer list](https://asia-en.onepiece-cardgame.com/pdf/replacement-shoplist_my_01.pdf) gives Lot 22, first floor, Block C, Kepayan Point, Jalan Penampang By-Pass, 88200. Resolve the current exact storefront and postcode before importing. No standalone official website verified. Latest Omnidex event 2026-10-04T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "259": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branch page](https://www.catfootprint.com/貓腳印-高雄店) gives 77 Liwen Road, sixth floor unit 2; recorded Omnidex address says thirteenth floor unit 1. [Publisher store](https://tcg.ravensburgerplay.com/stores/9505eb1a-ff64-45bf-af35-989d178a36e0) also uses sixth floor unit 2. Official named map feature is 22.6643361, 120.304414; held pending resolution of the event/store floor discrepancy. Latest Omnidex event 2026-09-27T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
