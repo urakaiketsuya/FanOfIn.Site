@@ -304,5 +304,9 @@
   "603": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai retailer list](https://asia-en.onepiece-cardgame.com/pdf/replacement-shoplist_sg_01.pdf) confirms 183 Toa Payoh Central #02-278. [Publisher event](https://locator.riftbound.uvsgames.com/events/816725) and embedded Bricks Play store agree on 1.3333602999999905, 103.84884549999964 at 183 Toa Payoh Central and link [official Facebook](https://www.facebook.com/bricksplay). Imported address-bound point. Latest Omnidex event 2026-08-23T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "85": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store](https://cardmerchant.co.nz/pages/faqs) and [mall directory](https://www.west-city.co.nz/store/card-merchant/) confirm WestCity, 7 Catherine Street, Level 2; [Bandai list](https://en.onepiece-cardgame.com/pdf/in_store_tutorial_oc.pdf) confirms shop S290. [Publisher store](https://tcg.ravensburgerplay.com/stores/b7b73384-3f7e-4827-acf0-301b50a51c6f) publishes -36.8808316, 174.6329455 for Card Merchant Westcity on Catherine Street. Imported exact-address point. Latest Omnidex event 2026-10-02T22:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

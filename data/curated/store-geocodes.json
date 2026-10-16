@@ -144,6 +144,15 @@
     "sourceCollectedAt": "2026-10-16T15:09:03.847Z"
   },
   {
+    "hostId": 85,
+    "address": "Shop S290, West City, Catherine Street, Henderson, Auckland 0612, New Zealand",
+    "lat": -36.8808316,
+    "lng": 174.6329455,
+    "sourceUrl": "https://tcg.ravensburgerplay.com/stores/b7b73384-3f7e-4827-acf0-301b50a51c6f",
+    "sourceAddress": "Catherine Street, Auckland, Auckland, 612, NZ",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 100,
     "address": "g1/975 Whitehorse Rd, Box Hill VIC 3128, Australia",
     "lat": -37.817931152328924,
