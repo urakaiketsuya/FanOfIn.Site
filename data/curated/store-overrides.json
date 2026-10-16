@@ -364,5 +364,9 @@
   "264": {
     "kind": "store",
     "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/49183/) identifies 新奇玩具店 at 127 Huaxing Street, Yongkang, Tainan. [Local shop directory](https://taiwancool.com.tw/web/storeInfo/休閒娛樂/台南新奇玩具店_7476.html) corroborates the address and toy/card retail identity. No official standalone website or verified coordinates obtained. Latest Omnidex event 2026-10-13T11:00:00.000Z. Existing recurrence projects 2026-10-20T11:00:00.000Z, 2026-10-27T11:00:00.000Z, 2026-11-03T11:00:00.000Z, 2026-11-10T11:00:00.000Z (source event 65984); estimates, not confirmed bookings."
+  },
+  "65": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official shop](https://tabletoparena.myshopify.com/) confirms S-206, second floor, 1Borneo Hypermall, Jalan Sulaman, 88450 Kota Kinabalu. Its [retail marketplace](https://shopee.com.my/tabletoparena) agrees and links [official Facebook](https://www.facebook.com/tabletoparena/). No verified store-specific map point obtained; do not substitute a general mall location. Latest Omnidex event 2026-08-22T06:35:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
