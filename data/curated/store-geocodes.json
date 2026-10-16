@@ -99,6 +99,15 @@
     "sourceCollectedAt": "2026-10-16T15:09:03.847Z"
   },
   {
+    "hostId": 76,
+    "address": "200 E Main St, Marlborough, MA 01752, USA",
+    "lat": 42.352615004665864,
+    "lng": -71.53718247487542,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/819d511e-d8a9-48f3-94ed-541435bec57a",
+    "sourceAddress": "200 East Main Street, Marlborough, MA, 01752, US",
+    "sourceCollectedAt": "2026-10-16T16:13:07.584511+00:00"
+  },
+  {
     "hostId": 84,
     "lat": -37.7831689,
     "lng": 175.2797244,
