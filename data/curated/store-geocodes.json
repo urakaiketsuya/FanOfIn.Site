@@ -36,6 +36,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
   },
   {
+    "hostId": 15,
+    "address": "3017 Kilgore Rd ste 130, Rancho Cordova, CA 95670, USA",
+    "lat": 38.59379,
+    "lng": -121.27033,
+    "sourceUrl": "https://www.cardsnearby.com/card-shops/california/rancho-cordova/final-cut-tcg",
+    "sourceAddress": "3017 Kilgore Rd #130, Rancho Cordova, CA 95670",
+    "sourceCollectedAt": "2026-10-16T15:37:21Z"
+  },
+  {
     "hostId": 26,
     "address": "5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA",
     "lat": 36.1596979,

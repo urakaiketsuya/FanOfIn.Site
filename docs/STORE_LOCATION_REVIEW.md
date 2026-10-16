@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 14 reviewed (3.8% of this checklist); 355 pending. Two mapped, 12 need further evidence. Map coverage: 307/674 (45.6%); 367 unmapped.
+Progress: first 15 reviewed (4.1% of this checklist); 354 pending. Three mapped, 12 need further evidence. Map coverage: 308/674 (45.7%); 366 unmapped.
 
-Next: #15 Final Cut TCG. Revisit Needs evidence entries after the initial pass.
+Next: #16 TCG Cafe & Bar EVO. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -25,7 +25,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 12 | 161 | Gamersshop Gaming Store | PH | Aggct 2 Bldg V Luna Ave Cor Matapat St, Quezon City; Metro Manila, 1101; Philippines | Needs evidence | Reviewed 2026-10-16: [Official Pokémon event venue](https://asia.pokemon-card.com/ph/event-search/5478/) and [official Bandai shop/event listings](https://www.carddass.com/onepiece-tcg_asia-en/events/officialevents/meetup/list_philippines.php) confirm the AGGCT II Building, V. Luna and Matapat. [WorldPlaces](https://philippines.worldplaces.me/view-place/83691928-mapang-akit-st-brgy-pinyahan-qc.html) lists an area point at 14.63349, 121.04858 and places AGGCT II 28m away; [Mapcarta's OSM-derived building point](https://mapcarta.com/W364943912) gives 14.63675, 121.05281, ~600m away. The source points conflict and neither is a verified storefront pin; do not import until resolved. |
 | 13 | 24 | Topspot Cards | US | 1571 S Sunkist St ste j, Anaheim, CA 92806, USA | Needs evidence | Reviewed 2026-10-16: [Official website](https://topspot.cards/) and its [contact page](https://topspot.cards/pages/contact) confirm the exact storefront address; official directions link targets that address but exposes no coordinates in the available page. Need a verifiable map pin before importing. |
 | 14 | 112 | Cat Footprints Amusement Park | TW | 330, Taiwan, Taoyuan City, Taoyuan District, Zhonghua Rd, 1號11樓 | Mapped | Reviewed 2026-10-16: [Official Taoyuan branch page](https://www.catfootprint.com/貓腳印-桃園店) confirms the address and links to the named Google Maps storefront pin at 24.9911358, 121.3119534. The same page links the [official branch Facebook](https://www.facebook.com/CatFootPrintTaoyuan.tw). Imported from the official map pin. |
-| 15 | 15 | Final Cut TCG | US | 3017 Kilgore Rd ste 130, Rancho Cordova, CA 95670, USA | Pending |  |
+| 15 | 15 | Final Cut TCG | US | 3017 Kilgore Rd ste 130, Rancho Cordova, CA 95670, USA | Mapped | Reviewed 2026-10-16: [Official website](https://finalcuttcg.com/) confirms the exact street and suite. [CardsNearby](https://www.cardsnearby.com/card-shops/california/rancho-cordova/final-cut-tcg) shows a Mapbox pin at 38.59379, -121.27033 for 3017 Kilgore Rd #130. A separate [GPS listing for suite 180 in the same building](https://www.whereorg.com/vantage-med-corp-1701487) is about 20 m away; the storefront pin was imported to replace the existing city-level point. |
 | 16 | 376 | TCG Cafe & Bar EVO | JP | 2nd floor Nest Building ; 1-18-5 Shinjuku Shinjuku-ku ; Tokyo 160-0022 ; Japan | Pending |  |
 | 17 | 380 | Lonestar Pack Breaks Store | US | 3733 N Josey Ln Apt 108, Carrollton, TX 75007, USA | Pending |  |
 | 18 | 180 | Jeux Kingdom | SG | 150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841 | Pending |  |
