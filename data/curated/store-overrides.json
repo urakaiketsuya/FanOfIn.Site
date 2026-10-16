@@ -556,5 +556,9 @@
   "831": {
     "kind": "unclassified",
     "evidence": "2026-10-16: [GA event report](https://www.fractalofin.site/RDO/57404.html) corroborates organizer Axis at AL Farah954 Building, Achrafieh Sassine Street. Name/address searches did not establish an independent retailer identity or official website; unrelated Axis online shops excluded. No coordinates imported; verify the business and building entrance. Latest Omnidex event in committed snapshot 2026-10-03T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "265": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Bandai store list](https://www.carddass.com/onepiece-tcg_tw/events/2023/officialevents/flagship-battle_202305/list.php) confirms Cat Footprint Shanhua at 78 Gongyuan Road, second floor. [Local reporting](https://www.thehubnews.net/archives/342109) corroborates historical retail identity. No current official standalone website or named pin obtained; verify continued identity at this address. Latest Omnidex event in committed snapshot 2024-05-15T12:25:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
