@@ -452,5 +452,9 @@
   "643": {
     "kind": "store",
     "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms room A05, seventh floor, 20 Hing Yip Street and links [official Facebook](https://www.facebook.com/RapidStar2022/). Publisher locator corroborates the building. No verified storefront coordinates obtained; retain recorded address pending map evidence. Latest Omnidex event in committed snapshot 2026-09-25T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "789": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official directions](https://zarc.pl/pl/i/Jak-dojechac-do-zarc-pl/15) confirm Sienkiewicza 11, Jaworzno. [Publisher event](https://locator.riftbound.uvsgames.com/events/347143) contains conflicting coordinates: 50.2150042, 19.2578423 and 50.2021529, 19.2737847. No point imported until the named store location resolves that conflict. Latest Omnidex event in committed snapshot 2026-09-26T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
