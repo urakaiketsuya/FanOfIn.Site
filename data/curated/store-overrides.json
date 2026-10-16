@@ -164,5 +164,9 @@
   "105": {
     "kind": "store",
     "evidence": "2026-10-16: [Event organizer listing](https://allevents.in/org/double-kill-games/24745245) records events at 775 George Street, while [Waze](https://www.waze.com/live-map/directions/au/nsw/haymarket/boardgames-cafe-double-kill-games-%E6%A1%8C%E6%B8%B8%E5%90%A7?to=place.ChIJZY-ukCSuEmsRNtvUlyrceUw) lists Level 1, 203 Thomas Street and links [store Facebook](https://facebook.com/doublekillgamesau). No standalone official website verified. Resolve street/entrance or relocation discrepancy before importing a pin; retain GA address. Latest GA event 2026-09-21 is stale for projections."
+  },
+  "169": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-淡水店) confirms 28 Xuefu Road, fifth floor. Its named Google Maps storefront link publishes feature coordinates 25.1683747, 121.4477396, distinct from viewport center. Imported verified pin and classified as store. Latest GA event 2026-10-03; existing recurrence checks produce no upcoming weekly estimates."
   }
 }

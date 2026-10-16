@@ -216,6 +216,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 169,
+    "address": "新北市淡水區學府路28號5F, Tamsui District\nTaiwan",
+    "lat": 25.1683747,
+    "lng": 121.4477396,
+    "sourceUrl": "https://www.catfootprint.com/貓腳印-淡水店",
+    "sourceAddress": "新北市淡水區學府路28號5樓",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 177,
     "address": "No. 75, 2F, Ziqiang 2nd Rd\nQianjin District\nKaohsiung City 801\nTaiwan",
     "lat": 22.6243005,
