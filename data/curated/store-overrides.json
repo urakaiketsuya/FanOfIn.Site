@@ -196,5 +196,9 @@
   "250": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-彰化店) confirms 398 Juguang Road, second floor. Its map link is a name search without published feature coordinates; leave unmapped pending a verified pin. Latest Omnidex event is October 15; existing recurrence rules project Thursdays from October 22 at 11:30 UTC."
+  },
+  "642": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official Pokémon event](https://asia.pokemon-card.com/tw/event-search/61709/) and [Bandai directory](https://www.carddass.com/onepiece-tcg_tw/events/officialevents/standardbattle/list.php) give Bade Road Section 4, 135 B1, conflicting with recorded Minsheng East Road. The [store marketplace](https://www.ruten.com.tw/store/rockerchin5/) confirms retail identity; no standalone website verified. Resolve street discrepancy before mapping. Latest Omnidex event October 13 supports projected Tuesdays from October 20 at 11:40 UTC; recurrence does not resolve the address."
   }
 }
