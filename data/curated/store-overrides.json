@@ -232,5 +232,9 @@
   "103": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store pickup listing](https://plentyofgames.com.au/products/frilled-sparkshooter-bloomburrow) confirms Level 1, 278 Collins Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a2065bda-ce1a-4701-ab43-94e49688a638) confirms the street and publishes matching store/event coordinates -37.8156332, 144.9647558. Imported against exact recorded address. Latest Omnidex event May 1 is stale; no weekly projection."
+  },
+  "361": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://www.draagoonshobbyshop.com/) confirms Ruko Kav 31A no. 2, Sutera Utama, matching the recorded shop. Its embedded business coordinates (-6.2835218, 106.7112933) are attached only to South Tangerang city, not the street address; do not import a city point. Obtain a named storefront pin. Latest Omnidex event 2026-04-04T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
