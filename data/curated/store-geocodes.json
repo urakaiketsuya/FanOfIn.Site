@@ -603,6 +603,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 526,
+    "address": "level 1/857 George St, Sydney NSW 2000, Australia",
+    "lat": -33.8836761,
+    "lng": 151.2026106,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/cfaecad7-0cc5-41df-a88f-e73daef4c49d",
+    "sourceAddress": "857 George Street, Level 1, Sydney, NSW, 2000, AU",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 547,
     "address": "214 Bishan St. 23, Block 214, Singapore 570214",
     "lat": 1.3576010582467033,
