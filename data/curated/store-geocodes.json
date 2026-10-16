@@ -657,6 +657,15 @@
     "sourceCollectedAt": "2026-10-11T17:35:51.717783+00:00"
   },
   {
+    "hostId": 594,
+    "address": "10401 Stevenson Rd, Stevenson, MD 21153, USA",
+    "lat": 39.4105124,
+    "lng": -76.7131376,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/7f1b1924-7753-4c0b-af5a-b95d355a8df1",
+    "sourceAddress": "10401 Stevenson Road, Pikesville, MD, 21153, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 602,
     "address": "650 Iwilei Rd suite 160, Honolulu, HI 96817, USA",
     "lat": 21.316771,

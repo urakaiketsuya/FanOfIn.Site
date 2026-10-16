@@ -548,5 +548,9 @@
   "488": {
     "kind": "store",
     "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Cardshop AJITO at 1-11-4 Taito and links [official X account](https://x.com/cardAJITO). Regional events may use a separate Akihabara venue, so those coordinates cannot replace this storefront. No verified Taito business point obtained. Latest Omnidex event in committed snapshot 2026-10-03T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "594": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://stevensongames.com/) confirms the Maryland store at 10401 Stevenson Road. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/7f1b1924-7753-4c0b-af5a-b95d355a8df1) binds that address and matching phone to 39.4105124, -76.7131376. Imported Maryland point; Lemoyne Pennsylvania branch excluded. Latest Omnidex event in committed snapshot 2026-10-03T17:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

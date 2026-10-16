@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 160 reviewed (43.4% of this checklist); 209 pending. 55 mapped, 105 need further evidence. Map coverage: 360/674 (53.4%); 314 unmapped.
+Progress: first 161 reviewed (43.6% of this checklist); 208 pending. 56 mapped, 105 need further evidence. Map coverage: 361/674 (53.6%); 313 unmapped.
 
-Next: #161 Stevenson Games. Revisit Needs evidence entries after the initial pass.
+Next: #162 Axis. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -171,7 +171,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 158 | 5 | Curio Cavern | US | 6701 Loisdale Rd #15, Springfield, VA 22150, USA | Needs evidence | Reviewed 2026-10-16: [Official branches](https://www.curiocavern.com/pages/retail-locations) identify 6701 Loisdale Road Unit T, whereas the recorded event address says #15. [Waze](https://www.waze.com/live-map/directions/curio-cavern-loisdale-road-6701-springfield?to=place.w.185336196.1853493029.1901967) corroborates street and phone but not unit. Resolve suite equivalence and obtain branch-specific coordinates; do not reuse Springfield Mall pin. Latest Omnidex event in committed snapshot 2026-04-20T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 159 | 435 | Living Legends Enterprise | MY | 32A, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim, Malaysia | Mapped | Reviewed 2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/646632) binds Living Legends JB and 32A Jalan Pingai to 1.482418, 103.7736237 in both event and store data. It links [official website](https://www.livinglegendsjb.com/). Imported the matching Johor Bahru point. Latest Omnidex event in committed snapshot 2026-05-10T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 160 | 488 | CardShop AJITO | JP | Japan, 〒110-0016 Tokyo, Taito City, Taitō, 1-chōme−11−４ 誠心0ビル | Needs evidence | Reviewed 2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Cardshop AJITO at 1-11-4 Taito and links [official X account](https://x.com/cardAJITO). Regional events may use a separate Akihabara venue, so those coordinates cannot replace this storefront. No verified Taito business point obtained. Latest Omnidex event in committed snapshot 2026-10-03T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 161 | 594 | Stevenson Games | US | 10401 Stevenson Rd, Stevenson, MD 21153, USA | Pending |  |
+| 161 | 594 | Stevenson Games | US | 10401 Stevenson Rd, Stevenson, MD 21153, USA | Mapped | Reviewed 2026-10-16: [Official website](https://stevensongames.com/) confirms the Maryland store at 10401 Stevenson Road. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/7f1b1924-7753-4c0b-af5a-b95d355a8df1) binds that address and matching phone to 39.4105124, -76.7131376. Imported Maryland point; Lemoyne Pennsylvania branch excluded. Latest Omnidex event in committed snapshot 2026-10-03T17:05:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 162 | 831 | Axis | LB | Achrafieh Sassine Street AL Farah954 Building; Beirut ; Lebanon | Pending |  |
 | 163 | 265 | Catfootprint Shanhua | TW | No. 78, Gongyuan Rd, Shanhua District, Tainan City, Taiwan 741 | Pending |  |
 | 164 | 269 | Brand X | PH | Villongco subd Brgy IIID 4000 San Pablo City; Philippines | Pending |  |
