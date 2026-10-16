@@ -468,5 +468,9 @@
   "500": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://www.emberrestplay.com/) gives 901 Main Street; [Waze listing](https://www.waze.com/live-map/directions/united-states/california/martinez/ember-rest?to=place.ChIJ85wLInxvhYARgCkp8V7NGt8) retains recorded 649 Main Street #101. Retail identity established, but relocation needs reconciliation before mapping the recorded event address. Latest Omnidex event in committed snapshot 2026-09-26T22:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "836": {
+    "kind": "unclassified",
+    "evidence": "2026-10-16: [GA event report](https://fractalofin.site/RDO/53540.html) repeats third floor Vista Mall Malolos. [Independent event listing](https://allevents.in/malolos/bulacan-boardgame-club-x-questing-grounds-the-first-quest-unmatched-tournament/200028656821500) corroborates organized play at the mall. No official website, independent retail confirmation, or store-specific coordinates obtained; do not substitute the mall centroid. Latest Omnidex event in committed snapshot 2026-09-12T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
