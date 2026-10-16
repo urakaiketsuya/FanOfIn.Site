@@ -276,5 +276,9 @@
   "72": {
     "kind": "store",
     "evidence": "2026-10-16: [Official about page](https://www.myhobbyandcollectibles.com/blogs/news/about-us) and [Pokemon event](https://asia.pokemon-card.com/my/event-search/10622/) confirm No. 36F-1 Jalan Radin Anum, Sri Petaling. Recorded address omits the floor suffix. Retail identity confirmed; no verified storefront coordinates obtained. Latest Omnidex event 2026-05-03T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "514": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official links page](https://heylink.me/KouritenSG/) confirms 150 South Bridge Road, B1-22 Fook Hai Building. [Publisher event](https://locator.riftbound.uvsgames.com/events/894935) and embedded store agree on 1.2845625, 103.8467908 at that address. Imported; historical B1-08 listings were not used. Latest Omnidex event 2026-08-24T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

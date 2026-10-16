@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 92 reviewed (24.9% of this checklist); 277 pending. 42 mapped, 50 need further evidence. Map coverage: 347/674 (51.5%); 327 unmapped.
+Progress: first 93 reviewed (25.2% of this checklist); 276 pending. 43 mapped, 50 need further evidence. Map coverage: 348/674 (51.6%); 326 unmapped.
 
-Next: #93 KouritenSG. Revisit Needs evidence entries after the initial pass.
+Next: #94 Skupi sve. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -103,7 +103,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 90 | 428 | Limitless | KW | Salem Al Mubarak Street, Dalal Complex; First Floor, Store Number 12, Limitless; Salmiya; Kuwait | Mapped | Reviewed 2026-10-16: [PSA dealer listing](https://www.psacard.com/dealers/detail/limitless/5165) confirms Dalal Mall on Salem Al Mubarak Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/14fcbe88-ecc4-4295-b543-a2d03eaa8c4b) identifies the same Limitless at Dalal Complex, using Al Dimna Street access, and publishes 29.3401439, 48.0719036. Its [official website](https://kwt-limitless.com/) is linked. Imported against the recorded Dalal Complex address. Latest Omnidex event 2026-09-30T16:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 91 | 439 | KYD遊樂園 | TW | 6 樓, No. 13, Zhongyang E Rd, Zhongli District, Taoyuan City, Taiwan 320 | Needs evidence | Reviewed 2026-10-16: [Pokemon organizer listing](https://asia.pokemon-card.com/tw/event-search/66006/) confirms KYD遊樂園 at 13 Zhongyang East Road, sixth floor, Zhongli. No verified coordinates or standalone official website found. Obtain the named shop map pin. Latest Omnidex event 2026-09-26T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 92 | 72 | MY Hobby & Collectibles | MY | 36f, Jalan Radin Anum, Bandar Baru Sri Petaling, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia | Needs evidence | Reviewed 2026-10-16: [Official about page](https://www.myhobbyandcollectibles.com/blogs/news/about-us) and [Pokemon event](https://asia.pokemon-card.com/my/event-search/10622/) confirm No. 36F-1 Jalan Radin Anum, Sri Petaling. Recorded address omits the floor suffix. Retail identity confirmed; no verified storefront coordinates obtained. Latest Omnidex event 2026-05-03T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 93 | 514 | KouritenSG | SG | 150 South Bridge Road; #B1-22; Singapore 58727; Singapore | Pending |  |
+| 93 | 514 | KouritenSG | SG | 150 South Bridge Road; #B1-22; Singapore 58727; Singapore | Mapped | Reviewed 2026-10-16: [Official links page](https://heylink.me/KouritenSG/) confirms 150 South Bridge Road, B1-22 Fook Hai Building. [Publisher event](https://locator.riftbound.uvsgames.com/events/894935) and embedded store agree on 1.2845625, 103.8467908 at that address. Imported; historical B1-08 listings were not used. Latest Omnidex event 2026-08-24T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 94 | 745 | Skupi sve | HR | Ul. Baruna Trenka 8, 10000, Zagreb, Croatia | Pending |  |
 | 95 | 71 | Gathering Hub | MY | Taman Masjaya, 89500 Kota Kinabalu, Sabah, Malaysia | Pending |  |
 | 96 | 259 | Cat Footprints (Kaohsiung) | TW | 813, Taiwan, Kaohsiung City, Zuoying District, Liwen Rd, 77號13樓之一 | Pending |  |
