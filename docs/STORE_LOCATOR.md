@@ -84,3 +84,25 @@ lists suite A45 rather than the event/directory's A47. The other four conflictin
 matches above remain unresolved. A further comparison using historical host
 aliases and normalized street suffixes found no additional exact matches in the
 cached US directory. Wider coverage requires additional location evidence.
+
+### Publisher directory evidence (2026-10-16)
+
+Two exact store/address matches from the Riftbound Gaming Network bring coverage
+to 305 of 674 (369 remaining):
+
+- Agora Hobby (host 66): the [publisher's store listing](https://locator.riftbound.uvsgames.com/stores/a4bdb9b6-57bf-484a-b119-68799816e1c9)
+  publishes 1.3078243, 103.8611394 for 809 French Road #05-164. The
+  [store's own contact page](https://www.agorahobby.com/contact-us) confirms the
+  same building and unit as the Omnidex address.
+- Card Merchant Hamilton (host 84): the [published event location](https://locator.riftbound.uvsgames.com/events/194757)
+  and its embedded store record agree on -37.7831689, 175.2797244 at 36 Bryce
+  Street, Hamilton 3204. The source adds ground-floor detail to the event address.
+
+Imported points retain source URLs, source addresses, and collection timestamps;
+no event addresses or classifications were changed. These are published directory
+points, not independently surveyed coordinates. No geocoding requests were made.
+Apex Player's Guild was withheld: its [publisher event listing](https://locator.riftbound.uvsgames.com/events/804542)
+contains different event and store coordinates despite referring to High Street
+Centre. Resolve that discrepancy before importing a point. This publisher site
+announces an October 15 platform migration, so future reviews must recheck source
+availability and address currency.

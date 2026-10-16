@@ -72,6 +72,24 @@
     "sourceCollectedAt": "2026-10-11T17:35:46.718894+00:00"
   },
   {
+    "hostId": 66,
+    "lat": 1.3078243,
+    "lng": 103.8611394,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/a4bdb9b6-57bf-484a-b119-68799816e1c9",
+    "sourceAddress": "809 French Road, #05-164, Singapore, Singapore, 200809, SG",
+    "address": "French Rd, #05-164 Blk 809\nKitchener Complex\nSingapore",
+    "sourceCollectedAt": "2026-10-16T15:09:03.847Z"
+  },
+  {
+    "hostId": 84,
+    "lat": -37.7831689,
+    "lng": 175.2797244,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/194757",
+    "sourceAddress": "36 Bryce Street, Ground Floor (Eastern), Hamilton, Waikato Region, 3204, NZ",
+    "address": "36 Bryce Street, Hamilton Central, Hamilton 3204, New Zealand",
+    "sourceCollectedAt": "2026-10-16T15:09:03.847Z"
+  },
+  {
     "hostId": 137,
     "address": "552 Main St space 1, Honesdale, PA 18431, USA",
     "lat": 41.5702622,
