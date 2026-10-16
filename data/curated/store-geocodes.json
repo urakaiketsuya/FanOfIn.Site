@@ -594,6 +594,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:51.594684+00:00"
   },
   {
+    "hostId": 603,
+    "address": "183 Toa Payoh Central, #02 278, Singapore 310183",
+    "lat": 1.3333602999999905,
+    "lng": 103.84884549999964,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/816725",
+    "sourceAddress": "183 Toa Payoh Central 310183, Singapore, SG",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 606,
     "address": "Ruko Faraday, Jl. Scientia Blvd RFDB No.09\nGading, Kec. Serpong, Kabupaten Tangerang\nBanten 15334\nIndonesia",
     "lat": -6.2684203,

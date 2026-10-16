@@ -300,5 +300,9 @@
   "554": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai shop list](https://www.unionarena-tcg.com/en/pdf/shop-battle-shoplist-202305-sg.pdf) confirms 1 Rochor Canal Road #05-21, Sim Lim Square. [Shop marketplace](https://shopee.sg/tttcg) confirms retail identity. Directory-linked [official links page](https://linktr.ee/tripletacticstcg) could not be read. No verified store coordinates obtained; obtain a named shop pin. Latest Omnidex event 2026-05-03T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "603": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Bandai retailer list](https://asia-en.onepiece-cardgame.com/pdf/replacement-shoplist_sg_01.pdf) confirms 183 Toa Payoh Central #02-278. [Publisher event](https://locator.riftbound.uvsgames.com/events/816725) and embedded Bricks Play store agree on 1.3333602999999905, 103.84884549999964 at 183 Toa Payoh Central and link [official Facebook](https://www.facebook.com/bricksplay). Imported address-bound point. Latest Omnidex event 2026-08-23T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
