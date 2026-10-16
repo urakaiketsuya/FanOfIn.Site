@@ -480,5 +480,9 @@
   "557": {
     "kind": "venue",
     "evidence": "2026-10-16: [Official Geek Culture website](https://geekculture.co.nz/) identifies a gaming wholesaler and event organizer. Recorded 217 Green Lane West is Auckland Showgrounds, corroborated by an [exhibitor venue page](https://turtlecreations3d.com/pages/where-to-meet-turtle-creations-in-new-zealand). Classified as event venue at this address, not established retail premises. No hall-specific coordinates verified. Latest Omnidex event in committed snapshot 2026-08-16T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "687": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official shop pickup](https://goattcg.com/products/harrow-the-saved-184-phantom-monarchs) confirms 13 Lorong 8 Toa Payoh #06-03, Singapore 319261. Retail identity and floor match; no verified storefront coordinates obtained. Obtain a named business map point before import. Latest Omnidex event in committed snapshot 2026-10-11T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
