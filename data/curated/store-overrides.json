@@ -472,5 +472,9 @@
   "836": {
     "kind": "unclassified",
     "evidence": "2026-10-16: [GA event report](https://fractalofin.site/RDO/53540.html) repeats third floor Vista Mall Malolos. [Independent event listing](https://allevents.in/malolos/bulacan-boardgame-club-x-questing-grounds-the-first-quest-unmatched-tournament/200028656821500) corroborates organized play at the mall. No official website, independent retail confirmation, or store-specific coordinates obtained; do not substitute the mall centroid. Latest Omnidex event in committed snapshot 2026-09-12T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "907": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Cards Cave at 580 Xinzhuang Road, first floor, and links [official Facebook](https://www.facebook.com/cardscave/). [Business register](https://findbiz.nat.gov.tw/fts/business/91716341/93100000000022141107) corroborates address and retail activity. No named storefront coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-14T11:30:00.000Z. Existing recurrence projects 2026-10-21T11:30:00.000Z, 2026-10-28T11:30:00.000Z, 2026-11-04T11:30:00.000Z, 2026-11-11T11:30:00.000Z (source event 66085); estimates, not confirmed bookings."
   }
 }
