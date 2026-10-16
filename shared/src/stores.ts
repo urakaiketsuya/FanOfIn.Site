@@ -23,6 +23,7 @@ export interface StoreRecord {
   addressDate: string;
   lastEventDate: string;
   eventCount: number;
+  weeklyEvidence?: { id: number; date: string }[];
   recentEvents: { id: number; name: string; date: string }[];
 }
 export interface StoreDirectory { generatedAt: string; stores: StoreRecord[] }
@@ -55,6 +56,7 @@ export function buildStoreDirectory(events: readonly OmnidexEventSummary[], geoc
       ...(coordinates && validStoreCoordinates(coordinates) ? { coordinates: { lat: coordinates.lat, lng: coordinates.lng } } : {}),
       addressEventId: addressEvent.id, addressDate: addressEvent.date, lastEventDate: latest.date,
       eventCount: new Set(group.map(e => e.id)).size,
+      weeklyEvidence: [...new Map(group.filter(e => e.category === 'regular' && e.hostAddress === address && !/release|launch|championship|regional|ascent|worlds|national|qualifier|celebration/i.test(e.name)).map(e => [e.id, { id: e.id, date: e.date }])).values()].slice(0, 100),
       recentEvents: [...new Map(group.map(e => [e.id, { id: e.id, name: e.name, date: e.date }])).values()].slice(0, 12),
     } satisfies StoreRecord;
   }).sort((a, b) => a.name.localeCompare(b.name) || a.id - b.id);
@@ -77,4 +79,26 @@ export function filterStores(stores: readonly StoreRecord[], filters: { query: s
     .map(store => ({ store, distance: filters.position && store.coordinates ? storeDistanceKm(filters.position, store.coordinates) : undefined }))
     .filter(row => !filters.position || !filters.radius || (row.distance !== undefined && row.distance <= filters.radius))
     .sort((a, b) => filters.position ? (a.distance ?? Infinity) - (b.distance ?? Infinity) || a.store.name.localeCompare(b.store.name) : a.store.name.localeCompare(b.store.name));
+}
+
+/** Rolling four-week estimates; never creates synthetic Omnidex event IDs. */
+export function upcomingStoreEvents(store: StoreRecord, now = Date.now()): { date: string; sourceEventId: number }[] {
+  const day = 86400000;
+  const evidence = (store.weeklyEvidence ?? []).filter(e => {
+    const time = Date.parse(e.date);
+    return time <= now && time >= now - 56 * day;
+  }).sort((a, b) => b.date.localeCompare(a.date));
+  const result: { date: string; sourceEventId: number }[] = [];
+  for (let weekday = 0; weekday < 7; weekday++) {
+    const matches = [...new Map(evidence.filter(e => new Date(e.date).getUTCDay() === weekday).map(e => [e.date.slice(0, 10), e])).values()];
+    if (matches.length < 3) continue;
+    const latest = matches[0];
+    const latestTime = Date.parse(latest.date);
+    // Require a recent occurrence and consecutive weeks, not a monthly series.
+    if (now - latestTime > 21 * day || !matches.some(e => Math.abs(latestTime - Date.parse(e.date) - 7 * day) < day / 8)) continue;
+    for (let time = latestTime + 7 * day; time <= now + 28 * day; time += 7 * day) {
+      if (time > now) result.push({ date: new Date(time).toISOString(), sourceEventId: latest.id });
+    }
+  }
+  return result.sort((a, b) => a.date.localeCompare(b.date));
 }

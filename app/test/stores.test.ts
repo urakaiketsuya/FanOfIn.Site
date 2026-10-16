@@ -39,3 +39,22 @@ test('filters combine text, country, activity and distance while preserving unma
  assert.equal(filterStores(stores,{...base,radius:25,position:{lat:42,lng:-71}}).length,1);
  assert.equal(filterStores(stores,{...base,position:{lat:42,lng:-71}})[1].distance,undefined);
 });
+
+test('weekly estimates require repeated recent regular events at the current address', async () => {
+ const { upcomingStoreEvents } = await import('../../shared/src/stores');
+ const now = Date.parse('2026-10-16T12:00:00Z');
+ const es = ['2026-10-02','2026-10-09','2026-10-16'].map((d,i)=>event({id:i+1,date:`${d}T10:00:00Z`,category:'regular',name:'Weekly GA'}));
+ const store = buildStoreDirectory(es,[])[0];
+ const upcoming = upcomingStoreEvents(store,now);
+ assert.deepEqual(upcoming.map(e=>e.date.slice(0,10)),['2026-10-23','2026-10-30','2026-11-06','2026-11-13']);
+ assert.ok(upcoming.every(e=>e.sourceEventId===3));
+ assert.deepEqual(upcomingStoreEvents(store,now+60*86400000),[]);
+ assert.deepEqual(upcomingStoreEvents(buildStoreDirectory(es.slice(1),[])[0],now),[]);
+ for (const overrides of [{category:'store-championships'},{name:'Set release celebration'}]) {
+   assert.deepEqual(upcomingStoreEvents(buildStoreDirectory(es.map(e=>({...e,...overrides})),[])[0],now),[]);
+ }
+ const moved = buildStoreDirectory([...es,event({id:4,date:'2026-10-16T11:00:00Z',hostAddress:'New venue',category:'regular'})],[])[0];
+ assert.deepEqual(upcomingStoreEvents(moved,now),[]);
+ assert.deepEqual(upcomingStoreEvents({...store,weeklyEvidence:undefined},now),[]);
+ assert.deepEqual(upcomingStoreEvents({...store,weeklyEvidence:[...store.weeklyEvidence!,...store.weeklyEvidence!]},now),upcoming);
+});

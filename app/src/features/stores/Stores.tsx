@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { filterStores, type StoreDirectory, type StoreRecord } from '@gatcg/shared';
+import { upcomingStoreEvents, filterStores, type StoreDirectory, type StoreRecord } from '@gatcg/shared';
 import PageLayout from '../../components/layout/PageLayout';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
@@ -16,12 +16,14 @@ function Directions({ store }: { store: StoreRecord }) {
   return store.address ? <a className={link} href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(store.address)}`} target="_blank" rel="noreferrer">Directions<span className="sr-only"> (new tab)</span></a> : null;
 }
 function StoreCard({ store, distance, selected }: { store: StoreRecord; distance?: number; selected: boolean }) {
+  const nextEvent = upcomingStoreEvents(store)[0];
   return <article aria-label={store.name} className={`min-w-0 rounded-xl border bg-ctp-mantle p-4 ${selected ? 'border-ctp-blue ring-2 ring-ctp-blue' : 'border-ctp-surface1'}`}>
     {selected && <p className="text-sm text-ctp-blue">Selected on map</p>}
     <h2 className="break-words text-lg font-semibold"><Link className="inline-flex min-h-control items-center text-ctp-blue hover:underline focus-visible:outline-2" to={`/stores/${store.id}`}>{store.name}</Link></h2>
     <p className="text-sm text-ctp-subtext1">{store.kind === 'store' ? 'Store' : 'Event venue'}{distance !== undefined ? ` · ${distance.toFixed(1)} km away` : ''}</p>
     <p className="mt-2 break-words">{store.address || 'Address unavailable'}</p>
     <p className="mt-2 text-sm">Latest recorded event · {date(store.lastEventDate)}</p>
+    {nextEvent && <p className="mt-2 text-sm text-ctp-green">Expected weekly event · {date(nextEvent.date)}</p>}
     {!store.coordinates && <p className="mt-1 text-sm text-ctp-subtext1">Map location unavailable</p>}
     <Directions store={store} />
   </article>;
@@ -80,6 +82,17 @@ export default function Stores() {
     {data && (id ? current ? <>
       <Link className={link} to="/stores">All stores and venues</Link>
       <StoreCard store={current} selected={false} />
+      <section className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="upcoming-events">
+        <h2 id="upcoming-events" className="text-xl font-semibold">Upcoming weekly events</h2>
+        {upcomingStoreEvents(current).length ? <>
+          <p className="mt-2 text-sm text-ctp-subtext1">Expected dates based on recent weekly events. Confirm with the store. Dates shown in your time zone.</p>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2">{upcomingStoreEvents(current).map(event => <li key={event.date} className="rounded-lg bg-ctp-base p-3">
+            <p className="font-medium">{new Date(event.date).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</p>
+            <p className="text-sm text-ctp-subtext1">Expected · Weekly Grand Archive</p>
+            <Link className={link} to={`/events/${event.sourceEventId}`}>Previous event</Link>
+          </li>)}</ul>
+        </> : <p className="mt-2 text-ctp-subtext1">No recent weekly schedule found.</p>}
+      </section>
       {current.coordinates && <div className="mt-4"><Suspense fallback={<p>Loading map…</p>}><StoreMap stores={[current]} onSelect={() => {}} /></Suspense></div>}
       <h2 className="mt-6 text-xl font-semibold">Recent events</h2>
       <p className="mt-1 text-sm text-ctp-subtext1">{current.eventCount.toLocaleString()} recorded {current.eventCount === 1 ? "event" : "events"} · Address from {date(current.addressDate)}</p>

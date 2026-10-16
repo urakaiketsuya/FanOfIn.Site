@@ -115,3 +115,27 @@ The first 11 reviews add RWT Collective at its current Olympic Boulevard address
 bringing coverage to 306 of 674. Its publisher event and embedded store record agree
 on the coordinates, and its official site confirms suite 201. Ten reviewed hosts
 still need coordinate or address evidence; 358 await their first review.
+
+## Expected weekly events
+
+Store cards show the next expected date; store details show the next 28 days with
+links to the supporting historical event. These are estimates, not scheduled
+Omnidex listings (the published index currently contains completed events only).
+Stable host IDs and exact current-address matches bind evidence to each venue.
+Only regular physical completed events qualify; release/launch, championship,
+regional/ascent/worlds/national/qualifier/celebration names are excluded.
+
+The directory retains up to 100 qualifying event dates per venue. At display time,
+each UTC weekday needs three distinct event dates in the last 56 days, an occurrence
+within 21 days, and an occurrence a week before the latest (three-hour tolerance).
+Duplicate same-day events cannot establish recurrence. Each qualifying weekday
+projects weekly from its latest event through 28 days ahead. Old evidence expires,
+and legacy directory data without evidence simply shows no weekly schedule.
+
+Dates are displayed in the viewer's time zone, explicitly labeled. Source timestamps
+are UTC and do not carry venue time zones, so this approximation does not model
+venue daylight-saving changes; no start time or registration availability is promised.
+Store-local time zones and actual upcoming Omnidex listings remain future extensions.
+
+Verification: five store tests, app type checking and lint (existing Fast Refresh
+warnings only); mobile 390px and desktop 1280px overflow and 48px event-link checks.
