@@ -117,6 +117,15 @@
     "sourceCollectedAt": "2026-10-16T15:33:06.229Z"
   },
   {
+    "hostId": 125,
+    "address": "15901 Jefferson Davis Hwy, Chester, VA 23834, USA",
+    "lat": 37.3050764,
+    "lng": -77.4085387,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/92e8be43-280f-4089-8318-6e19367306c6",
+    "sourceAddress": "15901 Route 1, S CHESTERFLD, VA, 23834, US",
+    "sourceCollectedAt": "2026-10-16T16:10:53.641960+00:00"
+  },
+  {
     "hostId": 137,
     "address": "552 Main St space 1, Honesdale, PA 18431, USA",
     "lat": 41.5702622,
@@ -124,6 +133,15 @@
     "sourceUrl": "https://www.lgsfinder.org/pennsylvania/honesdale/dragons-den-games-and-hobbies-honesdale",
     "sourceAddress": "552 Main St space 1, Honesdale, PA 18431",
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
+  },
+  {
+    "hostId": 180,
+    "address": "150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841",
+    "lat": 1.3009768,
+    "lng": 103.8410562,
+    "sourceUrl": "https://asia.pokemon-card.com/sg/event-search/8406/",
+    "sourceAddress": "150 Orchard Road, #04-36, S238841",
+    "sourceCollectedAt": "2026-10-16T15:50:07Z"
   },
   {
     "hostId": 204,
@@ -196,6 +214,15 @@
     "sourceUrl": "https://map.yahoo.co.jp/v3/place/m26AtDW4UcY",
     "sourceAddress": "TCGカフェ&バー EVO, 東京都新宿区新宿1-18-5 ネスト新宿御苑ビル2階",
     "sourceCollectedAt": "2026-10-16T15:40:44.675Z"
+  },
+  {
+    "hostId": 380,
+    "address": "3733 N Josey Ln Apt 108, Carrollton, TX 75007, USA",
+    "lat": 33.0129469,
+    "lng": -96.888309,
+    "sourceUrl": "https://cardshopdir.com/shop/lonestar-pack-breaks-store-carrollton-tx",
+    "sourceAddress": "LoneStar Pack Breaks Store, 3733 North Josey Lane, Carrollton, TX 75007",
+    "sourceCollectedAt": "2026-10-16T15:46:48.517Z"
   },
   {
     "hostId": 395,
@@ -349,23 +376,5 @@
     "sourceUrl": "https://www.lgsfinder.org/colorado/littleton/mythic-games-littleton",
     "sourceAddress": "8966 W Bowles Ave Suite Y, Littleton, CO 80123",
     "sourceCollectedAt": "2026-10-11T17:34:21.601675+00:00"
-  },
-  {
-    "hostId": 380,
-    "address": "3733 N Josey Ln Apt 108, Carrollton, TX 75007, USA",
-    "lat": 33.0129469,
-    "lng": -96.888309,
-    "sourceUrl": "https://cardshopdir.com/shop/lonestar-pack-breaks-store-carrollton-tx",
-    "sourceAddress": "LoneStar Pack Breaks Store, 3733 North Josey Lane, Carrollton, TX 75007",
-    "sourceCollectedAt": "2026-10-16T15:46:48.517Z"
-  },
-  {
-    "hostId": 180,
-    "address": "150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841",
-    "lat": 1.3009768,
-    "lng": 103.8410562,
-    "sourceUrl": "https://asia.pokemon-card.com/sg/event-search/8406/",
-    "sourceAddress": "150 Orchard Road, #04-36, S238841",
-    "sourceCollectedAt": "2026-10-16T15:50:07Z"
   }
 ]
