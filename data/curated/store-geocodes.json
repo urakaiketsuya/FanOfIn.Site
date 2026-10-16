@@ -1,5 +1,14 @@
 [
   {
+    "hostId": 1,
+    "address": "84 Grasso Plaza, Affton, MO 63123, USA",
+    "lat": 38.551309,
+    "lng": -90.335852,
+    "sourceUrl": "https://www.lgsfinder.org/missouri/st-louis/yeti-gaming-st-louis",
+    "sourceAddress": "84 Grasso Plaza, St. Louis, MO 63123",
+    "sourceCollectedAt": "2026-10-11T17:36:01.654184+00:00"
+  },
+  {
     "hostId": 4,
     "address": "3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA",
     "lat": 28.6779817,
@@ -169,6 +178,15 @@
     "sourceUrl": "https://www.lgsfinder.org/oklahoma/shawnee/white-lotus-gaming-shawnee",
     "sourceAddress": "600 W Independence St Suite 1100, Shawnee, OK 74804",
     "sourceCollectedAt": "2026-10-11T17:36:51.683303+00:00"
+  },
+  {
+    "hostId": 522,
+    "address": "3407 Wells Branch Pkwy suite 800, Austin, TX 78727, USA",
+    "lat": 30.4383962,
+    "lng": -97.6962588,
+    "sourceUrl": "https://www.lgsfinder.org/texas/austin/game-kastle-austin-austin",
+    "sourceAddress": "3407 Wells Branch Pkwy suite 800, Austin, TX 78728",
+    "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
     "hostId": 578,

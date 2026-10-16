@@ -67,3 +67,20 @@ notation and shopping-center prefixes. Conflicting addresses (Andyseous Odyssey,
 Kobold's Keep, Webway Games), postal/locality discrepancies (Game Kastle Austin,
 Realgoodeal, Yeti Gaming), and an identity mismatch (True Champion Gaming versus
 AFK Games) were excluded pending further evidence. Remaining map gaps: 373.
+
+### Follow-up match review (2026-10-16)
+
+Two more directory points were accepted, bringing coverage to 303 of 674 (371
+remaining). Game Kastle Austin's [official location page](https://gamekastle.com/pages/austin-tx)
+confirms 3407 Wells Branch Pkwy Suite 800, Austin, TX 78728; the event record's
+78727 postal code differs but the store, street, and suite match. Yeti Gaming's
+[official social profile](https://linktr.ee/yetigamingstl) confirms 84 Grasso Plaza,
+St. Louis; the event address uses Affton for the same street and postal code.
+Both points retain the original event address as their exact cache key and the
+LGS Finder coordinate provenance. No event address was overwritten.
+
+Realgoodeal remains excluded: its [contact page](https://realgoodeal.com/pages/contact-us)
+lists suite A45 rather than the event/directory's A47. The other four conflicting
+matches above remain unresolved. A further comparison using historical host
+aliases and normalized street suffixes found no additional exact matches in the
+cached US directory. Wider coverage requires additional location evidence.
