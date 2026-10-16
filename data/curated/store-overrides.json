@@ -396,5 +396,9 @@
   "91": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://gamingdna.co.nz/) confirms Level 1, 550 Anglesea Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/25178054-09c1-461b-bc8b-a695302ce1ca) binds the same Hamilton address to -37.7815392, 175.2746926. Imported the named store point. Latest Omnidex event in committed snapshot 2026-08-20T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "676": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Card-store directory](https://riftboundex.com/en/stores) confirms SBT, Tak Wing Industrial Building, third floor C2; [another directory](https://binami.io/zh-TW/place/bf735a1d-97c9-4f89-bd74-b71d1537ceb8) uses 3 Tsun Wen Road and a different building occupant label. No official standalone website or reliable unit-specific coordinates obtained. Resolve road spelling and named store pin. Latest Omnidex event in committed snapshot 2026-10-02T12:20:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
