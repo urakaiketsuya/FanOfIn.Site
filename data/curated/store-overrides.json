@@ -108,5 +108,9 @@
   "241": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://www.backtogames.com/contactus) confirms the Town Centre Jumeirah ground-floor branch and phone +971 4 548 8445. [Publisher branch record](https://locator.riftbound.uvsgames.com/stores/2ce99f7e-f640-4642-941b-569ddfa6a4f5) matches name and phone; store and events agree on 25.2152868, 55.2509078. Imported branch-specific point and classified as store. Other branches were not used. Latest Omnidex event 2026-10-01; current Grand Archive evidence does not qualify for weekly projections."
+  },
+  "399": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Distributor directory](https://www.maxsoftonline.com/purchase-trading-card) lists Mandala Raya 33B, RT.12/RW.4; [publisher announcement](https://ultraman-cardgame.com/page/id/news/news-detail/20) specifies 33B, second floor above Es Teh Indonesia Tomang. Recorded address instead repeats number 33 and RT.1/RW.4. Classified as store, but retain unresolved status until street-number and unit conflict is reconciled with a current store pin. No standalone official website verified. Latest Omnidex event 2026-10-01; current evidence does not qualify for weekly projections."
   }
 }
