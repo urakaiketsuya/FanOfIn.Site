@@ -207,6 +207,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
   },
   {
+    "hostId": 290,
+    "address": "1101 Blanding Blvd #119, Orange Park, FL 32065, USA",
+    "lat": 30.1308834,
+    "lng": -81.78366079999999,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/5ae6cff6-69df-4c15-8ad4-777db3010d70",
+    "sourceAddress": "1101 Blanding Boulevard, Suite 119, Orange Park, FL, 32065, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 342,
     "address": "8085 W Bell Rd Ste 107, Peoria, AZ 85382, USA",
     "lat": 33.6359462,

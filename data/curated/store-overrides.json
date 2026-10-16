@@ -40,5 +40,9 @@
   "177": {
     "kind": "store",
     "evidence": "2026-10-16: Official https://www.catfootprint.com/貓腳印-雄二店 confirms 75 Ziqiang 2nd Road, 2F, Qianjin District and links named Google Maps storefront with feature coordinates !3d22.6243005!4d120.2955615. Imported feature point rather than viewport center longitude 120.2933675."
+  },
+  "290": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store record](https://locator.riftbound.uvsgames.com/stores/5ae6cff6-69df-4c15-8ad4-777db3010d70) identifies a physical retailer at 1101 Blanding Boulevard, Suite 119; store and event coordinates agree on 30.1308834, -81.7836608. Imported verified point and classified as store. [Retail directory](https://yestcg.com/stores/florida/orange-park/gamers-empyrean) links [store website](https://gamersempyrean.com/), inaccessible during review. Latest Omnidex event 2026-09-13 is stale for weekly projections; no upcoming estimates."
   }
 }
