@@ -333,6 +333,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:51.594684+00:00"
   },
   {
+    "hostId": 606,
+    "address": "Ruko Faraday, Jl. Scientia Blvd RFDB No.09\nGading, Kec. Serpong, Kabupaten Tangerang\nBanten 15334\nIndonesia",
+    "lat": -6.2684203,
+    "lng": 106.6085726,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/35665f14-50ef-4470-89b0-e2751266e8ab",
+    "sourceAddress": "Ruko Faraday, Jl. Scientia Blvd RFDB No.09, Gading, Kec. Serpong, Kabupaten Tangerang, Banten 15334, Indonesia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 652,
     "address": "2440 Fulton Ave #9, Sacramento, CA 95825, USA",
     "lat": 38.6098489,

@@ -44,5 +44,9 @@
   "290": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher store record](https://locator.riftbound.uvsgames.com/stores/5ae6cff6-69df-4c15-8ad4-777db3010d70) identifies a physical retailer at 1101 Blanding Boulevard, Suite 119; store and event coordinates agree on 30.1308834, -81.7836608. Imported verified point and classified as store. [Retail directory](https://yestcg.com/stores/florida/orange-park/gamers-empyrean) links [store website](https://gamersempyrean.com/), inaccessible during review. Latest Omnidex event 2026-09-13 is stale for weekly projections; no upcoming estimates."
+  },
+  "606": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store record](https://locator.riftbound.uvsgames.com/stores/35665f14-50ef-4470-89b0-e2751266e8ab) confirms physical retail at RFDB No.09 and links [official Instagram](https://www.instagram.com/jadifun_id/); no standalone website found. Store record and embedded map agree on -6.2684203, 106.6085726; imported point and classified as store. [Grand Archive regional announcement](https://www.gatcg.com/article/radiant-origins-regionals) uses Transpark Bintaro as a separate tournament venue. Latest Omnidex event 2026-10-03; recent Wednesday evidence supports 10-21, 10-28, 11-04 and 11-11 projections via existing recurrence logic."
   }
 }
