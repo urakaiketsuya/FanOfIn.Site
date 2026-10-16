@@ -504,5 +504,9 @@
   "151": {
     "kind": "store",
     "evidence": "2026-10-16: [Official GA championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) confirms 67 Wenxin South First Road; [publisher organizer record](https://judge.fabtcg.com/events/14023/) identifies Gi Meow The Card Team as 吉貓樂卡町. No official standalone website or verified current storefront pin obtained; historical address needs confirmation. Latest Omnidex event in committed snapshot 2025-01-03T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "482": {
+    "kind": "unclassified",
+    "evidence": "2026-10-16: [GA host report](https://recollect.gg/hosts/482) and [event report](https://www.fractalofin.site/RDO/51571.html) repeat No.5-1 Jalan PNBBU 2 under Yugoco/YUGUCO. No independent storefront confirmation, official website, or named coordinates obtained. Resolve spelling/retail identity and exact entrance before importing. Latest Omnidex event in committed snapshot 2026-05-31T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
