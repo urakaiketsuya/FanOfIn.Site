@@ -428,5 +428,9 @@
   "186": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact and directions](https://www.foxdenbgc.com/contact) confirm 12450 River Ridge Lane Suite 300; the named Google Maps destination supplies 44.7784029, -93.2806963. [Official product page](https://foxdenbcg.squarespace.com/products) establishes retail sales in addition to the cafe. Imported the business destination point. Latest Omnidex event in committed snapshot 2026-02-08T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "591": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official LINE account](https://page.line.me/rwp1204r) confirms the basement B1-7 location; [manufacturer retail channels](https://www.gege.com.tw/shop) confirm game retail at the same address. [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/25090/) agrees. No address-bound business coordinates obtained; retain unmapped status. Latest Omnidex event in committed snapshot 2026-10-10T12:00:00.000Z. Existing recurrence projects 2026-10-19T12:30:00.000Z, 2026-10-26T12:30:00.000Z, 2026-11-02T12:30:00.000Z, 2026-11-09T12:30:00.000Z (source event 65450); estimates, not confirmed bookings."
   }
 }
