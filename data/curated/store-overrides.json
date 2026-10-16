@@ -564,5 +564,9 @@
   "269": {
     "kind": "unclassified",
     "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) lists Brand x coffee at Maclane Center, San Pedro, and links [official Facebook](https://www.facebook.com/brandXcoffee). That differs from recorded Villongco subdivision, San Pablo. Do not conflate with Brand X Burgers. Retail identity/location remain unresolved; no pin imported. Latest Omnidex event in committed snapshot 2026-08-09T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "437": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) lists The Game Armory at Balagtey-Perez Building, 163 Lower Bonifacio, and links [official Facebook](https://www.facebook.com/JohnsonGamingPH/). Recorded events use Cuesta Building, 149 Upper Bonifacio, unit 204. Reconcile relocation before importing either point; retain recorded address. Latest Omnidex event in committed snapshot 2026-09-26T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
