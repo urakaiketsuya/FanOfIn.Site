@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 59 reviewed (16.0% of this checklist); 310 pending. 29 mapped, 30 need further evidence. Map coverage: 334/674 (49.6%); 340 unmapped.
+Progress: first 60 reviewed (16.3% of this checklist); 309 pending. 30 mapped, 30 need further evidence. Map coverage: 335/674 (49.7%); 339 unmapped.
 
-Next: #60 Magitek Games. Revisit Needs evidence entries after the initial pass.
+Next: #61 御三家咖啡廳3Cafe. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -70,7 +70,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 57 | 475 | Art of Cards | SG | 8 Burn Road Trivex #14-12; Singapore 369977; Singapore | Mapped | Reviewed 2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/06382f65-d59f-4fcc-9685-fb4b57a6d9d1) confirms 8 Burn Road, Trivex #14-12 and publishes 1.3353892, 103.8855939. [Official retail shop](https://shopee.sg/artofcards) independently confirms the exact unit and physical play space; publisher links [official Instagram](https://www.instagram.com/artofcardsofficial/). No standalone website found. Imported verified point and classified as store. Latest Omnidex event 2026-05-05 is stale; no weekly projections. |
 | 58 | 726 | HIDEOUT | SG | 803 King George's Ave, #02 190, Singapore 200803 | Mapped | Reviewed 2026-10-16: [Official website](https://hideoutcg.com/) confirms 803 King George's Avenue #02-190. [Publisher store](https://locator.riftbound.uvsgames.com/stores/b6613994-8576-4776-9720-03a2e8181a83) matches the address and publishes 1.308041, 103.860626. Imported verified point and classified as store. Latest Omnidex event 2026-10-15; existing Grand Archive recurrence supports Thursdays 10-22, 10-29, 11-05 and 11-12. Publisher Riftbound schedules were not imported. |
 | 59 | 159 | Deck Out Trading Cards | MY | 8-2, Jalan USJ 21/6, Taman Indah Subang Uep, 47630 Subang Jaya, Selangor, Malaysia | Needs evidence | Reviewed 2026-10-16: [Flesh and Blood publisher directory](https://legacy.fabtcg.com/en/locator/?page=251) lists No.8-G Jalan USJ 21/6, whereas Omnidex records 8-2 at the same street. [Retail shop](https://shopee.com.my/deckouttcg?entryPoint=ShopByPDP) supports store identity. No standalone official website found; [community interview](https://thesouthernislands.wordpress.com/2023/06/12/lim-han-juan-arceus-vstar-all-the-friends/) links [official Facebook](https://www.facebook.com/deckouttcg). Classified as store; resolve ground-floor versus second-floor venue and obtain a matching pin. Latest Omnidex event 2026-08-21 is stale; no weekly projections. |
-| 60 | 210 | Magitek Games | US | 1122 Cadillac Ct, Milpitas, CA 95035, USA | Pending |  |
+| 60 | 210 | Magitek Games | US | 1122 Cadillac Ct, Milpitas, CA 95035, USA | Mapped | Reviewed 2026-10-16: [Official Linktree](https://linktr.ee/magitekgames) confirms 1122 Cadillac Court and in-person TCG events. [Publisher event](https://locator.riftbound.uvsgames.com/events/503631) and embedded store agree on 37.4439482, -121.9176902 at that address. [Store website](https://magitek-games.com/password) is a password-protected opening-soon page. Imported verified point and classified as store; historical San Jose address not used. Latest Omnidex event 2026-09-17 is stale for weekly projections. |
 | 61 | 529 | 御三家咖啡廳3Cafe  | TW | 3f, 125 Section 3, Chengde Road, Datong District, Taipei City, 103, Taiwan | Pending |  |
 | 62 | 51 | Nor Cal TCG | US | 1311 Pine St Ste A, Martinez, CA 94553, USA | Pending |  |
 | 63 | 105 | Double Kill Games | AU | 775 George St, Haymarket NSW 2000, Australia | Pending |  |
