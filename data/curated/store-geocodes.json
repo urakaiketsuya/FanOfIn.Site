@@ -90,6 +90,15 @@
     "sourceCollectedAt": "2026-10-11T17:35:46.718894+00:00"
   },
   {
+    "hostId": 50,
+    "address": "478 Dundas St W Second Floor, Toronto, ON M5T 1G9, Canada",
+    "lat": 43.6534144,
+    "lng": -79.3970248,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/6c2e77b7-c9e8-407f-a369-d4ddf044255c",
+    "sourceAddress": "478 Dundas St W Second Floor, Toronto, ON M5T 1G9, Canada",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 66,
     "lat": 1.3078243,
     "lng": 103.8611394,

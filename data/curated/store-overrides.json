@@ -68,5 +68,9 @@
   "140": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://coretcg.com/) confirms 770 South Arroyo Parkway #110 and physical TCG retail. [Lorcana publisher store record](https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43) and its event records agree on 34.13254, -118.146938 at that suite. Imported verified coordinates and classified as store. Latest Omnidex event 2026-09-29; current Grand Archive evidence does not satisfy weekly recurrence requirements, so no upcoming estimates."
+  },
+  "50": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://goforgame.ca/pages/contact) confirms 478 Dundas Street West, second floor. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/6c2e77b7-c9e8-407f-a369-d4ddf044255c) and its events agree on 43.6534144, -79.3970248. Imported verified point and classified as store. Latest Omnidex event 2026-10-13; existing Grand Archive recurrence checks return no qualifying future dates. Publisher Wednesday listings are for Riftbound and were not imported as Grand Archive events."
   }
 }
