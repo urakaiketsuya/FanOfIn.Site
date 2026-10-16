@@ -358,5 +358,14 @@
     "sourceUrl": "https://cardshopdir.com/shop/lonestar-pack-breaks-store-carrollton-tx",
     "sourceAddress": "LoneStar Pack Breaks Store, 3733 North Josey Lane, Carrollton, TX 75007",
     "sourceCollectedAt": "2026-10-16T15:46:48.517Z"
+  },
+  {
+    "hostId": 180,
+    "address": "150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841",
+    "lat": 1.3009768,
+    "lng": 103.8410562,
+    "sourceUrl": "https://asia.pokemon-card.com/sg/event-search/8406/",
+    "sourceAddress": "150 Orchard Road, #04-36, S238841",
+    "sourceCollectedAt": "2026-10-16T15:50:07Z"
   }
 ]
