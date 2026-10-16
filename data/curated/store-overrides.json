@@ -11,5 +11,9 @@
   "507": {
     "kind": "store",
     "evidence": "2026-10-16: Flesh and Blood official 2026 event listing https://legacy.fabtcg.com/en/events/?mode=event&page=173 confirms SGC Card Cafe at 23-02 Jalan Suria 7, Bandar Baru Seri Alam, Masai. Retail presence corroborated by https://shopee.com.my/sgc_card_cafe. No verified storefront coordinate found."
+  },
+  "183": {
+    "kind": "store",
+    "evidence": "2026-10-16: Official Pokémon event https://asia.pokemon-card.com/hk/event-search/19890/ confirms Mox Saga at Room 13A, Justen Centre, 44-52 Wai Ching Street, Jordan. Its map is an address search, not a coordinate pin. Publisher https://legacy.fabtcg.com/en/organised-play/2025/battle-hardened-hong-kong-2025/ links https://mox-saga.webnode.page/ as organizer website; inaccessible during review."
   }
 }
