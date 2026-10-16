@@ -416,5 +416,9 @@
   "841": {
     "kind": "store",
     "evidence": "2026-10-16: [GA event report](https://www.fractalofin.site/RDO/51589.html) links host KSL TCG ENTERPRISE with the Korindou event name. [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) lists Korindou at 39-1 Jalan Bukit Beruang Utama 2. Recorded address omits the floor suffix. Confirm alias/floor and obtain a named pin; no official standalone website established. Latest Omnidex event in committed snapshot 2026-10-09T12:45:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "48": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official shop](https://koboldskeep.com/collections/card-games) confirms 680 Greenbrae Drive Suite 223 and retail sales. A [publisher event](https://tcg.ravensburgerplay.com/events/714727) instead uses 1188 Victorian Plaza Circle. Keep the recorded branch unmapped until the alternate event location and exact storefront coordinates are resolved. Latest Omnidex event in committed snapshot 2026-10-06T01:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
