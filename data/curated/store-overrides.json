@@ -484,5 +484,9 @@
   "687": {
     "kind": "store",
     "evidence": "2026-10-16: [Official shop pickup](https://goattcg.com/products/harrow-the-saved-184-phantom-monarchs) confirms 13 Lorong 8 Toa Payoh #06-03, Singapore 319261. Retail identity and floor match; no verified storefront coordinates obtained. Obtain a named business map point before import. Latest Omnidex event in committed snapshot 2026-10-11T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "822": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/id/event-search/37299/) confirms Torecaya at Gg. Sarwo No.7, Tampan, Pekanbaru, including organizer contact. [Distributor](https://mythicessential.com/) lists Torecaya as a partner. No official standalone website or verified business coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-11T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
