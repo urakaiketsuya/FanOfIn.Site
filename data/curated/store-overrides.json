@@ -188,5 +188,9 @@
   "633": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store page](https://www.fable-fab.com/view/page/shop_event) confirms Win Kanda Takahashi Building, 1-7-1 Kanda Sudacho, fifth floor. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms building/floor and links [official X](https://x.com/Fable_FABTCG). Official map embed identifies Fable Akihabara but exposes a viewport center rather than a separately verified feature point; do not import it as storefront coordinates. Latest GA event 2026-10-14; existing recurrence projects Wednesdays from 10-21 and Fridays from 10-23."
+  },
+  "653": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Thai Trainer Hub directory](https://pokemon.in.th/shops) confirms 85 Soi Lat Phrao 81, Khlong Chaokhun Sing, Wang Thonglang, Bangkok 10310 and links [official Pokémon shop record](https://asia.pokemon-card.com/th/shopmap/map/Shop185), which could not be fetched during review. No standalone store website or verified pin obtained; retain address and seek accessible primary map evidence. Latest GA event 2026-10-09; existing recurrence checks produce no upcoming estimates."
   }
 }
