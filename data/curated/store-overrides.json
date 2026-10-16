@@ -284,5 +284,9 @@
   "745": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://skupisve.hr/pages/contact) identifies its mini shop and play venue as Hero's Rest, Ulica Baruna Trenka 8. Its [directions link](https://maps.app.goo.gl/PQ6FtY981nUsp4Sx6) resolves to the named Hero's Rest gaming cafe feature at 45.8076482, 15.976145, distinct from the viewport center. Imported shared venue point. Latest Omnidex event 2026-10-15T16:40:00.000Z. Existing recurrence projects 2026-10-22T16:40:00.000Z, 2026-10-29T16:40:00.000Z, 2026-11-05T16:40:00.000Z, 2026-11-12T16:40:00.000Z (source event 66180); estimates, not confirmed bookings."
+  },
+  "71": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/ALC_Season_Store_Championship_List_3_14_ALC_Store_Championships_List_Updated_3_18_d27d16a25c.pdf) repeats Taman Masjaya, but [Bandai retailer list](https://asia-en.onepiece-cardgame.com/pdf/replacement-shoplist_my_01.pdf) gives Lot 22, first floor, Block C, Kepayan Point, Jalan Penampang By-Pass, 88200. Resolve the current exact storefront and postcode before importing. No standalone official website verified. Latest Omnidex event 2026-10-04T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
