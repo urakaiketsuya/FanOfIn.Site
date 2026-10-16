@@ -13,6 +13,7 @@ const STATIC_ROUTES = [
   "/",
   "/cards",
   "/artists",
+  "/stores",
   "/cards/stats",
   "/sets",
   "/thema",

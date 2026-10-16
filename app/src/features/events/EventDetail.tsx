@@ -176,7 +176,7 @@ export default function EventDetail() {
         <h1 className="mt-3 break-words text-3xl font-bold leading-tight text-ctp-text sm:text-4xl">{event.name}</h1>
         <div className="mt-3 text-sm text-ctp-subtext1">
           <time dateTime={event.date}>{new Date(event.date).toLocaleDateString()}</time>
-          <p className="mt-1 break-words" title={event.host.address || undefined}>{event.host.name}</p>
+          <p className="mt-1 break-words" title={event.host.address || undefined}>{omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical") ? <Link className="inline-flex min-h-control items-center text-ctp-blue underline focus-visible:outline-2" to={`/stores/${event.host.id}`}>{event.host.name}</Link> : event.host.name}</p>
           {formatCountry(event.host.addressCountryCode) && <Link
             to={`/regions?group=country&region=${event.host.addressCountryCode}`}
             className="inline-flex min-h-control items-center rounded-md text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue"
@@ -205,7 +205,7 @@ export default function EventDetail() {
           {event.description && <p className="text-sm text-ctp-subtext0">{event.description}</p>}
           {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue">▶ {vod.label}</a>)}</div>}
           {secondaryTabs.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{secondaryTabs.map((item) => <Button key={item.key} onClick={() => setTab(item.key)} aria-pressed={activeTab === item.key} className={activeTab === item.key ? "border-ctp-blue text-ctp-blue" : ""}>{item.label}</Button>)}</div>}
-          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-3 py-2 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
+          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical") ? <Link className="inline-flex min-h-control items-center text-ctp-blue underline focus-visible:outline-2" to={`/stores/${event.host.id}`}>{event.host.name}</Link> : event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-3 py-2 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
         </div>
       </details>}
 

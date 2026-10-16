@@ -9,7 +9,7 @@ const CACHE_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../.
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
 
 /** Nominatim's usage policy requires an identifying User-Agent, not a browser-spoofing one. */
-const USER_AGENT = "gatcg-explorer-pipeline/0.1 (+https://github.com/)";
+const USER_AGENT = "fanofin-store-locator/1.0 (+https://fanofin.site)";
 
 /** `null` = geocoded, Nominatim had no match for this address — cached too, so a bad/unresolvable address isn't retried every run. */
 type GeocodeCacheEntry = { lat: number; lng: number } | null;
@@ -40,28 +40,29 @@ async function geocodeOne(address: string): Promise<GeocodeCacheEntry> {
 /**
  * Geocodes each distinct Omnidex venue's free-text address via Nominatim (OpenStreetMap's free
  * geocoder, no API key needed) so venues can be plotted on a real map — `OmnidexHost` only carries
- * a free-text address, no coordinates. Cached forever by `hostId` in pipeline/.cache/geocode.json
- * since a venue's address doesn't change, so a normal incremental run only geocodes venues seen for
+ * a free-text address, no coordinates. Cached by `hostId` and address in pipeline/.cache/geocode.json
+ * so moved venues are refreshed and a normal incremental run only geocodes addresses seen for
  * the first time. Nominatim's usage policy caps free requests at 1/sec, so this deliberately
  * geocodes one at a time rather than in parallel — see `config.geocodeRequestDelayMs`.
  */
 export async function buildVenueGeocodes(events: OmnidexEventSummary[]): Promise<OmnidexVenueGeocode[]> {
   const hosts = new Map<number, string>();
-  for (const e of events) {
-    if (e.hostId === 0 || !e.hostAddress) continue;
+  for (const e of [...events].sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id)) {
+    if (e.hostId === 0 || e.setting !== "physical" || !e.hostAddress) continue;
     if (!hosts.has(e.hostId)) hosts.set(e.hostId, e.hostAddress);
   }
 
   const cache = await loadCache();
   let newlyGeocoded = 0;
   for (const [hostId, address] of hosts) {
-    const key = String(hostId);
+    const key = JSON.stringify([hostId, address]);
     if (key in cache) continue;
     try {
       cache[key] = await geocodeOne(address);
     } catch (err) {
       console.error(`geocode: failed for host ${hostId} ("${address}")`, err);
-      cache[key] = null;
+      await sleep(config.geocodeRequestDelayMs);
+      continue;
     }
     newlyGeocoded++;
     // Saved after every venue, not batched at the end — a run geocoding hundreds of venues at
@@ -73,9 +74,9 @@ export async function buildVenueGeocodes(events: OmnidexEventSummary[]): Promise
   if (newlyGeocoded > 0) console.log(`geocode: resolved ${newlyGeocoded} newly-seen venue(s)`);
 
   const venues: OmnidexVenueGeocode[] = [];
-  for (const hostId of hosts.keys()) {
-    const entry = cache[String(hostId)];
-    if (entry) venues.push({ hostId, lat: entry.lat, lng: entry.lng });
+  for (const [hostId, address] of hosts) {
+    const entry = cache[JSON.stringify([hostId, address])];
+    if (entry) venues.push({ hostId, address, lat: entry.lat, lng: entry.lng });
   }
   return venues;
 }

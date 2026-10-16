@@ -1,0 +1,52 @@
+# Store locator
+
+`/stores` searches the physical hosts of completed Omnidex events; `/stores/:hostId`
+shows the latest recorded address and up to twelve recent events. Hosts are joined by
+stable host ID, never by name. Former names remain searchable. Online-only hosts and
+host ID zero are excluded. Event history is evidence of hosting, not of current opening
+hours, retail inventory, or upcoming play. Unreviewed hosts are labeled Event venue.
+
+The pipeline publishes `data/omnidex/stores.json` and its manifest generation after the
+normal crawl/analysis run. The client fetches that compact projection rather than the
+full event index. To rebuild just the directory:
+
+```
+node --import tsx --input-type=module -e "import {writeStoreDirectory} from './pipeline/src/omnidex/stores.ts'; await writeStoreDirectory()"
+```
+
+Curate `data/curated/store-overrides.json`, keyed by host ID. Each correction requires
+an `evidence` string (prefer a source URL). Optional fields: `kind` (`store` or `venue`),
+`name`, `address`, `country` (ISO alpha-2), `region`, and `coordinates` (`{lat,lng}` or
+`null` to suppress an incorrect point). Do not classify retail status from an event
+name alone. Region filters appear only when structured region data exists; free-text
+city/region/postal searches work on every recorded address.
+
+The initial audit found 674 physical hosts and 293 legacy coordinates. Twenty-three
+mapped hosts had multiple historical addresses; their legacy points are withheld,
+leaving 270 points. All 674 locations remain in the list. Coordinates are range-checked;
+existing geocoder matches are not individually verified storefront positions.
+
+Geocoding now selects the latest dated address and caches by host ID plus address.
+Legacy host-only cache entries are not trusted for new geocoding runs. Network errors
+are retried on a later run instead of being permanently cached as no-match. The next
+normal crawl will refresh address provenance; no bulk geocoding request was made for
+this UI change. Confirm questionable locations using curated corrections.
+
+Search ignores case and Latin accents and matches all query words against names,
+aliases, and addresses. Country, curated region, activity, distance, and mobile view
+are URL parameters. Location coordinates remain in component memory: they are neither
+sent to the account API nor put in the URL. Distance uses great-circle kilometers;
+unmapped venues sort last and are excluded only when a radius is applied. Denied or
+unavailable location leaves ordinary search usable. OSM tiles retain attribution;
+tile failures leave address and directions controls available.
+
+Verification covers address changes, aliases, stable identity, online exclusion,
+invalid/suppressed coordinates, correction precedence, and distance calculation.
+
+UI verification: 390px and 1280px layouts, keyboard map-tab and marker selection,
+combined name/country filtering, empty results, missing map points, and detail-page
+recent-event links were checked in the browser. A temporary local harness verified
+cached-data load failure/retry, denied location, and nearby/radius filtering using a
+simulated Toronto location. Real device GPS accuracy and a forced tile-server outage
+were not tested. App and pipeline typechecks, focused lint, and directory/filter tests
+passed. Temporary harness files were removed.

@@ -9,6 +9,7 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
 export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "prices", file: "prices.json" },
   { key: "price-history", file: "priceHistory.json" },
+  { key: "store-directory", file: "omnidex/stores.json" },
   { key: "omnidex-index", file: "omnidex/index.json" },
   { key: "omnidex-players", file: "omnidex/players.json" },
   { key: "omnidex-judges", file: "omnidex/judges.json" },

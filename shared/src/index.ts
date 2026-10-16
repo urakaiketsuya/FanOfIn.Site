@@ -107,3 +107,4 @@ export * from "./collectionProgress.js";
 export * from "./profileFavorites.js";
 
 export * from "./merchandise";
+export * from './stores';

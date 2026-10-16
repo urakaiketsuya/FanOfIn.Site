@@ -1,3 +1,4 @@
+import { writeStoreDirectory } from "./omnidex/stores.js";
 import { buildPrices, writePrices } from "./pricing/build.js";
 import { updatePriceHistory, writePriceHistory } from "./pricing/history.js";
 import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
@@ -216,6 +217,7 @@ async function main() {
     process.exitCode = 1;
   }
 
+  await writeStoreDirectory();
   await writeManifest();
   console.log("pipeline: done");
 }
