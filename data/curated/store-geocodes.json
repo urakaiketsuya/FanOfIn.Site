@@ -405,6 +405,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:46.738819+00:00"
   },
   {
+    "hostId": 475,
+    "address": "8 Burn Road Trivex #14-12\nSingapore 369977\nSingapore",
+    "lat": 1.3353892,
+    "lng": 103.8855939,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/06382f65-d59f-4fcc-9685-fb4b57a6d9d1",
+    "sourceAddress": "8 Burn Rd, #14-12 Trivex, Singapore 369977",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 496,
     "address": "600 W Independence St Suite 1100, Shawnee, OK 74804, USA",
     "lat": 35.3482418,

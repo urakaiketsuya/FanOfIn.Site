@@ -140,5 +140,9 @@
   "506": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai publisher listing](https://www.unionarena-tcg.com/en/events/shop-battle/2024/02/list_indonesia.php) confirms Serma Kawi 5.B but uses postcode 80114. [Riftbound publisher store](https://locator.riftbound.uvsgames.com/stores/5a0f7ecf-aece-45a6-a55b-57981bc8bf21) uses number 5 and postcode 80234, while Omnidex uses 5b and 80236. Publisher links [official Facebook](https://www.facebook.com/BaliAwakeningZone/); no standalone website found. Classified as store; reconcile address/postcode before accepting a pin. Latest Omnidex event 2026-10-02; current Grand Archive evidence does not qualify for weekly projections."
+  },
+  "475": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/06382f65-d59f-4fcc-9685-fb4b57a6d9d1) confirms 8 Burn Road, Trivex #14-12 and publishes 1.3353892, 103.8855939. [Official retail shop](https://shopee.sg/artofcards) independently confirms the exact unit and physical play space; publisher links [official Instagram](https://www.instagram.com/artofcardsofficial/). No standalone website found. Imported verified point and classified as store. Latest Omnidex event 2026-05-05 is stale; no weekly projections."
   }
 }
