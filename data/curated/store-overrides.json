@@ -512,5 +512,9 @@
   "526": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store page](https://events.goodgames.com.au/venue/good-games-central/) confirms Level 1, 857 George Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/cfaecad7-0cc5-41df-a88f-e73daef4c49d) supplies -33.8836761, 151.2026106 for that address. Imported Central branch point; Town Hall is a separate branch. Latest Omnidex event in committed snapshot 2026-06-20T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "572": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official shop](https://rakuhobby.com/) confirms Raku retail identity. [Historical Bandai list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/8packs-battle_202405/list_indonesia.php) uses Ruko Plaza Graha Famili D-23 second floor, unlike recorded Tandes Lor 188. Resolve relocation/current entrance before mapping; no verified Tandes pin obtained. Latest Omnidex event in committed snapshot 2026-08-16T11:35:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
