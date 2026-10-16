@@ -136,5 +136,9 @@
   "164": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://www.andyseous-odyssey.com/) distinguishes the Bishop Arts branch at 334 Sunset Avenue from the Beckley branch. [Publisher store](https://locator.riftbound.uvsgames.com/stores/83041c3e-d337-4e36-8fa4-a63ebd410f7e) confirms the Sunset address and publishes 32.74376960000001, -96.8280195. Imported branch-specific point and classified as store. Latest Omnidex event 2026-10-15; existing recurrence returns no upcoming weekly estimates."
+  },
+  "506": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Bandai publisher listing](https://www.unionarena-tcg.com/en/events/shop-battle/2024/02/list_indonesia.php) confirms Serma Kawi 5.B but uses postcode 80114. [Riftbound publisher store](https://locator.riftbound.uvsgames.com/stores/5a0f7ecf-aece-45a6-a55b-57981bc8bf21) uses number 5 and postcode 80234, while Omnidex uses 5b and 80236. Publisher links [official Facebook](https://www.facebook.com/BaliAwakeningZone/); no standalone website found. Classified as store; reconcile address/postcode before accepting a pin. Latest Omnidex event 2026-10-02; current Grand Archive evidence does not qualify for weekly projections."
   }
 }
