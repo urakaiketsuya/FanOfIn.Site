@@ -630,6 +630,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 745,
+    "address": "Ul. Baruna Trenka 8, 10000, Zagreb, Croatia",
+    "lat": 45.8076482,
+    "lng": 15.976145,
+    "sourceUrl": "https://maps.app.goo.gl/PQ6FtY981nUsp4Sx6",
+    "sourceAddress": "Hero's Rest gaming cafe, Ulica Baruna Trenka 8, Zagreb",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 749,
     "address": "124 W Jefferson Ave ste 107, Kirkwood, MO 63122, USA",
     "lat": 38.581899,

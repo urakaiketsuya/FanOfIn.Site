@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 93 reviewed (25.2% of this checklist); 276 pending. 43 mapped, 50 need further evidence. Map coverage: 348/674 (51.6%); 326 unmapped.
+Progress: first 94 reviewed (25.5% of this checklist); 275 pending. 44 mapped, 50 need further evidence. Map coverage: 349/674 (51.8%); 325 unmapped.
 
-Next: #94 Skupi sve. Revisit Needs evidence entries after the initial pass.
+Next: #95 Gathering Hub. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -104,7 +104,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 91 | 439 | KYD遊樂園 | TW | 6 樓, No. 13, Zhongyang E Rd, Zhongli District, Taoyuan City, Taiwan 320 | Needs evidence | Reviewed 2026-10-16: [Pokemon organizer listing](https://asia.pokemon-card.com/tw/event-search/66006/) confirms KYD遊樂園 at 13 Zhongyang East Road, sixth floor, Zhongli. No verified coordinates or standalone official website found. Obtain the named shop map pin. Latest Omnidex event 2026-09-26T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 92 | 72 | MY Hobby & Collectibles | MY | 36f, Jalan Radin Anum, Bandar Baru Sri Petaling, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia | Needs evidence | Reviewed 2026-10-16: [Official about page](https://www.myhobbyandcollectibles.com/blogs/news/about-us) and [Pokemon event](https://asia.pokemon-card.com/my/event-search/10622/) confirm No. 36F-1 Jalan Radin Anum, Sri Petaling. Recorded address omits the floor suffix. Retail identity confirmed; no verified storefront coordinates obtained. Latest Omnidex event 2026-05-03T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 93 | 514 | KouritenSG | SG | 150 South Bridge Road; #B1-22; Singapore 58727; Singapore | Mapped | Reviewed 2026-10-16: [Official links page](https://heylink.me/KouritenSG/) confirms 150 South Bridge Road, B1-22 Fook Hai Building. [Publisher event](https://locator.riftbound.uvsgames.com/events/894935) and embedded store agree on 1.2845625, 103.8467908 at that address. Imported; historical B1-08 listings were not used. Latest Omnidex event 2026-08-24T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 94 | 745 | Skupi sve | HR | Ul. Baruna Trenka 8, 10000, Zagreb, Croatia | Pending |  |
+| 94 | 745 | Skupi sve | HR | Ul. Baruna Trenka 8, 10000, Zagreb, Croatia | Mapped | Reviewed 2026-10-16: [Official contact page](https://skupisve.hr/pages/contact) identifies its mini shop and play venue as Hero's Rest, Ulica Baruna Trenka 8. Its [directions link](https://maps.app.goo.gl/PQ6FtY981nUsp4Sx6) resolves to the named Hero's Rest gaming cafe feature at 45.8076482, 15.976145, distinct from the viewport center. Imported shared venue point. Latest Omnidex event 2026-10-15T16:40:00.000Z. Existing recurrence projects 2026-10-22T16:40:00.000Z, 2026-10-29T16:40:00.000Z, 2026-11-05T16:40:00.000Z, 2026-11-12T16:40:00.000Z (source event 66180); estimates, not confirmed bookings. |
 | 95 | 71 | Gathering Hub | MY | Taman Masjaya, 89500 Kota Kinabalu, Sabah, Malaysia | Pending |  |
 | 96 | 259 | Cat Footprints (Kaohsiung) | TW | 813, Taiwan, Kaohsiung City, Zuoying District, Liwen Rd, 77號13樓之一 | Pending |  |
 | 97 | 744 | ISLAND BOARD GAME | HK | Hong Kong, Kwai Chung, Kung Yip St, 2-8號, Effort Industrial Centre, 4樓D室 | Pending |  |
