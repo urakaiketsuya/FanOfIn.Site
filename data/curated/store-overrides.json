@@ -412,5 +412,9 @@
   "746": {
     "kind": "unclassified",
     "evidence": "2026-10-16: Name/address searches did not establish an independent retailer listing for Prangin Mall unit 4-22. [Mall directory](https://prangin-mall.com/mall-directory/) and other hobby-shop results do not establish this identity; do not substitute My Hobby Toys, Mind Maker, or a similarly named Kota Kinabalu business. No official website or verified point obtained; retail classification remains unconfirmed. Latest Omnidex event in committed snapshot 2026-10-13T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "841": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA event report](https://www.fractalofin.site/RDO/51589.html) links host KSL TCG ENTERPRISE with the Korindou event name. [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) lists Korindou at 39-1 Jalan Bukit Beruang Utama 2. Recorded address omits the floor suffix. Confirm alias/floor and obtain a named pin; no official standalone website established. Latest Omnidex event in committed snapshot 2026-10-09T12:45:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
