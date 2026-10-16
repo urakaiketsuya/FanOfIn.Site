@@ -420,5 +420,9 @@
   "48": {
     "kind": "store",
     "evidence": "2026-10-16: [Official shop](https://koboldskeep.com/collections/card-games) confirms 680 Greenbrae Drive Suite 223 and retail sales. A [publisher event](https://tcg.ravensburgerplay.com/events/714727) instead uses 1188 Victorian Plaza Circle. Keep the recorded branch unmapped until the alternate event location and exact storefront coordinates are resolved. Latest Omnidex event in committed snapshot 2026-10-06T01:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "683": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher locator](https://legacy.fabtcg.com/en/locator/nplustw-%E6%81%A9%E5%98%89%E6%95%B8%E4%BD%8D%E5%A8%9B%E6%A8%82/) and [Bandai store list](https://www.unionarena-tcg.com/tc/pdf/meetup-shoplist-2305-tw.pdf) confirm 31 Daren Street, Zhongli. A business registration listing uses Ningxia Second Street and is not storefront evidence. No official standalone website or verified Daren Street pin obtained. Latest Omnidex event in committed snapshot 2026-05-09T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
