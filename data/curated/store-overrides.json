@@ -160,5 +160,9 @@
   "51": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/728990) and embedded store agree on 38.0154307, -122.1299385 for 1311 Pine Street Suite A. [Lorcana store](https://tcg.ravensburgerplay.com/stores/78c21c08-aea0-4cc5-a96b-2f00b2383831) confirms retail identity and suite, linking [official website](https://norcaltcg.com/password), currently under maintenance. Imported verified point. Latest GA event 2026-07-09 is stale for weekly projections."
+  },
+  "105": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Event organizer listing](https://allevents.in/org/double-kill-games/24745245) records events at 775 George Street, while [Waze](https://www.waze.com/live-map/directions/au/nsw/haymarket/boardgames-cafe-double-kill-games-%E6%A1%8C%E6%B8%B8%E5%90%A7?to=place.ChIJZY-ukCSuEmsRNtvUlyrceUw) lists Level 1, 203 Thomas Street and links [store Facebook](https://facebook.com/doublekillgamesau). No standalone official website verified. Resolve street/entrance or relocation discrepancy before importing a pin; retain GA address. Latest GA event 2026-09-21 is stale for projections."
   }
 }
