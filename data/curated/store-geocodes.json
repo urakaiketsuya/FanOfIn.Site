@@ -531,6 +531,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 435,
+    "address": "32A, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim, Malaysia",
+    "lat": 1.482418,
+    "lng": 103.7736237,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/646632",
+    "sourceAddress": "32A, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta’zim, Malaysia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 449,
     "address": "721 Station Ave, Victoria, BC V9B 5R5, Canada",
     "lat": 48.4465745,

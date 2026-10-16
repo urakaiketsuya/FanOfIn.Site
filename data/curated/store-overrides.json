@@ -540,5 +540,9 @@
   "5": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branches](https://www.curiocavern.com/pages/retail-locations) identify 6701 Loisdale Road Unit T, whereas the recorded event address says #15. [Waze](https://www.waze.com/live-map/directions/curio-cavern-loisdale-road-6701-springfield?to=place.w.185336196.1853493029.1901967) corroborates street and phone but not unit. Resolve suite equivalence and obtain branch-specific coordinates; do not reuse Springfield Mall pin. Latest Omnidex event in committed snapshot 2026-04-20T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "435": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/646632) binds Living Legends JB and 32A Jalan Pingai to 1.482418, 103.7736237 in both event and store data. It links [official website](https://www.livinglegendsjb.com/). Imported the matching Johor Bahru point. Latest Omnidex event in committed snapshot 2026-05-10T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
