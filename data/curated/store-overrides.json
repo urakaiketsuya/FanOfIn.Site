@@ -312,5 +312,9 @@
   "379": {
     "kind": "store",
     "evidence": "2026-10-16: [Card Shop Hub](https://cardshophub.com/states/fl/fort-lauderdale/mbm-gaming/) confirms 6941 SW 196th Avenue Suite 20 and publishes address-bound GeoCoordinates 26.006735, -80.460152. [KeepUp](https://www.keepupcards.com/shop/mbm-gaming-fort-lauderdale-fl) independently corroborates the street address. Imported named shop point. Directory links [official Instagram](https://www.instagram.com/mbmgamingfl/); no standalone official website verified. Latest Omnidex event 2026-08-29T01:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "521": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store page](https://fyendalhobby.com/pages/the-store) confirms physical TCG retail at 86 Marine Parade Central #04-305. [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6054/) agrees, but its map is only a street-address search. No verified storefront coordinates obtained; obtain a named shop pin. Latest Omnidex event 2026-09-15T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
