@@ -456,5 +456,9 @@
   "789": {
     "kind": "store",
     "evidence": "2026-10-16: [Official directions](https://zarc.pl/pl/i/Jak-dojechac-do-zarc-pl/15) confirm Sienkiewicza 11, Jaworzno. [Publisher event](https://locator.riftbound.uvsgames.com/events/347143) contains conflicting coordinates: 50.2150042, 19.2578423 and 50.2021529, 19.2737847. No point imported until the named store location resolves that conflict. Latest Omnidex event in committed snapshot 2026-09-26T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "11": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://www.arzutcg.com/) confirms four retail branches: Barrio Chino, Heredia, Alajuela, and Desamparados. The recorded San Francisco plus-code address is not explicitly reconciled to those branches. No pin imported; verify which branch hosted the recorded events and its exact destination. Latest Omnidex event in committed snapshot 2026-04-19T00:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

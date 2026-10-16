@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 137 reviewed (37.1% of this checklist); 232 pending. 52 mapped, 85 need further evidence. Map coverage: 357/674 (53.0%); 317 unmapped.
+Progress: first 138 reviewed (37.4% of this checklist); 231 pending. 52 mapped, 86 need further evidence. Map coverage: 357/674 (53.0%); 317 unmapped.
 
-Next: #138 Arzu Trading Card Store. Revisit Needs evidence entries after the initial pass.
+Next: #139 Cat Footprints Yilan. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -148,7 +148,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 135 | 614 | Metagame Thailand | TH | 879 Soi Krungthep-Nonthaburi 23/1, Khwaeng Bang Sue, Khet Bang Sue, Krung Thep Maha Nakhon 10800, Thailand | Needs evidence | Reviewed 2026-10-16: [Organizer event description](https://omni.gatcg.com/events/37900) specifies Metagame Store at 20/8 Krungthep-Nonthaburi 21 alley, while the event address field says 879 Soi 23/1. This internal address conflict prevents a verified pin. No official standalone website established; reconcile the store entrance/address first. Latest Omnidex event in committed snapshot 2026-10-14T14:10:00.000Z. Existing recurrence projects 2026-10-21T14:10:00.000Z, 2026-10-28T14:10:00.000Z, 2026-11-04T14:10:00.000Z, 2026-11-11T14:10:00.000Z (source event 66099); estimates, not confirmed bookings. |
 | 136 | 643 | Rapid Star | HK | Room 05 , 7/F, Union Hing Yip Factory Building ; 20 Hing Yip Street; Kwun Tong, Kowloon; Hong Kong | Needs evidence | Reviewed 2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms room A05, seventh floor, 20 Hing Yip Street and links [official Facebook](https://www.facebook.com/RapidStar2022/). Publisher locator corroborates the building. No verified storefront coordinates obtained; retain recorded address pending map evidence. Latest Omnidex event in committed snapshot 2026-09-25T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 137 | 789 | zarc.pl | PL | Henryka Sienkiewicza 11, 43-600 Jaworzno, Poland | Needs evidence | Reviewed 2026-10-16: [Official directions](https://zarc.pl/pl/i/Jak-dojechac-do-zarc-pl/15) confirm Sienkiewicza 11, Jaworzno. [Publisher event](https://locator.riftbound.uvsgames.com/events/347143) contains conflicting coordinates: 50.2150042, 19.2578423 and 50.2021529, 19.2737847. No point imported until the named store location resolves that conflict. Latest Omnidex event in committed snapshot 2026-09-26T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 138 | 11 | Arzu Trading Card Store | CR | WW6R+GX7, San José, San Francisco, Costa Rica | Pending |  |
+| 138 | 11 | Arzu Trading Card Store | CR | WW6R+GX7, San José, San Francisco, Costa Rica | Needs evidence | Reviewed 2026-10-16: [Official website](https://www.arzutcg.com/) confirms four retail branches: Barrio Chino, Heredia, Alajuela, and Desamparados. The recorded San Francisco plus-code address is not explicitly reconciled to those branches. No pin imported; verify which branch hosted the recorded events and its exact destination. Latest Omnidex event in committed snapshot 2026-04-19T00:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 139 | 168 | Cat Footprints Yilan | TW | No. 53, Yizhong Rd, Yilan City, Yilan County, Taiwan 260 | Pending |  |
 | 140 | 500 | Ember Rest | US | 649 Main St suite 101, Martinez, CA 94553, USA | Pending |  |
 | 141 | 836 | Questing Grounds | PH | 3rd Floor, Vista Mall, MacArthur Hwy, Malolos, Bulacan, Philippines | Pending |  |
