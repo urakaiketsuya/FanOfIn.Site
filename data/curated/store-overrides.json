@@ -228,5 +228,9 @@
   "79": {
     "kind": "store",
     "evidence": "2026-10-16: [Kowloon card-store guide](https://roadoftheking.com/card-stores-in-kowloon/) confirms 大峽谷 Grand Canyon in Smiling Plaza; [local retailer directory](https://www.globuya.com/HK/Sham-Shui-Po/115845/genre/178680352174443/Toy%2BStore) lists shop 162, first floor, 162–188 Un Chau Street. No official standalone website or verified storefront coordinates obtained. Leave unmapped pending primary map evidence. Latest Omnidex event September 8 is stale; no weekly projection."
+  },
+  "103": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store pickup listing](https://plentyofgames.com.au/products/frilled-sparkshooter-bloomburrow) confirms Level 1, 278 Collins Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a2065bda-ce1a-4701-ab43-94e49688a638) confirms the street and publishes matching store/event coordinates -37.8156332, 144.9647558. Imported against exact recorded address. Latest Omnidex event May 1 is stale; no weekly projection."
   }
 }

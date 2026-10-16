@@ -153,6 +153,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 103,
+    "address": "L1/278 Collins St, Melbourne VIC 3000, Australia",
+    "lat": -37.8156332,
+    "lng": 144.9647558,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/a2065bda-ce1a-4701-ab43-94e49688a638",
+    "sourceAddress": "278 Collins Street, Melbourne, VIC, 3000, AU",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 108,
     "address": "UNIT 2/9 Yarmouth Pl, Smeaton Grange NSW 2567, Australia",
     "lat": -34.0408613,

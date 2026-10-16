@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 79 reviewed (21.4% of this checklist); 290 pending. 36 mapped, 43 need further evidence. Map coverage: 341/674 (50.6%); 333 unmapped.
+Progress: first 80 reviewed (21.7% of this checklist); 289 pending. 37 mapped, 43 need further evidence. Map coverage: 342/674 (50.7%); 332 unmapped.
 
-Next: #80 Plenty of Games. Revisit Needs evidence entries after the initial pass.
+Next: #81 Draagoons Hobby Shop. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -90,7 +90,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 77 | 267 | MoreFun Chiayi | TW | 1F., No. 365, Sec. 1, Bo'ai Rd., West Dist; Chiayi City 600076 , Taiwan (R.O.C.); Taiwan | Needs evidence | Reviewed 2026-10-16: [Publisher retailer list](https://reolacat.wixsite.com/bigfungames/where-to-buy) confirms 玩坊 Chiayi at 365 Boai Road Section 1. No verified store coordinates or standalone official store website obtained; retain unmapped pending a storefront map. Latest Omnidex event October 15; existing recurrence rules produce no upcoming dates. |
 | 78 | 383 | Forge Hobby Place | PH | 070 unit, 5 Naga Rd, 2, Las Piñas, Metro Manila, Philippines | Needs evidence | Reviewed 2026-10-16: [Herald’s Peak store guide](https://www.heraldspeak.com/articles/ga-local-game-stores-in-south-luzon) confirms unit 5, 0070 Naga Road and links [official Facebook](https://web.facebook.com/forgehobbyplacemain). [Waze](https://www.waze.com/live-map/directions/ph/ncr/las-pinas/forge-hobby-place?to=place.ChIJEzLKiynPlzMRXqcVmihZGiE) agrees and adds third floor. [Publisher directory](https://en.shadowverse-evolve.com/shops/asia-oceania/) instead uses 29 Velasquez Compound; historical Pokémon lists use 77. Resolve numbering and verify a matching pin; no standalone website verified. Latest Omnidex event March 22 is stale; no weekly projection. |
 | 79 | 79 | Grand Canyon | HK | Store 162, 1/F, Smiling Plaza; Un Chau Street 162-188; Cheung Sha Wan, Sham Shui Pao 0; Hong Kong | Needs evidence | Reviewed 2026-10-16: [Kowloon card-store guide](https://roadoftheking.com/card-stores-in-kowloon/) confirms 大峽谷 Grand Canyon in Smiling Plaza; [local retailer directory](https://www.globuya.com/HK/Sham-Shui-Po/115845/genre/178680352174443/Toy%2BStore) lists shop 162, first floor, 162–188 Un Chau Street. No official standalone website or verified storefront coordinates obtained. Leave unmapped pending primary map evidence. Latest Omnidex event September 8 is stale; no weekly projection. |
-| 80 | 103 | Plenty of Games | AU | L1/278 Collins St, Melbourne VIC 3000, Australia | Pending |  |
+| 80 | 103 | Plenty of Games | AU | L1/278 Collins St, Melbourne VIC 3000, Australia | Mapped | Reviewed 2026-10-16: [Official store pickup listing](https://plentyofgames.com.au/products/frilled-sparkshooter-bloomburrow) confirms Level 1, 278 Collins Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a2065bda-ce1a-4701-ab43-94e49688a638) confirms the street and publishes matching store/event coordinates -37.8156332, 144.9647558. Imported against exact recorded address. Latest Omnidex event May 1 is stale; no weekly projection. |
 | 81 | 361 | Draagoons Hobby Shop | ID | Ruko Kav 31A no 2 South Tangerang City, Ba, Jl. Sutera Utama, Pakualam, Kec. Serpong Utara, Kota Tangerang Selatan, Banten 15325, Indonesia | Pending |  |
 | 82 | 842 | Hideyoshi | SG | 504 Jurong West Street 51, #04 211, Singapore 640504 | Pending |  |
 | 83 | 139 | Chronos Games & Gifts | US | 11943 SW Canyon Rd, Beaverton, OR 97005, USA | Pending |  |
