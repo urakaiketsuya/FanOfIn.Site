@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 66 reviewed (17.9% of this checklist); 303 pending. 33 mapped, 33 need further evidence. Map coverage: 338/674 (50.1%); 336 unmapped.
+Progress: first 67 reviewed (18.2% of this checklist); 302 pending. 33 mapped, 34 need further evidence. Map coverage: 338/674 (50.1%); 336 unmapped.
 
-Next: #67 Treasure Mouse Card Shop. Revisit Needs evidence entries after the initial pass.
+Next: #68 PiggyLand. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -77,7 +77,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 64 | 169 | Cat Footprints Tamsui Gameshop | TW | 新北市淡水區學府路28號5F, Tamsui District; Taiwan | Mapped | Reviewed 2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-淡水店) confirms 28 Xuefu Road, fifth floor. Its named Google Maps storefront link publishes feature coordinates 25.1683747, 121.4477396, distinct from viewport center. Imported verified pin and classified as store. Latest GA event 2026-10-03; existing recurrence checks produce no upcoming weekly estimates. |
 | 65 | 200 | Manta Trading | CA | 7170 Warden Ave. Unit 22, Markham, ON L3R 8B4, Canada | Mapped | Reviewed 2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/799962) and embedded store agree on 43.826738257530145, -79.32757381349802 at 7170 Warden Avenue. [Waze storefront](https://www.waze.com/live-map/directions/ca/on/markham/manta-trading?to=place.ChIJFznQdALV1IkRMmx9oW72918) confirms Unit 22 and links [official retail website](https://mantatrading.com/). Imported verified address-bound point. Latest GA event 2026-10-15; existing recurrence projects Thursdays from 10-22. |
 | 66 | 509 | Red Viper Games | HR | Riva 6, 4th floor Robna Kuca Ri; 51000 Rijeka; Croatia | Needs evidence | Reviewed 2026-10-16: [Official shopping-center announcement](https://robnakucari.hr/red-viper-games-otvoren-na-4-katu-robne-kuce-ri/) confirms retail and play space on floor 4 at Riva 6. [Croatian tournament directory](https://yugioh-planet.net/yugioh-u-hrvatskoj/) corroborates exact address and floor. No standalone store website or verified storefront coordinates obtained. Latest GA event 2026-10-10; existing recurrence projects Saturdays from 10-17. |
-| 67 | 860 |  Treasure Mouse Card Shop | HK | Flat C6 9/F Cheong Fat Factory Building Nos. 265-271; Un Chau Street Cheung Sha Wan, Kowloon; Hong Kong | Pending |  |
+| 67 | 860 |  Treasure Mouse Card Shop | HK | Flat C6 9/F Cheong Fat Factory Building Nos. 265-271; Un Chau Street Cheung Sha Wan, Kowloon; Hong Kong | Needs evidence | Reviewed 2026-10-16: [GA distributor directory](https://www.fayble-asia.com/game_store.php?id=13) confirms 鼠來寶卡店 at Flat C6, 9/F, Cheong Fat Factory Building, 265–271 Un Chau Street and links [store Facebook](https://www.facebook.com/share/17N3Q2CHS5/?mibextid=wwXIfr). Its map link is an address search without published coordinates; no standalone website found. Classified as store; verified pin still needed. Latest GA event 2026-10-07; existing recurrence projects Saturdays from 10-17 and Wednesdays from 10-21. |
 | 68 | 408 | PiggyLand | TW | 234, Taiwan, New Taipei City, Yonghe District, Section 2, Yonghe Rd, 203號現代大廈9樓 | Pending |  |
 | 69 | 633 | Fable | JP | Japan, 〒101-0041 Tokyo, Chiyoda City, Kanda Sudachō, 1-chōme ウィン神田高橋ビル | Pending |  |
 | 70 | 653 | Grand Arena TCG Store | TH | 85 Soi Lat Phrao 81, Khlong Chaokhun Sing, Khet Wang Thonglang, Krung Thep Maha Nakhon 10310, Thailand | Pending |  |
