@@ -520,5 +520,9 @@
   "637": {
     "kind": "store",
     "evidence": "2026-10-16: [Official Telegram shop group](https://t.me/acmetcg_shop) confirms 52 Telok Blangah Road #02-10, Telok Blangah House, and provides a map link. Registration directories instead show a residential registered office on Telok Blangah Drive; do not map that office. No coordinates verified for the shop link; no standalone official website found. Latest Omnidex event in committed snapshot 2026-09-25T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "656": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/0bcf70aa-b977-49b1-a740-a243412f5cf5) confirms physical retailer Guildhall PLT and exact D6-1-2 Dana 1 address. Store/address coordinates agree on 3.111116607696123, 101.58436093923204. Imported named retailer point. No official standalone website established. Latest Omnidex event in committed snapshot 2026-08-29T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

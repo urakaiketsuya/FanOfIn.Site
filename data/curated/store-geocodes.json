@@ -693,6 +693,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:16.578635+00:00"
   },
   {
+    "hostId": 656,
+    "address": "UNIT D6-1-2 (2ND FLOOR), BLOCK D6, DANA 1, COMMERCIAL CENTRE, Jalan PJU 1a/46, Ara Damansara, 47301 Petaling Jaya, Selangor, Malaysia",
+    "lat": 3.111116607696123,
+    "lng": 101.58436093923204,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/0bcf70aa-b977-49b1-a740-a243412f5cf5",
+    "sourceAddress": "D6-1-2, BLOCK D6, DANA 1, COMMERCIAL CENTRE, Jalan PJU 1a/46, Petaling Jaya, Selangor, 47301, MY",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 674,
     "address": "14313 NE 20th Ave ste a112, Vancouver, WA 98686, USA",
     "lat": 45.7252109,
