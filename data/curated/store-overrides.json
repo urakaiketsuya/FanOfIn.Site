@@ -544,5 +544,9 @@
   "435": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/646632) binds Living Legends JB and 32A Jalan Pingai to 1.482418, 103.7736237 in both event and store data. It links [official website](https://www.livinglegendsjb.com/). Imported the matching Johor Bahru point. Latest Omnidex event in committed snapshot 2026-05-10T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "488": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Cardshop AJITO at 1-11-4 Taito and links [official X account](https://x.com/cardAJITO). Regional events may use a separate Akihabara venue, so those coordinates cannot replace this storefront. No verified Taito business point obtained. Latest Omnidex event in committed snapshot 2026-10-03T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
