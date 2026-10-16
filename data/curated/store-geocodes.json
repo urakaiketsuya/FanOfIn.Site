@@ -333,6 +333,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 201,
+    "address": "G/F, Unit E9, Blk E, Setia Kenangan II\nSpg 150-5-13-18,  Kg Kiulap, \nBSB, Brunei\nBrunei",
+    "lat": 4.9040951,
+    "lng": 114.9222831,
+    "sourceUrl": "https://www.bruneitourism.com/cafe/games-lattes/",
+    "sourceAddress": "Ground Floor, Unit E9, Block E, Kenangan II, Simpang 150-5-13-18, Kampong Kiulap, Bandar Seri Begawan, BE1318",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 204,
     "address": "969 Story Rd UNIT 6078, San Jose, CA 95122\nUnited States",
     "lat": 37.3321267,

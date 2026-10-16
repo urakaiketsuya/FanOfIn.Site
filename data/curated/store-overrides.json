@@ -576,5 +576,9 @@
   "736": {
     "kind": "store",
     "evidence": "2026-10-16: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) confirms 52A Block M Jalan Raja Uda. [Publisher event](https://locator.riftbound.uvsgames.com/events/801854) binds AeXern at 52A to matching store/event coordinates 5.41639577085487, 100.37982764931613. Imported point; no official standalone website established. Latest Omnidex event in committed snapshot 2026-09-04T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "201": {
+    "kind": "venue",
+    "evidence": "2026-10-16: [Official tourism listing](https://www.bruneitourism.com/cafe/games-lattes/) confirms cafe at Ground Floor E9 Block E, Setia Kenangan II, Kiulap, and links [official Instagram](https://www.instagram.com/games.lattes). Its named Maps destination explicitly supplies 4.9040951, 114.9222831. Imported cafe venue point; separate regional tournament at Times Square is not this location. Retail sales not established. Latest Omnidex event in committed snapshot 2026-03-15T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
