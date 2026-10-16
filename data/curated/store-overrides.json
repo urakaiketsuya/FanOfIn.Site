@@ -132,5 +132,9 @@
   "678": {
     "kind": "store",
     "evidence": "2026-10-16: [Official retail shop](https://shopee.tw/josephpu84) confirms TOP CARD at 182 Renyi Road, second floor, Zhubei, and physical card sales. No standalone official website found. [Taiwan card-store directory](https://tcg-map.gamer-star.com/debug/) corroborates the address, but no verified storefront coordinates obtained. Classified as store; pin unresolved. Latest Omnidex event 2026-10-08; current evidence does not qualify for weekly projections."
+  },
+  "164": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://www.andyseous-odyssey.com/) distinguishes the Bishop Arts branch at 334 Sunset Avenue from the Beckley branch. [Publisher store](https://locator.riftbound.uvsgames.com/stores/83041c3e-d337-4e36-8fa4-a63ebd410f7e) confirms the Sunset address and publishes 32.74376960000001, -96.8280195. Imported branch-specific point and classified as store. Latest Omnidex event 2026-10-15; existing recurrence returns no upcoming weekly estimates."
   }
 }

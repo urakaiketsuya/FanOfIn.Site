@@ -198,6 +198,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 164,
+    "address": "334 Sunset Ave, Dallas, TX 75208, USA",
+    "lat": 32.74376960000001,
+    "lng": -96.8280195,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/83041c3e-d337-4e36-8fa4-a63ebd410f7e",
+    "sourceAddress": "334 Sunset Ave, Dallas, TX 75208, USA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 177,
     "address": "No. 75, 2F, Ziqiang 2nd Rd\nQianjin District\nKaohsiung City 801\nTaiwan",
     "lat": 22.6243005,

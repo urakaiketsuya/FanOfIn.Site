@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 54 reviewed (14.6% of this checklist); 315 pending. 26 mapped, 28 need further evidence. Map coverage: 331/674 (49.1%); 343 unmapped.
+Progress: first 55 reviewed (14.9% of this checklist); 314 pending. 27 mapped, 28 need further evidence. Map coverage: 332/674 (49.3%); 342 unmapped.
 
-Next: #55 Andyseous Odyssey. Revisit Needs evidence entries after the initial pass.
+Next: #56 Bali Awakening Zone. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -65,7 +65,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 52 | 536 | Card's Village | HK | 155-181 Castle Peak Road	Shop 163-A, 1/F Smiling Plaza; Sham Shui Po Kowloon; Hong Kong; Hong Kong | Needs evidence | Reviewed 2026-10-16: The [official former website](https://www.cards-village.com/page/145/主頁) announces relocation effective 2025-10-01 to 8/F Block D, Ka Ming Factory Building, 688–690 Castle Peak Road, Cheung Sha Wan, and links the [current official store](https://www.cardsvillage.com/). Latest Omnidex event 2026-10-12 still records Smiling Plaza Shop 163-A. Classified as store; leave the recorded event location unresolved rather than bind a new-branch pin to the old address. Confirm which venue hosts Grand Archive and obtain a matching pin. Existing recurrence returns no upcoming estimates. |
 | 53 | 581 | Capybara Cards | SG | 1 N Bridge Rd, Singapore 179094 | Needs evidence | Reviewed 2026-10-16: [Official retail profile](https://www.carousell.sg/u/capybaracards/) confirms High Street Centre #02-16 and links [official website](https://capybaracards.com/). [Store directory](https://www.ctrlcollectibles.com/en/singapore-tcg-shops/capybara-cards) corroborates 1 North Bridge Road and unit; its map link supplies a place ID but no verified coordinates were obtained. Classified as store; pin unresolved. Latest Omnidex event 2026-10-02; existing recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13. |
 | 54 | 678 | TOP CARD 塔普卡 桌遊/卡牌 | TW | 2 樓, No. 182, Renyi Rd, Zhubei City, Hsinchu County, Taiwan 302 | Needs evidence | Reviewed 2026-10-16: [Official retail shop](https://shopee.tw/josephpu84) confirms TOP CARD at 182 Renyi Road, second floor, Zhubei, and physical card sales. No standalone official website found. [Taiwan card-store directory](https://tcg-map.gamer-star.com/debug/) corroborates the address, but no verified storefront coordinates obtained. Classified as store; pin unresolved. Latest Omnidex event 2026-10-08; current evidence does not qualify for weekly projections. |
-| 55 | 164 | Andyseous Odyssey | US | 334 Sunset Ave, Dallas, TX 75208, USA | Pending |  |
+| 55 | 164 | Andyseous Odyssey | US | 334 Sunset Ave, Dallas, TX 75208, USA | Mapped | Reviewed 2026-10-16: [Official website](https://www.andyseous-odyssey.com/) distinguishes the Bishop Arts branch at 334 Sunset Avenue from the Beckley branch. [Publisher store](https://locator.riftbound.uvsgames.com/stores/83041c3e-d337-4e36-8fa4-a63ebd410f7e) confirms the Sunset address and publishes 32.74376960000001, -96.8280195. Imported branch-specific point and classified as store. Latest Omnidex event 2026-10-15; existing recurrence returns no upcoming weekly estimates. |
 | 56 | 506 | Bali Awakening Zone | ID | Jl. Serma Kawi No.5b, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80236, Indonesia | Pending |  |
 | 57 | 475 | Art of Cards | SG | 8 Burn Road Trivex #14-12; Singapore 369977; Singapore | Pending |  |
 | 58 | 726 | HIDEOUT | SG | 803 King George's Ave, #02 190, Singapore 200803 | Pending |  |
