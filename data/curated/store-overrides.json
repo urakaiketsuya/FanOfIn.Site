@@ -184,5 +184,9 @@
   "408": {
     "kind": "store",
     "evidence": "2026-10-16: [Official supplier directory](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) confirms 203 Yonghe Road Section 2, Modern Building, ninth floor. [Retail shop](https://www.ruten.com.tw/store/judy228345/list) agrees on street and floor; [store Instagram](https://www.instagram.com/piggyland369/) is linked by the owner interview. No standalone website or verified storefront pin obtained. Classified as store. Latest GA event 2026-10-12; current evidence fails existing recurrence checks, so no upcoming estimates."
+  },
+  "633": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store page](https://www.fable-fab.com/view/page/shop_event) confirms Win Kanda Takahashi Building, 1-7-1 Kanda Sudacho, fifth floor. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms building/floor and links [official X](https://x.com/Fable_FABTCG). Official map embed identifies Fable Akihabara but exposes a viewport center rather than a separately verified feature point; do not import it as storefront coordinates. Latest GA event 2026-10-14; existing recurrence projects Wednesdays from 10-21 and Fridays from 10-23."
   }
 }
