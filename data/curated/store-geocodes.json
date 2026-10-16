@@ -558,6 +558,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 455,
+    "address": "Van Boetzelaerstraat 10B, 2406 BG Alphen aan den Rijn, Netherlands",
+    "lat": 52.1286887,
+    "lng": 4.6642048,
+    "sourceUrl": "https://tcg.ravensburgerplay.com/events/505956",
+    "sourceAddress": "Van Boetzelaerstraat 10B, 2406 BG Alphen aan den Rijn, Netherlands",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 462,
     "address": "Japan, 〒556-0011 Osaka, Naniwa Ward, Nanbanaka, 2-chōme−2−１５ 高砂ビル 5F",
     "lat": 34.663059,

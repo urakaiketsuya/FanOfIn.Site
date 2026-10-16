@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 169 reviewed (45.8% of this checklist); 200 pending. 58 mapped, 111 need further evidence. Map coverage: 363/674 (53.9%); 311 unmapped.
+Progress: first 170 reviewed (46.1% of this checklist); 199 pending. 59 mapped, 111 need further evidence. Map coverage: 364/674 (54.0%); 310 unmapped.
 
-Next: #170 Side7. Revisit Needs evidence entries after the initial pass.
+Next: #171 SC Collection. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -180,7 +180,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 167 | 736 | Aexern | MY | 52A, Block M, Jalan Raja Uda, Pusat Perniagaan Raja Uda, 12300 Butterworth, Pulau Pinang, Malaysia | Mapped | Reviewed 2026-10-16: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) confirms 52A Block M Jalan Raja Uda. [Publisher event](https://locator.riftbound.uvsgames.com/events/801854) binds AeXern at 52A to matching store/event coordinates 5.41639577085487, 100.37982764931613. Imported point; no official standalone website established. Latest Omnidex event in committed snapshot 2026-09-04T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 168 | 201 | Games & Lattes Cafe | BN | G/F, Unit E9, Blk E, Setia Kenangan II; Spg 150-5-13-18,  Kg Kiulap, ; BSB, Brunei; Brunei | Mapped | Reviewed 2026-10-16: [Official tourism listing](https://www.bruneitourism.com/cafe/games-lattes/) confirms cafe at Ground Floor E9 Block E, Setia Kenangan II, Kiulap, and links [official Instagram](https://www.instagram.com/games.lattes). Its named Maps destination explicitly supplies 4.9040951, 114.9222831. Imported cafe venue point; separate regional tournament at Times Square is not this location. Retail sales not established. Latest Omnidex event in committed snapshot 2026-03-15T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 169 | 377 | Madcap Gaming Philippines | PH | Maclane Center, Manila S Rd, San Antonio, San Pedro, Laguna, Philippines | Needs evidence | Reviewed 2026-10-16: [Bandai store list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202401/list_philippines.php) identifies unit 7, second floor, Maclane Center, Manila South Road, San Pedro. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) agrees and links [official Facebook](https://www.facebook.com/madcapgamingphilippines/). No named storefront coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-13T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 170 | 455 | Side7 | NL | Van Boetzelaerstraat 10B, 2406 BG Alphen aan den Rijn, Netherlands | Pending |  |
+| 170 | 455 | Side7 | NL | Van Boetzelaerstraat 10B, 2406 BG Alphen aan den Rijn, Netherlands | Mapped | Reviewed 2026-10-16: [Official store page](https://side7.nl/pages/about-us) confirms Van Boetzelaerstraat 10B. [Publisher event](https://tcg.ravensburgerplay.com/events/505956) supplies matching event/store coordinates 52.1286887, 4.6642048. Imported current address point; older Euromarkt 109 records excluded. Latest Omnidex event in committed snapshot 2026-08-12T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 171 | 691 | SC Collection | SG | 400 Orchard Rd, #04 13, Singapore 238875 | Pending |  |
 | 172 | 852 | Spectre | MY | NO.9-1, JALAN PJS 8/13, DATARAN MENTARI; 46150 SUBANG JAYA, SELANGOR; Malaysia | Pending |  |
 | 173 | 194 | Titan Games | NL | Kruisstraat 3, 5281 AW Boxtel, Netherlands | Pending |  |

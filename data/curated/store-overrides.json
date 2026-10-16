@@ -584,5 +584,9 @@
   "377": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai store list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202401/list_philippines.php) identifies unit 7, second floor, Maclane Center, Manila South Road, San Pedro. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) agrees and links [official Facebook](https://www.facebook.com/madcapgamingphilippines/). No named storefront coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-13T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "455": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store page](https://side7.nl/pages/about-us) confirms Van Boetzelaerstraat 10B. [Publisher event](https://tcg.ravensburgerplay.com/events/505956) supplies matching event/store coordinates 52.1286887, 4.6642048. Imported current address point; older Euromarkt 109 records excluded. Latest Omnidex event in committed snapshot 2026-08-12T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
