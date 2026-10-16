@@ -444,5 +444,9 @@
   "595": {
     "kind": "venue",
     "evidence": "2026-10-16: [Recorded international event](https://fractalofin.site/AMB/18130.html) places this organizer at Jaarbeursplein 6, Utrecht, unlike the recorded Dubai address. Public searches did not establish a permanent retail shop or official standalone site. Classified as event venue/organizer; no point imported. Verify the specific 78 Nad Al Hamar event venue before mapping. Latest Omnidex event in committed snapshot 2025-04-27T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "614": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Organizer event description](https://omni.gatcg.com/events/37900) specifies Metagame Store at 20/8 Krungthep-Nonthaburi 21 alley, while the event address field says 879 Soi 23/1. This internal address conflict prevents a verified pin. No official standalone website established; reconcile the store entrance/address first. Latest Omnidex event in committed snapshot 2026-10-14T14:10:00.000Z. Existing recurrence projects 2026-10-21T14:10:00.000Z, 2026-10-28T14:10:00.000Z, 2026-11-04T14:10:00.000Z, 2026-11-11T14:10:00.000Z (source event 66099); estimates, not confirmed bookings."
   }
 }
