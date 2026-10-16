@@ -84,5 +84,9 @@
   "100": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branch page](https://events.goodgames.com.au/venue/good-games-box-hill/) confirms G1/975 Whitehorse Road and retail identity. [Publisher championship event](https://locator.riftbound.uvsgames.com/events/923352) and embedded store agree on -37.817931152328924, 145.1247279048935 at 975 Whitehorse Road. Imported address-bound point and classified as store. The separate Game Expo event describes an offsite convention and was not used. Latest Omnidex event 2026-05-16 is stale; no weekly projections."
+  },
+  "463": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Grand Archive distributor directory](https://www.fayble-asia.com/game_store.php?id=13) and [Pokémon event](https://asia.pokemon-card.com/hk/event-search/9085/) confirm Card Lab at 30 Man Yue Street, Summit Building, 4F B1. Distributor links [official Facebook](https://www.facebook.com/cardlabstore/); [store Linktree](https://linktr.ee/cardlabstore) was inaccessible and no standalone website found. Classified as store; no verified storefront coordinates obtained. Latest Omnidex event 2026-10-15; existing Grand Archive recurrence supports Thursdays 10-22, 10-29, 11-05 and 11-12."
   }
 }
