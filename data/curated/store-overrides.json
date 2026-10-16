@@ -172,5 +172,9 @@
   "200": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/799962) and embedded store agree on 43.826738257530145, -79.32757381349802 at 7170 Warden Avenue. [Waze storefront](https://www.waze.com/live-map/directions/ca/on/markham/manta-trading?to=place.ChIJFznQdALV1IkRMmx9oW72918) confirms Unit 22 and links [official retail website](https://mantatrading.com/). Imported verified address-bound point. Latest GA event 2026-10-15; existing recurrence projects Thursdays from 10-22."
+  },
+  "509": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official shopping-center announcement](https://robnakucari.hr/red-viper-games-otvoren-na-4-katu-robne-kuce-ri/) confirms retail and play space on floor 4 at Riva 6. [Croatian tournament directory](https://yugioh-planet.net/yugioh-u-hrvatskoj/) corroborates exact address and floor. No standalone store website or verified storefront coordinates obtained. Latest GA event 2026-10-10; existing recurrence projects Saturdays from 10-17."
   }
 }
