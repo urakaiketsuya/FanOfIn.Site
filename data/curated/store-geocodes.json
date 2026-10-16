@@ -144,6 +144,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 140,
+    "address": "770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA",
+    "lat": 34.13254,
+    "lng": -118.146938,
+    "sourceUrl": "https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43",
+    "sourceAddress": "770 South Arroyo Parkway, 110, Pasadena, CA, 91105, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 177,
     "address": "No. 75, 2F, Ziqiang 2nd Rd\nQianjin District\nKaohsiung City 801\nTaiwan",
     "lat": 22.6243005,

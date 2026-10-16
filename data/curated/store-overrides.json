@@ -64,5 +64,9 @@
   "462": {
     "kind": "store",
     "evidence": "2026-10-16: [Official HASUYA store page](https://hasuya.jp/user_data/shop) confirms Takasago Building 5F, 2-2-15 Nanbanaka. [Pokémon publisher locator](https://map.pokemon-card.com/map/13177) confirms the exact store/floor and links coordinates 34.663059, 135.503239. Imported publisher pin and classified as store. Official site's embedded map viewport center was not used; other retailers occupy different floors in this building. Latest Omnidex event 2026-10-15; existing recurrence logic supports Thursdays starting 10-22 and Saturdays starting 10-17 for the next four weeks."
+  },
+  "140": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://coretcg.com/) confirms 770 South Arroyo Parkway #110 and physical TCG retail. [Lorcana publisher store record](https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43) and its event records agree on 34.13254, -118.146938 at that suite. Imported verified coordinates and classified as store. Latest Omnidex event 2026-09-29; current Grand Archive evidence does not satisfy weekly recurrence requirements, so no upcoming estimates."
   }
 }

@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 37 reviewed (10.0% of this checklist); 332 pending. 15 mapped, 22 need further evidence. Map coverage: 320/674 (47.5%); 354 unmapped.
+Progress: first 38 reviewed (10.3% of this checklist); 331 pending. 16 mapped, 22 need further evidence. Map coverage: 321/674 (47.6%); 353 unmapped.
 
-Next: #38 CoreTCG. Revisit Needs evidence entries after the initial pass.
+Next: #39 Go For Game. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -48,7 +48,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 35 | 280 | Cat Footprint Xinzhuang | TW | 242, Taiwan, New Taipei City, Xinzhuang District, Fuguo Rd, 100號7樓 | Mapped | Reviewed 2026-10-16: [Official branch website](https://www.catfootprint.com/貓腳印-新莊店) confirms 100 Fuguo Road, seventh floor, Xinzhuang and links its retail shop. Its Google Maps directions link identifies the named storefront feature at 25.0252371, 121.4213552; viewport center 25.0252419, 121.4168759 was not used. Imported feature point and classified as store. Latest Omnidex event 2026-03-30 is stale for recurrence; no upcoming weekly estimates. |
 | 36 | 217 | Pöttyös Zebra Játékbolt | HU | Szeged, Szeged Jókai utca 7-9 Aradi tér felől, az utcaszinten, 6720 Hungary | Mapped | Reviewed 2026-10-16: [Official website](https://pottyoszebra.hu/) confirms the Jókai 7–9 shop and separately lists Pöttyös Zebra 2 at Hajós 28. Its directions link between the two named branches publishes the Jókai origin feature at 46.2481675, 20.1463309; imported this point and classified as store. [Publisher locator](https://locator.riftbound.uvsgames.com/stores/48b2f3db-2289-462e-903f-2211fe771c74) refers to Hajós 28, so its point must not be substituted for the recorded Jókai venue. Latest Omnidex event 2026-10-10; current evidence does not qualify for weekly projections. Confirm branch on future event updates. |
 | 37 | 462 | HASUYA | JP | Japan, 〒556-0011 Osaka, Naniwa Ward, Nanbanaka, 2-chōme−2−１５ 高砂ビル 5F | Mapped | Reviewed 2026-10-16: [Official HASUYA store page](https://hasuya.jp/user_data/shop) confirms Takasago Building 5F, 2-2-15 Nanbanaka. [Pokémon publisher locator](https://map.pokemon-card.com/map/13177) confirms the exact store/floor and links coordinates 34.663059, 135.503239. Imported publisher pin and classified as store. Official site's embedded map viewport center was not used; other retailers occupy different floors in this building. Latest Omnidex event 2026-10-15; existing recurrence logic supports Thursdays starting 10-22 and Saturdays starting 10-17 for the next four weeks. |
-| 38 | 140 | CoreTCG | US | 770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA | Pending |  |
+| 38 | 140 | CoreTCG | US | 770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA | Mapped | Reviewed 2026-10-16: [Official website](https://coretcg.com/) confirms 770 South Arroyo Parkway #110 and physical TCG retail. [Lorcana publisher store record](https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43) and its event records agree on 34.13254, -118.146938 at that suite. Imported verified coordinates and classified as store. Latest Omnidex event 2026-09-29; current Grand Archive evidence does not satisfy weekly recurrence requirements, so no upcoming estimates. |
 | 39 | 50 | Go For Game | CA | 478 Dundas St W Second Floor, Toronto, ON M5T 1G9, Canada | Pending |  |
 | 40 | 16 | CardArt | US | 781 E El Camino Real Suite 100, Sunnyvale, CA 94087, USA | Pending |  |
 | 41 | 547 | Flagship Games | SG | 214 Bishan St. 23, Block 214, Singapore 570214 | Pending |  |
