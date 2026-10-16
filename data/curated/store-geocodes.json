@@ -144,6 +144,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 177,
+    "address": "No. 75, 2F, Ziqiang 2nd Rd\nQianjin District\nKaohsiung City 801\nTaiwan",
+    "lat": 22.6243005,
+    "lng": 120.2955615,
+    "sourceUrl": "https://www.catfootprint.com/貓腳印-雄二店",
+    "sourceAddress": "高雄市前金區自強二路75號2樓",
+    "sourceCollectedAt": "2026-10-16T16:13:56.227701+00:00"
+  },
+  {
     "hostId": 180,
     "address": "150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841",
     "lat": 1.3009768,
