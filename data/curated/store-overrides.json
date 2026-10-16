@@ -488,5 +488,9 @@
   "822": {
     "kind": "store",
     "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/id/event-search/37299/) confirms Torecaya at Gg. Sarwo No.7, Tampan, Pekanbaru, including organizer contact. [Distributor](https://mythicessential.com/) lists Torecaya as a partner. No official standalone website or verified business coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-11T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "479": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://sg-manapro.com/) confirms Choa Chu Kang branch at Block 203 #B1-41 and separately identifies Commonwealth branch. [Waze](https://www.waze.com/live-map/directions/sg/singapore/mana-pro-choa-chu-kang?to=place.ChIJNydeZnYR2jERT3JnTasIhjs) corroborates the recorded branch. No coordinates verified from the reviewed pages; exclude Commonwealth. Latest Omnidex event in committed snapshot 2026-07-11T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
