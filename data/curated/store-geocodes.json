@@ -180,6 +180,15 @@
     "sourceCollectedAt": "2026-10-16T15:33:06.229Z"
   },
   {
+    "hostId": 116,
+    "address": "Lower Ground, Shop 1/93 York St, Sydney NSW 2000, Australia",
+    "lat": -33.8699911,
+    "lng": 151.2060445,
+    "sourceUrl": "https://www.goodgames.com.au/venue/good-games-town-hall/",
+    "sourceAddress": "Shop 1, Lower Ground, 93 York St, Sydney, New South Wales, 2000, Australia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 125,
     "address": "15901 Jefferson Davis Hwy, Chester, VA 23834, USA",
     "lat": 37.3050764,

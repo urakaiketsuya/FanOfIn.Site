@@ -208,5 +208,9 @@
   "449": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact](https://www.everythinggames.ca/pages/contact) confirms unit 103 at 721 Station Avenue, Langford, postal code V9B 2S1. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/085dbafc-391a-4aac-91b6-aad2620ad882) agrees on street and publishes matching store/event coordinates 48.4465745, -123.496874. Recorded Victoria/V9B 5R5 is a locality/postcode variation; storefront identity is confirmed. Imported against exact event address. Latest Omnidex event August 21 is stale; no weekly projection."
+  },
+  "116": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official venue](https://www.goodgames.com.au/venue/good-games-town-hall/) redirects to the event site and embeds venue GeoCoordinates -33.8699911, 151.2060445 with Shop 1, Lower Ground, 93 York Street, Sydney 2000. Imported the exact-address venue point. Latest Omnidex event August 29 is stale; no weekly projection."
   }
 }
