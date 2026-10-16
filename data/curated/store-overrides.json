@@ -572,5 +572,9 @@
   "609": {
     "kind": "venue",
     "evidence": "2026-10-16: [Official retailer site](https://illusivetcg.com.au/) confirms Illusive TCG and online events. [Ascent event record](https://fractalofin.site/PRD/62616.html) identifies the recorded Sovereign Room at MCEC as a tournament venue. Classified as venue for this address; do not imply a permanent Illusive storefront at the convention center. No room-specific destination coordinates verified. Latest Omnidex event in committed snapshot 2026-09-11T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "736": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) confirms 52A Block M Jalan Raja Uda. [Publisher event](https://locator.riftbound.uvsgames.com/events/801854) binds AeXern at 52A to matching store/event coordinates 5.41639577085487, 100.37982764931613. Imported point; no official standalone website established. Latest Omnidex event in committed snapshot 2026-09-04T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

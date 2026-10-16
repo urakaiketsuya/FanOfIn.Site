@@ -738,6 +738,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 736,
+    "address": "52A, Block M, Jalan Raja Uda, Pusat Perniagaan Raja Uda, 12300 Butterworth, Pulau Pinang, Malaysia",
+    "lat": 5.41639577085487,
+    "lng": 100.37982764931613,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/801854",
+    "sourceAddress": "52a, Jalan Raja Uda, Kampung Baharu, 12300 Butterworth, Pulau Pinang, Malaysia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 745,
     "address": "Ul. Baruna Trenka 8, 10000, Zagreb, Croatia",
     "lat": 45.8076482,
