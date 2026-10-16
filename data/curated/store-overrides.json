@@ -92,5 +92,9 @@
   "111": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://ggadelaide.com.au/pages/contact-us) confirms 88 Grenfell Street. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/73d14e47-a313-44d7-88f0-022d03cf812d) publishes -34.92403, 138.6030835 for that address. Imported verified point and classified as store. Latest Omnidex event 2026-09-19 is stale for weekly projections."
+  },
+  "277": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact page](https://thefinalbosscollectables.com.au/pages/contact) confirms Unit 4/43 Orbis Drive and instructs visitors to enter the gate and drive to the back. [Publisher event](https://locator.riftbound.uvsgames.com/events/460200) and embedded store agree on -37.7774301, 144.7497849 at 4/43 Orbis Drive. Imported verified point and classified as store. Older publisher event at Turnbull Way was not used. Latest Omnidex event 2026-10-13; current evidence fails weekly recurrence requirements."
   }
 }
