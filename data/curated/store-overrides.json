@@ -400,5 +400,9 @@
   "676": {
     "kind": "store",
     "evidence": "2026-10-16: [Card-store directory](https://riftboundex.com/en/stores) confirms SBT, Tak Wing Industrial Building, third floor C2; [another directory](https://binami.io/zh-TW/place/bf735a1d-97c9-4f89-bd74-b71d1537ceb8) uses 3 Tsun Wen Road and a different building occupant label. No official standalone website or reliable unit-specific coordinates obtained. Resolve road spelling and named store pin. Latest Omnidex event in committed snapshot 2026-10-02T12:20:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "35": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact](https://paradoxtradingpost.com/contact/) contains both 9323 Martin Way E Suite 112 and recorded 9333 Suite 214. [Official links](https://linktr.ee/paradoxtradingpost) use 9333 Suite 214, while [publisher store](https://locator.riftbound.uvsgames.com/stores/dd25f98d-f575-4454-b1da-d139595a6c37) uses 9323 Suite 112. No pin imported pending address reconciliation. Latest Omnidex event in committed snapshot 2026-06-20T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
