@@ -332,5 +332,9 @@
   "651": {
     "kind": "store",
     "evidence": "2026-10-16: [Official TCG shop](https://1collectiblestcg.com/) confirms 511 Guillemard Road #02-03, matching the event address. The [main brand contact page](https://www.1collectibles.com/pages/customer-service) lists #01-06 and [CGC dealer record](https://www.cgcgrading.com/dealer-locator/5761/) uses #02-20. Retain the TCG-specific address; obtain a pin explicitly tied to that unit and clarify the relationship between brand locations. Latest Omnidex event 2026-10-05T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "73": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact page](https://tinyrobotonline.com/page/contactus) gives Suria Sabah lots 2-54, 2-55 and 2-56 on the second floor, while the recorded event address uses part of 3-32 on the third floor. The same page separately lists the office and Pintas Square branch. Resolve the event/store floor change before importing any mall point. Latest Omnidex event 2026-06-07T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
