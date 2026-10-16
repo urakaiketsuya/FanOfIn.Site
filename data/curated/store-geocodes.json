@@ -216,6 +216,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 139,
+    "address": "11943 SW Canyon Rd, Beaverton, OR 97005, USA",
+    "lat": 45.48995,
+    "lng": -122.79966,
+    "sourceUrl": "https://mapcarta.com/N13327464902",
+    "sourceAddress": "11943 Southwest Canyon Road, Beaverton, OR 97005",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 140,
     "address": "770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA",
     "lat": 34.13254,

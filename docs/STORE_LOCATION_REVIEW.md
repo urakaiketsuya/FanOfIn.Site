@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 82 reviewed (22.2% of this checklist); 287 pending. 37 mapped, 45 need further evidence. Map coverage: 342/674 (50.7%); 332 unmapped.
+Progress: first 83 reviewed (22.5% of this checklist); 286 pending. 38 mapped, 45 need further evidence. Map coverage: 343/674 (50.9%); 331 unmapped.
 
-Next: #83 Chronos Games & Gifts. Revisit Needs evidence entries after the initial pass.
+Next: #84 DXCOLLECTION. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -93,7 +93,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 80 | 103 | Plenty of Games | AU | L1/278 Collins St, Melbourne VIC 3000, Australia | Mapped | Reviewed 2026-10-16: [Official store pickup listing](https://plentyofgames.com.au/products/frilled-sparkshooter-bloomburrow) confirms Level 1, 278 Collins Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a2065bda-ce1a-4701-ab43-94e49688a638) confirms the street and publishes matching store/event coordinates -37.8156332, 144.9647558. Imported against exact recorded address. Latest Omnidex event May 1 is stale; no weekly projection. |
 | 81 | 361 | Draagoons Hobby Shop | ID | Ruko Kav 31A no 2 South Tangerang City, Ba, Jl. Sutera Utama, Pakualam, Kec. Serpong Utara, Kota Tangerang Selatan, Banten 15325, Indonesia | Needs evidence | Reviewed 2026-10-16: [Official website](https://www.draagoonshobbyshop.com/) confirms Ruko Kav 31A no. 2, Sutera Utama, matching the recorded shop. Its embedded business coordinates (-6.2835218, 106.7112933) are attached only to South Tangerang city, not the street address; do not import a city point. Obtain a named storefront pin. Latest Omnidex event 2026-04-04T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 82 | 842 | Hideyoshi | SG | 504 Jurong West Street 51, #04 211, Singapore 640504 | Needs evidence | Reviewed 2026-10-16: [Official shop](https://hideyoshitcg.com/) confirms 504 Jurong West Street 51, #04-211, 640504. No address-bound coordinates found in the public page. Retail identity confirmed; obtain a published store pin. Latest Omnidex event 2026-10-07T12:00:00.000Z. Existing recurrence projects 2026-10-21T12:00:00.000Z, 2026-10-28T12:00:00.000Z, 2026-11-04T12:00:00.000Z, 2026-11-11T12:00:00.000Z (source event 65566); estimates, not confirmed bookings. |
-| 83 | 139 | Chronos Games & Gifts | US | 11943 SW Canyon Rd, Beaverton, OR 97005, USA | Pending |  |
+| 83 | 139 | Chronos Games & Gifts | US | 11943 SW Canyon Rd, Beaverton, OR 97005, USA | Mapped | Reviewed 2026-10-16: [Official website](https://chronosgg.com/author/chronosgg/) confirms 11943 SW Canyon Road. [OSM-derived named shop](https://mapcarta.com/N13327464902) gives the same address and 45.48995, -122.79966. Imported this current location; older publisher events at 13227 SW Canyon Road were not used. Latest Omnidex event 2026-09-12T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 84 | 619 | DXCOLLECTION | SG | 35 Selegie Rd, #05 11, Singapore 188307 | Pending |  |
 | 85 | 516 | Favonia Hobbies Kampar | MY | 26A Jalan Batu Karang; Taman Bandar Baru 31900; Kampar, Perak; Malaysia | Pending |  |
 | 86 | 775 | Curio Mountlake | US | 22003 66th Ave W suite a 1, Mountlake Terrace, WA 98043, USA | Pending |  |

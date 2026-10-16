@@ -240,5 +240,9 @@
   "842": {
     "kind": "store",
     "evidence": "2026-10-16: [Official shop](https://hideyoshitcg.com/) confirms 504 Jurong West Street 51, #04-211, 640504. No address-bound coordinates found in the public page. Retail identity confirmed; obtain a published store pin. Latest Omnidex event 2026-10-07T12:00:00.000Z. Existing recurrence projects 2026-10-21T12:00:00.000Z, 2026-10-28T12:00:00.000Z, 2026-11-04T12:00:00.000Z, 2026-11-11T12:00:00.000Z (source event 65566); estimates, not confirmed bookings."
+  },
+  "139": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://chronosgg.com/author/chronosgg/) confirms 11943 SW Canyon Road. [OSM-derived named shop](https://mapcarta.com/N13327464902) gives the same address and 45.48995, -122.79966. Imported this current location; older publisher events at 13227 SW Canyon Road were not used. Latest Omnidex event 2026-09-12T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
