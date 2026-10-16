@@ -80,5 +80,9 @@
   "547": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://www.flagshipgames.sg/) confirms 214 Bishan Street 23, B1-223. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/0a22d294-3113-4417-a8f5-4136ea727337) and events agree on 1.3576010582467033, 103.84840612883607 at Block 214. Imported address-bound point and classified as store. Latest Omnidex event 2026-10-09; existing Grand Archive recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13. Other-game schedules were not imported."
+  },
+  "100": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branch page](https://events.goodgames.com.au/venue/good-games-box-hill/) confirms G1/975 Whitehorse Road and retail identity. [Publisher championship event](https://locator.riftbound.uvsgames.com/events/923352) and embedded store agree on -37.817931152328924, 145.1247279048935 at 975 Whitehorse Road. Imported address-bound point and classified as store. The separate Game Expo event describes an offsite convention and was not used. Latest Omnidex event 2026-05-16 is stale; no weekly projections."
   }
 }
