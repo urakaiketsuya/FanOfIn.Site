@@ -256,5 +256,9 @@
   "775": {
     "kind": "store",
     "evidence": "2026-10-16: [Official retail locations](https://www.curiocavern.com/pages/retail-locations) confirms 22003 66th Avenue W, Unit A-1, Mountlake Terrace. [Publisher event](https://locator.riftbound.uvsgames.com/events/528752) and embedded store agree on the address and 47.79891350173276, -122.3210665098564. Imported exact-address point. Latest Omnidex event 2026-10-16T01:30:00.000Z. Existing recurrence projects 2026-10-23T01:30:00.000Z, 2026-10-30T01:30:00.000Z, 2026-11-06T01:30:00.000Z, 2026-11-13T01:30:00.000Z (source event 65465); estimates, not confirmed bookings."
+  },
+  "273": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/82a1bcba-5477-4b86-b805-3282a3486cbd) confirms 21308 Pathfinder Road, suite 110, links [official website](https://www.gamesformeeple.com), and publishes matching store/event coordinates 33.9839856, -117.8414105. Imported; older suite 209 publisher listings were not used. Latest Omnidex event 2026-09-18T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
