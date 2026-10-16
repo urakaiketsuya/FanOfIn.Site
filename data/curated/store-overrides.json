@@ -192,5 +192,9 @@
   "653": {
     "kind": "store",
     "evidence": "2026-10-16: [Thai Trainer Hub directory](https://pokemon.in.th/shops) confirms 85 Soi Lat Phrao 81, Khlong Chaokhun Sing, Wang Thonglang, Bangkok 10310 and links [official Pokémon shop record](https://asia.pokemon-card.com/th/shopmap/map/Shop185), which could not be fetched during review. No standalone store website or verified pin obtained; retain address and seek accessible primary map evidence. Latest GA event 2026-10-09; existing recurrence checks produce no upcoming estimates."
+  },
+  "250": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-彰化店) confirms 398 Juguang Road, second floor. Its map link is a name search without published feature coordinates; leave unmapped pending a verified pin. Latest Omnidex event is October 15; existing recurrence rules project Thursdays from October 22 at 11:30 UTC."
   }
 }
