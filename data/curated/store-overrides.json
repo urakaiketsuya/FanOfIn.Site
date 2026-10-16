@@ -336,5 +336,9 @@
   "73": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://tinyrobotonline.com/page/contactus) gives Suria Sabah lots 2-54, 2-55 and 2-56 on the second floor, while the recorded event address uses part of 3-32 on the third floor. The same page separately lists the office and Pintas Square branch. Resolve the event/store floor change before importing any mall point. Latest Omnidex event 2026-06-07T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "127": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official about page](https://www.curiocavern.com/pages/about-us) confirms 6610 Springfield Mall. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/a2ae4148-e37b-4a1a-a07f-0febb5e4b006) and embedded events agree on 38.7739164, -77.1737916 for that address. Imported this branch point; separate Loisdale Road and Mountlake Terrace branches were not substituted. Latest Omnidex event 2026-05-23T15:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
