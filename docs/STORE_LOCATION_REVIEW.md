@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 77 reviewed (20.9% of this checklist); 292 pending. 36 mapped, 41 need further evidence. Map coverage: 341/674 (50.6%); 333 unmapped.
+Progress: first 78 reviewed (21.1% of this checklist); 291 pending. 36 mapped, 42 need further evidence. Map coverage: 341/674 (50.6%); 333 unmapped.
 
-Next: #78 Forge Hobby Place. Revisit Needs evidence entries after the initial pass.
+Next: #79 Grand Canyon. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -88,7 +88,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 75 | 116 | Good Games Town Hall | AU | Lower Ground, Shop 1/93 York St, Sydney NSW 2000, Australia | Mapped | Reviewed 2026-10-16: [Official venue](https://www.goodgames.com.au/venue/good-games-town-hall/) redirects to the event site and embeds venue GeoCoordinates -33.8699911, 151.2060445 with Shop 1, Lower Ground, 93 York Street, Sydney 2000. Imported the exact-address venue point. Latest Omnidex event August 29 is stale; no weekly projection. |
 | 76 | 240 | Trinity Card Capital LTD | GB | 5 Pink Ln, Newcastle upon Tyne NE1 5DW, UK | Needs evidence | Reviewed 2026-10-16: [Publisher directory](https://en.shadowverse-evolve.com/shops/europe/) lists 203 High Street, Gateshead, while [2022 Wixoss events](https://www.wixosstcg.eu/Results/918/EGB0013) establish that as a historical address and link trinitycardcapital.co.uk. That domain now displays a parked/domain-sale page, so it is not a verified current store website. Recorded 5 Pink Lane needs current primary confirmation and a pin; historical Gateshead coordinates must not be imported. Latest Omnidex event March 29 is stale; no weekly projection. |
 | 77 | 267 | MoreFun Chiayi | TW | 1F., No. 365, Sec. 1, Bo'ai Rd., West Dist; Chiayi City 600076 , Taiwan (R.O.C.); Taiwan | Needs evidence | Reviewed 2026-10-16: [Publisher retailer list](https://reolacat.wixsite.com/bigfungames/where-to-buy) confirms 玩坊 Chiayi at 365 Boai Road Section 1. No verified store coordinates or standalone official store website obtained; retain unmapped pending a storefront map. Latest Omnidex event October 15; existing recurrence rules produce no upcoming dates. |
-| 78 | 383 | Forge Hobby Place | PH | 070 unit, 5 Naga Rd, 2, Las Piñas, Metro Manila, Philippines | Pending |  |
+| 78 | 383 | Forge Hobby Place | PH | 070 unit, 5 Naga Rd, 2, Las Piñas, Metro Manila, Philippines | Needs evidence | Reviewed 2026-10-16: [Herald’s Peak store guide](https://www.heraldspeak.com/articles/ga-local-game-stores-in-south-luzon) confirms unit 5, 0070 Naga Road and links [official Facebook](https://web.facebook.com/forgehobbyplacemain). [Waze](https://www.waze.com/live-map/directions/ph/ncr/las-pinas/forge-hobby-place?to=place.ChIJEzLKiynPlzMRXqcVmihZGiE) agrees and adds third floor. [Publisher directory](https://en.shadowverse-evolve.com/shops/asia-oceania/) instead uses 29 Velasquez Compound; historical Pokémon lists use 77. Resolve numbering and verify a matching pin; no standalone website verified. Latest Omnidex event March 22 is stale; no weekly projection. |
 | 79 | 79 | Grand Canyon | HK | Store 162, 1/F, Smiling Plaza; Un Chau Street 162-188; Cheung Sha Wan, Sham Shui Pao 0; Hong Kong | Pending |  |
 | 80 | 103 | Plenty of Games | AU | L1/278 Collins St, Melbourne VIC 3000, Australia | Pending |  |
 | 81 | 361 | Draagoons Hobby Shop | ID | Ruko Kav 31A no 2 South Tangerang City, Ba, Jl. Sutera Utama, Pakualam, Kec. Serpong Utara, Kota Tangerang Selatan, Banten 15325, Indonesia | Pending |  |
