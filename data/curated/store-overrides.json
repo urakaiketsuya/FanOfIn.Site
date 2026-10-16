@@ -216,5 +216,9 @@
   "240": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher directory](https://en.shadowverse-evolve.com/shops/europe/) lists 203 High Street, Gateshead, while [2022 Wixoss events](https://www.wixosstcg.eu/Results/918/EGB0013) establish that as a historical address and link trinitycardcapital.co.uk. That domain now displays a parked/domain-sale page, so it is not a verified current store website. Recorded 5 Pink Lane needs current primary confirmation and a pin; historical Gateshead coordinates must not be imported. Latest Omnidex event March 29 is stale; no weekly projection."
+  },
+  "267": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher retailer list](https://reolacat.wixsite.com/bigfungames/where-to-buy) confirms 玩坊 Chiayi at 365 Boai Road Section 1. No verified store coordinates or standalone official store website obtained; retain unmapped pending a storefront map. Latest Omnidex event October 15; existing recurrence rules produce no upcoming dates."
   }
 }
