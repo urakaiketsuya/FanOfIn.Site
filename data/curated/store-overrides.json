@@ -516,5 +516,9 @@
   "572": {
     "kind": "store",
     "evidence": "2026-10-16: [Official shop](https://rakuhobby.com/) confirms Raku retail identity. [Historical Bandai list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/8packs-battle_202405/list_indonesia.php) uses Ruko Plaza Graha Famili D-23 second floor, unlike recorded Tandes Lor 188. Resolve relocation/current entrance before mapping; no verified Tandes pin obtained. Latest Omnidex event in committed snapshot 2026-08-16T11:35:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "637": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official Telegram shop group](https://t.me/acmetcg_shop) confirms 52 Telok Blangah Road #02-10, Telok Blangah House, and provides a map link. Registration directories instead show a residential registered office on Telok Blangah Drive; do not map that office. No coordinates verified for the shop link; no standalone official website found. Latest Omnidex event in committed snapshot 2026-09-25T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
