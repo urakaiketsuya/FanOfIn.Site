@@ -1,0 +1,281 @@
+[
+  {
+    "hostId": 4,
+    "address": "3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA",
+    "lat": 28.6779817,
+    "lng": -81.3348443,
+    "sourceUrl": "https://www.lgsfinder.org/florida/casselberry/the-haven-tabletop-games-casselberry",
+    "sourceAddress": "3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707",
+    "sourceCollectedAt": "2026-10-11T17:34:41.606403+00:00"
+  },
+  {
+    "hostId": 6,
+    "address": "3925 Chain Bridge Rd suite 201, Fairfax, VA 22030, USA",
+    "lat": 38.8449265,
+    "lng": -77.3053847,
+    "sourceUrl": "https://www.lgsfinder.org/virginia/fairfax/gaming-giant-fairfax",
+    "sourceAddress": "3925 Chain Bridge Rd Suite 201, Fairfax, VA 22030",
+    "sourceCollectedAt": "2026-10-11T17:37:42.144687+00:00"
+  },
+  {
+    "hostId": 12,
+    "address": "118 N Main St #1, Forked River, NJ 08731, USA",
+    "lat": 39.8421055,
+    "lng": -74.1904061,
+    "sourceUrl": "https://www.lgsfinder.org/new-jersey/forked-river/shipwreck-games-forked-river",
+    "sourceAddress": "118 N Main St #1, Forked River, NJ 08731",
+    "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
+  },
+  {
+    "hostId": 26,
+    "address": "5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA",
+    "lat": 36.1596979,
+    "lng": -115.2179553,
+    "sourceUrl": "https://www.lgsfinder.org/nevada/las-vegas/the-peoples-card-shop-las-vegas",
+    "sourceAddress": "5620 W Charleston Blvd #110, Las Vegas, NV 89146",
+    "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
+  },
+  {
+    "hostId": 38,
+    "address": "3902 13th Ave S #100, Fargo, ND 58103, USA",
+    "lat": 46.8584289,
+    "lng": -96.8477095,
+    "sourceUrl": "https://www.lgsfinder.org/north-dakota/fargo/jww-sports-cards-gaming-fargo",
+    "sourceAddress": "3902 13th Ave S #100, Fargo, ND 58103",
+    "sourceCollectedAt": "2026-10-11T17:36:41.794327+00:00"
+  },
+  {
+    "hostId": 46,
+    "address": "2329 Iowa St space m, Lawrence, KS 66047, USA",
+    "lat": 38.9411142,
+    "lng": -95.2619233,
+    "sourceUrl": "https://www.lgsfinder.org/kansas/lawrence/game-nut-entertainment-lawrence",
+    "sourceAddress": "2329 Iowa St space m, Lawrence, KS 66047",
+    "sourceCollectedAt": "2026-10-11T17:35:16.699902+00:00"
+  },
+  {
+    "hostId": 49,
+    "address": "2495 N Cedar St STE 14B, Holt, MI 48842, USA",
+    "lat": 42.6533127,
+    "lng": -84.5351711,
+    "sourceUrl": "https://www.lgsfinder.org/michigan/holt/afk-games-holt",
+    "sourceAddress": "2495 N Cedar St STE 14B, Holt, MI 48842",
+    "sourceCollectedAt": "2026-10-11T17:35:46.718894+00:00"
+  },
+  {
+    "hostId": 137,
+    "address": "552 Main St space 1, Honesdale, PA 18431, USA",
+    "lat": 41.5702622,
+    "lng": -75.254749,
+    "sourceUrl": "https://www.lgsfinder.org/pennsylvania/honesdale/dragons-den-games-and-hobbies-honesdale",
+    "sourceAddress": "552 Main St space 1, Honesdale, PA 18431",
+    "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
+  },
+  {
+    "hostId": 204,
+    "address": "969 Story Rd UNIT 6078, San Jose, CA 95122\nUnited States",
+    "lat": 37.3321267,
+    "lng": -121.8578876,
+    "sourceUrl": "https://www.lgsfinder.org/california/san-jose/tofus-trading-san-jose",
+    "sourceAddress": "969 Story Rd UNIT 6078, San Jose, CA 95122",
+    "sourceCollectedAt": "2026-10-11T17:34:16.578635+00:00"
+  },
+  {
+    "hostId": 212,
+    "address": "11122 W Alabama Ave g2, Youngtown, AZ 85363, USA",
+    "lat": 33.59407,
+    "lng": -112.3002613,
+    "sourceUrl": "https://www.lgsfinder.org/arizona/youngtown/the-orcs-lair-youngtown",
+    "sourceAddress": "11122 W Alabama Ave g2, Youngtown, AZ 85363",
+    "sourceCollectedAt": "2026-10-11T17:34:06.576897+00:00"
+  },
+  {
+    "hostId": 226,
+    "address": "525 Woodland Square Blvd #130, Conroe, TX 77384, USA",
+    "lat": 30.2253567,
+    "lng": -95.5422066,
+    "sourceUrl": "https://www.lgsfinder.org/texas/conroe/the-adventure-begins-comics-games-more-conroe",
+    "sourceAddress": "525 Woodland Square Blvd #130, Conroe, TX 77384",
+    "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
+  },
+  {
+    "hostId": 233,
+    "address": "3334 Stone Mountain Hwy suite e, Snellville, GA 30078, USA",
+    "lat": 33.8478292,
+    "lng": -84.0475625,
+    "sourceUrl": "https://www.lgsfinder.org/georgia/snellville/guubuu-hobby-snellville",
+    "sourceAddress": "3334 Stone Mountain Hwy suite e, Snellville, GA 30078",
+    "sourceCollectedAt": "2026-10-11T17:34:46.780467+00:00"
+  },
+  {
+    "hostId": 243,
+    "address": "6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119, USA",
+    "lat": 36.0685781,
+    "lng": -115.174789,
+    "sourceUrl": "https://www.lgsfinder.org/nevada/las-vegas/knight-day-games-las-vegas",
+    "sourceAddress": "6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119",
+    "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
+  },
+  {
+    "hostId": 342,
+    "address": "8085 W Bell Rd Ste 107, Peoria, AZ 85382, USA",
+    "lat": 33.6359462,
+    "lng": -112.229645,
+    "sourceUrl": "https://www.lgsfinder.org/arizona/peoria/silver-dragon-games-peoria",
+    "sourceAddress": "8085 W Bell Rd Ste 107, Peoria, AZ 85382",
+    "sourceCollectedAt": "2026-10-11T17:34:06.576897+00:00"
+  },
+  {
+    "hostId": 362,
+    "address": "1975 County Road B2 W, Roseville, MN 55113, USA",
+    "lat": 45.015212,
+    "lng": -93.184092,
+    "sourceUrl": "https://www.lgsfinder.org/minnesota/roseville/gamezenter-roseville",
+    "sourceAddress": "1975 County Road B2 W, Roseville, MN 55113",
+    "sourceCollectedAt": "2026-10-11T17:35:51.717783+00:00"
+  },
+  {
+    "hostId": 395,
+    "address": "444 Almeda Mall, Houston, TX 77075, USA",
+    "lat": 29.6226005,
+    "lng": -95.2272923,
+    "sourceUrl": "https://www.lgsfinder.org/texas/houston/game-guys-houston",
+    "sourceAddress": "444 Almeda Mall, Houston, TX 77075",
+    "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
+  },
+  {
+    "hostId": 414,
+    "address": "Whitpain Shopping Center, 1510 Dekalb Pike, Blue Bell, PA 19422, USA",
+    "lat": 40.1546043,
+    "lng": -75.3017677,
+    "sourceUrl": "https://www.lgsfinder.org/pennsylvania/blue-bell/alternate-universes-blue-bell-blue-bell",
+    "sourceAddress": "1510 Dekalb Pike, Blue Bell, PA 19422",
+    "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
+  },
+  {
+    "hostId": 472,
+    "address": "305 E Main St Suite 12 & 13, Lexington, OH 44904, USA",
+    "lat": 40.6807647,
+    "lng": -82.5722122,
+    "sourceUrl": "https://www.lgsfinder.org/ohio/lexington/post-board-gaming-lexington-lexington",
+    "sourceAddress": "305 E Main St Suite 12 & 13, Lexington, OH 44904",
+    "sourceCollectedAt": "2026-10-11T17:36:46.738819+00:00"
+  },
+  {
+    "hostId": 496,
+    "address": "600 W Independence St Suite 1100, Shawnee, OK 74804, USA",
+    "lat": 35.3482418,
+    "lng": -96.9327384,
+    "sourceUrl": "https://www.lgsfinder.org/oklahoma/shawnee/white-lotus-gaming-shawnee",
+    "sourceAddress": "600 W Independence St Suite 1100, Shawnee, OK 74804",
+    "sourceCollectedAt": "2026-10-11T17:36:51.683303+00:00"
+  },
+  {
+    "hostId": 578,
+    "address": "5116 196th St SW Suite 203, Lynnwood, WA 98036, USA",
+    "lat": 47.820714,
+    "lng": -122.3025619,
+    "sourceUrl": "https://www.lgsfinder.org/washington/lynnwood/zulus-board-game-cafe-lynnwood-lynnwood",
+    "sourceAddress": "5116 196th St SW Suite 203, Lynnwood, WA 98036",
+    "sourceCollectedAt": "2026-10-11T17:37:46.709600+00:00"
+  },
+  {
+    "hostId": 593,
+    "address": "711 W Lake St #103, Minneapolis, MN 55408, USA",
+    "lat": 44.9481557,
+    "lng": -93.2888493,
+    "sourceUrl": "https://www.lgsfinder.org/minnesota/minneapolis/steamship-games-minneapolis",
+    "sourceAddress": "711 W Lake St Suite 103, Minneapolis, MN 55408",
+    "sourceCollectedAt": "2026-10-11T17:35:51.717783+00:00"
+  },
+  {
+    "hostId": 602,
+    "address": "650 Iwilei Rd suite 160, Honolulu, HI 96817, USA",
+    "lat": 21.316771,
+    "lng": -157.8708268,
+    "sourceUrl": "https://www.lgsfinder.org/hawaii/honolulu/the-armchair-adventurer-honolulu",
+    "sourceAddress": "Dole Cannery, 650 Iwilei Rd #160, Honolulu, HI 96817",
+    "sourceCollectedAt": "2026-10-11T17:34:51.594684+00:00"
+  },
+  {
+    "hostId": 652,
+    "address": "2440 Fulton Ave #9, Sacramento, CA 95825, USA",
+    "lat": 38.6098489,
+    "lng": -121.4006069,
+    "sourceUrl": "https://www.lgsfinder.org/california/sacramento/card-shop-sacramento-x-gold-star-collectibles-sacramento",
+    "sourceAddress": "2440 Fulton Ave Suite 9, Sacramento, CA 95825",
+    "sourceCollectedAt": "2026-10-11T17:34:16.578635+00:00"
+  },
+  {
+    "hostId": 674,
+    "address": "14313 NE 20th Ave ste a112, Vancouver, WA 98686, USA",
+    "lat": 45.7252109,
+    "lng": -122.650504,
+    "sourceUrl": "https://www.lgsfinder.org/washington/vancouver/contrarians-game-cafe-vancouver",
+    "sourceAddress": "14313 NE 20th Ave # A112, Vancouver, WA 98686",
+    "sourceCollectedAt": "2026-10-11T17:37:46.709600+00:00"
+  },
+  {
+    "hostId": 749,
+    "address": "124 W Jefferson Ave ste 107, Kirkwood, MO 63122, USA",
+    "lat": 38.581899,
+    "lng": -90.4077298,
+    "sourceUrl": "https://www.lgsfinder.org/missouri/kirkwood/the-nerd-merchant-kirkwood",
+    "sourceAddress": "124 W Jefferson Ave #107, Kirkwood, MO 63122",
+    "sourceCollectedAt": "2026-10-11T17:36:01.654184+00:00"
+  },
+  {
+    "hostId": 782,
+    "address": "7211 W, 7211 Colonial St, Boise, ID 83709, USA",
+    "lat": 43.6015392,
+    "lng": -116.271408,
+    "sourceUrl": "https://www.lgsfinder.org/idaho/boise/abu-games-boise",
+    "sourceAddress": "7211 W Colonial St, Boise, ID 83709",
+    "sourceCollectedAt": "2026-10-11T17:34:56.588284+00:00"
+  },
+  {
+    "hostId": 835,
+    "address": "700 Paramus Pk suite 1305, Paramus, NJ 07652, USA",
+    "lat": 40.955216,
+    "lng": -74.0681158,
+    "sourceUrl": "https://www.lgsfinder.org/new-jersey/paramus/dragon-eye-gaming-paramus",
+    "sourceAddress": "700 Paramus Pk, Paramus, NJ 07652",
+    "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
+  },
+  {
+    "hostId": 878,
+    "address": "10971 4 Seasons Pl Ste 106, Crown Point, IN 46307, USA",
+    "lat": 41.4193016,
+    "lng": -87.2367734,
+    "sourceUrl": "https://www.lgsfinder.org/indiana/crown-point/the-shop-collectibles-crown-point",
+    "sourceAddress": "10971 4 Seasons Pl Ste 106, Crown Point, IN 46307",
+    "sourceCollectedAt": "2026-10-11T17:35:06.665322+00:00"
+  },
+  {
+    "hostId": 885,
+    "address": "331 E 87th Ave suite 102, Anchorage, AK 99515, USA",
+    "lat": 61.1426348,
+    "lng": -149.876345,
+    "sourceUrl": "https://www.lgsfinder.org/alaska/anchorage/d6-games-anchorage",
+    "sourceAddress": "331 E 87th Ave #102, Anchorage, AK 99515",
+    "sourceCollectedAt": "2026-10-11T17:34:01.634515+00:00"
+  },
+  {
+    "hostId": 895,
+    "address": "5251 Timberhill Dr ste 104, San Antonio, TX 78238, USA",
+    "lat": 29.4823563,
+    "lng": -98.6295545,
+    "sourceUrl": "https://www.lgsfinder.org/texas/san-antonio/shenanigans-gaming-llc-san-antonio",
+    "sourceAddress": "5251 Timberhill Dr Ste 104, San Antonio, TX 78238",
+    "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
+  },
+  {
+    "hostId": 949,
+    "address": "8966 W Bowles Ave ste y, Littleton, CO 80123, USA",
+    "lat": 39.6085288,
+    "lng": -105.0963895,
+    "sourceUrl": "https://www.lgsfinder.org/colorado/littleton/mythic-games-littleton",
+    "sourceAddress": "8966 W Bowles Ave Suite Y, Littleton, CO 80123",
+    "sourceCollectedAt": "2026-10-11T17:34:21.601675+00:00"
+  }
+]

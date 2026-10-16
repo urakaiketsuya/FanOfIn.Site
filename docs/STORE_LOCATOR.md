@@ -50,3 +50,20 @@ cached-data load failure/retry, denied location, and nearby/radius filtering usi
 simulated Toronto location. Real device GPS accuracy and a forced tile-server outage
 were not tested. App and pipeline typechecks, focused lint, and directory/filter tests
 passed. Temporary harness files were removed.
+
+## Imported location coverage
+
+A reviewed batch from TradeBinder.Bid's cached LGS Finder dataset (collected
+2026-10-11) adds 31 previously unmapped hosts, bringing coverage to 301 of 674.
+`data/curated/store-geocodes.json` retains the original source URL, source address,
+and collection date for each point. The crawler reuses these only for the exact
+recorded host/address pair; changed addresses require a fresh match. These are
+directory coordinates, not independently surveyed storefront positions. Host
+classification and event addresses remain unchanged. No external geocoding
+requests were made for this batch.
+
+Matches were reviewed for store identity and street address, allowing suite
+notation and shopping-center prefixes. Conflicting addresses (Andyseous Odyssey,
+Kobold's Keep, Webway Games), postal/locality discrepancies (Game Kastle Austin,
+Realgoodeal, Yeti Gaming), and an identity mismatch (True Champion Gaming versus
+AFK Games) were excluded pending further evidence. Remaining map gaps: 373.

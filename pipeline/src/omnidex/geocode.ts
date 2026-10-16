@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type { OmnidexEventSummary, OmnidexVenueGeocode } from "@gatcg/shared";
+import { validStoreCoordinates } from "@gatcg/shared";
 import { sleep } from "../lib/http.js";
 import { config } from "../config.js";
 
@@ -12,7 +13,7 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
 const USER_AGENT = "fanofin-store-locator/1.0 (+https://fanofin.site)";
 
 /** `null` = geocoded, Nominatim had no match for this address — cached too, so a bad/unresolvable address isn't retried every run. */
-type GeocodeCacheEntry = { lat: number; lng: number } | null;
+type GeocodeCacheEntry = Omit<OmnidexVenueGeocode, "hostId" | "address"> | null;
 type GeocodeCache = Record<string, GeocodeCacheEntry>;
 
 async function loadCache(): Promise<GeocodeCache> {
@@ -53,6 +54,13 @@ export async function buildVenueGeocodes(events: OmnidexEventSummary[]): Promise
   }
 
   const cache = await loadCache();
+  // Reviewed imports remain address-bound and survive subsequent crawler runs.
+  const imported = JSON.parse(await readFile(path.join(DATA_DIR, "../curated/store-geocodes.json"), "utf-8")) as OmnidexVenueGeocode[];
+  for (const point of imported) {
+    if (!point.address || !point.sourceUrl || !validStoreCoordinates(point)) continue;
+    const { hostId, address, ...entry } = point;
+    cache[JSON.stringify([hostId, address])] = entry;
+  }
   let newlyGeocoded = 0;
   for (const [hostId, address] of hosts) {
     const key = JSON.stringify([hostId, address]);
@@ -76,7 +84,7 @@ export async function buildVenueGeocodes(events: OmnidexEventSummary[]): Promise
   const venues: OmnidexVenueGeocode[] = [];
   for (const [hostId, address] of hosts) {
     const entry = cache[JSON.stringify([hostId, address])];
-    if (entry) venues.push({ hostId, address, lat: entry.lat, lng: entry.lng });
+    if (entry) venues.push({ hostId, address, ...entry });
   }
   return venues;
 }

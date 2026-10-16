@@ -74,6 +74,9 @@ export interface OmnidexIndexData {
 
 /** One venue's geocoded coordinates, keyed by the same `hostId` join `OmnidexEventSummary` uses. Only venues Nominatim could resolve are published — a venue with an unresolvable/missing address just has no entry. */
 export interface OmnidexVenueGeocode {
+  sourceUrl?: string;
+  sourceAddress?: string;
+  sourceCollectedAt?: string;
   /** Address used for this geocode; absent on legacy records. */
   address?: string;
   hostId: number;
