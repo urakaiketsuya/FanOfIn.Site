@@ -104,5 +104,9 @@
   "553": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher store record](https://locator.riftbound.uvsgames.com/stores/39e19058-1c3f-420f-a2d2-04b9f9159a52) confirms A-G-17, Ground Floor, Zenopy Shoplex and physical retail; store and event coordinates agree on 3.0076806, 101.668882. Imported verified point and classified as store. No standalone official website found. Latest Omnidex event 2026-09-28; current Grand Archive evidence does not qualify for weekly projections. [Current Pokémon listings](https://asia.pokemon-card.com/my/event-search/search/?keyword=MVP+Hobbies+%26+Collectibles+Sdn+Bhd) independently confirm Zenopy; [legacy Flesh and Blood locator](https://legacy.fabtcg.com/en/locator/mvp-hobbies-collectibles/) instead lists 2 Jalan LP 7/2 and was not used for the recorded Zenopy venue."
+  },
+  "241": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact page](https://www.backtogames.com/contactus) confirms the Town Centre Jumeirah ground-floor branch and phone +971 4 548 8445. [Publisher branch record](https://locator.riftbound.uvsgames.com/stores/2ce99f7e-f640-4642-941b-569ddfa6a4f5) matches name and phone; store and events agree on 25.2152868, 55.2509078. Imported branch-specific point and classified as store. Other branches were not used. Latest Omnidex event 2026-10-01; current Grand Archive evidence does not qualify for weekly projections."
   }
 }

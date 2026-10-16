@@ -261,6 +261,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:46.780467+00:00"
   },
   {
+    "hostId": 241,
+    "address": "Town Center, Jumeirah, Ground Floor - شارع جميرا - جميرا - جميرا ١ - دبي - United Arab Emirates",
+    "lat": 25.2152868,
+    "lng": 55.2509078,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/2ce99f7e-f640-4642-941b-569ddfa6a4f5",
+    "sourceAddress": "Back to Games - Town Centre Jumeirah, Jumeira St, Jumeirah 1, Dubai, United Arab Emirates",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 243,
     "address": "6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119, USA",
     "lat": 36.0685781,
