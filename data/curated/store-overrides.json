@@ -380,5 +380,9 @@
   "353": {
     "kind": "store",
     "evidence": "2026-10-16: [Herald’s Peak local-store guide](https://www.heraldspeak.com/articles/ga-local-game-store-in-mindanao) confirms Door 1, second floor, Paladio-Ching Building, Fernandez-Pabayo Streets, Cagayan de Oro 9000. It links [official Facebook](https://www.facebook.com/gonzamerchandhobbyshop/). No standalone official website or verified storefront coordinates obtained. Latest Omnidex event 2026-07-26T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "18": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official pickup page](https://www.gamersguildusa.com/products/pickup-in-store) confirms 2223 South 48th Street Suite C/D, Tempe. [Publisher event](https://locator.riftbound.uvsgames.com/events/530390) and embedded store agree on 33.4043354, -111.9764895 for that suite. Imported Tempe point; the separate North Phoenix branch was excluded. Latest Omnidex event 2026-08-29T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

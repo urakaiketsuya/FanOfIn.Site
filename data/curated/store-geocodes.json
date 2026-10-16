@@ -54,6 +54,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 18,
+    "address": "2223 S 48th St Suite C/D, Tempe, AZ 85282, USA",
+    "lat": 33.4043354,
+    "lng": -111.9764895,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/530390",
+    "sourceAddress": "2223 South 48th Street, Suite C/D, Tempe, AZ, 85282, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 26,
     "address": "5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA",
     "lat": 36.1596979,
