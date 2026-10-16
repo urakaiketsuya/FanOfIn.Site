@@ -441,6 +441,15 @@
     "sourceCollectedAt": "2026-10-16T15:40:44.675Z"
   },
   {
+    "hostId": 379,
+    "address": "6941 SW 196th Ave unit 20, Fort Lauderdale, FL 33332, USA",
+    "lat": 26.006735,
+    "lng": -80.460152,
+    "sourceUrl": "https://cardshophub.com/states/fl/fort-lauderdale/mbm-gaming/",
+    "sourceAddress": "6941 SW 196th Ave Suite 20, Fort Lauderdale, FL 33332",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 380,
     "address": "3733 N Josey Ln Apt 108, Carrollton, TX 75007, USA",
     "lat": 33.0129469,
