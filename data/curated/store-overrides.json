@@ -3,5 +3,9 @@
     "kind": "store",
     "address": "1F, No. 9 Leli St, Tucheng District, New Taipei City 236, Taiwan",
     "evidence": "2026-10-16 review: Orion Game’s current Taiwan TCG distributor directory lists 8號卡牌屋 at 新北市土城區樂利街9號1樓, matching Omnidex host 441’s latest event street and number while correcting its erroneous ‘Taichung District’ locality. Store status corroborated by the retailer’s Card House No 8 marketplace shop, which says its physical shop is an official TCG retailer. No reliable storefront coordinate found; leave unmapped."
+  },
+  "588": {
+    "kind": "store",
+    "evidence": "2026-10-16: Grand Archive distributor Fayble https://www.fayble-asia.com/game_store.php?id=13 lists RiRiCO at 台中市北屯區北屯路288號B1 and links official social https://www.facebook.com/RiRiCOPTCG/. Current Pokémon event results corroborate this address. The 2023 Pokémon Classic list instead gives 西屯路三段39號12樓; do not use that historical address. No verified coordinates found."
   }
 }
