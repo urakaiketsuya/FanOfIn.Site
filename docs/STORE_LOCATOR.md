@@ -106,3 +106,12 @@ contains different event and store coordinates despite referring to High Street
 Centre. Resolve that discrepancy before importing a point. This publisher site
 announces an October 15 platform migration, so future reviews must recheck source
 availability and address currency.
+
+### Individual review checklist (2026-10-16)
+
+[Remaining location reviews](STORE_LOCATION_REVIEW.md) preserves all 369 initially
+unmapped hosts in event-activity order, with per-host status, evidence, and follow-up.
+The first 11 reviews add RWT Collective at its current Olympic Boulevard address,
+bringing coverage to 306 of 674. Its publisher event and embedded store record agree
+on the coordinates, and its official site confirms suite 201. Ten reviewed hosts
+still need coordinate or address evidence; 358 await their first review.

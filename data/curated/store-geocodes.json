@@ -54,6 +54,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:41.794327+00:00"
   },
   {
+    "hostId": 42,
+    "address": "11301 W Olympic Blvd #201, Los Angeles, CA 90064, USA",
+    "lat": 34.0383929,
+    "lng": -118.4421933,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/848501",
+    "sourceAddress": "11301 W Olympic Blvd, 201, Los Angeles, CA, 90064, US",
+    "sourceCollectedAt": "2026-10-16T15:18:52.304407Z"
+  },
+  {
     "hostId": 46,
     "address": "2329 Iowa St space m, Lawrence, KS 66047, USA",
     "lat": 38.9411142,
