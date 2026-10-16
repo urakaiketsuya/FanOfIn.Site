@@ -404,5 +404,9 @@
   "35": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact](https://paradoxtradingpost.com/contact/) contains both 9323 Martin Way E Suite 112 and recorded 9333 Suite 214. [Official links](https://linktr.ee/paradoxtradingpost) use 9333 Suite 214, while [publisher store](https://locator.riftbound.uvsgames.com/stores/dd25f98d-f575-4454-b1da-d139595a6c37) uses 9323 Suite 112. No pin imported pending address reconciliation. Latest Omnidex event in committed snapshot 2026-06-20T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "239": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact](https://www.gameoverheremy.com/contact) confirms B-2-5, second floor, Arena Mentari, Jalan PJS 8/15, and board/card-game sales alongside the cafe. No named storefront coordinates obtained; obtain the second-floor business pin rather than a general complex centroid. Latest Omnidex event in committed snapshot 2026-10-04T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
