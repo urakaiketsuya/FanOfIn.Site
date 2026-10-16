@@ -568,5 +568,9 @@
   "437": {
     "kind": "store",
     "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) lists The Game Armory at Balagtey-Perez Building, 163 Lower Bonifacio, and links [official Facebook](https://www.facebook.com/JohnsonGamingPH/). Recorded events use Cuesta Building, 149 Upper Bonifacio, unit 204. Reconcile relocation before importing either point; retain recorded address. Latest Omnidex event in committed snapshot 2026-09-26T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "609": {
+    "kind": "venue",
+    "evidence": "2026-10-16: [Official retailer site](https://illusivetcg.com.au/) confirms Illusive TCG and online events. [Ascent event record](https://fractalofin.site/PRD/62616.html) identifies the recorded Sovereign Room at MCEC as a tournament venue. Classified as venue for this address; do not imply a permanent Illusive storefront at the convention center. No room-specific destination coordinates verified. Latest Omnidex event in committed snapshot 2026-09-11T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
