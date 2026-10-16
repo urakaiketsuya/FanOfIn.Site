@@ -436,5 +436,9 @@
   "649": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branches](https://www.wargaming.cl/article/sucursales) confirm Manuel Montt branch at Dr. Manuel Barros Borgono 160. The separate Eliodoro Yanez 2970 branch is excluded. No verified coordinates obtained for the recorded unit 101; retain address and obtain a branch-specific map point. Latest Omnidex event in committed snapshot 2026-09-26T14:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "585": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/5455/) confirms Bishan St 23 Block 230 B1-35. [Publisher store](https://locator.riftbound.uvsgames.com/stores/855b3e9d-6642-47be-ad2a-746917fcc0d5) instead lists 80 Playfair Road #04-01B; older publisher lists use Block 254 Bishan. [Official shop](https://sentinelgamessg.com/) found. Resolve relocation before importing coordinates. Latest Omnidex event in committed snapshot 2026-09-25T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
