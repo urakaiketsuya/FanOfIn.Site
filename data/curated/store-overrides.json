@@ -500,5 +500,9 @@
   "799": {
     "kind": "store",
     "evidence": "2026-10-16: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) confirms Monxter at 18-2 Jalan Menara Gading 1. Desk Monxter search results are a related-name accessory seller but do not establish the same storefront, so not treated as its official site. No verified storefront coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-15T12:30:00.000Z. Existing recurrence projects 2026-10-22T12:30:00.000Z, 2026-10-29T12:30:00.000Z, 2026-11-05T12:30:00.000Z, 2026-11-12T12:30:00.000Z (source event 66168); estimates, not confirmed bookings."
+  },
+  "151": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official GA championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) confirms 67 Wenxin South First Road; [publisher organizer record](https://judge.fabtcg.com/events/14023/) identifies Gi Meow The Card Team as 吉貓樂卡町. No official standalone website or verified current storefront pin obtained; historical address needs confirmation. Latest Omnidex event in committed snapshot 2025-01-03T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
