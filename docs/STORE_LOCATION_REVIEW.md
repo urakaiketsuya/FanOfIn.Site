@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 73 reviewed (19.8% of this checklist); 296 pending. 34 mapped, 39 need further evidence. Map coverage: 339/674 (50.3%); 335 unmapped.
+Progress: first 74 reviewed (20.1% of this checklist); 295 pending. 35 mapped, 39 need further evidence. Map coverage: 340/674 (50.4%); 334 unmapped.
 
-Next: #74 Everything Games. Revisit Needs evidence entries after the initial pass.
+Next: #75 Good Games Town Hall. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -84,7 +84,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 71 | 250 | CFP Changhua | TW | 510, Taiwan, Changhua County, Yuanlin City, Juguang Rd, 398; 號2樓; Taiwan | Needs evidence | Reviewed 2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-彰化店) confirms 398 Juguang Road, second floor. Its map link is a name search without published feature coordinates; leave unmapped pending a verified pin. Latest Omnidex event is October 15; existing recurrence rules project Thursdays from October 22 at 11:30 UTC. |
 | 72 | 642 | 暖角落卡牌遊戲專賣店CornerTcgPlayground | TW | B1., No. 135, Sec. 4, Minsheng E. Rd.; Songshan Dist.; Taipei City 105; Taiwan | Needs evidence | Reviewed 2026-10-16: [Official Pokémon event](https://asia.pokemon-card.com/tw/event-search/61709/) and [Bandai directory](https://www.carddass.com/onepiece-tcg_tw/events/officialevents/standardbattle/list.php) give Bade Road Section 4, 135 B1, conflicting with recorded Minsheng East Road. The [store marketplace](https://www.ruten.com.tw/store/rockerchin5/) confirms retail identity; no standalone website verified. Resolve street discrepancy before mapping. Latest Omnidex event October 13 supports projected Tuesdays from October 20 at 11:40 UTC; recurrence does not resolve the address. |
 | 73 | 405 | Magic Stronghold Games | CA | 3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada | Mapped | Reviewed 2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/261eeb55-f179-42fa-9351-027a870b21ce) confirms 3665 Kingsway unit 185, links [official website](https://www.magicstronghold.com/), and publishes store/address coordinates 49.2326922, -123.0241837. Imported against exact recorded address. Latest Omnidex event September 30; existing recurrence rules produce no upcoming dates. |
-| 74 | 449 | Everything Games | CA | 721 Station Ave, Victoria, BC V9B 5R5, Canada | Pending |  |
+| 74 | 449 | Everything Games | CA | 721 Station Ave, Victoria, BC V9B 5R5, Canada | Mapped | Reviewed 2026-10-16: [Official contact](https://www.everythinggames.ca/pages/contact) confirms unit 103 at 721 Station Avenue, Langford, postal code V9B 2S1. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/085dbafc-391a-4aac-91b6-aad2620ad882) agrees on street and publishes matching store/event coordinates 48.4465745, -123.496874. Recorded Victoria/V9B 5R5 is a locality/postcode variation; storefront identity is confirmed. Imported against exact event address. Latest Omnidex event August 21 is stale; no weekly projection. |
 | 75 | 116 | Good Games Town Hall | AU | Lower Ground, Shop 1/93 York St, Sydney NSW 2000, Australia | Pending |  |
 | 76 | 240 | Trinity Card Capital LTD | GB | 5 Pink Ln, Newcastle upon Tyne NE1 5DW, UK | Pending |  |
 | 77 | 267 | MoreFun Chiayi | TW | 1F., No. 365, Sec. 1, Bo'ai Rd., West Dist; Chiayi City 600076 , Taiwan (R.O.C.); Taiwan | Pending |  |

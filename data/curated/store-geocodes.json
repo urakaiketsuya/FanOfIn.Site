@@ -423,6 +423,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 449,
+    "address": "721 Station Ave, Victoria, BC V9B 5R5, Canada",
+    "lat": 48.4465745,
+    "lng": -123.496874,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/085dbafc-391a-4aac-91b6-aad2620ad882",
+    "sourceAddress": "721 Station Avenue, Victoria, BC, V9B 2S1, CA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 462,
     "address": "Japan, 〒556-0011 Osaka, Naniwa Ward, Nanbanaka, 2-chōme−2−１５ 高砂ビル 5F",
     "lat": 34.663059,
