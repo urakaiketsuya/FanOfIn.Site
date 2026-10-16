@@ -189,6 +189,15 @@
     "sourceCollectedAt": "2026-10-11T17:35:51.717783+00:00"
   },
   {
+    "hostId": 376,
+    "address": "2nd floor Nest Building \n1-18-5 Shinjuku Shinjuku-ku \nTokyo 160-0022 \nJapan",
+    "lat": 35.68968784,
+    "lng": 139.71145126,
+    "sourceUrl": "https://map.yahoo.co.jp/v3/place/m26AtDW4UcY",
+    "sourceAddress": "TCGカフェ&バー EVO, 東京都新宿区新宿1-18-5 ネスト新宿御苑ビル2階",
+    "sourceCollectedAt": "2026-10-16T15:40:44.675Z"
+  },
+  {
     "hostId": 395,
     "address": "444 Almeda Mall, Houston, TX 77075, USA",
     "lat": 29.6226005,
