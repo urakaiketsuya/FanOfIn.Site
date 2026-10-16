@@ -144,6 +144,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 108,
+    "address": "UNIT 2/9 Yarmouth Pl, Smeaton Grange NSW 2567, Australia",
+    "lat": -34.0408613,
+    "lng": 150.7513805,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/375278",
+    "sourceAddress": "9 Yarmouth Place, Smeaton Grange NSW 2567, Australia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 111,
     "address": "88 Grenfell St, Adelaide SA 5000, Australia",
     "lat": -34.92403,

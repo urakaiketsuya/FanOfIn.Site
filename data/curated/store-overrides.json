@@ -112,5 +112,9 @@
   "399": {
     "kind": "store",
     "evidence": "2026-10-16: [Distributor directory](https://www.maxsoftonline.com/purchase-trading-card) lists Mandala Raya 33B, RT.12/RW.4; [publisher announcement](https://ultraman-cardgame.com/page/id/news/news-detail/20) specifies 33B, second floor above Es Teh Indonesia Tomang. Recorded address instead repeats number 33 and RT.1/RW.4. Classified as store, but retain unresolved status until street-number and unit conflict is reconciled with a current store pin. No standalone official website verified. Latest Omnidex event 2026-10-01; current evidence does not qualify for weekly projections."
+  },
+  "108": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official Good Games venue page](https://events.goodgames.com.au/venue/narellan/) confirms Unit 2/9 Yarmouth Place. [Store website](https://thegamecenter.store/) announces an online-store transition while affirming continued in-store activity. [Publisher event](https://locator.riftbound.uvsgames.com/events/375278) names The Game Center Narellan / Good Games Narellan; event and embedded store agree on -34.0408613, 150.7513805 at 9 Yarmouth Place. Imported point and classified as store. Latest Omnidex event 2026-08-11 is stale; no weekly projections."
   }
 }
