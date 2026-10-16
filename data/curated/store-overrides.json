@@ -460,5 +460,9 @@
   "11": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://www.arzutcg.com/) confirms four retail branches: Barrio Chino, Heredia, Alajuela, and Desamparados. The recorded San Francisco plus-code address is not explicitly reconciled to those branches. No pin imported; verify which branch hosted the recorded events and its exact destination. Latest Omnidex event in committed snapshot 2026-04-19T00:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "168": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/18032/) confirms the historical 53 Yizhong Road store. [Official May 2024 closure register](https://serv.gcis.nat.gov.tw/moeadsBF/cmpy/reportAction.do?fileName=376420000Arest11305.pdf&method=report&reportClass=bms&subPath=11305) lists the matching business, while newer publisher search results mention Xinmin Road. Current GA activity alone does not resolve this address history. No official standalone site or verified current pin obtained. Latest Omnidex event in committed snapshot 2026-10-14T10:00:00.000Z. Existing recurrence projects 2026-10-18T09:30:00.000Z, 2026-10-25T09:30:00.000Z, 2026-11-01T09:30:00.000Z, 2026-11-08T09:30:00.000Z (source event 64787); estimates, not confirmed bookings."
   }
 }
