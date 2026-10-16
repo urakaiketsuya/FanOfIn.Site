@@ -108,6 +108,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 51,
+    "address": "1311 Pine St Ste A, Martinez, CA 94553, USA",
+    "lat": 38.0154307,
+    "lng": -122.1299385,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/728990",
+    "sourceAddress": "1311 Pine Street, Suite A, Martinez, CA, 94553, US",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 66,
     "lat": 1.3078243,
     "lng": 103.8611394,

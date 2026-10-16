@@ -156,5 +156,9 @@
   "210": {
     "kind": "store",
     "evidence": "2026-10-16: [Official Linktree](https://linktr.ee/magitekgames) confirms 1122 Cadillac Court and in-person TCG events. [Publisher event](https://locator.riftbound.uvsgames.com/events/503631) and embedded store agree on 37.4439482, -121.9176902 at that address. [Store website](https://magitek-games.com/password) is a password-protected opening-soon page. Imported verified point and classified as store; historical San Jose address not used. Latest Omnidex event 2026-09-17 is stale for weekly projections."
+  },
+  "51": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/728990) and embedded store agree on 38.0154307, -122.1299385 for 1311 Pine Street Suite A. [Lorcana store](https://tcg.ravensburgerplay.com/stores/78c21c08-aea0-4cc5-a96b-2f00b2383831) confirms retail identity and suite, linking [official website](https://norcaltcg.com/password), currently under maintenance. Imported verified point. Latest GA event 2026-07-09 is stale for weekly projections."
   }
 }
