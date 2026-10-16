@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 40 reviewed (10.8% of this checklist); 329 pending. 18 mapped, 22 need further evidence. Map coverage: 323/674 (47.9%); 351 unmapped.
+Progress: first 41 reviewed (11.1% of this checklist); 328 pending. 19 mapped, 22 need further evidence. Map coverage: 324/674 (48.1%); 350 unmapped.
 
-Next: #41 Flagship Games. Revisit Needs evidence entries after the initial pass.
+Next: #42 Good Games Box Hill. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -51,7 +51,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 38 | 140 | CoreTCG | US | 770 S Arroyo Pkwy #110, Pasadena, CA 91105, USA | Mapped | Reviewed 2026-10-16: [Official website](https://coretcg.com/) confirms 770 South Arroyo Parkway #110 and physical TCG retail. [Lorcana publisher store record](https://tcg.ravensburgerplay.com/stores/4aeb3d8a-68e4-40c0-91fe-425f5cefab43) and its event records agree on 34.13254, -118.146938 at that suite. Imported verified coordinates and classified as store. Latest Omnidex event 2026-09-29; current Grand Archive evidence does not satisfy weekly recurrence requirements, so no upcoming estimates. |
 | 39 | 50 | Go For Game | CA | 478 Dundas St W Second Floor, Toronto, ON M5T 1G9, Canada | Mapped | Reviewed 2026-10-16: [Official website](https://goforgame.ca/pages/contact) confirms 478 Dundas Street West, second floor. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/6c2e77b7-c9e8-407f-a369-d4ddf044255c) and its events agree on 43.6534144, -79.3970248. Imported verified point and classified as store. Latest Omnidex event 2026-10-13; existing Grand Archive recurrence checks return no qualifying future dates. Publisher Wednesday listings are for Riftbound and were not imported as Grand Archive events. |
 | 40 | 16 | CardArt | US | 781 E El Camino Real Suite 100, Sunnyvale, CA 94087, USA | Mapped | Reviewed 2026-10-16: [Official store website](https://www.svcardart.com/about) confirms 781 East El Camino Real, Suite 100, Sunnyvale and physical hobby retail. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/3ab95077-12e6-44db-a3cc-7444b1622309) and embedded map agree on 37.3574954, -122.0183866 for that address. Imported verified point and classified as store. Latest Omnidex event 2026-09-20 is outside the recurrence freshness window; no upcoming weekly estimates. |
-| 41 | 547 | Flagship Games | SG | 214 Bishan St. 23, Block 214, Singapore 570214 | Pending |  |
+| 41 | 547 | Flagship Games | SG | 214 Bishan St. 23, Block 214, Singapore 570214 | Mapped | Reviewed 2026-10-16: [Official website](https://www.flagshipgames.sg/) confirms 214 Bishan Street 23, B1-223. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/0a22d294-3113-4417-a8f5-4136ea727337) and events agree on 1.3576010582467033, 103.84840612883607 at Block 214. Imported address-bound point and classified as store. Latest Omnidex event 2026-10-09; existing Grand Archive recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13. Other-game schedules were not imported. |
 | 42 | 100 | Good Games Box Hill | AU | g1/975 Whitehorse Rd, Box Hill VIC 3128, Australia | Pending |  |
 | 43 | 463 | Card Lab | HK | Flat B1 4/F, Summit Building, 30 Man Yue Street, Hong Kong; Hong Kong | Pending |  |
 | 44 | 111 | Good Games Adelaide | AU | 88 Grenfell St, Adelaide SA 5000, Australia | Pending |  |

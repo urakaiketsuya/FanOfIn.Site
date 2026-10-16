@@ -76,5 +76,9 @@
   "16": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store website](https://www.svcardart.com/about) confirms 781 East El Camino Real, Suite 100, Sunnyvale and physical hobby retail. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/3ab95077-12e6-44db-a3cc-7444b1622309) and embedded map agree on 37.3574954, -122.0183866 for that address. Imported verified point and classified as store. Latest Omnidex event 2026-09-20 is outside the recurrence freshness window; no upcoming weekly estimates."
+  },
+  "547": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://www.flagshipgames.sg/) confirms 214 Bishan Street 23, B1-223. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/0a22d294-3113-4417-a8f5-4136ea727337) and events agree on 1.3576010582467033, 103.84840612883607 at Block 214. Imported address-bound point and classified as store. Latest Omnidex event 2026-10-09; existing Grand Archive recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13. Other-game schedules were not imported."
   }
 }

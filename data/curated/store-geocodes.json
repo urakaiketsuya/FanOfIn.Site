@@ -360,6 +360,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 547,
+    "address": "214 Bishan St. 23, Block 214, Singapore 570214",
+    "lat": 1.3576010582467033,
+    "lng": 103.84840612883607,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/0a22d294-3113-4417-a8f5-4136ea727337",
+    "sourceAddress": "Block 214, 214 Bishan St. 23, Singapore 570214",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 578,
     "address": "5116 196th St SW Suite 203, Lynnwood, WA 98036, USA",
     "lat": 47.820714,
