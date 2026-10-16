@@ -348,5 +348,9 @@
   "618": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://gamescape.gr/en/contact/) confirms 10 I. Metaxa Street, Agios Dimitrios. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/c1bb91ec-8eb7-49e5-b2f1-0ea21d2418e8) publishes matching address-bound coordinates 37.9399495, 23.7393317. Imported verified point and classified as store. Latest Omnidex event 2026-10-04T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "747": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Flesh and Blood locator](https://legacy.fabtcg.com/en/locator/cardboard-crack-games/) confirms 144 Upper Bukit Timah Road #03-28, Beauty World Centre, 588177. It identifies [official website](https://www.cardboardcrackgames.com/), which returned 403 during review. [Retail marketplace](https://shopee.sg/cardboardcrackgames) corroborates the unit. No verified storefront coordinates obtained. Latest Omnidex event 2026-10-13T12:00:00.000Z. Existing recurrence projects 2026-10-20T12:00:00.000Z, 2026-10-27T12:00:00.000Z, 2026-11-03T12:00:00.000Z, 2026-11-10T12:00:00.000Z (source event 65992); estimates, not confirmed bookings."
   }
 }
