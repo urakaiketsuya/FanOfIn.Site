@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 121 reviewed (32.8% of this checklist); 248 pending. 50 mapped, 71 need further evidence. Map coverage: 355/674 (52.7%); 319 unmapped.
+Progress: first 122 reviewed (33.1% of this checklist); 247 pending. 51 mapped, 71 need further evidence. Map coverage: 356/674 (52.8%); 318 unmapped.
 
-Next: #122 Gaming DNA. Revisit Needs evidence entries after the initial pass.
+Next: #123 SBT. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -132,7 +132,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 119 | 18 | Gamers Guild AZ | US | 2223 S 48th St Suite C/D, Tempe, AZ 85282, USA | Mapped | Reviewed 2026-10-16: [Official pickup page](https://www.gamersguildusa.com/products/pickup-in-store) confirms 2223 South 48th Street Suite C/D, Tempe. [Publisher event](https://locator.riftbound.uvsgames.com/events/530390) and embedded store agree on 33.4043354, -111.9764895 for that suite. Imported Tempe point; the separate North Phoenix branch was excluded. Latest Omnidex event 2026-08-29T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 120 | 701 | Labyrinth Games & Collectibles | BN | Bagunan Gadong Central, Block B, No.26 Simpang 21, Bandar Seri Begawan BE4119, Brunei | Needs evidence | Reviewed 2026-10-16: [Publisher retailer directory](https://en.shadowverse-evolve.com/shops/asia-oceania/) confirms second floor, Block B, No.26 Simpang 21, Bagunan Gadong Central, BE4119. [Official retail shop](https://take.app/labyrinthgamesco) corroborates brand and contact phone. [Vanguard directory](https://vg.jommain.my/store-list/) instead uses BE4199. Resolve postcode and obtain a named storefront pin before importing. Latest Omnidex event 2026-08-28T12:10:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 121 | 764 | Evergreen Games Shoppe | US | 105 S Seguin Rd suite 103, Converse, TX 78109, USA | Needs evidence | Reviewed 2026-10-16: [Official links](https://linktr.ee/evergreengamestx) identify the retailer. [Publisher event](https://locator.riftbound.uvsgames.com/events/285674) names 105 S Seguin Rd Ste 103, but embedded store coordinates (29.5170695, -98.3137295) differ from event coordinates (29.5587296, -98.321805). Other directories show Ascending Port or Pat Booker Road. Resolve relocation and coordinate conflict before importing. Latest Omnidex event in committed snapshot 2026-10-11T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 122 | 91 | Gaming DNA | NZ | Level 1/550 Anglesea Street, Hamilton Central, Hamilton 3204, New Zealand | Pending |  |
+| 122 | 91 | Gaming DNA | NZ | Level 1/550 Anglesea Street, Hamilton Central, Hamilton 3204, New Zealand | Mapped | Reviewed 2026-10-16: [Official website](https://gamingdna.co.nz/) confirms Level 1, 550 Anglesea Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/25178054-09c1-461b-bc8b-a695302ce1ca) binds the same Hamilton address to -37.7815392, 175.2746926. Imported the named store point. Latest Omnidex event in committed snapshot 2026-08-20T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 123 | 676 | SBT | HK | Unit C2, 3/F Tak Wing Industrial Bldg; 3 Tsun Wan Road; Tuen Mun; Hong Kong | Pending |  |
 | 124 | 35 | Paradox Trading Post | US | 9333 Martin Way E suite 214, Olympia, WA 98516, USA | Pending |  |
 | 125 | 239 | Game Over... here (Oasis Board Games Sdn Bhd) | MY | Arena Mentari, 1, Jalan PJS 8/15, Bandar Sunway, 46150 Petaling Jaya, Selangor, Malaysia | Pending |  |

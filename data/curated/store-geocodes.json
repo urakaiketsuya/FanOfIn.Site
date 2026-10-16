@@ -162,6 +162,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 91,
+    "address": "Level 1/550 Anglesea Street, Hamilton Central, Hamilton 3204, New Zealand",
+    "lat": -37.7815392,
+    "lng": 175.2746926,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/25178054-09c1-461b-bc8b-a695302ce1ca",
+    "sourceAddress": "550 Anglesea St, Hamilton Central, Waikato Region, 3204, NZ",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 100,
     "address": "g1/975 Whitehorse Rd, Box Hill VIC 3128, Australia",
     "lat": -37.817931152328924,

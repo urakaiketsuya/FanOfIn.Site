@@ -392,5 +392,9 @@
   "764": {
     "kind": "store",
     "evidence": "2026-10-16: [Official links](https://linktr.ee/evergreengamestx) identify the retailer. [Publisher event](https://locator.riftbound.uvsgames.com/events/285674) names 105 S Seguin Rd Ste 103, but embedded store coordinates (29.5170695, -98.3137295) differ from event coordinates (29.5587296, -98.321805). Other directories show Ascending Port or Pat Booker Road. Resolve relocation and coordinate conflict before importing. Latest Omnidex event in committed snapshot 2026-10-11T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "91": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://gamingdna.co.nz/) confirms Level 1, 550 Anglesea Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/25178054-09c1-461b-bc8b-a695302ce1ca) binds the same Hamilton address to -37.7815392, 175.2746926. Imported the named store point. Latest Omnidex event in committed snapshot 2026-08-20T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
