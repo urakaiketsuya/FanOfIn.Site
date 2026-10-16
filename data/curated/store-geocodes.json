@@ -288,6 +288,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 462,
+    "address": "Japan, 〒556-0011 Osaka, Naniwa Ward, Nanbanaka, 2-chōme−2−１５ 高砂ビル 5F",
+    "lat": 34.663059,
+    "lng": 135.503239,
+    "sourceUrl": "https://map.pokemon-card.com/map/13177",
+    "sourceAddress": "大阪府大阪市浪速区難波中２丁目２−１５ 高砂ビル 5F",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 469,
     "address": "2nd Floor, 100 Clegg Road, Markham, Ontario, L6G 1E1, Canada",
     "lat": 43.8522082,
