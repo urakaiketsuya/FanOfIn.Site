@@ -344,5 +344,9 @@
   "501": {
     "kind": "store",
     "evidence": "2026-10-16: [Official contact page](https://www.game-academia.com/pages/contact-us) now lists 3 Coleman Street #03-19, Peninsula Shopping Complex. [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6784/) corroborates unit #03-19, versus recorded basement #B1-38/39. Resolve whether the latest GA event belongs to the older unit before mapping; no pin imported. Latest Omnidex event 2026-03-28T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "618": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact page](https://gamescape.gr/en/contact/) confirms 10 I. Metaxa Street, Agios Dimitrios. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/c1bb91ec-8eb7-49e5-b2f1-0ea21d2418e8) publishes matching address-bound coordinates 37.9399495, 23.7393317. Imported verified point and classified as store. Latest Omnidex event 2026-10-04T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

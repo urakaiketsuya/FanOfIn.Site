@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 109 reviewed (29.5% of this checklist); 260 pending. 48 mapped, 61 need further evidence. Map coverage: 353/674 (52.4%); 321 unmapped.
+Progress: first 110 reviewed (29.8% of this checklist); 259 pending. 49 mapped, 61 need further evidence. Map coverage: 354/674 (52.5%); 320 unmapped.
 
-Next: #110 GAMESCAPE. Revisit Needs evidence entries after the initial pass.
+Next: #111 Cardboard Crack Games. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -120,7 +120,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 107 | 73 | TinyRobot | MY | Tinyrobot Sdn. Bhd., Unit No. Part of 3-32, Third Floor,, Suria Sabah Shopping Mall, 1 Jalan Tun Fuad Stephens, Kota Kinabalu, 88000 Kota Kinabalu, Sabah, Malaysia | Needs evidence | Reviewed 2026-10-16: [Official contact page](https://tinyrobotonline.com/page/contactus) gives Suria Sabah lots 2-54, 2-55 and 2-56 on the second floor, while the recorded event address uses part of 3-32 on the third floor. The same page separately lists the office and Pintas Square branch. Resolve the event/store floor change before importing any mall point. Latest Omnidex event 2026-06-07T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 108 | 127 | Curio - Springfield Mall | US | 6610 Springfield Mall, Springfield, VA 22150, USA | Mapped | Reviewed 2026-10-16: [Official about page](https://www.curiocavern.com/pages/about-us) confirms 6610 Springfield Mall. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/a2ae4148-e37b-4a1a-a07f-0febb5e4b006) and embedded events agree on 38.7739164, -77.1737916 for that address. Imported this branch point; separate Loisdale Road and Mountlake Terrace branches were not substituted. Latest Omnidex event 2026-05-23T15:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 109 | 501 | Game Academia | SG | 3 Coleman Street #B1-38/39; Peninsula Shopping Centre; Singapore | Needs evidence | Reviewed 2026-10-16: [Official contact page](https://www.game-academia.com/pages/contact-us) now lists 3 Coleman Street #03-19, Peninsula Shopping Complex. [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6784/) corroborates unit #03-19, versus recorded basement #B1-38/39. Resolve whether the latest GA event belongs to the older unit before mapping; no pin imported. Latest Omnidex event 2026-03-28T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 110 | 618 | GAMESCAPE | GR | I. Metaxa 10, Ag. Dimitrios 173 43, Greece | Pending |  |
+| 110 | 618 | GAMESCAPE | GR | I. Metaxa 10, Ag. Dimitrios 173 43, Greece | Mapped | Reviewed 2026-10-16: [Official contact page](https://gamescape.gr/en/contact/) confirms 10 I. Metaxa Street, Agios Dimitrios. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/c1bb91ec-8eb7-49e5-b2f1-0ea21d2418e8) publishes matching address-bound coordinates 37.9399495, 23.7393317. Imported verified point and classified as store. Latest Omnidex event 2026-10-04T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 111 | 747 | Cardboard Crack Games | SG | Upper Bukit Timah Rd, #03-28 Beauty World Centre, 144, Singapore 588177 | Pending |  |
 | 112 | 442 | DeRoot休閒空間 | TW | B1., No. 60, Sec 1 Xinsheng S. Rd.; Zhongzheng Dist., Taiperi City 100014; Taiwan | Pending |  |
 | 113 | 838 | 南瓜鎮Pumpkin Town | TW | No. 91號, Guoguang St, Sanxia District, New Taipei City, Taiwan 237 | Pending |  |

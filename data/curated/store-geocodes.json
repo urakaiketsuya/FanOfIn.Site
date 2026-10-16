@@ -639,6 +639,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 618,
+    "address": "I. Metaxa 10, Ag. Dimitrios 173 43, Greece",
+    "lat": 37.9399495,
+    "lng": 23.7393317,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/c1bb91ec-8eb7-49e5-b2f1-0ea21d2418e8",
+    "sourceAddress": "I. Metaxa 10, Ag. Dimitrios 173 43, Greece",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 652,
     "address": "2440 Fulton Ave #9, Sacramento, CA 95825, USA",
     "lat": 38.6098489,
