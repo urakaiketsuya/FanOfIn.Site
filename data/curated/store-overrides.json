@@ -532,5 +532,9 @@
   "540": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store page](https://www.card-cellar.com/pages/home) confirms Dongmen branch at 354 Dongmen Road Section 1, tenth floor. Its embedded map names Card Cellar but only exposed viewport coordinates in the reviewed source; these were not treated as a verified marker. Separate Dongqiao branch excluded; obtain explicit destination coordinates. Latest Omnidex event in committed snapshot 2026-09-27T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "737": {
+    "kind": "unclassified",
+    "evidence": "2026-10-16: [Official GA regional announcement](https://www.gatcg.com/article/phantom-monarchs-regionals) identifies Vincent Card Colosseum at an offsite Miri Boulevard Shopping Mall event. This does not verify recorded Lot 2036 Marina Commercial first-floor storefront. No official standalone website or reliable storefront coordinates obtained; keep retail classification unconfirmed pending a current store listing. Latest Omnidex event in committed snapshot 2026-09-07T12:10:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
