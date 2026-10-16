@@ -349,5 +349,14 @@
     "sourceUrl": "https://www.lgsfinder.org/colorado/littleton/mythic-games-littleton",
     "sourceAddress": "8966 W Bowles Ave Suite Y, Littleton, CO 80123",
     "sourceCollectedAt": "2026-10-11T17:34:21.601675+00:00"
+  },
+  {
+    "hostId": 380,
+    "address": "3733 N Josey Ln Apt 108, Carrollton, TX 75007, USA",
+    "lat": 33.0129469,
+    "lng": -96.888309,
+    "sourceUrl": "https://cardshopdir.com/shop/lonestar-pack-breaks-store-carrollton-tx",
+    "sourceAddress": "LoneStar Pack Breaks Store, 3733 North Josey Lane, Carrollton, TX 75007",
+    "sourceCollectedAt": "2026-10-16T15:46:48.517Z"
   }
 ]
