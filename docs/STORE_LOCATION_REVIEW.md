@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 11 reviewed (3.0% of this checklist); 358 pending. One mapped, 10 need further evidence. Map coverage: 306/674 (45.4%); 368 unmapped.
+Progress: first 12 reviewed (3.3% of this checklist); 357 pending. One mapped, 11 need further evidence. Map coverage: 306/674 (45.4%); 368 unmapped.
 
-Next: #12 Gamersshop Gaming Store. Revisit Needs evidence entries after the initial pass.
+Next: #13 Topspot Cards. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -22,7 +22,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 9 | 394 | AKMIGAMES | TW | No. 283號三樓, Section 2, Xinyi Rd, Zhongzheng District, Taipei City, Taiwan 100 | Needs evidence | Reviewed 2026-10-16: [2016 judge travel guide](https://blogs.magicjudges.org/travelguides/files/2016/03/GPTaipei2016TravelGuide.pdf) lists same street number/floor but Daan district 106 instead of recorded Zhongzheng 100. Historical evidence only; resolve district and obtain current store pin. |
 | 10 | 70 | The Weatherlight Enterprise | MY | 1, Jalan USJ 10/1a, Usj 1, 47600 Subang Jaya, Selangor, Malaysia | Needs evidence | Reviewed 2026-10-16: [2023 publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/DOA_SC_List_888cde0517.pdf) lists 29-1 Jalan USJ 10/1a; later 2024 publisher list uses recorded number 1. Resolve street-number discrepancy with current store evidence before mapping. |
 | 11 | 216 | Scry Games Ciannat | PH | J4F8+442, Marikina-Infanta Hwy, Antipolo, 1800 Rizal, Philippines | Needs evidence | Reviewed 2026-10-16: [Publisher listing](https://legacy.fabtcg.com/en/locator/scry-games-ciannat/) uses 63 Marikina-Infanta Highway. [Bandai event](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/8packs-battle_202402/list_philippines.php) uses units 209A-209B; another lists unit 125. Resolve these against recorded short Plus Code before importing coordinates. |
-| 12 | 161 | Gamersshop Gaming Store | PH | Aggct 2 Bldg V Luna Ave Cor Matapat St, Quezon City; Metro Manila, 1101; Philippines | Pending |  |
+| 12 | 161 | Gamersshop Gaming Store | PH | Aggct 2 Bldg V Luna Ave Cor Matapat St, Quezon City; Metro Manila, 1101; Philippines | Needs evidence | Reviewed 2026-10-16: [Official Pokémon event venue](https://asia.pokemon-card.com/ph/event-search/5478/) and [official Bandai shop/event listings](https://www.carddass.com/onepiece-tcg_asia-en/events/officialevents/meetup/list_philippines.php) confirm the AGGCT II Building, V. Luna and Matapat. [WorldPlaces](https://philippines.worldplaces.me/view-place/83691928-mapang-akit-st-brgy-pinyahan-qc.html) lists an area point at 14.63349, 121.04858 and places AGGCT II 28m away; [Mapcarta's OSM-derived building point](https://mapcarta.com/W364943912) gives 14.63675, 121.05281, ~600m away. The source points conflict and neither is a verified storefront pin; do not import until resolved. |
 | 13 | 24 | Topspot Cards | US | 1571 S Sunkist St ste j, Anaheim, CA 92806, USA | Pending |  |
 | 14 | 112 | Cat Footprints Amusement Park | TW | 330, Taiwan, Taoyuan City, Taoyuan District, Zhonghua Rd, 1號11樓 | Pending |  |
 | 15 | 15 | Final Cut TCG | US | 3017 Kilgore Rd ste 130, Rancho Cordova, CA 95670, USA | Pending |  |
