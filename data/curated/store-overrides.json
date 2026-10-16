@@ -268,5 +268,9 @@
   "428": {
     "kind": "store",
     "evidence": "2026-10-16: [PSA dealer listing](https://www.psacard.com/dealers/detail/limitless/5165) confirms Dalal Mall on Salem Al Mubarak Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/14fcbe88-ecc4-4295-b543-a2d03eaa8c4b) identifies the same Limitless at Dalal Complex, using Al Dimna Street access, and publishes 29.3401439, 48.0719036. Its [official website](https://kwt-limitless.com/) is linked. Imported against the recorded Dalal Complex address. Latest Omnidex event 2026-09-30T16:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "439": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Pokemon organizer listing](https://asia.pokemon-card.com/tw/event-search/66006/) confirms KYD遊樂園 at 13 Zhongyang East Road, sixth floor, Zhongli. No verified coordinates or standalone official website found. Obtain the named shop map pin. Latest Omnidex event 2026-09-26T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
