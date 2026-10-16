@@ -340,5 +340,9 @@
   "127": {
     "kind": "store",
     "evidence": "2026-10-16: [Official about page](https://www.curiocavern.com/pages/about-us) confirms 6610 Springfield Mall. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/a2ae4148-e37b-4a1a-a07f-0febb5e4b006) and embedded events agree on 38.7739164, -77.1737916 for that address. Imported this branch point; separate Loisdale Road and Mountlake Terrace branches were not substituted. Latest Omnidex event 2026-05-23T15:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "501": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact page](https://www.game-academia.com/pages/contact-us) now lists 3 Coleman Street #03-19, Peninsula Shopping Complex. [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6784/) corroborates unit #03-19, versus recorded basement #B1-38/39. Resolve whether the latest GA event belongs to the older unit before mapping; no pin imported. Latest Omnidex event 2026-03-28T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
