@@ -119,8 +119,7 @@ export default function CardStaples() {
             {card.keywords.length > 0 && <p className="mt-3 break-words text-xs text-ctp-subtext1">{card.keywords.join(" · ")}</p>}
             <div className="mt-3 flex items-baseline justify-between gap-2"><strong className="text-xl text-ctp-blue">{population === null ? "—" : percent(population ? row[1] / population : 0)}</strong><span className="text-xs text-ctp-subtext1">{row[1].toLocaleString()} {community ? "unique lists" : "decks"}</span></div>
             <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(population ? row[1] / population : 0) }} /></div>
-            <p className="mt-2 text-xs text-ctp-subtext1">{!blended && <>Usually {row[3]} {row[3] === 1 ? "copy" : "copies"} · </>}{(row[2] / row[1]).toFixed(1)} average</p>
-            {!community && <p className="mt-1 text-xs text-ctp-subtext0">{row[5] === null ? "No recorded match results" : `${percent(row[5])} adjusted tournament win rate · ${row[4].toLocaleString()} decks`}</p>}
+            {!blended && <p className="mt-2 text-xs text-ctp-subtext1">Usually {row[3]} {row[3] === 1 ? "copy" : "copies"}</p>}
           </article>;
         })}
       </div>
