@@ -424,5 +424,9 @@
   "683": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher locator](https://legacy.fabtcg.com/en/locator/nplustw-%E6%81%A9%E5%98%89%E6%95%B8%E4%BD%8D%E5%A8%9B%E6%A8%82/) and [Bandai store list](https://www.unionarena-tcg.com/tc/pdf/meetup-shoplist-2305-tw.pdf) confirm 31 Daren Street, Zhongli. A business registration listing uses Ningxia Second Street and is not storefront evidence. No official standalone website or verified Daren Street pin obtained. Latest Omnidex event in committed snapshot 2026-05-09T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "186": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official contact and directions](https://www.foxdenbgc.com/contact) confirm 12450 River Ridge Lane Suite 300; the named Google Maps destination supplies 44.7784029, -93.2806963. [Official product page](https://foxdenbcg.squarespace.com/products) establishes retail sales in addition to the cafe. Imported the business destination point. Latest Omnidex event in committed snapshot 2026-02-08T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

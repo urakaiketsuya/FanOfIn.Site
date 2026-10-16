@@ -315,6 +315,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 186,
+    "address": "12450 River Ridge Ln #300, Burnsville, MN 55337, USA",
+    "lat": 44.7784029,
+    "lng": -93.2806963,
+    "sourceUrl": "https://www.foxdenbgc.com/contact",
+    "sourceAddress": "12450 River Ridge Ln, Suite 300, Burnsville, MN 55337",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 200,
     "address": "7170 Warden Ave. Unit 22, Markham, ON L3R 8B4, Canada",
     "lat": 43.826738257530145,
