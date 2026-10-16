@@ -496,5 +496,9 @@
   "743": {
     "kind": "venue",
     "evidence": "2026-10-16: [Official website](https://atelierbrewspace.com/) establishes the brand. [Local directory](https://www.findglocal.com/PH/Quezon-City/1453603-42/genre/1787166534852540/Hobby%2BStores/2) describes a cafe/hobby lounge at U606 Milandre Center, 982 Quezon Avenue. Classified as venue; retail sales not established. No unit-specific pin obtained. Latest Omnidex event in committed snapshot 2026-09-20T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "799": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) confirms Monxter at 18-2 Jalan Menara Gading 1. Desk Monxter search results are a related-name accessory seller but do not establish the same storefront, so not treated as its official site. No verified storefront coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-15T12:30:00.000Z. Existing recurrence projects 2026-10-22T12:30:00.000Z, 2026-10-29T12:30:00.000Z, 2026-11-05T12:30:00.000Z, 2026-11-12T12:30:00.000Z (source event 66168); estimates, not confirmed bookings."
   }
 }
