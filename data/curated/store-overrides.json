@@ -536,5 +536,9 @@
   "737": {
     "kind": "unclassified",
     "evidence": "2026-10-16: [Official GA regional announcement](https://www.gatcg.com/article/phantom-monarchs-regionals) identifies Vincent Card Colosseum at an offsite Miri Boulevard Shopping Mall event. This does not verify recorded Lot 2036 Marina Commercial first-floor storefront. No official standalone website or reliable storefront coordinates obtained; keep retail classification unconfirmed pending a current store listing. Latest Omnidex event in committed snapshot 2026-09-07T12:10:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "5": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branches](https://www.curiocavern.com/pages/retail-locations) identify 6701 Loisdale Road Unit T, whereas the recorded event address says #15. [Waze](https://www.waze.com/live-map/directions/curio-cavern-loisdale-road-6701-springfield?to=place.w.185336196.1853493029.1901967) corroborates street and phone but not unit. Resolve suite equivalence and obtain branch-specific coordinates; do not reuse Springfield Mall pin. Latest Omnidex event in committed snapshot 2026-04-20T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
