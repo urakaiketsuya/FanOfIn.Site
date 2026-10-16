@@ -405,6 +405,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 553,
+    "address": "A-G-17, Zenopy Shoplex, Jln LP 7/4, Lestari Perdana, 43300 Seri Kembangan, Selangor, Malaysia",
+    "lat": 3.0076806,
+    "lng": 101.668882,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/39e19058-1c3f-420f-a2d2-04b9f9159a52",
+    "sourceAddress": "A-G-17, Ground Floor, Zenopy Shoplex, Jln LP 7/4, Lestari Perdana, 43300 Seri Kembangan, Selangor, Malaysia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 578,
     "address": "5116 196th St SW Suite 203, Lynnwood, WA 98036, USA",
     "lat": 47.820714,
