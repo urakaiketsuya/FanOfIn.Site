@@ -243,6 +243,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 469,
+    "address": "2nd Floor, 100 Clegg Road, Markham, Ontario, L6G 1E1, Canada",
+    "lat": 43.8522082,
+    "lng": -79.3418277,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/72d964b9-8ba2-4bbf-b1c3-4d238fa5fea1",
+    "sourceAddress": "100 Clegg Rd, Markham, ON L6G 1E1, Canada",
+    "sourceCollectedAt": "2026-10-16T16:12:23.523875+00:00"
+  },
+  {
     "hostId": 472,
     "address": "305 E Main St Suite 12 & 13, Lexington, OH 44904, USA",
     "lat": 40.6807647,

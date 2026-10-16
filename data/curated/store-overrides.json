@@ -23,5 +23,9 @@
   "125": {
     "kind": "store",
     "evidence": "2026-10-16: Official https://moderntabletoprva.com/contact/ confirms 15901 Jefferson Davis Hwy; current calendar uses 15901 Route 1, South Chesterfield. Publisher https://locator.riftbound.uvsgames.com/stores/92e8be43-280f-4089-8318-6e19367306c6 publishes matching storefront coordinates 37.3050764, -77.4085387; embedded map and store record agree."
+  },
+  "469": {
+    "kind": "store",
+    "evidence": "2026-10-16: Official https://www.clawmebaby.ca/ lists 100 Clegg Road; publisher https://locator.riftbound.uvsgames.com/stores/72d964b9-8ba2-4bbf-b1c3-4d238fa5fea1 confirms physical retailer and publishes matching store/event coordinates 43.8522082, -79.3418277. Retain second-floor detail from latest Omnidex address; https://zeltrix.ca/play/venues/ independently corroborates floor."
   }
 }
