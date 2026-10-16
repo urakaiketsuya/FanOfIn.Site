@@ -264,5 +264,9 @@
   "330": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://www.fireflytoysandgames.com/) confirms 736-C Saint Andrews Road, Columbia. Its embedded business record explicitly ties 736 Saint Andrews Road to 34.0433348, -81.12158989999999. Imported this point; older 657 Saint Andrews Road and separate Hartsville branch evidence were excluded. Latest Omnidex event 2026-10-11T22:45:00.000Z. Existing recurrence projects 2026-10-18T22:45:00.000Z, 2026-10-25T22:45:00.000Z, 2026-11-01T22:45:00.000Z, 2026-11-08T22:45:00.000Z (source event 65395); estimates, not confirmed bookings."
+  },
+  "428": {
+    "kind": "store",
+    "evidence": "2026-10-16: [PSA dealer listing](https://www.psacard.com/dealers/detail/limitless/5165) confirms Dalal Mall on Salem Al Mubarak Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/14fcbe88-ecc4-4295-b543-a2d03eaa8c4b) identifies the same Limitless at Dalal Complex, using Al Dimna Street access, and publishes 29.3401439, 48.0719036. Its [official website](https://kwt-limitless.com/) is linked. Imported against the recorded Dalal Complex address. Latest Omnidex event 2026-09-30T16:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

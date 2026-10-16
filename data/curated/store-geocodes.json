@@ -468,6 +468,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:01.708553+00:00"
   },
   {
+    "hostId": 428,
+    "address": "Salem Al Mubarak Street, Dalal Complex\nFirst Floor, Store Number 12, Limitless\nSalmiya\nKuwait",
+    "lat": 29.3401439,
+    "lng": 48.0719036,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/14fcbe88-ecc4-4295-b543-a2d03eaa8c4b",
+    "sourceAddress": "Dalal Complex, Al Dimna St. 7 Ln, Salmiya, Kuwait",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 449,
     "address": "721 Station Ave, Victoria, BC V9B 5R5, Canada",
     "lat": 48.4465745,
