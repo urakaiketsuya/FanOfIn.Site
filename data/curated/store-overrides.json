@@ -48,5 +48,9 @@
   "606": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher store record](https://locator.riftbound.uvsgames.com/stores/35665f14-50ef-4470-89b0-e2751266e8ab) confirms physical retail at RFDB No.09 and links [official Instagram](https://www.instagram.com/jadifun_id/); no standalone website found. Store record and embedded map agree on -6.2684203, 106.6085726; imported point and classified as store. [Grand Archive regional announcement](https://www.gatcg.com/article/radiant-origins-regionals) uses Transpark Bintaro as a separate tournament venue. Latest Omnidex event 2026-10-03; recent Wednesday evidence supports 10-21, 10-28, 11-04 and 11-11 projections via existing recurrence logic."
+  },
+  "106": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Bandai shop list](https://www.carddass.com/onepiece-tcg_asia-en/events/2022/officialevents/summer-meetup/list_malaysia.php) confirms B-3-6-3A Setiawalk; [retail shop](https://shopee.com.my/lonelywish) corroborates TCG sales. Classified as store. [Official Facebook](https://www.facebook.com/AKGamesCentre/) is blocked; no standalone website found. [Local business directory](https://biz.puchong.co/businesses/ak-games-centre/) gives postcode 47100 while [tabletop directory](https://kakitabletop.com/map/central/) gives 47160 and recorded address also includes 47610. Resolve postcode and obtain storefront coordinates before mapping. Latest Omnidex event 2026-08-15 is stale; no upcoming weekly estimates."
   }
 }
