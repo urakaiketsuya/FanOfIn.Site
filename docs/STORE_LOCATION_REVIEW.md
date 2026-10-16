@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 75 reviewed (20.3% of this checklist); 294 pending. 36 mapped, 39 need further evidence. Map coverage: 341/674 (50.6%); 333 unmapped.
+Progress: first 76 reviewed (20.6% of this checklist); 293 pending. 36 mapped, 40 need further evidence. Map coverage: 341/674 (50.6%); 333 unmapped.
 
-Next: #76 Trinity Card Capital. Revisit Needs evidence entries after the initial pass.
+Next: #77 MoreFun Chiayi. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -86,7 +86,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 73 | 405 | Magic Stronghold Games | CA | 3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada | Mapped | Reviewed 2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/261eeb55-f179-42fa-9351-027a870b21ce) confirms 3665 Kingsway unit 185, links [official website](https://www.magicstronghold.com/), and publishes store/address coordinates 49.2326922, -123.0241837. Imported against exact recorded address. Latest Omnidex event September 30; existing recurrence rules produce no upcoming dates. |
 | 74 | 449 | Everything Games | CA | 721 Station Ave, Victoria, BC V9B 5R5, Canada | Mapped | Reviewed 2026-10-16: [Official contact](https://www.everythinggames.ca/pages/contact) confirms unit 103 at 721 Station Avenue, Langford, postal code V9B 2S1. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/085dbafc-391a-4aac-91b6-aad2620ad882) agrees on street and publishes matching store/event coordinates 48.4465745, -123.496874. Recorded Victoria/V9B 5R5 is a locality/postcode variation; storefront identity is confirmed. Imported against exact event address. Latest Omnidex event August 21 is stale; no weekly projection. |
 | 75 | 116 | Good Games Town Hall | AU | Lower Ground, Shop 1/93 York St, Sydney NSW 2000, Australia | Mapped | Reviewed 2026-10-16: [Official venue](https://www.goodgames.com.au/venue/good-games-town-hall/) redirects to the event site and embeds venue GeoCoordinates -33.8699911, 151.2060445 with Shop 1, Lower Ground, 93 York Street, Sydney 2000. Imported the exact-address venue point. Latest Omnidex event August 29 is stale; no weekly projection. |
-| 76 | 240 | Trinity Card Capital LTD | GB | 5 Pink Ln, Newcastle upon Tyne NE1 5DW, UK | Pending |  |
+| 76 | 240 | Trinity Card Capital LTD | GB | 5 Pink Ln, Newcastle upon Tyne NE1 5DW, UK | Needs evidence | Reviewed 2026-10-16: [Publisher directory](https://en.shadowverse-evolve.com/shops/europe/) lists 203 High Street, Gateshead, while [2022 Wixoss events](https://www.wixosstcg.eu/Results/918/EGB0013) establish that as a historical address and link trinitycardcapital.co.uk. That domain now displays a parked/domain-sale page, so it is not a verified current store website. Recorded 5 Pink Lane needs current primary confirmation and a pin; historical Gateshead coordinates must not be imported. Latest Omnidex event March 29 is stale; no weekly projection. |
 | 77 | 267 | MoreFun Chiayi | TW | 1F., No. 365, Sec. 1, Bo'ai Rd., West Dist; Chiayi City 600076 , Taiwan (R.O.C.); Taiwan | Pending |  |
 | 78 | 383 | Forge Hobby Place | PH | 070 unit, 5 Naga Rd, 2, Las Piñas, Metro Manila, Philippines | Pending |  |
 | 79 | 79 | Grand Canyon | HK | Store 162, 1/F, Smiling Plaza; Un Chau Street 162-188; Cheung Sha Wan, Sham Shui Pao 0; Hong Kong | Pending |  |

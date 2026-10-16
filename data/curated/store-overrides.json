@@ -212,5 +212,9 @@
   "116": {
     "kind": "store",
     "evidence": "2026-10-16: [Official venue](https://www.goodgames.com.au/venue/good-games-town-hall/) redirects to the event site and embeds venue GeoCoordinates -33.8699911, 151.2060445 with Shop 1, Lower Ground, 93 York Street, Sydney 2000. Imported the exact-address venue point. Latest Omnidex event August 29 is stale; no weekly projection."
+  },
+  "240": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher directory](https://en.shadowverse-evolve.com/shops/europe/) lists 203 High Street, Gateshead, while [2022 Wixoss events](https://www.wixosstcg.eu/Results/918/EGB0013) establish that as a historical address and link trinitycardcapital.co.uk. That domain now displays a parked/domain-sale page, so it is not a verified current store website. Recorded 5 Pink Lane needs current primary confirmation and a pin; historical Gateshead coordinates must not be imported. Latest Omnidex event March 29 is stale; no weekly projection."
   }
 }
