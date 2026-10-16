@@ -384,5 +384,9 @@
   "18": {
     "kind": "store",
     "evidence": "2026-10-16: [Official pickup page](https://www.gamersguildusa.com/products/pickup-in-store) confirms 2223 South 48th Street Suite C/D, Tempe. [Publisher event](https://locator.riftbound.uvsgames.com/events/530390) and embedded store agree on 33.4043354, -111.9764895 for that suite. Imported Tempe point; the separate North Phoenix branch was excluded. Latest Omnidex event 2026-08-29T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "701": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher retailer directory](https://en.shadowverse-evolve.com/shops/asia-oceania/) confirms second floor, Block B, No.26 Simpang 21, Bagunan Gadong Central, BE4119. [Official retail shop](https://take.app/labyrinthgamesco) corroborates brand and contact phone. [Vanguard directory](https://vg.jommain.my/store-list/) instead uses BE4199. Resolve postcode and obtain a named storefront pin before importing. Latest Omnidex event 2026-08-28T12:10:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
