@@ -139,3 +139,15 @@ Store-local time zones and actual upcoming Omnidex listings remain future extens
 
 Verification: five store tests, app type checking and lint (existing Fast Refresh
 warnings only); mobile 390px and desktop 1280px overflow and 48px event-link checks.
+
+## Nearby recommendations
+
+Use my location explicitly requests browser geolocation. On success, default to a
+50 km search unless a distance is already selected, retaining other search filters.
+Results sort by straight-line distance. A compact nearby section recommends the
+next expected weekly date at up to six nearest qualifying venues within the chosen
+radius (50 km for the section when browsing Any distance). Estimates retain their
+Expected label and link to store details; directions use only the store destination.
+Unmapped venues cannot qualify for distance recommendations. Position remains in
+React memory, never in URLs, account storage, or a geocoding request. Denial and
+unavailability retain manual search; Clear location removes nearby recommendations.

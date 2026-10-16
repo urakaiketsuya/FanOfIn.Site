@@ -68,9 +68,13 @@ export default function Stores() {
     setLocationError('');
     if (!navigator.geolocation) { setLocationError('Location is unavailable. Search by city or postal code instead.'); return; }
     setLocating(true);
-    navigator.geolocation.getCurrentPosition(result => { setPosition({ lat: result.coords.latitude, lng: result.coords.longitude }); setLocating(false); setLimit(30); }, () => { setLocationError('Could not access your location. Search by city or postal code instead.'); setLocating(false); }, { timeout: 12000, maximumAge: 300000 });
+    navigator.geolocation.getCurrentPosition(result => { setPosition({ lat: result.coords.latitude, lng: result.coords.longitude }); setLocating(false); setLimit(30); if (!requestedParams.current.get('radius')) change('radius', '50'); }, () => { setLocationError('Could not access your location. Search by city or postal code instead.'); setLocating(false); }, { timeout: 12000, maximumAge: 300000 });
   }
   const rows = useMemo(() => filterStores(data?.stores ?? [], { query, country, region, days, radius, position }), [data, query, country, region, days, radius, position]);
+  const nearbyEvents = useMemo(() => position ? rows.flatMap(({ store, distance }) => {
+    const event = upcomingStoreEvents(store)[0];
+    return event && distance !== undefined && distance <= (radius || 50) ? [{ store, distance, event }] : [];
+  }).slice(0, 6) : [], [rows, position, radius]);
   const mapped = useMemo(() => rows.filter(r => r.store.coordinates).map(r => r.store), [rows]);
   const countries = [...new Set(data?.stores.map(s => s.country).filter(c => c !== '??' && c) ?? [])].sort((a,b) => (formatCountry(a) ?? a).localeCompare(formatCountry(b) ?? b));
   const regions = [...new Set(data?.stores.filter(s => !country || s.country === country).flatMap(s => s.region ? [s.region] : []) ?? [])].sort();
@@ -106,6 +110,20 @@ export default function Stores() {
         <label>Distance<select className={control} disabled={!position} value={radius || ''} onChange={e => change('radius', e.target.value)}><option value="">Any distance</option>{[25,50,100,250].map(km => <option key={km} value={km}>Within {km} km</option>)}</select></label>
       </div>
       <div className="my-3 flex flex-wrap gap-2"><Button onClick={locate} disabled={locating}>{locating ? 'Finding location…' : position ? 'Update my location' : 'Use my location'}</Button>{position && <Button onClick={() => { setPosition(undefined); change('radius', ''); }}>Clear location</Button>}<Button onClick={() => { requestedParams.current = new URLSearchParams(); startTransition(() => setParams({})); setLimit(30); setSelected(undefined); }}>Clear filters</Button></div>
+      <p className="mb-3 text-sm text-ctp-subtext1">Use your location for nearby stores and expected weekly events. Your location is used only in this page and is not saved.</p>
+      {position && <section aria-labelledby="nearby-events" className="my-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+        <h2 id="nearby-events" className="text-xl font-semibold">Weekly events near you</h2>
+        <p className="mt-1 text-sm text-ctp-subtext1">Within {radius || 50} km · Nearest venues first · Matching your filters</p>
+        {nearbyEvents.length ? <>
+          <p className="mt-2 text-sm text-ctp-subtext1">Expected dates, in your time zone. Confirm with the store.</p>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2">{nearbyEvents.map(({store, distance, event}) => <li key={store.id} className="min-w-0 rounded-lg bg-ctp-base p-3">
+            <p className="font-medium">{new Date(event.date).toLocaleDateString(undefined, {weekday:'long', month:'short', day:'numeric'})} · Expected</p>
+            <Link className={`${link} break-words`} to={`/stores/${store.id}`}>{store.name}</Link>
+            <p className="text-sm text-ctp-subtext1">{distance.toFixed(1)} km away</p>
+            <Directions store={store} />
+          </li>)}</ul>
+        </> : <p className="mt-3" role="status">No expected weekly events match nearby. Try a wider distance or clear your filters.</p>}
+      </section>}
       {locationError && <p role="alert" className="mb-3">{locationError}</p>}
       {radius > 0 && !position && <p className="mb-3" role="status">Use my location to apply the distance filter.</p>}
       <p role="status" className="my-3">{pending ? "Updating… · " : ""}{rows.length} {rows.length === 1 ? "location" : "locations"} · {mapped.length} on map{position ? ' · Nearest first' : ''}</p>
