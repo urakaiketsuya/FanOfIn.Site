@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 161 reviewed (43.6% of this checklist); 208 pending. 56 mapped, 105 need further evidence. Map coverage: 361/674 (53.6%); 313 unmapped.
+Progress: first 162 reviewed (43.9% of this checklist); 207 pending. 56 mapped, 106 need further evidence. Map coverage: 361/674 (53.6%); 313 unmapped.
 
-Next: #162 Axis. Revisit Needs evidence entries after the initial pass.
+Next: #163 Catfootprint Shanhua. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -172,7 +172,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 159 | 435 | Living Legends Enterprise | MY | 32A, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim, Malaysia | Mapped | Reviewed 2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/646632) binds Living Legends JB and 32A Jalan Pingai to 1.482418, 103.7736237 in both event and store data. It links [official website](https://www.livinglegendsjb.com/). Imported the matching Johor Bahru point. Latest Omnidex event in committed snapshot 2026-05-10T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 160 | 488 | CardShop AJITO | JP | Japan, 〒110-0016 Tokyo, Taito City, Taitō, 1-chōme−11−４ 誠心0ビル | Needs evidence | Reviewed 2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Cardshop AJITO at 1-11-4 Taito and links [official X account](https://x.com/cardAJITO). Regional events may use a separate Akihabara venue, so those coordinates cannot replace this storefront. No verified Taito business point obtained. Latest Omnidex event in committed snapshot 2026-10-03T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 161 | 594 | Stevenson Games | US | 10401 Stevenson Rd, Stevenson, MD 21153, USA | Mapped | Reviewed 2026-10-16: [Official website](https://stevensongames.com/) confirms the Maryland store at 10401 Stevenson Road. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/7f1b1924-7753-4c0b-af5a-b95d355a8df1) binds that address and matching phone to 39.4105124, -76.7131376. Imported Maryland point; Lemoyne Pennsylvania branch excluded. Latest Omnidex event in committed snapshot 2026-10-03T17:05:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 162 | 831 | Axis | LB | Achrafieh Sassine Street AL Farah954 Building; Beirut ; Lebanon | Pending |  |
+| 162 | 831 | Axis | LB | Achrafieh Sassine Street AL Farah954 Building; Beirut ; Lebanon | Needs evidence | Reviewed 2026-10-16: [GA event report](https://www.fractalofin.site/RDO/57404.html) corroborates organizer Axis at AL Farah954 Building, Achrafieh Sassine Street. Name/address searches did not establish an independent retailer identity or official website; unrelated Axis online shops excluded. No coordinates imported; verify the business and building entrance. Latest Omnidex event in committed snapshot 2026-10-03T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 163 | 265 | Catfootprint Shanhua | TW | No. 78, Gongyuan Rd, Shanhua District, Tainan City, Taiwan 741 | Pending |  |
 | 164 | 269 | Brand X | PH | Villongco subd Brgy IIID 4000 San Pablo City; Philippines | Pending |  |
 | 165 | 437 | The Game Armory | PH | Unit 204, 2nd floor, Barangay, Cuesta Building, 149 Upper Bonifacio St, Baguio, Benguet, Philippines | Pending |  |

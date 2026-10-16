@@ -552,5 +552,9 @@
   "594": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://stevensongames.com/) confirms the Maryland store at 10401 Stevenson Road. [Publisher listing](https://locator.riftbound.uvsgames.com/stores/7f1b1924-7753-4c0b-af5a-b95d355a8df1) binds that address and matching phone to 39.4105124, -76.7131376. Imported Maryland point; Lemoyne Pennsylvania branch excluded. Latest Omnidex event in committed snapshot 2026-10-03T17:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "831": {
+    "kind": "unclassified",
+    "evidence": "2026-10-16: [GA event report](https://www.fractalofin.site/RDO/57404.html) corroborates organizer Axis at AL Farah954 Building, Achrafieh Sassine Street. Name/address searches did not establish an independent retailer identity or official website; unrelated Axis online shops excluded. No coordinates imported; verify the business and building entrance. Latest Omnidex event in committed snapshot 2026-10-03T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
