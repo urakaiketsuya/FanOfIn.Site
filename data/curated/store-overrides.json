@@ -448,5 +448,9 @@
   "614": {
     "kind": "store",
     "evidence": "2026-10-16: [Organizer event description](https://omni.gatcg.com/events/37900) specifies Metagame Store at 20/8 Krungthep-Nonthaburi 21 alley, while the event address field says 879 Soi 23/1. This internal address conflict prevents a verified pin. No official standalone website established; reconcile the store entrance/address first. Latest Omnidex event in committed snapshot 2026-10-14T14:10:00.000Z. Existing recurrence projects 2026-10-21T14:10:00.000Z, 2026-10-28T14:10:00.000Z, 2026-11-04T14:10:00.000Z, 2026-11-11T14:10:00.000Z (source event 66099); estimates, not confirmed bookings."
+  },
+  "643": {
+    "kind": "store",
+    "evidence": "2026-10-16: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms room A05, seventh floor, 20 Hing Yip Street and links [official Facebook](https://www.facebook.com/RapidStar2022/). Publisher locator corroborates the building. No verified storefront coordinates obtained; retain recorded address pending map evidence. Latest Omnidex event in committed snapshot 2026-09-25T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
