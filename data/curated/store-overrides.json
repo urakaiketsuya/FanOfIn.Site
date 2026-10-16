@@ -52,5 +52,9 @@
   "106": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai shop list](https://www.carddass.com/onepiece-tcg_asia-en/events/2022/officialevents/summer-meetup/list_malaysia.php) confirms B-3-6-3A Setiawalk; [retail shop](https://shopee.com.my/lonelywish) corroborates TCG sales. Classified as store. [Official Facebook](https://www.facebook.com/AKGamesCentre/) is blocked; no standalone website found. [Local business directory](https://biz.puchong.co/businesses/ak-games-centre/) gives postcode 47100 while [tabletop directory](https://kakitabletop.com/map/central/) gives 47160 and recorded address also includes 47610. Resolve postcode and obtain storefront coordinates before mapping. Latest Omnidex event 2026-08-15 is stale; no upcoming weekly estimates."
+  },
+  "280": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official branch website](https://www.catfootprint.com/貓腳印-新莊店) confirms 100 Fuguo Road, seventh floor, Xinzhuang and links its retail shop. Its Google Maps directions link identifies the named storefront feature at 25.0252371, 121.4213552; viewport center 25.0252419, 121.4168759 was not used. Imported feature point and classified as store. Latest Omnidex event 2026-03-30 is stale for recurrence; no upcoming weekly estimates."
   }
 }

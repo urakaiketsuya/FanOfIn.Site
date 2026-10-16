@@ -207,6 +207,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
   },
   {
+    "hostId": 280,
+    "address": "242, Taiwan, New Taipei City, Xinzhuang District, Fuguo Rd, 100號7樓",
+    "lat": 25.0252371,
+    "lng": 121.4213552,
+    "sourceUrl": "https://www.catfootprint.com/貓腳印-新莊店",
+    "sourceAddress": "新北市新莊區富國路100號7樓",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 290,
     "address": "1101 Blanding Blvd #119, Orange Park, FL 32065, USA",
     "lat": 30.1308834,
