@@ -528,5 +528,9 @@
   "205": {
     "kind": "store",
     "evidence": "2026-10-16: [Bandai retailer event list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202404/list_malaysia.php) confirms 6-2 Jalan Jalil Jaya 1, Bukit Jalil. [Retail directory](https://cl2u.net/retail-shops/detail/Bw5Jbko/stella-toy-house) corroborates. No official standalone website or verified storefront pin obtained. Latest Omnidex event in committed snapshot 2026-06-27T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "540": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official store page](https://www.card-cellar.com/pages/home) confirms Dongmen branch at 354 Dongmen Road Section 1, tenth floor. Its embedded map names Card Cellar but only exposed viewport coordinates in the reviewed source; these were not treated as a verified marker. Separate Dongqiao branch excluded; obtain explicit destination coordinates. Latest Omnidex event in committed snapshot 2026-09-27T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
