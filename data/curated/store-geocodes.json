@@ -405,6 +405,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 405,
+    "address": "3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada",
+    "lat": 49.2326922,
+    "lng": -123.0241837,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/261eeb55-f179-42fa-9351-027a870b21ce",
+    "sourceAddress": "3665 Kingsway, unit 185, Vancouver, BC, V5R 5W2, CA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 414,
     "address": "Whitpain Shopping Center, 1510 Dekalb Pike, Blue Bell, PA 19422, USA",
     "lat": 40.1546043,

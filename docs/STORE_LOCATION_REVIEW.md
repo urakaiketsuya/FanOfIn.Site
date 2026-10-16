@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 72 reviewed (19.5% of this checklist); 297 pending. 33 mapped, 39 need further evidence. Map coverage: 338/674 (50.1%); 336 unmapped.
+Progress: first 73 reviewed (19.8% of this checklist); 296 pending. 34 mapped, 39 need further evidence. Map coverage: 339/674 (50.3%); 335 unmapped.
 
-Next: #73 Magic Stronghold Games. Revisit Needs evidence entries after the initial pass.
+Next: #74 Everything Games. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -83,7 +83,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 70 | 653 | Grand Arena TCG Store | TH | 85 Soi Lat Phrao 81, Khlong Chaokhun Sing, Khet Wang Thonglang, Krung Thep Maha Nakhon 10310, Thailand | Needs evidence | Reviewed 2026-10-16: [Thai Trainer Hub directory](https://pokemon.in.th/shops) confirms 85 Soi Lat Phrao 81, Khlong Chaokhun Sing, Wang Thonglang, Bangkok 10310 and links [official Pokémon shop record](https://asia.pokemon-card.com/th/shopmap/map/Shop185), which could not be fetched during review. No standalone store website or verified pin obtained; retain address and seek accessible primary map evidence. Latest GA event 2026-10-09; existing recurrence checks produce no upcoming estimates. |
 | 71 | 250 | CFP Changhua | TW | 510, Taiwan, Changhua County, Yuanlin City, Juguang Rd, 398; 號2樓; Taiwan | Needs evidence | Reviewed 2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-彰化店) confirms 398 Juguang Road, second floor. Its map link is a name search without published feature coordinates; leave unmapped pending a verified pin. Latest Omnidex event is October 15; existing recurrence rules project Thursdays from October 22 at 11:30 UTC. |
 | 72 | 642 | 暖角落卡牌遊戲專賣店CornerTcgPlayground | TW | B1., No. 135, Sec. 4, Minsheng E. Rd.; Songshan Dist.; Taipei City 105; Taiwan | Needs evidence | Reviewed 2026-10-16: [Official Pokémon event](https://asia.pokemon-card.com/tw/event-search/61709/) and [Bandai directory](https://www.carddass.com/onepiece-tcg_tw/events/officialevents/standardbattle/list.php) give Bade Road Section 4, 135 B1, conflicting with recorded Minsheng East Road. The [store marketplace](https://www.ruten.com.tw/store/rockerchin5/) confirms retail identity; no standalone website verified. Resolve street discrepancy before mapping. Latest Omnidex event October 13 supports projected Tuesdays from October 20 at 11:40 UTC; recurrence does not resolve the address. |
-| 73 | 405 | Magic Stronghold Games | CA | 3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada | Pending |  |
+| 73 | 405 | Magic Stronghold Games | CA | 3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada | Mapped | Reviewed 2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/261eeb55-f179-42fa-9351-027a870b21ce) confirms 3665 Kingsway unit 185, links [official website](https://www.magicstronghold.com/), and publishes store/address coordinates 49.2326922, -123.0241837. Imported against exact recorded address. Latest Omnidex event September 30; existing recurrence rules produce no upcoming dates. |
 | 74 | 449 | Everything Games | CA | 721 Station Ave, Victoria, BC V9B 5R5, Canada | Pending |  |
 | 75 | 116 | Good Games Town Hall | AU | Lower Ground, Shop 1/93 York St, Sydney NSW 2000, Australia | Pending |  |
 | 76 | 240 | Trinity Card Capital LTD | GB | 5 Pink Ln, Newcastle upon Tyne NE1 5DW, UK | Pending |  |

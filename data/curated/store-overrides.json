@@ -200,5 +200,9 @@
   "642": {
     "kind": "store",
     "evidence": "2026-10-16: [Official Pokémon event](https://asia.pokemon-card.com/tw/event-search/61709/) and [Bandai directory](https://www.carddass.com/onepiece-tcg_tw/events/officialevents/standardbattle/list.php) give Bade Road Section 4, 135 B1, conflicting with recorded Minsheng East Road. The [store marketplace](https://www.ruten.com.tw/store/rockerchin5/) confirms retail identity; no standalone website verified. Resolve street discrepancy before mapping. Latest Omnidex event October 13 supports projected Tuesdays from October 20 at 11:40 UTC; recurrence does not resolve the address."
+  },
+  "405": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/261eeb55-f179-42fa-9351-027a870b21ce) confirms 3665 Kingsway unit 185, links [official website](https://www.magicstronghold.com/), and publishes store/address coordinates 49.2326922, -123.0241837. Imported against exact recorded address. Latest Omnidex event September 30; existing recurrence rules produce no upcoming dates."
   }
 }
