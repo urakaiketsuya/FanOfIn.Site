@@ -207,6 +207,15 @@
     "sourceCollectedAt": "2026-10-16T15:50:07Z"
   },
   {
+    "hostId": 182,
+    "address": "111, Taiwan, Taipei City, Shilin District, Daxi Rd, 66號B1",
+    "lat": 25.0912946,
+    "lng": 121.5247564,
+    "sourceUrl": "https://www.catfootprint.com/貓腳印-士林店",
+    "sourceAddress": "台北市士林區大西路66號 B1F",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 204,
     "address": "969 Story Rd UNIT 6078, San Jose, CA 95122\nUnited States",
     "lat": 37.3321267,
