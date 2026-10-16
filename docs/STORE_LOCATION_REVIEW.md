@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 57 reviewed (15.4% of this checklist); 312 pending. 28 mapped, 29 need further evidence. Map coverage: 333/674 (49.4%); 341 unmapped.
+Progress: first 58 reviewed (15.7% of this checklist); 311 pending. 29 mapped, 29 need further evidence. Map coverage: 334/674 (49.6%); 340 unmapped.
 
-Next: #58 HIDEOUT. Revisit Needs evidence entries after the initial pass.
+Next: #59 Deck Out Trading Cards. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -68,7 +68,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 55 | 164 | Andyseous Odyssey | US | 334 Sunset Ave, Dallas, TX 75208, USA | Mapped | Reviewed 2026-10-16: [Official website](https://www.andyseous-odyssey.com/) distinguishes the Bishop Arts branch at 334 Sunset Avenue from the Beckley branch. [Publisher store](https://locator.riftbound.uvsgames.com/stores/83041c3e-d337-4e36-8fa4-a63ebd410f7e) confirms the Sunset address and publishes 32.74376960000001, -96.8280195. Imported branch-specific point and classified as store. Latest Omnidex event 2026-10-15; existing recurrence returns no upcoming weekly estimates. |
 | 56 | 506 | Bali Awakening Zone | ID | Jl. Serma Kawi No.5b, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80236, Indonesia | Needs evidence | Reviewed 2026-10-16: [Bandai publisher listing](https://www.unionarena-tcg.com/en/events/shop-battle/2024/02/list_indonesia.php) confirms Serma Kawi 5.B but uses postcode 80114. [Riftbound publisher store](https://locator.riftbound.uvsgames.com/stores/5a0f7ecf-aece-45a6-a55b-57981bc8bf21) uses number 5 and postcode 80234, while Omnidex uses 5b and 80236. Publisher links [official Facebook](https://www.facebook.com/BaliAwakeningZone/); no standalone website found. Classified as store; reconcile address/postcode before accepting a pin. Latest Omnidex event 2026-10-02; current Grand Archive evidence does not qualify for weekly projections. |
 | 57 | 475 | Art of Cards | SG | 8 Burn Road Trivex #14-12; Singapore 369977; Singapore | Mapped | Reviewed 2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/06382f65-d59f-4fcc-9685-fb4b57a6d9d1) confirms 8 Burn Road, Trivex #14-12 and publishes 1.3353892, 103.8855939. [Official retail shop](https://shopee.sg/artofcards) independently confirms the exact unit and physical play space; publisher links [official Instagram](https://www.instagram.com/artofcardsofficial/). No standalone website found. Imported verified point and classified as store. Latest Omnidex event 2026-05-05 is stale; no weekly projections. |
-| 58 | 726 | HIDEOUT | SG | 803 King George's Ave, #02 190, Singapore 200803 | Pending |  |
+| 58 | 726 | HIDEOUT | SG | 803 King George's Ave, #02 190, Singapore 200803 | Mapped | Reviewed 2026-10-16: [Official website](https://hideoutcg.com/) confirms 803 King George's Avenue #02-190. [Publisher store](https://locator.riftbound.uvsgames.com/stores/b6613994-8576-4776-9720-03a2e8181a83) matches the address and publishes 1.308041, 103.860626. Imported verified point and classified as store. Latest Omnidex event 2026-10-15; existing Grand Archive recurrence supports Thursdays 10-22, 10-29, 11-05 and 11-12. Publisher Riftbound schedules were not imported. |
 | 59 | 159 | Deck Out Trading Cards | MY | 8-2, Jalan USJ 21/6, Taman Indah Subang Uep, 47630 Subang Jaya, Selangor, Malaysia | Pending |  |
 | 60 | 210 | Magitek Games | US | 1122 Cadillac Ct, Milpitas, CA 95035, USA | Pending |  |
 | 61 | 529 | 御三家咖啡廳3Cafe  | TW | 3f, 125 Section 3, Chengde Road, Datong District, Taipei City, 103, Taiwan | Pending |  |
