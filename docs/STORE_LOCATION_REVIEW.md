@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 146 reviewed (39.6% of this checklist); 223 pending. 52 mapped, 94 need further evidence. Map coverage: 357/674 (53.0%); 317 unmapped.
+Progress: first 147 reviewed (39.8% of this checklist); 222 pending. 52 mapped, 95 need further evidence. Map coverage: 357/674 (53.0%); 317 unmapped.
 
-Next: #147 Atelier Tabletop Brewspace. Revisit Needs evidence entries after the initial pass.
+Next: #148 Monxter. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -157,7 +157,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 144 | 687 | Greatest Of All Time (GOAT) | SG | 13 Lor 8 Toa Payoh, #06 03, Singapore 319261 | Needs evidence | Reviewed 2026-10-16: [Official shop pickup](https://goattcg.com/products/harrow-the-saved-184-phantom-monarchs) confirms 13 Lorong 8 Toa Payoh #06-03, Singapore 319261. Retail identity and floor match; no verified storefront coordinates obtained. Obtain a named business map point before import. Latest Omnidex event in committed snapshot 2026-10-11T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 145 | 822 | Toreca-ya | ID | Gg. Sarwo No.7, Tampan, Kec. Payung Sekaki, Kota Pekanbaru, Riau 28291, Indonesia | Needs evidence | Reviewed 2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/id/event-search/37299/) confirms Torecaya at Gg. Sarwo No.7, Tampan, Pekanbaru, including organizer contact. [Distributor](https://mythicessential.com/) lists Torecaya as a partner. No official standalone website or verified business coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-11T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 146 | 479 | Mana Pro | SG | BLK 203 Choa Chu Kang Ave 1, B1-41, Singapore 680203 | Needs evidence | Reviewed 2026-10-16: [Official website](https://sg-manapro.com/) confirms Choa Chu Kang branch at Block 203 #B1-41 and separately identifies Commonwealth branch. [Waze](https://www.waze.com/live-map/directions/sg/singapore/mana-pro-choa-chu-kang?to=place.ChIJNydeZnYR2jERT3JnTasIhjs) corroborates the recorded branch. No coordinates verified from the reviewed pages; exclude Commonwealth. Latest Omnidex event in committed snapshot 2026-07-11T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 147 | 743 | Atelier Tabletop Brewspace | PH | U606, Milandre Center, 982 Quezon Ave, Diliman, Quezon City, Metro Manila, Philippines | Pending |  |
+| 147 | 743 | Atelier Tabletop Brewspace | PH | U606, Milandre Center, 982 Quezon Ave, Diliman, Quezon City, Metro Manila, Philippines | Needs evidence | Reviewed 2026-10-16: [Official website](https://atelierbrewspace.com/) establishes the brand. [Local directory](https://www.findglocal.com/PH/Quezon-City/1453603-42/genre/1787166534852540/Hobby%2BStores/2) describes a cafe/hobby lounge at U606 Milandre Center, 982 Quezon Avenue. Classified as venue; retail sales not established. No unit-specific pin obtained. Latest Omnidex event in committed snapshot 2026-09-20T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 148 | 799 | Monxter | MY | 18-2, Jalan Menara Gading 1; Lebuhraya Hubungan Timur Barat ,56000 Kuala Lumpur; Malaysia | Pending |  |
 | 149 | 151 | Gimeow The Card Team | TW | No. 67號, Wenxin South 1st Rd, Nantun District, Taichung City, Taiwan 408 | Pending |  |
 | 150 | 482 | Yugoco TCG & Games | MY | no 5, 1, Jalan PNBBU 2, Pusat Niaga Bukit Baru Utama, 75150 Bukit Baru, Melaka, Malaysia | Pending |  |

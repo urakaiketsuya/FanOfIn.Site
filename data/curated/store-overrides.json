@@ -492,5 +492,9 @@
   "479": {
     "kind": "store",
     "evidence": "2026-10-16: [Official website](https://sg-manapro.com/) confirms Choa Chu Kang branch at Block 203 #B1-41 and separately identifies Commonwealth branch. [Waze](https://www.waze.com/live-map/directions/sg/singapore/mana-pro-choa-chu-kang?to=place.ChIJNydeZnYR2jERT3JnTasIhjs) corroborates the recorded branch. No coordinates verified from the reviewed pages; exclude Commonwealth. Latest Omnidex event in committed snapshot 2026-07-11T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "743": {
+    "kind": "venue",
+    "evidence": "2026-10-16: [Official website](https://atelierbrewspace.com/) establishes the brand. [Local directory](https://www.findglocal.com/PH/Quezon-City/1453603-42/genre/1787166534852540/Hobby%2BStores/2) describes a cafe/hobby lounge at U606 Milandre Center, 982 Quezon Avenue. Classified as venue; retail sales not established. No unit-specific pin obtained. Latest Omnidex event in committed snapshot 2026-09-20T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
