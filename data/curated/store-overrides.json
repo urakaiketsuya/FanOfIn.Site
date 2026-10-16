@@ -128,5 +128,9 @@
   "581": {
     "kind": "store",
     "evidence": "2026-10-16: [Official retail profile](https://www.carousell.sg/u/capybaracards/) confirms High Street Centre #02-16 and links [official website](https://capybaracards.com/). [Store directory](https://www.ctrlcollectibles.com/en/singapore-tcg-shops/capybara-cards) corroborates 1 North Bridge Road and unit; its map link supplies a place ID but no verified coordinates were obtained. Classified as store; pin unresolved. Latest Omnidex event 2026-10-02; existing recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13."
+  },
+  "678": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official retail shop](https://shopee.tw/josephpu84) confirms TOP CARD at 182 Renyi Road, second floor, Zhubei, and physical card sales. No standalone official website found. [Taiwan card-store directory](https://tcg-map.gamer-star.com/debug/) corroborates the address, but no verified storefront coordinates obtained. Classified as store; pin unresolved. Latest Omnidex event 2026-10-08; current evidence does not qualify for weekly projections."
   }
 }
