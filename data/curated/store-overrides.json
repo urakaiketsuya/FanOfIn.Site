@@ -252,5 +252,9 @@
   "516": {
     "kind": "store",
     "evidence": "2026-10-16: [Local directory](https://kedaimainannearme.my/favonia-hobbies-kampar/) matches 26A Jalan Batu Karang and links the [shop Facebook profile](https://www.facebook.com/profile.php?id=61564523642763). No independently verified storefront coordinates or standalone official website obtained. Keep separate from Favonia Hobbies in Ipoh; obtain a Kampar shop pin. Latest Omnidex event 2026-04-25T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "775": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official retail locations](https://www.curiocavern.com/pages/retail-locations) confirms 22003 66th Avenue W, Unit A-1, Mountlake Terrace. [Publisher event](https://locator.riftbound.uvsgames.com/events/528752) and embedded store agree on the address and 47.79891350173276, -122.3210665098564. Imported exact-address point. Latest Omnidex event 2026-10-16T01:30:00.000Z. Existing recurrence projects 2026-10-23T01:30:00.000Z, 2026-10-30T01:30:00.000Z, 2026-11-06T01:30:00.000Z, 2026-11-13T01:30:00.000Z (source event 65465); estimates, not confirmed bookings."
   }
 }

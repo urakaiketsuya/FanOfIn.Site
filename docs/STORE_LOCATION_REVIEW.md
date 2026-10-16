@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 85 reviewed (23.0% of this checklist); 284 pending. 38 mapped, 47 need further evidence. Map coverage: 343/674 (50.9%); 331 unmapped.
+Progress: first 86 reviewed (23.3% of this checklist); 283 pending. 39 mapped, 47 need further evidence. Map coverage: 344/674 (51.0%); 330 unmapped.
 
-Next: #86 Curio Mountlake. Revisit Needs evidence entries after the initial pass.
+Next: #87 Games for Meeple. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -96,7 +96,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 83 | 139 | Chronos Games & Gifts | US | 11943 SW Canyon Rd, Beaverton, OR 97005, USA | Mapped | Reviewed 2026-10-16: [Official website](https://chronosgg.com/author/chronosgg/) confirms 11943 SW Canyon Road. [OSM-derived named shop](https://mapcarta.com/N13327464902) gives the same address and 45.48995, -122.79966. Imported this current location; older publisher events at 13227 SW Canyon Road were not used. Latest Omnidex event 2026-09-12T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 84 | 619 | DXCOLLECTION | SG | 35 Selegie Rd, #05 11, Singapore 188307 | Needs evidence | Reviewed 2026-10-16: [Official contact page](https://dxcollection.com.sg/contact-us/) confirms 35 Selegie Road #05-11. It publishes conflicting GeoCoordinates: 1.300569, 103.849323 and 1.3000, 103.8500. Address and retail identity confirmed, but resolve the coordinate conflict before importing. Latest Omnidex event 2026-05-24T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 85 | 516 | Favonia Hobbies Kampar | MY | 26A Jalan Batu Karang; Taman Bandar Baru 31900; Kampar, Perak; Malaysia | Needs evidence | Reviewed 2026-10-16: [Local directory](https://kedaimainannearme.my/favonia-hobbies-kampar/) matches 26A Jalan Batu Karang and links the [shop Facebook profile](https://www.facebook.com/profile.php?id=61564523642763). No independently verified storefront coordinates or standalone official website obtained. Keep separate from Favonia Hobbies in Ipoh; obtain a Kampar shop pin. Latest Omnidex event 2026-04-25T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 86 | 775 | Curio Mountlake | US | 22003 66th Ave W suite a 1, Mountlake Terrace, WA 98043, USA | Pending |  |
+| 86 | 775 | Curio Mountlake | US | 22003 66th Ave W suite a 1, Mountlake Terrace, WA 98043, USA | Mapped | Reviewed 2026-10-16: [Official retail locations](https://www.curiocavern.com/pages/retail-locations) confirms 22003 66th Avenue W, Unit A-1, Mountlake Terrace. [Publisher event](https://locator.riftbound.uvsgames.com/events/528752) and embedded store agree on the address and 47.79891350173276, -122.3210665098564. Imported exact-address point. Latest Omnidex event 2026-10-16T01:30:00.000Z. Existing recurrence projects 2026-10-23T01:30:00.000Z, 2026-10-30T01:30:00.000Z, 2026-11-06T01:30:00.000Z, 2026-11-13T01:30:00.000Z (source event 65465); estimates, not confirmed bookings. |
 | 87 | 273 | Games for Meeple | US | 21308 Pathfinder Rd #110, Diamond Bar, CA 91765, USA | Pending |  |
 | 88 | 333 | Fayble International | TW | 10F.-3, No. 10, Zhonghua Rd., Taoyuan Dist.; Taoyuan City, Taiwan 330; Taiwan | Pending |  |
 | 89 | 330 | Firefly Toys and Games | US | 736-C, St Andrews Shopping Center, 736 St Andrews Rd, Columbia, SC 29210, USA | Pending |  |

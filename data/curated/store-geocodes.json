@@ -603,6 +603,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:01.654184+00:00"
   },
   {
+    "hostId": 775,
+    "address": "22003 66th Ave W suite a 1, Mountlake Terrace, WA 98043, USA",
+    "lat": 47.79891350173276,
+    "lng": -122.3210665098564,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/528752",
+    "sourceAddress": "22003 66th Ave W unit a 1, Mountlake Terrace, WA 98043, USA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 782,
     "address": "7211 W, 7211 Colonial St, Boise, ID 83709, USA",
     "lat": 43.6015392,
