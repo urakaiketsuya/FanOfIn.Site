@@ -360,5 +360,9 @@
   "838": {
     "kind": "store",
     "evidence": "2026-10-16: [Manufacturer retailer list](https://www.kakamouse.com/tw/about/33) confirms Pumpkin Town at 91 Guoguang Street, Sanxia. [Pokemon results](https://asia.pokemon-card.com/tw/users/tw08776582/) corroborate the store/address. No official standalone website or verified storefront pin obtained; retain unmapped status pending map evidence. Latest Omnidex event 2026-08-16T13:50:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "264": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/49183/) identifies 新奇玩具店 at 127 Huaxing Street, Yongkang, Tainan. [Local shop directory](https://taiwancool.com.tw/web/storeInfo/休閒娛樂/台南新奇玩具店_7476.html) corroborates the address and toy/card retail identity. No official standalone website or verified coordinates obtained. Latest Omnidex event 2026-10-13T11:00:00.000Z. Existing recurrence projects 2026-10-20T11:00:00.000Z, 2026-10-27T11:00:00.000Z, 2026-11-03T11:00:00.000Z, 2026-11-10T11:00:00.000Z (source event 65984); estimates, not confirmed bookings."
   }
 }
