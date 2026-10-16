@@ -260,5 +260,9 @@
   "273": {
     "kind": "store",
     "evidence": "2026-10-16: [Publisher store](https://locator.riftbound.uvsgames.com/stores/82a1bcba-5477-4b86-b805-3282a3486cbd) confirms 21308 Pathfinder Road, suite 110, links [official website](https://www.gamesformeeple.com), and publishes matching store/event coordinates 33.9839856, -117.8414105. Imported; older suite 209 publisher listings were not used. Latest Omnidex event 2026-09-18T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "330": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Official website](https://www.fireflytoysandgames.com/) confirms 736-C Saint Andrews Road, Columbia. Its embedded business record explicitly ties 736 Saint Andrews Road to 34.0433348, -81.12158989999999. Imported this point; older 657 Saint Andrews Road and separate Hartsville branch evidence were excluded. Latest Omnidex event 2026-10-11T22:45:00.000Z. Existing recurrence projects 2026-10-18T22:45:00.000Z, 2026-10-25T22:45:00.000Z, 2026-11-01T22:45:00.000Z, 2026-11-08T22:45:00.000Z (source event 65395); estimates, not confirmed bookings."
   }
 }

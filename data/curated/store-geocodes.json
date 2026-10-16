@@ -396,6 +396,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 330,
+    "address": "736-C, St Andrews Shopping Center, 736 St Andrews Rd, Columbia, SC 29210, USA",
+    "lat": 34.0433348,
+    "lng": -81.12158989999999,
+    "sourceUrl": "https://www.fireflytoysandgames.com/",
+    "sourceAddress": "736 Saint Andrews Road, Columbia, SC, USA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 342,
     "address": "8085 W Bell Rd Ste 107, Peoria, AZ 85382, USA",
     "lat": 33.6359462,
