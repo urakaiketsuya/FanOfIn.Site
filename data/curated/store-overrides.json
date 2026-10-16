@@ -168,5 +168,9 @@
   "169": {
     "kind": "store",
     "evidence": "2026-10-16: [Official branch](https://www.catfootprint.com/貓腳印-淡水店) confirms 28 Xuefu Road, fifth floor. Its named Google Maps storefront link publishes feature coordinates 25.1683747, 121.4477396, distinct from viewport center. Imported verified pin and classified as store. Latest GA event 2026-10-03; existing recurrence checks produce no upcoming weekly estimates."
+  },
+  "200": {
+    "kind": "store",
+    "evidence": "2026-10-16: [Publisher event](https://locator.riftbound.uvsgames.com/events/799962) and embedded store agree on 43.826738257530145, -79.32757381349802 at 7170 Warden Avenue. [Waze storefront](https://www.waze.com/live-map/directions/ca/on/markham/manta-trading?to=place.ChIJFznQdALV1IkRMmx9oW72918) confirms Unit 22 and links [official retail website](https://mantatrading.com/). Imported verified address-bound point. Latest GA event 2026-10-15; existing recurrence projects Thursdays from 10-22."
   }
 }

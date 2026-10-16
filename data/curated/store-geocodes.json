@@ -252,6 +252,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 200,
+    "address": "7170 Warden Ave. Unit 22, Markham, ON L3R 8B4, Canada",
+    "lat": 43.826738257530145,
+    "lng": -79.32757381349802,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/799962",
+    "sourceAddress": "7170 Warden Avenue, Markham, ON, L3R 8B4, CA",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 204,
     "address": "969 Story Rd UNIT 6078, San Jose, CA 95122\nUnited States",
     "lat": 37.3321267,
