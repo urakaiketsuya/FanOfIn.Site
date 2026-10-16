@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 43 reviewed (11.7% of this checklist); 326 pending. 20 mapped, 23 need further evidence. Map coverage: 325/674 (48.2%); 349 unmapped.
+Progress: first 44 reviewed (11.9% of this checklist); 325 pending. 21 mapped, 23 need further evidence. Map coverage: 326/674 (48.4%); 348 unmapped.
 
-Next: #44 Good Games Adelaide. Revisit Needs evidence entries after the initial pass.
+Next: #45 The Final Boss Collectables. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -54,7 +54,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 41 | 547 | Flagship Games | SG | 214 Bishan St. 23, Block 214, Singapore 570214 | Mapped | Reviewed 2026-10-16: [Official website](https://www.flagshipgames.sg/) confirms 214 Bishan Street 23, B1-223. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/0a22d294-3113-4417-a8f5-4136ea727337) and events agree on 1.3576010582467033, 103.84840612883607 at Block 214. Imported address-bound point and classified as store. Latest Omnidex event 2026-10-09; existing Grand Archive recurrence supports Fridays 10-23, 10-30, 11-06 and 11-13. Other-game schedules were not imported. |
 | 42 | 100 | Good Games Box Hill | AU | g1/975 Whitehorse Rd, Box Hill VIC 3128, Australia | Mapped | Reviewed 2026-10-16: [Official branch page](https://events.goodgames.com.au/venue/good-games-box-hill/) confirms G1/975 Whitehorse Road and retail identity. [Publisher championship event](https://locator.riftbound.uvsgames.com/events/923352) and embedded store agree on -37.817931152328924, 145.1247279048935 at 975 Whitehorse Road. Imported address-bound point and classified as store. The separate Game Expo event describes an offsite convention and was not used. Latest Omnidex event 2026-05-16 is stale; no weekly projections. |
 | 43 | 463 | Card Lab | HK | Flat B1 4/F, Summit Building, 30 Man Yue Street, Hong Kong; Hong Kong | Needs evidence | Reviewed 2026-10-16: [Grand Archive distributor directory](https://www.fayble-asia.com/game_store.php?id=13) and [Pokémon event](https://asia.pokemon-card.com/hk/event-search/9085/) confirm Card Lab at 30 Man Yue Street, Summit Building, 4F B1. Distributor links [official Facebook](https://www.facebook.com/cardlabstore/); [store Linktree](https://linktr.ee/cardlabstore) was inaccessible and no standalone website found. Classified as store; no verified storefront coordinates obtained. Latest Omnidex event 2026-10-15; existing Grand Archive recurrence supports Thursdays 10-22, 10-29, 11-05 and 11-12. |
-| 44 | 111 | Good Games Adelaide | AU | 88 Grenfell St, Adelaide SA 5000, Australia | Pending |  |
+| 44 | 111 | Good Games Adelaide | AU | 88 Grenfell St, Adelaide SA 5000, Australia | Mapped | Reviewed 2026-10-16: [Official contact page](https://ggadelaide.com.au/pages/contact-us) confirms 88 Grenfell Street. [Publisher store record](https://locator.riftbound.uvsgames.com/stores/73d14e47-a313-44d7-88f0-022d03cf812d) publishes -34.92403, 138.6030835 for that address. Imported verified point and classified as store. Latest Omnidex event 2026-09-19 is stale for weekly projections. |
 | 45 | 277 | The Final Boss Collectables | AU | 4/43 Orbis Dr, Ravenhall VIC 3023, Australia | Pending |  |
 | 46 | 182 | Catfootprint Shilin | TW | 111, Taiwan, Taipei City, Shilin District, Daxi Rd, 66號B1 | Pending |  |
 | 47 | 553 | MVP Hobbies & Collectibles Sdn Bhd | MY | A-G-17, Zenopy Shoplex, Jln LP 7/4, Lestari Perdana, 43300 Seri Kembangan, Selangor, Malaysia | Pending |  |

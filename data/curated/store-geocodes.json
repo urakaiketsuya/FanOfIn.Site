@@ -144,6 +144,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 111,
+    "address": "88 Grenfell St, Adelaide SA 5000, Australia",
+    "lat": -34.92403,
+    "lng": 138.6030835,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/73d14e47-a313-44d7-88f0-022d03cf812d",
+    "sourceAddress": "88 Grenfell Street, Adelaide SA 5000, Australia",
+    "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
+  },
+  {
     "hostId": 112,
     "address": "330, Taiwan, Taoyuan City, Taoyuan District, Zhonghua Rd, 1號11樓",
     "lat": 24.9911358,
