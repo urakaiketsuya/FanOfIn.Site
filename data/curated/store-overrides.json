@@ -1970,5 +1970,9 @@
   "354": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified event site. Weekly events: Unconfirmed. [Source](https://upkeepannarbor.simpletix.com/) provides the Ann Arbor event surface, but no current Grand Archive weekly schedule was verified. [Publisher branch profile](https://legacy.fabtcg.com/en/locator/the-upkeep-games-ann-arbor/) corroborates the retailer. Historical retained activity is not a current weekly announcement. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "579": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://gamenut.com/) identifies the Topeka branch at 5119 SW 29th Street. [Publisher branch profile](https://locator.riftbound.uvsgames.com/stores/93cf45d2-a961-471c-ad54-20ede9b2f627) links its storefront. No current Grand Archive weekly schedule verified; do not substitute Lawrence events. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

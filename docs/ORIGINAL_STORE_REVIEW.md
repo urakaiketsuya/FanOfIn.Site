@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 148/305 (48.5%); 157 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 149/305 (48.9%); 156 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 15 historical schedule; 8 special event only; 100 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 15 historical schedule; 8 special event only; 101 unconfirmed.
 
-Next: #149 Gamenut Topeka.
+Next: #150 TOTL Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -162,7 +162,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 146 | 20 | Game Kastle Greenville | US | 2854a Wade Hampton Blvd, Taylors, SC 29687, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://gamekastle.com/pages/greenville-sc-event-calendar) identifies the Greenville branch calendar. No current recurring Grand Archive slot was verified in its readable entries; confirm with this branch rather than substituting another Game Kastle schedule. Snapshot: latest recorded event 2026-05-16T15:00:00.000Z; 1 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 147 | 233 | GuuBuu Hobby | US | 3334 Stone Mountain Hwy suite e, Snellville, GA 30078, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://guubuuhobby.com/) identifies the retailer and Grand Archive products. An alternate home page contains unrelated template text, so it was not used as schedule evidence. No current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-03T16:30:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 148 | 354 | The Upkeep Games | US | 2121 W Stadium Blvd, Ann Arbor, MI 48103, USA | Verified event site | Unconfirmed | Reviewed 2026-10-18: [Source](https://upkeepannarbor.simpletix.com/) provides the Ann Arbor event surface, but no current Grand Archive weekly schedule was verified. [Publisher branch profile](https://legacy.fabtcg.com/en/locator/the-upkeep-games-ann-arbor/) corroborates the retailer. Historical retained activity is not a current weekly announcement. Snapshot: latest recorded event 2025-06-07T17:00:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 149 | 579 | Gamenut Topeka | US | 5119 SW 29th St, Topeka, KS 66614, USA | Pending | Pending |  |
+| 149 | 579 | Gamenut Topeka | US | 5119 SW 29th St, Topeka, KS 66614, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://gamenut.com/) identifies the Topeka branch at 5119 SW 29th Street. [Publisher branch profile](https://locator.riftbound.uvsgames.com/stores/93cf45d2-a961-471c-ad54-20ede9b2f627) links its storefront. No current Grand Archive weekly schedule verified; do not substitute Lawrence events. Snapshot: latest recorded event 2026-10-11T21:00:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 150 | 769 | TOTL Games | US | 736 NE Martin Luther King Jr Blvd, Portland, OR 97232, USA | Pending | Pending |  |
 | 151 | 798 | Game Corner | NZ | 388 Riccarton Road, Upper Riccarton, Christchurch 8041, New Zealand | Pending | Pending |  |
 | 152 | 60 | HeldenTaverne Spielwaren | DE | Anna-Siemsen-Straße 33, 07745 Jena, Germany | Pending | Pending |  |
