@@ -765,6 +765,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 673,
+    "address": "Level 2 Unit 132, right beside the Department Store, Robinsons Metro East, Pasig, 1800 Metro Manila, Philippines",
+    "lat": 14.6192591,
+    "lng": 121.1000382,
+    "sourceUrl": "https://www.waze.com/live-map/directions/ph/ncr/pasig/board-game-madness-robinsons-metro-east?to=place.ChIJlfaq78y5lzMRG1Shi-JD8po",
+    "sourceAddress": "Level 2 Unit 132, Robinsons Metro East, Pasig, 1800 Metro Manila, Philippines",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 674,
     "address": "14313 NE 20th Ave ste a112, Vancouver, WA 98686, USA",
     "lat": 45.7252109,
