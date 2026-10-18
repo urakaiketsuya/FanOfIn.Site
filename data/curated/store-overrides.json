@@ -916,5 +916,9 @@
   "298": {
     "kind": "unclassified",
     "evidence": "2026-10-18: Recorded Omnidex address is 46a Pham Ngoc Thach, Hanoi. Multiple exact-name, English/Vietnamese and address searches did not establish independent retail identity, official website or business coordinates. Results for The Box Market in Ho Chi Minh City are a different business and were excluded. Remains unclassified pending primary evidence. Latest Omnidex event in committed snapshot 2024-06-02T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "512": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official locations page](https://www.gaminglib.com/pages/store-location) confirms the Greenbelt 5 branch on the third floor, Legazpi Street, Makati. Its map embeds query the mall rather than supplying a verified branch destination. Retail branch established; no generic mall point imported. Latest Omnidex event in committed snapshot 2026-05-30T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
