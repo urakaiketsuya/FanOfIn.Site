@@ -920,5 +920,9 @@
   "512": {
     "kind": "store",
     "evidence": "2026-10-18: [Official locations page](https://www.gaminglib.com/pages/store-location) confirms the Greenbelt 5 branch on the third floor, Legazpi Street, Makati. Its map embeds query the mall rather than supplying a verified branch destination. Retail branch established; no generic mall point imported. Latest Omnidex event in committed snapshot 2026-05-30T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "541": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Bandai shop list](https://www.unionarena-tcg.com/en/pdf/shop-battle-shoplist-202304-my.pdf) confirms No.8, second floor, Jalan Mega, Muar. [Local directory](https://kedaigamenearme.my/kedai-game-di-muar-malaysia/) links [shop Facebook](https://www.facebook.com/burningsoultrading). No standalone official website or verified business point obtained. Latest Omnidex event in committed snapshot 2025-10-18T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
