@@ -1436,5 +1436,9 @@
   "443": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher store listing](https://locator.riftbound.uvsgames.com/stores/6d626b2f-3abe-4a7c-9299-6bf53a9e89d6) confirms The Portal, units 14–15, Mayflower Street. [Organizer event](https://locator.riftbound.uvsgames.com/events/546861) identifies @whimsygamecafe on Facebook and Instagram. No standalone site or current Grand Archive weekly announcement verified; Friday Riftbound events must not be counted as Grand Archive. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "244": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://cardpoint.si/) confirms Grand Archive retail. Its [events page](https://cardpoint.si/events) says no upcoming events; this does not prove play has stopped. [Branch profile](https://www.findglocal.com/SI/Ljubljana/109620948128715/Cardpoint) matches Zaloška cesta 18 and directs event details to Discord. Current Grand Archive weekly schedule remains unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
