@@ -768,5 +768,9 @@
   "654": {
     "kind": "store",
     "evidence": "2026-10-18: [Bandai store list](https://www.unionarena-tcg.com/tc/events/ticket-battle/2024/06/list_taiwan.php) and [Pokemon venue record](https://asia.pokemon-card.com/tw/users/tw10879923/) confirm 358 Boai Street, second floor, Zhubei. Business-registration history also mentions 360 and an older Guangming Fifth Street address. No official standalone website or named current business coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-05T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "950": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://thetcgalchemists.com/) establishes card retail. [Publisher event](https://locator.riftbound.uvsgames.com/events/644602) explicitly confirms 100 Jalan Sultan, Sultan Plaza #03-24, and matching store/event coordinates 1.3031504, 103.8616675. Imported exact branch point. Latest Omnidex event in committed snapshot 2026-10-06T11:30:00.000Z. Existing recurrence projects 2026-10-20T11:30:00.000Z, 2026-10-27T11:30:00.000Z, 2026-11-03T11:30:00.000Z, 2026-11-10T11:30:00.000Z (source events 64675); estimates, not confirmed bookings."
   }
 }

@@ -943,5 +943,14 @@
     "sourceUrl": "https://www.lgsfinder.org/colorado/littleton/mythic-games-littleton",
     "sourceAddress": "8966 W Bowles Ave Suite Y, Littleton, CO 80123",
     "sourceCollectedAt": "2026-10-11T17:34:21.601675+00:00"
+  },
+  {
+    "hostId": 950,
+    "address": "100 Jln Sultan, #03-24 Sultan Plaza, Singapore 199001",
+    "lat": 1.3031504,
+    "lng": 103.8616675,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/644602",
+    "sourceAddress": "100 Jalan Sultan, Sultan Plaza, #03-24, 199001, SG",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   }
 ]
