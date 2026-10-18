@@ -1280,5 +1280,9 @@
   "528": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://lamaquinadeltemps.com/) confirms physical card and board-game sales at Carrer de la Merce 15, local, Badalona. Inspected site and follow-up searches yielded no verified destination coordinates; unrelated education/time-machine results excluded. Latest Omnidex event in committed snapshot 2025-10-04T19:45:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "531": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch](https://events.goodgames.com.au/venue/good-games-gold-coast/) gives Shop 4.8 at 501 Olsen Avenue and links directions to -27.9738798, 153.379775. [Manufacturer stockist list](https://mulgabarrier.com.au/store-list/) gives recorded Shop 8. Retail confirmed; withheld point pending reconciliation of the shop-number notation. Latest Omnidex event in committed snapshot 2024-12-07T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
