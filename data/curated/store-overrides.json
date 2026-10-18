@@ -780,5 +780,9 @@
   "117": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://ggmodbury.com.au/pages/contact) confirms shop 3 at 108-110 Reservoir Road. [Publisher event](https://locator.riftbound.uvsgames.com/events/534298) names the Modbury retailer at that building and supplies matching store/event coordinates -34.8330898, 138.6877027. Imported named branch point. Latest Omnidex event in committed snapshot 2026-06-30T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "517": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official about page](https://pikkuplay.com/pages/about-us) confirms retail store at 1 North Bridge Road #02-20 High Street Centre and links [official Facebook](https://www.facebook.com/Pikkuplay/). [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/1697/) agrees. No unit-specific named point verified; do not substitute another High Street Centre card shop. Latest Omnidex event in committed snapshot 2026-04-01T14:25:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
