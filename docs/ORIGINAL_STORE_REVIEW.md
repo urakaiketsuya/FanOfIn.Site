@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 139/305 (45.6%); 166 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 140/305 (45.9%); 165 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 93 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 14 historical schedule; 8 special event only; 93 unconfirmed.
 
-Next: #140 Gaia Card Game Sanctuary.
+Next: #141 Manticore.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -153,7 +153,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 137 | 145 | Brood en Spelen | BE | Stationsstraat 41, 9100 Sint-Niklaas, Belgium | Official site identified; inaccessible | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.ontdeksintniklaas.be/nl/winkelen/winkels-de-kijker/brood-en-spelen) links the official broodenspelensintniklaas.be site and corroborates the retailer. The official site could not be read; no current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-08-08T09:30:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 138 | 226 | The Adventure Begins Comics, Games, & More | US | 525 Woodland Square Blvd #130, Conroe, TX 77384, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://shop.theadventurebeginstx.com/events/full-events-calendar/) embeds a calendar; its weekly-events page directs visitors to Facebook without a readable Grand Archive day/time. Confirm current recurring play with this Conroe store. Snapshot: latest recorded event 2024-11-24T18:00:00.000Z; 8 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 139 | 246 | Dueling Land | US | 16070 E Dartmouth Ave #3, Aurora, CO 80013, USA | Official site unconfirmed | Unconfirmed | Reviewed 2026-10-18: [Source](https://tcg.ravensburgerplay.com/stores/a433ff05-caee-405e-a493-d01a6a49b200) corroborates Dueling Land at 16070 E Dartmouth Avenue #3. No official website or current Grand Archive weekly announcement identified; the publisher profile's Lorcana schedule is not Grand Archive evidence. Snapshot: latest recorded event 2026-05-19T00:45:00.000Z; 5 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 140 | 803 | Gaia Card Game Sanctuary | MY | Endah Parade, Jalan 1/149e, Taman Sri Endah, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia | Pending | Pending |  |
+| 140 | 803 | Gaia Card Game Sanctuary | MY | Endah Parade, Jalan 1/149e, Taman Sri Endah, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia | Official social page identified | Historical schedule | Reviewed 2026-10-18: [Source](https://omni.gatcg.com/events/65499) records a completed October 11, 2026 weekly BO3 event at 14:30 Malaysia time, RM28. This past date does not guarantee future Sunday recurrence. [Store Facebook](https://www.facebook.com/GaiaCardGameSanctuary) was identified, but no readable current recurring announcement verified. Snapshot: latest recorded event 2026-08-30T06:30:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 141 | 855 | Manticore | BE | Hoogstraat 17, 9660 Brakel, Belgium | Pending | Pending |  |
 | 142 | 344 | Desert City Games | CA | 171 Leigh Rd, Kamloops, BC V2B 2L7, Canada | Pending | Pending |  |
 | 143 | 566 | J and J Gaming Factory | US | 5140 W Peoria Ave #100, Glendale, AZ 85302, USA | Pending | Pending |  |
