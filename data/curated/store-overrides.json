@@ -1648,5 +1648,9 @@
   "97": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official collections page](https://www.lunacards.com.au/collections) confirms 512 Centre Road and a Grand Archive Tickets collection. No readable current weekly schedule found; the candidate ticket collection could not be accessed. Past regionals do not establish the current Bentleigh weekly day or start time. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "187": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official events page](https://valkyriegames.co.nz/pages/events) includes a Grand Archive filter but no readable event dates/times. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) matches 134 King Street. Confirm current local play directly; the February regional is historical special-event evidence. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
