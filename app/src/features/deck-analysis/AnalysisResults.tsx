@@ -37,10 +37,11 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       <h2 className="text-lg font-semibold">How many cards will I see?</h2>
       <p className="mt-1 text-xs text-ctp-subtext1">Starting influence: {report.opening}{report.openingInferred ? ' from spirit' : ' assumed'} · going {scenario.order}</p>
       <div className="mt-4 space-y-4" aria-label="Cards seen by turn">{report.checkpoints.filter((point) => point.order === scenario.order).map((point) => <div key={point.turn}>
-        <div className="mb-1 flex justify-between text-sm"><span>Turn {point.turn}</span><strong>{point.seen} / {report.size} cards</strong></div>
+        <div className="mb-1 flex flex-wrap justify-between gap-x-3 text-sm"><span>Turn {point.turn}</span><strong>Cards seen: {point.adjustedSeen} / {report.size}</strong></div>
         <div aria-hidden="true" className="flex h-7 overflow-hidden rounded bg-ctp-surface0"><div className="bg-ctp-blue transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${report.size ? point.seen / report.size * 100 : 0}%` }} />{report.sources.length > 0 && <div className="bg-ctp-teal transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${report.size ? (point.adjustedSeen - point.seen) / report.size * 100 : 0}%` }} />}</div>
-        {report.sources.length > 0 && <p className="mt-1 text-xs text-ctp-subtext1">With payable draws (est.): {point.adjustedSeen} / {report.size}</p>}
-        <p className="mt-1 text-xs text-ctp-subtext1">Influence (est.): {point.influence.toFixed(1)} · {point.hand.toFixed(1)} hand + {point.memory.toFixed(1)} memory</p>
+        {report.sources.length > 0 && <p className="mt-1 text-xs text-ctp-subtext1">Expected total · {point.seen} from natural draws</p>}
+        <p className="mt-1 text-xs text-ctp-subtext1">Expected influence: {point.influence.toFixed(1)} cards</p>
+        <p className="mt-1 text-xs text-ctp-subtext1">{point.hand.toFixed(1)} in hand + {point.memory.toFixed(1)} in memory</p>
       </div>)}</div>
       <div className="mt-3 flex flex-wrap gap-4 text-xs"><span>Blue · natural draws</span>{report.sources.length > 0 && <span>Teal · estimated extra draws</span>}</div>
     </section>
