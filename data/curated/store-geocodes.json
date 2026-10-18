@@ -549,6 +549,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 329,
+    "address": "Contiguo a la pizza Hut de, San José, Guadalupe, Col Del Rio, 10801, Costa Rica",
+    "lat": 9.94241127,
+    "lng": -84.06363845,
+    "sourceUrl": "https://panteongeek.com/tienda/fenix-tienda-de-entretenimiento/",
+    "sourceAddress": "Contiguo a la pizza Hut de, San José, Guadalupe, Col Del Rio, 10801",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 330,
     "address": "736-C, St Andrews Shopping Center, 736 St Andrews Rd, Columbia, SC 29210, USA",
     "lat": 34.0433348,

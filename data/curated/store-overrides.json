@@ -1156,5 +1156,9 @@
   "171": {
     "kind": "store",
     "evidence": "2026-10-18: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) and [manufacturer stockists](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) confirm Card Palace at 58 Dongmin Street, third floor. No standalone official website or verified destination point established. Latest Omnidex event in committed snapshot 2024-08-10T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "329": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer website](https://stg.nidodelfenix.com/) matches the recorded Guadalupe location next to Pizza Hut. [Supplier retailer page](https://panteongeek.com/tienda/fenix-tienda-de-entretenimiento/) confirms card/game sales and provides Waze navigation coordinates 9.94241127, -84.06363845, within a few metres of its Google destination. Imported supplier-linked destination; source site is a staging subdomain. Latest Omnidex event in committed snapshot 2024-09-24T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
