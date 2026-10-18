@@ -1923,5 +1923,9 @@
   "868": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official site identified. Weekly events: Unconfirmed. [Source](https://en.palworld-official-cardgame.com/shops/asia-oceania) links [lastpiecekw.com](https://www.lastpiecekw.com). [Publisher event profile](https://www.en.bushi-navi.com/event?organizerId=184&seriesId=13237) uses Awtad Mall, Egaila, Ahmadi, conflicting with stored Hawally/Sulaiman Complex. Resolve branch or relocation before relying on the old pin; no current Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "145": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Official site identified; inaccessible. Weekly events: Unconfirmed. [Source](https://www.ontdeksintniklaas.be/nl/winkelen/winkels-de-kijker/brood-en-spelen) links the official broodenspelensintniklaas.be site and corroborates the retailer. The official site could not be read; no current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
