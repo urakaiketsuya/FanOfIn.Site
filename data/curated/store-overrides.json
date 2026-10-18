@@ -1012,5 +1012,9 @@
   "397": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.xjoy.pl/content/14-kontakt) confirms Książkowa 9b, unit U9. [Map directory](https://pl.near-place.com/store-nearby-xjoypl-gry-planszowe-bitewne-i-karciane-ksiazkowa-9b-lok-4-warszawa/es) supplies 52.330608, 20.940281 for unit 4, also present in older rental terms. Withheld point pending unit reconciliation; excluded unrelated Kielce company coordinates. Latest Omnidex event in committed snapshot 2026-07-04T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "487": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer product/pickup page](https://carduniverse.store/products/gundam-st06) confirms Room 602, Block G, Ka Ming Factory Building, 688-690 Castle Peak Road. [FAB directory](https://legacy.fabtcg.com/en/locator/?page=309) still lists 658 Castle Peak Road. No verified destination for the recorded current pickup address; do not reuse the older building point. Latest Omnidex event in committed snapshot 2025-08-17T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
