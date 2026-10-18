@@ -1584,5 +1584,9 @@
   "87": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official events page](https://tcgcollectornz.com/pages/events-tcg-collector-nz) confirms 59B Carlyle Street and weekly events generally. Its [calendar](https://tcgcollectornz.com/pages/event-calendar) exposes no Grand Archive dates or times. Confirm the current GA slot directly; retail stock is not schedule evidence. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "688": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://hardbrickgames.com/) carries Grand Archive and links its [calendar](https://hardbrickgames.com/pages/event-calendar), which has no readable event entries. The Animethon charity tournament is a separate special event, not evidence for Edmonton store weeklies. Request the current branch schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
