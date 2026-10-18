@@ -1966,5 +1966,9 @@
   "233": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://guubuuhobby.com/) identifies the retailer and Grand Archive products. An alternate home page contains unrelated template text, so it was not used as schedule evidence. No current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "354": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified event site. Weekly events: Unconfirmed. [Source](https://upkeepannarbor.simpletix.com/) provides the Ann Arbor event surface, but no current Grand Archive weekly schedule was verified. [Publisher branch profile](https://legacy.fabtcg.com/en/locator/the-upkeep-games-ann-arbor/) corroborates the retailer. Historical retained activity is not a current weekly announcement. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
