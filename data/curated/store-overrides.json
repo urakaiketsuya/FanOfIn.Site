@@ -1160,5 +1160,9 @@
   "329": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer website](https://stg.nidodelfenix.com/) matches the recorded Guadalupe location next to Pizza Hut. [Supplier retailer page](https://panteongeek.com/tienda/fenix-tienda-de-entretenimiento/) confirms card/game sales and provides Waze navigation coordinates 9.94241127, -84.06363845, within a few metres of its Google destination. Imported supplier-linked destination; source site is a staging subdomain. Latest Omnidex event in committed snapshot 2024-09-24T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "457": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.tcgpark.com/si/contact) confirms Supernova Ljubljana Rudnik branch at Jurckova cesta 223, first floor. Kept distinct from BTC Citypark at Moskovska 4 and Ljubljana Center. Direct HTML retrieval returned 403; no verified branch-specific point obtained. Latest Omnidex event in committed snapshot 2025-06-14T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
