@@ -1660,5 +1660,9 @@
   "92": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. No uniquely matched official website or public GA weekly schedule found. The [publisher historical championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) corroborates 58D Lorna Street in 2023. A [2026 organizer listing](https://locator.riftbound.uvsgames.com/events/318887) has XP Games hosting Mountain Games Riftbound at 39 Devon Street East; this neither proves a store move nor a GA venue. Confirm current identity and play location. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "132": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified marketplace. Weekly events: Unconfirmed. [Store Shopee profile](https://shopee.com.my/lam.chico) identifies The Card Shop PLT and GA products. [Local tabletop directory](https://kakitabletop.com/map/central/) corroborates 54A Jalan 19/3. No standalone website or current GA weekly schedule verified; request an official announcement rather than inferring play from inventory. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

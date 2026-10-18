@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 70/305 (23.0%); 235 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 71/305 (23.3%); 234 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 48 unconfirmed.
+Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 49 unconfirmed.
 
-Next: #71 The Card Shop PLT.
+Next: #72 Diadem Cards and Hobbies.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -84,7 +84,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 68 | 187 | Valkyrie Games | NZ | 134 King Street, Palmerston North Central, Palmerston North 4410, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official events page](https://valkyriegames.co.nz/pages/events) includes a Grand Archive filter but no readable event dates/times. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) matches 134 King Street. Confirm current local play directly; the February regional is historical special-event evidence. Snapshot: latest recorded event 2026-03-19T05:30:00.000Z; 24 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 69 | 756 | Grand Cities Games | US | 120 N Washington St, Grand Forks, ND 58203, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher-linked store listing](https://www.hobbynext.com/stores/grand-cities-games/) matches 120 North Washington Street and links [Grand Cities Games Facebook](https://www.facebook.com/GrandCitiesGames/). No readable public GA weekly day/time verified. Recent championship results do not establish a recurring schedule; ask the Grand Forks store. Snapshot: latest recorded event 2026-10-08T23:00:00.000Z; 34 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 70 | 92 | Mountain Games | NZ | 58D Lorna Street, Lynmouth, New Plymouth 4310, New Zealand | Not found | Unconfirmed | Reviewed 2026-10-18: No uniquely matched official website or public GA weekly schedule found. The [publisher historical championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) corroborates 58D Lorna Street in 2023. A [2026 organizer listing](https://locator.riftbound.uvsgames.com/events/318887) has XP Games hosting Mountain Games Riftbound at 39 Devon Street East; this neither proves a store move nor a GA venue. Confirm current identity and play location. Snapshot: latest recorded event 2026-10-16T04:00:00.000Z; 27 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 71 | 132 | The Card Shop PLT | MY | 54A, Jln 19/3, Seksyen 19, 46300 Petaling Jaya, Selangor, Malaysia | Pending | Pending |  |
+| 71 | 132 | The Card Shop PLT | MY | 54A, Jln 19/3, Seksyen 19, 46300 Petaling Jaya, Selangor, Malaysia | Verified marketplace | Unconfirmed | Reviewed 2026-10-18: [Store Shopee profile](https://shopee.com.my/lam.chico) identifies The Card Shop PLT and GA products. [Local tabletop directory](https://kakitabletop.com/map/central/) corroborates 54A Jalan 19/3. No standalone website or current GA weekly schedule verified; request an official announcement rather than inferring play from inventory. Snapshot: latest recorded event 2026-10-04T04:00:00.000Z; 21 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 72 | 22 | Diadem Cards and Hobbies | CA | 166 Douglas St, Greater Sudbury, ON P3E 1G1, Canada | Pending | Pending |  |
 | 73 | 734 | Card Merchant Wellington | NZ | 49 Manners Street, Te Aro, Wellington 6011, New Zealand | Pending | Pending |  |
 | 74 | 559 | GameForce | NL | Geldropseweg 83, 5611 SE Eindhoven, Netherlands | Pending | Pending |  |
