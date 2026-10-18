@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 264 reviewed (71.5% of this checklist); 105 pending. 84 mapped, 180 need further evidence. Map coverage: 399/674 (59.2%); 275 unmapped. Coverage uses the current directory, including pins added outside this checklist.
+Progress: first 265 reviewed (71.8% of this checklist); 104 pending. 84 mapped, 181 need further evidence. Map coverage: 399/674 (59.2%); 275 unmapped. Coverage uses the current directory, including pins added outside this checklist.
 
-Next: #265 Keopi House PR. Revisit Needs evidence entries after the initial pass.
+Next: #266 Wizard's Tower. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -275,7 +275,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 262 | 179 | Sparks Trading Cards | US | 1224 Monaco Ct #31, Stockton, CA 95207, USA | Mapped | Reviewed 2026-10-18: [Official contact](https://sparkstradingcards.com/pages/contact-1) confirms 1224 Monaco Court Suite 31. [Publisher store](https://locator.riftbound.uvsgames.com/stores/1c6fc795-d8c0-4ae5-bbd9-f6d245a40a34) matches and supplies 37.9879892, -121.3208415. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-03-07T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 263 | 247 | Infinity Cards and Collectibles | CA | 27256 Fraser Hwy Unit #102, Aldergrove, BC V4W 3P8, Canada | Needs evidence | Reviewed 2026-10-18: [Official shop](https://infinitycards.ca/) and [local business association](https://www.aldergroveba.ca/businesses/infinity-cards-collectibles/) confirm #102, 27256 Fraser Highway. No verified Canadian storefront coordinates found; excluded publisher results for similarly named stores in Texas and Peru. Latest Omnidex event in committed snapshot 2024-04-27T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 264 | 301 | Kenkyo Hobby | SG | 35 Selegie Rd, #04-11A Parklane Shopping Mall, Singapore 188307 | Needs evidence | Reviewed 2026-10-18: [Official retail product](https://kenkyohobby.com/products/heavy-hitters-hvy-booster-box) confirms pickup at 35 Selegie Road #04-11A. [Official Telegram](https://t.me/KenkyoHobby) agrees. No verified unit-specific coordinates obtained; no general Parklane mall point imported. Latest Omnidex event in committed snapshot 2024-10-26T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 265 | 366 | Keopi House PR | PR | Urb Brasilia Calle 2 Bldg C-29 Vega Baja, PR 00693; Puerto Rico | Pending |  |
+| 265 | 366 | Keopi House PR | PR | Urb Brasilia Calle 2 Bldg C-29 Vega Baja, PR 00693; Puerto Rico | Needs evidence | Reviewed 2026-10-18: [Business listing](https://www.todosbiz.com/PR/keopi-house-pr-787-663-0838) confirms the cafe at Urbanizacion Calle 2 C-29, Vega Baja; [restaurant directory](https://restaurantguru.com/Keopi-House-PR-Vega-Baja) supports cafe identity. Classified as venue; independent card retail, official standalone website and exact cafe coordinates remain unverified. Latest Omnidex event in committed snapshot 2025-05-24T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 266 | 495 | Wizard's Tower | CA | 80 Marketplace Ave #1, Nepean, ON K2J 5G3, Canada | Pending |  |
 | 267 | 589 | Cardboard Diamonds | US | 11940 SW Pacific Hwy ste e, Tigard, OR 97223, USA | Pending |  |
 | 268 | 791 | NEXUS TABLETOP GAMES | ID | Jl. Ngagel Jaya Utara No.41, RT.003/RW.04, Pucang Sewu, Kec. Gubeng, Surabaya, Jawa Timur 60283, Indonesia | Pending |  |
