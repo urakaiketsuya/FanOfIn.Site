@@ -1740,5 +1740,9 @@
   "95": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Older official calendar](https://www.cardtastic.com.au/Default.aspx/js/scripts/images/js/js/tournaments.aspx) lists GA Thursdays at 19:00 in July 2026. The [current October calendar](https://www.cardtastic.com.au/tournaments.aspx) does not show GA in its readable entries. Confirm whether the Thursday league continues; absence from the current page is not proof it ended. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "128": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher retailer list](https://www.unionarena-tcg.com/na/pdf/events/demo_deck_event_at_localstores/2024/demo_deck_event_at_localstores_usa.pdf) matches 434 N Lemon Avenue and links [The Light Games Facebook](https://www.facebook.com/TheLightGames). No standalone site or readable current GA weekly announcement verified. Confirm through the store; the April championship does not establish a weekly slot. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
