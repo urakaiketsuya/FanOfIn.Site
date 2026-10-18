@@ -594,6 +594,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 396,
+    "address": "Predico building, Hernan Cortes St, Cebu City, 6000 Cebu, Philippines",
+    "lat": 10.336551,
+    "lng": 123.9238566,
+    "sourceUrl": "https://www.waze.com/live-map/directions/ph/central-visayas/cebu-city/magus-games?to=place.ChIJj3pPok-ZqTMRYIt23ScLxVY",
+    "sourceAddress": "Predico building, Hernan Cortes St, Cebu City, 6000 Cebu, Philippines",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 405,
     "address": "3665 Kingsway #185, Vancouver, BC V5R 5W2, Canada",
     "lat": 49.2326922,
