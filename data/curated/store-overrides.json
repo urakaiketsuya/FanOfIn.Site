@@ -996,5 +996,9 @@
   "19": {
     "kind": "store",
     "evidence": "2026-10-18: [Named Waze destination](https://www.waze.com/live-map/directions/us/ca/murrieta/cardboardia?to=place.ChIJ6YcAyICD3IARjXVkPg2alGU) matches 39815 Alta Murrieta Drive C6 and supplies 33.560773, -117.1779182. [Card-shop directory](https://cardshopmap.com/card-shops/california/murrieta/cardboardia/) confirms retail identity and identifies https://cardboardanddie.com as the official website. Imported named destination. Latest Omnidex event in committed snapshot 2025-02-02T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "58": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact page](https://www.wombatgames.cz/kontakt) now gives Sladkovskeho 505. The [official relocation announcement](https://www.wombatgames.cz/post/wombat-games-se-stehuje) confirms a move. Retail identity established, but recorded Bratr. Veverkovych 681 is historical; resolve event-address freshness before mapping. Latest Omnidex event in committed snapshot 2025-05-04T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
