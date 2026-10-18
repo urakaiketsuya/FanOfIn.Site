@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 77/305 (25.2%); 228 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 78/305 (25.6%); 227 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 13 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 53 unconfirmed.
+Weekly results among reviewed stores: 13 published weekly; 0 published fortnightly; 6 historical schedule; 6 special event only; 53 unconfirmed.
 
-Next: #78 AM Cards Collectibles.
+Next: #79 Symphony Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -91,7 +91,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 75 | 465 | Dane's Games | US | 1429 E State St, Geneva, IL 60134, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official branch website](https://danes-games.com/) confirms Geneva at 1429 East State Street and a separate West Chicago branch. [Geneva calendar](https://danes-games.com/geneva-calendar/) is an unreadable embed. The [GA championship announcement](https://danes-games.com/we-have-games-to-play/) explicitly places that event in West Chicago, so it cannot establish Geneva weeklies. Confirm branch-specific play. Snapshot: latest recorded event 2026-10-16T23:30:00.000Z; 25 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 76 | 752 | Epicly Games | AU | 2 Lowry St, North Ipswich QLD 4305, Australia | Identified site | Unconfirmed | Reviewed 2026-10-18: [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36bd226-3090-4f2f-8d18-da9c30260373) matches 2 Lowry Street and links epicipswich.com.au. The homepage returned 502. An [older official organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) still lists 17a Thorn Street and no events. Confirm current GA schedule at Lowry; retain the address discrepancy as a follow-up. Snapshot: latest recorded event 2026-06-26T08:30:00.000Z; 27 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 77 | 40 | The Otaku Hangout | US | 555 U.S. Hwy 70 SW, Hickory, NC 28602, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official website](https://theotakuhangout.com/) matches 555 US Highway 70 SW and explicitly publishes Grand Archive Saturdays at 19:00 under weekly tournaments. Other games occupy other days; the 16:00 Saturday Pokemon slot is separate. Check for special-event substitutions. Snapshot: latest recorded event 2026-08-13T22:20:00.000Z; 25 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 78 | 68 | AM Cards Collectibles | MY | 3, Jalan Ramin 1, Bandar Botanik, 41200 Klang, Selangor, Malaysia | Pending | Pending |  |
+| 78 | 68 | AM Cards Collectibles | MY | 3, Jalan Ramin 1, Bandar Botanik, 41200 Klang, Selangor, Malaysia | Verified profile | Historical schedule | Reviewed 2026-10-18: [Official Linktree](https://linktr.ee/amcardscollectibles) identifies the Klang store and its social/shop links. [Syndicated October 2025 announcement](https://allevents.in/klang/amcc-%7C-grand-archive-constructed-thursday-night/200028894767617) advertises every Thursday 20:30–23:30 at 32A-1 Jalan Ramin 3, conflicting with recorded 3 Jalan Ramin 1. Verify both the current address and October 2026 weekly schedule; do not promote the old listing to current play. Snapshot: latest recorded event 2026-10-13T12:40:00.000Z; 18 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 79 | 270 | Symphony Games | US | 6687 Royalton Rd, North Royalton, OH 44133, USA | Pending | Pending |  |
 | 80 | 461 | TableGameCafeShuffle | JP | 20-10 Hatsuchō, Neyagawa, Osaka 572-0833, Japan | Pending | Pending |  |
 | 81 | 199 | Matrix Cards & Games | US | 1185 Hilltop Dr, Redding, CA 96003, USA | Pending | Pending |  |
