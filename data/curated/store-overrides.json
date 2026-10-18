@@ -1476,5 +1476,9 @@
   "86": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch events page](https://www.cardmerchantwhangarei.co.nz/pages/events) confirms 2/10 John Street and the website, but exposes no event entries. The shop sells Grand Archive. Opening hours and a recent championship do not confirm weekly play; ask the branch for a current schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "38": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official events/services page](https://jwwcards.com/pages/events-services) confirms 3902 13th Avenue S #100 and advertises an Asphodel Paradise regional. The [ticket collection](https://jwwcards.com/collections/events) does not supply a recurring Grand Archive schedule. Verify weekly details separately from the regional. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
