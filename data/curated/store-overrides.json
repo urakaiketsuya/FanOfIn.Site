@@ -980,5 +980,9 @@
   "791": {
     "kind": "venue",
     "evidence": "2026-10-18: [Official social links](https://linktr.ee/NEXUSTABLETOP) identify Nexus Tabletop Games Cafe at 41 Ngagel Jaya Utara, Surabaya, alongside a separate Dharma Husada location. Classified as venue pending independent retail evidence. No verified cafe coordinates obtained; nexustabletopgames.com belongs to California and was excluded. Latest Omnidex event in committed snapshot 2026-02-07T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "794": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/355425) binds the Victoria store at 515 Chatham Street to matching store/event coordinates 48.4308524, -123.3690071. [Local card-shop directory](https://localcardshopsnearme.com/shops/british-columbia/victoria/colossal-cards-collectables-victoria-bc-dbslw/) confirms #101 and links [official Facebook](https://www.facebook.com/profile.php?id=61576236034631). Imported branch point, distinct from Courtenay; no standalone official site established. Latest Omnidex event in committed snapshot 2026-08-09T20:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

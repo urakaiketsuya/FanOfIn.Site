@@ -990,6 +990,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:56.588284+00:00"
   },
   {
+    "hostId": 794,
+    "address": "515 Chatham St #101, Victoria, BC V8T 1E1, Canada",
+    "lat": 48.4308524,
+    "lng": -123.3690071,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/355425",
+    "sourceAddress": "515 Chatham St, Victoria, BC, V8T 1E1, CA",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 811,
     "address": "Japan, 〒192-0084 Tokyo, Hachioji, Misakichō, 4−１１ トーネンビル 4F-C",
     "lat": 35.657626,
