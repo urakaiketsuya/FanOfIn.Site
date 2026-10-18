@@ -860,5 +860,9 @@
   "396": {
     "kind": "store",
     "evidence": "2026-10-18: [Named Waze destination](https://www.waze.com/live-map/directions/ph/central-visayas/cebu-city/magus-games?to=place.ChIJj3pPok-ZqTMRYIt23ScLxVY) confirms Predico Building, Hernan Cortes Street and supplies 10.336551, 123.9238566. [Business listing](https://www.cybo.com/PH-biz/magus-games) corroborates retail identity and identifies https://magus.games as its website. Imported named business point. Latest Omnidex event in committed snapshot 2025-04-06T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "451": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://kingstablegames.com/) establishes card and board-game retail. [Local event directory](https://missoulatonight.com/venues/kings-table-games) confirms 1819 Holborn Street Suite A. No verified address-bound shop coordinates found in inspected official page or map searches. Latest Omnidex event in committed snapshot 2025-09-27T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
