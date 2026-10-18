@@ -1685,7 +1685,7 @@
   },
   "752": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36bd226-3090-4f2f-8d18-da9c30260373) matches 2 Lowry Street and links epicipswich.com.au. The homepage returned 502. An [older official organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) still lists 17a Thorn Street and no events. Confirm current GA schedule at Lowry; retain the address discrepancy as a follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36bd226-3090-4f2f-8d18-da9c30260373) matches 2 Lowry Street and links epicipswich.com.au. The homepage returned 502. An [older official organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) still lists 17a Thorn Street and no events. Confirm current GA schedule at Lowry; retain the address discrepancy as a follow-up. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official homepage](https://www.epicipswich.com.au/) and [organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) could not be retrieved on recheck. No accessible official evidence resolved Lowry Street versus the previously noted Thorn Street address. Retained the existing address; current weekly play remains unconfirmed."
   },
   "40": {
     "kind": "store",
@@ -2180,7 +2180,7 @@
   },
   "395": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official contact](https://game-guys.com/contact-info/) confirms 444 Almeda Mall but has conflicting 77075/77034 postal details. [Publisher announcement](https://www.gatcg.com/article/nationals-season-reveal) documents March 2–3, 2024 Nationals there. No current weekly schedule verified; resolve postal detail. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official contact](https://game-guys.com/contact-info/) confirms 444 Almeda Mall but has conflicting 77075/77034 postal details. [Publisher announcement](https://www.gatcg.com/article/nationals-season-reveal) documents March 2–3, 2024 Nationals there. No current weekly schedule verified; resolve postal detail. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official contact page](https://game-guys.com/contact-info/) still conflicts internally: header/footer say 77034 while its address block says 77o75. The [mall entertainment directory](https://almedamall.com/entertainment/) identifies Game Guys but supplies no readable postal address. Retained the existing address pending resolution; current weekly play remains unconfirmed."
   },
   "416": {
     "kind": "store",
@@ -2317,7 +2317,9 @@
   },
   "1026": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified profile. Weekly events: Unconfirmed. [Official Linktree](https://linktr.ee/Kirin.Studio.TCG) gives Rua Cotoxo 774, conflicting with recorded Tavares Bastos 392; the [publisher profile](https://locator.riftbound.uvsgames.com/stores/68f00097-d239-4cd4-b3eb-c9c38366a271) retains the old address. Resolve current venue and weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified profile. Weekly events: Unconfirmed. [Official Linktree](https://linktr.ee/Kirin.Studio.TCG) gives Rua Cotoxo 774, conflicting with recorded Tavares Bastos 392; the [publisher profile](https://locator.riftbound.uvsgames.com/stores/68f00097-d239-4cd4-b3eb-c9c38366a271) retains the old address. Resolve current venue and weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official Linktree](https://linktr.ee/Kirin.Studio.TCG) explicitly lists Rua Cotoxo 774. Corrected the directory street address, omitted the unverified replacement postal code, and removed the old pin pending verified replacement coordinates. The linked shop could not be retrieved. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "774 Rua Cotoxo, São Paulo, São Paulo, Brazil",
+    "coordinates": null
   },
   "1035": {
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official retailer](https://illusivetcg.com.au) identifies Illusive TCG. [Publisher Ascent announcement](https://www.gatcg.com/article/ascent-melbourne-2026) documents September 12–13, 2026 at Melbourne Convention and Exhibition Centre with side events. This host’s convention address is not evidence of a retail shop or weekly venue; retain host classification. Existing address and coordinates retained; this review does not newly verify the map pin."
