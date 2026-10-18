@@ -876,5 +876,9 @@
   "620": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event announcement](https://ultraman-cardgame.com/page/id/news/news-detail/20) confirms Velocity at Terong 9A, Medan. [Verified marketplace account](https://shopee.co.id/velocityhobby) establishes retailer identity. No standalone official site or address-bound coordinates established. Latest Omnidex event in committed snapshot 2026-05-17T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "661": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon event directory](https://asia.pokemon-card.com/my/event-search/search/?keyword=Hobby+Lords) gives 31-1F Jalan Setia Perdana BA U13/BA, while recorded address says Persiaran Setia Utama. [Official chain links](https://linktr.ee/hobbylords) include its Setia Alam branch. Resolve street naming before pinning; no exact branch coordinates imported. Latest Omnidex event in committed snapshot 2026-10-10T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
