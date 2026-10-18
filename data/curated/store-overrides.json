@@ -604,5 +604,9 @@
   "511": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.gamersguildusa.com/pages/contact-us) confirms North Phoenix at 1818 W Bell Rd Suite 115, separate from Tempe. [Publisher event](https://locator.riftbound.uvsgames.com/events/534630) has matching store/event coordinates 33.6417771, -112.0981242. Imported branch-specific point. Latest Omnidex event in committed snapshot 2026-08-29T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "758": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6861/) and [retailer marketplace](https://shopee.sg/infernogamingsg) confirm 8 Lorong 7 Toa Payoh #01-287. [Store website](https://www.infernogamingsg.com/) instead names GR.iD, 1 Selegie Rd #01-09. Resolve address history before importing either pin. Latest Omnidex event in committed snapshot 2026-05-10T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
