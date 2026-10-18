@@ -884,5 +884,9 @@
   "703": {
     "kind": "store",
     "evidence": "2026-10-18: [FAB locator](https://legacy.fabtcg.com/en/locator/tier-1-cards-games/) confirms 1921 W Dimond Boulevard B3. [Publisher store](https://locator.riftbound.uvsgames.com/stores/78180532-d527-4a24-a8de-fb7e0f0c34fe) matches and supplies 61.1391595, -149.9158351; links [official website](https://www.tier1cardsandgames.com/). Imported exact store point. Latest Omnidex event in committed snapshot 2026-06-17T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "718": {
+    "kind": "store",
+    "evidence": "2026-10-18: [GA community shop list](https://gafreak.com/2025/01/18/shop/) distinguishes Showacho 2-162 from the separate Shimotanaka branch and identifies [branch X account](https://x.com/cardshopevrika2). [Card-shop directory](https://tcg-map.com/shop/card-shop-%E3%81%88%E3%81%86%E3%82%8C%E3%81%8B-%E6%98%AD%E5%92%8C%E7%94%BA%E5%BA%97/) confirms address and retail identity. No standalone official site or verified branch point obtained. Latest Omnidex event in committed snapshot 2026-05-06T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
