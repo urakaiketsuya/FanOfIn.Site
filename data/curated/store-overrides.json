@@ -1312,5 +1312,9 @@
   "655": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/64702/) confirms 382-3 Zhongzheng Road, second floor. [Government business record](https://serv.gcis.nat.gov.tw/moeadsBF/cmpy/reportAction.do?fileName=376610000Achange10912.pdf&method=report&reportClass=bmsItem&subPath=10912) supports retail and leisure-venue activity. No standalone official website or verified exact shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-06-06T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "662": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/azusa1120azusa/) confirms physical card sales at 10 Lane 94, Xinsheng South Road Section 3 under 幻想遊戲世界玩具店. [Distributor retailer list](https://funbox.com.tw/pokemontcg/06.asp) agrees. No standalone official website or verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-28T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
