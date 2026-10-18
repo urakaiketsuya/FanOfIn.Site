@@ -680,5 +680,9 @@
   "890": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/ph/event-search/6572/) confirms GO!Hobby and Toy Shop at 21 Abanao Street, Baguio. Excluded the unrelated Vietnamese GO HOBBY chain. No official standalone website or verified address-bound shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-18T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "27": {
+    "kind": "store",
+    "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/ALC_Season_Store_Championship_List_3_14_ALC_Store_Championships_List_Updated_3_18_d27d16a25c.pdf) and [Canadian store directory](https://www.nearmetcg.com/search) match 265 Queen St S unit 4. The similarly named untappedgamez.com contact page gives Texas addresses and is not verified as this Canadian store. No official website or named Canadian pin obtained. Latest Omnidex event in committed snapshot 2024-07-07T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
