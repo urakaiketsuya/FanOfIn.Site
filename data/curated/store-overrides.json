@@ -1604,5 +1604,9 @@
   "336": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://phoenix-inn.de/) matches Stöckmannstraße 90 and includes Grand Archive among regular games. Its extracted multi-game tables lose the association between game tabs and times, so Saturday 12:30 is not certified here. [Embedded October calendar](https://tcgevents.net/widgets/calendar/17271752705468) returns no events. Confirm the GA tab and current slot with the store. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "489": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official event calendar](https://www.rekreationgames.com/service/store-events/) explicitly lists a Grand Archive Weekly Tournament on Monday October 12, constructed Swiss, $5. It displays 19:00 with a BST label despite the Chandler location; confirm the local start time rather than converting that ambiguous label. [Official GA section](https://www.rekreationgames.com/trading-card-games/tcgs/grand-archive/) confirms the retailer. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

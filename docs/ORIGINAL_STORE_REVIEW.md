@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 56/305 (18.4%); 249 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 57/305 (18.7%); 248 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 0 published fortnightly; 4 historical schedule; 4 special event only; 39 unconfirmed.
+Weekly results among reviewed stores: 10 published weekly; 0 published fortnightly; 4 historical schedule; 4 special event only; 39 unconfirmed.
 
-Next: #57 Rekreation Games.
+Next: #58 Hypercollectibles.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -70,7 +70,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 54 | 343 | The Stadium | US | 3980 Wilder Rd, Bay City, MI 48706, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Store ticket collection](https://the-stadium-bc.myshopify.com/collections/events) identifies the official shop. [Syndicated June weekly announcement](https://happeningnext.com/event/grand-archive-weekly-eid3a0dps6sot) lists Sundays at 13:00, June 7–28, 2026, at 3980 Wilder Road. This is historical secondary evidence; confirm October play and the Bay City branch. Snapshot: latest recorded event 2026-10-11T17:25:00.000Z; 42 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 55 | 621 | Gamersshop Gaming Store Maginhawa Branch | PH | 138 Maginhawa, Diliman, Lungsod Quezon, Kalakhang Maynila, Philippines | Identified social | Unconfirmed | Reviewed 2026-10-18: [Distributor directory](https://www.fayble-asia.com/game_store.php?id=13) identifies the GamersShop Facebook account. [Publisher branch list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202404/list_philippines.php) distinguishes Gamer Shop GS at 138 Maginhawa from GamersShop at V. Luna Avenue. No readable branch-specific GA weekly announcement verified; do not apply V. Luna regional details to Maginhawa. Snapshot: latest recorded event 2026-10-03T04:00:00.000Z; 39 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 56 | 336 | Phoenix Inn | DE | Stöckmannstraße 90, 46045 Oberhausen, Germany | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official site](https://phoenix-inn.de/) matches Stöckmannstraße 90 and includes Grand Archive among regular games. Its extracted multi-game tables lose the association between game tabs and times, so Saturday 12:30 is not certified here. [Embedded October calendar](https://tcgevents.net/widgets/calendar/17271752705468) returns no events. Confirm the GA tab and current slot with the store. Snapshot: latest recorded event 2026-09-26T10:45:00.000Z; 37 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 57 | 489 | Rekreation Games | US | 1075 S Arizona Ave #2, Chandler, AZ 85286, USA | Pending | Pending |  |
+| 57 | 489 | Rekreation Games | US | 1075 S Arizona Ave #2, Chandler, AZ 85286, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official event calendar](https://www.rekreationgames.com/service/store-events/) explicitly lists a Grand Archive Weekly Tournament on Monday October 12, constructed Swiss, $5. It displays 19:00 with a BST label despite the Chandler location; confirm the local start time rather than converting that ambiguous label. [Official GA section](https://www.rekreationgames.com/trading-card-games/tcgs/grand-archive/) confirms the retailer. Snapshot: latest recorded event 2026-10-13T01:30:00.000Z; 39 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 58 | 3 | Hypercollectibles | US | 6347 Massachusetts Ave, New Port Richey, FL 34653, USA | Pending | Pending |  |
 | 59 | 4 | The Haven Games | US | 3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA | Pending | Pending |  |
 | 60 | 787 | Cards Central | SG | 62a Smith St, Singapore 058964 | Pending | Pending |  |
