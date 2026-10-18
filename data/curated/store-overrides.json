@@ -1256,5 +1256,9 @@
   "335": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://www.manaunderground.com/product-category/mtg/dka/) confirms card sales. [Publisher shop list](https://www.carddass.com/onepiece-tcg_asia-en/events/2023/officialevents/flagship-battle_202305/list_philippines.php) uses Dela Cruz Building, Lot 89, SB Loop corner Ascension, rather than recorded 91 Ascension Street. Resolve address numbering before mapping; no verified exact-recorded-address point obtained. Latest Omnidex event in committed snapshot 2024-04-28T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "338": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch page](https://www.catfootprint.com/貓腳印-豐原店) confirms 65 Sanmin Road, fifth floor and links a named Google Maps destination with 24.25358, 120.720984. Imported destination coordinates, excluding the adjacent viewport centre. Official branch Facebook is https://www.facebook.com/cfpfengyuan. Latest Omnidex event in committed snapshot 2024-07-07T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

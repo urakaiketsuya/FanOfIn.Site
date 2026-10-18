@@ -585,6 +585,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 338,
+    "address": "5 樓, No. 65, Sanmin Rd, Fengyuan District, Taichung City, Taiwan 420",
+    "lat": 24.25358,
+    "lng": 120.720984,
+    "sourceUrl": "https://www.catfootprint.com/貓腳印-豐原店",
+    "sourceAddress": "台中市豐原區豐原里三民路65號5樓",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 342,
     "address": "8085 W Bell Rd Ste 107, Peoria, AZ 85382, USA",
     "lat": 33.6359462,
