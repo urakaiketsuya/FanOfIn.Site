@@ -1568,5 +1568,9 @@
   "242": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official Essen event](https://www.whiterabbit-cgs.de/wp/events/ga-e-2610-2/?occurrence=2026-10-01) confirms Segerothstraße 79 and Grand Archive on Thursday October 1 at 18:15; [September listing](https://www.whiterabbit-cgs.de/wp/events/ga-e-2609/?occurrence=2026-09-17) also uses Thursday. These dated past events do not confirm future weekly occurrences. Check the [Essen calendar](https://www.whiterabbit-cgs.de/wp/veranstaltungen_neu/) for current dates; do not use Aachen's events. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "142": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/6a8c83f6-9827-4814-97f1-3cb3ee25b01f) links [official Facebook](https://www.facebook.com/gamersresort/) and lists 20 Edward Street rather than recorded 135 Maude Street. This is an unresolved location discrepancy; old pin is not newly verified. No current Grand Archive weekly schedule found; listed Riftbound Fridays are unrelated. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
