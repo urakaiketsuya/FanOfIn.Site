@@ -704,5 +704,9 @@
   "502": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon retailer list](https://asia.pokemon-card.com/tw/archive/special/card/classic/assets/images/%E3%80%90TW%E3%80%91Classic%E9%A0%90%E5%94%AE%E5%BA%97%E5%AE%B6%E5%90%8D%E5%96%AE.pdf) and [manufacturer retailer list](https://www.kakamouse.com/tw/about/33) confirm 145 Hansheng West Road, first floor. No official standalone site or verified shop pin established. Excluded the similarly named Hualien guesthouse. Latest Omnidex event in committed snapshot 2026-04-28T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "784": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://www.toweroftcg.com/) confirms card sales and 47 Nanchang Road Section 2, second floor; [publisher shop list](https://xrossstars-infotw.cc/Shop) agrees. Official social identity is [Tower of TCG](https://www.facebook.com/totarmory/). No address-bound store coordinates verified. Latest Omnidex event in committed snapshot 2026-08-06T11:35:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
