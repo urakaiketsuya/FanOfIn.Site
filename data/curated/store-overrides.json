@@ -1895,5 +1895,9 @@
   "49": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://afk.games/events/) publishes Grand Archive weekly play Wednesdays 6–9:30 p.m., free, including October 21. Confirm individual dates for cancellations. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "515": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.theendgames.co/calendar) embeds a calendar without readable Grand Archive weekly details. The official homepage advertises a store championship, but that does not establish current recurring play; obtain the current weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
