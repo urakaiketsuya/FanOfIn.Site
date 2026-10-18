@@ -684,5 +684,9 @@
   "27": {
     "kind": "store",
     "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/ALC_Season_Store_Championship_List_3_14_ALC_Store_Championships_List_Updated_3_18_d27d16a25c.pdf) and [Canadian store directory](https://www.nearmetcg.com/search) match 265 Queen St S unit 4. The similarly named untappedgamez.com contact page gives Texas addresses and is not verified as this Canadian store. No official website or named Canadian pin obtained. Latest Omnidex event in committed snapshot 2024-07-07T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "236": {
+    "kind": "store",
+    "evidence": "2026-10-18: [BBB business profile](https://www.bbb.org/us/az/peoria/profile/collectibles/retro-exchange-1126-1000133472) matches 8110 W Peoria Ave 109, while [sister-store website](https://hobbyforge.com/) lists Retro Exchange at 5140 W Peoria Ave 100 and identifies https://rextoys.com/ as its website. Other directories use West Bell Road. Resolve relocation before using any of the conflicting points. Latest Omnidex event in committed snapshot 2024-12-14T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
