@@ -1248,5 +1248,9 @@
   "296": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher retailer](https://tcg.ravensburgerplay.com/stores/756e0d51-e955-4f30-a796-d6e8f5467880) lists recorded Suite 1170 and official https://orbitalgamesaz.com. [Retailer pickup page](https://orbital-games-and-comics-a78b.myshopify.com/products/bct-1000-wraithlands-rpg) instead gives Suite 1158 at 2200 El Mercado Loop. Resolve suite relocation before mapping; direct official-domain retrieval failed. Latest Omnidex event in committed snapshot 2024-09-14T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "309": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/64908/) confirms 117 Beiming Street. [Manufacturer stockist directory](https://www.kakamouse.com/tw/about/33) establishes retail at that address. No standalone official website or verified destination point obtained. Latest Omnidex event in committed snapshot 2024-03-23T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
