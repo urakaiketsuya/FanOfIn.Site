@@ -1098,6 +1098,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:01.654184+00:00"
   },
   {
+    "hostId": 763,
+    "address": "Rukan Citra Niaga 2, Jl. Utan Jati No.7 blok A30, RT.7/RW.12, Pegadungan, Kec. Kalideres, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11830, Indonesia",
+    "lat": -6.1449210999999995,
+    "lng": 106.7059608,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/555229",
+    "sourceAddress": "Rukan Citra Niaga 2, Jl. Utan Jati, RT.7/RW.12, Pegadungan, Kec. Kalideres, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11830, Indonesia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 768,
     "address": "Abu Dhabi Mall, Al Maiyani St, 3rd Floor, Abu Dhabi Mall - مول أبو ظبي - الطابق - Al Zahiyah - E16 01 - Abu Dhabi - United Arab Emirates",
     "lat": 24.4959092,
