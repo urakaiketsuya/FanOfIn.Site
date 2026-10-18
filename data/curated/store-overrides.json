@@ -1851,5 +1851,9 @@
   "204": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://tofustrading.com/collections/grand-archive-tcg) includes Grand Archive league products. [League registration](https://tofustrading.com/products/pokemon-league) has Grand Archive variants but no readable current day/time; sold-out product entries do not confirm ongoing weekly availability. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "560": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://pandemoniumbooks.com/products/grand-archive-tcg-weekly-tournament) advertises a weekly Grand Archive constructed tournament for $7.50, with advance online registration required. Browser date picker stayed at loading schedule; weekly play is advertised, but exact dates and start time need confirmation before attending. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
