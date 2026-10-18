@@ -1304,5 +1304,9 @@
   "632": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retail pickup page](https://pairodicegamez.com/products/combat-patrol-kroot) now gives 224 San Pedro Street, second floor Oakwood Pines Building, distinct from recorded Mount Mayon Street. Retail identity established; resolve relocation before assigning a point to the historical event address. Latest Omnidex event in committed snapshot 2025-04-04T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "644": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official store locator](https://www.secretbasetcg.com/store-locator) confirms SH-G-17, Knox Wawasan, Bukit Rimau. [Official inventory](https://www.secretbasetcg.com/collections/all) establishes retail. Locator coordinates are null and its map link is an address search; no verified business destination point obtained. Latest Omnidex event in committed snapshot 2025-11-29T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
