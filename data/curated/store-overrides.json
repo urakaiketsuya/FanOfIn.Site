@@ -1608,5 +1608,9 @@
   "489": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official event calendar](https://www.rekreationgames.com/service/store-events/) explicitly lists a Grand Archive Weekly Tournament on Monday October 12, constructed Swiss, $5. It displays 19:00 with a BST label despite the Chandler location; confirm the local start time rather than converting that ambiguous label. [Official GA section](https://www.rekreationgames.com/trading-card-games/tcgs/grand-archive/) confirms the retailer. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "3": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://hypercollectiblestcg.com/) and [calendar](https://hypercollectiblestcg.com/pages/calendar) verified, but calendar entries are not readable. [Store marketplace profile](https://shop.com/m/hypercollectiblestcg) distinguishes New Port Richey, 6347 Massachusetts Avenue, from Tampa. Request the New Port Richey GA weekly schedule; do not substitute Tampa or Riftbound events. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
