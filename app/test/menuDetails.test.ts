@@ -13,7 +13,7 @@ function menuFixture() {
   const source = readFileSync(new URL('../src/components/ui/MenuDetails.tsx', import.meta.url), 'utf8');
   const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
   runInNewContext(compiled, { exports, require: (name: string) => {
-    if (name === 'react') return { useRef: () => ({ current: menu }), useEffect: () => {} };
+    if (name === 'react') return { useRef: (initial: unknown) => ({ current: initial === null ? menu : initial }), useEffect: () => {} };
     if (name === 'react-router-dom') return { useLocation: () => ({ key: 'test' }) };
     if (name === 'react/jsx-runtime') return { jsx: (_: unknown, props: object) => ({ props }) };
     throw new Error(name);
@@ -40,6 +40,23 @@ test('keyboard focus leaving closes the menu, internal focus does not', () => {
   const { menu, inside, props } = menuFixture();
   props.onBlur({ currentTarget: menu, relatedTarget: inside });
   assert.equal(menu.open, true);
+  props.onBlur({ currentTarget: menu, relatedTarget: {} });
+  assert.equal(menu.open, false);
+});
+
+test('tap survives an outside focus destination until the action click', () => {
+  const { menu, props } = menuFixture();
+  props.onPointerDownCapture({});
+  props.onBlur({ currentTarget: menu, relatedTarget: {} });
+  assert.equal(menu.open, true, 'mobile focus transfer must not hide the tapped action');
+  props.onClick({ target: { closest: (selector: string) => selector.includes('button') ? {} : null } });
+  assert.equal(menu.open, false);
+});
+
+test('keyboard dismissal resumes after opening with a pointer', () => {
+  const { menu, props } = menuFixture();
+  props.onPointerDownCapture({});
+  props.onKeyDown({ key: 'Tab', target: { closest: () => null } });
   props.onBlur({ currentTarget: menu, relatedTarget: {} });
   assert.equal(menu.open, false);
 });

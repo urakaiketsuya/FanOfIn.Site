@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 /** Action menu disclosure. Keep children mounted so launched dialogs retain their state. */
 export default function MenuDetails({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDetailsElement>(null);
+  const pointerInteraction = useRef(false);
   const location = useLocation();
   function close(restoreFocus = false) {
     const menu = ref.current;
@@ -20,12 +21,15 @@ export default function MenuDetails({ children, className }: { children: ReactNo
     return () => document.removeEventListener("pointerdown", outside, true);
   }, []);
   return <details ref={ref} name="site-action-menu" data-action-menu className={className}
+    onPointerDownCapture={() => { pointerInteraction.current = true; }}
     onBlur={event => {
-      // Safari can blur the trigger without focusing a tapped button. Hiding the
-      // menu here would remove that button before its click can run.
-      if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node)) close();
+      // Mobile browsers can move focus outside (or clear it) before delivering
+      // a tap's click. Pointer dismissal belongs to outside-pointerdown/click;
+      // only keyboard focus changes should dismiss via blur.
+      if (!pointerInteraction.current && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node)) close();
     }}
     onKeyDown={event => {
+      pointerInteraction.current = false;
       if ((event.target as Element).closest("dialog")) return;
       if (event.key === "Escape" && event.currentTarget.open) {
         event.preventDefault(); event.stopPropagation(); close(true);

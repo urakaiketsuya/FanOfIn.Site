@@ -143,10 +143,11 @@ children mounted so launched tasks retain their state; `DialogSheet` renders in
 the document body so closing a parent menu cannot hide its dialog. Keep ordinary
 section disclosures separate from action menus.
 
-Run child click actions before dismissing their menu. A blur with no next focus
-target must not hide menu contents: Safari can emit it when tapping a button,
-before delivering the click. Outside-pointer dismissal and keyboard focus moves
-to a known outside target still close the menu.
+Run child click actions before dismissing their menu. During pointer interaction,
+blur must not hide menu contents: mobile browsers can clear focus or move it
+outside before delivering the click. Outside-pointer dismissal and keyboard focus
+moves to a known outside target still close the menu. Resume keyboard dismissal
+on keydown, including when the menu was opened by touch.
 
 Keep Export deck image directly in the deck toolbar, outside the More disclosure,
 so opening the export sheet does not depend on a floating menu's event lifecycle.
