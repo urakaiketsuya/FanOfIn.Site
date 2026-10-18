@@ -1468,5 +1468,9 @@
   "78": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. [Publisher directory](https://legacy.fabtcg.com/en/locator/?mode=store&page=30&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) identifies Dragon Nest Game Limited at 162 Un Chau Street. [Grand Archive distributor](https://www.fayble-asia.com/game_store.php?id=13) lists dragon nest at Tian Yue Plaza 185, which may be a shop number rather than a street number. Resolve unit/address notation. No official website/social link or weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "21": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official website](https://www.davidsgoodgamecafe.com/) confirms the cafe's identity and weekly-event offering. [Syndicated September Grand Archive announcement](https://happeningnext.com/event/grand-archive-local-tournaments-eid3a0e3jbe73) matches 2285 Whitney Avenue and advertises Tuesdays around 18:00, but has ambiguous end-time text and is historical. Confirm October start time; do not convert the September listing into confirmed future dates. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
