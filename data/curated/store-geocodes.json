@@ -1098,6 +1098,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
   },
   {
+    "hostId": 840,
+    "address": "2603 Osborne Rd ste x, St Marys, GA 31558, USA",
+    "lat": 30.7488653,
+    "lng": -81.577294,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/500765",
+    "sourceAddress": "2603 Osborne Rd, St Marys, GA, 31558, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 850,
     "address": "Ruko Maggiore Square, Jl. Springs Boulevard No.31 LB, Cihuni, Kec. Pagedangan, Kabupaten Tangerang, Banten 15332, Indonesia",
     "lat": -6.2732515,
