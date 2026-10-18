@@ -872,5 +872,9 @@
   "569": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/omegaglandy/) explicitly identifies Magic Star at 231 Heping East Road Section 2, second floor, with card sales and store pickup. [Second shop listing](https://myship.7-11.com.tw/general/detail/GM2412169042109) agrees. No standalone website or verified business point obtained. Latest Omnidex event in committed snapshot 2026-09-10T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "620": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event announcement](https://ultraman-cardgame.com/page/id/news/news-detail/20) confirms Velocity at Terong 9A, Medan. [Verified marketplace account](https://shopee.co.id/velocityhobby) establishes retailer identity. No standalone official site or address-bound coordinates established. Latest Omnidex event in committed snapshot 2026-05-17T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
