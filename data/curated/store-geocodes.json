@@ -1062,6 +1062,15 @@
     "sourceCollectedAt": "2026-10-11T17:35:06.665322+00:00"
   },
   {
+    "hostId": 881,
+    "address": "3f, 1-chōme-6-3 Sotokanda\nChiyoda City, Tokyo 101-0021\nJapan",
+    "lat": 35.6996847,
+    "lng": 139.7694343,
+    "sourceUrl": "https://akihabara-cardmap.com/ja/shop/azumaya/",
+    "sourceAddress": "熊谷ビル 3f, 1-6-3 外神田 千代田区 東京都 101-0021 日本",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 885,
     "address": "331 E 87th Ave suite 102, Anchorage, AK 99515, USA",
     "lat": 61.1426348,

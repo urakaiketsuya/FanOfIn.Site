@@ -984,5 +984,9 @@
   "794": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/355425) binds the Victoria store at 515 Chatham Street to matching store/event coordinates 48.4308524, -123.3690071. [Local card-shop directory](https://localcardshopsnearme.com/shops/british-columbia/victoria/colossal-cards-collectables-victoria-bc-dbslw/) confirms #101 and links [official Facebook](https://www.facebook.com/profile.php?id=61576236034631). Imported branch point, distinct from Courtenay; no standalone official site established. Latest Omnidex event in committed snapshot 2026-08-09T20:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "881": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://azumayamtg.com/) confirms MTG/FAB retail. [Named card-shop map](https://akihabara-cardmap.com/ja/shop/azumaya/) matches Kumagaya Building 3F, 1-6-3 Sotokanda and supplies address-bound structured coordinates 35.6996847, 139.7694343. Imported named destination; official social account [@azumayamtg](https://x.com/azumayamtg). Latest Omnidex event in committed snapshot 2026-09-01T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
