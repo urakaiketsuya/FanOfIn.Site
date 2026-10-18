@@ -756,5 +756,9 @@
   "260": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event page](https://en.cf-vanguard.com/event/premium-weekend/) confirms Fortress at Unit V-227, second floor, Virra Mall. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) links [official Facebook](https://www.facebook.com/p/Fortress-Games-GH-100090596572827/). [Named Waze destination](https://www.waze.com/live-map/directions/ph/ncr/san-juan-city/fortress-toys-and-hobbies?to=place.ChIJGcvDwdi3lzMRNFQHrMefQ6k) supplies 14.6008034, 121.0487755 for the unit; imported business point. Latest Omnidex event in committed snapshot 2026-07-05T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "268": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher shop list](https://xrossstars-infotw.cc/Shop) identifies 獵模士 at 191 Xian Street, matching the recorded Toys Hunter location. [Official shop](https://www.figostoy.com/tw) confirms the retailer and card products. No verified address-bound business coordinates obtained. Latest Omnidex event in committed snapshot 2024-05-16T14:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
