@@ -1716,5 +1716,9 @@
   "81": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official March 2024 Hobby League listing](https://www.hobbylords.co.nz/events/single/grand-archive-hobby-league213024) advertises Wednesdays at 18:30 at 124 King Edward Street. [Current branch directory](https://hobbylords.com/nz/) still lists the same street address and postcode 9012. The old event does not confirm October 2026 weeklies; verify the current schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "107": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official GA page](https://unpluggedgames.com.au/pages/grand-archive) advertises Mondays at 17:30 but still gives the old 3/132 Dawson Street location. The [October relocation announcement](https://unpluggedgames.com.au/blogs/news/the-brand-new-era-of-unplugged-games-begins) and [November GA championship ticket](https://unpluggedgames.com.au/collections/events) use 58 Ballina Road. Treat the Dawson schedule as stale pending confirmation at the new venue; address/pin correction needs follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

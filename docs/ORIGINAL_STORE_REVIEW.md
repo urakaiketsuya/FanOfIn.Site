@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 84/305 (27.5%); 221 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 85/305 (27.9%); 220 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 15 published weekly; 0 published fortnightly; 8 historical schedule; 6 special event only; 55 unconfirmed.
+Weekly results among reviewed stores: 15 published weekly; 0 published fortnightly; 9 historical schedule; 6 special event only; 55 unconfirmed.
 
-Next: #85 Unplugged Games.
+Next: #86 Vortex Cards and Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -98,7 +98,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 82 | 472 | Post Board Game Lexington | US | 305 E Main St Suite 12 & 13, Lexington, OH 44904, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official store site](https://www.postboardgaminglexington.com/) is linked from the [publisher profile](https://locator.riftbound.uvsgames.com/stores/63e9a15f-8b85-4f8f-bffc-841b6b2b21b1). The readable news/events area provides no GA weekly schedule. Confirm Lexington-specific play rather than using another Post Board branch or past championships. Snapshot: latest recorded event 2026-09-05T19:30:00.000Z; 20 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 83 | 593 | Steamship Games | US | 711 W Lake St #103, Minneapolis, MN 55408, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Official storefront](https://steamshipgames.square.site/) matches 711 W Lake Street suite 103. [Syndicated store posts](https://www.findglocal.com/US/Minneapolis/18659276501/Steamship-Games) describe converting Saturday GA to Pantheon, but this is older secondary evidence without a confirmed current start time. Confirm Saturday format/time; storefront opening hours are not an event schedule. Snapshot: latest recorded event 2026-10-03T18:00:00.000Z; 20 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 84 | 81 | Hobby Lords Dunedin | NZ | 124 King Edward Street, South Dunedin, Dunedin 9012, New Zealand | Verified site | Historical schedule | Reviewed 2026-10-18: [Official March 2024 Hobby League listing](https://www.hobbylords.co.nz/events/single/grand-archive-hobby-league213024) advertises Wednesdays at 18:30 at 124 King Edward Street. [Current branch directory](https://hobbylords.com/nz/) still lists the same street address and postcode 9012. The old event does not confirm October 2026 weeklies; verify the current schedule. Snapshot: latest recorded event 2026-08-26T06:30:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 85 | 107 | Unplugged Games | AU | 3/132 Dawson St, Lismore NSW 2480, Australia | Pending | Pending |  |
+| 85 | 107 | Unplugged Games | AU | 3/132 Dawson St, Lismore NSW 2480, Australia | Verified site | Historical schedule | Reviewed 2026-10-18: [Official GA page](https://unpluggedgames.com.au/pages/grand-archive) advertises Mondays at 17:30 but still gives the old 3/132 Dawson Street location. The [October relocation announcement](https://unpluggedgames.com.au/blogs/news/the-brand-new-era-of-unplugged-games-begins) and [November GA championship ticket](https://unpluggedgames.com.au/collections/events) use 58 Ballina Road. Treat the Dawson schedule as stale pending confirmation at the new venue; address/pin correction needs follow-up. Snapshot: latest recorded event 2026-02-16T06:30:00.000Z; 22 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 86 | 37 | Vortex Cards and Games | US | 1932 Park Ave, Orange Park, FL 32073, USA | Pending | Pending |  |
 | 87 | 271 | Games Lab | NZ | 223B Green Lane West, Epsom, Auckland 1051, New Zealand | Pending | Pending |  |
 | 88 | 496 | White Lotus Gaming | US | 600 W Independence St Suite 1100, Shawnee, OK 74804, USA | Pending | Pending |  |
