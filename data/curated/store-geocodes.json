@@ -711,6 +711,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 495,
+    "address": "80 Marketplace Ave #1, Nepean, ON K2J 5G3, Canada",
+    "lat": 45.2703299,
+    "lng": -75.7430699,
+    "sourceUrl": "https://www.waze.com/live-map/directions/ca/on/ottawa/wizards-tower?to=place.ChIJoejz40H9zUwRZm9hPeaNc98",
+    "sourceAddress": "80 Marketplace Ave #1, Nepean, ON K2J 4H9, Canada",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 496,
     "address": "600 W Independence St Suite 1100, Shawnee, OK 74804, USA",
     "lat": 35.3482418,

@@ -968,5 +968,9 @@
   "366": {
     "kind": "venue",
     "evidence": "2026-10-18: [Business listing](https://www.todosbiz.com/PR/keopi-house-pr-787-663-0838) confirms the cafe at Urbanizacion Calle 2 C-29, Vega Baja; [restaurant directory](https://restaurantguru.com/Keopi-House-PR-Vega-Baja) supports cafe identity. Classified as venue; independent card retail, official standalone website and exact cafe coordinates remain unverified. Latest Omnidex event in committed snapshot 2025-05-24T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "495": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official buylist](https://buylist.wizardtower.com/) confirms retail store at 1-80 Marketplace Avenue. [Named Waze destination](https://www.waze.com/live-map/directions/ca/on/ottawa/wizards-tower?to=place.ChIJoejz40H9zUwRZm9hPeaNc98) matches name, street and unit and supplies 45.2703299, -75.7430699. Imported point; postal suffix varies across directories, while official source matches the recorded postal code. Latest Omnidex event in committed snapshot 2026-03-21T16:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
