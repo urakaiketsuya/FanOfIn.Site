@@ -1752,5 +1752,9 @@
   "786": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official July 2026 schedule](https://spellroogaming.com.au/blogs/news/spellroo-gaming-july-2026-event-schedule) lists Saturday GA weekly league at 16:30. An [older November 2025 league notice](https://spellroogaming.com.au/blogs/news/grand-archive-tcg-weekly-league-spellroo-gaming) used 13:00, demonstrating a time change. Confirm the October slot; the October championship is not a weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "959": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. No uniquely matched official website or social profile found for the Taiping host; same-name overseas shops and gaming communities were not accepted. The [October 17 championship results](https://tcgcontender.com/grandarchive/tournaments/zerghive-grand-archive-asphodelparadise-store-championships-2026-10-17) support recent GA activity. In the committed snapshot, event 65833 is titled Thursday October 15 but dated Friday October 16; event 65490 also has a title/date mismatch. Confirm current Thursday/weekend slots before trusting projections. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
