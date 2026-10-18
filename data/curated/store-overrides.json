@@ -836,5 +836,9 @@
   "778": {
     "kind": "unclassified",
     "evidence": "2026-10-18: [Tournament directory](https://palworldtcg.gg/events/mys) and [GA event record](https://www.fractalofin.site/RDO/58946.html) agree on second floor, Lot 10520, Block 16, Jalan Tun Jugah. Independent retail sales, official website and exact business coordinates remain unverified. Kept unclassified rather than inferring a shop from tournament participation alone. Latest Omnidex event in committed snapshot 2026-08-30T06:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "811": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch page](https://cantripmtg.com/pages/hachiojistore) confirms 4-11 Misakicho, Tonen Building 4F. [Pokemon retailer locator](https://map.pokemon-card.com/map/19752) matches and provides its Google Maps destination query 35.657626, 139.33717. Imported publisher-supplied shop destination, preserving recorded 4F-C. Latest Omnidex event in committed snapshot 2026-10-17T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
