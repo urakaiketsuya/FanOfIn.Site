@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 130/305 (42.6%); 175 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 131/305 (43.0%); 174 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 84 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 85 unconfirmed.
 
-Next: #131 GAMES TIME TORINO CENTER.
+Next: #132 TCB Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -144,7 +144,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 128 | 26 | The People's Card Shop | US | 5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://thepeoplescardshop.com/) confirms the Las Vegas retailer. Its Grand Archive product category does not publish a recurring play schedule; verify current weekly day/time directly. Snapshot: latest recorded event 2024-08-31T20:30:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 129 | 49 | AFK Games | US | 2495 N Cedar St STE 14B, Holt, MI 48842, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://afk.games/events/) publishes Grand Archive weekly play Wednesdays 6–9:30 p.m., free, including October 21. Confirm individual dates for cancellations. Snapshot: latest recorded event 2025-10-15T22:30:00.000Z; 10 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 130 | 515 | The End Games | US | 390 Hillsdale Dr, Charlottesville, VA 22901, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.theendgames.co/calendar) embeds a calendar without readable Grand Archive weekly details. The official homepage advertises a store championship, but that does not establish current recurring play; obtain the current weekly schedule. Snapshot: latest recorded event 2026-07-27T22:00:00.000Z; 8 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 131 | 772 | GAMES TIME TORINO CENTER | IT | Via Borgosesia, 90/B, 10145 Torino TO, Italy | Pending | Pending |  |
+| 131 | 772 | GAMES TIME TORINO CENTER | IT | Via Borgosesia, 90/B, 10145 Torino TO, Italy | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://locator.riftbound.uvsgames.com/stores/21eb3498-3022-4ce5-a17d-287da078b6da) links [official Instagram](https://www.instagram.com/gamestimetorinocentro/) and identifies Via Borgosesia 90/B. Its Riftbound schedule must not be used as Grand Archive evidence; no current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-06T19:00:00.000Z; 11 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 132 | 493 | TCB Games | US | 44 E Park Dr, Huntington, IN 46750, USA | Pending | Pending |  |
 | 133 | 596 | Good Games Canberra City | AU | 38 Garema Pl, Canberra ACT 2600, Australia | Pending | Pending |  |
 | 134 | 658 | The Dragonforge | PH | UP town center, Diliman, Quezon City, Metro Manila, Philippines | Pending | Pending |  |

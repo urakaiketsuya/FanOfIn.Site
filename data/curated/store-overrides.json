@@ -1899,5 +1899,9 @@
   "515": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.theendgames.co/calendar) embeds a calendar without readable Grand Archive weekly details. The official homepage advertises a store championship, but that does not establish current recurring play; obtain the current weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "772": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Official social page identified. Weekly events: Unconfirmed. [Source](https://locator.riftbound.uvsgames.com/stores/21eb3498-3022-4ce5-a17d-287da078b6da) links [official Instagram](https://www.instagram.com/gamestimetorinocentro/) and identifies Via Borgosesia 90/B. Its Riftbound schedule must not be used as Grand Archive evidence; no current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
