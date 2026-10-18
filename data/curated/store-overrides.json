@@ -1132,5 +1132,9 @@
   "908": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://legames.com.my/) confirms 18-1-6 Gembira Parade, Lorong Delima 1. [Store policy](https://legames.com.my/store-policy/) explicitly supports physical pickup. Map embed has a viewport centre without independently verified destination coordinates; no point imported. Latest Omnidex event in committed snapshot 2026-10-11T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "915": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.sonfallgames.com/location/contact) confirms 195 S Union Boulevard Suite 100. [Publisher event](https://locator.riftbound.uvsgames.com/events/521600) matches and supplies 39.7124158, -105.1342079. Imported exact shop point. [Official calendar](https://www.sonfallgames.com/event-calendar) separately advertises Grand Archive Thursdays at 18:30 through December 31, 2026; this published schedule is distinct from computed recurrence. Latest Omnidex event in committed snapshot 2026-07-11T22:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

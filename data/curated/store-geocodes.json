@@ -1170,6 +1170,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 915,
+    "address": "195 S Union Blvd ste 100, Lakewood, CO 80228, USA",
+    "lat": 39.7124158,
+    "lng": -105.1342079,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/521600",
+    "sourceAddress": "195 S Union Blvd suite 100, Lakewood, CO 80228, USA",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 949,
     "address": "8966 W Bowles Ave ste y, Littleton, CO 80123, USA",
     "lat": 39.6085288,
