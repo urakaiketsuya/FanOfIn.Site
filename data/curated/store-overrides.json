@@ -700,5 +700,9 @@
   "481": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/my/event-search/8943/) confirms RoundTable Cards and Hobbies Center at B-264, first floor, Jalan Beserah, Kuantan. roundtablehobbies.com describes sports collectibles without establishing a Kuantan connection, so it is not accepted as this shop website. No verified business coordinates obtained. Latest Omnidex event in committed snapshot 2025-12-08T14:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "502": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon retailer list](https://asia.pokemon-card.com/tw/archive/special/card/classic/assets/images/%E3%80%90TW%E3%80%91Classic%E9%A0%90%E5%94%AE%E5%BA%97%E5%AE%B6%E5%90%8D%E5%96%AE.pdf) and [manufacturer retailer list](https://www.kakamouse.com/tw/about/33) confirm 145 Hansheng West Road, first floor. No official standalone site or verified shop pin established. Excluded the similarly named Hualien guesthouse. Latest Omnidex event in committed snapshot 2026-04-28T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
