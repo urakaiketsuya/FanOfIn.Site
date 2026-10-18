@@ -852,5 +852,9 @@
   "249": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.generalgames.com.au/pages/contact-us) lists Chirnside Park Shop 5b, 239 Maroondah Highway, while recorded address says 5a. [Mall tenant listing](https://www.chirnsidepark.com.au/stores-services/generalgames) confirms retailer and centre but does not resolve unit discrepancy. No general mall point imported. Latest Omnidex event in committed snapshot 2026-06-14T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "387": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher store](https://locator.riftbound.uvsgames.com/stores/0696f625-4586-4f8b-950b-d876f283d693) confirms 625 Boulevard du Cure-Labelle Unit 6 and supplies 45.6594108, -73.8594516. [Lorcana locator](https://tcg.ravensburgerplay.com/stores/489f7bf3-704d-44c7-a3ca-11ffabb33f7e) corroborates and links [official shop](https://www.cardcastergames.com/). Imported exact branch point. Latest Omnidex event in committed snapshot 2026-07-09T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
