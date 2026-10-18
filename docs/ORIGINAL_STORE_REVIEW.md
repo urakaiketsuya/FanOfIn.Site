@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 64/305 (21.0%); 241 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 65/305 (21.3%); 240 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 42 unconfirmed.
+Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 43 unconfirmed.
 
-Next: #65 Games Haven BBK.
+Next: #66 Libertalia Juegos.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -78,7 +78,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 62 | 235 | Living Realms | GB | 13-15 Sagar St, Castleford WF10 1AG, UK | Verified site | Special event only | Reviewed 2026-10-18: [Official events page](https://www.livingrealms.co.uk/pages/events) has no readable schedule. The [official .asphodel/paradise regional ticket](https://www.livingrealms.co.uk/collections/events-revised/products/grand-archive-asphodel-paradise-regional) verifies GA organized play but not a weekly recurrence. Ask for the current Castleford local-play schedule. Snapshot: latest recorded event 2026-10-10T10:00:00.000Z; 8 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 63 | 717 | Game and Glory Sdn Bhd | MY | 1-42A, Jalan PJU 1/45, Aman Suria, 47301 Petaling Jaya, Selangor, Malaysia | Verified site | Historical schedule | Reviewed 2026-10-18: [Official October 2025 announcement](https://www.gameandglory.com/blogs/news/announcement-notice-) advertises Sunday Grand Archive BP tournaments. A [February 2026 founder interview](https://www.gameandglory.com/blogs/news/behind-the-brand-don-chong-founder-second-interview-with-cardzgo-) still describes weekly GA play, but gives no current day/time. Retain Sunday as historical evidence and verify the October 2026 schedule. Snapshot: latest recorded event 2026-10-14T12:30:00.000Z; 33 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 64 | 44 | Kayfabe Cards | US | 12652 S 2700 W, Riverton, UT 84065, USA | Identified site | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://tcg.ravensburgerplay.com/stores/870c9a35-9a95-4ff9-a91d-78efddf4d4a5) confirms 12652 S 2700 W, suite D, and links kayfabecards.com. That site returned 403; [Kayfabe Online](https://kayfabeonline.com/collections/grand-archive) has GA retail stock but no verified weekly slot. Confirm the current Riverton schedule; Lorcana Tuesdays are not GA. Snapshot: latest recorded event 2026-09-05T19:00:00.000Z; 25 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 65 | 695 | Games Haven BBK | MY | 17, Lorong Tiara 1a, Bandar Baru Klang, 41150 Klang, Selangor, Malaysia | Pending | Pending |  |
+| 65 | 695 | Games Haven BBK | MY | 17, Lorong Tiara 1a, Bandar Baru Klang, 41150 Klang, Selangor, Malaysia | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36b50a1-f0cd-4a29-a454-843e4e02e63e) confirms 17 Lorong Tiara 1a and links [Games Haven Facebook](https://www.facebook.com/gameshavenmy/). Publicly readable Tuesday/Sunday weekly listings are Riftbound, not Grand Archive. No current GA weekly announcement verified; request branch-specific details. Snapshot: latest recorded event 2026-09-05T08:00:00.000Z; 34 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 66 | 55 | Libertalia Juegos | ES | C. Badajoz, 32, 28931 Móstoles, Madrid, Spain | Pending | Pending |  |
 | 67 | 97 | Luna Cards | AU | 512 Centre Rd, Bentleigh VIC 3204, Australia | Pending | Pending |  |
 | 68 | 187 | Valkyrie Games | NZ | 134 King Street, Palmerston North Central, Palmerston North 4410, New Zealand | Pending | Pending |  |

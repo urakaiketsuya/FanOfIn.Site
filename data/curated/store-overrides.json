@@ -1636,5 +1636,9 @@
   "44": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher store profile](https://tcg.ravensburgerplay.com/stores/870c9a35-9a95-4ff9-a91d-78efddf4d4a5) confirms 12652 S 2700 W, suite D, and links kayfabecards.com. That site returned 403; [Kayfabe Online](https://kayfabeonline.com/collections/grand-archive) has GA retail stock but no verified weekly slot. Confirm the current Riverton schedule; Lorcana Tuesdays are not GA. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "695": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36b50a1-f0cd-4a29-a454-843e4e02e63e) confirms 17 Lorong Tiara 1a and links [Games Haven Facebook](https://www.facebook.com/gameshavenmy/). Publicly readable Tuesday/Sunday weekly listings are Riftbound, not Grand Archive. No current GA weekly announcement verified; request branch-specific details. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
