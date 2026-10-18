@@ -716,5 +716,9 @@
   "28": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://derpycards.com/) and [shop location listing](https://shop.app/m/derpycards) confirm 636 Edward Avenue unit 4, Richmond Hill. No named storefront coordinates verified. The additional derpycard.com contact page was not needed to establish the address; preserve the verified plural-domain retailer link. Latest Omnidex event in committed snapshot 2025-10-05T18:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "30": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://valhallahobby.com/) confirms 535 Half Mile Road Suite 5B, Verona. [Publisher event](https://locator.riftbound.uvsgames.com/events/442038) names the same retailer/building as ste 5 and supplies matching store/event coordinates 42.9868847, -89.54601219999999. Imported named business point; official site resolves the suite suffix. Latest Omnidex event in committed snapshot 2026-09-05T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

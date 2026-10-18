@@ -72,6 +72,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
   },
   {
+    "hostId": 30,
+    "address": "535 Half Mile Rd Suite 5B, Verona, WI 53593, USA",
+    "lat": 42.9868847,
+    "lng": -89.54601219999999,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/442038",
+    "sourceAddress": "535 Half Mile Rd, ste 5, Verona, WI, 53593, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 38,
     "address": "3902 13th Ave S #100, Fargo, ND 58103, USA",
     "lat": 46.8584289,
