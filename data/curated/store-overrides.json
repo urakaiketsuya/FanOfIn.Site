@@ -640,5 +640,9 @@
   "524": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://happylandcollectibles.com/contact-us/) and [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/7146/) confirm 5 Coleman Street B1-10. Contact-page embedded map instead names Giffard Mansion; its viewport is not valid shop evidence. Marketplace also retains 390 Victoria Street. No point imported pending a correct named business map. Latest Omnidex event in committed snapshot 2026-01-18T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "534": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event](https://asia.pokemon-card.com/my/event-search/10828/) confirms ground-floor SG-10-0, Subang Square Shopping Gallery, SS15/4, and requires purchase of a Build and Battle box. [Shop social mirror](https://www.findglocal.com/MY/Subang-Jaya/100349275388381/Let%27s-Koppie-and-Hobbies) confirms the cafe/card-game identity. No official standalone website or named unit coordinates established. Latest Omnidex event in committed snapshot 2026-01-01T01:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
