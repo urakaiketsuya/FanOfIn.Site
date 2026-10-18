@@ -1847,5 +1847,9 @@
   "12": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.shipwreckgamesnj.com/weeklyevents) did not expose a current Grand Archive slot in the readable weekly-event content; the full events route could not be read. Confirm current day/time with the store. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "204": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://tofustrading.com/collections/grand-archive-tcg) includes Grand Archive league products. [League registration](https://tofustrading.com/products/pokemon-league) has Grand Archive variants but no readable current day/time; sold-out product entries do not confirm ongoing weekly availability. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

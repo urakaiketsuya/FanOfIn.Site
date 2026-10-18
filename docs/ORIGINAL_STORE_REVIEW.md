@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 117/305 (38.4%); 188 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 118/305 (38.7%); 187 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 21 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 75 unconfirmed.
+Weekly results among reviewed stores: 21 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 76 unconfirmed.
 
-Next: #118 Tofu's Trading.
+Next: #119 Pandemonium Books and Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -131,7 +131,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 115 | 274 | Game Corps | US | 2920 Buffalo Rd, Erie, PA 16510, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://gamecorpsonline.com/schedule) shows an October 2026 calendar with Grand Archive every Monday at 6 p.m., visually checked. Official homepage matches 2920 Buffalo Road. Older Thursday activity should not replace this published schedule. Snapshot: latest recorded event 2025-07-03T22:00:00.000Z; 16 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 116 | 406 | RetroEdge Games | US | 2085 Solano Ave Vallejo, CA, 94509 United States | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://retroedgegames.com/wp-content/uploads/2026/10/Oct2026_rev1.jpg) shows Grand Archive at 6:30 p.m. on all October 2026 Fridays (2, 9, 16, 23, 30), visually checked. [Official homepage](https://retroedgegames.com/) gives ZIP 94590, conflicting with stored 94509; postal detail needs correction in a location follow-up. Snapshot: latest recorded event 2026-05-30T01:30:00.000Z; 10 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 117 | 12 | Shipwreck Games | US | 118 N Main St #1, Forked River, NJ 08731, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.shipwreckgamesnj.com/weeklyevents) did not expose a current Grand Archive slot in the readable weekly-event content; the full events route could not be read. Confirm current day/time with the store. Snapshot: latest recorded event 2026-06-14T16:00:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 118 | 204 | Tofu's Trading | US | 969 Story Rd UNIT 6078, San Jose, CA 95122 United States | Pending | Pending |  |
+| 118 | 204 | Tofu's Trading | US | 969 Story Rd UNIT 6078, San Jose, CA 95122 United States | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://tofustrading.com/collections/grand-archive-tcg) includes Grand Archive league products. [League registration](https://tofustrading.com/products/pokemon-league) has Grand Archive variants but no readable current day/time; sold-out product entries do not confirm ongoing weekly availability. Snapshot: latest recorded event 2025-08-30T20:00:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 119 | 560 | Pandemonium Books and Games | US | 4 Pleasant St, Cambridge, MA 02139, USA | Pending | Pending |  |
 | 120 | 802 | The Rare Den | MY | 26-1, Jalan KS 3, Kepayang Sentral, 70200 Seremban, Negeri Sembilan, Malaysia | Pending | Pending |  |
 | 121 | 332 | Spielipinas Games and Hobbies | PH | Mango Square, Cebu City, 6000 Cebu, Philippines | Pending | Pending |  |
