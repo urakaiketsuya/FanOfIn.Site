@@ -1148,5 +1148,9 @@
   "1060": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/70d38097-fa1e-4669-b61b-ae45bedf1fd9) and [Konami list](https://www.yugioh-card.com/en/events/tournament_locations_lat-am/) give 665 Conselheiro Portela, Sala 108, whereas recorded address is 655. Publisher links [official Instagram](https://www.instagram.com/geekshop.brasil/). No standalone official site established; withheld mapping pending street-number correction evidence. Latest Omnidex event in committed snapshot 2026-10-12T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "89": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://www.baydragon.co.nz/) confirms Unit 41a, 277 Te Irirangi Drive, distinct from the Blockhouse Bay branch in [publisher list](https://en.cf-vanguard.com/shop/asia-pacific/). Official postal code is 2019 while recorded is 2016; street/unit agree. No verified named branch coordinates obtained. Latest Omnidex event in committed snapshot 2024-08-18T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
