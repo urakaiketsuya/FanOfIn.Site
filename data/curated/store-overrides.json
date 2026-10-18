@@ -1416,5 +1416,9 @@
   "74": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://sites.google.com/view/hobbyoutpostcheras) identifies the Cheras game shop, Grand Archive, and its official Facebook; [storefront](https://hobbyoutpost.storehub.me/) corroborates retail identity. Neither readable page publishes a Grand Archive weekly schedule. Confirm exact C180 unit and current weekly day/time through the store. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "29": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified marketplace. Weekly events: Unconfirmed. [Store's TCGplayer seller page](https://www.tcgplayer.com/sellers/Final-Turn-Gaming/d229f260) identifies Clifton and Grand Archive inventory; [publisher listing](https://www.yugioh-card.com/en/events/release_celebration/ra05_relcel_locations/) confirms 120 Market Street. No standalone official site or current weekly Grand Archive schedule verified. Historical regional registration alone is insufficient. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
