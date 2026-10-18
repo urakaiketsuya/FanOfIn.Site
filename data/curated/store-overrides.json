@@ -1016,5 +1016,9 @@
   "487": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer product/pickup page](https://carduniverse.store/products/gundam-st06) confirms Room 602, Block G, Ka Ming Factory Building, 688-690 Castle Peak Road. [FAB directory](https://legacy.fabtcg.com/en/locator/?page=309) still lists 658 Castle Peak Road. No verified destination for the recorded current pickup address; do not reuse the older building point. Latest Omnidex event in committed snapshot 2025-08-17T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "532": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://constellationcollectivesac.com/) establishes card sales. [Publisher event](https://tcg.ravensburgerplay.com/events/740367) matches 6220 Belleau Wood Lane Unit 2 and supplies store/event coordinates 38.5128461, -121.504931. Imported exact business point. Latest Omnidex event in committed snapshot 2026-05-15T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

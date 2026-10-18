@@ -774,6 +774,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 532,
+    "address": "6220 Belleau Wood Ln unit 2, Sacramento, CA 95822, USA",
+    "lat": 38.5128461,
+    "lng": -121.504931,
+    "sourceUrl": "https://tcg.ravensburgerplay.com/events/740367",
+    "sourceAddress": "6220 Belleau Wood Lane, Unit 2, Sacramento, CA, 95822, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 535,
     "address": "No 20-1 jalan prima 2 pusat niaga metro prima\n52100 kuala lumpur\n52100 Kuala Lumpur\nMalaysia",
     "lat": 3.2157,
