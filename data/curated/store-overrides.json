@@ -1684,5 +1684,9 @@
   "752": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36bd226-3090-4f2f-8d18-da9c30260373) matches 2 Lowry Street and links epicipswich.com.au. The homepage returned 502. An [older official organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) still lists 17a Thorn Street and no events. Confirm current GA schedule at Lowry; retain the address discrepancy as a follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "40": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official website](https://theotakuhangout.com/) matches 555 US Highway 70 SW and explicitly publishes Grand Archive Saturdays at 19:00 under weekly tournaments. Other games occupy other days; the 16:00 Saturday Pokemon slot is separate. Check for special-event substitutions. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
