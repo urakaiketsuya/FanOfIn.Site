@@ -1204,5 +1204,9 @@
   "965": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://cardnyang.com/) lists 9 Nonhyeon-ro 77-gil, fourth floor, but its calendar places Tournament Center events on the second floor. [Publisher nationals listing](https://judge.fabtcg.com/events/14187/) also specifies second floor. Retail identity confirmed; reconcile Tournament Center floor before importing a point. Latest Omnidex event in committed snapshot 2026-09-05T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "970": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Recorded GA championship](https://fractalofin.site/PRD/64966.html) gives Unit 55.2, first floor, Airport Mall. [Publisher shop list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202405/list_malaysia.php) instead lists the older Wisma Intan shop in Sengkurong. Retail identity supported, but relocation and exact current-unit coordinates remain unresolved; no official standalone website established. Latest Omnidex event in committed snapshot 2026-10-10T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
