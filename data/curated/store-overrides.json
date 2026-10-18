@@ -1220,5 +1220,9 @@
   "7": {
     "kind": "store",
     "evidence": "2026-10-18: [BBB business record](https://www.bbb.org/us/ct/enfield/profile/games/haven-games-and-hobbies-llc-0111-110091668/) identifies retail but flags it out of business and lists Suite 13 rather than recorded Suite 56. [Local closure report](https://www.theconnecticutscoop.com/statewide-news/east-windsor-scoop-new-tabletop-gaming-store-to-open) reports permanent closure May 17, 2025. No current official website or active exact-unit point verified; retain historical evidence pending status reconciliation. Latest Omnidex event in committed snapshot 2024-08-18T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "64": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event](https://tcg.ravensburgerplay.com/events/718413) supplies 3.00638, 101.5338817 at number 46 and links [official Facebook](https://www.facebook.com/nakamashop126). [Bandai retailer list](https://www.unionarena-tcg.com/en/events/shop-battle/2024/04/list_malaysia.php) specifies 46-1 first floor, while Pokemon lists 46A. Retail confirmed; withheld point until unit/address variants are reconciled. No standalone website established. Latest Omnidex event in committed snapshot 2024-03-10T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
