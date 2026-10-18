@@ -1572,5 +1572,9 @@
   "142": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/6a8c83f6-9827-4814-97f1-3cb3ee25b01f) links [official Facebook](https://www.facebook.com/gamersresort/) and lists 20 Edward Street rather than recorded 135 Maude Street. This is an unresolved location discrepancy; old pin is not newly verified. No current Grand Archive weekly schedule found; listed Riftbound Fridays are unrelated. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "421": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official PokeBox USA website](https://www.pokeboxusa.com/) confirms 625 West Las Tunas Drive and Grand Archive inventory. No readable current Grand Archive weekly schedule found. Recent Omnidex events and a championship do not independently establish weekly day/time; confirm through the store. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
