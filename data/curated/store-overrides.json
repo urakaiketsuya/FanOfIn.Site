@@ -804,5 +804,9 @@
   "854": {
     "kind": "unclassified",
     "evidence": "2026-10-18: [GA event record](https://www.fractalofin.site/RDO/57712.html) confirms SideDeck at 20-1 Jalan Impian Makmur 3/A. Repeated name/address searches did not establish independent retail identity, an official website, or address-bound coordinates. Remains unclassified; do not substitute a similarly named shop. Latest Omnidex event in committed snapshot 2026-10-16T13:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "63": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://darkwood.lv/en/) establishes retail sales but now gives Augusta Deglava 69H; [returns policy](https://darkwood.lv/pravo-otkaza) also directs returns to 69H while older text uses 69E. Recorded event address is 69E. Resolve building-letter/relocation discrepancy before importing a point. Latest Omnidex event in committed snapshot 2026-09-04T15:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
