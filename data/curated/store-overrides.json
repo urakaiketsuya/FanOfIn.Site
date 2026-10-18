@@ -624,5 +624,9 @@
   "434": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://ikicardshop.wixsite.com/ikicardshop) identifies the card retailer. [Bandai store list](https://www.unionarena-tcg.com/en/events/shop-battle/2024/02/list_indonesia.php) identifies IKI x TCGnoHeya at Mediterania Residences 1, Tower BC, third floor beside Starbucks. No exact storefront coordinates verified; resolve the floor/tower notation against the recorded address before mapping. Latest Omnidex event in committed snapshot 2026-08-11T12:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "666": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Manufacturer retail channels](https://www.gege.com.tw/shop) confirm Gaia at 35 Lane 285, Section 1 Datong Road. [Publisher event](https://event.shadowverse.com/cht/eventsupport/detail?id=2332) agrees; [official Facebook](https://www.facebook.com/GAIABOARDGAME/) identified. No verified address-bound point obtained. Latest Omnidex event in committed snapshot 2026-10-16T12:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
