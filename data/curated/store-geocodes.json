@@ -1026,6 +1026,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 739,
+    "address": "T059, mezzanine floor Mid Valley Megamall, Mid Valley City, 59200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia",
+    "lat": 3.1174103,
+    "lng": 101.6777107,
+    "sourceUrl": "https://www.waze.com/en-AU/live-map/directions/my/wilayah-persekutuan-kuala-lumpur/kuala-lumpur/ace-cards-%2A-mid-valley-megamall?to=place.ChIJI8KOl45JzDERjqOzJybPGQ0",
+    "sourceAddress": "T-059, 3rd Floor Mezzanine Floor, Mid Valley Megamall, Mid Valley City, 59200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 745,
     "address": "Ul. Baruna Trenka 8, 10000, Zagreb, Croatia",
     "lat": 45.8076482,

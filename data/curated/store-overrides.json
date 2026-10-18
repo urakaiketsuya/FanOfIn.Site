@@ -1180,5 +1180,9 @@
   "698": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://hullpops.co.uk/) confirms physical retail at Unit 26 Priory Tec Park, Saxon Way. [Publisher event](https://locator.riftbound.uvsgames.com/events/800147) matches and supplies 53.7209961, -0.4270781. Imported shop point; company registered-office address at Boothferry Road was not substituted. Latest Omnidex event in committed snapshot 2025-10-20T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "739": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch directory](https://acecards.com/pages/locate-us) confirms T-059, third-floor mezzanine, Mid Valley Megamall. [Named Waze destination](https://www.waze.com/en-AU/live-map/directions/my/wilayah-persekutuan-kuala-lumpur/kuala-lumpur/ace-cards-%2A-mid-valley-megamall?to=place.ChIJI8KOl45JzDERjqOzJybPGQ0) matches exact unit and supplies 3.1174103, 101.6777107. Imported branch point, distinct from 1 Utama and Sunway Pyramid. Latest Omnidex event in committed snapshot 2025-11-11T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
