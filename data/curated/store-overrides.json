@@ -1736,5 +1736,9 @@
   "814": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.itsgametimela.com/) matches 3301 Motor Avenue and publishes schedules for several other games, but none for Grand Archive. Historical GA championship results do not establish recurring play. Confirm current GA day/time with the Los Angeles store. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "95": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Older official calendar](https://www.cardtastic.com.au/Default.aspx/js/scripts/images/js/js/tournaments.aspx) lists GA Thursdays at 19:00 in July 2026. The [current October calendar](https://www.cardtastic.com.au/tournaments.aspx) does not show GA in its readable entries. Confirm whether the Thursday league continues; absence from the current page is not proof it ended. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
