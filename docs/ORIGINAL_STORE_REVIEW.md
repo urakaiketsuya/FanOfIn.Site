@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 146/305 (47.9%); 159 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 147/305 (48.2%); 158 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 15 historical schedule; 8 special event only; 98 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 15 historical schedule; 8 special event only; 99 unconfirmed.
 
-Next: #147 GuuBuu Hobby.
+Next: #148 The Upkeep Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -160,7 +160,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 144 | 782 | ABU Games | US | 7211 W, 7211 Colonial St, Boise, ID 83709, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://abugames.com/) is the official site but readable event detail was unavailable. A [secondary September 24 listing](https://events.yodel.today/boise-id/event/ABU-Games/Grand-Archive-TCG---Weekly-Tournament----ABU-Games/6a038e1c25567b3260231a15) records Thursday 6:30–9 p.m. Grand Archive play. Treat that as past evidence pending a current store-owned schedule. Snapshot: latest recorded event 2026-10-16T00:30:00.000Z; 10 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 145 | 901 | Hyper Collectibles Tampa | US | 7029 W Waters Ave, Tampa, FL 33634, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://hypercollectiblestcg.com/pages/calendar) is the official calendar but did not expose readable weekly details. [Publisher Tampa profile](https://locator.riftbound.uvsgames.com/stores/1093f903-dcbc-4b90-888e-67522f83e653) links this site to the Tampa store. Current Grand Archive weekly day/time remains unconfirmed. Snapshot: latest recorded event 2026-10-13T22:30:00.000Z; 10 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 146 | 20 | Game Kastle Greenville | US | 2854a Wade Hampton Blvd, Taylors, SC 29687, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://gamekastle.com/pages/greenville-sc-event-calendar) identifies the Greenville branch calendar. No current recurring Grand Archive slot was verified in its readable entries; confirm with this branch rather than substituting another Game Kastle schedule. Snapshot: latest recorded event 2026-05-16T15:00:00.000Z; 1 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 147 | 233 | GuuBuu Hobby | US | 3334 Stone Mountain Hwy suite e, Snellville, GA 30078, USA | Pending | Pending |  |
+| 147 | 233 | GuuBuu Hobby | US | 3334 Stone Mountain Hwy suite e, Snellville, GA 30078, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://guubuuhobby.com/) identifies the retailer and Grand Archive products. An alternate home page contains unrelated template text, so it was not used as schedule evidence. No current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-03T16:30:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 148 | 354 | The Upkeep Games | US | 2121 W Stadium Blvd, Ann Arbor, MI 48103, USA | Pending | Pending |  |
 | 149 | 579 | Gamenut Topeka | US | 5119 SW 29th St, Topeka, KS 66614, USA | Pending | Pending |  |
 | 150 | 769 | TOTL Games | US | 736 NE Martin Luther King Jr Blvd, Portland, OR 97232, USA | Pending | Pending |  |

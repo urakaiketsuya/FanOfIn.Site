@@ -1962,5 +1962,9 @@
   "20": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://gamekastle.com/pages/greenville-sc-event-calendar) identifies the Greenville branch calendar. No current recurring Grand Archive slot was verified in its readable entries; confirm with this branch rather than substituting another Game Kastle schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "233": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://guubuuhobby.com/) identifies the retailer and Grand Archive products. An alternate home page contains unrelated template text, so it was not used as schedule evidence. No current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
