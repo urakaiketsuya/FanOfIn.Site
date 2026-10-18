@@ -1144,5 +1144,9 @@
   "984": {
     "kind": "store",
     "evidence": "2026-10-18: [Manufacturer stockist list](https://maydaygames.com.br/pages/onde-comprar) matches 685 Conde de Bonfim, Loja D Galeria. [Company profile](https://br.linkedin.com/company/bolsa-do-infinito) establishes retail but still gives 615, Loja 117 and identifies http://www.bolsadoinfinito.com.br. Resolve historical address discrepancy; no verified current business point obtained. Latest Omnidex event in committed snapshot 2026-09-30T22:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "1060": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/70d38097-fa1e-4669-b61b-ae45bedf1fd9) and [Konami list](https://www.yugioh-card.com/en/events/tournament_locations_lat-am/) give 665 Conselheiro Portela, Sala 108, whereas recorded address is 655. Publisher links [official Instagram](https://www.instagram.com/geekshop.brasil/). No standalone official site established; withheld mapping pending street-number correction evidence. Latest Omnidex event in committed snapshot 2026-10-12T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
