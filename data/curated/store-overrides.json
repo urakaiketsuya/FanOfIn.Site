@@ -1376,5 +1376,9 @@
   "982": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/67753/) and [GA distributor directory](https://www.fayble-asia.com/game_store.php?id=13) identify MiDogTCG; Pokemon listings give 3 Lane 3 Yucai Street. [Retailer marketplace](https://www.ruten.com.tw/store/andyiee000/list) establishes card sales. No official standalone website or verified shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-10-04T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "1017": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch directory](https://193tcg.com/user_data/shopinfo) confirms 3-2-14 Sotokanda, Imai Building second floor, filling the missing street detail in the recorded address. [Named Yahoo Maps shop](https://map.yahoo.co.jp/v3/place/HK4ucKeU3yA) supplies 35.70048141479492, 139.7698516845703 for this branch. Imported named destination; separate fourth-floor event-space references do not replace the official second-floor shop address. Latest Omnidex event in committed snapshot 2026-10-10T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

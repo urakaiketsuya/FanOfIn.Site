@@ -1377,6 +1377,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 1017,
+    "address": "２F, 今井ビル, Chiyoda City, Tokyo, 101-0021, Japan",
+    "lat": 35.70048141479492,
+    "lng": 139.7698516845703,
+    "sourceUrl": "https://map.yahoo.co.jp/v3/place/HK4ucKeU3yA",
+    "sourceAddress": "東京都千代田区外神田3丁目2-14 今井ビル 2F",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 1042,
     "address": "Loja 143C - Subsolo, 188 Rua Dias da Cruz, Rio de Janeiro, Rio de Janeiro, 20720-012, Brazil",
     "lat": -22.9020148,
