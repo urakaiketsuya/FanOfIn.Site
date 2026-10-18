@@ -868,5 +868,9 @@
   "546": {
     "kind": "store",
     "evidence": "2026-10-18: [Card-shop directory](https://www.tcdb.com/CardShops.cfm?MODE=VIEW&ShopID=3102) confirms 1073 W Broad Street Unit 201D and identifies [official website](https://sinnersrefuge.com/) and [Facebook](https://www.facebook.com/people/Sinners-Refuge/61550327987647/). [Retail inventory directory](https://yestcg.com/stores/virginia/falls-church/sinners-refuge) supports card sales. Official page returned a shop shell without verified map coordinates; no pin imported. Latest Omnidex event in committed snapshot 2026-04-28T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "569": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/omegaglandy/) explicitly identifies Magic Star at 231 Heping East Road Section 2, second floor, with card sales and store pickup. [Second shop listing](https://myship.7-11.com.tw/general/detail/GM2412169042109) agrees. No standalone website or verified business point obtained. Latest Omnidex event in committed snapshot 2026-09-10T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
