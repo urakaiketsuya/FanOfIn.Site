@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 3/305 (1.0%); 302 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 4/305 (1.3%); 301 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 0 special event only; 2 unconfirmed.
+Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 0 special event only; 3 unconfirmed.
 
-Next: #4 Card Merchant Christchurch.
+Next: #5 Game Nut Entertainment.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -17,7 +17,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 1 | 452 | Active Game Collections | SG | 8 Yio Chu Kang Rd, Singapore 545522 | Historical site | Unconfirmed | Reviewed 2026-10-18: [Store about page](https://activegamecollections.wordpress.com/about/) matches 8 Yio Chu Kang Road, adding #02-8D/E; it is a historical page. [Business listing](https://recordowl.com/company/active-game-collections) identifies activegamecollection.com, which could not be accessed. No readable current weekly announcement found; ask the store to confirm Wednesday/Saturday play. Snapshot: latest recorded event 2026-10-14T12:00:00.000Z; 100 retained regular-event evidence entries; 8 projected dates in the next 28 days (estimates only). |
 | 2 | 297 | Hobby Lords Lower Hutt | NZ | 174 High Street, Hutt Central, Lower Hutt 5010, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) gives 191 High Street, while Omnidex records 174. [Official regional listing](https://www.hobbylords.co.nz/events/single/grand-archive-ptm-regionals-%40-hobby-lords-lower-hutt-) also uses 191. Events page returned 403; a regional is not weekly evidence. Resolve the address discrepancy and current weekly venue before relying on the old pin or Wednesday estimates. Snapshot: latest recorded event 2026-10-14T05:30:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 3 | 54 | Wilczek Sklep | PL | Garbary 64, 61-001 Poznań, Poland | Verified site | Historical schedule | Reviewed 2026-10-18: [Official shop](https://wilczek.poznan.pl/category/grand-archive) confirms Garbary 64/7, Pasaż SIMEX, but gives postcode 61-758 instead of 61-001. [Syndicated May event](https://simplygo.pl/wydarzenia/poznan/rozrywka/wydarzenie/turniej-grand-archive-w-poznaniu-b12584dd-2f1f-4a8f-bd40-d9b6f0779310) advertises Mondays at 18:30; this is historical secondary evidence, not confirmation of October Mondays or Fridays. Verify current schedule and postal detail. Snapshot: latest recorded event 2026-10-16T16:30:00.000Z; 100 retained regular-event evidence entries; 8 projected dates in the next 28 days (estimates only). |
-| 4 | 82 | Card Merchant Christchurch | NZ | 300H Lincoln Road, Addington, Christchurch 8024, New Zealand | Pending | Pending |  |
+| 4 | 82 | Card Merchant Christchurch | NZ | 300H Lincoln Road, Addington, Christchurch 8024, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://cardmerchantchristchurch.co.nz/) lists a7/300 Lincoln Road rather than Omnidex 300H. [Ticket collection](https://cardmerchantchristchurch.co.nz/collections/event-tickets) establishes Grand Archive regional activity, but the readable calendar gives no weekly times. Resolve unit notation and confirm Thursday weekly play with the branch. Snapshot: latest recorded event 2026-10-15T05:30:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 5 | 46 | Game Nut Entertainment | US | 2329 Iowa St space m, Lawrence, KS 66047, USA | Pending | Pending |  |
 | 6 | 66 | Agora Hobby | SG | French Rd, #05-164 Blk 809 Kitchener Complex Singapore | Pending | Pending |  |
 | 7 | 198 | DeckaDice | AU | 75 Victoria St, Mackay QLD 4740, Australia | Pending | Pending |  |

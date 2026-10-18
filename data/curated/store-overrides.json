@@ -1392,5 +1392,9 @@
   "54": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official shop](https://wilczek.poznan.pl/category/grand-archive) confirms Garbary 64/7, Pasaż SIMEX, but gives postcode 61-758 instead of 61-001. [Syndicated May event](https://simplygo.pl/wydarzenia/poznan/rozrywka/wydarzenie/turniej-grand-archive-w-poznaniu-b12584dd-2f1f-4a8f-bd40-d9b6f0779310) advertises Mondays at 18:30; this is historical secondary evidence, not confirmation of October Mondays or Fridays. Verify current schedule and postal detail. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "82": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://cardmerchantchristchurch.co.nz/) lists a7/300 Lincoln Road rather than Omnidex 300H. [Ticket collection](https://cardmerchantchristchurch.co.nz/collections/event-tickets) establishes Grand Archive regional activity, but the readable calendar gives no weekly times. Resolve unit notation and confirm Thursday weekly play with the branch. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
