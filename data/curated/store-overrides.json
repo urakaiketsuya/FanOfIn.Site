@@ -840,5 +840,9 @@
   "811": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch page](https://cantripmtg.com/pages/hachiojistore) confirms 4-11 Misakicho, Tonen Building 4F. [Pokemon retailer locator](https://map.pokemon-card.com/map/19752) matches and provides its Google Maps destination query 35.657626, 139.33717. Imported publisher-supplied shop destination, preserving recorded 4F-C. Latest Omnidex event in committed snapshot 2026-10-17T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "834": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://www.ctcgames.com.au/) confirms card retail at Unit 9, 49 Jijaws Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/092417f6-05ad-4527-a5d7-dae78d027611) matches the exact unit and supplies -27.5624381, 152.9396391. Imported verified point. Latest Omnidex event in committed snapshot 2026-08-13T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

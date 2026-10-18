@@ -945,6 +945,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 834,
+    "address": "unit 9/49 Jijaws St, Sumner QLD 4074, Australia",
+    "lat": -27.5624381,
+    "lng": 152.9396391,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/092417f6-05ad-4527-a5d7-dae78d027611",
+    "sourceAddress": "9/49 Jijaws Street, Sumner, QLD, 4074, AU",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 835,
     "address": "700 Paramus Pk suite 1305, Paramus, NJ 07652, USA",
     "lat": 40.955216,

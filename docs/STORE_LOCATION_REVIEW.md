@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 233 reviewed (63.1% of this checklist); 136 pending. 77 mapped, 156 need further evidence. Map coverage: 392/674 (58.2%); 282 unmapped. Coverage uses the current directory, including pins added outside this checklist.
+Progress: first 234 reviewed (63.4% of this checklist); 135 pending. 78 mapped, 156 need further evidence. Map coverage: 393/674 (58.3%); 281 unmapped. Coverage uses the current directory, including pins added outside this checklist.
 
-Next: #234 CTC Games. Revisit Needs evidence entries after the initial pass.
+Next: #235 True Champion Gaming. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -244,7 +244,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 231 | 694 | Kado | MY | A0331, Blok A, Eko Galleria Iskandar Puteri, 79100 Johor, Johor Darul Ta'zim, Malaysia | Mapped | Reviewed 2026-10-18: [Official shop](https://kado.asia/) confirms Eco Galleria unit A0331, Block A, second floor, distinct from its Sutera Mall outlet. Its address-bound business structured data supplies 1.442348, 103.615777 and a named map link. Imported Eco Galleria point. Latest Omnidex event in committed snapshot 2026-08-08T07:40:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 232 | 778 | Gentoshi | MY | 2nd Floor, Lot 10520, Block 16, KCLD; Jalan Tun Jugah; 93350 Kuching Sarawak; Malaysia | Needs evidence | Reviewed 2026-10-18: [Tournament directory](https://palworldtcg.gg/events/mys) and [GA event record](https://www.fractalofin.site/RDO/58946.html) agree on second floor, Lot 10520, Block 16, Jalan Tun Jugah. Independent retail sales, official website and exact business coordinates remain unverified. Kept unclassified rather than inferring a shop from tournament participation alone. Latest Omnidex event in committed snapshot 2026-08-30T06:15:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 233 | 811 | CANTRIP | JP | Japan, 〒192-0084 Tokyo, Hachioji, Misakichō, 4−１１ トーネンビル 4F-C | Mapped | Reviewed 2026-10-18: [Official branch page](https://cantripmtg.com/pages/hachiojistore) confirms 4-11 Misakicho, Tonen Building 4F. [Pokemon retailer locator](https://map.pokemon-card.com/map/19752) matches and provides its Google Maps destination query 35.657626, 139.33717. Imported publisher-supplied shop destination, preserving recorded 4F-C. Latest Omnidex event in committed snapshot 2026-10-17T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 234 | 834 | CTC Games | AU | unit 9/49 Jijaws St, Sumner QLD 4074, Australia | Pending |  |
+| 234 | 834 | CTC Games | AU | unit 9/49 Jijaws St, Sumner QLD 4074, Australia | Mapped | Reviewed 2026-10-18: [Official website](https://www.ctcgames.com.au/) confirms card retail at Unit 9, 49 Jijaws Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/092417f6-05ad-4527-a5d7-dae78d027611) matches the exact unit and supplies -27.5624381, 152.9396391. Imported verified point. Latest Omnidex event in committed snapshot 2026-08-13T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 235 | 208 | True Champion Gaming | US | 2495 N Cedar St STE 14B, Holt, MI 48842, USA | Pending |  |
 | 236 | 249 | General Games Chirnside Park | AU | Shopping Centre, shop 5a/239 Maroondah Hwy, Chirnside Park VIC 3116, Australia | Pending |  |
 | 237 | 387 | Card Caster Games | CA | 625 Bd du Curé-Labelle #6, Blainville, QC J7C 2J1, Canada | Pending |  |
