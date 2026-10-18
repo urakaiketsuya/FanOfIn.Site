@@ -612,5 +612,9 @@
   "795": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://mainphasehobbies.com/) offers card listings and identifies Rus 888, Riverside Building, Riverside Drive, Pasig for its events. Retail identity established; direct map retrieval failed and no named storefront coordinates were verified. Obtain an address-bound business destination. Latest Omnidex event in committed snapshot 2026-09-20T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "123": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher championship list](https://battlespirits-saga.com/events/store/store-championships/2024/) confirms 28is Oktovriou 48. [Named Waze destination](https://www.waze.com/live-map/directions/gr/athina/no-label-x?to=place.ChIJGYYqzTa9oRQR3ovfNOhonPo) binds No Label X at that address, also called Patision 48, to 37.9904169, 23.7311465. Imported point; no official standalone website established. Latest Omnidex event in committed snapshot 2026-09-12T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
