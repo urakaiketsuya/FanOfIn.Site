@@ -636,5 +636,9 @@
   "207": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher locator](https://legacy.fabtcg.com/en/locator/?mode=store&page=170&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) confirms Fidels Dream on Newport Road, Sandown. [Manufacturer FAQ](https://www.kickstarter.com/projects/thegallantgoblin/kobold-plushies/faqs) identifies https://www.fidelsdream.co.uk/ as its retail website. No current unit A4a destination coordinates obtained; retain recorded address. Latest Omnidex event in committed snapshot 2024-05-18T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "524": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://happylandcollectibles.com/contact-us/) and [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/7146/) confirm 5 Coleman Street B1-10. Contact-page embedded map instead names Giffard Mansion; its viewport is not valid shop evidence. Marketplace also retains 390 Victoria Street. No point imported pending a correct named business map. Latest Omnidex event in committed snapshot 2026-01-18T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
