@@ -315,6 +315,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 143,
+    "address": "372 Saint-Catherine St W #216, Montreal, QC H3B 1A2, Canada",
+    "lat": 45.5057634,
+    "lng": -73.5672666,
+    "sourceUrl": "https://www.waze.com/live-map/directions/ca/qc/montreal/gobelin-dargent?to=place.ChIJPbu-vswbyUwRpXiBs7Bep20",
+    "sourceAddress": "372 Sainte-Catherine St. West #216, Montreal, QC H3B 1A4, Canada",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 164,
     "address": "334 Sunset Ave, Dallas, TX 75208, USA",
     "lat": 32.74376960000001,
