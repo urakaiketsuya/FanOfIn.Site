@@ -3,7 +3,7 @@ import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState, useTransition, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
-import { useOmnidexIndex } from "./data";
+import { useEventBrowserData } from "./data";
 import { EventRowView } from "./EventRow";
 import { useChampionCardImages, useNamelessChampionCard } from "../players/useChampionCardImages";
 import LoadMore from "../../components/LoadMore";
@@ -25,10 +25,10 @@ function categoryRank(category: string): number {
 
 export default function TournamentsIndex() {
   useDocumentTitle("Tournaments", "Browse Grand Archive TCG tournament results from Store Championships to Worlds.");
-  const index = useOmnidexIndex();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(() => searchParams.get("q") ?? "");
+  const { summaries, index, error, retry } = useEventBrowserData(Boolean(search.trim()));
   const [searchDraft, setSearchDraft] = useState(search);
   const [isPending, startTransition] = useTransition();
   function updateSearch(value: string) {
@@ -53,20 +53,20 @@ export default function TournamentsIndex() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const categoriesPresent = useMemo(() => {
-    if (!index) return [];
-    const present = new Set(index.events.map((e) => e.category));
+    if (!summaries) return [];
+    const present = new Set(summaries.events.map((e) => e.category));
     return EVENT_CATEGORY_ORDER.filter((c) => present.has(c));
-  }, [index]);
+  }, [summaries]);
 
   const seasonsPresent = useMemo(() => {
-    if (!index) return [];
-    return [...index.seasons].sort((a, b) => b.dateStart.localeCompare(a.dateStart));
-  }, [index]);
+    if (!summaries) return [];
+    return [...summaries.seasons].sort((a, b) => b.dateStart.localeCompare(a.dateStart));
+  }, [summaries]);
 
   const countriesPresent = useMemo(() => {
-    if (!index) return [];
-    return [...new Set(index.events.map((event) => event.hostCountry).filter((value) => value && value !== "??"))].sort();
-  }, [index]);
+    if (!summaries) return [];
+    return [...new Set(summaries.events.map((event) => event.hostCountry).filter((value) => value && value !== "??"))].sort();
+  }, [summaries]);
 
   const events = useMemo(() => {
     if (!index) return [];
@@ -257,7 +257,7 @@ export default function TournamentsIndex() {
       <button type="button" onClick={() => { updateSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setCountry(null); setDateFrom(""); setDateTo(""); setDecklists("any"); setCoverage("any"); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-control rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
       </details>
 
-      {!index && <InlineState className="mt-6">Loading…</InlineState>}
+      {error ? <div className="mt-6" role="alert"><InlineState tone="danger">{error}</InlineState><Button variant="secondary" onClick={retry}>Retry</Button></div> : !index && <InlineState className="mt-6">{search.trim() ? "Loading search…" : "Loading…"}</InlineState>}
       {index && events.length === 0 && (
         <InlineState className="mt-6">
           No ingested events match this filter yet. Not every event gets deep-fetched – if you know its ID, try
@@ -265,7 +265,7 @@ export default function TournamentsIndex() {
         </InlineState>
       )}
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext0">{isPending ? "Updating…" : `${events.length} event${events.length === 1 ? "" : "s"} match`}</p><Tabs variant="pill" baseId="event-view" label="Event results view" active={viewMode} onChange={setViewMode} tabs={[{key: "list", label: "List"}, {key: "calendar", label: "Calendar"}]} /></div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext0">{error ? "Results unavailable" : !index ? "Loading…" : isPending ? "Updating…" : `${events.length} event${events.length === 1 ? "" : "s"} match`}</p><Tabs variant="pill" baseId="event-view" label="Event results view" active={viewMode} onChange={setViewMode} tabs={[{key: "list", label: "List"}, {key: "calendar", label: "Calendar"}]} /></div>
 
       <TabPanel baseId="event-view" tab="list" active={viewMode} className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</TabPanel><TabPanel baseId="event-view" tab="calendar" active={viewMode} className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</div></section>)}</TabPanel>
 

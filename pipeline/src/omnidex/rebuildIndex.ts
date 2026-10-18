@@ -1,7 +1,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { buildOmnidexIndex } from "./build.js";
+import { buildOmnidexIndex, writeEventBrowserData } from "./build.js";
 import type { OmnidexEventBundle } from "./cache.js";
 
 const dataDirectory = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
@@ -12,6 +12,7 @@ const bundles = await Promise.all(
   eventFiles.map(async (file) => JSON.parse(await readFile(path.join(eventsDirectory, file), "utf8")) as OmnidexEventBundle),
 );
 const { index } = await buildOmnidexIndex(bundles);
+await writeEventBrowserData(index);
 await writeFile(outputPath, JSON.stringify(index), "utf8");
 
 console.log(

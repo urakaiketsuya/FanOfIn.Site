@@ -1,3 +1,4 @@
+import { joinEventBrowserData, type EventSearchData } from "@gatcg/shared";
 import { useCallback, useMemo } from "react";
 import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData, OmnidexVenueGeocodeData } from "@gatcg/shared";
 import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
@@ -45,4 +46,14 @@ export function useOmnidexTeams(): OmnidexTeamsData | undefined {
 /** Geocoded venue coordinates (Nominatim, via pipeline/src/omnidex/geocode.ts) – only venues Nominatim could resolve are present, keyed by the same `hostId` join `OmnidexEventSummary` uses. */
 export function useVenueGeocodes(enabled = true): OmnidexVenueGeocodeData | undefined {
   return usePublishedData<OmnidexVenueGeocodeData>("omnidex-venue-geocodes", "/data/omnidex/venues.json", enabled);
+}
+
+export function useEventBrowserData(searching: boolean) {
+  const summaries = usePublishedData<OmnidexIndexData>("omnidex-browse", "/data/omnidex/browse.json");
+  const search = usePublishedData<EventSearchData>("omnidex-search", "/data/omnidex/search.json", searching);
+  const summaryStatus = usePublishedDataStatus("omnidex-browse", "/data/omnidex/browse.json");
+  const searchStatus = usePublishedDataStatus("omnidex-search", "/data/omnidex/search.json", searching);
+  const index = useMemo(() => !searching ? summaries : summaries && search ? joinEventBrowserData(summaries, search) : undefined, [summaries, search, searching]);
+  const error = !index && (summaryStatus.error || (searching && searchStatus.error) || (summaries && search && summaries.generatedAt !== search.generatedAt ? "Event data is updating. Please retry." : null));
+  return { summaries, index, error, retry: () => { summaryStatus.retry(); if (searching) searchStatus.retry(); } };
 }

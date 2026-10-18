@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import {
   slugify,
+  splitEventBrowserData,
   type OmnidexEventSummary,
   type OmnidexIndexData,
   type OmnidexJudgeSummary,
@@ -155,6 +156,12 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
   };
 }
 
+export async function writeEventBrowserData(index: OmnidexIndexData): Promise<void> {
+  const { summaries, search } = splitEventBrowserData(index);
+  await writeFile(path.join(DATA_DIR, "browse.json"), JSON.stringify(summaries), "utf8");
+  await writeFile(path.join(DATA_DIR, "search.json"), JSON.stringify(search), "utf8");
+}
+
 export async function writeOmnidexData(
   index: OmnidexIndexData,
   players: OmnidexPlayerSummary[],
@@ -163,6 +170,7 @@ export async function writeOmnidexData(
 ): Promise<void> {
   const eventsOutDir = path.join(DATA_DIR, "events");
   await mkdir(eventsOutDir, { recursive: true });
+  await writeEventBrowserData(index);
   await writeFile(path.join(DATA_DIR, "index.json"), JSON.stringify(index), "utf-8");
   await writeFile(path.join(DATA_DIR, "players.json"), JSON.stringify({ generatedAt: index.generatedAt, players }), "utf-8");
   await writeFile(path.join(DATA_DIR, "judges.json"), JSON.stringify({ generatedAt: index.generatedAt, judges }), "utf-8");

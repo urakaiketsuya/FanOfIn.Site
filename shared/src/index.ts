@@ -110,3 +110,5 @@ export * from "./merchandise";
 export * from './stores';
 
 export * from './drawInfluence';
+
+export * from "./eventBrowserData.js";
