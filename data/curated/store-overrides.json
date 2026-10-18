@@ -1680,5 +1680,9 @@
   "465": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch website](https://danes-games.com/) confirms Geneva at 1429 East State Street and a separate West Chicago branch. [Geneva calendar](https://danes-games.com/geneva-calendar/) is an unreadable embed. The [GA championship announcement](https://danes-games.com/we-have-games-to-play/) explicitly places that event in West Chicago, so it cannot establish Geneva weeklies. Confirm branch-specific play. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "752": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/b36bd226-3090-4f2f-8d18-da9c30260373) matches 2 Lowry Street and links epicipswich.com.au. The homepage returned 502. An [older official organizer page](https://www.epicipswich.com.au/event-organizer/epic-ipswich/) still lists 17a Thorn Street and no events. Confirm current GA schedule at Lowry; retain the address discrepancy as a follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
