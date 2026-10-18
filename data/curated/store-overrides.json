@@ -1748,5 +1748,9 @@
   "522": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Austin calendar](https://www.gamekastle.live/pages/austin-tx-event-calendar) explicitly advertises GA meetups every Saturday at 13:00; displayed duration is 13:00–16:00. It lists 3407 Wells Branch Parkway suite 800, postcode 78728 instead of recorded 78727. Verify postal detail and individual meetup dates; do not imply every meetup is a sanctioned tournament. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "786": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official July 2026 schedule](https://spellroogaming.com.au/blogs/news/spellroo-gaming-july-2026-event-schedule) lists Saturday GA weekly league at 16:30. An [older November 2025 league notice](https://spellroogaming.com.au/blogs/news/grand-archive-tcg-weekly-league-spellroo-gaming) used 13:00, demonstrating a time change. Confirm the October slot; the October championship is not a weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

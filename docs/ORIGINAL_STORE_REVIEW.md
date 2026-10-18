@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 92/305 (30.2%); 213 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 93/305 (30.5%); 212 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 10 historical schedule; 6 special event only; 59 unconfirmed.
+Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 11 historical schedule; 6 special event only; 59 unconfirmed.
 
-Next: #93 SPELLROO GAMING.
+Next: #94 ZergHive TCG.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -106,7 +106,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 90 | 95 | CardTastic Collectables and Gaming | AU | 38B Scotsburn Ave, Clayton VIC 3168, Australia | Verified site | Historical schedule | Reviewed 2026-10-18: [Older official calendar](https://www.cardtastic.com.au/Default.aspx/js/scripts/images/js/js/tournaments.aspx) lists GA Thursdays at 19:00 in July 2026. The [current October calendar](https://www.cardtastic.com.au/tournaments.aspx) does not show GA in its readable entries. Confirm whether the Thursday league continues; absence from the current page is not proof it ended. Snapshot: latest recorded event 2026-01-08T08:00:00.000Z; 18 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 91 | 128 | The Light | US | 434 N Lemon Ave, Ontario, CA 91764, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher retailer list](https://www.unionarena-tcg.com/na/pdf/events/demo_deck_event_at_localstores/2024/demo_deck_event_at_localstores_usa.pdf) matches 434 N Lemon Avenue and links [The Light Games Facebook](https://www.facebook.com/TheLightGames). No standalone site or readable current GA weekly announcement verified. Confirm through the store; the April championship does not establish a weekly slot. Snapshot: latest recorded event 2026-10-11T19:00:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 92 | 522 | Game Kastle Austin | US | 3407 Wells Branch Pkwy suite 800, Austin, TX 78727, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official Austin calendar](https://www.gamekastle.live/pages/austin-tx-event-calendar) explicitly advertises GA meetups every Saturday at 13:00; displayed duration is 13:00–16:00. It lists 3407 Wells Branch Parkway suite 800, postcode 78728 instead of recorded 78727. Verify postal detail and individual meetup dates; do not imply every meetup is a sanctioned tournament. Snapshot: latest recorded event 2026-07-18T18:00:00.000Z; 17 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 93 | 786 | SPELLROO GAMING | AU | 327 Concord Rd, Concord West NSW 2138, Australia | Pending | Pending |  |
+| 93 | 786 | SPELLROO GAMING | AU | 327 Concord Rd, Concord West NSW 2138, Australia | Verified site | Historical schedule | Reviewed 2026-10-18: [Official July 2026 schedule](https://spellroogaming.com.au/blogs/news/spellroo-gaming-july-2026-event-schedule) lists Saturday GA weekly league at 16:30. An [older November 2025 league notice](https://spellroogaming.com.au/blogs/news/grand-archive-tcg-weekly-league-spellroo-gaming) used 13:00, demonstrating a time change. Confirm the October slot; the October championship is not a weekly schedule. Snapshot: latest recorded event 2026-10-11T00:15:00.000Z; 19 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 94 | 959 | ZergHive TCG | MY | 100, Jalan Pasar, 34000 Taiping, Perak, Malaysia | Pending | Pending |  |
 | 95 | 1 | Yeti Gaming | US | 84 Grasso Plaza, Affton, MO 63123, USA | Pending | Pending |  |
 | 96 | 292 | World Legacy | HK | 162 Un Chau St, Un Chau, Hong Kong | Pending | Pending |  |
