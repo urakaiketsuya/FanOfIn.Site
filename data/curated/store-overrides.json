@@ -1044,5 +1044,9 @@
   "729": {
     "kind": "venue",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/759342) binds PI Space Games to Shop Lot 1, Suria Residence No.5, Jalan Bazar U8/100 and supplies matching store/event point 3.0982142, 101.5378309. Imported named venue point. Classified as venue pending independent retail evidence; no official standalone website established. Latest Omnidex event in committed snapshot 2026-05-15T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "792": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retail page](https://www.irresistibleforce.com.au/products/combat-patrol-battlezone) gives Shop 1/2 Grevillea Street in its footer, but pickup details specify 18. [Bandai list](https://www.battlespirits-saga.com/pdf/demodeck_storelist_oceania.pdf?v230120=) says shops 17/18. [Waze](https://www.waze.com/live-map/directions/au/qld/tanah-merah/irresistible-force-logan-or-hobby-supplies-and-tabletop-wargaming?to=place.ChIJWceoYyZCkWsRF9g-XAlIlBY) matches recorded Shop 1 and supplies -27.6627873, 153.1705676; withheld until unit conflict is resolved. Latest Omnidex event in committed snapshot 2026-04-11T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
