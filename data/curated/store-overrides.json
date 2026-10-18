@@ -808,5 +808,9 @@
   "63": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://darkwood.lv/en/) establishes retail sales but now gives Augusta Deglava 69H; [returns policy](https://darkwood.lv/pravo-otkaza) also directs returns to 69H while older text uses 69E. Recorded event address is 69E. Resolve building-letter/relocation discrepancy before importing a point. Latest Omnidex event in committed snapshot 2026-09-04T15:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "174": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Bandai shop list](https://www.unionarena-tcg.com/tc/pdf/meetup-shoplist-2305-tw.pdf) confirms historical 61 Jiuru First Road 4F-1. [Official branch page](https://www.catfootprint.com/%E8%B2%93%E8%85%B3%E5%8D%B0-%E4%B8%89%E6%B0%91%E5%BA%97) now lists 169 Yangming Road 5F-7. Retail branch confirmed; resolve relocation before pinning the recorded address. Latest Omnidex event in committed snapshot 2026-10-03T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
