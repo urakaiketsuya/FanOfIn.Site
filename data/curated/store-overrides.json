@@ -1552,5 +1552,9 @@
   "10": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://thebanishzone.com/) matches 600 E Penn Avenue; its [events page](https://thebanishzone.com/events) provides no readable Grand Archive weekly listing. Historical regional and store-championship evidence is not a recurring schedule. Confirm current weekly play directly. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "571": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Grand Archive event page](https://www.boardgamesdallas.com/products/grand-archive-weekly-event) explicitly advertises Thursdays at 19:15 local time with three rounds. The store's [events navigation](https://www.boardgamesdallas.com/pages/events) links that listing. Record this as a published weekly schedule even though the historical recurrence function currently yields no estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
