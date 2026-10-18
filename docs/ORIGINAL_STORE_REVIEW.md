@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 81/305 (26.6%); 224 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 82/305 (26.9%); 223 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 15 published weekly; 0 published fortnightly; 6 historical schedule; 6 special event only; 54 unconfirmed.
+Weekly results among reviewed stores: 15 published weekly; 0 published fortnightly; 6 historical schedule; 6 special event only; 55 unconfirmed.
 
-Next: #82 Post Board Game Lexington.
+Next: #83 Steamship Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -95,7 +95,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 79 | 270 | Symphony Games | US | 6687 Royalton Rd, North Royalton, OH 44133, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official tournament page](https://www.symphony-games.com/tournaments.html) explicitly publishes Grand Archive every Tuesday at 18:30, $5, constructed with proxies allowed. Record that format qualification; it is not a promise of sanctioned tournament legality. [Official about page](https://www.symphony-games.com/about-us.html) identifies the store and its shared print-shop premises. Snapshot: latest recorded event 2026-10-10T17:00:00.000Z; 22 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 80 | 461 | TableGameCafeShuffle | JP | 20-10 Hatsuchō, Neyagawa, Osaka 572-0833, Japan | Verified profile | Unconfirmed | Reviewed 2026-10-18: [Store blog profile](https://tgcshuffle.hatenablog.com/about) matches 20-10 Hatsucho, Neyagawa. [GA distributor directory](https://www.fayble-asia.com/game_store.php?id=13) corroborates the address and links [official X](https://x.com/tgcshuffle). No current weekly day/time verified. The January regional was at a separate Osaka venue; do not replace the store pin with that event venue. Snapshot: latest recorded event 2026-09-27T04:00:00.000Z; 19 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 81 | 199 | Matrix Cards & Games | US | 1185 Hilltop Dr, Redding, CA 96003, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official October 2026 calendar](https://matrixcardsandgames.gg/) publishes GA locals Thursdays at 18:15 and Fridays at 18:00, including October 22/23 and 29/30. The October 9 Friday slot was a championship, showing that special events can replace a local. Confirm the venue for individual entries; the store also uses secondary spaces for other games. Snapshot: latest recorded event 2026-08-28T01:30:00.000Z; 22 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 82 | 472 | Post Board Game Lexington | US | 305 E Main St Suite 12 & 13, Lexington, OH 44904, USA | Pending | Pending |  |
+| 82 | 472 | Post Board Game Lexington | US | 305 E Main St Suite 12 & 13, Lexington, OH 44904, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official store site](https://www.postboardgaminglexington.com/) is linked from the [publisher profile](https://locator.riftbound.uvsgames.com/stores/63e9a15f-8b85-4f8f-bffc-841b6b2b21b1). The readable news/events area provides no GA weekly schedule. Confirm Lexington-specific play rather than using another Post Board branch or past championships. Snapshot: latest recorded event 2026-09-05T19:30:00.000Z; 20 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 83 | 593 | Steamship Games | US | 711 W Lake St #103, Minneapolis, MN 55408, USA | Pending | Pending |  |
 | 84 | 81 | Hobby Lords Dunedin | NZ | 124 King Edward Street, South Dunedin, Dunedin 9012, New Zealand | Pending | Pending |  |
 | 85 | 107 | Unplugged Games | AU | 3/132 Dawson St, Lismore NSW 2480, Australia | Pending | Pending |  |
