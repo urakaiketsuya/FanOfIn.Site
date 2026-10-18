@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 122/305 (40.0%); 183 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 123/305 (40.3%); 182 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 78 unconfirmed.
+Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 79 unconfirmed.
 
-Next: #123 Titan Games Corp.
+Next: #124 The Armchair Adventurer.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -136,7 +136,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 120 | 802 | The Rare Den | MY | 26-1, Jalan KS 3, Kepayang Sentral, 70200 Seremban, Negeri Sembilan, Malaysia | Official site unconfirmed | Unconfirmed | Reviewed 2026-10-18: [Source](https://legacy.fabtcg.com/en/locator/?mode=store&page=256) corroborates The Rare Den at 26-1 Jalan KS 3 through publisher retail listings. No official website or readable current Grand Archive weekly announcement identified. Snapshot: latest recorded event 2026-08-16T11:35:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 121 | 332 | Spielipinas Games and Hobbies | PH | Mango Square, Cebu City, 6000 Cebu, Philippines | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.fayble-asia.com/game_store.php?id=13) links [official Facebook](https://www.facebook.com/spielipinasgames/). [Mall directory](https://www.mangosquarecebu.com/spielipinasgamesandhobbies.html) locates the shop at unit 302, third floor, Mango Square. No current Grand Archive weekly schedule verified. Snapshot: latest recorded event 2025-03-19T10:15:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 122 | 375 | Mad Alpaca Games Davis | US | 654 G St, Davis, CA 95616, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://www.madalpaca.com/davis-events-touranments) lists Davis Grand Archive sessions on June 21 and 28, 2024, Fridays 6:30–10 p.m., $10. These are historical dates; confirm the current Davis schedule and do not substitute Fairfield events. Snapshot: latest recorded event 2026-01-31T21:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 123 | 601 | Titan Games Corp | PR | 13 Calle Luis Munoz Rivera, Caguas, 00725, Puerto Rico | Pending | Pending |  |
+| 123 | 601 | Titan Games Corp | PR | 13 Calle Luis Munoz Rivera, Caguas, 00725, Puerto Rico | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://titanhobbygames.com/pages/eventos) lists a Grand Archive Winterfest special event at Rio Piedras, not this Caguas location. [Publisher Caguas profile](https://tcg.ravensburgerplay.com/stores/48cec65a-1aa8-4d44-989b-113078324833) corroborates the branch; no Caguas Grand Archive weekly schedule was verified. Snapshot: latest recorded event 2026-09-06T20:00:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 124 | 602 | The Armchair Adventurer | US | 650 Iwilei Rd suite 160, Honolulu, HI 96817, USA | Pending | Pending |  |
 | 125 | 700 | Carta Magica | CA | 1179 St. Laurent Blvd, Ottawa, ON K1J 7S5, Canada | Pending | Pending |  |
 | 126 | 774 | I Want That Stuff | CA | 138 10th St, Brandon, MB R7A 4E6, Canada | Pending | Pending |  |
