@@ -888,5 +888,9 @@
   "718": {
     "kind": "store",
     "evidence": "2026-10-18: [GA community shop list](https://gafreak.com/2025/01/18/shop/) distinguishes Showacho 2-162 from the separate Shimotanaka branch and identifies [branch X account](https://x.com/cardshopevrika2). [Card-shop directory](https://tcg-map.com/shop/card-shop-%E3%81%88%E3%81%86%E3%82%8C%E3%81%8B-%E6%98%AD%E5%92%8C%E7%94%BA%E5%BA%97/) confirms address and retail identity. No standalone official site or verified branch point obtained. Latest Omnidex event in committed snapshot 2026-05-06T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "810": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official chain contact](https://www.generalgames.com.au/pages/contact-us) confirms Highpoint L02 2090/1 at 120-200 Rosamond Road. [Branch events directory](https://allevents.in/org/general-games-highpoint/27018786) agrees. No verified shop-specific coordinates obtained; do not substitute shopping-centre centroid. Latest Omnidex event in committed snapshot 2026-09-05T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
