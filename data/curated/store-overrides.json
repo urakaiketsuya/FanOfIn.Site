@@ -1040,5 +1040,9 @@
   "719": {
     "kind": "venue",
     "evidence": "2026-10-18: [Official website](https://cacacat.com.tw/) confirms third floor, 80 Xinsheng Road and paid tabletop play. [Pokemon event](https://asia.pokemon-card.com/tw/event-search/66038/) corroborates the address. Classified as venue pending independent retail-sale evidence. No verified business point obtained; direct HTML retrieval failed certificate validation. Latest Omnidex event in committed snapshot 2026-01-31T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "729": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/759342) binds PI Space Games to Shop Lot 1, Suria Residence No.5, Jalan Bazar U8/100 and supplies matching store/event point 3.0982142, 101.5378309. Imported named venue point. Classified as venue pending independent retail evidence; no official standalone website established. Latest Omnidex event in committed snapshot 2026-05-15T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

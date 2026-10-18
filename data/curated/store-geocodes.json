@@ -963,6 +963,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 729,
+    "address": "Shoplot 1 suria resisdent no 5\nalan bazar u8/100 bukit jelutong\n40150 shah alam\nMalaysia",
+    "lat": 3.0982142,
+    "lng": 101.5378309,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/759342",
+    "sourceAddress": "Shop Lot 1, Suria Residence No. 5 Jalan Bazar U8/100, Shah Alam, Selangor, 40150, MY",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 736,
     "address": "52A, Block M, Jalan Raja Uda, Pusat Perniagaan Raja Uda, 12300 Butterworth, Pulau Pinang, Malaysia",
     "lat": 5.41639577085487,
