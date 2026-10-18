@@ -1348,5 +1348,9 @@
   "884": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop information](https://www.marineford.link/shopInfo/) confirms card retail and pickup at 37 Janghan-ro, third floor. [Konami retailer listing](https://www.konami.com/efootball/ko/page/yugioh_collab) agrees. Official directions are image-based; no independently verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2026-06-14T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "891": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://brintsco.com/) confirms 11 Lorong 21A Geylang #01-02 on the mezzanine. [Publisher event](https://locator.riftbound.uvsgames.com/events/607119) matches exact unit and supplies matching store/event point 1.315442, 103.8801912. Imported business point; retained stair-access detail. Latest Omnidex event in committed snapshot 2026-04-30T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

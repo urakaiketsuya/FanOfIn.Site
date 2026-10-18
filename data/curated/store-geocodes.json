@@ -1278,6 +1278,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:01.634515+00:00"
   },
   {
+    "hostId": 891,
+    "address": "Lam Thong Building, 11 Lor 21A Geylang, #01-02 mezzanine floor do not take lift, Singapore 388429",
+    "lat": 1.315442,
+    "lng": 103.8801912,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/607119",
+    "sourceAddress": "11 Lor 21A Geylang, #01-02, Singapore 388429",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 895,
     "address": "5251 Timberhill Dr ste 104, San Antonio, TX 78238, USA",
     "lat": 29.4823563,
