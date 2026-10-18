@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 39/305 (12.8%); 266 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 40/305 (13.1%); 265 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 8 published weekly; 2 historical schedule; 4 special event only; 25 unconfirmed.
+Weekly results among reviewed stores: 8 published weekly; 2 historical schedule; 4 special event only; 26 unconfirmed.
 
-Next: #40 Good Games Greensborough.
+Next: #41 Kamenn Enterprise.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -53,7 +53,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 37 | 13 | RetroPlay Games | CA | 1886 London Line, Sarnia, ON N7W 1B3, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://retroplaygames.com/) and [store information](https://retroplaygames.com/Info/) confirm 1886 London Line alongside District Beta. No readable current Grand Archive weekly announcement found. Recent Omnidex activity supports historical hosting but does not establish a fixed schedule. Snapshot: latest recorded event 2026-10-07T22:45:00.000Z; 59 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 38 | 875 | Archive Collectables | AU | 410 Burke Rd, Camberwell VIC 3124, Australia | Not verified | Unconfirmed | Reviewed 2026-10-18: [Publisher store listing](https://locator.riftbound.uvsgames.com/stores/c7ad0942-3a85-43dd-a96f-b422db48cc94) confirms 410 Burke Road and physical retail. The domain suggested by its contact email, archivecollectables.com, could not be accessed and is not accepted as a verified website. No current public Grand Archive weekly schedule verified; publisher Thursday Nexus Nights are Riftbound, not Grand Archive. Snapshot: latest recorded event 2026-10-16T08:10:00.000Z; 61 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 39 | 62 | Outpost Ghent | BE | Ottergemsesteenweg 13, 9000 Gent, Belgium | Verified site | Published weekly | Reviewed 2026-10-18: [Official November calendar](https://www.outpost.be/website/index.php?Itemid=&option=com_outpostcalendar&period=2026-11&view=calendar) lists recurring Sunday Grand Archive Locals in Ghent; [October regional page](https://outpost.be/website/index.php?Itemid=6&eventid=31487&option=com_outpostcalendar&view=event) independently establishes branch Grand Archive activity. Local weekly start time still requires event details; regional 11:00 must not be reused as the weekly start. Snapshot: latest recorded event 2026-09-13T11:30:00.000Z; 50 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 40 | 98 | Good Games Greensborough | AU | 61 Main St, Greensborough VIC 3088, Australia | Pending | Pending |  |
+| 40 | 98 | Good Games Greensborough | AU | 61 Main St, Greensborough VIC 3088, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official branch event page](https://events.goodgames.com.au/venue/good-games-greensborough/) confirms 61 Main Street but shows zero events. This does not prove play has ceased. No current Grand Archive weekly schedule verified; historical event evidence is stale. Snapshot: latest recorded event 2026-05-13T09:00:00.000Z; 53 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 41 | 686 | Kamenn Enterprise | MY | 55a, Jalan Perwira 2, Taman Ungku Tun Aminah, 81300 Skudai, Johor Darul Ta'zim, Malaysia | Pending | Pending |  |
 | 42 | 90 | Card Merchant Nelson | NZ | 129 Hardy Street, Nelson 7010, New Zealand | Pending | Pending |  |
 | 43 | 10 | The Banish Zone | US | 600 E Penn Ave, Wernersville, PA 19565, USA | Pending | Pending |  |

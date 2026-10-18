@@ -1536,5 +1536,9 @@
   "62": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official November calendar](https://www.outpost.be/website/index.php?Itemid=&option=com_outpostcalendar&period=2026-11&view=calendar) lists recurring Sunday Grand Archive Locals in Ghent; [October regional page](https://outpost.be/website/index.php?Itemid=6&eventid=31487&option=com_outpostcalendar&view=event) independently establishes branch Grand Archive activity. Local weekly start time still requires event details; regional 11:00 must not be reused as the weekly start. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "98": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch event page](https://events.goodgames.com.au/venue/good-games-greensborough/) confirms 61 Main Street but shows zero events. This does not prove play has ceased. No current Grand Archive weekly schedule verified; historical event evidence is stale. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
