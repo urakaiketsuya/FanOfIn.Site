@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 102/305 (33.4%); 203 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 103/305 (33.8%); 202 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 17 published weekly; 1 published fortnightly; 11 historical schedule; 7 special event only; 66 unconfirmed.
+Weekly results among reviewed stores: 17 published weekly; 1 published fortnightly; 11 historical schedule; 7 special event only; 67 unconfirmed.
 
-Next: #103 Card Merchant Takapuna.
+Next: #104 Top Deck Keep.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -116,7 +116,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 100 | 671 | Shuffle by Snacks & Ladders | MY | 337, Jln Perak, Jelutong, 11600 Jelutong, Pulau Pinang, Malaysia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://playatshuffle.com/) and [GA collection](https://playatshuffle.com/product-category/grand-archive/) verified. The Join Events link points to /visit-us, which could not be fetched. No readable weekly schedule confirmed. The publisher’s February regional used Island 88 shopping mall, a special-event venue that must not replace the Jalan Perak store address. Snapshot: latest recorded event 2026-09-19T08:00:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 101 | 674 | Contrarian's Game Cafe | US | 14313 NE 20th Ave ste a112, Vancouver, WA 98686, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://contrariangaming.com/pages/google-event-calendar) links an embedded event calendar; the official site matches the Vancouver address, but no readable current Grand Archive day/time was verified. Confirm the weekly schedule directly. Snapshot: latest recorded event 2026-07-12T18:00:00.000Z; 17 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 102 | 925 | Dragonstone Games and Hobbies | US | 131 N Water Ave, Tahlequah, OK 74464, USA | Official site unconfirmed | Unconfirmed | Reviewed 2026-10-18: [Source](https://tcg.ravensburgerplay.com/events/693016) corroborates Dragonstone Games and Hobbies at 131 N Water Avenue through publisher organized play. No official website or current Grand Archive weekly announcement was identified; the cited event is Lorcana, not Grand Archive. Snapshot: latest recorded event 2026-10-15T23:00:00.000Z; 20 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 103 | 83 | Card Merchant Takapuna | NZ | 15-17 Hurstmere Road, Takapuna, Auckland 0622, New Zealand | Pending | Pending |  |
+| 103 | 83 | Card Merchant Takapuna | NZ | 15-17 Hurstmere Road, Takapuna, Auckland 0622, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.cardmerchanttakapuna.co.nz/) identifies the Takapuna shop and embeds an event calendar. Its Grand Archive collection verifies products, not current Monday play; obtain a readable branch schedule. Snapshot: latest recorded event 2026-08-10T06:30:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 104 | 413 | Top Deck Keep | US | 10128 Indiana Ave, Riverside, CA 92503, USA | Pending | Pending |  |
 | 105 | 530 | Cards & Games Capital  | MY | 30-3, Jalan BS 4/2 Taman Bukit Serdang, Seksyen 4 43300 Seri Kembangan, Selangor Malaysia | Pending | Pending |  |
 | 106 | 652 | Card Shop Sacramento X Gold Star Collectibles | US | 2440 Fulton Ave #9, Sacramento, CA 95825, USA | Pending | Pending |  |

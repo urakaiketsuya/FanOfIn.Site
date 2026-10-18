@@ -1787,5 +1787,9 @@
   "925": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official site unconfirmed. Weekly events: Unconfirmed. [Source](https://tcg.ravensburgerplay.com/events/693016) corroborates Dragonstone Games and Hobbies at 131 N Water Avenue through publisher organized play. No official website or current Grand Archive weekly announcement was identified; the cited event is Lorcana, not Grand Archive. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "83": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.cardmerchanttakapuna.co.nz/) identifies the Takapuna shop and embeds an event calendar. Its Grand Archive collection verifies products, not current Monday play; obtain a readable branch schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
