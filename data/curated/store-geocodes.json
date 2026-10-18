@@ -63,6 +63,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 19,
+    "address": "39815 Alta Murrieta Dr STE C6, Murrieta, CA 92563, USA",
+    "lat": 33.560773,
+    "lng": -117.1779182,
+    "sourceUrl": "https://www.waze.com/live-map/directions/us/ca/murrieta/cardboardia?to=place.ChIJ6YcAyICD3IARjXVkPg2alGU",
+    "sourceAddress": "39815 Alta Murrieta Dr Ste C6, Murrieta, CA 92563, USA",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 26,
     "address": "5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA",
     "lat": 36.1596979,
