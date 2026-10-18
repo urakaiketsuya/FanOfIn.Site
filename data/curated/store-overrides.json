@@ -668,5 +668,9 @@
   "109": {
     "kind": "unclassified",
     "evidence": "2026-10-18: [GA event record](https://www.fractalofin.site/RDO/56124.html) confirms Via Alessandro Manzoni 38, Flero. Searches did not establish an independent retail identity or official website; excluded the unrelated Hong Kong Battleground. Current pipeline already supplies 45.4932803, 10.1666601 without source metadata. Preserved that existing point, but did not promote it to a verified curated point. Obtain primary venue and coordinate provenance. Latest Omnidex event in committed snapshot 2026-08-16T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "225": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher locator](https://legacy.fabtcg.com/en/locator/liams-cards-and-games/) confirms 869 Main Street, Smithfield. [Official shop](https://liamscardsandgames.com/) establishes card retail. No independently verified unit B destination coordinates obtained; direct publisher-map retrieval failed. Latest Omnidex event in committed snapshot 2026-10-14T00:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
