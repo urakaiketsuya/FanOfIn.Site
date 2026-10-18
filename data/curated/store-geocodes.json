@@ -81,6 +81,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 32,
+    "address": "5320 W Sunset Ave suite 172, Springdale, AR 72762, USA",
+    "lat": 36.1758331,
+    "lng": -94.190179,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/515936",
+    "sourceAddress": "5320 West Sunset Avenue, STE 172, Springdale, AR, 72762, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 38,
     "address": "3902 13th Ave S #100, Fargo, ND 58103, USA",
     "lat": 46.8584289,
