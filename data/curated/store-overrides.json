@@ -672,5 +672,9 @@
   "225": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher locator](https://legacy.fabtcg.com/en/locator/liams-cards-and-games/) confirms 869 Main Street, Smithfield. [Official shop](https://liamscardsandgames.com/) establishes card retail. No independently verified unit B destination coordinates obtained; direct publisher-map retrieval failed. Latest Omnidex event in committed snapshot 2026-10-14T00:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "788": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Distributor tournament listing](https://cl2u.net/tournament-details/EdB5ygm/hololive-exstreamer-cup-summer-2025-astral-rift-tactics-shop-1) confirms 8A Medan Bercham Selatan 1. [Retail product listing](https://shopee.com.my/Palvor-Sword---Phantom-Monarchs-%28PTM-i.1694942717.55303830601) establishes Astral Rift Tactics card sales in Perak. No standalone official website or exact shop coordinates established. Latest Omnidex event in committed snapshot 2026-10-10T12:45:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
