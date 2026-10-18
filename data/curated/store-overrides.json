@@ -1444,5 +1444,9 @@
   "118": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://cardmerchantdunedin.co.nz/) confirms 23 Princes Street and Grand Archive stock. The linked [events page](https://cardmerchantdunedin.co.nz/pages/events) exposes filters but no readable event entries. Confirm Thursday start time with the branch; Omnidex-derived Thursdays remain estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "599": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official daily events](https://tapsgames.com/collections/upcoming-events) offers Grand Archive Sunday entry. [October syndicated store announcement](https://stayhappening.com/e/grand-archive-weekly-play-taps-games-E2ISYWQS9QC) gives Sundays at 16:00 and 2854 Calgary Trail NW; that start time has secondary-source support only. Separate [Wednesday announcement](https://happeningnext.com/event/grand-archive-midweek-taps-games-wednesday-eid3a0e4wxnbb) needs confirmation before treating it as another current recurring slot. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

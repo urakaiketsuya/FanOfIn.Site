@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 16/305 (5.2%); 289 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 17/305 (5.6%); 288 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 3 published weekly; 1 historical schedule; 1 special event only; 11 unconfirmed.
+Weekly results among reviewed stores: 4 published weekly; 1 historical schedule; 1 special event only; 11 unconfirmed.
 
-Next: #17 Taps Games.
+Next: #18 Beginner's Luck.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -30,7 +30,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 14 | 443 | Whimsy Game Cafe | PH | The Portal, Mayflower St, Greenfield District, Mandaluyong, Metro Manila, Philippines | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher store listing](https://locator.riftbound.uvsgames.com/stores/6d626b2f-3abe-4a7c-9299-6bf53a9e89d6) confirms The Portal, units 14–15, Mayflower Street. [Organizer event](https://locator.riftbound.uvsgames.com/events/546861) identifies @whimsygamecafe on Facebook and Instagram. No standalone site or current Grand Archive weekly announcement verified; Friday Riftbound events must not be counted as Grand Archive. Snapshot: latest recorded event 2026-10-04T05:00:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 15 | 244 | Cardpoint | SI | Zaloška cesta 18, 1000 Ljubljana, Slovenia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://cardpoint.si/) confirms Grand Archive retail. Its [events page](https://cardpoint.si/events) says no upcoming events; this does not prove play has stopped. [Branch profile](https://www.findglocal.com/SI/Ljubljana/109620948128715/Cardpoint) matches Zaloška cesta 18 and directs event details to Discord. Current Grand Archive weekly schedule remains unconfirmed. Snapshot: latest recorded event 2026-10-15T15:30:00.000Z; 97 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 16 | 118 | Card Merchant Dunedin | NZ | 23 Princes Street, Central Dunedin, Dunedin 9016, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://cardmerchantdunedin.co.nz/) confirms 23 Princes Street and Grand Archive stock. The linked [events page](https://cardmerchantdunedin.co.nz/pages/events) exposes filters but no readable event entries. Confirm Thursday start time with the branch; Omnidex-derived Thursdays remain estimates. Snapshot: latest recorded event 2026-10-15T05:30:00.000Z; 90 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 17 | 599 | Taps Games | CA | 2854 Calgary Trail NW, Edmonton, AB T6J 6V7, Canada | Pending | Pending |  |
+| 17 | 599 | Taps Games | CA | 2854 Calgary Trail NW, Edmonton, AB T6J 6V7, Canada | Verified site | Published weekly | Reviewed 2026-10-18: [Official daily events](https://tapsgames.com/collections/upcoming-events) offers Grand Archive Sunday entry. [October syndicated store announcement](https://stayhappening.com/e/grand-archive-weekly-play-taps-games-E2ISYWQS9QC) gives Sundays at 16:00 and 2854 Calgary Trail NW; that start time has secondary-source support only. Separate [Wednesday announcement](https://happeningnext.com/event/grand-archive-midweek-taps-games-wednesday-eid3a0e4wxnbb) needs confirmation before treating it as another current recurring slot. Snapshot: latest recorded event 2026-09-10T00:30:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 18 | 345 | Beginner's Luck | SG | 148f Pasir Panjang Rd, Singapore 118553 | Pending | Pending |  |
 | 19 | 243 | Knight and Day Games | US | 6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119, USA | Pending | Pending |  |
 | 20 | 295 | Game Kastle Redwood City | US | 340 Walnut St, Redwood City, CA 94063, USA | Pending | Pending |  |
