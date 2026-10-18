@@ -1823,5 +1823,9 @@
   "386": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Source](https://www.paladins-place.de/) advertises a Grand Archive store championship on October 31 at 11 a.m. No recurring Grand Archive slot was verified; other games' weekly sessions are not evidence for this game. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "627": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Official social page identified. Weekly events: Unconfirmed. [Source](https://www.gatcg.com/article/radiant-origins-regionals) lists Misteria's April 25 regional at Okaya Nagoya Hall, an event venue rather than evidence of a shop move. [Misteria Sakae social profile](https://x.com/MisteriaSakae) was identified, but no current weekly announcement was readable. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

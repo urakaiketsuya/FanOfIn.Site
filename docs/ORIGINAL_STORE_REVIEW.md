@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 111/305 (36.4%); 194 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 112/305 (36.7%); 193 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 18 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 72 unconfirmed.
+Weekly results among reviewed stores: 18 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 73 unconfirmed.
 
-Next: #112 Misteria.
+Next: #113 Good Games Parramatta.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -125,7 +125,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 109 | 138 | Counterspell Games | US | 8102 Blanding Blvd #12, Jacksonville, FL 32244, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.counterspellgamestcg.com/) confirms the Jacksonville store at 8102 Blanding Boulevard #12. No current published Grand Archive weekly schedule found; opening hours do not establish play times. Snapshot: latest recorded event 2026-07-11T18:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 110 | 146 | VGMX The Nerd Emporium | US | 1489 Schrock Rd, Columbus, OH 43229, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://vgmx.com/) confirms the store. A [secondary October 5 weekly-play listing](https://happeningnext.com/event/vgmxs-grand-archive-weekly-play-eid3a0e4wu22j) supports past Monday activity; the readable official calendar does not establish a current Grand Archive weekly schedule. Snapshot: latest recorded event 2026-08-24T22:00:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 111 | 386 | Paladin's Place | DE | Kirchstraße 21, 64283 Darmstadt, Germany | Verified site | Special event only | Reviewed 2026-10-18: [Source](https://www.paladins-place.de/) advertises a Grand Archive store championship on October 31 at 11 a.m. No recurring Grand Archive slot was verified; other games' weekly sessions are not evidence for this game. Snapshot: latest recorded event 2026-09-19T10:30:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 112 | 627 | Misteria | JP | 3-chōme-31-7 Sakae, Naka Ward, Nagoya, Aichi 460-0008, Japan | Pending | Pending |  |
+| 112 | 627 | Misteria | JP | 3-chōme-31-7 Sakae, Naka Ward, Nagoya, Aichi 460-0008, Japan | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.gatcg.com/article/radiant-origins-regionals) lists Misteria's April 25 regional at Okaya Nagoya Hall, an event venue rather than evidence of a shop move. [Misteria Sakae social profile](https://x.com/MisteriaSakae) was identified, but no current weekly announcement was readable. Snapshot: latest recorded event 2026-09-02T11:00:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 113 | 851 | Good Games Parramatta | AU | 219-221 Church St, Parramatta NSW 2150, Australia | Pending | Pending |  |
 | 114 | 59 | Dragonphoenix Inn | GR | Ilia Iliou 55, Athina 117 44, Greece | Pending | Pending |  |
 | 115 | 274 | Game Corps | US | 2920 Buffalo Rd, Erie, PA 16510, USA | Pending | Pending |  |
