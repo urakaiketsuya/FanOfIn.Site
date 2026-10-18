@@ -237,3 +237,14 @@ Opponent archetype names remain visible because multiple builds can share a cham
 art keeps the champion name. Loading, failed fetches with retry, and genuinely empty matchup
 results are distinct. Detected card interactions appear openly as card-art groups; the Analysis
 view does not inherit Builder disclosures, per-card impact tables, or empty nearest-deck controls.
+
+## Store browsing
+
+Lead with search and Near me; keep optional filters in DialogSheet with removable active
+filters outside it. Published schedules use curated review dates, source links and
+store-local time summaries; inferred recurrence remains labeled as expected dates.
+Never create booked events from a published schedule. Preserve query filters and the
+browsing position when returning from store details. Cluster map markers at wide zooms,
+link selections to visible result cards, and keep unmapped matches in a separately
+labeled group when distance filtering cannot place them. User location coordinates remain
+transient page state and are never placed in URLs or persistent storage.

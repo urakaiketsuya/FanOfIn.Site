@@ -58,3 +58,11 @@ test('weekly estimates require repeated recent regular events at the current add
  assert.deepEqual(upcomingStoreEvents({...store,weeklyEvidence:undefined},now),[]);
  assert.deepEqual(upcomingStoreEvents({...store,weeklyEvidence:[...store.weeklyEvidence!,...store.weeklyEvidence!]},now),upcoming);
 });
+
+test('published schedule review survives directory generation without inventing event dates', () => {
+ const review = { checkedAt: '2026-10-18', scheduleStatus: 'Published weekly', scheduleSummary: 'Sundays · 13:00', scheduleUrl: 'https://example.com/events', website: 'https://example.com', sources: [{label:'Store calendar',url:'https://example.com/events'}] };
+ const store = buildStoreDirectory([event()], [], {10:{review,evidence:'Official calendar'}})[0];
+ assert.deepEqual(store.review, review);
+ assert.equal(store.recentEvents.length, 1);
+ assert.equal(store.weeklyEvidence?.length, 0);
+});

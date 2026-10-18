@@ -1,6 +1,15 @@
 import type { OmnidexEventSummary, OmnidexVenueGeocode } from './omnidex-index-types';
 
+export interface StoreReview {
+  checkedAt: string;
+  website?: string;
+  scheduleStatus: string;
+  scheduleSummary?: string;
+  scheduleUrl?: string;
+  sources: { label: string; url: string }[];
+}
 export interface StoreOverride {
+  review?: StoreReview;
   kind?: 'store' | 'venue';
   name?: string;
   address?: string;
@@ -11,6 +20,7 @@ export interface StoreOverride {
   evidence: string;
 }
 export interface StoreRecord {
+  review?: StoreReview;
   id: number;
   name: string;
   aliases: string[];
@@ -53,6 +63,7 @@ export function buildStoreDirectory(events: readonly OmnidexEventSummary[], geoc
       id, name: correction?.name ?? latest.hostName, aliases: [...new Set(group.map(e => e.hostName))],
       address, country: correction?.country ?? addressEvent.hostCountry, region: correction?.region,
       kind: correction?.kind ?? 'unclassified',
+      ...(correction?.review ? { review: correction.review } : {}),
       ...(coordinates && validStoreCoordinates(coordinates) ? { coordinates: { lat: coordinates.lat, lng: coordinates.lng } } : {}),
       addressEventId: addressEvent.id, addressDate: addressEvent.date, lastEventDate: latest.date,
       eventCount: new Set(group.map(e => e.id)).size,
