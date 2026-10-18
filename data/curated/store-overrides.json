@@ -1184,5 +1184,9 @@
   "739": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch directory](https://acecards.com/pages/locate-us) confirms T-059, third-floor mezzanine, Mid Valley Megamall. [Named Waze destination](https://www.waze.com/en-AU/live-map/directions/my/wilayah-persekutuan-kuala-lumpur/kuala-lumpur/ace-cards-%2A-mid-valley-megamall?to=place.ChIJI8KOl45JzDERjqOzJybPGQ0) matches exact unit and supplies 3.1174103, 101.6777107. Imported branch point, distinct from 1 Utama and Sunway Pyramid. Latest Omnidex event in committed snapshot 2025-11-11T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "816": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/tas_boardgameclub/) explicitly confirms physical sales and the move to 140 Wenhua Road Section 1, third floor. No standalone official website or independently verified exact shop coordinates obtained; retained current recorded address. Latest Omnidex event in committed snapshot 2026-09-19T10:40:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
