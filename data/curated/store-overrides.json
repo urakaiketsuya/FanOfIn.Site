@@ -936,5 +936,9 @@
   "934": {
     "kind": "store",
     "evidence": "2026-10-18: [Official distributor list](https://www.maxsoftonline.com/purchase-trading-card) confirms Collect All Card Shop at Vanda Business Park, but gives 723L-2 instead of recorded 723D-2. Retail identity established; resolve unit-letter discrepancy. No official standalone website or verified exact-unit point imported. Latest Omnidex event in committed snapshot 2026-08-31T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "938": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/arthur861226/list) explicitly confirms card sales and physical shop at 32 Yuliao Road South Section, Qiaotou, Kaohsiung. No standalone website or verified named store coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-19T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
