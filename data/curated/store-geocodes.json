@@ -1170,6 +1170,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 832,
+    "address": "25430 Northwest Fwy a 7, Cypress, TX 77429, USA",
+    "lat": 29.9666283,
+    "lng": -95.6888741,
+    "sourceUrl": "https://maps.app.goo.gl/1QVPAS6RkwgMyifQ6",
+    "sourceAddress": "25430 Northwest Fwy Suite A-7, Cypress, TX 77429, USA",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 834,
     "address": "unit 9/49 Jijaws St, Sumner QLD 4074, Australia",
     "lat": -27.5624381,
