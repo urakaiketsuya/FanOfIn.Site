@@ -772,5 +772,9 @@
   "950": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://thetcgalchemists.com/) establishes card retail. [Publisher event](https://locator.riftbound.uvsgames.com/events/644602) explicitly confirms 100 Jalan Sultan, Sultan Plaza #03-24, and matching store/event coordinates 1.3031504, 103.8616675. Imported exact branch point. Latest Omnidex event in committed snapshot 2026-10-06T11:30:00.000Z. Existing recurrence projects 2026-10-20T11:30:00.000Z, 2026-10-27T11:30:00.000Z, 2026-11-03T11:30:00.000Z, 2026-11-10T11:30:00.000Z (source events 64675); estimates, not confirmed bookings."
+  },
+  "57": {
+    "kind": "store",
+    "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) confirms the historical Rottenbiller 39 retailer. [Business directory](https://wanderlog.com/place/details/8139828/arias-cardshop) marks it permanently closed. No official current website or verified active storefront point established. Confirm closure/reopening; excluded the unrelated greeting-card Etsy seller. Latest Omnidex event in committed snapshot 2025-01-05T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
