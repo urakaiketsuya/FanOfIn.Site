@@ -928,5 +928,9 @@
   "640": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://thequeensrealm.com/) establishes tabletop retail at 5451 S 1900 West, Roy. The inspected site does not establish unit 8 with address-bound coordinates. No exact store point verified; retained recorded unit for follow-up. Latest Omnidex event in committed snapshot 2026-08-23T23:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "932": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retail collection](https://cardmerchantnewplymouth.co.nz/collections/yu-gi-oh-sealed) establishes branch card sales; [chain website](https://cardmerchant.co.nz/) identifies the New Plymouth outlet. [Branch social mirror](https://www.findglocal.com/NZ/New-Plymouth-City/1082549691604584/Card-Merchant-New-Plymouth) gives 19 Devon Street East. No exact business coordinates obtained; do not reuse XP Games at number 39. Latest Omnidex event in committed snapshot 2026-10-17T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
