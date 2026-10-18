@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 97/305 (31.8%); 208 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 98/305 (32.1%); 207 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 11 historical schedule; 7 special event only; 62 unconfirmed.
+Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 11 historical schedule; 7 special event only; 63 unconfirmed.
 
-Next: #98 Loot Box.
+Next: #99 The Connection Game & Hobbies.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -111,7 +111,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 95 | 1 | Yeti Gaming | US | 84 Grasso Plaza, Affton, MO 63123, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://www.yetigaming.com/) and [GA collection](https://www.yetigaming.com/collections/grand-archive) verified. No current in-store GA weekly schedule found. Historical Yeti webcam events are online and must not be mapped to the Grasso Plaza store; confirm physical-store play separately. Snapshot: latest recorded event 2026-08-08T18:00:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 96 | 292 | World Legacy | HK | 162 Un Chau St, Un Chau, Hong Kong | Not found | Unconfirmed | Reviewed 2026-10-18: No uniquely matched official website/social profile or current weekly schedule found. Committed activity ends in July 2024 and includes an explicitly online event (6121), while the recorded address also appears under Dragon Nest. Do not merge the hosts or certify this as a separate physical store on that evidence. Leave classification unclassified; confirm identity, venue and in-person play before changing the pin. Snapshot: latest recorded event 2024-07-08T12:00:00.000Z; 19 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 97 | 324 | Hobby Lords Palmerston North | NZ | 137 Cuba Street, Palmerston North Central, Palmerston North 4410, New Zealand | Verified site | Special event only | Reviewed 2026-10-18: [Current official branch directory](https://hobbylords.com/nz/contact-us) lists 235 Main Street, conflicting with recorded 137 Cuba Street. [Older official GA championship](https://www.hobbylords.co.nz/events/single/grand-archive-abyssal-heaven-store-championship%40-palmerston-north%21) uses Cuba Street in May 2025. No current weekly slot verified. Confirm current GA venue/schedule and correct the stale location in a follow-up. Snapshot: latest recorded event 2026-08-04T06:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 98 | 327 | Loot Box | US | 5214 Chesebro Rd, Agoura Hills, CA 91301, USA | Pending | Pending |  |
+| 98 | 327 | Loot Box | US | 5214 Chesebro Rd, Agoura Hills, CA 91301, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher profile](https://locator.riftbound.uvsgames.com/stores/d5f9afb3-5a81-4f94-8992-4afd2ee73867) matches 5214 Chesebro Road. [Store directory](https://packspots.com/stores/chijr3-4h-kh6iarwxgv82q1ykg/) identifies [lootbox.official Instagram](https://www.instagram.com/lootbox.official/). No readable current GA weekly schedule verified; Riftbound Friday Nexus Nights and old GA championships do not establish it. Snapshot: latest recorded event 2026-08-30T23:55:00.000Z; 18 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 99 | 494 | The Connection Game & Hobbies | CA | 2945 Renfrew St, Vancouver, BC V5M 3K5, Canada | Pending | Pending |  |
 | 100 | 671 | Shuffle by Snacks & Ladders | MY | 337, Jln Perak, Jelutong, 11600 Jelutong, Pulau Pinang, Malaysia | Pending | Pending |  |
 | 101 | 674 | Contrarian's Game Cafe | US | 14313 NE 20th Ave ste a112, Vancouver, WA 98686, USA | Pending | Pending |  |
