@@ -940,5 +940,9 @@
   "938": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/arthur861226/list) explicitly confirms card sales and physical shop at 32 Yuliao Road South Section, Qiaotou, Kaohsiung. No standalone website or verified named store coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-19T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "944": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [GA event record](https://fractalofin.site/RDO/54876.html) shows this organizer also hosts at Dubai World Trade Centre, distinct from recorded Rove at the Park. Classified as venue/organizer; no independent storefront established. No official organizer website or point tied to this exact Rove event space obtained. Latest Omnidex event in committed snapshot 2026-08-29T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
