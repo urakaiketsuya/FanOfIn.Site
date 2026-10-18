@@ -819,6 +819,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
   },
   {
+    "hostId": 852,
+    "address": "NO.9-1, JALAN PJS 8/13, DATARAN MENTARI\n46150 SUBANG JAYA, SELANGOR\nMalaysia",
+    "lat": 3.078233,
+    "lng": 101.6109931,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/902439",
+    "sourceAddress": "9-1 Jalan PJS 8/13, Bandar Sunway, 46150 Petaling Jaya, Selangor, Malaysia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 878,
     "address": "10971 4 Seasons Pl Ste 106, Crown Point, IN 46307, USA",
     "lat": 41.4193016,

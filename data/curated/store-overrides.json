@@ -592,5 +592,9 @@
   "691": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.sc-collection.sg/pages/contact) confirms Orchard Towers #04-13. [Publisher event](https://locator.riftbound.uvsgames.com/events/809290) binds SC Collection at 400 Orchard Road to matching store/event coordinates 1.3072293, 103.8293323. Imported named store point. Latest Omnidex event in committed snapshot 2026-03-31T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "852": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://spectremy.com/) confirms card sales and Bandar Sunway pickup. [Publisher event](https://locator.riftbound.uvsgames.com/events/902439) confirms 9-1 Jalan PJS 8/13 and matching store/event coordinates 3.078233, 101.6109931; it links [official Facebook](https://www.facebook.com/profile.php?id=61586042528721). Imported point; an older FAB listing abbreviates the number to 1. Latest Omnidex event in committed snapshot 2026-09-28T12:30:00.000Z. Existing recurrence projects 2026-10-19T12:30:00.000Z, 2026-10-26T12:30:00.000Z, 2026-11-02T12:30:00.000Z, 2026-11-09T12:30:00.000Z (source events 64873); estimates, not confirmed bookings."
   }
 }
