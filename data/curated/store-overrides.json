@@ -1352,5 +1352,9 @@
   "891": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://brintsco.com/) confirms 11 Lorong 21A Geylang #01-02 on the mezzanine. [Publisher event](https://locator.riftbound.uvsgames.com/events/607119) matches exact unit and supplies matching store/event point 1.315442, 103.8801912. Imported business point; retained stair-access detail. Latest Omnidex event in committed snapshot 2026-04-30T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "909": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://raptorgames.com/pages/contact) confirms 2/105 Bay Terrace and links [named Google destination](https://maps.app.goo.gl/CBXPpVsVLh1eFW3x5), which supplies -27.4441487, 153.17324. Imported destination point rather than embedded-map viewport coordinates. Latest Omnidex event in committed snapshot 2026-04-18T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

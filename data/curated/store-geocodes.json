@@ -1296,6 +1296,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:26.720739+00:00"
   },
   {
+    "hostId": 909,
+    "address": "shop 2/105 Bay Terrace, Wynnum QLD 4178, Australia",
+    "lat": -27.4441487,
+    "lng": 153.17324,
+    "sourceUrl": "https://maps.app.goo.gl/CBXPpVsVLh1eFW3x5",
+    "sourceAddress": "2/105 Bay Terrace, Wynnum QLD 4178",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 915,
     "address": "195 S Union Blvd ste 100, Lakewood, CO 80228, USA",
     "lat": 39.7124158,
