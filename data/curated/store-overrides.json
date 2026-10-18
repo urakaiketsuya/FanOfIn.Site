@@ -1732,5 +1732,9 @@
   "496": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Indexed site. Weekly events: Unconfirmed. [Indexed official shop](https://www.whitelotus.gg/category/all-products) identifies White Lotus Gaming and GA products, but its content was crawled in 2025 and the homepage returned 502. No current weekly schedule or fresh address corroboration verified. Confirm the Shawnee store’s current site, venue and GA schedule; do not infer closure from the fetch failure. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "814": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.itsgametimela.com/) matches 3301 Motor Avenue and publishes schedules for several other games, but none for Grand Archive. Historical GA championship results do not establish recurring play. Confirm current GA day/time with the Los Angeles store. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
