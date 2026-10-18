@@ -513,6 +513,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 281,
+    "address": "5 樓, No. 696, Jingping Rd, Zhonghe District, New Taipei City, Taiwan 235",
+    "lat": 25.0019066,
+    "lng": 121.4969909,
+    "sourceUrl": "https://www.catfootprint.com/%E8%B2%93%E8%85%B3%E5%8D%B0-%E9%9B%99%E5%92%8C%E5%BA%97",
+    "sourceAddress": "新北市中和區景平路696號5樓",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 290,
     "address": "1101 Blanding Blvd #119, Orange Park, FL 32065, USA",
     "lat": 30.1308834,
