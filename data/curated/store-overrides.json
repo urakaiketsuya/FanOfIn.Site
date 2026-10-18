@@ -912,5 +912,9 @@
   "281": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch page](https://www.catfootprint.com/%E8%B2%93%E8%85%B3%E5%8D%B0-%E9%9B%99%E5%92%8C%E5%BA%97) confirms 696 Jingping Road, fifth floor. Its named Google Maps place link supplies destination coordinates 25.0019066, 121.4969909, distinct from the viewport longitude. Imported branch point; official page also links [Facebook](https://www.facebook.com/profile.php?id=100063970363614). Latest Omnidex event in committed snapshot 2025-03-29T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "298": {
+    "kind": "unclassified",
+    "evidence": "2026-10-18: Recorded Omnidex address is 46a Pham Ngoc Thach, Hanoi. Multiple exact-name, English/Vietnamese and address searches did not establish independent retail identity, official website or business coordinates. Results for The Box Market in Ho Chi Minh City are a different business and were excluded. Remains unclassified pending primary evidence. Latest Omnidex event in committed snapshot 2024-06-02T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
