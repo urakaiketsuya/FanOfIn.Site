@@ -764,5 +764,9 @@
   "480": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/7455/) and [publisher store](https://tcg.ravensburgerplay.com/stores/09ca799e-aae1-4868-b41e-a11f13ae3187) use 50 Serangoon North Avenue 4 #08-19, unlike recorded 200 Jalan Sultan #03-15. Publisher links [shop Telegram](https://t.me/+YQDrzwBlwew4MDI1). Resolve relocation before pinning the recorded address; no standalone official website established. Latest Omnidex event in committed snapshot 2025-06-07T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "654": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Bandai store list](https://www.unionarena-tcg.com/tc/events/ticket-battle/2024/06/list_taiwan.php) and [Pokemon venue record](https://asia.pokemon-card.com/tw/users/tw10879923/) confirm 358 Boai Street, second floor, Zhubei. Business-registration history also mentions 360 and an older Guangming Fifth Street address. No official standalone website or named current business coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-05T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
