@@ -1141,5 +1141,14 @@
     "sourceUrl": "https://locator.riftbound.uvsgames.com/events/644602",
     "sourceAddress": "100 Jalan Sultan, Sultan Plaza, #03-24, 199001, SG",
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
+    "hostId": 974,
+    "address": "Unit G38, 1st Floor, Citis Square Shopping Complex, Spg 13-41 Jln, Bandar Seri Begawan BB2713, Brunei",
+    "lat": 4.9388032,
+    "lng": 114.9405915,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/767814",
+    "sourceAddress": "Unit G38, 1st Floor, Citis Square Shopping Complex, Spg 13-41 Jln, Bandar Seri Begawan BB2713, Brunei",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   }
 ]

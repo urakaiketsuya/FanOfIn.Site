@@ -1052,5 +1052,9 @@
   "972": {
     "kind": "store",
     "evidence": "2026-10-18: [Branch social mirror](https://www.sotwe.com/hobbygamemol?lang=en) identifies [official X account](https://x.com/hobbygamemol), product arrivals, and Jeil Building A fourth floor, 202-7 Yulgok-ro. Retail branch established. https://hobbygamemall.com/ was found, but its relationship to this branch was not independently established; no exact branch point verified. Latest Omnidex event in committed snapshot 2026-10-11T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "974": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/767814) matches Unit G38, first floor, Citis Square and supplies store/event coordinates 4.9388032, 114.9405915. Imported named event-venue point. Independent retail sales and an official standalone website remain unverified, so classified as venue. Latest Omnidex event in committed snapshot 2026-09-09T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
