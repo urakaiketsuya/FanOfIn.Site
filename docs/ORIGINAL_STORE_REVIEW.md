@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 115/305 (37.7%); 190 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 116/305 (38.0%); 189 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 20 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 74 unconfirmed.
+Weekly results among reviewed stores: 21 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 74 unconfirmed.
 
-Next: #116 RetroEdge Games.
+Next: #117 Shipwreck Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -129,7 +129,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 113 | 851 | Good Games Parramatta | AU | 219-221 Church St, Parramatta NSW 2150, Australia | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://events.goodgames.com.au/venue/good-games-parramatta/) publishes Grand Archive Thursday sessions, 6–9:30 p.m., $15, at 221 Church Street. [Category calendar](https://events.goodgames.com.au/events/category/trading-card-games/grand-archive/) also lists repeated October/November dates. Snapshot: latest recorded event 2026-10-03T01:15:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 114 | 59 | Dragonphoenix Inn | GR | Ilia Iliou 55, Athina 117 44, Greece | Official site identified; inaccessible | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.athenscon.gr/dragonphoenix-inn/?lang=en) links the official innkeeper.gr site and Dragonphoenix Inn social accounts. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/7313ed95-ce8b-4450-becc-1752e559f3a0) matches Ilia Iliou 55. Official site could not be read; Grand Archive weekly schedule unconfirmed. Snapshot: latest recorded event 2025-01-30T17:20:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 115 | 274 | Game Corps | US | 2920 Buffalo Rd, Erie, PA 16510, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://gamecorpsonline.com/schedule) shows an October 2026 calendar with Grand Archive every Monday at 6 p.m., visually checked. Official homepage matches 2920 Buffalo Road. Older Thursday activity should not replace this published schedule. Snapshot: latest recorded event 2025-07-03T22:00:00.000Z; 16 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 116 | 406 | RetroEdge Games | US | 2085 Solano Ave Vallejo, CA, 94509 United States | Pending | Pending |  |
+| 116 | 406 | RetroEdge Games | US | 2085 Solano Ave Vallejo, CA, 94509 United States | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://retroedgegames.com/wp-content/uploads/2026/10/Oct2026_rev1.jpg) shows Grand Archive at 6:30 p.m. on all October 2026 Fridays (2, 9, 16, 23, 30), visually checked. [Official homepage](https://retroedgegames.com/) gives ZIP 94590, conflicting with stored 94509; postal detail needs correction in a location follow-up. Snapshot: latest recorded event 2026-05-30T01:30:00.000Z; 10 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 117 | 12 | Shipwreck Games | US | 118 N Main St #1, Forked River, NJ 08731, USA | Pending | Pending |  |
 | 118 | 204 | Tofu's Trading | US | 969 Story Rd UNIT 6078, San Jose, CA 95122 United States | Pending | Pending |  |
 | 119 | 560 | Pandemonium Books and Games | US | 4 Pleasant St, Cambridge, MA 02139, USA | Pending | Pending |  |

@@ -1839,5 +1839,9 @@
   "274": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://gamecorpsonline.com/schedule) shows an October 2026 calendar with Grand Archive every Monday at 6 p.m., visually checked. Official homepage matches 2920 Buffalo Road. Older Thursday activity should not replace this published schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "406": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://retroedgegames.com/wp-content/uploads/2026/10/Oct2026_rev1.jpg) shows Grand Archive at 6:30 p.m. on all October 2026 Fridays (2, 9, 16, 23, 30), visually checked. [Official homepage](https://retroedgegames.com/) gives ZIP 94590, conflicting with stored 94509; postal detail needs correction in a location follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
