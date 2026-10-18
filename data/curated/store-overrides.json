@@ -1524,5 +1524,9 @@
   "195": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official Forest City Collectibles website](https://forestcitycollectibles.com/) sells Grand Archive. Its [events collection](https://forestcitycollectibles.com/collections/events-1) confirms 354 Richmond Street but shows zero products in the accessible version (older crawl). This is not evidence that weekly play stopped. Confirm current Grand Archive events with the shop. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "13": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://retroplaygames.com/) and [store information](https://retroplaygames.com/Info/) confirm 1886 London Line alongside District Beta. No readable current Grand Archive weekly announcement found. Recent Omnidex activity supports historical hosting but does not establish a fixed schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
