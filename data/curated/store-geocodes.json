@@ -693,6 +693,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 431,
+    "address": "Batiment Le Millenium Interphone Ludiworld, 9 Bd Pierre Mendès France, 77600 Bussy-Saint-Georges, France",
+    "lat": 48.8358509,
+    "lng": 2.7086366,
+    "sourceUrl": "https://www.ludiworld.com",
+    "sourceAddress": "9 Boulevard Pierre Mendes France, bussy saint georges, 77600, FR",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 435,
     "address": "32A, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim, Malaysia",
     "lat": 1.482418,

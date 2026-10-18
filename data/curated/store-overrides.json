@@ -1264,5 +1264,9 @@
   "367": {
     "kind": "store",
     "evidence": "2026-10-18: [Retail business directory](https://www.cylex.pt/aveiro/taberna-octopus-132078.html) confirms Rua Capitao Sousa Pizarro 28A and identifies https://www.tabernaoctopus.com. Official site contents could not be verified; no exact named shop coordinates obtained. Retail classification supported by the directory, with current operation requiring follow-up. Latest Omnidex event in committed snapshot 2024-09-07T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "431": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://www.ludiworld.com/) explicitly publishes LocalBusiness coordinates 48.83585090, 2.70863660 for 9 Boulevard Pierre Mendes France. [Government business register](https://annuaire-entreprises.data.gouv.fr/entreprise/808497747) corroborates current retail address and distinguishes former number 6. Imported exact business point. Latest Omnidex event in committed snapshot 2026-01-13T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
