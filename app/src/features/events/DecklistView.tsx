@@ -1,5 +1,5 @@
 import MenuDetails from "../../components/ui/MenuDetails";
-import DeckImageExport from "../../components/deck-export/DeckImageExport";
+import DeckExportActions from "../../components/deck-export/DeckExportActions";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
 import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
@@ -223,7 +223,7 @@ export default function DecklistView({
         </MenuDetails>
         {allLines.length > 0 && <div className="flex w-full flex-wrap items-center justify-end gap-1 sm:ml-auto sm:w-auto">
           <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
-          <DeckImageExport ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
+          <DeckExportActions ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
           <MenuDetails>
             <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">

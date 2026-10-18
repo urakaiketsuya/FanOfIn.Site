@@ -218,3 +218,13 @@ that drops artist or set favorites keeps the local draft and reports an error, r
 returned revision for retry instead of announcing success.
 
 Merchandise collection uses individual verified items as the progress denominator. Manufacturer product photos must be distinct from bundle overviews, and sleeve quantities must show the pack size. Bundle overview images must be labeled as overviews; owning one component never implies a full bundle. Merchandise releases are distinct from card sets. Saved progress excludes drafts, and unknown product identities stay outside totals. Quantity drafts survive view changes and failed saves. An unconfirmed save must be retried before editing; a conflict retains edits while loading newer saved quantities for explicit review and resubmission.
+
+## Printable deck proxies
+
+Keep Print proxies beside Export deck image. Snapshot the deck when the sheet opens,
+show named card previews and copy/page counts, and preserve selected printings. Include
+main and material by default with opt-in sideboard; exclude maybeboard and other sections.
+Offer Letter and A4 PDFs with nine 63 × 88 mm cards per page, one placement per copy,
+external cutting guides and a 20 mm scale check. Keep Actual size / 100% printing guidance
+beside Download PDF. Missing artwork blocks download with named errors and a retry that
+refreshes both the PDF and preview. Cancel pending work and release object URLs on dismissal.
