@@ -932,5 +932,9 @@
   "932": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retail collection](https://cardmerchantnewplymouth.co.nz/collections/yu-gi-oh-sealed) establishes branch card sales; [chain website](https://cardmerchant.co.nz/) identifies the New Plymouth outlet. [Branch social mirror](https://www.findglocal.com/NZ/New-Plymouth-City/1082549691604584/Card-Merchant-New-Plymouth) gives 19 Devon Street East. No exact business coordinates obtained; do not reuse XP Games at number 39. Latest Omnidex event in committed snapshot 2026-10-17T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "934": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official distributor list](https://www.maxsoftonline.com/purchase-trading-card) confirms Collect All Card Shop at Vanda Business Park, but gives 723L-2 instead of recorded 723D-2. Retail identity established; resolve unit-letter discrepancy. No official standalone website or verified exact-unit point imported. Latest Omnidex event in committed snapshot 2026-08-31T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
