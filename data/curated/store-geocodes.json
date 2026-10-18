@@ -900,6 +900,15 @@
     "sourceCollectedAt": "2026-10-11T17:34:56.588284+00:00"
   },
   {
+    "hostId": 817,
+    "address": "2330 Hoffman Street Unit 1b\nUSA",
+    "lat": 40.8545267,
+    "lng": -73.8896297,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/125a7b5a-5c6e-4f21-9fec-cc602cf8cb76",
+    "sourceAddress": "2330 Hoffman Street Unit 1B, Bronx, NY, 10458, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 835,
     "address": "700 Paramus Pk suite 1305, Paramus, NJ 07652, USA",
     "lat": 40.955216,

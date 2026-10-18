@@ -784,5 +784,9 @@
   "517": {
     "kind": "store",
     "evidence": "2026-10-18: [Official about page](https://pikkuplay.com/pages/about-us) confirms retail store at 1 North Bridge Road #02-20 High Street Centre and links [official Facebook](https://www.facebook.com/Pikkuplay/). [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/1697/) agrees. No unit-specific named point verified; do not substitute another High Street Centre card shop. Latest Omnidex event in committed snapshot 2026-04-01T14:25:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "817": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher store](https://locator.riftbound.uvsgames.com/stores/125a7b5a-5c6e-4f21-9fec-cc602cf8cb76) identifies HPT Collects at Saigon Caphe as physical/online retailer, with full address 2330 Hoffman Street Unit 1B, Bronx NY 10458 and coordinates 40.8545267, -73.8896297. Imported address-bound store point. No official standalone website established. Latest Omnidex event in committed snapshot 2026-08-13T20:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
