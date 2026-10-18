@@ -1152,5 +1152,9 @@
   "89": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://www.baydragon.co.nz/) confirms Unit 41a, 277 Te Irirangi Drive, distinct from the Blockhouse Bay branch in [publisher list](https://en.cf-vanguard.com/shop/asia-pacific/). Official postal code is 2019 while recorded is 2016; street/unit agree. No verified named branch coordinates obtained. Latest Omnidex event in committed snapshot 2024-08-18T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "171": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Distributor retailer list](https://www.maxsoftonline.com/purchase-trading-card) and [manufacturer stockists](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) confirm Card Palace at 58 Dongmin Street, third floor. No standalone official website or verified destination point established. Latest Omnidex event in committed snapshot 2024-08-10T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
