@@ -1084,5 +1084,9 @@
   "626": {
     "kind": "store",
     "evidence": "2026-10-18: [Official about/contact page](https://www.tcge.hk/en/about-us) confirms card retail at Room 01, 20/F, President Commercial Building, 608 Nathan Road, compatible with recorded 602-608 range. No exact business destination coordinates verified; unrelated Singapore technology/logistics results excluded. Latest Omnidex event in committed snapshot 2026-02-22T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "635": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch directory](https://www.gaminglib.com/pages/store-location) confirms The Block, Level 5, SM City North EDSA and retail pickup. Older third-party descriptions give Level 4; current official source matches the recorded floor. No verified branch destination point obtained; no mall centroid substituted. Latest Omnidex event in committed snapshot 2026-03-14T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
