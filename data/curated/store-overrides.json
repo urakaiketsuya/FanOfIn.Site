@@ -620,5 +620,9 @@
   "325": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://realgoodeal.com/pages/contact-us) gives 20725 NE 16th Ave A45; [Bandai retailer list](https://www.unionarena-tcg.com/na/pdf/events/demo_deck_event_at_localstores/2024/demo_deck_event_at_localstores_usa.pdf) uses recorded A47. Retailer identity confirmed, but unit discrepancy remains. Do not import a generic business-park point. Latest Omnidex event in committed snapshot 2025-11-02T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "434": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://ikicardshop.wixsite.com/ikicardshop) identifies the card retailer. [Bandai store list](https://www.unionarena-tcg.com/en/events/shop-battle/2024/02/list_indonesia.php) identifies IKI x TCGnoHeya at Mediterania Residences 1, Tower BC, third floor beside Starbucks. No exact storefront coordinates verified; resolve the floor/tower notation against the recorded address before mapping. Latest Omnidex event in committed snapshot 2026-08-11T12:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
