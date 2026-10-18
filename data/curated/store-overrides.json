@@ -904,5 +904,9 @@
   "942": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://rooted-games.com/pages/contact) gives 222 FM359 Suite E, not recorded 3333 FM359. [Official pickup product page](https://rooted-games.com/products/santorini-2nd-edition) corroborates 222 Suite E. Retail identity established; resolve relocation/event address before importing a point. Latest Omnidex event in committed snapshot 2026-10-03T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "1019": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Business directory](https://www.bizmalay.com/flunix-016-588-5397) identifies Flunix as toy/game retail at Lot 33, ground floor, Karamunsing. It lists a Facebook presence but no standalone website; direct retrieval was blocked. No verified shop destination obtained. Excluded unrelated marketing agencies. Latest Omnidex event in committed snapshot 2026-10-03T07:30:00.000Z. Existing recurrence projects 2026-10-22T11:30:00.000Z, 2026-10-29T11:30:00.000Z, 2026-11-05T11:30:00.000Z, 2026-11-12T11:30:00.000Z (source events 64304); estimates, not confirmed bookings."
   }
 }
