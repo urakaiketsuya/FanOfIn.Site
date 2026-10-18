@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
@@ -7,18 +6,13 @@ import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import { InlineState } from '../../components/ui/ContentState';
 import type { DeckTestResult } from '../../lib/deckTestResult';
-import { cutoutsForChampion } from '../products/characterArt';
 
 const percent = (value: number) => `${(value * 100).toFixed(0)}%`;
 
 function ChampionArt({ name, cards }: { name: string; cards: Map<string, Card> }) {
-  const cutout = cutoutsForChampion(name)[0];
-  const card = (cutout && cards.get(cutout.cardName)) ?? cards.get(name)
+  const card = cards.get(name)
     ?? [...cards.values()].find((candidate) => candidate.types.includes('CHAMPION') && candidate.name.startsWith(`${name}, `));
-  const [failedImage, setFailedImage] = useState<string>();
-  const art = cutout && failedImage !== cutout.image
-    ? <img src={cutout.image} alt={cutout.cardName} loading="lazy" onError={() => setFailedImage(cutout.image)} className="h-32 w-full object-contain sm:h-40" />
-    : <CardArtTile card={card} name={name} artworkOnly />;
+  const art = <CardArtTile card={card} name={card?.name ?? name} artworkOnly />;
   return card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`View ${card.name}`} className="block min-h-12 min-w-12 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{art}</Link> : <div>{art}</div>;
 }
 

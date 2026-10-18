@@ -20,7 +20,8 @@ test('matchup cards identify historical archetype rates without claiming exact-l
  assert.match(html,/54%/);
  assert.match(html,/Similar decks’ win rate/);
  assert.match(html,/86 recorded games/);
- assert.match(html,/\/media\/products\/DOA\/cutouts\/lorraine/);
+ assert.match(html,/data-component="CardArtTile"/);
+ assert.doesNotMatch(html,/\/cutouts\//);
  assert.doesNotMatch(html,/<details|<summary|<select|Estimated win rate|win-rate change|Nearest similar/);
 });
 test('loading, failure and unmatched decks remain distinct', () => {
