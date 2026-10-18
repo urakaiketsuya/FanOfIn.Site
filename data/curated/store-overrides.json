@@ -1520,5 +1520,9 @@
   "415": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. [Store directory](https://yestcg.com/stores/virginia/hopewell/time-capsule) matches 205 East Broadway and identifies a retail comic/game shop; [second directory](https://www.keepupcards.com/shop/time-capsule-hopewell-va) corroborates the business. No standalone official website or current Grand Archive weekly schedule found. Directory listings of other games are not evidence of Grand Archive recurrence. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "195": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official Forest City Collectibles website](https://forestcitycollectibles.com/) sells Grand Archive. Its [events collection](https://forestcitycollectibles.com/collections/events-1) confirms 354 Richmond Street but shows zero products in the accessible version (older crawl). This is not evidence that weekly play stopped. Confirm current Grand Archive events with the shop. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
