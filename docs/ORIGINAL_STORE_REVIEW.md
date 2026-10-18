@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 54/305 (17.7%); 251 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 55/305 (18.0%); 250 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 0 published fortnightly; 4 historical schedule; 4 special event only; 37 unconfirmed.
+Weekly results among reviewed stores: 9 published weekly; 0 published fortnightly; 4 historical schedule; 4 special event only; 38 unconfirmed.
 
-Next: #55 Gamersshop Gaming Store Maginhawa Branch.
+Next: #56 Phoenix Inn.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -68,7 +68,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 52 | 688 | Hard Brick Games LTD. | CA | 9126 51 Ave NW, Edmonton, AB T6E 5L8, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://hardbrickgames.com/) carries Grand Archive and links its [calendar](https://hardbrickgames.com/pages/event-calendar), which has no readable event entries. The Animethon charity tournament is a separate special event, not evidence for Edmonton store weeklies. Request the current branch schedule. Snapshot: latest recorded event 2026-10-03T00:30:00.000Z; 42 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 53 | 101 | Heretics Haven | AU | 91 Currie St, Nambour QLD 4560, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://hereticshaven.com.au/) matches 91 Currie Street. Its [events page](https://tcg.hereticshaven.com.au/pages/events) exposes no dated Grand Archive entries. Confirm current weekly play; product expression-of-interest forms and previous regionals do not establish a weekly slot. Snapshot: latest recorded event 2026-07-18T23:30:00.000Z; 34 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 54 | 343 | The Stadium | US | 3980 Wilder Rd, Bay City, MI 48706, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Store ticket collection](https://the-stadium-bc.myshopify.com/collections/events) identifies the official shop. [Syndicated June weekly announcement](https://happeningnext.com/event/grand-archive-weekly-eid3a0dps6sot) lists Sundays at 13:00, June 7–28, 2026, at 3980 Wilder Road. This is historical secondary evidence; confirm October play and the Bay City branch. Snapshot: latest recorded event 2026-10-11T17:25:00.000Z; 42 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 55 | 621 | Gamersshop Gaming Store Maginhawa Branch | PH | 138 Maginhawa, Diliman, Lungsod Quezon, Kalakhang Maynila, Philippines | Pending | Pending |  |
+| 55 | 621 | Gamersshop Gaming Store Maginhawa Branch | PH | 138 Maginhawa, Diliman, Lungsod Quezon, Kalakhang Maynila, Philippines | Identified social | Unconfirmed | Reviewed 2026-10-18: [Distributor directory](https://www.fayble-asia.com/game_store.php?id=13) identifies the GamersShop Facebook account. [Publisher branch list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202404/list_philippines.php) distinguishes Gamer Shop GS at 138 Maginhawa from GamersShop at V. Luna Avenue. No readable branch-specific GA weekly announcement verified; do not apply V. Luna regional details to Maginhawa. Snapshot: latest recorded event 2026-10-03T04:00:00.000Z; 39 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 56 | 336 | Phoenix Inn | DE | Stöckmannstraße 90, 46045 Oberhausen, Germany | Pending | Pending |  |
 | 57 | 489 | Rekreation Games | US | 1075 S Arizona Ave #2, Chandler, AZ 85286, USA | Pending | Pending |  |
 | 58 | 3 | Hypercollectibles | US | 6347 Massachusetts Ave, New Port Richey, FL 34653, USA | Pending | Pending |  |
