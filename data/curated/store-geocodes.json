@@ -720,6 +720,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 485,
+    "address": "Kirkegade 16, st th, 8900 Randers, Denmark",
+    "lat": 56.460081,
+    "lng": 10.033623,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/650617",
+    "sourceAddress": "16 Kirkegade, Randers, Denmark, Randers C, 8900, DK",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 495,
     "address": "80 Marketplace Ave #1, Nepean, ON K2J 5G3, Canada",
     "lat": 45.2703299,

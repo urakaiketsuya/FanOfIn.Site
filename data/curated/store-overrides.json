@@ -1060,5 +1060,9 @@
   "1042": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/341733) matches 188 Dias da Cruz, basement shop 143C and supplies -22.9020148, -43.2828759. [Card-shop listing](https://www.cafecomonepiece.com.br/lojas/brand%C3%A3o-card-game) corroborates the exact shop in Meier; publisher locality label Tijuca differs but street and unit agree. Imported point; publisher identifies https://www.brandaocardgame.com.br, whose direct retrieval returned 403. Latest Omnidex event in committed snapshot 2026-10-15T22:00:00.000Z. Existing recurrence projects 2026-10-22T22:00:00.000Z, 2026-10-29T22:00:00.000Z, 2026-11-05T22:00:00.000Z, 2026-11-12T22:00:00.000Z (source events 65822); estimates, not confirmed bookings."
+  },
+  "485": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retail page](https://thewobblynerdles.dk/pokemon/) confirms Kirkegade 16 st. th. [Publisher event](https://locator.riftbound.uvsgames.com/events/650617) binds the same business/address to 56.460081, 10.033623. Imported publisher point rather than the official embedded map viewport centre. Latest Omnidex event in committed snapshot 2025-08-02T10:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
