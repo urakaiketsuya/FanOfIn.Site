@@ -864,5 +864,9 @@
   "451": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://kingstablegames.com/) establishes card and board-game retail. [Local event directory](https://missoulatonight.com/venues/kings-table-games) confirms 1819 Holborn Street Suite A. No verified address-bound shop coordinates found in inspected official page or map searches. Latest Omnidex event in committed snapshot 2025-09-27T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "546": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Card-shop directory](https://www.tcdb.com/CardShops.cfm?MODE=VIEW&ShopID=3102) confirms 1073 W Broad Street Unit 201D and identifies [official website](https://sinnersrefuge.com/) and [Facebook](https://www.facebook.com/people/Sinners-Refuge/61550327987647/). [Retail inventory directory](https://yestcg.com/stores/virginia/falls-church/sinners-refuge) supports card sales. Official page returned a shop shell without verified map coordinates; no pin imported. Latest Omnidex event in committed snapshot 2026-04-28T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
