@@ -1612,5 +1612,9 @@
   "3": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://hypercollectiblestcg.com/) and [calendar](https://hypercollectiblestcg.com/pages/calendar) verified, but calendar entries are not readable. [Store marketplace profile](https://shop.com/m/hypercollectiblestcg) distinguishes New Port Richey, 6347 Massachusetts Avenue, from Tampa. Request the New Port Richey GA weekly schedule; do not substitute Tampa or Riftbound events. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "4": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official shop](https://thehaventabletop.com/) identifies the Casselberry retailer. Its [GA collection](https://thehaventabletop.com/collections/grand-archive-1) contains regional tickets, including May 17, 2025, but no verified current weekly slot. Confirm current recurring play separately from old regional products and the incomplete readable homepage calendar. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
