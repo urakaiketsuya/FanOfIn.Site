@@ -1088,5 +1088,9 @@
   "635": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch directory](https://www.gaminglib.com/pages/store-location) confirms The Block, Level 5, SM City North EDSA and retail pickup. Older third-party descriptions give Level 4; current official source matches the recorded floor. No verified branch destination point obtained; no mall centroid substituted. Latest Omnidex event in committed snapshot 2026-03-14T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "659": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Business record](https://mygov.tw/company/38715239) identifies Syong Da retail at 171 Guoqing 11th Street. [Current Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/69332/) names SD雄大TCG休閒館 at 312 Zhonghua Fourth Road and links [official Facebook](https://www.facebook.com/jswindtcginsd). [Retail marketplace listing](https://www.ruten.com.tw/item/22627025878380/) supports card sales. Resolve relocation before mapping; no standalone website established. Latest Omnidex event in committed snapshot 2026-09-13T07:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
