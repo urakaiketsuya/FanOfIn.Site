@@ -1456,5 +1456,9 @@
   "243": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Publisher store profile](https://legacy.fabtcg.com/en/locator/knight-and-day-games/) matches 6521 S Las Vegas Boulevard C-105 and identifies knightanddaygames.com. Its [official calendar](https://knightanddaygames.com/pages/event-calendar) is accessible but supplies no readable Grand Archive schedule. The publisher's Wednesday Armory day is Flesh and Blood, not Grand Archive. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "295": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official Redwood City calendar](https://gamekastle.com/pages/redwood-city-ca-event-calendar) confirms 340 Walnut Street. The readable page shows October 13 events only; it does not verify Grand Archive's weekly slot. Confirm Friday local-time play in the full branch calendar; computed Saturday UTC timestamps must not be described as Saturday local events. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

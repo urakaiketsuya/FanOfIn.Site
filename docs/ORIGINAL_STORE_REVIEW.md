@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 19/305 (6.2%); 286 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 20/305 (6.6%); 285 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 4 published weekly; 1 historical schedule; 1 special event only; 13 unconfirmed.
+Weekly results among reviewed stores: 4 published weekly; 1 historical schedule; 1 special event only; 14 unconfirmed.
 
-Next: #20 Game Kastle Redwood City.
+Next: #21 The Arcanum Sanctorum.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -33,7 +33,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 17 | 599 | Taps Games | CA | 2854 Calgary Trail NW, Edmonton, AB T6J 6V7, Canada | Verified site | Published weekly | Reviewed 2026-10-18: [Official daily events](https://tapsgames.com/collections/upcoming-events) offers Grand Archive Sunday entry. [October syndicated store announcement](https://stayhappening.com/e/grand-archive-weekly-play-taps-games-E2ISYWQS9QC) gives Sundays at 16:00 and 2854 Calgary Trail NW; that start time has secondary-source support only. Separate [Wednesday announcement](https://happeningnext.com/event/grand-archive-midweek-taps-games-wednesday-eid3a0e4wxnbb) needs confirmation before treating it as another current recurring slot. Snapshot: latest recorded event 2026-09-10T00:30:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 18 | 345 | Beginner's Luck | SG | 148f Pasir Panjang Rd, Singapore 118553 | Not found | Unconfirmed | Reviewed 2026-10-18: [Publisher shop list](https://en.shadowverse-evolve.com/shops/asia-oceania/) and [Lorcana store listing](https://tcg.ravensburgerplay.com/stores/979da99b-97c0-4ef3-a8dc-7ccb671befda) match Beginner's Luck at 148F Pasir Panjang Road. No standalone official website or readable current Grand Archive weekly announcement found. Confirm Thursday play with the store; do not confuse other games' schedules. Snapshot: latest recorded event 2026-10-15T12:00:00.000Z; 98 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 19 | 243 | Knight and Day Games | US | 6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://legacy.fabtcg.com/en/locator/knight-and-day-games/) matches 6521 S Las Vegas Boulevard C-105 and identifies knightanddaygames.com. Its [official calendar](https://knightanddaygames.com/pages/event-calendar) is accessible but supplies no readable Grand Archive schedule. The publisher's Wednesday Armory day is Flesh and Blood, not Grand Archive. Snapshot: latest recorded event 2026-10-07T02:00:00.000Z; 85 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 20 | 295 | Game Kastle Redwood City | US | 340 Walnut St, Redwood City, CA 94063, USA | Pending | Pending |  |
+| 20 | 295 | Game Kastle Redwood City | US | 340 Walnut St, Redwood City, CA 94063, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official Redwood City calendar](https://gamekastle.com/pages/redwood-city-ca-event-calendar) confirms 340 Walnut Street. The readable page shows October 13 events only; it does not verify Grand Archive's weekly slot. Confirm Friday local-time play in the full branch calendar; computed Saturday UTC timestamps must not be described as Saturday local events. Snapshot: latest recorded event 2026-10-17T02:00:00.000Z; 93 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 21 | 31 | The Arcanum Sanctorum | US | 3994 N Oracle Rd, Tucson, AZ 85705, USA | Pending | Pending |  |
 | 22 | 78 | Dragon Nest Game Unlimited | HK | 162 Un Chau St, Un Chau, Hong Kong | Pending | Pending |  |
 | 23 | 21 | David's Good Game Cafe | US | 2285 Whitney Ave, Hamden, CT 06518, USA | Pending | Pending |  |
