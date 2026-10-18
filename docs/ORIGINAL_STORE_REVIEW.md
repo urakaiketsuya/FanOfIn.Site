@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 142/305 (46.6%); 163 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 143/305 (46.9%); 162 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 14 historical schedule; 8 special event only; 95 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 14 historical schedule; 8 special event only; 96 unconfirmed.
 
-Next: #143 J and J Gaming Factory.
+Next: #144 ABU Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -156,7 +156,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 140 | 803 | Gaia Card Game Sanctuary | MY | Endah Parade, Jalan 1/149e, Taman Sri Endah, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia | Official social page identified | Historical schedule | Reviewed 2026-10-18: [Source](https://omni.gatcg.com/events/65499) records a completed October 11, 2026 weekly BO3 event at 14:30 Malaysia time, RM28. This past date does not guarantee future Sunday recurrence. [Store Facebook](https://www.facebook.com/GaiaCardGameSanctuary) was identified, but no readable current recurring announcement verified. Snapshot: latest recorded event 2026-08-30T06:30:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 141 | 855 | Manticore | BE | Hoogstraat 17, 9660 Brakel, Belgium | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.manticore-brakel.be/) explicitly says the Brakel shop is permanently closed and directs customers to Smissenhoek 120, Erwetegem. [October 3 Grand Archive championship](https://manticore-zottegem.be/en/event/grand-archive-asphodel-paradise-store-championship-227/register) is at Erwetegem, not the stored Brakel address. Current Brakel weeklies are unconfirmed; resolve the closed-location record separately. Snapshot: latest recorded event 2026-10-10T12:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 142 | 344 | Desert City Games | CA | 171 Leigh Rd, Kamloops, BC V2B 2L7, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.desertcitygamestcg.ca/collections/grand-archive-sealed-product) confirms the store and Grand Archive products, but no current recurring play schedule was verified. Obtain a current weekly announcement. Snapshot: latest recorded event 2025-11-30T00:00:25.000Z; 7 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 143 | 566 | J and J Gaming Factory | US | 5140 W Peoria Ave #100, Glendale, AZ 85302, USA | Pending | Pending |  |
+| 143 | 566 | J and J Gaming Factory | US | 5140 W Peoria Ave #100, Glendale, AZ 85302, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://jandjgamingfactory.com/) confirms the Glendale retailer and Grand Archive products. No readable current Grand Archive weekly schedule found; product availability does not establish event recurrence. Snapshot: latest recorded event 2026-05-17T19:00:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 144 | 782 | ABU Games | US | 7211 W, 7211 Colonial St, Boise, ID 83709, USA | Pending | Pending |  |
 | 145 | 901 | Hyper Collectibles Tampa | US | 7029 W Waters Ave, Tampa, FL 33634, USA | Pending | Pending |  |
 | 146 | 20 | Game Kastle Greenville | US | 2854a Wade Hampton Blvd, Taylors, SC 29687, USA | Pending | Pending |  |
