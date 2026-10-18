@@ -1775,5 +1775,9 @@
   "494": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published fortnightly. [Official GA event page](https://www.theconnectiongames.com/GrandArchiveTCG) says every other Monday at 18:30, despite its weekly heading. Record fortnightly, with exact Mondays to be checked in tickets/calendar. [Official home page](https://www.theconnectiongames.com/) matches 2945 Renfrew Street. Do not generate weekly dates from the heading alone. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "671": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://playatshuffle.com/) and [GA collection](https://playatshuffle.com/product-category/grand-archive/) verified. The Join Events link points to /visit-us, which could not be fetched. No readable weekly schedule confirmed. The publisher’s February regional used Island 88 shopping mall, a special-event venue that must not replace the Jalan Perak store address. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
