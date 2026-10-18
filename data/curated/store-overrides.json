@@ -1763,5 +1763,9 @@
   },
   "292": {
     "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. No uniquely matched official website/social profile or current weekly schedule found. Committed activity ends in July 2024 and includes an explicitly online event (6121), while the recorded address also appears under Dragon Nest. Do not merge the hosts or certify this as a separate physical store on that evidence. Leave classification unclassified; confirm identity, venue and in-person play before changing the pin. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "324": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Current official branch directory](https://hobbylords.com/nz/contact-us) lists 235 Main Street, conflicting with recorded 137 Cuba Street. [Older official GA championship](https://www.hobbylords.co.nz/events/single/grand-archive-abyssal-heaven-store-championship%40-palmerston-north%21) uses Cuba Street in May 2025. No current weekly slot verified. Confirm current GA venue/schedule and correct the stale location in a follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
