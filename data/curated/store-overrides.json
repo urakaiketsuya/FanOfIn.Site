@@ -1712,5 +1712,9 @@
   "593": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official storefront](https://steamshipgames.square.site/) matches 711 W Lake Street suite 103. [Syndicated store posts](https://www.findglocal.com/US/Minneapolis/18659276501/Steamship-Games) describe converting Saturday GA to Pantheon, but this is older secondary evidence without a confirmed current start time. Confirm Saturday format/time; storefront opening hours are not an event schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "81": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official March 2024 Hobby League listing](https://www.hobbylords.co.nz/events/single/grand-archive-hobby-league213024) advertises Wednesdays at 18:30 at 124 King Edward Street. [Current branch directory](https://hobbylords.com/nz/) still lists the same street address and postcode 9012. The old event does not confirm October 2026 weeklies; verify the current schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
