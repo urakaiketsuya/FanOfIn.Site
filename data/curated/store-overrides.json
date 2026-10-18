@@ -600,5 +600,9 @@
   "194": {
     "kind": "store",
     "evidence": "2026-10-18: [Local tourism listing](https://www.beleefboxtel.nl/locaties/2262592759/titan-games) identifies the retailer at Kruisstraat 3 and supplies address-bound structured coordinates 51.588202, 5.32612. Independently verified the existing pipeline point and added curated provenance. Listing links [official site](https://titangames.nl/) and [Facebook](https://www.facebook.com/TitanGamesNL/). Latest Omnidex event in committed snapshot 2024-10-27T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "511": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.gamersguildusa.com/pages/contact-us) confirms North Phoenix at 1818 W Bell Rd Suite 115, separate from Tempe. [Publisher event](https://locator.riftbound.uvsgames.com/events/534630) has matching store/event coordinates 33.6417771, -112.0981242. Imported branch-specific point. Latest Omnidex event in committed snapshot 2026-08-29T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

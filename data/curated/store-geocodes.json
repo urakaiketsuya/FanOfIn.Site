@@ -621,6 +621,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:51.683303+00:00"
   },
   {
+    "hostId": 511,
+    "address": "Deer Valley Plaza, 1818 W Bell Rd, Phoenix, AZ 85023, USA",
+    "lat": 33.6417771,
+    "lng": -112.0981242,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/534630",
+    "sourceAddress": "1818 W Bell Rd, suite 115, Phoenix, AZ, 85023, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 514,
     "address": "150 South Bridge Road\n#B1-22\nSingapore 58727\nSingapore",
     "lat": 1.2845625,
