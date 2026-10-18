@@ -324,6 +324,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 194,
+    "address": "Kruisstraat 3, 5281 AW Boxtel, Netherlands",
+    "lat": 51.588202,
+    "lng": 5.32612,
+    "sourceUrl": "https://www.beleefboxtel.nl/locaties/2262592759/titan-games",
+    "sourceAddress": "Kruisstraat 3, 5281 AW Boxtel, Netherlands",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 200,
     "address": "7170 Warden Ave. Unit 22, Markham, ON L3R 8B4, Canada",
     "lat": 43.826738257530145,
