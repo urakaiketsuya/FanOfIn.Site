@@ -1779,5 +1779,9 @@
   "671": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://playatshuffle.com/) and [GA collection](https://playatshuffle.com/product-category/grand-archive/) verified. The Join Events link points to /visit-us, which could not be fetched. No readable weekly schedule confirmed. The publisher’s February regional used Island 88 shopping mall, a special-event venue that must not replace the Jalan Perak store address. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "674": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://contrariangaming.com/pages/google-event-calendar) links an embedded event calendar; the official site matches the Vancouver address, but no readable current Grand Archive day/time was verified. Confirm the weekly schedule directly. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
