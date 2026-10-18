@@ -1744,5 +1744,9 @@
   "128": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher retailer list](https://www.unionarena-tcg.com/na/pdf/events/demo_deck_event_at_localstores/2024/demo_deck_event_at_localstores_usa.pdf) matches 434 N Lemon Avenue and links [The Light Games Facebook](https://www.facebook.com/TheLightGames). No standalone site or readable current GA weekly announcement verified. Confirm through the store; the April championship does not establish a weekly slot. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "522": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Austin calendar](https://www.gamekastle.live/pages/austin-tx-event-calendar) explicitly advertises GA meetups every Saturday at 13:00; displayed duration is 13:00–16:00. It lists 3407 Wells Branch Parkway suite 800, postcode 78728 instead of recorded 78727. Verify postal detail and individual meetup dates; do not imply every meetup is a sanctioned tournament. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
