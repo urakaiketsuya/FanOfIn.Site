@@ -1316,5 +1316,9 @@
   "662": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/azusa1120azusa/) confirms physical card sales at 10 Lane 94, Xinsheng South Road Section 3 under 幻想遊戲世界玩具店. [Distributor retailer list](https://funbox.com.tw/pokemontcg/06.asp) agrees. No standalone official website or verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2025-09-28T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "733": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official about page](https://www.cardpro.ph/about-us/) confirms buying and selling cards at Unit 1707, 17th floor One Park Drive, 9th Avenue corner 11th. Its [contact page](https://www.cardpro.ph/contact-us/) yielded no verified business coordinates. No building centroid substituted for the shop. Latest Omnidex event in committed snapshot 2025-11-08T05:55:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
