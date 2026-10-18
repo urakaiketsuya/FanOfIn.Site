@@ -819,6 +819,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 562,
+    "address": "Mega Mall Batam Centre Upper Ground, Jl. Engku Putri No.1 Floor 107, Belian, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29461, Indonesia",
+    "lat": 1.1291952,
+    "lng": 104.0555219,
+    "sourceUrl": "https://www.jpbindo.com/ots-info",
+    "sourceAddress": "Jl. Engku Putri No.1, Belian, Kota Batam Mega Mall Batam Centre Upper Ground Kepulauan Riau 29461",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 578,
     "address": "5116 196th St SW Suite 203, Lynnwood, WA 98036, USA",
     "lat": 47.820714,
