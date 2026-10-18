@@ -1192,5 +1192,9 @@
   "866": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch](https://events.goodgames.com.au/venue/good-games-castle-hill/) confirms retail at Castle Towers Shop 1217, 6-14 Castle Street. [Named Waze destination](https://www.waze.com/live-map/directions/au/nsw/castle-hill/good-games-castle-hill?to=place.ChIJS53JIdehEmsRq4DsCK02oCs) matches the exact unit and supplies -33.7306293, 151.0065332. Imported destination point. Latest Omnidex event in committed snapshot 2026-10-07T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "919": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/ba85d106-9a15-4c86-b07c-8267c2072c15) confirms physical retail at D-1-10 Pusat Komersial Bayu Tasek and supplies 1.4973037, 103.7775957. Imported exact shop point. [Games Haven website](https://www.gameshaventcg.com/pages/our-stores) does not list Southkey, so branch affiliation/official standalone website remains unconfirmed. Latest Omnidex event in committed snapshot 2026-07-26T00:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

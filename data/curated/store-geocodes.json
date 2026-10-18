@@ -1215,6 +1215,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 919,
+    "address": "D-1-10 Pusat Komersial Bayu Tasek Persiaran Southkey 1\nKota Southkey, 1, Southkey\n80150 Johor Bahru, Johor Darul Ta'zim\nMalaysia",
+    "lat": 1.4973037,
+    "lng": 103.7775957,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/ba85d106-9a15-4c86-b07c-8267c2072c15",
+    "sourceAddress": "D-1-10 Pusat Komersial Bayu Tasek Persiaran Southkey 1, Kota Southkey, 1, Southkey, 80150 Johor Bahru, Johor Darul Ta'zim, Malaysia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 949,
     "address": "8966 W Bowles Ave ste y, Littleton, CO 80123, USA",
     "lat": 39.6085288,
