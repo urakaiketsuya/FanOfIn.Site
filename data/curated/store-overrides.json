@@ -1332,5 +1332,9 @@
   "832": {
     "kind": "store",
     "evidence": "2026-10-18: [Official Cypress branch](https://www.atomicgamingcomics.com/pages/atomic-gaming-and-comics-cypress) confirms 25430 Northwest Freeway Suite A-7 and links [exact-suite Google destination](https://maps.app.goo.gl/1QVPAS6RkwgMyifQ6) with 29.9666283, -95.6888741. Imported official directions destination, excluding the map viewport centre. Latest Omnidex event in committed snapshot 2026-05-30T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "856": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://atorihobbies.com/) confirms Unit 19, Casa Ophelia, DRT Highway, Sabang. [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/a9f34111-762c-4b34-9c5c-c3d4fdade04d) matches and supplies 14.9687212, 120.90421859999998. Imported exact shop point; the broad official embedded-map viewport was not used. Latest Omnidex event in committed snapshot 2026-04-14T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

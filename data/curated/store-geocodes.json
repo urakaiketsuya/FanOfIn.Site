@@ -1233,6 +1233,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 856,
+    "address": "Unit 19, Casa Ophelia, Doña Remedios Trinidad Hwy, Sabang, Baliwag, 3006 Bulacan, Philippines",
+    "lat": 14.9687212,
+    "lng": 120.90421859999998,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/a9f34111-762c-4b34-9c5c-c3d4fdade04d",
+    "sourceAddress": "Unit 19, Casa Ophelia, Doña Remedios Trinidad Hwy, Sabang, Baliwag, 3006 Bulacan, Philippines",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 866,
     "address": "Castle Towers, Shop 1217, Level 1/6 - 14 Castle St, Castle Hill NSW 2154, Australia",
     "lat": -33.7306293,
