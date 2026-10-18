@@ -1396,5 +1396,9 @@
   "82": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://cardmerchantchristchurch.co.nz/) lists a7/300 Lincoln Road rather than Omnidex 300H. [Ticket collection](https://cardmerchantchristchurch.co.nz/collections/event-tickets) establishes Grand Archive regional activity, but the readable calendar gives no weekly times. Resolve unit notation and confirm Thursday weekly play with the branch. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "46": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://gamenut.com/) identifies the Lawrence branch at 2329 Iowa Suite M, with postcode 66046 rather than recorded 66047. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) corroborates the recorded street/suite. No current Grand Archive weekly schedule verified; do not substitute the Topeka branch's events. Postal detail needs follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
