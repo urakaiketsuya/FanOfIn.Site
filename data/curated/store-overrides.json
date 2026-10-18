@@ -692,5 +692,9 @@
   "278": {
     "kind": "unclassified",
     "evidence": "2026-10-18: [GA publisher championship list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/ALC_Season_Store_Championship_List_3_14_ALC_Store_Championships_List_Updated_3_18_d27d16a25c.pdf) confirms 344 Stroud Mall Road unit 622. Name/address searches did not establish a current official site, independent retail identity, or exact unit coordinates. Remains unclassified; do not substitute an unrelated P Money business or mall centroid. Latest Omnidex event in committed snapshot 2024-04-18T23:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "318": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://xpgames.co.nz/collections/pre-orders) and [publisher store](https://locator.riftbound.uvsgames.com/stores/0eaa2079-f679-48d5-a2a2-c3146557cf47) confirm 39 Devon Street East. Publisher structured coordinates are 1, -2, outside New Zealand; rejected as invalid. Obtain a correct address-bound destination before import. Latest Omnidex event in committed snapshot 2026-02-07T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
