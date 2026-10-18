@@ -988,5 +988,9 @@
   "881": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://azumayamtg.com/) confirms MTG/FAB retail. [Named card-shop map](https://akihabara-cardmap.com/ja/shop/azumaya/) matches Kumagaya Building 3F, 1-6-3 Sotokanda and supplies address-bound structured coordinates 35.6996847, 139.7694343. Imported named destination; official social account [@azumayamtg](https://x.com/azumayamtg). Latest Omnidex event in committed snapshot 2026-09-01T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "886": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://cardchill.tw/) confirms card sales at 77 Hulin Street Lane 132, first floor. Its inspected page supplies no verified destination coordinates. The similarly named cardchill.com is a UK information portal and was excluded; no point imported. Latest Omnidex event in committed snapshot 2026-04-14T14:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
