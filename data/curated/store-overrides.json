@@ -1540,5 +1540,9 @@
   "98": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch event page](https://events.goodgames.com.au/venue/good-games-greensborough/) confirms 61 Main Street but shows zero events. This does not prove play has ceased. No current Grand Archive weekly schedule verified; historical event evidence is stale. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "686": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. [Local tabletop directory](https://kakitabletop.com/map/south/johor/) matches Kamenn Enterprise at 55a Jalan Perwira 2; [publisher event notice](https://ultraman-cardgame.com/page/my/news/news-detail/15) corroborates street/store but omits the a suffix. No standalone official website or readable current Grand Archive weekly announcement found. Confirm Wednesday estimates with the store. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
