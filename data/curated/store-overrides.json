@@ -892,5 +892,9 @@
   "810": {
     "kind": "store",
     "evidence": "2026-10-18: [Official chain contact](https://www.generalgames.com.au/pages/contact-us) confirms Highpoint L02 2090/1 at 120-200 Rosamond Road. [Branch events directory](https://allevents.in/org/general-games-highpoint/27018786) agrees. No verified shop-specific coordinates obtained; do not substitute shopping-centre centroid. Latest Omnidex event in committed snapshot 2026-09-05T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "825": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer website](https://tcg.lizstudio.co.kr/) confirms basement 1 at 36-5 Nonhyeon-ro 26-gil, House Raum, and card sales. Its [GA schedule](https://tcg.lizstudio.co.kr/events/14) advertises Saturday 13:00 local weekly play; this is website schedule evidence, separate from computed Omnidex estimates below. No verified basement-store coordinates obtained. Latest Omnidex event in committed snapshot 2026-07-17T07:19:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
