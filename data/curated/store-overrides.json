@@ -1803,5 +1803,9 @@
   "652": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.goldstarcollectibles.com/) identifies Card Shop Sacramento X Gold Star Collectibles at 2440 Fulton Avenue #9. Saturday opening hours are not Grand Archive event times; confirm current locals separately. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "41": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://reapergamestore.com/pages/events) includes Grand Archive under weekly events, but its description is placeholder text and no day/time is published in the readable section. A usable current schedule remains unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
