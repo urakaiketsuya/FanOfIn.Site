@@ -1879,5 +1879,9 @@
   "700": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.cartamagicaottawa.com/events) publishes a weekly schedule without a Grand Archive slot in the readable content. Site gives K1K 3B7 for 1179 St Laurent, conflicting with stored K1J 7S5. Do not assign Montreal regional events to Ottawa. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "774": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://iwantthatstuff.store/collections/events) lists Grand Archive on Sundays October 4, 11, 18 and 25, 2026. Recurrence is published, but a start time was not verified; check individual event details before attending. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
