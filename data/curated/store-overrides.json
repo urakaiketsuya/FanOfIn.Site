@@ -1512,5 +1512,9 @@
   "6": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official website](https://www.gaminggiant.com/) lists the October 17 PRD Regional; [publisher profile](https://legacy.fabtcg.com/en/locator/gaming-giant/) confirms 3925 Chain Bridge Road Suite 201. Readable calendar evidence establishes a special event, not a current Grand Archive weekly schedule. The Monday Armory shown by the publisher is a different game. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "391": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Ponsonby calendar](https://cardmerchantponsonby.co.nz/) lists Grand Archive Hobby League on Wednesdays October 7, 14, 21 and 28. Day is store-published; start time was not exposed in the readable calendar and must be checked in the event detail. Do not infer a local start time from stale historical UTC timestamps. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
