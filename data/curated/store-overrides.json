@@ -1020,5 +1020,9 @@
   "532": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://constellationcollectivesac.com/) establishes card sales. [Publisher event](https://tcg.ravensburgerplay.com/events/740367) matches 6220 Belleau Wood Lane Unit 2 and supplies store/event coordinates 38.5128461, -121.504931. Imported exact business point. Latest Omnidex event in committed snapshot 2026-05-15T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "575": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon organizer listing](https://asia.pokemon-card.com/hk/event-search/19470/) confirms Hang Fung Phase 1, 6F F1-08 but gives street number 2G, while recorded address has 2. It links [official Facebook](https://www.facebook.com/kez.tcg.shop). Retail identity supported by [card-shop directory](https://parrottcg.com/shops/district/tsim-sha-tsui/); no standalone website or verified exact-unit point obtained. Latest Omnidex event in committed snapshot 2025-04-22T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
