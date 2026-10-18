@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 23/305 (7.5%); 282 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 24/305 (7.9%); 281 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 4 published weekly; 2 historical schedule; 1 special event only; 16 unconfirmed.
+Weekly results among reviewed stores: 4 published weekly; 2 historical schedule; 1 special event only; 17 unconfirmed.
 
-Next: #24 Card Merchant Whangarei.
+Next: #25 JWW Sports Cards & Gaming.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -37,7 +37,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 21 | 31 | The Arcanum Sanctorum | US | 3994 N Oracle Rd, Tucson, AZ 85705, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://arcanumsanctorum.com/) has a Grand Archive section; its [events page](https://arcanumsanctorum.com/pages/events) embeds a calendar without readable event detail. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/23382291-c832-4041-824f-790e570bf5a7) matches 3994 North Oracle Road and links that website. Current Grand Archive weeklies unconfirmed. Snapshot: latest recorded event 2026-09-10T02:00:00.000Z; 84 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 22 | 78 | Dragon Nest Game Unlimited | HK | 162 Un Chau St, Un Chau, Hong Kong | Not found | Unconfirmed | Reviewed 2026-10-18: [Publisher directory](https://legacy.fabtcg.com/en/locator/?mode=store&page=30&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) identifies Dragon Nest Game Limited at 162 Un Chau Street. [Grand Archive distributor](https://www.fayble-asia.com/game_store.php?id=13) lists dragon nest at Tian Yue Plaza 185, which may be a shop number rather than a street number. Resolve unit/address notation. No official website/social link or weekly schedule verified. Snapshot: latest recorded event 2026-10-04T08:35:00.000Z; 88 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 23 | 21 | David's Good Game Cafe | US | 2285 Whitney Ave, Hamden, CT 06518, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Official website](https://www.davidsgoodgamecafe.com/) confirms the cafe's identity and weekly-event offering. [Syndicated September Grand Archive announcement](https://happeningnext.com/event/grand-archive-local-tournaments-eid3a0e3jbe73) matches 2285 Whitney Avenue and advertises Tuesdays around 18:00, but has ambiguous end-time text and is historical. Confirm October start time; do not convert the September listing into confirmed future dates. Snapshot: latest recorded event 2026-10-06T22:45:00.000Z; 87 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 24 | 86 | Card Merchant Whangarei | NZ | 2/10 John Street, Whangārei 0110, New Zealand | Pending | Pending |  |
+| 24 | 86 | Card Merchant Whangarei | NZ | 2/10 John Street, Whangārei 0110, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official branch events page](https://www.cardmerchantwhangarei.co.nz/pages/events) confirms 2/10 John Street and the website, but exposes no event entries. The shop sells Grand Archive. Opening hours and a recent championship do not confirm weekly play; ask the branch for a current schedule. Snapshot: latest recorded event 2026-09-30T05:00:00.000Z; 82 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 25 | 38 | JWW Sports Cards & Gaming | US | 3902 13th Ave S #100, Fargo, ND 58103, USA | Pending | Pending |  |
 | 26 | 33 | ProjectCCG | US | 39 S Garfield Ave, Alhambra, CA 91801, USA | Pending | Pending |  |
 | 27 | 149 | King Fandom | US | 21425 Sherman Way, Canoga Park, CA 91303, USA | Pending | Pending |  |
