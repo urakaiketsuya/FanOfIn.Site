@@ -2445,7 +2445,9 @@
   },
   "150": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://www.thegamecellarla.com/) announces a move from El Monte to 261 S San Gabriel Boulevard, San Gabriel, CA 91776. Resolve the recorded Lower Azusa address and pin before relying on them. No current Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://www.thegamecellarla.com/) announces a move from El Monte to 261 S San Gabriel Boulevard, San Gabriel, CA 91776. Resolve the recorded Lower Azusa address and pin before relying on them. No current Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official website](https://www.thegamecellarla.com/) explicitly describes the move from El Monte to San Gabriel and gives 261 S San Gabriel Boulevard. Updated the directory address; removed the old map pin pending verified replacement coordinates. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "261 S San Gabriel Blvd, San Gabriel, CA 91776, USA",
+    "coordinates": null
   },
   "153": {
     "kind": "store",
@@ -2456,11 +2458,15 @@
   },
   "181": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://cardarena.at/) gives Leopoldskronstrasse 4, conflicting with the recorded Maxglaner Hauptstrasse 32. October calendar entries concern other games; no Grand Archive weekly schedule verified. Resolve the address discrepancy. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://cardarena.at/) gives Leopoldskronstrasse 4, conflicting with the recorded Maxglaner Hauptstrasse 32. October calendar entries concern other games; no Grand Archive weekly schedule verified. Resolve the address discrepancy. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official contact section](https://cardarena.at/#kontakt) lists Card Arena GmbH at Leopoldskronstraße 4, 5020 Salzburg. Updated the directory address from Maxglaner Hauptstraße; removed the old map pin pending verified replacement coordinates. October calendar lists other games but no verified Grand Archive weekly schedule.",
+    "address": "Leopoldskronstraße 4, 5020 Salzburg, Austria",
+    "coordinates": null
   },
   "209": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official contact](https://support.401games.ca/support/solutions/articles/66000491481-contact-information) gives downtown Toronto as 431 Yonge Street, conflicting with recorded 750 Yonge. [Grand Archive products](https://store.401games.ca/collections/grand-archive-mortal-ambition) do not verify weekly play. Resolve branch/address and schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official contact](https://support.401games.ca/support/solutions/articles/66000491481-contact-information) gives downtown Toronto as 431 Yonge Street, conflicting with recorded 750 Yonge. [Grand Archive products](https://store.401games.ca/collections/grand-archive-mortal-ambition) do not verify weekly play. Resolve branch/address and schedule. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official branch contact](https://support.401games.ca/support/solutions/articles/66000491481-contact-information) lists the downtown store at 431 Yonge Street, M5B 1T3, separately from Vaughan. Updated the directory address from 750 Yonge Street; removed the old map pin pending verified replacement coordinates. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "431 Yonge St, Toronto, ON M5B 1T3, Canada",
+    "coordinates": null
   },
   "223": {
     "kind": "store",
@@ -2515,7 +2521,7 @@
   },
   "542": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official page](https://www.hobbybadgergames.com/hobbybadgergames) gives 1255 Merkley Avenue, conflicting with recorded 1271. [Syndicated store posts](https://www.findglocal.com/US/West-Sacramento/102922198343280/Hobby-Badger-Games) use 1271. Resolve the discrepancy; Grand Archive weeklies remain unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official page](https://www.hobbybadgergames.com/hobbybadgergames) gives 1255 Merkley Avenue, conflicting with recorded 1271. [Syndicated store posts](https://www.findglocal.com/US/West-Sacramento/102922198343280/Hobby-Badger-Games) use 1271. Resolve the discrepancy; Grand Archive weeklies remain unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official homepage](https://www.hobbybadgergames.com/) lists 1271 Merkley Avenue, matching the recorded address and [publisher locator](https://legacy.fabtcg.com/en/locator/hobby-badger-games/). A [second official page](https://www.hobbybadgergames.com/hobbybadgergames) instead lists 1255. Retained the existing address and pin; the conflicting official pages require direct confirmation. Current Grand Archive weekly play remains unconfirmed."
   },
   "580": {
     "evidence": "2026-10-18 original mapped-store review: Website: Historical site. Weekly events: Historical schedule. [Indexed official tickets](https://vivalasfoilstcg.com/collections/event-tickets) include a sold-out Grand Archive Weekly Play Tournaments item, but the listing is historical and the live page was inaccessible. Current venue, day and time require confirmation; retain host classification pending physical-location evidence. Existing address and coordinates retained; this review does not newly verify the map pin."
