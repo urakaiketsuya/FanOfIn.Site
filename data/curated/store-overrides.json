@@ -1791,5 +1791,9 @@
   "83": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.cardmerchanttakapuna.co.nz/) identifies the Takapuna shop and embeds an event calendar. Its Grand Archive collection verifies products, not current Monday play; obtain a readable branch schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "413": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://top-deck-keep.shoplightspeed.com/event-calendar/) is the official event calendar, but its embedded calendar remained blank in the browser. Grand Archive event registration exists; current weekly day/time remains unverified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
