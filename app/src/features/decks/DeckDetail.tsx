@@ -1,3 +1,4 @@
+import DeckStats from "../../components/DeckStats";
 import MenuDetails from "../../components/ui/MenuDetails";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DisclosureChevron from "../../components/DisclosureChevron";
@@ -39,9 +40,11 @@ import { trackEvent } from "../../lib/analytics";
 import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import DeckComments from "../social/DeckComments";
 
-type DeckTab = "performance" | "related" | "discussion";
+type DeckTab = "decklist" | "stats" | "performance" | "related" | "discussion";
 
 const TABS: { key: DeckTab; label: string }[] = [
+  { key: "decklist", label: "Deck" },
+  { key: "stats", label: "Stats" },
   { key: "performance", label: "Performance" },
   { key: "related", label: "History & Similar" },
   { key: "discussion", label: "Discussion" },
@@ -66,7 +69,7 @@ export default function DeckDetail() {
   const navigate = useNavigate();
   const [historyOpened, setHistoryOpened] = useState(false);
   const [copyBusy, setCopyBusy] = useState(false);
-  const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "performance");
+  const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [favorited, setFavorited] = useState<boolean | null>(null);
   const [favoriteBusy, setFavoriteBusy] = useState(false);
@@ -511,21 +514,22 @@ export default function DeckDetail() {
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
+      <div className="mt-6"><Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" wrap /></div>
+      <TabPanel baseId="deck-detail" tab="decklist" active={tab} keepMounted>
       <details className="mt-3 text-xs text-ctp-subtext1"><summary className="inline-flex min-h-12 cursor-pointer list-none items-center text-ctp-blue">Sideboard source <DisclosureChevron className="ml-1" /></summary><div className="pb-2">
           {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
       </div></details>
-      <UserDecklistPanel deckTitle={deck.championName ?? "Decklist"} decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
-
-      <div className="mt-10"><Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" /></div>
-
-      <TabPanel baseId="deck-detail" tab="performance" active={tab}>
+      <UserDecklistPanel showStats={false} deckTitle={deck.championName ?? "Decklist"} decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
+      </TabPanel>
+      <TabPanel baseId="deck-detail" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
+      <TabPanel baseId="deck-detail" tab="performance" active={tab} keepMounted>
         <UserDeckStats decklist={decklist} championName={deck.championName} format="STANDARD" title={deck.championName ?? "Deck"} extraTabs={deckStatsExtraTabs} />
       </TabPanel>
 
       <TabPanel baseId="deck-detail" tab="related" active={tab}>
         <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />{fullUniverseError ? <div role="alert"><p>{fullUniverseError}</p><Button onClick={retryFullUniverse}>Retry similar decks</Button></div> : similarityStatus.phase === "error" ? <div role="alert"><p>Similar decks could not load.</p><button type="button" className="min-h-12 px-3 text-ctp-blue" onClick={similarityStatus.retry}>Retry similar decks</button></div> : fullUniverseLoading || !similarityData ? <InlineState>Loading similar decks…</InlineState> : <SimilarDecksSection decks={similarDecks} />}</div>
       </TabPanel>
-      <TabPanel baseId="deck-detail" tab="discussion" active={tab}><DeckComments target={{ kind: "tournament", id: hash }} /></TabPanel>
+      <TabPanel baseId="deck-detail" tab="discussion" active={tab} keepMounted><DeckComments target={{ kind: "tournament", id: hash }} /></TabPanel>
     </PageLayout>
   );
 }

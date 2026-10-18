@@ -1,3 +1,4 @@
+import DeckStats from "../../components/DeckStats";
 import CopyDeckLink from "./CopyDeckLink";
 import PublicDeckDetail from "./PublicDeckDetail";
 import MenuDetails from "../../components/ui/MenuDetails";
@@ -30,7 +31,7 @@ import UserDecklistPanel from "./UserDecklistPanel";
 import PageLayout from "../../components/layout/PageLayout";
 import UserDeckStats from "./UserDeckStats";
 import DeckPrimerEditor from "./DeckPrimerEditor";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
@@ -43,8 +44,8 @@ import DeckSaveBar from "./DeckSaveBar";
 import { DeckVersionHistory } from "./MyDeckDetailSections";
 import DeckMatchLogSummary from "./DeckMatchLogSummary";
 
-type DeckTab = "decklist" | "performance" | "primer" | "manage" | "history";
-const DECK_TABS = [{ key: "decklist", label: "Cards" }, { key: "primer", label: "Primer" }, { key: "performance", label: "Analysis" }, { key: "history", label: "History" }, { key: "manage", label: "Sharing" }] satisfies { key: DeckTab; label: string }[];
+type DeckTab = "stats" | "decklist" | "performance" | "primer" | "manage" | "history";
+const DECK_TABS = [{ key: "decklist", label: "Cards" }, { key: "stats", label: "Stats" }, { key: "primer", label: "Primer" }, { key: "performance", label: "Analysis" }, { key: "history", label: "History" }, { key: "manage", label: "Sharing" }] satisfies { key: DeckTab; label: string }[];
 const DECK_TAB_KEYS: DeckTab[] = DECK_TABS.map(({ key }) => key);
 
 export default function MyDeckDetail() {
@@ -346,7 +347,7 @@ export default function MyDeckDetail() {
     </div>
       <div className="mt-5 flex flex-wrap items-center gap-2">{!editing && <button type="button" onClick={startEditing} className="min-h-12 shrink-0 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<Link to={goldfishPath} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "test" }); }} className="min-h-12 inline-flex items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Goldfish test</Link><MenuDetails className="relative"><summary className="flex min-h-12 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "tune" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={`/match-log?deck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "record" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-blue hover:bg-ctp-mantle">Record a match</Link><Link to={comparePath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare decks</Link><div className="my-1 border-t border-ctp-surface1" /><button type="button" onClick={() => setRenamingTitle(true)} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Rename</button><button type="button" onClick={() => setTab("manage")} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Details &amp; sharing</button></div></MenuDetails></div>
     {editing && tab !== "decklist" && <button type="button" onClick={() => setTab("decklist")} className="mt-4 min-h-12 rounded-lg border border-ctp-blue px-3 text-sm text-ctp-blue">Return to card draft{hasUnsavedChanges ? " · Unsaved changes" : ""}</button>}
-    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
+    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" wrap /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
 
     {tab === "manage" && <section id="owned-deck-panel-manage" role="tabpanel" aria-labelledby="owned-deck-tab-manage" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
@@ -370,7 +371,7 @@ export default function MyDeckDetail() {
       </div>
     </section>}
     {tab === "performance" && <section id="owned-deck-panel-performance" role="tabpanel" aria-labelledby="owned-deck-tab-performance" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /><DeckMatchLogSummary deckId={deck.id} /></section>}
-    {tab === "decklist" && <section id="owned-deck-panel-decklist" role="tabpanel" aria-labelledby="owned-deck-tab-decklist" tabIndex={0}><UserDecklistPanel deckTitle={deck.title} deckOwner={exportOwner} decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false} showAnalysis={false}>
+    {tab === "decklist" && <section id="owned-deck-panel-decklist" role="tabpanel" aria-labelledby="owned-deck-tab-decklist" tabIndex={0}><UserDecklistPanel showStats={false} deckTitle={deck.title} deckOwner={exportOwner} decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false} showAnalysis={false}>
       {editing ? <div className="mt-3">
         <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Use −/+ for one card, or tap several card images and update them together.</p></div>
         <div className="flex flex-wrap items-center justify-between gap-2"><EditorModeSwitch value={editorMode} onChange={setEditorMode} label="Deck editing mode" /><button type="button" onClick={() => { setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>
@@ -396,6 +397,7 @@ export default function MyDeckDetail() {
       <MaybeboardPanel onAdd={() => { setAddDestination("maybeboard"); setBrowserOpen(true); }} onPrintings={(name, printings) => applySharedEdit({ type: "printings", section: "maybeboard", name, printings })} open={maybeboardOpen} onOpenChange={setMaybeboardOpen} format={deck.format} editing={editing} busy={busy} maybeboardText={maybeboardText} maybeboardLines={maybeboardLines} cardsByName={catalogByName} onMoveAll={addMaybeboardToEditor} onSave={() => void saveMaybeboard()} onChangeQuantity={changeMaybeboardQuantity} onMove={moveMaybeboardCard} onRemove={removeMaybeboardCard} onTextChange={text => editing ? commitEdit(deckText, text) : setMaybeboardText(text)} />
       {editing && <DeckSaveBar onUndo={undoEdit} onRedo={redoEdit} canUndo={editHistory.past.length > 0} canRedo={editHistory.future.length > 0} busy={busy} changedEntries={editedCardChangeCount + (maybeboardText !== savedMaybeboardText ? 1 : 0)} currentChampion={deck.championName} detectedChampion={editedChampionName} detailsOpen={saveDetailsOpen} saveAsNewVersion={saveAsNewVersion} changeNote={changeNote} onDetailsOpenChange={setSaveDetailsOpen} onSaveModeChange={setSaveAsNewVersion} onChangeNote={setChangeNote} onCancel={cancelEditing} onSave={saveEditedDeck} />}
     </section>}
+    <TabPanel baseId="owned-deck" tab="stats" active={tab}><DeckStats decklist={editing ? editedDecklist : deck.decklist} cardsByName={catalogByName} /></TabPanel>
     <div hidden={tab !== "primer"}><DeckPrimerEditor decklist={deck.decklist} primerMarkdown={primerMarkdown} setPrimerMarkdown={setPrimerMarkdown} savedMarkdown={deck.primerMarkdown} busy={busy} onSave={() => run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); })} /></div>
     {tab === "history" && <section id="owned-deck-panel-history" role="tabpanel" aria-labelledby="owned-deck-tab-history" tabIndex={0}><DeckVersionHistory key={`${deck.id}:${deck.revision}`} deck={deck} busy={busy} onRestore={restoreVersion} /></section>}
   </PageLayout>;

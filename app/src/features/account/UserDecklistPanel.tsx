@@ -11,7 +11,7 @@ import DeckCollectionTools from "../collection/DeckCollectionTools";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import DisclosureChevron from "../../components/DisclosureChevron";
 
-export default function UserDecklistPanel({ decklist, deckTitle, deckOwner, format, actions, children, ownerDeckId, collectionSource, showBuilderAction = true, showAnalysis = true }: { decklist: OmnidexDecklist; deckTitle?: string; deckOwner?: string; format?: DeckFormat; actions?: ReactNode; children?: ReactNode; ownerDeckId?: string; collectionSource?: string; showBuilderAction?: boolean; showAnalysis?: boolean }) {
+export default function UserDecklistPanel({ decklist, deckTitle, deckOwner, format, actions, children, ownerDeckId, collectionSource, showBuilderAction = true, showAnalysis = true, showStats = true }: { decklist: OmnidexDecklist; deckTitle?: string; deckOwner?: string; format?: DeckFormat; actions?: ReactNode; children?: ReactNode; ownerDeckId?: string; collectionSource?: string; showBuilderAction?: boolean; showAnalysis?: boolean; showStats?: boolean }) {
   const displayPrefs = useDecklistDisplayPrefs();
   const cardNames = useMemo(
     () => [...decklist.main, ...decklist.material, ...decklist.sideboard].map((line) => line.card),
@@ -37,7 +37,7 @@ export default function UserDecklistPanel({ decklist, deckTitle, deckOwner, form
       collectionPanel={collectionSource && showCollection && <div id={collectionId}><DeckCollectionTools ownerDeckId={ownerDeckId} decklist={decklist} cardsByName={cardsByName} source={collectionSource} onCollectionChange={setCollection} onIncludeSideboardChange={setIncludeSideboard} /></div>}
       toolbarActions={<>{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { printings: builderParams.printings, ...(canImprove && ownerDeckId ? { mode: "improve" as const, sourceDeckId: ownerDeckId } : {}) })} className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{actions}</>}
     />}
-    <DeckStats decklist={decklist} cardsByName={cardsByName} />
+    {showStats && <DeckStats decklist={decklist} cardsByName={cardsByName} />}
     {showAnalysis && format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
   </section>;
 }

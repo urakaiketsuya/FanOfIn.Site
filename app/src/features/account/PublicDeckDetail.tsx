@@ -1,3 +1,5 @@
+import DeckStats from "../../components/DeckStats";
+import { useCardsByNames } from "../events/useCardsByNames";
 import CopyDeckLink from "./CopyDeckLink";
 import MenuDetails from "../../components/ui/MenuDetails";
 import { useToast } from "../../components/ui/toast/ToastContext";
@@ -18,12 +20,13 @@ import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import DeckComments from "../social/DeckComments";
 
-type PublicDeckTab = "performance" | "primer" | "discussion";
-const PUBLIC_TABS = [{ key: "performance", label: "Performance" }, { key: "primer", label: "Primer" }, { key: "discussion", label: "Discussion" }] satisfies { key: PublicDeckTab; label: string }[];
+type PublicDeckTab = "decklist" | "stats" | "performance" | "primer" | "discussion";
+const PUBLIC_TABS = [{ key: "decklist", label: "Deck" }, { key: "stats", label: "Stats" }, { key: "performance", label: "Performance" }, { key: "primer", label: "Primer" }, { key: "discussion", label: "Discussion" }] satisfies { key: PublicDeckTab; label: string }[];
 
 export default function PublicDeckDetail() {
   const { id: publicSlug = "" } = useParams<{ id: string }>();
   const [deck, setDeck] = useState<PublicDeck | null>();
+  const cardsByName = useCardsByNames([...(deck?.decklist.main ?? []), ...(deck?.decklist.material ?? [])].map(line => line.card));
   const [error, setError] = useState<string | null>(null);
   const [social, setSocial] = useState<DeckSocialState | null>(null);
   const [busy, setBusy] = useState(false);
@@ -31,7 +34,7 @@ export default function PublicDeckDetail() {
   const actionErrorToast = useRef("");
   const [notice, setNotice] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [tab, setTab] = useTabParam<PublicDeckTab>("tab", PUBLIC_TABS.map(({ key }) => key), "performance");
+  const [tab, setTab] = useTabParam<PublicDeckTab>("tab", PUBLIC_TABS.map(({ key }) => key), "decklist");
   useDocumentTitle(deck?.title ?? "Decklist", deck?.description || "A community decklist on Fan of Insight.");
 
   useEffect(() => {
@@ -76,11 +79,12 @@ export default function PublicDeckDetail() {
       {!social && <Link to="/account" className="text-sm text-ctp-blue hover:underline">Sign in for deck actions</Link>}
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
-    <UserDecklistPanel deckTitle={deck.title} deckOwner={deck.owner.displayName} decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} />
-    <div className="mt-10"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
-    <TabPanel baseId="public-deck" tab="performance" active={tab}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
+    <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" wrap /></div>
+    <TabPanel baseId="public-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showStats={false} deckTitle={deck.title} deckOwner={deck.owner.displayName} decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} /></TabPanel>
+    <TabPanel baseId="public-deck" tab="stats" active={tab}><DeckStats decklist={deck.decklist} cardsByName={cardsByName} /></TabPanel>
+    <TabPanel baseId="public-deck" tab="performance" active={tab} keepMounted><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
     <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>
-    <TabPanel baseId="public-deck" tab="discussion" active={tab}><DeckComments target={{ kind: "community", id: publicSlug }} /></TabPanel>
+    <TabPanel baseId="public-deck" tab="discussion" active={tab} keepMounted><DeckComments target={{ kind: "community", id: publicSlug }} /></TabPanel>
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>
   </PageLayout>;
 }

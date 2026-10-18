@@ -1,4 +1,6 @@
-import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckStats from "../../components/DeckStats";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { useTabParam } from "../../lib/useTabParam";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -38,6 +40,7 @@ function displayName(name: string | null): string {
  */
 export default function PantheonDeckDetail() {
   const { id = "" } = useParams();
+  const [tab, setTab] = useTabParam("tab", ["decklist", "stats", "performance"] as const, "decklist");
   const [deck, setDeck] = useState<PantheonDeckRecord | null | undefined>();
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
@@ -64,7 +67,9 @@ export default function PantheonDeckDetail() {
     <Link to="/pantheon/decks" className="text-sm text-ctp-blue hover:underline">← Browse Pantheon decks</Link>
     <UserDeckHeader decklist={decklist} title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
     <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Compare deck</Link></div>
-    <UserDecklistPanel decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} />
-    <details className="group mt-10 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden"><span>Performance and composition</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></details>
+    <div className="mt-6"><Tabs tabs={[{ key: "decklist", label: "Deck" }, { key: "stats", label: "Stats" }, { key: "performance", label: "Performance" }]} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" wrap /></div>
+    <TabPanel baseId="pantheon-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showStats={false} decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
+    <TabPanel baseId="pantheon-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
+    <TabPanel baseId="pantheon-deck" tab="performance" active={tab} keepMounted><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></TabPanel>
   </PageLayout>;
 }
