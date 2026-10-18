@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 6/305 (2.0%); 299 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 7/305 (2.3%); 298 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 0 special event only; 5 unconfirmed.
+Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 1 special event only; 5 unconfirmed.
 
-Next: #7 DeckaDice.
+Next: #8 Home-run FABulous Card Shop.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -20,7 +20,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 4 | 82 | Card Merchant Christchurch | NZ | 300H Lincoln Road, Addington, Christchurch 8024, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://cardmerchantchristchurch.co.nz/) lists a7/300 Lincoln Road rather than Omnidex 300H. [Ticket collection](https://cardmerchantchristchurch.co.nz/collections/event-tickets) establishes Grand Archive regional activity, but the readable calendar gives no weekly times. Resolve unit notation and confirm Thursday weekly play with the branch. Snapshot: latest recorded event 2026-10-15T05:30:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 5 | 46 | Game Nut Entertainment | US | 2329 Iowa St space m, Lawrence, KS 66047, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://gamenut.com/) identifies the Lawrence branch at 2329 Iowa Suite M, with postcode 66046 rather than recorded 66047. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) corroborates the recorded street/suite. No current Grand Archive weekly schedule verified; do not substitute the Topeka branch's events. Postal detail needs follow-up. Snapshot: latest recorded event 2026-09-12T23:45:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 6 | 66 | Agora Hobby | SG | French Rd, #05-164 Blk 809 Kitchener Complex Singapore | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://agorahobby.com/) sells Grand Archive and links its [weekly calendar](https://agorahobby.com/events-calendar). The calendar's Grand_Archive_Weeklys.png poster could not be read (HTTP 451), so no day/time is transcribed from its filename. Exact French Road unit was already corroborated in [official contact](https://www.agorahobby.com/contact-us). Confirm current Friday schedule directly. Snapshot: latest recorded event 2026-10-16T12:00:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 7 | 198 | DeckaDice | AU | 75 Victoria St, Mackay QLD 4740, Australia | Pending | Pending |  |
+| 7 | 198 | DeckaDice | AU | 75 Victoria St, Mackay QLD 4740, Australia | Verified site | Special event only | Reviewed 2026-10-18: [Official October calendar](https://www.deckadice.com.au/pages/events) lists a Grand Archive store championship on October 10 at noon, but no recurring Grand Archive event in the readable month. [Organized-play listing](https://anzmtg.com.au/stores/deckadice/) matches 75 Victoria Street and the official website. A championship does not establish weekly play; request a current weekly schedule. Snapshot: latest recorded event 2026-08-10T08:00:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 8 | 80 | Home-run FABulous Card Shop | HK | 749A Nathan Rd, Mong Kok, Hong Kong | Pending | Pending |  |
 | 9 | 74 | Hobby Outpost Cheras | MY | 1, Jalan C180/1, C180, 43200 Cheras, Selangor, Malaysia | Pending | Pending |  |
 | 10 | 29 | Final Turn Gaming | US | 120 Market St, Clifton, NJ 07012, USA | Pending | Pending |  |
