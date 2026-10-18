@@ -1228,5 +1228,9 @@
   "96": {
     "kind": "store",
     "evidence": "2026-10-18: [Manufacturer stockist list](https://haloflashpoint.manticgames.com/stockists/) confirms Shop 8/26 Diarama Village and links [official Facebook](https://www.facebook.com/MagoobieGames). [Current local listing](https://www.localsearch.com.au/profile/magoobie-games/cmpup5isn000802jp58db8x23) instead gives Shop 10. Retail identity confirmed; resolve unit conflict before mapping. No standalone official website established. Latest Omnidex event in committed snapshot 2024-03-06T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "113": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://njcollectables.com.au/contact/) now gives Unit 7, 1 Reliance Drive, corroborated by [organized-play directory](https://anzmtg.com.au/stores/nj-collectables/). This differs from recorded Unit 7/7 Teamster Close. Retail confirmed; resolve relocation before importing coordinates for the historical address. Latest Omnidex event in committed snapshot 2024-03-30T23:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
