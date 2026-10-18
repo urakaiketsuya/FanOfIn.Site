@@ -696,5 +696,9 @@
   "318": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://xpgames.co.nz/collections/pre-orders) and [publisher store](https://locator.riftbound.uvsgames.com/stores/0eaa2079-f679-48d5-a2a2-c3146557cf47) confirm 39 Devon Street East. Publisher structured coordinates are 1, -2, outside New Zealand; rejected as invalid. Obtain a correct address-bound destination before import. Latest Omnidex event in committed snapshot 2026-02-07T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "481": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/my/event-search/8943/) confirms RoundTable Cards and Hobbies Center at B-264, first floor, Jalan Beserah, Kuantan. roundtablehobbies.com describes sports collectibles without establishing a Kuantan connection, so it is not accepted as this shop website. No verified business coordinates obtained. Latest Omnidex event in committed snapshot 2025-12-08T14:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
