@@ -1939,5 +1939,8 @@
   "803": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official social page identified. Weekly events: Historical schedule. [Source](https://omni.gatcg.com/events/65499) records a completed October 11, 2026 weekly BO3 event at 14:30 Malaysia time, RM28. This past date does not guarantee future Sunday recurrence. [Store Facebook](https://www.facebook.com/GaiaCardGameSanctuary) was identified, but no readable current recurring announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "855": {
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.manticore-brakel.be/) explicitly says the Brakel shop is permanently closed and directs customers to Smissenhoek 120, Erwetegem. [October 3 Grand Archive championship](https://manticore-zottegem.be/en/event/grand-archive-asphodel-paradise-store-championship-227/register) is at Erwetegem, not the stored Brakel address. Current Brakel weeklies are unconfirmed; resolve the closed-location record separately. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
