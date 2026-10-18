@@ -1708,5 +1708,9 @@
   "472": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official store site](https://www.postboardgaminglexington.com/) is linked from the [publisher profile](https://locator.riftbound.uvsgames.com/stores/63e9a15f-8b85-4f8f-bffc-841b6b2b21b1). The readable news/events area provides no GA weekly schedule. Confirm Lexington-specific play rather than using another Post Board branch or past championships. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "593": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official storefront](https://steamshipgames.square.site/) matches 711 W Lake Street suite 103. [Syndicated store posts](https://www.findglocal.com/US/Minneapolis/18659276501/Steamship-Games) describe converting Saturday GA to Pantheon, but this is older secondary evidence without a confirmed current start time. Confirm Saturday format/time; storefront opening hours are not an event schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
