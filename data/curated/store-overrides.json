@@ -628,5 +628,9 @@
   "666": {
     "kind": "store",
     "evidence": "2026-10-18: [Manufacturer retail channels](https://www.gege.com.tw/shop) confirm Gaia at 35 Lane 285, Section 1 Datong Road. [Publisher event](https://event.shadowverse.com/cht/eventsupport/detail?id=2332) agrees; [official Facebook](https://www.facebook.com/GAIABOARDGAME/) identified. No verified address-bound point obtained. Latest Omnidex event in committed snapshot 2026-10-16T12:05:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "52": {
+    "kind": "store",
+    "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/DOA_SC_List_888cde0517.pdf) confirms Richardson at 970 N Coit Road. [Business listing](https://www.businessyab.com/explore/united_states/texas/dallas_county/richardson/north_coit_road/970/the-local-game-store-469-248-0242.html) confirms Suite 3080 and identifies http://www.thelocalgamestore.com/ as its website, not independently verified live. Excluded the similarly named Plainwell, Michigan shop. No verified storefront point obtained. Latest Omnidex event in committed snapshot 2024-04-27T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
