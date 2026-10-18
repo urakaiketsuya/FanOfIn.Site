@@ -1835,5 +1835,9 @@
   "59": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official site identified; inaccessible. Weekly events: Unconfirmed. [Source](https://www.athenscon.gr/dragonphoenix-inn/?lang=en) links the official innkeeper.gr site and Dragonphoenix Inn social accounts. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/7313ed95-ce8b-4450-becc-1752e559f3a0) matches Ilia Iliou 55. Official site could not be read; Grand Archive weekly schedule unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "274": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://gamecorpsonline.com/schedule) shows an October 2026 calendar with Grand Archive every Monday at 6 p.m., visually checked. Official homepage matches 2920 Buffalo Road. Older Thursday activity should not replace this published schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
