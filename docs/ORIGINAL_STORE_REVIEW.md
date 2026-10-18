@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 12/305 (3.9%); 293 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 13/305 (4.3%); 292 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 2 published weekly; 1 historical schedule; 1 special event only; 8 unconfirmed.
+Weekly results among reviewed stores: 3 published weekly; 1 historical schedule; 1 special event only; 8 unconfirmed.
 
-Next: #13 TC's Rockets.
+Next: #14 Whimsy Game Cafe.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -26,7 +26,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 10 | 29 | Final Turn Gaming | US | 120 Market St, Clifton, NJ 07012, USA | Verified marketplace | Unconfirmed | Reviewed 2026-10-18: [Store's TCGplayer seller page](https://www.tcgplayer.com/sellers/Final-Turn-Gaming/d229f260) identifies Clifton and Grand Archive inventory; [publisher listing](https://www.yugioh-card.com/en/events/release_celebration/ra05_relcel_locations/) confirms 120 Market Street. No standalone official site or current weekly Grand Archive schedule verified. Historical regional registration alone is insufficient. Snapshot: latest recorded event 2026-10-11T19:30:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 11 | 84 | Card Merchant Hamilton | NZ | 36 Bryce Street, Hamilton Central, Hamilton 3204, New Zealand | Verified site | Published weekly | Reviewed 2026-10-18: [Official branch calendar](https://cardmerchanthamilton.co.nz/) publishes Grand Archive Pantheon on Monday October 19 and Hobby League on Tuesday October 20 and Friday October 23. These are store-published events, separate from our recurrence estimates. [Branch report](https://www.findglocal.com/NZ/Hamilton/102573915642154/Card-Merchant-Hamilton) corroborates 36 Bryce Street and a July announcement of Monday Pantheon at 18:00; current start times should be checked in each calendar entry. Snapshot: latest recorded event 2026-10-16T22:00:00.000Z; 23 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 12 | 321 | Tabletop Village LLC | US | 616 8th Ave S, Seattle, WA 98104, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official tournament collection](https://tabletopvillage.com/collections/tournament) explicitly advertises Grand Archive every Sunday, 13:00–16:30 local time. The store says events can change and links its calendar. [Local event directory](https://www.drumislandtrading.com/p/seattle-tcg-events) corroborates Tabletop Village at 616 8th Avenue S. Published schedule is stronger than the stale historical projection, but individual dates still need checking. Snapshot: latest recorded event 2026-09-06T20:00:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 13 | 334 | TC's Rockets | US | 5155 Waring Rd, San Diego, CA 92120, USA | Pending | Pending |  |
+| 13 | 334 | TC's Rockets | US | 5155 Waring Rd, San Diego, CA 92120, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official October calendar](https://tcsrockets.com/events/) lists Grand Archive Thursdays at 18:30 (including October 22) and Sundays at noon (including October 25). [Store-hosted regional](https://topdeck.gg/event/tcs-rockets-prd-grand-archive-regional) confirms 5155 Waring Road. Retain both published weekly slots separately from the currently empty computed estimates. Snapshot: latest recorded event 2026-10-16T01:30:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 14 | 443 | Whimsy Game Cafe | PH | The Portal, Mayflower St, Greenfield District, Mandaluyong, Metro Manila, Philippines | Pending | Pending |  |
 | 15 | 244 | Cardpoint | SI | Zaloška cesta 18, 1000 Ljubljana, Slovenia | Pending | Pending |  |
 | 16 | 118 | Card Merchant Dunedin | NZ | 23 Princes Street, Central Dunedin, Dunedin 9016, New Zealand | Pending | Pending |  |

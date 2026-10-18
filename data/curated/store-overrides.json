@@ -1428,5 +1428,9 @@
   "321": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official tournament collection](https://tabletopvillage.com/collections/tournament) explicitly advertises Grand Archive every Sunday, 13:00–16:30 local time. The store says events can change and links its calendar. [Local event directory](https://www.drumislandtrading.com/p/seattle-tcg-events) corroborates Tabletop Village at 616 8th Avenue S. Published schedule is stronger than the stale historical projection, but individual dates still need checking. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "334": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official October calendar](https://tcsrockets.com/events/) lists Grand Archive Thursdays at 18:30 (including October 22) and Sundays at noon (including October 25). [Store-hosted regional](https://topdeck.gg/event/tcs-rockets-prd-grand-archive-regional) confirms 5155 Waring Road. Retain both published weekly slots separately from the currently empty computed estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
