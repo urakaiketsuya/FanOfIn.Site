@@ -1815,5 +1815,9 @@
   "138": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.counterspellgamestcg.com/) confirms the Jacksonville store at 8102 Blanding Boulevard #12. No current published Grand Archive weekly schedule found; opening hours do not establish play times. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "146": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Source](https://vgmx.com/) confirms the store. A [secondary October 5 weekly-play listing](https://happeningnext.com/event/vgmxs-grand-archive-weekly-play-eid3a0e4wu22j) supports past Monday activity; the readable official calendar does not establish a current Grand Archive weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

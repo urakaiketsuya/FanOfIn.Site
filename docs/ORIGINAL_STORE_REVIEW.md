@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 109/305 (35.7%); 196 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 110/305 (36.1%); 195 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 18 published weekly; 1 published fortnightly; 11 historical schedule; 7 special event only; 72 unconfirmed.
+Weekly results among reviewed stores: 18 published weekly; 1 published fortnightly; 12 historical schedule; 7 special event only; 72 unconfirmed.
 
-Next: #110 VGMX The Nerd Emporium.
+Next: #111 Paladin's Place.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -123,7 +123,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 107 | 41 | Reaper Game Store | US | 9080 Teasley Ln, Denton, TX 76210, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://reapergamestore.com/pages/events) includes Grand Archive under weekly events, but its description is placeholder text and no day/time is published in the readable section. A usable current schedule remains unconfirmed. Snapshot: latest recorded event 2026-04-26T15:00:00.000Z; 6 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 108 | 93 | Gamers Revelation | NZ | 141 Dee Street, Invercargill 9810, New Zealand | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://gamersrevelationtcg.co.nz/events/) publishes a weekly poster showing Grand Archive Sundays at 1 p.m., visually checked. Footer lists 153 Dee Street, 9812, while the shipping page and stored record use 141 Dee Street; confirm venue before attending. Snapshot: latest recorded event 2026-09-06T01:00:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 109 | 138 | Counterspell Games | US | 8102 Blanding Blvd #12, Jacksonville, FL 32244, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.counterspellgamestcg.com/) confirms the Jacksonville store at 8102 Blanding Boulevard #12. No current published Grand Archive weekly schedule found; opening hours do not establish play times. Snapshot: latest recorded event 2026-07-11T18:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 110 | 146 | VGMX The Nerd Emporium | US | 1489 Schrock Rd, Columbus, OH 43229, USA | Pending | Pending |  |
+| 110 | 146 | VGMX The Nerd Emporium | US | 1489 Schrock Rd, Columbus, OH 43229, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://vgmx.com/) confirms the store. A [secondary October 5 weekly-play listing](https://happeningnext.com/event/vgmxs-grand-archive-weekly-play-eid3a0e4wu22j) supports past Monday activity; the readable official calendar does not establish a current Grand Archive weekly schedule. Snapshot: latest recorded event 2026-08-24T22:00:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 111 | 386 | Paladin's Place | DE | Kirchstraße 21, 64283 Darmstadt, Germany | Pending | Pending |  |
 | 112 | 627 | Misteria | JP | 3-chōme-31-7 Sakae, Naka Ward, Nagoya, Aichi 460-0008, Japan | Pending | Pending |  |
 | 113 | 851 | Good Games Parramatta | AU | 219-221 Church St, Parramatta NSW 2150, Australia | Pending | Pending |  |
