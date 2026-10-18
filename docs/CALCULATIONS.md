@@ -3533,11 +3533,21 @@ checkpoints show both play orders. Sideboard and Material are not part of the sh
 Reviewed setup and payoff roles use the existing joint recipe probability, not independent products.
 
 Draw estimates remain separate from natural access. Starting level 0 Champion clauses are excluded
-from bonus sources because their draws establish the opening. The timing helper accepts an explicit
-turn and play order for this report, avoiding inference from capped cards seen. Expected bonus draws
-are rounded and added to the natural checkpoint, capped at deck size. This is a heuristic estimate,
-not an exact probability for a draw engine, statistical confidence interval, or successful play.
-Unsupported variable effects, searches, conditions, level gates, and prior spending are not simulated.
+from bonus sources because their draws establish the opening. The report uses a fixed-seed,
+512-sample draw-only simulation (`shared/src/drawInfluence.ts`) for each play order. Reserve
+payment moves actual hand cards to memory, excluding the played source itself. Played sources
+leave influence; fixed draws add cards, and explicit “then discard N cards” removes cards from
+hand. Memory returns to hand next turn. Influence is hand + memory at the end of the modeled
+main phase, distinct from cumulative cards seen. Non-engine cards pay costs first; each engine
+copy resolves at most once, including newly drawn engines. Unknown Reserve costs are not free.
+Material draw sources may materialize once per turn from turn 2, paying their printed Memory
+cost from actual memory before recollection, with printed level bounded by turn − 1. This is a
+resource estimate, not proof of lineage or activation permission. No other materializations or
+ordinary plays are assumed. Effects are optimistic about triggers, elements, class/level access,
+and additional ability costs; variable effects, searches, replacement effects and discards other
+than the explicit fixed “then discard” clause are unsupported. Results are sample means, not
+exact probabilities. Seen means are rounded and capped by the actual deck; influence and its
+hand/memory components are displayed to one decimal. Natural access odds remain exact.
 Printed costs and detected lineage are descriptive; the report does not infer a strategic grade.
 
 ## Draft tribal themes and token engines

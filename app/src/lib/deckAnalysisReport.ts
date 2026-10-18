@@ -1,6 +1,6 @@
-import type { Card } from '@gatcg/shared';
+import { estimateDrawInfluence, type Card } from '@gatcg/shared';
 import { probabilityAtLeast } from '../features/deckbuilder/synergyReadiness';
-import { drawEngineSources, computeDrawEngineTiming } from '../features/deckbuilder/drawEffects';
+import { drawEngineSources } from '../features/deckbuilder/drawEffects';
 import { inferStartingHandSize, naturalCardsSeenByTurn } from './turnToPlay';
 import { selectedRecipeOdds, type CalculatorLine } from './calculatorDashboard';
 import type { AnalysisPlan } from './analysisProfile';
@@ -17,10 +17,21 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
   const openingInferred = !!startingCard && /\bdraw\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+cards?\b/i.test(catalog.get(startingCard.name)?.effect ?? '');
   // Starting Spirit draws are already included in the opening hand, not bonus draws.
   const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog);
+  const drawSource = (line: CalculatorLine) => {
+    const card = catalog.get(line.name);
+    const source = sources.find((source) => source.name === line.name);
+    const words: Record<string, number> = { a: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
+    const discard = card?.effect?.match(/\bthen discard (a|one|two|three|four|five|six|seven|\d+) cards?\b/i)?.[1].toLowerCase();
+    return { ...line, draws: source?.perCopy ?? 0, reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: discard ? words[discard] ?? Number(discard) : 0 };
+  };
+  const estimates = {
+    first: estimateDrawInfluence(lines.map(drawSource), material.filter((line) => catalog.get(line.name)?.level !== 0).map(drawSource), opening, 'first'),
+    second: estimateDrawInfluence(lines.map(drawSource), material.filter((line) => catalog.get(line.name)?.level !== 0).map(drawSource), opening, 'second'),
+  };
   const checkpoints = ([3, 5] as const).flatMap((turn) => (['first', 'second'] as const).map((order) => {
     const seen = Math.min(size, naturalCardsSeenByTurn(turn, opening, order));
-    const timing = computeDrawEngineTiming(sources, size, seen, opening, { turn, order });
-    return { turn, order, seen, extra: timing.expectedActiveDraws, adjustedSeen: Math.min(size, seen + Math.round(timing.expectedActiveDraws)) };
+    const estimate = estimates[order][turn - 1];
+    return { turn, order, seen, extra: estimate.seen - seen, adjustedSeen: Math.round(estimate.seen), influence: estimate.influence, hand: estimate.hand, memory: estimate.memory };
   }));
   const cards = lines.map((line) => ({ ...line, opening: probabilityAtLeast(size, line.quantity, opening, 1), duplicate: probabilityAtLeast(size, line.quantity, opening, 2), checkpoints: checkpoints.map((point) => ({ natural: probabilityAtLeast(size, line.quantity, point.seen, 1), modeled: probabilityAtLeast(size, line.quantity, point.adjustedSeen, 1) })) }));
   const costs = new Map<string, number>();

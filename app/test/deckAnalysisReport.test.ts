@@ -36,6 +36,16 @@ test('plan requires explicit review and both role pools', () => {
 test('draw timing respects explicit checkpoint even when the library is exhausted', () => {
  const catalog = new Map([['A',{...card('A','Draw a card.'),cost_reserve:4}]]);
  const report = computeDeckAnalysisReport([{name:'A',quantity:2}],[],catalog);
- assert.ok(report.checkpoints[0].extra > 0);
- assert.ok(report.checkpoints.every(point=>point.adjustedSeen===2));
+ assert.equal(report.checkpoints[0].extra, 0);
+ assert.ok(report.checkpoints.every(point=>point.adjustedSeen===2 && point.influence===2));
+});
+
+test('reserve payment excludes the played card and uses starting spirit influence', () => {
+ const catalog = new Map([['A',{...card('A','Draw two cards.'),cost_reserve:8}], ['Spirit',card('Spirit','Draw six cards.',0)]]);
+ const six = computeDeckAnalysisReport(main,[{name:'Spirit',quantity:1}],catalog);
+ assert.equal(six.checkpoints[0].extra,0);
+ catalog.set('Spirit',card('Spirit','Draw seven cards.',0));
+ const seven = computeDeckAnalysisReport(main,[{name:'Spirit',quantity:1}],catalog);
+ assert.ok(seven.checkpoints[0].extra > 0);
+ assert.deepEqual(seven,computeDeckAnalysisReport(main,[{name:'Spirit',quantity:1}],catalog));
 });
