@@ -1112,5 +1112,9 @@
   "801": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer marketplace](https://shopee.com.my/cardfightbuddy98) confirms card sales. [Organized-play retailer directory](https://cl2u.net/retail-shops/detail/1dM55d6/cardfight-buddy-enterprise) instead gives 210B Jalan Datuk Kumbar, Alor Setar, whereas recorded address is 141B Raja Uda, Butterworth. Resolve relocation/branch identity; no standalone official site or matching point verified. Latest Omnidex event in committed snapshot 2026-08-16T10:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "809": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://www.hobbecharge.com/) announces a move. [Official contact](https://www.hobbecharge.com/contact) gives 510 Commercial Street Suite B, differing from recorded Suite A; [retail directory](https://www.keepupcards.com/shop/hobbecharge-cards-and-games-atchison-ks) gives 515 Suite B. Retail identity established; resolve street-number and suite conflicts before mapping. Latest Omnidex event in committed snapshot 2026-06-26T23:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
