@@ -1600,5 +1600,9 @@
   "621": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Distributor directory](https://www.fayble-asia.com/game_store.php?id=13) identifies the GamersShop Facebook account. [Publisher branch list](https://www.carddass.com/onepiece-tcg_asia-en/events/2024/officialevents/flagship-battle_202404/list_philippines.php) distinguishes Gamer Shop GS at 138 Maginhawa from GamersShop at V. Luna Avenue. No readable branch-specific GA weekly announcement verified; do not apply V. Luna regional details to Maginhawa. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "336": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official site](https://phoenix-inn.de/) matches Stöckmannstraße 90 and includes Grand Archive among regular games. Its extracted multi-game tables lose the association between game tabs and times, so Saturday 12:30 is not certified here. [Embedded October calendar](https://tcgevents.net/widgets/calendar/17271752705468) returns no events. Confirm the GA tab and current slot with the store. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
