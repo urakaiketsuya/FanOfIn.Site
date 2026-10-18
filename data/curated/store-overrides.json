@@ -1532,5 +1532,9 @@
   "875": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Not verified. Weekly events: Unconfirmed. [Publisher store listing](https://locator.riftbound.uvsgames.com/stores/c7ad0942-3a85-43dd-a96f-b422db48cc94) confirms 410 Burke Road and physical retail. The domain suggested by its contact email, archivecollectables.com, could not be accessed and is not accepted as a verified website. No current public Grand Archive weekly schedule verified; publisher Thursday Nexus Nights are Riftbound, not Grand Archive. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "62": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official November calendar](https://www.outpost.be/website/index.php?Itemid=&option=com_outpostcalendar&period=2026-11&view=calendar) lists recurring Sunday Grand Archive Locals in Ghent; [October regional page](https://outpost.be/website/index.php?Itemid=6&eventid=31487&option=com_outpostcalendar&view=event) independently establishes branch Grand Archive activity. Local weekly start time still requires event details; regional 11:00 must not be reused as the weekly start. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
