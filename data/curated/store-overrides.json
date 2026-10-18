@@ -608,5 +608,9 @@
   "758": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/6861/) and [retailer marketplace](https://shopee.sg/infernogamingsg) confirm 8 Lorong 7 Toa Payoh #01-287. [Store website](https://www.infernogamingsg.com/) instead names GR.iD, 1 Selegie Rd #01-09. Resolve address history before importing either pin. Latest Omnidex event in committed snapshot 2026-05-10T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "795": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://mainphasehobbies.com/) offers card listings and identifies Rus 888, Riverside Building, Riverside Drive, Pasig for its events. Retail identity established; direct map retrieval failed and no named storefront coordinates were verified. Obtain an address-bound business destination. Latest Omnidex event in committed snapshot 2026-09-20T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
