@@ -1168,5 +1168,9 @@
   "513": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch directory](https://www.gaminglib.com/pages/store-location) confirms Uptown Mall, third floor, 36th Street corner 9th Avenue. Recorded address instead describes a plus code and Fifth Avenue. Resolve street/location detail before mapping; no mall centroid or another Gaming Library branch point substituted. Latest Omnidex event in committed snapshot 2025-02-09T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "567": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer about page](https://milongja.waca.tw/about) confirms toy and card sales, including GA, at 1421 Bade West Road. [Business record](https://www.findcompany.com.tw/%E7%B1%B3%E6%9C%A7%E5%AE%B6%E7%8E%A9%E5%85%B7%E5%9D%8A) agrees. No verified named store coordinates obtained. Latest Omnidex event in committed snapshot 2026-05-09T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
