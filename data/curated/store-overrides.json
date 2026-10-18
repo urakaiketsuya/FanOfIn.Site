@@ -1771,5 +1771,9 @@
   "327": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/d5f9afb3-5a81-4f94-8992-4afd2ee73867) matches 5214 Chesebro Road. [Store directory](https://packspots.com/stores/chijr3-4h-kh6iarwxgv82q1ykg/) identifies [lootbox.official Instagram](https://www.instagram.com/lootbox.official/). No readable current GA weekly schedule verified; Riftbound Friday Nexus Nights and old GA championships do not establish it. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "494": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published fortnightly. [Official GA event page](https://www.theconnectiongames.com/GrandArchiveTCG) says every other Monday at 18:30, despite its weekly heading. Record fortnightly, with exact Mondays to be checked in tickets/calendar. [Official home page](https://www.theconnectiongames.com/) matches 2945 Renfrew Street. Do not generate weekly dates from the heading alone. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
