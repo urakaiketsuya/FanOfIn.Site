@@ -1308,5 +1308,9 @@
   "644": {
     "kind": "store",
     "evidence": "2026-10-18: [Official store locator](https://www.secretbasetcg.com/store-locator) confirms SH-G-17, Knox Wawasan, Bukit Rimau. [Official inventory](https://www.secretbasetcg.com/collections/all) establishes retail. Locator coordinates are null and its map link is an address search; no verified business destination point obtained. Latest Omnidex event in committed snapshot 2025-11-29T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "655": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/64702/) confirms 382-3 Zhongzheng Road, second floor. [Government business record](https://serv.gcis.nat.gov.tw/moeadsBF/cmpy/reportAction.do?fileName=376610000Achange10912.pdf&method=report&reportClass=bmsItem&subPath=10912) supports retail and leisure-venue activity. No standalone official website or verified exact shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-06-06T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
