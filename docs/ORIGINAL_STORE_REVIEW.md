@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 126/305 (41.3%); 179 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 127/305 (41.6%); 178 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 23 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 81 unconfirmed.
+Weekly results among reviewed stores: 23 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 82 unconfirmed.
 
-Next: #127 Shuffle the duel field.
+Next: #128 The People's Card Shop.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -140,7 +140,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 124 | 602 | The Armchair Adventurer | US | 650 Iwilei Rd suite 160, Honolulu, HI 96817, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://armchairhi.com/) confirms 650 Iwilei Road, suite 160, and offers table booking. No readable recurring Grand Archive schedule found; table availability is not a scheduled weekly event. Snapshot: latest recorded event 2025-12-02T04:00:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 125 | 700 | Carta Magica | CA | 1179 St. Laurent Blvd, Ottawa, ON K1J 7S5, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.cartamagicaottawa.com/events) publishes a weekly schedule without a Grand Archive slot in the readable content. Site gives K1K 3B7 for 1179 St Laurent, conflicting with stored K1J 7S5. Do not assign Montreal regional events to Ottawa. Snapshot: latest recorded event 2026-07-04T16:00:00.000Z; 5 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 126 | 774 | I Want That Stuff | CA | 138 10th St, Brandon, MB R7A 4E6, Canada | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://iwantthatstuff.store/collections/events) lists Grand Archive on Sundays October 4, 11, 18 and 25, 2026. Recurrence is published, but a start time was not verified; check individual event details before attending. Snapshot: latest recorded event 2026-08-30T18:30:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 127 | 839 | Shuffle the duel field | MY | 10, Jalan Austin Perdana 2/24, Taman Austin Perdana, 81100 Johor Bahru, Johor Darul Ta'zim, Malaysia | Pending | Pending |  |
+| 127 | 839 | Shuffle the duel field | MY | 10, Jalan Austin Perdana 2/24, Taman Austin Perdana, 81100 Johor Bahru, Johor Darul Ta'zim, Malaysia | Official site unconfirmed | Unconfirmed | Reviewed 2026-10-18: [Source](https://locator.riftbound.uvsgames.com/stores/d310b3a1-e9af-4fe3-85d8-fd23b6d585ec) corroborates the retailer at 10-01 Jalan Austin Perdana 2/24. [Grand Archive event 49869](https://omni.gatcg.com/events/49869) says on demand, which does not establish weekly recurrence. No official website identified. Snapshot: latest recorded event 2026-08-30T07:00:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 128 | 26 | The People's Card Shop | US | 5620 W Charleston Blvd #110, Las Vegas, NV 89146, USA | Pending | Pending |  |
 | 129 | 49 | AFK Games | US | 2495 N Cedar St STE 14B, Holt, MI 48842, USA | Pending | Pending |  |
 | 130 | 515 | The End Games | US | 390 Hillsdale Dr, Charlottesville, VA 22901, USA | Pending | Pending |  |
