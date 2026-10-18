@@ -1460,5 +1460,9 @@
   "295": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official Redwood City calendar](https://gamekastle.com/pages/redwood-city-ca-event-calendar) confirms 340 Walnut Street. The readable page shows October 13 events only; it does not verify Grand Archive's weekly slot. Confirm Friday local-time play in the full branch calendar; computed Saturday UTC timestamps must not be described as Saturday local events. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "31": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://arcanumsanctorum.com/) has a Grand Archive section; its [events page](https://arcanumsanctorum.com/pages/events) embeds a calendar without readable event detail. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/23382291-c832-4041-824f-790e570bf5a7) matches 3994 North Oracle Road and links that website. Current Grand Archive weeklies unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
