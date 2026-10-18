@@ -944,5 +944,9 @@
   "944": {
     "kind": "venue",
     "evidence": "2026-10-18: [GA event record](https://fractalofin.site/RDO/54876.html) shows this organizer also hosts at Dubai World Trade Centre, distinct from recorded Rove at the Park. Classified as venue/organizer; no independent storefront established. No official organizer website or point tied to this exact Rove event space obtained. Latest Omnidex event in committed snapshot 2026-08-29T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "131": {
+    "kind": "store",
+    "evidence": "2026-10-18: [FAB locator](https://legacy.fabtcg.com/en/locator/?mode=store&page=110&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) and [retail directory](https://www.keepupcards.com/shop/underworld-tcg-collectibles-roy-ut) confirm 3464 W 4800 S, Roy. Existing pipeline point 41.1771531, -112.0635318 lacks independently verified provenance; preserved it without curated promotion. No official standalone website established; underworldtcg.com belongs to Raleigh and was excluded. Latest Omnidex event in committed snapshot 2025-09-20T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
