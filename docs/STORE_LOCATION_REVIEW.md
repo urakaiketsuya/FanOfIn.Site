@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 260 reviewed (70.5% of this checklist); 109 pending. 83 mapped, 177 need further evidence. Map coverage: 398/674 (59.1%); 276 unmapped. Coverage uses the current directory, including pins added outside this checklist.
+Progress: first 261 reviewed (70.7% of this checklist); 108 pending. 83 mapped, 178 need further evidence. Map coverage: 398/674 (59.1%); 276 unmapped. Coverage uses the current directory, including pins added outside this checklist.
 
-Next: #261 Ju You TCG Store. Revisit Needs evidence entries after the initial pass.
+Next: #262 Sparks Trading Cards. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -271,7 +271,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 258 | 938 | 可可卡牌 (COCOCARDSHOP) | TW | No. 32號, S Section, Yuliao Rd, Yuliao Village, Qiaotou District, Kaohsiung City, Taiwan 825004 | Needs evidence | Reviewed 2026-10-18: [Retailer-operated marketplace](https://www.ruten.com.tw/store/arthur861226/list) explicitly confirms card sales and physical shop at 32 Yuliao Road South Section, Qiaotou, Kaohsiung. No standalone website or verified named store coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-19T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 259 | 944 | Nexus Event Middle East | AE | Ground Floor, Rove at the Park, Dubai, 00000, 00000, United Arab Emirates | Needs evidence | Reviewed 2026-10-18: [GA event record](https://fractalofin.site/RDO/54876.html) shows this organizer also hosts at Dubai World Trade Centre, distinct from recorded Rove at the Park. Classified as venue/organizer; no independent storefront established. No official organizer website or point tied to this exact Rove event space obtained. Latest Omnidex event in committed snapshot 2026-08-29T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 260 | 131 | Underworld TCG & Collectibles | US | 3464 W 4800 S, Roy, UT 84067, USA | Needs evidence | Reviewed 2026-10-18: [FAB locator](https://legacy.fabtcg.com/en/locator/?mode=store&page=110&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) and [retail directory](https://www.keepupcards.com/shop/underworld-tcg-collectibles-roy-ut) confirm 3464 W 4800 S, Roy. Existing pipeline point 41.1771531, -112.0635318 lacks independently verified provenance; preserved it without curated promotion. No official standalone website established; underworldtcg.com belongs to Raleigh and was excluded. Latest Omnidex event in committed snapshot 2025-09-20T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 261 | 170 | Ju You TCG Store | TW | 新竹市中華路三段9號13樓; Taiwan | Pending |  |
+| 261 | 170 | Ju You TCG Store | TW | 新竹市中華路三段9號13樓; Taiwan | Needs evidence | Reviewed 2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/45558/) confirms Ju You Hsinchu at 9 Zhonghua Road Section 3, 13F-1. No official standalone website or exact store destination point established; retain the floor detail in evidence. Latest Omnidex event in committed snapshot 2025-01-12T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 262 | 179 | Sparks Trading Cards | US | 1224 Monaco Ct #31, Stockton, CA 95207, USA | Pending |  |
 | 263 | 247 | Infinity Cards and Collectibles | CA | 27256 Fraser Hwy Unit #102, Aldergrove, BC V4W 3P8, Canada | Pending |  |
 | 264 | 301 | Kenkyo Hobby | SG | 35 Selegie Rd, #04-11A Parklane Shopping Mall, Singapore 188307 | Pending |  |
