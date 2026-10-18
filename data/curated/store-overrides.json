@@ -1344,5 +1344,9 @@
   "874": {
     "kind": "store",
     "evidence": "2026-10-18: [Government business registration](https://serv.gcis.nat.gov.tw/moeadsBF/cmpy/reportAction.do?fileName=376530000Asetup11109.pdf&method=report&reportClass=bms&subPath=11109) and [shop social mirror](https://www.findglocal.com/TW/Pingtung/107779814312819/卡片特快車桌遊工作室) confirm 739-1 Guangdong Road, second floor and card sales. No standalone official website or verified shop point obtained. Latest Omnidex event in committed snapshot 2026-09-20T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "884": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop information](https://www.marineford.link/shopInfo/) confirms card retail and pickup at 37 Janghan-ro, third floor. [Konami retailer listing](https://www.konami.com/efootball/ko/page/yugioh_collab) agrees. Official directions are image-based; no independently verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2026-06-14T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
