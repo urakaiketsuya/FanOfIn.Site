@@ -848,5 +848,9 @@
   "208": {
     "kind": "venue",
     "evidence": "2026-10-18: [Official organizer website](https://www.truechampiongaming.com/) describes a competitive GA team. [AFK Games regional event page](https://afk.games/event/grand-archive-michigan-regional-dtr/) explicitly identifies the recorded 2495 N Cedar Street 14B as AFK Games. Classified this host as venue/organizer, not a True Champion storefront. No independently verified event-venue coordinates imported. Latest Omnidex event in committed snapshot 2026-04-25T15:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "249": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.generalgames.com.au/pages/contact-us) lists Chirnside Park Shop 5b, 239 Maroondah Highway, while recorded address says 5a. [Mall tenant listing](https://www.chirnsidepark.com.au/stores-services/generalgames) confirms retailer and centre but does not resolve unit discrepancy. No general mall point imported. Latest Omnidex event in committed snapshot 2026-06-14T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
