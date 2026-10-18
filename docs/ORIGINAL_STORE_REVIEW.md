@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 21/305 (6.9%); 284 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 22/305 (7.2%); 283 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 4 published weekly; 1 historical schedule; 1 special event only; 15 unconfirmed.
+Weekly results among reviewed stores: 4 published weekly; 1 historical schedule; 1 special event only; 16 unconfirmed.
 
-Next: #22 Dragon Nest Game Unlimited.
+Next: #23 David's Good Game Cafe.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -35,7 +35,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 19 | 243 | Knight and Day Games | US | 6521 S Las Vegas Blvd STE C-105, Las Vegas, NV 89119, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://legacy.fabtcg.com/en/locator/knight-and-day-games/) matches 6521 S Las Vegas Boulevard C-105 and identifies knightanddaygames.com. Its [official calendar](https://knightanddaygames.com/pages/event-calendar) is accessible but supplies no readable Grand Archive schedule. The publisher's Wednesday Armory day is Flesh and Blood, not Grand Archive. Snapshot: latest recorded event 2026-10-07T02:00:00.000Z; 85 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 20 | 295 | Game Kastle Redwood City | US | 340 Walnut St, Redwood City, CA 94063, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official Redwood City calendar](https://gamekastle.com/pages/redwood-city-ca-event-calendar) confirms 340 Walnut Street. The readable page shows October 13 events only; it does not verify Grand Archive's weekly slot. Confirm Friday local-time play in the full branch calendar; computed Saturday UTC timestamps must not be described as Saturday local events. Snapshot: latest recorded event 2026-10-17T02:00:00.000Z; 93 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 21 | 31 | The Arcanum Sanctorum | US | 3994 N Oracle Rd, Tucson, AZ 85705, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://arcanumsanctorum.com/) has a Grand Archive section; its [events page](https://arcanumsanctorum.com/pages/events) embeds a calendar without readable event detail. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/23382291-c832-4041-824f-790e570bf5a7) matches 3994 North Oracle Road and links that website. Current Grand Archive weeklies unconfirmed. Snapshot: latest recorded event 2026-09-10T02:00:00.000Z; 84 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 22 | 78 | Dragon Nest Game Unlimited | HK | 162 Un Chau St, Un Chau, Hong Kong | Pending | Pending |  |
+| 22 | 78 | Dragon Nest Game Unlimited | HK | 162 Un Chau St, Un Chau, Hong Kong | Not found | Unconfirmed | Reviewed 2026-10-18: [Publisher directory](https://legacy.fabtcg.com/en/locator/?mode=store&page=30&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) identifies Dragon Nest Game Limited at 162 Un Chau Street. [Grand Archive distributor](https://www.fayble-asia.com/game_store.php?id=13) lists dragon nest at Tian Yue Plaza 185, which may be a shop number rather than a street number. Resolve unit/address notation. No official website/social link or weekly schedule verified. Snapshot: latest recorded event 2026-10-04T08:35:00.000Z; 88 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 23 | 21 | David's Good Game Cafe | US | 2285 Whitney Ave, Hamden, CT 06518, USA | Pending | Pending |  |
 | 24 | 86 | Card Merchant Whangarei | NZ | 2/10 John Street, Whangārei 0110, New Zealand | Pending | Pending |  |
 | 25 | 38 | JWW Sports Cards & Gaming | US | 3902 13th Ave S #100, Fargo, ND 58103, USA | Pending | Pending |  |
