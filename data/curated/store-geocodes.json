@@ -207,6 +207,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 104,
+    "address": "B1-02A Macpherson Mall, Singapore 368125",
+    "lat": 1.3317621,
+    "lng": 103.8794484,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/1194b8c8-bac6-4ed1-bb6b-592c228c6c89",
+    "sourceAddress": "B1-02 Macpherson Mall, Singapore, 368125, SG",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 108,
     "address": "UNIT 2/9 Yarmouth Pl, Smeaton Grange NSW 2567, Australia",
     "lat": -34.0408613,

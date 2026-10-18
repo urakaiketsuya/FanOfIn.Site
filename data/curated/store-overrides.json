@@ -788,5 +788,9 @@
   "817": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher store](https://locator.riftbound.uvsgames.com/stores/125a7b5a-5c6e-4f21-9fec-cc602cf8cb76) identifies HPT Collects at Saigon Caphe as physical/online retailer, with full address 2330 Hoffman Street Unit 1B, Bronx NY 10458 and coordinates 40.8545267, -73.8896297. Imported address-bound store point. No official standalone website established. Latest Omnidex event in committed snapshot 2026-08-13T20:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "104": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shipping policy](https://tefudagames.com/policies/shipping-policy) confirms Macpherson Mall B1-02; [Pokemon venue](https://asia.pokemon-card.com/sg/event-search/5781/) explicitly supplies B1-02A. [Publisher store](https://locator.riftbound.uvsgames.com/stores/1194b8c8-bac6-4ed1-bb6b-592c228c6c89) binds Tefuda at this mall unit to 1.3317621, 103.8794484. Imported named shop point; preserved recorded unit suffix. Latest Omnidex event in committed snapshot 2025-04-13T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
