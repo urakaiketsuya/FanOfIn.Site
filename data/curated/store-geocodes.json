@@ -1242,6 +1242,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 956,
+    "address": "2448 S Vineyard Ave #101, Ontario, CA 91761, USA",
+    "lat": 34.02857999676268,
+    "lng": -117.6126680462184,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/712728",
+    "sourceAddress": "2448 South Vineyard Avenue, 101, Ontario, CA, 91761, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 974,
     "address": "Unit G38, 1st Floor, Citis Square Shopping Complex, Spg 13-41 Jln, Bandar Seri Begawan BB2713, Brunei",
     "lat": 4.9388032,

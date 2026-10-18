@@ -1196,5 +1196,9 @@
   "919": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/ba85d106-9a15-4c86-b07c-8267c2072c15) confirms physical retail at D-1-10 Pusat Komersial Bayu Tasek and supplies 1.4973037, 103.7775957. Imported exact shop point. [Games Haven website](https://www.gameshaventcg.com/pages/our-stores) does not list Southkey, so branch affiliation/official standalone website remains unconfirmed. Latest Omnidex event in committed snapshot 2026-07-26T00:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "956": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://s-rankgames.com/) confirms 2448 S Vineyard Avenue Suite 101. [Publisher event](https://locator.riftbound.uvsgames.com/events/712728) supplies matching store/event coordinates 34.02857999676268, -117.6126680462184. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-09-27T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
