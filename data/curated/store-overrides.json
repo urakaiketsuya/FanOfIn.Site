@@ -1336,5 +1336,9 @@
   "856": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://atorihobbies.com/) confirms Unit 19, Casa Ophelia, DRT Highway, Sabang. [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/a9f34111-762c-4b34-9c5c-c3d4fdade04d) matches and supplies 14.9687212, 120.90421859999998. Imported exact shop point; the broad official embedded-map viewport was not used. Latest Omnidex event in committed snapshot 2026-04-14T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "858": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://oztetamigo.com/) confirms Room B01, ninth floor, Great Wall Factory Building, 11 Cheung Shun Street, matching recorded Block B Room 1. No verified exact business destination coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-11T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
