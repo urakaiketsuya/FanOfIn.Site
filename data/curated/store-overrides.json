@@ -1388,5 +1388,9 @@
   "297": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) gives 191 High Street, while Omnidex records 174. [Official regional listing](https://www.hobbylords.co.nz/events/single/grand-archive-ptm-regionals-%40-hobby-lords-lower-hutt-) also uses 191. Events page returned 403; a regional is not weekly evidence. Resolve the address discrepancy and current weekly venue before relying on the old pin or Wednesday estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "54": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official shop](https://wilczek.poznan.pl/category/grand-archive) confirms Garbary 64/7, Pasaż SIMEX, but gives postcode 61-758 instead of 61-001. [Syndicated May event](https://simplygo.pl/wydarzenia/poznan/rozrywka/wydarzenie/turniej-grand-archive-w-poznaniu-b12584dd-2f1f-4a8f-bd40-d9b6f0779310) advertises Mondays at 18:30; this is historical secondary evidence, not confirmation of October Mondays or Fridays. Verify current schedule and postal detail. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
