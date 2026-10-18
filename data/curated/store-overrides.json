@@ -1224,5 +1224,9 @@
   "64": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event](https://tcg.ravensburgerplay.com/events/718413) supplies 3.00638, 101.5338817 at number 46 and links [official Facebook](https://www.facebook.com/nakamashop126). [Bandai retailer list](https://www.unionarena-tcg.com/en/events/shop-battle/2024/04/list_malaysia.php) specifies 46-1 first floor, while Pokemon lists 46A. Retail confirmed; withheld point until unit/address variants are reconciled. No standalone website established. Latest Omnidex event in committed snapshot 2024-03-10T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "96": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Manufacturer stockist list](https://haloflashpoint.manticgames.com/stockists/) confirms Shop 8/26 Diarama Village and links [official Facebook](https://www.facebook.com/MagoobieGames). [Current local listing](https://www.localsearch.com.au/profile/magoobie-games/cmpup5isn000802jp58db8x23) instead gives Shop 10. Retail identity confirmed; resolve unit conflict before mapping. No standalone official website established. Latest Omnidex event in committed snapshot 2024-03-06T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
