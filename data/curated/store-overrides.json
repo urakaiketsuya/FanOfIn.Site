@@ -1756,5 +1756,9 @@
   "959": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. No uniquely matched official website or social profile found for the Taiping host; same-name overseas shops and gaming communities were not accepted. The [October 17 championship results](https://tcgcontender.com/grandarchive/tournaments/zerghive-grand-archive-asphodelparadise-store-championships-2026-10-17) support recent GA activity. In the committed snapshot, event 65833 is titled Thursday October 15 but dated Friday October 16; event 65490 also has a title/date mismatch. Confirm current Thursday/weekend slots before trusting projections. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "1": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://www.yetigaming.com/) and [GA collection](https://www.yetigaming.com/collections/grand-archive) verified. No current in-store GA weekly schedule found. Historical Yeti webcam events are online and must not be mapped to the Grasso Plaza store; confirm physical-store play separately. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

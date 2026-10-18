@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 94/305 (30.8%); 211 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 95/305 (31.1%); 210 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 11 historical schedule; 6 special event only; 60 unconfirmed.
+Weekly results among reviewed stores: 17 published weekly; 0 published fortnightly; 11 historical schedule; 6 special event only; 61 unconfirmed.
 
-Next: #95 Yeti Gaming.
+Next: #96 World Legacy.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -108,7 +108,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 92 | 522 | Game Kastle Austin | US | 3407 Wells Branch Pkwy suite 800, Austin, TX 78727, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official Austin calendar](https://www.gamekastle.live/pages/austin-tx-event-calendar) explicitly advertises GA meetups every Saturday at 13:00; displayed duration is 13:00–16:00. It lists 3407 Wells Branch Parkway suite 800, postcode 78728 instead of recorded 78727. Verify postal detail and individual meetup dates; do not imply every meetup is a sanctioned tournament. Snapshot: latest recorded event 2026-07-18T18:00:00.000Z; 17 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 93 | 786 | SPELLROO GAMING | AU | 327 Concord Rd, Concord West NSW 2138, Australia | Verified site | Historical schedule | Reviewed 2026-10-18: [Official July 2026 schedule](https://spellroogaming.com.au/blogs/news/spellroo-gaming-july-2026-event-schedule) lists Saturday GA weekly league at 16:30. An [older November 2025 league notice](https://spellroogaming.com.au/blogs/news/grand-archive-tcg-weekly-league-spellroo-gaming) used 13:00, demonstrating a time change. Confirm the October slot; the October championship is not a weekly schedule. Snapshot: latest recorded event 2026-10-11T00:15:00.000Z; 19 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 94 | 959 | ZergHive TCG | MY | 100, Jalan Pasar, 34000 Taiping, Perak, Malaysia | Not found | Unconfirmed | Reviewed 2026-10-18: No uniquely matched official website or social profile found for the Taiping host; same-name overseas shops and gaming communities were not accepted. The [October 17 championship results](https://tcgcontender.com/grandarchive/tournaments/zerghive-grand-archive-asphodelparadise-store-championships-2026-10-17) support recent GA activity. In the committed snapshot, event 65833 is titled Thursday October 15 but dated Friday October 16; event 65490 also has a title/date mismatch. Confirm current Thursday/weekend slots before trusting projections. Snapshot: latest recorded event 2026-10-16T12:00:00.000Z; 20 retained regular-event evidence entries; 8 projected dates in the next 28 days (estimates only). |
-| 95 | 1 | Yeti Gaming | US | 84 Grasso Plaza, Affton, MO 63123, USA | Pending | Pending |  |
+| 95 | 1 | Yeti Gaming | US | 84 Grasso Plaza, Affton, MO 63123, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://www.yetigaming.com/) and [GA collection](https://www.yetigaming.com/collections/grand-archive) verified. No current in-store GA weekly schedule found. Historical Yeti webcam events are online and must not be mapped to the Grasso Plaza store; confirm physical-store play separately. Snapshot: latest recorded event 2026-08-08T18:00:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 96 | 292 | World Legacy | HK | 162 Un Chau St, Un Chau, Hong Kong | Pending | Pending |  |
 | 97 | 324 | Hobby Lords Palmerston North | NZ | 137 Cuba Street, Palmerston North Central, Palmerston North 4410, New Zealand | Pending | Pending |  |
 | 98 | 327 | Loot Box | US | 5214 Chesebro Rd, Agoura Hills, CA 91301, USA | Pending | Pending |  |
