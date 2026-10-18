@@ -1911,5 +1911,9 @@
   "596": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://events.goodgames.com.au/venue/good-games-canberra-city/) lists branch events but no Grand Archive weekly slot was verified in the readable October/November entries. Do not copy Grand Archive schedules from other Good Games branches. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "658": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://dragonforgehobbies.com/) identifies The Dragonforge at 2F Phase 2 Urban Turf, UP Town Center, 216 Katipunan Avenue; [official Linktree](https://linktr.ee/TheDragonforge) also identifies the store. No readable current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

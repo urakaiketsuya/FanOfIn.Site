@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 133/305 (43.6%); 172 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 134/305 (43.9%); 171 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 87 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 88 unconfirmed.
 
-Next: #134 The Dragonforge.
+Next: #135 Crimson Phoenix Comics and Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -147,7 +147,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 131 | 772 | GAMES TIME TORINO CENTER | IT | Via Borgosesia, 90/B, 10145 Torino TO, Italy | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://locator.riftbound.uvsgames.com/stores/21eb3498-3022-4ce5-a17d-287da078b6da) links [official Instagram](https://www.instagram.com/gamestimetorinocentro/) and identifies Via Borgosesia 90/B. Its Riftbound schedule must not be used as Grand Archive evidence; no current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-06T19:00:00.000Z; 11 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 132 | 493 | TCB Games | US | 44 E Park Dr, Huntington, IN 46750, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.tcb.games/) confirms 44 E Park Drive. The events page returned 403, so current Grand Archive weekly times could not be read; product listings alone do not establish recurrence. Snapshot: latest recorded event 2026-08-16T19:00:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 133 | 596 | Good Games Canberra City | AU | 38 Garema Pl, Canberra ACT 2600, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://events.goodgames.com.au/venue/good-games-canberra-city/) lists branch events but no Grand Archive weekly slot was verified in the readable October/November entries. Do not copy Grand Archive schedules from other Good Games branches. Snapshot: latest recorded event 2026-09-19T02:00:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 134 | 658 | The Dragonforge | PH | UP town center, Diliman, Quezon City, Metro Manila, Philippines | Pending | Pending |  |
+| 134 | 658 | The Dragonforge | PH | UP town center, Diliman, Quezon City, Metro Manila, Philippines | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://dragonforgehobbies.com/) identifies The Dragonforge at 2F Phase 2 Urban Turf, UP Town Center, 216 Katipunan Avenue; [official Linktree](https://linktr.ee/TheDragonforge) also identifies the store. No readable current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-04T02:30:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 135 | 707 | Crimson Phoenix Comics and Games | US | 127 N Main St, Butte, MT 59701, USA | Pending | Pending |  |
 | 136 | 868 | Last Piece Games & Toys | KW | Sulaiman Complex, Beirut Street, Hawally 30009, Kuwait | Pending | Pending |  |
 | 137 | 145 | Brood en Spelen | BE | Stationsstraat 41, 9100 Sint-Niklaas, Belgium | Pending | Pending |  |
