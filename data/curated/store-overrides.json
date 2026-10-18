@@ -752,5 +752,9 @@
   "173": {
     "kind": "store",
     "evidence": "2026-10-18: [Distributor list](https://ultra-pro.com.tw/store/storelist.htm) explicitly marks Cat Footprint Chiayi at 502 Renai Road, second floor, as closed on 2024-11-17. [Chain website](https://www.catfootprint.com/post/%E3%80%90ws%E3%80%91%E5%85%A8%E8%87%BA%E8%81%AF%E8%B3%BD%E8%B3%BD%E7%A8%8B%E5%85%AC%E5%B8%83) establishes historical branch identity. No pin imported; verify reopening or successor identity before presenting the location as current. Latest Omnidex event in committed snapshot 2024-11-19T11:21:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "260": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event page](https://en.cf-vanguard.com/event/premium-weekend/) confirms Fortress at Unit V-227, second floor, Virra Mall. [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) links [official Facebook](https://www.facebook.com/p/Fortress-Games-GH-100090596572827/). [Named Waze destination](https://www.waze.com/live-map/directions/ph/ncr/san-juan-city/fortress-toys-and-hobbies?to=place.ChIJGcvDwdi3lzMRNFQHrMefQ6k) supplies 14.6008034, 121.0487755 for the unit; imported business point. Latest Omnidex event in committed snapshot 2026-07-05T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

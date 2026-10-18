@@ -450,6 +450,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:16.764627+00:00"
   },
   {
+    "hostId": 260,
+    "address": "V-Mall Greenhills Shopping Complex, N. Western St Ortigas Avenue, San Juan, 1503 Metro Manila, Philippines",
+    "lat": 14.6008034,
+    "lng": 121.0487755,
+    "sourceUrl": "https://www.waze.com/live-map/directions/ph/ncr/san-juan-city/fortress-toys-and-hobbies?to=place.ChIJGcvDwdi3lzMRNFQHrMefQ6k",
+    "sourceAddress": "Unit V-227, V-Mall Greenhills Shopping Complex, N. Western St, Ortigas Ave, San Juan City, 1503 Metro Manila, Philippines",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 273,
     "address": "21308 Pathfinder Rd #110, Diamond Bar, CA 91765, USA",
     "lat": 33.9839856,
