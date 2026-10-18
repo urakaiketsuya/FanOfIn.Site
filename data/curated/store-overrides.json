@@ -1807,5 +1807,9 @@
   "41": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://reapergamestore.com/pages/events) includes Grand Archive under weekly events, but its description is placeholder text and no day/time is published in the readable section. A usable current schedule remains unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "93": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://gamersrevelationtcg.co.nz/events/) publishes a weekly poster showing Grand Archive Sundays at 1 p.m., visually checked. Footer lists 153 Dee Street, 9812, while the shipping page and stored record use 141 Dee Street; confirm venue before attending. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
