@@ -1161,6 +1161,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 866,
+    "address": "Castle Towers, Shop 1217, Level 1/6 - 14 Castle St, Castle Hill NSW 2154, Australia",
+    "lat": -33.7306293,
+    "lng": 151.0065332,
+    "sourceUrl": "https://www.waze.com/live-map/directions/au/nsw/castle-hill/good-games-castle-hill?to=place.ChIJS53JIdehEmsRq4DsCK02oCs",
+    "sourceAddress": "Castle Towers, Shop 1217, Level 1/6 - 14 Castle St, Castle Hill NSW 2154, Australia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 878,
     "address": "10971 4 Seasons Pl Ste 106, Crown Point, IN 46307, USA",
     "lat": 41.4193016,
