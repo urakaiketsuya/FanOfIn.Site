@@ -1799,5 +1799,9 @@
   "530": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official social page identified. Weekly events: Unconfirmed. [Source](https://asia.pokemon-card.com/my/event-search/12470/) identifies the shop and links [official Facebook events](https://www.facebook.com/CardsnGamesCapital/events). [Omnidex event 15278](https://omni.gatcg.com/events/15278) is historical, not a current recurring schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "652": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.goldstarcollectibles.com/) identifies Card Shop Sacramento X Gold Star Collectibles at 2440 Fulton Avenue #9. Saturday opening hours are not Grand Archive event times; confirm current locals separately. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

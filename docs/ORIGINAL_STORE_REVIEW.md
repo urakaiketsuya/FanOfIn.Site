@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 105/305 (34.4%); 200 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 106/305 (34.8%); 199 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 17 published weekly; 1 published fortnightly; 11 historical schedule; 7 special event only; 69 unconfirmed.
+Weekly results among reviewed stores: 17 published weekly; 1 published fortnightly; 11 historical schedule; 7 special event only; 70 unconfirmed.
 
-Next: #106 Card Shop Sacramento X Gold Star Collectibles.
+Next: #107 Reaper Game Store.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -119,7 +119,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 103 | 83 | Card Merchant Takapuna | NZ | 15-17 Hurstmere Road, Takapuna, Auckland 0622, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.cardmerchanttakapuna.co.nz/) identifies the Takapuna shop and embeds an event calendar. Its Grand Archive collection verifies products, not current Monday play; obtain a readable branch schedule. Snapshot: latest recorded event 2026-08-10T06:30:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 104 | 413 | Top Deck Keep | US | 10128 Indiana Ave, Riverside, CA 92503, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://top-deck-keep.shoplightspeed.com/event-calendar/) is the official event calendar, but its embedded calendar remained blank in the browser. Grand Archive event registration exists; current weekly day/time remains unverified. Snapshot: latest recorded event 2026-09-22T02:15:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 105 | 530 | Cards & Games Capital  | MY | 30-3, Jalan BS 4/2 Taman Bukit Serdang, Seksyen 4 43300 Seri Kembangan, Selangor Malaysia | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://asia.pokemon-card.com/my/event-search/12470/) identifies the shop and links [official Facebook events](https://www.facebook.com/CardsnGamesCapital/events). [Omnidex event 15278](https://omni.gatcg.com/events/15278) is historical, not a current recurring schedule. Snapshot: latest recorded event 2026-05-17T04:30:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 106 | 652 | Card Shop Sacramento X Gold Star Collectibles | US | 2440 Fulton Ave #9, Sacramento, CA 95825, USA | Pending | Pending |  |
+| 106 | 652 | Card Shop Sacramento X Gold Star Collectibles | US | 2440 Fulton Ave #9, Sacramento, CA 95825, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.goldstarcollectibles.com/) identifies Card Shop Sacramento X Gold Star Collectibles at 2440 Fulton Avenue #9. Saturday opening hours are not Grand Archive event times; confirm current locals separately. Snapshot: latest recorded event 2026-09-19T20:10:00.000Z; 16 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 107 | 41 | Reaper Game Store | US | 9080 Teasley Ln, Denton, TX 76210, USA | Pending | Pending |  |
 | 108 | 93 | Gamers Revelation | NZ | 141 Dee Street, Invercargill 9810, New Zealand | Pending | Pending |  |
 | 109 | 138 | Counterspell Games | US | 8102 Blanding Blvd #12, Jacksonville, FL 32244, USA | Pending | Pending |  |
