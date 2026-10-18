@@ -1580,5 +1580,9 @@
   "315": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.roundtablegamescafe.com/) confirms 5511 Coldwater Road, retail/cafe identity, and Grand Archive. It directs visitors to a calendar/social media but provides no readable Grand Archive weekly day/time. Confirm a current schedule rather than inferring one from its general event description. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "87": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official events page](https://tcgcollectornz.com/pages/events-tcg-collector-nz) confirms 59B Carlyle Street and weekly events generally. Its [calendar](https://tcgcollectornz.com/pages/event-calendar) exposes no Grand Archive dates or times. Confirm the current GA slot directly; retail stock is not schedule evidence. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
