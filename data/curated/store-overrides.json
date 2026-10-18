@@ -1296,5 +1296,9 @@
   "574": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/55563/) confirms 390 Wenhua 2nd Road Section 1, third floor unit 3. [Manufacturer stockists](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) establishes retailer identity as 卡咖王國. No official standalone website or verified shop point obtained; unrelated English-name results excluded. Latest Omnidex event in committed snapshot 2026-05-30T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "582": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher retailer](https://locator.riftbound.uvsgames.com/stores/a82db15e-60dd-4c27-8507-241a03555936) confirms physical and online retail at Avenida Providencia 2594, local 602, supplies -33.4185258, -70.6031363, and identifies https://tomatorepublic.cl/ as the official website. Imported exact named-shop point. Latest Omnidex event in committed snapshot 2025-03-22T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

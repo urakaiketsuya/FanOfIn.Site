@@ -882,6 +882,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:46.709600+00:00"
   },
   {
+    "hostId": 582,
+    "address": "Avenida Providencia 2594, Providencia - Local 602, 7510007 Santiago, Providencia, Región Metropolitana, Chile",
+    "lat": -33.4185258,
+    "lng": -70.6031363,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/a82db15e-60dd-4c27-8507-241a03555936",
+    "sourceAddress": "Avenida Providencia 2594, local 602, Providencia, Santiago, Región Metropolitana, 7510007, CL",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 589,
     "address": "11940 SW Pacific Hwy ste e, Tigard, OR 97223, USA",
     "lat": 45.4331992,
