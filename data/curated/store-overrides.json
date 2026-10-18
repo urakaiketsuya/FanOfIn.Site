@@ -1000,5 +1000,9 @@
   "58": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact page](https://www.wombatgames.cz/kontakt) now gives Sladkovskeho 505. The [official relocation announcement](https://www.wombatgames.cz/post/wombat-games-se-stehuje) confirms a move. Retail identity established, but recorded Bratr. Veverkovych 681 is historical; resolve event-address freshness before mapping. Latest Omnidex event in committed snapshot 2025-05-04T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "77": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer website](https://neko2nyaa.com/homepage) and [business directory](https://www.bizmalay.com/en/neko-neko-nyaa_2T-013-818-3616) give recorded Block 10, Lot 2762. [Bandai retailer list](https://www.carddass.com/onepiece-tcg_asia-en/events/2022/officialevents/rookie-tours/list_malaysia.php) instead gives Lot 11378 Jalan Song. Retailer confirmed; location history remains conflicting and no exact recorded-address point verified. Latest Omnidex event in committed snapshot 2026-01-22T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
