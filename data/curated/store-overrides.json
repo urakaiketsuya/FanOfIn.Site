@@ -1072,5 +1072,9 @@
   "562": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://gattchaa.com/) and [retailer introduction](https://gattchaalive.com/about-us/) confirm Mega Mall Batam Centre Upper Ground, distinct from One Batam Mall. [Distributor directory](https://www.jpbindo.com/ots-info) supplies a named Gattchaa Google Maps destination with 1.1291952, 104.0555219. Imported destination point and retained recorded unit 107. Latest Omnidex event in committed snapshot 2026-04-02T13:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "612": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon retailer announcement](https://asia.pokemon-card.com/my/archives/6693/) and [local tabletop directory](https://kakitabletop.com/map/north/penang/) confirm 12 Medan Seri Impian 3. Older Bandai lists use 66 Lorong Nirwana 10. Retail identity established, but no official standalone site or verified current shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-01-11T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
