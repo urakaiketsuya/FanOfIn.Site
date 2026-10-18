@@ -1384,5 +1384,9 @@
   "452": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Historical site. Weekly events: Unconfirmed. [Store about page](https://activegamecollections.wordpress.com/about/) matches 8 Yio Chu Kang Road, adding #02-8D/E; it is a historical page. [Business listing](https://recordowl.com/company/active-game-collections) identifies activegamecollection.com, which could not be accessed. No readable current weekly announcement found; ask the store to confirm Wednesday/Saturday play. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "297": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) gives 191 High Street, while Omnidex records 174. [Official regional listing](https://www.hobbylords.co.nz/events/single/grand-archive-ptm-regionals-%40-hobby-lords-lower-hutt-) also uses 191. Events page returned 403; a regional is not weekly evidence. Resolve the address discrepancy and current weekly venue before relying on the old pin or Wednesday estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
