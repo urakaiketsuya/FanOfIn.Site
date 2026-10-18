@@ -1668,5 +1668,9 @@
   "22": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://diademhobbies.com/) matches 166 Douglas Street and offers a GA collection. The readable site has no GA event schedule. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/4efeeef7-c092-4cfe-9763-bab48dbdd4c9) adds units 1 and 3. Confirm current weekly day/time; other games’ weekly listings are insufficient. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "734": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch site](https://cardmerchantwellington.co.nz/) confirms level 1, 49 Manners Street and provides an event calendar, but no readable GA weekly entry. Product availability and other games’ release tickets do not confirm recurring GA play; ask the Wellington branch for its current schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
