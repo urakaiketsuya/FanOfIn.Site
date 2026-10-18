@@ -720,5 +720,9 @@
   "30": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://valhallahobby.com/) confirms 535 Half Mile Road Suite 5B, Verona. [Publisher event](https://locator.riftbound.uvsgames.com/events/442038) names the same retailer/building as ste 5 and supplies matching store/event coordinates 42.9868847, -89.54601219999999. Imported named business point; official site resolves the suite suffix. Latest Omnidex event in committed snapshot 2026-09-05T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "141": {
+    "kind": "store",
+    "evidence": "2026-10-18: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Aurorus Collections Fairview at B2 L3A Commonwealth Avenue and links [official Facebook](https://www.facebook.com/AurorusCollections/). Excluded the similarly named Duluth, Georgia TCGplayer seller. No verified Quezon City shop coordinates obtained. Latest Omnidex event in committed snapshot 2025-05-18T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
