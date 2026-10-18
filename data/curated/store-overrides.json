@@ -1260,5 +1260,9 @@
   "338": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch page](https://www.catfootprint.com/貓腳印-豐原店) confirms 65 Sanmin Road, fifth floor and links a named Google Maps destination with 24.25358, 120.720984. Imported destination coordinates, excluding the adjacent viewport centre. Official branch Facebook is https://www.facebook.com/cfpfengyuan. Latest Omnidex event in committed snapshot 2024-07-07T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "367": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retail business directory](https://www.cylex.pt/aveiro/taberna-octopus-132078.html) confirms Rua Capitao Sousa Pizarro 28A and identifies https://www.tabernaoctopus.com. Official site contents could not be verified; no exact named shop coordinates obtained. Retail classification supported by the directory, with current operation requiring follow-up. Latest Omnidex event in committed snapshot 2024-09-07T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
