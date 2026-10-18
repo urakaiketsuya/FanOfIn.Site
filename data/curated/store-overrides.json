@@ -1891,5 +1891,9 @@
   "26": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://thepeoplescardshop.com/) confirms the Las Vegas retailer. Its Grand Archive product category does not publish a recurring play schedule; verify current weekly day/time directly. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "49": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Source](https://afk.games/events/) publishes Grand Archive weekly play Wednesdays 6–9:30 p.m., free, including October 21. Confirm individual dates for cancellations. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
