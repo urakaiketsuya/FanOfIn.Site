@@ -9,6 +9,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:01.654184+00:00"
   },
   {
+    "hostId": 2,
+    "address": "4425j Treat Blvd, Concord, CA 94521, USA",
+    "lat": 37.96305,
+    "lng": -121.99446,
+    "sourceUrl": "https://www.thetradeemporium.com/store-locations",
+    "sourceAddress": "4425J Treat Boulevard Concord, CA 94521",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 4,
     "address": "3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA",
     "lat": 28.6779817,
