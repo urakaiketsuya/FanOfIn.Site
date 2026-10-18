@@ -1508,5 +1508,9 @@
   "36": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official website](https://moxvalleygames.com/) offers a Grand Archive November 8 championship; its [calendar](https://moxvalleygames.com/pages/calendar) provides no readable weekly details. [Regional ticket](https://moxvalleygames.com/products/grand-archive-dtr-regional-portland-9-27) uses a separate Portland venue, not the recorded Springfield store. Confirm weekly play at the Springfield branch rather than moving its pin to that event venue. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "6": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official website](https://www.gaminggiant.com/) lists the October 17 PRD Regional; [publisher profile](https://legacy.fabtcg.com/en/locator/gaming-giant/) confirms 3925 Chain Bridge Road Suite 201. Readable calendar evidence establishes a special event, not a current Grand Archive weekly schedule. The Monday Armory shown by the publisher is a different game. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
