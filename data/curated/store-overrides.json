@@ -820,5 +820,9 @@
   "224": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher store](https://locator.riftbound.uvsgames.com/stores/372f1563-9b7f-4a48-a822-1bd79edd4b3f) gives recorded 3389 N State Street #3 and links [official website](https://www.kingswaycollectibles.com/), but [FAB locator](https://legacy.fabtcg.com/en/locator/kingsway-collectibles/) gives 3363 N State Street #3. Publisher point 29.5081792, -81.2649756 withheld until conflicting street numbers are reconciled. Latest Omnidex event in committed snapshot 2024-07-23T22:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "319": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Store social mirror](https://www.globuya.com/PH/Quezon-City/637999909576591/High-Market-Store-and-Cafe) records card sales and pickup at 903 Aurora Boulevard corner Harvard. It identifies https://highmarketonline.com/ and https://www.highmarketonline.shop as shop URLs; direct retrieval of the former failed DNS. No independently verified business destination coordinates obtained. Latest Omnidex event in committed snapshot 2025-08-31T07:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
