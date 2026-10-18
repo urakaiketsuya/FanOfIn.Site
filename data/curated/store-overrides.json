@@ -1324,5 +1324,9 @@
   "763": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch page](https://www.hbst.net/shop/106/) confirms No.7 Block A30, Rukan Citra Niaga 2. [Publisher event](https://locator.riftbound.uvsgames.com/events/555229) supplies the same named retailer point -6.1449210999999995, 106.7059608 at that complex. Imported named shop destination, retaining official block/unit detail. Latest Omnidex event in committed snapshot 2026-01-31T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "812": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon retailer](https://map.pokemon-card.com/map/20953) confirms 3-5-9 Tenjinbashi, north-side second floor. [Named Yahoo Maps shop](https://map.yahoo.co.jp/v3/place/kke0E_k-6hs) matches and supplies 34.70066445, 135.51189203. Imported shop point. Yahoo identifies https://stellacards.net/ as official, but DNS resolution failed; excluded a separate corporate-office address. Latest Omnidex event in committed snapshot 2025-12-10T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

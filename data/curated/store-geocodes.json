@@ -1152,6 +1152,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 812,
+    "address": "Japan, 〒530-0041 Osaka, Kita Ward, Tenjinbashi, 3-chōme−5−９ 北側2F",
+    "lat": 34.70066445,
+    "lng": 135.51189203,
+    "sourceUrl": "https://map.yahoo.co.jp/v3/place/kke0E_k-6hs",
+    "sourceAddress": "大阪府大阪市北区天神橋3丁目5-9 北側2階",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 817,
     "address": "2330 Hoffman Street Unit 1b\nUSA",
     "lat": 40.8545267,
