@@ -1108,5 +1108,9 @@
   "760": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch event page](https://jupiterjuegos.com/tiendas/actividad/649/) confirms Parque Bujaruelo 10, local 7, and official contact. Its embedded map exposes a viewport centre only; no independently verified destination coordinates obtained. No viewport point imported. Latest Omnidex event in committed snapshot 2026-04-11T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "801": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer marketplace](https://shopee.com.my/cardfightbuddy98) confirms card sales. [Organized-play retailer directory](https://cl2u.net/retail-shops/detail/1dM55d6/cardfight-buddy-enterprise) instead gives 210B Jalan Datuk Kumbar, Alor Setar, whereas recorded address is 141B Raja Uda, Butterworth. Resolve relocation/branch identity; no standalone official site or matching point verified. Latest Omnidex event in committed snapshot 2026-08-16T10:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
