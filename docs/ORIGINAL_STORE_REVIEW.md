@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 42/305 (13.8%); 263 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 43/305 (14.1%); 262 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 8 published weekly; 2 historical schedule; 4 special event only; 28 unconfirmed.
+Weekly results among reviewed stores: 8 published weekly; 2 historical schedule; 4 special event only; 29 unconfirmed.
 
-Next: #43 The Banish Zone.
+Next: #44 Common Ground Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -56,7 +56,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 40 | 98 | Good Games Greensborough | AU | 61 Main St, Greensborough VIC 3088, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official branch event page](https://events.goodgames.com.au/venue/good-games-greensborough/) confirms 61 Main Street but shows zero events. This does not prove play has ceased. No current Grand Archive weekly schedule verified; historical event evidence is stale. Snapshot: latest recorded event 2026-05-13T09:00:00.000Z; 53 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 41 | 686 | Kamenn Enterprise | MY | 55a, Jalan Perwira 2, Taman Ungku Tun Aminah, 81300 Skudai, Johor Darul Ta'zim, Malaysia | Not found | Unconfirmed | Reviewed 2026-10-18: [Local tabletop directory](https://kakitabletop.com/map/south/johor/) matches Kamenn Enterprise at 55a Jalan Perwira 2; [publisher event notice](https://ultraman-cardgame.com/page/my/news/news-detail/15) corroborates street/store but omits the a suffix. No standalone official website or readable current Grand Archive weekly announcement found. Confirm Wednesday estimates with the store. Snapshot: latest recorded event 2026-10-16T14:00:00.000Z; 54 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 42 | 90 | Card Merchant Nelson | NZ | 129 Hardy Street, Nelson 7010, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://cardmerchantnelson.co.nz/) identifies the branch at 131 Hardy Street, while Omnidex records 129 Hardy Street. Its readable in-store-events section supplies no Grand Archive weekly schedule. Resolve the address discrepancy and current event venue before treating the old map point as verified. Snapshot: latest recorded event 2026-10-10T22:00:00.000Z; 47 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 43 | 10 | The Banish Zone | US | 600 E Penn Ave, Wernersville, PA 19565, USA | Pending | Pending |  |
+| 43 | 10 | The Banish Zone | US | 600 E Penn Ave, Wernersville, PA 19565, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://thebanishzone.com/) matches 600 E Penn Avenue; its [events page](https://thebanishzone.com/events) provides no readable Grand Archive weekly listing. Historical regional and store-championship evidence is not a recurring schedule. Confirm current weekly play directly. Snapshot: latest recorded event 2026-08-22T17:10:00.000Z; 39 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 44 | 571 | Common Ground Games | US | 1314 Inwood Rd, Dallas, TX 75247, USA | Pending | Pending |  |
 | 45 | 605 | Oinkers Island | US | 745 N Aspen Ave, Broken Arrow, OK 74012, USA | Pending | Pending |  |
 | 46 | 757 | Gamersaurus Rex | SG | 259A Upper Thomson Rd, Singapore 574386 | Pending | Pending |  |
