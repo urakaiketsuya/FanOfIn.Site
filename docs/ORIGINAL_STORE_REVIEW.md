@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 68/305 (22.3%); 237 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 69/305 (22.6%); 236 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 46 unconfirmed.
+Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 5 historical schedule; 6 special event only; 47 unconfirmed.
 
-Next: #69 Grand Cities Games.
+Next: #70 Mountain Games.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -82,7 +82,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 66 | 55 | Libertalia Juegos | ES | C. Badajoz, 32, 28931 Móstoles, Madrid, Spain | Site under construction | Unconfirmed | Reviewed 2026-10-18: [Listed official domain](https://libertaliajuegos.com/) displays an under-construction page. [Store directory](https://www.waze.com/live-map/directions/es/md/mostoles/libertalia-juegos?to=place.ChIJfbHAM9GPQQ0R79ZGbVRPF2Q) associates it with Calle Badajoz 32. Historical championship mentions do not verify current weeklies; confirm through the store social/community channel. Snapshot: latest recorded event 2026-10-03T08:15:00.000Z; 31 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 67 | 97 | Luna Cards | AU | 512 Centre Rd, Bentleigh VIC 3204, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official collections page](https://www.lunacards.com.au/collections) confirms 512 Centre Road and a Grand Archive Tickets collection. No readable current weekly schedule found; the candidate ticket collection could not be accessed. Past regionals do not establish the current Bentleigh weekly day or start time. Snapshot: latest recorded event 2025-08-30T03:00:00.000Z; 29 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 68 | 187 | Valkyrie Games | NZ | 134 King Street, Palmerston North Central, Palmerston North 4410, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official events page](https://valkyriegames.co.nz/pages/events) includes a Grand Archive filter but no readable event dates/times. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) matches 134 King Street. Confirm current local play directly; the February regional is historical special-event evidence. Snapshot: latest recorded event 2026-03-19T05:30:00.000Z; 24 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 69 | 756 | Grand Cities Games | US | 120 N Washington St, Grand Forks, ND 58203, USA | Pending | Pending |  |
+| 69 | 756 | Grand Cities Games | US | 120 N Washington St, Grand Forks, ND 58203, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher-linked store listing](https://www.hobbynext.com/stores/grand-cities-games/) matches 120 North Washington Street and links [Grand Cities Games Facebook](https://www.facebook.com/GrandCitiesGames/). No readable public GA weekly day/time verified. Recent championship results do not establish a recurring schedule; ask the Grand Forks store. Snapshot: latest recorded event 2026-10-08T23:00:00.000Z; 34 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 70 | 92 | Mountain Games | NZ | 58D Lorna Street, Lynmouth, New Plymouth 4310, New Zealand | Pending | Pending |  |
 | 71 | 132 | The Card Shop PLT | MY | 54A, Jln 19/3, Seksyen 19, 46300 Petaling Jaya, Selangor, Malaysia | Pending | Pending |  |
 | 72 | 22 | Diadem Cards and Hobbies | CA | 166 Douglas St, Greater Sudbury, ON P3E 1G1, Canada | Pending | Pending |  |
