@@ -990,6 +990,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 732,
+    "address": "8866 S Eastern Ave suite 103 c, Las Vegas, NV 89123, USA",
+    "lat": 36.0284,
+    "lng": -115.1183,
+    "sourceUrl": "https://manyrealms.com/pages/locations",
+    "sourceAddress": "8866 S Eastern Ave, Las Vegas, NV 89123",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 736,
     "address": "52A, Block M, Jalan Raja Uda, Pusat Perniagaan Raja Uda, 12300 Butterworth, Pulau Pinang, Malaysia",
     "lat": 5.41639577085487,

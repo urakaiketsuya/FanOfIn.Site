@@ -1100,5 +1100,9 @@
   "679": {
     "kind": "unclassified",
     "evidence": "2026-10-18: [GA event record](https://www.fractalofin.site/RDO/53140.html) confirms D1-07, Block D, NZX Commercial Centre. Repeated exact-name and address searches yielded tournament records but no independent retail evidence, official website, or verified business coordinates. Remains unclassified. Latest Omnidex event in committed snapshot 2026-01-11T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "732": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official locations](https://manyrealms.com/pages/locations) explicitly identifies Arena retail at 8866 S Eastern Avenue and provides branch map-marker coordinates 36.0284, -115.1183. [Official buylist instructions](https://manyrealms.com/pages/we-buy-cards) confirm Suite 103-C. Imported Arena marker at its published precision; kept separate from Hub and Town Square branches. Latest Omnidex event in committed snapshot 2026-09-04T01:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
