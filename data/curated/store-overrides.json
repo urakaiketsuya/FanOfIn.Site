@@ -1080,5 +1080,9 @@
   "615": {
     "kind": "store",
     "evidence": "2026-10-18: [Official about page](https://www.bravesoulcard.com/en/about) confirms retail sales at Room 1, 12/F, Midas Plaza, 1 Tai Yau Street. Embedded map contains a viewport centred near 22.3387447, 114.1995296, not independently verified destination coordinates. No point imported from the viewport. Latest Omnidex event in committed snapshot 2025-07-22T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "626": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official about/contact page](https://www.tcge.hk/en/about-us) confirms card retail at Room 01, 20/F, President Commercial Building, 608 Nathan Road, compatible with recorded 602-608 range. No exact business destination coordinates verified; unrelated Singapore technology/logistics results excluded. Latest Omnidex event in committed snapshot 2026-02-22T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
