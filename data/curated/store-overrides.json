@@ -1236,5 +1236,9 @@
   "176": {
     "kind": "store",
     "evidence": "2026-10-18: [Retail directory](https://www.my-card-dex.com/shops/catfootprint-tainan) and [business record](https://www.findcompany.com.tw/貓腳印台南卡牌專賣店) confirm 115 Minzu Road Section 2, third floor. [Official chain website](https://www.catfootprint.com/) displays a Tainan contract-termination announcement. Do not equate franchise termination with shop closure; current affiliation and exact storefront coordinates require follow-up. Latest Omnidex event in committed snapshot 2024-08-24T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "276": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/365919) binds Najada Games at 14 Ondrickova to 50.0794878, 14.4502499 and identifies https://www.najada.games/ as its website. [Named Waze listing](https://www.waze.com/live-map/directions/cz/hlavni-mesto-praha/najada-games?to=place.ChIJgXN285yUC0cR4nG8wJRwpto) confirms full 2166/14 address. Retail identity corroborated by [business directory](https://www.firmy.cz/detail/13333262-najada-games-praha-vinohrady.html); imported publisher point. Latest Omnidex event in committed snapshot 2024-09-21T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

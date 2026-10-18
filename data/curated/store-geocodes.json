@@ -522,6 +522,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 276,
+    "address": "Ondříčkova 2166/14, Vinohrady, 130 00 Praha-Praha 3, Czechia",
+    "lat": 50.0794878,
+    "lng": 14.4502499,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/365919",
+    "sourceAddress": "14 Ondříčkova, Praha 3, Hlavní město Praha, 130 00, CZ",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 277,
     "address": "4/43 Orbis Dr, Ravenhall VIC 3023, Australia",
     "lat": -37.7774301,
