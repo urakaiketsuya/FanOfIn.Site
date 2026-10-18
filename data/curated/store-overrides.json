@@ -844,5 +844,9 @@
   "834": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://www.ctcgames.com.au/) confirms card retail at Unit 9, 49 Jijaws Street. [Publisher store](https://locator.riftbound.uvsgames.com/stores/092417f6-05ad-4527-a5d7-dae78d027611) matches the exact unit and supplies -27.5624381, 152.9396391. Imported verified point. Latest Omnidex event in committed snapshot 2026-08-13T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "208": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Official organizer website](https://www.truechampiongaming.com/) describes a competitive GA team. [AFK Games regional event page](https://afk.games/event/grand-archive-michigan-regional-dtr/) explicitly identifies the recorded 2495 N Cedar Street 14B as AFK Games. Classified this host as venue/organizer, not a True Champion storefront. No independently verified event-venue coordinates imported. Latest Omnidex event in committed snapshot 2026-04-25T15:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
