@@ -1887,5 +1887,9 @@
   "839": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official site unconfirmed. Weekly events: Unconfirmed. [Source](https://locator.riftbound.uvsgames.com/stores/d310b3a1-e9af-4fe3-85d8-fd23b6d585ec) corroborates the retailer at 10-01 Jalan Austin Perdana 2/24. [Grand Archive event 49869](https://omni.gatcg.com/events/49869) says on demand, which does not establish weekly recurrence. No official website identified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "26": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://thepeoplescardshop.com/) confirms the Las Vegas retailer. Its Grand Archive product category does not publish a recurring play schedule; verify current weekly day/time directly. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
