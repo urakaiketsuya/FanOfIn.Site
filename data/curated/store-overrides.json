@@ -1200,5 +1200,9 @@
   "956": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://s-rankgames.com/) confirms 2448 S Vineyard Avenue Suite 101. [Publisher event](https://locator.riftbound.uvsgames.com/events/712728) supplies matching store/event coordinates 34.02857999676268, -117.6126680462184. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-09-27T22:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "965": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://cardnyang.com/) lists 9 Nonhyeon-ro 77-gil, fourth floor, but its calendar places Tournament Center events on the second floor. [Publisher nationals listing](https://judge.fabtcg.com/events/14187/) also specifies second floor. Retail identity confirmed; reconcile Tournament Center floor before importing a point. Latest Omnidex event in committed snapshot 2026-09-05T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
