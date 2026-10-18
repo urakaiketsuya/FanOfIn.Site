@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 121/305 (39.7%); 184 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 122/305 (40.0%); 183 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 78 unconfirmed.
+Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 78 unconfirmed.
 
-Next: #122 Mad Alpaca Games Davis.
+Next: #123 Titan Games Corp.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -135,7 +135,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 119 | 560 | Pandemonium Books and Games | US | 4 Pleasant St, Cambridge, MA 02139, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://pandemoniumbooks.com/products/grand-archive-tcg-weekly-tournament) advertises a weekly Grand Archive constructed tournament for $7.50, with advance online registration required. Browser date picker stayed at loading schedule; weekly play is advertised, but exact dates and start time need confirmation before attending. Snapshot: latest recorded event 2026-08-26T22:30:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 120 | 802 | The Rare Den | MY | 26-1, Jalan KS 3, Kepayang Sentral, 70200 Seremban, Negeri Sembilan, Malaysia | Official site unconfirmed | Unconfirmed | Reviewed 2026-10-18: [Source](https://legacy.fabtcg.com/en/locator/?mode=store&page=256) corroborates The Rare Den at 26-1 Jalan KS 3 through publisher retail listings. No official website or readable current Grand Archive weekly announcement identified. Snapshot: latest recorded event 2026-08-16T11:35:00.000Z; 13 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 121 | 332 | Spielipinas Games and Hobbies | PH | Mango Square, Cebu City, 6000 Cebu, Philippines | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.fayble-asia.com/game_store.php?id=13) links [official Facebook](https://www.facebook.com/spielipinasgames/). [Mall directory](https://www.mangosquarecebu.com/spielipinasgamesandhobbies.html) locates the shop at unit 302, third floor, Mango Square. No current Grand Archive weekly schedule verified. Snapshot: latest recorded event 2025-03-19T10:15:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 122 | 375 | Mad Alpaca Games Davis | US | 654 G St, Davis, CA 95616, USA | Pending | Pending |  |
+| 122 | 375 | Mad Alpaca Games Davis | US | 654 G St, Davis, CA 95616, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://www.madalpaca.com/davis-events-touranments) lists Davis Grand Archive sessions on June 21 and 28, 2024, Fridays 6:30–10 p.m., $10. These are historical dates; confirm the current Davis schedule and do not substitute Fairfield events. Snapshot: latest recorded event 2026-01-31T21:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 123 | 601 | Titan Games Corp | PR | 13 Calle Luis Munoz Rivera, Caguas, 00725, Puerto Rico | Pending | Pending |  |
 | 124 | 602 | The Armchair Adventurer | US | 650 Iwilei Rd suite 160, Honolulu, HI 96817, USA | Pending | Pending |  |
 | 125 | 700 | Carta Magica | CA | 1179 St. Laurent Blvd, Ottawa, ON K1J 7S5, Canada | Pending | Pending |  |
