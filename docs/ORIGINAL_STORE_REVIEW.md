@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 34/305 (11.1%); 271 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 35/305 (11.5%); 270 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 7 published weekly; 2 historical schedule; 4 special event only; 21 unconfirmed.
+Weekly results among reviewed stores: 7 published weekly; 2 historical schedule; 4 special event only; 22 unconfirmed.
 
-Next: #35 The Time Capsule.
+Next: #36 Forest City Coins.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -48,7 +48,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 32 | 36 | Mox Valley Games | US | 1843 Pioneer Pkwy E, Springfield, OR 97477, USA | Verified site | Special event only | Reviewed 2026-10-18: [Official website](https://moxvalleygames.com/) offers a Grand Archive November 8 championship; its [calendar](https://moxvalleygames.com/pages/calendar) provides no readable weekly details. [Regional ticket](https://moxvalleygames.com/products/grand-archive-dtr-regional-portland-9-27) uses a separate Portland venue, not the recorded Springfield store. Confirm weekly play at the Springfield branch rather than moving its pin to that event venue. Snapshot: latest recorded event 2026-08-22T01:00:00.000Z; 64 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 33 | 6 | Gaming Giant | US | 3925 Chain Bridge Rd suite 201, Fairfax, VA 22030, USA | Verified site | Special event only | Reviewed 2026-10-18: [Official website](https://www.gaminggiant.com/) lists the October 17 PRD Regional; [publisher profile](https://legacy.fabtcg.com/en/locator/gaming-giant/) confirms 3925 Chain Bridge Road Suite 201. Readable calendar evidence establishes a special event, not a current Grand Archive weekly schedule. The Monday Armory shown by the publisher is a different game. Snapshot: latest recorded event 2026-09-23T23:00:00.000Z; 29 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 34 | 391 | Card Merchant Ponsonby | NZ | 15 Rose Road, Grey Lynn, Auckland 1021, New Zealand | Verified site | Published weekly | Reviewed 2026-10-18: [Official Ponsonby calendar](https://cardmerchantponsonby.co.nz/) lists Grand Archive Hobby League on Wednesdays October 7, 14, 21 and 28. Day is store-published; start time was not exposed in the readable calendar and must be checked in the event detail. Do not infer a local start time from stale historical UTC timestamps. Snapshot: latest recorded event 2026-09-16T06:30:00.000Z; 63 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 35 | 415 | The Time Capsule | US | 205 E Broadway, Hopewell, VA 23860, USA | Pending | Pending |  |
+| 35 | 415 | The Time Capsule | US | 205 E Broadway, Hopewell, VA 23860, USA | Not found | Unconfirmed | Reviewed 2026-10-18: [Store directory](https://yestcg.com/stores/virginia/hopewell/time-capsule) matches 205 East Broadway and identifies a retail comic/game shop; [second directory](https://www.keepupcards.com/shop/time-capsule-hopewell-va) corroborates the business. No standalone official website or current Grand Archive weekly schedule found. Directory listings of other games are not evidence of Grand Archive recurrence. Snapshot: latest recorded event 2026-09-27T17:00:00.000Z; 63 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 36 | 195 | Forest City Coins | CA | 354 Richmond St, London, ON N6A 3C3, Canada | Pending | Pending |  |
 | 37 | 13 | RetroPlay Games | CA | 1886 London Line, Sarnia, ON N7W 1B3, Canada | Pending | Pending |  |
 | 38 | 875 | Archive Collectables | AU | 410 Burke Rd, Camberwell VIC 3124, Australia | Pending | Pending |  |

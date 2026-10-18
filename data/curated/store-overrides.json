@@ -1516,5 +1516,9 @@
   "391": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Ponsonby calendar](https://cardmerchantponsonby.co.nz/) lists Grand Archive Hobby League on Wednesdays October 7, 14, 21 and 28. Day is store-published; start time was not exposed in the readable calendar and must be checked in the event detail. Do not infer a local start time from stale historical UTC timestamps. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "415": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. [Store directory](https://yestcg.com/stores/virginia/hopewell/time-capsule) matches 205 East Broadway and identifies a retail comic/game shop; [second directory](https://www.keepupcards.com/shop/time-capsule-hopewell-va) corroborates the business. No standalone official website or current Grand Archive weekly schedule found. Directory listings of other games are not evidence of Grand Archive recurrence. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
