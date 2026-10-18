@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 61/305 (20.0%); 244 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 62/305 (20.3%); 243 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 4 historical schedule; 5 special event only; 41 unconfirmed.
+Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 4 historical schedule; 6 special event only; 41 unconfirmed.
 
-Next: #62 Living Realms.
+Next: #63 Game and Glory Sdn Bhd.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -75,7 +75,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 59 | 4 | The Haven Games | US | 3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA | Verified site | Special event only | Reviewed 2026-10-18: [Official shop](https://thehaventabletop.com/) identifies the Casselberry retailer. Its [GA collection](https://thehaventabletop.com/collections/grand-archive-1) contains regional tickets, including May 17, 2025, but no verified current weekly slot. Confirm current recurring play separately from old regional products and the incomplete readable homepage calendar. Snapshot: latest recorded event 2026-07-09T22:30:00.000Z; 28 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 60 | 787 | Cards Central | SG | 62a Smith St, Singapore 058964 | Verified site | Published weekly | Reviewed 2026-10-18: [Official branch schedules](https://cardscentral.com/about) publish Grand Archive Thursdays at 20:00 at Cards Central, 62A Smith Street. The Tuesday 20:00 GA slot belongs to Cardboard Crack Games at Beauty World Centre and must not be assigned to this host. Check individual dates for changes. Snapshot: latest recorded event 2026-10-15T12:05:00.000Z; 36 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 61 | 211 | Strictly Broken TCG | US | 1600 W Sam Houston Pkwy N, Houston, TX 77043, USA | Identified site | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/91c88b06-45e2-455f-9d45-f3d5d372c336) confirms the Houston premises. [Listed .com website](https://strictlybrokentcg.com/) redirects to strictlybrokentcg.ca; its readable retail page does not verify Houston GA weeklies. Confirm the branch website and local schedule; Riftbound Nexus Nights are not GA evidence. Snapshot: latest recorded event 2026-09-19T20:00:00.000Z; 32 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 62 | 235 | Living Realms | GB | 13-15 Sagar St, Castleford WF10 1AG, UK | Pending | Pending |  |
+| 62 | 235 | Living Realms | GB | 13-15 Sagar St, Castleford WF10 1AG, UK | Verified site | Special event only | Reviewed 2026-10-18: [Official events page](https://www.livingrealms.co.uk/pages/events) has no readable schedule. The [official .asphodel/paradise regional ticket](https://www.livingrealms.co.uk/collections/events-revised/products/grand-archive-asphodel-paradise-regional) verifies GA organized play but not a weekly recurrence. Ask for the current Castleford local-play schedule. Snapshot: latest recorded event 2026-10-10T10:00:00.000Z; 8 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 63 | 717 | Game and Glory Sdn Bhd | MY | 1-42A, Jalan PJU 1/45, Aman Suria, 47301 Petaling Jaya, Selangor, Malaysia | Pending | Pending |  |
 | 64 | 44 | Kayfabe Cards | US | 12652 S 2700 W, Riverton, UT 84065, USA | Pending | Pending |  |
 | 65 | 695 | Games Haven BBK | MY | 17, Lorong Tiara 1a, Bandar Baru Klang, 41150 Klang, Selangor, Malaysia | Pending | Pending |  |

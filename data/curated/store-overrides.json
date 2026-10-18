@@ -1624,5 +1624,9 @@
   "211": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Identified site. Weekly events: Unconfirmed. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/91c88b06-45e2-455f-9d45-f3d5d372c336) confirms the Houston premises. [Listed .com website](https://strictlybrokentcg.com/) redirects to strictlybrokentcg.ca; its readable retail page does not verify Houston GA weeklies. Confirm the branch website and local schedule; Riftbound Nexus Nights are not GA evidence. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "235": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official events page](https://www.livingrealms.co.uk/pages/events) has no readable schedule. The [official .asphodel/paradise regional ticket](https://www.livingrealms.co.uk/collections/events-revised/products/grand-archive-asphodel-paradise-regional) verifies GA organized play but not a weekly recurrence. Ask for the current Castleford local-play schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
