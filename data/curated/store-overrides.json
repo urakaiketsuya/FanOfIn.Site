@@ -664,5 +664,9 @@
   "768": {
     "kind": "store",
     "evidence": "2026-10-18: [Mall tenant listing](https://www.abudhabi-mall.com/brands_and_stores/back-to-games/) and [official contact](https://www.backtogames.com/contactus) establish the Abu Dhabi Mall branch. [Named Waze destination](https://www.waze.com/live-map/directions/ae/abu-dhabi/abu-dhabi/back-to-games-abu-dhabi-mall?to=place.ChIJz-qsabxnXj4RSI4ThC9XrsM) binds the third-floor shop to 24.4959092, 54.3832241. Imported branch point. Latest Omnidex event in committed snapshot 2026-07-18T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "109": {
+    "kind": "unclassified",
+    "evidence": "2026-10-18: [GA event record](https://www.fractalofin.site/RDO/56124.html) confirms Via Alessandro Manzoni 38, Flero. Searches did not establish an independent retail identity or official website; excluded the unrelated Hong Kong Battleground. Current pipeline already supplies 45.4932803, 10.1666601 without source metadata. Preserved that existing point, but did not promote it to a verified curated point. Obtain primary venue and coordinate provenance. Latest Omnidex event in committed snapshot 2026-08-16T16:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
