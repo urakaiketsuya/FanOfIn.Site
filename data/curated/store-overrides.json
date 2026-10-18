@@ -1387,7 +1387,7 @@
   },
   "297": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) gives 191 High Street, while Omnidex records 174. [Official regional listing](https://www.hobbylords.co.nz/events/single/grand-archive-ptm-regionals-%40-hobby-lords-lower-hutt-) also uses 191. Events page returned 403; a regional is not weekly evidence. Resolve the address discrepancy and current weekly venue before relying on the old pin or Wednesday estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) gives 191 High Street, while Omnidex records 174. [Official regional listing](https://www.hobbylords.co.nz/events/single/grand-archive-ptm-regionals-%40-hobby-lords-lower-hutt-) also uses 191. Events page returned 403; a regional is not weekly evidence. Resolve the address discrepancy and current weekly venue before relying on the old pin or Wednesday estimates. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official branch listing](https://hobbylords.com/nz/shop/brand/grand-archive?level=315&pc_level_3=315) could not be retrieved on recheck. Retained the existing address pending accessible confirmation of the previously noted 191 High Street location; the address conflict and weekly schedule remain unresolved."
   },
   "54": {
     "kind": "store",
@@ -1547,7 +1547,9 @@
   },
   "90": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://cardmerchantnelson.co.nz/) identifies the branch at 131 Hardy Street, while Omnidex records 129 Hardy Street. Its readable in-store-events section supplies no Grand Archive weekly schedule. Resolve the address discrepancy and current event venue before treating the old map point as verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://cardmerchantnelson.co.nz/) identifies the branch at 131 Hardy Street, while Omnidex records 129 Hardy Street. Its readable in-store-events section supplies no Grand Archive weekly schedule. Resolve the address discrepancy and current event venue before treating the old map point as verified. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official store section](https://cardmerchantnelson.co.nz/) confirms 131 Hardy Street, Nelson 7010. Corrected the directory address and removed the old pin pending verified replacement coordinates. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "131 Hardy Street, Nelson 7010, New Zealand",
+    "coordinates": null
   },
   "10": {
     "kind": "store",
@@ -2230,7 +2232,7 @@
   },
   "115": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.jojoshobbyhouse.com.au) gives Unit 1, 544 Kessels Road, Macgregor, conflicting with the recorded Sunnybank address. No readable Grand Archive weekly schedule verified; resolve current venue before relying on the pin. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.jojoshobbyhouse.com.au) gives Unit 1, 544 Kessels Road, Macgregor, conflicting with the recorded Sunnybank address. No readable Grand Archive weekly schedule verified; resolve current venue before relying on the pin. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official website](https://www.jojoshobbyhouse.com.au/) returned no readable content on recheck. Retained the existing address pending accessible official confirmation of the previously noted Kessels Road location; the address conflict and weekly schedule remain unresolved."
   },
   "133": {
     "kind": "store",
@@ -2242,7 +2244,9 @@
   },
   "220": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official about page](https://excelsiorgamesandcomics.co.uk/pages/about-us) gives 51–53 Merchant Street, BS1 3EE, conflicting with 48 Bond Street. No current Grand Archive weekly schedule verified; confirm venue and schedule before using the old pin. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official about page](https://excelsiorgamesandcomics.co.uk/pages/about-us) gives 51–53 Merchant Street, BS1 3EE, conflicting with 48 Bond Street. No current Grand Archive weekly schedule verified; confirm venue and schedule before using the old pin. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official about page](https://excelsiorgamesandcomics.co.uk/pages/about-us) explicitly invites visits to 51–53 Merchant Street, Bristol BS1 3EE. Corrected the directory address and removed the old pin pending verified replacement coordinates. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "51–53 Merchant Street, Bristol BS1 3EE, UK",
+    "coordinates": null
   },
   "228": {
     "kind": "store",
@@ -2324,7 +2328,9 @@
   },
   "114": {
     "kind": "store",
-    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official contact](https://guf.com.au/pages/contact-us) lists a new Geelong location at 185 Malop Street, conflicting with recorded 2/73 Malop. Resolve current venue; no branch-specific Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official contact](https://guf.com.au/pages/contact-us) lists a new Geelong location at 185 Malop Street, conflicting with recorded 2/73 Malop. Resolve current venue; no branch-specific Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin. Follow-up 2026-10-18: [Official contact page](https://guf.com.au/pages/contact-us) labels 185 Malop Street as the new Geelong location. Corrected the directory address and removed the old pin pending verified replacement coordinates. Current Grand Archive weekly play remains unconfirmed.",
+    "address": "185 Malop Street, Geelong VIC 3220, Australia",
+    "coordinates": null
   },
   "137": {
     "kind": "store",
