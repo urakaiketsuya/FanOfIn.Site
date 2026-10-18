@@ -880,5 +880,9 @@
   "661": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon event directory](https://asia.pokemon-card.com/my/event-search/search/?keyword=Hobby+Lords) gives 31-1F Jalan Setia Perdana BA U13/BA, while recorded address says Persiaran Setia Utama. [Official chain links](https://linktr.ee/hobbylords) include its Setia Alam branch. Resolve street naming before pinning; no exact branch coordinates imported. Latest Omnidex event in committed snapshot 2026-10-10T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "703": {
+    "kind": "store",
+    "evidence": "2026-10-18: [FAB locator](https://legacy.fabtcg.com/en/locator/tier-1-cards-games/) confirms 1921 W Dimond Boulevard B3. [Publisher store](https://locator.riftbound.uvsgames.com/stores/78180532-d527-4a24-a8de-fb7e0f0c34fe) matches and supplies 61.1391595, -149.9158351; links [official website](https://www.tier1cardsandgames.com/). Imported exact store point. Latest Omnidex event in committed snapshot 2026-06-17T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

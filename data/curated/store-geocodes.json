@@ -882,6 +882,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 703,
+    "address": "1921 W Dimond Blvd b3, Anchorage, AK 99515, USA",
+    "lat": 61.1391595,
+    "lng": -149.9158351,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/78180532-d527-4a24-a8de-fb7e0f0c34fe",
+    "sourceAddress": "1921 West Dimond Boulevard, b3, Anchorage, AK, 99515, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 726,
     "address": "803 King George's Ave, #02 190, Singapore 200803",
     "lat": 1.308041,
