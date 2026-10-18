@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 37/305 (12.1%); 268 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 38/305 (12.5%); 267 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 7 published weekly; 2 historical schedule; 4 special event only; 24 unconfirmed.
+Weekly results among reviewed stores: 7 published weekly; 2 historical schedule; 4 special event only; 25 unconfirmed.
 
-Next: #38 Archive Collectables.
+Next: #39 Outpost Ghent.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -51,7 +51,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 35 | 415 | The Time Capsule | US | 205 E Broadway, Hopewell, VA 23860, USA | Not found | Unconfirmed | Reviewed 2026-10-18: [Store directory](https://yestcg.com/stores/virginia/hopewell/time-capsule) matches 205 East Broadway and identifies a retail comic/game shop; [second directory](https://www.keepupcards.com/shop/time-capsule-hopewell-va) corroborates the business. No standalone official website or current Grand Archive weekly schedule found. Directory listings of other games are not evidence of Grand Archive recurrence. Snapshot: latest recorded event 2026-09-27T17:00:00.000Z; 63 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 36 | 195 | Forest City Coins | CA | 354 Richmond St, London, ON N6A 3C3, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official Forest City Collectibles website](https://forestcitycollectibles.com/) sells Grand Archive. Its [events collection](https://forestcitycollectibles.com/collections/events-1) confirms 354 Richmond Street but shows zero products in the accessible version (older crawl). This is not evidence that weekly play stopped. Confirm current Grand Archive events with the shop. Snapshot: latest recorded event 2026-09-18T23:00:00.000Z; 58 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 37 | 13 | RetroPlay Games | CA | 1886 London Line, Sarnia, ON N7W 1B3, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://retroplaygames.com/) and [store information](https://retroplaygames.com/Info/) confirm 1886 London Line alongside District Beta. No readable current Grand Archive weekly announcement found. Recent Omnidex activity supports historical hosting but does not establish a fixed schedule. Snapshot: latest recorded event 2026-10-07T22:45:00.000Z; 59 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 38 | 875 | Archive Collectables | AU | 410 Burke Rd, Camberwell VIC 3124, Australia | Pending | Pending |  |
+| 38 | 875 | Archive Collectables | AU | 410 Burke Rd, Camberwell VIC 3124, Australia | Not verified | Unconfirmed | Reviewed 2026-10-18: [Publisher store listing](https://locator.riftbound.uvsgames.com/stores/c7ad0942-3a85-43dd-a96f-b422db48cc94) confirms 410 Burke Road and physical retail. The domain suggested by its contact email, archivecollectables.com, could not be accessed and is not accepted as a verified website. No current public Grand Archive weekly schedule verified; publisher Thursday Nexus Nights are Riftbound, not Grand Archive. Snapshot: latest recorded event 2026-10-16T08:10:00.000Z; 61 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 39 | 62 | Outpost Ghent | BE | Ottergemsesteenweg 13, 9000 Gent, Belgium | Pending | Pending |  |
 | 40 | 98 | Good Games Greensborough | AU | 61 Main St, Greensborough VIC 3088, Australia | Pending | Pending |  |
 | 41 | 686 | Kamenn Enterprise | MY | 55a, Jalan Perwira 2, Taman Ungku Tun Aminah, 81300 Skudai, Johor Darul Ta'zim, Malaysia | Pending | Pending |  |
