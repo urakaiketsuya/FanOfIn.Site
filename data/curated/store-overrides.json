@@ -616,5 +616,9 @@
   "123": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher championship list](https://battlespirits-saga.com/events/store/store-championships/2024/) confirms 28is Oktovriou 48. [Named Waze destination](https://www.waze.com/live-map/directions/gr/athina/no-label-x?to=place.ChIJGYYqzTa9oRQR3ovfNOhonPo) binds No Label X at that address, also called Patision 48, to 37.9904169, 23.7311465. Imported point; no official standalone website established. Latest Omnidex event in committed snapshot 2026-09-12T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "325": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://realgoodeal.com/pages/contact-us) gives 20725 NE 16th Ave A45; [Bandai retailer list](https://www.unionarena-tcg.com/na/pdf/events/demo_deck_event_at_localstores/2024/demo_deck_event_at_localstores_usa.pdf) uses recorded A47. Retailer identity confirmed, but unit discrepancy remains. Do not import a generic business-park point. Latest Omnidex event in committed snapshot 2025-11-02T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
