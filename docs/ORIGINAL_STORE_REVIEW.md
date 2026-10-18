@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 113/305 (37.0%); 192 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 114/305 (37.4%); 191 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 19 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 73 unconfirmed.
+Weekly results among reviewed stores: 19 published weekly; 1 published fortnightly; 12 historical schedule; 8 special event only; 74 unconfirmed.
 
-Next: #114 Dragonphoenix Inn.
+Next: #115 Game Corps.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -127,7 +127,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 111 | 386 | Paladin's Place | DE | Kirchstraße 21, 64283 Darmstadt, Germany | Verified site | Special event only | Reviewed 2026-10-18: [Source](https://www.paladins-place.de/) advertises a Grand Archive store championship on October 31 at 11 a.m. No recurring Grand Archive slot was verified; other games' weekly sessions are not evidence for this game. Snapshot: latest recorded event 2026-09-19T10:30:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 112 | 627 | Misteria | JP | 3-chōme-31-7 Sakae, Naka Ward, Nagoya, Aichi 460-0008, Japan | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.gatcg.com/article/radiant-origins-regionals) lists Misteria's April 25 regional at Okaya Nagoya Hall, an event venue rather than evidence of a shop move. [Misteria Sakae social profile](https://x.com/MisteriaSakae) was identified, but no current weekly announcement was readable. Snapshot: latest recorded event 2026-09-02T11:00:00.000Z; 14 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 113 | 851 | Good Games Parramatta | AU | 219-221 Church St, Parramatta NSW 2150, Australia | Verified site | Published weekly | Reviewed 2026-10-18: [Source](https://events.goodgames.com.au/venue/good-games-parramatta/) publishes Grand Archive Thursday sessions, 6–9:30 p.m., $15, at 221 Church Street. [Category calendar](https://events.goodgames.com.au/events/category/trading-card-games/grand-archive/) also lists repeated October/November dates. Snapshot: latest recorded event 2026-10-03T01:15:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 114 | 59 | Dragonphoenix Inn | GR | Ilia Iliou 55, Athina 117 44, Greece | Pending | Pending |  |
+| 114 | 59 | Dragonphoenix Inn | GR | Ilia Iliou 55, Athina 117 44, Greece | Official site identified; inaccessible | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.athenscon.gr/dragonphoenix-inn/?lang=en) links the official innkeeper.gr site and Dragonphoenix Inn social accounts. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/7313ed95-ce8b-4450-becc-1752e559f3a0) matches Ilia Iliou 55. Official site could not be read; Grand Archive weekly schedule unconfirmed. Snapshot: latest recorded event 2025-01-30T17:20:00.000Z; 15 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 115 | 274 | Game Corps | US | 2920 Buffalo Rd, Erie, PA 16510, USA | Pending | Pending |  |
 | 116 | 406 | RetroEdge Games | US | 2085 Solano Ave Vallejo, CA, 94509 United States | Pending | Pending |  |
 | 117 | 12 | Shipwreck Games | US | 118 N Main St #1, Forked River, NJ 08731, USA | Pending | Pending |  |
