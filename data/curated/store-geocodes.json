@@ -855,6 +855,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 694,
+    "address": "A0331, Blok A, Eko Galleria Iskandar Puteri, 79100 Johor, Johor Darul Ta'zim, Malaysia",
+    "lat": 1.442348,
+    "lng": 103.615777,
+    "sourceUrl": "https://kado.asia/",
+    "sourceAddress": "2F, A0331, Block A, Eco Galleria, Iskandar Puteri, Johor, 79100, Malaysia",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 726,
     "address": "803 King George's Ave, #02 190, Singapore 200803",
     "lat": 1.308041,

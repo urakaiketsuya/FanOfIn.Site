@@ -828,5 +828,9 @@
   "470": {
     "kind": "store",
     "evidence": "2026-10-18: [Official pickup page](https://www.thetradinggallery.com/address-pickup) confirms Richmond retail operations at 305-13888 Wireless Way, unlike recorded unit 12. [Publisher retailer list](https://img.yugioh-card.com/en/downloads/ots/KonamiOTS_2026-0324.pdf) confirms the building but omits the unit. Resolve unit change before mapping. Latest Omnidex event in committed snapshot 2026-08-08T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "694": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://kado.asia/) confirms Eco Galleria unit A0331, Block A, second floor, distinct from its Sutera Mall outlet. Its address-bound business structured data supplies 1.442348, 103.615777 and a named map link. Imported Eco Galleria point. Latest Omnidex event in committed snapshot 2026-08-08T07:40:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
