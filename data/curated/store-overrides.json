@@ -632,5 +632,9 @@
   "52": {
     "kind": "store",
     "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/DOA_SC_List_888cde0517.pdf) confirms Richardson at 970 N Coit Road. [Business listing](https://www.businessyab.com/explore/united_states/texas/dallas_county/richardson/north_coit_road/970/the-local-game-store-469-248-0242.html) confirms Suite 3080 and identifies http://www.thelocalgamestore.com/ as its website, not independently verified live. Excluded the similarly named Plainwell, Michigan shop. No verified storefront point obtained. Latest Omnidex event in committed snapshot 2024-04-27T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "207": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher locator](https://legacy.fabtcg.com/en/locator/?mode=store&page=170&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) confirms Fidels Dream on Newport Road, Sandown. [Manufacturer FAQ](https://www.kickstarter.com/projects/thegallantgoblin/kobold-plushies/faqs) identifies https://www.fidelsdream.co.uk/ as its retail website. No current unit A4a destination coordinates obtained; retain recorded address. Latest Omnidex event in committed snapshot 2024-05-18T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
