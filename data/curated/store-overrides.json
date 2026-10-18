@@ -1576,5 +1576,9 @@
   "421": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official PokeBox USA website](https://www.pokeboxusa.com/) confirms 625 West Las Tunas Drive and Grand Archive inventory. No readable current Grand Archive weekly schedule found. Recent Omnidex events and a championship do not independently establish weekly day/time; confirm through the store. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "315": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://www.roundtablegamescafe.com/) confirms 5511 Coldwater Road, retail/cafe identity, and Grand Archive. It directs visitors to a calendar/social media but provides no readable Grand Archive weekly day/time. Confirm a current schedule rather than inferring one from its general event description. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

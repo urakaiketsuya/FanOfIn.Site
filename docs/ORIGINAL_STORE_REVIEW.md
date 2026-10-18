@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 49/305 (16.1%); 256 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 50/305 (16.4%); 255 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 3 historical schedule; 4 special event only; 33 unconfirmed.
+Weekly results among reviewed stores: 9 published weekly; 3 historical schedule; 4 special event only; 34 unconfirmed.
 
-Next: #50 Round Table Games and Curt's Cafe.
+Next: #51 TCG Collector NZ.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -63,7 +63,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 47 | 242 | White Rabbit Community Game Store (Essen) | DE | Segerothstraße 79, 45141 Essen, Germany | Verified site | Historical schedule | Reviewed 2026-10-18: [Official Essen event](https://www.whiterabbit-cgs.de/wp/events/ga-e-2610-2/?occurrence=2026-10-01) confirms Segerothstraße 79 and Grand Archive on Thursday October 1 at 18:15; [September listing](https://www.whiterabbit-cgs.de/wp/events/ga-e-2609/?occurrence=2026-09-17) also uses Thursday. These dated past events do not confirm future weekly occurrences. Check the [Essen calendar](https://www.whiterabbit-cgs.de/wp/veranstaltungen_neu/) for current dates; do not use Aachen's events. Snapshot: latest recorded event 2026-09-10T16:30:00.000Z; 44 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 48 | 142 | Gamer's Resort | AU | 135 Maude St, Shepparton VIC 3630, Australia | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/6a8c83f6-9827-4814-97f1-3cb3ee25b01f) links [official Facebook](https://www.facebook.com/gamersresort/) and lists 20 Edward Street rather than recorded 135 Maude Street. This is an unresolved location discrepancy; old pin is not newly verified. No current Grand Archive weekly schedule found; listed Riftbound Fridays are unrelated. Snapshot: latest recorded event 2026-06-21T09:30:00.000Z; 48 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 49 | 421 | Pokebox USA | US | 625 W Las Tunas Dr, San Gabriel, CA 91776, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official PokeBox USA website](https://www.pokeboxusa.com/) confirms 625 West Las Tunas Drive and Grand Archive inventory. No readable current Grand Archive weekly schedule found. Recent Omnidex events and a championship do not independently establish weekly day/time; confirm through the store. Snapshot: latest recorded event 2026-10-10T02:00:00.000Z; 43 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 50 | 315 | Round Table Games and Curt's Cafe | US | 5511 Coldwater Rd, Fort Wayne, IN 46825, USA | Pending | Pending |  |
+| 50 | 315 | Round Table Games and Curt's Cafe | US | 5511 Coldwater Rd, Fort Wayne, IN 46825, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://www.roundtablegamescafe.com/) confirms 5511 Coldwater Road, retail/cafe identity, and Grand Archive. It directs visitors to a calendar/social media but provides no readable Grand Archive weekly day/time. Confirm a current schedule rather than inferring one from its general event description. Snapshot: latest recorded event 2026-10-03T17:00:00.000Z; 44 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 51 | 87 | TCG Collector NZ | NZ | 59B Carlyle Street, Sydenham, Christchurch 8023, New Zealand | Pending | Pending |  |
 | 52 | 688 | Hard Brick Games LTD. | CA | 9126 51 Ave NW, Edmonton, AB T6E 5L8, Canada | Pending | Pending |  |
 | 53 | 101 | Heretics Haven | AU | 91 Currie St, Nambour QLD 4560, Australia | Pending | Pending |  |
