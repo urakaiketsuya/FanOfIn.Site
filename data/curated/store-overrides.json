@@ -1907,5 +1907,9 @@
   "493": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.tcb.games/) confirms 44 E Park Drive. The events page returned 403, so current Grand Archive weekly times could not be read; product listings alone do not establish recurrence. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "596": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://events.goodgames.com.au/venue/good-games-canberra-city/) lists branch events but no Grand Archive weekly slot was verified in the readable October/November entries. Do not copy Grand Archive schedules from other Good Games branches. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
