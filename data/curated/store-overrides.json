@@ -956,5 +956,9 @@
   "179": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://sparkstradingcards.com/pages/contact-1) confirms 1224 Monaco Court Suite 31. [Publisher store](https://locator.riftbound.uvsgames.com/stores/1c6fc795-d8c0-4ae5-bbd9-f6d245a40a34) matches and supplies 37.9879892, -121.3208415. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-03-07T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "247": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://infinitycards.ca/) and [local business association](https://www.aldergroveba.ca/businesses/infinity-cards-collectibles/) confirm #102, 27256 Fraser Highway. No verified Canadian storefront coordinates found; excluded publisher results for similarly named stores in Texas and Peru. Latest Omnidex event in committed snapshot 2024-04-27T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

@@ -2,9 +2,9 @@
 
 Snapshot: 2026-10-16. 369 unmapped hosts out of 674; 305 already mapped. Includes event venues that may not be retail stores.
 
-Progress: first 262 reviewed (71.0% of this checklist); 107 pending. 84 mapped, 178 need further evidence. Map coverage: 399/674 (59.2%); 275 unmapped. Coverage uses the current directory, including pins added outside this checklist.
+Progress: first 263 reviewed (71.3% of this checklist); 106 pending. 84 mapped, 179 need further evidence. Map coverage: 399/674 (59.2%); 275 unmapped. Coverage uses the current directory, including pins added outside this checklist.
 
-Next: #263 Infinity Cards and Collectibles. Revisit Needs evidence entries after the initial pass.
+Next: #264 Kenkyo Hobby. Revisit Needs evidence entries after the initial pass.
 Review order: descending recorded event count, then host ID. Keep this order stable. Check identity and the exact latest event address before accepting published coordinates; record evidence and conflicts. Record the official store website when found. A completed review can remain unresolved. No guessed points.
 
 Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but unresolved; Mapped = verified point imported.
@@ -273,7 +273,7 @@ Status: Pending = not yet reviewed in this pass; Needs evidence = reviewed but u
 | 260 | 131 | Underworld TCG & Collectibles | US | 3464 W 4800 S, Roy, UT 84067, USA | Needs evidence | Reviewed 2026-10-18: [FAB locator](https://legacy.fabtcg.com/en/locator/?mode=store&page=110&query=Japan%2C+Osaka%2C+Chuo+Ward%2C+Namba%2C+1+Chome%E2%88%929%2C+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85) and [retail directory](https://www.keepupcards.com/shop/underworld-tcg-collectibles-roy-ut) confirm 3464 W 4800 S, Roy. Existing pipeline point 41.1771531, -112.0635318 lacks independently verified provenance; preserved it without curated promotion. No official standalone website established; underworldtcg.com belongs to Raleigh and was excluded. Latest Omnidex event in committed snapshot 2025-09-20T00:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 261 | 170 | Ju You TCG Store | TW | 新竹市中華路三段9號13樓; Taiwan | Needs evidence | Reviewed 2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/45558/) confirms Ju You Hsinchu at 9 Zhonghua Road Section 3, 13F-1. No official standalone website or exact store destination point established; retain the floor detail in evidence. Latest Omnidex event in committed snapshot 2025-01-12T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 262 | 179 | Sparks Trading Cards | US | 1224 Monaco Ct #31, Stockton, CA 95207, USA | Mapped | Reviewed 2026-10-18: [Official contact](https://sparkstradingcards.com/pages/contact-1) confirms 1224 Monaco Court Suite 31. [Publisher store](https://locator.riftbound.uvsgames.com/stores/1c6fc795-d8c0-4ae5-bbd9-f6d245a40a34) matches and supplies 37.9879892, -121.3208415. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-03-07T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
-| 263 | 247 | Infinity Cards and Collectibles | CA | 27256 Fraser Hwy Unit #102, Aldergrove, BC V4W 3P8, Canada | Pending |  |
+| 263 | 247 | Infinity Cards and Collectibles | CA | 27256 Fraser Hwy Unit #102, Aldergrove, BC V4W 3P8, Canada | Needs evidence | Reviewed 2026-10-18: [Official shop](https://infinitycards.ca/) and [local business association](https://www.aldergroveba.ca/businesses/infinity-cards-collectibles/) confirm #102, 27256 Fraser Highway. No verified Canadian storefront coordinates found; excluded publisher results for similarly named stores in Texas and Peru. Latest Omnidex event in committed snapshot 2024-04-27T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates. |
 | 264 | 301 | Kenkyo Hobby | SG | 35 Selegie Rd, #04-11A Parklane Shopping Mall, Singapore 188307 | Pending |  |
 | 265 | 366 | Keopi House PR | PR | Urb Brasilia Calle 2 Bldg C-29 Vega Baja, PR 00693; Puerto Rico | Pending |  |
 | 266 | 495 | Wizard's Tower | CA | 80 Marketplace Ave #1, Nepean, ON K2J 5G3, Canada | Pending |  |
