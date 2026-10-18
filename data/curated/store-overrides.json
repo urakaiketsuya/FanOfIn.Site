@@ -796,5 +796,9 @@
   "143": {
     "kind": "store",
     "evidence": "2026-10-18: [Named Waze destination](https://www.waze.com/live-map/directions/ca/qc/montreal/gobelin-dargent?to=place.ChIJPbu-vswbyUwRpXiBs7Bep20) matches 372 Sainte-Catherine West #216 and supplies 45.5057634, -73.5672666. It identifies [official shop](https://silvergoblin.cards/); [local games directory](https://lapageamelkor.org/boutique/gobelin-dargent) corroborates retail identity. Postal suffix differs across listings but street/unit agree; imported named destination. Latest Omnidex event in committed snapshot 2026-10-11T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "275": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon event listing](https://asia.pokemon-card.com/tw/event-search/search/?pageNo=2&startDate=07-27-2026) confirms 432 Qingnian Road, second floor. [Manufacturer retailer directory](https://www.kakamouse.com/tw/about/33) lists the shop; [community store introduction](https://forum.gamer.com.tw/C.php?bsn=857&snA=4815) supports identity. No official standalone website or verified shop coordinates obtained. CardDex direct page no longer returned store details. Latest Omnidex event in committed snapshot 2025-05-03T15:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
