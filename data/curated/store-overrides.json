@@ -976,5 +976,9 @@
   "589": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://cardboarddiamonds.com/) confirms 11940 SW Pacific Highway Suite E. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a6cb378f-f7bf-4e1d-a994-b9b1ee8c4b4e) agrees and supplies 45.4331992, -122.7656637. Imported address-bound point. Latest Omnidex event in committed snapshot 2025-05-18T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "791": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Official social links](https://linktr.ee/NEXUSTABLETOP) identify Nexus Tabletop Games Cafe at 41 Ngagel Jaya Utara, Surabaya, alongside a separate Dharma Husada location. Classified as venue pending independent retail evidence. No verified cafe coordinates obtained; nexustabletopgames.com belongs to California and was excluded. Latest Omnidex event in committed snapshot 2026-02-07T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
