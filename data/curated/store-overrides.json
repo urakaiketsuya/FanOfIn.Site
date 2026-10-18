@@ -1164,5 +1164,9 @@
   "457": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.tcgpark.com/si/contact) confirms Supernova Ljubljana Rudnik branch at Jurckova cesta 223, first floor. Kept distinct from BTC Citypark at Moskovska 4 and Ljubljana Center. Direct HTML retrieval returned 403; no verified branch-specific point obtained. Latest Omnidex event in committed snapshot 2025-06-14T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "513": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch directory](https://www.gaminglib.com/pages/store-location) confirms Uptown Mall, third floor, 36th Street corner 9th Avenue. Recorded address instead describes a plus code and Fifth Avenue. Resolve street/location detail before mapping; no mall centroid or another Gaming Library branch point substituted. Latest Omnidex event in committed snapshot 2025-02-09T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
