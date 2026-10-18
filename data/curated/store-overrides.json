@@ -1942,5 +1942,9 @@
   },
   "855": {
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.manticore-brakel.be/) explicitly says the Brakel shop is permanently closed and directs customers to Smissenhoek 120, Erwetegem. [October 3 Grand Archive championship](https://manticore-zottegem.be/en/event/grand-archive-asphodel-paradise-store-championship-227/register) is at Erwetegem, not the stored Brakel address. Current Brakel weeklies are unconfirmed; resolve the closed-location record separately. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "344": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.desertcitygamestcg.ca/collections/grand-archive-sealed-product) confirms the store and Grand Archive products, but no current recurring play schedule was verified. Obtain a current weekly announcement. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
