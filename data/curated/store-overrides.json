@@ -1272,5 +1272,9 @@
   "486": {
     "kind": "store",
     "evidence": "2026-10-18: [Recent local customer report](https://www.reddit.com/r/Iloilo/comments/1wq52bs/cardhobby_shops/) describes card sales at IBAM on Marymart second floor. [Hobby community report](https://www.reddit.com/r/tamiyaPinas/comments/1ntxez1/) corroborates the shop and racing space. Retail identity has community support; no verified official standalone website or exact shop coordinates obtained. Latest Omnidex event in committed snapshot 2025-02-01T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "508": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Manufacturer store listing](https://www.cmon.com/shop-locator/game-den-layton/) confirms 719 N Main Street and links [official Facebook](https://www.facebook.com/northgameden). [Konami retailer list](https://img.yugioh-card.com/en/downloads/ots/KonamiOTS_2026-0324.pdf) corroborates retail address. No standalone official site or verified shop coordinates obtained; direct manufacturer HTML returned 403. Latest Omnidex event in committed snapshot 2026-08-08T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
