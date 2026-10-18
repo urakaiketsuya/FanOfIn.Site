@@ -1136,5 +1136,9 @@
   "915": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://www.sonfallgames.com/location/contact) confirms 195 S Union Boulevard Suite 100. [Publisher event](https://locator.riftbound.uvsgames.com/events/521600) matches and supplies 39.7124158, -105.1342079. Imported exact shop point. [Official calendar](https://www.sonfallgames.com/event-calendar) separately advertises Grand Archive Thursdays at 18:30 through December 31, 2026; this published schedule is distinct from computed recurrence. Latest Omnidex event in committed snapshot 2026-07-11T22:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "939": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retail/event page](https://cothecollectiblestore.com/products/ticket-play-and-laugh-with-mak-navarez-feat-jeps-gallon-trixie-corpez-28-jun-2026-at-07-00-pm) confirms second-floor Sta. Lucia Business Center play space and card sales. [Parent company](https://www.herohubventures.com/) corroborates the Pasig branch. No verified exact-unit point obtained; separate SM North and other branch points excluded. Latest Omnidex event in committed snapshot 2026-08-01T05:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
