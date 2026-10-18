@@ -228,3 +228,12 @@ Offer Letter and A4 PDFs with nine 63 × 88 mm cards per page, one placement per
 external cutting guides and a 20 mm scale check. Keep Actual size / 100% printing guidance
 beside Download PDF. Missing artwork blocks download with named errors and a retry that
 refreshes both the PDF and preview. Cancel pending work and release object URLs on dismissal.
+
+Deck Analysis Matchups uses a dedicated, always-open overview: a named historical archetype
+summary followed by champion-art matchup cards with large win rates and recorded game counts.
+Rates describe the matched archetype, not a prediction for the exact current list. No card-impact
+bonuses are added together, and no current-list delta is displayed without a validated model.
+Opponent archetype names remain visible because multiple builds can share a champion. Missing
+art keeps the champion name. Loading, failed fetches with retry, and genuinely empty matchup
+results are distinct. Detected card interactions appear openly as card-art groups; the Analysis
+view does not inherit Builder disclosures, per-card impact tables, or empty nearest-deck controls.

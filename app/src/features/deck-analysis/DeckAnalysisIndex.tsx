@@ -19,7 +19,8 @@ import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import ResourceCurveReliability from "../deckbuilder/ResourceCurveReliability";
 import DrawPatternReview from "./DrawPatternReview";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
-import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
+import AnalysisMatchups from "./AnalysisMatchups";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
 import type { AnalysisScenario } from "./AccessTimeline";
@@ -92,6 +93,8 @@ export default function DeckAnalysisIndex() {
   const opening = workspace ? inferStartingHandSize(workspace.material, catalogByName) : 0;
   const deckCardCounts = useMemo(() => new Map([...(workspace?.main ?? []), ...(workspace?.material ?? [])].map((line) => [line.name, line.quantity])), [workspace]);
   const { result: deckTestResult, loading: deckTestLoading } = useDeckTestResult({ deckCardCounts, cardsByName: catalogByName, nearestDecks: [] });
+  const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
+  const matchupsStatus = usePublishedDataStatus("analysis-matchup-card-impact", "/data/analysis/matchup-card-impact.json");
   const collectionDecklist = useMemo<OmnidexDecklist>(() => ({
     main: (workspace?.main ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
     material: (workspace?.material ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
@@ -169,7 +172,7 @@ export default function DeckAnalysisIndex() {
         "Sideboard comparison": <>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</>,
       }} />
     </TabPanel>
-    <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><AnalysisMatchups result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} matchupsLoading={matchupsStatus.phase === "loading"} matchupsError={matchupsStatus.error} onRetryMatchups={matchupsStatus.retry} /></TabPanel>
   </PageLayout>;
 }
 
