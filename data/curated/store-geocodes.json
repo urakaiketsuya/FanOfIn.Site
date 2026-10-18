@@ -945,6 +945,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 712,
+    "address": "739 Design Ct suite 503, Chula Vista, CA 91911, USA",
+    "lat": 32.5959818,
+    "lng": -117.0212032,
+    "sourceUrl": "https://tcg.ravensburgerplay.com/events/565252",
+    "sourceAddress": "739 Design Court, Suite 503, Chula Vista, CA, 91911, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 726,
     "address": "803 King George's Ave, #02 190, Singapore 200803",
     "lat": 1.308041,

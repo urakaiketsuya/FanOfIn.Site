@@ -1032,5 +1032,9 @@
   "710": {
     "kind": "store",
     "evidence": "2026-10-18: [Government registration](https://serv.gcis.nat.gov.tw/moeadsBF/cmpy/reportAction.do?fileName=376410000Asetup11312.pdf&method=report&reportClass=bmsItem&subPath=11312) supports retailer identity at 172 Renai Road. [Current Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/68484/) instead gives 20 Lane 30, Chenggong Road Section 4, second floor, Neihu. Resolve branch/relocation identity before pinning; no official standalone site established. Latest Omnidex event in committed snapshot 2026-04-03T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "712": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://krakendice.com/) confirms 739 Design Court Suite 503. [Publisher event](https://tcg.ravensburgerplay.com/events/565252) matches the exact suite and supplies 32.5959818, -117.0212032. Imported address-bound store point. Latest Omnidex event in committed snapshot 2026-03-08T02:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
