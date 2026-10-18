@@ -990,6 +990,15 @@
     "sourceCollectedAt": "2026-10-11T17:36:26.723325+00:00"
   },
   {
+    "hostId": 850,
+    "address": "Ruko Maggiore Square, Jl. Springs Boulevard No.31 LB, Cihuni, Kec. Pagedangan, Kabupaten Tangerang, Banten 15332, Indonesia",
+    "lat": -6.2732515,
+    "lng": 106.6391363,
+    "sourceUrl": "https://www.jpbindo.com/ots-info",
+    "sourceAddress": "Ruko Maggiore Square, Jl. Springs Boulevard No.31 LB, Cihuni, Kec. Pagedangan, Kabupaten Tangerang, Banten 15332",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 852,
     "address": "NO.9-1, JALAN PJS 8/13, DATARAN MENTARI\n46150 SUBANG JAYA, SELANGOR\nMalaysia",
     "lat": 3.078233,
