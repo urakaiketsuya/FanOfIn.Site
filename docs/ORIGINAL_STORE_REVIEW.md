@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 60/305 (19.7%); 245 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 61/305 (20.0%); 244 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 4 historical schedule; 5 special event only; 40 unconfirmed.
+Weekly results among reviewed stores: 11 published weekly; 0 published fortnightly; 4 historical schedule; 5 special event only; 41 unconfirmed.
 
-Next: #61 Strictly Broken TCG.
+Next: #62 Living Realms.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -74,7 +74,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 58 | 3 | Hypercollectibles | US | 6347 Massachusetts Ave, New Port Richey, FL 34653, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://hypercollectiblestcg.com/) and [calendar](https://hypercollectiblestcg.com/pages/calendar) verified, but calendar entries are not readable. [Store marketplace profile](https://shop.com/m/hypercollectiblestcg) distinguishes New Port Richey, 6347 Massachusetts Avenue, from Tampa. Request the New Port Richey GA weekly schedule; do not substitute Tampa or Riftbound events. Snapshot: latest recorded event 2026-04-18T18:00:00.000Z; 36 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 59 | 4 | The Haven Games | US | 3385 S US Hwy 17 92 Suite 269, Casselberry, FL 32707, USA | Verified site | Special event only | Reviewed 2026-10-18: [Official shop](https://thehaventabletop.com/) identifies the Casselberry retailer. Its [GA collection](https://thehaventabletop.com/collections/grand-archive-1) contains regional tickets, including May 17, 2025, but no verified current weekly slot. Confirm current recurring play separately from old regional products and the incomplete readable homepage calendar. Snapshot: latest recorded event 2026-07-09T22:30:00.000Z; 28 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 60 | 787 | Cards Central | SG | 62a Smith St, Singapore 058964 | Verified site | Published weekly | Reviewed 2026-10-18: [Official branch schedules](https://cardscentral.com/about) publish Grand Archive Thursdays at 20:00 at Cards Central, 62A Smith Street. The Tuesday 20:00 GA slot belongs to Cardboard Crack Games at Beauty World Centre and must not be assigned to this host. Check individual dates for changes. Snapshot: latest recorded event 2026-10-15T12:05:00.000Z; 36 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 61 | 211 | Strictly Broken TCG | US | 1600 W Sam Houston Pkwy N, Houston, TX 77043, USA | Pending | Pending |  |
+| 61 | 211 | Strictly Broken TCG | US | 1600 W Sam Houston Pkwy N, Houston, TX 77043, USA | Identified site | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/91c88b06-45e2-455f-9d45-f3d5d372c336) confirms the Houston premises. [Listed .com website](https://strictlybrokentcg.com/) redirects to strictlybrokentcg.ca; its readable retail page does not verify Houston GA weeklies. Confirm the branch website and local schedule; Riftbound Nexus Nights are not GA evidence. Snapshot: latest recorded event 2026-09-19T20:00:00.000Z; 32 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 62 | 235 | Living Realms | GB | 13-15 Sagar St, Castleford WF10 1AG, UK | Pending | Pending |  |
 | 63 | 717 | Game and Glory Sdn Bhd | MY | 1-42A, Jalan PJU 1/45, Aman Suria, 47301 Petaling Jaya, Selangor, Malaysia | Pending | Pending |  |
 | 64 | 44 | Kayfabe Cards | US | 12652 S 2700 W, Riverton, UT 84065, USA | Pending | Pending |  |
