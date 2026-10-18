@@ -1284,5 +1284,9 @@
   "531": {
     "kind": "store",
     "evidence": "2026-10-18: [Official branch](https://events.goodgames.com.au/venue/good-games-gold-coast/) gives Shop 4.8 at 501 Olsen Avenue and links directions to -27.9738798, 153.379775. [Manufacturer stockist list](https://mulgabarrier.com.au/store-list/) gives recorded Shop 8. Retail confirmed; withheld point pending reconciliation of the shop-number notation. Latest Omnidex event in committed snapshot 2024-12-07T01:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "556": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official social hub](https://linktr.ee/Dimensiongamingsg) advertises a new location at 12 Arumugam Road, LTC Building B #02-03. [Historical publisher list](https://www.carddass.com/onepiece-tcg_asia-en/events/2023/officialevents/flagship-battle_202310/list_singapore.php) matches recorded City Plaza #01-38, 810 Geylang Road. Retailer confirmed; resolve relocation before mapping. No standalone shop website established. Latest Omnidex event in committed snapshot 2025-05-01T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
