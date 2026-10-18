@@ -960,5 +960,9 @@
   "247": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://infinitycards.ca/) and [local business association](https://www.aldergroveba.ca/businesses/infinity-cards-collectibles/) confirm #102, 27256 Fraser Highway. No verified Canadian storefront coordinates found; excluded publisher results for similarly named stores in Texas and Peru. Latest Omnidex event in committed snapshot 2024-04-27T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "301": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retail product](https://kenkyohobby.com/products/heavy-hitters-hvy-booster-box) confirms pickup at 35 Selegie Road #04-11A. [Official Telegram](https://t.me/KenkyoHobby) agrees. No verified unit-specific coordinates obtained; no general Parklane mall point imported. Latest Omnidex event in committed snapshot 2024-10-26T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
