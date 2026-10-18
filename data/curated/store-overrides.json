@@ -1958,5 +1958,9 @@
   "901": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://hypercollectiblestcg.com/pages/calendar) is the official calendar but did not expose readable weekly details. [Publisher Tampa profile](https://locator.riftbound.uvsgames.com/stores/1093f903-dcbc-4b90-888e-67522f83e653) links this site to the Tampa store. Current Grand Archive weekly day/time remains unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "20": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://gamekastle.com/pages/greenville-sc-event-calendar) identifies the Greenville branch calendar. No current recurring Grand Archive slot was verified in its readable entries; confirm with this branch rather than substituting another Game Kastle schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
