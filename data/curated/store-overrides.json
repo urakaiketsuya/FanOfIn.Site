@@ -1232,5 +1232,9 @@
   "113": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://njcollectables.com.au/contact/) now gives Unit 7, 1 Reliance Drive, corroborated by [organized-play directory](https://anzmtg.com.au/stores/nj-collectables/). This differs from recorded Unit 7/7 Teamster Close. Retail confirmed; resolve relocation before importing coordinates for the historical address. Latest Omnidex event in committed snapshot 2024-03-30T23:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "176": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retail directory](https://www.my-card-dex.com/shops/catfootprint-tainan) and [business record](https://www.findcompany.com.tw/貓腳印台南卡牌專賣店) confirm 115 Minzu Road Section 2, third floor. [Official chain website](https://www.catfootprint.com/) displays a Tainan contract-termination announcement. Do not equate franchise termination with shop closure; current affiliation and exact storefront coordinates require follow-up. Latest Omnidex event in committed snapshot 2024-08-24T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
