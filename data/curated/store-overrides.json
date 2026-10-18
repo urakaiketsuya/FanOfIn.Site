@@ -776,5 +776,9 @@
   "57": {
     "kind": "store",
     "evidence": "2026-10-18: [GA publisher list](https://ga-mainsite-common.s3.us-west-2.amazonaws.com/media/FTC_Store_Championships_List_10_28_23_194d5db650.pdf) confirms the historical Rottenbiller 39 retailer. [Business directory](https://wanderlog.com/place/details/8139828/arias-cardshop) marks it permanently closed. No official current website or verified active storefront point established. Confirm closure/reopening; excluded the unrelated greeting-card Etsy seller. Latest Omnidex event in committed snapshot 2025-01-05T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "117": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://ggmodbury.com.au/pages/contact) confirms shop 3 at 108-110 Reservoir Road. [Publisher event](https://locator.riftbound.uvsgames.com/events/534298) names the Modbury retailer at that building and supplies matching store/event coordinates -34.8330898, 138.6877027. Imported named branch point. Latest Omnidex event in committed snapshot 2026-06-30T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

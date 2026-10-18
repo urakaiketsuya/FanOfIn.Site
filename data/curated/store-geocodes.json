@@ -243,6 +243,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 117,
+    "address": "Between Anytime Fitness and ANZ Bank, Shop 3/108 Reservoir Rd, Modbury SA 5092, Australia",
+    "lat": -34.8330898,
+    "lng": 138.6877027,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/534298",
+    "sourceAddress": "108-110 Reservoir Road, Modbury, SA, 5092, AU",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 123,
     "address": "28is Oktovriou 48, Athina 106 82, Greece",
     "lat": 37.9904169,
