@@ -1008,5 +1008,9 @@
   "311": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer marketplace](https://shopee.tw/labytcg) confirms physical card sales at 89 Wufen Street, second floor. [Pokemon event](https://asia.pokemon-card.com/tw/event-search/41328/) agrees and identifies [official Facebook](https://www.facebook.com/labytcg). No standalone website or verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-26T03:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "397": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.xjoy.pl/content/14-kontakt) confirms Książkowa 9b, unit U9. [Map directory](https://pl.near-place.com/store-nearby-xjoypl-gry-planszowe-bitewne-i-karciane-ksiazkowa-9b-lok-4-warszawa/es) supplies 52.330608, 20.940281 for unit 4, also present in older rental terms. Withheld point pending unit reconciliation; excluded unrelated Kielce company coordinates. Latest Omnidex event in committed snapshot 2026-07-04T08:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
