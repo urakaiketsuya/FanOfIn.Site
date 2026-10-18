@@ -1150,5 +1150,14 @@
     "sourceUrl": "https://locator.riftbound.uvsgames.com/events/767814",
     "sourceAddress": "Unit G38, 1st Floor, Citis Square Shopping Complex, Spg 13-41 Jln, Bandar Seri Begawan BB2713, Brunei",
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
+    "hostId": 1042,
+    "address": "Loja 143C - Subsolo, 188 Rua Dias da Cruz, Rio de Janeiro, Rio de Janeiro, 20720-012, Brazil",
+    "lat": -22.9020148,
+    "lng": -43.2828759,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/341733",
+    "sourceAddress": "188 R. Dias da Cruz, Loja 143C Subsolo, Tijuca, RJ, 20720-012, BR",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   }
 ]

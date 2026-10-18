@@ -1056,5 +1056,9 @@
   "974": {
     "kind": "venue",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/767814) matches Unit G38, first floor, Citis Square and supplies store/event coordinates 4.9388032, 114.9405915. Imported named event-venue point. Independent retail sales and an official standalone website remain unverified, so classified as venue. Latest Omnidex event in committed snapshot 2026-09-09T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "1042": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/341733) matches 188 Dias da Cruz, basement shop 143C and supplies -22.9020148, -43.2828759. [Card-shop listing](https://www.cafecomonepiece.com.br/lojas/brand%C3%A3o-card-game) corroborates the exact shop in Meier; publisher locality label Tijuca differs but street and unit agree. Imported point; publisher identifies https://www.brandaocardgame.com.br, whose direct retrieval returned 403. Latest Omnidex event in committed snapshot 2026-10-15T22:00:00.000Z. Existing recurrence projects 2026-10-22T22:00:00.000Z, 2026-10-29T22:00:00.000Z, 2026-11-05T22:00:00.000Z, 2026-11-12T22:00:00.000Z (source events 65822); estimates, not confirmed bookings."
   }
 }
