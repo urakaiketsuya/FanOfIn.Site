@@ -1919,5 +1919,9 @@
   "707": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official social page identified. Weekly events: Unconfirmed. [Source](https://usa-stores.worldorgs.com/catalog/butte/game-store/crimson-phoenix-comics-and-games) identifies the Butte retailer and links [Facebook](https://www.facebook.com/crimsonphoenixgames/). This secondary listing does not confirm a current Grand Archive weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "868": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Official site identified. Weekly events: Unconfirmed. [Source](https://en.palworld-official-cardgame.com/shops/asia-oceania) links [lastpiecekw.com](https://www.lastpiecekw.com). [Publisher event profile](https://www.en.bushi-navi.com/event?organizerId=184&seriesId=13237) uses Awtad Mall, Egaila, Ahmadi, conflicting with stored Hawally/Sulaiman Complex. Resolve branch or relocation before relying on the old pin; no current Grand Archive weekly schedule verified. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

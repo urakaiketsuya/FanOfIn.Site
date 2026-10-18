@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 135/305 (44.3%); 170 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 136/305 (44.6%); 169 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 89 unconfirmed.
+Weekly results among reviewed stores: 24 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 90 unconfirmed.
 
-Next: #136 Last Piece Games & Toys.
+Next: #137 Brood en Spelen.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -149,7 +149,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 133 | 596 | Good Games Canberra City | AU | 38 Garema Pl, Canberra ACT 2600, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://events.goodgames.com.au/venue/good-games-canberra-city/) lists branch events but no Grand Archive weekly slot was verified in the readable October/November entries. Do not copy Grand Archive schedules from other Good Games branches. Snapshot: latest recorded event 2026-09-19T02:00:00.000Z; 9 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 134 | 658 | The Dragonforge | PH | UP town center, Diliman, Quezon City, Metro Manila, Philippines | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://dragonforgehobbies.com/) identifies The Dragonforge at 2F Phase 2 Urban Turf, UP Town Center, 216 Katipunan Avenue; [official Linktree](https://linktr.ee/TheDragonforge) also identifies the store. No readable current Grand Archive weekly announcement verified. Snapshot: latest recorded event 2026-10-04T02:30:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 135 | 707 | Crimson Phoenix Comics and Games | US | 127 N Main St, Butte, MT 59701, USA | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://usa-stores.worldorgs.com/catalog/butte/game-store/crimson-phoenix-comics-and-games) identifies the Butte retailer and links [Facebook](https://www.facebook.com/crimsonphoenixgames/). This secondary listing does not confirm a current Grand Archive weekly schedule. Snapshot: latest recorded event 2026-09-02T22:30:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 136 | 868 | Last Piece Games & Toys | KW | Sulaiman Complex, Beirut Street, Hawally 30009, Kuwait | Pending | Pending |  |
+| 136 | 868 | Last Piece Games & Toys | KW | Sulaiman Complex, Beirut Street, Hawally 30009, Kuwait | Official site identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://en.palworld-official-cardgame.com/shops/asia-oceania) links [lastpiecekw.com](https://www.lastpiecekw.com). [Publisher event profile](https://www.en.bushi-navi.com/event?organizerId=184&seriesId=13237) uses Awtad Mall, Egaila, Ahmadi, conflicting with stored Hawally/Sulaiman Complex. Resolve branch or relocation before relying on the old pin; no current Grand Archive weekly schedule verified. Snapshot: latest recorded event 2026-10-09T15:00:00.000Z; 12 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 137 | 145 | Brood en Spelen | BE | Stationsstraat 41, 9100 Sint-Niklaas, Belgium | Pending | Pending |  |
 | 138 | 226 | The Adventure Begins Comics, Games, & More | US | 525 Woodland Square Blvd #130, Conroe, TX 77384, USA | Pending | Pending |  |
 | 139 | 246 | Dueling Land | US | 16070 E Dartmouth Ave #3, Aurora, CO 80013, USA | Pending | Pending |  |
