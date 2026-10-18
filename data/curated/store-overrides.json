@@ -900,5 +900,9 @@
   "850": {
     "kind": "store",
     "evidence": "2026-10-18: [Official tournament-store distributor](https://www.jpbindo.com/ots-info) confirms Invaders at Ruko Maggiore Square No.31 LB and links [official Instagram](https://www.instagram.com/invadersgs/). Its named Google Maps destination encodes -6.2732515, 106.6391363 in the place coordinates. Imported address-bound distributor-linked business point. Latest Omnidex event in committed snapshot 2026-05-30T03:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "942": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://rooted-games.com/pages/contact) gives 222 FM359 Suite E, not recorded 3333 FM359. [Official pickup product page](https://rooted-games.com/products/santorini-2nd-edition) corroborates 222 Suite E. Retail identity established; resolve relocation/event address before importing a point. Latest Omnidex event in committed snapshot 2026-10-03T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
