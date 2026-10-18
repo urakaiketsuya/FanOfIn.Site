@@ -972,5 +972,9 @@
   "495": {
     "kind": "store",
     "evidence": "2026-10-18: [Official buylist](https://buylist.wizardtower.com/) confirms retail store at 1-80 Marketplace Avenue. [Named Waze destination](https://www.waze.com/live-map/directions/ca/on/ottawa/wizards-tower?to=place.ChIJoejz40H9zUwRZm9hPeaNc98) matches name, street and unit and supplies 45.2703299, -75.7430699. Imported point; postal suffix varies across directories, while official source matches the recorded postal code. Latest Omnidex event in committed snapshot 2026-03-21T16:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "589": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://cardboarddiamonds.com/) confirms 11940 SW Pacific Highway Suite E. [Publisher store](https://locator.riftbound.uvsgames.com/stores/a6cb378f-f7bf-4e1d-a994-b9b1ee8c4b4e) agrees and supplies 45.4331992, -122.7656637. Imported address-bound point. Latest Omnidex event in committed snapshot 2025-05-18T19:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

@@ -801,6 +801,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:46.709600+00:00"
   },
   {
+    "hostId": 589,
+    "address": "11940 SW Pacific Hwy ste e, Tigard, OR 97223, USA",
+    "lat": 45.4331992,
+    "lng": -122.7656637,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/a6cb378f-f7bf-4e1d-a994-b9b1ee8c4b4e",
+    "sourceAddress": "11940 Southwest Pacific Highway, Suite e, Tigard, OR, 97223, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 593,
     "address": "711 W Lake St #103, Minneapolis, MN 55408, USA",
     "lat": 44.9481557,
