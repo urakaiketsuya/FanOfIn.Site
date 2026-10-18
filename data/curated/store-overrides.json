@@ -1076,5 +1076,9 @@
   "612": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon retailer announcement](https://asia.pokemon-card.com/my/archives/6693/) and [local tabletop directory](https://kakitabletop.com/map/north/penang/) confirm 12 Medan Seri Impian 3. Older Bandai lists use 66 Lorong Nirwana 10. Retail identity established, but no official standalone site or verified current shop coordinates obtained. Latest Omnidex event in committed snapshot 2026-01-11T04:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "615": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official about page](https://www.bravesoulcard.com/en/about) confirms retail sales at Room 1, 12/F, Midas Plaza, 1 Tai Yau Street. Embedded map contains a viewport centred near 22.3387447, 114.1995296, not independently verified destination coordinates. No point imported from the viewport. Latest Omnidex event in committed snapshot 2025-07-22T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
