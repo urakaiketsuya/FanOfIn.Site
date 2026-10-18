@@ -732,5 +732,9 @@
   "723": {
     "kind": "store",
     "evidence": "2026-10-18: [Local player account](https://www.dcard.tw/f/talk/p/260987634) describes card sales and the entrance to fifth-floor unit 6 at 472 Guangfu Road Section 1, consistent with the recorded address. [Community post](https://forum.gamer.com.tw/Co.php?bsn=81445&sn=263) corroborates GA play. No official standalone website or exact business point established; retain unmapped status. Latest Omnidex event in committed snapshot 2026-10-12T11:35:00.000Z. Existing recurrence projects 2026-10-19T11:35:00.000Z, 2026-10-26T11:35:00.000Z, 2026-11-02T11:35:00.000Z, 2026-11-09T11:35:00.000Z (source events 65913); estimates, not confirmed bookings."
+  },
+  "826": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://universecards.sg/pages/contact-us) gives 203 Toa Payoh North #01-1109, unlike recorded Primz Bizhub, 21 Woodlands Close #02-22. Retail identity established by [official shop](https://universecards.sg/). Resolve relocation before mapping the recorded event address; no replacement coordinates imported. Latest Omnidex event in committed snapshot 2026-08-26T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
