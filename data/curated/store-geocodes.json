@@ -1332,6 +1332,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 940,
+    "address": "15 Devon Street West, New Plymouth Central, New Plymouth 4310, New Zealand",
+    "lat": -39.05415787229389,
+    "lng": 174.06738834069213,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/c4ceb1c1-23f1-4217-84c6-7bbf9c8c5841",
+    "sourceAddress": "15 Devon Street West, New Plymouth Central, New Plymouth 4310, New Zealand",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 949,
     "address": "8966 W Bowles Ave ste y, Littleton, CO 80123, USA",
     "lat": 39.6085288,
