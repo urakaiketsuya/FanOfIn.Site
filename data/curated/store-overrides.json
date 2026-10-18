@@ -1760,5 +1760,8 @@
   "1": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official shop](https://www.yetigaming.com/) and [GA collection](https://www.yetigaming.com/collections/grand-archive) verified. No current in-store GA weekly schedule found. Historical Yeti webcam events are online and must not be mapped to the Grasso Plaza store; confirm physical-store play separately. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "292": {
+    "evidence": "2026-10-18 original mapped-store review: Website: Not found. Weekly events: Unconfirmed. No uniquely matched official website/social profile or current weekly schedule found. Committed activity ends in July 2024 and includes an explicitly online event (6121), while the recorded address also appears under Dragon Nest. Do not merge the hosts or certify this as a separate physical store on that evidence. Leave classification unclassified; confirm identity, venue and in-person play before changing the pin. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
