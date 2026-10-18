@@ -1240,5 +1240,9 @@
   "276": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/365919) binds Najada Games at 14 Ondrickova to 50.0794878, 14.4502499 and identifies https://www.najada.games/ as its website. [Named Waze listing](https://www.waze.com/live-map/directions/cz/hlavni-mesto-praha/najada-games?to=place.ChIJgXN285yUC0cR4nG8wJRwpto) confirms full 2166/14 address. Retail identity corroborated by [business directory](https://www.firmy.cz/detail/13333262-najada-games-praha-vinohrady.html); imported publisher point. Latest Omnidex event in committed snapshot 2024-09-21T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "293": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Manufacturer stockist list](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) confirms retail at 105 Chuiyang Road. [Pokemon event](https://asia.pokemon-card.com/tw/event-search/57301/) agrees. No official standalone website or verified shop coordinates obtained; unrelated dessert/gift listings excluded. Latest Omnidex event in committed snapshot 2024-03-23T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
