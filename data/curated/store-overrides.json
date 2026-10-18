@@ -724,5 +724,9 @@
   "141": {
     "kind": "store",
     "evidence": "2026-10-18: [GA distributor](https://www.fayble-asia.com/game_store.php?id=13) confirms Aurorus Collections Fairview at B2 L3A Commonwealth Avenue and links [official Facebook](https://www.facebook.com/AurorusCollections/). Excluded the similarly named Duluth, Georgia TCGplayer seller. No verified Quezon City shop coordinates obtained. Latest Omnidex event in committed snapshot 2025-05-18T05:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "535": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://www.hobbiescornertcg.com/) binds Hobbies Corner TCG to 20-1 Jalan Prima 2, Metro Prima, Kepong, in its LocalBusiness structured data with coordinates 3.2157, 101.6389. [Distributor retailer list](https://vg.jommain.my/store-list/) agrees on address. Imported published business point at its supplied precision. Latest Omnidex event in committed snapshot 2026-08-08T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

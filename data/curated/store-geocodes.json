@@ -675,6 +675,15 @@
     "sourceCollectedAt": "2026-10-16T16:00:00.000Z"
   },
   {
+    "hostId": 535,
+    "address": "No 20-1 jalan prima 2 pusat niaga metro prima\n52100 kuala lumpur\n52100 Kuala Lumpur\nMalaysia",
+    "lat": 3.2157,
+    "lng": 101.6389,
+    "sourceUrl": "https://www.hobbiescornertcg.com/",
+    "sourceAddress": "20-1, Jln Prima 2, Metro Prima, Kepong, Kuala Lumpur, 52100, MY",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 547,
     "address": "214 Bishan St. 23, Block 214, Singapore 570214",
     "lat": 1.3576010582467033,
