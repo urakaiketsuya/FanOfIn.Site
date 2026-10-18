@@ -1216,5 +1216,9 @@
   "2": {
     "kind": "store",
     "evidence": "2026-10-18: [Official group locations](https://www.thetradeemporium.com/store-locations) identifies Games of Concord at 4425J Treat Boulevard and explicitly publishes its branch map marker at 37.96305, -121.99446. Imported branch-specific coordinates at their published precision; other group locations excluded. Latest Omnidex event in committed snapshot 2024-09-15T01:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "7": {
+    "kind": "store",
+    "evidence": "2026-10-18: [BBB business record](https://www.bbb.org/us/ct/enfield/profile/games/haven-games-and-hobbies-llc-0111-110091668/) identifies retail but flags it out of business and lists Suite 13 rather than recorded Suite 56. [Local closure report](https://www.theconnecticutscoop.com/statewide-news/east-windsor-scoop-new-tabletop-gaming-store-to-open) reports permanent closure May 17, 2025. No current official website or active exact-unit point verified; retain historical evidence pending status reconciliation. Latest Omnidex event in committed snapshot 2024-08-18T18:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
