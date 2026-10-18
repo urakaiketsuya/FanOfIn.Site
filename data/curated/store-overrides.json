@@ -1360,5 +1360,9 @@
   "926": {
     "kind": "venue",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/610302) binds The Archive to Parkway Square, Mataas na Lupa, Lipa City, with store/event point 13.9416699, 121.1497891. Imported named venue point. [Venue directory](https://tavernfinder.com/en/venues/the-archive-co-working-space-lipa-city) identifies [official Facebook](https://www.facebook.com/profile.php?id=61569306605998). Classified as venue pending independent retail evidence; no standalone site established. Latest Omnidex event in committed snapshot 2026-07-17T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "928": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Distributor-hosted event](https://topdeck.gg/event/my-slimetcg-cookie-party-oct-2026) confirms first floor, 6959 Jalan Raja Uda. Repeated searches did not establish independent retail sales, an official website, or exact business coordinates. Classified as venue pending retail evidence; unrelated Chilean marketplace seller excluded. Latest Omnidex event in committed snapshot 2026-05-02T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
