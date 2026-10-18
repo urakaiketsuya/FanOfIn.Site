@@ -1252,5 +1252,9 @@
   "309": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon organizer](https://asia.pokemon-card.com/tw/event-search/64908/) confirms 117 Beiming Street. [Manufacturer stockist directory](https://www.kakamouse.com/tw/about/33) establishes retail at that address. No standalone official website or verified destination point obtained. Latest Omnidex event in committed snapshot 2024-03-23T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "335": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://www.manaunderground.com/product-category/mtg/dka/) confirms card sales. [Publisher shop list](https://www.carddass.com/onepiece-tcg_asia-en/events/2023/officialevents/flagship-battle_202305/list_philippines.php) uses Dela Cruz Building, Lot 89, SB Loop corner Ascension, rather than recorded 91 Ascension Street. Resolve address numbering before mapping; no verified exact-recorded-address point obtained. Latest Omnidex event in committed snapshot 2024-04-28T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
