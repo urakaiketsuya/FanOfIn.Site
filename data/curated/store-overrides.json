@@ -1875,5 +1875,9 @@
   "602": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://armchairhi.com/) confirms 650 Iwilei Road, suite 160, and offers table booking. No readable recurring Grand Archive schedule found; table availability is not a scheduled weekly event. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "700": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://www.cartamagicaottawa.com/events) publishes a weekly schedule without a Grand Archive slot in the readable content. Site gives K1K 3B7 for 1179 St Laurent, conflicting with stored K1J 7S5. Do not assign Montreal regional events to Ottawa. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
