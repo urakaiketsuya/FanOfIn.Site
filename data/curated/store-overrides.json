@@ -1400,5 +1400,9 @@
   "46": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://gamenut.com/) identifies the Lawrence branch at 2329 Iowa Suite M, with postcode 66046 rather than recorded 66047. [Publisher regional listing](https://www.gatcg.com/article/phantom-monarchs-regionals) corroborates the recorded street/suite. No current Grand Archive weekly schedule verified; do not substitute the Topeka branch's events. Postal detail needs follow-up. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "66": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://agorahobby.com/) sells Grand Archive and links its [weekly calendar](https://agorahobby.com/events-calendar). The calendar's Grand_Archive_Weeklys.png poster could not be read (HTTP 451), so no day/time is transcribed from its filename. Exact French Road unit was already corroborated in [official contact](https://www.agorahobby.com/contact-us). Confirm current Friday schedule directly. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
