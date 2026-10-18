@@ -1244,5 +1244,9 @@
   "293": {
     "kind": "store",
     "evidence": "2026-10-18: [Manufacturer stockist list](https://arc.morishita.com.tw/mrst-tw/2025/05/22/morishita_distribution/) confirms retail at 105 Chuiyang Road. [Pokemon event](https://asia.pokemon-card.com/tw/event-search/57301/) agrees. No official standalone website or verified shop coordinates obtained; unrelated dessert/gift listings excluded. Latest Omnidex event in committed snapshot 2024-03-23T08:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "296": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher retailer](https://tcg.ravensburgerplay.com/stores/756e0d51-e955-4f30-a796-d6e8f5467880) lists recorded Suite 1170 and official https://orbitalgamesaz.com. [Retailer pickup page](https://orbital-games-and-comics-a78b.myshopify.com/products/bct-1000-wraithlands-rpg) instead gives Suite 1158 at 2200 El Mercado Loop. Resolve suite relocation before mapping; direct official-domain retrieval failed. Latest Omnidex event in committed snapshot 2024-09-14T20:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
