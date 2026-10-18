@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 123/305 (40.3%); 182 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 124/305 (40.7%); 181 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 79 unconfirmed.
+Weekly results among reviewed stores: 22 published weekly; 1 published fortnightly; 13 historical schedule; 8 special event only; 80 unconfirmed.
 
-Next: #124 The Armchair Adventurer.
+Next: #125 Carta Magica.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -137,7 +137,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 121 | 332 | Spielipinas Games and Hobbies | PH | Mango Square, Cebu City, 6000 Cebu, Philippines | Official social page identified | Unconfirmed | Reviewed 2026-10-18: [Source](https://www.fayble-asia.com/game_store.php?id=13) links [official Facebook](https://www.facebook.com/spielipinasgames/). [Mall directory](https://www.mangosquarecebu.com/spielipinasgamesandhobbies.html) locates the shop at unit 302, third floor, Mango Square. No current Grand Archive weekly schedule verified. Snapshot: latest recorded event 2025-03-19T10:15:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 122 | 375 | Mad Alpaca Games Davis | US | 654 G St, Davis, CA 95616, USA | Verified site | Historical schedule | Reviewed 2026-10-18: [Source](https://www.madalpaca.com/davis-events-touranments) lists Davis Grand Archive sessions on June 21 and 28, 2024, Fridays 6:30–10 p.m., $10. These are historical dates; confirm the current Davis schedule and do not substitute Fairfield events. Snapshot: latest recorded event 2026-01-31T21:00:00.000Z; 11 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 123 | 601 | Titan Games Corp | PR | 13 Calle Luis Munoz Rivera, Caguas, 00725, Puerto Rico | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://titanhobbygames.com/pages/eventos) lists a Grand Archive Winterfest special event at Rio Piedras, not this Caguas location. [Publisher Caguas profile](https://tcg.ravensburgerplay.com/stores/48cec65a-1aa8-4d44-989b-113078324833) corroborates the branch; no Caguas Grand Archive weekly schedule was verified. Snapshot: latest recorded event 2026-09-06T20:00:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 124 | 602 | The Armchair Adventurer | US | 650 Iwilei Rd suite 160, Honolulu, HI 96817, USA | Pending | Pending |  |
+| 124 | 602 | The Armchair Adventurer | US | 650 Iwilei Rd suite 160, Honolulu, HI 96817, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Source](https://armchairhi.com/) confirms 650 Iwilei Road, suite 160, and offers table booking. No readable recurring Grand Archive schedule found; table availability is not a scheduled weekly event. Snapshot: latest recorded event 2025-12-02T04:00:00.000Z; 12 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 125 | 700 | Carta Magica | CA | 1179 St. Laurent Blvd, Ottawa, ON K1J 7S5, Canada | Pending | Pending |  |
 | 126 | 774 | I Want That Stuff | CA | 138 10th St, Brandon, MB R7A 4E6, Canada | Pending | Pending |  |
 | 127 | 839 | Shuffle the duel field | MY | 10, Jalan Austin Perdana 2/24, Taman Austin Perdana, 81100 Johor Bahru, Johor Darul Ta'zim, Malaysia | Pending | Pending |  |
