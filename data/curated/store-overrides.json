@@ -648,5 +648,9 @@
   "820": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer website](https://toycorner.ae/) confirms trading-card sales, but gives headquarters at Al Joud Center, Sheikh Zayed Road. The recorded Dubai Production City address has no shop/unit number. No exact branch match or verified destination obtained; do not map the headquarters as the recorded event venue. Latest Omnidex event in committed snapshot 2026-10-11T09:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "613": {
+    "kind": "venue",
+    "evidence": "2026-10-18: [Shop LINE community](https://openchat.line.me/th/cover/e_YKi_tg7ahbFJIy2tvL1ifWDuc_kf8Osoa5-LFQvrh0QPHhfFPWpLTukIU) identifies the board-game cafe near Central Rama 2. [GA event](https://www.fractalofin.site/RDO/58227.html) supplies 59/515 Phraram2 Alley 52. Classified as venue because retail sales were not independently established. No standalone official website or exact cafe coordinates obtained. Latest Omnidex event in committed snapshot 2026-08-16T13:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
