@@ -1492,5 +1492,9 @@
   "294": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://lazarus-games.com/) confirms 1707 S Cameron Street and [Grand Archive inventory](https://lazarus-games.com/collections/grand-archive). Its [events calendar](https://lazarus-games.com/pages/events-calendar) has no readable current Grand Archive entries. Current weekly day/time remains unconfirmed. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "578": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official Lynnwood website](https://www.zuluslynnwood.com/) matches 5116 196th Street SW Suite 203 and explicitly says it is independently operated from Bothell. [Calendar](https://www.zuluslynnwood.com/calendar) is an image that could not be read in this review. Confirm Grand Archive day/time from that branch; do not substitute Bothell's calendar. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
