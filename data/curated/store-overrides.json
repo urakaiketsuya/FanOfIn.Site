@@ -1504,5 +1504,9 @@
   "75": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official about page](https://www.favoniahobbies.com/about) confirms 12B Persiaran Greentown 6 and Grand Archive retail. The [storefront](https://www.favoniahobbies.com/) says online orders are temporarily paused; this does not establish a physical closure. No current weekly schedule verified; ask the store directly. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "36": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Special event only. [Official website](https://moxvalleygames.com/) offers a Grand Archive November 8 championship; its [calendar](https://moxvalleygames.com/pages/calendar) provides no readable weekly details. [Regional ticket](https://moxvalleygames.com/products/grand-archive-dtr-regional-portland-9-27) uses a separate Portland venue, not the recorded Springfield store. Confirm weekly play at the Springfield branch rather than moving its pin to that event venue. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }

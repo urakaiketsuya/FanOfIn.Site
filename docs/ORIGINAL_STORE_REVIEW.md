@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 31/305 (10.2%); 274 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 32/305 (10.5%); 273 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 6 published weekly; 2 historical schedule; 2 special event only; 21 unconfirmed.
+Weekly results among reviewed stores: 6 published weekly; 2 historical schedule; 3 special event only; 21 unconfirmed.
 
-Next: #32 Mox Valley Games.
+Next: #33 Gaming Giant.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -45,7 +45,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 29 | 578 | Zulu's Board Game Cafe Lynnwood | US | 5116 196th St SW Suite 203, Lynnwood, WA 98036, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official Lynnwood website](https://www.zuluslynnwood.com/) matches 5116 196th Street SW Suite 203 and explicitly says it is independently operated from Bothell. [Calendar](https://www.zuluslynnwood.com/calendar) is an image that could not be read in this review. Confirm Grand Archive day/time from that branch; do not substitute Bothell's calendar. Snapshot: latest recorded event 2026-09-08T01:30:00.000Z; 76 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 30 | 25 | Victory Point Cafe | US | 1797 Shattuck Ave., Berkeley, CA 94709, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official TCG events page](https://www.victorypointcafe.com/pages/trading-card-games) explicitly advertises Grand Archive Standard every Saturday at 11:00 local time, with three Swiss rounds. Wednesday kitchen-table TCG play is a general all-games session, not a separate confirmed Grand Archive tournament. Store calendar remains the source for special-date exceptions. Snapshot: latest recorded event 2026-10-10T18:00:00.000Z; 65 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 31 | 75 | Favonia Hobbies | MY | 12b, Persiaran Greentown 6, Greentown Business Centre, 30450 Ipoh, Perak, Malaysia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official about page](https://www.favoniahobbies.com/about) confirms 12B Persiaran Greentown 6 and Grand Archive retail. The [storefront](https://www.favoniahobbies.com/) says online orders are temporarily paused; this does not establish a physical closure. No current weekly schedule verified; ask the store directly. Snapshot: latest recorded event 2026-05-15T13:00:00.000Z; 64 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 32 | 36 | Mox Valley Games | US | 1843 Pioneer Pkwy E, Springfield, OR 97477, USA | Pending | Pending |  |
+| 32 | 36 | Mox Valley Games | US | 1843 Pioneer Pkwy E, Springfield, OR 97477, USA | Verified site | Special event only | Reviewed 2026-10-18: [Official website](https://moxvalleygames.com/) offers a Grand Archive November 8 championship; its [calendar](https://moxvalleygames.com/pages/calendar) provides no readable weekly details. [Regional ticket](https://moxvalleygames.com/products/grand-archive-dtr-regional-portland-9-27) uses a separate Portland venue, not the recorded Springfield store. Confirm weekly play at the Springfield branch rather than moving its pin to that event venue. Snapshot: latest recorded event 2026-08-22T01:00:00.000Z; 64 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 33 | 6 | Gaming Giant | US | 3925 Chain Bridge Rd suite 201, Fairfax, VA 22030, USA | Pending | Pending |  |
 | 34 | 391 | Card Merchant Ponsonby | NZ | 15 Rose Road, Grey Lynn, Auckland 1021, New Zealand | Pending | Pending |  |
 | 35 | 415 | The Time Capsule | US | 205 E Broadway, Hopewell, VA 23860, USA | Pending | Pending |  |
