@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 44/305 (14.4%); 261 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 45/305 (14.8%); 260 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 2 historical schedule; 4 special event only; 29 unconfirmed.
+Weekly results among reviewed stores: 9 published weekly; 2 historical schedule; 4 special event only; 30 unconfirmed.
 
-Next: #45 Oinkers Island.
+Next: #46 Gamersaurus Rex.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -58,7 +58,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 42 | 90 | Card Merchant Nelson | NZ | 129 Hardy Street, Nelson 7010, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://cardmerchantnelson.co.nz/) identifies the branch at 131 Hardy Street, while Omnidex records 129 Hardy Street. Its readable in-store-events section supplies no Grand Archive weekly schedule. Resolve the address discrepancy and current event venue before treating the old map point as verified. Snapshot: latest recorded event 2026-10-10T22:00:00.000Z; 47 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 43 | 10 | The Banish Zone | US | 600 E Penn Ave, Wernersville, PA 19565, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://thebanishzone.com/) matches 600 E Penn Avenue; its [events page](https://thebanishzone.com/events) provides no readable Grand Archive weekly listing. Historical regional and store-championship evidence is not a recurring schedule. Confirm current weekly play directly. Snapshot: latest recorded event 2026-08-22T17:10:00.000Z; 39 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 44 | 571 | Common Ground Games | US | 1314 Inwood Rd, Dallas, TX 75247, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official Grand Archive event page](https://www.boardgamesdallas.com/products/grand-archive-weekly-event) explicitly advertises Thursdays at 19:15 local time with three rounds. The store's [events navigation](https://www.boardgamesdallas.com/pages/events) links that listing. Record this as a published weekly schedule even though the historical recurrence function currently yields no estimates. Snapshot: latest recorded event 2026-10-16T00:15:00.000Z; 51 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 45 | 605 | Oinkers Island | US | 745 N Aspen Ave, Broken Arrow, OK 74012, USA | Pending | Pending |  |
+| 45 | 605 | Oinkers Island | US | 745 N Aspen Ave, Broken Arrow, OK 74012, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/19afd38c-a5f5-4c8c-b836-2f265ceba4eb) confirms 745 North Aspen Avenue and links [official Facebook](https://www.facebook.com/oinkersisland). No standalone website or readable current weekly Grand Archive announcement verified. Other-game events and championships cannot supply the missing weekly schedule. Snapshot: latest recorded event 2026-08-13T23:30:00.000Z; 50 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 46 | 757 | Gamersaurus Rex | SG | 259A Upper Thomson Rd, Singapore 574386 | Pending | Pending |  |
 | 47 | 242 | White Rabbit Community Game Store (Essen) | DE | Segerothstraße 79, 45141 Essen, Germany | Pending | Pending |  |
 | 48 | 142 | Gamer's Resort | AU | 135 Maude St, Shepparton VIC 3630, Australia | Pending | Pending |  |

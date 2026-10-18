@@ -1556,5 +1556,9 @@
   "571": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Published weekly. [Official Grand Archive event page](https://www.boardgamesdallas.com/products/grand-archive-weekly-event) explicitly advertises Thursdays at 19:15 local time with three rounds. The store's [events navigation](https://www.boardgamesdallas.com/pages/events) links that listing. Record this as a published weekly schedule even though the historical recurrence function currently yields no estimates. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "605": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Identified social. Weekly events: Unconfirmed. [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/19afd38c-a5f5-4c8c-b836-2f265ceba4eb) confirms 745 North Aspen Avenue and links [official Facebook](https://www.facebook.com/oinkersisland). No standalone website or readable current weekly Grand Archive announcement verified. Other-game events and championships cannot supply the missing weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
