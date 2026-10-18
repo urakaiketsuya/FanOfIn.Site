@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 52/305 (17.0%); 253 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 53/305 (17.4%); 252 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 0 published fortnightly; 3 historical schedule; 4 special event only; 36 unconfirmed.
+Weekly results among reviewed stores: 9 published weekly; 0 published fortnightly; 3 historical schedule; 4 special event only; 37 unconfirmed.
 
-Next: #53 Heretics Haven.
+Next: #54 The Stadium.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Published fortnightly means the store explicitly advertises every-other-week play; exact dates still need checking. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -66,7 +66,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 50 | 315 | Round Table Games and Curt's Cafe | US | 5511 Coldwater Rd, Fort Wayne, IN 46825, USA | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://www.roundtablegamescafe.com/) confirms 5511 Coldwater Road, retail/cafe identity, and Grand Archive. It directs visitors to a calendar/social media but provides no readable Grand Archive weekly day/time. Confirm a current schedule rather than inferring one from its general event description. Snapshot: latest recorded event 2026-10-03T17:00:00.000Z; 44 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 51 | 87 | TCG Collector NZ | NZ | 59B Carlyle Street, Sydenham, Christchurch 8023, New Zealand | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official events page](https://tcgcollectornz.com/pages/events-tcg-collector-nz) confirms 59B Carlyle Street and weekly events generally. Its [calendar](https://tcgcollectornz.com/pages/event-calendar) exposes no Grand Archive dates or times. Confirm the current GA slot directly; retail stock is not schedule evidence. Snapshot: latest recorded event 2026-08-11T06:00:00.000Z; 40 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 52 | 688 | Hard Brick Games LTD. | CA | 9126 51 Ave NW, Edmonton, AB T6E 5L8, Canada | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official shop](https://hardbrickgames.com/) carries Grand Archive and links its [calendar](https://hardbrickgames.com/pages/event-calendar), which has no readable event entries. The Animethon charity tournament is a separate special event, not evidence for Edmonton store weeklies. Request the current branch schedule. Snapshot: latest recorded event 2026-10-03T00:30:00.000Z; 42 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
-| 53 | 101 | Heretics Haven | AU | 91 Currie St, Nambour QLD 4560, Australia | Pending | Pending |  |
+| 53 | 101 | Heretics Haven | AU | 91 Currie St, Nambour QLD 4560, Australia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://hereticshaven.com.au/) matches 91 Currie Street. Its [events page](https://tcg.hereticshaven.com.au/pages/events) exposes no dated Grand Archive entries. Confirm current weekly play; product expression-of-interest forms and previous regionals do not establish a weekly slot. Snapshot: latest recorded event 2026-07-18T23:30:00.000Z; 34 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 54 | 343 | The Stadium | US | 3980 Wilder Rd, Bay City, MI 48706, USA | Pending | Pending |  |
 | 55 | 621 | Gamersshop Gaming Store Maginhawa Branch | PH | 138 Maginhawa, Diliman, Lungsod Quezon, Kalakhang Maynila, Philippines | Pending | Pending |  |
 | 56 | 336 | Phoenix Inn | DE | Stöckmannstraße 90, 46045 Oberhausen, Germany | Pending | Pending |  |
