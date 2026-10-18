@@ -588,5 +588,9 @@
   "455": {
     "kind": "store",
     "evidence": "2026-10-16: [Official store page](https://side7.nl/pages/about-us) confirms Van Boetzelaerstraat 10B. [Publisher event](https://tcg.ravensburgerplay.com/events/505956) supplies matching event/store coordinates 52.1286887, 4.6642048. Imported current address point; older Euromarkt 109 records excluded. Latest Omnidex event in committed snapshot 2026-08-12T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "691": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://www.sc-collection.sg/pages/contact) confirms Orchard Towers #04-13. [Publisher event](https://locator.riftbound.uvsgames.com/events/809290) binds SC Collection at 400 Orchard Road to matching store/event coordinates 1.3072293, 103.8293323. Imported named store point. Latest Omnidex event in committed snapshot 2026-03-31T11:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

@@ -747,6 +747,15 @@
     "sourceCollectedAt": "2026-10-11T17:37:46.709600+00:00"
   },
   {
+    "hostId": 691,
+    "address": "400 Orchard Rd, #04 13, Singapore 238875",
+    "lat": 1.3072293,
+    "lng": 103.8293323,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/809290",
+    "sourceAddress": "400 Orchard Rd, Singapore, 238875, SG",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 726,
     "address": "803 King George's Ave, #02 190, Singapore 200803",
     "lat": 1.308041,
