@@ -736,5 +736,9 @@
   "826": {
     "kind": "store",
     "evidence": "2026-10-18: [Official contact](https://universecards.sg/pages/contact-us) gives 203 Toa Payoh North #01-1109, unlike recorded Primz Bizhub, 21 Woodlands Close #02-22. Retail identity established by [official shop](https://universecards.sg/). Resolve relocation before mapping the recorded event address; no replacement coordinates imported. Latest Omnidex event in committed snapshot 2026-08-26T12:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "873": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/my/event-search/5654/) and [current publisher events](https://asia.pokemon-card.com/my/event-search/search/?keyword=Game+On+Boardgame+Cafe) match 199B Jalan PSK 5, Alor Setar, including Build and Battle product events. No standalone official website or exact shop coordinates established. Other-game dates were not used as GA schedule evidence. Latest Omnidex event in committed snapshot 2026-07-24T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
