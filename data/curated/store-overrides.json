@@ -952,5 +952,9 @@
   "170": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/tw/event-search/45558/) confirms Ju You Hsinchu at 9 Zhonghua Road Section 3, 13F-1. No official standalone website or exact store destination point established; retain the floor detail in evidence. Latest Omnidex event in committed snapshot 2025-01-12T06:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "179": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official contact](https://sparkstradingcards.com/pages/contact-1) confirms 1224 Monaco Court Suite 31. [Publisher store](https://locator.riftbound.uvsgames.com/stores/1c6fc795-d8c0-4ae5-bbd9-f6d245a40a34) matches and supplies 37.9879892, -121.3208415. Imported exact shop point. Latest Omnidex event in committed snapshot 2026-03-07T21:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }

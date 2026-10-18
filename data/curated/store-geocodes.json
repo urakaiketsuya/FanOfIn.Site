@@ -351,6 +351,15 @@
     "sourceCollectedAt": "2026-10-16T16:13:56.227701+00:00"
   },
   {
+    "hostId": 179,
+    "address": "1224 Monaco Ct #31, Stockton, CA 95207, USA",
+    "lat": 37.9879892,
+    "lng": -121.3208415,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/stores/1c6fc795-d8c0-4ae5-bbd9-f6d245a40a34",
+    "sourceAddress": "1224 Monaco Court, Suite 31, Stockton, CA, 95207, US",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 180,
     "address": "150 Orchard Rd, #04-36 Orchard Plaza, Singapore 238841",
     "lat": 1.3009768,
