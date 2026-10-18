@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 8/305 (2.6%); 297 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 9/305 (3.0%); 296 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 1 special event only; 6 unconfirmed.
+Weekly results among reviewed stores: 0 published weekly; 1 historical schedule; 1 special event only; 7 unconfirmed.
 
-Next: #9 Hobby Outpost Cheras.
+Next: #10 Final Turn Gaming.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -22,7 +22,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 6 | 66 | Agora Hobby | SG | French Rd, #05-164 Blk 809 Kitchener Complex Singapore | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official website](https://agorahobby.com/) sells Grand Archive and links its [weekly calendar](https://agorahobby.com/events-calendar). The calendar's Grand_Archive_Weeklys.png poster could not be read (HTTP 451), so no day/time is transcribed from its filename. Exact French Road unit was already corroborated in [official contact](https://www.agorahobby.com/contact-us). Confirm current Friday schedule directly. Snapshot: latest recorded event 2026-10-16T12:00:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
 | 7 | 198 | DeckaDice | AU | 75 Victoria St, Mackay QLD 4740, Australia | Verified site | Special event only | Reviewed 2026-10-18: [Official October calendar](https://www.deckadice.com.au/pages/events) lists a Grand Archive store championship on October 10 at noon, but no recurring Grand Archive event in the readable month. [Organized-play listing](https://anzmtg.com.au/stores/deckadice/) matches 75 Victoria Street and the official website. A championship does not establish weekly play; request a current weekly schedule. Snapshot: latest recorded event 2026-08-10T08:00:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 8 | 80 | Home-run FABulous Card Shop | HK | 749A Nathan Rd, Mong Kok, Hong Kong | Verified profile | Unconfirmed | Reviewed 2026-10-18: [Official Linktree](https://linktr.ee/homerunfab) confirms 749A Nathan Road, I Do Centre, 10/F and links the store's Grand Archive community. No readable public weekly day/time was found. Community link and opening hours are not a weekly schedule; confirm Wednesday play before attending. Snapshot: latest recorded event 2026-10-14T12:00:00.000Z; 100 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 9 | 74 | Hobby Outpost Cheras | MY | 1, Jalan C180/1, C180, 43200 Cheras, Selangor, Malaysia | Pending | Pending |  |
+| 9 | 74 | Hobby Outpost Cheras | MY | 1, Jalan C180/1, C180, 43200 Cheras, Selangor, Malaysia | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official site](https://sites.google.com/view/hobbyoutpostcheras) identifies the Cheras game shop, Grand Archive, and its official Facebook; [storefront](https://hobbyoutpost.storehub.me/) corroborates retail identity. Neither readable page publishes a Grand Archive weekly schedule. Confirm exact C180 unit and current weekly day/time through the store. Snapshot: latest recorded event 2026-10-02T13:00:00.000Z; 100 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 10 | 29 | Final Turn Gaming | US | 120 Market St, Clifton, NJ 07012, USA | Pending | Pending |  |
 | 11 | 84 | Card Merchant Hamilton | NZ | 36 Bryce Street, Hamilton Central, Hamilton 3204, New Zealand | Pending | Pending |  |
 | 12 | 321 | Tabletop Village LLC | US | 616 8th Ave S, Seattle, WA 98104, USA | Pending | Pending |  |
