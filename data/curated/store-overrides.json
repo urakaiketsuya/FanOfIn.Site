@@ -1927,5 +1927,9 @@
   "145": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Official site identified; inaccessible. Weekly events: Unconfirmed. [Source](https://www.ontdeksintniklaas.be/nl/winkelen/winkels-de-kijker/brood-en-spelen) links the official broodenspelensintniklaas.be site and corroborates the retailer. The official site could not be read; no current Grand Archive weekly announcement verified. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "226": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://shop.theadventurebeginstx.com/events/full-events-calendar/) embeds a calendar; its weekly-events page directs visitors to Facebook without a readable Grand Archive day/time. Confirm current recurring play with this Conroe store. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
