@@ -1124,5 +1124,9 @@
   "843": {
     "kind": "store",
     "evidence": "2026-10-18: [Publisher event](https://locator.riftbound.uvsgames.com/events/403604) matches 9161 Sierra Avenue #106 and supplies 34.0874976, -117.4347384. [Retailer marketplace](https://www.tcgplayer.com/sellers/Chrono%20%26%20Cosmo/3cc54f27) establishes Fontana card sales. Imported exact shop point; publisher identifies https://chronoandcosmo.com, whose contents could not be retrieved. Latest Omnidex event in committed snapshot 2026-05-23T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "857": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official website](https://ssotarusis.com/) confirms 6-2-84 Kirenishi; [WIXOSS retailer listing](https://www.takaratomy.co.jp/products/wixoss/shop/shop_search/?shop_id=1502) supports card retail. Official map iframe contains viewport coordinates only, not a verified destination point. No point imported. Latest Omnidex event in committed snapshot 2026-08-08T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
