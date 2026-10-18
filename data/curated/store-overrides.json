@@ -1664,5 +1664,9 @@
   "132": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified marketplace. Weekly events: Unconfirmed. [Store Shopee profile](https://shopee.com.my/lam.chico) identifies The Card Shop PLT and GA products. [Local tabletop directory](https://kakitabletop.com/map/central/) corroborates 54A Jalan 19/3. No standalone website or current GA weekly schedule verified; request an official announcement rather than inferring play from inventory. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "22": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official website](https://diademhobbies.com/) matches 166 Douglas Street and offers a GA collection. The readable site has no GA event schedule. [Publisher profile](https://locator.riftbound.uvsgames.com/stores/4efeeef7-c092-4cfe-9763-bab48dbdd4c9) adds units 1 and 3. Confirm current weekly day/time; other games’ weekly listings are insufficient. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
