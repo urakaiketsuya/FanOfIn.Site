@@ -1004,5 +1004,9 @@
   "77": {
     "kind": "store",
     "evidence": "2026-10-18: [Retailer website](https://neko2nyaa.com/homepage) and [business directory](https://www.bizmalay.com/en/neko-neko-nyaa_2T-013-818-3616) give recorded Block 10, Lot 2762. [Bandai retailer list](https://www.carddass.com/onepiece-tcg_asia-en/events/2022/officialevents/rookie-tours/list_malaysia.php) instead gives Lot 11378 Jalan Song. Retailer confirmed; location history remains conflicting and no exact recorded-address point verified. Latest Omnidex event in committed snapshot 2026-01-22T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "311": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Retailer marketplace](https://shopee.tw/labytcg) confirms physical card sales at 89 Wufen Street, second floor. [Pokemon event](https://asia.pokemon-card.com/tw/event-search/41328/) agrees and identifies [official Facebook](https://www.facebook.com/labytcg). No standalone website or verified destination coordinates obtained. Latest Omnidex event in committed snapshot 2026-09-26T03:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
