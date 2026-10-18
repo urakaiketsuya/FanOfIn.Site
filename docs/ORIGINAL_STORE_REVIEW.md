@@ -2,11 +2,11 @@
 
 Cohort: the 305 hosts already mapped in the 2026-10-16 snapshot, excluding the 369 hosts in [the location checklist](STORE_LOCATION_REVIEW.md). Review order is descending recorded event count, then host ID; keep this snapshot order stable.
 
-Reviewed: 2026-10-18. Progress: 46/305 (15.1%); 259 pending. A completed review may still need evidence.
+Reviewed: 2026-10-18. Progress: 47/305 (15.4%); 258 pending. A completed review may still need evidence.
 
-Weekly results among reviewed stores: 9 published weekly; 2 historical schedule; 4 special event only; 31 unconfirmed.
+Weekly results among reviewed stores: 9 published weekly; 3 historical schedule; 4 special event only; 31 unconfirmed.
 
-Next: #47 White Rabbit Community Game Store (Essen).
+Next: #48 Gamer's Resort.
 
 Website status describes what was verified in this review, not whether a business is open. Published weekly means a store-owned page publishes recurring play or repeated future weekly dates; check individual dates and missing start times with the store. Historical schedules and special events do not confirm current weeklies. Unconfirmed does not mean no events.
 
@@ -60,7 +60,7 @@ Activity below is the committed Omnidex snapshot, not a live event feed. Estimat
 | 44 | 571 | Common Ground Games | US | 1314 Inwood Rd, Dallas, TX 75247, USA | Verified site | Published weekly | Reviewed 2026-10-18: [Official Grand Archive event page](https://www.boardgamesdallas.com/products/grand-archive-weekly-event) explicitly advertises Thursdays at 19:15 local time with three rounds. The store's [events navigation](https://www.boardgamesdallas.com/pages/events) links that listing. Record this as a published weekly schedule even though the historical recurrence function currently yields no estimates. Snapshot: latest recorded event 2026-10-16T00:15:00.000Z; 51 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 45 | 605 | Oinkers Island | US | 745 N Aspen Ave, Broken Arrow, OK 74012, USA | Identified social | Unconfirmed | Reviewed 2026-10-18: [Publisher store profile](https://locator.riftbound.uvsgames.com/stores/19afd38c-a5f5-4c8c-b836-2f265ceba4eb) confirms 745 North Aspen Avenue and links [official Facebook](https://www.facebook.com/oinkersisland). No standalone website or readable current weekly Grand Archive announcement verified. Other-game events and championships cannot supply the missing weekly schedule. Snapshot: latest recorded event 2026-08-13T23:30:00.000Z; 50 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 46 | 757 | Gamersaurus Rex | SG | 259A Upper Thomson Rd, Singapore 574386 | Verified site | Unconfirmed | Reviewed 2026-10-18: [Official webstore](https://www.gamersaurus-rex.com/) confirms retail identity; [publisher profile](https://locator.riftbound.uvsgames.com/stores/86c3b94f-ea8e-47c6-b2d6-9780d9c30c5e) matches 259A Upper Thomson Road. No current Grand Archive weekly schedule verified on the public pages. Wednesday/Friday Riftbound sessions are a different game; retain Tuesday Grand Archive dates as estimates only. Snapshot: latest recorded event 2026-10-13T12:00:00.000Z; 51 retained regular-event evidence entries; 4 projected dates in the next 28 days (estimates only). |
-| 47 | 242 | White Rabbit Community Game Store (Essen) | DE | Segerothstraße 79, 45141 Essen, Germany | Pending | Pending |  |
+| 47 | 242 | White Rabbit Community Game Store (Essen) | DE | Segerothstraße 79, 45141 Essen, Germany | Verified site | Historical schedule | Reviewed 2026-10-18: [Official Essen event](https://www.whiterabbit-cgs.de/wp/events/ga-e-2610-2/?occurrence=2026-10-01) confirms Segerothstraße 79 and Grand Archive on Thursday October 1 at 18:15; [September listing](https://www.whiterabbit-cgs.de/wp/events/ga-e-2609/?occurrence=2026-09-17) also uses Thursday. These dated past events do not confirm future weekly occurrences. Check the [Essen calendar](https://www.whiterabbit-cgs.de/wp/veranstaltungen_neu/) for current dates; do not use Aachen's events. Snapshot: latest recorded event 2026-09-10T16:30:00.000Z; 44 retained regular-event evidence entries; 0 projected dates in the next 28 days (estimates only). |
 | 48 | 142 | Gamer's Resort | AU | 135 Maude St, Shepparton VIC 3630, Australia | Pending | Pending |  |
 | 49 | 421 | Pokebox USA | US | 625 W Las Tunas Dr, San Gabriel, CA 91776, USA | Pending | Pending |  |
 | 50 | 315 | Round Table Games and Curt's Cafe | US | 5511 Coldwater Rd, Fort Wayne, IN 46825, USA | Pending | Pending |  |

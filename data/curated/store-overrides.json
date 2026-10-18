@@ -1564,5 +1564,9 @@
   "757": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Official webstore](https://www.gamersaurus-rex.com/) confirms retail identity; [publisher profile](https://locator.riftbound.uvsgames.com/stores/86c3b94f-ea8e-47c6-b2d6-9780d9c30c5e) matches 259A Upper Thomson Road. No current Grand Archive weekly schedule verified on the public pages. Wednesday/Friday Riftbound sessions are a different game; retain Tuesday Grand Archive dates as estimates only. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "242": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Official Essen event](https://www.whiterabbit-cgs.de/wp/events/ga-e-2610-2/?occurrence=2026-10-01) confirms Segerothstraße 79 and Grand Archive on Thursday October 1 at 18:15; [September listing](https://www.whiterabbit-cgs.de/wp/events/ga-e-2609/?occurrence=2026-09-17) also uses Thursday. These dated past events do not confirm future weekly occurrences. Check the [Essen calendar](https://www.whiterabbit-cgs.de/wp/veranstaltungen_neu/) for current dates; do not use Aachen's events. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
