@@ -1128,5 +1128,9 @@
   "857": {
     "kind": "store",
     "evidence": "2026-10-18: [Official website](https://ssotarusis.com/) confirms 6-2-84 Kirenishi; [WIXOSS retailer listing](https://www.takaratomy.co.jp/products/wixoss/shop/shop_search/?shop_id=1502) supports card retail. Official map iframe contains viewport coordinates only, not a verified destination point. No point imported. Latest Omnidex event in committed snapshot 2026-08-08T10:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "908": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official retailer](https://legames.com.my/) confirms 18-1-6 Gembira Parade, Lorong Delima 1. [Store policy](https://legames.com.my/store-policy/) explicitly supports physical pickup. Map embed has a viewport centre without independently verified destination coordinates; no point imported. Latest Omnidex event in committed snapshot 2026-10-11T03:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
