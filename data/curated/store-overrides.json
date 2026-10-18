@@ -832,5 +832,9 @@
   "694": {
     "kind": "store",
     "evidence": "2026-10-18: [Official shop](https://kado.asia/) confirms Eco Galleria unit A0331, Block A, second floor, distinct from its Sutera Mall outlet. Its address-bound business structured data supplies 1.442348, 103.615777 and a named map link. Imported Eco Galleria point. Latest Omnidex event in committed snapshot 2026-08-08T07:40:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "778": {
+    "kind": "unclassified",
+    "evidence": "2026-10-18: [Tournament directory](https://palworldtcg.gg/events/mys) and [GA event record](https://www.fractalofin.site/RDO/58946.html) agree on second floor, Lot 10520, Block 16, Jalan Tun Jugah. Independent retail sales, official website and exact business coordinates remain unverified. Kept unclassified rather than inferring a shop from tournament participation alone. Latest Omnidex event in committed snapshot 2026-08-30T06:15:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
