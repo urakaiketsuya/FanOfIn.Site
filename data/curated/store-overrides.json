@@ -1268,5 +1268,9 @@
   "431": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer](https://www.ludiworld.com/) explicitly publishes LocalBusiness coordinates 48.83585090, 2.70863660 for 9 Boulevard Pierre Mendes France. [Government business register](https://annuaire-entreprises.data.gouv.fr/entreprise/808497747) corroborates current retail address and distinguishes former number 6. Imported exact business point. Latest Omnidex event in committed snapshot 2026-01-13T17:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "486": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Recent local customer report](https://www.reddit.com/r/Iloilo/comments/1wq52bs/cardhobby_shops/) describes card sales at IBAM on Marymart second floor. [Hobby community report](https://www.reddit.com/r/tamiyaPinas/comments/1ntxez1/) corroborates the shop and racing space. Retail identity has community support; no verified official standalone website or exact shop coordinates obtained. Latest Omnidex event in committed snapshot 2025-02-01T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
