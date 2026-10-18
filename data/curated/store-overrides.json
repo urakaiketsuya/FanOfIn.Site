@@ -740,5 +740,9 @@
   "873": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon venue](https://asia.pokemon-card.com/my/event-search/5654/) and [current publisher events](https://asia.pokemon-card.com/my/event-search/search/?keyword=Game+On+Boardgame+Cafe) match 199B Jalan PSK 5, Alor Setar, including Build and Battle product events. No standalone official website or exact shop coordinates established. Other-game dates were not used as GA schedule evidence. Latest Omnidex event in committed snapshot 2026-07-24T11:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "912": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official shop](https://cardmerchantblenheim.co.nz/) and [publisher locator](https://legacy.fabtcg.com/en/locator/card-merchant-blenheim/) confirm 34 Scott Street. Retail identity and branch match established; direct publisher-map retrieval failed and no reliable numeric business point obtained. Latest Omnidex event in committed snapshot 2026-10-14T05:00:00.000Z. Existing recurrence projects 2026-10-21T05:00:00.000Z, 2026-10-28T05:00:00.000Z, 2026-11-04T05:00:00.000Z, 2026-11-11T05:00:00.000Z (source events 66058); estimates, not confirmed bookings."
   }
 }
