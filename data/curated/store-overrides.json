@@ -1172,5 +1172,9 @@
   "567": {
     "kind": "store",
     "evidence": "2026-10-18: [Official retailer about page](https://milongja.waca.tw/about) confirms toy and card sales, including GA, at 1421 Bade West Road. [Business record](https://www.findcompany.com.tw/%E7%B1%B3%E6%9C%A7%E5%AE%B6%E7%8E%A9%E5%85%B7%E5%9D%8A) agrees. No verified named store coordinates obtained. Latest Omnidex event in committed snapshot 2026-05-09T09:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "667": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Official branch page](https://www.catfootprint.com/%E8%B2%93%E8%85%B3%E5%8D%B0-%E8%8B%97%E6%A0%97%E5%BA%97) confirms 92 Fuqian Road, fourth floor and links [official Facebook](https://www.facebook.com/CatFootPrintMiaoLi). [Retailer marketplace](https://shopee.tw/gp65h48) corroborates sales. Official Google link is a broad search viewport, not a verified shop destination; no point imported. Latest Omnidex event in committed snapshot 2026-05-03T06:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
