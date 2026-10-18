@@ -1024,5 +1024,9 @@
   "575": {
     "kind": "store",
     "evidence": "2026-10-18: [Pokemon organizer listing](https://asia.pokemon-card.com/hk/event-search/19470/) confirms Hang Fung Phase 1, 6F F1-08 but gives street number 2G, while recorded address has 2. It links [official Facebook](https://www.facebook.com/kez.tcg.shop). Retail identity supported by [card-shop directory](https://parrottcg.com/shops/district/tsim-sha-tsui/); no standalone website or verified exact-unit point obtained. Latest Omnidex event in committed snapshot 2025-04-22T12:00:00.000Z. Existing recurrence returns no qualifying future weekly dates."
+  },
+  "597": {
+    "kind": "store",
+    "evidence": "2026-10-18: [Publisher retailer list](https://en.shadowverse-evolve.com/shops/asia-oceania/) and [Pokemon event](https://asia.pokemon-card.com/sg/event-search/5795/) agree on 1A Thomson Ridge, second floor. [Business listing](https://www.bizapore.com/en/card-nation-9008-8091) identifies historical card-nation.business.site. No current standalone official site or verified shop point established. Latest Omnidex event in committed snapshot 2026-01-01T04:30:00.000Z. Existing recurrence returns no qualifying future weekly dates."
   }
 }
