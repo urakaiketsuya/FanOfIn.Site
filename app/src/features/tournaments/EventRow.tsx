@@ -1,5 +1,6 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS, type OmnidexEventSummary } from "@gatcg/shared";
+import { EVENT_CATEGORY_LABELS, type Card, type OmnidexEventSummary } from "@gatcg/shared";
 import { formatCountry } from "../../lib/format";
 
 import CardArtTile from "../../components/CardArtTile";
@@ -37,6 +38,12 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
   const nameless = useNamelessChampionCard();
   const name = identity?.championName ?? "Nameless Champion";
   const card = identity ? champions.get(name) : nameless;
+  return <EventRowView event={event} card={card} />;
+}
+
+export const EventRowView = memo(function EventRowView({ event, card }: { event: OmnidexEventSummary; card?: Card }) {
+  const identity = event.topPlayerIdentity;
+  const name = identity?.championName ?? "Nameless Champion";
   return (
     <article
       data-component="EventRow"
@@ -75,4 +82,4 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
       </div>
     </article>
   );
-}
+});

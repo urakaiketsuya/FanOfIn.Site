@@ -1,10 +1,11 @@
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import DisclosureChevron from "../../components/DisclosureChevron";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, useTransition, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexIndex } from "./data";
-import EventRow from "./EventRow";
+import { EventRowView } from "./EventRow";
+import { useChampionCardImages, useNamelessChampionCard } from "../players/useChampionCardImages";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
@@ -28,6 +29,12 @@ export default function TournamentsIndex() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(() => searchParams.get("q") ?? "");
+  const [searchDraft, setSearchDraft] = useState(search);
+  const [isPending, startTransition] = useTransition();
+  function updateSearch(value: string) {
+    setSearchDraft(value);
+    startTransition(() => setSearch(value));
+  }
   const [idLookup, setIdLookup] = useState("");
   const [minPlayers, setMinPlayers] = useState(() => Number(searchParams.get("minPlayers")) || 0);
   const [category, setCategory] = useState<string | null>(() => searchParams.get("category"));
@@ -84,11 +91,16 @@ export default function TournamentsIndex() {
     if (minPlayers > 0) next.set("minPlayers", String(minPlayers));
     if (sortMode !== "date") next.set("sort", sortMode);
     if (viewMode !== "list") next.set("view", viewMode);
-    if (next.toString() !== searchParams.toString()) setSearchParams(next, { replace: true });
+    if (next.toString() === searchParams.toString()) return;
+    const timer = window.setTimeout(() => setSearchParams(next, { replace: true }), 250);
+    return () => window.clearTimeout(timer);
   }, [category, country, coverage, dateFrom, dateTo, decklists, minPlayers, search, searchParams, seasonId, setSearchParams, setting, sortMode, viewMode]);
 
-  const visibleEvents = events.slice(0, visibleCount);
-  const calendarGroups = useMemo(() => groupEventsByMonth(visibleEvents), [visibleEvents]);
+  const visibleEvents = useMemo(() => events.slice(0, visibleCount), [events, visibleCount]);
+  const calendarGroups = useMemo(() => viewMode === "calendar" ? groupEventsByMonth(visibleEvents) : [], [visibleEvents, viewMode]);
+  const championNames = useMemo(() => visibleEvents.flatMap((event) => event.topPlayerIdentity ? [event.topPlayerIdentity.championName] : []), [visibleEvents]);
+  const championCards = useChampionCardImages(championNames);
+  const nameless = useNamelessChampionCard();
 
   function handleIdLookup(e: FormEvent) {
     e.preventDefault();
@@ -108,8 +120,8 @@ export default function TournamentsIndex() {
           type="text"
           aria-label="Search by event, player, champion, organizer, or location"
           placeholder="Search event, player, Champion, or location…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchDraft}
+          onChange={(e) => updateSearch(e.target.value)}
           className="min-h-control flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 sm:text-sm"
         />
         <form onSubmit={handleIdLookup} className="flex gap-2">
@@ -242,7 +254,7 @@ export default function TournamentsIndex() {
           </button>
         ))}
       </div>
-      <button type="button" onClick={() => { setSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setCountry(null); setDateFrom(""); setDateTo(""); setDecklists("any"); setCoverage("any"); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-control rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
+      <button type="button" onClick={() => { updateSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setCountry(null); setDateFrom(""); setDateTo(""); setDecklists("any"); setCoverage("any"); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-control rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
       </details>
 
       {!index && <InlineState className="mt-6">Loading…</InlineState>}
@@ -253,9 +265,9 @@ export default function TournamentsIndex() {
         </InlineState>
       )}
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p className="text-xs text-ctp-subtext0">{events.length} event{events.length === 1 ? "" : "s"} match</p><Tabs variant="pill" baseId="event-view" label="Event results view" active={viewMode} onChange={setViewMode} tabs={[{key: "list", label: "List"}, {key: "calendar", label: "Calendar"}]} /></div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext0">{isPending ? "Updating…" : `${events.length} event${events.length === 1 ? "" : "s"} match`}</p><Tabs variant="pill" baseId="event-view" label="Event results view" active={viewMode} onChange={setViewMode} tabs={[{key: "list", label: "List"}, {key: "calendar", label: "Calendar"}]} /></div>
 
-      <TabPanel baseId="event-view" tab="list" active={viewMode} className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRow key={event.id} event={event} />)}</TabPanel><TabPanel baseId="event-view" tab="calendar" active={viewMode} className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRow key={event.id} event={event} />)}</div></section>)}</TabPanel>
+      <TabPanel baseId="event-view" tab="list" active={viewMode} className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</TabPanel><TabPanel baseId="event-view" tab="calendar" active={viewMode} className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</div></section>)}</TabPanel>
 
       <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </PageLayout>

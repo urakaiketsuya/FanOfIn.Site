@@ -39,3 +39,31 @@ test("event browser searches participants and champions and filters public cover
   assert.deepEqual(filterAndSortEvents(events, { ...defaults, coverage: "some" }, () => 0).map((item) => item.id), [1, 2]);
   assert.deepEqual(filterAndSortEvents(events, { ...defaults, coverage: "none" }, () => 0).map((item) => item.id), [3]);
 });
+
+test("relevance preserves all ranking levels, date ties, and normalized participant matches", () => {
+  const events = [
+    event({ id: 8, seasonName: "ALPHA" }),
+    event({ id: 7, hostAddress: "Alpha Street" }),
+    event({ id: 6, hostName: "Alpha Shop" }),
+    event({ id: 5, name: "Open Alpha" }),
+    event({ id: 4, championNames: ["Alpha"] }),
+    event({ id: 3, participantNames: ["  ALPHA  "] }),
+    event({ id: 2, name: "Alpha Open" }),
+    event({ id: 1, name: "Alpha" }),
+    event({ id: 9, name: "Alpha", date: "2025-03-01T12:00:00.000Z" }),
+  ];
+  const original = events.slice();
+  for (const search of ["alpha", " ALPHA ", "alpha"]) {
+    assert.deepEqual(filterAndSortEvents(events, { ...defaults, search, sort: "relevance" }, () => 0).map(item => item.id), [9, 1, 2, 3, 4, 5, 6, 7, 8]);
+  }
+  assert.deepEqual(events, original);
+});
+
+test("search cache follows replaced records and does not match across field boundaries", () => {
+  const old = event({ name: "Alpha", hostName: "Beta" });
+  assert.equal(filterAndSortEvents([old], { ...defaults, search: "alpha beta" }, () => 0).length, 0);
+  assert.equal(filterAndSortEvents([old], { ...defaults, search: "alpha" }, () => 0).length, 1);
+  const updated = { ...old, name: "Gamma" };
+  assert.equal(filterAndSortEvents([updated], { ...defaults, search: "alpha" }, () => 0).length, 0);
+  assert.equal(filterAndSortEvents([updated], { ...defaults, search: "gamma" }, () => 0).length, 1);
+});

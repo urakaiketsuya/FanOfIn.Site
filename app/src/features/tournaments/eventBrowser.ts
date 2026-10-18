@@ -20,11 +20,30 @@ export interface EventBrowserFilters {
 
 const normalize = (value: string) => value.trim().toLocaleLowerCase("en-US");
 
+// Published events are immutable. Weak keys let a replaced dataset be collected.
+const searchFields = new WeakMap<OmnidexEventSummary, ReturnType<typeof prepareSearchFields>>();
+function prepareSearchFields(event: OmnidexEventSummary) {
+  const name = normalize(event.name), host = normalize(event.hostName), address = normalize(event.hostAddress);
+  const people = (event.participantNames ?? []).map(normalize);
+  const champions = (event.championNames ?? []).map(normalize);
+  return { name, host, address, people, champions,
+    all: [name, host, address, normalize(event.hostCountry), normalize(event.seasonName ?? ""), ...people, ...champions] };
+}
+function fieldsFor(event: OmnidexEventSummary) {
+  let fields = searchFields.get(event);
+  if (!fields) { fields = prepareSearchFields(event); searchFields.set(event, fields); }
+  return fields;
+}
+function relevance(event: OmnidexEventSummary, needle: string): number {
+  const { name, host, address, people, champions } = fieldsFor(event);
+  return name === needle ? 6 : name.startsWith(needle) ? 5 : people.includes(needle) ? 4 : champions.includes(needle) ? 3 : name.includes(needle) ? 2 : people.some((value) => value.includes(needle)) || champions.some((value) => value.includes(needle)) || host.includes(needle) ? 1 : address.includes(needle) ? 0 : -1;
+}
+
 export function filterAndSortEvents(events: OmnidexEventSummary[], filters: EventBrowserFilters, categoryRank: (category: string) => number): OmnidexEventSummary[] {
   const needle = normalize(filters.search);
   const from = filters.dateFrom ? `${filters.dateFrom}T00:00:00.000Z` : "";
   const to = filters.dateTo ? `${filters.dateTo}T23:59:59.999Z` : "";
-  return events.filter((event) =>
+  const matches = events.filter((event) =>
     event.playerCount >= filters.minPlayers
     && (!filters.category || event.category === filters.category)
     && (!filters.setting || event.setting === filters.setting)
@@ -39,15 +58,13 @@ export function filterAndSortEvents(events: OmnidexEventSummary[], filters: Even
       if (filters.coverage === "complete") return event.playerCount > 0 && count >= event.playerCount;
       return count > 0;
     })())
-    && (!needle || [event.name, event.hostName, event.hostAddress, event.hostCountry, event.seasonName ?? "", ...(event.participantNames ?? []), ...(event.championNames ?? [])].some((value) => normalize(value).includes(needle)))
-  ).sort((a, b) => {
-    if (filters.sort === "relevance" && needle) {
-      const score = (event: OmnidexEventSummary) => {
-        const name = normalize(event.name); const host = normalize(event.hostName); const address = normalize(event.hostAddress);
-        const people = event.participantNames ?? []; const champions = event.championNames ?? [];
-        return name === needle ? 6 : name.startsWith(needle) ? 5 : people.some((value) => normalize(value) === needle) ? 4 : champions.some((value) => normalize(value) === needle) ? 3 : name.includes(needle) ? 2 : people.concat(champions).some((value) => normalize(value).includes(needle)) || host.includes(needle) ? 1 : address.includes(needle) ? 0 : -1;
-      };
-      const difference = score(b) - score(a);
+    && (!needle || fieldsFor(event).all.some((value) => value.includes(needle)))
+  );
+  const scores = filters.sort === "relevance" && needle
+    ? new Map(matches.map((event) => [event, relevance(event, needle)])) : null;
+  return matches.sort((a, b) => {
+    if (scores) {
+      const difference = scores.get(b)! - scores.get(a)!;
       if (difference !== 0) return difference;
     }
     if (filters.sort === "size" && b.playerCount !== a.playerCount) return b.playerCount - a.playerCount;
@@ -63,7 +80,9 @@ export function groupEventsByMonth(events: OmnidexEventSummary[]): { key: string
   const groups = new Map<string, OmnidexEventSummary[]>();
   for (const event of events) {
     const key = event.date.slice(0, 7);
-    groups.set(key, [...(groups.get(key) ?? []), event]);
+    const group = groups.get(key);
+    if (group) group.push(event);
+    else groups.set(key, [event]);
   }
   return [...groups].map(([key, grouped]) => ({
     key,
