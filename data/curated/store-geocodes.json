@@ -963,6 +963,15 @@
     "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
   },
   {
+    "hostId": 698,
+    "address": "Unit 26\nPriory Tech Park, Saxon Way, Hessle\nHU13 9PB\nUnited Kingdom",
+    "lat": 53.7209961,
+    "lng": -0.4270781,
+    "sourceUrl": "https://locator.riftbound.uvsgames.com/events/800147",
+    "sourceAddress": "Unit 26 Priory Tec Pk, Saxon Way, Hessle, England, HU13 9PB, GB",
+    "sourceCollectedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
     "hostId": 703,
     "address": "1921 W Dimond Blvd b3, Anchorage, AK 99515, USA",
     "lat": 61.1391595,
