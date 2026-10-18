@@ -1950,5 +1950,9 @@
   "566": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://jandjgamingfactory.com/) confirms the Glendale retailer and Grand Archive products. No readable current Grand Archive weekly schedule found; product availability does not establish event recurrence. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "782": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Historical schedule. [Source](https://abugames.com/) is the official site but readable event detail was unavailable. A [secondary September 24 listing](https://events.yodel.today/boise-id/event/ABU-Games/Grand-Archive-TCG---Weekly-Tournament----ABU-Games/6a038e1c25567b3260231a15) records Thursday 6:30–9 p.m. Grand Archive play. Treat that as past evidence pending a current store-owned schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
