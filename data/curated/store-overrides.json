@@ -1974,5 +1974,9 @@
   "579": {
     "kind": "store",
     "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://gamenut.com/) identifies the Topeka branch at 5119 SW 29th Street. [Publisher branch profile](https://locator.riftbound.uvsgames.com/stores/93cf45d2-a961-471c-ad54-20ede9b2f627) links its storefront. No current Grand Archive weekly schedule verified; do not substitute Lawrence events. Existing address and coordinates retained; this review does not newly verify the map pin."
+  },
+  "769": {
+    "kind": "store",
+    "evidence": "2026-10-18 original mapped-store review: Website: Verified site. Weekly events: Unconfirmed. [Source](https://totlgames.com/events) publishes recurring sessions for other games but no readable Grand Archive weekly slot. The about page gives ZIP 97232 while the events footer gives 97212; postal detail needs follow-up. Older Monday activity does not confirm a current weekly schedule. Existing address and coordinates retained; this review does not newly verify the map pin."
   }
 }
