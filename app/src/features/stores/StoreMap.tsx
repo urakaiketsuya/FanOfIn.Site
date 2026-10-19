@@ -7,8 +7,8 @@ import 'leaflet/dist/leaflet.css';
 const icon = L.divIcon({ className: '', html: '<span class="block h-5 w-5 rounded-full bg-ctp-blue ring-2 ring-ctp-crust"></span>', iconSize: [48, 48], iconAnchor: [10, 10] });
 function Bounds({ stores, selected }: { stores: StoreRecord[]; selected?: number }) {
   const map = useMap();
-  useEffect(() => { if (stores.length) map.fitBounds(stores.map(s => [s.coordinates!.lat, s.coordinates!.lng]), { padding: [30, 30], maxZoom: 14 }); }, [map, stores]);
-  useEffect(() => { const store = stores.find(s => s.id === selected); if (store?.coordinates) map.setView([store.coordinates.lat, store.coordinates.lng], 14); }, [map, stores, selected]);
+  useEffect(() => { if (stores.length) map.fitBounds(stores.map(s => [s.coordinates!.lat, s.coordinates!.lng]), { padding: [30, 30], maxZoom: 14, animate: false }); }, [map, stores]);
+  useEffect(() => { const store = stores.find(s => s.id === selected); if (store?.coordinates) map.setView([store.coordinates.lat, store.coordinates.lng], 14, { animate: false }); }, [map, stores, selected]);
   useEffect(() => { const observer = new ResizeObserver(() => map.invalidateSize()); observer.observe(map.getContainer()); return () => observer.disconnect(); }, [map]);
   return null;
 }
@@ -33,7 +33,7 @@ export default function StoreMap({ stores, selected, onSelect, search = "" }: { 
   if (!stores.length) return <p role="status" className="p-4">No mapped locations in these results. Use the list to see all matches.</p>;
   return <div>
     {error && <p role="status" className="mb-2">Map tiles could not load. Store addresses and directions are available in the list.</p>}
-    <div className="isolate h-96 overflow-hidden rounded-xl border border-ctp-surface1 [&_.leaflet-control-zoom_a]:!h-12 [&_.leaflet-control-zoom_a]:!w-12 [&_.leaflet-control-zoom_a]:!leading-[48px] [&_.leaflet-popup-close-button]:!h-12 [&_.leaflet-popup-close-button]:!w-12">
+    <div className="isolate h-72 lg:h-[calc(100dvh-8rem)] lg:max-h-[48rem] overflow-hidden rounded-xl border border-ctp-surface1 [&_.leaflet-control-zoom_a]:!h-12 [&_.leaflet-control-zoom_a]:!w-12 [&_.leaflet-control-zoom_a]:!leading-[48px] [&_.leaflet-popup-close-button]:!h-12 [&_.leaflet-popup-close-button]:!w-12">
       <MapContainer center={[20, 0]} zoom={2} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
         <Bounds stores={stores} selected={selected} />
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' eventHandlers={{ tileerror: () => setError(true) }} />

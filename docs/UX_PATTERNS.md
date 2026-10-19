@@ -248,3 +248,10 @@ browsing position when returning from store details. Cluster map markers at wide
 link selections to visible result cards, and keep unmapped matches in a separately
 labeled group when distance filtering cannot place them. User location coordinates remain
 transient page state and are never placed in URLs or persistent storage.
+
+Store browse controls share a wrapping row with the mobile List/Map tabs. Show Clear all
+next to active filter chips. Cards lead with name/distance, published schedule, address
+and Directions/Website actions; the name opens details. Keep review dates and recorded
+activity in details, and show the time-zone note once above results. Desktop uses a
+40/60 list/map split with a viewport-height map; mobile uses a short map and a compact
+selected-store summary with Directions below it. Preserve 48px controls while compacting.
