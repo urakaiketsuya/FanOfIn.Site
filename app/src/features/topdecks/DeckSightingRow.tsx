@@ -67,6 +67,6 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
         {decklist && <DeckPreviewListActions decklist={decklist} format={format} title={`${sighting.championName ?? "Deck"} · ${playerName}`} compare={!onAdd} />}
         {onAdd && <button type="button" onClick={onAdd} aria-pressed={added ?? false} className={`${deckPreviewActionClass} border ${added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{added ? "Remove from compare" : "Compare"}</button>}
       </>,
-    }} view={{ to: sighting.deckHash ? `/decks/${sighting.deckHash}` : `/events/${sighting.eventId}?tab=decklists&player=${sighting.player}` }} />
+    }} view={{ to: sighting.deckHash ? `/decks/${sighting.deckHash}` : `/decks/event/${sighting.eventId}/${sighting.player}` }} />
   </div>;
 }

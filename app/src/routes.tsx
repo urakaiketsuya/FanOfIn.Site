@@ -145,6 +145,7 @@ const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfil
 const CardLocationsPage = lazy(() => import("./features/collection/CardLocationsPage"));
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
+const EventDeckRedirect = lazy(() => import("./features/decks/EventDeckRedirect"));
 
 // Saved deck IDs and shared slugs use the same owner-aware page. The server
 // decides ownership; visitors receive only the published snapshot.
@@ -227,6 +228,7 @@ export default function AppRoutes() {
         <Route path="/decks/edit" element={<MyDecksIndex />} />
         <Route path="/decks/:id/edit" element={<DeckEditRedirect />} />
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
+        <Route path="/decks/event/:eventId/:player" element={<EventDeckRedirect />} />
         <Route path="/pantheon/decks" element={<PantheonDecksIndex />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
