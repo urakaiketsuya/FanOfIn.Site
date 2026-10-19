@@ -1,6 +1,8 @@
 import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { PublicDeckSummary } from "@gatcg/shared";
+import DialogSheet from "../../components/ui/DialogSheet";
+import { deckDateInRange } from "./deckDateRange";
 import DeckSightingsView from "./DeckSightingsView";
 import type { DeckContentFilterState } from "./deckContentFilters";
 import { accountApi } from "../../lib/accountApi";
@@ -19,7 +21,11 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
   const [params, setParams] = useSearchParams();
-  const source = params.get("source") ?? "all";
+  const source = ["shared", "tournament"].includes(params.get("source") ?? "") ? params.get("source")! : "all";
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const dateFrom = params.get("from") ?? "";
+  const dateTo = params.get("to") ?? "";
+  const sort = ["oldest", "champion"].includes(params.get("sort") ?? "") ? params.get("sort")! : "newest";
   const [visitedTournament, setVisitedTournament] = useState(source === "tournament");
   useEffect(() => { if (source === "tournament") setVisitedTournament(true); }, [source]);
   const query = params.get("q") ?? "";
@@ -56,33 +62,78 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     const search = deferredQuery.trim().toLowerCase();
     const matches = (name: string | null, text: string) => (!champion || champion === name) && (!search || text.toLowerCase().includes(search));
     return [
-      ...(source !== "tournament" ? shared.filter(d => (!format || d.format === format) && matches(d.championName, `${d.title} ${d.championName ?? ""} ${d.owner.displayName}`)).map(deck => ({ kind: "shared" as const, id: deck.publicSlug, date: deck.publishedAt.slice(0, 10), deck })) : []),
+      ...(source !== "tournament" ? shared.filter(d => (!format || d.format === format) && matches(d.championName, `${d.title} ${d.championName ?? ""} ${d.owner.displayName}`)).map(deck => ({ kind: "shared" as const, id: deck.publicSlug, date: deck.publishedAt, deck })) : []),
       ...(source !== "shared" && format !== "PANTHEON" ? (sightings?.sightings ?? []).filter(d => matches(d.championName, `${d.championName ?? ""} ${d.eventName} ${playerName(d.player)}`)).map(deck => ({ kind: "tournament" as const, id: deck.deckId, date: deck.eventDate.slice(0, 10), deck })) : []),
-    ].sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
-  }, [source, shared, sightings, deferredQuery, champion, format, playerName]);
+    ].filter(row => deckDateInRange(row.date, dateFrom, dateTo)).sort((a, b) => {
+      const byDate = b.date.localeCompare(a.date);
+      const byChampion = a.deck.championName === null ? (b.deck.championName === null ? 0 : 1)
+        : b.deck.championName === null ? -1 : a.deck.championName.localeCompare(b.deck.championName);
+      return (sort === "oldest" ? -byDate : sort === "champion" ? byChampion || byDate : byDate)
+        || a.kind.localeCompare(b.kind) || a.id.localeCompare(b.id);
+    });
+  }, [source, shared, sightings, deferredQuery, champion, format, playerName, dateFrom, dateTo, sort]);
   function update(key: string, value: string) {
     const apply = () => { setParams(previous => { const next = new URLSearchParams(previous); if (value) next.set(key, value); else next.delete(key); next.delete("page"); return next; }, { replace: true }); setVisibleCount(30); };
     if (key === "q") apply(); else startTransition(apply);
+  }
+  const activeFilters = [champion, format, dateFrom && `From ${dateFrom}`, dateTo && `Through ${dateTo}`].filter(Boolean);
+  function clearFilters() {
+    startTransition(() => {
+      setParams(previous => {
+        const next = new URLSearchParams(previous);
+        for (const key of ["q", "champion", "format", "from", "to", "page"]) next.delete(key);
+        return next;
+      }, { replace: true });
+      setVisibleCount(30);
+    });
   }
   const waiting = (source !== "tournament" && loading) || (source !== "shared" && format !== "PANTHEON" && !sightings && status.phase !== "error");
   const failed = (source !== "tournament" && Boolean(error)) || (source !== "shared" && format !== "PANTHEON" && !sightings && status.phase === "error");
   return <>
     <div className="mt-4">
-      <Select aria-label="Deck source" value={source} onChange={e => update("source", e.target.value)}><option value="all">All sources</option><option value="shared">Shared decks</option><option value="tournament">Tournament decks</option></Select>
+      <label className="flex flex-col gap-1 text-xs">Source<Select aria-label="Deck source" value={source} onChange={e => update("source", e.target.value)}><option value="all">All sources</option><option value="shared">Shared decks</option><option value="tournament">Tournament decks</option></Select></label>
     </div>
     {(source === "tournament" || visitedTournament) && <div hidden={source !== "tournament"}>
       <DeckSightingsView championName={champion || null} setChampionName={value => update("champion", value ?? "")} query={query} setQuery={value => update("q", value)} contentFilters={contentFilters} setContentFilters={setContentFilters} />
     </div>}
     {source !== "tournament" && <>
-    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-      <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} className="min-w-0" />
-      <Select aria-label="Champion" value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</Select>
-      <Select aria-label="Deck format" value={format} onChange={e => update("format", e.target.value)}><option value="">All formats</option><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></Select>
+    <div className="mt-4 flex flex-wrap items-end gap-2">
+      <label className="flex min-w-0 basis-full flex-col gap-1 text-xs sm:flex-1">Search decks
+        <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} />
+      </label>
+      <Button aria-haspopup="dialog" onClick={() => setFiltersOpen(true)}>Filters{activeFilters.length ? ` (${activeFilters.length})` : ""}</Button>
+      <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">Sort by
+        <Select aria-label="Sort decks" value={sort} onChange={e => update("sort", e.target.value)}>
+          <option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="champion">Champion A–Z</option>
+        </Select>
+      </label>
     </div>
+    {(activeFilters.length > 0 || query) && <div className="mt-2 flex flex-wrap items-center gap-2">
+      <p className="min-w-0 text-sm text-ctp-subtext0 [overflow-wrap:anywhere]">{[query && `Search: ${query}`, ...activeFilters].filter(Boolean).join(" · ")}</p>
+      <Button onClick={clearFilters}>Clear filters</Button>
+    </div>}
+    {filtersOpen && <DialogSheet title="Filter decks" onDismiss={() => setFiltersOpen(false)} footer={<div className="flex flex-wrap gap-2"><Button variant="primary" onClick={() => setFiltersOpen(false)}>Show {rows.length.toLocaleString()} decks</Button><Button onClick={clearFilters}>Clear filters</Button></div>}>
+      <div className="space-y-4">
+        <label className="flex min-w-0 flex-col gap-1 text-sm">Champion
+          <Select aria-label="Champion" value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</Select>
+        </label>
+        <label className="flex min-w-0 flex-col gap-1 text-sm">Format
+          <Select aria-label="Deck format" value={format} onChange={e => update("format", e.target.value)}><option value="">All formats</option><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></Select>
+        </label>
+        <fieldset className="min-w-0">
+          <legend className="mb-2 text-sm">Published / event date</legend>
+          <div className="grid min-w-0 gap-2 sm:grid-cols-2">
+            <label className="flex min-w-0 flex-col gap-1 text-xs">From<TextInput aria-label="Date from" type="date" value={dateFrom} max={dateTo || undefined} onInput={e => update("from", e.currentTarget.value)} /></label>
+            <label className="flex min-w-0 flex-col gap-1 text-xs">Through<TextInput aria-label="Date through" type="date" value={dateTo} min={dateFrom || undefined} onInput={e => update("to", e.currentTarget.value)} /></label>
+          </div>
+          {dateFrom && dateTo && dateFrom > dateTo && <p role="alert" className="mt-2 text-sm text-ctp-red">Choose an end date on or after the start date.</p>}
+        </fieldset>
+      </div>
+    </DialogSheet>}
     {source !== "shared" && format !== "PANTHEON" && <PublishedSourceStatus label="Tournament decks" status={status} hasData={Boolean(sightings)} />}
     {source !== "tournament" && loading && <InlineState className="mt-4">Loading shared decks…</InlineState>}
     {source !== "tournament" && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
-    <p className="mt-4 text-xs text-ctp-subtext0" role="status">{rows.length.toLocaleString()} decks · Newest first{pending || query !== deferredQuery ? " · Recalculating…" : ""}</p>
+    <p className="mt-4 text-xs text-ctp-subtext0" role="status">{rows.length.toLocaleString()} decks · {sort === "oldest" ? "Oldest first" : sort === "champion" ? "Champion A–Z" : "Newest first"}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</p>
     {!rows.length && !waiting && !failed && <InlineState className="mt-4">No decks match these filters.</InlineState>}
     <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <PublicDeckCard key={`shared:${row.id}`} deck={row.deck} /> : <DeckSightingRow key={`tournament:${row.id}`} sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard />)}</div>
     {rows.length > visibleCount && <Button className="mt-4" onClick={() => setVisibleCount(value => value + 30)}>Load more</Button>}
