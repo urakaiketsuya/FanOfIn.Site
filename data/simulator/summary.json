@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-10-17T10:11:10.132Z",
-  "games": 26,
+  "generatedAt": "2026-10-19T12:11:38.235Z",
+  "games": 28,
   "firstPlayer": {
-    "games": 26,
-    "wins": 15,
-    "winRate": 0.5769230769230769
+    "games": 28,
+    "wins": 17,
+    "winRate": 0.6071428571428571
   },
-  "avgTurns": 4.576923076923077,
+  "avgTurns": 4.607142857142857,
   "champions": [
     {
       "championId": "tafqldAGRF",
@@ -27,6 +27,14 @@
       "winRate": 0.2
     },
     {
+      "championId": "DpHDGaX2Pn",
+      "championName": "Lorraine, Wandering Warrior",
+      "element": "NORM",
+      "games": 4,
+      "wins": 1,
+      "winRate": 0.25
+    },
+    {
       "championId": "j6dkdoxyqt",
       "championName": "Guo Jia, Chosen Disciple",
       "element": "NORM",
@@ -43,20 +51,20 @@
       "winRate": 1
     },
     {
-      "championId": "DpHDGaX2Pn",
-      "championName": "Lorraine, Wandering Warrior",
-      "element": "NORM",
-      "games": 3,
-      "wins": 1,
-      "winRate": 0.3333333333333333
-    },
-    {
       "championId": "LMyKyVC2O9",
       "championName": "Spirit of Fire",
       "element": "FIRE",
       "games": 3,
       "wins": 2,
       "winRate": 0.6666666666666666
+    },
+    {
+      "championId": "apVtyt48u3",
+      "championName": "Dante, Prodigal Swain",
+      "element": "NORM",
+      "games": 3,
+      "wins": 1,
+      "winRate": 0.3333333333333333
     },
     {
       "championId": "2TCyILvBYa",
@@ -83,20 +91,20 @@
       "winRate": 0.5
     },
     {
-      "championId": "apVtyt48u3",
-      "championName": "Dante, Prodigal Swain",
-      "element": "NORM",
-      "games": 2,
-      "wins": 0,
-      "winRate": 0
-    },
-    {
       "championId": "dPP9I4nVn0",
       "championName": "Merlin, Amethyst's Glow",
       "element": "NORM",
       "games": 2,
       "wins": 2,
       "winRate": 1
+    },
+    {
+      "championId": "iq4d5vettc",
+      "championName": "Diana, Duskstalker",
+      "element": "UMBRA",
+      "games": 2,
+      "wins": 0,
+      "winRate": 0
     },
     {
       "championId": "m7f6r8f3y8",
@@ -163,20 +171,20 @@
       "winRate": 0
     },
     {
+      "championId": "c4yrrtv7o1",
+      "championName": "Jin, Undying Resolve",
+      "element": "EXIA",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
+    },
+    {
       "championId": "he6kd7hocc",
       "championName": "Tristan, Shadowdancer",
       "element": "UMBRA",
       "games": 1,
       "wins": 1,
       "winRate": 1
-    },
-    {
-      "championId": "iq4d5vettc",
-      "championName": "Diana, Duskstalker",
-      "element": "UMBRA",
-      "games": 1,
-      "wins": 0,
-      "winRate": 0
     },
     {
       "championId": "n2TKqNaODR",
@@ -318,6 +326,24 @@
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
+    },
+    {
+      "champion1": "apVtyt48u3",
+      "champion1Name": "Dante, Prodigal Swain",
+      "champion2": "DpHDGaX2Pn",
+      "champion2Name": "Lorraine, Wandering Warrior",
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
+    },
+    {
+      "champion1": "c4yrrtv7o1",
+      "champion1Name": "Jin, Undying Resolve",
+      "champion2": "iq4d5vettc",
+      "champion2Name": "Diana, Duskstalker",
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
     },
     {
       "champion1": "dPP9I4nVn0",
@@ -485,6 +511,20 @@
       "lethalHits": 1
     },
     {
+      "cardId": "apVtyt48u3",
+      "games": 8,
+      "avgDrawn": 0,
+      "avgDrawnToMemory": 0,
+      "avgMaterialized": 1,
+      "avgReserved": 0,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.25,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
       "cardId": "em6eEh9q8y",
       "games": 8,
       "avgDrawn": 1.1,
@@ -497,20 +537,6 @@
       "attackEvents": 12,
       "avgDamageDealt": 1.5,
       "lethalHits": 1
-    },
-    {
-      "cardId": "apVtyt48u3",
-      "games": 7,
-      "avgDrawn": 0,
-      "avgDrawnToMemory": 0,
-      "avgMaterialized": 1,
-      "avgReserved": 0,
-      "avgDiscarded": 0,
-      "avgActivated": 0,
-      "winRate": 0.14285714285714285,
-      "attackEvents": 0,
-      "avgDamageDealt": 0,
-      "lethalHits": 0
     },
     {
       "cardId": "BqDw4Mei4C",
@@ -583,6 +609,20 @@
       "lethalHits": 0
     },
     {
+      "cardId": "io7maIjC4u",
+      "games": 6,
+      "avgDrawn": 1,
+      "avgDrawnToMemory": 0.16666666666666666,
+      "avgMaterialized": 0,
+      "avgReserved": 1.5,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.8333333333333334,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
       "cardId": "rpOaAjgtue",
       "games": 6,
       "avgDrawn": 0.8571428571428571,
@@ -594,6 +634,34 @@
       "winRate": 0.5,
       "attackEvents": 4,
       "avgDamageDealt": 1.3333333333333333,
+      "lethalHits": 0
+    },
+    {
+      "cardId": "rWhFC8XBaH",
+      "games": 6,
+      "avgDrawn": 1.2857142857142858,
+      "avgDrawnToMemory": 0.14285714285714285,
+      "avgMaterialized": 0,
+      "avgReserved": 0.2857142857142857,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.8333333333333334,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
+      "cardId": "zHhOcG9MfK",
+      "games": 6,
+      "avgDrawn": 1.1666666666666667,
+      "avgDrawnToMemory": 0.16666666666666666,
+      "avgMaterialized": 0,
+      "avgReserved": 1.6666666666666667,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.3333333333333333,
+      "attackEvents": 0,
+      "avgDamageDealt": 1.6666666666666667,
       "lethalHits": 0
     },
     {
@@ -667,6 +735,20 @@
       "lethalHits": 0
     },
     {
+      "cardId": "DpHDGaX2Pn",
+      "games": 5,
+      "avgDrawn": 0,
+      "avgDrawnToMemory": 0,
+      "avgMaterialized": 1,
+      "avgReserved": 0,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.4,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
       "cardId": "fp773yotth",
       "games": 5,
       "avgDrawn": 1.4,
@@ -676,20 +758,6 @@
       "avgDiscarded": 0,
       "avgActivated": 0,
       "winRate": 0.4,
-      "attackEvents": 0,
-      "avgDamageDealt": 0,
-      "lethalHits": 0
-    },
-    {
-      "cardId": "io7maIjC4u",
-      "games": 5,
-      "avgDrawn": 1,
-      "avgDrawnToMemory": 0.2,
-      "avgMaterialized": 0,
-      "avgReserved": 1.4,
-      "avgDiscarded": 0,
-      "avgActivated": 0,
-      "winRate": 0.8,
       "attackEvents": 0,
       "avgDamageDealt": 0,
       "lethalHits": 0
@@ -751,20 +819,6 @@
       "lethalHits": 0
     },
     {
-      "cardId": "rWhFC8XBaH",
-      "games": 5,
-      "avgDrawn": 1,
-      "avgDrawnToMemory": 0.16666666666666666,
-      "avgMaterialized": 0,
-      "avgReserved": 0.3333333333333333,
-      "avgDiscarded": 0,
-      "avgActivated": 0,
-      "winRate": 0.8,
-      "attackEvents": 0,
-      "avgDamageDealt": 0,
-      "lethalHits": 0
-    },
-    {
       "cardId": "SkAe1hsw5H",
       "games": 5,
       "avgDrawn": 1.2,
@@ -791,107 +845,105 @@
       "attackEvents": 0,
       "avgDamageDealt": 0.6,
       "lethalHits": 0
-    },
-    {
-      "cardId": "zHhOcG9MfK",
-      "games": 5,
-      "avgDrawn": 1.2,
-      "avgDrawnToMemory": 0.2,
-      "avgMaterialized": 0,
-      "avgReserved": 1.8,
-      "avgDiscarded": 0,
-      "avgActivated": 0,
-      "winRate": 0.2,
-      "attackEvents": 0,
-      "avgDamageDealt": 2,
-      "lethalHits": 0
     }
   ],
   "weapons": [],
   "turnStats": [
     {
       "turn": 1,
-      "games": 25,
-      "avgCardsPlayed": 1.02,
+      "games": 27,
+      "avgCardsPlayed": 0.9814814814814815,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.74,
-      "avgDamageDealt": 0.3,
-      "avgDamageTaken": 0.1,
+      "avgReserveSpent": 2.685185185185185,
+      "avgDamageDealt": 0.3333333333333333,
+      "avgDamageTaken": 0.09259259259259259,
       "avgHealed": 0,
       "avgLevel": 0,
       "avgHp": 15
     },
     {
       "turn": 2,
-      "games": 24,
-      "avgCardsPlayed": 1.6818181818181819,
-      "avgMemorySpent": 0.4318181818181818,
-      "avgReserveSpent": 3.727272727272727,
-      "avgDamageDealt": 1.3181818181818181,
-      "avgDamageTaken": 0.8863636363636364,
-      "avgHealed": 0.11363636363636363,
-      "avgLevel": 0.7045454545454546,
-      "avgHp": 17.90909090909091
+      "games": 26,
+      "avgCardsPlayed": 1.6458333333333333,
+      "avgMemorySpent": 0.4375,
+      "avgReserveSpent": 3.625,
+      "avgDamageDealt": 1.3333333333333333,
+      "avgDamageTaken": 0.9375,
+      "avgHealed": 0.10416666666666667,
+      "avgLevel": 0.7291666666666666,
+      "avgHp": 18.041666666666668
     },
     {
       "turn": 3,
-      "games": 18,
-      "avgCardsPlayed": 1.7567567567567568,
-      "avgMemorySpent": 0.4864864864864865,
-      "avgReserveSpent": 3.5405405405405403,
-      "avgDamageDealt": 2.4324324324324325,
-      "avgDamageTaken": 2.189189189189189,
-      "avgHealed": 0.02702702702702703,
-      "avgLevel": 1.5405405405405406,
-      "avgHp": 20.2972972972973
+      "games": 19,
+      "avgCardsPlayed": 1.794871794871795,
+      "avgMemorySpent": 0.5128205128205128,
+      "avgReserveSpent": 3.41025641025641,
+      "avgDamageDealt": 2.4358974358974357,
+      "avgDamageTaken": 2.1538461538461537,
+      "avgHealed": 0.02564102564102564,
+      "avgLevel": 1.564102564102564,
+      "avgHp": 20.435897435897434
     },
     {
       "turn": 4,
-      "games": 13,
-      "avgCardsPlayed": 1.68,
-      "avgMemorySpent": 0.52,
-      "avgReserveSpent": 3.36,
-      "avgDamageDealt": 2.56,
-      "avgDamageTaken": 3.04,
-      "avgHealed": 0.08,
-      "avgLevel": 2.04,
-      "avgHp": 22.36
+      "games": 14,
+      "avgCardsPlayed": 1.6666666666666667,
+      "avgMemorySpent": 0.5185185185185185,
+      "avgReserveSpent": 3.2962962962962963,
+      "avgDamageDealt": 2.6666666666666665,
+      "avgDamageTaken": 3,
+      "avgHealed": 0.07407407407407407,
+      "avgLevel": 2.074074074074074,
+      "avgHp": 22.555555555555557
     },
     {
       "turn": 5,
-      "games": 9,
-      "avgCardsPlayed": 1.7058823529411764,
-      "avgMemorySpent": 0.5294117647058824,
-      "avgReserveSpent": 1.8823529411764706,
-      "avgDamageDealt": 2.4705882352941178,
-      "avgDamageTaken": 3.411764705882353,
-      "avgHealed": 0.17647058823529413,
-      "avgLevel": 2.2941176470588234,
-      "avgHp": 23.764705882352942
+      "games": 10,
+      "avgCardsPlayed": 1.6842105263157894,
+      "avgMemorySpent": 0.5263157894736842,
+      "avgReserveSpent": 2,
+      "avgDamageDealt": 2.736842105263158,
+      "avgDamageTaken": 3.736842105263158,
+      "avgHealed": 0.15789473684210525,
+      "avgLevel": 2.3157894736842106,
+      "avgHp": 23.894736842105264
     },
     {
       "turn": 6,
-      "games": 6,
-      "avgCardsPlayed": 1.7272727272727273,
-      "avgMemorySpent": 1,
-      "avgReserveSpent": 2.272727272727273,
-      "avgDamageDealt": 4,
-      "avgDamageTaken": 3.6363636363636362,
-      "avgHealed": 0.2727272727272727,
-      "avgLevel": 2.8181818181818183,
-      "avgHp": 27.09090909090909
+      "games": 7,
+      "avgCardsPlayed": 1.7692307692307692,
+      "avgMemorySpent": 1.1538461538461537,
+      "avgReserveSpent": 2.3076923076923075,
+      "avgDamageDealt": 3.923076923076923,
+      "avgDamageTaken": 4,
+      "avgHealed": 0.23076923076923078,
+      "avgLevel": 2.8461538461538463,
+      "avgHp": 27.53846153846154
     },
     {
       "turn": 7,
+      "games": 6,
+      "avgCardsPlayed": 1.9230769230769231,
+      "avgMemorySpent": 0.38461538461538464,
+      "avgReserveSpent": 1.7692307692307692,
+      "avgDamageDealt": 4.076923076923077,
+      "avgDamageTaken": 4.6923076923076925,
+      "avgHealed": 0.46153846153846156,
+      "avgLevel": 2.923076923076923,
+      "avgHp": 28.307692307692307
+    },
+    {
+      "turn": 8,
       "games": 5,
-      "avgCardsPlayed": 1.9090909090909092,
-      "avgMemorySpent": 0.36363636363636365,
-      "avgReserveSpent": 1.6363636363636365,
-      "avgDamageDealt": 4.181818181818182,
-      "avgDamageTaken": 5.2727272727272725,
-      "avgHealed": 0.5454545454545454,
-      "avgLevel": 2.909090909090909,
-      "avgHp": 28
+      "avgCardsPlayed": 1.4,
+      "avgMemorySpent": 0.3,
+      "avgReserveSpent": 1.4,
+      "avgDamageDealt": 4.8,
+      "avgDamageTaken": 5.1,
+      "avgHealed": 1.4,
+      "avgLevel": 3,
+      "avgHp": 28.6
     }
   ]
 }
