@@ -112,3 +112,4 @@ export * from './stores';
 export * from './drawInfluence';
 
 export * from "./eventBrowserData.js";
+export * from "./defenseScenario.js";

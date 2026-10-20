@@ -5071,3 +5071,24 @@ completion; this feature shows current coverage, not historical acquisition prog
 Combined goal filters intersect card UUIDs and edition UUIDs across all selected categories. Artist or rarity filters require exact-printing targets. Other filtered goals retain any-printing ownership for card/playset targets. Filter order does not change goal identity; old unfiltered pins remain valid. Empty intersections show zero requirements without claiming completion.
 
 Account goals use a unique user/goal key. Commands insert or delete only specified goals; imports run as atomic batches. Concurrent writes to different goals are preserved, while writes to the same goal follow database execution order. Retry repeats the intended state, never a toggle. Legacy device goals migrate only through explicit import, in batches of at most 100. Goal references contain catalog identifiers, not user-authored display text.
+
+## Prevention and recovery scenarios
+
+Deck analytics models one resolved copy independently of the other cards. Inputs describe
+one turn with equal-sized incoming damage events; activation legality, payment, sequencing,
+stacking, and survival are not inferred. Main-only copy counts use the existing access
+probability at 10 cards seen and a minimum 60-card library. Sideboard is excluded.
+
+- Veiling Breeze: per event `min(wind cards revealed from memory, incoming damage)`;
+  total is that amount times the number of events. Main wind count is composition, not memory.
+- Crystallized Destiny: prevents one next event if any occurs. At least 7 prevented
+  activates the +2 opponent activation tax. This is not a reduction of every event.
+- Flourishing Restoration: capacity `3 + 3 * min(2, opposing allies)`;
+  actual recovered damage is `min(capacity, damage already on champion)`.
+
+Source: local catalog snapshot dated 2026-09-28 and reviewed TCGEngine fixtures
+`cards-v.php`, `phase-e-norm.php`, `tera.php`, `phase-e-tera.php`. Breeze's fixture
+asserts effect creation only; repeated-event arithmetic is based on printed text,
+not claimed as an engine replay. Existing Restoration fixtures assert 9 recovery and
+6 recovery with the Diao Chan waiver. The UI assumes successful resolution; the waiver
+and Destiny's cost reduction do not change the displayed effect calculation.

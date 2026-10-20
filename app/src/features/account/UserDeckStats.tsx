@@ -1,5 +1,6 @@
 import AssociatedCards from "../../components/AssociatedCards";
 import CardArtTile from "../../components/CardArtTile";
+import DefenseRecovery from "./DefenseRecovery";
 import DeckAccessSummary from "./DeckAccessSummary";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
@@ -242,6 +243,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
         )}
       </Panel>
       </div>
+      <DefenseRecovery mainLines={namedSections.main} cardsByName={cardsByName} />
       {allyPower.allyCopies > 0 && hasDamageForecast && (
         <Panel className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>
