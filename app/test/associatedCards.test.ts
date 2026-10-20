@@ -25,9 +25,12 @@ test("access summary uses combined main copies and does not invent odds for an e
   const render = (mainLines: { name: string; quantity: number }[]) => renderToStaticMarkup(createElement(MemoryRouter, {}, createElement(DeckAccessSummary, {
     mainLines, cardsByName: new Map(),
   })));
-  const html = render([{ name: "Unknown", quantity: 2 }, { name: "Unknown", quantity: 2 }]);
-  assert.match(html, /53%/);
+  const html = render([{ name: "Unknown", quantity: 2 }, { name: "Unknown", quantity: 2 }, { name: "Other", quantity: 56 }]);
+  assert.match(html, /52\.8%/);
   assert.match(html, /4 copies/);
   assert.doesNotMatch(render([]), /0%/);
-  assert.match(render([]), /Add main-deck cards/);
+  assert.match(render([]), /Add Main cards/);
+  const incomplete = render([{ name: "Unknown", quantity: 4 }]);
+  assert.match(incomplete, /Incomplete Main deck/);
+  assert.match(incomplete, /100\.0%/);
 });
