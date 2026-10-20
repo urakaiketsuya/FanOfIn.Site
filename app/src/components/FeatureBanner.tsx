@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { DISCORD_INVITE_URL } from "../lib/communityLinks";
 
 interface FeatureTip {
   message: string;
   to: string;
   cta: string;
+  external?: boolean;
 }
 
 // Keep tips concise and stable for the mounted visit.
 const FEATURE_TIPS: FeatureTip[] = [
+  { message: "Connect with the Fan of Insight community.", to: DISCORD_INVITE_URL, cta: "Join our Discord", external: true },
   { message: "Meet your champion. Explore their cards and builds.", to: "/champions", cta: "Explore champions" },
   { message: "Bring your decklist. Keep building from there.", to: "/decks/edit", cta: "Import a deck" },
   { message: "Start your next deck with guided tools.", to: "/deck-builder", cta: "Build a deck" },
@@ -32,7 +35,7 @@ export default function FeatureBanner() {
   return (
     <div data-component="FeatureBanner" className="border-b border-ctp-surface0 bg-ctp-mauve/10">
       <div className="mx-auto max-w-5xl px-4 text-center text-xs text-ctp-subtext1 sm:text-sm">
-        <Link to={tip.to} className="flex min-h-control items-center justify-center rounded py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-mauve group">
+        <Link to={tip.to} reloadDocument={tip.external} target={tip.external ? "_blank" : undefined} rel={tip.external ? "noopener noreferrer" : undefined} className="flex min-h-control items-center justify-center rounded py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-mauve group">
           <span>
             <span aria-hidden="true" className="mr-2">💡</span>
             {tip.message}{" "}

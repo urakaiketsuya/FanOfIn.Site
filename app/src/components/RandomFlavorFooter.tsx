@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useRandomFlavorCard } from "../features/cards/useRandomFlavorCard";
 import { useCardsByNames } from "../features/events/useCardsByNames";
 import { CHARACTER_CUTOUTS } from "../features/products/characterArt";
+import { DISCORD_INVITE_URL } from "../lib/communityLinks";
 
 // Hand-picked, not every CHARACTER_CUTOUTS entry (which also has a few non-Champion pieces –
 // Slime tokens, a Drone ally – and some champion art that just doesn't read as well small).
@@ -44,9 +45,14 @@ export default function RandomFlavorFooter() {
           Grand Archive is a trademark of Weebs of the Shore. This is an unofficial fan project and is not affiliated
           with or endorsed by Weebs of the Shore. This site is built and maintained with AI assistance.
         </p>
-        <Link to="/changelog" className="mt-3 inline-block text-[11px] text-ctp-subtext0/70 hover:text-ctp-blue">
-          Changelog
-        </Link>
+        <nav aria-label="Footer" className="mt-3 flex flex-wrap items-center justify-center gap-x-4">
+          <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-control items-center rounded px-2 text-sm font-medium text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+            Join our Discord
+          </a>
+          <Link to="/changelog" className="inline-flex min-h-control items-center rounded px-2 text-[11px] text-ctp-subtext0/70 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+            Changelog
+          </Link>
+        </nav>
       </footer>
       {cutoutName && cutoutCard && (
         <div className="pb-8 text-center">
