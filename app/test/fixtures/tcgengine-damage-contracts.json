@@ -171,6 +171,66 @@
       "level": 1,
       "cost_reserve": null,
       "power": null
+    },
+    {
+      "name": "Purge in Flames",
+      "effect": "**Efficiency** *(This card costs **LV** less to activate. **LV** refers to your champion's level.)*\n\nDeal 2 damage to all units except for your champion. **Class Bonus:** Deal 3 damage to those units instead. *(Apply the additional effect only if your champion's class matches this card's class.)*",
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost_reserve": 8,
+      "power": null
+    },
+    {
+      "name": "Rai, Spellcrafter",
+      "effect": "**On Enter:** Put two **enlighten** counters on CARDNAME. *(You may remove three **enlighten** counters from your champion to draw a card.)*",
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "HUMAN"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost_reserve": null,
+      "power": null
+    },
+    {
+      "name": "Lorraine, Wandering Warrior",
+      "effect": "**On Enter:** Materialize a weapon card with memory cost 0 from your material deck.",
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "HUMAN"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost_reserve": null,
+      "power": null
     }
   ],
   "contracts": {
@@ -199,6 +259,26 @@
       "negativeFixture": "ashwick-cremator-class-bonus-end-phase-with-cards-in-hand-does-nothing",
       "damage": 2,
       "negativeDamage": 0
+    },
+    "classReplacement": {
+      "fixture": "purge-in-flames-damage",
+      "negativeFixture": "purge-in-flames-without-the-class-bonus-deals-two-damage",
+      "damage": 3,
+      "negativeDamage": 2
     }
+  },
+  "engineVerification": {
+    "verifiedAt": "2026-10-20",
+    "passedFixtures": [
+      "purge-in-flames-damage",
+      "purge-in-flames-without-the-class-bonus-deals-two-damage",
+      "harbinger-of-lightning-without-an-arcane-shenju-ally-needs-the-arcane-element"
+    ],
+    "scope": "Selected engine replays only; element rejection is boundary evidence, not an analytics playability contract."
+  },
+  "additionalSourceFiles": {
+    "Tests/Integration/GrandArchiveSim/purge-in-flames-damage/assertions.json": "b731833761a091e8614bde02d057ae42e6f3e26fbac6b918f58aca616cf12788",
+    "Tests/Integration/GrandArchiveSim/purge-in-flames-without-the-class-bonus-deals-two-damage/assertions.json": "c1fe3b806d95f238c9d31dde0c5333aa02941f8157d710dba86da3e112b7a77f",
+    "DevTools/ga-fixtures/phase-e-arcane.php": "4ca560ba7f6587e90a97d7ef42c01820055f7f0b724e85b5b1e3d874ccf0b4a5"
   }
 }

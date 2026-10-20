@@ -35,6 +35,7 @@ hand. The ordinary Diao reference deck stays on the exact path.
 | Card | Deck-derived optimistic contribution |
 | --- | --- |
 | Fireball | `1 + level`, using contiguous champion levels actually present in Material and the natural `turn - 1` ceiling |
+| Purge in Flames | 2 base; 3 instead when a Mage champion in Material is reachable through the contiguous lineage at the checkpoint. Its class replacement does not remove base damage or create another drawn card. |
 | Essence of Blizzards | `1 + level`; rested opposing target is an unresolved condition and remains marked partial |
 | Refracting Missile | `1 + drawn Fractal objects` per drawn Missile |
 | Shimmering Refraction | `drawn phantasia objects` per drawn copy |

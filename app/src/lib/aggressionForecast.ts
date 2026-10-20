@@ -115,6 +115,7 @@ export function computeAggressionForecast(
   const deckSize = Math.max(60, main.reduce((sum, line) => sum + line.quantity, 0));
   const minGroups: DamageGroup[] = [];
   const maxGroups: DamageGroup[] = [];
+  const classDamageUpgrades = new Map<DamageGroup, { seen: number; damage: number }>();
   const audit: DamageAuditEntry[] = [];
   let fixedDamageCopies = 0, variableDamageCopies = 0, scalingDamageCopies = 0, ambiguousDamageCopies = 0;
   let awakeningBloomComboCopies = 0, symmetricDamageCopies = 0, recurringDamagePerTurn = 0, detectedDamageCopies = 0;
@@ -212,6 +213,23 @@ export function computeAggressionForecast(
           break;
         case "Potion Infusion: Volatility": high.volatility = 1; reason = "5–10 per paired drawn Potion with a sacrifice ability that does not require resting; each Potion used once"; break;
       }
+    } else if (line.name === "Purge in Flames") {
+      // The class clause replaces the base amount; it does not gate the whole spell.
+      high.damage = 2;
+      ambiguousDamageCopies += line.quantity;
+      const mageLevels = champions
+        .filter((champion) => champion.classes?.includes("MAGE"))
+        .map((champion) => champion.level ?? Infinity)
+        .filter((level) => level <= lineageLevel);
+      if (mageLevels.length) {
+        const level = Math.min(...mageLevels);
+        classDamageUpgrades.set(high, {
+          seen: level === 0 ? 0 : level + (playOrder === "first" ? 7 : 8),
+          damage: 3,
+        });
+      }
+      status = "partial";
+      reason = "2 printed damage; 3 instead once a matching Mage champion is available";
     } else if (line.name === "Full Bloom") {
       awakeningBloomComboCopies += line.quantity;
       if (hasDiao) {
@@ -301,7 +319,10 @@ export function computeAggressionForecast(
       scepterAvailable: seen >= advancedReadySeen,
     };
     const min = damageDistribution(minGroups, deckSize, seen);
-    const max = damageDistribution(maxGroups, deckSize, seen, context);
+    const max = damageDistribution(maxGroups.map((group) => {
+      const upgrade = classDamageUpgrades.get(group);
+      return upgrade && seen >= upgrade.seen ? { ...group, damage: upgrade.damage } : group;
+    }), deckSize, seen, context);
     return {
       seen, ...(min.sampleSize || max.sampleSize ? { sampleSize: Math.max(min.sampleSize ?? 0, max.sampleSize ?? 0) } : {}),
       expectedMin: round(expected(min)), expectedMax: round(expected(max)),

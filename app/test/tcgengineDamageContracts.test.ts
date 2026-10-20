@@ -64,3 +64,34 @@ test("TCGEngine: Cremator's empty-hand damage remains conditional and needs clas
   assert.equal(supported.audit.find(entry => entry.name === main[0].name)?.status, "partial");
   assert.ok(computeAggressionForecast(main, catalog).points.every(point => point.expectedMax === 0));
 });
+
+test("TCGEngine: Purge retains base damage without its class and replaces it with the bonus", () => {
+  const main = [line("Purge in Flames", 4)];
+  const { damage, negativeDamage } = contracts.classReplacement;
+  for (const material of [[], [line("Lorraine, Wandering Warrior")]]) {
+    const result = computeAggressionForecast(main, catalog, material);
+    for (const point of result.points) {
+      assert.equal(point.expectedMax, rounded(negativeDamage * 4 * point.seen / 60));
+    }
+  }
+  const result = computeAggressionForecast(main, catalog, [line("Rai, Spellcrafter")]);
+  assert.equal(result.points[0].expectedMax, rounded(negativeDamage * 4 * 7 / 60));
+  assert.equal(result.points[1].expectedMax, rounded(damage * 4 * 10 / 60));
+  assert.equal(result.points[1].expectedMin, 0);
+  assert.deepEqual(result, computeAggressionForecast([
+    line("Purge in Flames", 2), line("Purge in Flames", 2),
+  ], catalog, [line("Rai, Spellcrafter")]));
+});
+
+test("Purge's class upgrade respects lineage gaps and first/second-player timing", () => {
+  const levelThree = { ...catalog.get("Rai, Spellcrafter")!, name: "Contract Mage 3", level: 3 };
+  const levelTwo = { ...catalog.get("Lorraine, Wandering Warrior")!, name: "Contract Warrior 2", level: 2 };
+  const local = new Map([...catalog, [levelThree.name, levelThree], [levelTwo.name, levelTwo]] as [string, Card][]);
+  const main = [line("Purge in Flames", 4)];
+  const gap = [line("Lorraine, Wandering Warrior"), line(levelThree.name)];
+  const full = [...gap, line(levelTwo.name)];
+  assert.equal(computeAggressionForecast(main, local, gap).points[1].expectedMax, 1.3);
+  assert.equal(computeAggressionForecast(main, local, full).points[1].expectedMax, 2);
+  assert.equal(computeAggressionForecast(main, local, full, "second").points[1].expectedMax, 1.3);
+  assert.equal(computeAggressionForecast(main, local, full, "second").points[2].expectedMax, 3);
+});
