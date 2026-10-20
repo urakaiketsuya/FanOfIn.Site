@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import { reportDeltaChanged, scenarioConditions, SCENARIO_FIELDS, BOOLEAN_SCENARIOS, calculateFixtureMatchup, compareFixtureScenarios, copies, type AnalyticsDeck, type AnalyticsLine, type Card, type ScenarioKey, } from '@gatcg/shared';
+import DrawAccessComparison from './DrawAccessComparison';
 import AssociatedCards from '../../components/AssociatedCards';
 import Button from '../../components/ui/Button';
 import DialogSheet from '../../components/ui/DialogSheet';
@@ -23,7 +24,6 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
   const other = useCardScenario(target, cardsByName);
   const [mode, setMode] = useState<Mode>(initialMode);
   const [named, setNamed] = useState('');
-  const [versionGroup, setVersionGroup] = useState('overview');
   const [adjusting, setAdjusting] = useState(false);
   const [sequenceText, setSequenceText] = useState('3, 3');
   const sequenceValid = /^\s*\d+(\s*,\s*\d+)*\s*$/.test(sequenceText) && sequenceText.split(',').length <= 30 && sequenceText.split(',').every(value => Number(value) <= 100);
@@ -31,10 +31,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
   // Versions use identical numeric conditions, with each deck's selected active champion class.
   const targetState = { ...own.state, classes: other.state.classes };
   const deltas = compareFixtureScenarios(baseline, target, cardsByName, own.state, targetState);
-  const groups = [{ key: 'resources', label: 'Resources & answer access' }, { key: 'draw', label: 'Draw & recovery' }, { key: 'combat', label: 'Damage & attacks' }, { key: 'packages', label: 'Enabler access' }].filter(group => deltas.some(delta => (delta.after ?? delta.before)!.group === group.key));
-  groups.unshift({ key: 'overview', label: 'All findings' });
-  const selectedGroup = groups.some(group => group.key === versionGroup) ? versionGroup : groups[0]?.key;
-  const visibleDeltas = deltas.filter(delta => selectedGroup === 'overview' || (delta.after ?? delta.before)!.group === selectedGroup).sort((a, b) => Number(reportDeltaChanged(b)) - Number(reportDeltaChanged(a)));
+  const visibleDeltas = [...deltas].sort((a, b) => Number(reportDeltaChanged(b)) - Number(reportDeltaChanged(a)));
   const changedCount = deltas.filter(reportDeltaChanged).length;
   const selectedName = target.main.some(line => line.name === named) ? named : [...target.main].sort((a, b) => b.quantity - a.quantity || a.name.localeCompare(b.name))[0]?.name ?? '';
   const matchup = calculateFixtureMatchup(baseline, target, cardsByName, own.state, other.state.classes, selectedName, sequence);
@@ -90,9 +87,9 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
 
     </TabPanel>
     <TabPanel baseId={id} tab="versions" active={mode} keepMounted>
+      <DrawAccessComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />
       <p className="mt-3 text-xs text-ctp-subtext1">{changedCount} changed findings · {deltas.length - changedCount} unchanged · {own.state.seen} cards seen</p>
       <p className="mt-1 text-xs text-ctp-subtext1">{own.champion || 'No class bonus'} → {other.champion || 'No class bonus'}</p>
-      {groups.length > 0 && <label className="mt-3 block text-xs font-medium" htmlFor={`${id}-group`}>Calculation<select id={`${id}-group`} value={selectedGroup} onChange={e => setVersionGroup(e.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base sm:max-w-sm">{groups.map(group => <option key={group.key} value={group.key}>{group.label}</option>)}</select></label>}
       {!deltas.length && <p className="mt-3 text-sm">No supported calculations in either deck.</p>}
       <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {visibleDeltas.map(delta => {
@@ -100,10 +97,11 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
           const accessA = delta.before?.access, accessB = delta.after?.access;
           const accessDelta = (accessB ?? 0) - (accessA ?? 0);
           return <article key={delta.id} className={`min-w-0 rounded-xl bg-ctp-mantle p-3 ${delta.id === "answerAccess" ? "sm:col-span-2 xl:col-span-3" : ""}`}>
-            <AssociatedCards lines={comparisonLines(delta.before?.lines, delta.after?.lines)} cardsByName={cardsByName} label={row.name} />
+            <h4 className="text-sm font-semibold">{row.name}</h4>
             <p className="mt-3 text-xs font-medium">{reportDeltaChanged(delta) ? "Changed" : "Unchanged"} · {row.unit}</p><p className="mt-1 text-xl font-semibold" aria-live="polite">{delta.before ? Number(delta.before.value.toFixed(1)) : 'Absent'} → {delta.after ? Number(delta.after.value.toFixed(1)) : 'Absent'}</p>
             <p className="mt-1 text-xs text-ctp-subtext1">{delta.before && delta.after && delta.before.detail !== delta.after.detail ? `${delta.before.detail} → ${delta.after.detail}` : row.detail}</p>
             {scenarioConditions(row, own.state) && <p className="mt-2 text-xs text-ctp-subtext1">{scenarioConditions(row, own.state)}</p>}
+            <AssociatedCards lines={comparisonLines(delta.before?.lines, delta.after?.lines)} cardsByName={cardsByName} label={row.name} />
             {row.group === 'packages' && <div className="mt-3"><p className="mb-2 text-xs font-medium">Supporting cards · either version</p><AssociatedCards lines={comparisonLines(delta.before?.support, delta.after?.support)} cardsByName={cardsByName} label={`${row.name} enablers`} /></div>}
             {(accessA != null || accessB != null) && <p className="mt-2 text-xs">Find in {own.state.seen}: {((accessA ?? 0) * 100).toFixed(1)}% → {((accessB ?? 0) * 100).toFixed(1)}% ({accessDelta >= 0 ? '+' : ''}{(accessDelta * 100).toFixed(1)} pp)</p>}
           </article>;
@@ -111,7 +109,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
       </div>
       {changed.size > 0 && <div className="mt-4"><h4 className="mb-2 text-xs font-semibold">Changed Main & Material cards</h4><AssociatedCards lines={[...changed.values()]} cardsByName={cardsByName} label="Cards changed between versions" /></div>}
     </TabPanel>
-    <Button className="mt-4" onClick={() => setAdjusting(true)}>Adjust report scenario</Button>
+    {mode === 'opponents' && <Button className="mt-4" onClick={() => setAdjusting(true)}>Adjust opponent scenario</Button>}
     {adjusting && <DialogSheet title="Adjust comparison scenario" onDismiss={() => setAdjusting(false)} footer={<Button onClick={() => setAdjusting(false)}>View report</Button>}>
     {mode === 'opponents' && <>      {(needsName || needsSequence) && <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {needsName && <label className="min-w-0 text-xs font-medium" htmlFor={`${id}-name`}>Named opposing card<select id={`${id}-name`} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base" value={selectedName} onChange={e => setNamed(e.target.value)}>{[...new Set(target.main.map(line => line.name))].sort().map(name => <option key={name}>{name}</option>)}</select></label>}

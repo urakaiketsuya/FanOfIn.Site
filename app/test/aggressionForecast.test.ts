@@ -105,6 +105,8 @@ test("fixed damage exposes separate conservative and optimistic medians", () => 
 
   for (const point of forecast.points) {
     assert.equal(point.medianMin, point.medianMax);
+    assert.equal(point.low, point.optimisticLow);
+    assert.equal(point.conservativeHigh, point.high);
     assert.ok(point.low <= point.medianMin);
     assert.ok(point.medianMax <= point.high);
     assert.ok(point.chanceAtLeastFiveMin >= 0 && point.chanceAtLeastFiveMin <= 1);
@@ -135,4 +137,16 @@ test("prevention is not flagged as unmodeled outgoing damage in either deck sect
   }
   const result = computeAggressionForecast([], cards, [{ name: mixed.name, quantity: 1 }]);
   assert.equal(result.audit[0]?.classification, "Unmodeled damage text");
+});
+
+
+test("conditional model keeps its own percentile endpoints", () => {
+  const bolt = card("Conditional Bolt", "If you control an ally, deal 5 damage to target champion.", { types: ["ACTION"], elements: ["FIRE"] });
+  const forecast = computeAggressionForecast([{ name: bolt.name, quantity: 4 }], new Map([[bolt.name, bolt]]));
+  for (const point of forecast.points) {
+    assert.equal(point.conservativeHigh, 0);
+    assert.ok(point.optimisticLow <= point.medianMax);
+    assert.ok(point.medianMax <= point.high);
+  }
+  assert.ok(forecast.points.some(point => point.high > point.conservativeHigh));
 });

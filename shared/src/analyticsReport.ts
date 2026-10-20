@@ -1,6 +1,6 @@
 import type { Card } from './api-types.js';
 import { BOOLEAN_SCENARIOS, calculateCardScenarios, SCENARIO_FIELDS, type CardScenario, type CardScenarioResult, type ScenarioKey } from './cardScenarios.js';
-import type { AnalyticsDeck } from './fixtureResources.js';
+import { aggregateLines, copies, fixtureAccess, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
 
 /** Checkpoints vary one resource at a time; they are conditional outcomes, never expected play. */
 const CHECKPOINTS: Partial<Record<ScenarioKey, number[]>> = {
@@ -29,4 +29,31 @@ export function reportDeltaChanged(delta: { before?: CardScenarioResult; after?:
   if (!before || !after) return true;
   const membership = (lines: CardScenarioResult['lines'] = []) => JSON.stringify([...lines].sort((a, b) => a.name.localeCompare(b.name)));
   return before.value !== after.value || before.access !== after.access || before.detail !== after.detail || membership(before.lines) !== membership(after.lines) || membership(before.support) !== membership(after.support);
+}
+
+/** Main-library access, independent of catalog coverage and game-state assumptions. */
+export const REPORT_DRAW_CHECKPOINTS = [7, 10, 15, 20] as const;
+
+export function drawAccessReport(main: AnalyticsLine[]) {
+  const lines = aggregateLines(main).sort((a, b) => b.quantity - a.quantity || a.name.localeCompare(b.name));
+  const size = copies(lines);
+  return { size, rows: lines.map(line => ({ ...line, points: REPORT_DRAW_CHECKPOINTS.map(seen => ({
+    seen, probability: fixtureAccess(size, line.quantity, seen),
+  })) })) };
+}
+
+export function compareDrawAccess(before: AnalyticsLine[], after: AnalyticsLine[]) {
+  const a = drawAccessReport(before), b = drawAccessReport(after);
+  const aRows = new Map(a.rows.map(row => [row.name, row]));
+  const bRows = new Map(b.rows.map(row => [row.name, row]));
+  return [...new Set([...aRows.keys(), ...bRows.keys()])].sort().flatMap(name => {
+    const old = aRows.get(name), next = bRows.get(name);
+    const points = REPORT_DRAW_CHECKPOINTS.map((seen, i) => ({ seen,
+      before: old?.points[i].probability ?? 0, after: next?.points[i].probability ?? 0,
+    }));
+    if (old?.quantity === next?.quantity && points.every(point => Math.abs(point.after - point.before) < 1e-12)) return [];
+    return [{ name, beforeCopies: old?.quantity ?? 0, afterCopies: next?.quantity ?? 0, points }];
+  }).sort((a, b) => Number(b.beforeCopies !== b.afterCopies) - Number(a.beforeCopies !== a.afterCopies)
+    || Math.abs(b.points[2].after - b.points[2].before) - Math.abs(a.points[2].after - a.points[2].before)
+    || a.name.localeCompare(b.name));
 }

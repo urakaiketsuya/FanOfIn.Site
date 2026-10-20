@@ -24,6 +24,9 @@ export interface AggressionForecastPoint {
   low: number;
   /** 90th percentile of the optimistic model. */
   high: number;
+  /** Same-model endpoints for separately displayed percentile intervals. */
+  conservativeHigh: number;
+  optimisticLow: number;
   chanceAtLeastFiveMin: number;
   chanceAtLeastFiveMax: number;
   chanceAtLeastTenMin: number;
@@ -335,6 +338,7 @@ export function computeAggressionForecast(
       seen, ...(min.sampleSize || max.sampleSize ? { sampleSize: Math.max(min.sampleSize ?? 0, max.sampleSize ?? 0) } : {}),
       expectedMin: round(expected(min)), expectedMax: round(expected(max)),
       medianMin: quantile(min, 0.5), medianMax: quantile(max, 0.5), low: quantile(min, 0.1), high: quantile(max, 0.9),
+      conservativeHigh: quantile(min, 0.9), optimisticLow: quantile(max, 0.1),
       chanceAtLeastFiveMin: round(chanceAtLeast(min, 5), 3), chanceAtLeastFiveMax: round(chanceAtLeast(max, 5), 3),
       chanceAtLeastTenMin: round(chanceAtLeast(min, 10), 3), chanceAtLeastTenMax: round(chanceAtLeast(max, 10), 3),
     };

@@ -5242,3 +5242,25 @@ Adjustments use parent-owned state in DialogSheet and survive dismissal and tabs
 The existing defense panel is replaced in deck results by the same report rows;
 underlying prevention/recovery formulas are unchanged. Missing catalog and empty
 supported coverage retain visible status. No deck mutations or saves are involved.
+
+### Statistical deck report (October 2026)
+
+The automatic Main-card access report uses hypergeometric P(X ≥ 1) at 7, 10,
+15 and 20 cards seen. Duplicate names are aggregated. Each quantity group shows
+**individual** card access, not the probability of drawing any card in that group.
+Its denominator is the actual Main count; incomplete lists are visibly labeled.
+Material and Sideboard are excluded. Catalog gaps do not affect named-copy odds.
+Version comparisons use each list's own denominator, including changes caused by
+library size even when a card's copy count is unchanged. Differences are percentage
+points, with both original probabilities displayed on the same 0–100% scale.
+
+Damage report intervals now retain both percentile endpoints from each distribution:
+conservative p10/median/p90 and conditional p10/median/p90. They share a numerical
+scale and are never combined into one interval. The existing first-player progression
+assumption remains explicit. These are potential printed outputs, not affordability,
+resolved damage, or win probability. Discrete percentile endpoints need not contain
+exactly 80% of outcomes. Partial coverage and sampled results remain visible.
+
+Fixture effect rows show all draw checkpoints and fixed, labeled conditional outcomes.
+They do not infer the frequency of battlefield, graveyard, or memory states from
+engine fixtures. Their existing minimum-60 library convention remains unchanged.

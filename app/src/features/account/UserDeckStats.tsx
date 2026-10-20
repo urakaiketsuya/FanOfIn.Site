@@ -23,7 +23,7 @@ import { validateDeck, sideboardPointCost } from "../deckbuilder/validateDeck";
 import { computeTrimPlan, computeCurvePeakCardNames, TRIM_TARGET_SIZE, type TrimSection } from "../deckbuilder/deckTrimming";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
-import AggressionForecast from "../decks/AggressionForecast";
+import DamageStatisticalReport from "../analytics/DamageStatisticalReport";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import TurnToPlayCalculator from "../deckbuilder/TurnToPlayCalculator";
 import InteractiveCompositionProfile from "../../components/InteractiveCompositionProfile";
@@ -231,7 +231,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       <DeckAccessSummary mainLines={namedSections.main} cardsByName={cardsByName} />
       <Panel>
         {hasDamageForecast ? (
-          <AggressionForecast forecast={aggressionForecast} mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
+          <DamageStatisticalReport forecast={aggressionForecast} cardsByName={cardsByName} />
         ) : breakthroughVsAverage.attackerCount > 0 ? (
           <div data-component="BreakthroughDamageFallback">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>

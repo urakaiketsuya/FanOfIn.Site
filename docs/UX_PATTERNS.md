@@ -270,3 +270,17 @@ Version reports put changed findings first and retain unchanged findings below.
 Use Adjust scenario in DialogSheet; retain parent-owned adjustments on dismissal.
 Keep selected champions and scenario conditions visible with the results. Conditional
 checkpoints are never labeled expected performance or an affordable play sequence.
+
+## Statistical reports illustrated with cards
+
+Deck reports lead with one statistical question, directly labeled results, then
+associated card artwork and names. Show 7/10/15/20 cards-seen checkpoints together;
+no card selection or scenario adjustment is required. Separate draw access from
+conditional output. Use paired access dots for version changes and same-model
+percentile intervals for damage. Keep a shared scale, text values, and visible
+coverage status. Do not encode numerical magnitudes with card artwork size.
+
+Acceptance tasks: identify the effect of a fourth copy; distinguish drawn potential
+from resolved damage; identify included cards; compare a 60-card and larger library.
+Validate against known-answer calculations, then assess player accuracy and time
+against a plain table. Automated checks cannot establish player comprehension.
