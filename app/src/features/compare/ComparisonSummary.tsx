@@ -1,3 +1,4 @@
+import FixtureComparison from "../analytics/FixtureComparison";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import { useMemo, useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -137,6 +138,10 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
     })}
 
     {mode === "forecasts" && <div className="space-y-8">
+      {baselineDeck && forecastDecks.filter(entry => entry.deck.key !== baselineDeck.key).map(entry => {
+        const source = forecastDecks.find(candidate => candidate.deck.key === baselineDeck.key);
+        return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode="versions" /> : null;
+      })}
       <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, mainLines, materialLines }) => <section key={deck.key} className="min-w-0">

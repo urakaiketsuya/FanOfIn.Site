@@ -1,0 +1,2314 @@
+{
+  "sourceRevision": "3600535e3bc74dc052ecb4756c5204f1352c627e",
+  "reviewedAt": "2026-10-20",
+  "catalogGeneratedAt": "2026-10-19T12:51:26.950Z",
+  "sourceFiles": {
+    "norm-floating.php": "26de36bea86b397ac37c871d4800e9fbfbd34fc7fe7cb564623fdc3d4c55057b",
+    "wind-floating.php": "54cb8e29ebafcddda4b72bb6d6ed1c1c8d5e6a6a6825fe04c8eaec276a643db9",
+    "Scenario.php": "acd0e60b33622a8880f8d4a2b79c761b82bc9205f87133796679c5e977225744",
+    "water-negates.php": "999479f24d945b9d89e5a0d4c286a4147c57d19232369ae751b9ca2e8e2fc7ba",
+    "water-negates2.php": "e0bc377f2ae57ab50a853d541109454d931abf50a20682ff502c9eba7f53f0e3",
+    "wind-attacks.php": "80640fdb7cc0a40e3be1fa17f6365bdd0fd050ee3649b5fcc805aa925289d368",
+    "damage-backlog.php": "ed0b59e4fc0ac3eb418c232b136bbb1bb883989a18afcbbeb6ca376c00bf6dbf",
+    "water-actions2.php": "4e7e0f1a330b06ab73f6627e37e1b73204da603647269ffc70e40cf891fa4b6f",
+    "water-rest.php": "87e9d0f733a6a5b482338c2d857da825a0492bf5e672f1d40f3a9235553e9bc6",
+    "wind-items.php": "ac6e882836795a0533b2472c7e4b491038347b5ccd22ad422703af1909d85fb3",
+    "wind-champions.php": "f547b6c34d6e3e98d853119fe71c40716728f43d9060300487a9735d40c75003",
+    "norm-allies4.php": "0d02a5b1a647ea2b66366490273aac309fe4ec93dfb3128bdad33efaea0c206e",
+    "norm-items2.php": "9f455120e606a7162bc4929b5bb9c0406771585d0232c6f849202b0f4ca923f2",
+    "cards-a.php": "635f24f71eed53e4b1021caf99ef2f389284e95e33fa0f4299822b48f344c16e",
+    "wind-uniques.php": "6ea2b74c2e787546e4e2efd108002c9197e7ba29b20767c2dacb38fc6a1ee65e"
+  },
+  "floatingContracts": [
+    {
+      "name": "Combat Training",
+      "class": "WARRIOR",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Fortification",
+      "class": "GUARDIAN",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Equip with Courage",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Exorcise Curses",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Feed Nourishment",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Manifest Threat",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Reprogram",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Right of Realm",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Summon Pawn",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Tune Up",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Ameliorating Mantra",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Deploy Gunshield",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Fast Cure",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Floral Arrangement",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Incantation of Prosperity",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Leading Charge",
+      "class": "WARRIOR",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "March On",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Organize the Alliance",
+      "class": "GUARDIAN",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Savage Arrow",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Seal the Past",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Angelic Channeling",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Harness Mana",
+      "class": "MAGE",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Maiden of Shimmering Air",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Ordinary Bear",
+      "class": "TAMER",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Ordinary Horse",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Raze the Land",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Five of Spades",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Hefty Hammering",
+      "class": "WARRIOR",
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Navigate the Streets",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Unwelcome Fortune",
+      "class": null,
+      "source": "norm-floating.php"
+    },
+    {
+      "name": "Galed Erasure",
+      "class": null,
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Welcome Merriment",
+      "class": null,
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Repelling Palmblast",
+      "class": null,
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Lunge of Evoking Winds",
+      "class": null,
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Channel the Wind",
+      "class": "MAGE",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Evanescent Winds",
+      "class": "CLERIC",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Infusion of Crescent Jade",
+      "class": "WARRIOR",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Updraft Slice",
+      "class": "WARRIOR",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Cell Vanguard",
+      "class": "WARRIOR",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Shu Frontliner",
+      "class": "WARRIOR",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Winbless Rangefinder",
+      "class": "RANGER",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Menagerie Beastbonder",
+      "class": "TAMER",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Ensnaring Fumes",
+      "class": "ASSASSIN",
+      "source": "wind-floating.php"
+    },
+    {
+      "name": "Skilled Aerotheurge",
+      "class": "RANGER",
+      "source": "wind-floating.php"
+    }
+  ],
+  "cards": [
+    {
+      "name": "Ameliorating Mantra",
+      "slug": "ameliorating-mantra",
+      "uuid": "b3sm5e7pan",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Remove two **wither** counters from each of up to two target objects.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Angelic Channeling",
+      "slug": "angelic-channeling",
+      "uuid": "o3M5ZWSL6E",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ANGEL",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Banish up to three advanced element cards from your hand and/or memory. Draw a card into your memory for each card banished this way. When your champion levels up into a champion card with base level 3 the next time this game, put the banished cards on the top and/or bottom of your deck in any order.\n\n**Floating Memory**"
+    },
+    {
+      "name": "Arrow Trap",
+      "slug": "arrow-trap",
+      "uuid": "uoQGe5xGDQ",
+      "classes": [
+        "ASSASSIN",
+        "RANGER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "RANGER",
+        "SKILL",
+        "REACTION"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Prepare 1** *(You may remove a **preparation** counter from your champion as you activate this card.)*\n\nReturn target attacking ally to its owner's hand. **Class Bonus:** If CARDNAME was prepared, destroy that ally instead."
+    },
+    {
+      "name": "Burst Asunder",
+      "slug": "burst-asunder",
+      "uuid": "rzsr6aw4hz",
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs 2 less to activate.\n\nDeal 2 damage to target unit. Then you may sacrifice any amount of Fractals. For each Fractal sacrificed this way, deal an additional 2 damage to that unit."
+    },
+    {
+      "name": "Calculated Foresight",
+      "slug": "calculated-foresight",
+      "uuid": "sl7dedg616",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "RANGER",
+        "SKILL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Put the top two cards of your deck into your graveyard. Then you may banish a card with **floating memory** from your graveyard. If you do, your champion gains **ranged 3** until end of turn. *(Multiple instances of **ranged** stack.)*"
+    },
+    {
+      "name": "Cell Vanguard",
+      "slug": "cell-vanguard",
+      "uuid": "3qiwqjt0oo",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "[Class Bonus] **On Enter:** **Summon** a Powercell token rested.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Ceremonial Stormblade",
+      "slug": "ceremonial-stormblade",
+      "uuid": "au5sw9f8uq",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "REGALIA",
+        "WEAPON"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SWORD"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": 0,
+      "cost_reserve": null,
+      "power": 1,
+      "life": null,
+      "durability": 1,
+      "effect": "[Class Bonus] **On Enter:** Put a **durability** counter on CARDNAME for each wind element ally you control. *(Apply this effect only if your champion\u2019s class matches this card\u2019s class.)*"
+    },
+    {
+      "name": "Channel the Wind",
+      "slug": "channel-the-wind",
+      "uuid": "6YiMaCGsfV",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Put an **enlighten** counter on your champion. *(You may remove three **enlighten** counters from your champion to draw a card.)*\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Combat Training",
+      "slug": "combat-training",
+      "uuid": "3bxtj3te9i",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target Warrior ally's next attack this turn gets +2 [POWER]. If that ally is unique, their next attack this turn gets +3 [POWER] instead.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Conjure Downpour",
+      "slug": "conjure-downpour",
+      "uuid": "r0zadf9q1w",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Until end of turn, whenever a unit attacks, that attack gets -2 [POWER]. \n\n[Class Bonus] [Memory 4+] Draw a card into your memory. *(Apply this effect only if your champion's class matches this card's class and only if there are four or more cards in your memory.)*"
+    },
+    {
+      "name": "Crosswind Cuts",
+      "slug": "crosswind-cuts",
+      "uuid": "S0YCKJcU5e",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SWORD"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 5,
+      "power": 2,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs 2 less to activate.\n\n**Multistrike 1** *(You may assign up to one additional target as you declare this attack.)*"
+    },
+    {
+      "name": "Crystallized Destiny",
+      "slug": "crystallized-destiny",
+      "uuid": "l36wwe3d5c",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "As long as you control two or more Fatestone and/or Fatebound objects, this card costs 2 less to activate.\n\nThe next time damage would be dealt to your champion this turn, prevent that damage. When 7 or more damage is prevented this way, cards your opponents activate this turn cost (2) more to activate."
+    },
+    {
+      "name": "Deploy Gunshield",
+      "slug": "deploy-gunshield",
+      "uuid": "bjvwbcizm6",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "RANGER",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target Gun weapon you control gains **spellshroud** until end of turn. *(Objects with **spellshroud** can't be targeted by Spells.)*\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Dungeon Guide",
+      "slug": "dungeon-guide",
+      "uuid": "em6eEh9q8y",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "MAGE",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "life": 3,
+      "durability": null,
+      "effect": "**On Enter:** You may banish two cards at random from your memory. If you do, level up your champion. *(Your champion levels up into a compatible champion card from your material deck, ignoring materialization costs.)*"
+    },
+    {
+      "name": "Engulf",
+      "slug": "engulf",
+      "uuid": "IPmK09iEIT",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 6,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Level 2+] This card costs 3 less to activate. *(Apply this effect only if your champion is level 2 or higher.)*\n\n**Negate** target non-attack card activation. "
+    },
+    {
+      "name": "Ensnaring Fumes",
+      "slug": "ensnaring-fumes",
+      "uuid": "wPKxvzTmqq",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "SKILL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 5,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "You may remove three **preparation** counters from your champion rather than pay this card's reserve cost.\n\nReturn all allies to their owner's hands.\n\n[Class Bonus] **Floating Memory**"
+    },
+    {
+      "name": "Equip with Courage",
+      "slug": "equip-with-courage",
+      "uuid": "eU8IEVpFZg",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target ally's next attack this turn gets +**X**[POWER], where **X** is the amount of items linked to that ally plus 1.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Evanescent Winds",
+      "slug": "evanescent-winds",
+      "uuid": "90i1prp63s",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Phantasia allies you control get +2 [LIFE] until end of turn.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Exorcise Curses",
+      "slug": "exorcise-curses",
+      "uuid": "u1xhs5jwsl",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Choose up to two Curse cards from a champion's lineage and discard them.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Fast Cure",
+      "slug": "fast-cure",
+      "uuid": "3oda2ha4dk",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "If target opponent's **influence** is greater than yours, **recover 4**. *(A player's **influence** is equal to the total amount of cards in their hand and memory.)*\n\n**Floating Memory**"
+    },
+    {
+      "name": "Feed Nourishment",
+      "slug": "feed-nourishment",
+      "uuid": "44pr0h0yqi",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Put a **buff** counter on target Animal or Beast ally.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Five of Spades",
+      "slug": "five-of-spades",
+      "uuid": "i9hf5lhl5f",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SUITED",
+        "ANIMAL",
+        "BEAR"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 5,
+      "power": 1,
+      "life": 4,
+      "durability": null,
+      "effect": "***Cardistry*** \u2014 (5): Five of Spades gets +5[POWER] until end of turn. This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.\n\n**Floating Memory**"
+    },
+    {
+      "name": "Floral Arrangement",
+      "slug": "floral-arrangement",
+      "uuid": "dt4YncETqE",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Summon** a Silvershine and a Fraysia token.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Flourishing Restoration",
+      "slug": "flourishing-restoration",
+      "uuid": "alnjt7DyZL",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "TERA"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Diao Chan Bonus] You may ignore this card's elemental requirements as you activate it. If you do, it costs 2 more to activate.\n\n**Recover 3**. Then for each of up to two allies you don't control, **recover 3** again."
+    },
+    {
+      "name": "Fortification",
+      "slug": "fortification",
+      "uuid": "6FGKeLTumW",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Put a **bulwark** counter on target ally or Siegeable domain. *(If combat damage would be dealt to an object with any **bulwark** counters on it, remove one and prevent that damage instead.)*\n\n[Class Bonus] **Floating Memory**"
+    },
+    {
+      "name": "Fractal of Waves",
+      "slug": "fractal-of-waves",
+      "uuid": "qVtWCAx3zb",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "MAGE",
+        "FRACTAL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Whenever your champion levels up into a champion with base level 3, you may sacrifice CARDNAME. If you do, draw two cards into your memory.\n\n**Reservable** *(While paying for a reserve cost, you may rest this object to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Frozen Dismissal",
+      "slug": "frozen-dismissal",
+      "uuid": "8qgr2drym1",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs 1 less to activate.\n\n**Negate** target ally card activation unless its controller pays (4). Banish the card that had its activation **negated** this way."
+    },
+    {
+      "name": "Galed Erasure",
+      "slug": "galed-erasure",
+      "uuid": "jtp4cy6pdy",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Destroy target **ephemeral** object.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Giant Tortoise",
+      "slug": "giant-tortoise",
+      "uuid": "L0RmNaDzhk",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "ANIMAL",
+        "TURTLE"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": 1,
+      "life": 6,
+      "durability": null,
+      "effect": null
+    },
+    {
+      "name": "Harness Mana",
+      "slug": "harness-mana",
+      "uuid": "G2XFRE8rFX",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 0,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Put any amount of cards from your hand into your memory. \n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Hefty Hammering",
+      "slug": "hefty-hammering",
+      "uuid": "ceqDwfTzFI",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "HAMMER",
+        "CRAFT"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 7,
+      "power": 4,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs **X** less to activate, where** X** is the amount of **durability** counters on a weapon you control with the most **durability** counters on it.\n\n[Class Bonus] **Floating Memory**\n\n"
+    },
+    {
+      "name": "Hunt, Weiss King",
+      "slug": "hunt-weiss-king",
+      "uuid": "Y6PZntlVDl",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "CHESSMAN",
+        "KING",
+        "HUMAN"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 6,
+      "power": 0,
+      "life": 4,
+      "durability": null,
+      "effect": "[Alice Bonus] This card costs 2 less to activate for each of up to two Pawn allies you control.\n\n[REST]: Choose one that hasn't been chosen\u2014\n\u2022 If you control a Chessman Bishop ally, draw a card.\n\u2022 Put a **buff** counter on a Chessman Knight ally.\n\u2022 Change the target of an attack to a Chessman Rook ally you control. If you do, that ally gets +2 [LIFE] until end of turn."
+    },
+    {
+      "name": "Incantation of Prosperity",
+      "slug": "incantation-of-prosperity",
+      "uuid": "9WeCxLlnbt",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Depending on your Shifting Currents\u2019 direction\u2014\n\u2022 North or South\u2014 **Empower 2**.\n\u2022 East or West\u2014 **Recover 2**.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Infusion of Crescent Jade",
+      "slug": "infusion-of-crescent-jade",
+      "uuid": "91jnc6v71t",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SPELL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target Polearm weapon gets +1 [POWER] until end of turn for each wind element non-champion object you control.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Innervate Knowledge",
+      "slug": "innervate-knowledge",
+      "uuid": "pcescfpwak",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "As an additional cost to activate this card, **delevel** your champion and **recover 5**. *(To **delevel** your champion, return the top card of its lineage to its owner's material deck.)*\n\nDraw two cards."
+    },
+    {
+      "name": "Jianyu, Fate's Premonition",
+      "slug": "jianyu-fates-premonition",
+      "uuid": "qv0vn6tuow",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs 2 less to activate.\n\nAs Jianyu enters the field, choose a card name.\n\nCards with the chosen name cost (2+X) more to activate, where **X** is the amount of phantasias you control."
+    },
+    {
+      "name": "Leading Charge",
+      "slug": "leading-charge",
+      "uuid": "WWnmb1Hjdo",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "POLEARM"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": 4,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] As long as you control a unique Warrior ally, this card costs 2 less to activate.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Lorraine, Wandering Warrior",
+      "slug": "lorraine-wandering-warrior",
+      "uuid": "DpHDGaX2Pn",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost_memory": 1,
+      "cost_reserve": null,
+      "power": null,
+      "life": 20,
+      "durability": null,
+      "effect": "**On Enter:** Materialize a weapon card with memory cost 0 from your material deck."
+    },
+    {
+      "name": "Lunge of Evoking Winds",
+      "slug": "lunge-of-evoking-winds",
+      "uuid": "kDCEtGnZZe",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "POLEARM"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": null,
+      "durability": null,
+      "effect": "[Jin Bonus] **On Hit:** Reveal up to two wind element cards from your memory and return them to your hand. \n\n**Floating Memory**"
+    },
+    {
+      "name": "Ma Chao, Lupine Huntress",
+      "slug": "ma-chao-lupine-huntress",
+      "uuid": "fw8yvhf3mz",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "[Class Bonus] [Level 2+] Ma Chao gets +1 [POWER] and has **vigor**.\n\n**On Enter**: Target opponent banishes two cards from their graveyard. If you control an Animal or Beast ally, that player banishes four cards from their graveyard instead."
+    },
+    {
+      "name": "Maiden of Shimmering Air",
+      "slug": "maiden-of-shimmering-air",
+      "uuid": "3n4l6aoj4t",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "PHANTASIA",
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "APPARITION"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Manifest Threat",
+      "slug": "manifest-threat",
+      "uuid": "jK7LRuTSPh",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "If target ally has a **debuff** counter on it, destroy that ally. Otherwise, put a **debuff** counter on it.\n\n**Floating Memory**"
+    },
+    {
+      "name": "March On",
+      "slug": "march-on",
+      "uuid": "zuAmYGyCcL",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "CHESSMAN",
+        "COMMAND"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": 1,
+      "life": null,
+      "durability": null,
+      "effect": "**Command Chessman** *(A Chessman ally you control performs this attack.)*\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Menagerie Beastbonder",
+      "slug": "menagerie-beastbonder",
+      "uuid": "izGEjxBPo9",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "life": 3,
+      "durability": null,
+      "effect": "Your champion gets +1 level as long as you control an Animal or Beast ally. \n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Mire Reparation",
+      "slug": "mire-reparation",
+      "uuid": "7imoz7vrlr",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Recover** **X**, where **X** is the amount of omens you have.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Navigate the Streets",
+      "slug": "navigate-the-streets",
+      "uuid": "8jypwc8tuh",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "RANGER",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Glimpse 1+X**, where **X** is the amount of domains you control. *(To **glimpse**, look at that many cards from the top of your deck. Put those cards back on the top or on the bottom of your deck in any order.)*\n\n**Floating Memory**"
+    },
+    {
+      "name": "Nia, Mistveiled Scout",
+      "slug": "nia-mistveiled-scout",
+      "uuid": "PZM9uvCFai",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "HUMAN"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "life": 3,
+      "durability": null,
+      "effect": "[Class Bonus] **Stealth** *(This unit can't be targeted by attacks unless permitted by **true sight**.)*\n\n**On Enter:** Look at target opponent's memory, then choose any card name. \n\nCards with the chosen name cost 1 more to play."
+    },
+    {
+      "name": "Ordinary Bear",
+      "slug": "ordinary-bear",
+      "uuid": "p3nq0ymvdd",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "BEAST",
+        "BEAR"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 2,
+      "life": 3,
+      "durability": null,
+      "effect": "**Pride 2** *(This ally won't obey you unless your champion is level 2 or higher.)*\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Ordinary Horse",
+      "slug": "ordinary-horse",
+      "uuid": "w6ax750524",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "ANIMAL",
+        "HORSE"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "life": 3,
+      "durability": null,
+      "effect": "**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Organize the Alliance",
+      "slug": "organize-the-alliance",
+      "uuid": "ch2bbmoqk2",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target ally becomes **fostered**.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Poised Strike",
+      "slug": "poised-strike",
+      "uuid": "mj3WSrghUH",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "DAGGER"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 3,
+      "life": null,
+      "durability": null,
+      "effect": "**Prepare 1** *(You may remove a **preparation** counter from your champion as you activate this card.)*\n\n[Class Bonus] **On Hit:** If CARDNAME was prepared, wake up your champion. *(Apply this effect only if your champion's class matches this card's class.)*"
+    },
+    {
+      "name": "Port Smuggler",
+      "slug": "port-smuggler",
+      "uuid": "uCIEMgGjWe",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "[Class Bonus] CARDNAME's attacks can't be intercepted. *(Apply this effect only if your champion's class matches this card's class.)*"
+    },
+    {
+      "name": "Protector's Plate",
+      "slug": "protectors-plate",
+      "uuid": "i1j4gvwbjo",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "ARMOR"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": 0,
+      "cost_reserve": null,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Ally Link** *(This object enters the field linked to target ally. If the link is broken, sacrifice this object.)*\n\nLinked ally gets +1 [LIFE] and has **intercept**."
+    },
+    {
+      "name": "Purified Shot",
+      "slug": "purified-shot",
+      "uuid": "dcgw05q66h",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ITEM"
+      ],
+      "subtypes": [
+        "RANGER",
+        "BULLET"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": null,
+      "durability": null,
+      "effect": "[REST]**:** Load CARDNAME into target unloaded Gun weapon you control.\n\n[Class Bonus] **On Champion Hit:** Banish up to **X** cards from that opponent\u2019s graveyard, where X is the amount of damage dealt by this hit."
+    },
+    {
+      "name": "Purifying Thurible",
+      "slug": "purifying-thurible",
+      "uuid": "LeyUk5auEP",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "ARTIFACT"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": 0,
+      "cost_reserve": null,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "(X)**, Banish CARDNAME:** Target opponent banishes **X** cards from their graveyard. If **X **is 3 or greater, draw a card into your memory. "
+    },
+    {
+      "name": "Rai, Spellcrafter",
+      "slug": "rai-spellcrafter",
+      "uuid": "gPKTJKqvOI",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost_memory": 1,
+      "cost_reserve": null,
+      "power": null,
+      "life": 19,
+      "durability": null,
+      "effect": "**On Enter:** Put two **enlighten** counters on CARDNAME. *(You may remove three **enlighten** counters from your champion to draw a card.)*"
+    },
+    {
+      "name": "Raze the Land",
+      "slug": "raze-the-land",
+      "uuid": "6i0iqmyn2r",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Destroy target domain.\n\n**Floating Memory**"
+    },
+    {
+      "name": "Repelling Palmblast",
+      "slug": "repelling-palmblast",
+      "uuid": "4xippor7ch",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 5,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Return all allies with 2 [POWER] or less to their owner's memories.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Reprogram",
+      "slug": "reprogram",
+      "uuid": "o6eanbrfnr",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Up to one target ally gets -1 [POWER] until end of turn. If that ally is an Automaton, put two **debuff** counters on it instead. *(Allies get -1[POWER] and -1[LIFE] for each **debuff** counter on them.)*\n\n**Floating Memory**"
+    },
+    {
+      "name": "Right of Realm",
+      "slug": "right-of-realm",
+      "uuid": "ptrz1bqry4",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ITEM"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "ACCESSORY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Whenever you activate a domain card, you may sacrifice CARDNAME. If you do, that domain enters the field without any of its **upkeep** abilities.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Savage Arrow",
+      "slug": "savage-arrow",
+      "uuid": "uuty5scwug",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ITEM"
+      ],
+      "subtypes": [
+        "RANGER",
+        "ARROW"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 3,
+      "life": null,
+      "durability": null,
+      "effect": "[REST]**:** Load CARDNAME into target unloaded Bow weapon you control. *(As a weapon is used for an attack, all of its loaded cards are put into the attacker's intent.)*\n\n**Floating Memory**"
+    },
+    {
+      "name": "Seal the Past",
+      "slug": "seal-the-past",
+      "uuid": "2m31946aki",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Target player banishes three **preserved** cards from their material deck.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Shu Frontliner",
+      "slug": "shu-frontliner",
+      "uuid": "uhaao91ee1",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "***Equestrian*** \u2014 As long as you control a Horse ally, this card costs 1 less to activate.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Skilled Aerotheurge",
+      "slug": "skilled-aerotheurge",
+      "uuid": "58xpspudnf",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "RANGER",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 2,
+      "durability": null,
+      "effect": "**Ranged 2**\n\n**On Hit**: If Skilled Aerotheurge is **distant**, you may load target wind element Aethercharge card from your graveyard into an Aetherwing weapon you control.\n\n[Class Bonus] **Floating Memory**"
+    },
+    {
+      "name": "Spalling Cleanse",
+      "slug": "spalling-cleanse",
+      "uuid": "t3Yb097xpJ",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "If your Fractured Memories has six or less **sheen** counters on it, put two **sheen** counters on it. Otherwise, **recover 3**. *(If you don't have the mastery, **recover 3**.)*\n\n**Floating Memory**"
+    },
+    {
+      "name": "Spirit of Serene Wind",
+      "slug": "spirit-of-serene-wind",
+      "uuid": "h973fdt8pt",
+      "classes": [
+        "SPIRIT"
+      ],
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "SPIRIT"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": 0,
+      "cost_memory": 0,
+      "cost_reserve": null,
+      "power": null,
+      "life": 15,
+      "durability": null,
+      "effect": "**On Enter:** **Glimpse 6**. Draw six cards. \n\n**Lineage Release** \u2014 **Recover 6**. *(Activate this ability by banishing this card from your champion's inner lineage.)*"
+    },
+    {
+      "name": "Strategem of Myriad Ice",
+      "slug": "strategem-of-myriad-ice",
+      "uuid": "id0ybub247",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 6,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "As long as your Shifting Currents face East, this card has **efficiency**.\n\nYou may banish any amount of cards with **floating memory** from your graveyard. When a card is banished this way, deal 3 damage to target unit you don't control."
+    },
+    {
+      "name": "Summon Pawn",
+      "slug": "summon-pawn",
+      "uuid": "SM2A2o5hru",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "CHESSMAN",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "You may reveal three Chessman cards from your hand and/or memory. If you do, **summon** a Pawn Piece token.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Surging Obstruction",
+      "slug": "surging-obstruction",
+      "uuid": "VpM6CAp4ts",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "CHESSMAN",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "As long as you control a Chessman Bishop ally, this card costs 1 less to activate. \n\n**Negate** target card activation unless its controller pays (1). If that card has an odd reserve cost, **negate** its activation unless its controller pays (3) instead. *(Zero is considered even.)*"
+    },
+    {
+      "name": "Thunderclap",
+      "slug": "thunderclap",
+      "uuid": "0xm513tj3j",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Level 3+] This card costs 2 less to activate. *(Apply this effect only if your champion is level 3 or higher.)*\n\nDeal 4 damage to target ally. "
+    },
+    {
+      "name": "Tidal Lock",
+      "slug": "tidal-lock",
+      "uuid": "c4poa10ezw",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "As long as you have three or more water element cards in your graveyard, this card costs 2 less to activate.\n\n**Negate** target card activation unless its controller pays (2). Banish the card that had its activation **negated** this way."
+    },
+    {
+      "name": "Total Whiteout",
+      "slug": "total-whiteout",
+      "uuid": "O4mD40xpbY",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 5,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] This card costs 3 less to activate.\n\nObjects you don't control enter the field rested.\n\nRested non-champion objects you don't control lose all activated abilities and can't be used for an attack.\n\nAt the beginning of your main phase, **cascade**\u2014\n\u2022 1\u2014  Pay (4) or sacrifice CARDNAME. \n\u2022 2\u2014 Sacrifice CARDNAME."
+    },
+    {
+      "name": "Tune Up",
+      "slug": "tune-up",
+      "uuid": "chyfhweEro",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "AUTOMATON",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "**Recover 2**. If you control an Automaton ally, **recover 4** instead.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Unwelcome Fortune",
+      "slug": "unwelcome-fortune",
+      "uuid": "pgt4lhko8w",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Look at target player's memory.\n\n**Floating Memory**"
+    },
+    {
+      "name": "Updraft Slice",
+      "slug": "updraft-slice",
+      "uuid": "k5RG5TNLAp",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ATTACK"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "SWORD"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 2,
+      "life": null,
+      "durability": null,
+      "effect": "[Class Bonus] CARDNAME gets +1[POWER]. \n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Veiling Breeze",
+      "slug": "veiling-breeze",
+      "uuid": "KoF3AMSlUe",
+      "classes": [
+        "ASSASSIN"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "ASSASSIN",
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "Reveal any amount of wind element cards from your memory. Until end of turn, if damage would be dealt to your champion, prevent an amount of that damage equal to the amount of cards revealed this way."
+    },
+    {
+      "name": "Weiss Bishop",
+      "slug": "weiss-bishop",
+      "uuid": "Dgtim99eB5",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "CHESSMAN",
+        "BISHOP",
+        "HUMAN"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 3,
+      "durability": null,
+      "effect": "As long as you control one or more Pawn allies, CARDNAME has **stealth**.\n\n[Alice Bonus] CARDNAME gets +1 [POWER] as long as it's attacking a unit with an odd life stat."
+    },
+    {
+      "name": "Weiss Pawn",
+      "slug": "weiss-pawn",
+      "uuid": "0WgtmLuYpA",
+      "classes": [
+        "GUARDIAN"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "GUARDIAN",
+        "CHESSMAN",
+        "PAWN",
+        "HUMAN"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 0,
+      "life": 2,
+      "durability": null,
+      "effect": "**Floating Memory**, **Taunt**\n\n[Alice Bonus] **On Hit:** If 7 or more damage was dealt, you may sacrifice CARDNAME. If you do, **summon** a Queen Piece token.\n\n**On Death**: Other Chessman allies you control get +2[LIFE] until end of turn."
+    },
+    {
+      "name": "Welcome Merriment",
+      "slug": "welcome-merriment",
+      "uuid": "mUyzPPc0nc",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "life": null,
+      "durability": null,
+      "effect": "For each player, that player may rest any amount of allies they control. Put a **buff** counter on each ally rested this way.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*"
+    },
+    {
+      "name": "Winbless Rangefinder",
+      "slug": "winbless-rangefinder",
+      "uuid": "uyv3fpvw2i",
+      "classes": [
+        "RANGER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "RANGER",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "life": 1,
+      "durability": null,
+      "effect": "**On Enter:** Another target unit you control becomes **distant**. If that unit is an Automaton ally, put a **buff** counter on it.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* "
+    },
+    {
+      "name": "Windstrike Soldier",
+      "slug": "windstrike-soldier",
+      "uuid": "WFNM4etSFB",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 2,
+      "life": 3,
+      "durability": null,
+      "effect": "[Class Bonus] **On Enter: **You may pay (3). If you do, CARDNAME gains **multistrike 2** until end of turn. *(You may assign up to two additional targets as you declare an attack with an ally with **multistrike 2**.)*"
+    }
+  ]
+}

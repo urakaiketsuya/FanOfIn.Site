@@ -29,7 +29,7 @@ import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 import { trackEvent } from "../../lib/analytics";
 import Tabs from "../../components/ui/Tabs";
-import MatchupPlanning from "./MatchupPlanning";
+import ComparisonTools from "./ComparisonTools";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -319,8 +319,7 @@ export default function CompareIndex() {
                         {cardDataMode === "quantities" ? <ComparisonDifferences decks={decks} decklists={decklists} /> : <ComparisonCardStats decks={decks} decklists={decklists} />}
                       </>
                     )}
-                    {effectiveViewMode === "forecasts" && <ComparisonSummary decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} mode="forecasts" onViewAllDifferences={() => setViewMode("table")} />}
-                    {effectiveViewMode === "matchup" && <MatchupPlanning decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} />}
+                    <ComparisonTools active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
                   </div>
                 </>
               )}

@@ -5092,3 +5092,131 @@ asserts effect creation only; repeated-event arithmetic is based on printed text
 not claimed as an engine replay. Existing Restoration fixtures assert 9 recovery and
 6 recovery with the Diao Chan waiver. The UI assumes successful resolution; the waiver
 and Destiny's cost reduction do not change the displayed effect calculation.
+
+## Fixture-backed card scenarios and comparisons
+
+Implementation: `shared/src/cardScenarios.ts`, `fixtureResources.ts`, and
+`fixtureMatchup.ts`. Reviewed scope and provenance are recorded in
+`docs/TCGENGINE_ANALYTICS.md` and
+`app/test/fixtures/tcgengine-analytics-contracts.json`.
+
+Inputs use Main and Material only. Duplicate lines aggregate by name within the
+relevant pool; negative/nonfinite counts become zero. A card outcome represents
+one resolved copy or one specified ability use. Quantities affect draw access,
+not multiplication of the result. No total adds together independent outcomes:
+the same Fractal or graveyard card cannot be assumed available to multiple effects.
+The active champion determines class bonuses. A separate level input can model
+level changes; selecting a champion is not a claim that it has been reached.
+
+### Resources and access
+
+The reviewed Floating Memory pool contains the 44 cards in the engine's Norm and
+Wind floating-memory fixture families. Class-qualified cards require the selected
+active champion's class; unconditional cards do not. Other cards with Floating
+Memory remain outside this pool and are called out when present. Catalog keyword
+counts elsewhere on the site retain their existing wider scope. The payment
+scenario takes an explicit eligible graveyard count G and memory cost C:
+`paid = min(G,C)`, `remainingCost = C-paid`, `remainingCards = G-paid`. It does not
+infer graveyard availability from cards seen. The remaining count must be used for
+any subsequent payment; the separate resource-damage scenarios are alternatives.
+
+Conditional reserve cost is printed reserve minus the reviewed discount:
+Crosswind Cuts 5→3 (Warrior); Frozen Dismissal 3→2 (Cleric); Burst Asunder 4→2
+(Cleric/Mage); Total Whiteout 5→2 (Mage); Jianyu 4→2 (Cleric); Thunderclap 4→2 at
+level 3+; Tidal Lock 3→1 with three Water graveyard cards; Surging Obstruction
+3→2 with a Chessman Bishop ally. This does not model payment or other modifiers.
+
+Draw access is `1 - product((N-K-i)/(N-i), i=0..S-1)` with nonnegative factors,
+N=max(60, Main copies), K=eligible Main copies, and S=min(N,cards seen). Material
+cards have no Main draw probability. Pair access uses inclusion-exclusion:
+`P(payoff) + P(support) - P(union)`. Only actual Main membership is used. Burst/
+Fractal, Hunt/Bishop, Hunt/Pawn, Strategem/Floating Memory and Foresight/Floating
+Memory show draw access to one of each, not deployment, eligibility, or survival.
+The two Floating Memory packages use the reviewed pool and selected class.
+
+### One-copy card outcomes
+
+- Innervate Knowledge: delevel must be payable; draw 2 to hand and recover up to
+  5 current damage. Reserve 4 plus the cast card means hand change -3, separate
+  from the champion returning to Material. Recovery occurs as a cost.
+- Conjure Downpour: draw 1 to memory with Cleric and at least four memory cards
+  **after** paying reserve 3; otherwise 0. The input is post-payment memory.
+- Fractal of Waves: sacrifice on a base-level-3 level-up draws 2 to memory.
+- Hunt: an unused draw mode while controlling a Chessman Bishop draws 1 to hand
+  when Hunt rests. The scenario assumes the rest activation is available.
+- Mire Reparation: recover min(omens, current damage).
+- Spalling Cleanse: recover up to 3 when no Fractured Memories is present or its
+  sheen exceeds 6; otherwise gain 2 sheen and recover 0.
+- Spirit of Serene Wind: recover up to 6 only when available for inner-lineage
+  release; consume the spirit by banishing it.
+- Burst Asunder: 2 + 2×Fractals sacrificed to one unit. Resources are consumed.
+- Strategem of Myriad Ice: 3×eligible Floating Memory cards banished, with one
+  3-damage event per card. May distribute targets; this is available damage.
+- Ceremonial Stormblade: printed durability 1 plus Wind allies on entry when the
+  champion is Warrior. Durability is not a guaranteed number of successful hits.
+- Calculated Foresight: ranged 3 if one eligible Floating Memory card is banished
+  after milling two; otherwise 0. This is ranged gained, not direct damage.
+- Windstrike Soldier: maximum three targets with Warrior and the extra reserve 3
+  paid; otherwise one. Printed power is 2 per target. Extra targets do not add
+  champion damage to the same champion.
+- Poised Strike: one wake-up requires Assassin, preparation paid, and a hit.
+  It does not infer another affordable or legal attack.
+- The previous three prevention/recovery rules remain unchanged and are reused
+  for equal-condition version comparisons.
+
+### Opposing decks
+
+Coverage counts copies in the opposing Main deck, never how many are in play.
+Engulf covers non-Attack activations; Frozen Dismissal covers Ally activations
+(pay 4 or negate/banish); Tidal Lock covers card activations (pay 2 or negate/
+banish). Surging Obstruction partitions known fixed printed reserve costs into
+odd (pay 3) and even, including zero (pay 1). Unknown and X costs are excluded
+and counted explicitly. These are conditional targeting/type comparisons, not
+negate success probabilities or a complete rules-legality engine.
+
+Thunderclap covers allies with known printed life ≤4. Unknown/variable life is
+unassessed, not zero. Buffs, damage already taken, immunities, targeting
+restrictions, and prevention are outside this printed-life comparison. Arrow
+Trap returns an attacking ally; with matching class and preparation paid it
+instead destroys it. Deck membership does not assert that an ally is attacking.
+
+For graveyard size G, eligible Floating Memory count F capped at G, and banish
+capacity B capped at G, opponent-selected banishment removes between
+`max(0,B-(G-F))` and `min(F,B)` Floating Memory cards. Thurible uses the chosen X
+and draws into memory when X≥3; Ma Chao uses 2 or 4 with an Animal/Beast ally.
+Purified Shot uses the specified champion-hit damage with Ranger and can choose
+up to that many cards, so its removal range starts at zero. Associated opposing
+cards show the reviewed Floating Memory pool; they are not asserted to be in
+the graveyard.
+
+Port Smuggler with Assassin bypasses interception. Protector's Plate compares
+against the reviewed Crosswind Cuts, Poised Strike, Windstrike Soldier and Port
+Smuggler attack sources, excluding the opposing Assassin Smuggler. Its linked
+ally must actually be available to intercept. No claim is made about unreviewed
+attack bypasses, stealth or true sight.
+
+Total Whiteout shows opposing object cards from Main **and Material** exposed to
+entering rested while it is present. Nia taxes the explicitly chosen opposing
+card name by 1. Jianyu taxes it by 2+phantasias, including Jianyu itself (minimum
+one while its effect is active). Counts remain Main copies for named-card taxes.
+
+A damage sequence is an ordered list of up to 30 nonnegative integer events,
+0–100 each. Zero amounts are not damage events. Breeze prevents min(Wind revealed,
+event damage) on every event; Destiny prevents the first positive event and
+triggers its +2 activation tax if that event is at least 7. Each is evaluated
+independently. Recovery offset is capped by both current recoverable damage and
+total incoming damage; it is not a survival/turn simulation. The sequence is
+user-authored, not inferred from the opponent's deck or a win-rate estimate.
+
+### Comparing deck versions
+
+Both decks use the same numeric scenario and cards-seen checkpoint, with their
+own selected active champion classes. Stable card/rule IDs align outcomes;
+absent cards remain labeled Absent rather than becoming zero-strength cards.
+Access deltas are percentage points. The supported answer pool is the union of
+Engulf, Frozen Dismissal, Tidal Lock, Surging Obstruction, Thunderclap and Arrow
+Trap in Main; access to any one does not establish a legal answer to every target.
+Changed Main and Material cards are shown
+with quantities before/after. Sideboard changes do not enter these calculations.
+Inputs persist between scenario categories, comparison modes, and visited
+Forecasts/Matchup views while the comparison workspace remains mounted.

@@ -113,3 +113,7 @@ export * from './drawInfluence';
 
 export * from "./eventBrowserData.js";
 export * from "./defenseScenario.js";
+
+export * from "./fixtureResources.js";
+export * from "./cardScenarios.js";
+export * from "./fixtureMatchup.js";
