@@ -4,12 +4,23 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import DeckStatsTabs from '../src/features/account/DeckStatsTabs';
 
-test('closed specialist sections do not run their calculators during initial rendering', () => {
+test('results render immediately while unopened specialist calculators stay lazy', () => {
+  let resultsRendered = 0;
+  function Results() {
+    resultsRendered++;
+    return createElement('p', null, 'Visible deck results');
+  }
   function Calculator() { throw new Error('An unopened calculator should not run'); }
   const html = renderToStaticMarkup(createElement(DeckStatsTabs, {
-    tabs: [{ key: 'probability', label: 'Probability & damage', content: createElement(Calculator) }],
+    tabs: [
+      { key: 'results', label: 'Results', content: createElement(Results) },
+      { key: 'probability', label: 'Consistency', content: createElement(Calculator) },
+    ],
   }));
-  assert.match(html, /Probability &amp; damage/);
-  assert.match(html, /<summary/);
-  assert.doesNotMatch(html, /<details[^>]*\sopen/);
+  assert.equal(resultsRendered, 1);
+  assert.match(html, /Visible deck results/);
+  assert.match(html, /role="tab"[^>]*aria-selected="true"[^>]*>Results/);
+  assert.match(html, /role="tab"[^>]*aria-selected="false"[^>]*>Consistency/);
+  assert.match(html, /role="tabpanel"[^>]*hidden/);
+  assert.doesNotMatch(html, /<summary|<details/);
 });
