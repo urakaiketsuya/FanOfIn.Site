@@ -9,7 +9,7 @@ export function ChampionControl({ controller, label = 'Active champion' }: { con
 }
 export default function ScenarioControls({ controller, fields, champion = true }: { controller: ScenarioController; fields: ScenarioKey[]; champion?: boolean }) {
   const id = useId();
-  return <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  return <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
     {champion && <ChampionControl controller={controller} />}
     {[...new Set(fields)].map(key => <label key={key} htmlFor={`${id}-${key}`} className="block min-w-0 text-xs font-medium">{SCENARIO_FIELDS[key][0]}
       {BOOLEAN_SCENARIOS.has(key) ? <select id={`${id}-${key}`} className={controlClass} value={controller.state[key] ? 1 : 0} onChange={e => controller.setValue(key, Number(e.target.value))}><option value={0}>No</option><option value={1}>Yes</option></select>

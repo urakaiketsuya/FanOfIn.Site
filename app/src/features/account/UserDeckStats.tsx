@@ -2,7 +2,6 @@ import AssociatedCards from "../../components/AssociatedCards";
 import CardArtTile from "../../components/CardArtTile";
 import FixtureComparison from "../analytics/FixtureComparison";
 import CardScenarios from "../analytics/CardScenarios";
-import DefenseRecovery from "./DefenseRecovery";
 import DeckAccessSummary from "./DeckAccessSummary";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
@@ -245,7 +244,6 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
         )}
       </Panel>
       </div>
-      <DefenseRecovery mainLines={namedSections.main} cardsByName={cardsByName} />
       <CardScenarios deck={namedSections} cardsByName={cardsByName} />
       {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" />}
       {allyPower.allyCopies > 0 && hasDamageForecast && (

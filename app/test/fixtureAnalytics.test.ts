@@ -145,7 +145,7 @@ test('server rendering handles empty deck, missing catalog names and comparison 
   const { default: CardScenarios } = await import('../src/features/analytics/CardScenarios');
   const { default: FixtureComparison } = await import('../src/features/analytics/FixtureComparison');
   const render = (child: ReturnType<typeof createElement>) => renderToStaticMarkup(createElement(MemoryRouter, {}, child));
-  assert.equal(render(createElement(CardScenarios, { deck: deck(), cardsByName: new Map() })), '');
+  assert.match(render(createElement(CardScenarios, { deck: deck(), cardsByName: new Map() })), /No supported card findings/);
   const missing = render(createElement(CardScenarios, { deck: deck('Crosswind Cuts'), cardsByName: new Map() }));
   assert.match(missing, /Crosswind Cuts/); assert.match(missing, /Card data incomplete/);
   const empty = render(createElement(FixtureComparison, { baseline: deck(), target: deck(), cardsByName: new Map(), baselineLabel: 'A', targetLabel: 'B' }));
@@ -157,4 +157,21 @@ test('version answer pool access accounts for added answers without including un
   const row = rows.find(row => row.id === 'answerAccess')!;
   assert.equal(row.before?.value, 1); assert.equal(row.after?.value, 2);
   assert.ok(row.after!.access! > row.before!.access!);
+});
+
+test('report checkpoints preserve conditional state and separate damage events', async () => {
+  const { cardReportCheckpoints, reportDeltaChanged, scenarioConditions } = await import('@gatcg/shared');
+  const d = deck('Burst Asunder', 'Veiling Breeze', 'Crystallized Destiny');
+  const s = state({ fractals: 1, wind: 2 });
+  const rows = calculateCardScenarios(d, catalog, s);
+  const burst = rows.find(row => row.id === 'Burst Asunder:damage')!;
+  assert.deepEqual(cardReportCheckpoints(d, catalog, s, burst).map(p => p.value), [2, 4, 6]);
+  assert.match(scenarioConditions(burst, s), /Fractals to sacrifice: 1/);
+  assert.deepEqual(cardReportCheckpoints(d, catalog, s, rows.find(r => r.name === 'Veiling Breeze')!).map(p => p.value), [6, 2]);
+  assert.deepEqual(cardReportCheckpoints(d, catalog, s, rows.find(r => r.name === 'Crystallized Destiny')!).map(p => p.value), [2, 8]);
+  assert.equal(s.fractals, 1);
+  assert.equal(reportDeltaChanged({ before: burst, after: { ...burst } }), false);
+  assert.equal(reportDeltaChanged({ before: burst, after: { ...burst, access: 0.9 } }), true);
+  assert.equal(reportDeltaChanged({ before: burst }), true);
+  assert.equal(reportDeltaChanged({ before: burst, after: { ...burst, lines: [{ name: burst.name, quantity: 4 }] } }), true);
 });

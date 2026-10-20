@@ -5220,3 +5220,23 @@ Changed Main and Material cards are shown
 with quantities before/after. Sideboard changes do not enter these calculations.
 Inputs persist between scenario categories, comparison modes, and visited
 Forecasts/Matchup views while the comparison workspace remains mounted.
+
+### Automatic fixture reports (2026-10-20)
+
+CardScenarios opens on an all-category deck report. Each one-copy result retains
+its source cards, access probability, selected champion, and explicit conditions.
+`shared/src/analyticsReport.ts` derives checkpoints using the existing evaluator,
+varying one input while preserving all others. These are conditional outcomes,
+not expected performance or proof of affordability. Prevention additionally
+compares three 2-damage events with one 8-damage event at the selected Wind count.
+Resource payment and package access rows do not receive synthetic checkpoints.
+
+Version reports show all findings by default, stably placing changed findings
+before unchanged ones. Changes include outcome, access, detail, card quantity and
+support membership. Opposing named-card tax initially uses the most numerous Main
+card (name breaks ties); the selected name stays visible and can be changed.
+Shared Floating Memory consumers are shown as a resource tradeoff, never summed.
+Adjustments use parent-owned state in DialogSheet and survive dismissal and tabs.
+The existing defense panel is replaced in deck results by the same report rows;
+underlying prevention/recovery formulas are unchanged. Missing catalog and empty
+supported coverage retain visible status. No deck mutations or saves are involved.

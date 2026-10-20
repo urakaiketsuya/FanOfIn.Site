@@ -263,3 +263,10 @@ and Directions/Website actions; the name opens details. Keep review dates and re
 activity in details, and show the time-zone note once above results. Desktop uses a
 40/60 list/map split with a viewport-height map; mobile uses a short map and a compact
 selected-store summary with Directions below it. Preserve 48px controls while compacting.
+
+Fixture analytics opens on automatic Deck report and Comparison report findings.
+Show named cards, conditional checkpoints and access odds before optional inputs.
+Version reports put changed findings first and retain unchanged findings below.
+Use Adjust scenario in DialogSheet; retain parent-owned adjustments on dismissal.
+Keep selected champions and scenario conditions visible with the results. Conditional
+checkpoints are never labeled expected performance or an affordable play sequence.
