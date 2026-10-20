@@ -1,0 +1,204 @@
+{
+  "sourceRevision": "34a054ba71c735663c5f8d48befb4bcf5715540a",
+  "reviewedAt": "2026-10-20",
+  "catalogFetchedAt": "2026-09-28T14:06:47.680Z",
+  "sourceFiles": {
+    "cards-a.php": "635f24f71eed53e4b1021caf99ef2f389284e95e33fa0f4299822b48f344c16e",
+    "damage-backlog.php": "ed0b59e4fc0ac3eb418c232b136bbb1bb883989a18afcbbeb6ca376c00bf6dbf",
+    "damage.php": "fb4e3ac227ba8389a3ef6586174f98cf7115208cf202f19785b3ab7cedd28b10",
+    "water-actions2.php": "4e7e0f1a330b06ab73f6627e37e1b73204da603647269ffc70e40cf891fa4b6f",
+    "fire-allies.php": "5bd36540a1a68a4ae7b669747184877fae39894afd8425d3c5973e805e587643"
+  },
+  "cards": [
+    {
+      "name": "Arcane Blast",
+      "effect": "**Efficiency** *(This card costs **LV** less to activate. **LV** refers to your champion's level.)*\n\nDeal 11 damage to target champion.",
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost_reserve": 11,
+      "power": null
+    },
+    {
+      "name": "Thunderclap",
+      "effect": "[Level 3+] This card costs 2 less to activate. *(Apply this effect only if your champion is level 3 or higher.)*\n\nDeal 4 damage to target ally. ",
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost_reserve": 4,
+      "power": null
+    },
+    {
+      "name": "Fireball",
+      "effect": "[Class Bonus] This card costs 2 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*\n\nDeal 1+**LV** damage to target unit. *(**LV** refers to your champion's level.)*",
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost_reserve": 4,
+      "power": null
+    },
+    {
+      "name": "Burst Asunder",
+      "effect": "[Class Bonus] This card costs 2 less to activate.\n\nDeal 2 damage to target unit. Then you may sacrifice any amount of Fractals. For each Fractal sacrificed this way, deal an additional 2 damage to that unit.",
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "MAGE",
+        "SPELL"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_reserve": 4,
+      "power": null
+    },
+    {
+      "name": "Fractal of Rain",
+      "effect": "**Imbue 2**\n\nAt the beginning of your recollection phase, if CARDNAME is **imbued**, target player puts the top card of their deck into their graveyard.\n\n**Reservable** *(While paying for a reserve cost, you may rest this object to pay for 1 of that cost.)* ",
+      "types": [
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "FRACTAL"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_reserve": 2,
+      "power": null
+    },
+    {
+      "name": "Fractal of Snow",
+      "effect": "**Reservable** *(While paying for a reserve cost, you may rest this object to pay for 1 of that cost.)*\n\n[Class Bonus] **Sacrifice CARDNAME:** The next time one or more allies would enter the field this turn, they enter the field rested instead.",
+      "types": [
+        "PHANTASIA"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "FRACTAL"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost_reserve": 2,
+      "power": null
+    },
+    {
+      "name": "Ashwick Cremator",
+      "effect": "[Class Bonus] At the beginning of your end phase, if you have no cards in your hand, deal 2 damage to each champion.",
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "HUMAN"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost_reserve": 2,
+      "power": 2
+    },
+    {
+      "name": "Diao Chan, Enchantress",
+      "effect": "**On Enter**: Put two **glimmer** counters on CARDNAME.\n\n**Inherited Effect** \u2014 [REST]: Activate a Reaction Spell card from your memory. Pay its reserve cost only by removing that many **glimmer** counters from CARDNAME. Activate this ability only during an opponent's turn.",
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "HUMAN"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost_reserve": null,
+      "power": null
+    }
+  ],
+  "contracts": {
+    "fixed": {
+      "fixture": "arcane-blast-damage-target-champion",
+      "damage": 11
+    },
+    "allyOnly": {
+      "fixture": "thunderclap-rejects-a-champion-target",
+      "championDamage": 0
+    },
+    "level": {
+      "fixture": "fireball-scaling-damage",
+      "level": 2,
+      "damage": 3
+    },
+    "burst": {
+      "fixture": "burst-asunder-sacrificed-fractals-deal-two-more-damage-each",
+      "baseFixture": "burst-asunder-class-bonus-costs-two-less-and-deals-two-damage",
+      "baseDamage": 2,
+      "fractals": 2,
+      "damage": 6
+    },
+    "conditional": {
+      "fixture": "ashwick-cremator-class-bonus-end-phase-with-an-empty-hand-damages-each-champion",
+      "negativeFixture": "ashwick-cremator-class-bonus-end-phase-with-cards-in-hand-does-nothing",
+      "damage": 2,
+      "negativeDamage": 0
+    }
+  }
+}

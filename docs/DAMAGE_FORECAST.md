@@ -116,3 +116,8 @@ requirements, shared sacrifices/counters, exact dice, absent champion/class gate
 missing lineage levels, first/second-player timing, Unique objects, and duplicate
 import lines. The homepage example is regenerated from the real deck `8qjzzs` using
 the same engine; it now includes Missile and Refraction alongside Burst.
+
+The [TCGEngine direct-damage pilot](TCGENGINE_DAMAGE_PILOT.md) adds pinned,
+hand-reviewed outcome contracts for selected damage, targeting, level, condition,
+and sacrifice cases. It records which engine-state assumptions do not transfer
+to deck-level access estimates.
