@@ -98,6 +98,14 @@ function damageConditions(card: Card): string | null {
     ? "Printed trigger/board conditions are not determined by draw access; ceiling only" : null;
 }
 
+/** Prevention mentions incoming damage, not an unrecognized source of outgoing damage.
+ * Keep separate damage clauses in the audit, including cards that also prevent damage. */
+function hasUnmodeledDamageText(card: Card): boolean {
+  const clauses = (card.effect ?? "").replace(/\*\*/g, "").split(/[.\n]+/);
+  return clauses.some((clause) => /\bdamage\b/i.test(clause)
+    && (!/\bprevent(?:s|ed|ing|ion)?\b/i.test(clause) || /\bdeals?\b[^.]*\bdamage\b/i.test(clause)));
+}
+
 export function computeAggressionForecast(
   mainLines: { name: string; quantity: number }[],
   cardsByName: Map<string, Card>,
@@ -177,7 +185,7 @@ export function computeAggressionForecast(
       audit.push({ ...line, section: "Material", status: "partial", classification: "Scepter attack", reason: "Ceiling requires four drawn phantasias; one eligible attack including its buff counter, subject to payment and attack readiness" });
     } else if (witherSupply(card) > 0) {
       audit.push({ ...line, section: "Material", status: "partial", classification: "Wither support", reason: `${witherSupply(card)} counters after materialization, with a legal opposing target; shared once` });
-    } else if (/\bdamage\b/i.test(card.effect ?? "")) {
+    } else if (hasUnmodeledDamageText(card)) {
       audit.push({ ...line, section: "Material", status: "review", classification: "Unmodeled damage text", reason: "Material ability needs a supported activation scenario." });
     }
   }
@@ -297,7 +305,7 @@ export function computeAggressionForecast(
       detectedDamageCopies += line.quantity;
       if (unlockSeen > 0) reason += "; advanced element held until turn 4";
       audit.push({ ...line, section: "Main", status, classification, reason });
-    } else if (/\bdamage\b/i.test(card.effect ?? "")) {
+    } else if (hasUnmodeledDamageText(card)) {
       // An ally can also have ability damage; do not hide unrecognized text behind Combat damage.
       audit.push({ ...line, section: "Main", status: "review", classification: "Unmodeled damage text", reason: "Damage text needs review; ordinary attacks use the combat forecast." });
     } else if (card.types.includes("ALLY") || typeof card.power === "number") {

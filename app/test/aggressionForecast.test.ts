@@ -119,3 +119,20 @@ test("recurring material damage is disclosed separately from cards-seen totals",
   assert.equal(forecast.recurringDamagePerTurn, 1);
   assert.ok(forecast.points.every((point) => point.expectedMin === 0 && point.expectedMax === 0));
 });
+
+
+test("prevention is not flagged as unmodeled outgoing damage in either deck section", () => {
+  const breeze = card("Veiling Breeze", "Reveal any amount of wind element cards from your memory. Until end of turn, if damage would be dealt to your champion, prevent an amount of that damage equal to the amount of cards revealed this way.");
+  const destiny = card("Crystallized Destiny", "As long as you control two or more Fatestone and/or Fatebound objects, this card costs 2 less to activate. The next time damage would be dealt to your champion this turn, prevent that damage. When 7 or more damage is prevented this way, cards your opponents activate this turn cost (2) more to activate.");
+  const mixed = card("Mixed ability", "Prevent the next damage to your champion. Deal X damage to each unit.");
+  const cards = new Map([breeze, destiny, mixed].map(c => [c.name, c]));
+  for (const section of ["Main", "Material"]) {
+    const lines = [breeze, destiny].map(c => ({ name: c.name, quantity: 4 }));
+    const result = computeAggressionForecast(section === "Main" ? lines : [], cards, section === "Material" ? lines : []);
+    assert.deepEqual(result.audit, []);
+    assert.equal(result.detectedDamageCopies, 0);
+    assert.ok(result.points.every(point => point.expectedMax === 0));
+  }
+  const result = computeAggressionForecast([], cards, [{ name: mixed.name, quantity: 1 }]);
+  assert.equal(result.audit[0]?.classification, "Unmodeled damage text");
+});

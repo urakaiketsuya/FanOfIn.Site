@@ -2200,6 +2200,8 @@ seen. These conditional additions affect the optimistic side of the range; Full 
 four-Flowerbud sequence is the exception included on the conservative side.
 
 The forecast emits a filtered coverage ledger for damage-bearing Main and Material entries.
+Prevention-only damage clauses (including Veiling Breeze and Crystallized Destiny) do not
+trigger unmodeled outgoing-damage warnings; separate damage-dealing clauses remain eligible.
 Recognized direct, recurring, scaling, and supported combo effects are marked modeled; variable
 amounts such as Refracting Missile are partial; ordinary ally attacks are explicitly delegated to
 the combat forecast; unresolved rules text containing “damage” is flagged for review; and cards
