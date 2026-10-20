@@ -3,6 +3,7 @@ import type { Card } from "@gatcg/shared";
 import type { DependencyReadiness, SynergyLine, SynergyReadiness } from "../features/deckbuilder/synergyReadiness";
 import { VisualCardTile, type VisualFieldVisibility } from "./VisualCardTile";
 import Panel from "./ui/Panel";
+import AssociatedCards from "./AssociatedCards";
 
 type PackageKind = "synergy" | "dependency";
 type PackageEntry = {
@@ -63,12 +64,9 @@ function asEntries(synergies: SynergyReadiness[], dependencies: DependencyReadin
 }
 
 function CardCluster({ title, lines, cardsByName }: { title: string; lines: SynergyLine[]; cardsByName: Map<string, Card> }) {
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? lines : lines.slice(0, 4);
   return <section className="min-w-0" aria-label={title}>
     <div className="mb-2 flex items-center justify-between gap-2"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{title}</h4><span className="text-xs tabular-nums text-ctp-subtext0">{lines.reduce((sum, line) => sum + line.quantity, 0)} copies</span></div>
-    {lines.length > 0 ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{visible.map((line) => <VisualCardTile key={line.name} line={{ card: line.name, quantity: line.quantity }} card={cardsByName.get(line.name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} />)}</div> : <div className="flex min-h-32 items-center justify-center rounded-lg border border-dashed border-ctp-red/50 bg-ctp-red/5 p-4 text-center text-xs text-ctp-red">No support cards detected</div>}
-    {lines.length > 4 && <button type="button" onClick={() => setExpanded((value) => !value)} className="mt-2 min-h-10 text-xs font-medium text-ctp-blue">{expanded ? "Show fewer cards" : `Show all ${lines.length} cards`}</button>}
+    {lines.length > 0 ? <AssociatedCards lines={lines} cardsByName={cardsByName} label={title} /> : <p className="py-4 text-sm text-ctp-yellow">No {title.toLowerCase()} detected</p>}
   </section>;
 }
 
@@ -108,7 +106,7 @@ export default function CardPackageMap({ synergies, dependencies, cardsByName, p
         <div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{active.kind === "synergy" ? "Synergy package" : "Dependency package"}</p><h3 className="mt-0.5 text-lg font-semibold capitalize text-ctp-text">{active.label}</h3></div>
         <div className="flex flex-wrap gap-2"><span className={`rounded-full bg-ctp-base/70 px-2.5 py-1 text-xs font-medium ${style.text}`}>{active.status}</span>{active.probability !== null && <span className="rounded-full bg-ctp-base/70 px-2.5 py-1 text-xs tabular-nums text-ctp-subtext1">{Math.round(active.probability * 100)}% by 10 seen</span>}</div>
       </div>
-      <p className="mt-2 text-xs leading-5 text-ctp-subtext1">{active.note}</p>
+      <p className="mt-2 text-xs text-ctp-subtext1">Detected card pool · Main and Material</p>
 
       <div className="mt-4 grid items-center gap-4 md:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)]">
         <CardCluster title={active.supportLabel} lines={active.support} cardsByName={cardsByName} />
@@ -122,7 +120,7 @@ export default function CardPackageMap({ synergies, dependencies, cardsByName, p
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {active.recommendations.map((name) => {
             const previewed = previewedCards.has(name);
-            return <div key={name} className={`rounded-lg border border-dashed p-2 ${previewed ? "border-ctp-blue bg-ctp-blue/10" : "border-ctp-surface1 bg-ctp-base/40"}`}><VisualCardTile line={{ card: name, quantity: 1 }} card={cardsByName.get(name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} /><button type="button" aria-pressed={previewed} onClick={() => onTogglePreview(name)} className={`mt-2 min-h-10 w-full rounded-md px-2 text-xs font-medium ${previewed ? "bg-ctp-blue text-ctp-base" : "border border-ctp-blue/50 text-ctp-blue hover:bg-ctp-blue/10"}`}>{previewed ? "Previewing ✓" : "+ Preview addition"}</button></div>;
+            return <div key={name} className={`rounded-lg border border-dashed p-2 ${previewed ? "border-ctp-blue bg-ctp-blue/10" : "border-ctp-surface1 bg-ctp-base/40"}`}><VisualCardTile line={{ card: name, quantity: 1 }} card={cardsByName.get(name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} /><button type="button" aria-pressed={previewed} onClick={() => onTogglePreview(name)} className={`mt-2 min-h-12 w-full rounded-md px-2 text-xs font-medium ${previewed ? "bg-ctp-blue text-ctp-base" : "border border-ctp-blue/50 text-ctp-blue hover:bg-ctp-blue/10"}`}>{previewed ? "Previewing ✓" : "+ Preview addition"}</button></div>;
           })}
         </div>
       </section>}

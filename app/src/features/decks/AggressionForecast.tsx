@@ -1,10 +1,8 @@
 import { useMemo, useState, useTransition } from "react";
 import type { Card } from "@gatcg/shared";
-import { Link } from "react-router-dom";
-import CardArtTile from "../../components/CardArtTile";
+import AssociatedCards from "../../components/AssociatedCards";
 import Button from "../../components/ui/Button";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import type { AggressionForecast as Forecast } from "../../lib/aggressionForecast";
 import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline, ForecastMetricBar } from "../../components/ui/ForecastVisual";
 
@@ -50,26 +48,26 @@ export default function AggressionForecast({ forecast: initialForecast, mainLine
   const fiveChance = (selected.chanceAtLeastFiveMin + selected.chanceAtLeastFiveMax) / 2;
   const tenChance = (selected.chanceAtLeastTenMin + selected.chanceAtLeastTenMax) / 2;
   const damageCopies = forecast.detectedDamageCopies;
-  const sources = forecast.audit.filter((entry) => entry.section === "Main" && (entry.status === "modeled" || entry.status === "partial"));
+  const sources = forecast.audit.filter((entry) => entry.status === "modeled" || entry.status === "partial");
+  if (sources.length === 0 && auditAttention.length > 0) return <section data-component="AggressionForecast" className="space-y-2">
+    <h3 className="text-sm font-semibold">Direct-damage estimate unavailable</h3>
+    {auditAttention.map(entry => <p key={`${entry.section}-${entry.name}`} className="text-xs text-ctp-yellow">{entry.name} · {entry.classification}</p>)}
+    <AssociatedCards lines={auditAttention.map(entry => ({ name: entry.name, quantity: entry.quantity, detail: "Not modeled" }))} cardsByName={cardsByName} />
+  </section>;
 
   return (
     <div data-component="AggressionForecast" className={embedded ? "" : "mt-4 border-t border-ctp-surface1 pt-4"}>
       <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed direct-damage access</h3>
-      <p className="mt-1 text-xs text-ctp-subtext0">Damage access from this deck’s draws and support cards.</p>
-      <div className="mt-3 flex flex-wrap gap-3">{sources.map((entry) => {
-        const card = cardsByName.get(entry.name);
-        const tile = <><CardArtTile card={card} name={entry.name} cornerBadge={`${entry.quantity}×`} /><span className="mt-1 block text-xs font-medium">{entry.name}</span></>;
-        return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="w-20 min-w-0 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{tile}</Link> : <div key={entry.name} className="w-20">{tile}</div>;
-      })}</div>
+      <div className="mt-4"><ForecastHeadline label={`Estimated printed damage available · ${selected.seen} cards seen`} value={formatRange(selected.expectedMin, selected.expectedMax)} /></div>
+      <p className="my-3 text-xs text-ctp-subtext1">Modeled sources · Main and Material</p>
+      <AssociatedCards lines={sources.map(entry => ({ name: entry.name, quantity: entry.quantity, detail: entry.section }))} cardsByName={cardsByName} />
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <ForecastCheckpointSelector checkpoints={checkpoints} selected={selected.seen} onSelect={setSelectedSeen} />
         <div className="flex gap-2" aria-label="Play order">
           {(["first", "second"] as const).map((order) => <Button key={order} size="sm" variant={playOrder === order ? "primary" : "secondary"} aria-pressed={playOrder === order} onClick={() => startTransition(() => setPlayOrder(order))}>Play {order}</Button>)}
         </div>
       </div>
-      {selected.sampleSize && <p className="mt-2 text-xs text-ctp-subtext1">Draw odds estimated from {selected.sampleSize.toLocaleString()} sampled hands.</p>}
       {pending && <p role="status" className="mt-2 text-xs text-ctp-subtext1">Recalculating…</p>}
-      <div className="mt-4"><ForecastHeadline label={`Expected printed damage available · turn ${turnForSeen(selected.seen)}`} value={formatRange(selected.expectedMin, selected.expectedMax)} detail={`Median ${formatRange(selected.medianMin, selected.medianMax)} · conservative p10 ${selected.low} · optimistic p90 ${selected.high}`} /></div>
       <div className="mt-3">
         <ForecastChart values={expectedValues} low={forecast.points.map((point) => point.low)} high={forecast.points.map((point) => point.high)} selectedIndex={forecast.points.indexOf(selected)} />
         <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">{forecast.points.map((point) => <span key={point.seen}>{point.seen} seen</span>)}</div>
@@ -83,24 +81,9 @@ export default function AggressionForecast({ forecast: initialForecast, mainLine
         {forecast.recurringDamagePerTurn > 0 && <span className="font-semibold text-ctp-mauve">+{forecast.recurringDamagePerTurn} potential recurring damage/turn once materialized (separate)</span>}
         {forecast.awakeningBloomComboCopies > 0 && <span>{forecast.awakeningBloomComboCopies} Diao phantasia combo copies</span>}
       </div>
-      {forecast.audit.some((entry) => entry.status === "modeled") && <details className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-surface0/40 text-xs">
-        <summary className="list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-ctp-blue min-h-control cursor-pointer px-3 py-3 font-medium text-ctp-text">Where the damage comes from <DisclosureChevron /></summary>
-        <div className="space-y-2 border-t border-ctp-surface1 px-3 py-3">{forecast.audit.filter((entry) => entry.status === "modeled").map((entry) => <div key={`${entry.section}-${entry.name}`} className="flex flex-wrap justify-between gap-x-3 gap-y-1"><span className="font-medium text-ctp-text">{entry.quantity}× {entry.name}</span><span className="text-ctp-subtext1">{entry.reason}</span></div>)}</div>
-      </details>}
-      <details className={`mt-3 overflow-hidden rounded-xl border text-xs ${auditAttention.length > 0 ? "border-ctp-yellow/50 bg-ctp-yellow/5" : "border-ctp-surface1 bg-ctp-surface0/40"}`}>
-        <summary className="list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-ctp-blue flex min-h-control cursor-pointer items-center justify-between gap-3 px-3 py-2.5 font-medium text-ctp-text hover:bg-ctp-surface0/60"><span>Damage coverage audit</span><span className={auditAttention.length > 0 ? "text-ctp-yellow" : "text-ctp-green"}>{auditAttention.length > 0 ? `${auditAttention.length} conditional / unmodeled` : "All damage text classified"}</span><DisclosureChevron /></summary>
-        <div className="space-y-3 border-t border-ctp-surface1 p-3">{forecast.audit.map((entry) => <div key={`${entry.section}-${entry.name}`} className="min-w-0">
-          <p className="font-medium text-ctp-text">{entry.quantity}× {entry.name} · {entry.section}</p>
-          <p className={entry.status === "partial" || entry.status === "review" ? "text-ctp-yellow" : "text-ctp-subtext1"}>{entry.classification}: {entry.reason}</p>
-        </div>)}</div>
-      </details>
-      <details className="mt-3 overflow-hidden rounded-xl bg-ctp-surface0/50 text-xs text-ctp-subtext0">
-        <summary className="list-none [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-ctp-blue min-h-control cursor-pointer px-3 py-2.5 font-medium hover:bg-ctp-surface0 hover:text-ctp-text focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ctp-blue">View forecast data <DisclosureChevron /></summary>
-        <div className="overflow-x-auto px-3 pb-3"><table className="w-full min-w-[32rem] text-left">
-          <thead><tr className="border-b border-ctp-surface1"><th className="pb-1 pr-3">Seen</th><th className="px-3 pb-1">Scenario percentiles</th><th className="px-3 pb-1">Expected</th><th className="px-3 pb-1">5+</th><th className="pl-3 pb-1">10+</th></tr></thead>
-          <tbody>{forecast.points.map((point) => <tr key={point.seen} className="border-b border-ctp-surface0 last:border-0"><td className="py-1.5 pr-3">{point.seen}{point.sampleSize ? " · estimated" : ""}</td><td className="px-3 py-1.5">p10 {point.low} / p90 {point.high}</td><td className="px-3 py-1.5">{formatRange(point.expectedMin, point.expectedMax)}</td><td className="px-3 py-1.5">{formatChance(point.chanceAtLeastFiveMin, point.chanceAtLeastFiveMax)}</td><td className="py-1.5 pl-3">{formatChance(point.chanceAtLeastTenMin, point.chanceAtLeastTenMax)}</td></tr>)}</tbody>
-        </table></div>
-      </details>
+      {auditAttention.length > 0 && <div className="mt-3 space-y-1 text-xs text-ctp-yellow" aria-label="Damage coverage issues">
+        {auditAttention.map(entry => <p key={`${entry.section}-${entry.name}`}>{entry.name} · {entry.section}: {entry.classification} — {entry.status === "partial" ? "partly modeled" : "not modeled"}</p>)}
+      </div>}
     </div>
   );
 }

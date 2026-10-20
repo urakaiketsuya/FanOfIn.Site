@@ -1,3 +1,6 @@
+import AssociatedCards from "../../components/AssociatedCards";
+import CardArtTile from "../../components/CardArtTile";
+import DeckAccessSummary from "./DeckAccessSummary";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
 import { useMemo, useState, type ReactNode } from "react";
@@ -166,15 +169,14 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   }, [decklist, previousDecklist]);
   const findings = useMemo<Finding[]>(() => {
     const result: Finding[] = [];
-    if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} card name${coverage.unresolved.length === 1 ? " is" : "s are"} unresolved, so computed scores and charts may be incomplete.` });
+    if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} unresolved card names · results incomplete` });
     if (validation.status !== "Legal") result.push({ tone: "red", title: `${validation.status} construction`, detail: validation.reasons[0] ?? "Review the construction rules before playing this list." });
-    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target – extra cards dilute consistency. See "Trim & packages" for ranked cut suggestions.` });
+    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize}/60 cards · review cuts in Changes & packages` });
     const weakSynergy = synergyReadiness.find((entry) => entry.status === "Unlikely" || entry.status === "Fragile");
     if (weakSynergy) result.push({ tone: "yellow", title: `${weakSynergy.label} is ${weakSynergy.status.toLowerCase()}`, detail: `${weakSynergy.enablerCopies} eligible copies give a ${(weakSynergy.probabilityByTen * 100).toFixed(0)}% theoretical chance by 10 cards seen.` });
     const weakPackage = dependencyReadiness.find((entry) => entry.status !== "Supported");
     if (weakPackage) result.push({ tone: "yellow", title: `${weakPackage.label}: ${weakPackage.status}`, detail: `${weakPackage.producerCopies} producer copies support ${weakPackage.consumerCopies} consumer copies.` });
-    if (result.length === 0) result.push({ tone: "green", title: "No immediate structural warnings", detail: "The construction check and detected card packages look supported. Use the builder review for matchup-aware tuning." });
-    return result.slice(0, 5);
+    return result;
   }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation, trimPlans.main]);
 
   // `cardsByName` (a per-name Dexie query) and `catalog` (the full-list Dexie query) are two
@@ -223,12 +225,14 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
     || aggressionForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
   const probabilityTab: ReactNode = (
     <>
+      <div className="grid items-start gap-4 lg:grid-cols-2">
+      <DeckAccessSummary mainLines={namedSections.main} cardsByName={cardsByName} />
       <Panel>
         {hasDamageForecast ? (
           <AggressionForecast forecast={aggressionForecast} mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
         ) : breakthroughVsAverage.attackerCount > 0 ? (
           <div data-component="BreakthroughDamageFallback">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>
             <div className="mt-3">
               <CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
             </div>
@@ -237,9 +241,10 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
           <InlineState className="text-sm">No printed spell/ability damage and no attacking allies found in this list.</InlineState>
         )}
       </Panel>
+      </div>
       {allyPower.allyCopies > 0 && hasDamageForecast && (
         <Panel className="mt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>
           <div className="mt-3"><CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} /></div>
         </Panel>
       )}
@@ -255,12 +260,16 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
           <div className="mt-2"><DelugeForecastList forecasts={delugeForecasts} /></div>
         </div>
       )}
-      <div className="mt-4">
-        <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
-      </div>
-      <div className="mt-4">
-        <TurnToPlayCalculator mainLines={namedSections.main} catalogByName={cardsByName} />
-      </div>
+
+      {[...synergyReadiness.filter(entry => entry.status === "Fragile" || entry.status === "Unlikely").map(entry => ({ key: `synergy:${entry.key}`, label: entry.label, status: entry.status, support: entry.enablerCards, payoffs: entry.payoffCards, supportLabel: "Enablers", payoffLabel: "Payoffs" })),
+        ...dependencyReadiness.filter(entry => entry.status !== "Supported").map(entry => ({ key: `dependency:${entry.key}`, label: entry.label, status: entry.status, support: entry.producers, payoffs: entry.consumers, supportLabel: "Support", payoffLabel: "Consumers" }))].map(entry => <Panel key={entry.key} className="mt-4">
+          <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-semibold">{entry.label}</h3><span className="text-xs text-ctp-yellow">{entry.status}</span></div>
+          <p className="mt-1 text-xs text-ctp-subtext1">Detected pool · Main and Material</p>
+          <div className="mt-3 grid gap-4 md:grid-cols-2">{[{ label: entry.supportLabel, lines: entry.support }, { label: entry.payoffLabel, lines: entry.payoffs }].map(group => <section key={group.label}>
+            <h4 className="mb-2 text-xs font-medium">{group.label} · {group.lines.reduce((sum, line) => sum + line.quantity, 0)} copies</h4>
+            {group.lines.length ? <AssociatedCards lines={group.lines} cardsByName={cardsByName} label={group.label} /> : <p className="text-xs text-ctp-yellow">No {group.label.toLowerCase()} detected</p>}
+          </section>)}</div>
+        </Panel>)}
     </>
   );
 
@@ -268,22 +277,23 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   const trimTab: ReactNode = (
     <>
       {stagedChanges.length > 0 && <DeckChangeImpactPreview decklist={decklist} changes={stagedChanges} cardsByName={previewCardsByName} format={format} />}
-      {stagedChanges.length > 0 && <Panel tone="info" className="mb-5 sticky top-16 z-20 shadow-lg"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} · {stagedAdditions.size} addition{stagedAdditions.size === 1 ? "" : "s"} staged</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts, ...stagedAdditions].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => { setStagedCuts(new Set()); setStagedAdditions(new Set()); }} className="rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{stagedBuilderParams && <Link to={buildDeckBuilderPath(stagedBuilderParams.championName, stagedBuilderParams.spiritFilter, stagedBuilderParams.lockedCards, stagedBuilderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
+      {stagedChanges.length > 0 && <Panel tone="info" className="mb-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} · {stagedAdditions.size} addition{stagedAdditions.size === 1 ? "" : "s"} staged</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts, ...stagedAdditions].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => { setStagedCuts(new Set()); setStagedAdditions(new Set()); }} className="min-h-12 rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{stagedBuilderParams && <Link to={buildDeckBuilderPath(stagedBuilderParams.championName, stagedBuilderParams.spiritFilter, stagedBuilderParams.lockedCards, stagedBuilderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
       {overTrimSections.length > 0 && activeTrimPlan && (
-        <Section heading="compact" title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
+        <Section heading="compact" title="Trim to size">
           <div className="mt-3 flex flex-wrap gap-2">
             {overTrimSections.map((section) => {
               const plan = trimPlans[section];
               if (!plan) return null;
-              return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`rounded-md border px-3 py-1.5 text-sm capitalize transition-all duration-200 active:scale-[0.97] ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue shadow-md shadow-ctp-blue/20" : "border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/20"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
+              return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`min-h-12 rounded-md border px-3 py-1.5 text-sm capitalize transition-all duration-200 active:scale-[0.97] ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue shadow-md shadow-ctp-blue/20" : "border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/20"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
             })}
           </div>
           <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} – cut at least {activeTrimPlan.overBy} to reach target.</p>
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              {cardsByName.get(candidate.cardName) ? <Link to={`/cards/${cardsByName.get(candidate.cardName)!.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={cardsByName.get(candidate.cardName)} name={candidate.cardName} /></Link> : <CardArtTile card={undefined} name={candidate.cardName} />}
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
                 <span className="font-semibold text-ctp-text">{candidate.remainingQuantity > 0 ? `Cut ${candidate.cutQuantity}x (keep ${candidate.remainingQuantity}x)` : `Cut all ${candidate.cutQuantity}x`} {candidate.cardName}</span>
-                <div className="flex items-center gap-2">{candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}<button type="button" aria-pressed={stagedCuts.has(candidate.cardName)} onClick={() => setStagedCuts((current) => { const next = new Set(current); if (next.has(candidate.cardName)) next.delete(candidate.cardName); else next.add(candidate.cardName); return next; })} className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${stagedCuts.has(candidate.cardName) ? "border-ctp-blue bg-ctp-blue text-ctp-base" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue"}`}>{stagedCuts.has(candidate.cardName) ? "Staged ✓" : "Stage cut"}</button></div>
+                <div className="flex items-center gap-2">{candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}<button type="button" aria-pressed={stagedCuts.has(candidate.cardName)} onClick={() => setStagedCuts((current) => { const next = new Set(current); if (next.has(candidate.cardName)) next.delete(candidate.cardName); else next.add(candidate.cardName); return next; })} className={`min-h-12 rounded-md border px-2.5 py-1.5 text-xs font-medium ${stagedCuts.has(candidate.cardName) ? "border-ctp-blue bg-ctp-blue text-ctp-base" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue"}`}>{stagedCuts.has(candidate.cardName) ? "Staged ✓" : "Stage cut"}</button></div>
               </div>
               <p className="mt-1 text-xs text-ctp-subtext1">{candidate.detail}</p>
             </li>)}
@@ -301,20 +311,32 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   );
 
   const tabs: DeckStatsTab[] = [
-    { key: "composition", label: "Deck composition", content: compositionTab },
-    { key: "forecasts", label: "Probability & damage", content: probabilityTab },
-    { key: "improvements", label: "Advanced change planning", content: trimTab },
+    { key: "forecasts", label: "Results", content: probabilityTab },
+    { key: "consistency", label: "Consistency", content: <>
+      <div>
+        <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
+      </div>
+      <div className="mt-4">
+        <TurnToPlayCalculator mainLines={namedSections.main} catalogByName={cardsByName} />
+      </div>
+    </> },
+    { key: "composition", label: "Composition", content: compositionTab },
+    { key: "improvements", label: "Changes & packages", content: trimTab },
     ...extraTabs,
   ];
 
   return <div data-component="UserDeckStats" className="mt-6 space-y-5">
-    <Panel aria-labelledby="analysis-findings" elevation={1}>
-      <div className="flex flex-wrap items-start justify-between gap-3"><div><div className="flex flex-wrap items-center gap-2"><h2 id="analysis-findings" className="font-semibold text-ctp-text">What stands out</h2><span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${validationTone}`}>{validation.status}</span></div><p className="mt-1 text-xs text-ctp-subtext0">The highest-priority structural signals from this list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="min-h-10 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Open Deck Review</Link>}</div>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.slice(0, 3).map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
-      {(findings.length > 3 || validation.reasons.length > 0) && <details className="mt-3 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext1"><summary className="cursor-pointer font-medium">More checks ({Math.max(0, findings.length - 3) + validation.reasons.length})</summary><div className="mt-2 space-y-2">{findings.slice(3).map((finding) => <div key={`${finding.title}:${finding.detail}`}><p className="font-medium text-ctp-text">{finding.title}</p><p>{finding.detail}</p></div>)}{validation.reasons.length > 0 && <ul className="list-disc space-y-1 pl-5">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}</div></details>}
-      <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-ctp-surface1 pt-2 text-[10px] text-ctp-subtext0"><span>Main {totals.main}</span><span>Material {totals.material}</span><span>Sideboard {totals.sideboard}</span>{versionChange && <span>Since last version: {versionChange.changedCards} cards changed</span>}</div>
-    </Panel>
-
+    <div className="flex flex-wrap items-center gap-3 text-xs text-ctp-subtext1">
+      <span className={`rounded-full border px-3 py-1 ${validationTone}`}>Construction: {validation.status}</span>
+      <span>Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</span>
+      {versionChange && <span>{versionChange.changedCards} cards changed since last version</span>}
+    </div>
+    {coverage.unresolved.length > 0 && <p role="status" className="text-sm text-ctp-yellow">Incomplete card data: {coverage.unresolved.join(" · ")}</p>}
     <DeckStatsTabs tabs={tabs} />
+    {(findings.length > 0 || validation.reasons.length > 0) && <section aria-label="Needs attention" className="space-y-2">
+      <h2 className="text-sm font-semibold">Needs attention</h2>
+      {findings.map(finding => <Panel key={finding.title} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-medium">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}
+      {validation.reasons.map(reason => <p key={reason} className="text-xs text-ctp-yellow">{reason}</p>)}
+    </section>}
   </div>;
 }

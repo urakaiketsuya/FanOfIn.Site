@@ -104,6 +104,14 @@ roles. Catalog gaps and inherited roles needing review remain visible beside pla
 
 Deck analysis results use draw-count and Reserve-cost bars with visible values. Natural draws and estimated extra draws retain distinct labels. Saved access comparisons name the selected cards and play order; use “Save for comparison,” not “baseline.” Do not add methodology accordions or opening-size summaries.
 
+Deck Analysis opens on Results. Use peer tabs that retain visited calculators and drafts,
+with results and named card artwork before configuration. Associated-card grids wrap and show
+copy counts, card-detail links, and name fallbacks; never gate their membership behind “show all.”
+Combat metric selection highlights the printed-power ally pool or supported boost sources with
+an outline and a Contributes label. Keep attack power distinct from direct-damage access.
+Unmodeled-only damage is unavailable, not zero. Package issues show their detected enabler/payoff
+or producer/consumer pools explicitly; proposed additions remain separate from selected cards.
+
 ## Browse navigation and supporting evidence
 
 Use shared pill Tabs for peer browse views (cards, decks, archetypes, and event results), with TabPanel associations for newly migrated views. Underline tabs remain appropriate inside a focused task such as choosing an import source. Wrap long browse tab sets on phones instead of compressing controls. Controls remain at least 48px tall.

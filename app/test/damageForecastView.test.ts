@@ -22,6 +22,8 @@ test("missing catalog data remains visible in coverage rather than marked comple
   assert.match(html, /Missing card data/);
   assert.match(html, /Unresolved Card/);
   assert.doesNotMatch(html, /All damage text classified/);
+  assert.match(html, /estimate unavailable/);
+  assert.doesNotMatch(html, /<details|Chance to access 5/);
 });
 
 test("automatic forecast shows card-name fallback and has no board-state configuration", () => {
