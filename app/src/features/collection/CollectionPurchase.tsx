@@ -1,5 +1,7 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
+import Button from "../../components/ui/Button";
+import { readShoppingDraft, SHOPPING_DRAFT_KEY } from "./shoppingDraft";
 import CardArtTile from "../../components/CardArtTile";
 import { playsetTarget, supportsPlayset } from "./collectionPlaysets";
 import CollectionBinderReview from "./CollectionBinderReview";
@@ -15,13 +17,20 @@ export interface CollectionPurchaseMode {
 }
 
 /** Shopping changes the shared grid's interaction; it never renders a second card grid. */
-export default function CollectionPurchase({ cards, catalog = cards, quantities = new Map(), preview, children }: {
-  catalog?: Card[]; quantities?: ReadonlyMap<string, number>; cards: Card[]; preview?: boolean; children: (mode: CollectionPurchaseMode) => ReactNode;
+export default function CollectionPurchase({ cards, catalog = cards, quantities = new Map(), preview, quickBuy = false, ownershipReady = false, children }: {
+  catalog?: Card[]; quantities?: ReadonlyMap<string, number>; cards: Card[]; preview?: boolean; quickBuy?: boolean; ownershipReady?: boolean; children: (mode: CollectionPurchaseMode) => ReactNode;
 }) {
   const [binderKind,setBinderKind]=useState<"available"|"wanted"|null>(null);
-  const [active, setActive] = useState(false);
+  const [selecting, setActive] = useState(false);
+  const active = quickBuy || selecting;
   const [review, setReview] = useState(false);
-  const [choices, setChoices] = useState<Record<string, ShoppingChoice>>({});
+  const [choices, setChoices] = useState<Record<string, ShoppingChoice>>(() => quickBuy ? readShoppingDraft() : {});
+  const [storageError, setStorageError] = useState(false);
+  useEffect(() => {
+    if (!quickBuy) return;
+    try { localStorage.setItem(SHOPPING_DRAFT_KEY, JSON.stringify(choices)); setStorageError(false); }
+    catch { setStorageError(true); }
+  }, [choices, quickBuy]);
   const [message, setMessage] = useState("");
   const lines = shoppingLines(choices);
   const batches = shoppingBatches(lines);
@@ -33,22 +42,28 @@ export default function CollectionPurchase({ cards, catalog = cards, quantities 
     setMessage("");
   }
   const controls = <>
-    {!preview && <div className="contents">
-      <button type="button" aria-pressed={active} onClick={() => setActive(!active)} className={control}>{active ? "Done selecting" : "Select"}</button>
-      {active && <button type="button" disabled={!cards.length} onClick={() => setChoices(current => ({ ...current, ...Object.fromEntries(cards.map(card => [card.uuid, current[card.uuid] ?? { name: card.name, quantity: 1 }])) }))} className={control}>Select all {cards.length}</button>}
-      {active && <button type="button" onClick={()=>{setChoices(Object.fromEntries(cards.flatMap(card=>{const extra=Math.max(0,(quantities.get(card.uuid)??0)-playsetTarget(card));return extra?[[card.uuid,{name:card.name,quantity:extra}]]:[];})));}} className={control}>Select extra copies</button>}
-      {!!lines.length && <><button type="button" onClick={()=>setBinderKind("available")} className={control}>Add to binder</button><button type="button" onClick={()=>setBinderKind("wanted")} className={control}>Add to wants</button></>}
-      {!!lines.length && <button type="button" onClick={() => setReview(true)} className={`${control} border-ctp-blue`}>Review purchase ({lines.length})</button>}
+    {(!preview || quickBuy) && <div className="contents">
+      {!quickBuy && <button type="button" aria-pressed={active} onClick={() => setActive(!active)} className={control}>{active ? "Done selecting" : "Select"}</button>}
+      {active && <button type="button" disabled={!cards.length} onClick={() => setChoices(current => ({ ...current, ...Object.fromEntries(cards.map(card => [card.uuid, current[card.uuid] ?? { name: card.name, quantity: 1 }])) }))} className={control}>Select all results ({cards.length})</button>}
+      {active && !quickBuy && <button type="button" onClick={()=>{setChoices(Object.fromEntries(cards.flatMap(card=>{const extra=Math.max(0,(quantities.get(card.uuid)??0)-playsetTarget(card));return extra?[[card.uuid,{name:card.name,quantity:extra}]]:[];})));}} className={control}>Select extra copies</button>}
+      {quickBuy && !!lines.length && <Button onClick={() => setChoices({})}>Clear selection</Button>}
+      {!quickBuy && !!lines.length && <><button type="button" onClick={()=>setBinderKind("available")} className={control}>Add to binder</button><button type="button" onClick={()=>setBinderKind("wanted")} className={control}>Add to wants</button></>}
+      {!quickBuy && !!lines.length && <button type="button" onClick={() => setReview(true)} className={`${control} border-ctp-blue`}>Review purchase ({lines.length})</button>}
     </div>}
-    {active && <p role="status" className="mb-3 text-sm text-ctp-subtext1">Select cards below, then choose an action.{hidden > 0 ? ` ${hidden} selected outside these filters.` : ""}</p>}
+    {active && <p role="status" className="mb-3 text-sm text-ctp-subtext1">{quickBuy ? "Select cards to buy." : "Select cards below, then choose an action."}{hidden > 0 ? ` ${hidden} selected outside these filters.` : ""}</p>}
   </>;
   return <>
     {children({ controls, active, choices, choose })}
+    {quickBuy && <div className="sticky bottom-0 z-20 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-lg">
+      <span role="status" className="text-sm">{lines.length} cards · {lines.reduce((sum, line) => sum + line.quantity, 0)} copies</span>
+      <Button disabled={!lines.length} onClick={() => setReview(true)}>Review purchase</Button>
+      {storageError && <p role="alert" className="w-full text-sm text-ctp-yellow">This browser cannot save your shopping list. Keep this tab open or copy your list.</p>}
+    </div>}
     {binderKind && <CollectionBinderReview kind={binderKind} choices={choices} cards={catalog} onDismiss={()=>setBinderKind(null)}/>}
-    {review && <EditorDialog title="Review purchase" doneLabel="Back to cards" onDismiss={() => setReview(false)}>
+    {review && <EditorDialog title="Review purchase" doneLabel="Back to cards" onDismiss={() => setReview(false)} footer={<div className="flex max-h-40 flex-wrap gap-2 overflow-y-auto">{batches.map((batch, index) => <a key={index} href={buildTcgplayerMassEntryUrl(batch)} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base">Shop on TCGplayer{batches.length > 1 ? ` · batch ${index + 1} of ${batches.length}` : ""} ↗</a>)}</div>}>
       <p className="text-sm text-ctp-subtext1">Choose quantities, then open TCGplayer. Printing and condition are chosen there.</p>
-      <div className="my-2 flex flex-wrap gap-2"><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).map(([id, choice]) => [id, {...choice, quantity: 1}])))}>One of each</button>{catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).flatMap(([id, choice]) => { const card = catalog.find(card => card.uuid === id); if (!card || !supportsPlayset(card)) return [[id, choice]]; const quantity = Math.max(0, playsetTarget(card) - (quantities.get(id) ?? 0)); return quantity ? [[id, {...choice, quantity}]] : []; })))}>Fill missing playset copies</button>}</div>
-      {catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <p className="text-xs text-ctp-subtext1">Fill playsets uses your physical ownership and removes main-deck cards already complete.</p>}
+      <div className="my-2 flex flex-wrap gap-2"><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).map(([id, choice]) => [id, {...choice, quantity: 1}])))}>One of each</button>{(!quickBuy || ownershipReady) && catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).flatMap(([id, choice]) => { const card = catalog.find(card => card.uuid === id); if (!card || !supportsPlayset(card)) return [[id, choice]]; const quantity = Math.max(0, playsetTarget(card) - (quantities.get(id) ?? 0)); return quantity ? [[id, {...choice, quantity}]] : []; })))}>Fill missing playset copies</button>}</div>
+      {(!quickBuy || ownershipReady) && catalog.some(card => choices[card.uuid] && supportsPlayset(card)) && <p className="text-xs text-ctp-subtext1">Fill playsets uses your physical ownership and removes main-deck cards already complete.</p>}
       <div className="my-3 divide-y divide-ctp-surface1">{Object.entries(choices).map(([id, choice]) => <div key={id} className="flex flex-wrap items-center gap-2 py-3">
         <div className="w-16 shrink-0"><CardArtTile card={catalog.find(card => card.uuid === id)} name={choice.name}/></div><span className="min-w-0 flex-1 text-sm">{choice.name}</span>
         <input type="number" min={0} max={99} aria-label={`Buy quantity for ${choice.name}`} value={choice.quantity} onChange={event => choose(id, choice.name, Math.max(0, Math.min(99, Math.floor(Number(event.target.value) || 0))))} className="min-h-12 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2" />
@@ -56,7 +71,7 @@ export default function CollectionPurchase({ cards, catalog = cards, quantities 
       </div>)}</div>
       {!lines.length && <p role="status">No cards selected.</p>}
       {batches.length > 1 && <p className="my-2 text-sm">Open each of the {batches.length} batches to include all selected cards.</p>}
-      <div className="flex flex-wrap gap-2">{batches.map((batch, index) => <a key={index} href={buildTcgplayerMassEntryUrl(batch)} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base">TCGplayer Mass Entry{batches.length > 1 ? ` · ${index + 1}` : ""} ↗</a>)}</div>
+
       {!!lines.length && <button type="button" onClick={async () => { try { await navigator.clipboard.writeText(list); setMessage("Copied."); } catch { setMessage("Copy the list below."); } }} className={`${control} mt-3`}>Copy list</button>}
       {message && <><p role="status" className="my-2 text-sm">{message}</p><textarea aria-label="Shopping list" readOnly value={list} rows={4} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-2" /></>}
     </EditorDialog>}
