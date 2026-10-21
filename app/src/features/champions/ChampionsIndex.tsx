@@ -44,8 +44,8 @@ function ChampionDirectoryCard({ summary, card, trend, showTrend = false, showSt
 
 export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
-  const [showStats, setShowStats] = useState(false);
-  const [view, setView] = useState<"champions" | "spirits">("champions");
+  const [showStats, setShowStats] = useState(true);
+  const [view, setView] = useState<"champions" | "spirits" | "race">("champions");
   const [limit, setLimit] = useState(6);
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
@@ -85,12 +85,11 @@ export default function ChampionsIndex() {
       </Link>
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        <Tabs baseId="champion-directory" label="Browse champions and spirits" variant="pill" wrap active={view} onChange={setView} tabs={[{ key: "champions", label: "Champions" }, { key: "spirits", label: "Named spirits" }]} />
-        <Button aria-pressed={showStats} onClick={() => setShowStats(value => !value)}>{showStats ? "Hide tournament stats" : "Show tournament stats"}</Button>
+        <Tabs baseId="champion-directory" label="Champion views" variant="pill" wrap active={view} onChange={setView} tabs={[{ key: "champions", label: "Champions" }, { key: "spirits", label: "Named spirits" }, { key: "race", label: "Meta race" }]} />
+        {view !== "race" && <Button aria-pressed={showStats} onClick={() => setShowStats(value => !value)}>{showStats ? "Hide tournament stats" : "Show tournament stats"}</Button>}
       </div>
-      {showStats && <p className="mt-3 text-sm text-ctp-subtext1">Statistics cover the published tournament sample.</p>}
+      {showStats && view !== "race" && <p className="mt-3 text-sm text-ctp-subtext1">Statistics cover the published tournament sample.</p>}
       <TabPanel baseId="champion-directory" tab="champions" active={view} keepMounted>
-        {trendsData && <ChampionMetaRace data={trendsData} active={view === "champions"} />}
         {archetypes?.length === 0 && <p role="status" className="mt-6 text-ctp-subtext1">No champions have been published yet.</p>}
         {trendsData && <p className="mt-3 text-sm text-ctp-subtext1">{trendsData.seasonOrder.length > 1 ? `Tournament trends · ${trendsData.seasonOrder.at(-1)} compared with ${trendsData.seasonOrder.at(-2)}` : "Season trends need two seasons of results to compare."}</p>}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -103,6 +102,9 @@ export default function ChampionsIndex() {
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data?.namedSpirits?.map(spirit => <ChampionDirectoryCard key={spirit.signature} summary={spirit} card={namedSpiritImages.get(spirit.signature)} showStats={showStats} />)}
         </div>
+      </TabPanel>
+      <TabPanel baseId="champion-directory" tab="race" active={view} keepMounted>
+        {trendsData && <ChampionMetaRace data={trendsData} active={view === "race"} />}
       </TabPanel>
     </PageLayout>
   );
