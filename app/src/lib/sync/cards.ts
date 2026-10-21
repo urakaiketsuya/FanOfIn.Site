@@ -1,5 +1,6 @@
 import type { Card } from "@gatcg/shared";
 import { gatcgApi } from "../api/client";
+import { publishedCardUpdates } from "./publishedCards";
 import { db } from "../db";
 
 export interface SyncProgress {
@@ -11,26 +12,31 @@ export interface SyncProgress {
 const PAGE_SIZE = 50;
 
 /**
- * Bulk-syncs the full card catalog into IndexedDB on first run; on later runs
- * only fetches cards updated since the last sync's cursor. If a first sync is
- * starts with one published catalog request and an atomic cache write. An interruption
+ * Refreshes new published catalogs on returning visits as well as first use.
+ * Then fetches incremental API updates. Published snapshots repair stale legality
+ * even when the upstream card timestamp was not advanced. An interruption
  * leaves the previous cursor intact; the next run retries safely. The API is a fallback.
  */
 export async function syncCards(onProgress?: (progress: SyncProgress) => void): Promise<void> {
   let meta = await db.syncMeta.get("cards");
-  if (!meta?.cursor) {
+  {
     onProgress?.({phase:"syncing",fetched:0,total:null});
     try {
-      const response = await fetch("/data/card-catalog.json");
+      const response = await fetch("/data/card-catalog.json", { cache: "no-cache" });
       if (response.ok) {
         const published = await response.json() as {generatedAt:string;cards:Card[]};
-        if (!published.cards?.length || published.cards.some(card=>!card.uuid || !card.last_update || !Array.isArray(card.editions))) throw new Error("Incomplete published catalog");
-        const cursor = published.cards.reduce((latest,card)=>card.last_update > latest ? card.last_update : latest, "");
-        await db.transaction("rw",db.cards,db.syncMeta,async()=>{
-          await db.cards.bulkPut(published.cards);
-          await db.syncMeta.put({key:"cards",lastSyncedAt:published.generatedAt,cursor});
-        });
-        meta = await db.syncMeta.get("cards");
+        if (!Number.isFinite(Date.parse(published.generatedAt)) || !published.cards?.length || published.cards.some(card=>!card.uuid || !card.last_update || !Array.isArray(card.editions))) throw new Error("Incomplete published catalog");
+        const snapshot = await db.syncMeta.get("cards-published");
+        if (!snapshot || published.generatedAt > snapshot.lastSyncedAt) {
+          const cursor = published.cards.reduce((latest,card)=>card.last_update > latest ? card.last_update : latest, "");
+          await db.transaction("rw",db.cards,db.syncMeta,async()=>{
+            const existing = await db.cards.bulkGet(published.cards.map(card => card.uuid));
+            await db.cards.bulkPut(publishedCardUpdates(published.cards, existing));
+            await db.syncMeta.put({key:"cards-published",lastSyncedAt:published.generatedAt,cursor:null});
+            await db.syncMeta.put({key:"cards",lastSyncedAt:published.generatedAt,cursor: meta?.cursor && meta.cursor > cursor ? meta.cursor : cursor});
+          });
+          meta = await db.syncMeta.get("cards");
+        }
       }
     } catch {
       // A missing/offline bootstrap falls back to the existing paginated API sync.
