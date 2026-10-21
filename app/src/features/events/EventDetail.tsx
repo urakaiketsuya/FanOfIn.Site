@@ -16,7 +16,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Button from "../../components/ui/Button";
 import Tabs from "../../components/ui/Tabs";
-import { formatCountry } from "../../lib/format";
+import EventIdentityHeader from "./EventIdentityHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
@@ -167,29 +167,9 @@ export default function EventDetail() {
         &larr; Back to Tournaments
       </Link>
 
-      <header className="identity-surface mt-2 rounded-xl p-4 sm:p-6">
-        <div className="flex flex-wrap gap-2 text-xs font-medium text-ctp-subtext1">
-          <span className="rounded-full border border-ctp-surface2 px-3 py-1">{EVENT_CATEGORY_LABELS[event.category] ?? event.category}</span>
-          <span className="rounded-full border border-ctp-surface2 px-3 py-1">{event.format}</span>
-          <span className="rounded-full border border-ctp-surface2 px-3 py-1 capitalize">{event.status}</span>
-        </div>
-        <h1 className="mt-3 break-words text-3xl font-bold leading-tight text-ctp-text sm:text-4xl">{event.name}</h1>
-        <div className="mt-3 text-sm text-ctp-subtext1">
-          <time dateTime={event.date}>{new Date(event.date).toLocaleDateString()}</time>
-          <p className="mt-1 break-words" title={event.host.address || undefined}>{omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical") ? <Link className="inline-flex min-h-control items-center text-ctp-blue underline focus-visible:outline-2" to={`/stores/${event.host.id}`}>{event.host.name}</Link> : event.host.name}</p>
-          {formatCountry(event.host.addressCountryCode) && <Link
-            to={`/regions?group=country&region=${event.host.addressCountryCode}`}
-            className="inline-flex min-h-control items-center rounded-md text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue"
-          >{formatCountry(event.host.addressCountryCode)}</Link>}
-          {event.season && <p className="mt-1">{event.season.name}</p>}
-        </div>
-        <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3 border-t border-ctp-surface1 pt-4">
-          <div><dt className="text-xs text-ctp-subtext0">Players</dt><dd className="mt-1 text-3xl font-semibold tabular-nums text-ctp-text">{rankedPlayers.length}</dd></div>
-          {!isApiErrorBody(bundle.decklists) && <div><dt className="text-xs text-ctp-subtext0">Available deck lists</dt><dd className="mt-1 text-3xl font-semibold tabular-nums text-ctp-text">{bundle.decklists.length}</dd></div>}
-        </dl>
-      </header>
+      <EventIdentityHeader event={event} players={players} decklists={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists} teams={isApiErrorBody(bundle.teams) ? undefined : bundle.teams} storeLink={!!omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical")} />
 
-      {!(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+
 
       {!secondaryActive && primaryTabs.length > 1 && (
         <div className="mt-4">
@@ -198,6 +178,8 @@ export default function EventDetail() {
       )}
 
       {secondaryActive && <Button onClick={() => setTab(primaryTabs[0].key)} className="mt-5">← Back to event results</Button>}
+
+      {!(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
 
       {(event.description || vods.length > 0 || venueEvents.length > 0 || secondaryTabs.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
