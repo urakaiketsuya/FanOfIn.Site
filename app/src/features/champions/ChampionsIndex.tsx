@@ -46,7 +46,6 @@ export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
   const [showStats, setShowStats] = useState(true);
   const [view, setView] = useState<"champions" | "spirits" | "race">("champions");
-  const [limit, setLimit] = useState(6);
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
   const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
@@ -93,9 +92,8 @@ export default function ChampionsIndex() {
         {archetypes?.length === 0 && <p role="status" className="mt-6 text-ctp-subtext1">No champions have been published yet.</p>}
         {trendsData && <p className="mt-3 text-sm text-ctp-subtext1">{trendsData.seasonOrder.length > 1 ? `Tournament trends · ${trendsData.seasonOrder.at(-1)} compared with ${trendsData.seasonOrder.at(-2)}` : "Season trends need two seasons of results to compare."}</p>}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {archetypes?.slice(0, limit).map(champion => <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} trend={trendByName.get(champion.signature)} showTrend={!!trendsData} showStats={showStats} />)}
+          {archetypes?.map(champion => <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} trend={trendByName.get(champion.signature)} showTrend={!!trendsData} showStats={showStats} />)}
         </div>
-        {archetypes && archetypes.length > limit && <Button className="mt-5" onClick={() => setLimit(count => count + 6)}>Show more champions</Button>}
       </TabPanel>
       <TabPanel baseId="champion-directory" tab="spirits" active={view}>
         {data && !data.namedSpirits?.length && <p role="status" className="mt-6 text-ctp-subtext1">No named spirits have been published yet.</p>}
