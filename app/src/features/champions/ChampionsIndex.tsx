@@ -14,6 +14,7 @@ import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Button from "../../components/ui/Button";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import ChampionMetaRace from "./ChampionMetaRace";
 
 const TREND_LABELS = { rising: "Gaining ground", falling: "Losing ground", stable: "Holding steady", new: "New this season", absent: "Not seen this season", "insufficient-data": "Not enough results yet" };
 const TREND_ICONS = { rising: "↗", falling: "↘", stable: "→", new: "+", absent: "—", "insufficient-data": "—" };
@@ -88,7 +89,8 @@ export default function ChampionsIndex() {
         <Button aria-pressed={showStats} onClick={() => setShowStats(value => !value)}>{showStats ? "Hide tournament stats" : "Show tournament stats"}</Button>
       </div>
       {showStats && <p className="mt-3 text-sm text-ctp-subtext1">Statistics cover the published tournament sample.</p>}
-      <TabPanel baseId="champion-directory" tab="champions" active={view}>
+      <TabPanel baseId="champion-directory" tab="champions" active={view} keepMounted>
+        {trendsData && <ChampionMetaRace data={trendsData} active={view === "champions"} />}
         {archetypes?.length === 0 && <p role="status" className="mt-6 text-ctp-subtext1">No champions have been published yet.</p>}
         {trendsData && <p className="mt-3 text-sm text-ctp-subtext1">{trendsData.seasonOrder.length > 1 ? `Tournament trends · ${trendsData.seasonOrder.at(-1)} compared with ${trendsData.seasonOrder.at(-2)}` : "Season trends need two seasons of results to compare."}</p>}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

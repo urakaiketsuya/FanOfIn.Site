@@ -408,6 +408,14 @@ are derived, not raw Omnidex data:
 
 ## Champion season trends (`pipeline/src/analysis/championTrends.ts`)
 
+The Champions page's Meta race replays these published seasons in `seasonOrder`.
+Weighted meta share uses `shareOfSeason` unchanged (not deck-count share); Top cuts uses
+`topCutCount`. Only champions with recorded decks in the selected season enter its standings.
+Equal metric values share a competition rank (1, 1, 3), with names ordering tied rows.
+Rank movement compares the same metric against the immediately preceding season; a champion
+without recorded decks there is labeled New. The top-six view does not renormalize values.
+Bar scales stay fixed across all seasons for the selected metric.
+
 Built on top of `computeDeckSightings` output (not a re-walk of event bundles) since sightings
 already carry every field needed: season, Champion, `weightedScore`.
 
