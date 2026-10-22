@@ -15,10 +15,11 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
 }
 
 /** Keep client navigation aligned with metadata in generated entry pages. */
-export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string, social?: { src: string; alt: string }) {
+export function useDocumentTitle(title?: string | null, description?: string | null, canonicalPath?: string, social?: { src: string; alt: string; portrait?: boolean }) {
   const location = useLocation();
   const socialSrc = social?.src;
   const socialAlt = social?.alt;
+  const socialPortrait = social?.portrait ?? false;
 
   useEffect(() => {
     if (title) {
@@ -53,10 +54,15 @@ export function useDocumentTitle(title?: string | null, description?: string | n
       setMetaByAttr("name", "twitter:image", image);
       setMetaByAttr("property", "og:image:alt", socialAlt ?? SITE_NAME);
       setMetaByAttr("name", "twitter:image:alt", socialAlt ?? SITE_NAME);
-      setMetaByAttr("property", "og:image:width", "1200");
-      setMetaByAttr("property", "og:image:height", "630");
-      setMetaByAttr("property", "og:image:type", "image/jpeg");
-      setMetaByAttr("name", "twitter:card", "summary_large_image");
+      // Portrait card art has no fixed 1200×630 size, and a large summary card would crop it.
+      if (socialPortrait) {
+        document.head.querySelectorAll('meta[property^="og:image:"]:not([property="og:image:alt"])').forEach((el) => el.remove());
+      } else {
+        setMetaByAttr("property", "og:image:width", "1200");
+        setMetaByAttr("property", "og:image:height", "630");
+        setMetaByAttr("property", "og:image:type", "image/jpeg");
+      }
+      setMetaByAttr("name", "twitter:card", socialPortrait ? "summary" : "summary_large_image");
     }
-  }, [location.pathname, canonicalPath, socialSrc, socialAlt]);
+  }, [location.pathname, canonicalPath, socialSrc, socialAlt, socialPortrait]);
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
+import { cardPageMetadata, cardSocialImage, priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
@@ -70,12 +70,9 @@ const TAB_KEYS: CardTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((tab) =
 export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const { card, loading, error } = useCard(slug);
-  useDocumentTitle(
-    card?.name,
-    card && `${[card.types.join("/"), card.classes.join("/"), card.elements.join("/")].filter(Boolean).join(" · ")}${
-      card.effect ? ` – ${card.effect.replace(/\s+/g, " ").slice(0, 140)}` : ""
-    }`,
-  );
+  const seo = card ? cardPageMetadata(card) : undefined;
+  const social = card ? cardSocialImage(card) : undefined;
+  useDocumentTitle(seo?.title, seo?.description, undefined, social && { ...social, portrait: true });
   const [printingParams, setPrintingParams] = useSearchParams();
   const requestedEdition = printingParams.get("edition");
   const editionIndex = Math.max(0, card?.editions.findIndex(edition => edition.uuid === requestedEdition) ?? 0);

@@ -62,7 +62,7 @@ export async function writeSitemap(): Promise<void> {
   const catalog = await loadCardCatalog();
   const fullCatalog = await readJson<{ cards: Card[] }>("card-catalog.json");
   for (const artist of buildArtistGalleries(fullCatalog?.cards ?? [])) urls.push(canonicalSiteUrl(`/artists/${encodeURIComponent(artist.slug)}`));
-  for (const card of catalog) urls.push(`${SITE_URL}/cards/${card.slug}`);
+  for (const card of catalog) urls.push(canonicalSiteUrl(`/cards/${card.slug}`));
 
   const index = await readJson<OmnidexIndexData>("omnidex/index.json");
   if (index) {

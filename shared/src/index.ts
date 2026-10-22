@@ -102,6 +102,7 @@ export * from './artists';
 export * from './artistDirectory';
 
 export * from './artistSeo';
+export * from './cardSeo';
 export * from "./collectionProgress.js";
 
 export * from "./profileFavorites.js";
