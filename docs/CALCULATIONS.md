@@ -5272,3 +5272,23 @@ exactly 80% of outcomes. Partial coverage and sampled results remain visible.
 Fixture effect rows show all draw checkpoints and fixed, labeled conditional outcomes.
 They do not infer the frequency of battlefield, graveyard, or memory states from
 engine fixtures. Their existing minimum-60 library convention remains unchanged.
+
+## Build evolution
+
+The archetype detail Evolution view uses the published strategy family's concrete build membership
+(or the current build when no strategy exists). It joins champion-partitioned deck cards and
+popularity records to event season metadata. Each deckId counts once; sideboards are excluded.
+Seasons sort by the earliest event date in the event calendar, retaining empty seasons from the
+family's first recorded season onward. Unknown-season sightings are omitted.
+
+Build share is the build's unique recorded deck count divided by the family's recorded deck count
+in that season, not global meta share. Card adoption uses only available nonempty main/material
+lists as its denominator; missing lists are reported separately. Copies are averaged over lists
+containing the card, combining main and material quantities. Season previews show the three most
+adopted cards (ties by name), a pool rather than an exact list or mandatory core.
+
+Comparison defaults to the last two seasons with available lists. Added/dropped means present
+in only the destination/source season's observed pool; retained means present in both. Changes
+sort by absolute adoption difference, then name. The first twelve display initially, with all
+cards accessible through expansion; unchanged cards have a separate toggle. Comparisons with
+missing lists produce no card-change claims. This describes observed construction, not ancestry.

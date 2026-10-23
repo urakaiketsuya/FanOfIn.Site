@@ -15,7 +15,8 @@ import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { championNameToSlug } from "../../lib/championSlug";
-import Tabs from "../../components/ui/Tabs";
+import BuildEvolution from "./BuildEvolution";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
@@ -40,12 +41,13 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "mixed", label: "Mixed" },
 ];
 
-type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants";
-type DetailSurface = "overview" | "decks" | "more";
-const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants"];
+type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants" | "evolution";
+type DetailSurface = "overview" | "decks" | "more" | "evolution";
+const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants", "evolution"];
 const SURFACES: { key: DetailSurface; label: string }[] = [
   { key: "overview", label: "Overview" },
   { key: "decks", label: "Decks" },
+  { key: "evolution", label: "Evolution" },
   { key: "more", label: "More" },
 ];
 const OVERVIEW_TABS: DetailTab[] = ["overview", "decklist"];
@@ -60,9 +62,13 @@ export default function ArchetypeDetail() {
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
-  const surface: DetailSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : "more";
+  const surface: DetailSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : tab === "evolution" ? "evolution" : "more";
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "impact" | "variants" : "impact";
   const showOverview = surface === "overview";
+  const [evolutionVisitedId, setEvolutionVisitedId] = useState<string | null>(null);
+  useEffect(() => {
+    if (surface === "evolution") setEvolutionVisitedId(id);
+  }, [surface, id]);
 
   // Gate every large per-tab dataset behind the tab that actually needs it – this page used to
   // eagerly fetch playedBy's popularity-index/omnidex-index/players data (~25.7MB) and impact's
@@ -95,6 +101,7 @@ export default function ArchetypeDetail() {
   const cluster = data?.clusters.find((c) => c.id === resolvedId);
   const materialArchetype = data?.materialArchetypes?.find((route) => route.id === cluster?.materialArchetypeId);
   const strategyArchetype = data?.strategyArchetypes?.find((strategy) => strategy.id === cluster?.strategyArchetypeId);
+  const evolutionBuilds = useMemo(() => cluster ? data!.clusters.filter(build => strategyArchetype ? build.strategyArchetypeId === strategyArchetype.id : build.id === cluster.id) : [], [data, cluster, strategyArchetype]);
   const siblingBuilds = materialArchetype
     ? materialArchetype.buildIds.map((buildId) => data?.clusters.find((candidate) => candidate.id === buildId)).filter((candidate): candidate is NonNullable<typeof cluster> => !!candidate)
     : [];
@@ -248,11 +255,15 @@ export default function ArchetypeDetail() {
           <ReviewedStrategyRelationships buildId={cluster.id} />
           <StaleDataNotice generatedAt={[data?.generatedAt]} />
           <div className="mt-4 sm:mt-6">
-            <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "overview" : next === "decks" ? "playedBy" : moreTab)} label={`${cluster.name} details`} variant="pill" />
+            <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "overview" : next === "decks" ? "playedBy" : next === "evolution" ? "evolution" : moreTab)} label={`${cluster.name} details`} baseId="build-detail" wrap variant="pill" />
           </div>
 
+          <TabPanel baseId="build-detail" tab="evolution" active={surface} keepMounted>
+            {(surface === "evolution" || evolutionVisitedId === id) && <BuildEvolution key={cluster.id} cluster={cluster} builds={evolutionBuilds} familyName={strategyArchetype?.name ?? cluster.name} />}
+          </TabPanel>
+
           {showOverview && (
-            <div className="mt-6">
+            <div role="tabpanel" id="build-detail-panel-overview" aria-labelledby="build-detail-tab-overview" className="mt-6">
               <Panel className="mb-6">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ctp-subtext1">
                   <span><strong className="text-ctp-text">{(cluster.metaShare * 100).toFixed(1)}%</strong> meta</span>
@@ -300,7 +311,7 @@ export default function ArchetypeDetail() {
           )}
 
           {surface === "more" && (
-            <div className="mt-5 flex flex-wrap gap-2" aria-label="More build data">
+            <div role="tabpanel" id="build-detail-panel-more" aria-labelledby="build-detail-tab-more" className="mt-5 flex flex-wrap gap-2" aria-label="More build data">
               {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
             </div>
           )}
@@ -484,6 +495,9 @@ export default function ArchetypeDetail() {
             <Section
               className="mt-6"
               heading="compact"
+              id="build-detail-panel-decks"
+              role="tabpanel"
+              aria-labelledby="build-detail-tab-decks"
               title={`Played by (${instances.length})`}
               description="Check any of these instances to compare their decklists side by side."
               actions={selectedInstances.length > 0 && (
