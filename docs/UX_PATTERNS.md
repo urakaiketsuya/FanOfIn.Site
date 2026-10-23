@@ -284,3 +284,13 @@ Acceptance tasks: identify the effect of a fourth copy; distinguish drawn potent
 from resolved damage; identify included cards; compare a 60-card and larger library.
 Validate against known-answer calculations, then assess player accuracy and time
 against a plain table. Automated checks cannot establish player comprehension.
+
+## Include and exclude filters
+
+Shared facet controls offer explicit Include and Exclude buttons; selecting one replaces the opposite choice. Clicking the active choice removes it. Searchable facets find options without applying a choice merely from typing. Active chips use the word Exclude, remain visible outside the card filter sheet, and remove one selection at a time.
+
+The query and visual picker edit the same state. Supported query fields are `class`, `type`, `subtype`, `element`, `set`, `edition`, `rarity`, and `tag` where that view has the corresponding data. Prefix a field with `-` to exclude it, such as `-subtype:harmony`; quote values containing spaces. Plain text retains name/rules phrase matching in card browsers. Search/Enter applies the query; malformed or conflicting terms leave the previous results intact and show an inline error. Deck-content queries use explicit fields; named deck cards are selected separately. This is a bounded grammar, not full Scryfall syntax (no OR, nested expressions or regular expressions).
+
+Multiple positive choices in a facet match any; separate facets combine. Exclusions veto any matching value. Deck identity element filters retain their existing all-positive-values semantics. Deck-content exclusions apply to the entire main-plus-material card pool, and do not contribute to relevance scores. Edition/set/rarity restrictions in card browsers must match the same eligible printing; another eligible printing keeps the card visible. Community tags are card-level across printings, so excluding a tag removes any card with that tag.
+
+Facet values serialize with a leading minus for exclusions. Cards, Collection, Quick Buy, and tournament deck-content filters retain their selections in the URL, preserve unrelated navigation parameters, and restore on Back/Forward. Collection and Quick Buy use separate parameter prefixes. Builder retains filters in its existing browser controller while mounted.

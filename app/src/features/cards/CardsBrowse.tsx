@@ -1,3 +1,6 @@
+import { useUrlFilters, CARD_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
+import FilterQuery from "../../components/filters/FilterQuery";
+import { includeFilterValue, filterValue } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import PriceSortStatus from "../../components/PriceSortStatus";
 import { useDeckPriceByNameState } from "../pricing/useDeckPriceByName";
@@ -5,7 +8,7 @@ import { compareCardPrices } from "../../lib/cardPriceSort";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { CARD_TAG_CATEGORIES, canonicalCardTag, cardTagCategory, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
+import { CARD_TAG_CATEGORIES, cardTagCategory, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -14,7 +17,7 @@ import Tabs from "../../components/ui/Tabs";
 import Button from "../../components/ui/Button";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
-import { editionWithTag, emptyFilterState, filterCards, matchesEdition, type CardFilterState } from "./filters";
+import { editionWithTag, emptyFilterState, filterCards, matchesEdition } from "./filters";
 import { useCardTags } from "./cardTags";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
@@ -43,19 +46,9 @@ export default function CardsBrowse() {
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const featuredSets = useFeaturedSets();
   const cardTags = useCardTags();
-  const [searchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [tab, setTab] = useTabParam<TabMode>("tab", TABS, "browse");
-  const [filters, setFilters] = useState<CardFilterState>(() => ({
-    ...emptyFilterState(),
-    rarities: new Set(searchParams.getAll("rarity")),
-    artist: searchParams.get("artist") ?? "",
-    classes: new Set(searchParams.getAll("class")),
-    types: new Set(searchParams.getAll("type")),
-    subtypes: new Set(searchParams.getAll("subtype")),
-    elements: new Set(searchParams.getAll("element")),
-    sets: new Set(searchParams.getAll("set").map(setFamilyPrefix)),
-    tags: new Set(searchParams.getAll("tag").map(canonicalCardTag)),
-  }));
+  const [filters, setFilters] = useUrlFilters(emptyFilterState, "", CARD_FILTER_PARAMS);
 
   const [sort, setSort] = useState("name");
   const priceState = useDeckPriceByNameState(sort !== "name");
@@ -84,7 +77,7 @@ export default function CardsBrowse() {
   }, [cards]);
 
   const tagOptions = useMemo<OptionValue[]>(
-    () => (cardTags.data?.tags ?? []).map((tag) => ({ value: tag.name, text: `${tag.name} (${tag.cardCount})` })),
+    () => (cardTags.data?.tags ?? []).map((tag) => ({ value: includeFilterValue(tag.name), text: `${tag.name} (${tag.cardCount})` })),
     [cardTags.data],
   );
 
@@ -112,8 +105,12 @@ export default function CardsBrowse() {
   }, [filters, cardTags.lookup]);
 
   function browseSet(prefix: string) {
-    setFilters((f) => ({ ...f, sets: new Set([prefix]), printingSets: new Set() }));
-    setTab("browse");
+    setSearchParams(previous => {
+      const next = new URLSearchParams(previous);
+      next.delete("set"); next.delete("edition");
+      next.set("set", prefix); next.set("tab", "browse");
+      return next;
+    }, { preventScrollReset: true });
   }
 
   // Only when the Set filter narrows to exactly one – a graceful no-op for any set outside the
@@ -191,14 +188,7 @@ export default function CardsBrowse() {
       ) : (
         <>
           <div className="mt-4 flex flex-wrap gap-3">
-            <input
-              type="text"
-              aria-label="Search by name or card text"
-              placeholder="Search by name or card text…"
-              value={filters.name}
-              onChange={(e) => setFilters((f) => ({ ...f, name: e.target.value }))}
-              className="w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-            />
+            <div className="w-full"><FilterQuery text={filters.name} facets={filters} onChange={(name, facets) => setFilters(f => ({ ...f, name, ...facets }))} /></div>
             <input
               type="text"
               list="artist-options"
@@ -259,7 +249,7 @@ export default function CardsBrowse() {
               {tagOptions.length > 0 && (
                 <div className="space-y-3">
                   <p className="text-sm font-semibold">Community tags</p>
-                  {CARD_TAG_CATEGORIES.map(category => <SearchSelectFilter key={category} label={`${category} tags`} options={tagOptions.filter(tag => cardTagCategory(tag.value) === category)} selected={new Set([...filters.tags ?? []].filter(tag => cardTagCategory(tag) === category))} onToggle={value => setFilters(f => ({ ...f, tags: toggleSetValue(f.tags ?? new Set(), value) }))} />)}
+                  {CARD_TAG_CATEGORIES.map(category => <SearchSelectFilter key={category} label={`${category} tags`} options={tagOptions.filter(tag => cardTagCategory(filterValue(tag.value)) === category)} selected={new Set([...filters.tags ?? []].filter(tag => tagOptions.some(option => cardTagCategory(filterValue(option.value)) === category && filterValue(option.value).toLowerCase() === filterValue(tag).toLowerCase())))} onToggle={value => setFilters(f => ({ ...f, tags: toggleSetValue(f.tags ?? new Set(), value) }))} />)}
                 </div>
               )}
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />

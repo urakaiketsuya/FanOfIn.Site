@@ -1,6 +1,7 @@
+import { useUrlFilters, CARD_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState, useRef, type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import Tabs from "../../components/ui/Tabs";
 import Button from "../../components/ui/Button";
 import CardResult from "../../components/CardResult";
@@ -19,17 +20,19 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
   cards: Card[]; entries: CollectionEntry[]; savedEntries?: CollectionEntry[]; busy?: boolean; preview?: boolean;
   onUpdate?: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
 }) {
-  const location = useLocation();
   const [view, setView] = useState<"all" | "owned">("all");
   const [editing, setEditing] = useState<string | null>(null);
   const [limit, setLimit] = useState(24);
-  const [cardFilters, setCardFilters] = useState(emptyFilterState);
+  const [cardFilters, setCardFilters] = useUrlFilters(emptyFilterState, quickBuy ? "buy-" : "collection-", CARD_FILTER_PARAMS);
   const focusedCardName = cards.find(card => card.uuid === focusCardUuid)?.name;
+  const lastFocused = useRef<string | null>(null);
   useEffect(() => {
-    if (!focusCardUuid || !focusedCardName) return;
+    if (!focusCardUuid) { lastFocused.current = null; return; }
+    if (!focusedCardName || lastFocused.current === focusCardUuid) return;
+    lastFocused.current = focusCardUuid;
     setView("all"); setCardFilters({ ...emptyFilterState(), name: focusedCardName });
     setEditing(focusCardUuid); setLimit(24);
-  }, [focusCardUuid, focusedCardName, location.key]);
+  }, [focusCardUuid, focusedCardName, setCardFilters]);
   const [sort, setSort] = useState("name");
   const quantities = useMemo(() => {
     const result = new Map<string, number>();

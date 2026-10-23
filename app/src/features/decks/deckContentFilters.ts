@@ -1,3 +1,4 @@
+import { matchesFilterValues, filterLabel } from "@gatcg/shared";
 import type { Card, DeckCardIndexLine } from "@gatcg/shared";
 
 export type DeckSpeedFilter = "any" | "fast" | "normal";
@@ -22,12 +23,12 @@ export function deckContentFilterCount(filters: DeckContentFilterState): number 
 
 export function deckContentFilterLabels(filters: DeckContentFilterState): string[] {
   return [
-    ...filters.cards,
-    ...Array.from(filters.classes, (value) => `Class: ${value}`),
-    ...Array.from(filters.types, (value) => `Type: ${value}`),
-    ...Array.from(filters.subtypes, (value) => `Subtype: ${value}`),
-    ...Array.from(filters.elements, (value) => `Element: ${value}`),
-    ...Array.from(filters.sets, (value) => `Set: ${value}`),
+    ...filters.cards.map(filterLabel),
+    ...Array.from(filters.classes, (value) => `Class: ${filterLabel(value)}`),
+    ...Array.from(filters.types, (value) => `Type: ${filterLabel(value)}`),
+    ...Array.from(filters.subtypes, (value) => `Subtype: ${filterLabel(value)}`),
+    ...Array.from(filters.elements, (value) => `Element: ${filterLabel(value)}`),
+    ...Array.from(filters.sets, (value) => `Set: ${filterLabel(value)}`),
     ...(filters.speed === "any" ? [] : [`Speed: ${filters.speed}`]),
   ];
 }
@@ -39,13 +40,13 @@ export function deckMatchesContentFilters(
   cardsByName: ReadonlyMap<string, Card>,
 ): boolean {
   const names = new Set(lines.map((line) => line.name));
-  if (filters.cards.some((name) => !names.has(name))) return false;
+  if (filters.cards.length && !matchesFilterValues(names, new Set(filters.cards), true)) return false;
   const cards = lines.map((line) => cardsByName.get(line.name)).filter((card): card is Card => !!card);
-  if (filters.classes.size && !cards.some((card) => card.classes.some((value) => filters.classes.has(value)))) return false;
-  if (filters.types.size && !cards.some((card) => card.types.some((value) => filters.types.has(value)))) return false;
-  if (filters.subtypes.size && !cards.some((card) => card.subtypes.some((value) => filters.subtypes.has(value)))) return false;
-  if (filters.elements.size && !cards.some((card) => card.elements.some((value) => filters.elements.has(value)))) return false;
-  if (filters.sets.size && !cards.some((card) => card.editions.some((edition) => filters.sets.has(edition.set.prefix)))) return false;
+  if (filters.classes.size && !matchesFilterValues(cards.flatMap(card => card.classes), filters.classes)) return false;
+  if (filters.types.size && !matchesFilterValues(cards.flatMap(card => card.types), filters.types)) return false;
+  if (filters.subtypes.size && !matchesFilterValues(cards.flatMap(card => card.subtypes), filters.subtypes)) return false;
+  if (filters.elements.size && !matchesFilterValues(cards.flatMap(card => card.elements), filters.elements)) return false;
+  if (filters.sets.size && !matchesFilterValues(cards.flatMap(card => card.editions.map(edition => edition.set.prefix)), filters.sets)) return false;
   if (filters.speed === "fast" && !cards.some((card) => card.speed === true)) return false;
   if (filters.speed === "normal" && !cards.some((card) => card.speed === false)) return false;
   return true;
@@ -61,6 +62,7 @@ export function deckContentRelevance(
   filters: DeckContentFilterState,
   cardsByName: ReadonlyMap<string, Card>,
 ): number {
+  filters = { ...filters, cards: filters.cards.filter(name => !name.startsWith("-")), ...Object.fromEntries(["classes", "types", "subtypes", "elements", "sets"].map(key => [key, new Set([...(filters[key as "classes"])].filter(value => !value.startsWith("-")))])) };
   const totalCopies = lines.reduce((sum, line) => sum + line.quantity, 0);
   if (totalCopies === 0) return 0;
 

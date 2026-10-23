@@ -1,3 +1,4 @@
+import { includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
 import { setFamilyPrefix, type Card } from "@gatcg/shared";
 import type { CardTagLookup } from "./cardTags";
@@ -36,16 +37,17 @@ export function emptyFilterState(): CardFilterState {
     elements: new Set(),
     sets: new Set(),
     speed: "any",
+    printingSets: new Set(),
     rarities: new Set(),
     tags: new Set(),
   };
 }
 
 export function matchesEdition(edition: Card["editions"][number], filters: CardFilterState): boolean {
-  const families = new Set([...filters.sets].map(setFamilyPrefix));
-  return (!families.size || families.has(setFamilyPrefix(edition.set.prefix)))
-    && (!filters.printingSets?.size || filters.printingSets.has(edition.set.prefix))
-    && (!filters.rarities?.size || filters.rarities.has(String(edition.rarity)))
+  const families = new Set([...filters.sets].map(v => (v.startsWith("-") ? "-" : "") + setFamilyPrefix(filterValue(v))));
+  return matchesFilterValues([setFamilyPrefix(edition.set.prefix)], families)
+    && matchesFilterValues([edition.set.prefix], filters.printingSets ?? new Set())
+    && matchesFilterValues([String(edition.rarity)], filters.rarities ?? new Set())
     && (!filters.artist.trim() || !!edition.illustrator?.toLowerCase().includes(filters.artist.trim().toLowerCase()));
 }
 
@@ -61,7 +63,7 @@ export function cardSearchText(card: Card): string {
 }
 
 function hasAnyTag(tags: ReadonlySet<string> | undefined, selected: ReadonlySet<string>): boolean {
-  return !!tags && [...selected].some((tag) => tags.has(canonicalCardTag(tag)));
+  return matchesFilterValues(tags ?? [], new Set([...selected].map(tag => tag.startsWith("-") ? "-" + canonicalCardTag(filterValue(tag)) : includeFilterValue(canonicalCardTag(filterValue(tag))))));
 }
 
 /** The printing whose art carries a selected tag, when tags are filtered – else undefined. */
@@ -71,15 +73,18 @@ export function editionWithTag(card: Card, filters: CardFilterState, tagLookup: 
 }
 
 export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?: CardTagLookup): Card[] {
-  const name = filters.name.trim().toLowerCase();
+  const parsed = parseFilterQuery(filters.name);
+  if (parsed.error) return [];
+  filters = { ...filters, ...Object.fromEntries(Object.entries(parsed.facets).map(([key, values]) => [key, new Set([...(filters[key as keyof CardFilterState] as Set<string> ?? []), ...values])])) };
+  const name = parsed.text.trim().toLowerCase();
 
   return cards.filter((card) => {
     if (name && !cardSearchText(card).includes(name)) return false;
 
-    if (filters.classes.size && !card.classes.some((c) => filters.classes.has(c))) return false;
-    if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
-    if (filters.subtypes.size && !card.subtypes.some((s) => filters.subtypes.has(s))) return false;
-    if (filters.elements.size && !card.elements.some((e) => filters.elements.has(e))) return false;
+    if (filters.classes.size && !matchesFilterValues(card.classes, filters.classes)) return false;
+    if (filters.types.size && !matchesFilterValues(card.types, filters.types)) return false;
+    if (filters.subtypes.size && !matchesFilterValues(card.subtypes, filters.subtypes)) return false;
+    if (filters.elements.size && !matchesFilterValues(card.elements, filters.elements)) return false;
     if ((filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;

@@ -1,3 +1,6 @@
+import FilterQuery from "../filters/FilterQuery";
+import SearchSelectFilter from "../filters/SearchSelectFilter";
+import { toggleFilterValue, type SearchFacet } from "@gatcg/shared";
 import { formatUsd } from "../../lib/format";
 import PriceSortStatus from "../PriceSortStatus";
 import { useDeckPriceByNameState } from "../../features/pricing/useDeckPriceByName";
@@ -8,7 +11,6 @@ import type { Card } from "@gatcg/shared";
 import { automaticDeckSection, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
 import { rarityLabel, rarityOptions } from "../../features/cards/rarities";
-import CardResultsToolbar from "../CardResultsToolbar";
 import DialogSheet from "../ui/DialogSheet";
 import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
@@ -38,7 +40,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     const pool = [...new Set(suggestedNames ?? names)];
     return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && suggestedNames === undefined ? "name" : sort, prices);
   }, [cards, query, filters, owned, identityElements, suggestedNames, names, catalog, sort, prices]);
-  const active = Object.entries(filters).filter(([, value]) => Boolean(value)) as [keyof CatalogFilters, string | boolean][];
+  const active = Object.entries(filters).filter(([key, value]) => !["element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
   const labels: Record<keyof CatalogFilters, string> = { rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
   const quantityFor = (name: string) => deck[sectionFor(name)].find(line => line.card === name)?.quantity ?? 0;
@@ -56,20 +58,21 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     setSelectionError("");
     onAdded?.();
   }
+  const facetKeys = { element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
+  const facets = Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [facet, new Set(filters[key as keyof typeof facetKeys] ? filters[key as keyof typeof facetKeys]!.split("|") : [])]));
   return <>
-    <CardResultsToolbar query={query} onQuery={onQuery} onSubmit={() => { if (matches.includes(query)) toggleSelection(query); }}>
+    <FilterQuery text={query} facets={facets} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
     <div className={`grid w-full items-center gap-2 ${sourceControl ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
       {sourceControl}
       <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck (automatic)</option><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
-      <button type="button" aria-expanded={filterOpen} aria-haspopup="dialog" onClick={event=>{event.currentTarget.focus();setFilterOpen(open=>!open);}} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Options{active.length ? ` (${active.length})` : ""}<DisclosureChevron /></button>
+      <button type="button" aria-expanded={filterOpen} aria-haspopup="dialog" onClick={event=>{event.currentTarget.focus();setFilterOpen(open=>!open);}} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Options{active.length + Object.values(facets).reduce((n, values) => n + values.size, 0) ? ` (${active.length + Object.values(facets).reduce((n, values) => n + values.size, 0)})` : ""}<DisclosureChevron /></button>
     </div>
-    </CardResultsToolbar>
+
     {filterOpen && <DialogSheet title="Browse options" onDismiss={()=>setFilterOpen(false)} dismissLabel="Show cards">
     <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<span className="relative min-w-0"><select aria-label="Sort cards" value={sort === "recommended" && suggestedNames === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 max-w-full min-w-0 appearance-none rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-10!">{suggestedNames !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
     {statsControls}
       <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
-        {([['element','elements'],['type','types'],['subtype','subtypes']] as const).map(([key,values]) => <label key={key} className="text-sm">{labels[key]}<select value={filters[key]} onChange={e => setFilters(f => ({...f,[key]:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option>{options(values).map(value => <option key={value} value={value}>{value}</option>)}</select></label>)}
-        <label className="text-sm">Rarity<select value={filters.rarity ?? ""} onChange={e => setFilters(f => ({...f, rarity:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All rarities</option>{rarityOptions(cards).map(option => <option key={option.value} value={option.value}>{option.text}</option>)}</select></label>
+        {Object.entries(facetKeys).map(([key, facet]) => <SearchSelectFilter key={key} label={labels[key as keyof typeof facetKeys]} options={key === "rarity" ? rarityOptions(cards) : options(facet as "elements" | "types" | "subtypes").map(value => ({value, text:value}))} selected={facets[facet]} onToggle={value => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")}))} />)}
         <label className="text-sm">Cost type<select value={filters.costType} onChange={e => setFilters(f=>({...f,costType:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option><option value="memory">Memory</option><option value="reserve">Reserve</option></select></label>
         <label className="text-sm">Maximum cost<input type="number" min={0} value={filters.maxCost} onChange={e=>setFilters(f=>({...f,maxCost:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2" /></label>
         <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={filters.availableElements} disabled={!identityElements?.size} onChange={e=>setFilters(f=>({...f,availableElements:e.target.checked}))} />Available deck elements</label>
@@ -77,7 +80,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
         {!owned && <p className="text-xs text-ctp-subtext0">{collectionStatus ?? "Open your collection to load ownership filters."}</p>}
         {!identityElements?.size && <p className="text-xs text-ctp-subtext0">Add Material cards to enable the element filter.</p>}
       </div>
-      {!!active.length && <button type="button" onClick={()=>setFilters(emptyCatalogFilters())} className="min-h-12 text-sm text-ctp-blue">Clear filters</button>}
+      {(!!active.length || Object.values(facets).some(values => values.size)) && <button type="button" onClick={()=>setFilters(emptyCatalogFilters())} className="min-h-12 text-sm text-ctp-blue">Clear filters</button>}
     </DialogSheet>}
     {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}
     {(sort === "price" || sort === "price-desc") && <PriceSortStatus state={priceState} />}

@@ -1,3 +1,4 @@
+import { useUrlFilters, DECK_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
 import { useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
@@ -7,7 +8,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import CombinedDecksView from "./CombinedDecksView";
 import TournamentBuildsView from "./TournamentBuildsView";
-import { emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { emptyDeckContentFilters } from "./deckContentFilters";
 
 type ViewMode = "all" | "builds";
 const VIEW_TABS: readonly ViewMode[] = ["all", "builds"];
@@ -24,7 +25,7 @@ export default function BrowseDecksIndex() {
   const [searchParams] = useSearchParams();
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "all");
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
-  const [contentFilters, setContentFilters] = useState<DeckContentFilterState>(emptyDeckContentFilters);
+  const [contentFilters, setContentFilters] = useUrlFilters(emptyDeckContentFilters, "content-", DECK_FILTER_PARAMS);
 
   // Preserve links from the brief period when Pantheon search lived as a third tab here.
   if (searchParams.get("view") === "pantheon") return <Navigate to="/pantheon/decks" replace />;

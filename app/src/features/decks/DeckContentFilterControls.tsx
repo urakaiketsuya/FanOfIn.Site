@@ -1,8 +1,7 @@
-import { useMemo, useState, useTransition } from "react";
+import FilterQuery from "../../components/filters/FilterQuery";
+import { useMemo, useTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { gatcgApi } from "../../lib/api/client";
-import CardSearchPicker from "../../components/CardSearchPicker";
-import FilterGroup from "../../components/filters/FilterGroup";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
@@ -16,8 +15,7 @@ export default function DeckContentFilterControls({ filters, setFilters }: {
 }) {
   const catalog = useCardCatalog();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
-  const [cardInput, setCardInput] = useState("");
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const cardNames = useMemo(() => Array.from(new Set(catalog.map((card) => card.name))).sort(), [catalog]);
   const setOptions = useMemo(() => {
     const sets = new Map<string, string>();
@@ -27,10 +25,9 @@ export default function DeckContentFilterControls({ filters, setFilters }: {
   const update = (fn: (previous: DeckContentFilterState) => DeckContentFilterState) => startTransition(() => setFilters(fn));
 
   return <>
-    <FilterGroup label="Cards in deck" onClear={filters.cards.length ? () => update((f) => ({ ...f, cards: [] })) : undefined}>
-      <div className="flex flex-wrap items-center gap-2">{filters.cards.map((name) => <button key={name} type="button" onClick={() => update((f) => ({ ...f, cards: f.cards.filter((card) => card !== name) }))} className="flex items-center gap-1 rounded-full border border-ctp-blue bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-blue">{name}<span aria-hidden="true">&times;</span></button>)}</div>
-      <CardSearchPicker options={cardNames.filter((name) => !filters.cards.includes(name))} value={cardInput} onChange={setCardInput} onSelect={(name) => { update((f) => ({ ...f, cards: [...f.cards, name] })); setCardInput(""); }} placeholder="Type a card name…" ariaLabel="Cards in deck" className="mt-1 w-full max-w-sm" />
-    </FilterGroup>
+    {isPending && <p role="status" className="text-sm">Recalculating…</p>}
+    <FilterQuery allowText={false} text="" facets={filters} allowed={["classes", "types", "subtypes", "elements", "sets"]} onChange={(_text, facets) => update(f => ({...f, ...facets}))} />
+    <SearchSelectFilter label="Cards in deck" options={cardNames.map(value => ({value, text:value}))} selected={new Set(filters.cards)} onToggle={value => update(f => ({...f, cards: [...toggleSetValue(new Set(f.cards), value)]}))} />
     {options.data && <>
       <MultiSelectFilter label="Card class" options={options.data.class} selected={filters.classes} onToggle={(value) => update((f) => ({ ...f, classes: toggleSetValue(f.classes, value) }))} iconKind="classes" />
       <MultiSelectFilter label="Card type" options={options.data.type} selected={filters.types} onToggle={(value) => update((f) => ({ ...f, types: toggleSetValue(f.types, value) }))} iconKind="types" />

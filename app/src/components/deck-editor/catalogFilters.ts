@@ -9,8 +9,8 @@ export interface CatalogFilters {
 export const emptyCatalogFilters = (): CatalogFilters => ({ rarity: "", element: "", type: "", subtype: "", costType: "", maxCost: "", ownedOnly: false, availableElements: false });
 
 export function filterCatalog(cards: Card[], query: string, filters: CatalogFilters, owned?: ReadonlyMap<string, number>, elements?: ReadonlySet<string>): Card[] {
-  return filterCards(cards, { ...emptyFilterState(), name: query, rarities: new Set(filters.rarity ? [filters.rarity] : []),
-    elements: new Set(filters.element ? [filters.element] : []), types: new Set(filters.type ? [filters.type] : []), subtypes: new Set(filters.subtype ? [filters.subtype] : []),
+  return filterCards(cards, { ...emptyFilterState(), name: query, rarities: new Set(filters.rarity?.split("|").filter(Boolean) ?? []),
+    elements: new Set(filters.element?.split("|").filter(Boolean) ?? []), types: new Set(filters.type?.split("|").filter(Boolean) ?? []), subtypes: new Set(filters.subtype?.split("|").filter(Boolean) ?? []),
   }).filter(card => {
     const memory = card.cost_memory != null || card.cost?.type === "memory";
     if (filters.costType === "memory" && !memory) return false;

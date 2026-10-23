@@ -1,3 +1,5 @@
+import DeckContentFilterChips from "./DeckContentFilterChips";
+import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
 import DeckDateRangeFilter from "./DeckDateRangeFilter";
 import { deckDateInRange } from "./deckDateRange";
 import { balancedSort, type SortPriority } from "@gatcg/shared";
@@ -20,7 +22,7 @@ import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPriceIndexData, useDeckPopularityIndexData } from "../topdecks/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckContentFilterLabels, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const BUILDS_PAGE_SIZE = 30;
 
@@ -93,14 +95,14 @@ export default function TournamentBuildsView({
   const filtered = useMemo(() => {
     let result = decks.filter(d => deckDateInRange(d.lastPlayedDate, dateFrom, dateTo));
     if (maxPrice !== null) result = result.filter(d => { const price = priceBySignature.get(d.signature); return price != null && price <= maxPrice; });
-    if (elementFilter.length > 0) result = result.filter((d) => elementFilter.every((e) => d.elements.includes(e)));
+    if (elementFilter.length > 0) result = result.filter((d) => matchesFilterValues(d.elements, new Set(elementFilter), true));
     if (deckContentFilterCount(contentFilters) > 0) result = result.filter((d) => deckMatchesContentFilters([...d.main, ...d.material], contentFilters, cardsByName));
     return result;
   }, [decks, dateFrom, dateTo, maxPrice, priceBySignature, elementFilter, contentFilters, cardsByName]);
 
   function toggleElement(element: string) {
     startTransition(() =>
-      setElementFilter((prev) => (prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element])),
+      setElementFilter((prev) => [...toggleFilterValue(new Set(prev), element)]),
     );
   }
 
@@ -147,8 +149,8 @@ export default function TournamentBuildsView({
     ...(dateFrom || dateTo ? [`Last played: ${dateFrom || "Any start"} – ${dateTo || "Any end"}`] : []),
     ...(minPlayers > 1 ? [`${minPlayers}+ players`] : []),
     ...(maxPrice !== null ? [`Up to $${maxPrice}`] : []),
-    ...elementFilter.map((element) => `Deck element: ${element}`),
-    ...deckContentFilterLabels(contentFilters),
+    ...elementFilter.map((element) => `Deck element: ${filterLabel(element)}`),
+    ...(contentFilters.speed === "any" ? [] : [`Speed: ${contentFilters.speed}`]),
   ];
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))));
 
@@ -199,6 +201,7 @@ export default function TournamentBuildsView({
         </label>}
       </details>
 
+      <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
       <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${sorted.length.toLocaleString()} build${sorted.length === 1 ? "" : "s"}`} onClear={() => startTransition(() => { setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
         <SegmentedFilter label="Players" options={MIN_PLAYERS.map(value => ({ value, label: value === 1 ? "Any" : `${value}+ players` }))} value={minPlayers} onChange={value => startTransition(() => setMinPlayers(value))} />
         <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...[25, 50, 100, 250, 500, 1000].map(value => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={value => startTransition(() => setMaxPrice(value || null))} />
