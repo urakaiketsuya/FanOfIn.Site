@@ -9,12 +9,12 @@ export default function DamageStatisticalReport({ forecast, cardsByName }: { for
   const different = forecast.points.some(p => p.medianMin !== p.medianMax || p.low !== p.optimisticLow || p.conservativeHigh !== p.high || p.expectedMin !== p.expectedMax);
   const scale = Math.max(1, ...forecast.points.map(p => p.high), ...forecast.points.map(p => p.conservativeHigh));
   const models = different ? ['conservative', 'conditional'] as const : ['conservative'] as const;
-  return <section data-component="DamageStatisticalReport" className="mt-4 space-y-4">
+  return <section data-component="DamageStatisticalReport" className="@container mt-4 space-y-4">
     <div><h3 className="font-semibold">How much printed damage do your draws contain?</h3>
       <p className="mt-1 text-xs text-ctp-subtext1">Potential output · affordability and resolution excluded</p>
       <p className="mt-1 text-xs text-ctp-subtext1">First-player progression assumption · {forecast.deckSize}-card library</p></div>
     {!sources.length && <p role="status" className="text-sm">No modeled direct-damage sources.</p>}
-    {sources.length > 0 && <div className="grid gap-4 lg:grid-cols-2">{models.map(model => <section key={model} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
+    {sources.length > 0 && <div className="grid gap-4 @lg:grid-cols-2">{models.map(model => <section key={model} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
       <h4 className="text-sm font-semibold">{different ? model === 'conservative' ? 'Conservative model' : 'Conditional ceiling model' : 'Modeled printed damage'}</h4>
       <p className="mt-1 text-xs text-ctp-subtext1">Dot: median · line: 10th–90th percentiles</p>
       <div className="mt-3 space-y-4">{forecast.points.map(point => {

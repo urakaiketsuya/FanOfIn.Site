@@ -43,3 +43,34 @@ test('package checkpoints display joint access, including zero when support is m
   assert.ok((packageSection.match(/0\.0%/g) ?? []).length >= 4);
   assert.doesNotMatch(html, /<input|<select|Adjust scenario/);
 });
+
+test('deck reports expose all checkpoints without scenario inputs, including incomplete data', async () => {
+  const { createElement } = await import('react');
+  const { renderToStaticMarkup } = await import('react-dom/server');
+  const { MemoryRouter } = await import('react-router-dom');
+  const { default: DeckReport } = await import('../src/features/analytics/DeckReport');
+  const render = (main: { name: string; quantity: number }[]) => renderToStaticMarkup(createElement(MemoryRouter, {}, createElement(DeckReport, {
+    deck: { main, material: [] }, cardsByName: new Map(), onExplore: () => {},
+  })));
+  const html = render(deck(4));
+  for (const seen of [7, 10, 15, 20]) assert.match(html, new RegExp(`${seen} seen`));
+  assert.doesNotMatch(html, /<input|<select|<textarea|Adjust scenario/);
+  assert.match(html, /Explore Veiling Breeze in calculator/);
+  assert.match(html, /attack report unavailable/);
+  assert.match(render([]), /Add Main cards to calculate access/);
+});
+
+test('automatic version reports cannot open scenario inputs, while calculators retain adjustments', async () => {
+  const { createElement } = await import('react');
+  const { renderToStaticMarkup } = await import('react-dom/server');
+  const { MemoryRouter } = await import('react-router-dom');
+  const { default: FixtureComparison } = await import('../src/features/analytics/FixtureComparison');
+  const render = (reportOnly: boolean) => renderToStaticMarkup(createElement(MemoryRouter, {}, createElement(FixtureComparison, {
+    baseline: { main: deck(3), material: [] }, target: { main: deck(4), material: [] }, cardsByName: new Map(), baselineLabel: 'Before', targetLabel: 'After', reportOnly,
+  })));
+  const report = render(true);
+  assert.match(report, /Comparison report/);
+  assert.doesNotMatch(report, /Adjust scenario|role="tab"|<input|<select/);
+  assert.match(render(false), /Comparison calculator/);
+  assert.match(render(false), /Adjust scenario/);
+});

@@ -2,9 +2,10 @@ import { drawAccessReport, type Card } from "@gatcg/shared";
 import AssociatedCards from "../../components/AssociatedCards";
 import Panel from "../../components/ui/Panel";
 
-export default function DeckAccessSummary({ mainLines, cardsByName }: {
+export default function DeckAccessSummary({ mainLines, cardsByName, onExplore }: {
   mainLines: { name: string; quantity: number }[];
   cardsByName: Map<string, Card>;
+  onExplore?: (name: string) => void;
 }) {
   const { size, rows } = drawAccessReport(mainLines);
   const quantities = [...new Set(rows.map(row => row.quantity))];
@@ -22,7 +23,7 @@ export default function DeckAccessSummary({ mainLines, cardsByName }: {
           <p className="mt-1 text-lg font-semibold tabular-nums">{(point.probability * 100).toFixed(1)}%</p>
           <div aria-hidden="true" className="mt-2 h-1.5 rounded bg-ctp-surface1"><div className="h-full rounded bg-ctp-blue" style={{ width: `${point.probability * 100}%` }} /></div>
         </div>)}</div>
-        <AssociatedCards lines={group} cardsByName={cardsByName} label={`${quantity}-copy cards · individual access`} />
+        <AssociatedCards onExplore={onExplore} lines={group} cardsByName={cardsByName} label={`${quantity}-copy cards · individual access`} />
       </section>;
     })}</div>
   </Panel>;

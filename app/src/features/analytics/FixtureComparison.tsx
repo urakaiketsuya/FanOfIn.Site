@@ -16,13 +16,13 @@ function comparisonLines(before: AnalyticsLine[] = [], after: AnalyticsLine[] = 
     return { name, quantity: Math.max(a, b), detail: `${a} → ${b} copies` };
   });
 }
-export default function FixtureComparison({ baseline, target, cardsByName, baselineLabel, targetLabel, initialMode = 'opponents' }: {
-  baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card>; baselineLabel: string; targetLabel: string; initialMode?: Mode;
+export default function FixtureComparison({ baseline, target, cardsByName, baselineLabel, targetLabel, initialMode = 'opponents', reportOnly = false }: {
+  baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card>; baselineLabel: string; targetLabel: string; initialMode?: Mode; reportOnly?: boolean;
 }) {
   const id = useId();
   const own = useCardScenario(baseline, cardsByName);
   const other = useCardScenario(target, cardsByName);
-  const [mode, setMode] = useState<Mode>(initialMode);
+  const [mode, setMode] = useState<Mode>(reportOnly ? 'versions' : initialMode);
   const [named, setNamed] = useState('');
   const [adjusting, setAdjusting] = useState(false);
   const [sequenceText, setSequenceText] = useState('3, 3');
@@ -66,9 +66,9 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
     }
   }
   return <Panel data-component="FixtureComparison">
-    <h3 className="font-semibold">Comparison report</h3>
+    <h3 id={reportOnly ? `${id}-tab-versions` : undefined} className="font-semibold">{reportOnly ? "Comparison report" : "Comparison calculator"}</h3>
     <p className="mt-1 break-words text-xs text-ctp-subtext1">{baselineLabel} → {targetLabel}</p>
-    <div className="mt-3"><Tabs baseId={id} active={mode} onChange={setMode} tabs={[{ key: 'opponents', label: 'Against this deck' }, { key: 'versions', label: 'Compare versions' }]} label="Interaction comparison" wrap /></div>
+    {!reportOnly && <div className="mt-3"><Tabs baseId={id} active={mode} onChange={setMode} tabs={[{ key: 'opponents', label: 'Against this deck' }, { key: 'versions', label: 'Compare versions' }]} label="Interaction comparison" wrap /></div>}
     {missing.length > 0 && <p role="status" className="mt-3 text-xs text-ctp-yellow">Card data incomplete · {copies(missing)} copies unavailable</p>}
     <TabPanel baseId={id} tab="opponents" active={mode} keepMounted>
       <p className="mt-3 text-xs text-ctp-subtext1">{own.champion || 'No class bonus'} · one resolved source at a time</p>
@@ -109,8 +109,8 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
       </div>
       {changed.size > 0 && <div className="mt-4"><h4 className="mb-2 text-xs font-semibold">Changed Main & Material cards</h4><AssociatedCards lines={[...changed.values()]} cardsByName={cardsByName} label="Cards changed between versions" /></div>}
     </TabPanel>
-    {mode === 'opponents' && <Button className="mt-4" onClick={() => setAdjusting(true)}>Adjust opponent scenario</Button>}
-    {adjusting && <DialogSheet title="Adjust comparison scenario" onDismiss={() => setAdjusting(false)} footer={<Button onClick={() => setAdjusting(false)}>View report</Button>}>
+    {!reportOnly && <Button className="mt-4" onClick={() => setAdjusting(true)}>Adjust scenario</Button>}
+    {adjusting && <DialogSheet title="Adjust comparison scenario" onDismiss={() => setAdjusting(false)} footer={<Button onClick={() => setAdjusting(false)}>View calculation</Button>}>
     {mode === 'opponents' && <>      {(needsName || needsSequence) && <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {needsName && <label className="min-w-0 text-xs font-medium" htmlFor={`${id}-name`}>Named opposing card<select id={`${id}-name`} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base" value={selectedName} onChange={e => setNamed(e.target.value)}>{[...new Set(target.main.map(line => line.name))].sort().map(name => <option key={name}>{name}</option>)}</select></label>}
         {needsSequence && <label className="min-w-0 text-xs font-medium" htmlFor={`${id}-sequence`}>Incoming damage sequence<input id={`${id}-sequence`} value={sequenceText} onChange={e => setSequenceText(e.target.value)} aria-invalid={!sequenceValid} aria-describedby={`${id}-sequence-help`} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base" /><span id={`${id}-sequence-help`} className="mt-1 block">{sequenceValid ? `${sequence.reduce((sum, n) => sum + n, 0)} total · comma-separated events` : 'Enter up to 30 damage amounts, 0–100, separated by commas.'}</span></label>}

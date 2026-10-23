@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Card } from "@gatcg/shared";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { computeDrawEngineTiming, drawEngineSources } from "./drawEffects";
@@ -48,6 +48,7 @@ export default function HypergeometricCalculator({
   onSeenChange,
   defaultMode = "single",
   initialRecipe,
+  initialCard,
   onApplyRecipeSuggestion,
   onRecipeChange,
 }: {
@@ -58,6 +59,7 @@ export default function HypergeometricCalculator({
   onSeenChange?: (seen: number) => void;
   defaultMode?: "single" | "functional" | "recipe";
   initialRecipe?: ComboRecipeRequirement[];
+  initialCard?: { name: string; nonce: number };
   onApplyRecipeSuggestion?: (addCard: string, removeCard: string) => void;
   onRecipeChange?: (requirements: ComboRecipeRequirement[]) => void;
 }) {
@@ -72,6 +74,15 @@ export default function HypergeometricCalculator({
   const setSeen = onSeenChange ?? setLocalSeen;
   const [required, setRequired] = useState(1);
   const [mode, setMode] = useState<"single" | "functional" | "recipe">(defaultMode);
+  useEffect(() => {
+    if (!initialCard) return;
+    const line = mainLines.find(line => line.name === initialCard.name);
+    if (!line) return;
+    setSelectedCard(line.name);
+    setCopies(line.quantity);
+    setDeckSize(defaultDeckSize);
+    setMode("single");
+  }, [initialCard, mainLines, defaultDeckSize]);
   const [functionalRole, setFunctionalRole] = useState<FunctionalRole>("draw");
   const [selectedGlimpseSource, setSelectedGlimpseSource] = useState("");
   const [glimpseActivationCap, setGlimpseActivationCap] = useState(2);

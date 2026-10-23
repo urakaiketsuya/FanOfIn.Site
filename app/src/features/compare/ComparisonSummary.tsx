@@ -1,3 +1,6 @@
+import DamageStatisticalReport from "../analytics/DamageStatisticalReport";
+import CombatAccessReport from "../analytics/CombatAccessReport";
+import Button from "../../components/ui/Button";
 import FixtureComparison from "../analytics/FixtureComparison";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import { useMemo, useState } from "react";
@@ -69,9 +72,10 @@ function DeckProfile({ baseline, target }: { baseline: ComparisonDeckStats; targ
   </div>;
 }
 
-export default function ComparisonSummary({ decks, decklists, baselineKey, mode = "overview", onViewAllDifferences }: {
+export default function ComparisonSummary({ decks, decklists, baselineKey, mode = "overview", onViewAllDifferences, onExplore }: {
   decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null;
-  mode?: "overview" | "forecasts";
+  mode?: "overview" | "forecasts" | "calculators";
+  onExplore?: () => void;
   onBaselineChange?: (key: string) => void;
   onViewAllDifferences: () => void;
 }) {
@@ -82,7 +86,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
   const pantheonOnly = formats.size === 1 && formats.has("PANTHEON");
   const baselineDeck = baselineIndex >= 0 ? decks[baselineIndex] : undefined;
   const baselineStats = baselineIndex >= 0 ? deckStats[baselineIndex] : undefined;
-  const forecastDecks = useMemo(() => mode !== "forecasts" ? [] : decks.map((deck) => {
+  const forecastDecks = useMemo(() => mode === "overview" ? [] : decks.map((deck) => {
     const list = decklists.get(deck.key);
     if (!list) return { deck, list: null, mainLines: [], materialLines: [], damageForecast: null, breakthroughVsAverage: null };
     const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
@@ -137,38 +141,39 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       </section>;
     })}
 
-    {mode === "forecasts" && <div className="space-y-8">
+    {mode !== "overview" && <div className="space-y-8">
       {baselineDeck && forecastDecks.filter(entry => entry.deck.key !== baselineDeck.key).map(entry => {
         const source = forecastDecks.find(candidate => candidate.deck.key === baselineDeck.key);
-        return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode="versions" /> : null;
+        return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode={mode === "calculators" ? "opponents" : "versions"} reportOnly={mode !== "calculators"} /> : null;
       })}
-      <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
+      {mode === "forecasts" && onExplore && <Button onClick={onExplore}>Explore in calculators</Button>}
+      {mode === "calculators" && <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, mainLines, materialLines }) => <section key={deck.key} className="min-w-0">
             <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={cardsByName} seen={forecastSeen} onSeenChange={setForecastSeen} />}
           </section>)}
         </div>
-      </Section>
+      </Section>}
 
       <Section heading="dense" title="Damage forecasts" description="Compare access to printed direct damage at the same checkpoint. These values do not claim the effects resolve.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, mainLines, materialLines, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
             <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : damageForecast ? (
-              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
+              <Panel className="mt-4 shadow-sm">{mode === "forecasts" ? <DamageStatisticalReport forecast={damageForecast} cardsByName={cardsByName} /> : <AggressionForecast forecast={damageForecast} mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} embedded seen={forecastSeen} onSeenChange={setForecastSeen} />}</Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
-              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} /></div></Panel>
+              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3">{mode === "forecasts" ? <CombatAccessReport deck={{ main: mainLines, material: materialLines }} cardsByName={cardsByName} /> : <CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} />}</div></Panel>
             ) : (
               <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></Panel>
             )}
-            {list && damageForecast && breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 && <Panel className="mt-4"><CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} /></Panel>}
+            {list && damageForecast && breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 && <Panel className="mt-4">{mode === "forecasts" ? <CombatAccessReport deck={{ main: mainLines, material: materialLines }} cardsByName={cardsByName} /> : <CombatAccessForecast mainLines={mainLines} materialLines={materialLines} cardsByName={cardsByName} />}</Panel>}
           </section>)}
         </div>
       </Section>
     </div>}
 
-    {mode === "forecasts" && baselineDeck && (
+    {mode === "calculators" && baselineDeck && (
       <Section heading="dense" title="All-allies combat ceiling" description="A theoretical deck-composition ceiling if every listed ally is in play and attacks while the defender uses its best Intercept allies first.">
         <div className="mt-3 space-y-4">
           {decks.map((deck, index) => {

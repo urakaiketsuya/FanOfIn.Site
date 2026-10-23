@@ -24,7 +24,8 @@ import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
 import type { AnalysisScenario } from "./AccessTimeline";
-import AnalysisResults from "./AnalysisResults";
+import DeckReport from "../analytics/DeckReport";
+import ScenarioOverview from "./AnalysisResults";
 
 import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
 import FunctionalHandCalculator from "../deckbuilder/FunctionalHandCalculator";
@@ -42,6 +43,7 @@ type AnalysisTab = "summary" | "explore" | "matchups";
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
+  const [calculatorView, setCalculatorView] = useState<"tools" | "scenario">("tools");
   const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
   const setupRef = useRef<HTMLDetailsElement>(null);
   const [tab, setTab] = useState<AnalysisTab>("summary");
@@ -110,6 +112,7 @@ export default function DeckAnalysisIndex() {
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
     setCalculatorCard(undefined);
     setScenario({ turn: 3, order: "first" });
+    setCalculatorView("tools");
     setTab("summary");
   }
 
@@ -126,6 +129,13 @@ export default function DeckAnalysisIndex() {
   function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
     if (!analysisProfile) return;
     persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, roles } : plan), reviewedAt: null });
+  }
+
+  function openCalculator(card?: string) {
+    if (card) setCalculatorCard({ name: card, nonce: Date.now() });
+    setCalculatorView("tools");
+    setTab("explore");
+    requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus());
   }
 
   function openPlanSetup() {
@@ -151,15 +161,16 @@ export default function DeckAnalysisIndex() {
   return <PageLayout>
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
-    <DeckStats decklist={collectionDecklist} cardsByName={catalogByName} />
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Deck Report" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
+    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><DeckReport deck={workspace} cardsByName={catalogByName} onExplore={openCalculator} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Results" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><AnalysisResults onEditPlan={openPlanSetup} scenario={scenario} onScenarioChange={setScenario} key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
-    <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
+      <Tabs baseId="calculator-views" active={calculatorView} onChange={setCalculatorView} tabs={[{ key: "tools", label: "All calculators" }, { key: "scenario", label: "Scenario overview" }]} label="Calculator views" wrap />
+      <TabPanel baseId="calculator-views" tab="scenario" active={calculatorView} keepMounted><ScenarioOverview onEditPlan={openPlanSetup} scenario={scenario} onScenarioChange={setScenario} key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={openCalculator} /></TabPanel>
+      <TabPanel baseId="calculator-views" tab="tools" active={calculatorView} keepMounted>
       <CalculatorDashboard needsReview={!!analysisProfile?.inheritedFrom && !analysisProfile.reviewedAt} scenario={scenario} onScenarioChange={setScenario} initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={openPlanSetup} detailedModels={{
         "Plan consistency": <><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></>,
         "Opening hand": <><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></>,
@@ -171,6 +182,7 @@ export default function DeckAnalysisIndex() {
         "Resource timing": <><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></>,
         "Sideboard comparison": <>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</>,
       }} />
+      </TabPanel>
     </TabPanel>
     <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><AnalysisMatchups result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} matchupsLoading={matchupsStatus.phase === "loading"} matchupsError={matchupsStatus.error} onRetryMatchups={matchupsStatus.retry} /></TabPanel>
   </PageLayout>;

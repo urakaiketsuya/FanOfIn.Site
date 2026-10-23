@@ -36,14 +36,15 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "myDecks" | "users" | "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "forecasts" | "matchup";
+type ViewMode = "summary" | "table" | "forecasts" | "calculators" | "matchup";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
   summary: "Summary",
   table: "Cards",
-  forecasts: "Forecasts",
+  forecasts: "Comparison Report",
+  calculators: "Calculators",
   matchup: "Matchup",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts", "matchup"];
+const VIEW_MODE_KEYS: ViewMode[] = ["forecasts", "summary", "table", "calculators", "matchup"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   myDecks: "My Decks",
@@ -65,9 +66,8 @@ export default function CompareIndex() {
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [showAddDecks, setShowAddDecks] = useState(true);
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "myDecks");
-  // Lead with a decision summary, then let cards, forecasts, and tuning progressively disclose
-  // detail. Older summary/table URLs retain their meaning below.
-  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
+  // Automatic comparisons open first; existing view URLs retain their meaning.
+  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "forecasts");
   const [cardDataMode, setCardDataMode] = useState<"quantities" | "performance">("quantities");
   const effectiveViewMode = viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
@@ -236,7 +236,7 @@ export default function CompareIndex() {
     <PageLayout data-component="CompareIndex" width="full">
       <PageHeader title="Compare" />
 
-      <div className="mt-4"><Tabs active={compareType} tabs={COMPARE_TYPE_KEYS.map(key => ({ key, label: COMPARE_TYPE_LABELS[key] }))} label="Comparison type" baseId="type" onChange={setCompareType} variant="pill" /></div>
+      <div className="mt-4"><Tabs active={compareType} tabs={COMPARE_TYPE_KEYS.map(key => ({ key, label: COMPARE_TYPE_LABELS[key] }))} label="Comparison type" baseId="type" onChange={setCompareType} variant="pill" wrap /></div>
 
       {compareType === "cards" ? (
         <div role="tabpanel" id="type-panel-cards" aria-labelledby="type-tab-cards" className="mt-4">
@@ -275,7 +275,7 @@ export default function CompareIndex() {
                   <div className="flex flex-wrap items-center gap-2 text-sm">
                 <label htmlFor="compare-deck-source" className="text-xs text-ctp-subtext0">Source:</label>
                 <select id="compare-deck-source" value={tab} onChange={(event) => setTab(event.target.value as SourceTab)} className="min-h-10 flex-1 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text sm:hidden">{SOURCE_TAB_KEYS.map((key) => <option key={key} value={key}>{TAB_LABELS[key]}</option>)}</select>
-                <div className="hidden sm:block"><Tabs active={tab} tabs={SOURCE_TAB_KEYS.map(key => ({ key, label: TAB_LABELS[key] }))} label="Add decks source" baseId="source" onChange={setTab} variant="pill" /></div>
+                <div className="hidden sm:block"><Tabs active={tab} tabs={SOURCE_TAB_KEYS.map(key => ({ key, label: TAB_LABELS[key] }))} label="Add decks source" baseId="source" onChange={setTab} variant="pill" wrap /></div>
               </div>
 
               <Panel as="div" role="tabpanel" id={`source-panel-${tab}`} aria-labelledby={`source-tab-${tab}`} className="mt-3">
@@ -298,7 +298,7 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div className="mt-4"><Tabs active={effectiveViewMode} tabs={VIEW_MODE_KEYS.map(key => ({ key, label: VIEW_MODE_LABELS[key] }))} label="Comparison view" baseId="view" onChange={(mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }} variant="pill" /></div>
+                  <div className="mt-4"><Tabs active={effectiveViewMode} tabs={VIEW_MODE_KEYS.map(key => ({ key, label: VIEW_MODE_LABELS[key] }))} label="Comparison view" baseId="view" onChange={(mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }} variant="pill" wrap /></div>
 
                   <div role="tabpanel" id={`view-panel-${effectiveViewMode}`} aria-labelledby={`view-tab-${effectiveViewMode}`} className="mt-4">
                     {effectiveViewMode === "summary" && (
@@ -319,7 +319,7 @@ export default function CompareIndex() {
                         {cardDataMode === "quantities" ? <ComparisonDifferences decks={decks} decklists={decklists} /> : <ComparisonCardStats decks={decks} decklists={decklists} />}
                       </>
                     )}
-                    <ComparisonTools active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
+                    <ComparisonTools onExplore={() => { setViewMode("calculators"); requestAnimationFrame(() => document.getElementById("view-tab-calculators")?.focus()); }} active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
                   </div>
                 </>
               )}

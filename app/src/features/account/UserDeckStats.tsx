@@ -3,9 +3,10 @@ import CardArtTile from "../../components/CardArtTile";
 import FixtureComparison from "../analytics/FixtureComparison";
 import CardScenarios from "../analytics/CardScenarios";
 import DeckAccessSummary from "./DeckAccessSummary";
+import CombatAccessReport from "../analytics/CombatAccessReport";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
-import { useMemo, useState, type ReactNode } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
@@ -51,6 +52,14 @@ function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
 }
 
 export default function UserDeckStats({ decklist, championName, format, ownerDeckId, previousDecklist, extraTabs = [] }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist; extraTabs?: DeckStatsTab[] }) {
+  const [statsTab, setStatsTab] = useState("forecasts");
+  const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
+  const exploreCard = (name: string) => {
+    setCalculatorCard({ name, nonce: Date.now() });
+    setStatsTab("consistency");
+    requestAnimationFrame(() => document.getElementById(statsId)?.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]')?.focus());
+  };
+  const statsId = useId();
   const namedSections = useMemo(() => ({
     main: decklist.main.map((line) => ({ name: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ name: line.card, quantity: line.quantity })),
@@ -228,7 +237,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   const probabilityTab: ReactNode = (
     <>
       <div className="grid items-start gap-4 lg:grid-cols-2">
-      <DeckAccessSummary mainLines={namedSections.main} cardsByName={cardsByName} />
+      <DeckAccessSummary onExplore={exploreCard} mainLines={namedSections.main} cardsByName={cardsByName} />
       <Panel>
         {hasDamageForecast ? (
           <DamageStatisticalReport forecast={aggressionForecast} cardsByName={cardsByName} />
@@ -236,7 +245,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
           <div data-component="BreakthroughDamageFallback">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>
             <div className="mt-3">
-              <CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} />
+              <CombatAccessReport deck={namedSections} cardsByName={cardsByName} />
             </div>
           </div>
         ) : (
@@ -245,11 +254,11 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       </Panel>
       </div>
       <CardScenarios deck={namedSections} cardsByName={cardsByName} />
-      {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" />}
+      {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" reportOnly />}
       {allyPower.allyCopies > 0 && hasDamageForecast && (
         <Panel className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat access</h3>
-          <div className="mt-3"><CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} /></div>
+          <div className="mt-3"><CombatAccessReport deck={namedSections} cardsByName={cardsByName} /></div>
         </Panel>
       )}
       {scavengeForecasts.length > 0 && (
@@ -315,14 +324,16 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   );
 
   const tabs: DeckStatsTab[] = [
-    { key: "forecasts", label: "Results", content: probabilityTab },
-    { key: "consistency", label: "Consistency", content: <>
+    { key: "forecasts", label: "Deck Report", content: probabilityTab },
+    { key: "consistency", label: "Calculators", content: <>
       <div>
-        <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
+        <HypergeometricCalculator initialCard={calculatorCard} mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
       </div>
       <div className="mt-4">
         <TurnToPlayCalculator mainLines={namedSections.main} catalogByName={cardsByName} />
       </div>
+      {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" />}
+      <Panel className="mt-4"><CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} /></Panel>
     </> },
     { key: "composition", label: "Composition", content: compositionTab },
     { key: "improvements", label: "Changes & packages", content: trimTab },
@@ -336,7 +347,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       {versionChange && <span>{versionChange.changedCards} cards changed since last version</span>}
     </div>
     {coverage.unresolved.length > 0 && <p role="status" className="text-sm text-ctp-yellow">Incomplete card data: {coverage.unresolved.join(" · ")}</p>}
-    <DeckStatsTabs tabs={tabs} />
+    <div id={statsId}><DeckStatsTabs tabs={tabs} selected={statsTab} onChange={setStatsTab} /></div>
     {(findings.length > 0 || validation.reasons.length > 0) && <section aria-label="Needs attention" className="space-y-2">
       <h2 className="text-sm font-semibold">Needs attention</h2>
       {findings.map(finding => <Panel key={finding.title} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-medium">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}

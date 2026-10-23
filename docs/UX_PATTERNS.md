@@ -104,7 +104,7 @@ roles. Catalog gaps and inherited roles needing review remain visible beside pla
 
 Deck analysis results use draw-count and Reserve-cost bars with visible values. Natural draws and estimated extra draws retain distinct labels. Saved access comparisons name the selected cards and play order; use “Save for comparison,” not “baseline.” Do not add methodology accordions or opening-size summaries.
 
-Deck Analysis opens on Results. Use peer tabs that retain visited calculators and drafts,
+Deck Analysis opens on Deck Report. Use peer tabs that retain visited calculators and drafts,
 with results and named card artwork before configuration. Associated-card grids wrap and show
 copy counts, card-detail links, and name fallbacks; never gate their membership behind “show all.”
 Combat metric selection highlights the printed-power ally pool or supported boost sources with
@@ -267,7 +267,7 @@ selected-store summary with Directions below it. Preserve 48px controls while co
 Fixture analytics opens on automatic Deck report and Comparison report findings.
 Show named cards, conditional checkpoints and access odds before optional inputs.
 Version reports put changed findings first and retain unchanged findings below.
-Use Adjust scenario in DialogSheet; retain parent-owned adjustments on dismissal.
+Keep Adjust scenario in the separate Calculators view using DialogSheet; retain parent-owned adjustments on dismissal.
 Keep selected champions and scenario conditions visible with the results. Conditional
 checkpoints are never labeled expected performance or an affordable play sequence.
 
@@ -294,3 +294,20 @@ The query and visual picker edit the same state. Supported query fields are `cla
 Multiple positive choices in a facet match any; separate facets combine. Exclusions veto any matching value. Deck identity element filters retain their existing all-positive-values semantics. Deck-content exclusions apply to the entire main-plus-material card pool, and do not contribute to relevance scores. Edition/set/rarity restrictions in card browsers must match the same eligible printing; another eligible printing keeps the card visible. Community tags are card-level across printings, so excluding a tag removes any card with that tag.
 
 Facet values serialize with a leading minus for exclusions. Cards, Collection, Quick Buy, and tournament deck-content filters retain their selections in the URL, preserve unrelated navigation parameters, and restore on Back/Forward. Collection and Quick Buy use separate parameter prefixes. Builder retains filters in its existing browser controller while mounted.
+
+## Reports and calculators
+
+Deck Report is the default automatic view; Calculators owns card selections, deadlines,
+play order, board assumptions and scenario profiles. Reports receive deck and catalog
+inputs only, never calculator state. Use fixed 7/10/15/20 cards-seen checkpoints; retain
+conditional-output and coverage labels. Metric highlighting and composition navigation
+inspect existing results without changing their assumptions. Ally-power checkpoints
+use the existing deterministic model with Musicbox replay disabled; they show sampled
+mean potential, not expected resolved combat damage.
+
+Explore in calculator carries the deck and named card into the calculator. Keep visited
+tools mounted so their drafts survive returning to the report. Scenario setup belongs
+inside Calculators. Deck comparisons default to Comparison Report; Calculators retains
+probability controls, adjustable opponent/version scenarios and the all-allies ceiling.
+Report and calculator comparisons mount independently, preventing scenario changes from
+altering automatic findings. Existing summary, table, forecasts and matchup URLs remain valid.
