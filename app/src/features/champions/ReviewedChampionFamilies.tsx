@@ -56,13 +56,16 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
         <Link className="flex min-h-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.id}`}>{build.name}</Link>
         <p className="text-sm text-ctp-subtext1">{build.playerCount} players · {build.eventCount} events</p>
       </section>)}
-      <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">
-        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/evidence:rotate-180" /></summary>
-        {shared && evidence ? <>
-          <p className="my-2">{evidence.coreDeckCount} of {evidence.evaluatedDeckCount} checked decklists contain all {familyCore.length === 3 ? 'three' : familyCore.length} {coreLabel} core cards: {familyCore.join(', ')}.</p>
-          {packages.map(pkg => <p key={pkg.label} className="my-2">{pkg.cards.join(', ')} appear together in {pkg.count} of {evidence.evaluatedDeckCount} decklists.</p>)}
-          <p className="my-2 text-ctp-subtext1">Main and material only; sideboards excluded. The shared name requires the complete core in at least 90% of this group, complete decklist coverage, five players and two events. Card presence does not prove a combo was played.</p>
-        </> : <><ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} /><p className="my-2">Common cards across this family, not an exact decklist or required core.</p></>}
+      <details className="group/cards mt-3 border-t border-ctp-surface1 text-sm">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
+        {shared ? <>
+          <h5 className="my-3 font-semibold">Core cards</h5>
+          <ArchetypePreview names={familyCore} cardImages={catalog} />
+          {packages.filter(pkg => pkg.count > 0).map(pkg => <div key={pkg.label} className="my-3">
+            <h5 className="mb-2 font-semibold">{pkg.label}</h5>
+            <ArchetypePreview names={pkg.cards} cardImages={catalog} />
+          </div>)}
+        </> : <ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} />}
       </details>
       {remainingBuilds.length > 0 && <details className="group/builds border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Explore {remainingBuilds.length} {remainingBuilds.length === 1 ? 'build' : 'builds'}<DisclosureChevron className="group-open/builds:rotate-180" /></summary>

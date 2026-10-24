@@ -19,27 +19,17 @@ export default function DiaoArchetypeFamilies({ taxonomy, catalog }: { taxonomy:
       <h3 className="mt-3 text-lg font-semibold">{family.name}</h3>
       <p className="mt-1 text-sm text-ctp-subtext1">{family.confidence === 'emerging' ? 'Emerging · ' : ''}{family.playerCount} players · {family.eventCount} events · {(family.avgWinRate * 100).toFixed(0)}% win rate</p>
       <p className="mt-2 text-sm text-ctp-subtext1">{identity ? `${identity.description} The cards shown are the family’s identifying core, not a complete decklist.` : 'Common cards across this family; these are not an exact decklist or a required core.'}</p>
-      <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">
-        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/evidence:rotate-180" /></summary>
-        <p className="my-2 text-ctp-subtext1">{family.deckCount} tournament deck appearances. Players and events are counted once per family.</p>
-        {evidence && evidence.missingDeckCount > 0 && <p className="my-2">{evidence.missingDeckCount} decklists unavailable for card checks.</p>}
-        {evidence && identity && <>
-          <p className="my-2">{evidence.identityDeckCount} of {evidence.evaluatedDeckCount} checked decklists contain the full identifying core: {identity.core.join(', ')}.</p>
-          <h4 className="mt-3 font-semibold">Supporting cards</h4>
+      <details className="group/cards mt-3 border-t border-ctp-surface1 text-sm">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
+        {identity && <>
+          <h4 className="my-3 font-semibold">Supporting cards</h4>
           <ArchetypePreview names={identity.support} cardImages={catalog} />
-          <p className="my-2 text-ctp-subtext1">These support the strategy but are not required to identify it.</p>
-          <ul className="my-2 space-y-2 text-ctp-subtext1">{evidence.identityCards?.map(card => <li key={card.name}>{card.name}: {card.deckCount} decklists · {card.averageCopies.toFixed(1)} copies on average across checked decks</li>)}</ul>
         </>}
-        {evidence && hasFirePackage ? <>
-          <h4 className="mt-3 font-semibold">Searing Rebuke combo package</h4>
+        {hasFirePackage && <>
+          <h4 className="my-3 font-semibold">Searing Rebuke package</h4>
           <ArchetypePreview names={DIAO_REBUKE_COMBO} cardImages={catalog} />
-          <p className="my-2">With their class bonuses active, Flourish or Sparks can target your champion; Searing Rebuke can prevent that damage and deal damage to an opposing champion. This needs the damage ability and prevention effect to be timed together.</p>
-          <p className="my-2">All three cards appear together in {evidence.comboDeckCount} of {evidence.evaluatedDeckCount} checked decklists. This package can occur in other archetypes. Presence shows access to the cards, not proof that the combo was played.</p>
-          <p className="my-2">Cinder Geyser is supporting damage; it does not establish this archetype on its own.</p>
-          <ul className="my-2 space-y-2 text-ctp-subtext1">{evidence.cards.map(card => <li key={card.name}>{card.name}: {card.deckCount} decklists · {card.averageCopies.toFixed(1)} copies on average across checked decks</li>)}</ul>
-          <p className="my-2 text-ctp-subtext1">Checks use positive copies in main and material only; sideboards are excluded. A reviewed name requires the full core in at least 90% of the family, complete decklist coverage, five players and two events.</p>
-        </> : !identity && <><ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} /><p className="my-2 text-ctp-subtext1">{evidence ? "The fire package does not occur in this family. These cards summarize its own common strategy." : "Joint card evidence is not available in this published analysis yet."}</p></>}
-        {!hasFirePackage && <p className="my-2 text-ctp-subtext1">Checks use positive copies in main and material only; sideboards are excluded. A reviewed name requires the full core in at least 90% of the family, complete decklist coverage, five players and two events. Card presence is not proof of a combo being played.</p>}
+        </>}
+        {!identity && !hasFirePackage && <ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} />}
       </details>
       <details className="group/variants border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Explore {builds.length} build {builds.length === 1 ? 'variant' : 'variants'}<DisclosureChevron className="group-open/variants:rotate-180" /></summary>

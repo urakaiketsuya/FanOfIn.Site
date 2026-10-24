@@ -498,28 +498,22 @@ export default function ChampionSynergy() {
                           <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded text-lg font-semibold text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
                         </div>
                         <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
-                        <details className="group/build mt-2 border-t border-ctp-surface1 text-sm text-ctp-subtext1"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/build:rotate-180" /></summary><p className="my-2">{engine.deckCount} decks · {engine.eventCount} events. Common cards across this family, not an exact decklist or required core.</p><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} />
+                        <details className="group/build mt-2 border-t border-ctp-surface1 text-sm text-ctp-subtext1"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards<DisclosureChevron className="group-open/build:rotate-180" /></summary><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} />
                         {engine.relationships.map((relationship) => (
                           <div key={relationship.id} className="mt-4 border-t border-ctp-surface1 pt-3 text-sm text-ctp-subtext1">
-                            <h4 className="font-medium text-ctp-text">
-                              {relationship.status === "shared" ? "Shared with other champions" : "Candidate overlap with other champions"}
-                            </h4>
-                            <p className="mt-2 font-medium">{relationship.name}</p>
-                            <p className="mt-1">{relationship.status === "shared" ? "Recurring multi-card package with independent player and event evidence." : "Evidence is insufficient to establish a shared archetype."}</p>
-                            {(relationship.championEvidence ?? relationship.championBreakdown).map((entry) => <p key={entry.championName} className="mt-2"><Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/champions/${championNameToSlug(entry.championName)}`}>{entry.championName}</Link>{"qualifying" in entry && entry.qualifying ? " (qualifying evidence)" : " (limited evidence)"}: {entry.deckCount} decks · {entry.playerCount} players · {"eventCount" in entry ? String(entry.eventCount) : "–"} events</p>)}
-                            {[{ label: "Common core", cards: relationship.commonCore ?? relationship.definingCards }, { label: `${championName}-specific cards`, cards: relationship.championEvidence?.find((entry) => entry.championName === championName)?.differentiatorCards ?? [] }].map((section) => <div key={section.label} className="mt-3">
-                              <p className="mb-2 font-medium">{section.label}</p>{section.label === "Common core" && <p className="mb-2">Includes cohort staples; only enriched recurring cards establish a shared package.</p>}
+                            <h4 className="font-medium text-ctp-text">{relationship.name}</h4>
+                            {[{ label: "Common core", cards: relationship.commonCore ?? relationship.definingCards }, { label: `${championName}-specific cards`, cards: relationship.championEvidence?.find((entry) => entry.championName === championName)?.differentiatorCards ?? [] }].filter(section => section.cards.length > 0).map((section) => <div key={section.label} className="mt-3">
+                              <p className="mb-2 font-medium">{section.label}</p>
                               <div className="grid grid-cols-3 gap-2">{section.cards.map((entry) => {
                                 const card = catalogByName.get(entry.name);
                                 const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-1 block">{entry.name}</span></>;
                                 return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2">{content}</Link> : <div key={entry.name}>{content}</div>;
                               })}</div>
-                              {section.cards.length === 0 && <p>No recurring differentiators identified.</p>}
                             </div>)}
                           </div>
                         ))}
-                        <Link className="inline-flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2" to={`/archetypes/mine?build=${engine.id}`}>Curate this family</Link>
                         </details>
+                        <Link className="inline-flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2" to={`/archetypes/mine?build=${engine.id}`}>Curate this family</Link>
                       </article>
                     );
                   })}
