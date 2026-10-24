@@ -2,6 +2,18 @@ import type { Card } from './api-types.js';
 import { calculateCardScenarios, type CardScenario } from './cardScenarios.js';
 import { aggregateLines, copies, fixtureAccess, fixtureFloating, hasType, whole, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
 
+/** Catalog-verified printed target conditions; timing, costs and successful resolution remain separate. */
+const FIXED_TARGET_RULES: Record<string, { label: string; detail: string; accepts: (card: Card) => boolean }> = {
+  Engulf: { label: 'Negate targets', detail: 'Non-attack activations · target eligibility', accepts: card => !hasType(card, 'ATTACK') },
+  'Frozen Dismissal': { label: 'Negate targets', detail: 'Pay 4 or negate and banish', accepts: card => hasType(card, 'ALLY') },
+  'Tidal Lock': { label: 'Negate targets', detail: 'Pay 2 or negate and banish', accepts: () => true },
+  Thunderclap: { label: 'Printed life ≤4', detail: '4 ally damage · before buffs, prevention or targeting restrictions', accepts: card => hasType(card, 'ALLY') && card.life != null && card.life >= 0 && card.life <= 4 },
+};
+export function fixedTargetCoverage(source: string, target: Card | undefined) {
+  const rule = FIXED_TARGET_RULES[source];
+  return rule && target && rule.accepts(target) ? { label: rule.label, detail: rule.detail } : null;
+}
+
 export interface FixtureMatchupRow {
   id: string; source: AnalyticsLine; label: string; value: string; detail: string;
   targets: (AnalyticsLine & { detail?: string })[];
@@ -38,13 +50,12 @@ export function calculateFixtureMatchup(own: AnalyticsDeck, opposing: AnalyticsD
     const unknown = copies(targets.filter(line => !catalog.has(line.name)));
     add(name, label, unknown ? `${copies(members)} known eligible · ${unknown} unknown` : `${copies(members)} / ${copies(targets)} Main copies`, detail, members);
   };
-  coverage('Engulf', 'Negate targets', c => !hasType(c, 'ATTACK'), 'Non-attack activations · target eligibility');
-  coverage('Frozen Dismissal', 'Negate targets', c => hasType(c, 'ALLY'), 'Pay 4 or negate and banish');
-  coverage('Tidal Lock', 'Negate targets', () => true, 'Pay 2 or negate and banish');
+  const fixedCoverage = (name: string) => { const rule = FIXED_TARGET_RULES[name]; coverage(name, rule.label, rule.accepts, rule.detail); };
+  for (const name of ['Engulf', 'Frozen Dismissal', 'Tidal Lock']) fixedCoverage(name);
   const taxTargets = targets.filter(line => { const c = catalog.get(line.name); return c?.cost_reserve != null && c.cost_reserve >= 0; });
   const odd = copies(taxTargets.filter(line => catalog.get(line.name)!.cost_reserve! % 2 === 1));
   add('Surging Obstruction', 'Tax pressure', `${odd} copies pay 3 · ${copies(taxTargets) - odd} pay 1`, `${copies(targets) - copies(taxTargets)} copies with unknown/variable reserve excluded`, taxTargets.map(line => ({ ...line, detail: `Pay ${catalog.get(line.name)!.cost_reserve! % 2 ? 3 : 1} or negate` })));
-  coverage('Thunderclap', 'Printed life ≤4', c => hasType(c, 'ALLY') && c.life != null && c.life >= 0 && c.life <= 4, '4 ally damage · before buffs, prevention or targeting restrictions');
+  fixedCoverage('Thunderclap');
   const unassessedAllies = copies(targets.filter(line => { const c = catalog.get(line.name); return c && hasType(c, 'ALLY') && (c.life == null || c.life < 0); }));
   if (unassessedAllies) {
     const row = rows.find(row => row.source.name === 'Thunderclap');

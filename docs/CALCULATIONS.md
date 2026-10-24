@@ -5326,3 +5326,55 @@ including DTR Alter. Promo-only and future editions are excluded. Results retain
 edition’s actual set prefix and date and deduplicate by card name. Format legality must be
 allowed (Standard by default; Builder passes its selected format). Existing element, selected
 card, and designed-connection checks still apply. Tournament sightings are not required.
+
+## Deck decision report (October 2026)
+
+`shared/src/packageAccessReport.ts` calculates four joint presence outcomes for the
+reviewed published package catalog at 7/10/15/20 Main cards seen. Source is the first
+requirement; support is the remaining requirements. A single multi-name Material
+requirement splits its first name from the remaining required names. Requirements
+count distinct names, not copies. Main duplicates aggregate; Material is deterministic;
+Sideboard never satisfies a package. The actual Main size bounds each checkpoint.
+
+For every subset S of relevant Main names, compute F(S), the hypergeometric chance
+that none of the names outside S appears. Subset Möbius inversion yields the exact
+probability of each observed name set. Sum those sets into both/source-only/support-only/
+neither using the requirement predicates. This preserves overlapping alternative
+pools without assuming independence. The bounded helper rejects more than 16 relevant
+names. Presence is separate from construction lineage and activation requirements;
+these probabilities do not establish playability. Only reviewed published definitions
+are automatically included; inferred text links and mined construction pools are not.
+
+The decision report classifies against taxonomy clusters containing the current
+champion, then uses champion-partitioned deck rows with matching cluster membership
+and printed elemental access. The comparison window is 180 days ending at that
+eligible cohort's latest recorded event, with actual dates visible. Deduplicate by
+`deckId`; omit undated and empty lists. Rank exact references by main+material weighted
+Jaccard, then date and ID. Sideboards are excluded. Matchup evidence retains its
+published build/champion scope and with/without samples; historical answer candidates
+are not mechanically verified answers. Pantheon gets no Standard historical guidance.
+
+Opt-in suggestions evaluate one-copy Main swaps toward up to twelve comparable exact
+lists. A consistency candidate must improve at least one reviewed package's joint
+access at 10 seen; a matchup candidate must have a positive Main-card association in
+the chosen matchup. Alternatives describe construction resemblance only. None predicts
+a win-rate gain. At most three candidates are shown. Card locks preserve quantities;
+a package lock prevents lowering that package's 10-seen access. Additions require known
+catalog data, verified format eligibility, printed elemental access, correct section,
+and available copies across Main+Material+Sideboard. Null legality means unrestricted,
+using the existing four-copy Standard default. Assigned printing copies cannot be
+silently removed. Unresolved active catalog cards withhold suggestions.
+
+Preview shows changed-card access, all recognized package access/construction changes,
+and the existing conservative/conditional damage medians and sampled ally-power model
+at 10 seen, retaining each model's assumptions and partial coverage. Swaps use the shared
+immutable deck editor. Applying writes the local workspace and its serialized original
+in one storage operation; a failed write leaves the displayed deck unchanged and the
+preview open. Subsequent swaps retain the same original; restore and reload preserve it.
+No account mutation occurs. Saved-deck testing history is explicitly cross-version;
+no revision-level causal inference is made.
+
+Matchup coverage additionally reuses the fixture engine's catalog-verified fixed target
+rules for Engulf, Frozen Dismissal, Tidal Lock and Thunderclap. These are printed target
+eligibility/damage thresholds, presented separately from tournament correlations; they
+do not infer resolved removal, affordability or an opponent's ability to pay a tax.

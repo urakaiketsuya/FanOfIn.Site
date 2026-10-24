@@ -707,3 +707,15 @@ Track product outcomes without treating engagement alone as success:
 - Simulator-derived conclusions mixed with tournament or manual logs without visible provenance.
 - Payments, escrow, shipping guarantees, or reputation scores before trading safety and support requirements
   receive separate legal, fraud, privacy, and operations review.
+
+## Deferred initiative: Deck Basics
+
+Separate from the October 2026 Deck Report decision expansion. Plan a cohesive basic
+statistics view covering deck size, composition, resource/cost distributions, individual
+card access and duplicate exposure. Include marginal copy-count tradeoffs (2→3, 3→4),
+showing access gained and duplicate exposure together; multiple copies are not inherently
+bad. Compare observed quantities only within compatible builds and retain sample sizes.
+Do not treat global quantity win rates as causal recommendations. Existing statistics
+remain available until this initiative establishes their consolidated presentation.
+Implementation has not started; first task is auditing existing stats and agreeing the
+minimum useful mobile flow, avoiding duplicate calculators.

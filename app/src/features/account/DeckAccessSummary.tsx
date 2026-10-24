@@ -10,7 +10,7 @@ export default function DeckAccessSummary({ mainLines, cardsByName, onExplore }:
   const { size, rows } = drawAccessReport(mainLines);
   const quantities = [...new Set(rows.map(row => row.quantity))];
   return <Panel data-component="DeckAccessSummary">
-    <h3 className="font-semibold">How reliably will you draw each card?</h3>
+    <h3 className="font-semibold">Card access</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">Chance of drawing at least one · {size} Main cards</p>
     {!rows.length && <p role="status" className="mt-3 text-sm">Add Main cards to calculate access.</p>}
     {size > 0 && size < 60 && <p role="status" className="mt-2 text-xs text-ctp-yellow">Incomplete Main deck · probabilities use the current {size} cards</p>}

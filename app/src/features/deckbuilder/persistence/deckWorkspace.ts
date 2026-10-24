@@ -8,6 +8,8 @@ export interface WorkspaceCardLine {
 }
 
 export interface DeckWorkspace {
+  /** Serialized original workspace for restoring an explicitly applied report draft. */
+  reportOriginal?: string;
   printings?: import("@gatcg/shared").DeckPrintings;
   version: 1;
   updatedAt: string;
@@ -35,6 +37,7 @@ export function loadActiveDeckWorkspace(storage: StorageLike): DeckWorkspace | n
     const parsed = JSON.parse(storage.getItem(ACTIVE_DECK_WORKSPACE_KEY) ?? "null") as Partial<DeckWorkspace> | null;
     if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.main) || !Array.isArray(parsed.material) || !Array.isArray(parsed.sideboard)) return null;
     return {
+      reportOriginal: typeof parsed.reportOriginal === "string" ? parsed.reportOriginal : undefined,
       printings: parsed.printings,
       version: 1,
       updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString(),

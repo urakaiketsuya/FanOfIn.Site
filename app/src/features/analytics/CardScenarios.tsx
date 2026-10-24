@@ -15,7 +15,7 @@ export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDe
   return <Panel data-component="CardScenarios">
     <h3 className="text-sm font-semibold">Card effects report</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">{controller.champion || 'No class bonus'} · conditional one-copy outcomes · {Math.max(60, deck.main.reduce((sum, line) => sum + line.quantity, 0))}-card library</p>
-    {consumers.length > 0 && <div className="mt-3 rounded-xl bg-ctp-mantle p-3"><h4 className="mb-2 text-sm font-semibold">Shared graveyard resource</h4><AssociatedCards lines={consumers} cardsByName={cardsByName} label="Floating Memory consumers" /><p className="mt-2 text-xs">These effects and memory payments consume eligible Floating Memory cards. Each banished card can fund only one use.</p></div>}
+    {consumers.length > 0 && <div className="mt-3 rounded-xl bg-ctp-mantle p-3"><h4 className="mb-2 text-sm font-semibold">Shared graveyard resource</h4><AssociatedCards lines={consumers} cardsByName={cardsByName} label="Floating Memory consumers" /><p className="mt-2 text-xs">Shared Floating Memory · 1 use per banished card</p></div>}
     {missing && <p role="status" className="mt-2 text-xs text-ctp-yellow">Card data incomplete</p>}
     {GROUPS.filter(group => rows.some(row => row.group === group.key)).map(group => <section key={group.key} className="mt-6">
       <h3 className="text-sm font-semibold">{group.label}</h3>
@@ -28,8 +28,7 @@ export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDe
           return <div key={point.seen}><p className="text-xs text-ctp-subtext1">{point.seen} seen</p><p className="text-base font-semibold tabular-nums">{access == null ? '—' : `${(access * 100).toFixed(1)}%`}</p></div>;
         })}</div></>}
         <p className="mt-3 text-lg font-semibold">{row.unit.startsWith('%') ? row.value.toFixed(1) : row.value} {row.unit}{row.group === 'packages' ? ` · ${controller.state.seen} seen` : ''}</p>
-        <p className="mt-1 text-xs text-ctp-subtext1">{row.detail}</p>
-        {scenarioConditions(row, controller.state) && <p className="mt-2 text-xs text-ctp-subtext1">When {scenarioConditions(row, controller.state)}</p>}
+        {scenarioConditions(row, controller.state) && <p className="mt-2 text-xs text-ctp-subtext1">{scenarioConditions(row, controller.state)}</p>}
         <dl className="my-3 space-y-2">{cardReportCheckpoints(deck, cardsByName, controller.state, row).map(point => <div key={point.label} className="flex flex-wrap justify-between gap-2 text-xs"><dt>{point.label}</dt><dd className="font-semibold">{point.value} {point.unit}</dd></div>)}</dl>
         <AssociatedCards lines={row.lines} cardsByName={cardsByName} label={row.name} highlighted={row.id === 'floating' ? new Set(row.support?.map(line => line.name)) : undefined} />
         {row.support && row.id !== 'floating' && <div className="mt-3"><p className="mb-2 text-xs font-medium">Supporting Main cards</p>{row.support.length ? <AssociatedCards lines={row.support} cardsByName={cardsByName} label={`${row.name} support`} /> : <p className="text-xs text-ctp-subtext1">No supported enablers in Main</p>}</div>}

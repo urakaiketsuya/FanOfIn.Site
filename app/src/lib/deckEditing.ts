@@ -76,3 +76,17 @@ export function selectedMovePrintings(line: OmnidexDecklistCardLine, quantity: n
   if (quantity - chosen.reduce((sum, p) => sum + p.quantity, 0) > unspecified) return null;
   return chosen;
 }
+
+/** One-copy Main swap, validated as a whole before returning an immutable result. */
+export function swapMainCard(deck: EditableDeck, cut: string, add: string, catalog: ReadonlyMap<string, Card>): EditableDeck | null {
+  if (cut === add || !catalog.has(add) || !deckDestinationEligibility(catalog.get(add), 'main').allowed) return null;
+  const source = deck.main.filter(line => line.card === cut);
+  if (!source.length || source.some(line => line.printings?.length)) return null;
+  const counts = new Map<string, number>();
+  for (const line of deck.main) counts.set(line.card, (counts.get(line.card) ?? 0) + line.quantity);
+  const quantity = counts.get(cut) ?? 0;
+  if (quantity < 1) return null;
+  counts.set(cut, quantity - 1);
+  counts.set(add, (counts.get(add) ?? 0) + 1);
+  return { ...deck, main: [...counts].filter(([, count]) => count > 0).map(([card, count]) => ({ card, quantity: count, ...(deck.main.find(line => line.card === card)?.printings ? { printings: deck.main.find(line => line.card === card)!.printings } : {}) })) };
+}

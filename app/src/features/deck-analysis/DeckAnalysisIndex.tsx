@@ -2,7 +2,7 @@ import DeckStats from "../../components/DeckStats";
 import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@gatcg/shared";
+import { reportCounts, computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
@@ -12,7 +12,7 @@ import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
 import { useDeckBuilderData } from "../deckbuilder/data/useDeckBuilderData";
-import { loadActiveDeckWorkspace, saveActiveDeckWorkspace, type DeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
+import { ACTIVE_DECK_WORKSPACE_KEY, loadActiveDeckWorkspace, saveActiveDeckWorkspace, type DeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
 import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
 import DeckToolWorkspaceHeader from "../deckbuilder/components/DeckToolWorkspaceHeader";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
@@ -24,6 +24,11 @@ import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
 import type { AnalysisScenario } from "./AccessTimeline";
+import Button from "../../components/ui/Button";
+import DeckDecisionReport from "./DeckDecisionReport";
+import { persistReportSwap } from "./reportDraft";
+import { computeDeckTestResult } from "../../lib/deckTestResult";
+import type { ReportSwap } from "./reportModel";
 import DeckReport from "../analytics/DeckReport";
 import ScenarioOverview from "./AnalysisResults";
 
@@ -45,6 +50,7 @@ export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
   const [calculatorView, setCalculatorView] = useState<"tools" | "scenario">("tools");
   const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
+  const [draftError, setDraftError] = useState<string | null>(null);
   const setupRef = useRef<HTMLDetailsElement>(null);
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
@@ -93,8 +99,12 @@ export default function DeckAnalysisIndex() {
   const materialTotal = total(workspace?.material);
   const sideboardTotal = total(workspace?.sideboard);
   const opening = workspace ? inferStartingHandSize(workspace.material, catalogByName) : 0;
-  const deckCardCounts = useMemo(() => new Map([...(workspace?.main ?? []), ...(workspace?.material ?? [])].map((line) => [line.name, line.quantity])), [workspace]);
+  const deckCardCounts = useMemo(() => reportCounts([...(workspace?.main ?? []), ...(workspace?.material ?? [])]), [workspace]);
   const { result: deckTestResult, loading: deckTestLoading } = useDeckTestResult({ deckCardCounts, cardsByName: catalogByName, nearestDecks: [] });
+  const decisionResult = useMemo(() => data.archetypeTaxonomy ? computeDeckTestResult({
+    deckCardCounts, taxonomy: { ...data.archetypeTaxonomy, clusters: data.archetypeTaxonomy.clusters.filter(cluster => cluster.championName === workspace?.championName || cluster.championBreakdown?.some(row => row.championName === workspace?.championName)) },
+    matchupCardImpactData: data.matchupCardImpact, deckClusterIndex: data.cardImpact?.deckClusterIndex, winConditions: [], nearestDecks: [],
+  }) : null, [deckCardCounts, data.archetypeTaxonomy, data.matchupCardImpact, data.cardImpact, workspace?.championName]);
   const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
   const matchupsStatus = usePublishedDataStatus("analysis-matchup-card-impact", "/data/analysis/matchup-card-impact.json");
   const collectionDecklist = useMemo<OmnidexDecklist>(() => ({
@@ -131,6 +141,25 @@ export default function DeckAnalysisIndex() {
     persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, roles } : plan), reviewedAt: null });
   }
 
+  function applyReportSwap(swap: ReportSwap): string | null {
+    if (!workspace) return "The active deck is unavailable.";
+    let draft: DeckWorkspace;
+    try { draft = persistReportSwap(sessionStorage, workspace, swap, catalogByName); }
+    catch { return "Could not apply the swap. Check card limits and browser storage, then try again."; }
+    setWorkspace(draft); setDraftError(null);
+    requestAnimationFrame(() => document.getElementById('report-draft-status')?.focus());
+    return null;
+  }
+  function restoreReportOriginal() {
+    if (!workspace?.reportOriginal) return;
+    const original = loadActiveDeckWorkspace({ getItem: () => workspace.reportOriginal!, setItem: () => {} });
+    if (!original) { setDraftError("The original deck could not be restored."); return; }
+    try { sessionStorage.setItem(ACTIVE_DECK_WORKSPACE_KEY, JSON.stringify(original)); }
+    catch { setDraftError("Could not save the restored draft. Try again after freeing browser storage."); return; }
+    setWorkspace(original); setDraftError(null);
+    requestAnimationFrame(() => document.getElementById('deck-analysis-tab-summary')?.focus());
+  }
+
   function openCalculator(card?: string) {
     if (card) setCalculatorCard({ name: card, nonce: Date.now() });
     setCalculatorView("tools");
@@ -162,7 +191,10 @@ export default function DeckAnalysisIndex() {
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Deck Report" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
-    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted><DeckReport deck={workspace} cardsByName={catalogByName} onExplore={openCalculator} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
+      {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
+      <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={openCalculator} onApply={applyReportSwap} />
+      <DeckReport deck={workspace} cardsByName={catalogByName} onExplore={openCalculator} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
     <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}

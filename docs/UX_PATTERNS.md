@@ -321,3 +321,19 @@ separate. Available-list and unresolved-card status stay visible; optional expan
 more observed cards without changing the calculation. Overview, Decks, and Evolution remain
 separate tabs. New-release candidates show their own edition prefix/date because the candidate
 pool can include both the latest main set and newer Alter editions.
+
+### Deck decision findings and opt-in suggestions
+
+The automatic report leads with three numeric summary tiles and reviewed package
+presence outcomes. Keep sections card-and-number led: short headings, compact status
+labels, and no explanatory paragraphs. Testing priorities use short chips. Package art identifies the full reviewed pool, current Main/Material
+copies, and missing members. Comparable exact lists and matchup evidence remain
+inspectable without changing calculator assumptions. Reference differences expand
+inline from six cards; historical candidates retain sample scope.
+
+Suggestions begin only after “Suggest improvements”. Goal, required matchup context,
+optional quantity locks and a package-access lock belong to that flow. Each candidate
+shows exact cut/add art and opens a DialogSheet comparison. Apply is explicit and saves
+a local draft; restore original remains available and survives reload. Account decks
+are unchanged. Storage failure keeps the preview and reports the error. No generic
+strength score or automatic deck mutation is permitted.
