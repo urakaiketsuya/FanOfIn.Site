@@ -7,6 +7,7 @@ import { computeReadinessCrossLinks, DependencyReadinessEntries, SynergyReadines
 import { CompositionChartsSection, CompositionSuggestionsSection } from "./CompositionPanels";
 import type { CardDecayReport } from "../../../lib/cardDecay";
 import type { DependencyReadiness, SynergyReadiness } from "../synergyReadiness";
+import CardArtTile from "../../../components/CardArtTile";
 import type { NewReleaseCard } from "../newReleaseCards";
 import Panel from "../../../components/ui/Panel";
 import Section from "../../../components/ui/Section";
@@ -86,7 +87,7 @@ export default function StatsPanel({
                     <button
                       type="button"
                       onClick={() => onAddCard(signal.cardName)}
-                      className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                      className="ml-auto min-h-control min-w-control rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
                     >
                       + Add
                     </button>
@@ -135,13 +136,14 @@ export default function StatsPanel({
             heading="dense"
             collapsible
             defaultOpen={false}
-            title={`New from ${newReleaseCards[0].setName}`}
-            description="Cards from the newest set with a designed connection – shared token economy, tribal reference, or named reference – to a card already in this build. Too new for tournament data, so this isn't ranked or scored, just worth a look."
-            actions={<span className="text-[10px] text-ctp-subtext0">{newReleaseCards[0].releaseDate}</span>}
+            title="New release candidates"
+            description="Latest set and newer Alter releases · designed connections to this build."
           >
-          <div className="mt-3 space-y-2">
-            {newReleaseCards.map(({ card, combos }) => (
-              <div key={card.name} className="rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {newReleaseCards.map(({ card, combos, setPrefix, releaseDate }) => (
+              <div key={card.name} className="min-w-0 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                <Link className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" to={`/cards/${card.slug}`}><CardArtTile card={card} name={card.name} /></Link>
+                <p className="my-2 text-xs text-ctp-subtext0">{setPrefix} · {releaseDate}</p>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <ElementIcon element={card.element} size={14} />
                   <CardHoverPreview image={card.editions[0]?.image} alt={card.name}>
@@ -152,7 +154,7 @@ export default function StatsPanel({
                   <button
                     type="button"
                     onClick={() => onAddCard(card.name)}
-                    className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                    className="ml-auto min-h-control min-w-control rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
                   >
                     + Add
                   </button>

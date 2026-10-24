@@ -4,7 +4,7 @@ const families = [
   ["ALC", "Alchemical Revolution", "ALC 1st", "ALC Alter"],
   ["MRC", "Mercurial Heart", "MRC 1st", "MRC Alter"],
   ["AMB", "Mortal Ambition", "AMB 1st", "AMB Alter"],
-  ["DTR", "Distorted Reflections", "DTR 1st"],
+  ["DTR", "Distorted Reflections", "DTR 1st", "DTR Alter"],
   ["HVN", "Abyssal Heaven", "HVN 1st"],
   ["PTM", "Phantom Monarchs", "PTM 1st"],
   ["RDO", "Radiant Origins", "RDO 1st"],

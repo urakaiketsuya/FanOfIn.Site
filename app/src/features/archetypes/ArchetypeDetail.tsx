@@ -15,6 +15,7 @@ import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { championNameToSlug } from "../../lib/championSlug";
+import ArchetypeReport from "./ArchetypeReport";
 import BuildEvolution from "./BuildEvolution";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { formatUsd } from "../../lib/format";
@@ -41,10 +42,11 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "mixed", label: "Mixed" },
 ];
 
-type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants" | "evolution";
-type DetailSurface = "overview" | "decks" | "more" | "evolution";
-const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants", "evolution"];
+type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants" | "evolution" | "report";
+type DetailSurface = "overview" | "decks" | "more" | "evolution" | "report";
+const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants", "evolution", "report"];
 const SURFACES: { key: DetailSurface; label: string }[] = [
+  { key: "report", label: "Report" },
   { key: "overview", label: "Overview" },
   { key: "decks", label: "Decks" },
   { key: "evolution", label: "Evolution" },
@@ -61,8 +63,8 @@ export default function ArchetypeDetail() {
 
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
-  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
-  const surface: DetailSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : tab === "evolution" ? "evolution" : "more";
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "report");
+  const surface: DetailSurface = tab === "report" ? "report" : OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : tab === "evolution" ? "evolution" : "more";
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "impact" | "variants" : "impact";
   const showOverview = surface === "overview";
   const [evolutionVisitedId, setEvolutionVisitedId] = useState<string | null>(null);
@@ -88,7 +90,7 @@ export default function ArchetypeDetail() {
   const prevIdRef = useRef(id);
   useEffect(() => {
     if (prevIdRef.current !== id) {
-      setTab("overview");
+      setTab("report");
       setOpponentClusterId("all");
       setVariantMinSimilarity(0.45);
       setVariantChampionFilter("all");
@@ -255,8 +257,12 @@ export default function ArchetypeDetail() {
           <ReviewedStrategyRelationships buildId={cluster.id} />
           <StaleDataNotice generatedAt={[data?.generatedAt]} />
           <div className="mt-4 sm:mt-6">
-            <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "overview" : next === "decks" ? "playedBy" : next === "evolution" ? "evolution" : moreTab)} label={`${cluster.name} details`} baseId="build-detail" wrap variant="pill" />
+            <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "report" ? "report" : next === "overview" ? "overview" : next === "decks" ? "playedBy" : next === "evolution" ? "evolution" : moreTab)} label={`${cluster.name} details`} baseId="build-detail" wrap variant="pill" />
           </div>
+
+          <TabPanel baseId="build-detail" tab="report" active={surface}>
+            <ArchetypeReport key={cluster.id} cluster={cluster} />
+          </TabPanel>
 
           <TabPanel baseId="build-detail" tab="evolution" active={surface} keepMounted>
             {(surface === "evolution" || evolutionVisitedId === id) && <BuildEvolution key={cluster.id} cluster={cluster} builds={evolutionBuilds} familyName={strategyArchetype?.name ?? cluster.name} />}

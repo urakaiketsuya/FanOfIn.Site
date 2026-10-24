@@ -446,18 +446,19 @@ export default function ChampionSynergy() {
               id="new"
               className="scroll-mt-48"
               description={spiritFilter.kind === "element" ? `Connections for ${titleCase(spiritFilter.element)} decks. Change the scope in Browse cards and filters.` : spiritFilter.kind === "spirit" ? `Connections for ${spiritFilter.spiritName} decks. Change the scope in Browse cards and filters.` : "Connections across this champion’s recorded decks."}
-              title={newReleaseCards.length > 0 ? `New from ${newReleaseCards[0].setName}` : "New releases"}
+              title="New release candidates"
             >
               {newReleaseCards.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No new-set cards connect to {champ.signature}'s most-played cards yet.</InlineState>
               ) : (
                 <div className="mt-3 grid grid-cols-2 items-start gap-4 sm:grid-cols-4">
-                  {(showAllReleases ? newReleaseCards : newReleaseCards.slice(0, 4)).map(({ card, combos }) => (
+                  {(showAllReleases ? newReleaseCards : newReleaseCards.slice(0, 4)).map(({ card, combos, setPrefix, releaseDate }) => (
                     <article key={card.name} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
                       <Link to={`/cards/${card.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">
                         <CardArtTile card={card} name={card.name} />
                         <span className="mt-2 block text-sm font-medium text-ctp-text">{card.name}</span>
                       </Link>
+                      <p className="mt-2 text-xs text-ctp-subtext0">{setPrefix} · {releaseDate}</p>
                       <NewReleaseComboFooter
                         combos={combos}
                         stats={{ priceByName, priceTrendByName, simulatorEvidenceByName, communityInclusionByName, cardImpactByName, fields: visualFields }}

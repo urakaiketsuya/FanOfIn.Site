@@ -121,3 +121,4 @@ export * from "./fixtureMatchup.js";
 export * from './analyticsReport.js';
 export * from './searchFilters.js';
 export * from './buildEvolution.js';
+export * from './archetypeReport.js';

@@ -311,3 +311,13 @@ inside Calculators. Deck comparisons default to Comparison Report; Calculators r
 probability controls, adjustable opponent/version scenarios and the all-allies ceiling.
 Report and calculator comparisons mount independently, preventing scenario changes from
 altering automatic findings. Existing summary, table, forecasts and matchup URLs remain valid.
+
+
+### Archetype reports
+
+Archetype detail opens on Report: composition intervals, card-illustrated inclusion and copy
+counts, then fixed draw checkpoints. No configuration is required. Main and Material remain
+separate. Available-list and unresolved-card status stay visible; optional expansion reveals
+more observed cards without changing the calculation. Overview, Decks, and Evolution remain
+separate tabs. New-release candidates show their own edition prefix/date because the candidate
+pool can include both the latest main set and newer Alter editions.

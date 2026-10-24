@@ -91,8 +91,8 @@ export function useBuilderPresentationModel({
     const deckCards = buildLines
       .map((line) => catalogByName.get(line.name))
       .filter((card): card is Card => card !== undefined);
-    return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames);
-  }, [buildLines, catalogByName, identityElements]);
+    return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames, deckFormat);
+  }, [buildLines, catalogByName, identityElements, deckFormat]);
   const decklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build), printings ?? {}), [build, printings]);
   const keptDecklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build, true), printings ?? {}), [build, printings]);
   const validation = useMemo(

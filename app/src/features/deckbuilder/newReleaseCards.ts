@@ -1,6 +1,6 @@
-import type { Card } from "@gatcg/shared";
+import { cardLegalityStatus, setFamilyPrefix, type DeckFormat, type Card } from "@gatcg/shared";
 import { PRODUCTS } from "../products/data";
-import { isElementCompatible } from "./useSuggestedBuild";
+import { isElementCompatible } from "./suggestedBuild/identityRules";
 import { intentCards, type IntentTier } from "../../lib/cardIntent";
 import { sameCoreEffectCards } from "../../lib/cardSimilarity";
 
@@ -24,8 +24,9 @@ export interface NewReleaseCard {
 const MAX_RESULTS = 8;
 
 /**
- * Surfaces cards from the most recently released real product (`products/data.ts`, which already
- * excludes promo-only prints) that have a real designed connection – shared token economy, a
+ * Surfaces cards from the latest main product and recognized expansion editions released since
+ * that product (including Alter editions). Catalog dates exclude future prints and family
+ * membership excludes promo-only prints. Format legality is checked before ranking. Cards that have a real designed connection – shared token economy, a
  * tribal/subtype reference, Empower, a named card mention (`cardIntent.ts`'s "validated" tier
  * only), or the same core effect as (`cardSimilarity.ts`'s `sameCoreEffectCards`) – to a card
  * already in this build, and fit the deck's element identity. A just-released set has no
@@ -45,16 +46,24 @@ export function computeNewReleaseCards(
   deckCards: Card[],
   identityElements: Set<string>,
   includedNames: Set<string>,
+  format: DeckFormat = "STANDARD",
+  today = new Date().toISOString().slice(0, 10),
 ): NewReleaseCard[] {
-  const today = new Date().toISOString().slice(0, 10);
   const latestProduct = PRODUCTS.filter((p) => p.releaseDate <= today).sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))[0];
   if (!latestProduct || deckCards.length === 0) return [];
 
+  const productFamilies = new Set(PRODUCTS.map(product => setFamilyPrefix(product.prefix)));
   const results: NewReleaseCard[] = [];
+  const candidateNames = new Set<string>();
   for (const card of catalog) {
-    if (card.types.includes("CHAMPION") || includedNames.has(card.name)) continue;
+    if (card.types.includes("CHAMPION") || includedNames.has(card.name) || candidateNames.has(card.name)) continue;
+    if (cardLegalityStatus(card, format) !== "allowed") continue;
     if (!isElementCompatible(card, identityElements)) continue;
-    if (!card.editions.some((edition) => edition.set.prefix === latestProduct.prefix)) continue;
+    const release = card.editions.map(edition => edition.set).filter(set => {
+      const date = set.release_date.slice(0, 10);
+      return productFamilies.has(setFamilyPrefix(set.prefix)) && date >= latestProduct.releaseDate && date <= today;
+    }).sort((a, b) => b.release_date.localeCompare(a.release_date) || a.prefix.localeCompare(b.prefix))[0];
+    if (!release) continue;
 
     // Only check against deckCards (a few dozen cards), not the full catalog – intentCards() is
     // O(catalog passed in), and we only care about connections to what's actually in this build.
@@ -78,8 +87,9 @@ export function computeNewReleaseCards(
     // they're a fallback so a Champion doesn't show nothing, not a way to pad out real hits.
     if (combos.length === 0) combos.push(...experimentalCombos);
     if (combos.length === 0) continue;
-    results.push({ card, setName: latestProduct.name, setPrefix: latestProduct.prefix, releaseDate: latestProduct.releaseDate, combos });
+    candidateNames.add(card.name);
+    results.push({ card, setName: release.name, setPrefix: release.prefix, releaseDate: release.release_date.slice(0, 10), combos });
   }
-  results.sort((a, b) => b.combos.length - a.combos.length || a.card.name.localeCompare(b.card.name));
+  results.sort((a, b) => b.combos.length - a.combos.length || b.releaseDate.localeCompare(a.releaseDate) || a.card.name.localeCompare(b.card.name));
   return results.slice(0, MAX_RESULTS);
 }

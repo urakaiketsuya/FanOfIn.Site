@@ -5292,3 +5292,37 @@ in only the destination/source season's observed pool; retained means present in
 sort by absolute adoption difference, then name. The first twelve display initially, with all
 cards accessible through expansion; unchanged cards have a separate toggle. Comparisons with
 missing lists produce no card-change claims. This describes observed construction, not ancestry.
+
+
+## Archetype report
+
+The Report tab summarizes the published build’s exact deckId membership across all of its
+champion partitions and recorded events. Each deckId counts once. Missing or empty Main
+lists are excluded and available/requested counts stay visible. Sideboards are excluded;
+Main and Material sizes and card inclusion are reported separately.
+
+Distributions report the arithmetic mean, median, and 25th–75th percentiles using linear
+interpolation at `(n - 1) * p`. Composition counts each list’s Main types, elements, Reserve
+costs (8+ grouped; missing numeric costs labeled No fixed cost), and copies with the printed
+Floating Memory keyword. Types and elements can overlap; they are not additive partitions.
+Only lists with fully resolved Main catalog data contribute to composition. Unknown cards
+never become zero counts. Printed Floating Memory is not a claim about eligible payments.
+
+Card inclusion divides lists containing the card by all available lists. Copy distributions
+use only lists playing the card. Core means at least 90% inclusion; Flexible describes the
+remaining observed pool, not a recommendation or required package.
+
+Draw consistency computes `drawAccessReport` independently for each actual Main list at
+7, 10, 15, and 20 cards seen, using its actual size and copies. Lists without the card
+contribute zero. The resulting distribution summarizes between-list variation in the
+probability of finding at least one copy, not a confidence interval or game win rate.
+No extra draws, mulligans, card costs, or turn timings are inferred.
+
+## New-release recommendation eligibility
+
+The release window begins at the latest released product in the product catalog. Recognized
+set-family editions with catalog release dates within that window through today are eligible,
+including DTR Alter. Promo-only and future editions are excluded. Results retain the eligible
+edition’s actual set prefix and date and deduplicate by card name. Format legality must be
+allowed (Standard by default; Builder passes its selected format). Existing element, selected
+card, and designed-connection checks still apply. Tournament sightings are not required.
