@@ -47,7 +47,9 @@
     "pipeline:catalog:publish": "node --import tsx pipeline/src/public-api/publishCatalog.ts"
   },
   "overrides": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "undici": "7.30.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "sharp": "0.35.5"
