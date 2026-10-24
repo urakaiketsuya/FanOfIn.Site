@@ -1,3 +1,6 @@
+import { deckMatchesSearch, searchableDeckCards } from "@gatcg/shared";
+import DeckSearchFilters from "../../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../../components/deck-search/useDeckSearch";
 import DisclosureChevron from "../../../components/DisclosureChevron";
 import Button from "../../../components/ui/Button";
 import DialogSheet from "../../../components/ui/DialogSheet";
@@ -44,6 +47,7 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
   const [owned, setOwned] = useState<SavedDeck[]>([]);
   const [saved, setSaved] = useState<BookmarkedDeck[]>([]);
   const [query, setQuery] = useState("");
+  const [deckFilter, setDeckFilter] = useDeckSearch();
 
   useEffect(() => {
     if (!open || mode !== "library") return;
@@ -77,8 +81,8 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
   const libraryDecks = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return [...owned.map((deck) => ({ ...deck, key: `mine-${deck.id}`, subtitle: "My deck" })), ...saved.map((deck) => ({ ...deck, key: `saved-${deck.publicSlug}`, subtitle: `Saved · ${deck.owner.displayName}` }))]
-      .filter((deck) => !needle || `${deck.title} ${deck.subtitle}`.toLowerCase().includes(needle));
-  }, [owned, saved, query]);
+      .filter(deck => deckMatchesSearch(deck.championName, searchableDeckCards(deck.decklist), deckFilter)).filter((deck) => !needle || `${deck.title} ${deck.subtitle}`.toLowerCase().includes(needle));
+  }, [owned, saved, query, deckFilter]);
 
   const preview = useMemo(() => pending ? {
     main: pending.main.reduce((sum, line) => sum + line.quantity, 0),
@@ -120,6 +124,7 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
         {libraryState === "signed-out" && <InlineState>Sign in from <Link to="/decks/edit" className="inline-flex min-h-control items-center text-ctp-blue underline">My Decks</Link> to import a saved deck.</InlineState>}
         {libraryState === "error" && <p role="alert" className="text-sm text-ctp-red">Your deck library could not be loaded. <Button onClick={() => setLibraryReload(value => value + 1)}>Try again</Button></p>}
         {libraryState === "ready" && <>{bookmarksUnavailable && <p role="status" className="mb-3 text-sm text-ctp-yellow">Community favorites could not be loaded. Your saved builds are available. <Button onClick={() => setLibraryReload(value => value + 1)}>Retry library</Button></p>}<input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search your decks…" aria-label="Search your decks" className="min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm" />
+    <DeckSearchFilters inlinePicker={compact} champion={deckFilter.champion} onChampionChange={champion => setDeckFilter(f => ({ ...f, champion }))} cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
           {!libraryDecks.length ? <InlineState className="mt-3">{owned.length || saved.length ? "No decks match this search. Try another name." : "No saved decks yet. Paste a decklist to get started."}</InlineState> : <div className="mt-3 grid gap-3 sm:grid-cols-2">{libraryDecks.map(deck => <article key={deck.key} className="min-w-0 rounded-xl border border-ctp-surface1 p-3">
             <DeckCardPreview compact newTab lines={(deck.decklist.material.length ? deck.decklist.material : deck.decklist.main).slice(0, 3).map(line => ({name: line.card, quantity: line.quantity}))} cardsByName={catalogByName} />
             <h3 className="mt-3 break-words font-semibold">{deck.title}</h3><p className="mt-1 text-xs text-ctp-subtext1">{deck.subtitle} · {deck.format === "PANTHEON" ? "Pantheon" : "Standard"}</p>

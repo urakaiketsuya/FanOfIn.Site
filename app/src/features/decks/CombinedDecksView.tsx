@@ -1,3 +1,10 @@
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { decodeCardLines, deckSearchChampion } from "@gatcg/shared";
+import DeckContentFilterControls from "./DeckContentFilterControls";
+import DeckContentFilterChips from "./DeckContentFilterChips";
+import { deckContentFilterCount, deckMatchesContentFilters } from "./deckContentFilters";
+import { useDeckCardIndexData } from "../archetypes/data";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { PublicDeckSummary } from "@gatcg/shared";
@@ -39,6 +46,15 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   const [visibleCount, setVisibleCount] = useState(30);
   const [pending, startTransition] = useTransition();
   const sightings = useDeckSightingsData();
+  const catalog = useCardCatalog();
+  const cardsByName = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
+  const contentActive = deckContentFilterCount(contentFilters) > 0;
+  const cardIndex = useDeckCardIndexData(contentActive && source === "all");
+  const cardStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", contentActive && source === "all");
+  const matchingIds = useMemo(() => {
+    if (!contentActive || source !== "all") return null;
+    return new Set((cardIndex?.decks ?? []).filter(deck => cardIndex?.cardNames && deckMatchesContentFilters(decodeCardLines([...deck.main, ...deck.material], cardIndex.cardNames), contentFilters, cardsByName)).map(deck => deck.deckId));
+  }, [cardIndex, contentActive, contentFilters, cardsByName, source]);
   const status = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
   const playerName = usePlayerNameById();
   useEffect(() => {
@@ -60,10 +76,10 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   const champions = useMemo(() => [...new Set([...shared.map(d => d.championName), ...(sightings?.sightings ?? []).map(d => d.championName)].filter((name): name is string => Boolean(name)))].sort(), [shared, sightings]);
   const rows = useMemo(() => {
     const search = deferredQuery.trim().toLowerCase();
-    const matches = (name: string | null, text: string) => (!champion || champion === name) && (!search || text.toLowerCase().includes(search));
+    const matches = (name: string | null, text: string) => (!champion || deckSearchChampion(champion) === deckSearchChampion(name)) && (!search || text.toLowerCase().includes(search));
     return [
-      ...(source !== "tournament" ? shared.filter(d => (!format || d.format === format) && matches(d.championName, `${d.title} ${d.championName ?? ""} ${d.owner.displayName}`)).map(deck => ({ kind: "shared" as const, id: deck.publicSlug, date: deck.publishedAt, deck })) : []),
-      ...(source !== "shared" && format !== "PANTHEON" ? (sightings?.sightings ?? []).filter(d => matches(d.championName, `${d.championName ?? ""} ${d.eventName} ${playerName(d.player)}`)).map(deck => ({ kind: "tournament" as const, id: deck.deckId, date: deck.eventDate.slice(0, 10), deck })) : []),
+      ...(source !== "tournament" ? shared.filter(d => (!contentActive || (d.cardNames && deckMatchesContentFilters(d.cardNames.map(name => ({ name, quantity: 1 })), contentFilters, cardsByName))) && (!format || d.format === format) && matches(d.championName, `${d.title} ${d.championName ?? ""} ${d.owner.displayName}`)).map(deck => ({ kind: "shared" as const, id: deck.publicSlug, date: deck.publishedAt, deck })) : []),
+      ...(source !== "shared" && format !== "PANTHEON" ? (sightings?.sightings ?? []).filter(d => (!matchingIds || matchingIds.has(d.deckId)) && matches(d.championName, `${d.championName ?? ""} ${d.eventName} ${playerName(d.player)}`)).map(deck => ({ kind: "tournament" as const, id: deck.deckId, date: deck.eventDate.slice(0, 10), deck })) : []),
     ].filter(row => deckDateInRange(row.date, dateFrom, dateTo)).sort((a, b) => {
       const byDate = b.date.localeCompare(a.date);
       const byChampion = a.deck.championName === null ? (b.deck.championName === null ? 0 : 1)
@@ -71,7 +87,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
       return (sort === "oldest" ? -byDate : sort === "champion" ? byChampion || byDate : byDate)
         || a.kind.localeCompare(b.kind) || a.id.localeCompare(b.id);
     });
-  }, [source, shared, sightings, deferredQuery, champion, format, playerName, dateFrom, dateTo, sort]);
+  }, [source, shared, sightings, deferredQuery, champion, format, playerName, dateFrom, dateTo, sort, contentActive, contentFilters, cardsByName, matchingIds]);
   function update(key: string, value: string) {
     const apply = () => { setParams(previous => { const next = new URLSearchParams(previous); if (value) next.set(key, value); else next.delete(key); next.delete("page"); return next; }, { replace: true }); setVisibleCount(30); };
     if (key === "q") apply(); else startTransition(apply);
@@ -81,6 +97,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     startTransition(() => {
       setParams(previous => {
         const next = new URLSearchParams(previous);
+        for (const key of [...next.keys()]) if (key.startsWith("content-")) next.delete(key);
         for (const key of ["q", "champion", "format", "from", "to", "page"]) next.delete(key);
         return next;
       }, { replace: true });
@@ -114,6 +131,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     </div>}
     {filtersOpen && <DialogSheet title="Filter decks" onDismiss={() => setFiltersOpen(false)} footer={<div className="flex flex-wrap gap-2"><Button variant="primary" onClick={() => setFiltersOpen(false)}>Show {rows.length.toLocaleString()} decks</Button><Button onClick={clearFilters}>Clear filters</Button></div>}>
       <div className="space-y-4">
+        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
         <label className="flex min-w-0 flex-col gap-1 text-sm">Champion
           <Select aria-label="Champion" value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</Select>
         </label>
@@ -130,11 +148,15 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
         </fieldset>
       </div>
     </DialogSheet>}
+    <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
+      <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
+    {contentActive && source === "all" && <PublishedSourceStatus label="Deck card index" status={cardStatus} hasData={!!cardIndex} />}
+    {contentActive && shared.some(deck => !deck.cardNames) && <InlineState>Card lists are unavailable for some shared decks.</InlineState>}
     {source !== "shared" && format !== "PANTHEON" && <PublishedSourceStatus label="Tournament decks" status={status} hasData={Boolean(sightings)} />}
     {source !== "tournament" && loading && <InlineState className="mt-4">Loading shared decks…</InlineState>}
     {source !== "tournament" && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
     <p className="mt-4 text-xs text-ctp-subtext0" role="status">{rows.length.toLocaleString()} decks · {sort === "oldest" ? "Oldest first" : sort === "champion" ? "Champion A–Z" : "Newest first"}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</p>
-    {!rows.length && !waiting && !failed && <InlineState className="mt-4">No decks match these filters.</InlineState>}
+    {!rows.length && !waiting && !failed && (!contentActive || source === "shared" || !!cardIndex) && <InlineState className="mt-4">No decks match these filters.</InlineState>}
     <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <PublicDeckCard key={`shared:${row.id}`} deck={row.deck} /> : <DeckSightingRow key={`tournament:${row.id}`} sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard />)}</div>
     {rows.length > visibleCount && <Button className="mt-4" onClick={() => setVisibleCount(value => value + 30)}>Load more</Button>}
     </>}

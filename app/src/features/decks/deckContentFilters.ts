@@ -41,6 +41,7 @@ export function deckMatchesContentFilters(
 ): boolean {
   const names = new Set(lines.map((line) => line.name));
   if (filters.cards.length && !matchesFilterValues(names, new Set(filters.cards), true)) return false;
+  if (!filters.classes.size && !filters.types.size && !filters.subtypes.size && !filters.elements.size && !filters.sets.size && filters.speed === "any") return true;
   const cards = lines.map((line) => cardsByName.get(line.name)).filter((card): card is Card => !!card);
   if (filters.classes.size && !matchesFilterValues(cards.flatMap(card => card.classes), filters.classes)) return false;
   if (filters.types.size && !matchesFilterValues(cards.flatMap(card => card.types), filters.types)) return false;

@@ -16,7 +16,6 @@ export default function DeckContentFilterControls({ filters, setFilters }: {
   const catalog = useCardCatalog();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const [isPending, startTransition] = useTransition();
-  const cardNames = useMemo(() => Array.from(new Set(catalog.map((card) => card.name))).sort(), [catalog]);
   const setOptions = useMemo(() => {
     const sets = new Map<string, string>();
     for (const card of catalog) for (const edition of card.editions) sets.set(edition.set.prefix, `${edition.set.name} (${edition.set.prefix})`);
@@ -27,7 +26,6 @@ export default function DeckContentFilterControls({ filters, setFilters }: {
   return <>
     {isPending && <p role="status" className="text-sm">Recalculating…</p>}
     <FilterQuery allowText={false} text="" facets={filters} allowed={["classes", "types", "subtypes", "elements", "sets"]} onChange={(_text, facets) => update(f => ({...f, ...facets}))} />
-    <SearchSelectFilter label="Cards in deck" options={cardNames.map(value => ({value, text:value}))} selected={new Set(filters.cards)} onToggle={value => update(f => ({...f, cards: [...toggleSetValue(new Set(f.cards), value)]}))} />
     {options.data && <>
       <MultiSelectFilter label="Card class" options={options.data.class} selected={filters.classes} onToggle={(value) => update((f) => ({ ...f, classes: toggleSetValue(f.classes, value) }))} iconKind="classes" />
       <MultiSelectFilter label="Card type" options={options.data.type} selected={filters.types} onToggle={(value) => update((f) => ({ ...f, types: toggleSetValue(f.types, value) }))} iconKind="types" />

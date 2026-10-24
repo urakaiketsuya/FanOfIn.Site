@@ -1,7 +1,7 @@
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import DeckSearchByCards from "./DeckSearchByCards";
+import SearchTournamentDecks from "./SearchTournamentDecks";
 import ImportByPlayer from "./ImportByPlayer";
 import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
@@ -281,7 +281,7 @@ export default function CompareIndex() {
               <Panel as="div" role="tabpanel" id={`source-panel-${tab}`} aria-labelledby={`source-tab-${tab}`} className="mt-3">
                 {tab === "myDecks" && <ImportMyDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "users" && <ImportByUser comparedKeys={comparedKeys} onToggle={toggleDeck} />}
-                {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
+                {tab === "cards" && <SearchTournamentDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "topDecks" && <ImportTopDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "paste" && <PasteDecklist onAdd={addDeck} />}

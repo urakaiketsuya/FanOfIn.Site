@@ -1,3 +1,7 @@
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
+import { useTournamentCardMatches } from "../../components/deck-search/useTournamentCardMatches";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
@@ -88,8 +92,11 @@ export default function PlayerProfile() {
     return map;
   }, [popularityIndexData, playerId]);
 
+  const [deckFilter, setDeckFilter] = useDeckSearch();
+  const cardMatches = useTournamentCardMatches(deckFilter.cards);
   const [eventCategory, setEventCategory] = useState<string | null>(null);
-  const [eventChampion, setEventChampion] = useState<string | null>(null);
+  const eventChampion = deckFilter.champion || null;
+  const setEventChampion = (champion: string | null) => setDeckFilter(f => ({ ...f, champion: champion ?? "" }));
   const [eventSeasonId, setEventSeasonId] = useState<number | null>(null);
   const [manualTab, setManualTab] = useState<PlayerTab | null>(null);
   const [eventsVisibleCount, setEventsVisibleCount] = useState(PAGE_SIZE);
@@ -117,16 +124,17 @@ export default function PlayerProfile() {
     () =>
       allEvents.filter(
         (e) =>
+          (!cardMatches.ids || cardMatches.ids.has(`${e.id}:${playerId}`)) &&
           (!eventCategory || e.category === eventCategory) &&
           (!eventChampion || championByEventId.get(e.id) === eventChampion) &&
           (eventSeasonId === null || e.seasonId === eventSeasonId),
       ),
-    [allEvents, eventCategory, eventChampion, eventSeasonId, championByEventId],
+    [allEvents, eventCategory, eventChampion, eventSeasonId, championByEventId, cardMatches.ids, playerId],
   );
 
   useEffect(() => {
     setEventsVisibleCount(PAGE_SIZE);
-  }, [eventCategory, eventChampion, eventSeasonId]);
+  }, [eventCategory, eventChampion, eventSeasonId, deckFilter]);
 
   const visibleEvents = events.slice(0, eventsVisibleCount);
   const recentEvents = allEvents.slice(0, 3);
@@ -323,6 +331,8 @@ export default function PlayerProfile() {
           heading="compact"
           title={`Events (${events.length}${events.length !== allEvents.length ? ` of ${allEvents.length}` : ""})`}
         >
+          <DeckSearchFilters cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
+          {!!deckFilter.cards.length && <PublishedSourceStatus label="Deck cards" status={cardMatches.status} hasData={cardMatches.hasData} />}
           <PlayerEventFilters categories={categoriesPresent} champions={championsPresent} seasons={seasonsPresent} category={eventCategory} champion={eventChampion} seasonId={eventSeasonId} onCategoryChange={setEventCategory} onChampionChange={setEventChampion} onSeasonChange={setEventSeasonId} />
 
           <div className="mt-2 space-y-2">

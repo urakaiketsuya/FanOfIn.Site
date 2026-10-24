@@ -97,7 +97,7 @@ export function buildCommunityDeckSearchIndex(
 ): CommunityDeckSearchIndex {
   const allNames = new Set<string>();
   for (const { decks } of groups) for (const deck of decks) {
-    for (const line of [...deck.mainDeck, ...deck.materialDeck]) allNames.add(line.name);
+    for (const line of [...deck.mainDeck, ...deck.materialDeck, ...(deck.pantheonDeck ?? [])].filter(line => line.quantity > 0)) allNames.add(line.name);
   }
   const cardNames = Array.from(allNames).sort((a, b) => a.localeCompare(b));
   const nameIndex = new Map(cardNames.map((name, index) => [name, index]));
@@ -110,7 +110,7 @@ export function buildCommunityDeckSearchIndex(
     champion: deck.champion,
     mainCount: deck.mainCount,
     materialCount: deck.materialCount,
-    cardIndexes: Array.from(new Set([...deck.mainDeck, ...deck.materialDeck].map((line) => nameIndex.get(line.name)!))).sort((a, b) => a - b),
+    cardIndexes: Array.from(new Set([...deck.mainDeck, ...deck.materialDeck, ...(deck.pantheonDeck ?? [])].filter(line => line.quantity > 0).map((line) => nameIndex.get(line.name)!))).sort((a, b) => a - b),
   })));
   decks.sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id));
   return { generatedAt: new Date().toISOString(), cardNames, decks };

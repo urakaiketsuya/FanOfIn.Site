@@ -5,7 +5,10 @@ import { useSearchParams } from "react-router-dom";
 /** Stores filter fields only; tab, source and unrelated URL parameters remain intact. */
 export function useUrlFilters<T extends object>(empty: () => T, prefix: string, fields: Record<string, string>): [T, (action: SetStateAction<T>) => void] {
   const [params, setParams] = useSearchParams();
-  const serialized = params.toString();
+  // Keep derived filter objects stable when unrelated navigation/other filters change.
+  const relevant = new URLSearchParams();
+  for (const param of Object.values(fields)) for (const value of params.getAll(prefix + param)) relevant.append(prefix + param, value);
+  const serialized = relevant.toString();
   const state = useMemo(() => {
     const next = empty();
     const search = new URLSearchParams(serialized);

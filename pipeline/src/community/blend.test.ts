@@ -8,7 +8,7 @@ import { MANIFEST_ENTRIES } from "../manifest.js";
 import { listPublishedSleevedDecks, type CachedSleevedDeckRecord } from "../sleeved/cache.js";
 import { isRetryableSleevedStatus } from "../sleeved/client.js";
 import { listPublishedTcgArchitectDecks, type CachedTcgArchitectDeckRecord } from "../tcgarchitect/cache.js";
-import { chooseSleevedRecords, chooseTcgArchitectRecords, writeGeneratedJsonIfChanged } from "./blend.js";
+import { buildCommunityDeckSearchIndex, chooseSleevedRecords, chooseTcgArchitectRecords, writeGeneratedJsonIfChanged } from "./blend.js";
 
 function record(id: string): CachedSleevedDeckRecord {
   return { id, deck: null };
@@ -137,4 +137,10 @@ describe("community blend safeguards", () => {
     assert.equal(isRetryableSleevedStatus(401), false);
     assert.equal(isRetryableSleevedStatus(404), false);
   });
+});
+
+it("indexes Main, Material and Pantheon cards but excludes sideboard and zero quantities", () => {
+  const entry = { ...deck("search"), mainDeck: [{ name: "A", quantity: 4 }, { name: "Zero", quantity: 0 }], materialDeck: [{ name: "Champion", quantity: 1 }], pantheonDeck: [{ name: "Boon", quantity: 1 }], sideDeck: [{ name: "Side", quantity: 4 }] };
+  const index = buildCommunityDeckSearchIndex([{ source: "shoutatyourdecks", decks: [entry] }]);
+  assert.deepEqual(index.decks[0].cardIndexes.map(i => index.cardNames[i]).sort(), ["A", "Boon", "Champion"]);
 });

@@ -337,3 +337,20 @@ shows exact cut/add art and opens a DialogSheet comparison. Apply is explicit an
 a local draft; restore original remains available and survives reload. Account decks
 are unchanged. Storage failure keeps the preview and reports the error. No generic
 strength score or automatic deck mutation is permitted.
+
+## Deck search
+
+Deck searches share Champion and Includes cards controls. Champion selects a family;
+requiring an exact champion card uses Includes cards. All selected names must occur
+in the same list's Main + Material; Pantheon archives additionally include their
+explicit Boon zone. Sideboards and referenced tokens do not qualify. Printings share
+card identity. Preserve existing include/exclude URL filters and keep selected card
+art and names outside advanced filter sheets. The picker uses CardResult and explicit
+selection; typing never applies a card requirement. Unknown membership cannot qualify.
+
+Search applies before pagination and retains source, format, folder and selected decks.
+Library and scoped searches use deck-search- URL parameters; Browse Decks retains its
+existing champion and content-card parameters. Card-detail and champion-detail links
+open scoped Browse Decks. Shared summaries expose only published Main + Material
+membership, never private drafts. Loading and unavailable sources retain filters and
+provide retry through source status.

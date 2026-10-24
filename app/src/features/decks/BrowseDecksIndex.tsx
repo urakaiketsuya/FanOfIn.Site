@@ -1,5 +1,4 @@
 import { useUrlFilters, DECK_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
-import { useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
@@ -22,9 +21,10 @@ export default function BrowseDecksIndex() {
     "Browse Decks",
     "Browse Grand Archive TCG decklists – grouped into distinct builds or as individual tournament results – filterable by Champion, element, cards, season, and outcome.",
   );
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "all");
-  const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
+  const championName = searchParams.get("champion");
+  const setChampionName = (value: string | null) => setSearchParams(previous => { const next = new URLSearchParams(previous); if (value) next.set("champion", value); else next.delete("champion"); return next; });
   const [contentFilters, setContentFilters] = useUrlFilters(emptyDeckContentFilters, "content-", DECK_FILTER_PARAMS);
 
   // Preserve links from the brief period when Pantheon search lived as a third tab here.

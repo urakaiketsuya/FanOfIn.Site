@@ -1,3 +1,8 @@
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import { deckMatchesSearch } from "@gatcg/shared";
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { sortDeckCardsByElement, type Card, type ShoutAtYourDecksDeckSummary } from "@gatcg/shared";
@@ -24,23 +29,26 @@ function referencedPantheonTokens(lines: { name: string }[], cardsByName: Map<st
 
 export default function PantheonDecksView() {
   const index = usePantheonDeckIndex();
+  const status = usePublishedDataStatus("shoutatyourdecks-pantheon-decks", "/data/shoutatyourdecks/analytics/pantheon/decks.json");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const [query, setQuery] = useState("");
-  const [champion, setChampion] = useState("");
+  const [deckFilter, setDeckFilter] = useDeckSearch();
+  const champion = deckFilter.champion;
   const [sort, setSort] = useState<"champion" | "main">("champion");
   const [visibleCount, setVisibleCount] = useState(30);
   const decks = useMemo(() => index?.decks ?? [], [index]);
-  const champions = useMemo(() => Array.from(new Set(decks.map((deck) => deck.champion).filter((name): name is string => Boolean(name)))).sort(), [decks]);
-  const filtered = useMemo(() => decks.filter((deck) => (!champion || deck.champion === champion) && (!query || `${deck.champion ?? ""} ${(deck.cardNames ?? []).join(" ")} ${(deck.boonNames ?? []).join(" ")}`.toLowerCase().includes(query.toLowerCase()))).sort((a, b) => sort === "main" ? (b.mainCount ?? 0) - (a.mainCount ?? 0) || formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion)) : formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion))), [decks, champion, query, sort]);
+  const filtered = useMemo(() => decks.filter((deck) => deckMatchesSearch(deck.champion, deck.searchCardNames, deckFilter) && (!query || `${deck.champion ?? ""} ${(deck.cardNames ?? []).join(" ")} ${(deck.boonNames ?? []).join(" ")}`.toLowerCase().includes(query.toLowerCase()))).sort((a, b) => sort === "main" ? (b.mainCount ?? 0) - (a.mainCount ?? 0) || formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion)) : formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion))), [decks, deckFilter, query, sort]);
   return <div className="mt-5">
     <div className="grid grid-cols-2 gap-2">
       <input value={query} onChange={(event) => { setQuery(event.target.value); setVisibleCount(30); }} placeholder="Search Champion, card, or Boon…" aria-label="Search Pantheon decks" className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0" />
-      <select value={champion} onChange={(event) => { setChampion(event.target.value); setVisibleCount(30); }} aria-label="Pantheon Champion" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((name) => <option key={name} value={name}>{formatPantheonChampion(name)}</option>)}</select>
+
       <select value={sort} onChange={(event) => { setSort(event.target.value as "champion" | "main"); setVisibleCount(30); }} aria-label="Sort Pantheon decks" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="champion">Champion A–Z</option><option value="main">Largest main deck</option></select>
     </div>
+    <DeckSearchFilters champion={champion} onChampionChange={champion => { setDeckFilter(f => ({ ...f, champion })); setVisibleCount(30); }} cards={deckFilter.cards} onCardsChange={cards => { setDeckFilter(f => ({ ...f, cards })); setVisibleCount(30); }} />
     <p className="mt-3 text-xs text-ctp-subtext0">Showing {Math.min(visibleCount, filtered.length).toLocaleString()} of {filtered.length.toLocaleString()} Pantheon decks</p>
-    {!index && <InlineState className="mt-5 text-sm">Loading Pantheon decks…</InlineState>}
+    <PublishedSourceStatus label="Pantheon decks" status={status} hasData={!!index} />
+    {deckFilter.cards.length > 0 && decks.some(deck => !deck.searchCardNames) && <InlineState>Card membership is unavailable for some lists.</InlineState>}
     {index && filtered.length === 0 && <InlineState className="mt-5 text-sm">No Pantheon decklists match these filters.</InlineState>}
     <div className="mt-3 grid gap-3 sm:grid-cols-2 sm:items-start">{filtered.slice(0, visibleCount).map((deck) => <PantheonDeckRow key={deck.id} deck={deck} cardsByName={cardsByName} />)}</div>
     {visibleCount < filtered.length && <Button variant="secondary" onClick={() => setVisibleCount((count) => count + 30)} className="mt-4">Load more</Button>}

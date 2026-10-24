@@ -1,3 +1,7 @@
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
+import { useTournamentCardMatches } from "../../components/deck-search/useTournamentCardMatches";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { useMemo, useState } from "react";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useArchetypeTaxonomyData } from "../archetypes/data";
@@ -21,12 +25,15 @@ export default function ImportTopDecks({
   comparedKeys: Set<string>;
   onToggle: (deck: ComparedDeck) => void;
 }) {
+  const [deckFilter, setDeckFilter] = useDeckSearch();
+  const cardMatches = useTournamentCardMatches(deckFilter.cards);
   const sightingsData = useDeckSightingsData();
   const taxonomyData = useArchetypeTaxonomyData();
   const playerName = usePlayerNameById();
 
   const [mode, setMode] = useState<Mode>("placement");
-  const [championName, setChampionName] = useState<string | null>(null);
+  const championName = deckFilter.champion || null;
+  const setChampionName = (champion: string | null) => setDeckFilter(f => ({ ...f, champion: champion ?? "" }));
   const [clusterId, setClusterId] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -45,13 +52,13 @@ export default function ImportTopDecks({
 
   const matches = useMemo(() => {
     if (!sightingsData || !championName) return [];
-    let rows = sightingsData.sightings.filter((s) => s.championName === championName);
+    let rows = sightingsData.sightings.filter((s) => s.championName === championName && (!cardMatches.ids || cardMatches.ids.has(s.deckId)));
     if (mode === "archetype") {
       if (!clusterDeckIds) return [];
       rows = rows.filter((s) => clusterDeckIds.has(s.deckId));
     }
     return [...rows].sort((a, b) => b.weightedScore - a.weightedScore);
-  }, [sightingsData, championName, mode, clusterDeckIds]);
+  }, [sightingsData, championName, mode, clusterDeckIds, cardMatches.ids]);
 
   const visible = matches.slice(0, visibleCount);
   const championImages = useChampionCardImages(useMemo(() => (championName ? [championName] : []), [championName]));
@@ -71,6 +78,8 @@ export default function ImportTopDecks({
 
   return (
     <div data-component="ImportTopDecks">
+      <DeckSearchFilters cards={deckFilter.cards} onCardsChange={cards => { setDeckFilter(f => ({ ...f, cards })); setVisibleCount(PAGE_SIZE); }} />
+      {!!deckFilter.cards.length && <PublishedSourceStatus label="Deck cards" status={cardMatches.status} hasData={cardMatches.hasData} />}
       <p className="text-sm text-ctp-subtext1">
         Browse top-performing decks by Champion, ranked by placement – or narrow to one named build.
       </p>
@@ -81,7 +90,7 @@ export default function ImportTopDecks({
           value={championName ?? ""}
           aria-label="Champion"
           onChange={(e) => selectChampion(e.target.value || null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-h-12 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">Choose a Champion…</option>
           {championsPresent.map((name) => (
@@ -120,7 +129,7 @@ export default function ImportTopDecks({
               setClusterId(e.target.value || null);
               setVisibleCount(PAGE_SIZE);
             }}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            className="min-h-12 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >
             <option value="">Choose a build…</option>
             {clustersForChampion.map((c) => (
@@ -139,7 +148,7 @@ export default function ImportTopDecks({
             {matches.length} deck{matches.length === 1 ? "" : "s"} match, ranked by placement
           </p>
 
-          {matches.length === 0 && <InlineState className="mt-2 text-sm">No decks match this filter.</InlineState>}
+          {matches.length === 0 && !cardMatches.loading && <InlineState className="mt-2 text-sm">No decks match this filter.</InlineState>}
 
           <div className="mt-2 space-y-2">
             {visible.map((sighting) => (

@@ -123,3 +123,5 @@ export * from './searchFilters.js';
 export * from './buildEvolution.js';
 export * from './archetypeReport.js';
 export * from './packageAccessReport';
+
+export * from "./deckSearch";

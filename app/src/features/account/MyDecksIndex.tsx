@@ -1,3 +1,6 @@
+import { deckMatchesSearch, searchableDeckCards } from "@gatcg/shared";
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import DeckVisualStrip from "./DeckVisualStrip";
 import DeckFolderGallery from "./DeckFolderGallery";
@@ -76,39 +79,36 @@ export default function MyDecksIndex() {
   const [officialLoading, setOfficialLoading] = useState(true);
   const [officialError, setOfficialError] = useState<string | null>(null);
   const [deckFormatFilter, setDeckFormatFilter] = useState<"ALL" | DeckFormat>("ALL");
-  const [deckChampionFilter, setDeckChampionFilter] = useState("ALL");
+  const [deckFilter, setDeckFilter] = useDeckSearch();
+  const deckChampionFilter = deckFilter.champion || "ALL";
   const [deckSort, setDeckSort] = useState<"updated" | "created" | "title">("updated");
   const pastedDeck = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const pastedCardNames = useMemo(() => [...pastedDeck.main, ...pastedDeck.material, ...pastedDeck.sideboard].map((line) => line.card), [pastedDeck]);
   const pastedCardsByName = useCardsByNames(pastedCardNames);
   const pastedChampionName = useMemo(() => findDeckChampionName(pastedDeck.material, pastedCardsByName)?.split(",")[0].trim() ?? null, [pastedDeck.material, pastedCardsByName]);
 
-  const deckChampionOptions = useMemo(
-    () => Array.from(new Set(decks.map((deck) => deck.championName).filter((name): name is string => !!name))).sort((a, b) => a.localeCompare(b)),
-    [decks],
-  );
   const visibleDecks = useMemo(() => {
     const query = deckSearch.trim().toLowerCase();
     return decksInFolder(decks, folders.folders, selectedFolder)
       .filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false))
       .filter((deck) => deckFormatFilter === "ALL" || deck.format === deckFormatFilter)
-      .filter((deck) => deckChampionFilter === "ALL" || deck.championName === deckChampionFilter)
+      .filter(deck => deckMatchesSearch(deck.championName, searchableDeckCards(deck.decklist), deckFilter))
       .sort((a, b) => deckSort === "title" ? a.title.localeCompare(b.title) : deckSort === "created" ? b.createdAt.localeCompare(a.createdAt) : b.updatedAt.localeCompare(a.updatedAt));
-  }, [decks, folders.folders, selectedFolder, deckSearch, deckFormatFilter, deckChampionFilter, deckSort]);
+  }, [decks, folders.folders, selectedFolder, deckSearch, deckFormatFilter, deckFilter, deckSort]);
   const visibleBookmarks = useMemo(() => {
     const query = favoriteSearch.trim().toLowerCase();
-    return bookmarks.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
-  }, [bookmarks, favoriteSearch]);
+    return bookmarks.filter(deck => deckMatchesSearch(deck.championName, searchableDeckCards(deck.decklist), deckFilter)).filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
+  }, [bookmarks, favoriteSearch, deckFilter]);
   const visibleTournamentFavorites = useMemo(() => {
     const query = favoriteSearch.trim().toLowerCase();
-    return tournamentFavorites.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false) || (deck.sourceEventName?.toLowerCase().includes(query) ?? false));
-  }, [tournamentFavorites, favoriteSearch]);
+    return tournamentFavorites.filter(deck => deckMatchesSearch(deck.championName, searchableDeckCards(deck.decklist), deckFilter)).filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false) || (deck.sourceEventName?.toLowerCase().includes(query) ?? false));
+  }, [tournamentFavorites, favoriteSearch, deckFilter]);
   const visibleOfficialDecks = useMemo(() => {
     const query = officialSearch.trim().toLowerCase();
-    return officialDecks.filter(deck => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
-  }, [officialDecks, officialSearch]);
+    return officialDecks.filter(deck => deckMatchesSearch(deck.championName, searchableDeckCards(deck.decklist), deckFilter)).filter(deck => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
+  }, [officialDecks, officialSearch, deckFilter]);
   const favoriteCount = bookmarks.length + tournamentFavorites.length;
-  const hasBuildFilters = Boolean(deckSearch.trim() || deckFormatFilter !== "ALL" || deckChampionFilter !== "ALL");
+  const hasBuildFilters = Boolean(deckFilter.cards.length || deckSearch.trim() || deckFormatFilter !== "ALL" || deckChampionFilter !== "ALL");
 
   const refreshDecks = useCallback(async () => {
     setOfficialLoading(true); setOfficialError(null);
@@ -172,6 +172,7 @@ export default function MyDecksIndex() {
     </DialogSheet>}
 
     <div className="mt-5"><Tabs tabs={[{ key: "builds", label: libraryReady ? `Builds (${decks.length})` : "Builds" }, { key: "official", label: officialLoading || officialError ? "Official" : `Official (${officialDecks.length})` }, { key: "favorites", label: !libraryReady || favoritesUnavailable ? "Favorites" : `Favorites (${favoriteCount})` }]} active={libraryView} onChange={setLibraryView} label="Deck library" baseId="deck-library" variant="pill" /></div>
+    <DeckSearchFilters champion={deckFilter.champion} onChampionChange={champion => setDeckFilter(f => ({ ...f, champion }))} cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
     <TabPanel baseId="deck-library" tab="builds" active={libraryView}>    <Section className="mt-4" title="Your builds" description="Editable decks that you own and version.">
       <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
         <div className="flex flex-wrap items-end gap-2">
@@ -194,10 +195,7 @@ export default function MyDecksIndex() {
             <option value="PANTHEON">Pantheon</option>
             <option value="UNKNOWN">Unknown</option>
           </select>
-          {deckChampionOptions.length > 0 && <select value={deckChampionFilter} onChange={(event) => setDeckChampionFilter(event.target.value)} aria-label="Filter by Champion" className="min-h-12 max-w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
-            <option value="ALL">All Champions</option>
-            {deckChampionOptions.map((name) => <option key={name} value={name}>{name}</option>)}
-          </select>}
+
           <select value={deckSort} onChange={(event) => setDeckSort(event.target.value as "updated" | "created" | "title")} aria-label="Sort my decks" className="min-h-12 max-w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
             <option value="updated">Recently updated</option>
             <option value="created">Recently created</option>
@@ -205,7 +203,7 @@ export default function MyDecksIndex() {
           </select>
         </div>
         {visibleDecks.length === 0
-          ? <EmptyState className="mt-4" title={hasBuildFilters ? "No matching builds" : "No builds in this folder yet"} description={hasBuildFilters ? "Clear search filters to see the builds in this view." : selectedFolder === "unfiled" ? "Your builds are already organized into folders." : "Use Edit folder to choose builds for this group."} action={hasBuildFilters ? <Button onClick={() => { setDeckSearch(""); setDeckFormatFilter("ALL"); setDeckChampionFilter("ALL"); deckSearchInput.current?.focus(); }}>Clear search filters</Button> : <Button onClick={() => { setSelectedFolder(""); folderSelect.current?.focus(); }}>All builds</Button>} />
+          ? <EmptyState className="mt-4" title={hasBuildFilters ? "No matching builds" : "No builds in this folder yet"} description={hasBuildFilters ? "Clear search filters to see the builds in this view." : selectedFolder === "unfiled" ? "Your builds are already organized into folders." : "Use Edit folder to choose builds for this group."} action={hasBuildFilters ? <Button onClick={() => { setDeckSearch(""); setDeckFormatFilter("ALL"); setDeckFilter({ champion: "", cards: [] }); deckSearchInput.current?.focus(); }}>Clear search filters</Button> : <Button onClick={() => { setSelectedFolder(""); folderSelect.current?.focus(); }}>All builds</Button>} />
           : <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {visibleDecks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} foldersReady={folders.ready} folderNames={folders.folders.filter(folder => folder.deckIds.includes(deck.id)).map(folder => folder.name)} onFolders={() => setOrganizingDeck(deck)} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); trackEvent("deck_renamed"); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); trackEvent("deck_deleted"); await refreshDecks(); }); }} />)}
           </div>}

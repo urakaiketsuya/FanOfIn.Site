@@ -71,7 +71,7 @@ export async function runAnalytics(): Promise<void> {
     await Promise.all([
       ...(format === "PANTHEON" ? [writeFile(path.join(dir, "decks.json"), JSON.stringify({ generatedAt: new Date().toISOString(), decks: summaries.map((summary) => {
         const deck = decks.find((candidate) => candidate.id === summary.id);
-        return { ...summary, cardNames: deck ? Array.from(new Set([...deck.mainDeck, ...deck.materialDeck, ...deck.sideDeck].map((line) => line.name))) : [], boonNames: deck?.pantheonDeck?.map((line) => line.name) ?? [] };
+        return { ...summary, searchCardNames: deck ? Array.from(new Set([...deck.mainDeck, ...deck.materialDeck, ...(deck.pantheonDeck ?? [])].filter(line => line.quantity > 0).map(line => line.name))) : [], cardNames: deck ? Array.from(new Set([...deck.mainDeck, ...deck.materialDeck, ...deck.sideDeck].map((line) => line.name))) : [], boonNames: deck?.pantheonDeck?.map((line) => line.name) ?? [] };
       }) }), "utf-8")] : []),
       writeFile(path.join(dir, "card-inclusion.json"), JSON.stringify(cardInclusion), "utf-8"),
       writeFile(path.join(dir, "popularity.json"), JSON.stringify(popularity), "utf-8"),

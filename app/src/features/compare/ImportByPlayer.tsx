@@ -1,3 +1,8 @@
+import { deckMatchesSearch } from "@gatcg/shared";
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
+import { useTournamentCardMatches } from "../../components/deck-search/useTournamentCardMatches";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { useMemo, useState } from "react";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
@@ -14,6 +19,8 @@ export default function ImportByPlayer({
   comparedKeys: Set<string>;
   onToggle: (deck: ComparedDeck) => void;
 }) {
+  const [deckFilter, setDeckFilter] = useDeckSearch();
+  const cardMatches = useTournamentCardMatches(deckFilter.cards);
   const playersData = useOmnidexPlayers();
   const index = useOmnidexIndex();
   const popularityIndexData = useDeckPopularityIndexData();
@@ -47,7 +54,7 @@ export default function ImportByPlayer({
     if (!selectedPlayer || !index) return [];
     const needle = eventSearch.trim().toLowerCase();
     const rows = index.events.filter(
-      (e) => selectedPlayer.eventIds.includes(e.id) && e.decklists && (!needle || e.name.toLowerCase().includes(needle)),
+      (e) => selectedPlayer.eventIds.includes(e.id) && e.decklists && (!cardMatches.ids || cardMatches.ids.has(`${e.id}:${selectedPlayer.id}`)) && deckMatchesSearch(popularityIndexData?.entries.find(deck => deck.deckId === `${e.id}:${selectedPlayer.id}`)?.championName, undefined, { ...deckFilter, cards: [] }) && (!needle || e.name.toLowerCase().includes(needle)),
     );
     if (sortMode === "best") {
       return [...rows].sort((a, b) => {
@@ -57,7 +64,7 @@ export default function ImportByPlayer({
       });
     }
     return [...rows].sort((a, b) => b.date.localeCompare(a.date));
-  }, [selectedPlayer, index, eventSearch, sortMode, scoreByDeckId]);
+  }, [selectedPlayer, index, eventSearch, sortMode, scoreByDeckId, cardMatches.ids, deckFilter, popularityIndexData]);
 
   return (
     <div data-component="ImportByPlayer">
@@ -103,6 +110,8 @@ export default function ImportByPlayer({
             </button>
           </div>
 
+          <DeckSearchFilters champion={deckFilter.champion} onChampionChange={champion => setDeckFilter(f => ({ ...f, champion }))} cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
+          {!!deckFilter.cards.length && <PublishedSourceStatus label="Deck cards" status={cardMatches.status} hasData={cardMatches.hasData} />}
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <input
               type="text"
@@ -110,7 +119,7 @@ export default function ImportByPlayer({
               value={eventSearch}
               onChange={(e) => setEventSearch(e.target.value)}
               placeholder="Search by event name…"
-              className="w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+              className="min-h-12 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
             />
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
@@ -129,7 +138,7 @@ export default function ImportByPlayer({
             ))}
           </div>
 
-          {events.length === 0 && <InlineState className="mt-2 text-sm">No public decklists match.</InlineState>}
+          {events.length === 0 && !cardMatches.loading && <InlineState className="mt-2 text-sm">No public decklists match.</InlineState>}
 
           <div className="mt-2 space-y-2">
             {events.map((event) => {

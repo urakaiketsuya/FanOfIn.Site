@@ -320,7 +320,7 @@ test("public decks expose only published card data and a display name", async ()
 
 test("discovery returns summaries and explicitly filters to public decks", async () => {
   let discoverySql = "";
-  const row = { public_slug: "a".repeat(32), title: "Shared", description: "", published_at: "now", display_name: "Pilot", profile_slug: "b".repeat(24), version_number: 2, format: "STANDARD", champion_name: "Rai", like_count: 4 };
+  const row = { decklist_json: JSON.stringify({ main: [{card: "A", quantity: 4}], material: [{card: "Rai", quantity: 1}], sideboard: [{card: "Side", quantity: 2}] }), public_slug: "a".repeat(32), title: "Shared", description: "", published_at: "now", display_name: "Pilot", profile_slug: "b".repeat(24), version_number: 2, format: "STANDARD", champion_name: "Rai", like_count: 4 };
   const database = { prepare(query: string) { discoverySql = query; return { bind() { return this; }, async all() { return { results: [row] }; } }; } } as unknown as D1Database;
   const result = await discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams("q=Rai&format=STANDARD"));
   assert.match(discoverySql, /ud\.visibility = 'public'/);
@@ -328,6 +328,7 @@ test("discovery returns summaries and explicitly filters to public decks", async
   assert.match(discoverySql, /ud\.moderation_status = 'active'/);
   assert.equal(discoverySql.includes("unlisted"), false);
   assert.equal("decklist" in result.decks[0], false);
+  assert.deepEqual(result.decks[0].cardNames, ["A", "Rai"]);
   assert.deepEqual(result.decks[0].owner, { displayName: "Pilot", profileSlug: "b".repeat(24) });
   await assert.rejects(discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams(`q=${"x".repeat(81)}`)), /Search is too long/);
 });

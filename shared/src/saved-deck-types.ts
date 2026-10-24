@@ -77,6 +77,8 @@ export interface PublicDeck {
 }
 
 export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibility" | "updatedAt"> {
+  /** Complete published Main + Material membership, independent of printings. */
+  cardNames?: string[];
   /** Bounded material sample and totals from the published version. Optional for older servers. */
   materialPreview?: OmnidexDecklistCardLine[];
   mainCount?: number;

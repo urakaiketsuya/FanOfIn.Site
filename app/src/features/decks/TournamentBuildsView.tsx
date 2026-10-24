@@ -1,3 +1,4 @@
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import DeckContentFilterChips from "./DeckContentFilterChips";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
 import DeckDateRangeFilter from "./DeckDateRangeFilter";
@@ -201,6 +202,7 @@ export default function TournamentBuildsView({
         </label>}
       </details>
 
+      <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
       <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
       <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${sorted.length.toLocaleString()} build${sorted.length === 1 ? "" : "s"}`} onClear={() => startTransition(() => { setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
         <SegmentedFilter label="Players" options={MIN_PLAYERS.map(value => ({ value, label: value === 1 ? "Any" : `${value}+ players` }))} value={minPlayers} onChange={value => startTransition(() => setMinPlayers(value))} />

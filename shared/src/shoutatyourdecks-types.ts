@@ -29,6 +29,8 @@ export interface ShoutAtYourDecksDeckSummary {
   formatConfidence?: DeckFormatConfidence;
   /** Optional lean browse metadata published for locally stored Pantheon lists. */
   cardNames?: string[];
+  /** Main + Material + Pantheon membership; excludes sideboard and referenced tokens. */
+  searchCardNames?: string[];
   boonNames?: string[];
 }
 

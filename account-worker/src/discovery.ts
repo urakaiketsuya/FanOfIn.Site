@@ -1,7 +1,7 @@
 import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
 import { getShowcase } from "./profile-showcase";
 import { databaseAll } from "./database";
-import { deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
+import { searchableDeckCards, deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
 import type { DeckFormat, PublicDeckSummary, PublicProfile } from "@gatcg/shared";
 import type { Env } from "./auth";
 import { badRequest } from "./errors";
@@ -39,6 +39,7 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
     isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count ?? 0),
     previewCards: decklist ? deckPreviewCards(decklist) : [],
+    cardNames: decklist ? searchableDeckCards(decklist) : undefined,
     materialPreview: decklist?.material.slice(0, 4),
     mainCount: decklist?.main.reduce((sum, line) => sum + line.quantity, 0),
     sideboardCount: decklist?.sideboard.reduce((sum, line) => sum + line.quantity, 0),

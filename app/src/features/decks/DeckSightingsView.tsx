@@ -1,3 +1,4 @@
+import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import DeckContentFilterChips from "./DeckContentFilterChips";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
 import DeckDateRangeFilter from "./DeckDateRangeFilter";
@@ -266,6 +267,7 @@ export default function DeckSightingsView({
         </label>}
       </details>
 
+      <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
       <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
       <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setDateFrom(""); setDateTo(""); setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
