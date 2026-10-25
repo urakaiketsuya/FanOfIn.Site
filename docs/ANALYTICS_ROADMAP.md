@@ -32,11 +32,10 @@ This roadmap owns contextual comparison and placement across pages, not duplicat
 | C | How cards and builds are used | Stable cohort aggregation | Card, champion and archetype views share quantities and denominators |
 | D | What happened in competition | Event participant/result/list coverage audit | Field and top-cut reports reconcile to source records |
 | E | What the collection enables | Existing availability and allocation logic | Coverage previews reconcile with saved decks and simultaneous demand |
-| F | Observed play and simulation | Recorded event semantics and version identity | Repeated-session summaries reproduce from retained source records |
 | Later | Secondary discovery and specialist pages | Relevant preceding release | Each item gets a bounded spec before implementation |
 
 Ship releases independently. E can follow B if competitive data work blocks D; it
-does not depend on C or D. F is explicitly data-gated. No calendar estimates until
+does not depend on C or D. No calendar estimates until
 each release's audit establishes data coverage and implementation size.
 
 ## A — This deck versus its archetype (first release)
@@ -145,22 +144,11 @@ scope retain existing semantics. Rank blockers by explicit saved-deck goals, not
 assumption that users want to buy every useful card. No additional purchasing input
 is required merely to view a report.
 
-## F — Observed play and simulation
-
-| Page | Deliverable | Data gate |
-| --- | --- | --- |
-| Combo Lab/public combos | Complete/partial/neither access; executable sequence timing only when modeled | Reviewed requirements and supported sequencing |
-| Goldfish | Across-session setup/level timing, stalls and unused cards | Stable event definitions, retained completed sessions and explicit stalls |
-| Match Log | Results by matchup, exact version and play/draw | Sufficient recorded fields and resolved deck versions |
-| Timelines/Simulator | Completion-time distributions and recurring failure points | Reproducible runs with model version, seeds and failure definitions |
-
-**Acceptance:** observed sessions, tournament results and simulations remain separate.
-Fixtures verify supported mechanics; fixtures alone do not establish how often game
-states occur. Retained records reproduce summaries; aborted and failed runs have
-explicit inclusion rules. Version changes are associations, not causal improvements.
-Do not add a new rules engine or live simulator integration as an implicit dependency.
-
 ## Later and intentionally unchanged
+
+Recorded-play and simulation reporting was removed from this initiative on 2026-10-25.
+Existing Combo Lab, Goldfish, Match Log, Timeline and Simulator features remain unchanged;
+this roadmap does not schedule their expansion.
 
 - Tags and strategies: observed co-occurrence and quantities after C; preserve discovery focus.
 - Thema/price history: printing/finish-specific trends only after coverage validation.
@@ -200,4 +188,4 @@ quantities. Page views alone do not demonstrate analytical usefulness.
 
 Next work: release A's cohort/model audit and one mobile-first deck-versus-build design.
 Planning is complete; new implementation is 0% complete. Existing foundations reduce
-effort, but cohort coverage and telemetry quality remain unverified dependencies.
+effort, but cohort and event-data coverage remain unverified dependencies.

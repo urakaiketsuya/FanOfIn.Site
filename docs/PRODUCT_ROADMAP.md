@@ -126,7 +126,8 @@ Use three consistent information layers:
 
 Follow [the Results-first Analytics Roadmap](ANALYTICS_ROADMAP.md) for the page-by-page
 analytics initiative: deck versus archetype, list/version comparisons, card and build
-adoption, competitive results, collection readiness, then data-gated play reports.
+adoption, competitive results, and collection readiness. Recorded-play and simulation
+reporting is outside this initiative.
 Start with the deck-versus-archetype cohort audit. This is a planned expansion of
 existing reports, not a claim that those releases have shipped. Its automatic reports
 use numbers and cards with concise status labels; methodology stays in documentation
