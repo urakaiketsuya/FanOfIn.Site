@@ -1,19 +1,13 @@
 import { useMemo } from 'react';
+import EventFieldComparison from './EventFieldComparison';
 import { Link } from 'react-router-dom';
-import { computeEventReport, type Card, type OmnidexDecklistEntry, type OmnidexEvent, type OmnidexPlayer } from '@gatcg/shared';
-import CardArtTile from '../../components/CardArtTile';
+import { computeEventReport, type OmnidexDecklistEntry, type OmnidexEvent, type OmnidexPlayer } from '@gatcg/shared';
+import { Bar, CardIdentity } from './EventReportVisuals';
 import { InlineState } from '../../components/ui/ContentState';
 import { findDeckChampionName } from '../../lib/ttsExport';
 import { useCardsByNames } from './useCardsByNames';
 
 const percent = (value: number) => `${Number(value.toFixed(1))}%`;
-function Bar({ value, label, blue = false }: { value: number; label: string; blue?: boolean }) {
-  return <div role="img" aria-label={`${label}: ${percent(value)}`} className="h-2.5 overflow-hidden rounded bg-ctp-surface0"><div className={`h-full rounded ${blue ? 'bg-ctp-blue' : 'bg-ctp-teal'}`} style={{ width: `${value}%` }} /></div>;
-}
-function CardIdentity({ name, card }: { name: string; card?: Card }) {
-  const content = <><div className="w-14 shrink-0"><CardArtTile name={name} card={card} /></div><span className="min-w-0 break-words text-sm font-medium">{name}</span></>;
-  return card ? <Link className="flex min-h-control items-center gap-3 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" to={`/cards/${card.slug}`}>{content}</Link> : <div className="flex items-center gap-3">{content}</div>;
-}
 export default function EventReport({ event, players, decks, teamEvent }: { event: OmnidexEvent; players: OmnidexPlayer[]; decks?: OmnidexDecklistEntry[]; teamEvent: boolean }) {
   const names = useMemo(() => decks?.flatMap(d => [...d.decklist.main, ...d.decklist.material].map(l => l.card)) ?? [], [decks]);
   const catalog = useCardsByNames(names);
@@ -47,6 +41,7 @@ export default function EventReport({ event, players, decks, teamEvent }: { even
         </article>)}
       </div>
     </section>
+    <EventFieldComparison event={event} report={report} />
     {report.champions.filter(row => row.advanced > 0).map(row => <section key={row.name} aria-label={`${row.name} top-cut cards`}>
       <h2 className="text-xl font-semibold">What did top-cut {row.name} decks play?</h2>
       <p className="mt-1 text-xs text-ctp-subtext0">Card inclusion · {row.advanced} top-cut lists · {row.entrants} {row.name} lists overall · Main + Material</p>

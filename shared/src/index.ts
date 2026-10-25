@@ -126,3 +126,4 @@ export * from './packageAccessReport';
 
 export * from "./deckSearch";
 export { computeEventReport, type EventReport, type EventChampionReport } from './eventReport';
+export * from './eventComparison';

@@ -113,8 +113,11 @@ Implementation note (2026-10-25): the first event-detail report adds percentage-
 champion advancement, field versus top-cut share, and same-champion card inclusion, using real cut size and complete
 public field coverage. It defaults to Report while preserving deck/player deep links.
 Unsupported or incomplete events retain explicit status. Remaining release D scope:
-preceding-field comparisons and the other page integrations below; live verification
-is pending. This note does not mark release D complete.
+the other page integrations below; live verification is pending. The preceding-field
+comparison now uses the nearest three matching events within 90 days, weighted by
+entrant count, with complete-field and completion-time validation. It retains unavailable
+cohorts rather than skipping missing events. Archive audit: 1,783 of 22,272 indexed
+events advertise complete public deck coverage; each selected bundle is revalidated. This note does not mark release D complete.
 
 | Page | Deliverable |
 | --- | --- |

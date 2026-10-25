@@ -5406,3 +5406,28 @@ Event champion share uses champion entrants / all event entrants for Field and c
 advancers / recorded cut size for Top cut, each × 100. Both populations sum to 100%
 before rounding. Champions with no advancers remain visible at 0% top-cut share.
 These population shares are distinct from a champion’s advancement rate.
+
+### Earlier event field comparison
+
+Event detail compares champion field share with the three nearest earlier indexed
+completed events in the preceding 90 days. Require identical format, season ID,
+category, setting, ranked flag, structure and event type. The population is worldwide;
+venue and country do not constrain it. Missing season blocks selection. Break date
+ties by descending event ID and deduplicate IDs. Select before inspecting deck coverage:
+do not skip incomplete candidates to cherry-pick a reportable cohort.
+
+Refresh each selected event, players, teams and decklists. Revalidate matching metadata,
+require a finite completion timestamp strictly before the target start date, and apply
+`computeEventReport`'s complete public field and verified individual bracket gates.
+Require all three reports; partial coverage is unavailable, never zero. This conservative
+first comparison also excludes Swiss-only events. Same-season matching does not guarantee
+an unchanged card pool or banlist within that season; this is a historical field comparison,
+not a controlled estimate of a card's effect.
+
+Earlier champion share = summed champion entrants / summed entrants across the three
+events × 100. Each event entry counts once, including repeated players or identical decks
+at different events. Do not average event percentages or deduplicate construction here.
+Change = target field share − earlier share, in percentage points. Retain the union of
+champions, using zero only for a verified absence in a complete field. Sort by absolute
+change, then champion name. Event names/dates link to source reports. No win prediction,
+causal claim or automatic deck recommendation follows from these differences.
