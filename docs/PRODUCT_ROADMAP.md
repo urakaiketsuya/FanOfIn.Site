@@ -122,6 +122,18 @@ Use three consistent information layers:
 
 ## Priority overview
 
+### Results-first analytics expansion — October 2026
+
+Follow [the Results-first Analytics Roadmap](ANALYTICS_ROADMAP.md) for the page-by-page
+analytics initiative: deck versus archetype, list/version comparisons, card and build
+adoption, competitive results, collection readiness, then data-gated play reports.
+Start with the deck-versus-archetype cohort audit. This is a planned expansion of
+existing reports, not a claim that those releases have shipped. Its automatic reports
+use numbers and cards with concise status labels; methodology stays in documentation
+and interactive calculators remain separate. This report-specific direction supersedes
+the older explanatory/disclosure defaults above; current UX_PATTERNS.md and AGENTS.md
+govern implementation and 48px mobile targets.
+
 | Phase | Theme | Outcome |
 | --- | --- | --- |
 | 0 | Research and definitions | Resolve ambiguous calculator language and data requirements before more UI is built |
