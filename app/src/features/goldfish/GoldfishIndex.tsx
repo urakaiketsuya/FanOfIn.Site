@@ -3,7 +3,7 @@ import GoldfishTurnControls from "./GoldfishTurnControls";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, goldfishEffectSupport, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -12,8 +12,6 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import CardArtTile from "../../components/CardArtTile";
 import DialogSheet from "../../components/ui/DialogSheet";
 import Button from "../../components/ui/Button";
-import DisclosureChevron from "../../components/DisclosureChevron";
-import CardHoverPreview from "../../components/CardHoverPreview";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
@@ -50,21 +48,17 @@ function readSavedSession(): GoldfishSession | null {
 }
 
 function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: GoldfishCardInstance; resolved: Card | undefined; disabled?: boolean; onPlay: () => void; onReserve?: () => void }) {
-  const support = goldfishEffectSupport(resolved);
-  const assistedLabels = support.assists.map((assist) => assist.type === "draw" ? `draw ${assist.count}` : assist.type === "glimpse" ? `Glimpse ${assist.count}` : assist.type === "create-tokens" ? `summon ${assist.count} ${assist.name}` : `randomly banish ${assist.count} from Memory`);
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle">
       <div className="p-2">
-        <CardHoverPreview image={resolved?.editions[0]?.image} alt={card.name}>
+        {onReserve ? <button type="button" disabled={disabled} onClick={onReserve} aria-label={`Reserve ${card.name} to Memory`} className="block min-h-12 w-full rounded text-left transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-yellow disabled:cursor-not-allowed disabled:opacity-40">
           <CardArtTile card={resolved} name={card.name} />
-        </CardHoverPreview>
+        </button> : <CardArtTile card={resolved} name={card.name} />}
         <p className="mt-2 break-words text-sm font-medium text-ctp-text">{resolved ? <Link to={`/cards/${resolved.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center underline">{card.name}<span className="sr-only"> (opens in a new tab)</span></Link> : card.name}</p>
       </div>
       <div className="grid gap-2 border-t border-ctp-surface1 px-3 py-2">
         <button type="button" disabled={disabled} onClick={onPlay} className="min-h-12 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play · Reserve {resolved?.cost_reserve === -1 ? "X" : Math.max(0, resolved?.cost_reserve ?? 0)}</button>
-        {onReserve && <button type="button" disabled={disabled} onClick={onReserve} className="min-h-12 w-full rounded-md border border-ctp-yellow/60 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10 disabled:opacity-40">Reserve to Memory</button>}
       </div>
-      {resolved?.effect && <details className="group px-3 pb-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between text-xs text-ctp-blue">Read effect<DisclosureChevron className="group-open:rotate-180" /></summary><p className="whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p><div className="mt-2 text-xs leading-5 text-ctp-subtext0">{assistedLabels.length > 0 && <p><span className="font-semibold text-ctp-green">Assisted:</span> {assistedLabels.join(" · ")}</p>}{support.hasUnsupportedText && <p><span className="font-semibold text-ctp-yellow">Player-resolved:</span> remaining costs, targets, conditions, timing, and effects.</p>}</div></details>}
     </div>
   );
 }
@@ -302,7 +296,7 @@ export default function GoldfishIndex() {
         </DialogSheet>
       )}
 
-      <div className="identity-surface mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ctp-surface1 p-4"><div><h2 className="text-2xl font-semibold text-ctp-text">Your hand</h2><p className="mt-1 text-sm text-ctp-subtext1">{state.phase === "main" ? (state.library.length > 0 ? "Choose a card to play or draw to keep testing." : "Library is empty. Keep testing with the cards in your zones.") : "Recollection is active. Open Memory to manage your cards."}</p></div><p className="text-sm text-ctp-subtext0"><span className="text-3xl font-semibold tabular-nums text-ctp-text">{state.hand.length}</span> {state.hand.length === 1 ? "card" : "cards"}</p></div>
+      <div className="identity-surface mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ctp-surface1 p-4"><div><h2 className="text-2xl font-semibold text-ctp-text">Your hand</h2><p className="mt-1 text-sm text-ctp-subtext1">{state.phase === "main" ? (state.library.length > 0 ? "Tap a reservable card to move it to Memory." : "Library empty · Tap a reservable card to move it to Memory.") : "Recollection is active. Open Memory to manage your cards."}</p></div><p className="text-sm text-ctp-subtext0"><span className="text-3xl font-semibold tabular-nums text-ctp-text">{state.hand.length}</span> {state.hand.length === 1 ? "card" : "cards"}</p></div>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
           <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || pendingPayment !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
