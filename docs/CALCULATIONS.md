@@ -5401,3 +5401,8 @@ Champion groups sort by advancement rate, entrants, then name. Card previews sho
 to six non-Champion cards, sorted by top-cut inclusion, inclusion difference, then
 name. These are observed choices, not causal recommendations. Catalog gaps retain
 named card fallbacks. Percentages are rounded to one decimal, with 0–100% bar scales.
+
+Event champion share uses champion entrants / all event entrants for Field and champion
+advancers / recorded cut size for Top cut, each × 100. Both populations sum to 100%
+before rounding. Champions with no advancers remain visible at 0% top-cut share.
+These population shares are distinct from a champion’s advancement rate.

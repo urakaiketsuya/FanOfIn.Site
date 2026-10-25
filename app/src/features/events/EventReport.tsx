@@ -34,6 +34,19 @@ export default function EventReport({ event, players, decks, teamEvent }: { even
       <div className="mt-4 grid grid-cols-[minmax(0,1fr)_minmax(60px,2fr)_4rem] items-center gap-3 border-y border-ctp-surface1 py-4"><span className="text-sm">Event average</span><Bar value={report.average} label="Event average" blue /><span className="text-right text-lg font-semibold tabular-nums">{percent(report.average)}</span></div>
       {report.champions.map(row => <div key={row.name} className="grid grid-cols-[minmax(0,1fr)_minmax(60px,2fr)_4rem] items-center gap-3 py-3"><div><Link to={`/champions/${encodeURIComponent(row.name)}`} className="inline-flex min-h-control items-center rounded text-sm font-medium focus-visible:outline-2 focus-visible:outline-ctp-blue">{row.name}</Link><p className="text-xs text-ctp-subtext0">{row.entrants} {row.entrants === 1 ? 'entrant' : 'entrants'}</p></div><Bar value={row.rate} label={`${row.name} advancing`} /><span className="text-right text-lg font-semibold tabular-nums">{percent(row.rate)}</span></div>)}
     </section>
+    <section aria-labelledby="event-field">
+      <h2 id="event-field" className="text-xl font-semibold">How did the field change?</h2>
+      <p className="mt-1 text-xs text-ctp-subtext0">Champion share · {report.entrants} entrants → Top {report.cut}</p>
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {[...report.champions].sort((a, b) => b.fieldShare - a.fieldShare || a.name.localeCompare(b.name)).map(row => <article key={row.name} className="rounded-xl bg-ctp-mantle p-4">
+          <CardIdentity name={row.cardName} card={catalog.get(row.cardName)} />
+          <div className="mb-1 mt-4 flex items-baseline justify-between gap-2"><span className="text-xs text-ctp-subtext1">Field</span><span className="text-xl font-semibold tabular-nums">{percent(row.fieldShare)}</span></div>
+          <Bar value={row.fieldShare} label={`${row.name} share of field`} blue />
+          <div className="mb-1 mt-3 flex items-baseline justify-between gap-2"><span className="text-xs text-ctp-subtext1">Top cut</span><span className="text-xl font-semibold tabular-nums">{percent(row.topCutShare)}</span></div>
+          <Bar value={row.topCutShare} label={`${row.name} share of top cut`} />
+        </article>)}
+      </div>
+    </section>
     {report.champions.filter(row => row.advanced > 0).map(row => <section key={row.name} aria-label={`${row.name} top-cut cards`}>
       <h2 className="text-xl font-semibold">What did top-cut {row.name} decks play?</h2>
       <p className="mt-1 text-xs text-ctp-subtext0">Card inclusion · {row.advanced} top-cut lists · {row.entrants} {row.name} lists overall · Main + Material</p>

@@ -6,6 +6,8 @@ export interface EventChampionReport {
   entrants: number;
   advanced: number;
   rate: number;
+  fieldShare: number;
+  topCutShare: number;
   cards: { name: string; field: number; top: number; fieldRate: number; topRate: number }[];
 }
 export interface EventReport {
@@ -46,7 +48,7 @@ export function computeEventReport(
     const champion = champions.get(id)!;
     let group = groups.get(champion.name);
     if (!group) {
-      group = { row: { ...champion, entrants: 0, advanced: 0, rate: 0, cards: [] }, names: new Map() };
+      group = { row: { ...champion, entrants: 0, advanced: 0, rate: 0, fieldShare: 0, topCutShare: 0, cards: [] }, names: new Map() };
       groups.set(champion.name, group);
     }
     group.row.entrants++;
@@ -61,6 +63,8 @@ export function computeEventReport(
   }
   result.champions = [...groups.values()].map(({ row, names }) => ({
     ...row, rate: row.advanced / row.entrants * 100,
+    fieldShare: row.entrants / ids.size * 100,
+    topCutShare: row.advanced / result.cut * 100,
     cards: [...names].filter(([, n]) => n.top > 0).map(([name, n]) => ({ name, ...n, fieldRate: n.field / row.entrants * 100, topRate: n.top / row.advanced * 100 }))
       .sort((a, b) => b.topRate - a.topRate || (b.topRate - b.fieldRate) - (a.topRate - a.fieldRate) || a.name.localeCompare(b.name)),
   })).sort((a, b) => b.rate - a.rate || b.entrants - a.entrants || a.name.localeCompare(b.name));

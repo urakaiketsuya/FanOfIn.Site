@@ -1,6 +1,6 @@
 # Results-first analytics roadmap
 
-Planned 2026-10-25. Status: roadmap defined; delivery has not started under this
+Planned 2026-10-25. Status: roadmap defined; event-detail delivery is underway under this
 initiative. Existing calculations and reports are foundations, not newly completed
 milestones. This is an ordered backlog, not a commitment to deliver every page at once.
 
@@ -110,7 +110,7 @@ Correlations between inclusion and results are never causal recommendations.
 ## D — What happened in competition
 
 Implementation note (2026-10-25): the first event-detail report adds percentage-led
-champion advancement and same-champion card inclusion, using real cut size and complete
+champion advancement, field versus top-cut share, and same-champion card inclusion, using real cut size and complete
 public field coverage. It defaults to Report while preserving deck/player deep links.
 Unsupported or incomplete events retain explicit status. Remaining release D scope:
 preceding-field comparisons and the other page integrations below; live verification

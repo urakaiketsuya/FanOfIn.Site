@@ -26,3 +26,15 @@ test('published event 52397 reconciles to its recorded Top 4 and 16 entrants',()
  const names=new Map<number,{name:string;cardName:string}>(b.decklists.map((d:OmnidexDecklistEntry)=>[d.player,{name:'Test cohort',cardName:'Champion'}]));
  const r=computeEventReport(b.event,b.players,b.decklists,names);assert.equal(r.status,null);assert.equal(r.entrants,16);assert.equal(r.cut,4);assert.equal(r.average,25);assert.equal(r.champions[0].advanced,4);
 });
+
+test('field and top-cut shares have separate denominators and retain zero advancement', () => {
+ const identities = new Map([1,2,3,4].map(id => [id,{name:id <= 2 ? 'A' : 'B',cardName:'Champion'}]));
+ const r = computeEventReport(event,players,decks,identities);
+ assert.equal(r.status,null);
+ const a = r.champions.find(c=>c.name==='A')!;
+ const b = r.champions.find(c=>c.name==='B')!;
+ assert.equal(a.fieldShare,50); assert.equal(a.topCutShare,100);
+ assert.equal(b.fieldShare,50); assert.equal(b.topCutShare,0);
+ assert.equal(r.champions.reduce((sum,c)=>sum+c.fieldShare,0),100);
+ assert.equal(r.champions.reduce((sum,c)=>sum+c.topCutShare,0),100);
+});
