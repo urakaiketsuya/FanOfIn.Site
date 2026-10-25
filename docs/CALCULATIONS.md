@@ -5378,3 +5378,26 @@ Matchup coverage additionally reuses the fixture engine's catalog-verified fixed
 rules for Engulf, Frozen Dismissal, Tidal Lock and Thunderclap. These are printed target
 eligibility/damage thresholds, presented separately from tournament correlations; they
 do not infer resolved removal, affordability or an opponent's ability to pay a tax.
+
+## Event top-cut report (October 2026)
+
+`shared/src/eventReport.ts` reports completed individual events with recorded Swiss
+and single-elimination stages and a positive cut size. The roster is the union of
+event player IDs and player records. Every entrant needs a positive integer final
+placement; exactly the recorded cut size must have placement at or above the cut
+(rank <= cut). Duplicate player records, conflicting deck entries, missing/private
+or empty Main/Material lists, and unresolved champion identities block the report.
+Team events and Swiss-only events receive a short unavailable status, not an inferred
+Top 8. The event average is cut entrants / all entrants; champion advancement is
+that champion's cut entrants / that champion's entrants. Byes and match wins do not
+enter either formula.
+
+Champion identity uses the existing highest-level Material champion resolver, grouped
+by the name before the comma. All positive-quantity Material names must resolve before
+identity is accepted. Card inclusion counts each name once per list across Main and
+Material, excluding Sideboard, regardless of quantity or repeated section appearances.
+The denominator is all lists for that champion or its top-cut lists respectively.
+Champion groups sort by advancement rate, entrants, then name. Card previews show up
+to six non-Champion cards, sorted by top-cut inclusion, inclusion difference, then
+name. These are observed choices, not causal recommendations. Catalog gaps retain
+named card fallbacks. Percentages are rounded to one decimal, with 0–100% bar scales.

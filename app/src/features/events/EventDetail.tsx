@@ -1,3 +1,4 @@
+import EventReport from "./EventReport";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
@@ -15,7 +16,7 @@ import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Button from "../../components/ui/Button";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import EventIdentityHeader from "./EventIdentityHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -23,8 +24,8 @@ import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import { useCardsByNames } from "./useCardsByNames";
 
-type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
-const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
+type EventTab = "report" | "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
+const ALL_EVENT_TABS: EventTab[] = ["report", "standings", "pairings", "decklists", "teams", "judges", "statistics"];
 
 function EventTopDecks({ eventId, format, decklists, players }: { eventId: number; format?: DeckFormat; decklists: OmnidexDecklistEntry[]; players: OmnidexPlayer[] }) {
   const topDecks = useMemo(() => [...players]
@@ -86,7 +87,7 @@ export default function EventDetail() {
       .filter((e) => e.hostId === hostId && e.id !== eventId)
       .sort((a, b) => b.date.localeCompare(a.date));
   }, [omnidexIndex, bundle?.event.host?.id, eventId]);
-  const [tab, setTab] = useTabParam("tab", ALL_EVENT_TABS, "decklists");
+  const [tab, setTab] = useTabParam("tab", ALL_EVENT_TABS, searchParams.has("player") || searchParams.has("browse") ? "decklists" : "report");
 
   // Individual-format events key each standing by numeric player `id`. Team-format events (e.g.
   // 3v3) instead key by team `name` and have no per-player record at all -- verified live against
@@ -149,7 +150,7 @@ export default function EventDetail() {
     (a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity),
   );
 
-  const primaryTabs: { key: EventTab; label: string }[] = [];
+  const primaryTabs: { key: EventTab; label: string }[] = [{ key: "report", label: "Report" }];
   if (!isApiErrorBody(bundle.decklists)) primaryTabs.push({ key: "decklists", label: `Decks (${bundle.decklists.length})` });
   primaryTabs.push({ key: "standings", label: `Results (${rankedPlayers.length})` });
   const secondaryTabs: { key: EventTab; label: string }[] = [];
@@ -173,13 +174,15 @@ export default function EventDetail() {
 
       {!secondaryActive && primaryTabs.length > 1 && (
         <div className="mt-4">
-          <Tabs tabs={primaryTabs} active={activeTab} onChange={setTab} label="Event results" />
+          <Tabs tabs={primaryTabs} active={activeTab} onChange={setTab} label="Event results" baseId="event-results" />
         </div>
       )}
 
       {secondaryActive && <Button onClick={() => setTab(primaryTabs[0].key)} className="mt-5">← Back to event results</Button>}
 
-      {!(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+      {activeTab !== "report" && !(activeTab === "decklists" && searchParams.has("player")) && !isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
+
+      <TabPanel baseId="event-results" tab="report" active={activeTab}><EventReport event={event} players={players} decks={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists} teamEvent={!isApiErrorBody(bundle.teams) && bundle.teams.length > 0} /></TabPanel>
 
       {(event.description || vods.length > 0 || venueEvents.length > 0 || secondaryTabs.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
@@ -191,7 +194,7 @@ export default function EventDetail() {
         </div>
       </details>}
 
-      {activeTab === "standings" && (
+      <TabPanel baseId="event-results" tab="standings" active={activeTab}>
         <Section className="mt-6" heading="compact" title={`Standings (${rankedPlayers.length} players)`}>
           {decklistSubmissionRate && (
             <p className="mt-0.5 text-xs text-ctp-subtext0">
@@ -244,7 +247,7 @@ export default function EventDetail() {
             </table>
           </div>
         </Section>
-      )}
+      </TabPanel>
 
       {activeTab === "pairings" && event.stages.length > 0 && (
         <div className="mt-6">
@@ -259,10 +262,10 @@ export default function EventDetail() {
         </div>
       )}
 
-      {activeTab === "decklists" && !isApiErrorBody(bundle.decklists) && (
-        <div className="mt-6">
+      {!isApiErrorBody(bundle.decklists) && (
+        <TabPanel baseId="event-results" tab="decklists" active={activeTab} className="mt-6">
           <DecklistsSection format={event.format.toLowerCase() === "standard" ? "STANDARD" : event.format.toLowerCase() === "pantheon" ? "PANTHEON" : "UNKNOWN"} eventId={eventId} decklists={bundle.decklists} players={players} />
-        </div>
+        </TabPanel>
       )}
 
       {activeTab === "teams" && !isApiErrorBody(bundle.teams) && (

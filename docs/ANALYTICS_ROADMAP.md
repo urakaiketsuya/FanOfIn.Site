@@ -109,6 +109,13 @@ Correlations between inclusion and results are never causal recommendations.
 
 ## D — What happened in competition
 
+Implementation note (2026-10-25): the first event-detail report adds percentage-led
+champion advancement and same-champion card inclusion, using real cut size and complete
+public field coverage. It defaults to Report while preserving deck/player deep links.
+Unsupported or incomplete events retain explicit status. Remaining release D scope:
+preceding-field comparisons and the other page integrations below; live verification
+is pending. This note does not mark release D complete.
+
 | Page | Deliverable |
 | --- | --- |
 | Event detail (first) | Field versus top-cut share, conversion, top-cut card adoption and preceding-field comparison |
@@ -187,5 +194,5 @@ without configuring a calculator. Collection previews must reconcile to actual s
 quantities. Page views alone do not demonstrate analytical usefulness.
 
 Next work: release A's cohort/model audit and one mobile-first deck-versus-build design.
-Planning is complete; new implementation is 0% complete. Existing foundations reduce
+Planning is complete; event-detail implementation has begun. Existing foundations reduce
 effort, but cohort and event-data coverage remain unverified dependencies.
