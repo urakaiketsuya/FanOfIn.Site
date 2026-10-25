@@ -1,3 +1,6 @@
+import type { Card } from "@gatcg/shared";
+import { useCardCatalog } from "../cards/useCardCatalog";
+import CardArtTile from "../../components/CardArtTile";
 import Button from "../../components/ui/Button";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useMemo } from "react";
@@ -7,6 +10,17 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
+
+function SimulatorCard({ id, name, cards }: { id: string; name?: string | null; cards: Map<string, Card> }) {
+  const card = cards.get(id);
+  const label = card?.name ?? name ?? id;
+  return card ? (
+    <Link to={`/cards/${card.slug}`} className="inline-flex min-h-control items-center gap-2 rounded text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">
+      <span aria-hidden="true" className="block w-10 shrink-0"><CardArtTile card={card} name={label} /></span>
+      <span>{label}</span>
+    </Link>
+  ) : <span className="break-all">{label}</span>;
+}
 
 function formatPercent(rate: number | null): string {
   return rate === null ? "–" : `${(rate * 100).toFixed(0)}%`;
@@ -19,6 +33,15 @@ function formatAvg(value: number): string {
 export default function SimulatorIndex() {
   useDocumentTitle("Simulator Data", "Experimental – anonymous match telemetry from Clarent, the community Grand Archive simulator.");
   const data = useSimulatorSummaryData();
+  const catalog = useCardCatalog();
+  const cards = useMemo(() => {
+    const result = new Map<string, Card>();
+    for (const card of catalog) {
+      result.set(card.uuid, card);
+      result.set(card.slug, card);
+    }
+    return result;
+  }, [catalog]);
   const status = usePublishedDataStatus("simulator-summary", "/data/simulator/summary.json");
 
   const champions = useMemo(() => [...(data?.champions ?? [])].sort((a, b) => b.games - a.games), [data]);
@@ -80,7 +103,6 @@ export default function SimulatorIndex() {
           <Section
             heading="dense"
             title="Champions"
-            description="Known names come from the card catalog; unmatched identities retain the name or ID supplied by Clarent."
           >
             {champions.length === 0 ? (
               <InlineState className="mt-2 text-sm">No champion data yet.</InlineState>
@@ -99,8 +121,7 @@ export default function SimulatorIndex() {
                     {champions.map((c) => (
                       <tr key={c.championId} className="border-t border-ctp-surface0">
                         <td className="py-1.5 pr-3 text-ctp-text">
-                          <div>{c.championName ?? c.championId}</div>
-                          {c.championName && <div className="font-mono text-[10px] text-ctp-overlay1">{c.championId}</div>}
+                          <SimulatorCard id={c.championId} name={c.championName} cards={cards} />
                         </td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{c.element}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">
@@ -122,9 +143,9 @@ export default function SimulatorIndex() {
               <ul className="mt-2 space-y-1 text-sm">
                 {matchups.map((m) => (
                   <li key={`${m.champion1}__${m.champion2}`} className="flex flex-wrap items-center gap-2">
-                    <span className="text-ctp-text" title={m.champion1}>{m.champion1Name ?? m.champion1}</span>
+                    <SimulatorCard id={m.champion1} name={m.champion1Name} cards={cards} />
                     <span className="text-ctp-subtext0">vs</span>
-                    <span className="text-ctp-text" title={m.champion2}>{m.champion2Name ?? m.champion2}</span>
+                    <SimulatorCard id={m.champion2} name={m.champion2Name} cards={cards} />
                     <span className="text-ctp-subtext1">
                       – {m.champion1Wins}-{m.champion2Wins} across {m.games} game{m.games === 1 ? "" : "s"}
                     </span>
@@ -137,13 +158,7 @@ export default function SimulatorIndex() {
           <Section
             heading="dense"
             title="Card stats"
-            description={
-              <>
-                Only shown for a card once it's appeared in at least 5 separate games – below that, an "average" would
-                just be replaying one specific game's exact card usage, not actually aggregating anything. Card ID is
-                Clarent/TCGEngine's internal identifier, same caveat as Champions above.
-              </>
-            }
+            description="5-game minimum."
           >
             {cardStats.length === 0 ? (
               <InlineState className="mt-2 text-sm">
@@ -154,7 +169,7 @@ export default function SimulatorIndex() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Card ID</th>
+                      <th className="pb-1 pr-3 font-normal">Card</th>
                       <th className="pb-1 pr-3 font-normal">Games</th>
                       <th className="pb-1 pr-3 font-normal">Win rate</th>
                       <th className="pb-1 pr-3 font-normal">Avg drawn</th>
@@ -170,7 +185,7 @@ export default function SimulatorIndex() {
                   <tbody>
                     {cardStats.map((c) => (
                       <tr key={c.cardId} className="border-t border-ctp-surface0">
-                        <td className="py-1.5 pr-3 font-mono text-xs text-ctp-text">{c.cardId}</td>
+                        <td className="min-w-44 py-1.5 pr-3 text-ctp-text"><SimulatorCard id={c.cardId} cards={cards} /></td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{c.games}</td>
                         <td className="py-1.5 pr-3 text-ctp-text">{formatPercent(c.winRate)}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDrawn)}</td>
@@ -203,7 +218,7 @@ export default function SimulatorIndex() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Weapon ID</th>
+                      <th className="pb-1 pr-3 font-normal">Weapon</th>
                       <th className="pb-1 pr-3 font-normal">Games</th>
                       <th className="pb-1 pr-3 font-normal">Attack events</th>
                       <th className="pb-1 font-normal">Cleave rate</th>
@@ -212,7 +227,7 @@ export default function SimulatorIndex() {
                   <tbody>
                     {weapons.map((w) => (
                       <tr key={w.weaponCardId} className="border-t border-ctp-surface0">
-                        <td className="py-1.5 pr-3 font-mono text-xs text-ctp-text">{w.weaponCardId}</td>
+                        <td className="min-w-44 py-1.5 pr-3 text-ctp-text"><SimulatorCard id={w.weaponCardId} cards={cards} /></td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{w.games}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{w.attackEvents}</td>
                         <td className="py-1.5 text-ctp-text">{formatPercent(w.cleaveRate)}</td>
