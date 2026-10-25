@@ -354,3 +354,15 @@ existing champion and content-card parameters. Card-detail and champion-detail l
 open scoped Browse Decks. Shared summaries expose only published Main + Material
 membership, never private drafts. Loading and unavailable sources retain filters and
 provide retry through source status.
+
+## Banlist
+
+Default to Standard and the reviewed official B&R list, including seasonal bans.
+Catalog zero-copy limits alone do not identify balance bans: keep other unavailable
+cards in a separate view without guessing their restriction reason. Preserve format,
+view, and card-name search in the URL. Show only the selected format's status, retain
+announced card names while artwork loads or fails, and link the dated official review.
+The list-effective date describes the reviewed B&R, not each card's original ban date.
+Maintain `features/cards/banlistData.ts` after official announcements; update names,
+season labels, effective date, sources, and last-verified date together. Never advance
+the verification date just because the catalog synced.
