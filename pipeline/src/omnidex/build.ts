@@ -15,6 +15,7 @@ import { readCachedBundle, type OmnidexEventBundle } from "./cache.js";
 import { loadCardCatalog } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "../analysis/decklists.js";
 
+import { eventField } from "./eventField.js";
 import { eventIdentity } from "./eventIdentity.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
@@ -33,6 +34,7 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
   teams: OmnidexTeamSighting[];
 }> {
   const cardIndex = new Map((await loadCardCatalog()).map((card) => [card.name, card]));
+  const catalogNames = new Set([...cardIndex.keys()].map(name => name.trim().toLowerCase()));
   const events: OmnidexEventSummary[] = [];
   const seasonsById = new Map<number, OmnidexSeasonSummary>();
   const playersById = new Map<number, OmnidexPlayerSummary>();
@@ -73,6 +75,7 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
       championNames,
       publicDecklistCount: publicDecklists.length,
       topPlayerIdentity: eventIdentity(players, signatures),
+      fieldComposition: eventField(bundle, signatures, catalogNames),
     });
 
     if (event.season && !seasonsById.has(event.season.id)) {

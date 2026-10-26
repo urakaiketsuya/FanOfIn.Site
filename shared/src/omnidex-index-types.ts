@@ -28,6 +28,7 @@ export interface OmnidexEventSummary {
   setting: string;
   url: string;
   /** Compact discovery fields derived from the already-cached event bundle. */
+  fieldComposition?: { entrants: number; champions: { name: string; count: number }[] };
   participantNames?: string[];
   championNames?: string[];
   /** Number of event players whose public decklist was present in the bundle. */

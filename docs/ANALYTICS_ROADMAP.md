@@ -117,7 +117,7 @@ the other page integrations below; live verification is pending. The preceding-f
 comparison now uses the nearest three matching events within 90 days, weighted by
 entrant count, with complete-field and completion-time validation. It retains unavailable
 cohorts rather than skipping missing events. Archive audit: 1,783 of 22,272 indexed
-events advertise complete public deck coverage; each selected bundle is revalidated. This note does not mark release D complete.
+events advertise complete public deck coverage; each selected bundle is revalidated. Events index previews now show the three largest champion shares and the remaining share, alongside attendance, in list and calendar views. Published summaries contain 1,545 validated complete individual fields. Mobile and desktop checks passed; live verification and other page integrations remain. This note does not mark release D complete.
 
 | Page | Deliverable |
 | --- | --- |

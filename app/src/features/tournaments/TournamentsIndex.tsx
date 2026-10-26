@@ -98,7 +98,7 @@ export default function TournamentsIndex() {
 
   const visibleEvents = useMemo(() => events.slice(0, visibleCount), [events, visibleCount]);
   const calendarGroups = useMemo(() => viewMode === "calendar" ? groupEventsByMonth(visibleEvents) : [], [visibleEvents, viewMode]);
-  const championNames = useMemo(() => visibleEvents.flatMap((event) => event.topPlayerIdentity ? [event.topPlayerIdentity.championName] : []), [visibleEvents]);
+  const championNames = useMemo(() => visibleEvents.flatMap((event) => [...(event.topPlayerIdentity ? [event.topPlayerIdentity.championName] : []), ...(event.fieldComposition?.champions.slice(0, 3).map(c => c.name) ?? [])]), [visibleEvents]);
   const championCards = useChampionCardImages(championNames);
   const nameless = useNamelessChampionCard();
 
@@ -267,7 +267,7 @@ export default function TournamentsIndex() {
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-xs text-ctp-subtext0">{error ? "Results unavailable" : !index ? "Loading…" : isPending ? "Updating…" : `${events.length} event${events.length === 1 ? "" : "s"} match`}</p><Tabs variant="pill" baseId="event-view" label="Event results view" active={viewMode} onChange={setViewMode} tabs={[{key: "list", label: "List"}, {key: "calendar", label: "Calendar"}]} /></div>
 
-      <TabPanel baseId="event-view" tab="list" active={viewMode} className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</TabPanel><TabPanel baseId="event-view" tab="calendar" active={viewMode} className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRowView key={event.id} event={event} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</div></section>)}</TabPanel>
+      <TabPanel baseId="event-view" tab="list" active={viewMode} className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRowView key={event.id} event={event} championCards={championCards} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</TabPanel><TabPanel baseId="event-view" tab="calendar" active={viewMode} className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRowView key={event.id} event={event} championCards={championCards} card={event.topPlayerIdentity ? championCards.get(event.topPlayerIdentity.championName) : nameless} />)}</div></section>)}</TabPanel>
 
       <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </PageLayout>

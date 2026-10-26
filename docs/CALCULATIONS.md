@@ -5431,3 +5431,19 @@ Change = target field share − earlier share, in percentage points. Retain the 
 champions, using zero only for a verified absence in a complete field. Sort by absolute
 change, then champion name. Event names/dates link to source reports. No win prediction,
 causal claim or automatic deck recommendation follows from these differences.
+
+### Event browser field previews
+
+Published event summaries contain champion-family counts only for completed individual
+events with one public Main + Material list per entrant and resolved Material names
+and champion identities. The entrant roster is the union of event and player records.
+Duplicate lists, private lists, unknown team status, team events and catalog gaps suppress
+the preview. Unlike advancement reports, field composition requires no top-cut bracket
+or final placements. Champion identity uses the existing pipeline deck signature.
+
+Each share is champion entrants / all entrants × 100. Show the three largest groups
+(count descending, name to break ties), with the remaining groups combined as Other
+champions. Bars use 0–100%; displayed percentages round to one decimal. Attendance
+retains the event index player count; the field heading states its validated denominator.
+The 2026-10-25 backfill used published event bundles and the local cached card catalog;
+1,545 of 22,272 events qualified. No new live API data was fetched.

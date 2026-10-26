@@ -6,6 +6,8 @@ import { formatCountry } from "../../lib/format";
 import CardArtTile from "../../components/CardArtTile";
 import { useChampionCardImages, useNamelessChampionCard } from "../players/useChampionCardImages";
 
+import { Bar, CardIdentity } from "../events/EventReportVisuals";
+
 const HIGH_TIER = new Set(["worlds", "nationals", "ascent"]);
 
 /** One accent color per event tier, in the same tier order as EVENT_CATEGORY_ORDER – gives the list a scannable rhythm without needing to read the category badge text. */
@@ -34,14 +36,14 @@ function CategoryBadge({ category }: { category: string }) {
 
 export default function EventRow({ event }: { event: OmnidexEventSummary }) {
   const identity = event.topPlayerIdentity;
-  const champions = useChampionCardImages(identity ? [identity.championName] : []);
+  const champions = useChampionCardImages([...(identity ? [identity.championName] : []), ...(event.fieldComposition?.champions.map(c => c.name) ?? [])]);
   const nameless = useNamelessChampionCard();
   const name = identity?.championName ?? "Nameless Champion";
   const card = identity ? champions.get(name) : nameless;
-  return <EventRowView event={event} card={card} />;
+  return <EventRowView event={event} card={card} championCards={champions} />;
 }
 
-export const EventRowView = memo(function EventRowView({ event, card }: { event: OmnidexEventSummary; card?: Card }) {
+export const EventRowView = memo(function EventRowView({ event, card, championCards }: { event: OmnidexEventSummary; card?: Card; championCards?: Map<string, Card> }) {
   const identity = event.topPlayerIdentity;
   const name = identity?.championName ?? "Nameless Champion";
   return (
@@ -75,6 +77,22 @@ export const EventRowView = memo(function EventRowView({ event, card }: { event:
         </div>
         </div>
       </div>
+      <section aria-label="Event field" className="mt-3 border-t border-ctp-surface0 pt-3">
+        {event.fieldComposition ? <>
+          <h4 className="text-sm font-semibold">Field · {event.fieldComposition.entrants} players</h4>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            {event.fieldComposition.champions.slice(0, 3).map(champion => {
+              const share = champion.count / event.fieldComposition!.entrants * 100;
+              return <div key={champion.name} className="min-w-0 rounded-lg bg-ctp-mantle p-3">
+                <CardIdentity name={champion.name} card={championCards?.get(champion.name)} />
+                <p className="my-2 text-xl font-semibold tabular-nums text-ctp-teal">{Number(share.toFixed(1))}%</p>
+                <Bar value={share} label={`${champion.name} field share`} />
+              </div>;
+            })}
+          </div>
+          {event.fieldComposition.champions.length > 3 && <p className="mt-2 text-xs text-ctp-subtext0">Other champions · {Number((event.fieldComposition.champions.slice(3).reduce((sum, c) => sum + c.count, 0) / event.fieldComposition.entrants * 100).toFixed(1))}%</p>}
+        </> : <p className="text-xs text-ctp-subtext0">Complete field unavailable</p>}
+      </section>
       <div className="mt-3 flex flex-wrap gap-2 border-t border-ctp-surface0 pt-2">
         <Link to={`/events/${event.id}`} className="inline-flex min-h-control items-center rounded-lg px-3 text-sm font-medium text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Event details →</Link>
         {event.decklists && <Link to={`/events/${event.id}?tab=decklists`} className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue/10 px-3 text-sm font-medium text-ctp-blue hover:bg-ctp-blue/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Browse deck lists</Link>}
