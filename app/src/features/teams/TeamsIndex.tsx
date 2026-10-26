@@ -1,12 +1,15 @@
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexTeams, usePlayerNameById } from "../tournaments/data";
-import { usePlayerDecksData } from "../players/data";
+import { useCompetition } from "../competition/data";
+import type { CompetitionTeam } from "@gatcg/shared";
+import { MatchRecord } from "../competition/ReportValues";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { CardIdentity } from "../events/EventReportVisuals";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PlayerLink from "../players/PlayerLink";
-import CardImage from "../../components/CardImage";
-import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
@@ -21,21 +24,20 @@ export default function TeamsIndex() {
     "Grand Archive TCG team registrations from 3v3 team-format events, searchable by team name or player.",
   );
   const teamsData = useOmnidexTeams();
+  const teamsStatus = usePublishedDataStatus("omnidex-teams", "/data/omnidex/teams.json");
   const playerName = usePlayerNameById();
-  const playerDecksData = usePlayerDecksData();
+  const { data: reports, status: reportStatus } = useCompetition<CompetitionTeam>("teams");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const topChampionById = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const p of playerDecksData?.players ?? []) {
-      const top = p.topChampions[0];
-      if (top) map.set(p.playerId, top.name);
-    }
+  const reportByTeam = useMemo(() => {
+    const map = new Map<string, CompetitionTeam[]>();
+    for (const row of reports?.rows ?? []) { const key = JSON.stringify([row.eventId, row.teamName]); const group = map.get(key) ?? []; group.push(row); map.set(key, group); }
     return map;
-  }, [playerDecksData]);
+  }, [reports]);
+  const reportFor = (eventId: number, name: string) => { const rows = reportByTeam.get(JSON.stringify([eventId, name])); return rows?.length === 1 ? rows[0] : undefined; };
 
   const categoriesPresent = useMemo(() => {
     const present = new Set((teamsData?.teams ?? []).map((t) => t.eventCategory));
@@ -69,7 +71,7 @@ export default function TeamsIndex() {
   const championImages = useChampionCardImages(
     Array.from(
       new Set(
-        visibleRows.flatMap((t) => t.players.map((p) => topChampionById.get(p.id)).filter((n): n is string => n !== undefined)),
+        visibleRows.flatMap((t) => reportFor(t.eventId, t.teamName)?.players.map(p => p.champion).filter((n): n is string => !!n) ?? []),
       ),
     ),
   );
@@ -78,8 +80,12 @@ export default function TeamsIndex() {
     <PageLayout data-component="TeamsIndex">
       <PageHeader
         title="Teams"
-        description={`Team registrations from 3v3 team-format events. Each row is one team at one event – team names aren't a reliable identity (the same name can belong to unrelated teams, and generic names like "Team 1" repeat across unrelated local events), so this isn't deduplicated into one profile per team.`}
+        description="Event-date rosters, results, and champion lineups."
+
       />
+
+      <PublishedSourceStatus label="Team registrations" status={teamsStatus} hasData={!!teamsData} />
+      <PublishedSourceStatus label="Team reports" status={reportStatus} hasData={!!reports} />
 
       <input
         type="text"
@@ -87,7 +93,7 @@ export default function TeamsIndex() {
         placeholder="Search by team or player…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mt-4 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+        className="mt-4 min-h-control w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
       />
 
       {(categoriesPresent.length > 1 || seasonsPresent.length > 1) && (
@@ -99,7 +105,7 @@ export default function TeamsIndex() {
                 value={category ?? ""}
                 aria-label="Type"
                 onChange={(e) => setCategory(e.target.value || null)}
-                className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                className="min-h-control min-w-0 max-w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
               >
                 <option value="">All types</option>
                 {categoriesPresent.map((c) => (
@@ -118,7 +124,7 @@ export default function TeamsIndex() {
                 value={seasonId ?? ""}
                 aria-label="Season"
                 onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
-                className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                className="min-h-control min-w-0 max-w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
               >
                 <option value="">All seasons</option>
                 {seasonsPresent.map(([id, name]) => (
@@ -132,7 +138,6 @@ export default function TeamsIndex() {
         </div>
       )}
 
-      {!teamsData && <InlineState className="mt-6">Loading…</InlineState>}
       {teamsData && rows.length === 0 && <InlineState className="mt-6">No teams match this filter.</InlineState>}
       {teamsData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
@@ -150,37 +155,25 @@ export default function TeamsIndex() {
               {t.finalPlacement !== null && <span className="text-xs text-ctp-subtext0">Placed #{t.finalPlacement}</span>}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-ctp-subtext1">
-              <Link to={`/events/${t.eventId}`} className="text-ctp-blue hover:underline">
+              <Link to={`/events/${t.eventId}`} className="inline-flex min-h-control items-center text-ctp-blue hover:underline">
                 {t.eventName}
               </Link>
               <span className="text-xs text-ctp-subtext0">
                 {EVENT_CATEGORY_LABELS[t.eventCategory] ?? t.eventCategory} · {new Date(t.eventDate).toLocaleDateString()}
               </span>
             </div>
-            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-ctp-subtext1">
-              {t.players.map((p) => {
-                const topChampion = topChampionById.get(p.id);
-                const card = topChampion ? championImages.get(topChampion) : undefined;
-                return (
-                  <span key={p.id} className="inline-flex items-center gap-1.5">
-                    {topChampion && (
-                      <CardHoverPreview image={card?.editions[0]?.image} alt={topChampion}>
-                        <div className="h-6 w-6 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
-                          {card?.editions[0] && (
-                            <CardImage
-                              image={card.editions[0].image}
-                              alt={topChampion}
-                              className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
-                            />
-                          )}
-                        </div>
-                      </CardHoverPreview>
-                    )}
-                    <PlayerLink id={p.id} username={playerName(p.id)} className="hover:text-ctp-blue" />
-                  </span>
-                );
-              })}
-            </div>
+            {(() => {
+              const report = reportFor(t.eventId, t.teamName);
+              const known = report?.players.filter(p => p.champion).length ?? 0;
+              return <div className="mt-4 space-y-3">
+                {report?.record ? <MatchRecord record={report.record} /> : <p className="text-xs text-ctp-subtext1">Team record unavailable.</p>}
+                <p className="text-xs text-ctp-subtext1">{known}/{t.players.length} event champions known · {report?.distinct === null || !report ? 'Lineup diversity unavailable' : `${report.distinct} distinct champions`}</p>
+                <div className="grid gap-4 sm:grid-cols-3">{t.players.map(p => {
+                  const champion = report?.players.find(member => member.id === p.id)?.champion;
+                  return <div key={p.id} className="min-w-0"><CardIdentity name={champion ?? 'Champion unavailable'} card={champion ? championImages.get(champion) : undefined} /><PlayerLink id={p.id} username={playerName(p.id)} className="flex min-h-control items-center break-words text-ctp-blue focus-visible:outline-2" /></div>;
+                })}</div>
+              </div>;
+            })()}
           </div>
         ))}
       </div>

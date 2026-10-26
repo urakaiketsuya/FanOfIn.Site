@@ -12,7 +12,7 @@ export default function SeasonFieldReport({ events }: { events: OmnidexEventSumm
   return <section aria-label="Season field report" className="my-5 space-y-4">
     <h2 className="text-xl font-semibold">Which champions filled the field?</h2>
     {reports.length === 0 && <p className="text-sm text-ctp-subtext0">No completed individual events.</p>}
-    {reports.map(report => <Panel key={report.format}>
+    {[...reports].sort((a,b) => b.months.reduce((s,m) => s+m.entrants,0) - a.months.reduce((s,m) => s+m.entrants,0)).map(report => <Panel key={report.format}>
       <h3 className="text-lg font-semibold capitalize">{report.format}</h3>
       <p className="text-xs text-ctp-subtext0">Worldwide · All tiers · Online + in person · Ranked + unranked</p>
       <div className="my-4 grid gap-3 sm:grid-cols-2">

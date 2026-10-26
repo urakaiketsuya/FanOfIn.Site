@@ -208,3 +208,27 @@ available, but 24.9% lack concrete build assignments and event sampling is spars
 Season build shares must retain Unclassified; card adoption must be labeled for recorded
 lists, distinct from complete-field shares. Next is a shared monthly model and compact
 pipeline artifact, then the season UI. Audit complete does not mean report/live release complete.
+
+### Release D completion pass (2026-10-26)
+
+Implemented the remaining bounded page scope:
+- Seasons index/detail: monthly recorded-build shares, unclassified share, largest
+  gains, same-champion card adoption changes; retains complete-field champion report.
+- Battle Chart: adjacent 90-day records and changes, identity and fetched-round coverage;
+  existing all-time archive remains separate, with ties no longer credited as opponent wins.
+- Players index/profile: recent Standard summaries, per-format records by build,
+  opponent experience and card-illustrated changes between the latest two recorded lists.
+- Teams: historical event lineups, standings records, known-champion coverage and
+  distinct-champion counts; all-time favorite champion substitution removed.
+- Regions: local versus other-country complete fields with matching date/format scope,
+  and champion recurrence across observed fields.
+- Stores/venues: attendance, repeat participation and recurring champion fields,
+  each with its own coverage denominator.
+
+Delivery uses five bounded pipeline projections. Unsupported data remains unavailable;
+no new classifications or user inputs are required. Calculation fixtures cover source
+joins and arithmetic. Local browser verification and release verification are tracked in
+`docs/COMPETITION_REPORT_VERIFICATION.md`. Live release remains a separate gate until
+these commits are pushed and the deployed pages pass verification.
+
+Release D local verification is complete. Estimated delivery: 90% (all eight page groups implemented and locally verified; push/deployment and integrated live verification remain). The remaining gate depends on push authorization under AGENTS.md.

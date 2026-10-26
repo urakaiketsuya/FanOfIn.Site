@@ -1,3 +1,4 @@
+import StoreCompetitionReport from "../competition/StoreCompetitionReport";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { upcomingStoreEvents, filterStores, type StoreDirectory, type StoreRecord } from '@gatcg/shared';
@@ -121,6 +122,7 @@ export default function Stores() {
     {data && (id ? current ? <>
       <Link className={link} to={`/stores${search}`}>All stores and venues</Link>
       <StoreCard store={current} selected={false} search={search} />
+      <StoreCompetitionReport hostId={current.id} />
       <p className="mt-2 text-sm text-ctp-subtext1">Published times are store-local unless noted. Last recorded event · {date(current.lastEventDate)}</p>
       {current.review?.scheduleUrl && <a className={link} href={current.review.scheduleUrl} target="_blank" rel="noreferrer">Check schedule<span className="sr-only"> (new tab)</span></a>}
       <section className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="upcoming-events">

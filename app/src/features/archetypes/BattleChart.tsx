@@ -1,3 +1,4 @@
+import BattlePeriodReport from "../competition/BattlePeriodReport";
 import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { BattleChartEntry } from "@gatcg/shared";
@@ -113,7 +114,7 @@ export default function BattleChart() {
     if (!data) return { lopsided: [], closest: [] };
     const withRate = data.battleChart
       .filter((b) => b.games > 0)
-      .map((b) => ({ ...b, aWinRate: b.aWins / b.games, distFromEven: Math.abs(b.aWins / b.games - 0.5) }));
+      .map((b) => ({ ...b, aWinRate: b.aWins / b.games, distFromEven: Math.abs(b.aWins - b.bWins) / b.games }));
     const lopsided = [...withRate].sort((x, y) => y.distFromEven - x.distFromEven).slice(0, 15);
     const closest = [...withRate].sort((x, y) => x.distFromEven - y.distFromEven).slice(0, 15);
     return { lopsided, closest };
@@ -129,6 +130,8 @@ export default function BattleChart() {
     <PageLayout data-component="BattleChart" width="wide">
       <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} />
 
+      <BattlePeriodReport />
+      <h2 className="mt-8 text-xl font-semibold">All-time matchup archive</h2>
       {!data && status.phase !== "error" && <InlineState className="mt-6">Loading…</InlineState>}
       {status.phase === "error" && <div role="alert" className="mt-6 text-sm text-ctp-subtext1">{status.error} {data && "Showing cached results."} <Button onClick={status.retry}>Retry</Button></div>}
       {data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
@@ -154,7 +157,7 @@ export default function BattleChart() {
                     <th className="sticky left-0 z-20 bg-ctp-base p-2"></th>
                     {signatures.map((s) => (
                       <th key={s} className="sticky top-0 z-10 bg-ctp-base p-2 text-ctp-subtext0">
-                        <button type="button" onClick={() => goToChampion(s)} title={s} className="hover:text-ctp-blue hover:underline">
+                        <button type="button" onClick={() => goToChampion(s)} title={s} className="min-h-control min-w-control rounded hover:text-ctp-blue hover:underline focus-visible:outline-2">
                           {s.slice(0, 4)}
                         </button>
                       </th>
@@ -165,7 +168,7 @@ export default function BattleChart() {
                   {signatures.map((row) => (
                     <tr key={row}>
                       <th className="sticky left-0 z-10 whitespace-nowrap bg-ctp-base p-2 text-right text-ctp-subtext0">
-                        <button type="button" onClick={() => goToChampion(row)} className="hover:text-ctp-blue hover:underline">
+                        <button type="button" onClick={() => goToChampion(row)} className="min-h-control min-w-control rounded hover:text-ctp-blue hover:underline focus-visible:outline-2">
                           {row}
                         </button>
                       </th>
@@ -177,7 +180,7 @@ export default function BattleChart() {
                             key={col}
                             className={`min-w-14 rounded-sm p-1.5 text-center ${isMirror ? "bg-ctp-surface0 text-ctp-subtext0" : heatmapTextColor(rate, games)}`}
                             style={isMirror ? undefined : heatmapStyle(rate, games)}
-                            title={isMirror ? `${row} mirror match` : rate === null ? `${row} vs ${col}: no qualifying games` : `${row} vs ${col}: ${label} over ${games.toLocaleString()} games`}
+                            title={isMirror ? `${row} mirror match` : rate === null ? `${row} vs ${col}: no qualifying matches` : `${row} vs ${col}: ${label} over ${games.toLocaleString()} matches`}
                           >
                             {isMirror || rate === null ? (
                               "–"
@@ -200,18 +203,18 @@ export default function BattleChart() {
           <TabPanel baseId="battle-chart" tab="champion" active={tab}>
           {activeChampion && (
             <div className="mt-6">
-              <div className="flex items-start gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+              <div className="flex flex-wrap items-start gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
                 {championImages.get(activeChampion)?.editions[0]?.image ? (
                   <CardImage image={championImages.get(activeChampion)!.editions[0].image} alt={activeChampion} className="h-32 w-24 shrink-0 rounded-md object-cover object-top" />
                 ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 basis-48">
                   <div className="text-xs text-ctp-subtext0">Matchups for</div>
                   <div className="mt-1 font-semibold text-ctp-text">{activeChampion}</div>
                 <select
                   value={activeChampion}
                   aria-label="Champion"
                   onChange={(e) => { setChampion(e.target.value); setShowAllMatchups(false); }}
-                  className="mt-3 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm text-ctp-text"
+                  className="mt-3 min-h-control w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm text-ctp-text"
                 >
                   {signatures.map((s) => (
                     <option key={s} value={s}>
@@ -235,42 +238,42 @@ export default function BattleChart() {
                         <div className="flex items-start gap-3">
                           {opponentCard?.editions[0]?.image ? <CardImage image={opponentCard.editions[0].image} alt={matchup.opponent} className="h-24 w-16 shrink-0 rounded-md object-cover object-top" /> : <div className="h-24 w-16 shrink-0 rounded-md bg-ctp-surface0" />}
                           <div className="min-w-0 flex-1">
-                            <button type="button" onClick={() => goToChampion(matchup.opponent)} className="font-medium text-ctp-text hover:text-ctp-blue">{matchup.opponent}</button>
+                            <button type="button" onClick={() => goToChampion(matchup.opponent)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{matchup.opponent}</button>
                             <div className={`mt-2 text-lg font-semibold ${winRateColor(matchup.winRate)}`}>{matchup.winRate !== null ? `${(matchup.winRate * 100).toFixed(0)}%` : "–"} <span className="text-xs font-normal text-ctp-subtext0">win rate</span></div>
-                            <div className="mt-1 text-xs text-ctp-subtext1">{matchup.games.toLocaleString()} games</div>
+                            <div className="mt-1 text-xs text-ctp-subtext1">{matchup.games.toLocaleString()} matches</div>
                           </div>
                         </div>
-                        <details className="mt-2 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer hover:text-ctp-blue">Match record</summary><p className="mt-1">{matchup.wins} wins · {matchup.losses} losses · {matchup.ties} ties</p></details>
+                        <p className="mt-2 text-xs text-ctp-subtext1">{matchup.wins}W · {matchup.losses}L · {matchup.ties}T</p>
                       </article>
                     );
                   })}
                 </div>
                 </>
               )}
-              {championMatchups.length > 8 && <button type="button" onClick={() => setShowAllMatchups((value) => !value)} aria-expanded={showAllMatchups} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllMatchups ? "Show fewer matchups" : `Show all ${championMatchups.length} matchups`}</button>}
+              {championMatchups.length > 8 && <button type="button" onClick={() => setShowAllMatchups((value) => !value)} aria-expanded={showAllMatchups} className="mt-3 min-h-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllMatchups ? "Show fewer matchups" : `Show all ${championMatchups.length} matchups`}</button>}
             </div>
           )}
           </TabPanel>
 
           <TabPanel baseId="battle-chart" tab="highlights" active={tab}>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <Section heading="compact" title="Most lopsided" description="The matchups furthest from an even 50/50.">
+              <Section heading="compact" title="Largest win-rate gaps">
                 <div className="mt-2 space-y-1.5 text-sm">
                   {highlights.lopsided.map((h, i) => {
-                    const favored = h.aWinRate >= 0.5 ? h.a : h.b;
-                    const underdog = h.aWinRate >= 0.5 ? h.b : h.a;
-                    const rate = h.aWinRate >= 0.5 ? h.aWinRate : 1 - h.aWinRate;
+                    const favored = h.aWins >= h.bWins ? h.a : h.b;
+                    const underdog = h.aWins >= h.bWins ? h.b : h.a;
+                    const rate = h.aWinRate >= h.bWins / h.games ? h.aWinRate : h.bWins / h.games;
                     return (
                       <div key={i} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5">
-                        <button type="button" onClick={() => goToChampion(favored)} className="font-medium text-ctp-text hover:text-ctp-blue">
+                        <button type="button" onClick={() => goToChampion(favored)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">
                           {favored}
                         </button>{" "}
                         <span className="text-ctp-subtext0">vs</span>{" "}
-                        <button type="button" onClick={() => goToChampion(underdog)} className="font-medium text-ctp-text hover:text-ctp-blue">
+                        <button type="button" onClick={() => goToChampion(underdog)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">
                           {underdog}
                         </button>
                         <div className={`text-xs ${winRateColor(rate)}`}>
-                          {(rate * 100).toFixed(0)}% win rate over {h.games} games
+                          {(rate * 100).toFixed(0)}% win rate over {h.games} matches
                         </div>
                       </div>
                     );
@@ -278,19 +281,19 @@ export default function BattleChart() {
                 </div>
               </Section>
 
-              <Section heading="compact" title="Closest" description="The matchups nearest to a true coin flip.">
+              <Section heading="compact" title="Closest recorded win rates">
                 <div className="mt-2 space-y-1.5 text-sm">
                   {highlights.closest.map((h, i) => (
                     <div key={i} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5">
-                      <button type="button" onClick={() => goToChampion(h.a)} className="font-medium text-ctp-text hover:text-ctp-blue">
+                      <button type="button" onClick={() => goToChampion(h.a)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">
                         {h.a}
                       </button>{" "}
                       <span className="text-ctp-subtext0">vs</span>{" "}
-                      <button type="button" onClick={() => goToChampion(h.b)} className="font-medium text-ctp-text hover:text-ctp-blue">
+                      <button type="button" onClick={() => goToChampion(h.b)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">
                         {h.b}
                       </button>
                       <div className="text-xs text-ctp-text">
-                        {(h.aWinRate * 100).toFixed(0)}% / {((1 - h.aWinRate) * 100).toFixed(0)}% over {h.games} games
+                        {(h.aWinRate * 100).toFixed(0)}% / {((h.bWins / h.games) * 100).toFixed(0)}% over {h.games} matches
                       </div>
                     </div>
                   ))}

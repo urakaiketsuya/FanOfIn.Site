@@ -28,6 +28,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-card-quantity-stats", file: "analysis/card-quantity-stats.json" },
   { key: "analysis-card-stats-by-champion", file: "analysis/card-stats-by-champion.json" },
   { key: "analysis-composition-win-rates", file: "analysis/composition-win-rates.json" },
+  ...["seasons", "battle", "players", "places", "teams"].map(name => ({ key: `competition-${name}`, file: `analysis/competition-${name}.json` })),
   { key: "analysis-field-history", file: "analysis/field-history.json" },
   { key: "analysis-archetypes", file: "analysis/archetypes.json" },
   { key: "analysis-champion-trends", file: "analysis/champion-trends.json" },

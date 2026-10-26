@@ -62,10 +62,10 @@ export const EventRowView = memo(function EventRowView({ event, card, championCa
         <div className="min-w-0">
         <CategoryBadge category={event.category} />
         <h3 className="mt-2 break-words text-lg font-semibold leading-snug text-ctp-text">
-          <Link to={`/events/${event.id}`} className="inline-flex min-h-control items-center rounded-md hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{event.name}</Link>
+          <Link to={`/events/${event.id}`} className="block min-h-control min-w-0 break-words rounded-md [overflow-wrap:anywhere] hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{event.name}</Link>
         </h3>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
-          <div className="min-w-0 flex-1 text-sm text-ctp-subtext1">
+          <div className="min-w-0 flex-1 basis-40 text-sm text-ctp-subtext1">
             <p><time dateTime={event.date}>{new Date(event.date).toLocaleDateString()}</time></p>
             <p className="break-words">{event.hostName}{formatCountry(event.hostCountry) && ` (${formatCountry(event.hostCountry)})`}</p>
             {event.seasonName && <p className="mt-1 break-words text-xs text-ctp-subtext0">{event.seasonName}</p>}

@@ -1,0 +1,15 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { writeCompetitionReports } from '../src/analysis/competitionReports.js';
+import { createAnalysisContext } from '../src/analysis/context.js';
+import { buildCardIndex } from '../src/cards/catalog.js';
+const root = new URL('../../data/', import.meta.url);
+const read = async (file: string) => JSON.parse(await readFile(new URL(file, root), 'utf8'));
+const browse = await read('omnidex/browse.json');
+const bundles = [];
+for (const e of browse.events) if (e.status === 'complete') bundles.push(await read(`omnidex/events/${e.id}.json`));
+await writeCompetitionReports(fileURLToPath(new URL('analysis/', root)), bundles, createAnalysisContext(buildCardIndex((await read('card-catalog.json')).cards)), (await read('analysis/deck-popularity-index.json')).entries, await read('analysis/deck-card-index.json'), await read('analysis/archetype-taxonomy.json'));
+const manifest = await read('manifest.json');
+for (const name of ['seasons', 'battle', 'players', 'places', 'teams']) manifest[`competition-${name}`] = (await read(`analysis/competition-${name}.json`)).generatedAt;
+await writeFile(new URL('manifest.json', root), JSON.stringify(manifest));
+console.log('Competition reports published.');

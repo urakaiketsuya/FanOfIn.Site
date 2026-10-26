@@ -1,3 +1,6 @@
+import { useCompetition } from "../competition/data";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import SeasonPreview from "../competition/SeasonPreview";
 import { Link } from "react-router-dom";
 import { useOmnidexIndex, useOmnidexIndexStatus } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -11,12 +14,14 @@ export default function SeasonsIndex() {
   useDocumentTitle("Seasons", "Grand Archive TCG card-legality seasons and their tournament history.");
   const index = useOmnidexIndex();
   const status = useOmnidexIndexStatus();
+  const reports = useCompetition("seasons");
 
   return (
     <PageLayout data-component="SeasonsIndex">
       <PageHeader title="Seasons" description="Explore tournament history by season, then discover the champions and builds players brought." />
 
       <SeasonIndexStatus status={status} hasData={!!index} />
+      <PublishedSourceStatus label="Season previews" status={reports.status} hasData={!!reports.data} />
       {index && index.seasons.length === 0 && <EmptyState className="mt-6" title="No seasons found yet" />}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -37,6 +42,7 @@ export default function SeasonsIndex() {
                     {new Date(season.dateStart).toLocaleDateString()} to {new Date(season.dateEnd).toLocaleDateString()}
                   </div>
                 </div>
+                <SeasonPreview seasonId={season.id} />
                 <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-5">
                   <div><span className="text-3xl font-bold tabular-nums text-ctp-text">{eventCount}</span>{" "}<span className="ml-2 text-sm text-ctp-subtext0">{eventCount === 1 ? "event" : "events"}</span></div>
                   <span className="text-sm font-semibold text-ctp-blue">Explore season <span aria-hidden="true">→</span></span>

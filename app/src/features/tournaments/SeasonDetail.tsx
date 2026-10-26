@@ -1,3 +1,4 @@
+import SeasonRecordedReport from "../competition/SeasonRecordedReport";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOmnidexIndex, useOmnidexIndexStatus } from "./data";
@@ -157,6 +158,7 @@ export default function SeasonDetail() {
           </header>
 
           <SeasonFieldReport events={events} />
+          <SeasonRecordedReport seasonId={season.id} />
 
           {seasonProduct && (
             <Link

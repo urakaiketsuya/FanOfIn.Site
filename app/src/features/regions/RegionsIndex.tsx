@@ -1,4 +1,5 @@
-import { useState } from "react";
+import RegionalCompetitionReport from "../competition/RegionalCompetitionReport";
+import { useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useRegionalDecks } from "./useRegionalDecks";
 import { useRegionalArchetypes, type RegionalArchetypeRow } from "./useRegionalArchetypes";
@@ -84,6 +85,7 @@ export default function RegionsIndex() {
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
   const [searchParams, setSearchParams] = useSearchParams();
+  const [recalculating, startTransition] = useTransition();
   const [regionOverride, setRegionOverride] = useState<string | null>(() => searchParams.get("region"));
 
   const { loading, options, regionByDeckId } = useRegionalDecks(group);
@@ -94,11 +96,13 @@ export default function RegionsIndex() {
   const insightTab: "cards" | "keywords" = tab === "keywords" ? "keywords" : "cards";
 
   function selectRegion(code: string) {
-    setRegionOverride(code);
-    setSearchParams((previous) => {
-      const next = new URLSearchParams(previous);
-      next.set("region", code);
-      return next;
+    startTransition(() => {
+      setRegionOverride(code);
+      setSearchParams((previous) => {
+        const next = new URLSearchParams(previous);
+        next.set("region", code);
+        return next;
+      });
     });
   }
 
@@ -145,6 +149,7 @@ export default function RegionsIndex() {
         </div>
       </FilterBar>
 
+      {recalculating && <p role="status" className="text-sm text-ctp-subtext1">Recalculating…</p>}
       {loading && <InlineState className="mt-6">Loading…</InlineState>}
       {!loading && options.length === 0 && <EmptyState className="mt-6" title="Not enough regional data yet" />}
 
@@ -154,6 +159,7 @@ export default function RegionsIndex() {
 
           {surface === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
 
+          {surface === "overview" && selectedRegion && <RegionalCompetitionReport region={selectedRegion} group={group} label={selectedOption?.label ?? selectedRegion} />}
           {surface === "overview" && (
             <div className="mt-4">
               <div className="mb-4 flex gap-2">

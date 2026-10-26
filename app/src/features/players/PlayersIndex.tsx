@@ -1,3 +1,6 @@
+import { useCompetition } from "../competition/data";
+import { recordPercent, recordSize, type CompetitionPlayer } from "@gatcg/shared";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
@@ -86,6 +89,8 @@ export default function PlayersIndex() {
 }
 
 function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, string> }) {
+  const { data: recent, status: recentStatus } = useCompetition<CompetitionPlayer>("players");
+  const recentById = useMemo(() => new Map(recent?.rows.map(p => [p.playerId, p.formats.find(f => f.format === "standard")]) ?? []), [recent]);
   const playersData = useOmnidexPlayers();
   const eloData = useEloData();
   const [search, setSearch] = useState("");
@@ -141,6 +146,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
         </p>
       )}
 
+      <PublishedSourceStatus label="Recent records" status={recentStatus} hasData={!!recent} />
+      {recent && <p className="mt-4 text-xs text-ctp-subtext1">Recent record · Standard · {recent.from} – {recent.to} · Individual events · All tiers · Ranked + unranked</p>}
       <div className="mt-6 overflow-x-auto">
         <table className="w-max min-w-full text-sm">
           <thead>
@@ -148,7 +155,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
               <th className="py-1 pr-6">#</th>
               <th className="py-1 pr-6">Player</th>
               <th className="py-1 pr-6">Rating</th>
-              <th className="py-1 pr-6">Record</th>
+              <th className="py-1 pr-6">All-time record</th>
+              <th className="py-1 pr-6">Recent Standard</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
@@ -159,7 +167,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
                 <tr key={player.id}>
                   <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
                   <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <Link to={`/players/${player.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
+                    <Link to={`/players/${player.id}`} className="flex min-h-control items-center gap-2 rounded text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
                       <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
                       {player.username}
                     </Link>
@@ -175,6 +183,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
                   <td className="py-1.5 pr-6 text-ctp-subtext1">
                     {rating?.wins}-{rating?.losses}-{rating?.ties}
                   </td>
+                  <td className="py-2 pr-3">{(() => { const row = recentById.get(player.id); return row && recordSize(row.record) ? <><strong>{recordPercent(row.record)!.toFixed(1)}%</strong><span className="block whitespace-nowrap text-xs text-ctp-subtext1">{row.record.wins}W · {row.record.losses}L · {row.record.ties}T</span></> : <span className="text-xs">Unavailable</span>; })()}</td>
                 </tr>
               );
             })}
@@ -241,7 +250,7 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
               return (
                 <tr key={judge.id}>
                   <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <Link to={`/players/${judge.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
+                    <Link to={`/players/${judge.id}`} className="flex min-h-control items-center gap-2 rounded text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
                       <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
                       {judge.username}
                     </Link>

@@ -128,3 +128,5 @@ export * from "./deckSearch";
 export { computeEventReport, type EventReport, type EventChampionReport } from './eventReport';
 export * from './eventComparison';
 export * from './seasonFieldReport';
+
+export * from "./competitionReports";

@@ -5453,3 +5453,90 @@ The 2026-10-25 backfill used published event bundles and the local cached card c
 Season pages pool the published complete event fields by format and calendar month (the date's published YYYY-MM prefix). The latest two months containing completed individual events are shown; missing field data never causes a month to be skipped. All tiers, settings, and ranked statuses are included and labeled. These are descriptive observed fields, not a matched trend or a causal performance comparison. Changing event coverage can change the observed mix.
 
 Champion share = champion entries / all entries in complete fields × 100. Entries are player-event appearances, not unique players. Each event ID contributes once. A field must have positive integer counts, unique champion names, and counts summing to its positive integer entrant total. Coverage is complete fields / completed individual events for that month and format. A zero-share champion is absent from an observed field; an unobserved month is unavailable. Every observed champion is shown, ordered by combined entries, with paired 0–100% bars and one decimal precision. No new live event requests are needed.
+
+## Competition reports (#4, October 2026)
+
+`shared/src/competitionReports.ts` defines record arithmetic, season recorded-deck
+cohorts, and regional comparisons. `pipeline/src/analysis/competitionReports.ts`
+validates source bundles and publishes five `competition-*.json` projections during
+analysis. `node --import tsx pipeline/scripts/build-competition-reports.ts` rebuilds
+only these projections from published bundles, catalog, lists, and taxonomy, and
+updates their manifest entries. No network or taxonomy recomputation is required.
+
+### Seasons
+
+One observation per recorded `deckId`, joined to completed individual events by event
+ID. Format and season stay separate. Compare the latest two calendar months containing
+eligible events, including a partial latest month; an unsampled month remains visible.
+Build share = assigned sightings / all recorded sightings. Unclassified and ambiguous
+assignments retain their share. Current taxonomy labels apply retrospectively; a gain
+is not proof of a newly invented build. Show the six most recorded builds, three largest
+share gains, and all assignment-status buckets without double listing a row.
+
+Card adoption = usable Main+Material lists containing a card / usable lists for the
+same champion and period. Count a card once regardless of copies or sections. Structural
+usability requires both sections, resolved dictionary names, and positive integer
+quantities; this does not establish deck legality. Sideboard is excluded. Missing or
+invalid lists are counted separately via recorded-deck versus usable-list coverage.
+Show the six largest absolute adoption changes for each of the four most recorded
+champions, with period denominators. Missing denominators suppress comparisons, not
+replace them with zero. These are sampled lists, not whole tournament fields.
+
+### Match and player reports
+
+Anchor the latest 90 inclusive calendar days to the latest completed individual event
+no later than generation day; the preceding 90 days are adjacent and disjoint. Periods
+use event calendar date, not ingestion date. Separate formats; worldwide, all tiers,
+ranked and unranked, online and physical. A completed two-person pairing with reciprocal
+winner/loser or tied/tied status counts once per event/pairing ID. Exclude byes,
+self-pairings, incomplete and conflicting outcomes. Win percentage = wins /
+(wins + losses + ties); ties remain in the denominator. These are match records, not
+game-win percentages. Empty match cells are unavailable. A missing prior period never
+produces a percentage-point delta.
+
+Champion matchup reports require each side to have one visible, structurally usable
+list with catalog-resolved identity. Coverage shows identified matches / all recorded
+valid matches, and events whose fetched round responses have no error / eligible events.
+The latter does not prove every scheduled round was harvested. Mirrors contribute to
+identity coverage but not directional matchup rates. Rank the twelve displayed pairs by
+combined recorded match count; do not infer causal deck strength or statistical significance.
+
+Player reports include all valid recorded pairings in the period, including those with
+unavailable decks. Build results use exact event/player membership and show Unclassified
+when assignment is unavailable. Opponent experience shows the six most frequently faced
+identified champions and identity coverage. A player’s latest two recorded lists within
+the format/window are compared by card quantity separately for Main and Material;
+Sideboard is excluded. Incomplete lists produce unavailable changes. Links preserve the
+source event and player. Player-index recent values are explicitly Standard and separate
+from the pre-existing all-time Elo records.
+
+### Teams
+
+Use the historical event registration, never a player's all-time favorite champion.
+Join an unambiguous team name only within that event to team standings. Counts use
+`statsWins`, `statsLosses`, and `statsTies` directly: Omnidex records byes separately.
+Verified source example: event 4197, Blu-Ray Disco LV, 6W/3L/1 bye, 66.667% MW and
+21 points. Subtracting the bye from wins would be incorrect. Duplicate team names
+prevent a standings join. Lineup diversity is distinct identified champion names among
+three unique registered players; incomplete identities leave diversity unavailable.
+Do not invent a persistent team identity across events.
+
+### Regions and stores
+
+Regional results use completed physical individual events in the latest 90-day window
+of the index, separated by format. Compare the selected host country/region with other
+known host countries, excluding the selected area from the comparison. Complete fields
+must reconcile champion counts to entrants. Field share pools entrants, not an average
+of event percentages. Show complete-field coverage and the number of observed fields
+containing each displayed champion. Unknown locations and unavailable fields do not
+become zero-share events. Use the existing geographic grouping rules.
+
+Stores join on host ID, within the common recent window and format, physical events
+only. A complete roster requires the event's player IDs and player-detail IDs to agree
+uniquely and be nonempty. Average attendance = complete-roster entries / complete-roster
+events. Repeat participation = distinct people seen at two or more observed events /
+distinct people seen at least once in the same window. This is not a retention estimate
+or a claim that other players are new customers. Show roster coverage. Attendance bars
+share a zero baseline and scale to the largest attendance in that store/format/window;
+latest eight observed events are visible and linked. Champion shares and recurrence
+use only separately validated complete public fields, with their own denominator.

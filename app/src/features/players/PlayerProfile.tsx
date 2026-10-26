@@ -1,3 +1,4 @@
+import PlayerCompetitionReport from "../competition/PlayerCompetitionReport";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
 import { useTournamentCardMatches } from "../../components/deck-search/useTournamentCardMatches";
@@ -257,6 +258,7 @@ export default function PlayerProfile() {
       )}
 
       <TabPanel baseId="player-profile" tab="overview" active={tab}>
+      {player && <PlayerCompetitionReport playerId={playerId} />}
       {recentEvents.length > 0 && (
         <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <button type="button" onClick={() => setManualTab("events")} className="text-xs font-medium text-ctp-blue hover:underline">View all {allEvents.length}</button> : undefined}>
           <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />)}</div>

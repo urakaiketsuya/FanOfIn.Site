@@ -1,3 +1,4 @@
+import { writeCompetitionReports } from "./competitionReports.js";
 import { buildDeckPriceIndex } from "./deckPriceIndex.js";
 import { computeCommunityCardStaples } from "./communityCardStaples.js";
 import { loadCommunityStaples } from "./loadCommunityStaples.js";
@@ -256,6 +257,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     JSON.stringify({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }),
     "utf-8",
   );
+
+  await writeCompetitionReports(DATA_DIR, completed, ctx, deckPopularityIndex, { generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }, archetypeTaxonomy);
 
   await writeReferenceArchetypes(path.dirname(DATA_DIR), { generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }, catalog, deckSightings, archetypeTaxonomy.clusters);
 
