@@ -201,3 +201,10 @@ Planning is complete; event-detail implementation has begun. Existing foundation
 effort, but cohort and event-data coverage remain unverified dependencies.
 
 Release D continuation: season detail now includes a card-illustrated monthly field report, separated by format, with entrant-weighted percentages and complete-event coverage. The latest two observed event months stay visible even when field data is unavailable. Build trajectories and card adoption still require their own cohort/data audit; this report does not infer either from champion counts.
+
+Release D data gate (2026-10-26): [season report audit](SEASON_REPORT_AUDIT.md)
+completed with a reproducible read-only command. Recorded-deck lists are structurally
+available, but 24.9% lack concrete build assignments and event sampling is sparse.
+Season build shares must retain Unclassified; card adoption must be labeled for recorded
+lists, distinct from complete-field shares. Next is a shared monthly model and compact
+pipeline artifact, then the season UI. Audit complete does not mean report/live release complete.
