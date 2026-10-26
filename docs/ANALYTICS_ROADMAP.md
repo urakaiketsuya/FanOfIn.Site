@@ -199,3 +199,5 @@ quantities. Page views alone do not demonstrate analytical usefulness.
 Next work: release A's cohort/model audit and one mobile-first deck-versus-build design.
 Planning is complete; event-detail implementation has begun. Existing foundations reduce
 effort, but cohort and event-data coverage remain unverified dependencies.
+
+Release D continuation: season detail now includes a card-illustrated monthly field report, separated by format, with entrant-weighted percentages and complete-event coverage. The latest two observed event months stay visible even when field data is unavailable. Build trajectories and card adoption still require their own cohort/data audit; this report does not infer either from champion counts.

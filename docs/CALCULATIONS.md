@@ -5447,3 +5447,9 @@ champions. Bars use 0–100%; displayed percentages round to one decimal. Attend
 retains the event index player count; the field heading states its validated denominator.
 The 2026-10-25 backfill used published event bundles and the local cached card catalog;
 1,545 of 22,272 events qualified. No new live API data was fetched.
+
+### Season monthly field report
+
+Season pages pool the published complete event fields by format and calendar month (the date's published YYYY-MM prefix). The latest two months containing completed individual events are shown; missing field data never causes a month to be skipped. All tiers, settings, and ranked statuses are included and labeled. These are descriptive observed fields, not a matched trend or a causal performance comparison. Changing event coverage can change the observed mix.
+
+Champion share = champion entries / all entries in complete fields × 100. Entries are player-event appearances, not unique players. Each event ID contributes once. A field must have positive integer counts, unique champion names, and counts summing to its positive integer entrant total. Coverage is complete fields / completed individual events for that month and format. A zero-share champion is absent from an observed field; an unobserved month is unavailable. Every observed champion is shown, ordered by combined entries, with paired 0–100% bars and one decimal precision. No new live event requests are needed.

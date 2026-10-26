@@ -4,6 +4,7 @@ import { useOmnidexIndex, useOmnidexIndexStatus } from "./data";
 import { useSeasonMeta, type SeasonArchetypeRow, type SeasonChampionRow } from "./useSeasonMeta";
 import SeasonIndexStatus from "./SeasonIndexStatus";
 import EventRow from "./EventRow";
+import SeasonFieldReport from "./SeasonFieldReport";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
@@ -154,6 +155,8 @@ export default function SeasonDetail() {
             </div>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-ctp-subtext1">Browse results and decklists, or explore the champions and builds in this season’s meta.</p>
           </header>
+
+          <SeasonFieldReport events={events} />
 
           {seasonProduct && (
             <Link
