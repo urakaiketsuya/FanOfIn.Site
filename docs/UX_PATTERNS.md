@@ -410,3 +410,14 @@ Select at most two decks to inspect Shared core, Different quantities and Distin
 Keep Main and Material separate, show both deck names and actual copy counts, and exclude
 sideboards. No before/after labels or baseline controls appear in the report. Existing Summary
 and Calculators retain their baseline behavior. Report selections survive switching views.
+
+## Deck display arrangement
+
+Finished deck views share browser-persisted grouping, sorting, and visual sizing. Group by deck
+location, set family, element, exact type combination, or no groups. Non-location groups retain
+location labels; tokens remain separate. Set grouping uses allocated editions and the earliest
+catalog release for unspecified copies, without changing saved quantities or printings.
+Sort within each group by deck order, name, numeric cost, quantity, or cheapest available unit
+price. Missing prices and nonnumeric costs sort last; zero is a known value. Price sorting loads
+quotes and keeps pricing visible, including refresh status and retry. The one-card-per-row visual
+layout places artwork beside a linked name and stats at both mobile and desktop widths.

@@ -54,7 +54,7 @@ export function CardStatRows({
       )}
       {fields.price && unitPrice !== undefined && (
         <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
-          <span>Price</span>
+          <span>Price{quantity > 1 ? ` · ${quantity} copies` : ""}</span>
           <span className="text-ctp-text">{formatUsd(unitPrice * quantity)}</span>
         </div>
       )}
@@ -99,8 +99,10 @@ export function VisualCardTile({
   communityEntry,
   fields,
   linkToCard = true,
+  layout = "tile",
   footer,
 }: {
+  layout?: "tile" | "row";
   line: OmnidexDecklistCardLine;
   card: Card | undefined;
   unitPrice: number | undefined;
@@ -126,8 +128,10 @@ export function VisualCardTile({
 
   return (
     <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={line.card}>
-      <div title={line.card}>
+      <div title={line.card} className={layout === "row" ? "grid grid-cols-[88px_minmax(0,1fr)] items-start gap-3 rounded-lg border border-ctp-surface1 p-2 sm:grid-cols-[112px_minmax(0,1fr)]" : undefined}>
         {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{image}</Link> : image}
+        <div className="min-w-0">
+        {layout === "row" && (card && linkToCard ? <Link to={`/cards/${card.slug}`} className="inline-flex min-h-control items-center break-words text-sm font-medium text-ctp-text hover:text-ctp-blue">{line.quantity}× {line.card}</Link> : <p className="break-words text-sm font-medium text-ctp-text">{line.quantity}× {line.card}</p>)}
         <CardStatRows
           card={card}
           quantity={line.quantity}
@@ -137,7 +141,9 @@ export function VisualCardTile({
           communityEntry={communityEntry}
           fields={fields}
         />
+        {layout === "row" && fields.price && <p className="mt-1 text-xs text-ctp-subtext1">Unit price: {unitPrice === undefined ? "Unavailable" : formatUsd(unitPrice)}</p>}
         {footer}
+        </div>
       </div>
     </CardHoverPreview>
   );

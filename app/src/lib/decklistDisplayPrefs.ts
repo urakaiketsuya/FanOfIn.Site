@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 
+import { DECK_GROUPS, DECK_SORTS, type DeckGrouping, type DeckSorting } from "./decklistArrangement";
+
 const STORAGE_KEY = "decklist-display-prefs-v1";
 
 export type DeckDisplayMode = "visual" | "detailed";
 
-export type VisualCardSize = "large" | "medium" | "compact";
+export type VisualCardSize = "large" | "medium" | "compact" | "rows";
 
 interface DecklistDisplayPrefs {
   displayMode: DeckDisplayMode | null;
+  grouping: DeckGrouping;
+  sorting: DeckSorting;
   showPrices: boolean;
   tuningEvidence: boolean;
   metaGaps: boolean;
@@ -26,6 +30,8 @@ interface DecklistDisplayPrefs {
 
 const DEFAULTS: DecklistDisplayPrefs = {
   displayMode: null,
+  grouping: "location",
+  sorting: "original",
   showPrices: false,
   tuningEvidence: false,
   metaGaps: false,
@@ -47,6 +53,8 @@ function load(): DecklistDisplayPrefs {
     const parsed = JSON.parse(raw) as Partial<Omit<DecklistDisplayPrefs, "displayMode">> & { displayMode?: string };
     return {
       displayMode: parsed.displayMode === "compact" ? "visual" : parsed.displayMode === "visual" || parsed.displayMode === "detailed" ? parsed.displayMode : null,
+      grouping: parsed.grouping && Object.hasOwn(DECK_GROUPS, parsed.grouping) ? parsed.grouping : DEFAULTS.grouping,
+      sorting: parsed.sorting && Object.hasOwn(DECK_SORTS, parsed.sorting) ? parsed.sorting : DEFAULTS.sorting,
       showPrices: parsed.showPrices === true,
       tuningEvidence: parsed.tuningEvidence ?? DEFAULTS.tuningEvidence,
       metaGaps: parsed.metaGaps ?? DEFAULTS.metaGaps,
@@ -106,6 +114,8 @@ export function useDecklistDisplayPrefs() {
 
   return {
     ...prefs,
+    setGrouping: (value: DeckGrouping) => setPrefs({ ...getPrefs(), grouping: value }),
+    setSorting: (value: DeckSorting) => setPrefs({ ...getPrefs(), sorting: value }),
     setDisplayMode: (value: DeckDisplayMode) => setPrefs({ ...getPrefs(), displayMode: value }),
     setShowPrices: (value: boolean) => setPrefs({ ...getPrefs(), showPrices: value }),
     setTuningEvidence: (value: boolean) => setPrefs({ ...getPrefs(), tuningEvidence: value }),
