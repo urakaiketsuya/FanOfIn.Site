@@ -44,7 +44,22 @@ Five projections total about 384 KiB gzip. The largest is recent players, 311 Ki
 benchmark. Season/Battle/places/teams projections avoid fetching full lists solely for
 these reports.
 Published projections regenerated from local source artifacts; no network data mutation.
-Push and live verification: pending.
+Push and live verification: passed on 2026-10-26.
+
+- Deployed revision: `7a88075d316594a510075600c888ffc97a1df562` (implementation
+  `26faa5be6`, merged with the latest automated source-data refresh).
+- [Deployment and smoke checks](https://github.com/urakaiketsuya/FanOfIn.Site/actions/runs/40387473970)
+  passed on attempt 2. The first attempt was canceled after an Ubuntu font download
+  stalled; no application change was needed for the successful retry.
+- Real live browser checks, without mocked responses or seeded local data, passed at
+  390px and 1280px on events index/detail (52397), seasons index/Asphodel Paradise,
+  Battle Chart, players index/profile (7483), teams, US regions and store 653.
+- All five live projections match their manifest timestamps and contain results.
+  No JavaScript page errors, report alerts or horizontal overflow were found.
+- Live season mobile and matchup desktop screenshots were visually inspected.
+  Evidence: `/tmp/check-competition-live.cjs` and `/tmp/live-*.png`.
+- Release data validation after merging the refresh passed: 328 concrete builds,
+  60,262 unique decks.
 
 A successful local build does not establish player comprehension. The design retains
 visible percentages/counts, common scales, readable names and linked cards; player-task

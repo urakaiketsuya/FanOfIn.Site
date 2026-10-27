@@ -228,7 +228,7 @@ Implemented the remaining bounded page scope:
 Delivery uses five bounded pipeline projections. Unsupported data remains unavailable;
 no new classifications or user inputs are required. Calculation fixtures cover source
 joins and arithmetic. Local browser verification and release verification are tracked in
-`docs/COMPETITION_REPORT_VERIFICATION.md`. Live release remains a separate gate until
-these commits are pushed and the deployed pages pass verification.
+`docs/COMPETITION_REPORT_VERIFICATION.md`. Deployment and live browser verification
+passed on 2026-10-26 at revision `7a88075d3`.
 
-Release D local verification is complete. Estimated delivery: 90% (all eight page groups implemented and locally verified; push/deployment and integrated live verification remain). The remaining gate depends on push authorization under AGENTS.md.
+Release D / #4 is complete: 100% of the bounded scope (all eight page groups implemented, locally verified, deployed and live verified). No release blockers remain. Earlier continuation notes above record historical milestones; this completion record supersedes their pending work. Next recommended work is release A’s cohort/model audit and mobile-first deck-versus-build design. Player comprehension remains an ongoing evaluation, not a claimed release test.
