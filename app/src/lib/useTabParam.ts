@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
  * keeping default-tab URLs clean. An unrecognized or missing value falls back to `defaultTab`
  * rather than erroring, so a stale/bad link still renders something.
  */
-export function useTabParam<T extends string>(paramName: string, validTabs: readonly T[], defaultTab: T): [T, (tab: T) => void] {
+export function useTabParam<T extends string>(paramName: string, validTabs: readonly T[], defaultTab: T, navigationState?: unknown): [T, (tab: T) => void] {
   const [searchParams, setSearchParams] = useSearchParams();
   const raw = searchParams.get(paramName);
   const tab = raw && (validTabs as readonly string[]).includes(raw) ? (raw as T) : defaultTab;
@@ -22,7 +22,7 @@ export function useTabParam<T extends string>(paramName: string, validTabs: read
         else params.set(paramName, next);
         return params;
       },
-      { replace: true },
+      { replace: true, state: navigationState },
     );
   }
 

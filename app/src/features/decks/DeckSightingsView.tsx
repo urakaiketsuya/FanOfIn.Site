@@ -1,3 +1,5 @@
+import { BrowseComparisonChoice } from "./BrowseComparison";
+import { sightingComparison } from "./browseComparisonModel";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import DeckContentFilterChips from "./DeckContentFilterChips";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
@@ -326,13 +328,12 @@ export default function DeckSightingsView({
 
       <div className={`mt-2 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 ${contentFiltersLoading ? "hidden" : ""}`}>
         {visible.map((sighting) => (
-          <DeckSightingRow
-            key={sighting.deckId}
+          <BrowseComparisonChoice key={sighting.deckId} deck={sightingComparison(sighting, playerName(sighting.player))}><DeckSightingRow
             sighting={sighting}
             playerName={playerName(sighting.player)}
             championCard={sighting.championName ? championImages.get(sighting.championName) : undefined}
             browseCard
-          />
+          /></BrowseComparisonChoice>
         ))}
       </div>
 

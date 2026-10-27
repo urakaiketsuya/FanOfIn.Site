@@ -1,6 +1,7 @@
+import { readBrowseComparison } from "../decks/browseComparisonModel";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import SearchTournamentDecks from "./SearchTournamentDecks";
 import ImportByPlayer from "./ImportByPlayer";
 import ImportTopDecks from "./ImportTopDecks";
@@ -62,12 +63,15 @@ export default function CompareIndex() {
     "Compare",
     "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge, or compare individual cards' usage, win rate, and price.",
   );
-  const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks");
-  const [decks, setDecks] = useState<ComparedDeck[]>([]);
-  const [showAddDecks, setShowAddDecks] = useState(true);
-  const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "myDecks");
+  const location = useLocation();
+  const [browseReturnTo] = useState<string | null>(() => typeof location.state?.browseReturnTo === "string" && /^\/decks(?:\?|$)/.test(location.state.browseReturnTo) ? location.state.browseReturnTo : null);
+  const [decks, setDecks] = useState<ComparedDeck[]>(() => readBrowseComparison(location.state?.browseDecks).filter((deck): deck is ComparedDeck => deck.source.kind !== "public"));
+  const [showAddDecks, setShowAddDecks] = useState(decks.length === 0);
+  const browseState = browseReturnTo ? { browseDecks: decks, browseReturnTo } : undefined;
+  const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks", browseState);
+  const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "myDecks", browseState);
   // Automatic comparisons open first; existing view URLs retain their meaning.
-  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "forecasts");
+  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "forecasts", browseState);
   const [cardDataMode, setCardDataMode] = useState<"quantities" | "performance">("quantities");
   const effectiveViewMode = viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
@@ -235,6 +239,7 @@ export default function CompareIndex() {
   return (
     <PageLayout data-component="CompareIndex" width="full">
       <PageHeader title="Compare" />
+      {browseReturnTo && <Link to={browseReturnTo} className="mt-2 inline-flex min-h-12 items-center rounded px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">← Browse decks</Link>}
 
       <div className="mt-4"><Tabs active={compareType} tabs={COMPARE_TYPE_KEYS.map(key => ({ key, label: COMPARE_TYPE_LABELS[key] }))} label="Comparison type" baseId="type" onChange={setCompareType} variant="pill" wrap /></div>
 

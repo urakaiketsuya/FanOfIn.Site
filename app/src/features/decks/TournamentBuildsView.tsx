@@ -1,3 +1,5 @@
+import { BrowseComparisonChoice } from "./BrowseComparison";
+import { buildComparison } from "./browseComparisonModel";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import DeckContentFilterChips from "./DeckContentFilterChips";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
@@ -227,12 +229,11 @@ export default function TournamentBuildsView({
 
       <div className={`mt-2 grid gap-3 transition-opacity sm:grid-cols-2 xl:grid-cols-3 ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (
-          <PopularDeckRow
-            key={deck.signature}
+          <BrowseComparisonChoice key={deck.signature} deck={buildComparison(deck)}><PopularDeckRow
             deck={deck}
             price={priceBySignature.get(deck.signature) ?? null}
             championCard={deck.championName ? championImages.get(deck.championName) : undefined}
-          />
+          /></BrowseComparisonChoice>
         ))}
       </div>
 

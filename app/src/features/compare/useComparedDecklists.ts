@@ -7,8 +7,10 @@ interface PublishedEventBundle {
   decklists: OmnidexDecklistEntry[] | { error: string };
 }
 
-async function resolveOne(deck: ComparedDeck): Promise<OmnidexDecklist | null> {
+export async function resolveComparedDeck(deck: ComparedDeck): Promise<OmnidexDecklist | null> {
+  // Browse preloads the complete selection atomically; retain event identity for result stats.
   if (deck.source.kind === "custom") return deck.source.decklist;
+  if (deck.source.decklist) return deck.source.decklist;
 
   const { eventId, player } = deck.source;
 
@@ -43,7 +45,7 @@ export function useComparedDecklists(decks: ComparedDeck[]): Map<string, Omnidex
   useEffect(() => {
     let cancelled = false;
 
-    Promise.all(decks.map(async (deck) => [deck.key, await resolveOne(deck)] as const)).then((pairs) => {
+    Promise.all(decks.map(async (deck) => [deck.key, await resolveComparedDeck(deck).catch(() => null)] as const)).then((pairs) => {
       if (!cancelled) setResolved(new Map(pairs));
     });
 

@@ -5,6 +5,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import BrowseComparison from "./BrowseComparison";
 import CombinedDecksView from "./CombinedDecksView";
 import TournamentBuildsView from "./TournamentBuildsView";
 import { emptyDeckContentFilters } from "./deckContentFilters";
@@ -38,7 +39,7 @@ export default function BrowseDecksIndex() {
   }
 
   return (
-    <PageLayout data-component="BrowseDecksIndex" width="wide">
+    <PageLayout data-component="BrowseDecksIndex" width="wide"><BrowseComparison>
       <PageHeader
         title="Browse Decks"
       />
@@ -51,6 +52,6 @@ export default function BrowseDecksIndex() {
       <TabPanel baseId="deck-view" tab="builds" active={view}>
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       </TabPanel>
-    </PageLayout>
+    </BrowseComparison></PageLayout>
   );
 }

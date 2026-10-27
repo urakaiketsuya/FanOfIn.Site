@@ -377,3 +377,18 @@ retain their mounted content, and preserve expansion while switching visual/deta
 views or display settings within the current viewer. Empty sections remain omitted.
 Prices stay visible in the header when enabled. Collapse does not alter deck contents,
 exports, ownership calculations, or editing drafts.
+
+## Browse deck comparison
+
+Browse results expose an independent Compare checkbox with a Selected label and outline.
+One selection spans All Decks, source filters, and Most Played, and persists in this tab's
+session storage across navigation and reloads. Filtering never removes selected decks.
+The bottom tray shows removable deck labels and a Compare selected action, enabled at two
+decks. Additional selections open the shared sheet so the tray stays compact. Reserve its
+measured height and focus scroll padding; move it into document flow while the keyboard is open.
+
+Resolve every selected list before navigating; a failed source retains the whole selection
+with a named error and retry. Comparison opens Cards on differences and retains an explicit
+return to Browse with its filters. Shared decks use the published list and format; tournament
+lists keep their actual sections. Most Played selections represent exact Main + Material only,
+explicitly labeled, and never borrow a sideboard from an arbitrary player.

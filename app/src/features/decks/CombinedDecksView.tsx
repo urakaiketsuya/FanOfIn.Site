@@ -1,3 +1,5 @@
+import { BrowseComparisonChoice } from "./BrowseComparison";
+import { publicComparison, sightingComparison } from "./browseComparisonModel";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import { decodeCardLines, deckSearchChampion } from "@gatcg/shared";
 import DeckContentFilterControls from "./DeckContentFilterControls";
@@ -157,7 +159,7 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
     {source !== "tournament" && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
     <p className="mt-4 text-xs text-ctp-subtext0" role="status">{rows.length.toLocaleString()} decks · {sort === "oldest" ? "Oldest first" : sort === "champion" ? "Champion A–Z" : "Newest first"}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</p>
     {!rows.length && !waiting && !failed && (!contentActive || source === "shared" || !!cardIndex) && <InlineState className="mt-4">No decks match these filters.</InlineState>}
-    <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <PublicDeckCard key={`shared:${row.id}`} deck={row.deck} /> : <DeckSightingRow key={`tournament:${row.id}`} sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard />)}</div>
+    <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <BrowseComparisonChoice key={`shared:${row.id}`} deck={publicComparison(row.deck)}><PublicDeckCard deck={row.deck} /></BrowseComparisonChoice> : <BrowseComparisonChoice key={`tournament:${row.id}`} deck={sightingComparison(row.deck, playerName(row.deck.player))}><DeckSightingRow sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard /></BrowseComparisonChoice>)}</div>
     {rows.length > visibleCount && <Button className="mt-4" onClick={() => setVisibleCount(value => value + 30)}>Load more</Button>}
     </>}
   </>;
