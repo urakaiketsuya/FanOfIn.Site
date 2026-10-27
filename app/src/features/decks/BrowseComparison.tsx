@@ -5,6 +5,7 @@ import DialogSheet from "../../components/ui/DialogSheet";
 import { accountApi } from "../../lib/accountApi";
 import { resolveComparedDeck } from "../compare/useComparedDecklists";
 import type { ComparedDeck } from "../compare/types";
+import { saveBrowseHandoff } from "../compare/browseHandoff";
 import { readBrowseComparison, type BrowseComparisonDeck } from "./browseComparisonModel";
 
 const STORAGE_KEY = "foi:browse-comparison:v1";
@@ -81,7 +82,15 @@ export default function BrowseComparison({ children }: { children: ReactNode }) 
           return { ...comparison, source: { ...comparison.source, decklist } };
         } catch { throw new Error(`Could not load ${deck.label}. Retry or remove this deck.`); }
       }));
-      if (current === request.current) navigate("/compare?view=table", { state: { browseDecks: resolved, browseReturnTo: `${location.pathname}${location.search}` } });
+      if (current === request.current) {
+        const handoff = { browseDecks: resolved, browseReturnTo: `${location.pathname}${location.search}` };
+        const id = crypto.randomUUID();
+        // Static-host route redirects discard history.state, so retain this exact comparison
+        // under a tab-local token. Navigation state remains a fallback when storage is blocked.
+        let saved = false;
+        try { saved = saveBrowseHandoff(id, handoff, sessionStorage); } catch { /* Navigation still works without storage. */ }
+        navigate(`/compare?view=table${saved ? `&browse=${id}` : ""}`, { state: handoff });
+      }
     } catch (reason) { if (current === request.current) setError(reason instanceof Error ? reason.message : "Could not load the selected decks. Try again."); }
     finally { if (current === request.current) setBusy(false); }
   }

@@ -1,4 +1,4 @@
-import { readBrowseComparison } from "../decks/browseComparisonModel";
+import { loadBrowseHandoff, readBrowseHandoff, saveBrowseHandoff } from "./browseHandoff";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -64,9 +64,20 @@ export default function CompareIndex() {
     "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge, or compare individual cards' usage, win rate, and price.",
   );
   const location = useLocation();
-  const [browseReturnTo] = useState<string | null>(() => typeof location.state?.browseReturnTo === "string" && /^\/decks(?:\?|$)/.test(location.state.browseReturnTo) ? location.state.browseReturnTo : null);
-  const [decks, setDecks] = useState<ComparedDeck[]>(() => readBrowseComparison(location.state?.browseDecks).filter((deck): deck is ComparedDeck => deck.source.kind !== "public"));
+  const browseId = new URLSearchParams(location.search).get("browse");
+  const [handoff] = useState(() => {
+    try { return loadBrowseHandoff(browseId, sessionStorage) ?? readBrowseHandoff(location.state); }
+    catch { return readBrowseHandoff(location.state); }
+  });
+  const browseReturnTo = handoff?.browseReturnTo ?? null;
+  const [decks, setDecks] = useState<ComparedDeck[]>(handoff?.browseDecks ?? []);
   const [showAddDecks, setShowAddDecks] = useState(decks.length === 0);
+  const [handoffSaved, setHandoffSaved] = useState(true);
+  useEffect(() => {
+    if (!browseReturnTo) return;
+    try { setHandoffSaved(Boolean(browseId && saveBrowseHandoff(browseId, { browseDecks: decks, browseReturnTo }, sessionStorage))); }
+    catch { setHandoffSaved(false); }
+  }, [browseId, browseReturnTo, decks]);
   const browseState = browseReturnTo ? { browseDecks: decks, browseReturnTo } : undefined;
   const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks", browseState);
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "myDecks", browseState);
@@ -240,6 +251,7 @@ export default function CompareIndex() {
     <PageLayout data-component="CompareIndex" width="full">
       <PageHeader title="Compare" />
       {browseReturnTo && <Link to={browseReturnTo} className="mt-2 inline-flex min-h-12 items-center rounded px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">← Browse decks</Link>}
+      {!handoffSaved && <p role="status" className="text-sm text-ctp-yellow">This browser cannot retain the comparison after a refresh.</p>}
 
       <div className="mt-4"><Tabs active={compareType} tabs={COMPARE_TYPE_KEYS.map(key => ({ key, label: COMPARE_TYPE_LABELS[key] }))} label="Comparison type" baseId="type" onChange={setCompareType} variant="pill" wrap /></div>
 
@@ -249,7 +261,7 @@ export default function CompareIndex() {
         </div>
       ) : (
         <div role="tabpanel" id="type-panel-decks" aria-labelledby="type-tab-decks">
-          <Panel className="sticky top-14 z-30 mt-4 shadow-sm">
+          <Panel className="mt-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm font-semibold text-ctp-text">{decks.length === 0 ? "Choose decks" : `${decks.length} deck${decks.length === 1 ? "" : "s"} selected`}</p>
               <div className="flex items-center gap-2">

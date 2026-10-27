@@ -392,3 +392,8 @@ with a named error and retry. Comparison opens Cards on differences and retains 
 return to Browse with its filters. Shared decks use the published list and format; tournament
 lists keep their actual sections. Most Played selections represent exact Main + Material only,
 explicitly labeled, and never borrow a sideboard from an arbitrary player.
+Comparison handoffs use a tab-local session token in the URL as well as navigation state.
+The token restores exact lists after static-host redirects on refresh; comparison edits update
+that snapshot without changing the Browse selection. Share uses the existing portable share link,
+not the tab-local token. Blocked storage keeps navigation available and shows a refresh warning.
+The selected-decks summary on the comparison page scrolls normally with the page; it is not sticky.
