@@ -17,14 +17,15 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
   championCard: Card | undefined;
   deckHref?: string;
   isBaseline: boolean;
-  onSetBaseline: () => void;
+  onSetBaseline?: () => void;
   onRemove: () => void;
 }) {
+  const Wrapper = onSetBaseline ? 'button' : 'div';
   const { primary, secondary } = splitDeckLabel(deck.label);
 
   return (
     <div data-component="DeckChip" className={`relative w-32 shrink-0 snap-start overflow-hidden rounded-xl border transition-colors ${isBaseline ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/10" : "border-ctp-surface1 bg-ctp-surface0"}`}>
-      <button type="button" onClick={onSetBaseline} aria-pressed={isBaseline} aria-label={`${deck.label}${isBaseline ? ", comparison baseline" : ", set as comparison baseline"}`} className="block w-full text-left">
+      <Wrapper onClick={onSetBaseline} aria-pressed={onSetBaseline ? isBaseline : undefined} aria-label={onSetBaseline ? `${deck.label}${isBaseline ? ", comparison baseline" : ", set as comparison baseline"}` : deck.label} className="block w-full text-left">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={primary}>
           <div className="relative aspect-[5/3] w-full overflow-hidden bg-ctp-mantle">
             {championCard?.editions[0] && (
@@ -41,7 +42,7 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
           <div className={`truncate text-xs ${isBaseline ? "font-semibold text-ctp-blue" : "text-ctp-text"}`}>{primary}</div>
           {secondary && <div className="mt-0.5 truncate text-[10px] text-ctp-subtext0">{secondary}</div>}
         </div>
-      </button>
+      </Wrapper>
       {deckHref && <Link to={deckHref} aria-label={`Open deck page for ${deck.label}`} title="Open deck page" className="absolute bottom-0 right-8 inline-flex min-h-8 min-w-8 items-center justify-center text-sm text-ctp-subtext0 hover:text-ctp-blue">↗</Link>}
       <button
         type="button"

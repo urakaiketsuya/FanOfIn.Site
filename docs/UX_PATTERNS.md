@@ -397,3 +397,16 @@ The token restores exact lists after static-host redirects on refresh; compariso
 that snapshot without changing the Browse selection. Share uses the existing portable share link,
 not the tab-local token. Blocked storage keeps navigation available and shows a refresh warning.
 The selected-decks summary on the comparison page scrolls normally with the page; it is not sticky.
+
+### Baseline-free comparison report
+
+Comparison Report treats every selected deck equally. Show absolute Main-library draw access
+for named cards at 7/10/15/20 cards seen; a missing card is zero, but an unavailable list or
+empty library is unknown. The single-outcome view sorts all decks by probability; the two-outcome
+view uses the same 0–100% axes and stable numbered deck labels. Coincident points list all deck
+numbers. Keep every deck available in the labeled selection rows, including on mobile.
+
+Select at most two decks to inspect Shared core, Different quantities and Distinctive cards.
+Keep Main and Material separate, show both deck names and actual copy counts, and exclude
+sideboards. No before/after labels or baseline controls appear in the report. Existing Summary
+and Calculators retain their baseline behavior. Report selections survive switching views.

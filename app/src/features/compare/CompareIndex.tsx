@@ -279,8 +279,8 @@ export default function CompareIndex() {
                   deck={d}
                   championCard={championCardsByDeckKey.get(d.key)}
                   deckHref={d.source.kind === "sighting" ? deckPageByKey.get(d.key) : undefined}
-                  isBaseline={d.key === effectiveBaselineKey}
-                  onSetBaseline={() => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
+                  isBaseline={effectiveViewMode !== "forecasts" && d.key === effectiveBaselineKey}
+                  onSetBaseline={effectiveViewMode === "forecasts" ? undefined : () => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
                   onRemove={() => removeDeck(d.key)}
                 />
               ))}
@@ -336,7 +336,7 @@ export default function CompareIndex() {
                         {cardDataMode === "quantities" ? <ComparisonDifferences decks={decks} decklists={decklists} /> : <ComparisonCardStats decks={decks} decklists={decklists} />}
                       </>
                     )}
-                    <ComparisonTools onExplore={() => { setViewMode("calculators"); requestAnimationFrame(() => document.getElementById("view-tab-calculators")?.focus()); }} active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
+                    <ComparisonTools onRetryDecklists={() => setDecks(previous => [...previous])} active={effectiveViewMode} decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} onViewAllDifferences={() => setViewMode("table")} />
                   </div>
                 </>
               )}
