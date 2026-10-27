@@ -366,3 +366,14 @@ The list-effective date describes the reviewed B&R, not each card's original ban
 Maintain `features/cards/banlistData.ts` after official announcements; update names,
 season labels, effective date, sources, and last-verified date together. Never advance
 the verification date just because the catalog synced.
+
+## Deck section headings
+
+Shared read-only deck views use prominent sentence-case section headings, visible copy
+counts (distinct types for Tokens), a divider, and the shared chevron. The full header
+is a minimum-48px button with expanded state and a linked content region. Main and
+Material start open; Sideboard and Tokens start closed. Sections toggle independently,
+retain their mounted content, and preserve expansion while switching visual/detailed
+views or display settings within the current viewer. Empty sections remain omitted.
+Prices stay visible in the header when enabled. Collapse does not alter deck contents,
+exports, ownership calculations, or editing drafts.

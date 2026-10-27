@@ -24,6 +24,7 @@ import { extractProducedTokens } from "../../lib/cardIntent";
 import { useDecklistDisplayPrefs, type DeckDisplayMode } from "../../lib/decklistDisplayPrefs";
 import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
+import { DeckSectionExpansion } from "./DeckSection";
 import { DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines – round-trips with the Compare tool's paste parser. */
@@ -196,7 +197,7 @@ export default function DecklistView({
   }
 
   return (
-    <div data-component="DecklistView">
+    <DeckSectionExpansion><div data-component="DecklistView">
       <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
       <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
         <MenuDetails className="group">
@@ -299,6 +300,6 @@ export default function DecklistView({
       {showAnalysis && displayPrefs.tuningEvidence && (
         <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
       )}
-    </div>
+    </div></DeckSectionExpansion>
   );
 }
