@@ -1,6 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadBrowseHandoff, saveBrowseHandoff, type BrowseHandoff } from "../src/features/compare/browseHandoff";
+import { loadBrowseHandoff, readBrowseHandoff, saveBrowseHandoff, type BrowseHandoff } from "../src/features/compare/browseHandoff";
+
+test("static-host canonical browse URLs retain their trailing slash and filters", () => {
+  for (const browseReturnTo of ["/decks", "/decks/", "/decks?source=tournament", "/decks/?source=tournament"]) {
+    assert.deepEqual(readBrowseHandoff({ browseReturnTo, browseDecks: [] }), { browseReturnTo, browseDecks: [] });
+  }
+  assert.equal(readBrowseHandoff({ browseReturnTo: "/decks/other", browseDecks: [] }), null);
+});
 
 test("comparison survives loss of navigation state and keeps separate comparison snapshots", () => {
   const values = new Map<string, string>();

@@ -7,7 +7,7 @@ const prefix = "foi:comparison-handoff:";
 export function readBrowseHandoff(value: unknown): BrowseHandoff | null {
   if (!value || typeof value !== "object") return null;
   const handoff = value as Partial<BrowseHandoff>;
-  if (typeof handoff.browseReturnTo !== "string" || !/^\/decks(?:\?|$)/.test(handoff.browseReturnTo)) return null;
+  if (typeof handoff.browseReturnTo !== "string" || !/^\/decks\/?(?:\?|$)/.test(handoff.browseReturnTo)) return null;
   return { browseReturnTo: handoff.browseReturnTo, browseDecks: readBrowseComparison(handoff.browseDecks).filter((deck): deck is ComparedDeck => deck.source.kind !== "public") };
 }
 
