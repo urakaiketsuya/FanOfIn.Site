@@ -1,7 +1,8 @@
 import { BrowseComparisonChoice } from "./BrowseComparison";
 import { buildComparison } from "./browseComparisonModel";
-import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
-import DeckContentFilterChips from "./DeckContentFilterChips";
+import BrowseDeckFilters from "./BrowseDeckFilters";
+import DeckResultsOrder from "./DeckResultsOrder";
+import type { ActiveDeckFilter } from "../../components/deck-search/ActiveDeckFilters";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
 import DeckDateRangeFilter from "./DeckDateRangeFilter";
 import { deckDateInRange } from "./deckDateRange";
@@ -12,10 +13,8 @@ import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/ui/Button";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import LoadMore from "../../components/LoadMore";
 import { EmptyState } from "../../components/ui/ContentState";
-import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -25,7 +24,7 @@ import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPriceIndexData, useDeckPopularityIndexData } from "../topdecks/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const BUILDS_PAGE_SIZE = 30;
 
@@ -51,7 +50,7 @@ export default function TournamentBuildsView({
   contentFilters: DeckContentFilterState;
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [minPlayers, setMinPlayers] = useState<number>(searchParams.get("minPlayers") === "any" ? 1 : 2);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [elementFilter, setElementFilter] = useState<string[]>([]);
@@ -147,46 +146,65 @@ export default function TournamentBuildsView({
   }, [championName, minPlayers, maxPrice, elementFilter, sortMode, secondarySortMode, sortPriority, dateFrom, dateTo, contentFilters]);
 
   const visible = sorted.slice(0, visibleCount);
-  const activeFilterCount = (dateFrom || dateTo ? 1 : 0) + (minPlayers > 1 ? 1 : 0) + (maxPrice !== null ? 1 : 0) + elementFilter.length + deckContentFilterCount(contentFilters);
-  const activeFilterLabels = [
-    ...(dateFrom || dateTo ? [`Last played: ${dateFrom || "Any start"} – ${dateTo || "Any end"}`] : []),
-    ...(minPlayers > 1 ? [`${minPlayers}+ players`] : []),
-    ...(maxPrice !== null ? [`Up to $${maxPrice}`] : []),
-    ...elementFilter.map((element) => `Deck element: ${filterLabel(element)}`),
-    ...(contentFilters.speed === "any" ? [] : [`Speed: ${contentFilters.speed}`]),
+  const activeItems: ActiveDeckFilter[] = [
+    ...(championName ? [{ key: 'champion', label: `Champion: ${championName}`, remove: () => setChampionName(null) }] : []),
+    ...(dateFrom || dateTo ? [{ key: 'dates', label: `Last played: ${dateFrom || 'Any'} – ${dateTo || 'Any'}`, remove: () => { setDateFrom(''); setDateTo(''); } }] : []),
+    ...(minPlayers > 1 ? [{ key: 'players', label: `${minPlayers}+ players`, remove: () => setMinPlayers(1) }] : []),
+    ...(maxPrice !== null ? [{ key: 'price', label: `Up to $${maxPrice}`, remove: () => setMaxPrice(null) }] : []),
+    ...elementFilter.map(value => ({ key: `element:${value}`, label: `Deck element: ${filterLabel(value)}`, remove: () => toggleElement(value) })),
   ];
+  function clearFilters() {
+    startTransition(() => {
+      setDateFrom(''); setDateTo(''); setMinPlayers(1); setMaxPrice(null); setElementFilter([]);
+      setSearchParams(previous => { const next = new URLSearchParams(previous); for (const key of [...next.keys()]) if (key.startsWith('content-') || key === 'champion') next.delete(key); return next; });
+    });
+  }
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))));
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:flex sm:flex-wrap sm:items-center">
-        <select
-          value={championName ?? ""}
-          aria-label="Champion"
-          onChange={(e) => setChampionName(e.target.value || null)}
-          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
-        >
-          <option value="">All champions</option>
-          {championsPresent.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={sortMode}
-          aria-label="Sort most played decks"
-          onChange={(e) => { const value = e.target.value as BuildSortMode; startTransition(() => setSortMode(value)); }}
-          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
-        >
-          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
-            <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
-          ))}
-        </select>
-      </div>
+      <BrowseDeckFilters filters={contentFilters} setFilters={setContentFilters} items={activeItems} onClear={clearFilters} resultLabel={`Show ${sorted.length.toLocaleString()} ${sorted.length === 1 ? "build" : "builds"}`}>
+        <label className="flex flex-col gap-1 text-sm">Champion
+          <select
+            value={championName ?? ""}
+            aria-label="Champion"
+            onChange={(e) => setChampionName(e.target.value || null)}
+            className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
+          >
+            <option value="">All champions</option>
+            {championsPresent.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <SegmentedFilter label="Players" options={MIN_PLAYERS.map(value => ({ value, label: value === 1 ? "Any" : `${value}+ players` }))} value={minPlayers} onChange={value => startTransition(() => setMinPlayers(value))} />
+        <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...[25, 50, 100, 250, 500, 1000].map(value => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={value => startTransition(() => setMaxPrice(value || null))} />
+        <MultiSelectFilter label="Elements" hint={elementFilter.length > 1 ? "Match all selected" : undefined} options={elementsPresent.map((element) => ({ value: element, text: element.toLowerCase() }))} selected={new Set(elementFilter)} onToggle={toggleElement} iconKind="elements" />
+        <DeckDateRangeFilter label="Last played" from={dateFrom} to={dateTo} onFrom={value => startTransition(() => setDateFrom(value))} onTo={value => startTransition(() => setDateTo(value))} />
+        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
+      </BrowseDeckFilters>
 
-      <details className="group mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
+      <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(priceIndexData)} />
+      <PublishedSourceStatus label="Most played deck results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
+      <PublishedSourceStatus label="Most played deck lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
+      {error && <div role="alert" className="mt-4"><p>{error}</p><Button onClick={retry}>Try again</Button></div>}
+      {loading && popularityStatus.phase !== "error" && cardIndexStatus.phase !== "error" && <DeckResultsSkeleton />}
+      {!loading && !error && sorted.length === 0 && <EmptyState className="mt-6" title="No matching decks" description="Include all champions and players to explore more lists." action={<Button onClick={clearFilters}>Clear filters</Button>} />}
+      <DeckResultsOrder summary={<>{loading ? "Loading builds…" : `${sorted.length.toLocaleString()} ${sorted.length === 1 ? "build" : "builds"}`}{isPending && " · Recalculating…"}</>} label={BUILD_SORT_LABELS[sortMode] + (secondarySortMode ? ` + ${BUILD_SORT_LABELS[secondarySortMode]}` : "")}>
+        <label className="flex flex-col gap-1 text-sm">Sort by
+          <select
+            value={sortMode}
+            aria-label="Sort most played decks"
+            onChange={(e) => { const value = e.target.value as BuildSortMode; startTransition(() => setSortMode(value)); }}
+            className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
+          >
+            {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
+              <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
+            ))}
+          </select>
+        </label>
         <label className="mt-2 flex flex-wrap items-center gap-2">
           <span>Second choice</span>
           <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as BuildSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
@@ -202,30 +220,7 @@ export default function TournamentBuildsView({
             <option value="tie-break">First choice; second breaks ties</option>
           </select>
         </label>}
-      </details>
-
-      <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
-      <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
-      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${sorted.length.toLocaleString()} build${sorted.length === 1 ? "" : "s"}`} onClear={() => startTransition(() => { setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
-        <SegmentedFilter label="Players" options={MIN_PLAYERS.map(value => ({ value, label: value === 1 ? "Any" : `${value}+ players` }))} value={minPlayers} onChange={value => startTransition(() => setMinPlayers(value))} />
-        <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...[25, 50, 100, 250, 500, 1000].map(value => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={value => startTransition(() => setMaxPrice(value || null))} />
-        <MultiSelectFilter label="Elements" hint={elementFilter.length > 1 ? "Match all selected" : undefined} options={elementsPresent.map((element) => ({ value: element, text: element.toLowerCase() }))} selected={new Set(elementFilter)} onToggle={toggleElement} iconKind="elements" />
-        <DeckDateRangeFilter label="Last played" from={dateFrom} to={dateTo} onFrom={value => startTransition(() => setDateFrom(value))} onTo={value => startTransition(() => setDateTo(value))} />
-        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
-      </FilterPanel>
-
-      <PublishedSourceStatus label="Build prices" status={priceStatus} hasData={Boolean(priceIndexData)} />
-      <PublishedSourceStatus label="Most played deck results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
-      <PublishedSourceStatus label="Most played deck lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
-      {error && <div role="alert" className="mt-4"><p>{error}</p><Button onClick={retry}>Try again</Button></div>}
-      {loading && popularityStatus.phase !== "error" && cardIndexStatus.phase !== "error" && <DeckResultsSkeleton />}
-      {!loading && !error && sorted.length === 0 && <EmptyState className="mt-6" title="No matching decks" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setDateFrom(""); setDateTo(""); setMinPlayers(1); setMaxPrice(null); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
-      {sorted.length > 0 && (
-        <p className="mt-4 text-xs text-ctp-subtext0">
-          Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}
-          {isPending && " · Recalculating…"}
-        </p>
-      )}
+      </DeckResultsOrder>
 
       <div className={`mt-2 grid gap-3 transition-opacity sm:grid-cols-2 xl:grid-cols-3 ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (

@@ -1,16 +1,16 @@
 import { BrowseComparisonChoice } from "./BrowseComparison";
 import { publicComparison, sightingComparison } from "./browseComparisonModel";
-import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
+import BrowseDeckFilters from "./BrowseDeckFilters";
+import DeckResultsOrder from "./DeckResultsOrder";
+import type { ActiveDeckFilter } from "../../components/deck-search/ActiveDeckFilters";
 import { decodeCardLines, deckSearchChampion } from "@gatcg/shared";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import DeckContentFilterChips from "./DeckContentFilterChips";
 import { deckContentFilterCount, deckMatchesContentFilters } from "./deckContentFilters";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { PublicDeckSummary } from "@gatcg/shared";
-import DialogSheet from "../../components/ui/DialogSheet";
 import { deckDateInRange } from "./deckDateRange";
 import DeckSightingsView from "./DeckSightingsView";
 import type { DeckContentFilterState } from "./deckContentFilters";
@@ -31,7 +31,6 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
 }) {
   const [params, setParams] = useSearchParams();
   const source = ["shared", "tournament"].includes(params.get("source") ?? "") ? params.get("source")! : "all";
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const dateFrom = params.get("from") ?? "";
   const dateTo = params.get("to") ?? "";
   const sort = ["oldest", "champion"].includes(params.get("sort") ?? "") ? params.get("sort")! : "newest";
@@ -92,9 +91,11 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
   }, [source, shared, sightings, deferredQuery, champion, format, playerName, dateFrom, dateTo, sort, contentActive, contentFilters, cardsByName, matchingIds]);
   function update(key: string, value: string) {
     const apply = () => { setParams(previous => { const next = new URLSearchParams(previous); if (value) next.set(key, value); else next.delete(key); next.delete("page"); return next; }, { replace: true }); setVisibleCount(30); };
-    if (key === "q") apply(); else startTransition(apply);
+    apply();
   }
-  const activeFilters = [champion, format, dateFrom && `From ${dateFrom}`, dateTo && `Through ${dateTo}`].filter(Boolean);
+  const activeItems: ActiveDeckFilter[] = [
+    ...[['champion', champion], ['format', format], ['from', dateFrom], ['to', dateTo], ['q', query]].filter(([, value]) => value).map(([key, value]) => ({ key, label: `${({ champion: 'Champion', format: 'Format', from: 'From', to: 'Through', q: 'Search' } as Record<string, string>)[key]}: ${value}`, remove: () => update(key, '') })),
+  ];
   function clearFilters() {
     startTransition(() => {
       setParams(previous => {
@@ -120,20 +121,9 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
       <label className="flex min-w-0 basis-full flex-col gap-1 text-xs sm:flex-1">Search decks
         <TextInput aria-label="Search decks" placeholder="Deck, champion, player, or event" value={query} onChange={e => update("q", e.target.value)} />
       </label>
-      <Button aria-haspopup="dialog" onClick={() => setFiltersOpen(true)}>Filters{activeFilters.length ? ` (${activeFilters.length})` : ""}</Button>
-      <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">Sort by
-        <Select aria-label="Sort decks" value={sort} onChange={e => update("sort", e.target.value)}>
-          <option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="champion">Champion A–Z</option>
-        </Select>
-      </label>
     </div>
-    {(activeFilters.length > 0 || query) && <div className="mt-2 flex flex-wrap items-center gap-2">
-      <p className="min-w-0 text-sm text-ctp-subtext0 [overflow-wrap:anywhere]">{[query && `Search: ${query}`, ...activeFilters].filter(Boolean).join(" · ")}</p>
-      <Button onClick={clearFilters}>Clear filters</Button>
-    </div>}
-    {filtersOpen && <DialogSheet title="Filter decks" onDismiss={() => setFiltersOpen(false)} footer={<div className="flex flex-wrap gap-2"><Button variant="primary" onClick={() => setFiltersOpen(false)}>Show {rows.length.toLocaleString()} decks</Button><Button onClick={clearFilters}>Clear filters</Button></div>}>
+    <BrowseDeckFilters filters={contentFilters} setFilters={setContentFilters} items={activeItems} onClear={clearFilters} resultLabel={`Show ${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}>
       <div className="space-y-4">
-        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
         <label className="flex min-w-0 flex-col gap-1 text-sm">Champion
           <Select aria-label="Champion" value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</Select>
         </label>
@@ -148,16 +138,21 @@ export default function CombinedDecksView({ contentFilters, setContentFilters }:
           </div>
           {dateFrom && dateTo && dateFrom > dateTo && <p role="alert" className="mt-2 text-sm text-ctp-red">Choose an end date on or after the start date.</p>}
         </fieldset>
+        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </div>
-    </DialogSheet>}
-    <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
-      <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
+    </BrowseDeckFilters>
     {contentActive && source === "all" && <PublishedSourceStatus label="Deck card index" status={cardStatus} hasData={!!cardIndex} />}
     {contentActive && shared.some(deck => !deck.cardNames) && <InlineState>Card lists are unavailable for some shared decks.</InlineState>}
     {source !== "shared" && format !== "PANTHEON" && <PublishedSourceStatus label="Tournament decks" status={status} hasData={Boolean(sightings)} />}
     {source !== "tournament" && loading && <InlineState className="mt-4">Loading shared decks…</InlineState>}
     {source !== "tournament" && error && <InlineState tone="danger" className="mt-4">{error}<Button onClick={() => setRetry(value => value + 1)}>Retry shared decks</Button></InlineState>}
-    <p className="mt-4 text-xs text-ctp-subtext0" role="status">{rows.length.toLocaleString()} decks · {sort === "oldest" ? "Oldest first" : sort === "champion" ? "Champion A–Z" : "Newest first"}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</p>
+    <DeckResultsOrder summary={<>{waiting && !rows.length ? "Loading decks…" : `${rows.length.toLocaleString()} ${rows.length === 1 ? "deck" : "decks"}`}{pending || query !== deferredQuery ? " · Recalculating…" : ""}</>} label={sort === 'oldest' ? 'Oldest first' : sort === 'champion' ? 'Champion A–Z' : 'Newest first'}>
+      <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">Sort by
+        <Select aria-label="Sort decks" value={sort} onChange={e => update("sort", e.target.value)}>
+          <option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="champion">Champion A–Z</option>
+        </Select>
+      </label>
+    </DeckResultsOrder>
     {!rows.length && !waiting && !failed && (!contentActive || source === "shared" || !!cardIndex) && <InlineState className="mt-4">No decks match these filters.</InlineState>}
     <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{rows.slice(0, visibleCount).map(row => row.kind === "shared" ? <BrowseComparisonChoice key={`shared:${row.id}`} deck={publicComparison(row.deck)}><PublicDeckCard deck={row.deck} /></BrowseComparisonChoice> : <BrowseComparisonChoice key={`tournament:${row.id}`} deck={sightingComparison(row.deck, playerName(row.deck.player))}><DeckSightingRow sighting={row.deck} championCard={undefined} playerName={playerName(row.deck.player)} browseCard /></BrowseComparisonChoice>)}</div>
     {rows.length > visibleCount && <Button className="mt-4" onClick={() => setVisibleCount(value => value + 30)}>Load more</Button>}

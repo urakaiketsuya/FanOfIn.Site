@@ -1,13 +1,17 @@
-import { useMemo, useState, useTransition } from 'react';
-import { deckSearchChampion, filterLabel, filterValue } from '@gatcg/shared';
+import { useMemo, useState, useTransition, type ReactNode } from 'react';
+import { deckSearchChampion, filterValue } from '@gatcg/shared';
 import { useCardCatalog } from '../../features/cards/useCardCatalog';
+import ActiveDeckFilters, { type ActiveDeckFilter } from './ActiveDeckFilters';
 import CardResult from '../CardResult';
 import Button from '../ui/Button';
 import { TextInput } from '../ui/FormControl';
 import DialogSheet from '../ui/DialogSheet';
 
 /** Shared visual controls. Owners retain filters, result selection and pagination. */
-export default function DeckSearchFilters({ cards, onCardsChange, champion, onChampionChange, inlinePicker = false, allowExclude = false }: {
+export default function DeckSearchFilters({ cards, onCardsChange, champion, onChampionChange, inlinePicker = false, allowExclude = false, controls, activeFilters = [], onClearAll }: {
+  controls?: ReactNode;
+  activeFilters?: ActiveDeckFilter[];
+  onClearAll?: () => void;
   inlinePicker?: boolean;
   allowExclude?: boolean;
   cards: string[]; onCardsChange: (cards: string[]) => void;
@@ -29,7 +33,15 @@ export default function DeckSearchFilters({ cards, onCardsChange, champion, onCh
     }).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 24);
   }, [catalog, picker, query]);
   function open(next: 'cards' | 'champion') { setQuery(''); setPicker(next); }
+  const selectedCards: ActiveDeckFilter[] = cards.map(value => ({
+    key: `card:${value}`, label: `${value.startsWith('-') ? 'Excludes' : 'Includes'}: ${filterValue(value)}`,
+    cardName: filterValue(value), card: byName.get(filterValue(value)),
+    remove: () => startTransition(() => onCardsChange(cards.filter(card => card !== value))),
+  }));
+  const selectedFilters = [...(champion && onChampionChange ? [{ key: 'champion', label: `Champion: ${champion}`, remove: () => onChampionChange('') }] : []), ...selectedCards, ...activeFilters];
   const pickerBody = <>
+      {picker === 'cards' && <><ActiveDeckFilters items={selectedCards} limit={3} />{cards.length > 0 && <Button variant="ghost" onClick={() => startTransition(() => onCardsChange([]))}>Clear cards</Button>}<p className="my-2 text-xs text-ctp-subtext0">Includes: match all{allowExclude && ' · Excludes: match none'}</p></>}
+      {picker === 'champion' && champion && <Button variant="ghost" onClick={() => onChampionChange?.('')}>Clear champion</Button>}
       <TextInput className="w-full" autoFocus aria-label={picker === 'champion' ? 'Find champion' : 'Find included card'} placeholder="Search by name" value={query} onChange={event => setQuery(event.target.value)} />
       {!catalog.length && <p role="status">Card catalog unavailable. Existing filters are kept.</p>}
       {catalog.length > 0 && !options.length && <p role="status">No matching cards.</p>}
@@ -40,15 +52,11 @@ export default function DeckSearchFilters({ cards, onCardsChange, champion, onCh
   </>;
   return <div className="my-3 min-w-0 space-y-2" data-component="DeckSearchFilters">
     <div className="flex flex-wrap gap-2">
-      {onChampionChange && <Button aria-haspopup={inlinePicker ? undefined : "dialog"} aria-expanded={inlinePicker ? picker !== null : undefined} onClick={() => open('champion')}>Champion: {champion || 'All'}</Button>}
-      <Button aria-haspopup={inlinePicker ? undefined : "dialog"} aria-expanded={inlinePicker ? picker !== null : undefined} onClick={() => open('cards')}>Includes cards{cards.length ? ` (${cards.length})` : ''}</Button>
-      {cards.length > 0 && <Button onClick={() => startTransition(() => onCardsChange([]))}>Clear cards</Button>}
-      {champion && onChampionChange && <Button onClick={() => startTransition(() => onChampionChange(''))}>Clear champion</Button>}
+      {onChampionChange && <Button aria-haspopup={inlinePicker ? undefined : "dialog"} aria-expanded={inlinePicker ? picker === 'champion' : undefined} onClick={event => { event.currentTarget.focus(); open('champion'); }}>Champion: {champion || 'All'}</Button>}
+      <Button aria-haspopup={inlinePicker ? undefined : "dialog"} aria-expanded={inlinePicker ? picker === 'cards' : undefined} onClick={event => { event.currentTarget.focus(); open('cards'); }}>Cards{cards.length ? ` (${cards.length})` : ''}</Button>
+      {controls}
     </div>
-    {cards.length > 0 && <><p className="text-xs text-ctp-subtext0">Every selected card</p><div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-8">{cards.map(value => {
-      const name = filterValue(value);
-      return <CardResult key={value} name={name} card={byName.get(name)} newTab><Button className="w-full" aria-label={`Remove ${filterLabel(value)} filter`} onClick={() => startTransition(() => onCardsChange(cards.filter(card => card !== value)))}>{value.startsWith('-') ? 'Exclude · Remove' : 'Remove'}</Button></CardResult>;
-    })}</div></>}
+    <ActiveDeckFilters items={selectedFilters} onClear={onClearAll} />
     {pending && <p role="status" className="text-sm">Recalculating…</p>}
     {picker && (inlinePicker ? <section className="rounded-xl border border-ctp-surface1 p-3" aria-label={picker === 'champion' ? 'Choose champion' : 'Include cards'}>{pickerBody}<Button className="mt-3" onClick={() => setPicker(null)}>Done</Button></section> : <DialogSheet title={picker === 'champion' ? 'Choose champion' : 'Include cards'} onDismiss={() => setPicker(null)} footer={<Button variant="primary" onClick={() => setPicker(null)}>Done</Button>}>{pickerBody}</DialogSheet>)}
   </div>;

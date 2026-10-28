@@ -342,13 +342,21 @@ strength score or automatic deck mutation is permitted.
 
 ## Deck search
 
-Deck searches share Champion and Includes cards controls. Champion selects a family;
+Deck searches share Champion and Cards controls. Champion selects a family;
 requiring an exact champion card uses Includes cards. All selected names must occur
 in the same list's Main + Material; Pantheon archives additionally include their
 explicit Boon zone. Sideboards and referenced tokens do not qualify. Printings share
 card identity. Preserve existing include/exclude URL filters and keep selected card
 art and names outside advanced filter sheets. The picker uses CardResult and explicit
 selection; typing never applies a card requirement. Unknown membership cannot qualify.
+
+Browse Decks puts search first, then Cards and Filters. Use one bounded active-filter
+summary with removable labels, card thumbnails, and an inline “+N more” expansion;
+keep card names and include/exclude status visible. Browse has one Clear all action.
+Category resets belong inside the picker. Selected cards remain available while searching
+in that picker. Put sorting beside the result count; primary order, second choice, and
+priority share a Sort sheet. Filtering and ordering apply immediately without a save step.
+Preserve comparison selections and existing URL state when rearranging these controls.
 
 Search applies before pagination and retains source, format, folder and selected decks.
 Library and scoped searches use deck-search- URL parameters; Browse Decks retains its

@@ -1,14 +1,15 @@
 import { BrowseComparisonChoice } from "./BrowseComparison";
 import { sightingComparison } from "./browseComparisonModel";
-import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
-import DeckContentFilterChips from "./DeckContentFilterChips";
+import BrowseDeckFilters from "./BrowseDeckFilters";
+import DeckResultsOrder from "./DeckResultsOrder";
+import type { ActiveDeckFilter } from "../../components/deck-search/ActiveDeckFilters";
 import { matchesFilterValues, toggleFilterValue, filterLabel } from "@gatcg/shared";
 import DeckDateRangeFilter from "./DeckDateRangeFilter";
 import { deckDateInRange } from "./deckDateRange";
 import { balancedSort, type SortPriority } from "@gatcg/shared";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { decodeCardLines, EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import LoadMore from "../../components/LoadMore";
@@ -20,16 +21,16 @@ import { useDeckSightingsData } from "../topdecks/data";
 import { usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import FilterGroup from "../../components/filters/FilterGroup";
-import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const SIGHTINGS_PAGE_SIZE = 50;
 
 type SightingSortMode = "best" | "date" | "placement" | "duplicated" | "cheapest" | "relevance";
+const SORT_LABELS: Record<SightingSortMode, string> = { date: "Newest", best: "Best results", placement: "Best placement", duplicated: "Most played build", cheapest: "Lowest price", relevance: "Relevance" };
 type Outcome = "all" | "winner" | "topCut" | "high";
 
 const OUTCOME_LABELS: Record<Outcome, string> = {
@@ -57,6 +58,7 @@ export default function DeckSightingsView({
   contentFilters: DeckContentFilterState;
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
+  const [, setSearchParams] = useSearchParams();
   const sightingsData = useDeckSightingsData();
   const sightingsStatus = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
   const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", deckContentFilterCount(contentFilters) > 0);
@@ -197,18 +199,23 @@ export default function DeckSightingsView({
   }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, secondarySortMode, sortPriority, dateFrom, dateTo, query]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (dateFrom || dateTo ? 1 : 0) + (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
-  const activeFilterLabels = [
-    ...(dateFrom || dateTo ? [`Event dates: ${dateFrom || "Any start"} – ${dateTo || "Any end"}`] : []),
-    ...(championName ? [`Champion: ${championName}`] : []),
-    ...(category ? [EVENT_CATEGORY_LABELS[category] ?? category] : []),
-    ...(seasonId !== null ? [seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? `Season ${seasonId}`] : []),
-    ...Array.from(selectedClasses, (value) => `Champion class: ${filterLabel(value)}`),
-    ...(keyword ? [`Keyword: ${keyword}`] : []),
-    ...(maxPrice !== null ? [`Up to $${maxPrice}`] : []),
-    ...(outcome === "all" ? [] : [OUTCOME_LABELS[outcome]]),
-    ...(contentFilters.speed === "any" ? [] : [`Speed: ${contentFilters.speed}`]),
+  const activeItems: ActiveDeckFilter[] = [
+    ...(championName ? [{ key: 'champion', label: `Champion: ${championName}`, remove: () => setChampionName(null) }] : []),
+    ...(query ? [{ key: 'query', label: `Search: ${query}`, remove: () => setQuery('') }] : []),
+    ...(dateFrom || dateTo ? [{ key: 'dates', label: `Event dates: ${dateFrom || 'Any'} – ${dateTo || 'Any'}`, remove: () => { setDateFrom(''); setDateTo(''); } }] : []),
+    ...(category ? [{ key: 'category', label: EVENT_CATEGORY_LABELS[category] ?? category, remove: () => setCategory(null) }] : []),
+    ...(seasonId !== null ? [{ key: 'season', label: seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? `Season ${seasonId}`, remove: () => setSeasonId(null) }] : []),
+    ...Array.from(selectedClasses, value => ({ key: `class:${value}`, label: `Champion class: ${filterLabel(value)}`, remove: () => toggleClass(value) })),
+    ...(keyword ? [{ key: 'keyword', label: `Keyword: ${keyword}`, remove: () => setKeyword(null) }] : []),
+    ...(maxPrice !== null ? [{ key: 'price', label: `Up to $${maxPrice}`, remove: () => setMaxPrice(null) }] : []),
+    ...(outcome !== 'all' ? [{ key: 'outcome', label: OUTCOME_LABELS[outcome], remove: () => setOutcome('all') }] : []),
   ];
+  function clearFilters() {
+    startTransition(() => {
+      setDateFrom(''); setDateTo(''); setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome('all');
+      setSearchParams(previous => { const next = new URLSearchParams(previous); for (const key of [...next.keys()]) if (key.startsWith('content-') || key === 'champion' || key === 'q') next.delete(key); return next; });
+    });
+  }
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
 
   return (
@@ -221,57 +228,20 @@ export default function DeckSightingsView({
           aria-label="Search tournament results"
           className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:min-w-64 sm:flex-1"
         />
-        <select
-          value={championName ?? ""}
-          aria-label="Champion"
-          onChange={(e) => setChampionName(e.target.value || null)}
-          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
-        >
-          <option value="">All champions</option>
-          {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
-        </select>
-        <select
-          value={sortMode}
-          aria-label="Sort tournament results"
-          onChange={(e) => { const value = e.target.value as SightingSortMode; startTransition(() => setSortMode(value)); }}
-          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
-        >
-          <option value="date">Newest</option>
-          <option value="best">Best results</option>
-          <option value="placement">Best placement</option>
-          <option value="duplicated">Most played build</option>
-          <option value="cheapest">Lowest price</option>
-          {deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
-        </select>
       </div>
 
-      <details className="group mt-2 text-xs text-ctp-subtext0">
-        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
-        <label className="mt-2 flex flex-wrap items-center gap-2">
-          <span>Second choice</span>
-          <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as SightingSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
-            <option value="">None</option>
-            {sortMode !== "date" && <option value="date">Newest</option>}
-            {sortMode !== "best" && <option value="best">Best results</option>}
-            {sortMode !== "placement" && <option value="placement">Best placement</option>}
-            {sortMode !== "duplicated" && <option value="duplicated">Most played build</option>}
-            {sortMode !== "cheapest" && <option value="cheapest">Lowest price</option>}
-            {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
+      <BrowseDeckFilters filters={contentFilters} setFilters={setContentFilters} items={activeItems} onClear={clearFilters} resultLabel={`Show ${filtered.length.toLocaleString()} ${filtered.length === 1 ? "deck" : "decks"}`}>
+        <label className="flex flex-col gap-1 text-sm">Champion
+          <select
+            value={championName ?? ""}
+            aria-label="Champion"
+            onChange={(e) => setChampionName(e.target.value || null)}
+            className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
+          >
+            <option value="">All champions</option>
+            {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
           </select>
         </label>
-        {secondarySortMode && <label className="mt-2 flex flex-wrap items-center gap-2">
-          <span>Priority</span>
-          <select value={sortPriority} onChange={(e) => { const value = e.target.value as SortPriority; startTransition(() => setSortPriority(value)); }} className="min-h-control min-w-0 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
-            <option value="equal">Equal balance</option>
-            <option value="favor-first">Favor first (2× weight)</option>
-            <option value="tie-break">First choice; second breaks ties</option>
-          </select>
-        </label>}
-      </details>
-
-      <DeckSearchFilters allowExclude cards={contentFilters.cards} onCardsChange={cards => setContentFilters(f => ({ ...f, cards }))} />
-      <DeckContentFilterChips filters={contentFilters} setFilters={setContentFilters} />
-      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setDateFrom(""); setDateTo(""); setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
         <FilterGroup label="Season">
           <select
@@ -314,17 +284,49 @@ export default function DeckSightingsView({
         <SegmentedFilter label="Outcome" options={(Object.keys(OUTCOME_LABELS) as Outcome[]).map((value) => ({ value, label: OUTCOME_LABELS[value] }))} value={outcome} onChange={setOutcome} />
         <DeckDateRangeFilter label="Event dates" from={dateFrom} to={dateTo} onFrom={value => startTransition(() => setDateFrom(value))} onTo={value => startTransition(() => setDateTo(value))} />
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
-      </FilterPanel>
+      </BrowseDeckFilters>
 
       <PublishedSourceStatus label="Tournament results" status={sightingsStatus} hasData={Boolean(sightingsData)} />
       {deckContentFilterCount(contentFilters) > 0 && <PublishedSourceStatus label="Deck card filters" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />}
       {((!sightingsData && sightingsStatus.phase !== "error") || (contentFiltersLoading && cardIndexStatus.phase !== "error")) && <DeckResultsSkeleton />}
       {sightingsData && !contentFiltersLoading && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
-      {sightingsData && !contentFiltersLoading && filtered.length > 0 && (
-        <p className="mt-4 text-xs text-ctp-subtext0">
-          Showing {visible.length.toLocaleString()} of {filtered.length.toLocaleString()} result{filtered.length === 1 ? "" : "s"}{isPending && " · Recalculating…"}
-        </p>
-      )}
+      <DeckResultsOrder summary={<>{(!sightingsData && sightingsStatus.phase === "error") || (contentFiltersLoading && cardIndexStatus.phase === "error") ? "Results unavailable" : !sightingsData || contentFiltersLoading ? "Loading decks…" : `${filtered.length.toLocaleString()} ${filtered.length === 1 ? "deck" : "decks"}`}{isPending && " · Recalculating…"}</>} label={SORT_LABELS[sortMode] + (secondarySortMode ? ` + ${SORT_LABELS[secondarySortMode]}` : "")}>
+        <label className="flex flex-col gap-1 text-sm">Sort by
+          <select
+            value={sortMode}
+            aria-label="Sort tournament results"
+            onChange={(e) => { const value = e.target.value as SightingSortMode; startTransition(() => setSortMode(value)); }}
+            className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
+          >
+            <option value="date">Newest</option>
+            <option value="best">Best results</option>
+            <option value="placement">Best placement</option>
+            <option value="duplicated">Most played build</option>
+            <option value="cheapest">Lowest price</option>
+            {deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
+          </select>
+        </label>
+        <label className="mt-2 flex flex-wrap items-center gap-2">
+          <span>Second choice</span>
+          <select value={secondarySortMode ?? ""} onChange={(e) => { const value = (e.target.value || null) as SightingSortMode | null; startTransition(() => setSecondarySortMode(value)); }} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+            <option value="">None</option>
+            {sortMode !== "date" && <option value="date">Newest</option>}
+            {sortMode !== "best" && <option value="best">Best results</option>}
+            {sortMode !== "placement" && <option value="placement">Best placement</option>}
+            {sortMode !== "duplicated" && <option value="duplicated">Most played build</option>}
+            {sortMode !== "cheapest" && <option value="cheapest">Lowest price</option>}
+            {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
+          </select>
+        </label>
+        {secondarySortMode && <label className="mt-2 flex flex-wrap items-center gap-2">
+          <span>Priority</span>
+          <select value={sortPriority} onChange={(e) => { const value = e.target.value as SortPriority; startTransition(() => setSortPriority(value)); }} className="min-h-control min-w-0 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+            <option value="equal">Equal balance</option>
+            <option value="favor-first">Favor first (2× weight)</option>
+            <option value="tie-break">First choice; second breaks ties</option>
+          </select>
+        </label>}
+      </DeckResultsOrder>
 
       <div className={`mt-2 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 ${contentFiltersLoading ? "hidden" : ""}`}>
         {visible.map((sighting) => (
