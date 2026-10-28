@@ -1,3 +1,4 @@
+import DeckSightingSummary from "./DeckSightingSummary";
 import DecklistActions from "../events/DecklistActions";
 import DeckStats from "../../components/DeckStats";
 import MenuDetails from "../../components/ui/MenuDetails";
@@ -503,12 +504,7 @@ export default function DeckDetail() {
         championName={deck.championName}
         format="STANDARD"
         statLine={
-          <>
-            {deck.playerCount} player{deck.playerCount === 1 ? "" : "s"} · {deck.eventCount} event
-            {deck.eventCount === 1 ? "" : "s"}
-            {deck.bestPlacement !== null && ` · best finish #${deck.bestPlacement}`} ·{" "}
-            {(deck.avgWinRate * 100).toFixed(0)}% avg win rate
-          </>
+          <DeckSightingSummary key={hash} sightings={instances} playerName={playerName} eventNameById={eventNameById} avgWinRate={deck.avgWinRate} />
         }
       />
 
