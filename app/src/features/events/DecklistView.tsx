@@ -1,9 +1,9 @@
+import DialogSheet from "../../components/ui/DialogSheet";
+import DecklistActions from "./DecklistActions";
 import { arrangeDeckSections, DECK_GROUPS, DECK_SORTS, type DeckGrouping, type DeckSorting } from "../../lib/decklistArrangement";
 import MenuDetails from "../../components/ui/MenuDetails";
-import DeckExportActions from "../../components/deck-export/DeckExportActions";
-import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
-import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
+import { sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -15,11 +15,7 @@ import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByN
 import DeckTuningEvidence from "./DeckTuningEvidence";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
-import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
-import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
-import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
-import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
 import { useDecklistDisplayPrefs, type DeckDisplayMode } from "../../lib/decklistDisplayPrefs";
@@ -28,22 +24,7 @@ import Button from "../../components/ui/Button";
 import { DeckSectionExpansion } from "./DeckSection";
 import { DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
-/** Plain-text export with "# Section" headers and "4 Card Name" lines – round-trips with the Compare tool's paste parser. */
-export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = [], includePrintings = false): string {
-  const sections: [string, OmnidexDecklistCardLine[]][] = [
-    ...extraSections.map((section) => [section.title, section.lines] as [string, OmnidexDecklistCardLine[]]),
-    ["Main", decklist.main],
-    ["Material", decklist.material],
-    ["Sideboard", decklist.sideboard],
-  ];
-  return sections
-    .filter(([, lines]) => lines.length > 0)
-    .map(([title, lines]) => `# ${title}\n${lines.map((l) => includePrintings ? printingCardLine(l) : `${l.quantity} ${l.card}`).join("\n")}`)
-    .join("\n\n");
-}
-
-export const buildEditableDeckText = (deck: OmnidexDecklist) => buildDecklistText(deck, [], true);
-
+export { buildDecklistText, buildEditableDeckText } from "../../lib/decklistText";
 
 export default function DecklistView({
   decklist,
@@ -61,6 +42,7 @@ export default function DecklistView({
   showAnalysis = true,
   ownershipByName,
   toolbarActions,
+  showActions = true,
   collectionControl,
   collectionPanel,
 }: {
@@ -85,10 +67,10 @@ export default function DecklistView({
   /** Ownership status for the signed-in viewer. When supplied, shortages are visible in every display mode. */
   ownershipByName?: Map<string, DeckCollectionLine>;
   toolbarActions?: ReactNode;
+  showActions?: boolean;
   collectionControl?: ReactNode;
   collectionPanel?: ReactNode;
 }) {
-  const { notify } = useToast();
   const displayPrefs = useDecklistDisplayPrefs();
   const priceSorting = displayPrefs.sorting === "priceAsc" || displayPrefs.sorting === "priceDesc";
   const showPrices = displayPrefs.showPrices || priceSorting;
@@ -99,43 +81,15 @@ export default function DecklistView({
   // Visual mode's optional "sim games" field only – cardId isn't Champion-scoped like the Guided
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
-  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [customizing, setCustomizing] = useState(false);
   const displayMode = displayPrefs.displayMode ?? (defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "visual" : defaultDisplayMode);
   const setDisplayMode = displayPrefs.setDisplayMode;
   const [showMissingOnly, setShowMissingOnly] = useState(false);
-
-  async function handleCopy(includePrintings = false) {
-    try {
-      await navigator.clipboard.writeText(buildDecklistText(decklist, [...extraSections, ...trailingSections], includePrintings));
-      setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
-    } catch {
-      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: () => handleCopy() } });
-    }
-    setTimeout(() => setCopyState("idle"), 1500);
-  }
-
-  async function handleCopyAndOpen(url: string) {
-    try {
-      await copyDecklistAndOpen(buildDecklistText(decklist, [...extraSections, ...trailingSections]), url);
-      setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
-    } catch {
-      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: () => handleCopy() } });
-    }
-    setTimeout(() => setCopyState("idle"), 1500);
-  }
 
   const deckPrice = computeSectionPrice([...decklist.main, ...decklist.material], priceByName);
   const sideboardPrice = computeSectionPrice(decklist.sideboard, priceByName);
   const missingCount = deckPrice.missing + sideboardPrice.missing;
 
-  const identity = useMemo(
-    () =>
-      computeDeckIdentity(
-        [...decklist.main, ...decklist.material].map((l) => ({ name: l.card, quantity: l.quantity })),
-        cardsByName,
-      ),
-    [decklist, cardsByName],
-  );
   const referencedTokens = useMemo(() => {
     const catalogBySlug = new Map(catalog.map((card) => [card.slug, card]));
     const tokenByName = new Map(catalog.filter((card) => card.types.includes("TOKEN")).map((card) => [card.name.toLocaleLowerCase(), card]));
@@ -163,12 +117,6 @@ export default function DecklistView({
   // image lookup. Merge the local catalog for display only, keeping caller-resolved cards first.
   const displayCardsByName = useMemo(() => new Map([...catalog.map((card) => [card.name, card] as const), ...cardsByName]), [catalog, cardsByName]);
 
-  const allLines = useMemo(() => [...extraSections.flatMap((section) => section.lines), ...decklist.main, ...decklist.material, ...decklist.sideboard, ...trailingSections.flatMap((section) => section.lines)], [decklist, extraSections, trailingSections]);
-  const massEntryUrl = useMemo(
-    () => buildTcgplayerMassEntryUrl(allLines.map((l) => ({ name: l.card, quantity: l.quantity }))),
-    [allLines],
-  );
-  const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist, undefined, [...extraSections, ...trailingSections]), [decklist, extraSections, trailingSections]);
   const missingOwnershipLines = useMemo(() => ownershipByName ? [...ownershipByName.values()].filter((line) => line.missing > 0) : [], [ownershipByName]);
   const missingCopies = missingOwnershipLines.reduce((sum, line) => sum + line.missing, 0);
   const missingCardNames = useMemo(() => new Set(missingOwnershipLines.map((line) => line.card)), [missingOwnershipLines]);
@@ -186,38 +134,41 @@ export default function DecklistView({
 
   const arrangedSections = useMemo(() => arrangeDeckSections([...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing], displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting), [visibleSections, displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting]);
 
-  function handleExportTts() {
-    const championName = findDeckChampionName(decklist.material, cardsByName);
-    const save = buildTtsSaveFile(
-      [
-        ...extraSections.map((section) => ({ label: section.title, lines: section.lines })),
-        { label: "Main", lines: decklist.main },
-        { label: "Material", lines: decklist.material },
-        { label: "Sideboard", lines: decklist.sideboard },
-        ...trailingSections.map((section) => ({ label: section.title, lines: section.lines })),
-      ],
-      cardsByName,
-    );
-    downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
-    notify({ message: "Decklist download started." });
-  }
-
   return (
     <DeckSectionExpansion><div data-component="DecklistView">
       <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
-      <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
-        <MenuDetails className="group">
-          <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
-          <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
-            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-control flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div role="group" aria-label="Card layout" className="flex flex-wrap gap-1">
+          {(["Grid", "Rows", "List"] as const).map(layout => {
+            const selected = layout === "List" ? displayMode === "detailed" : displayMode === "visual" && (layout === "Rows" ? displayPrefs.visualCardSize === "rows" : displayPrefs.visualCardSize !== "rows");
+            return <Button key={layout} aria-pressed={selected} variant={selected ? "primary" : "secondary"} onClick={() => {
+              setDisplayMode(layout === "List" ? "detailed" : "visual");
+              if (layout === "Rows") displayPrefs.setVisualCardSize("rows");
+              else if (layout === "Grid" && displayPrefs.visualCardSize === "rows") displayPrefs.setVisualCardSize("medium");
+            }}>{layout}</Button>;
+          })}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-ctp-subtext1">{DECK_GROUPS[displayPrefs.grouping]} · {DECK_SORTS[displayPrefs.sorting]}</span>
+          <Button onClick={() => setCustomizing(true)}>Customize</Button>
+          {collectionControl}
+          {showActions && <MenuDetails className="relative"><summary className="flex min-h-control cursor-pointer list-none items-center px-3 text-sm">More <DisclosureChevron /></summary><div className="absolute right-0 top-full z-30 grid w-64 max-w-[calc(100vw-2rem)] gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><DecklistActions decklist={decklist} cardsByName={displayCardsByName} deckTitle={deckTitle} deckOwner={deckOwner} extraSections={extraSections} trailingSections={trailingSections} toolbarActions={toolbarActions} /></div></MenuDetails>}
+        </div>
+      </div>
+      {customizing && <DialogSheet title="Customize cards" onDismiss={() => setCustomizing(false)} footer={<Button variant="primary" onClick={() => setCustomizing(false)}>Done</Button>}>
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">Arrange</h3>
             <label className="block text-xs text-ctp-subtext1">Group by<select className="mt-1 min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-2" value={displayPrefs.grouping} onChange={event => displayPrefs.setGrouping(event.target.value as DeckGrouping)}>{Object.entries(DECK_GROUPS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
             <label className="block text-xs text-ctp-subtext1">Sort cards<select className="mt-1 min-h-control w-full rounded border border-ctp-surface1 bg-ctp-base px-2" value={displayPrefs.sorting} onChange={event => displayPrefs.setSorting(event.target.value as DeckSorting)}>{Object.entries(DECK_SORTS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+            {displayMode === "visual" && displayPrefs.visualCardSize !== "rows" && <h3 className="text-sm font-medium">Appearance</h3>}
+            {displayMode === "visual" && <>               {displayPrefs.visualCardSize !== "rows" && <label className="flex items-center justify-between text-xs text-ctp-subtext1">Grid size<select aria-label="Grid size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact" | "rows")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>} </>}
+            <h3 className="text-sm font-medium">Show</h3>
             <div className="flex flex-wrap items-center gap-1">
               <button type="button" disabled={priceSorting} aria-pressed={showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{priceSorting ? "Price · sorting" : "Price"}</button>
-              {collectionControl}
+
             </div>
             {displayMode === "visual" && <>
-              <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact" | "rows")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="rows">One card per row</option><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
+
               {[
                 { label: "Cost", checked: displayPrefs.visualCost, change: displayPrefs.setVisualCost },
                 { label: "Price trend", checked: displayPrefs.visualPriceTrend, change: displayPrefs.setVisualPriceTrend },
@@ -226,27 +177,9 @@ export default function DecklistView({
                 { label: "Community usage", checked: displayPrefs.visualCommunity, change: displayPrefs.setVisualCommunity },
               ].map((field) => <label key={field.label} className="flex min-h-control items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={field.checked} onChange={(event) => field.change(event.target.checked)} />{field.label}</label>)}
             </>}
-            {(identity.classes.length > 0 || identity.elements.length > 0) && <p className="text-xs text-ctp-subtext0">{identity.classes.join("/")} · {identity.elements.join("/")}</p>}
-            <Link to="/settings" className="inline-flex min-h-control items-center text-xs text-ctp-blue">More display settings →</Link>
-          </div>
-        </MenuDetails>
-        {allLines.length > 0 && <div className="flex w-full flex-wrap items-center justify-end gap-1 sm:ml-auto sm:w-auto">
-          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`min-h-control ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
-          <DeckExportActions ownerName={deckOwner} title={deckTitle ?? `${findDeckChampionName(decklist.material, cardsByName) ?? "Untitled"} deck`} cardsByName={displayCardsByName} sections={[...extraSections, { title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, ...trailingSections]} />
-          <MenuDetails>
-            <summary className="flex min-h-control cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More <DisclosureChevron className="ml-1" /></summary>
-            <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
-              {toolbarActions}
-              {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
-              <a href={clarentUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
-                  {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="flex min-h-control items-center rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
-                  <a href={massEntryUrl} target="_blank" rel="noreferrer" className="flex min-h-control items-center rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
-                  <button type="button" onClick={handleExportTts} title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="flex min-h-control items-center rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
-
-            </div>
-          </MenuDetails>
-        </div>}
-      </div>
+          <Link to="/settings" className="inline-flex min-h-control items-center text-sm text-ctp-blue">More display settings</Link>
+        </div>
+      </DialogSheet>}
       {showPrices && <div className="mb-3 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Estimated price: {formatUsd(deckPrice.total + sideboardPrice.total)}</span><span className="ml-2 text-xs">Main + Material {formatUsd(deckPrice.total)} · Sideboard {formatUsd(sideboardPrice.total)}</span>{missingCount > 0 && <span className="ml-2 text-xs">{missingCount} card{missingCount === 1 ? "" : "s"} without prices</span>}</div>}
       {collectionPanel && <div className="mb-3">{collectionPanel}</div>}
       {ownershipByName && (missingCopies > 0 ? <div className="mb-4 space-y-2 text-sm">

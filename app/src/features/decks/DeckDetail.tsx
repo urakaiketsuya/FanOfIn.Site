@@ -1,3 +1,4 @@
+import DecklistActions from "../events/DecklistActions";
 import DeckStats from "../../components/DeckStats";
 import MenuDetails from "../../components/ui/MenuDetails";
 import { useToast } from "../../components/ui/toast/ToastContext";
@@ -45,8 +46,8 @@ type DeckTab = "decklist" | "stats" | "performance" | "related" | "discussion";
 const TABS: { key: DeckTab; label: string }[] = [
   { key: "decklist", label: "Deck" },
   { key: "stats", label: "Stats" },
-  { key: "performance", label: "Performance" },
-  { key: "related", label: "History & Similar" },
+  { key: "performance", label: "Analysis" },
+  { key: "related", label: "Related" },
   { key: "discussion", label: "Discussion" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
@@ -477,7 +478,27 @@ export default function DeckDetail() {
         &larr; Browse Decks
       </Link>
 
-      <UserDeckHeader decklist={decklist}
+      <UserDeckHeader actions={<> {signedIn === false && <Link to="/account" className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-4 text-sm text-ctp-base">Sign in to save</Link>}
+        {signedIn === true && <button type="button" disabled={copyBusy} onClick={() => {
+          setCopyBusy(true); setFavoriteNotice(null);
+          void accountApi.saveDeck({ title: `${deck.championName ?? "Unknown Champion"} tournament build`, format: "STANDARD", championName: deck.championName, decklist, source: { provider: "manual", externalDeckId: `tournament-copy:${hash}`, label: "Tournament build" } })
+            .then(({ id }) => { notify({ message: "Editable copy saved to your account." }); trackEvent("deck_copy_saved", { source: "tournament" }); navigate(`/decks/${id}`); })
+            .catch((reason: unknown) => setFavoriteNotice(reason instanceof Error ? reason.message : "Could not save a copy. Please try again."))
+            .finally(() => setCopyBusy(false));
+        }} className="min-h-control rounded-lg border border-ctp-blue bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save copy"}</button>}
+        <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-control items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Playtest</Link>
+
+        <MenuDetails className="relative"><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More <DisclosureChevron className="ml-1" /></summary><div className="absolute right-0 top-full z-30 mt-2 grid max-h-[60dvh] max-w-[calc(100vw-2rem)] overflow-y-auto [&>a]:min-h-control [&>button]:min-h-control min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">        {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
+          if (favorited === null) return;
+          setFavoriteBusy(true); setFavoriteNotice(null);
+          void accountApi.favoriteTournamentDeck(hash, {
+            favorited: !favorited, title: `${deck.championName ?? "Unknown Champion"} tournament build`, championName: deck.championName,
+            decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
+            sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
+          }).then((result) => { setFavorited(result.favorited); notify({ message: result.favorited ? "Added to My Decks favorites." : "Removed from favorites.", key: "favorite" }); }, (reason: Error) => { setFavoriteNotice(reason.message); notify({ tone: "error", message: reason.message, key: "favorite" }); }).finally(() => setFavoriteBusy(false));
+        }} className={`min-h-control rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Favorited" : "Favorite deck"}</button> : null}
+<Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button><DecklistActions showBuilderAction decklist={decklist} cardsByName={cardsByName} deckTitle={deck.championName ?? "Deck"} /></div></MenuDetails>
+       </>} decklist={decklist}
         title={deck.championName ?? "Unknown champion"}
         championName={deck.championName}
         format="STANDARD"
@@ -491,27 +512,6 @@ export default function DeckDetail() {
         }
       />
 
-      <div className="relative mt-5 flex flex-wrap gap-2">
-        {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
-          if (favorited === null) return;
-          setFavoriteBusy(true); setFavoriteNotice(null);
-          void accountApi.favoriteTournamentDeck(hash, {
-            favorited: !favorited, title: `${deck.championName ?? "Unknown Champion"} tournament build`, championName: deck.championName,
-            decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
-            sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
-          }).then((result) => { setFavorited(result.favorited); notify({ message: result.favorited ? "Added to My Decks favorites." : "Removed from favorites.", key: "favorite" }); }, (reason: Error) => { setFavoriteNotice(reason.message); notify({ tone: "error", message: reason.message, key: "favorite" }); }).finally(() => setFavoriteBusy(false));
-        }} className={`min-h-control rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Favorited" : "Favorite deck"}</button> : signedIn === false ? <Link to="/account" className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Sign in to save</Link> : <span className="inline-flex min-h-control items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
-        {signedIn === true && <button type="button" disabled={copyBusy} onClick={() => {
-          setCopyBusy(true); setFavoriteNotice(null);
-          void accountApi.saveDeck({ title: `${deck.championName ?? "Unknown Champion"} tournament build`, format: "STANDARD", championName: deck.championName, decklist, source: { provider: "manual", externalDeckId: `tournament-copy:${hash}`, label: "Tournament build" } })
-            .then(({ id }) => { notify({ message: "Editable copy saved to your account." }); trackEvent("deck_copy_saved", { source: "tournament" }); navigate(`/decks/${id}`); })
-            .catch((reason: unknown) => setFavoriteNotice(reason instanceof Error ? reason.message : "Could not save a copy. Please try again."))
-            .finally(() => setCopyBusy(false));
-        }} className="min-h-control rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}
-        <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-control items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link>
-
-        <MenuDetails><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="flex min-h-control items-center rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></MenuDetails>
-      </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
       <div className="mt-6"><Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" wrap /></div>
@@ -519,7 +519,7 @@ export default function DeckDetail() {
       <details className="mt-3 text-xs text-ctp-subtext1"><summary className="inline-flex min-h-12 cursor-pointer list-none items-center text-ctp-blue">Sideboard source <DisclosureChevron className="ml-1" /></summary><div className="pb-2">
           {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
       </div></details>
-      <UserDecklistPanel showStats={false} deckTitle={deck.championName ?? "Decklist"} decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
+      <UserDecklistPanel showActions={false} showStats={false} deckTitle={deck.championName ?? "Decklist"} decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
       </TabPanel>
       <TabPanel baseId="deck-detail" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
       <TabPanel baseId="deck-detail" tab="performance" active={tab} keepMounted>

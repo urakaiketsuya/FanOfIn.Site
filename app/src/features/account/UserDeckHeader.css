@@ -5,7 +5,7 @@
   position: relative;
   isolation: isolate;
   margin-top: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 1rem;
   overflow-wrap: anywhere;
 }
@@ -31,3 +31,6 @@
 @media (min-width: 640px) {
   .deck-panorama-art { height: 11rem; }
 }
+
+/* Header action menus sit above peer tabs without clipping the card artwork. */
+.deck-panorama:has(details[open]) { z-index: 30; }

@@ -157,8 +157,10 @@ outside before delivering the click. Outside-pointer dismissal and keyboard focu
 moves to a known outside target still close the menu. Resume keyboard dismissal
 on keydown, including when the menu was opened by touch.
 
-Keep Export deck image directly in the deck toolbar, outside the More disclosure,
-so opening the export sheet does not depend on a floating menu's event lifecycle.
+Deck detail pages keep Edit or Save copy and Playtest in the identity header, with
+secondary actions in one More menu. Export deck image is a direct item in that menu;
+its portaled sheet must remain mounted after menu dismissal. Embedded decklists retain
+a local More menu. Verify export opening by touch and keyboard after changing menus.
 Deck image exports show a PNG preview with native touch-and-hold image actions
 available, plus a named PNG download. Offer native file sharing only when the
 browser reports support for that PNG file. Keep the preview available after a
@@ -421,3 +423,11 @@ Sort within each group by deck order, name, numeric cost, quantity, or cheapest 
 price. Missing prices and nonnumeric costs sort last; zero is a known value. Price sorting loads
 quotes and keeps pricing visible, including refresh status and retry. The one-card-per-row visual
 layout places artwork beside a linked name and stats at both mobile and desktop widths.
+
+## Deck presentation controls
+
+Keep page navigation separate from the Deck tab's Grid / Rows / List selector and
+Customize action. Customize uses DialogSheet with Arrange, Appearance (grid only),
+and Show groups. Preferences apply immediately and persist; Done dismisses without
+a save or discard step. Keep collection tasks outside display customization. Preserve
+existing tab URL keys and mounted drafts when changing visible labels.

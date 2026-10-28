@@ -1,3 +1,6 @@
+import DecklistActions from "../events/DecklistActions";
+import MenuDetails from "../../components/ui/MenuDetails";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import DeckStats from "../../components/DeckStats";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
@@ -65,10 +68,10 @@ export default function PantheonDeckDetail() {
 
   return <PageLayout data-component="PantheonDeckDetail">
     <Link to="/pantheon/decks" className="text-sm text-ctp-blue hover:underline">← Browse Pantheon decks</Link>
-    <UserDeckHeader decklist={decklist} title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
-    <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Compare deck</Link></div>
-    <div className="mt-6"><Tabs tabs={[{ key: "decklist", label: "Deck" }, { key: "stats", label: "Stats" }, { key: "performance", label: "Performance" }]} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" wrap /></div>
-    <TabPanel baseId="pantheon-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showStats={false} decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
+    <UserDeckHeader actions={<><Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Playtest</Link><MenuDetails className="relative"><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm">More <DisclosureChevron className="ml-1" /></summary><div className="absolute right-0 top-full z-30 mt-2 grid max-h-[60dvh] w-64 max-w-[calc(100vw-2rem)] gap-1 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-control items-center px-3 text-sm">Compare deck</Link><DecklistActions showBuilderAction decklist={decklist} cardsByName={cardsByName} deckTitle={title} /></div></MenuDetails></>} decklist={decklist} title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
+
+    <div className="mt-6"><Tabs tabs={[{ key: "decklist", label: "Deck" }, { key: "stats", label: "Stats" }, { key: "performance", label: "Analysis" }]} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" wrap /></div>
+    <TabPanel baseId="pantheon-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showActions={false} showStats={false} decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
     <TabPanel baseId="pantheon-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
     <TabPanel baseId="pantheon-deck" tab="performance" active={tab} keepMounted><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></TabPanel>
   </PageLayout>;
