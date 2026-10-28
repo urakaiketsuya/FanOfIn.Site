@@ -329,6 +329,7 @@ test("discovery returns summaries and explicitly filters to public decks", async
   assert.equal(discoverySql.includes("unlisted"), false);
   assert.equal("decklist" in result.decks[0], false);
   assert.deepEqual(result.decks[0].cardNames, ["A", "Rai"]);
+  assert.equal(result.decks[0].buildSignature, "A:4|Rai:1", "identity uses published Main + Material quantities, never sideboard");
   assert.deepEqual(result.decks[0].owner, { displayName: "Pilot", profileSlug: "b".repeat(24) });
   await assert.rejects(discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams(`q=${"x".repeat(81)}`)), /Search is too long/);
 });

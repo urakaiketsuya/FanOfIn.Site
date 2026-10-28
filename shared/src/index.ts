@@ -130,3 +130,5 @@ export * from './eventComparison';
 export * from './seasonFieldReport';
 
 export * from "./competitionReports";
+
+export * from "./collected-decks.js";

@@ -5540,3 +5540,17 @@ or a claim that other players are new customers. Show roster coverage. Attendanc
 share a zero baseline and scale to the largest attendance in that store/format/window;
 latest eight observed events are visible and linked. Champion shares and recurrence
 use only separately validated complete public fields, with their own denominator.
+
+### Anonymous collected browse projection
+
+`pipeline/src/community/collected.ts` reads the already-published source decklists, reapplies
+source eligibility and rejects invalid/empty lists. It publishes `community/collected.json`
+independently of tournament analysis. Format + the existing combined Main/Material quantity
+signature determines a SHA-256-derived 24-character build ID. Full normalized sections determine
+variant IDs; sideboards never split build identity. Pantheon Boons join Material, matching the
+existing Pantheon viewer. Imported display metadata is excluded by an explicit output allowlist;
+champion labels come only from known catalog Champion cards. Card names are dictionary encoded.
+The earliest observed source fetch date seeds collection date, retained on subsequent refreshes.
+Private source-ID-to-build provenance stays in `pipeline/.cache/collected-provenance.json`.
+The prior raw published source archives are unchanged. Refresh runs with community blending;
+this output does not contribute to tournament popularity, player counts or win rates.

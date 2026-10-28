@@ -439,3 +439,17 @@ Customize action. Customize uses DialogSheet with Arrange, Appearance (grid only
 and Show groups. Preferences apply immediately and persist; Done dismisses without
 a save or discard step. Keep collection tasks outside display customization. Preserve
 existing tab URL keys and mounted drafts when changing visible labels.
+
+## Collected builds
+
+Browse integrates anonymous collected builds with a Collected source filter. Only generated
+catalog-based champion names, format, exact card quantities and earliest collection dates enter
+the browse projection; never copy imported titles, authors, profile links or descriptions.
+Merge Main + Material identities within a format and retain distinct exact section/sideboard
+variants. Variant selection flows into saves, analysis, comparison and playtesting. Collection
+dates describe discovery, not source publication. Keep verified tournament sightings separate;
+builds with tournament sightings are excluded from collected browse results and represented
+by tournament results in All Decks. Collection frequency is neither a player count nor a performance or Most Played signal.
+Shared publications keep their owner credit; matching collected variants remain linked from
+the shared result. Older account servers without quantity signatures leave those results
+separate rather than guessing identity from a card-name set.

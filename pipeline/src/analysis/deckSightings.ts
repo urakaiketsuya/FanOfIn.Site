@@ -1,20 +1,11 @@
+import { deckBuildSignature as canonicalSignature } from "@gatcg/shared";
 import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, shortHash, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { DeckCardLine } from "./decklists.js";
 import type { AnalysisContext } from "./context.js";
 import { computeDeckPrice } from "./deckPricing.js";
 
 /** A stable key for "this exact card list" — main+material combined, since that's what defines a deck's identity (sideboard is situational tech). Empty string for decks with no matched cards at all (unmatched/broken decklists), which are deliberately excluded from duplicate detection below. */
-export function canonicalSignature(mainCards: DeckCardLine[], materialCards: DeckCardLine[]): string {
-  const combined = new Map<string, number>();
-  for (const line of [...mainCards, ...materialCards]) {
-    combined.set(line.name, (combined.get(line.name) ?? 0) + line.quantity);
-  }
-  return Array.from(combined.entries())
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([name, qty]) => `${name}:${qty}`)
-    .join("|");
-}
+export { deckBuildSignature as canonicalSignature } from "@gatcg/shared";
 
 /**
  * Flattens every public decklist across all ingested events into one lean, filterable/sortable

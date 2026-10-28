@@ -1,3 +1,4 @@
+import { writeCollectedDecks } from "./collected.js";
 import { loadCommunityStaples } from "../analysis/loadCommunityStaples.js";
 import { computeCommunityCardStaples } from "../analysis/communityCardStaples.js";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
@@ -117,6 +118,7 @@ export function buildCommunityDeckSearchIndex(
 }
 
 export async function runCommunityBlend(): Promise<void> {
+  await writeCollectedDecks();
   const [saydRecords, cachedSleevedRecords, publishedSleevedRecords, cachedTcgaRecords, publishedTcgaRecords] = await Promise.all([
     listCachedDecks(),
     listCachedSleevedDecks(),
