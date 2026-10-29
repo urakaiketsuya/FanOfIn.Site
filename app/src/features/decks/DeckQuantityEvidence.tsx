@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
-import { deckBuildComparison, resolveDeckBuildCohort, deckQuantityEvidenceFromCohort, shortHash, MIN_QUANTITY_EVIDENCE_LISTS, type Card, type DeckDetailData, type DeckFormat, type OmnidexDecklist } from '@gatcg/shared';
+import { deckBuildComparison, resolveDeckBuildCohort, shortHash, MIN_QUANTITY_EVIDENCE_LISTS, type Card, type DeckDetailData, type DeckFormat, type OmnidexDecklist } from '@gatcg/shared';
 import { useArchetypeTaxonomyData } from '../archetypes/data';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
-import CardArtTile from '../../components/CardArtTile';
 import Button from '../../components/ui/Button';
 import DeckBuildSummary from './DeckBuildSummary';
 
@@ -27,17 +26,16 @@ function Evidence({ decklist, championName, cardsByName }: Props & { championNam
   }), []);
   const onData = useCallback((name: string, data: DeckDetailData) => setPartitions(previous => previous.get(name) === data ? previous : new Map(previous).set(name, data)), []);
   const target = useMemo(() => ({ main: decklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: decklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }), [decklist]);
-  const [computed, setComputed] = useState<{ target: typeof target; report: ReturnType<typeof deckQuantityEvidenceFromCohort>; comparison: ReturnType<typeof deckBuildComparison> } | null>(null);
+  const [computed, setComputed] = useState<{ target: typeof target; report: ReturnType<typeof resolveDeckBuildCohort>; comparison: ReturnType<typeof deckBuildComparison> } | null>(null);
   const [pending, startTransition] = useTransition();
   useEffect(() => {
     if (taxonomy && partitions.has(championName)) startTransition(() => {
       const cohort = resolveDeckBuildCohort(target, 'STANDARD', taxonomy.clusters, partitions);
-      setComputed({ target, report: deckQuantityEvidenceFromCohort(target, cohort), comparison: deckBuildComparison(target, cohort, cardsByName) });
+      setComputed({ target, report: cohort, comparison: deckBuildComparison(target, cohort, cardsByName) });
     });
   }, [target, taxonomy, partitions, championName, cardsByName]);
   const report = computed?.target === target ? computed.report : null;
   const champions = [...new Set([championName, ...(report?.champions ?? [])])];
-  const [all, setAll] = useState(false);
   return <div aria-busy={pending} className="space-y-3">
     {champions.map(name => <Partition key={name} champion={name} onData={onData} onFailure={onFailure} />)}
     {taxonomyStatus.error && <p role="alert" className="text-sm text-ctp-yellow">Build assignments could not be refreshed. <Button onClick={taxonomyStatus.retry}>Retry builds</Button></p>}
@@ -47,18 +45,7 @@ function Evidence({ decklist, championName, cardsByName }: Props & { championNam
         <p role="status" className="text-xs text-ctp-subtext1">{report.lists} distinct lists · {report.sightings} sightings · this list excluded{pending ? ' · Recalculating…' : ''}</p>
         {report.missing > 0 && <p className="text-xs text-ctp-yellow">{report.missing} assigned lists unavailable.</p>}
         {report.status === 'sparse' ? <p role="status" className="text-sm text-ctp-subtext1">At least {MIN_QUANTITY_EVIDENCE_LISTS} other distinct lists needed.</p> : <>
-          <DeckBuildSummary comparison={computed!.comparison} />
-          <h4 className="text-sm font-semibold">Observed copy counts · Main</h4>
-          <div className="grid gap-4 sm:grid-cols-2">{report.rows.slice(0, all ? undefined : 6).map(row => {
-            const card = cardsByName.get(row.name);
-            const visual = <><CardArtTile card={card} name={row.name} cornerBadge={`Your list ×${row.current}`} artworkOnly /><span className="mt-1 block text-sm font-medium">{row.name}</span></>;
-            return <article key={row.name} className="min-w-0 rounded-lg border border-ctp-surface1 p-3">
-              {card ? <Link className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" to={`/cards/${card.slug}`}>{visual}</Link> : visual}
-              <p className="my-2 text-xs text-ctp-subtext1">Included in {row.included}/{report.lists} lists</p>
-              <div className="space-y-1">{row.buckets.map(bucket => <div key={bucket.quantity} className="grid grid-cols-[2rem_minmax(0,1fr)_5rem] items-center gap-2 text-xs"><span>{bucket.quantity}×</span><span aria-hidden="true" className="h-2 rounded bg-ctp-surface0"><span className="block h-2 rounded bg-ctp-blue" style={{ width: `${bucket.lists / report.lists * 100}%` }} /></span><span className="text-right tabular-nums">{bucket.lists} · {(bucket.lists / report.lists * 100).toFixed(1)}%</span></div>)}</div>
-            </article>;
-          })}</div>
-          {report.rows.length > 6 && <Button aria-expanded={all} onClick={() => setAll(value => !value)}>{all ? 'Show fewer cards' : `Show all ${report.rows.length} cards`}</Button>}
+          <DeckBuildSummary comparison={computed!.comparison} cardsByName={cardsByName} />
         </>}
       </>}
     </>}

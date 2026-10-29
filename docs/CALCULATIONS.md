@@ -5645,5 +5645,8 @@ contributes zero copies; inclusion counts positive copies across all reference l
 Median and middle 50% therefore differ intentionally from the legacy archetype report's
 played-only quantities. Distributions use the existing `(n - 1) * p` interpolation.
 No turn timing, draw effects, affordability, optimal quantity or win rate is inferred.
-The legacy quantity component now uses this resolver but retains its Main-only buckets.
+The deck-page card comparison uses this resolver for Main and Material, including
+reference-only cards with zero current copies. Its median and middle-50% range include
+absent cards as zero copies; inclusion uses all eligible distinct lists. The legacy
+Main-only bucket calculation remains available for other consumers.
 The new comparison projection is not yet displayed in the UI.

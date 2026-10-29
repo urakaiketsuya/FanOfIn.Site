@@ -41,24 +41,32 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 50% complete: the audit, shared comparison engine and
-first compact deck-page composition view are implemented. Main and Material show
+Release A is approximately 60% complete: the audit, shared comparison engine,
+compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
-The existing Main card quantity evidence remains alongside it. The controller reuses
-one resolved cohort, and composition skips unused traits and caches repeated sections.
+Card-first Main and Material views show current copies, zero-inclusive build medians,
+middle-50% ranges and inclusion counts. A focused filter exposes cards only in other
+lists, ordered by inclusion; six cards appear initially with expansion. These replace
+the Main-only bucket grid. The controller uses one resolved cohort without computing
+the unused legacy buckets; composition skips unused traits and caches repeated sections.
 A largest-build sample (1,894 references) now took approximately 780ms locally versus
 993ms previously; this is not a mobile benchmark and further performance work remains.
-Next: expose Material and reference-only card quantity differences, then carry the
-same target exclusion into the archetype report. Compact placements, release checks
+Next: carry the same target exclusion into the archetype report. Compact placements, release checks
 and extra-draw model validation remain. The percentage is approximate because that
 validated model scope remains undecided.
 
-Verification: 21 focused calculation tests; app/shared type checks; app lint (existing
+Previous increment verification: 21 focused calculation tests; app/shared type checks; app lint (existing
 warnings only). Browser checks at 390×844 and 1280×900 cover Main/Material, keyboard
 section switching, cost selection, empty breakdown, category expansion, card expansion,
 48px controls and no horizontal overflow. Loading was observed; sparse/unknown/conflict
 states are covered by calculation tests. Forced network failure, text zoom and signed-in
 saved-deck flows have not been browser-verified for this increment.
+
+Card-view increment verification: 17 focused calculation tests, app type check and
+lint (existing warnings only). Browser checks at 390×844 and 1280×900 cover Main and
+Material, reference-only cards, expansion/collapse, 48px controls, visible focus and no
+horizontal overflow. Loading was observed. Empty/fallback/error states, full keyboard
+interaction, text zoom and signed-in flows remain unverified for this increment.
 
 **Question:** How does this exact list differ from comparable lists?
 

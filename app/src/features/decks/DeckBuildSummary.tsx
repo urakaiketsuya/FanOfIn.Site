@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
-import type { deckBuildComparison, BuildComparisonMetric } from '@gatcg/shared';
+import type { deckBuildComparison, BuildComparisonMetric, Card } from '@gatcg/shared';
+import DeckBuildCards from './DeckBuildCards';
 import Button from '../../components/ui/Button';
 import Tabs, { TabPanel } from '../../components/ui/Tabs';
 
@@ -21,7 +22,7 @@ function Metric({ row, maximum }: { row: BuildComparisonMetric; maximum: number 
   </div>;
 }
 
-export default function DeckBuildSummary({ comparison }: { comparison: ReturnType<typeof deckBuildComparison> }) {
+export default function DeckBuildSummary({ comparison, cardsByName }: { comparison: ReturnType<typeof deckBuildComparison>; cardsByName: Map<string, Card> }) {
   const [section, setSection] = useState<'main' | 'material'>('main');
   const baseId = useId();
   const [group, setGroup] = useState('types');
@@ -29,6 +30,7 @@ export default function DeckBuildSummary({ comparison }: { comparison: ReturnTyp
   return <div className="space-y-3">
     <Tabs baseId={baseId} label="Comparison section" active={section} onChange={setSection} tabs={[{ key: 'main', label: 'Main' }, { key: 'material', label: 'Material' }]} />
     {comparison.sections.map(result => <TabPanel key={result.section} baseId={baseId} tab={result.section} active={section}>
+      <DeckBuildCards key={result.section} rows={result.cards} cardsByName={cardsByName} />
       <p className="mb-3 text-xs text-ctp-subtext1">● Your deck · │ Build median · ━ Middle 50%</p>
       {result.unresolved > 0 && <p role="status" className="mb-3 text-xs text-ctp-yellow">{result.unresolved} copies missing card data.</p>}
       {result.complete < comparison.lists && <p className="mb-3 text-xs text-ctp-yellow">Composition coverage: {result.complete}/{comparison.lists} lists.</p>}
