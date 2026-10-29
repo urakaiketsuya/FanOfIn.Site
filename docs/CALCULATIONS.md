@@ -5663,3 +5663,13 @@ Reloads and archetype tab changes preserve this context. “View all recorded li
 clears it and opens the original sightings-based archetype report. Direct/copied URLs
 and new tabs have no snapshot and open that original report. Sideboard and attribution
 are not carried in the comparison snapshot.
+
+## Comparison deck blending
+
+`app/src/features/compare/deckBlend.ts` builds an opt-in draft from selected lists. Balanced is the default. Compatibility requires the same known format and exact Material Champion/Spirit names; conflicts require an explicit base choice and incompatible lists are excluded. Exact duplicate lists count once. Main and Sideboard target the base's copy totals. Material stays intact, preserving the base lineage and equipment choices.
+
+Tournament evidence joins the existing main+material canonical hash (with deckId fallback), deduplicated by event/player. Popular weights use recorded entry count, minimum one. Winning weights use twice `shrinkWinRate(wins + ties / 2, wins + losses + ties, 10).adjustedWinRate`; missing results therefore have weight one. Balanced multiplies the popularity and winning weights. Selected variants of the same main+material identity split that identity's weight, so selecting extra Sideboards does not duplicate its tournament evidence. Missing index data falls back to equal source weights with visible status. These are selection weights, never a predicted win rate for the draft.
+
+The shared minimum quantity of each card is retained. Known registered/approved package member quantities remain exactly as in the base in each section; the blend does not introduce partial donor packages. For each remaining card, the target quantity is its weighted mean across the compatible sources (absence counts as zero). Each additional copy is ranked by its marginal reduction in squared distance to that target (`target - currentCopies - 0.5`), with base quantity and card name as deterministic tie-breaks. This produces integer quantities while keeping the base section size, rather than automatically taking all flex slots from the winning source. Allocation enforces catalog format copy limits across all sections, section eligibility, element identity, and the existing 15-point Sideboard budget. Missing card data blocks generation. The existing deck validator checks the finished draft; shortages and legality issues remain visible. Card-text exceptions and unregistered dependencies are not inferred.
+
+The preview shows cards, quantities and changes from the base. The explicit Edit / save draft action opens the existing deck workspace with the generated sections and format; saving uses the workspace's existing account flow. Source decks remain unchanged.

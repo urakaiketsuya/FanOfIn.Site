@@ -31,6 +31,7 @@ import { InlineState } from "../../components/ui/ContentState";
 import { trackEvent } from "../../lib/analytics";
 import Tabs from "../../components/ui/Tabs";
 import ComparisonTools from "./ComparisonTools";
+import BlendDeck from "./BlendDeck";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -264,10 +265,11 @@ export default function CompareIndex() {
           <Panel className="mt-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm font-semibold text-ctp-text">{decks.length === 0 ? "Choose decks" : `${decks.length} deck${decks.length === 1 ? "" : "s"} selected`}</p>
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" onClick={() => setShowAddDecks((value) => !value)}>
                   {showAddDecks ? "Close deck picker" : "+ Add deck"}
                 </Button>
+                {decks.length > 1 && <BlendDeck decks={decks} decklists={decklists} onRetry={() => setDecks(previous => [...previous])} />}
                 {decks.length > 0 && <Button variant="ghost" size="sm" onClick={handleCopyShareLink} className={shareCopyState === "failed" ? "text-ctp-red" : ""}>{shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Share"}</Button>}
                 {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
               </div>
@@ -329,7 +331,7 @@ export default function CompareIndex() {
                     )}
                     {effectiveViewMode === "table" && (
                       <>
-                        <div className="mb-4 inline-flex rounded-lg bg-ctp-mantle p-1" aria-label="Card data">
+                        <div className="mb-4 inline-flex max-w-full flex-wrap rounded-lg bg-ctp-mantle p-1" aria-label="Card data">
                           <button type="button" aria-pressed={cardDataMode === "quantities"} onClick={() => setCardDataMode("quantities")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "quantities" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Deck quantities</button>
                           <button type="button" aria-pressed={cardDataMode === "performance"} onClick={() => setCardDataMode("performance")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "performance" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Performance</button>
                         </div>
