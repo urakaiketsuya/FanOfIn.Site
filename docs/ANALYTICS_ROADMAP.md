@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 60% complete: the audit, shared comparison engine,
+Release A is approximately 70% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -51,7 +51,12 @@ the Main-only bucket grid. The controller uses one resolved cohort without compu
 the unused legacy buckets; composition skips unused traits and caches repeated sections.
 A largest-build sample (1,894 references) now took approximately 780ms locally versus
 993ms previously; this is not a mobile benchmark and further performance work remains.
-Next: carry the same target exclusion into the archetype report. Compact placements, release checks
+Deck-to-archetype navigation now carries a Main/Material snapshot in browser history
+state and reuses the same comparison controller, including target exclusion and missing-list
+coverage. Report-tab navigation and reload retain the snapshot; unrelated builds reject it.
+“View all recorded lists” explicitly switches to the existing sightings-based report.
+Copied URLs and new tabs open that broader report; comparison snapshots are not shared URLs.
+Next: large-cohort performance and compact Browse placements. Release checks
 and extra-draw model validation remain. The percentage is approximate because that
 validated model scope remains undecided.
 
@@ -67,6 +72,12 @@ lint (existing warnings only). Browser checks at 390×844 and 1280×900 cover Ma
 Material, reference-only cards, expansion/collapse, 48px controls, visible focus and no
 horizontal overflow. Loading was observed. Empty/fallback/error states, full keyboard
 interaction, text zoom and signed-in flows remain unverified for this increment.
+
+Archetype-handoff verification: 19 focused tests, app type check and lint (existing
+warnings only). Browser checks at 390×844 and 1280×900 confirm identical 416-list
+references, reload and tab retention, Main/Material keyboard switching, reference-only
+cards, 48px exit action and no horizontal overflow. Loading was observed. Forced
+network failures, empty/stale-assignment UI, text zoom and signed-in flows remain unverified.
 
 **Question:** How does this exact list differ from comparable lists?
 

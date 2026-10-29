@@ -5650,3 +5650,16 @@ reference-only cards with zero current copies. Its median and middle-50% range i
 absent cards as zero copies; inclusion uses all eligible distinct lists. The legacy
 Main-only bucket calculation remains available for other consumers.
 The new comparison projection is not yet displayed in the UI.
+
+
+### Deck-to-archetype comparison context
+
+Opening the build link from a deck comparison carries a snapshot of Main and Material
+in browser history state. The archetype comparison reuses `resolveDeckBuildCohort` and
+`deckBuildComparison` through the same controller; it does not reweight by sightings.
+The target remains excluded from every reference distribution. The receiving build ID
+must match the resolved assignment; stale assignments show an unavailable status.
+Reloads and archetype tab changes preserve this context. “View all recorded lists”
+clears it and opens the original sightings-based archetype report. Direct/copied URLs
+and new tabs have no snapshot and open that original report. Sideboard and attribution
+are not carried in the comparison snapshot.

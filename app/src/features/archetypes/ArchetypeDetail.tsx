@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import type { CardImpactRole } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useMatchupCardImpactData } from "./data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
@@ -61,9 +61,10 @@ const MORE_TABS: { key: Extract<DetailTab, "impact" | "variants">; label: string
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
 
+  const location = useLocation();
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
-  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "report");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "report", location.state);
   const surface: DetailSurface = tab === "report" ? "report" : OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : tab === "evolution" ? "evolution" : "more";
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "impact" | "variants" : "impact";
   const showOverview = surface === "overview";

@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { archetypeReport, shortHash, type ArchetypeCluster, type DeckDetailData, type ReportDistribution } from '@gatcg/shared';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import { useCardCatalog } from '../cards/useCardCatalog';
 import CardArtTile from '../../components/CardArtTile';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
+
+import DeckQuantityEvidence from '../decks/DeckQuantityEvidence';
+import { readBuildComparisonState } from '../decks/buildComparisonHandoff';
 
 type Report = ReturnType<typeof archetypeReport>;
 const number = (n: number) => n > 0 && n < .1 ? '<0.1' : Number(n.toFixed(1)).toString();
@@ -30,6 +33,22 @@ function Interval({ value, scale, probability = false }: { value: ReportDistribu
 }
 
 export default function ArchetypeReport({ cluster }: { cluster: ArchetypeCluster }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const context = readBuildComparisonState(location.state, cluster.id);
+  return context ? <section className="mt-6 space-y-3" aria-label="Archetype comparison">
+    <ComparisonReport context={context} />
+    <Button onClick={() => navigate(location.pathname + location.search, { replace: true, state: null })}>View all recorded lists</Button>
+  </section> : <RecordedReport cluster={cluster} />;
+}
+
+function ComparisonReport({ context }: { context: NonNullable<ReturnType<typeof readBuildComparisonState>> }) {
+  const catalog = useCardCatalog();
+  const cards = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
+  return <DeckQuantityEvidence decklist={context.decklist} championName={context.championName} format="STANDARD" cardsByName={cards} expectedBuildId={context.buildId} />;
+}
+
+function RecordedReport({ cluster }: { cluster: ArchetypeCluster }) {
   const champions = useMemo(() => [...new Set([cluster.championName, ...cluster.championBreakdown.map(row => row.championName)])], [cluster]);
   const [partitions, setPartitions] = useState<Map<string, DeckDetailData>>(new Map());
   const onData = useCallback((name: string, data: DeckDetailData) => setPartitions(previous => previous.get(name) === data ? previous : new Map(previous).set(name, data)), []);
