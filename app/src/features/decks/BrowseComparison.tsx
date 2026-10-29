@@ -15,8 +15,8 @@ export function BrowseComparisonChoice({ deck, children }: { deck: BrowseCompari
   const context = useContext(ComparisonContext);
   if (!context) return children;
   const selected = context.decks.some(item => item.key === deck.key);
-  return <div data-component="BrowseComparisonChoice" className={`min-w-0 rounded-xl ${selected ? "ring-2 ring-ctp-blue" : ""}`}>
-    <label className="flex min-h-12 cursor-pointer items-center justify-end gap-2 rounded-t-xl bg-ctp-mantle px-3 text-sm font-medium text-ctp-text">
+  return <div data-component="BrowseComparisonChoice" className={`flex min-w-0 flex-col rounded-xl ${selected ? "ring-2 ring-ctp-blue" : ""}`}>
+    <label className="flex min-h-12 shrink-0 cursor-pointer items-center justify-end gap-2 rounded-t-xl bg-ctp-mantle px-3 text-sm font-medium text-ctp-text">
       <input type="checkbox" className="h-5 w-5 accent-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" checked={selected} disabled={context.busy} aria-label={`Compare ${deck.label}`} onChange={() => context.toggle(deck)} />
       {selected ? "Selected" : "Compare"}
     </label>

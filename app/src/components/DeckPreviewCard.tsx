@@ -98,7 +98,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
     </Panel>
   );
   if (presentation === "cover" && view.to !== undefined) return (
-    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source?.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
+    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source?.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-1 flex-col overflow-hidden rounded-3xl">
       <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="card-art-action group flex flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
