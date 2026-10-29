@@ -41,15 +41,24 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 35% complete: audit and the shared section-preserving
-cohort/composition/quantity engine are implemented, with 14 focused tests and app,
-shared and pipeline type checks passing. The existing quantity report uses the new
-resolver; the new comparison projection is not yet displayed. Integration, compact
-placements, performance work and browser verification remain. A largest-build sample
-(1,894 distinct reference lists) took approximately 993ms in local Node, excluding
-loading; benchmark/optimize before adding synchronous page computation. Extra-draw
-comparisons remain held for model validation. The percentage is approximate because
-that validated model scope remains undecided.
+Release A is approximately 50% complete: the audit, shared comparison engine and
+first compact deck-page composition view are implemented. Main and Material show
+current copies, build medians and middle-50% ranges with one selectable breakdown.
+The existing Main card quantity evidence remains alongside it. The controller reuses
+one resolved cohort, and composition skips unused traits and caches repeated sections.
+A largest-build sample (1,894 references) now took approximately 780ms locally versus
+993ms previously; this is not a mobile benchmark and further performance work remains.
+Next: expose Material and reference-only card quantity differences, then carry the
+same target exclusion into the archetype report. Compact placements, release checks
+and extra-draw model validation remain. The percentage is approximate because that
+validated model scope remains undecided.
+
+Verification: 21 focused calculation tests; app/shared type checks; app lint (existing
+warnings only). Browser checks at 390×844 and 1280×900 cover Main/Material, keyboard
+section switching, cost selection, empty breakdown, category expansion, card expansion,
+48px controls and no horizontal overflow. Loading was observed; sparse/unknown/conflict
+states are covered by calculation tests. Forced network failure, text zoom and signed-in
+saved-deck flows have not been browser-verified for this increment.
 
 **Question:** How does this exact list differ from comparable lists?
 

@@ -92,7 +92,12 @@ export function resolveDeckBuildCohort(target: { main: DeckLine[]; material: Dec
 
 /** Legacy Main-only presentation, backed by the same section-preserving reference cohort. */
 export function deckQuantityEvidence(target: { main: DeckLine[]; material: DeckLine[] }, format: DeckFormat | undefined, clusters: readonly ArchetypeCluster[], partitions: ReadonlyMap<string, DeckDetailData>): DeckQuantityEvidence {
-  const { records, conflicts: _conflicts, ...cohort } = resolveDeckBuildCohort(target, format, clusters, partitions);
+  return deckQuantityEvidenceFromCohort(target, resolveDeckBuildCohort(target, format, clusters, partitions));
+}
+
+/** Reuse an already resolved cohort when displaying composition and quantities together. */
+export function deckQuantityEvidenceFromCohort(target: { main: DeckLine[] }, resolved: DeckBuildCohort): DeckQuantityEvidence {
+  const { records, conflicts: _conflicts, ...cohort } = resolved;
   if (cohort.status !== 'ready') return { ...cohort, rows: [] };
   const mains = records.map(row => counts(row.main));
   const rows = [...counts(target.main)].map(([name, current]) => {

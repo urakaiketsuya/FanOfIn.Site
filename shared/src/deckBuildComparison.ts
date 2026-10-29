@@ -24,7 +24,16 @@ export interface BuildComparisonCard {
 /** A shared projection for target-scoped deck and archetype consumers. No population reselection. */
 export function deckBuildComparison(target: { main: DeckLine[]; material: DeckLine[] }, cohort: DeckBuildCohort, catalog: Map<string, Card>) {
   const sections = (['main', 'material'] as const).map(section => {
-    const stats = (lines: DeckLine[]) => basicDeckStats(lines.map(line => ({ card: line.name, quantity: line.quantity })), catalog);
+    const cached = new Map<string, ReturnType<typeof basicDeckStats>>();
+    const stats = (lines: DeckLine[]) => {
+      const key = JSON.stringify(lines.map(line => [line.name, line.quantity]).sort((a, b) => String(a[0]).localeCompare(String(b[0]))));
+      let result = cached.get(key);
+      if (!result) {
+        result = basicDeckStats(lines.map(line => ({ card: line.name, quantity: line.quantity })), catalog, 'composition');
+        cached.set(key, result);
+      }
+      return result;
+    };
     const current = stats(target[section]);
     const validTarget = target[section].length > 0 && target[section].every(line => line.name && Number.isSafeInteger(line.quantity) && line.quantity > 0);
     const references = cohort.status === 'ready' || cohort.status === 'sparse' ? cohort.records.map(record => stats(record[section])) : [];

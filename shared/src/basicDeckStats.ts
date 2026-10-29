@@ -8,8 +8,9 @@ export interface BasicStatRow {
   percent: number;
   lines: { name: string; quantity: number; detail?: string }[];
 }
-/** One exact section; membership and totals share the same copy-weighted source. */
-export function basicDeckStats(input: OmnidexDecklistCardLine[], catalog: Map<string, Card>) {
+/** One exact section; membership and totals share the same copy-weighted source.
+ * Composition scope omits subtypes, copy groups, keywords and Floating Memory. */
+export function basicDeckStats(input: OmnidexDecklistCardLine[], catalog: Map<string, Card>, scope: 'all' | 'composition' = 'all') {
   const quantities = new Map<string, number>();
   for (const line of input) if (line.quantity > 0) quantities.set(line.card, (quantities.get(line.card) ?? 0) + line.quantity);
   const lines = [...quantities].map(([name, quantity]) => ({ name, quantity }));
@@ -34,7 +35,7 @@ export function basicDeckStats(input: OmnidexDecklistCardLine[], catalog: Map<st
     const rank = (s: string) => /^\d+$/.test(s) ? Number(s) : s === 'X' ? 1000 : s === '—' ? 1001 : 1002;
     return rank(a.label) - rank(b.label);
   });
-  const floating = group(card => {
+  const floating = scope === 'composition' ? [] : group(card => {
     if (!card?.effect) return [];
     return [...card.effect.matchAll(/(?:\[([^\]]+)\]\s*)?\*\*Floating Memory\*\*/g)].map(match => match[1] ? `Conditional · ${match[1]}` : 'Base');
   });
@@ -43,9 +44,9 @@ export function basicDeckStats(input: OmnidexDecklistCardLine[], catalog: Map<st
     unresolved: lines.filter(line => !catalog.has(line.name)).reduce((sum, line) => sum + line.quantity, 0),
     types: group(card => card ? card.types : ['Unknown']),
     elements: group(card => card ? card.elements : ['Unknown']),
-    subtypes: group(card => card ? card.subtypes : ['Unknown']),
-    copies: group((_card, _name, quantity) => [`${quantity}× per card`]),
-    keywords: group((card, name) => card ? [...computeKeywordComposition([{ name, quantity: 1 }], catalog).keys()] : ['Unknown']),
+    subtypes: scope === 'composition' ? [] : group(card => card ? card.subtypes : ['Unknown']),
+    copies: scope === 'composition' ? [] : group((_card, _name, quantity) => [`${quantity}× per card`]),
+    keywords: scope === 'composition' ? [] : group((card, name) => card ? [...computeKeywordComposition([{ name, quantity: 1 }], catalog).keys()] : ['Unknown']),
     floating, reserve: costs('cost_reserve', false), memory: costs('cost_memory', false),
     progression: costs('cost_memory', true),
   };

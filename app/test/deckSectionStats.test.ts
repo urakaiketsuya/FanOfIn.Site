@@ -72,3 +72,12 @@ test('Floating Memory counts each printed condition once per card without assumi
   const stats = basicDeckStats([{ card: 'Base', quantity: 3 }, { card: 'Conditional', quantity: 2 }], cards);
   assert.deepEqual(stats.floating.map(row => [row.label, row.count]), [['Base', 3], ['Conditional · Class Bonus', 2], ['Conditional · Level 2+', 2]]);
 });
+
+test('composition projection preserves full statistics without computing unused card traits', () => {
+  const lines = [{ card: 'Dual', quantity: 3 }, { card: 'Champion', quantity: 1 }, { card: 'Missing', quantity: 2 }];
+  const full = basicDeckStats(lines, catalog);
+  const composition = basicDeckStats(lines, catalog, 'composition');
+  for (const key of ['total', 'unique', 'unresolved', 'types', 'elements', 'reserve', 'memory', 'progression'] as const) assert.deepEqual(composition[key], full[key]);
+  assert.deepEqual(composition.keywords, []);
+  assert.deepEqual(composition.floating, []);
+});
