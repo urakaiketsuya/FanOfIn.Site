@@ -26,11 +26,13 @@ test("access summary uses combined main copies and does not invent odds for an e
     mainLines, cardsByName: new Map(),
   })));
   const html = render([{ name: "Unknown", quantity: 2 }, { name: "Unknown", quantity: 2 }, { name: "Other", quantity: 56 }]);
-  assert.match(html, /52\.8%/);
-  assert.match(html, /4 copies/);
+  assert.match(html, /4 copies per card: find one or more 39\.9%, find two or more 6\.3%/);
+  for (const seen of [7, 10, 15, 20]) assert.match(html, new RegExp(`<option value="${seen}"`));
+  assert.match(html, /aria-expanded="false"/);
   assert.doesNotMatch(render([]), /0%/);
   assert.match(render([]), /Add Main cards/);
   const incomplete = render([{ name: "Unknown", quantity: 4 }]);
-  assert.match(incomplete, /Incomplete Main deck/);
+  assert.match(incomplete, /Main · 4 cards/);
+  assert.match(incomplete, /<option value="4" selected="">4<\/option>/);
   assert.match(incomplete, /100\.0%/);
 });

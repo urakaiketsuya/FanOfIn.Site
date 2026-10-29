@@ -50,14 +50,14 @@ test('deck reports expose all checkpoints without scenario inputs, including inc
   const { MemoryRouter } = await import('react-router-dom');
   const { default: DeckReport } = await import('../src/features/analytics/DeckReport');
   const render = (main: { name: string; quantity: number }[]) => renderToStaticMarkup(createElement(MemoryRouter, {}, createElement(DeckReport, {
-    deck: { main, material: [] }, cardsByName: new Map(), onExplore: () => {},
+    deck: { main, material: [] }, cardsByName: new Map(),
   })));
   const html = render(deck(4));
   for (const seen of [7, 10, 15, 20]) assert.match(html, new RegExp(`${seen} seen`));
   assert.doesNotMatch(html, /<input|<select|<textarea|Adjust scenario/);
-  assert.match(html, /Explore Veiling Breeze in calculator/);
+  assert.doesNotMatch(html, /data-component="DeckAccessSummary"/);
   assert.match(html, /attack report unavailable/);
-  assert.match(render([]), /Add Main cards to calculate access/);
+  assert.doesNotMatch(render([]), /NaN|Infinity/);
 });
 
 test('automatic version reports cannot open scenario inputs, while calculators retain adjustments', async () => {
