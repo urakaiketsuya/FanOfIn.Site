@@ -7,7 +7,7 @@ import Button from './ui/Button';
 const percent = (n: number) => `${(n * 100).toFixed(1)}%`;
 const gain = (n: number) => `+${(n * 100).toFixed(1)} pp`;
 
-export default function DeckCardAccess({ size, groups, cardsByName }: { size: number; groups: BasicStatRow[]; cardsByName: Map<string, Card> }) {
+export default function DeckCardAccess({ size, groups, cardsByName, onExplore }: { onExplore?: (name: string) => void; size: number; groups: BasicStatRow[]; cardsByName: Map<string, Card> }) {
   const id = useId();
   const [checkpoint, setCheckpoint] = useState(7);
   const [selected, setSelected] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export default function DeckCardAccess({ size, groups, cardsByName }: { size: nu
       </Button>;
     })}
     <div id={`${id}-details`} aria-live="polite">{active && <div className="mt-2 space-y-3 border-t border-ctp-surface1 pt-3">
-      <AssociatedCards lines={active.lines} cardsByName={cardsByName} />
+      <AssociatedCards lines={active.lines} cardsByName={cardsByName} onExplore={onExplore} />
       <div><h4 className="text-sm font-semibold">Copy-count scenarios</h4><p className="mt-1 text-xs text-ctp-subtext1">Fixed {size}-card Main · change from one fewer copy</p></div>
       <table className="w-full text-right text-xs tabular-nums"><thead><tr className="text-ctp-subtext1"><th scope="col" className="py-2 text-left font-medium">Copies</th><th scope="col" className="w-16 font-medium">Find 1+</th><th scope="col" className="w-16 font-medium">Find 2+</th></tr></thead><tbody>{copyCountTradeoffs(size, seen, current).map(row => <tr key={row.copies} className={row.copies === current ? 'bg-ctp-surface0' : ''}><th scope="row" className="py-2 text-left font-medium">{row.copies}×{row.copies === current && <span className="block text-ctp-subtext1">Current</span>}</th><td className="py-2">{percent(row.access)}<span className="block text-ctp-subtext1">{gain(row.accessGain)}</span></td><td className="py-2">{percent(row.multiple)}<span className="block text-ctp-subtext1">{gain(row.multipleGain)}</span></td></tr>)}</tbody></table>
     </div>}</div>

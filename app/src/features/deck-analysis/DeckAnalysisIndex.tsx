@@ -194,7 +194,7 @@ export default function DeckAnalysisIndex() {
     <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
       {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
       <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={openCalculator} onApply={applyReportSwap} />
-      <DeckReport deck={workspace} cardsByName={catalogByName} onExplore={openCalculator} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
+      <DeckReport deck={workspace} cardsByName={catalogByName} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={openCalculator} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
     <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}

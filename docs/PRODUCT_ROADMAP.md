@@ -738,8 +738,15 @@ exposure now share a compact Main-only report grouped by identical copy counts, 
 and multiple-copy changes together in percentage points, including 2→3 and 3→4.
 These are modeled scenarios, not legal-build or performance recommendations.
 
-Deck Basics is approximately 80% complete against the original scope: descriptive
-stats and modeled access/tradeoffs are implemented. Remaining: compatible-build
-observed quantity distributions with sample sizes, consolidation of overlapping
-analysis presentation, and deployment/live verification of the new access slice.
-Cohort coverage and consolidation scope still require audit.
+Deck Basics continuation (2026-10-29): observed Main quantities now use exact published
+Standard build membership, target exclusion, identity deduplication, zero-copy buckets,
+and separate unique-list/sighting denominators. Unmatched drafts, conflicting assignments,
+unsupported formats and cohorts below five other unique lists retain explicit status.
+The historical cohort audit and sample counts are recorded in CALCULATIONS.md.
+Analysis reuses compact access controls; basic composition/cost/keyword duplication has
+been removed while additional card traits and calculator actions remain.
+
+Deck Basics is approximately 95% complete for this bounded scope: implementation and
+local verification are complete; access and cohort slices still need deployment and live
+verification. Arbitrary draft classification, current-era cohort selection and broader
+archetype comparison belong to release A and are not claimed complete here.

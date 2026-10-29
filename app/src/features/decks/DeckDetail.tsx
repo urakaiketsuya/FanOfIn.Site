@@ -517,7 +517,7 @@ export default function DeckDetail() {
       </div></details>
       <UserDecklistPanel showActions={false} showStats={false} deckTitle={deck.championName ?? "Decklist"} decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
       </TabPanel>
-      <TabPanel baseId="deck-detail" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
+      <TabPanel baseId="deck-detail" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} format="STANDARD" championName={deck.championName} /></TabPanel>
       <TabPanel baseId="deck-detail" tab="performance" active={tab} keepMounted>
         <UserDeckStats decklist={decklist} championName={deck.championName} format="STANDARD" title={deck.championName ?? "Deck"} extraTabs={deckStatsExtraTabs} />
       </TabPanel>

@@ -69,7 +69,7 @@ export default function BuilderBuildPanel() {
       {!hasCards && <p className="py-8 text-sm text-ctp-subtext1">Your deck is empty. Use Add cards to get started.</p>}
       {cardStats.controls}
       <DeckEditor onAdd={section => { setBrowserDestination(section); setBrowserOpen(true); }} format={b.deckFormat} renderStats={name => cardStats.renderStats(name, true)} deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
-      <DeckStats decklist={b.editor.deck} cardsByName={b.catalogByName} />
+      <DeckStats decklist={b.editor.deck} cardsByName={b.catalogByName} format={b.deckFormat} championName={b.championName} />
     </section>}
 
     {browserOpen && <EditorDialog count={total} onDismiss={()=>setBrowserOpen(false)}>{cardBrowser}</EditorDialog>}

@@ -473,3 +473,25 @@ empty Sideboard, section-reset behavior, and 48px controls with no page overflow
 Nine calculation/section tests and app/shared type checks passed. Lint retained seven
 existing Fast Refresh warnings. Network-failure injection and browser text zoom were
 not exercised; this slice adds no network request.
+
+Observed copy counts accompany Main stats. Card art and names precede exact quantity
+bars, including the zero-copy bucket. Show the published build, historical date range,
+unique-list and sighting counts, and missing-list status. Six cards appear initially;
+Show all expands in place. Unmatched, ambiguous, sparse and unsupported cohorts retain
+short explicit states. Fetch failures provide Retry; cached data remains labeled with
+its historical coverage. No global quantity win-rate substitution is allowed.
+
+Basic composition, costs and keyword counts now live in Stats. Analysis's Card traits
+view retains additional rarity, power and damage characteristics. Analysis access uses
+the same compact component and shared probabilities as Stats, preserving per-card
+calculator actions. The standalone analysis report no longer repeats its access report
+above Deck Stats, and forwards those calculator actions through Stats instead.
+
+Quantity-evidence verification (2026-10-29): real Lorraine report reconciled to 416
+unique other lists / 489 sightings. Mobile 390×844 and desktop 1280×900 showed no
+horizontal overflow; links and expansion controls met 48px targets. Keyboard Show all
+expanded 6→21 cards and collapsed again. Calculator handoff retained Fluffy Shopkeep
+and two copies, and Card traits retained the additional charts. Browser loading,
+partial coverage, unmatched and Pantheon states were checked. Sparse, ambiguous,
+invalid and duplicate-cohort cases are covered by calculation tests; forced network
+failure/retry, text zoom, and signed-in saved-deck flows were not browser-tested.

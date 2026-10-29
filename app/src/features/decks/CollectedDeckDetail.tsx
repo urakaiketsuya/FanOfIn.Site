@@ -67,7 +67,7 @@ export default function CollectedDeckDetail() {
     {deck.variants.length > 1 && <label className="mt-4 flex flex-col gap-1 text-sm">List variant<Select aria-label="List variant" disabled={busy} value={variant!.id} onChange={event => setParams(previous => { const next = new URLSearchParams(previous); next.set('variant', event.target.value); return next; }, { replace: true })}>{deck.variants.map((v, index) => <option key={v.id} value={v.id}>Variant {index + 1} · {v.sideboard.reduce((sum, [, qty]) => sum + qty, 0)} sideboard cards</option>)}</Select></label>}
     <div className="mt-6"><Tabs tabs={[{ key: 'decklist', label: 'Deck' }, { key: 'stats', label: 'Stats' }, { key: 'performance', label: 'Analysis' }]} active={tab} onChange={setTab} label="Collected deck details" baseId="collected-deck" wrap /></div>
     <TabPanel baseId="collected-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showActions={false} showStats={false} decklist={decklist} format={deck.format} collectionSource={deck.title} /></TabPanel>
-    <TabPanel baseId="collected-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cards} /></TabPanel>
+    <TabPanel baseId="collected-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cards} format={deck.format} championName={deck.championName} /></TabPanel>
     <TabPanel baseId="collected-deck" tab="performance" active={tab} keepMounted><UserDeckStats key={variant!.id} decklist={decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
   </PageLayout>;
 }

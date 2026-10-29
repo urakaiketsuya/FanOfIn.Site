@@ -72,7 +72,7 @@ export default function PantheonDeckDetail() {
 
     <div className="mt-6"><Tabs tabs={[{ key: "decklist", label: "Deck" }, { key: "stats", label: "Stats" }, { key: "performance", label: "Analysis" }]} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" wrap /></div>
     <TabPanel baseId="pantheon-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showActions={false} showStats={false} decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
-    <TabPanel baseId="pantheon-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} /></TabPanel>
+    <TabPanel baseId="pantheon-deck" tab="stats" active={tab}><DeckStats decklist={decklist} cardsByName={cardsByName} format="PANTHEON" championName={championName} /></TabPanel>
     <TabPanel baseId="pantheon-deck" tab="performance" active={tab} keepMounted><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></TabPanel>
   </PageLayout>;
 }

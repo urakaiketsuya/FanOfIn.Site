@@ -10,9 +10,9 @@ import { useId, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
-  computeAllyPower, computeDamageComposition, computeDeckComposition, computeDeckIdentity,
-  computeFloatingMemory, computeKeywordComposition, computeMemoryCostCurve,
-  computeRarityBreakdown, computeReserveCostCurve, formatAllyPower,
+  computeAllyPower, computeDamageComposition, computeDeckIdentity,
+  computeFloatingMemory,
+  computeRarityBreakdown, formatAllyPower,
 } from "../../lib/deckIdentity";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
@@ -27,7 +27,6 @@ import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
 import DamageStatisticalReport from "../analytics/DamageStatisticalReport";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import TurnToPlayCalculator from "../deckbuilder/TurnToPlayCalculator";
-import InteractiveCompositionProfile from "../../components/InteractiveCompositionProfile";
 import CardPackageMap from "../../components/CardPackageMap";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
@@ -80,10 +79,6 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   );
   const scavengeForecasts = useMemo(() => computeScavengeForecasts(namedSections.main, cardsByName), [namedSections.main, cardsByName]);
   const delugeForecasts = useMemo(() => computeDelugeForecasts(namedSections.main, namedSections.material, cardsByName), [namedSections.main, namedSections.material, cardsByName]);
-  const composition = useMemo(() => computeDeckComposition(identityLines, cardsByName), [identityLines, cardsByName]);
-  const memoryCurve = useMemo(() => computeMemoryCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);
-  const reserveCurve = useMemo(() => computeReserveCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);
-  const keywords = useMemo(() => buildChartSegments(computeKeywordComposition(identityLines, cardsByName)), [identityLines, cardsByName]);
   const allyPower = useMemo(() => computeAllyPower(identityLines, cardsByName), [identityLines, cardsByName]);
   const allyPowerSegments = useMemo(() => buildChartSegments(new Map(Array.from(allyPower.byPower, ([power, count]) => [`Power ${power}`, count]))), [allyPower]);
   const damage = useMemo(() => computeDamageComposition(identityLines, cardsByName), [identityLines, cardsByName]);
@@ -202,20 +197,16 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
 
   const compositionTab: ReactNode = catalogCoverage < 0.9 ? (
     <Panel tone="warning" className="text-sm text-ctp-subtext1">
-      Composition is waiting for card data: {resolvedMainCount} of {totals.main} main-deck cards resolved. Charts appear at 90% coverage.
+      Card traits are waiting for card data: {resolvedMainCount} of {totals.main} main-deck cards resolved. Charts appear at 90% coverage.
     </Panel>
   ) : (
     <>
       <p className="text-sm text-ctp-subtext1">
         Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: {allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "–"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}
       </p>
-      <div className="mt-3">
-        <InteractiveCompositionProfile composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} lines={[...decklist.main, ...decklist.material]} cardsByName={cardsByName} />
-      </div>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <RankedCompositionChart title="Rarity" segments={rarity} />
         <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
-        <RankedCompositionChart title="Keywords" segments={keywords} />
         <DonutChart title="Damage Targets" segments={buildChartSegments(damage.targets)} />
         <DonutChart title="Damage Type" segments={buildChartSegments(damage.conditionality)} />
       </div>
@@ -335,7 +326,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" />}
       <Panel className="mt-4"><CombatAccessForecast mainLines={namedSections.main} materialLines={namedSections.material} cardsByName={cardsByName} /></Panel>
     </> },
-    { key: "composition", label: "Composition", content: compositionTab },
+    { key: "composition", label: "Card traits", content: compositionTab },
     { key: "improvements", label: "Changes & packages", content: trimTab },
     ...extraTabs,
   ];

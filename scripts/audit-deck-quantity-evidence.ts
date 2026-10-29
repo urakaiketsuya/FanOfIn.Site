@@ -1,0 +1,22 @@
+import { readFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
+import { collectedDecklist, deckQuantityEvidence, shortHash, type ArchetypeTaxonomyData, type CollectedDeckData, type DeckCardIndexData, type DeckDetailData } from '../shared/src/index.js';
+const read = <T>(path: string): T => JSON.parse(readFileSync(path, 'utf8')) as T;
+const taxonomy = read<ArchetypeTaxonomyData>('data/analysis/archetype-taxonomy.json');
+const index = read<DeckCardIndexData>('data/analysis/deck-card-index.json');
+const recorded = new Set(index.decks.map(row => row.deckId));
+const assigned = new Set(taxonomy.clusters.flatMap(cluster => cluster.deckIds));
+const collected = read<CollectedDeckData>('data/community/collected.json');
+const sample = collected.decks.find(deck => deck.id === '1353acbed1581ad6a4ab7400');
+if (!sample?.championName) throw new Error('Audit sample unavailable');
+const deck = collectedDecklist(sample.variants[0], collected.cardNames);
+const target = { main: deck.main.map(line => ({ name: line.card, quantity: line.quantity })), material: deck.material.map(line => ({ name: line.card, quantity: line.quantity })) };
+const partitions = new Map<string, DeckDetailData>();
+const add = (champion: string) => partitions.set(champion, read<DeckDetailData>(`data/analysis/champion-decks/${shortHash(champion)}.json`));
+add(sample.championName);
+const start = performance.now();
+let result = deckQuantityEvidence(target, sample.format, taxonomy.clusters, partitions);
+for (const champion of result.champions) if (!partitions.has(champion)) add(champion);
+result = deckQuantityEvidence(target, sample.format, taxonomy.clusters, partitions);
+console.log(JSON.stringify({ generatedAt: taxonomy.generatedAt, recorded: recorded.size, assigned: assigned.size, missingAssigned: [...assigned].filter(id => !recorded.has(id)).length,
+  sample: sample.id, elapsedMs: Math.round(performance.now() - start), ...result, rows: result.rows.slice(0, 1) }, null, 2));

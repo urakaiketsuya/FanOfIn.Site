@@ -5585,3 +5585,37 @@ absolute probability difference from one fewer copy, displayed in percentage poi
 Multiple-copy exposure is not scored as good or bad. Quantities 1–4 plus the actual
 quantity are shown, excluding quantities above deck size. No observed cohort or win-rate
 claim is made by these modeled results.
+
+### Observed copy-count evidence
+
+`shared/src/deckQuantityEvidence.ts` resolves exact Main+Material identity against
+published Standard tournament build membership. It uses existing identity hashes only
+to narrow decoding and verifies full `deckBuildSignature` strings before assignment.
+An unmatched list, conflicting assignments, unknown format, or Pantheon does not fall
+back to a champion-wide or similarity-inferred cohort. All champions represented in the
+published build must load before the report is ready. The UI loads bounded champion
+partitions rather than the complete 21.7 MB card index and uses transition feedback.
+
+Scope is all recorded events for that published build, with the observed date range
+shown. It is historical construction evidence, not current legality or optimal quantities.
+All sightings of the target identity are excluded. Other identities are deduplicated
+by Main+Material; Sideboard does not affect identity, membership, or quantities. Distinct
+lists and sightings have separate counts. Invalid/missing Main or Material lists are
+excluded and counted. At least five other distinct lists are required before showing
+buckets; this is a display minimum for descriptive counts, not statistical significance.
+
+For each card in the target Main, each eligible distinct list contributes once to its
+Main quantity bucket, including zero. Every bucket's percentage uses all eligible
+unique lists. Inclusion is the number of unique lists with quantity > 0 over that same
+denominator. Unknown catalog entries retain their names and quantities. No win rates,
+best-quantity label, automatic edit, or causal recommendation is derived from these counts.
+
+Read-only audit: `node --import tsx scripts/audit-deck-quantity-evidence.ts`.
+On the 2026-10-29 artifact, 60,277 recorded lists include 45,309 published assignments
+across 328 builds, with no assigned ID missing from the complete card index. The Lorraine
+sample resolves to build `e0ums8`: 416 distinct other lists, 489 sightings, six excluded
+target sightings, and two unavailable/invalid assigned lists in its champion partition.
+The scope spans 2025-09-20 through 2026-07-26. Cheshire Cat quantities 0/1/2/3/4 have
+39/2/118/238/19 lists respectively, summing to 416. Hash-based narrowing reduced the
+measured two-pass sample calculation from about 1.2 seconds to 0.32 seconds locally;
+these are indicative development measurements, not a mobile performance guarantee.

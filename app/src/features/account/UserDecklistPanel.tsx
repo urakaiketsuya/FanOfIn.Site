@@ -37,7 +37,7 @@ export default function UserDecklistPanel({ decklist, deckTitle, deckOwner, form
       collectionPanel={collectionSource && showCollection && <div id={collectionId}><DeckCollectionTools ownerDeckId={ownerDeckId} decklist={decklist} cardsByName={cardsByName} source={collectionSource} onCollectionChange={setCollection} onIncludeSideboardChange={setIncludeSideboard} /></div>}
       toolbarActions={<>{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { printings: builderParams.printings, ...(canImprove && ownerDeckId ? { mode: "improve" as const, sourceDeckId: ownerDeckId } : {}) })} className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{actions}</>}
     />}
-    {showStats && <DeckStats decklist={decklist} cardsByName={cardsByName} />}
+    {showStats && <DeckStats decklist={decklist} cardsByName={cardsByName} format={format} championName={builderParams?.championName} />}
     {showAnalysis && format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
   </section>;
 }

@@ -1,5 +1,6 @@
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
-import { basicDeckStats, type BasicStatRow, type Card, type OmnidexDecklist } from "@gatcg/shared";
+import { basicDeckStats, type BasicStatRow, type Card, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
+import DeckQuantityEvidence from "../features/decks/DeckQuantityEvidence";
 import DeckCardAccess from "./DeckCardAccess";
 import AssociatedCards from "./AssociatedCards";
 import Button from "./ui/Button";
@@ -27,7 +28,7 @@ function StatChart({ title, rows, cardsByName, curve = false, control }: { contr
   </section>;
 }
 
-export default function DeckStats({ decklist, cardsByName }: { decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
+export default function DeckStats({ decklist, cardsByName, format, championName, onExplore }: { format?: DeckFormat; championName?: string | null; onExplore?: (name: string) => void; decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
   const id = useId();
   const [section, setSection] = useState<Section>("main");
   const [breakdown, setBreakdown] = useState<Breakdown>("elements");
@@ -43,10 +44,11 @@ export default function DeckStats({ decklist, cardsByName }: { decklist: Pick<Om
         <div className="grid min-w-0 items-start gap-x-6 gap-y-3 lg:grid-cols-2"><StatChart title={section === "material" ? "Memory cost · non-champions" : "Reserve cost · non-champions"} rows={section === "material" ? stats.memory : stats.reserve} cardsByName={cardsByName} curve /><StatChart title="Card types" rows={stats.types} cardsByName={cardsByName} /></div>
         {section === "material" && stats.progression.length > 0 && <StatChart title="Champion Memory costs" rows={stats.progression} cardsByName={cardsByName} curve />}
         {stats.floating.length > 0 && <StatChart title="Floating Memory · printed copies" rows={stats.floating} cardsByName={cardsByName} />}
-        {section === "main" && <DeckCardAccess size={stats.total} groups={stats.copies} cardsByName={cardsByName} />}
+        {section === "main" && <DeckCardAccess size={stats.total} groups={stats.copies} cardsByName={cardsByName} onExplore={onExplore} />}
         <div className="border-t border-ctp-surface1 pt-2">
           <StatChart key={breakdown} title="Breakdown" rows={stats[breakdown]} cardsByName={cardsByName} control={<select aria-label="Deck stats breakdown" className="min-h-control max-w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm" value={breakdown} onChange={event => setBreakdown(event.target.value as Breakdown)}><option value="elements">Elements</option><option value="copies">Copies per card</option><option value="subtypes">Subtypes</option><option value="keywords">Keywords</option></select>} />
         </div>
+        {section === "main" && <DeckQuantityEvidence decklist={decklist} format={format} championName={championName} cardsByName={cardsByName} />}
       </div>}
     </TabPanel>
   </Panel>;

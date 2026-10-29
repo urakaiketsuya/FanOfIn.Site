@@ -82,7 +82,7 @@ export default function PublicDeckDetail() {
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
     <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" wrap /></div>
     <TabPanel baseId="public-deck" tab="decklist" active={tab} keepMounted><UserDecklistPanel showActions={false} showStats={false} deckTitle={deck.title} deckOwner={deck.owner.displayName} decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} /></TabPanel>
-    <TabPanel baseId="public-deck" tab="stats" active={tab}><DeckStats decklist={deck.decklist} cardsByName={cardsByName} /></TabPanel>
+    <TabPanel baseId="public-deck" tab="stats" active={tab}><DeckStats decklist={deck.decklist} cardsByName={cardsByName} format={deck.format} championName={deck.championName} /></TabPanel>
     <TabPanel baseId="public-deck" tab="performance" active={tab} keepMounted><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
     <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>
     <TabPanel baseId="public-deck" tab="discussion" active={tab} keepMounted><DeckComments target={{ kind: "community", id: publicSlug }} /></TabPanel>
