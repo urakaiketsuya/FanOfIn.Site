@@ -40,6 +40,13 @@ each release's audit establishes data coverage and implementation size.
 
 ## A — This deck versus its archetype (first release)
 
+2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
+Release A is approximately 20% complete (scope/audit established; implementation,
+integration and verification remain). The audit found 1,153 assigned sightings missing
+from popularity-backed partitions and incompatible sighting/construction weighting
+between existing reports. Next is the shared section-preserving cohort/metric contract.
+Extra-draw comparisons remain held for model validation; this does not block composition.
+
 **Question:** How does this exact list differ from comparable lists?
 
 1. Audit existing report consumers, cohort membership, formats, catalog resolution,

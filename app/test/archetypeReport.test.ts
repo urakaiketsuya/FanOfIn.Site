@@ -36,3 +36,18 @@ test('quartiles and missing catalog coverage never turn unknown composition into
   assert.equal(report.cards.length, 4); assert.equal(report.mainSize.mean, 70);
   assert.equal(archetypeReport([], [a], catalog).listed, 0);
 });
+
+// Baseline fixture for Release A: changing to construction weighting must be explicit.
+test('legacy archetype report weights separate sightings of an identical construction', () => {
+  const repeated: DeckCardIndexData = { ...a, decks: [...a.decks,
+    { ...a.decks[0], deckId: '2:1', sideboard: [[4, 9]] },
+  ] };
+  const report = archetypeReport(['1:1', '1:2', '2:1'], [repeated], catalog);
+  assert.equal(report.listed, 3);
+  assert.deepEqual(report.mainSize, { count: 3, mean: 200 / 3, median: 60, low: 60, high: 70 });
+  assert.equal(report.cards.find(row => row.name === 'Flex')!.inclusion, 2 / 3);
+  assert.equal(report.composition.find(row => row.label === 'Printed Floating Memory')!.mean, 8 / 3);
+  assert.deepEqual(report.cards.map(row => [row.section, row.name]), [
+    ['main', 'Core'], ['main', 'Filler'], ['material', 'Spirit'], ['main', 'Flex'],
+  ]);
+});
