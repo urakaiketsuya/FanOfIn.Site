@@ -107,3 +107,23 @@ validation and local/live verification remain. Extra-draw scope may change after
 validation. Missing popularity records block complete coverage, not a clearly labeled
 partial-cohort implementation. Next: shared cohort resolver and section metric contract,
 then the mobile deck-versus-build component.
+
+
+### Shared engine implementation — 2026-10-29
+
+The section-preserving resolver and composition/quantity projection are implemented.
+The existing quantity presentation delegates to the resolver; the new comparison
+projection has no UI consumer yet. Fourteen focused tests cover legacy weighting,
+exact membership, target exclusion, duplicate sightings, zero-inclusive quantities,
+reference-only Material cards, catalog gaps, sparse/unsupported populations and
+conflicting section allocations. App/shared/pipeline type checks pass.
+
+Largest-build sample `szgmmc`, target `21122:104`: 1,894 other distinct lists,
+2,340 sightings, three excluded target sightings, 130 missing. Main and Material
+both have 1,894 catalog-complete references; median sizes 60 and 12. The combined
+resolver/projection took 993ms locally in Node, excluding file reads, parsing and
+network. This is a performance concern, not a browser benchmark. Next: avoid computing
+unused basic-stat categories or cache per-list projections, then integrate the compact
+report and verify mobile/desktop behavior. No browser verification or deployment is
+claimed for this calculation-layer change. Release A is approximately 35% complete;
+UI integration/parity/placement, performance and validation remain.

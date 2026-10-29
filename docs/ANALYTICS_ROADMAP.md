@@ -41,11 +41,15 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 20% complete (scope/audit established; implementation,
-integration and verification remain). The audit found 1,153 assigned sightings missing
-from popularity-backed partitions and incompatible sighting/construction weighting
-between existing reports. Next is the shared section-preserving cohort/metric contract.
-Extra-draw comparisons remain held for model validation; this does not block composition.
+Release A is approximately 35% complete: audit and the shared section-preserving
+cohort/composition/quantity engine are implemented, with 14 focused tests and app,
+shared and pipeline type checks passing. The existing quantity report uses the new
+resolver; the new comparison projection is not yet displayed. Integration, compact
+placements, performance work and browser verification remain. A largest-build sample
+(1,894 distinct reference lists) took approximately 993ms in local Node, excluding
+loading; benchmark/optimize before adding synchronous page computation. Extra-draw
+comparisons remain held for model validation. The percentage is approximate because
+that validated model scope remains undecided.
 
 **Question:** How does this exact list differ from comparable lists?
 

@@ -5619,3 +5619,31 @@ The scope spans 2025-09-20 through 2026-07-26. Cheshire Cat quantities 0/1/2/3/4
 39/2/118/238/19 lists respectively, summing to 416. Hash-based narrowing reduced the
 measured two-pass sample calculation from about 1.2 seconds to 0.32 seconds locally;
 these are indicative development measurements, not a mobile performance guarantee.
+
+
+## Deck versus published build comparison
+
+`resolveDeckBuildCohort` preserves exact published Standard membership, verifies complete
+Main+Material signatures after hash narrowing, excludes every sighting of the target
+identity, and deduplicates the remaining constructions. Sideboard has no effect.
+Main and Material remain separate in each retained record. Conflicting section
+allocations for one combined identity make the cohort ambiguous, including conflicts
+with the target. Missing/invalid records remain missing coverage. Dates describe
+available non-target sightings; they do not establish coverage of missing records.
+
+`deckBuildComparison` projects that resolved cohort without choosing another population.
+Each section uses `basicDeckStats` for size, types, elements, non-champion Reserve and
+Memory costs, and champion progression costs. Numeric zero, X, and no printed cost
+remain distinct. Types/elements may overlap. Every reference distribution requires
+five eligible distinct lists; unavailable distributions are null. Structural sizes
+and named quantities do not require catalog resolution. Catalog-derived comparisons
+require a fully resolved target section and at least five fully resolved reference
+sections. Resolution of Main and Material is independent.
+
+Card rows use the union of target and reference names in each section. An absent card
+contributes zero copies; inclusion counts positive copies across all reference lists.
+Median and middle 50% therefore differ intentionally from the legacy archetype report's
+played-only quantities. Distributions use the existing `(n - 1) * p` interpolation.
+No turn timing, draw effects, affordability, optimal quantity or win rate is inferred.
+The legacy quantity component now uses this resolver but retains its Main-only buckets.
+The new comparison projection is not yet displayed in the UI.
