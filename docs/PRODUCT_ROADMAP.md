@@ -746,7 +746,13 @@ The historical cohort audit and sample counts are recorded in CALCULATIONS.md.
 Analysis reuses compact access controls; basic composition/cost/keyword duplication has
 been removed while additional card traits and calculator actions remain.
 
-Deck Basics is approximately 95% complete for this bounded scope: implementation and
-local verification are complete; access and cohort slices still need deployment and live
-verification. Arbitrary draft classification, current-era cohort selection and broader
+Deck Basics is 100% complete for this bounded scope: implementation, automated release
+checks and deployment/live verification are complete at `5fc0b6e44` (2026-10-29,
+GitHub Pages run `40890723645`). The live Lorraine sample reconciles to 416 distinct
+lists and 489 sightings; mobile (390px) and desktop (1280px) checks covered draw-count
+selection, keyboard expansion/collapse, observed-card expansion and horizontal overflow.
+No runtime errors were recorded in the checked flow. Forced network failures, text zoom
+and signed-in saved-deck flows were not browser-tested. Two obsolete report-rendering
+assertions were updated after the first release gate failed; the full release gate then passed.
+Arbitrary draft classification, current-era cohort selection and broader
 archetype comparison belong to release A and are not claimed complete here.
