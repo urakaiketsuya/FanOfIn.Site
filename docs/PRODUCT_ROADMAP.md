@@ -721,7 +721,7 @@ Track product outcomes without treating engagement alone as success:
 - Payments, escrow, shipping guarantees, or reputation scores before trading safety and support requirements
   receive separate legal, fraud, privacy, and operations review.
 
-## Deferred initiative: Deck Basics
+## Initiative: Deck Basics
 
 Separate from the October 2026 Deck Report decision expansion. Plan a cohesive basic
 statistics view covering deck size, composition, resource/cost distributions, individual
@@ -730,5 +730,16 @@ showing access gained and duplicate exposure together; multiple copies are not i
 bad. Compare observed quantities only within compatible builds and retain sample sizes.
 Do not treat global quantity win rates as causal recommendations. Existing statistics
 remain available until this initiative establishes their consolidated presentation.
-Implementation has not started; first task is auditing existing stats and agreeing the
-minimum useful mobile flow, avoiding duplicate calculators.
+Implementation status (2026-10-29): section-aware composition, cost distributions,
+printed Floating Memory and card drilldowns are implemented; spacing and browse-card
+layout fixes are live at `a19e81934` (deployment and production smoke checks passed). Individual card access and multiple-copy
+exposure now share a compact Main-only report grouped by identical copy counts, with
+7/10/15/20 cards-seen checkpoints. Inline fixed-size 1–4-copy scenarios show access
+and multiple-copy changes together in percentage points, including 2→3 and 3→4.
+These are modeled scenarios, not legal-build or performance recommendations.
+
+Deck Basics is approximately 80% complete against the original scope: descriptive
+stats and modeled access/tradeoffs are implemented. Remaining: compatible-build
+observed quantity distributions with sample sizes, consolidation of overlapping
+analysis presentation, and deployment/live verification of the new access slice.
+Cohort coverage and consolidation scope still require audit.

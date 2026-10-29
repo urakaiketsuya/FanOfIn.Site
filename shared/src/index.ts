@@ -133,3 +133,4 @@ export * from "./competitionReports";
 
 export * from "./collected-decks.js";
 export * from "./basicDeckStats.js";
+export * from './cardAccess.js';

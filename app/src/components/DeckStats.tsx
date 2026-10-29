@@ -1,5 +1,6 @@
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { basicDeckStats, type BasicStatRow, type Card, type OmnidexDecklist } from "@gatcg/shared";
+import DeckCardAccess from "./DeckCardAccess";
 import AssociatedCards from "./AssociatedCards";
 import Button from "./ui/Button";
 import Panel from "./ui/Panel";
@@ -42,6 +43,7 @@ export default function DeckStats({ decklist, cardsByName }: { decklist: Pick<Om
         <div className="grid min-w-0 items-start gap-x-6 gap-y-3 lg:grid-cols-2"><StatChart title={section === "material" ? "Memory cost · non-champions" : "Reserve cost · non-champions"} rows={section === "material" ? stats.memory : stats.reserve} cardsByName={cardsByName} curve /><StatChart title="Card types" rows={stats.types} cardsByName={cardsByName} /></div>
         {section === "material" && stats.progression.length > 0 && <StatChart title="Champion Memory costs" rows={stats.progression} cardsByName={cardsByName} curve />}
         {stats.floating.length > 0 && <StatChart title="Floating Memory · printed copies" rows={stats.floating} cardsByName={cardsByName} />}
+        {section === "main" && <DeckCardAccess size={stats.total} groups={stats.copies} cardsByName={cardsByName} />}
         <div className="border-t border-ctp-surface1 pt-2">
           <StatChart key={breakdown} title="Breakdown" rows={stats[breakdown]} cardsByName={cardsByName} control={<select aria-label="Deck stats breakdown" className="min-h-control max-w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm" value={breakdown} onChange={event => setBreakdown(event.target.value as Breakdown)}><option value="elements">Elements</option><option value="copies">Copies per card</option><option value="subtypes">Subtypes</option><option value="keywords">Keywords</option></select>} />
         </div>

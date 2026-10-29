@@ -5565,3 +5565,23 @@ cards get an explicit Unknown bucket. Cost charts retain X, zero, and a dash for
 cost of that kind, with champion Memory costs separated from non-champions. Numeric costs
 remain exact. Floating Memory reports printed base and condition-specific copies, without
 claiming the conditions are satisfied or those copies are available in the graveyard.
+
+### Individual access and marginal copy counts
+
+`shared/src/cardAccess.ts` uses uniform sampling without replacement from the exact Main
+size. `reportAccess` supplies P(X ≥ 1); a sequential zero/one-hit recurrence supplies
+P(X = 1), so P(X ≥ 2) = P(X ≥ 1) − P(X = 1). Checkpoints are cards seen (7/10/15/20),
+clamped to deck size, not turns or inferred starting hands. Mulligans, tutors, selection,
+extra draws and playability are not modeled. Catalog resolution does not affect these
+quantity-only probabilities; unknown names remain in the population and drilldowns.
+Main only: Material and Sideboard are not random draws from this population.
+
+Cards with the same quantity have identical marginal probabilities, so the UI groups
+those cards and retains their names/art in the expansion. "Find 2+" is per individual
+card name, not the chance of any duplicate anywhere in the deck. Fixed-size scenarios
+replace other cards with copies of the selected name; they do not increase deck size,
+mutate a deck, enforce card legality, or recommend a quantity. Each row's gain is the
+absolute probability difference from one fewer copy, displayed in percentage points.
+Multiple-copy exposure is not scored as good or bad. Quantities 1–4 plus the actual
+quantity are shown, excluding quantities above deck size. No observed cohort or win-rate
+claim is made by these modeled results.

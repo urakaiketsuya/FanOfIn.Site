@@ -459,3 +459,17 @@ or breakdown bar reveals its exact card pool inline, with artwork, readable name
 Clear restores focus to the originating bar. Section changes clear local drill-downs; quantity
 edits recalculate membership. Keep unknown card data visible and printed conditional resources
 separate from unconditional copies. Do not infer playability from printed cost bars.
+
+Deck Basics card access groups names with identical quantities. Rows expose one-copy
+access and two-or-more-copy exposure together; the row expands named, linked card art
+and fixed-size copy-count scenarios. Cards-seen checkpoints update both measures and
+scenario deltas. Native buttons/selects retain keyboard access and 48px targets; section
+changes clear the local expansion. Main-only probabilities must not appear on Material
+or Sideboard. This view has no deck mutation or automatic recommendation action.
+
+Verification (2026-10-29): access report checked at 390×844 and 1280×900, including
+collapsed/expanded rows, keyboard Space, checkpoint changes, Material isolation,
+empty Sideboard, section-reset behavior, and 48px controls with no page overflow.
+Nine calculation/section tests and app/shared type checks passed. Lint retained seven
+existing Fast Refresh warnings. Network-failure injection and browser text zoom were
+not exercised; this slice adds no network request.
