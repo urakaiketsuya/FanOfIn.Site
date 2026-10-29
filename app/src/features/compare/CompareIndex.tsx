@@ -31,22 +31,22 @@ import { InlineState } from "../../components/ui/ContentState";
 import { trackEvent } from "../../lib/analytics";
 import Tabs from "../../components/ui/Tabs";
 import ComparisonTools from "./ComparisonTools";
-import BlendDeck from "./BlendDeck";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "myDecks" | "users" | "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "forecasts" | "calculators" | "matchup";
+type ViewMode = "summary" | "table" | "forecasts" | "calculators" | "matchup" | "blend";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
+  blend: "Blended deck",
   summary: "Summary",
   table: "Cards",
   forecasts: "Comparison Report",
   calculators: "Calculators",
   matchup: "Matchup",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["forecasts", "summary", "table", "calculators", "matchup"];
+const VIEW_MODE_KEYS: ViewMode[] = ["forecasts", "blend", "summary", "table", "calculators", "matchup"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   myDecks: "My Decks",
@@ -269,7 +269,6 @@ export default function CompareIndex() {
                 <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" onClick={() => setShowAddDecks((value) => !value)}>
                   {showAddDecks ? "Close deck picker" : "+ Add deck"}
                 </Button>
-                {decks.length > 1 && <BlendDeck decks={decks} decklists={decklists} onRetry={() => setDecks(previous => [...previous])} />}
                 {decks.length > 0 && <Button variant="ghost" size="sm" onClick={handleCopyShareLink} className={shareCopyState === "failed" ? "text-ctp-red" : ""}>{shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Share"}</Button>}
                 {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
               </div>
@@ -281,8 +280,8 @@ export default function CompareIndex() {
                   deck={d}
                   championCard={championCardsByDeckKey.get(d.key)}
                   deckHref={d.source.kind === "sighting" ? deckPageByKey.get(d.key) : undefined}
-                  isBaseline={effectiveViewMode !== "forecasts" && d.key === effectiveBaselineKey}
-                  onSetBaseline={effectiveViewMode === "forecasts" ? undefined : () => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
+                  isBaseline={effectiveViewMode !== "forecasts" && effectiveViewMode !== "blend" && d.key === effectiveBaselineKey}
+                  onSetBaseline={(effectiveViewMode === "forecasts" || effectiveViewMode === "blend") ? undefined : () => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
                   onRemove={() => removeDeck(d.key)}
                 />
               ))}
