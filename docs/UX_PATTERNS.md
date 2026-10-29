@@ -453,3 +453,9 @@ by tournament results in All Decks. Collection frequency is neither a player cou
 Shared publications keep their owner credit; matching collected variants remain linked from
 the shared result. Older account servers without quantity signatures leave those results
 separate rather than guessing identity from a card-name set.
+
+Basic deck Stats default to Main, with Material and Sideboard kept separate. Tapping a cost
+or breakdown bar reveals its exact card pool inline, with artwork, readable names and quantities.
+Clear restores focus to the originating bar. Section changes clear local drill-downs; quantity
+edits recalculate membership. Keep unknown card data visible and printed conditional resources
+separate from unconditional copies. Do not infer playability from printed cost bars.

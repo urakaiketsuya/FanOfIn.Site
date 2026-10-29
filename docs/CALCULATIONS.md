@@ -5554,3 +5554,14 @@ The earliest observed source fetch date seeds collection date, retained on subse
 Private source-ID-to-build provenance stays in `pipeline/.cache/collected-provenance.json`.
 The prior raw published source archives are unchanged. Refresh runs with community blending;
 this output does not contribute to tournament popularity, player counts or win rates.
+
+## Interactive basic deck stats
+
+`shared/src/basicDeckStats.ts` calculates one exact section at a time, aggregating duplicate
+names before counting copies or unique cards. Every bucket retains its contributing cards;
+percentages use all copies in that section, including unresolved cards. Types, elements,
+subtypes, keywords and printed Floating Memory conditions may overlap. Unknown catalog
+cards get an explicit Unknown bucket. Cost charts retain X, zero, and a dash for no printed
+cost of that kind, with champion Memory costs separated from non-champions. Numeric costs
+remain exact. Floating Memory reports printed base and condition-specific copies, without
+claiming the conditions are satisfied or those copies are available in the graveyard.

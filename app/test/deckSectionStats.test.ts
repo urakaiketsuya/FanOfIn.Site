@@ -38,3 +38,37 @@ test("empty and entirely unresolved sections do not invent statistics", () => {
   assert.equal(unknown.unresolved, 4);
   assert.deepEqual(unknown.types, []);
 });
+
+import { basicDeckStats } from '@gatcg/shared';
+
+test('basic stats aggregate duplicate names and keep every chart membership aligned', () => {
+  const stats = basicDeckStats([{ card: 'Dual', quantity: 2 }, { card: 'Dual', quantity: 1 }, { card: 'Missing', quantity: 2 }], catalog);
+  assert.equal(stats.unique, 2);
+  assert.equal(stats.total, 5);
+  assert.equal(stats.copies.find(row => row.label === '3× per card')?.lines[0].quantity, 3);
+  assert.equal(stats.reserve.find(row => row.label === 'Unknown')?.count, 2);
+  for (const rows of [stats.types, stats.copies, stats.reserve]) for (const row of rows) {
+    assert.equal(row.count, row.lines.reduce((sum, line) => sum + line.quantity, 0));
+    assert.equal(row.percent, row.count / 5 * 100);
+  }
+});
+
+test('basic stats preserve variable, zero, absent costs and separate champion progression', () => {
+  const cards = new Map(catalog);
+  cards.set('Variable', card('Variable', ['ACTION'], { cost_reserve: -1 }));
+  cards.set('Free', card('Free', ['ACTION'], { cost_reserve: 0 }));
+  cards.set('None', card('None', ['REGALIA'], { cost_reserve: null }));
+  const stats = basicDeckStats(['Variable', 'Free', 'None', 'Champion'].map(card => ({ card, quantity: 1 })), cards);
+  assert.deepEqual(stats.reserve.map(row => row.label), ['0', 'X', '—']);
+  assert.equal(stats.progression[0].label, '2');
+  assert.equal(stats.progression[0].count, 1);
+});
+
+test('Floating Memory counts each printed condition once per card without assuming activation', () => {
+  const cards = new Map([
+    ['Base', card('Base', ['ACTION'], { effect: '**Floating Memory**\n**Floating Memory**' })],
+    ['Conditional', card('Conditional', ['ACTION'], { effect: '[Class Bonus] **Floating Memory**\n[Level 2+] **Floating Memory**' })],
+  ]);
+  const stats = basicDeckStats([{ card: 'Base', quantity: 3 }, { card: 'Conditional', quantity: 2 }], cards);
+  assert.deepEqual(stats.floating.map(row => [row.label, row.count]), [['Base', 3], ['Conditional · Class Bonus', 2], ['Conditional · Level 2+', 2]]);
+});
