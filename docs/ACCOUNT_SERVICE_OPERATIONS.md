@@ -44,7 +44,9 @@ For an exceptional local recovery point, export production D1 from the `account-
 npx wrangler d1 export fanofin-accounts-production --env production --remote --output account-backup.sql
 ```
 
-The `Account D1 restore drill` workflow runs quarterly and can also be dispatched for a selected release tag. It downloads and verifies an encrypted release, restores it into a uniquely named disposable D1 database, checks the expected application tables and required parent relationships, and deletes the disposable database even when verification fails. GitHub Actions failure notifications must be enabled for maintainers. D1 does not authorize `PRAGMA integrity_check`, so successful import, queryability, schema presence, relationship checks, and the encrypted asset checksum form the automated verification set.
+The `Account D1 restore drill` workflow runs quarterly and can also be dispatched for a selected release tag. It downloads and verifies an encrypted release, restores it into a uniquely named disposable D1 database, checks every current migration-defined table, view and column plus all declared foreign-key relationships, and deletes the disposable database even when verification fails. GitHub Actions failure notifications must be enabled for maintainers. D1 does not authorize `PRAGMA integrity_check`, so successful import, queryability, schema presence, relationship checks, and the encrypted asset checksum form the automated verification set.
+
+The drill checks compatibility with the current candidate schema. Older backups missing newer schema fail this readiness check; verification does not apply migrations to the restored data. Successful checks establish schema presence and declared relationship integrity, not authenticated user-journey acceptance.
 
 For a manual restore drill:
 

@@ -84,14 +84,9 @@ jobs:
           npx wrangler d1 create "$restore_db"
           created=true
           npx wrangler d1 execute "$restore_db" --remote --yes --file ../recovery/unpacked/account-backup.sql
-          npx wrangler d1 execute "$restore_db" --remote --json --command \
-            "SELECT COUNT(*) AS application_table_count FROM sqlite_schema WHERE type = 'table' AND name IN ('users','sessions','external_profiles','saved_decks','saved_deck_sources','oauth_nonces','canonical_builds','user_decks','deck_versions','deck_likes','deck_bookmarks','deck_reports')" \
-            > ../recovery/schema.json
-          jq -e '.[0].results[0].application_table_count == 12' ../recovery/schema.json
-          npx wrangler d1 execute "$restore_db" --remote --json --command \
-            "SELECT (SELECT COUNT(*) FROM sessions c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM external_profiles c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM saved_decks c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM saved_deck_sources c LEFT JOIN saved_decks p ON p.id = c.saved_deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM user_decks c LEFT JOIN users p ON p.id = c.owner_user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_versions c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_versions c LEFT JOIN canonical_builds p ON p.id = c.canonical_build_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_likes c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_likes c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN deck_versions p ON p.id = c.version_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_reports c LEFT JOIN users p ON p.id = c.reporter_user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_reports c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) AS orphan_count" \
-            > ../recovery/relationships.json
-          jq -e '.[0].results[0].orphan_count == 0' ../recovery/relationships.json
+          node ../scripts/account-restore-check.mjs > ../recovery/verify.sql
+          npx wrangler d1 execute "$restore_db" --remote --json --command "$(cat ../recovery/verify.sql)" > ../recovery/verification.json
+          jq --argjson expected "$(wc -l < ../recovery/verify.sql)" -e 'length == $expected and all(.[]; .success == true) and ([.[].results[] | select(has("orphan_count"))] | length > 0 and all(.[]; .orphan_count == 0))' ../recovery/verification.json
 
       - name: Confirm disposable database cleanup
         if: always()
@@ -107,5 +102,5 @@ jobs:
         run: |
           echo "### Account D1 restore drill passed" >> "$GITHUB_STEP_SUMMARY"
           echo "- Recovery point: \`${{ steps.recovery.outputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Verified: encrypted asset checksum, decryption, D1 import, 12 application tables, and required parent relationships" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Verified: encrypted asset checksum, decryption, D1 import, all current migration-defined tables, views and columns, and every declared foreign-key relationship" >> "$GITHUB_STEP_SUMMARY"
           echo "- Disposable D1 database deleted" >> "$GITHUB_STEP_SUMMARY"

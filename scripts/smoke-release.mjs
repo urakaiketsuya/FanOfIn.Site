@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
 import { pathToFileURL } from 'node:url';
+import { readdirSync } from 'node:fs';
+
+export const expectedAccountSchemaVersion = readdirSync(new URL('../account-worker/migrations/', import.meta.url))
+  .filter(name => /^\d{4}_.+\.sql$/.test(name)).sort().at(-1)?.slice(0, 4);
+assert.match(expectedAccountSchemaVersion ?? '', /^\d{4}$/, 'Missing account migration version');
 
 export async function smokeRelease({ origin = 'https://fanofin.site', expectedRevision, fetchImpl = fetch } = {}) {
   async function get(path) {
@@ -29,6 +34,7 @@ export async function smokeRelease({ origin = 'https://fanofin.site', expectedRe
   const payload = await health.json();
   assert.equal(payload.success, true, 'Account health unsuccessful');
   assert.equal(payload.schema?.ready, true, 'Account schema not ready');
+  assert.equal(payload.schema?.requiredVersion, expectedAccountSchemaVersion, 'Account schema version differs from candidate');
   return release.revision;
 }
 

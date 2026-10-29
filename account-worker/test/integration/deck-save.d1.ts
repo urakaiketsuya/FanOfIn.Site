@@ -1,3 +1,4 @@
+import { restoreChecks } from "../../../scripts/account-restore-check.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, rmSync } from "node:fs";
@@ -16,6 +17,9 @@ try {
   runtime = new Miniflare(convertV4MiniflareOptions({ modules: true, script: "export default { fetch() { return new Response('test'); } }", compatibilityDate: "2026-08-24",
     d1Databases: { ACCOUNT_DB: "replace-with-development-d1-id" }, resourcePersistencePath: join(directory, "v3") }));
   const db = await runtime.getD1Database("ACCOUNT_DB");
+  const recovery = await db.batch(restoreChecks().map((sql: string) => db.prepare(sql)));
+  assert.ok(recovery.length > 0);
+  assert.ok(recovery.every(result => result.success && result.results.every(row => row.orphan_count === 0)));
   const env = { ACCOUNT_DB: db } as unknown as Env;
   await db.prepare("INSERT INTO users(id,google_subject,email,display_name,created_at,updated_at) VALUES('a','a','a@test','A','now','now')").run();
   const user = { id: "a" } as AuthUser;
@@ -36,7 +40,7 @@ try {
   assert.deepEqual(after.maybeboard, command.maybeboard);
   assert.deepEqual((await listDecks(env, user))[0].decklist, after.decklist);
   await assert.rejects(createDeckVersion(env, user, id, { ...command, requestId: crypto.randomUUID() }), /changed elsewhere/);
-  console.log("Local D1: migrations, batch rollback, retry receipts, concurrent retries, and revision conflicts passed.");
+  console.log("Local D1: migrations, recovery queries, batch rollback, retry receipts, concurrent retries, and revision conflicts passed.");
 } finally {
   await runtime?.dispose();
   rmSync(directory, { recursive: true, force: true });

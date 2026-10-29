@@ -18,12 +18,13 @@ function tests(workspace, folder, env = {}) {
 for (const workspace of ['shared', 'pipeline', 'worker', 'account-worker', 'account-bff', 'api-worker']) {
   run(`${workspace} typecheck`, 'npx', ['--no-install', 'tsc', '--noEmit', '-p', '.'], workspace);
 }
-run('release tooling tests', process.execPath, ['--import', 'tsx', '--test', 'scripts/test/smoke-release.test.mjs', 'scripts/test/build-deck-pages.test.mjs', 'scripts/test/build-artist-pages.test.mjs', 'scripts/test/build-card-pages.test.mjs', 'scripts/test/artist-social-images.test.mjs', 'scripts/test/deck-edge.test.mjs']);
+run('release tooling tests', process.execPath, ['--import', 'tsx', '--test', 'scripts/test/smoke-release.test.mjs', 'scripts/test/account-restore-check.test.mjs', 'scripts/test/build-deck-pages.test.mjs', 'scripts/test/build-artist-pages.test.mjs', 'scripts/test/build-card-pages.test.mjs', 'scripts/test/artist-social-images.test.mjs', 'scripts/test/deck-edge.test.mjs']);
 run('dependency audit', 'npm', ['audit', '--audit-level=high']);
 run('app lint', 'npm', ['run', 'lint', '-w', 'app']);
 tests('app', 'test', { TSX_TSCONFIG_PATH: 'tsconfig.app.json' });
 tests('pipeline', 'src');
 tests('account-worker', 'test');
+run('account D1 integration', 'npm', ['run', 'test:d1', '--workspace=account-worker']);
 tests('account-bff', 'test');
 run('ingestion tests', 'npm', ['run', 'worker:test']);
 run('public API tests', 'npm', ['run', 'api:test']);

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { smokeRelease } from '../smoke-release.mjs';
+import { smokeRelease, expectedAccountSchemaVersion } from '../smoke-release.mjs';
 
 const revision = 'a'.repeat(40);
 const timestamp = '2026-09-29T12:00:00.000Z';
@@ -10,7 +10,7 @@ function fixture() {
     ['/assets/app.js', { body: 'console.log("loaded")', type: 'text/javascript' }],
     ['/release.json', { body: { revision, dirty: false, builtAt: timestamp } }],
     ['/data/manifest.json', { body: {} }],
-    ['/api/health', { body: { success: true, schema: { ready: true } } }],
+    ['/api/health', { body: { success: true, schema: { ready: true, requiredVersion: expectedAccountSchemaVersion } } }],
   ]);
   for (const name of ['archetype-taxonomy', 'reference-archetypes', 'curated-strategies']) {
     responses.get('/data/manifest.json').body[`analysis-${name}`] = timestamp;
@@ -46,6 +46,9 @@ for (const [name, mutate, error] of [
   ['SPA fallback instead of JavaScript', r => { r.get('/assets/app.js').type = 'text/html'; }, /did not return JavaScript/],
   ['failed asset request', r => { r.get('/assets/app.js').status = 404; }, /HTTP 404/],
   ['unready account schema', r => { r.get('/api/health').body.schema.ready = false; }, /schema not ready/],
+  ['older account schema', r => { r.get('/api/health').body.schema.requiredVersion = '0001'; }, /schema version differs/],
+  ['missing account schema version', r => { delete r.get('/api/health').body.schema.requiredVersion; }, /schema version differs/],
+  ['newer account schema', r => { r.get('/api/health').body.schema.requiredVersion = '9999'; }, /schema version differs/],
   ['failed account health', r => { r.get('/api/health').status = 503; }, /HTTP 503/],
 ]) {
   test(`rejects ${name}`, async () => {
