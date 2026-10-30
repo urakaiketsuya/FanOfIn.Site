@@ -44,3 +44,25 @@ test('a newly observed build has zero returning share and a positive share shift
  const r=metaFreshness(index,entries,events,taxonomy,scope,'2026-10-30');
  assert.equal(r.returning,0); assert.equal(r.builds[0].previousShare,0); assert.equal(r.builds[0].share,100);
 });
+
+test('seasons use assigned IDs, chronological predecessors and the publication cutoff', async () => {
+ const { seasonalMetaFreshness } = await import('@gatcg/shared');
+ const {index,entries,taxonomy}=fixture(true);
+ const seasons = [
+  {id:8,name:'Second',slug:'second',dateStart:'2026-10-01',dateEnd:'2026-12-01'},
+  {id:4,name:'First',slug:'first',dateStart:'2026-01-01',dateEnd:'2026-09-30'},
+  {id:9,name:'Future',slug:'future',dateStart:'2027-01-01',dateEnd:'2027-04-01'},
+ ];
+ const assigned=events.map(e=>({...e,seasonId:e.id===1?8:4}));
+ const rows=seasonalMetaFreshness(index,entries,assigned,taxonomy,seasons,scope,'2026-10-30');
+ assert.deepEqual(rows.map(r=>r.season.id),[8,4]);
+ assert.equal(rows[0].previousSeason?.id,4); assert.equal(rows[0].inProgress,true);
+ assert.equal(rows[0].report.returning,100); assert.ok(rows[0].report.cardChange!>60);
+ assert.equal(rows[1].report.returning,null); assert.equal(rows[1].inProgress,false);
+ const unavailable=seasonalMetaFreshness(index,entries,assigned,taxonomy,[...seasons,{id:6,name:'Gap',slug:'gap',dateStart:'2026-09-01',dateEnd:'2026-09-30'}],scope,'2026-10-30');
+ assert.equal(unavailable[0].previousSeason?.id,6); assert.equal(unavailable[0].report.returning,null);
+ const excluded=seasonalMetaFreshness(index,entries,assigned.map(e=>({...e,status:'pending' as const})),taxonomy,seasons,scope,'2026-10-30');
+ assert.equal(excluded[0].report.current.decks,0);
+ const champion=seasonalMetaFreshness(index,entries,assigned,taxonomy,seasons,{format:'standard',champion:'Silvie'},'2026-10-30');
+ assert.equal(champion[0].report.current.decks,0);
+});
