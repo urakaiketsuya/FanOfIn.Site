@@ -33,7 +33,11 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
     const estimate = estimates[order][turn - 1];
     return { turn, order, seen, extra: estimate.seen - seen, adjustedSeen: Math.round(estimate.seen), influence: estimate.influence, hand: estimate.hand, memory: estimate.memory };
   }));
-  const cards = lines.map((line) => ({ ...line, opening: probabilityAtLeast(size, line.quantity, opening, 1), duplicate: probabilityAtLeast(size, line.quantity, opening, 2), checkpoints: checkpoints.map((point) => ({ natural: probabilityAtLeast(size, line.quantity, point.seen, 1), modeled: probabilityAtLeast(size, line.quantity, point.adjustedSeen, 1) })) }));
+  const cards = lines.map((line) => ({ ...line, opening: probabilityAtLeast(size, line.quantity, opening, 1), duplicate: probabilityAtLeast(size, line.quantity, opening, 2), checkpoints: checkpoints.map((point) => {
+    const natural = probabilityAtLeast(size, line.quantity, point.seen, 1);
+    const extraAccess = estimates[point.order][point.turn - 1].extraAccess.get(line.name) ?? 0;
+    return { natural, modeled: Math.min(1, natural + extraAccess) };
+  }) }));
   const costs = new Map<string, number>();
   for (const line of lines) { const cost = catalog.get(line.name)?.cost_reserve; const label = cost == null ? 'Unknown or no fixed Reserve cost' : String(cost); costs.set(label, (costs.get(label) ?? 0) + line.quantity); }
   const groups = ['enabler', 'payoff'].map((role) => lines.filter((line) => plan?.roles[line.name] === role).map((line) => line.name));

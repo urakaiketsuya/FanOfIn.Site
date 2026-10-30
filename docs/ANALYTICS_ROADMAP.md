@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 90% complete: the audit, shared comparison engine,
+Release A is approximately 92% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -360,3 +360,20 @@ horizontal overflow. Browser-forced errors, text zoom, and signed-in flows remai
 unverified. Next: finish those browser checks and validate the extra-draw model.
 Release A is approximately 90% complete based on implemented report/discovery scope
 and worker/request recovery coverage; extra-draw scope remains uncertain.
+
+
+Draw-access correction (2026-10-30): removed rounded-mean hypergeometric access from
+the automatic deck analysis report. The shared simulation now counts additional
+per-card access against the natural prefix of each identical shuffled library.
+The report adds that sampled gain to exact natural odds, bounded at one. A lone
+engine no longer increases access to itself (the audit's 28.3% case now reports the
+correct 15%); independent target cards retain gains from the engine. Existing
+resource/seen outputs and natural odds are preserved. Fourteen focused tests pass,
+including no-engine equality, deterministic bounded access, and an independent
+exact two-card-access check. App/shared type checks and app lint pass (existing
+warnings). This changes no page layout; browser checks were not repeated. Memory destinations and
+unsupported activation conditions remain unresolved; the standalone hypergeometric
+calculator also retains its separate legacy approximation. Next: model hand versus
+memory draws and restrict unsupported effects, then finish browser release checks.
+Release A is approximately 92% complete, reflecting completed report integration and
+the first draw-model correction; remaining supported-effect scope is uncertain.

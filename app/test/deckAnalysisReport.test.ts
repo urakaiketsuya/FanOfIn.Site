@@ -49,3 +49,31 @@ test('reserve payment excludes the played card and uses starting spirit influenc
  assert.ok(seven.checkpoints[0].extra > 0);
  assert.deepEqual(seven,computeDeckAnalysisReport(main,[{name:'Spirit',quantity:1}],catalog));
 });
+
+test('an engine cannot improve access to its own first copy', () => {
+ const catalog = new Map([['Engine',card('Engine','Draw 60 cards.')],['Other',card('Other')]]);
+ const report = computeDeckAnalysisReport([{name:'Engine',quantity:1},{name:'Other',quantity:59}],[],catalog);
+ const engine = report.cards.find(row=>row.name==='Engine')!;
+ assert.equal(engine.checkpoints[0].natural, 0.15);
+ assert.equal(engine.checkpoints[0].modeled, 0.15);
+ assert.ok(report.checkpoints[0].adjustedSeen > 9, 'other cards are still drawn by the engine');
+ for (const point of engine.checkpoints) assert.equal(point.modeled,point.natural);
+});
+
+test('without usable extra draws modeled access retains exact natural odds', () => {
+ const report = computeDeckAnalysisReport(main,[],new Map());
+ for (const row of report.cards) for (const point of row.checkpoints) assert.equal(point.modeled,point.natural);
+});
+
+test('other engines increase target access within bounds and deterministically', () => {
+ const catalog = new Map([['Engine',card('Engine','Draw 60 cards.')],['Target',card('Target')],['Other',card('Other')]]);
+ const main = [{name:'Engine',quantity:1},{name:'Target',quantity:1},{name:'Other',quantity:58}];
+ const report = computeDeckAnalysisReport(main,[],catalog);
+ const target = report.cards.find(row=>row.name==='Target')!;
+ // A target is found if it or the engine is in the natural prefix: exact 2-copy access.
+ const exact = 1 - (51*50)/(60*59);
+ assert.ok(Math.abs(target.checkpoints[0].modeled-exact) < 0.04);
+ assert.ok(target.checkpoints[0].modeled > target.checkpoints[0].natural);
+ for (const row of report.cards) for (const point of row.checkpoints) assert.ok(point.modeled>=point.natural && point.modeled<=1);
+ assert.deepEqual(report,computeDeckAnalysisReport(main,[],catalog));
+});

@@ -3573,8 +3573,18 @@ resource estimate, not proof of lineage or activation permission. No other mater
 ordinary plays are assumed. Effects are optimistic about triggers, elements, class/level access,
 and additional ability costs; variable effects, searches, replacement effects and discards other
 than the explicit fixed “then discard” clause are unsupported. Results are sample means, not
-exact probabilities. Seen means are rounded and capped by the actual deck; influence and its
-hand/memory components are displayed to one decimal. Natural access odds remain exact.
+exact probabilities. Seen means are rounded and capped by the actual deck for display only;
+influence and its hand/memory components are displayed to one decimal. Natural access odds
+remain exact. Per-card modeled access no longer applies a hypergeometric formula to the
+rounded mean number seen. For each shuffled trial and checkpoint, compare the names in
+the modeled drawn prefix with those in the natural drawn prefix of that same library.
+Count each name once only when extra draws found it and natural draws did not. Modeled
+access is exact natural access plus this sampled incremental probability, capped at one.
+This paired estimate preserves exact natural odds when there is no extra access and prevents
+a lone draw engine from increasing access to its own first copy. The incremental term
+still has sampling error (512 deterministic trials); the cap keeps reported odds bounded.
+Draw destinations and unsupported activation conditions remain limitations of the underlying
+simulation and are not corrected by this probability change.
 Printed costs and detected lineage are descriptive; the report does not infer a strategic grade.
 
 ## Draft tribal themes and token engines

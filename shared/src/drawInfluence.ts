@@ -11,7 +11,7 @@ export interface InfluenceDrawSource {
 
 export function estimateDrawInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
-  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0 }));
+  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   for (let sample = 0; sample < samples; sample++) {
@@ -49,6 +49,15 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
         memory.push(...take(hand, source.reserve!));
         draw(source.draws);
         take(hand, source.discard);
+      }
+      // Couple the modeled and natural draws to the same shuffled library. Only
+      // newly accessed names contribute: an engine cannot help find its first copy.
+      const naturalCount = Math.min(library.length, opening + turn - (order === 'first' ? 1 : 0));
+      const naturalNames = new Set(library.slice(0, naturalCount).map(source => source.name));
+      const extraNames = new Set(library.slice(naturalCount, seen).map(source => source.name));
+      const access = totals[turn - 1].extraAccess;
+      for (const name of extraNames) {
+        if (!naturalNames.has(name)) access.set(name, (access.get(name) ?? 0) + 1 / samples);
       }
       totals[turn - 1].seen += seen / samples;
       totals[turn - 1].hand += hand.length / samples;
