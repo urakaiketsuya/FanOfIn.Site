@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 87% complete: the audit, shared comparison engine,
+Release A is approximately 89% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -68,7 +68,8 @@ worker result and target-excluded cohort. Closed previews load no comparison par
 The same disclosure and comparison now appear on Browse tournament sightings and
 homepage discovery cards. Homepage event lists and comparison partitions load on expansion;
 the published event supplies the actual format. Failed deck loads offer Retry deck.
-Next: release validation, including comparison failure/retry and cancellation.
+Next: browser release validation for deck-load retry, text zoom, and signed-in flows.
+Worker cancellation and failure/retry now have focused lifecycle regression coverage.
 Extra-draw model validation remains. The percentage is approximate because that
 validated model scope remains undecided.
 
@@ -330,3 +331,18 @@ resolve event 66963/player 3753 to the same 1,282 reference lists, 1,578 sightin
 103 unavailable assigned lists, and three card differences. The homepage Ciel
 list correctly reports no published assignment. Forced deck-load failure/retry,
 text zoom, and signed-in flows remain unverified.
+
+
+Worker lifecycle release checks (2026-10-30): comparison attempts now accept only
+one completion, so late messages or errors cannot replace a finished result. The
+hook retains input-bound state and transition rendering. Seven focused lifecycle
+tests exercise construction and message-post failures, worker errors, unreadable
+messages, calculation errors, successful retries, cancellation, and late events
+from a previous deck. These test the production attempt controller with controlled
+worker ports; they do not claim to test React scheduling or browser failure UI.
+Fourteen combined lifecycle/calculation/preview/handoff tests, app type check, lint,
+and the Vite production bundle pass. No layout changed. Browser-forced failures,
+event-deck request retry, text zoom, and signed-in flows remain unverified; extra-draw
+model validation remains separately pending. Release A is approximately 89% complete,
+based on completed discovery/report integration and worker lifecycle coverage; the
+remaining model scope makes this an estimate.
