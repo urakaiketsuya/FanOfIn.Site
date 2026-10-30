@@ -55,6 +55,10 @@ export default function PlayerProfile() {
   const rivalsData = useRivalsData();
   const index = useOmnidexIndex();
   const popularityIndexData = useDeckPopularityIndexData();
+  const resultStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
+  const resultsByEvent = useMemo(() => new Map(
+    popularityIndexData?.entries.filter(entry => entry.player === playerId).map(entry => [entry.eventId, entry]) ?? [],
+  ), [popularityIndexData, playerId]);
   const achievementsData = useAchievementsData();
 
   const player = playersData?.players.find((p) => p.id === playerId);
@@ -208,8 +212,8 @@ export default function PlayerProfile() {
       {(player || judge) && (
         <>
           <Panel elevation={1} className="mt-3 overflow-hidden border-t-4 border-t-ctp-blue">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0 flex-1 basis-40">
                 <p className="mb-1 text-xs font-medium uppercase tracking-wide text-ctp-subtext0">{player ? "Player record" : "Judge record"}</p>
                 <h1 className="break-words text-3xl font-bold text-ctp-text sm:text-4xl">{player?.username ?? judge?.username}</h1>
                 {(() => {
@@ -232,7 +236,7 @@ export default function PlayerProfile() {
                 </Link>
               )}
             {player && <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />}
-            <div className={`mt-3 grid gap-2 ${judge ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-[1fr_1.5fr_1fr]"}`}>
+            <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,6rem),1fr))] gap-2">
               {rating && <ProfileMetric label="Rating" value={Math.round(rating.rating).toLocaleString()} />}
               {rating && <ProfileMetric label="All-time W–L–T" value={`${rating.wins}–${rating.losses}–${rating.ties}`} />}
               {player && <ProfileMetric label="Events" value={index ? allEvents.length.toLocaleString() : "—"} />}
@@ -253,7 +257,8 @@ export default function PlayerProfile() {
       {player && <PlayerCompetitionReport playerId={playerId} />}
       {recentEvents.length > 0 && (
         <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <Button variant="ghost" size="sm" onClick={() => setManualTab("events")}>View all {allEvents.length}</Button> : undefined}>
-          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />)}</div>
+          <PublishedSourceStatus label="Event results" status={resultStatus} hasData={!!popularityIndexData} />
+          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} />)}</div>
         </Section>
       )}
 
@@ -318,6 +323,7 @@ export default function PlayerProfile() {
           heading="compact"
           title={`Events (${events.length}${events.length !== allEvents.length ? ` of ${allEvents.length}` : ""})`}
         >
+          <PublishedSourceStatus label="Event results" status={resultStatus} hasData={!!popularityIndexData} />
           <PublishedSourceStatus label="Events" status={eventsStatus} hasData={!!index} />
           <DeckSearchFilters cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
           {!!deckFilter.cards.length && <PublishedSourceStatus label="Deck cards" status={cardMatches.status} hasData={cardMatches.hasData} />}
@@ -326,7 +332,7 @@ export default function PlayerProfile() {
           <div className="mt-2 space-y-2">
             {index && events.length === 0 && <p className="py-4 text-sm text-ctp-subtext1">No events match these filters.</p>}
             {visibleEvents.map((event) => (
-              <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />
+              <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} />
             ))}
           </div>
 

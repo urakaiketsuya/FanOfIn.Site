@@ -9,8 +9,10 @@ interface PlayerDecklistState {
 }
 
 /** Fetches a single player's decklist for one event, only once `enabled` (lazy – avoids fetching for every event on a profile page). */
-export function usePlayerDecklist(eventId: number, playerId: number, enabled: boolean): PlayerDecklistState {
+export function usePlayerDecklist(eventId: number, playerId: number, enabled: boolean): PlayerDecklistState & { retry: () => void } {
   const [state, setState] = useState<PlayerDecklistState>({ loading: false, decklist: null, error: null });
+
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!enabled) return;
@@ -39,7 +41,7 @@ export function usePlayerDecklist(eventId: number, playerId: number, enabled: bo
     return () => {
       cancelled = true;
     };
-  }, [eventId, playerId, enabled]);
+  }, [eventId, playerId, enabled, attempt]);
 
-  return state;
+  return { ...state, retry: () => setAttempt(v => v + 1) };
 }

@@ -511,3 +511,11 @@ counts, artwork and names together. Start with six cards per section and allow e
 Do not mix this denominator with recent match results. Rankings stay ordered by rating and
 use wrapping rows on phones, with all-time record separate from recent Standard wins.
 Use explicit provisional labels and loading, unavailable, retry and empty states.
+
+Player event previews use compact result rows rather than the event-wide preview.
+Join the public-deck index by player and event: show that player's champion, placement,
+field size and W–L–T, never the event winner's identity. Keep unavailable results explicit;
+an event having decklists does not prove this player's deck is public. Known public decks
+expand inline with a shared disclosure indicator and retryable loading. The event title
+opens the event focused on that player. Keep event field composition and venue detail on
+the event page, and avoid fetching every event's full decklists to render collapsed rows.
