@@ -598,3 +598,11 @@ Player card scope verification (2026-10-30): checked 390px and 1280px layouts,
 usage lists, all-champion sideboards, and empty format/unique-choice states. Six report
 fixtures pass, including cross-section uniqueness and empty-sideboard denominators.
 Forced source failures, text zoom, and populated unique-card UI were not exercised.
+
+Player card follow-up verification (2026-10-30): populated unique choices checked on
+player 1005 / Silvie at 390px and 1280px, with linked artwork, names, usage counts and
+no page overflow. An isolated local harness using the production published-data hooks
+and status component verified first-load failure → Retry → results, and cached results
+surviving a failed refresh → Retry; the selected filter stayed intact. The harness used
+its own cache key and temporary endpoints, without changing production datasets. Full
+app typechecking now passes. Text zoom and live deployment remain unverified.

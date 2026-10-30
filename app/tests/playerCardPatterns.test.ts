@@ -67,3 +67,24 @@ test('unique choices compare other players on the same champion across all secti
   assert.deepEqual(older.uniqueCards.sideboard, []);
   assert.deepEqual(playerCardPatterns(index, entries, events, 1, 'standard', 'Rai', '2026-10-29').uniqueCards.main, []);
 });
+test('unique choices retain missing peer coverage and ignore other formats and future events', () => {
+  const extraEntries = [
+    { deckId: '2:3', eventId: 2, player: 3, championName: 'Alice' },
+    { deckId: '4:4', eventId: 4, player: 4, championName: 'Alice' },
+    { deckId: '5:5', eventId: 5, player: 5, championName: 'Alice' },
+  ] as DeckPopularityEntry[];
+  const extraEvents = [
+    { id: 4, date: '2026-10-01', format: 'draft', status: 'complete' },
+    { id: 5, date: '2026-11-01', format: 'standard', status: 'complete' },
+  ] as OmnidexEventSummary[];
+  const r = playerCardPatterns({ ...index, decks: [...index.decks,
+    { deckId: '4:4', main: [[0, 4]], material: [], sideboard: [] },
+    { deckId: '5:5', main: [], material: [], sideboard: [[0, 4]] },
+  ] }, [...entries, ...extraEntries], [...events, ...extraEvents], 1, 'standard', 'Alice', '2026-10-29');
+  assert.equal(r.peers.decks, 1);
+  assert.equal(r.peers.missing, 1);
+  assert.deepEqual(r.uniqueCards.main.map(row => row.name), ['Old']);
+  const unavailable = playerCardPatterns({ ...index, decks: index.decks.filter(d => d.deckId !== '3:2') }, entries, events, 1, 'standard', 'Alice', '2026-10-29');
+  assert.equal(unavailable.peers.missing, 1);
+  assert.deepEqual(unavailable.uniqueCards.main, []);
+});
