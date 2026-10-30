@@ -5832,3 +5832,23 @@ Review groups no longer pair unrelated cards solely because their sections match
 The standalone Deck Review adapter retains overlapping Sideboard copies separately from the name-keyed ranking inputs. The Tonoris fixture's two Main Song of Frost and one Sideboard Song of Frost must survive loading, separate quantity edits, workspace persistence, decklist export and account-save payloads. Sideboard overlaps do not supply Main evidence. Until builder recipe links support these independent sections end-to-end, Review disables that link for split-section decks and points to decklist sharing instead; normal decklist exports remain available.
 
 Verification: 20 focused recommendation/package/import tests and app typecheck pass. Local 390px and 1280px browser checks confirm no arbitrary swaps, independent Song of Frost quantity edits, keyboard activation, and 60/12/9 totals after reload; normal viewport widths fit. Mobile 200% text zoom still exposes existing page overflow. Lint has warnings outside these changes. Live deployment has not been verified.
+
+### Tonoris conditional effects and draw access
+
+Reviewed against committed card-catalog.json: Blade of Creation costs max(0, 7 − tokens)
+with its class bonus, otherwise 7. Archon Broadsword has 2 + tokens power with its
+class bonus (otherwise 2); its additional attack payment is not a discount.
+Atmos Armor Type-Ares has 1 + controlled Atmos Shields power with its class bonus,
+otherwise 1. Academy Guide grants one champion-materialization memory discount
+per Guide in play; this is discount capacity, not payment or reserve generation.
+Storm of Thorns prevents min(1, incoming damage) per affected damage event;
+retaliation is not included because the damage source must be a unit.
+
+Automatic report checkpoints use 0/2/4/7 tokens, 0/1/2 Shields and 0/1/2 Guides.
+These are conditional states, not expected boards or damage dealt. Existing report
+source access uses 7/10/15/20 cards seen. Blade, Genesis, Cordelia and Neos Sight
+also show joint draw access with another Main-deck token producer, detected from
+catalog summon-token text. Exclude the payoff itself from that support pool.
+Draw access does not assert legal deployment, survival, class activation, or attacks.
+Material and Sideboard cards do not contribute to these Main support probabilities.
+Genesis buff power and reservable payments remain outside this extension.

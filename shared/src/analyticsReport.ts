@@ -4,6 +4,7 @@ import { aggregateLines, copies, fixtureAccess, type AnalyticsDeck, type Analyti
 
 /** Checkpoints vary one resource at a time; they are conditional outcomes, never expected play. */
 const CHECKPOINTS: Partial<Record<ScenarioKey, number[]>> = {
+  tokens: [0, 2, 4, 7], shields: [0, 1, 2], guides: [0, 1, 2],
   fractals: [0, 1, 2], waterGrave: [0, 2, 3], floating: [0, 1, 2], omens: [0, 1, 2],
   windAllies: [0, 1, 2], memory: [3, 4, 5], allies: [0, 1, 2], sheen: [6, 7], level: [1, 2, 3],
 };

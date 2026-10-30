@@ -3,6 +3,7 @@ import { calculateDefenseScenario } from './defenseScenario.js';
 import { aggregateLines, copies, fixtureAccess, fixtureFloating, fixturePairAccess, FIXTURE_FLOATING, floatingPayment, hasType, whole, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
 
 export const SCENARIO_FIELDS = {
+  tokens: ['Tokens controlled', 0], shields: ['Atmos Shields controlled', 0], guides: ['Academy Guides in play', 0],
   level: ['Champion level', 0], seen: ['Cards seen', 10], waterGrave: ['Water cards in your graveyard', 0],
   floating: ['Eligible Floating Memory cards in your graveyard', 0], memoryCost: ['Memory cost to pay', 1],
   memory: ['Memory cards after paying reserve', 3], lineage: ['Can pay delevel cost', 0],
@@ -67,6 +68,13 @@ export function calculateCardScenarios(deck: AnalyticsDeck, catalog: ReadonlyMap
     const cost = fixtureReserveCost(name, s)!;
     add(name, 'cost', 'resources', cost.cost, 'reserve', `${cost.saved} saved · printed ${cost.base}`, rule.field ? [rule.field] : []);
   }
+  const tokenSources = main.filter(line => /\bsummon\b[^.\n]*\btoken/i.test(catalog.get(line.name)?.effect ?? ''));
+  const classActive = (name: string) => catalog.get(name)?.classes.some(c => s.classes.includes(c)) ?? false;
+  add('Blade of Creation', 'token-cost', 'resources', Math.max(0, 7 - (classActive('Blade of Creation') ? s.tokens : 0)), 'reserve', 'Printed 7 · Guardian token discount', ['tokens'], tokenSources);
+  add('Archon Broadsword', 'token-power', 'combat', 2 + (classActive('Archon Broadsword') ? s.tokens : 0), 'weapon power', 'Attack requires 2 reserve', ['tokens'], tokenSources);
+  add('Atmos Armor Type-Ares', 'shield-power', 'combat', 1 + (classActive('Atmos Armor Type-Ares') ? s.shields : 0), 'ally power', 'Summons 2 shields on entry', ['shields']);
+  add('Academy Guide', 'champion-discount', 'resources', s.guides, 'champion memory discount', 'Per champion materialization · cannot reduce payment below zero', ['guides']);
+  add('Storm of Thorns', 'prevent', 'combat', Math.min(1, s.damage) * s.events, 'prevented', '1 per damage event to your units', ['damage', 'events']);
   const floating = fixtureFloating(main, s.classes);
   const supportedFloating = main.filter(line => Object.hasOwn(FIXTURE_FLOATING, line.name));
   if (supportedFloating.length) {
@@ -94,6 +102,9 @@ export function calculateCardScenarios(deck: AnalyticsDeck, catalog: ReadonlyMap
     if (!payoff.length) return;
     add(name, id, 'packages', 100 * fixturePairAccess(main, payoff, support, s.seen), '% to find both', label, ['seen'], support);
   };
+  for (const name of ['Blade of Creation', 'Automata Genesis', 'Cordelia, Aurous Kaiser', 'Neos Sight']) {
+    packageRow(name, tokenSources.filter(line => line.name !== name), 'Draw source + another token producer · deployment not assumed', 'token-package');
+  }
   packageRow('Burst Asunder', main.filter(line => catalog.get(line.name)?.subtypes.includes('FRACTAL')), 'One Burst + one Fractal · draw access');
   packageRow('Hunt, Weiss King', main.filter(line => { const c = catalog.get(line.name); return hasType(c, 'ALLY') && Boolean(c?.subtypes.includes('CHESSMAN') && c?.subtypes.includes('BISHOP')); }), 'One Hunt + one Chessman Bishop · draw access');
   packageRow('Hunt, Weiss King', main.filter(line => { const c = catalog.get(line.name); return hasType(c, 'ALLY') && Boolean(c?.subtypes.includes('PAWN')); }), 'One Hunt + one Pawn · draw access', 'pawn-package');
