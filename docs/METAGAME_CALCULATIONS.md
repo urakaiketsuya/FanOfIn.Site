@@ -27,3 +27,48 @@ Recent changes compare (cutoff − 90 days, cutoff] against (cutoff − 180 days
 Signature choices compare the player's recent 90 days with other players' registrations in the same period, champion and format. Exclude every registration belonging to the selected player from the peer baseline. Require three player lists and ten peer lists; a displayed signature card must appear in at least two player lists and have inclusion at least 0.05 percentage points higher than the peer baseline. These are descriptive minimums, not statistical significance tests. Registrations, not unique players, form denominators. Both comparisons retain separate section denominators, including empty sideboards, and use the shared completed-event and missing-list rules. Show the top six cards with paired 0–100% bars, numerator/denominator and signed percentage-point difference. Sparse samples show progress toward the minimum instead of a comparison.
 
 Comparison verification: seven combined calculation tests pass, including exact adjacent-window boundaries, peer exclusion, sparse samples and cards removed from recent lists. Local browser checks pass at 360/390/1280px for comparison counts, section empty states, source retry, keyboard, touch targets, URL persistence and 200% text without overflow. Card-name fallbacks and loaded desktop card artwork were verified. Live verification remains.
+
+## Meta freshness
+
+`shared/src/metaFreshness.ts` compares adjacent (cutoff − N days, cutoff] and
+(cutoff − 2N days, cutoff − N days] windows, N=30 or 90. Cutoff is the earliest
+publication time of events, popularity, card index and build taxonomy. The metagame
+page defaults to 30 days; its All time usage view retains a labeled 30-day freshness
+comparison. Format and optional champion apply to both periods. Deduplicate event and
+deck IDs. Include completed events only. Require nonempty Main and Material with
+resolved dictionary names and positive integer quantities; Sideboard is ignored.
+
+Coverage denominators are recorded deck entries, not all tournament entrants. Report
+usable public lists and uniquely classified build memberships separately in each period.
+Missing/invalid lists and ambiguous/unclassified memberships never become new builds.
+Use the same published taxonomy for both periods; this is retrospective membership,
+not proof that a build was known at the time. Taxonomy changes can revise these values.
+
+Top-five build share sums the five largest classified groups in each period, divided by
+all usable public lists, retaining unclassified lists in the denominator. Returning
+build share counts current lists assigned to groups with at least three previous-period
+registrations, divided by all current usable lists. Without classified lists in both
+periods it is unavailable. These shares are observed lower bounds when classification
+is incomplete. A build seen once or twice previously is not called common. Repeated
+players and copied lists count once per registration, since this measures the played
+field rather than unique-player preferences. No combined freshness score or stale/fresh
+threshold is assigned.
+
+Card turnover measures absolute change in card inclusion in percentage points within
+each champion. Presence is deduplicated across Main and Material, irrespective of copies.
+Average across the union of card names observed in the two periods, including absent
+cards as zero within a nonempty period. Require at least three usable lists per champion
+per period and known champion identity. The headline is weighted by current lists among
+comparable champions; show that comparable count. New/absent champions do not imply 100%
+turnover. This separates shifts in champion popularity from changes inside their decks.
+The six most-played builds show current/previous shares; the six most-played comparable
+champions show turnover. Low turnover and concentration describe repetition, not player
+enjoyment, balance, causality or predicted performance.
+
+Verification (2026-10-30): five fixture tests cover stable and changed cards/builds,
+Sideboard exclusion, deduplication, ambiguous/missing memberships, sparse and empty
+periods, future-event exclusion, and the exact period boundary. App/shared typechecks
+and focused lint pass. Browser checks cover 390px mobile and 1280px desktop, 48px
+filters, no horizontal overflow, 30/90-day switching and empty format results. Source
+failure/retry uses the existing shared status component; no new forced failure or
+text-zoom check was performed for this panel. Live deployment remains unverified.

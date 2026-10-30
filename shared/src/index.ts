@@ -140,3 +140,4 @@ export * from './deckQuantityEvidence.js';
 export * from "./deckBuildComparison.js";
 export * from "./conditionalCombatResults.js";
 export * from './effectAccessReport.js';
+export { metaFreshness } from './metaFreshness';

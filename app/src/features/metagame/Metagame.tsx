@@ -1,6 +1,6 @@
 import { useMemo, useState, useTransition } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useDeckCardIndexData } from '../archetypes/data';
+import { useDeckCardIndexData, useArchetypeTaxonomyData } from '../archetypes/data';
 import { useDeckPopularityIndexData } from '../topdecks/data';
 import { useOmnidexIndex, useOmnidexIndexStatus } from '../tournaments/data';
 import { usePublishedDataStatus } from '../../lib/sync/usePublishedData';
@@ -11,8 +11,12 @@ import { useCardsByNames } from '../events/useCardsByNames';
 import { Bar, CardIdentity } from '../events/EventReportVisuals';
 import { metagameReport, type Section } from './report';
 
+import MetaFreshness from './MetaFreshness';
+
 const sections = ['main', 'material', 'sideboard'] as const;
 export default function Metagame() {
+  const taxonomy = useArchetypeTaxonomyData();
+  const taxonomyStatus = usePublishedDataStatus('analysis-archetype-taxonomy', '/data/analysis/archetype-taxonomy.json');
   const index = useDeckCardIndexData(), popularity = useDeckPopularityIndexData(), events = useOmnidexIndex();
   const indexStatus = usePublishedDataStatus('analysis-deck-card-index', '/data/analysis/deck-card-index.json');
   const popularityStatus = usePublishedDataStatus('analysis-deck-popularity-index', '/data/analysis/deck-popularity-index.json');
@@ -21,7 +25,7 @@ export default function Metagame() {
   const [pending, startTransition] = useTransition();
   const [limit, setLimit] = useState(12);
   const format = params.get('format') || 'standard', champion = params.get('champion') || '';
-  const days = ['30', '90', '0'].includes(params.get('days') ?? '') ? Number(params.get('days')) : 90;
+  const days = ['30', '90', '0'].includes(params.get('days') ?? '') ? Number(params.get('days')) : 30;
   const section: Section = sections.includes(params.get('section') as Section) ? params.get('section') as Section : 'main';
   const asOf = [index?.generatedAt, popularity?.generatedAt, events?.generatedAt].filter((v): v is string => !!v).sort()[0] ?? '';
   const report = useMemo(() => index && popularity && events ? metagameReport(index, popularity.entries, events.events, { format, champion, days }, asOf) : undefined, [index, popularity, events, format, champion, days, asOf]);
@@ -47,6 +51,8 @@ export default function Metagame() {
     {report && <div className="space-y-5" aria-busy={pending}>
       <div className="flex flex-wrap gap-x-8 gap-y-3"><p><strong className="text-2xl">{report.decks.toLocaleString()}</strong> public decks</p><p><strong className="text-2xl">{report.events.toLocaleString()}</strong> events</p></div>
       {report.missing > 0 && <p role="status" className="text-sm text-ctp-subtext1">{report.missing} deck lists unavailable</p>}
+      <PublishedSourceStatus label="Build groups" status={taxonomyStatus} hasData={!!taxonomy} />
+      {index && popularity && events && taxonomy && <MetaFreshness index={index} popularity={popularity} events={events} taxonomy={taxonomy} format={format} champion={champion} days={days === 90 ? 90 : 30} asOf={[asOf, taxonomy.generatedAt].sort()[0]} />}
       <Tabs baseId="metagame" label="Deck section" tabs={sections.map(key => ({ key, label: key[0].toUpperCase() + key.slice(1) }))} active={section} onChange={value => change('section', value)} wrap />
       <TabPanel baseId="metagame" tab={section} active={section} className="space-y-4">
         <h2 className="text-lg font-semibold">{champion || 'All champions'} · {section === 'sideboard' ? 'Sideboard registrations' : 'Most frequent cards'}</h2>
