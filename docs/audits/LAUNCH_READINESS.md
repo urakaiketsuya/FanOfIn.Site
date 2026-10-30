@@ -95,3 +95,11 @@ Public concrete archetypes remain the stable URLs and statistical records. Fract
 - Blending and validation now share that exception. It requires a positive Material quantity and does not grant basic-element or non-Slime access, bypass bans/copy limits, or treat a sideboard Champion as active.
 - Passed 25 targeted eligibility, legality, section and blending tests plus app/shared typechecks. Real-catalog regression cases cover flexible-slot allocation and exception boundaries.
 - The HolySamurai / Zabauu Silvie comparison now reports Standard Legal at 360px and 1440px without horizontal overflow. Keyboard weighting selection passed; browser error log was empty. Full release build and authenticated production acceptance were not repeated for this correction; authenticated checks remain deferred by the user.
+
+### October 30, 2026 — deployment and recovery
+
+- Candidate `390872825` passed the full local gate: 1,140 tests, real D1 integration, typechecks, data checks, production build, and clean-candidate smoke. It was pushed with user approval. [Pages build, deployment and production smoke passed](https://github.com/urakaiketsuya/FanOfIn.Site/actions/runs/41003996358); the security audit also passed.
+- The stronger restore drill exposed an automatic backup-selection error: an older recovery point lacked `analysis_profiles`. Diagnostics were previously lost in redirected output; the workflow now logs only its schema/count verification results on failure. All failed-drill disposable databases were cleaned up.
+- [Fresh encrypted backup succeeded](https://github.com/urakaiketsuya/FanOfIn.Site/actions/runs/41004456717). [The drill pinned to `account-d1-20261030T044406Z` passed all current-schema and relationship checks and cleanup](https://github.com/urakaiketsuya/FanOfIn.Site/actions/runs/41004832283).
+- Automatic selection now sorts valid UTC timestamp backup tags, excludes drafts, and fails explicitly if none exist. Regression checks exercised conflicting release metadata, unrelated/malformed tags, and an empty list. The default-selection hosted rerun remains to be confirmed.
+- Authenticated acceptance remains deferred by the user. Code rollback rehearsal remains pending; no production database restoration or migration was performed.

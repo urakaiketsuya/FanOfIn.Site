@@ -51,8 +51,10 @@ jobs:
 
           tag="$REQUESTED_TAG"
           if [ -z "$tag" ]; then
-            tag="$(gh release list --repo "$BACKUP_REPOSITORY" --limit 100 --json tagName,createdAt \
-              --jq '[.[] | select(.tagName | startswith("account-d1-"))] | sort_by(.createdAt) | last | .tagName')"
+            # Release createdAt can reflect the target commit rather than the
+            # recovery-point time. Our UTC timestamp tags sort chronologically.
+            tag="$(gh release list --repo "$BACKUP_REPOSITORY" --exclude-drafts --limit 100 --json tagName \
+              --jq '[.[] | select(.tagName | test("^account-d1-[0-9]{8}T[0-9]{6}Z$"))] | sort_by(.tagName) | (last // error("No account backup releases found")) | .tagName')"
           fi
           test -n "$tag"
           mkdir recovery
