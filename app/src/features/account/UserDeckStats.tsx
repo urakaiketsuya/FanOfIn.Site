@@ -1,3 +1,4 @@
+import EffectAccessReport from '../analytics/EffectAccessReport';
 import AssociatedCards from "../../components/AssociatedCards";
 import CardArtTile from "../../components/CardArtTile";
 import FixtureComparison from "../analytics/FixtureComparison";
@@ -244,6 +245,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
         )}
       </Panel>
       </div>
+      <EffectAccessReport deck={namedSections} cardsByName={cardsByName} />
       <CardScenarios deck={namedSections} cardsByName={cardsByName} />
       {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" reportOnly />}
       {allyPower.allyCopies > 0 && hasDamageForecast && (

@@ -1,3 +1,5 @@
+import EffectAccessReport from '../analytics/EffectAccessReport';
+import CombatRangeComparison from '../analytics/CombatRangeComparison';
 import { useMemo, useState } from 'react';
 import { REPORT_DRAW_CHECKPOINTS, type OmnidexDecklist } from '@gatcg/shared';
 import { useCardCatalog } from '../cards/useCardCatalog';
@@ -21,6 +23,10 @@ export default function EqualDeckReport({ decks, decklists, onRetry }: { decks: 
     const main = sectionCounts(list?.main ?? []);
     return { deck, list, main, size: [...main.values()].reduce((a, b) => a + b, 0) };
   }), [decks, decklists]);
+  const automatic = useMemo(() => rows.map(row => row.list ? {
+    key: row.deck.key, label: row.deck.label,
+    deck: { main: row.list.main.map(line => ({ name: line.card, quantity: line.quantity })), material: row.list.material.map(line => ({ name: line.card, quantity: line.quantity })) },
+  } : null), [rows]);
   const names = useMemo(() => [...new Set(rows.flatMap(r => [...r.main.keys()]))].sort(), [rows]);
   const a = names.includes(first) ? first : names[0] ?? '';
   const b = names.includes(second) && second !== a ? second : names.find(n => n !== a) ?? '';
@@ -60,6 +66,11 @@ export default function EqualDeckReport({ decks, decklists, onRetry }: { decks: 
       <span className="text-right tabular-nums">{value === null ? '—' : `${value.toFixed(1)}%${two ? ' X' : ''}`}{two && <span className="block text-xs">{access(r,b) === null ? '—' : `${access(r,b)!.toFixed(1)}%`} Y</span>}</span>
     </div>; })}</div>
     {!two && <p className="text-xs text-ctp-subtext1">Draw access · 0–100% scale</p>}
+    {automatic[0] && automatic.slice(1).map(target => target && <section key={target.key} className="space-y-4" data-component="AutomaticDeckComparison">
+      <h3 className="break-words font-semibold">{automatic[0]!.label} → {target.label}</h3>
+      <EffectAccessReport baseline={automatic[0]!.deck} deck={target.deck} cardsByName={cards} />
+      <CombatRangeComparison baseline={automatic[0]!.deck} target={target.deck} cardsByName={cards} />
+    </section>)}
     <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold">Inspect two decks</h3><Button onClick={() => setPicked([])} disabled={!picked.length}>Clear selection</Button></div>
     <p className="text-xs text-ctp-subtext1">{selected.length === 2 ? 'Two selected · deselect one to inspect another.' : 'Select two decks to inspect shared and distinctive cards.'}</p>
     {selected.length === 2 && <div aria-live="polite" className="space-y-5">{(['main','material'] as const).map(section => {
