@@ -519,3 +519,13 @@ an event having decklists does not prove this player's deck is public. Known pub
 expand inline with a shared disclosure indicator and retryable loading. The event title
 opens the event focused on that player. Keep event field composition and venue detail on
 the event page, and avoid fetching every event's full decklists to render collapsed rows.
+
+## Metagame card usage
+
+Competition → Metagame opens on the latest published 90 days of Standard. Show card
+identities, inclusion percentages, registration counts and average copies together,
+with a shared 0–100% scale. Main, Material and Sideboard stay separate; sideboard
+figures describe registrations, not sideboarding actions. Format, period, champion and
+section survive URL navigation/reload. Empty sideboards stay in the inclusion denominator.
+Keep missing-list counts and retryable source status visible. Load more cards inline.
+Calculation definitions are in `docs/METAGAME_CALCULATIONS.md`.
