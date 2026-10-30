@@ -26,7 +26,7 @@ export default function HomeDeckInsight() {
           <h3 className="text-xs font-semibold text-ctp-subtext1">Featured draw cards</h3>
           <div className="mt-3 grid grid-cols-3 gap-3">{FEATURED.map((name) => {
             const card = cards.get(name);
-            const content = <><CardArtTile card={card} name={name} /><span className="mt-2 block text-xs">{name}</span></>;
+            const content = <><CardArtTile card={card} name={name} /><span className="mt-2 block break-words text-xs">{name}</span></>;
             return card ? <Link key={name} to={`/cards/${card.slug}`} className="rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={name}>{content}</div>;
           })}</div>
         </div>

@@ -66,7 +66,7 @@ export default function App() {
       <div className="relative">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link to="/" className="flex min-h-control min-w-0 items-center font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+          <nav className="hidden min-w-0 flex-wrap items-center gap-1 md:flex" aria-label="Primary navigation">
             {NAV_ENTRIES.map((entry) => {
               if (entry.kind === "link") {
                 return (

@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 96% complete: the audit, shared comparison engine,
+Release A is approximately 98% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -390,7 +390,7 @@ end-to-end report propagation. App/shared type checks and lint pass (existing wa
 A catalog check preserves printed draw totals for all 2,535 cards and recognizes 187
 cards with memory draws. No layout changed; browser checks were not repeated.
 Next: restrict unsupported triggers/activation costs, then finish browser release
-checks. Release A is approximately 96% complete: report integration, recovery, access
+checks. Release A is approximately 98% complete: report integration, recovery, access
 probabilities and fixed draw destinations are implemented; supported-effect scope
 and remaining release verification keep this estimate uncertain.
 
@@ -453,3 +453,31 @@ corrections and completed scenario/report browser checks. Next: remaining forced
 failure/retry, text-zoom and signed-in release checks, then production build and
 user-requested deployment. These checks remain unverified; specialized calculators'
 separate library assumptions are outside this automatic-report correction.
+
+
+Failure/retry and enlarged-text release checks (2026-10-30): a temporary localhost
+proxy returned HTTP 503 for event 66963, then restored its real response. The page
+showed Failed to load decklist / Retry deck; keyboard focus and a 48px target were
+verified at 390px. Retry recovered the Guo Jia comparison with 1,282 distinct lists,
+1,578 sightings and 103 unavailable assignments. A separately injected worker error
+showed Retry comparison, and restoring the real worker recovered identical results.
+No failure injection was committed or deployed; the temporary server was stopped.
+
+A test-only 200% root font size (32px) exposed narrow homepage action-grid overflow,
+desktop navigation overflow and a long featured-card label. The actions now stack
+below sm, desktop navigation can wrap, and featured names wrap long words. Homepage
+and expanded comparison checks at 390px/1280px show no page overflow with enlarged
+text. Normal 16px rendering was checked at both widths too. This is CSS text scaling,
+not an assertion that every browser's native zoom behavior was exercised.
+App type check and lint passed (existing warnings); the production Vite bundle passed
+again after the final layout edits. The final bundle check skips unchanged public-file
+copying; an earlier full-copy Vite build in this increment also passed. Static-page
+generation and production deployment were not run.
+
+Release A is approximately 98% complete based on implemented reports/model scope and
+completed public-flow, recovery and text-scaling checks. Remaining blocker: signed-in
+saved-deck verification. Local /my-decks redirects to /decks/edit and is signed out;
+both the page and local-test-account attempt report Failed to fetch. Next: restore the
+local account service and verify saved-deck analysis, then run the full release build
+and deploy only when requested. Partition/taxonomy refresh failures have not been
+forced in the browser; their retry controls remain an additional verification gap.
