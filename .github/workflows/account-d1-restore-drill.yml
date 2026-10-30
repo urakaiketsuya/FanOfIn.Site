@@ -85,8 +85,16 @@ jobs:
           created=true
           npx wrangler d1 execute "$restore_db" --remote --yes --file ../recovery/unpacked/account-backup.sql
           node ../scripts/account-restore-check.mjs > ../recovery/verify.sql
-          npx wrangler d1 execute "$restore_db" --remote --json --command "$(cat ../recovery/verify.sql)" > ../recovery/verification.json
-          jq --argjson expected "$(wc -l < ../recovery/verify.sql)" -e 'length == $expected and all(.[]; .success == true) and ([.[].results[] | select(has("orphan_count"))] | length > 0 and all(.[]; .orphan_count == 0))' ../recovery/verification.json
+          # Generated queries expose only empty schema results and orphan counts.
+          # Preserve diagnostics on failure instead of losing them with the runner.
+          if ! npx wrangler d1 execute "$restore_db" --remote --json --command "$(cat ../recovery/verify.sql)" > ../recovery/verification.json; then
+            cat ../recovery/verification.json
+            exit 1
+          fi
+          if ! jq --argjson expected "$(wc -l < ../recovery/verify.sql)" -e 'length == $expected and all(.[]; .success == true) and ([.[].results[] | select(has("orphan_count"))] | length > 0 and all(.[]; .orphan_count == 0))' ../recovery/verification.json; then
+            cat ../recovery/verification.json
+            exit 1
+          fi
 
       - name: Confirm disposable database cleanup
         if: always()
