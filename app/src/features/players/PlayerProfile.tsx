@@ -1,3 +1,5 @@
+import { usePlayerRegions } from "./usePlayerRegions";
+import { REGION_LABELS } from "../../lib/regions";
 import PlayerCompetitionReport from "../competition/PlayerCompetitionReport";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
@@ -53,6 +55,9 @@ export default function PlayerProfile() {
   const playerDecksData = usePlayerDecksData();
   const rivalsData = useRivalsData();
   const index = useOmnidexIndex();
+  const playerRegions = usePlayerRegions(playersData, index);
+  const regionStoresStatus = usePublishedDataStatus("store-directory", "/data/omnidex/stores.json");
+  const playRegion = playerRegions?.get(playerId);
   const popularityIndexData = useDeckPopularityIndexData();
   const resultStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
   const resultsByEvent = useMemo(() => new Map(
@@ -200,6 +205,7 @@ export default function PlayerProfile() {
       </Link>
 
       <PublishedSourceStatus label="Players" status={playersStatus} hasData={!!playersData} />
+      {player?.country === "US" && <PublishedSourceStatus label="Region stores" status={regionStoresStatus} hasData={!!playerRegions} />}
       {!player && <PublishedSourceStatus label="Judges" status={judgesStatus} hasData={!!judgesData} />}
       {(player || judge) && (
         <>
@@ -217,6 +223,7 @@ export default function PlayerProfile() {
                     </Link>
                   );
                 })()}
+                {playRegion && <div className="text-sm text-ctp-subtext1">{playRegion.region ? <Link className="inline-flex min-h-control items-center hover:text-ctp-blue focus-visible:outline-2" to={`/regions?group=region&region=${playRegion.region}`}>{REGION_LABELS[playRegion.region]} · inferred play region</Link> : 'Play region unassigned'}</div>}
               </div>
               {deckProfile?.topChampions[0] && <Link to={`/champions/${championNameToSlug(deckProfile.topChampions[0].name)}`} className="w-20 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={championImages.get(deckProfile.topChampions[0].name)} name={deckProfile.topChampions[0].name} artworkOnly /><span className="mt-1 block text-center text-xs">{deckProfile.topChampions[0].name}</span></Link>}
 

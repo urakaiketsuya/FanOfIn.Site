@@ -6038,3 +6038,40 @@ overflow, East/West comparisons, keyboard tab selection, Central venues, and swi
 between country/region grouping. Loading and unavailable-field states were observed;
 forced network-error recovery and text zoom were not exercised. Comparison calculations
 now run only for the selected tab; surface/group URL changes are applied atomically.
+
+### Inferred US player play regions
+
+`shared/src/playerRegions.ts` joins US players' distinct event IDs to completed,
+physical US events in the preceding 365 days. The app derives assignments from the
+player, event, and store snapshots, using their earliest publication timestamp as
+`asOf`; no residence, citizenship, or account-country field is overwritten.
+
+The event address determines East/Central/West using the state map above. A missing
+state may use a matching host ID's US store address only for a classified store and
+when no known historical event region conflicts with that address. Convention/venue
+records never supply this fallback. Unresolved addresses, future/incomplete events,
+online events, and events outside the US do not vote.
+
+Regular and store-championship events count as local evidence unless the host is a
+classified venue or the event name identifies a major/travel event (worlds, national,
+regional, ascent, qualifier, convention, expo). With at least three local attendance
+dates, use local history only; otherwise use all eligible event history. Each distinct
+UTC calendar date has one vote, independent of duplicate event IDs or multiple events
+on that date. Cross-region dates count in the denominator but vote for neither region.
+An assignment requires at least three dates in the winning region, a unique leader,
+and at least 60% of local dates or 75% of broader event dates. Otherwise leave the
+player unassigned. These thresholds are product heuristics, not calibrated confidence
+probabilities. UI labels say "inferred" / "inferred play region".
+
+Player profiles link an assigned region to its regional statistics. The player directory
+filters assigned US regions and unassigned US players, preserving global rating rank.
+No event/deck is reclassified based on a player's inferred region: event statistics
+continue to describe where events were held. The current snapshots assign 650 West,
+372 Central, and 354 East; 1,416 have insufficient evidence and four mixed evidence.
+
+Validation: five fixtures cover local play versus major-event travel, sparse/mixed
+histories, broader-history thresholds, duplicate dates, date/status/country exclusions,
+and store-address fallback conflicts. Browser checks covered 390px and 1280px layouts,
+48px filter targets, page overflow, region filtering, unassigned players, empty search,
+loading, and keyboard activation of the profile region link. Forced source failure and
+text zoom were not exercised.

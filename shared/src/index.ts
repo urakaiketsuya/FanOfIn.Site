@@ -143,3 +143,4 @@ export * from './effectAccessReport.js';
 export { metaFreshness, seasonalMetaFreshness } from './metaFreshness';
 
 export * from "./usRegions.js";
+export * from "./playerRegions.js";
