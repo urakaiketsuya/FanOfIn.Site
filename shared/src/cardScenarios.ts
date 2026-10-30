@@ -3,6 +3,7 @@ import { calculateDefenseScenario } from './defenseScenario.js';
 import { aggregateLines, copies, fixtureAccess, fixtureFloating, fixturePairAccess, FIXTURE_FLOATING, floatingPayment, hasType, whole, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
 
 export const SCENARIO_FIELDS = {
+  domains: ['Unrested domains', 0], objects: ['Objects controlled', 0],
   tokens: ['Tokens controlled', 0], shields: ['Atmos Shields controlled', 0], guides: ['Academy Guides in play', 0],
   level: ['Champion level', 0], seen: ['Cards seen', 10], waterGrave: ['Water cards in your graveyard', 0],
   floating: ['Eligible Floating Memory cards in your graveyard', 0], memoryCost: ['Memory cost to pay', 1],
@@ -19,7 +20,7 @@ export const SCENARIO_FIELDS = {
   linked: ['Plate linked to an available interceptor', 0],
 } as const;
 export type ScenarioKey = keyof typeof SCENARIO_FIELDS;
-export type CardScenario = Record<ScenarioKey, number> & { classes: string[] };
+export type CardScenario = Record<ScenarioKey, number> & { classes: string[]; championName?: string };
 export const BOOLEAN_SCENARIOS: ReadonlySet<ScenarioKey> = new Set(['lineage', 'levelThree', 'bishop', 'mastery', 'release', 'prepared', 'hit', 'extraPaid', 'beast', 'linked']);
 export function defaultCardScenario(): CardScenario {
   const values = Object.fromEntries(Object.entries(SCENARIO_FIELDS).map(([key, [, value]]) => [key, value])) as Record<ScenarioKey, number>;
@@ -74,6 +75,18 @@ export function calculateCardScenarios(deck: AnalyticsDeck, catalog: ReadonlyMap
   add('Archon Broadsword', 'token-power', 'combat', 2 + (classActive('Archon Broadsword') ? s.tokens : 0), 'weapon power', 'Attack requires 2 reserve', ['tokens'], tokenSources);
   add('Atmos Armor Type-Ares', 'shield-power', 'combat', 1 + (classActive('Atmos Armor Type-Ares') ? s.shields : 0), 'ally power', 'Summons 2 shields on entry', ['shields']);
   add('Academy Guide', 'champion-discount', 'resources', s.guides, 'champion memory discount', 'Per champion materialization · cannot reduce payment below zero', ['guides']);
+  add('Cordelia, Aurous Kaiser', 'reserve-payment', 'resources', classActive('Cordelia, Aurous Kaiser') ? s.tokens : 0, 'reserve capacity', 'Unrested tokens · each object pays once', ['tokens'], tokenSources);
+  const domains = main.filter(line => catalog.get(line.name)?.types.includes('DOMAIN'));
+  add('The Eternal Kingdom', 'reserve-payment', 'resources', classActive('The Eternal Kingdom') ? s.domains : 0, 'reserve capacity', 'Unrested domains · each object pays once', ['domains'], domains);
+  const activeChampion = material.map(line => catalog.get(line.name)).filter(card => card?.types.includes('CHAMPION')).sort((a, b) => (b?.level ?? 0) - (a?.level ?? 0))[0];
+  const tonoris = (input.championName ?? activeChampion?.name ?? '').startsWith('Tonoris,');
+  add('Automata Genesis', 'token-buffs', 'combat', tonoris ? Math.max(3, s.tokens) : 0, 'buffs per token ally', 'After summoning 3 Titans · Tonoris bonus', ['tokens']);
+  add('Automata Genesis', 'titan-power', 'combat', 3 * (3 + (tonoris ? Math.max(3, s.tokens) : 0)), 'new Titan power', 'Three 3-power Titans · after entry · no other buffs', ['tokens']);
+  add('Neos Sight', 'draw', 'draw', 1, 'drawn to hand', 'One resolved copy', []);
+  add('Neos Sight', 'memory-draw', 'draw', s.objects >= 8 ? 1 : 0, 'drawn to memory', '8+ objects controlled', ['objects']);
+  for (const name of ['Hub of Innovation', 'Dormant Sacrificial Altar']) add(name, 'memory-draw', 'draw', 1, 'drawn to memory', 'On entry', []);
+  add('Epicurean Institute', 'draw', 'draw', 1, 'drawn to hand', 'Next recollection · sacrifice', []);
+  add('Mad Tea Party', 'recover', 'draw', Math.min(1, s.damageTaken), 'recovered per ally entry', 'Each ally entering · damage required', ['damageTaken']);
   add('Storm of Thorns', 'prevent', 'combat', Math.min(1, s.damage) * s.events, 'prevented', '1 per damage event to your units', ['damage', 'events']);
   const floating = fixtureFloating(main, s.classes);
   const supportedFloating = main.filter(line => Object.hasOwn(FIXTURE_FLOATING, line.name));

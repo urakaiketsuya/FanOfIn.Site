@@ -1,3 +1,4 @@
+import EffectAccessReport from './EffectAccessReport';
 import { useMemo } from 'react';
 import type { AnalyticsDeck, Card } from '@gatcg/shared';
 import DamageStatisticalReport from './DamageStatisticalReport';
@@ -14,6 +15,7 @@ export default function DeckReport({ deck, cardsByName }: {
   return <div data-component="DeckReport" className="mt-4 space-y-4">
     <Panel><DamageStatisticalReport forecast={forecast} cardsByName={cardsByName} /></Panel>
     <CombatAccessReport deck={deck} cardsByName={cardsByName} />
+    <EffectAccessReport deck={deck} cardsByName={cardsByName} />
     <CardScenarios deck={deck} cardsByName={cardsByName} />
   </div>;
 }

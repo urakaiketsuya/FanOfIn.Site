@@ -5926,3 +5926,53 @@ from the comparison; retain usage ordering. No peer decks means unavailable, not
 Missing peer lists remain visible. Uniqueness describes the observed public sample only.
 The all-champion view omits this champion-specific comparison. Existing recent signature
 choices remain a separate 90-day inclusion-rate comparison.
+
+### Extended effect access and Tonoris outcomes
+
+`effectAccessReport` groups reviewed Main sources into token production, prevention,
+recovery, extra draw, and cost/payment support. A physical copy contributes once to a
+pool even when several scenarios use it (Neos Sight's two destinations, for example).
+Pools overlap and must not be summed. Sideboard is excluded; Material is displayed
+separately and never enters draw probabilities. Missing catalog data makes the report
+unavailable. Unreviewed text is not classified as a zero-strength effect.
+
+At 7/10/15/20 cards seen, access is exact hypergeometric P(X >= 1). Source-count
+ranges are inverse-CDF p10/p50/p90, computed with an exact without-replacement
+probability recurrence, not sampling. The library is padded to 60 for incomplete
+lists, consistent with scenario/combat reports; larger lists retain their actual
+size. These are physical copies drawn, not sources in play, resolved effects, turns,
+or additional draws generated. Each comparison uses its own library and shows
+percentage-point changes, including additions/removals and zero access.
+
+Catalog-reviewed Tonoris extensions (2026-10-30): Automata Genesis summons three
+3-power Titan Mk II allies. Its Tonoris bonus grants each token ally X buffs, with X
+the total tokens after summoning. Examples at 3/5/7 total tokens give 18/24/30 power
+across the three new Titans; without Tonoris the result is 9. Existing token allies,
+other buffs, readiness, costs, and damage dealt are not included. The highest-level
+listed champion determines the automatic Tonoris identity assumption.
+Cordelia grants reservable to tokens with Guardian bonus; The Eternal Kingdom
+similarly grants reservable to domains. Examples assume unrested objects and count
+one reserve payment per object. These independent capacities are not added to each
+other, discounted costs, Floating Memory, or hand resources. Academy Guide's
+existing discount applies to champion materialization, not arbitrary memory costs.
+
+Neos Sight draws one to hand plus one to memory at 8+ controlled objects. Hub of
+Innovation and Dormant Sacrificial Altar draw one to memory on entry. Epicurean
+Institute draws one on its sacrifice at the next recollection; its destruction token
+is a different trigger and is not assumed to accompany the draw. Mad Tea Party
+recovers one per ally entry, capped by damage on the champion. Existing Breeze,
+Destiny and Restoration calculations supply prevention/recovery source pools;
+prevention is never added to outgoing damage. Existing direct-damage distributions,
+separate recurring-output labels, and ally-power distributions remain unchanged.
+
+Provenance: new Tonoris rules are catalog-derived contracts, not claimed TCGEngine
+replays. Tests use the complete Tonoris fixture, independent exact-count examples,
+class/identity gates, source deduplication, sideboard exclusion, and comparison
+removal/empty/missing states. The broader catalog still requires explicit review.
+
+Combat access also reports the fraction of the existing deterministic draw trials
+with a positive reviewed boost and an eligible ally. This reuses the same class,
+level and target rules; self-only boosts need no second card, while targeted boosts
+need their eligible target. It is access under the model's stated resolution
+assumptions, not a play probability. Comparison reports show both printed and
+supported-boost p10/p50/p90 at all four checkpoints and the associated source cards.

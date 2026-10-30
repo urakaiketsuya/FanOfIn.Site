@@ -4,7 +4,7 @@ import { aggregateLines, copies, fixtureAccess, type AnalyticsDeck, type Analyti
 
 /** Checkpoints vary one resource at a time; they are conditional outcomes, never expected play. */
 const CHECKPOINTS: Partial<Record<ScenarioKey, number[]>> = {
-  tokens: [0, 2, 4, 7], shields: [0, 1, 2], guides: [0, 1, 2],
+  domains: [0, 2, 4], objects: [7, 8, 10], tokens: [0, 2, 4, 7], shields: [0, 1, 2], guides: [0, 1, 2],
   fractals: [0, 1, 2], waterGrave: [0, 2, 3], floating: [0, 1, 2], omens: [0, 1, 2],
   windAllies: [0, 1, 2], memory: [3, 4, 5], allies: [0, 1, 2], sheen: [6, 7], level: [1, 2, 3],
 };
@@ -18,12 +18,21 @@ export function cardReportCheckpoints(deck: AnalyticsDeck, catalog: ReadonlyMap<
     const result = calculateCardScenarios(deck, catalog, { ...state, damage: point.damage, events: point.events }).find(candidate => candidate.id === row.id)!;
     return { label: point.label, value: result.value, unit: result.unit };
   });
+  if (row.id.startsWith('Automata Genesis:')) return [3, 5, 7].map(tokens => ({
+    label: `${tokens} total tokens after summoning`,
+    value: calculateCardScenarios(deck, catalog, { ...state, tokens }).find(candidate => candidate.id === row.id)!.value, unit: row.unit,
+  }));
   const key = row.fields.find(field => CHECKPOINTS[field] || BOOLEAN_SCENARIOS.has(field));
   if (!key) return [];
   return (CHECKPOINTS[key] ?? [0, 1]).map(value => {
     const result = calculateCardScenarios(deck, catalog, { ...state, [key]: value }).find(candidate => candidate.id === row.id)!;
     return { label: `${SCENARIO_FIELDS[key][0]}: ${BOOLEAN_SCENARIOS.has(key) ? (value ? 'Yes' : 'No') : value}`, value: result.value, unit: result.unit };
   });
+}
+/** Conditions held fixed while the report varies a resource or incoming-hit pattern. */
+export function cardReportFixedConditions(row: CardScenarioResult, state: CardScenario) {
+  const varied = row.id.endsWith(':prevent') ? ['damage', 'events'] : row.fields.filter(field => CHECKPOINTS[field] || BOOLEAN_SCENARIOS.has(field)).slice(0, 1);
+  return scenarioConditions({ ...row, fields: row.fields.filter(field => !varied.includes(field)) }, state);
 }
 export function reportDeltaChanged(delta: { before?: CardScenarioResult; after?: CardScenarioResult }) {
   const { before, after } = delta;

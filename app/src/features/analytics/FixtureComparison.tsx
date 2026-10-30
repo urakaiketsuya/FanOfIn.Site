@@ -1,5 +1,7 @@
 import { useId, useState } from 'react';
 import { reportDeltaChanged, scenarioConditions, SCENARIO_FIELDS, BOOLEAN_SCENARIOS, calculateFixtureMatchup, compareFixtureScenarios, copies, type AnalyticsDeck, type AnalyticsLine, type Card, type ScenarioKey, } from '@gatcg/shared';
+import CombatRangeComparison from './CombatRangeComparison';
+import EffectAccessReport from './EffectAccessReport';
 import DrawAccessComparison from './DrawAccessComparison';
 import AssociatedCards from '../../components/AssociatedCards';
 import Button from '../../components/ui/Button';
@@ -29,7 +31,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
   const sequenceValid = /^\s*\d+(\s*,\s*\d+)*\s*$/.test(sequenceText) && sequenceText.split(',').length <= 30 && sequenceText.split(',').every(value => Number(value) <= 100);
   const sequence = sequenceValid ? sequenceText.split(',').map(Number) : [];
   // Versions use identical numeric conditions, with each deck's selected active champion class.
-  const targetState = { ...own.state, classes: other.state.classes };
+  const targetState = { ...own.state, classes: other.state.classes, championName: other.state.championName };
   const deltas = compareFixtureScenarios(baseline, target, cardsByName, own.state, targetState);
   const visibleDeltas = [...deltas].sort((a, b) => Number(reportDeltaChanged(b)) - Number(reportDeltaChanged(a)));
   const changedCount = deltas.filter(reportDeltaChanged).length;
@@ -87,6 +89,8 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
 
     </TabPanel>
     <TabPanel baseId={id} tab="versions" active={mode} keepMounted>
+      <CombatRangeComparison baseline={baseline} target={target} cardsByName={cardsByName} />
+      <EffectAccessReport deck={target} baseline={baseline} cardsByName={cardsByName} />
       <DrawAccessComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />
       <p className="mt-3 text-xs text-ctp-subtext1">{changedCount} changed findings · {deltas.length - changedCount} unchanged · {own.state.seen} cards seen</p>
       <p className="mt-1 text-xs text-ctp-subtext1">{own.champion || 'No class bonus'} → {other.champion || 'No class bonus'}</p>

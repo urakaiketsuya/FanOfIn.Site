@@ -8,6 +8,7 @@ export interface CombatPowerRange { low: number; median: number; high: number }
 export interface CombatAccessForecast {
   printedRange: CombatPowerRange;
   boostedRange: CombatPowerRange;
+  boostAccessChance: number;
   seen: number;
   printedPower: number;
   boostedPower: number;
@@ -33,7 +34,7 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
   const deck = main.flatMap(l => Array.from({length: Math.max(0, Math.floor(l.quantity))}, () => l.name));
   while (deck.length < 60) deck.push("");
   const seen = Math.max(0, Math.min(deck.length, Math.floor(cardsSeen)));
-  const result: CombatAccessForecast = { printedRange: { low: 0, median: 0, high: 0 }, boostedRange: { low: 0, median: 0, high: 0 }, seen, printedPower: 0, boostedPower: 0, foreseDeploymentChance: 0, foreseAddedPower: 0, musicboxAddedPower: 0, sources: [], unmodeled: [], unavailable: [...main, ...material].some(l => l.quantity > 0 && !cards.has(l.name)) };
+  const result: CombatAccessForecast = { boostAccessChance: 0, printedRange: { low: 0, median: 0, high: 0 }, boostedRange: { low: 0, median: 0, high: 0 }, seen, printedPower: 0, boostedPower: 0, foreseDeploymentChance: 0, foreseAddedPower: 0, musicboxAddedPower: 0, sources: [], unmodeled: [], unavailable: [...main, ...material].some(l => l.quantity > 0 && !cards.has(l.name)) };
   if (result.unavailable || samples < 1) return result;
   const evidence = new Map<string, number>(), unmodeled = new Set<string>();
   const printedSamples: number[] = [], boostedSamples: number[] = [];
@@ -87,6 +88,7 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
     }
     result.musicboxAddedPower += totalPower(boosted) - beforeReplay;
     if (arrival !== undefined) result.foreseAddedPower += boosted.attackers[arrival].power;
+    if (boosted.evidence.some(item => item.status === 'modeled' && item.addedPower > 0)) result.boostAccessChance += 1 / samples;
     const power = totalPower(boosted);
     boostedSamples.push(power);
     result.boostedPower += power;

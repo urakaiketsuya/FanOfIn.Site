@@ -26,6 +26,7 @@ export default function CombatAccessReport({ deck, cardsByName }: { deck: Analyt
           const range = point[model];
           return <div key={point.seen}>
             <p className="flex flex-wrap justify-between gap-2 text-sm"><span>{point.seen} cards seen</span><span><strong>{range.median} power</strong><span className="text-xs text-ctp-subtext1"> · {range.low}–{range.high}</span></span></p>
+            {model === 'boostedRange' && <p className="mt-1 text-xs text-ctp-subtext1">{(point.boostAccessChance * 100).toFixed(1)}% eligible boost access</p>}
             <svg viewBox="0 0 300 22" className="w-full" aria-hidden="true">
               <line x1="8" x2="292" y1="11" y2="11" className="stroke-ctp-surface1" strokeWidth="4" />
               <line x1={8 + range.low / scale * 284} x2={8 + range.high / scale * 284} y1="11" y2="11" className={model === 'printedRange' ? 'stroke-ctp-blue' : 'stroke-ctp-teal'} strokeWidth="5" />

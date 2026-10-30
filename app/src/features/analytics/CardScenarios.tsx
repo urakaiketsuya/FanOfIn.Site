@@ -1,4 +1,4 @@
-import { REPORT_DRAW_CHECKPOINTS, calculateCardScenarios, cardReportCheckpoints, scenarioConditions, FIXTURE_FLOATING, type AnalyticsDeck, type Card, type ScenarioGroup } from '@gatcg/shared';
+import { REPORT_DRAW_CHECKPOINTS, calculateCardScenarios, cardReportCheckpoints, cardReportFixedConditions, scenarioConditions, FIXTURE_FLOATING, type AnalyticsDeck, type Card, type ScenarioGroup } from '@gatcg/shared';
 import AssociatedCards from '../../components/AssociatedCards';
 import Panel from '../../components/ui/Panel';
 import { useCardScenario } from './useCardScenario';
@@ -19,7 +19,7 @@ export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDe
     {missing && <p role="status" className="mt-2 text-xs text-ctp-yellow">Card data incomplete</p>}
     {GROUPS.filter(group => rows.some(row => row.group === group.key)).map(group => <section key={group.key} className="mt-6">
       <h3 className="text-sm font-semibold">{group.label}</h3>
-      <div className="mt-3 grid gap-4 lg:grid-cols-2">{rows.filter(row => row.group === group.key).map(row => <article key={row.id} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
+      <div className="mt-3 grid gap-4 lg:grid-cols-2">{rows.filter(row => row.group === group.key).map(row => { const outcomes = cardReportCheckpoints(deck, cardsByName, controller.state, row); return <article key={row.id} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
         <h4 className="text-sm font-semibold">{row.name}</h4>
         {row.access !== null && <><p className="mt-2 text-xs text-ctp-subtext1">{row.group === 'packages' ? 'Chance to draw source and support' : 'Chance to draw a source'}</p>
         <div className="my-3 grid grid-cols-4 gap-2">{checkpoints.map(point => {
@@ -27,12 +27,13 @@ export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDe
           const access = checkpointRow?.group === 'packages' ? checkpointRow.value / 100 : checkpointRow?.access;
           return <div key={point.seen}><p className="text-xs text-ctp-subtext1">{point.seen} seen</p><p className="text-base font-semibold tabular-nums">{access == null ? '—' : `${(access * 100).toFixed(1)}%`}</p></div>;
         })}</div></>}
-        <p className="mt-3 text-lg font-semibold">{row.unit.startsWith('%') ? row.value.toFixed(1) : row.value} {row.unit}{row.group === 'packages' ? ` · ${controller.state.seen} seen` : ''}</p>
-        {scenarioConditions(row, controller.state) && <p className="mt-2 text-xs text-ctp-subtext1">{scenarioConditions(row, controller.state)}</p>}
-        <dl className="my-3 space-y-2">{cardReportCheckpoints(deck, cardsByName, controller.state, row).map(point => <div key={point.label} className="flex flex-wrap justify-between gap-2 text-xs"><dt>{point.label}</dt><dd className="font-semibold">{point.value} {point.unit}</dd></div>)}</dl>
+        {!outcomes.length && row.group !== 'packages' && <p className="mt-3 text-lg font-semibold">{row.unit.startsWith('%') ? row.value.toFixed(1) : row.value} {row.unit}</p>}
+        {(outcomes.length ? cardReportFixedConditions(row, controller.state) : scenarioConditions(row, controller.state)) && <p className="mt-2 text-xs text-ctp-subtext1">{outcomes.length ? cardReportFixedConditions(row, controller.state) : scenarioConditions(row, controller.state)}</p>}
+        <dl className="my-3 space-y-2">{outcomes.map(point => <div key={point.label} className="flex flex-wrap justify-between gap-2 text-xs"><dt>{point.label}</dt><dd className="font-semibold">{point.value} {point.unit}</dd></div>)}</dl>
+        {row.group !== 'packages' && <p className="my-2 text-xs text-ctp-subtext1">{row.detail}</p>}
         <AssociatedCards lines={row.lines} cardsByName={cardsByName} label={row.name} highlighted={row.id === 'floating' ? new Set(row.support?.map(line => line.name)) : undefined} />
         {row.support && row.id !== 'floating' && <div className="mt-3"><p className="mb-2 text-xs font-medium">Supporting Main cards</p>{row.support.length ? <AssociatedCards lines={row.support} cardsByName={cardsByName} label={`${row.name} support`} /> : <p className="text-xs text-ctp-subtext1">No supported enablers in Main</p>}</div>}
-      </article>)}</div>
+      </article>; })}</div>
       {group.key === 'resources' && outsideFloating > 0 && <p role="status" className="mt-3 text-xs text-ctp-yellow">{outsideFloating} other Floating Memory copies outside this model</p>}
     </section>)}
   </Panel>;
