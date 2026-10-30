@@ -11,7 +11,6 @@ import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useR
 import HistoryChart from "../../components/HistoryChart";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
-import { useCardsByNames } from "../events/useCardsByNames";
 import { useChampionCardImages } from "./useChampionCardImages";
 import PlayerEventDecklistRow from "./PlayerEventDecklistRow";
 import { championNameToSlug } from "../../lib/championSlug";
@@ -19,7 +18,7 @@ import EventRow from "../tournaments/EventRow";
 import CardArtTile from "../../components/CardArtTile";
 import Button from "../../components/ui/Button";
 import { Bar } from "../events/EventReportVisuals";
-import PlayerCardUsage from "./PlayerCardUsage";
+import PlayerCardPatterns from "./PlayerCardPatterns";
 import { useTabParam } from "../../lib/useTabParam";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import LoadMore from "../../components/LoadMore";
@@ -181,13 +180,6 @@ export default function PlayerProfile() {
   const [tab, setManualTab] = useTabParam<PlayerTab>("tab", availableTabs.map(t => t.key), availableTabs[0]?.key ?? "overview");
 
   const championImages = useChampionCardImages(deckProfile?.topChampions.map((c) => c.name) ?? []);
-  const allTopCardNames = useMemo(() => {
-    if (!deckProfile) return [];
-    return [...deckProfile.topCards.main, ...deckProfile.topCards.material, ...deckProfile.topCards.sideboard].map(
-      (c) => c.name,
-    );
-  }, [deckProfile]);
-  const cardImages = useCardsByNames(allTopCardNames);
 
   if (playersData && judgesData && !player && !judge) {
     return (
@@ -287,7 +279,7 @@ export default function PlayerProfile() {
           return <article key={c.name} className="min-w-0 space-y-2"><Link to={`/champions/${championNameToSlug(c.name)}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile name={c.name} card={championImages.get(c.name)} artworkOnly /><span className="mt-2 block text-sm font-semibold">{c.name}</span></Link><div className="flex flex-wrap justify-between gap-1 text-sm"><strong>{value.toFixed(0)}%</strong><span className="text-xs text-ctp-subtext1">{c.deckCount}/{deckProfile.totalDecks} decks</span></div><Bar value={value} label={`${c.name} deck inclusion`} blue /></article>;
         })}</div>
       </Section>
-      {allTopCardNames.length > 0 && deckProfile && <Section className="mt-6" heading="compact" title="Most played cards"><PlayerCardUsage topCards={deckProfile.topCards} cards={cardImages} totalDecks={deckProfile.totalDecks} /></Section>}
+      <PlayerCardPatterns playerId={playerId} active={tab === "cards"} />
       </TabPanel>
       <TabPanel baseId="player-profile" tab="opponents" active={tab}>
       <PublishedSourceStatus label="Opponents" status={rivalsStatus} hasData={!!rivalsData} />

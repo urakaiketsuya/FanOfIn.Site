@@ -505,9 +505,10 @@ The compact identity header retains all-time rating and W–L–T; rating histor
 milestones follow recent results. Cards, Opponents, Events, and Judged are peer views.
 Preserve event filters and card expansions when switching tabs; link tabs through the URL.
 
-The Cards view uses all-time public-deck inclusion (decks containing a card divided by
-all public decks for that player), split by Main, Material, and Sideboard. Show percentages,
-counts, artwork and names together. Start with six cards per section and allow expansion.
+The Cards view uses all-time public-deck inclusion within the selected champion and
+format (decks containing a card divided by matching available public decks for that player),
+split by Main, Material, and Sideboard. Show percentages, counts, artwork and names together.
+Start with six cards per section and allow expansion.
 Do not mix this denominator with recent match results. Rankings stay ordered by rating and
 use wrapping rows on phones, with all-time record separate from recent Standard wins.
 Use explicit provisional labels and loading, unavailable, retry and empty states.
@@ -529,3 +530,11 @@ figures describe registrations, not sideboarding actions. Format, period, champi
 section survive URL navigation/reload. Empty sideboards stay in the inclusion denominator.
 Keep missing-list counts and retryable source status visible. Load more cards inline.
 Calculation definitions are in `docs/METAGAME_CALCULATIONS.md`.
+
+Player Cards now includes champion-specific Card patterns, defaulting automatically to
+the most-played Standard champion. Most played and First seen share section tabs and
+card identities; usage covers all available history, while First seen uses a labeled
+90-day window. Each dated observation links to the player's event. Keep public-list
+scope and missing-list counts visible. Persist champion, format and section in distinct
+URL parameters; retain expanded card lists when switching profile tabs. Fetch the card
+index only after Cards is visited. Preserve the all-time champion overview above it.
