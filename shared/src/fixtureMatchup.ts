@@ -99,7 +99,7 @@ export function compareFixtureScenarios(before: AnalyticsDeck, after: AnalyticsD
     const answers = main.filter(line => ['Engulf', 'Frozen Dismissal', 'Tidal Lock', 'Surging Obstruction', 'Thunderclap', 'Arrow Trap'].includes(line.name));
     if (answers.length) rows.unshift({ id: 'answerAccess', name: 'Answer access', group: 'resources', value: copies(answers), unit: 'negate/removal copies',
       detail: 'Supported answer pool · target conditions apply', fields: ['seen'], lines: answers,
-      access: fixtureAccess(Math.max(60, copies(main)), copies(answers), state.seen) });
+      access: fixtureAccess(copies(main), copies(answers), state.seen) });
     return rows;
   };
   const a = new Map(versionRows(before, stateBefore).map(row => [row.id, row]));

@@ -54,7 +54,7 @@ export function calculateCardScenarios(deck: AnalyticsDeck, catalog: ReadonlyMap
   for (const key of Object.keys(SCENARIO_FIELDS) as ScenarioKey[]) s[key] = whole(s[key]);
   const main = aggregateLines(deck.main), material = aggregateLines(deck.material);
   const all = aggregateLines([...main, ...material]);
-  const size = Math.max(60, copies(main));
+  const size = copies(main);
   const result: CardScenarioResult[] = [];
   const has = (name: string) => all.some(line => line.name === name);
   const matches = (...classes: string[]) => classes.some(c => s.classes.includes(c));

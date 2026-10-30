@@ -1,7 +1,6 @@
 import type { Card } from './api-types.js';
 import { calculateCardScenarios, defaultCardScenario } from './cardScenarios.js';
-import { REPORT_DRAW_CHECKPOINTS } from './analyticsReport.js';
-import { aggregateLines, copies, fixtureAccess, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
+import { aggregateLines, actualDrawCheckpoints, copies, fixtureAccess, type AnalyticsDeck, type AnalyticsLine } from './fixtureResources.js';
 
 /** Exact hypergeometric quantiles of physical sources drawn, not effects resolved. */
 export function sourceCountRange(size: number, hits: number, seen: number) {
@@ -37,11 +36,11 @@ export function effectAccessReport(deck: AnalyticsDeck, catalog: ReadonlyMap<str
   }
   // Reviewed catalog summon clauses. Trigger/entry conditions remain on the card.
   for (const name of ['Atmos Armor Type-Ares', 'Automata Genesis', 'Cordelia, Aurous Kaiser', 'Epicurean Institute']) pools.tokens.add(name);
-  const size = Math.max(60, copies(main));
+  const size = copies(main);
   return { size, unavailable: [...main, ...material].some(line => !catalog.has(line.name)), rows: (Object.keys(LABELS) as (keyof typeof LABELS)[]).flatMap(id => {
     const lines = main.filter(line => pools[id].has(line.name) && catalog.has(line.name));
     const regalia = material.filter(line => pools[id].has(line.name) && catalog.has(line.name));
     if (!lines.length && !regalia.length) return [];
-    return [{ id, label: LABELS[id], lines, material: regalia, points: REPORT_DRAW_CHECKPOINTS.map(seen => ({ seen, access: fixtureAccess(size, copies(lines), seen), ...sourceCountRange(size, copies(lines), seen) })) }];
+    return [{ id, label: LABELS[id], lines, material: regalia, points: actualDrawCheckpoints(size).map(seen => ({ seen, access: fixtureAccess(size, copies(lines), seen), ...sourceCountRange(size, copies(lines), seen) })) }];
   }) as EffectAccessRow[] };
 }

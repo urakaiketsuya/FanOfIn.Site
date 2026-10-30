@@ -32,7 +32,6 @@ function toLines(names: string[]): Line[] {
  * activation when explicitly supplied with readiness and a remaining budget. */
 export function computeCombatAccessForecast(main: Line[], material: Line[], cards: Map<string, Card>, cardsSeen: number, samples = 1024, musicbox?: MusicboxReplayState): CombatAccessForecast {
   const deck = main.flatMap(l => Array.from({length: Math.max(0, Math.floor(l.quantity))}, () => l.name));
-  while (deck.length < 60) deck.push("");
   const seen = Math.max(0, Math.min(deck.length, Math.floor(cardsSeen)));
   const result: CombatAccessForecast = { boostAccessChance: 0, printedRange: { low: 0, median: 0, high: 0 }, boostedRange: { low: 0, median: 0, high: 0 }, seen, printedPower: 0, boostedPower: 0, foreseDeploymentChance: 0, foreseAddedPower: 0, musicboxAddedPower: 0, sources: [], unmodeled: [], unavailable: [...main, ...material].some(l => l.quantity > 0 && !cards.has(l.name)) };
   if (result.unavailable || samples < 1) return result;

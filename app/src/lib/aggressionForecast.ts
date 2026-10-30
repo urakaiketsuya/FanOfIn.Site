@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import { actualDrawCheckpoints, type Card } from "@gatcg/shared";
 import {
   ambiguousFixedChampionDamage,
   fixedChampionDamageRange,
@@ -64,7 +64,6 @@ export interface AggressionForecast {
   points: AggressionForecastPoint[];
 }
 
-const CHECKPOINTS = [7, 10, 15, 20] as const;
 const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
 
 function expected(distribution: Map<number, number>): number {
@@ -124,7 +123,7 @@ export function computeAggressionForecast(
   };
   const main = merge(mainLines);
   const material = merge(materialLines);
-  const deckSize = Math.max(60, main.reduce((sum, line) => sum + line.quantity, 0));
+  const deckSize = main.reduce((sum, line) => sum + line.quantity, 0);
   const minGroups: DamageGroup[] = [];
   const maxGroups: DamageGroup[] = [];
   const classDamageUpgrades = new Map<DamageGroup, { seen: number; damage: number }>();
@@ -318,7 +317,7 @@ export function computeAggressionForecast(
     minGroups.push(low);
     maxGroups.push(high);
   }
-  const points = CHECKPOINTS.map((seen): AggressionForecastPoint => {
+  const points = actualDrawCheckpoints(deckSize).map((seen): AggressionForecastPoint => {
     const turn = Math.max(1, seen - (playOrder === "first" ? 6 : 7));
     const context = {
       // Starting Lv 0 is placed before turn one; its materialize phase is skipped.

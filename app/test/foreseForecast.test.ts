@@ -28,8 +28,8 @@ test("eligible means non-advanced Resonator ally with reserve cost at most three
 });
 test("first-trigger joint probability matches an independent three-card closed form", () => {
  const result = computeForeseForecast([line("Forese, Fervid Cantor",1), line("Steady Verse",1), line("Fanclub Leader",1)],cards,2);
- assert.ok(Math.abs(result.accessChance - 1/choose(60,2)) < 1e-12);
- assert.ok(Math.abs(result.deploymentChance - 1/choose(60,2)*5/58) < 1e-12);
+ assert.ok(Math.abs(result.accessChance - 1/choose(3,2)) < 1e-12);
+ assert.ok(Math.abs(result.deploymentChance - 1/choose(3,2)*1) < 1e-12);
 });
 test("no source, no activation, no targets and exhausted decks cannot deploy", () => {
  for(const lines of [[], [line("Forese, Fervid Cantor",4)], [line("Forese, Fervid Cantor",4),line("Steady Verse",4)]]) assert.equal(computeForeseForecast(lines,cards,10).deploymentChance,0);

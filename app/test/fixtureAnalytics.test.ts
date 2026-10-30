@@ -132,6 +132,7 @@ test('combat and named disruption preserve class, selected name and link require
 });
 test('version comparison shows additions/removals and probability deltas without multiplying one-copy outcomes', () => {
   const before = deck('Burst Asunder'); const after = deck('Burst Asunder', 'Burst Asunder', 'Fractal of Waves');
+  before.main.push({name:'Filler',quantity:59}); after.main.push({name:'Filler',quantity:57});
   const delta = compareFixtureScenarios(before, after, catalog, state({ fractals: 2 }), state({ fractals: 2 }));
   const damage = delta.find(row => row.id === 'Burst Asunder:damage')!;
   assert.equal(damage.before?.value, 6); assert.equal(damage.after?.value, 6);
@@ -153,7 +154,9 @@ test('server rendering handles empty deck, missing catalog names and comparison 
 });
 
 test('version answer pool access accounts for added answers without including unrelated cards', () => {
-  const rows = compareFixtureScenarios(deck('Engulf'), deck('Engulf', 'Thunderclap', 'Giant Tortoise'), catalog, state(), state());
+  const before = deck('Engulf'), after = deck('Engulf', 'Thunderclap', 'Giant Tortoise');
+  before.main.push({name:'Filler',quantity:59}); after.main.push({name:'Filler',quantity:57});
+  const rows = compareFixtureScenarios(before, after, catalog, state(), state());
   const row = rows.find(row => row.id === 'answerAccess')!;
   assert.equal(row.before?.value, 1); assert.equal(row.after?.value, 2);
   assert.ok(row.after!.access! > row.before!.access!);

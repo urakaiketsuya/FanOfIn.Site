@@ -30,7 +30,7 @@ export function computeForeseForecast(lines: { name: string; quantity: number }[
     if (target) { eligible += quantity; targets.push({ name, quantity }); }
     if ((song && target) || (name === FORESE_NAME && (song || target))) overlap = true;
   }
-  const deckSize = Math.max(60, listed);
+  const deckSize = listed;
   const seen = Math.max(0, Math.min(deckSize, Math.floor(cardsSeen)));
   const other = deckSize - foreseCopies - songs - eligible;
   let accessChance = 0, deploymentChance = 0;

@@ -64,7 +64,7 @@ test('eligible boost access requires a drawn target and respects class/level gat
   const { computeCombatAccessForecast } = await import('@gatcg/shared');
   const main = lines({ 'Slimeshield': 4, 'Limitless Slime': 4 });
   const forecast = computeCombatAccessForecast(main, [], catalog, 20);
-  assert.ok(forecast.boostAccessChance > 0 && forecast.boostAccessChance < 1);
+  assert.ok(forecast.boostAccessChance === 1);
   assert.equal(computeCombatAccessForecast(lines({Slimeshield:4}), [], catalog, 20).boostAccessChance, 0);
   assert.equal(computeCombatAccessForecast(lines({'Limitless Slime':4}), [], catalog, 20).boostAccessChance, 0);
   assert.equal(computeCombatAccessForecast(main, [], catalog, 0).boostAccessChance, 0);

@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 94% complete: the audit, shared comparison engine,
+Release A is approximately 96% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -390,7 +390,7 @@ end-to-end report propagation. App/shared type checks and lint pass (existing wa
 A catalog check preserves printed draw totals for all 2,535 cards and recognizes 187
 cards with memory draws. No layout changed; browser checks were not repeated.
 Next: restrict unsupported triggers/activation costs, then finish browser release
-checks. Release A is approximately 94% complete: report integration, recovery, access
+checks. Release A is approximately 96% complete: report integration, recovery, access
 probabilities and fixed draw destinations are implemented; supported-effect scope
 and remaining release verification keep this estimate uncertain.
 
@@ -434,3 +434,22 @@ actual-size contract consistent, with an incomplete-list status. Next work is th
 denominator correction before further release checks. Release A stays approximately
 94% complete: scenario verification progressed, but this newly observed inconsistency
 prevents declaring the integrated report ready.
+
+
+Actual-library correction (2026-10-30): resolved the preceding 16-versus-60 release
+blocker. Automatic damage, combat, effect and card-scenario reports now use listed
+Main copies, as do their shared paired-source, matchup and Forese calculations.
+Draw checkpoints cap at library size and deduplicate. Existing timing/conditional
+fixtures that require 60 cards now supply explicit filler; no hidden production
+padding remains in these paths. Fifty-five focused tests pass, including empty,
+two-card, 16-card, 60-card and 80-card cases and an independent exact odds check.
+App/shared type checks and app lint passed (existing warnings).
+Mobile 390px and desktop 1280px verification of the same imported fixture shows
+16-card labels, 7/10/15/16 checkpoints and consistent 93.1% four-copy access at
+seven draws across the main report and deck stats, with no overflow and visible
+keyboard focus. Loading and no-comparable-list states were observed.
+Release A is approximately 96% complete based on implemented integration/model
+corrections and completed scenario/report browser checks. Next: remaining forced
+failure/retry, text-zoom and signed-in release checks, then production build and
+user-requested deployment. These checks remain unverified; specialized calculators'
+separate library assumptions are outside this automatic-report correction.

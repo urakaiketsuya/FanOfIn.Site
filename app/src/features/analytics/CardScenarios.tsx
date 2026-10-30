@@ -1,4 +1,4 @@
-import { REPORT_DRAW_CHECKPOINTS, calculateCardScenarios, cardReportCheckpoints, cardReportFixedConditions, scenarioConditions, FIXTURE_FLOATING, type AnalyticsDeck, type Card, type ScenarioGroup } from '@gatcg/shared';
+import { actualDrawCheckpoints, calculateCardScenarios, cardReportCheckpoints, cardReportFixedConditions, scenarioConditions, FIXTURE_FLOATING, type AnalyticsDeck, type Card, type ScenarioGroup } from '@gatcg/shared';
 import AssociatedCards from '../../components/AssociatedCards';
 import Panel from '../../components/ui/Panel';
 import { useCardScenario } from './useCardScenario';
@@ -7,14 +7,14 @@ const GROUPS: { key: ScenarioGroup; label: string }[] = [{ key: 'resources', lab
 export default function CardScenarios({ deck, cardsByName }: { deck: AnalyticsDeck; cardsByName: Map<string, Card> }) {
   const controller = useCardScenario(deck, cardsByName);
   const rows = calculateCardScenarios(deck, cardsByName, controller.state);
-  const checkpoints = REPORT_DRAW_CHECKPOINTS.map(seen => ({ seen, rows: calculateCardScenarios(deck, cardsByName, { ...controller.state, seen }) }));
+  const checkpoints = actualDrawCheckpoints(deck.main.reduce((sum, line) => sum + line.quantity, 0)).map(seen => ({ seen, rows: calculateCardScenarios(deck, cardsByName, { ...controller.state, seen }) }));
   const missing = [...deck.main, ...deck.material].some(line => !cardsByName.has(line.name));
   const outsideFloating = deck.main.filter(line => /\*\*Floating Memory\*\*/i.test(cardsByName.get(line.name)?.effect ?? '') && !Object.hasOwn(FIXTURE_FLOATING, line.name)).reduce((sum, line) => sum + line.quantity, 0);
   const consumers = deck.main.filter(line => ['Strategem of Myriad Ice', 'Calculated Foresight'].includes(line.name));
   if (!rows.length) return <Panel data-component="CardScenarios"><h3 className="text-sm font-semibold">Card effects report</h3><p role="status" className="mt-2 text-sm">{missing ? 'Card data incomplete · report unavailable' : 'No supported card findings in this deck.'}</p></Panel>;
   return <Panel data-component="CardScenarios">
     <h3 className="text-sm font-semibold">Card effects report</h3>
-    <p className="mt-1 text-xs text-ctp-subtext1">{controller.champion || 'No class bonus'} · conditional one-copy outcomes · {Math.max(60, deck.main.reduce((sum, line) => sum + line.quantity, 0))}-card library</p>
+    <p className="mt-1 text-xs text-ctp-subtext1">{controller.champion || 'No class bonus'} · conditional one-copy outcomes · {deck.main.reduce((sum, line) => sum + line.quantity, 0)}-card library</p>
     {consumers.length > 0 && <div className="mt-3 rounded-xl bg-ctp-mantle p-3"><h4 className="mb-2 text-sm font-semibold">Shared graveyard resource</h4><AssociatedCards lines={consumers} cardsByName={cardsByName} label="Floating Memory consumers" /><p className="mt-2 text-xs">Shared Floating Memory · 1 use per banished card</p></div>}
     {missing && <p role="status" className="mt-2 text-xs text-ctp-yellow">Card data incomplete</p>}
     {GROUPS.filter(group => rows.some(row => row.group === group.key)).map(group => <section key={group.key} className="mt-6">

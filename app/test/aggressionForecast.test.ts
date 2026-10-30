@@ -11,7 +11,7 @@ test("Full Bloom and Scepter of Awakening require four drawn phantasias before a
     ["Scepter of Awakening", card("Scepter of Awakening", "Target phantasia becomes an ally with base power and life equal to its reserve cost until end of turn.")],
   ]);
   const forecast = computeAggressionForecast(
-    [{ name: "Full Bloom", quantity: 1 }],
+    [{ name: "Full Bloom", quantity: 1 }, { name: "Non-damage filler", quantity: 59 }],
     cards,
     [{ name: "Scepter of Awakening", quantity: 1 }, { name: "Diao Chan, Enchantress", quantity: 1 }],
   );
@@ -48,9 +48,10 @@ test("Diao reference deck includes Maiden Flowerbuds and the strongest available
     { name: "Fractal of Snow", quantity: 3 },
     { name: "Fractal of Waves", quantity: 4 },
     { name: "Hydrating Fractal", quantity: 4 },
+    { name: "Non-damage filler", quantity: 38 },
   ], cards, [{ name: "Scepter of Awakening", quantity: 1 }, { name: "Diao Chan, Enchantress", quantity: 1 }]);
   const bloomOnly = computeAggressionForecast(
-    [{ name: "Full Bloom", quantity: 4 }],
+    [{ name: "Full Bloom", quantity: 4 }, { name: "Non-damage filler", quantity: 56 }],
     cards,
     [{ name: "Scepter of Awakening", quantity: 1 }, { name: "Diao Chan, Enchantress", quantity: 1 }],
   );
@@ -92,7 +93,7 @@ test("damage audit omits no-signal cards and classifies variable and combat card
 
 test("advanced-element damage waits until the turn-four checkpoint", () => {
   const advanced = card("Tera Bolt", "Deal 6 damage to target champion.", { types: ["ACTION"], elements: ["TERA"] });
-  const forecast = computeAggressionForecast([{ name: advanced.name, quantity: 4 }], new Map([[advanced.name, advanced]]));
+  const forecast = computeAggressionForecast([{ name: advanced.name, quantity: 4 }, { name: "Non-damage filler", quantity: 56 }], new Map([[advanced.name, advanced]]));
 
   assert.equal(forecast.points[0].expectedMax, 0);
   assert.ok(forecast.points[1].expectedMax > 0);

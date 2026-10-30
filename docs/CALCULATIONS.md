@@ -2326,7 +2326,7 @@ its Fast Activation class bonus does not gate the counter. Future entrants are n
 
 **Forese deployment.** `shared/src/foreseForecast.ts` separately models the first use of Forese,
 Fervid Cantor at 7/10/15/20 cards seen. Targets are non-advanced-element Resonator Allies with a
-printed reserve cost ≤3. Main only, with a minimum deck size of 60, is partitioned into disjoint
+printed reserve cost ≤3. Main only, using the actual listed deck size, is partitioned into disjoint
 Forese copies F, Melody/Harmony copies S, targets T and other cards O. For each possible drawn
 composition (f,s,t,o) totaling n, weight is C(F,f)C(S,s)C(T,t)C(O,o)/C(N,n).
 Access sums weights with f≥1 and s≥1. Deployment sums those same weights multiplied by
@@ -2346,7 +2346,7 @@ small closed-form first-trigger case, plus depletion, exhaustion and unsupported
 
 **Cards-seen attack access.** Deck pages and per-deck Compare forecasts use
 `shared/src/combatAccessForecast.ts` instead of leading with the all-copies combat ceiling.
-A fixed-seed 1,024-sample Fisher–Yates draw from the Main deck (minimum 60) estimates mean printed
+A fixed-seed 1,024-sample Fisher–Yates draw from the actual listed Main deck estimates mean printed
 ally power and mean power with supported boosts at the selected 7/10/15/20 cards seen. Material
 support is treated as available, and unique allies are capped at one on the modeled board.
 Each drawn supported action resolves once; only drawn Melody/Harmony cards trigger Fanclub
@@ -5121,7 +5121,7 @@ Account goals use a unique user/goal key. Commands insert or delete only specifi
 Deck analytics models one resolved copy independently of the other cards. Inputs describe
 one turn with equal-sized incoming damage events; activation legality, payment, sequencing,
 stacking, and survival are not inferred. Main-only copy counts use the existing access
-probability at 10 cards seen and a minimum 60-card library. Sideboard is excluded.
+probability at up to 10 cards seen from the actual listed Main library. Sideboard is excluded.
 
 - Veiling Breeze: per event `min(wind cards revealed from memory, incoming damage)`;
   total is that amount times the number of events. Main wind count is composition, not memory.
@@ -5305,7 +5305,7 @@ exactly 80% of outcomes. Partial coverage and sampled results remain visible.
 
 Fixture effect rows show all draw checkpoints and fixed, labeled conditional outcomes.
 They do not infer the frequency of battlefield, graveyard, or memory states from
-engine fixtures. Their existing minimum-60 library convention remains unchanged.
+engine fixtures. Access uses the actual listed Main library, without implicit filler.
 
 ## Build evolution
 
@@ -5960,9 +5960,9 @@ unavailable. Unreviewed text is not classified as a zero-strength effect.
 
 At 7/10/15/20 cards seen, access is exact hypergeometric P(X >= 1). Source-count
 ranges are inverse-CDF p10/p50/p90, computed with an exact without-replacement
-probability recurrence, not sampling. The library is padded to 60 for incomplete
-lists, consistent with scenario/combat reports; larger lists retain their actual
-size. These are physical copies drawn, not sources in play, resolved effects, turns,
+probability recurrence, not sampling. The library uses its actual listed size,
+including incomplete lists. Automatic report checkpoints are capped to the library
+and deduplicated; a 16-card list shows 7/10/15/16. These are physical copies drawn, not sources in play, resolved effects, turns,
 or additional draws generated. Each comparison uses its own library and shows
 percentage-point changes, including additions/removals and zero access.
 
@@ -5998,3 +5998,17 @@ level and target rules; self-only boosts need no second card, while targeted boo
 need their eligible target. It is access under the model's stated resolution
 assumptions, not a play probability. Comparison reports show both printed and
 supported-boost p10/p50/p90 at all four checkpoints and the associated source cards.
+
+
+## Actual library size in automatic reports (2026-10-30)
+
+Damage, combat, effect-access and card-scenario reports use the supplied Main copies,
+with no minimum-60 substitution or implicit blank cards. Shared paired-source,
+matchup-answer and Forese access calculations use the same denominator. Material
+and Sideboard never enlarge that random draw pool. Distinct automatic report
+checkpoints are min(size, 7/10/15/20), including a zero checkpoint for an empty pool.
+Existing incomplete-list status remains: these are current-list odds, not legality.
+Four copies in a 16-card Main list have 93.1% access at seven draws; four in 60
+retain 39.9%. Tests cover 0/2/16/60/80 sizes and exact paired-source access.
+Separate specialized calculator models (keyword, level-goal, combo-turn) retain
+their existing minimum-size assumptions; this change does not redefine those tools.

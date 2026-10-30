@@ -19,7 +19,7 @@ export function fixtureAccess(size: number, hits: number, seen: number): number 
 }
 /** Inclusion-exclusion handles a physical card that belongs to both pools once. */
 export function fixturePairAccess(main: AnalyticsLine[], payoff: AnalyticsLine[], support: AnalyticsLine[], seen: number): number {
-  const size = Math.max(60, copies(main));
+  const size = copies(main);
   const union = new Set([...payoff, ...support].map(line => line.name));
   return Math.max(0, fixtureAccess(size, copies(payoff), seen) + fixtureAccess(size, copies(support), seen)
     - fixtureAccess(size, copies(main.filter(line => union.has(line.name))), seen));
@@ -50,3 +50,8 @@ export function floatingPayment(available: number, cost: number) {
   return { paid, remainingCost: whole(cost) - paid, remainingCards: whole(available) - paid };
 }
 export function hasType(card: Card | undefined, type: string): boolean { return Boolean(card?.types?.includes(type)); }
+
+/** Distinct draw checkpoints bounded by the supplied library, including empty lists. */
+export function actualDrawCheckpoints(size: number): number[] {
+  return [...new Set([7, 10, 15, 20].map(seen => Math.min(whole(size), seen)))];
+}

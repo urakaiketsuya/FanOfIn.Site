@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { CONDITIONAL_COMBAT_RESULTS, computeCombatAccessForecast, REPORT_DRAW_CHECKPOINTS, type AnalyticsDeck, type Card } from '@gatcg/shared';
+import { CONDITIONAL_COMBAT_RESULTS, computeCombatAccessForecast, actualDrawCheckpoints, type AnalyticsDeck, type Card } from '@gatcg/shared';
 import AssociatedCards from '../../components/AssociatedCards';
 import Panel from '../../components/ui/Panel';
 
 export default function CombatAccessReport({ deck, cardsByName }: { deck: AnalyticsDeck; cardsByName: Map<string, Card> }) {
-  const points = useMemo(() => REPORT_DRAW_CHECKPOINTS.map(seen => computeCombatAccessForecast(deck.main, deck.material, cardsByName, seen)), [deck.main, deck.material, cardsByName]);
+  const points = useMemo(() => actualDrawCheckpoints(deck.main.reduce((sum, line) => sum + line.quantity, 0)).map(seen => computeCombatAccessForecast(deck.main, deck.material, cardsByName, seen)), [deck.main, deck.material, cardsByName]);
   const allies = new Set([...deck.main, ...deck.material].filter(line => cardsByName.get(line.name)?.types.includes('ALLY')).map(line => line.name));
   const boosts = new Set(points.flatMap(point => point.sources.filter(source => source.addedPower > 0).map(source => source.name)));
   const lines = [...deck.main, ...deck.material].filter(line => allies.has(line.name) || boosts.has(line.name));
