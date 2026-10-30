@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useOmnidexIndex } from "../tournaments/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { regionKeyForCountry, regionLabelForKey, type RegionGroupMode } from "../../lib/regions";
+import { regionKeyForEvent, regionLabelForKey, type RegionGroupMode } from "../../lib/regions";
 
 const MIN_DECK_COUNT = 20;
 
@@ -32,7 +32,7 @@ export function useRegionalDecks(mode: RegionGroupMode, enabled = true): Regiona
     if (!index || !deckPopularity) return { loading: true, options: [], regionByDeckId: new Map() };
 
     const keyByEventId = new Map<number, string>();
-    for (const e of index.events) keyByEventId.set(e.id, regionKeyForCountry(e.hostCountry, mode));
+    for (const e of index.events) keyByEventId.set(e.id, regionKeyForEvent(e, mode));
 
     const regionByDeckId = new Map<string, string>();
     const deckCountByKey = new Map<string, number>();

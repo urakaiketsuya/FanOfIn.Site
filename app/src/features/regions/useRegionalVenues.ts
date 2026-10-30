@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useOmnidexIndex, useVenueGeocodes } from "../tournaments/data";
-import { regionKeyForCountry, type RegionGroupMode } from "../../lib/regions";
+import { regionKeyForEvent, type RegionGroupMode } from "../../lib/regions";
 
 export interface RegionalVenueEvent {
   id: number;
@@ -46,7 +46,7 @@ export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string 
     const byHost = new Map<number, RegionalVenueRow>();
     for (const e of index.events) {
       if (e.hostId === 0) continue;
-      if (regionKeyForCountry(e.hostCountry, mode) !== selectedRegion) continue;
+      if (regionKeyForEvent(e, mode) !== selectedRegion) continue;
       let row = byHost.get(e.hostId);
       if (!row) {
         const coords = coordsByHost.get(e.hostId);

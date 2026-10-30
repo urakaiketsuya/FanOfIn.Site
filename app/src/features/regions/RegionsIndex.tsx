@@ -17,6 +17,7 @@ import type { RegionGroupMode } from "../../lib/regions";
 import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
 import Tabs from "../../components/ui/Tabs";
+import Button from "../../components/ui/Button";
 import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -81,8 +82,8 @@ function ChampionCards({ rows }: { rows: RegionalChampionRow[] }) {
 
 export default function RegionsIndex() {
   useDocumentTitle("Regions", "Grand Archive TCG meta stats broken out by region.");
-  const [group, setGroup] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
-  const [view, setView] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
+  const [group] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
+  const [view] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
   const [searchParams, setSearchParams] = useSearchParams();
   const [recalculating, startTransition] = useTransition();
@@ -107,12 +108,15 @@ export default function RegionsIndex() {
   }
 
   function selectSurface(next: Surface) {
-    if (next === "compare") {
-      setView("compare");
-      return;
-    }
-    setView("single");
-    setTab(next === "overview" ? "archetypes" : next === "insights" ? "cards" : "venues");
+    startTransition(() => setSearchParams((previous) => {
+      const params = new URLSearchParams(previous);
+      if (next === "compare") params.set("view", "compare");
+      else {
+        params.delete("view");
+        params.set("tab", next === "overview" ? "archetypes" : next === "insights" ? "cards" : "venues");
+      }
+      return params;
+    }, { replace: true }));
   }
 
   const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion, surface === "overview");
@@ -128,7 +132,7 @@ export default function RegionsIndex() {
       <PageHeader title="Regions" description="See what players bring, then compare local metas." />
 
       <FilterBar>
-        <label className="min-w-0 flex-1 text-xs text-ctp-subtext0">
+        <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto text-xs text-ctp-subtext0">
           Area
           <select value={selectedRegion ?? ""} onChange={(event) => selectRegion(event.target.value)} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text sm:max-w-xs">
             {options.map((option) => <option key={option.code} value={option.code}>{option.label} · {option.deckCount} decks</option>)}
@@ -136,15 +140,15 @@ export default function RegionsIndex() {
         </label>
         <div className="flex gap-2">
           {GROUP_MODES.map((mode) => (
-            <Chip key={mode} active={group === mode} onClick={() => {
-              setGroup(mode);
+            <Button key={mode} size="sm" variant={group === mode ? "primary" : "secondary"} aria-pressed={group === mode} onClick={() => {
               setRegionOverride(null);
               setSearchParams((previous) => {
                 const next = new URLSearchParams(previous);
+                next.set("group", mode);
                 next.delete("region");
                 return next;
               });
-            }}>{GROUP_LABELS[mode]}</Chip>
+            }}>{GROUP_LABELS[mode]}</Button>
           ))}
         </div>
       </FilterBar>

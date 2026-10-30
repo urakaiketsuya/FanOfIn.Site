@@ -1,3 +1,4 @@
+import { usRegionForEvent, type OmnidexEventSummary } from "@gatcg/shared";
 import { formatCountry } from "./format";
 
 export type RegionGroupMode = "country" | "region";
@@ -52,6 +53,11 @@ export const COUNTRY_TO_REGION: Record<string, string> = {
 
 export const REGION_LABELS: Record<string, string> = {
   "north-america": "North America",
+  "us-east": "US East",
+  "us-central": "US Central",
+  "us-west": "US West",
+  "us-online": "US Online",
+  "us-unknown": "US · Location unknown",
   "latin-america": "Latin America",
   "east-asia": "East Asia",
   "southeast-asia": "Southeast Asia",
@@ -73,4 +79,10 @@ export function regionLabelForKey(key: string, mode: RegionGroupMode): string {
   if (key === "unknown") return "Unknown";
   if (mode === "region") return REGION_LABELS[key] ?? key;
   return formatCountry(key) ?? key;
+}
+
+/** Event-aware grouping keeps US subdivisions identical across decks, venues, and reports. */
+export function regionKeyForEvent(event: Pick<OmnidexEventSummary, "hostCountry" | "hostAddress" | "setting">, mode: RegionGroupMode): string {
+  if (mode === "region" && event.hostCountry.toUpperCase() === "US") return usRegionForEvent(event);
+  return regionKeyForCountry(event.hostCountry, mode);
 }

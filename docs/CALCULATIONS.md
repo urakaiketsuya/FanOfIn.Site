@@ -6012,3 +6012,29 @@ Four copies in a 16-card Main list have 93.1% access at seven draws; four in 60
 retain 39.9%. Tests cover 0/2/16/60/80 sizes and exact paired-source access.
 Separate specialized calculator models (keyword, level-goal, combo-turn) retain
 their existing minimum-size assumptions; this change does not redefine those tools.
+
+
+### US regional subdivisions
+
+In Regions grouping, US events use their venue address state (`shared/src/usRegions.ts`).
+Countries grouping retains the whole US. West: AK, AZ, CA, CO, HI, ID, MT, NM, NV,
+OR, UT, WA, WY. Central: AR, IA, IL, IN, KS, LA, MI, MN, MO, ND, NE, OH, OK,
+SD, TX, WI. East: AL, CT, DC, DE, FL, GA, KY, MA, MD, ME, MS, NC, NH, NJ,
+NY, PA, RI, SC, TN, VA, VT, WV. These are competitive-area groupings, not literal
+coastlines. Canada and Puerto Rico retain North America grouping.
+
+Parse a state code before a terminal ZIP (including existing short malformed ZIPs),
+or a full state name / code in the final address segment, after removing the US
+country suffix. Do not infer a state from venue names, cities, or street names.
+Unresolved US addresses use US · Location unknown; online US events use US Online.
+Decks, venue lists, and regional competition reports share this event-aware resolver.
+The existing minimum of 20 observed decks for selectable regions remains unchanged.
+
+Validation: four resolver tests cover all 50 states plus DC, real postal formats,
+unknown addresses, online events, and unchanged country grouping. The current event
+index assigns 1,455 US events East, 1,322 Central, and 2,842 West; 30 remain unknown.
+Browser checks covered mobile/desktop views, 48px region controls, no mobile page
+overflow, East/West comparisons, keyboard tab selection, Central venues, and switching
+between country/region grouping. Loading and unavailable-field states were observed;
+forced network-error recovery and text zoom were not exercised. Comparison calculations
+now run only for the selected tab; surface/group URL changes are applied atomically.

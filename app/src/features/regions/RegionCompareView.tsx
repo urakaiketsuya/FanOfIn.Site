@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
@@ -163,6 +163,7 @@ function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; lab
 }
 
 export default function RegionCompareView({ options, regionByDeckId }: { options: RegionOption[]; regionByDeckId: Map<string, string> }) {
+  const [recalculating, startTransition] = useTransition();
   const [tab, setTab] = useState<ContentTab>("archetypes");
   const [regionAOverride, setRegionAOverride] = useState<string | null>(null);
   const [regionBOverride, setRegionBOverride] = useState<string | null>(null);
@@ -172,23 +173,23 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
   const labelA = options.find((o) => o.code === regionA)?.label ?? "Region A";
   const labelB = options.find((o) => o.code === regionB)?.label ?? "Region B";
 
-  const archA = useRegionalArchetypes(regionByDeckId, regionA);
-  const archB = useRegionalArchetypes(regionByDeckId, regionB);
+  const archA = useRegionalArchetypes(regionByDeckId, regionA, tab === "archetypes");
+  const archB = useRegionalArchetypes(regionByDeckId, regionB, tab === "archetypes");
   const archetypeRows = useMemo(() => joinArchetypes(archA.rows, archB.rows), [archA.rows, archB.rows]);
 
-  const champA = useRegionalChampions(regionByDeckId, regionA);
-  const champB = useRegionalChampions(regionByDeckId, regionB);
+  const champA = useRegionalChampions(regionByDeckId, regionA, tab === "champions");
+  const champB = useRegionalChampions(regionByDeckId, regionB, tab === "champions");
   const championRows = useMemo(() => joinChampions(champA.rows, champB.rows), [champA.rows, champB.rows]);
 
-  const decodedA = useRegionDecodedDecks(regionByDeckId, regionA);
-  const decodedB = useRegionDecodedDecks(regionByDeckId, regionB);
+  const decodedA = useRegionDecodedDecks(regionByDeckId, regionA, tab === "cards" || tab === "keywords");
+  const decodedB = useRegionDecodedDecks(regionByDeckId, regionB, tab === "cards" || tab === "keywords");
 
-  const cardsA = useRegionalCardComposition(decodedA);
-  const cardsB = useRegionalCardComposition(decodedB);
+  const cardsA = useRegionalCardComposition(decodedA, tab === "cards");
+  const cardsB = useRegionalCardComposition(decodedB, tab === "cards");
   const cardDiff = useMemo(() => diffRates(cardsA.allEntries, cardsB.allEntries), [cardsA.allEntries, cardsB.allEntries]);
 
-  const keywordsA = useRegionalKeywords(decodedA);
-  const keywordsB = useRegionalKeywords(decodedB);
+  const keywordsA = useRegionalKeywords(decodedA, tab === "keywords");
+  const keywordsB = useRegionalKeywords(decodedB, tab === "keywords");
   const keywordDiff = useMemo(() => diffRates(keywordsA.allEntries, keywordsB.allEntries), [keywordsA.allEntries, keywordsB.allEntries]);
 
   const loading = archA.loading || archB.loading || champA.loading || champB.loading || cardsA.loading || cardsB.loading || keywordsA.loading || keywordsB.loading;
@@ -214,12 +215,12 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
   return (
     <div data-component="RegionCompareView">
       <FilterBar className="mt-4 text-sm">
-        <div className="flex items-center gap-2">
-          <span className="text-ctp-subtext0">Region A:</span>
+        <label className="flex min-w-0 w-full sm:w-auto items-center gap-2">
+          <span className="shrink-0 text-ctp-subtext0">Region A:</span>
           <select
             value={regionA ?? ""}
-            onChange={(e) => setRegionAOverride(e.target.value)}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            onChange={(e) => startTransition(() => setRegionAOverride(e.target.value))}
+            className="min-w-0 flex-1 min-h-control rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >
             {options.map((o) => (
               <option key={o.code} value={o.code}>
@@ -227,13 +228,13 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               </option>
             ))}
           </select>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-ctp-subtext0">Region B:</span>
+        </label>
+        <label className="flex min-w-0 w-full sm:w-auto items-center gap-2">
+          <span className="shrink-0 text-ctp-subtext0">Region B:</span>
           <select
             value={regionB ?? ""}
-            onChange={(e) => setRegionBOverride(e.target.value)}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            onChange={(e) => startTransition(() => setRegionBOverride(e.target.value))}
+            className="min-w-0 flex-1 min-h-control rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >
             {options.map((o) => (
               <option key={o.code} value={o.code}>
@@ -241,11 +242,12 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               </option>
             ))}
           </select>
-        </div>
+        </label>
       </FilterBar>
 
-      <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={setTab} label="Regional comparison data" /></div>
+      <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={(next) => startTransition(() => setTab(next))} label="Regional comparison data" /></div>
 
+      {recalculating && <p role="status" className="mt-4 text-sm text-ctp-subtext1">Recalculating…</p>}
       {loading && <InlineState className="mt-4">Loading…</InlineState>}
 
       {!loading && (

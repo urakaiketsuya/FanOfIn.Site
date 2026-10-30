@@ -141,3 +141,5 @@ export * from "./deckBuildComparison.js";
 export * from "./conditionalCombatResults.js";
 export * from './effectAccessReport.js';
 export { metaFreshness, seasonalMetaFreshness } from './metaFreshness';
+
+export * from "./usRegions.js";
