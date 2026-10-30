@@ -6316,3 +6316,29 @@ Pipeline typecheck, focused lint, and 29 distinct targeted tests passed, coverin
 stage selection, retry/failure preservation, round deduplication, atomic writes,
 field history, budget evidence, regional strength, player comparisons, and report
 reconciliation. This is a pipeline/data change; no UI changes were made.
+
+### Pairing coverage audit classifications
+
+Run `cd pipeline && node --import tsx scripts/audit-pairing-coverage.ts` for a
+local audit, or add `--live` to probe each gap against Omnidex. The default output
+is `/tmp/pairing-coverage.json`; `--output=/absolute/path.json` selects another
+location. The report includes its check time and the published index cutoff.
+It covers completed physical individual events through that cutoff.
+
+Coverage counts distinguish fully saved declared rounds, unknown stage metadata,
+and gaps. Gap statuses are `unverified`, `available-at-source` (a correctly routed
+pairings response exists), and `unavailable-at-source` (the API explicitly returns
+`Round not found.`). Network failures, other API errors, and mismatched responses
+remain unverified. A missing stage is probed at round 1; this does not enumerate or
+claim recovery of its later rounds. Invalid/missing round totals remain explicit
+metadata gaps. Unknown-stage records are not counted as complete.
+
+These are reporting classifications, not match outcomes: source absence does not
+prove a round was never played. The audit does not change bundles, ratings, crawler
+retry eligibility, or declared totals. A later audit can observe newly available
+source data. No manual event exception list is used.
+
+Live validation on 2026-10-30: 21,680 eligible events; 21,581 with complete declared
+coverage; 93 with unknown stage metadata; six source-unavailable gaps; zero
+available-at-source or unverified gaps. Seven targeted coverage/recovery tests,
+pipeline typecheck, focused lint, and whitespace checks passed. No UI changed.
