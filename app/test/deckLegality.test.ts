@@ -6,6 +6,28 @@ import { validateDeck } from "../src/features/deckbuilder/validateDeck.ts";
 const card = { name: "Restricted card", types: ["ALLY"], subtypes: [], elements: ["NORM"], legality: { STANDARD: { limit: 0 }, PANTHEON: { limit: 1 } } } as unknown as Card;
 const catalog = new Map([[card.name, card]]);
 const empty = (): OmnidexDecklist => ({ main: [], material: [], sideboard: [] });
+test("Slime Sovereign permits advanced Slimes only from active Material without waiving other rules", () => {
+  const cards: Card[] = JSON.parse(readFileSync(new URL("../../data/card-catalog.json", import.meta.url), "utf8")).cards;
+  const byName = new Map(cards.map(card => [card.name, card]));
+  const sovereign = byName.get("Silvie, Slime Sovereign")!;
+  assert.match(sovereign.effect!, /Ignore the elemental requirements of advanced element Slime cards you activate/);
+  const line = (cardName: string, quantity = 1) => ({ cardName, quantity });
+  const advancedNonSlime = cards.find(card => card.elements.includes("ARCANE") && !card.subtypes.includes("SLIME") && !card.types.includes("CHAMPION"))!;
+  assert.ok(advancedNonSlime);
+  const material = [line(sovereign.name), line("Spirit of Fire")];
+  const check = (main: ReturnType<typeof line>[], active = material, sideboard: ReturnType<typeof line>[] = []) => validateDeck({main, material:active, sideboard}, byName, new Set(["FIRE", "TERA"]));
+  assert.ok(!check([line("Storm Slime")], material, [line("Twilight Slime")]).reasons.some(reason => reason.includes("element identity")));
+  for (const name of ["Baby Blue Slime", advancedNonSlime.name]) {
+    assert.ok(check([line(name)]).reasons.includes(`${name} is outside the Champion/Spirit element identity.`));
+  }
+  for (const active of [[], [line(sovereign.name, 0)]]) {
+    assert.ok(check([line("Storm Slime")], active, [line(sovereign.name)]).reasons.some(reason => reason.includes("Storm Slime is outside")));
+  }
+  assert.ok(check([line("Storm Slime", 5)]).reasons.some(reason => reason.includes("exceeds the 4-copy")));
+  const banned = new Map(byName);
+  banned.set("Storm Slime", {...byName.get("Storm Slime")!, legality:{STANDARD:{limit:0}}} as Card);
+  assert.ok(validateDeck({main:[line("Storm Slime")],material,sideboard:[]},banned,new Set(["TERA"])).reasons.some(reason=>reason.includes("banned in Standard")));
+});
 test("bans are format specific and include every active section, not maybeboard", () => {
   const deck = { main: [{ card: card.name, quantity: 2 }], material: [], sideboard: [{ card: card.name, quantity: 1 }], maybeboard: [{ card: card.name, quantity: 4 }] };
   const issues = deckCardIssues(deck, catalog, "STANDARD");

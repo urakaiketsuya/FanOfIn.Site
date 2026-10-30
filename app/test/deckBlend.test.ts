@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { shortHash, type Card, type DeckPopularityEntry } from '@gatcg/shared';
 import { canonicalSignature } from '../src/features/popular/popularityAggregation';
 import { blendDecks, blendWeight, type BlendSource } from '../src/features/compare/deckBlend';
@@ -12,6 +13,17 @@ const main=Array.from({length:15},(_,i)=>({card:`Card ${i}`,quantity:4}));
 const a:BlendSource={key:'1:1',label:'A',format:'STANDARD',decklist:{main,material:[{card:'Hero',quantity:1},{card:'Spirit',quantity:1}],sideboard:[]}};
 const b:BlendSource={...a,key:'1:2',label:'B',decklist:{...a.decklist,main:[...main.slice(0,14),{card:'Card 15',quantity:4}]}};
 const result=(key:string,wins:number,losses:number)=>({deckId:key,wins,losses,ties:0} as DeckPopularityEntry);
+test('real Slime Sovereign lineage retains advanced Slimes in weighted flexible slots',()=>{
+ const real:Card[]=JSON.parse(readFileSync(new URL('../../data/card-catalog.json',import.meta.url),'utf8')).cards;
+ const catalog=new Map([...cards,...real.map(c=>[c.name,c] as const)]);
+ const material=[{card:'Silvie, Slime Sovereign',quantity:1},{card:'Spirit of Fire',quantity:1}];
+ const base:BlendSource={...a,decklist:{main:[...main.slice(0,14),{card:'Storm Slime',quantity:4}],material,sideboard:[]}};
+ const donor:BlendSource={...b,decklist:{main:[...main.slice(0,14),{card:'Card 14',quantity:4}],material,sideboard:[]}};
+ const blend=blendDecks([base,donor],base.key,'balanced',catalog);
+ assert.equal(blend.decklist.main.find(line=>line.card==='Storm Slime')?.quantity,2);
+ assert.equal(blend.decklist.main.reduce((n,line)=>n+line.quantity,0),60);
+ assert.ok(!blend.reasons.some(reason=>reason.includes('element identity')));
+});
 test('winning adjusts for sample size and treats missing outcomes neutrally',()=>{
  assert.equal(blendWeight(a,[],'winning'),1);
  assert.ok(blendWeight(a,[result(a.key,10,0)],'winning')>blendWeight(a,[result(a.key,1,0)],'winning'));

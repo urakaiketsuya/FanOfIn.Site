@@ -1,4 +1,4 @@
-import { shrinkWinRate, type Card, type DeckFormat, type OmnidexDecklist, type DeckPopularityEntry } from '@gatcg/shared';
+import { isDeckElementCompatible, shrinkWinRate, type Card, type DeckFormat, type OmnidexDecklist, type DeckPopularityEntry } from '@gatcg/shared';
 import { shortHash } from '../../lib/hash';
 import { canonicalSignature } from '../popular/popularityAggregation';
 import { deckDestinationEligibility } from '../../lib/deckSectionEligibility';
@@ -45,6 +45,7 @@ export function blendDecks(sources: BlendSource[], baseKey: string, mode: BlendM
   const packageMembers = new Set(unique.flatMap(s => getDeckPackageCatalog(sections.flatMap(section=>s.decklist[section].map(l=>({cardName:l.card,quantity:l.quantity,section})))).flatMap(p=>p.memberCards)));
   const result: OmnidexDecklist = { main:[], material:base.decklist.material.map(l=>({card:l.card,quantity:l.quantity})), sideboard:[] };
   const elements = new Set(base.decklist.material.flatMap(l=>cards.get(l.card)?.types.includes('CHAMPION') ? cards.get(l.card)!.elements : []).filter(e=>e!=='NORM'));
+  const materialCards = base.decklist.material.filter(line=>line.quantity>0).map(line=>cards.get(line.card));
   const totalFor = (name: string) => sections.reduce((n,section)=>n+quantity(result,section,name),0);
   // Reserve both sections' core/package copies before allocating across the shared copy limit.
   for (const section of ['main','sideboard'] as const) {
@@ -64,7 +65,7 @@ export function blendDecks(sources: BlendSource[], baseKey: string, mode: BlendM
     const candidates = names.flatMap(name => {
       if (fixed.has(name)) return [];
       const card = cards.get(name)!;
-      if (!deckDestinationEligibility(card,section).allowed || (card.elements.length && !card.elements.some(e=>e==='NORM'||elements.has(e)))) return [];
+      if (!deckDestinationEligibility(card,section).allowed || !isDeckElementCompatible(card,elements,materialCards)) return [];
       const max = Math.min(card.legality?.[base.format]?.limit ?? (base.format==='PANTHEON'?1:4), Math.max(...unique.map(s=>quantity(s.decklist,section,name))));
       const expected = unique.reduce((n,s,j)=>n+quantity(s.decklist,section,name)*weights[j],0)/weightSum;
       // Marginal reduction in squared distance to the weighted copy target.

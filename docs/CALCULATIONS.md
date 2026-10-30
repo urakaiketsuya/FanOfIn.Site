@@ -5666,6 +5666,8 @@ are not carried in the comparison snapshot.
 
 ## Comparison deck blending
 
+Element filtering and final validation share `isDeckElementCompatible`. The verified Silvie, Slime Sovereign exception permits advanced-element Slimes when that Champion has a positive quantity in Material. It grants no access to basic-element Slimes or unrelated cards, and does not waive bans, copy limits, or section rules. This exception is explicit, not inferred from arbitrary card text.
+
 `app/src/features/compare/deckBlend.ts` computes a client-side report from selected lists. Balanced is the default. Compatibility requires the same known format and exact Material Champion/Spirit names; conflicts require an explicit base choice and incompatible lists are excluded. Exact duplicate lists count once. Main and Sideboard target the base's copy totals. Material stays intact, preserving the base lineage and equipment choices.
 
 Tournament evidence joins the existing main+material canonical hash (with deckId fallback), deduplicated by event/player. Popular weights use recorded entry count, minimum one. Winning weights use twice `shrinkWinRate(wins + ties / 2, wins + losses + ties, 10).adjustedWinRate`; missing results therefore have weight one. Balanced multiplies the popularity and winning weights. Selected variants of the same main+material identity split that identity's weight, so selecting extra Sideboards does not duplicate its tournament evidence. Missing index data falls back to equal source weights with visible status. These are selection weights, never a predicted win rate for the draft.

@@ -1,4 +1,4 @@
-import { deckCardIssues, type DeckCardIssue } from "@gatcg/shared";
+import { deckCardIssues, isDeckElementCompatible, type DeckCardIssue } from "@gatcg/shared";
 import type { Card, DeckFormat } from "@gatcg/shared";
 
 export type DeckValidationStatus = "Legal" | "Incomplete" | "Illegal";
@@ -46,6 +46,7 @@ export function validateDeck(
     return line.quantity > 0 && card?.types.includes("CHAMPION") && card.name.split(",")[0].trim() === "Guo Jia";
   });
   const effectiveIdentityElements = new Set(identityElements);
+  const activeMaterialCards = sections.material.filter(line => line.quantity > 0).map(line => cardsByName.get(line.cardName));
   for (const line of sections.material) {
     const identityCard = cardsByName.get(line.cardName);
     if (identityCard?.types.includes("CHAMPION")) {
@@ -68,8 +69,8 @@ export function validateDeck(
     const materialFatestone = hasGuoJia && card.types.includes("REGALIA") && card.subtypes.includes("FATESTONE") &&
       sections.material.some(line => line.cardName === name && line.quantity > 0) &&
       ![...sections.main, ...sections.sideboard].some(line => line.cardName === name && line.quantity > 0);
-    if (!materialFatestone && !card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
-        !card.elements.some((element) => element === "NORM" || effectiveIdentityElements.has(element))) {
+    if (!materialFatestone && !card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 &&
+        !isDeckElementCompatible(card, effectiveIdentityElements, activeMaterialCards)) {
       illegal.push(`${name} is outside the Champion/Spirit element identity.`);
     }
   }

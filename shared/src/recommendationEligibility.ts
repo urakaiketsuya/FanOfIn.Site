@@ -2,6 +2,16 @@ import type { Card } from "./api-types.js";
 
 const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
 
+/** Printed element access plus verified, card-specific Material-lineage exceptions.
+ * Slime Sovereign ignores advanced-element requirements only for Slimes; it does
+ * not grant the element to other cards or waive basic-element requirements.
+ */
+export function isDeckElementCompatible(card: Card, elements: ReadonlySet<string>, materialCards: Iterable<Card | undefined>): boolean {
+  if (card.elements.length === 0 || card.elements.some(element => element === "NORM" || elements.has(element))) return true;
+  return card.subtypes.includes("SLIME") && card.elements.every(element => !BASIC_ELEMENTS.has(element)) &&
+    Array.from(materialCards).some(identity => identity?.types.includes("CHAMPION") && identity.name === "Silvie, Slime Sovereign");
+}
+
 /** Printed elements from the actual Material lineage, never main-deck splashes or sideboard cards.
  * Unrecorded choices (e.g. Prismatic Spirit's chosen elements) do not grant speculative access.
  */

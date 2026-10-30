@@ -88,3 +88,10 @@ Public concrete archetypes remain the stable URLs and statistical records. Fract
 - Focused regression checks cover healthy schema, missing newer tables/views and columns, orphaned collection goals, and account version mismatches. The local D1 integration suite also executes the generated recovery queries.
 - Remaining sign-off: run the updated hosted recovery drill after pushing, verify the deployed candidate, exercise authenticated account journeys with disposable data at mobile and desktop sizes, and record a code rollback rehearsal. No production changes or authenticated writes were performed in this follow-up.
 - Follow-up validation passed: 20 focused tests; workflow result validation for clean, partial, orphaned and failed responses; all 120 generated recovery queries in local D1; existing D1 rollback/retry/conflict assertions; and the stricter production smoke check at `5fc0b6e44`. The full application gate was not repeated for this tooling-only change. The updated remote restore workflow still needs a hosted run.
+
+### Slime eligibility correction
+
+- Public comparison acceptance found that Silvie, Slime Sovereign blends incorrectly marked advanced-element Slimes illegal and excluded them from flexible-slot allocation. The committed card catalog confirms her explicit advanced-Slime exception.
+- Blending and validation now share that exception. It requires a positive Material quantity and does not grant basic-element or non-Slime access, bypass bans/copy limits, or treat a sideboard Champion as active.
+- Passed 25 targeted eligibility, legality, section and blending tests plus app/shared typechecks. Real-catalog regression cases cover flexible-slot allocation and exception boundaries.
+- The HolySamurai / Zabauu Silvie comparison now reports Standard Legal at 360px and 1440px without horizontal overflow. Keyboard weighting selection passed; browser error log was empty. Full release build and authenticated production acceptance were not repeated for this correction; authenticated checks remain deferred by the user.
