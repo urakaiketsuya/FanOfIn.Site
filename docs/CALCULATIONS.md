@@ -6233,3 +6233,21 @@ loading/recalculation, 48px controls, and no horizontal overflow. Network failur
 was not injected; all four sources use the shared visible error/retry component.
 Thirteen comparison/regional tests, app/shared/pipeline typechecks, and focused
 lint passed. The match dataset is fetched only when the comparison tab is mounted.
+
+### Competition report refresh after round-aware match deduplication
+
+Rebuilt all five `competition-*` artifacts from the published event bundles using
+`pipeline/scripts/build-competition-reports.ts` and refreshed their manifest entries.
+The reporting windows remain unchanged. Standard matches increased from 11,269 to
+39,886 in the previous window and from 9,900 to 31,877 in the latest window. Draft
+matches increased from 45 to 127 and from 442 to 1,347 respectively. Free-play remains
+zero. Reused table IDs now remain distinct across rounds; duplicate payloads within
+a round still count once.
+
+Verified that current-period player match totals equal twice the battle match
+count for every format, each player's build records sum to their record, and
+identified opponent records plus unidentified opponents equal their match count.
+Season, place, and team report values are unchanged (source iteration can reorder
+rows). All manifest timestamps match their artifacts. Four shared competition tests,
+one pipeline competition adapter test, and nine regional tests pass (14 total).
+This refresh changes published data only; no interface or rating formulas changed.
