@@ -37,7 +37,7 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
     <section className="rounded-xl border border-ctp-surface1 p-4">
       <h2 className="text-lg font-semibold">How many cards will I see?</h2>
       <p className="mt-1 text-xs text-ctp-subtext1">Starting influence: {report.opening}{report.openingInferred ? ' from spirit' : ' assumed'} · going {scenario.order}</p>
-      <CardsSeenReport points={report.checkpoints.filter((point) => point.order === scenario.order)} deckSize={report.size} hasExtraDraws={report.sources.length > 0} />
+      <CardsSeenReport points={report.checkpoints.filter((point) => point.order === scenario.order)} deckSize={report.size} hasExtraDraws={report.sources.some(source => source.modeled)} modeledSources={report.sources.filter(source => source.modeled).length} totalSources={report.sources.length} />
     </section>
     <section className="rounded-xl border border-ctp-surface1 p-4"><h2 className="text-lg font-semibold">How often will I find each card?</h2>
       <p className="mt-2 text-xs text-ctp-subtext1">Alphabetical order · {all ? report.cards.length : Math.min(4, report.cards.length)} of {report.cards.length} unique cards</p>
@@ -46,7 +46,7 @@ export default function AnalysisResults({ main, material, catalog, profile, onEx
       {report.cards.length > 4 && <Button className="mt-3" aria-expanded={all} onClick={() => setAll(!all)}>{all ? 'Show fewer cards' : `Show all ${report.cards.length} cards`}</Button>}
     </section>
     <section className="rounded-xl border border-ctp-surface1 p-4"><h2 className="text-lg font-semibold">What supports extra draws?</h2>{!report.sources.length && <p className="mt-3 text-sm text-ctp-subtext1">No extra draw effects found.</p>}
-      <div className="mt-3 flex flex-wrap gap-4">{report.sources.map((source) => <div key={`${source.section}${source.name}`}>{art(source.name)}<p className="mt-1 max-w-24 text-xs">{source.section} · {source.perCopy} printed draws per copy{source.conditional ? ' · conditional' : ''}</p></div>)}</div>
+      <div className="mt-3 flex flex-wrap gap-4">{report.sources.map((source) => <div key={`${source.section}${source.name}`}>{art(source.name)}<p className="mt-1 max-w-24 text-xs">{source.section} · {source.perCopy} printed draws per copy{source.modeled ? ' · modeled' : ' · not modeled'}</p></div>)}</div>
     </section>
     <section className="rounded-xl border border-ctp-surface1 p-4"><h2 className="text-lg font-semibold">Costs and champion progression</h2><dl className="mt-3 space-y-2">{report.costs.map(([cost, count]) => <div key={cost}><div className="flex justify-between gap-3 text-sm"><dt>{cost === 'Unknown or no fixed Reserve cost' ? 'No fixed / known cost' : `Reserve ${cost}`}</dt><dd>{count} cards</dd></div><div aria-hidden="true" className="mt-1 h-3 overflow-hidden rounded bg-ctp-surface0"><div className="h-full bg-ctp-mauve" style={{ width: `${report.size ? count / report.size * 100 : 0}%` }} /></div></div>)}</dl><ul className="mt-4 flex flex-wrap gap-4">{report.lineage.map((line) => <li key={line.name}>{art(line.name)}<p className="mt-2 text-xs text-ctp-subtext1">Level {catalog.get(line.name)?.level ?? '?'}</p></li>)}</ul>{!report.lineage.length && <p className="mt-3 text-sm">No champion lineage identified.</p>}</section>
 

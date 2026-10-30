@@ -18,7 +18,7 @@ test('starting draw is not counted again, conditional extra effects remain separ
  const report = computeDeckAnalysisReport(main,[{name:'Spirit',quantity:1}],catalog);
  assert.equal(report.opening,6); assert.equal(report.openingInferred,true);
  assert.equal(report.sources.length,1); assert.equal(report.sources[0].conditional,true);
- assert.ok(report.checkpoints[0].extra > 0);
+ assert.equal(report.checkpoints[0].extra, 0);
  assert.ok(report.cards[0].checkpoints[0].modeled >= report.cards[0].checkpoints[0].natural);
 });
 test('merge duplicate lines, bound tiny decks and handle empty input', () => {
@@ -86,4 +86,23 @@ test('report passes memory destinations to the shared simulation', () => {
  assert.equal(memory.checkpoints[0].hand,0);
  assert.equal(memory.checkpoints[0].memory,9);
  assert.equal(hand.checkpoints[0].adjustedSeen,60);
+});
+
+test('unsupported activated and triggered effects remain printed sources without modeled draws', () => {
+ const catalog = new Map([
+  ['Slime',{...card('Slime','On Death: Draw two cards.'),types:['ALLY']}],
+  ['Charger',{...card('Charger','(3), Banish CARDNAME: Draw a card into your memory.'),types:['ITEM'],cost_memory:0}],
+ ]);
+ const report = computeDeckAnalysisReport([{name:'Slime',quantity:60}],[{name:'Charger',quantity:1}],catalog);
+ assert.equal(report.sources.length,2);
+ assert.ok(report.sources.every(source=>!source.modeled));
+ for (const point of report.checkpoints) assert.equal(point.extra,0);
+});
+
+
+test('Material Actions are not treated as automatic draw activations', () => {
+ const catalog = new Map([['Main',card('Main')],['Material',{...card('Material','Draw two cards.'),cost_memory:0}]]);
+ const report = computeDeckAnalysisReport([{name:'Main',quantity:60}],[{name:'Material',quantity:1}],catalog);
+ assert.equal(report.sources[0].modeled,false);
+ assert.ok(report.checkpoints.every(point=>point.extra===0));
 });

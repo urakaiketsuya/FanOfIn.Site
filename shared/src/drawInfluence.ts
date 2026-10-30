@@ -7,6 +7,21 @@ export function fixedDrawSteps(effect: string): FixedDrawStep[] {
     .map(match => ({ count: words[match[1].toLowerCase()] ?? Number(match[1]), destination: match[2]?.toLowerCase() === 'memory' ? 'memory' : 'hand' }));
 }
 
+/** Conservative automatic model: only complete, fixed draw-only Action text.
+ * Other printed draw effects remain discoverable but require rules we do not simulate.
+ */
+export function supportedDrawEffect(card: { types: string[]; effect?: string | null } | undefined): { steps: FixedDrawStep[]; discard: number } | null {
+  if (!card?.types.includes('ACTION')) return null;
+  const text = (card.effect ?? '').trim();
+  const quantity = '(?:a|an|one|two|three|four|five|six|seven|\\d+)';
+  const draw = `draw ${quantity} cards?(?: into (?:your )?(?:hand|memory))?`;
+  const normalized = text.replace(/\s+/g, ' ');
+  const match = normalized.match(new RegExp(`^(${draw}(?:\\. ${draw})*)(?:,? then discard (${quantity}) cards?)?\\.?$`, 'i'));
+  if (!match) return null;
+  const words: Record<string, number> = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
+  return { steps: fixedDrawSteps(match[1]), discard: match[2] ? words[match[2].toLowerCase()] ?? Number(match[2]) : 0 };
+}
+
 /** A bounded draw-only policy, not a full game simulation. */
 export interface InfluenceDrawSource {
   name: string;

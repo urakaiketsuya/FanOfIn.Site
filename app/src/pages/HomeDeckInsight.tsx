@@ -19,7 +19,7 @@ export default function HomeDeckInsight() {
       <p className="mt-3 text-sm text-ctp-subtext1">Silvie · {report.size}-card Main Deck · going first</p>
       <div className="mt-6 grid gap-6 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div>
-          {report.unresolved.length ? <p role="status" className="text-sm text-ctp-subtext1">Draw forecast awaiting card data.</p> : <CardsSeenReport points={report.checkpoints.filter((point) => point.order === "first")} deckSize={report.size} hasExtraDraws={report.sources.length > 0} />}
+          {report.unresolved.length ? <p role="status" className="text-sm text-ctp-subtext1">Draw forecast awaiting card data.</p> : <CardsSeenReport points={report.checkpoints.filter((point) => point.order === "first")} deckSize={report.size} hasExtraDraws={report.sources.some(source => source.modeled)} modeledSources={report.sources.filter(source => source.modeled).length} totalSources={report.sources.length} />}
           <Link to="/decks/xenbr4?tab=performance" className="mt-5 inline-flex min-h-12 items-center rounded-lg border border-ctp-blue/60 px-4 py-2 text-sm font-semibold text-ctp-blue hover:bg-forest-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Open the full deck analysis →</Link>
         </div>
         <div>

@@ -3569,13 +3569,18 @@ an unspecified destination defaults to hand. Cards drawn into memory cannot fund
 payments or be played from hand until recollection. Memory returns to hand next turn. Influence is hand + memory at the end of the modeled
 main phase, distinct from cumulative cards seen. Non-engine cards pay costs first; each engine
 copy resolves at most once, including newly drawn engines. Unknown Reserve costs are not free.
-Material draw sources may materialize once per turn from turn 2, paying their printed Memory
-cost from actual memory before recollection, with printed level bounded by turn − 1. This is a
-resource estimate, not proof of lineage or activation permission. No other materializations or
-ordinary plays are assumed. Effects are optimistic about triggers, elements, class/level access,
-and additional ability costs; variable effects, searches, replacement effects and discards other
-than the explicit fixed “then discard” clause are unsupported. Results are sample means, not
-exact probabilities. Seen means are rounded and capped by the actual deck for display only;
+The automatic report admits only Main-deck Actions whose complete text consists of fixed
+hand/memory draw clauses, optionally followed by one fixed “then discard” clause.
+Conditional effects, class/level bonuses, other actions, variable quantities, delayed
+triggers and activated abilities are excluded as a whole. Material sources are excluded
+until their activation and lineage rules are supported. The lower-level simulation still
+supports explicit material draw sources for tested callers, but the automatic report does
+not supply them. Printed sources remain visible with modeled/not-modeled status; the
+forecast reports the number of modeled distinct sources against all detected sources.
+This conservative subset is not a full forecast of the deck's draw potential or proof of
+element/class playability. With the current catalog it includes Creative Tinder and
+Pyretic Prognosis. Natural access remains exact; modeled gains are sample estimates.
+Seen means are rounded and capped by the actual deck for display only;
 influence and its hand/memory components are displayed to one decimal. Natural access odds
 remain exact. Per-card modeled access no longer applies a hypergeometric formula to the
 rounded mean number seen. For each shuffled trial and checkpoint, compare the names in

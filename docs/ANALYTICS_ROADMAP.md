@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 93% complete: the audit, shared comparison engine,
+Release A is approximately 94% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -390,6 +390,25 @@ end-to-end report propagation. App/shared type checks and lint pass (existing wa
 A catalog check preserves printed draw totals for all 2,535 cards and recognizes 187
 cards with memory draws. No layout changed; browser checks were not repeated.
 Next: restrict unsupported triggers/activation costs, then finish browser release
-checks. Release A is approximately 93% complete: report integration, recovery, access
+checks. Release A is approximately 94% complete: report integration, recovery, access
 probabilities and fixed draw destinations are implemented; supported-effect scope
 and remaining release verification keep this estimate uncertain.
+
+
+Supported-effect gate (2026-10-30): the automatic report now accepts only complete
+fixed draw-only Main Action text, optionally followed by a fixed discard. It excludes
+conditional/activated effects, additional instructions and all Material activations.
+The current catalog admits Creative Tinder and Pyretic Prognosis. Printed sources
+remain visible with modeled/not-modeled labels; forecasts show modeled/total source
+counts and hide the extra-draw legend when none qualify. This is a conservative
+supported subset, not validation of all draw mechanics or a full deck forecast.
+Twenty-three focused tests cover the gate, resource/access regressions and Material
+exclusion. App/shared type checks and lint passed (existing warnings).
+Homepage loading and zero-supported coverage were checked at 390px and
+1280px with no horizontal overflow: the Silvie example shows 0/11 supported sources
+and 9/11 natural cards by turns 3/5. Full analysis source labels, error/retry, text
+zoom, and signed-in flows were not browser-verified in this increment.
+Release A is approximately 94% complete based on completed report/discovery integration,
+recovery tests and the bounded model corrections. Next: verify the complete analysis
+flow and remaining browser release checks. Broader effect support is a separate
+expansion; release verification remains the blocker, and the percentage is estimated.

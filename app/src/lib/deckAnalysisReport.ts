@@ -1,4 +1,4 @@
-import { estimateDrawInfluence, fixedDrawSteps, type Card } from '@gatcg/shared';
+import { estimateDrawInfluence, supportedDrawEffect, type Card } from '@gatcg/shared';
 import { probabilityAtLeast } from '../features/deckbuilder/synergyReadiness';
 import { drawEngineSources } from '../features/deckbuilder/drawEffects';
 import { inferStartingHandSize, naturalCardsSeenByTurn } from './turnToPlay';
@@ -16,17 +16,16 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
   const startingCard = lineage.find((line) => catalog.get(line.name)?.level === 0);
   const openingInferred = !!startingCard && /\bdraw\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+cards?\b/i.test(catalog.get(startingCard.name)?.effect ?? '');
   // Starting Spirit draws are already included in the opening hand, not bonus draws.
-  const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog);
-  const drawSource = (line: CalculatorLine) => {
+  const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog).map(source => ({ ...source, modeled: source.section === 'main' && supportedDrawEffect(catalog.get(source.name)) !== null }));
+  const drawSource = (line: CalculatorLine, section: 'main' | 'material') => {
     const card = catalog.get(line.name);
-    const source = sources.find((source) => source.name === line.name);
-    const words: Record<string, number> = { a: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
-    const discard = card?.effect?.match(/\bthen discard (a|one|two|three|four|five|six|seven|\d+) cards?\b/i)?.[1].toLowerCase();
-    return { ...line, draws: source?.perCopy ?? 0, drawSteps: fixedDrawSteps(card?.effect ?? ''), reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: discard ? words[discard] ?? Number(discard) : 0 };
+    const supported = section === 'main' ? supportedDrawEffect(card) : null;
+    const steps = supported?.steps ?? [];
+    return { ...line, draws: steps.reduce((total, step) => total + step.count, 0), drawSteps: steps, reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: supported?.discard ?? 0 };
   };
   const estimates = {
-    first: estimateDrawInfluence(lines.map(drawSource), material.filter((line) => catalog.get(line.name)?.level !== 0).map(drawSource), opening, 'first'),
-    second: estimateDrawInfluence(lines.map(drawSource), material.filter((line) => catalog.get(line.name)?.level !== 0).map(drawSource), opening, 'second'),
+    first: estimateDrawInfluence(lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'first'),
+    second: estimateDrawInfluence(lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'second'),
   };
   const checkpoints = ([3, 5] as const).flatMap((turn) => (['first', 'second'] as const).map((order) => {
     const seen = Math.min(size, naturalCardsSeenByTurn(turn, opening, order));
