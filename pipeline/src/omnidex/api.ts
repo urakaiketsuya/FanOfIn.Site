@@ -19,8 +19,8 @@ export const omnidexApi = {
 
   getStandings: (id: number) => fetchJsonMaybe<OmnidexStandingsResponse>(`${BASE_URL}/omnidex/events/${id}/standings`),
 
-  getPairings: (id: number, round: number) =>
-    fetchJsonMaybe<OmnidexPairingsResponse>(`${BASE_URL}/omnidex/events/${id}/pairings?round=${round}`),
+  getPairings: (id: number, round: number, stage?: number) =>
+    fetchJsonMaybe<OmnidexPairingsResponse>(`${BASE_URL}/omnidex/events/${id}/pairings?round=${round}${stage === undefined ? "" : `&stage=${stage}`}`),
 
   getJudges: (id: number) => fetchJsonMaybe<OmnidexJudge[]>(`${BASE_URL}/omnidex/events/${id}/judges`),
 

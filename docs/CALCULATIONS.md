@@ -6251,3 +6251,68 @@ Season, place, and team report values are unchanged (source iteration can reorde
 rows). All manifest timestamps match their artifacts. Four shared competition tests,
 one pipeline competition adapter test, and nine regional tests pass (14 total).
 This refresh changes published data only; no interface or rating formulas changed.
+
+### Stage-specific pairing recovery
+
+Omnidex's pairing endpoint must include both `stage` and `round`. Without `stage`,
+completed multi-stage events returned their elimination stage even when the crawler
+was requesting the Swiss round count. Verified against Ascent Los Angeles (48556):
+`pairings?stage=1&round=1` returns 195 Swiss pairings and reports 13 rounds, while
+stored event metadata declared 12. The response's round total is authoritative for
+fetching; the event's Swiss-round setting is not a reliable loop bound.
+
+The crawler now enumerates completed stages, validates response stage/round IDs,
+and fetches each stage's reported rounds. A completed event with missing stage
+coverage is eligible for repair instead of being permanently skipped. Fast mode
+still samples just the first round per stage and remains detectably incomplete.
+Unknown-stage/free-play records are not assigned invented rounds. Pairing fetches
+finish in memory before replacing a bundle; failed or mismatched responses leave
+the existing bundle untouched. Cache writes use the existing atomic JSON writer.
+
+`pipeline/scripts/recover-stage-pairings.ts` repairs the audited completed physical
+individual events, prioritizing US majors, then other majors and larger fields.
+Six workers share the configured global request spacing (150 ms by default).
+Previously saved rounds are retained, duplicates are keyed by stage and round,
+and complete repairs are skipped on retry. The cache is written before the published
+mirror; a publication failure leaves the old published event eligible for retry.
+Each event is atomically replaced only after all its declared rounds are available.
+Unavailable source rounds are logged, not filled with synthetic results.
+
+`pipeline/scripts/rebuild-match-analysis.ts` rebuilds direct match consumers and
+rating-dependent achievements using the existing deck catalog/grouping artifacts:
+Elo/history, rivals, regional strength, player comparison, champion battle charts,
+field history, matchup card impact, budget decks, achievements, and competition
+reports. Manifest entries are updated after these outputs finish. Field history
+now also uses `competitionMatches` so repeated table IDs across rounds/stages do
+not discard recovered matches. Deck taxonomy and similarity are not regenerated.
+
+Recovery result (2026-10-30): 1,145 event bundles gained 5,245 rounds and 80,378
+additional matches accepted by `competitionMatches`. All 1,131 missing Swiss stages
+were recovered, including the 13 US majors identified in the audit. Validation
+compared every repaired bundle with its previous Git version: existing pairing
+payloads and all non-pairing metadata are unchanged, stage/round keys are unique,
+all reported rounds are present, and cache/published mirrors are byte-identical.
+
+Six declared stages/rounds remain unavailable (`Round not found.`); these bundles
+were left unchanged: 31758 (Swiss round 7), 45350 (Swiss round 3), and elimination
+round 1 for 61490, 64533, 65240, and 65700. A declared total can exceed the rounds
+actually played: event 31758's standings stop at round 6 despite a total of 7.
+Do not infer unplayed outcomes or treat these metadata inconsistencies as verified
+lost matches. The other 93 zero-match records are free-play events without stage
+metadata; no Swiss-stage recovery was attempted for them.
+
+The stricter result reader excludes ambiguous outcomes; the raw source gained
+80,451 completed two-side pairings. Existing Elo replay semantics remain unchanged:
+Omnidex-provided deltas are replayed, yielding 160,902 additional player appearances
+and 14,301 rated players (previously 13,977), with no non-finite ratings. This is not
+a new rating formula. Match-result reports use their existing validated outcomes.
+
+Final rebuild checks passed: all 14,301 finite ratings reconcile with their final
+history checkpoints; manifest timestamps match all 15 rebuilt analysis artifacts;
+competition player/build/opponent totals reconcile for every format. Latest-period
+Standard matches are now 35,022 (31,877 immediately before recovery); previous-period
+matches are 52,080. Season/place/team report values and period bounds are unchanged.
+Pipeline typecheck, focused lint, and 29 distinct targeted tests passed, covering
+stage selection, retry/failure preservation, round deduplication, atomic writes,
+field history, budget evidence, regional strength, player comparisons, and report
+reconciliation. This is a pipeline/data change; no UI changes were made.

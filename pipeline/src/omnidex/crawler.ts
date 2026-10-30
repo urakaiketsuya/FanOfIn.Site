@@ -1,3 +1,4 @@
+import { fetchStagePairings, missingStagePairings } from "./stagePairings.js";
 import type { OmnidexEvent } from "@gatcg/shared";
 import { sleep } from "../lib/http.js";
 import { config } from "../config.js";
@@ -18,24 +19,29 @@ export type CrawlMode =
   | { kind: "incremental" }
   | { kind: "range"; startId: number; endId: number };
 
-/** Once an event is complete or canceled its data never changes again — safe to never re-fetch. */
+/** Completed metadata is stable, but cached pairing coverage may still need repair. */
 const TERMINAL_STATUSES = new Set(["complete", "canceled"]);
 
 function isDeepFetchWorthy(event: OmnidexEvent): boolean {
   return event.status === "complete" && event.players.length >= config.minEventPlayers;
 }
 
-async function deepFetch(id: number, event: OmnidexEvent): Promise<OmnidexEventBundle> {
+async function deepFetch(id: number, event: OmnidexEvent, saved?: OmnidexEventBundle | null): Promise<OmnidexEventBundle> {
   const players = await omnidexApi.getPlayers(id);
   await sleep(config.crawlRequestDelayMs);
   const standings = await omnidexApi.getStandings(id);
   await sleep(config.crawlRequestDelayMs);
 
-  const pairingsByRound = [];
-  const rounds = config.fastMode ? Math.min(event.swissRounds ?? 0, 1) : (event.swissRounds ?? 0);
-  for (let round = 1; round <= rounds; round++) {
-    pairingsByRound.push(await omnidexApi.getPairings(id, round));
+  let pairingsByRound = saved?.pairingsByRound ?? [];
+  try {
+    pairingsByRound = await fetchStagePairings(event, pairingsByRound, async (id, round, stage) => {
+    const result = await omnidexApi.getPairings(id, round, stage);
     await sleep(config.crawlRequestDelayMs);
+    return result;
+    }, config.fastMode);
+  } catch (error) {
+    console.warn(`omnidex: pairing fetch incomplete for ${id}; retaining saved pairings: ${String(error)}`);
+    if (!pairingsByRound.length) pairingsByRound = [{ error: String(error) }];
   }
 
   const judges = await omnidexApi.getJudges(id);
@@ -116,6 +122,19 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
   for (let id = startId; id <= endId; id++) {
     const cached = await readCachedBundle(id);
     if (cached && TERMINAL_STATUSES.has(cached.event.status)) {
+      if (cached.event.status === 'complete' && !config.fastMode && missingStagePairings(cached.event, cached.pairingsByRound)) {
+        try {
+        const pairingsByRound = await fetchStagePairings(cached.event, cached.pairingsByRound, async (event, round, stage) => {
+          const response = await omnidexApi.getPairings(event, round, stage);
+          await sleep(config.crawlRequestDelayMs);
+          return response;
+        });
+        await writeCachedBundle({...cached,pairingsByRound,fetchedAt:new Date().toISOString()});
+        deepFetched++;
+        } catch (error) {
+          console.warn(`omnidex: unable to repair pairings for ${id}; saved bundle unchanged: ${String(error)}`);
+        }
+      }
       scanned++;
       maxIdSeen = Math.max(maxIdSeen, id);
       consecutive404s = 0;
@@ -164,7 +183,7 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
 
     if (!isDeepFetchWorthy(event)) continue;
 
-    const bundle = await deepFetch(id, event);
+    const bundle = await deepFetch(id, event, cached);
     await writeCachedBundle(bundle);
     deepFetched++;
 

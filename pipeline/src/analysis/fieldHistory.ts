@@ -1,4 +1,4 @@
-import { auditFieldWindows, fieldWindowStart, backtestFieldHistory, type BattleChartEntry, type FieldEvent, type FieldHistoryData } from '@gatcg/shared';
+import { competitionMatches, auditFieldWindows, fieldWindowStart, backtestFieldHistory, type BattleChartEntry, type FieldEvent, type FieldHistoryData } from '@gatcg/shared';
 import type { OmnidexEventBundle } from '../omnidex/cache.js';
 import type { AnalysisContext } from './context.js';
 
@@ -20,29 +20,18 @@ export function computeFieldHistory(bundles: OmnidexEventBundle[], ctx: Analysis
     for (const sig of signatures.values()) if (sig.championName) counts.set(sig.championName, (counts.get(sig.championName) ?? 0) + 1);
     if (!counts.size) continue;
     const rows = new Map<string, BattleChartEntry>();
-    const seenPairings = new Set<number>();
-    for (const round of bundle.pairingsByRound) {
-      if ('error' in round) continue;
-      for (const pair of round.pairings) {
-        if (pair.status !== 'complete' || pair.pairing.length !== 2 || seenPairings.has(pair.id)) continue;
-        seenPairings.add(pair.id);
-        const [left, right] = pair.pairing;
-        const leftName = signatures.get(left.id)?.championName, rightName = signatures.get(right.id)?.championName;
-        if (!leftName || !rightName || left.id === right.id) continue;
-        const draw = left.status === 'tied' && right.status === 'tied';
-        const leftWin = left.status === 'winner' && right.status === 'loser';
-        const rightWin = right.status === 'winner' && left.status === 'loser';
-        if (!draw && !leftWin && !rightWin) continue;
-        const forward = leftName <= rightName;
-        const a = forward ? leftName : rightName, b = forward ? rightName : leftName;
-        const key = JSON.stringify([a, b]);
-        const row = rows.get(key) ?? { a, b, aWins: 0, bWins: 0, ties: 0, games: 0 };
-        row.games++;
-        if (draw) row.ties++;
-        else if (forward ? leftWin : rightWin) row.aWins++;
-        else row.bWins++;
-        rows.set(key, row);
-      }
+    for (const match of competitionMatches(bundle.pairingsByRound)) {
+      const leftName = signatures.get(match.a)?.championName, rightName = signatures.get(match.b)?.championName;
+      if (!leftName || !rightName) continue;
+      const forward = leftName <= rightName;
+      const a = forward ? leftName : rightName, b = forward ? rightName : leftName;
+      const key = JSON.stringify([a, b]);
+      const row = rows.get(key) ?? { a, b, aWins: 0, bWins: 0, ties: 0, games: 0 };
+      row.games++;
+      if (match.winner === null) row.ties++;
+      else if (match.winner === (forward ? match.a : match.b)) row.aWins++;
+      else row.bWins++;
+      rows.set(key, row);
     }
     const completedDate = day(bundle.event.dateCompleted);
     events.push({ id: bundle.id, date, completedDate: completedDate && completedDate >= date ? completedDate : null,

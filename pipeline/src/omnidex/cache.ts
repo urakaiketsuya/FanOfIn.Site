@@ -1,3 +1,4 @@
+import { writeJsonAtomic } from "../lib/atomicWrite.js";
 import { readFile, writeFile, mkdir, readdir, copyFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -103,7 +104,7 @@ export async function readCachedBundle(id: number): Promise<OmnidexEventBundle |
 
 export async function writeCachedBundle(bundle: OmnidexEventBundle): Promise<void> {
   await ensureDirs();
-  await writeFile(bundlePath(bundle.id), JSON.stringify(bundle), "utf-8");
+  await writeJsonAtomic(bundlePath(bundle.id), bundle, 0);
 }
 
 /** Every cached bundle regardless of status — callers filter for `complete` as needed. */

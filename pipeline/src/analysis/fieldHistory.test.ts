@@ -28,3 +28,10 @@ test('incomplete events and invalid dates are excluded; invalid completion canno
   assert.equal(computeFieldHistory([{ ...bundle, event: { ...bundle.event, date: 'invalid' } }], ctx).events.length, 0);
   assert.equal(computeFieldHistory([{ ...bundle, event: { ...bundle.event, dateCompleted: '2025-01-01' } }], ctx).events[0].completedDate, null);
 });
+
+test('reused table IDs count across rounds and stages; repeated round payloads count once', () => {
+  const first={stage:{id:1},round:{id:1},pairings:[pair(1,'winner','loser')]};
+  const rounds=[first,{stage:{id:1},round:{id:2},pairings:[pair(1,'loser','winner')]},{stage:{id:2},round:{id:1},pairings:[pair(1,'tied','tied')]},first];
+  const result=computeFieldHistory([{...bundle,pairingsByRound:rounds as unknown as OmnidexEventBundle['pairingsByRound']}],ctx);
+  assert.deepEqual(result.events[0].battleChart,[{a:'A',b:'B',aWins:1,bWins:1,ties:1,games:3}]);
+});
