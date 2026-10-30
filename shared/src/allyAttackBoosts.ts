@@ -21,10 +21,14 @@ interface BoostRule {
   floatingMemory?: boolean;
   melodyTrigger?: boolean;
   selfOnce?: boolean;
+  selfOnly?: boolean;
+  firstAttackLevel?: number;
 }
 // Explicit templates checked against data/card-catalog.json. Cost discounts do not
 // impose their Class Bonus on a separate, unconditional power clause.
 const RULES: Record<string, BoostRule> = {
+  "Limitless Slime": { power: 1, selfOnly: true, classBonus: true, level: 2, firstAttackLevel: 3 },
+  "Slimeshield": { power: 1, subtypes: ["SLIME"], targets: 1 },
   "Fanclub Leader": { power: 1, subtypes: ["RESONATOR"], melodyTrigger: true },
   "Performance Enthusiast": { power: 1, selfOnce: true },
   "Breath's Coloratura": { power: 1, subtypes: ["HUMAN"] },
@@ -97,11 +101,11 @@ export function applyAllyAttackBoosts(
       continue;
     }
     let addedPower = 0;
-    const power = rule.power * (rule.melodyTrigger ? melodyActivations : rule.selfOnce ? Math.min(1, melodyActivations) : 1);
+    const power = (rule.power + (rule.firstAttackLevel && (champion?.level ?? 0) >= rule.firstAttackLevel ? 1 : 0)) * (rule.melodyTrigger ? melodyActivations : rule.selfOnce ? Math.min(1, melodyActivations) : 1);
     const sourceIndices = boosted.flatMap((a, i) => a.name === name ? [i] : []);
     for (let copy = 0; copy < copies; copy++) {
       const targets = boosted.map((a, i) => ({ a, i, card: cards.get(a.name) })).filter(({ i, card: target }) => {
-        if (rule.selfOnce && i !== sourceIndices[copy]) return false;
+        if ((rule.selfOnce || rule.selfOnly) && i !== sourceIndices[copy]) return false;
         if (!target || (rule.other && i === sourceIndices[copy])) return false;
         if (rule.subtypes && !rule.subtypes.some(s => target.subtypes.includes(s))) return false;
         if (rule.allSubtypes && !rule.allSubtypes.every(s => target.subtypes.includes(s))) return false;
@@ -115,7 +119,7 @@ export function applyAllyAttackBoosts(
           : sourceMissedTrigger && rule.selfOnce && melodyActivations <= 1 ? 0 : power;
         a.power += applied; addedPower += applied; }
     }
-    evidence.push({ name, copies, addedPower, status: addedPower ? "modeled" : "inactive", detail: addedPower ? (rule.melodyTrigger ? `${melodyActivations} Melody/Harmony activations × eligible Resonators` : rule.selfOnce ? "One buff counter per ally" : rule.targets ? `Up to ${rule.targets} eligible ${rule.targets === 1 ? "ally" : "allies"} per copy` : "Each eligible ally") : (rule.melodyTrigger || rule.selfOnce) && !melodyActivations ? "No Melody/Harmony activation in this list" : "No eligible attacking allies" });
+    evidence.push({ name, copies, addedPower, status: addedPower ? "modeled" : "inactive", detail: addedPower ? (rule.firstAttackLevel ? "Class bonus at level 2; one attack counter at level 3+" : rule.melodyTrigger ? `${melodyActivations} Melody/Harmony activations × eligible Resonators` : rule.selfOnce ? "One buff counter per ally" : rule.targets ? `Up to ${rule.targets} eligible ${rule.targets === 1 ? "ally" : "allies"} per copy` : "Each eligible ally") : (rule.melodyTrigger || rule.selfOnce) && !melodyActivations ? "No Melody/Harmony activation in this list" : "No eligible attacking allies" });
   }
   return { attackers: boosted, evidence };
 }

@@ -83,3 +83,19 @@ test("a Forese-deployed trigger source misses the activation that put it in play
  const enthusiast = [ally("Performance Enthusiast")];
  assert.equal(applyAllyAttackBoosts(enthusiast,[line("Performance Enthusiast"),line("Steady Verse")],cards,0).attackers[0].power,1);
 });
+
+test('Limitless Slime gains its own class/level bonus and only one attack counter', () => {
+ const attackers = [ally('Limitless Slime'), ally('Limitless Slime'), ally('Ordinary Bear')];
+ const run = (champion?: string) => applyAllyAttackBoosts(attackers, [line('Limitless Slime', 2), ...(champion ? [line(champion)] : [])], cards);
+ assert.deepEqual(run().attackers.map(a => a.power), [1, 1, 2]);
+ assert.deepEqual(run('Silvie, Wilds Whisperer').attackers.map(a => a.power), [1, 1, 2]);
+ assert.deepEqual(run('Silvie, With the Pack').attackers.map(a => a.power), [2, 2, 2]);
+ assert.deepEqual(run('Silvie, Slime Sovereign').attackers.map(a => a.power), [3, 3, 2]);
+ assert.deepEqual(run(warrior.name).attackers.map(a => a.power), [1, 1, 2]);
+});
+test('Slimeshield applies one counter per resolution to one Slime, without a class gate', () => {
+ const result = applyAllyAttackBoosts([ally('Limitless Slime'), ally('Baby Red Slime'), ally('Ordinary Bear')], [line('Slimeshield', 2)], cards);
+ assert.equal(result.evidence[0].addedPower, 2);
+ assert.equal(result.attackers[2].power, 2);
+ assert.equal(applyAllyAttackBoosts([ally('Ordinary Bear')], [line('Slimeshield')], cards).evidence[0].addedPower, 0);
+});

@@ -53,3 +53,17 @@ test("Musicbox chooses one best replay and does not repeat Enthusiast's initial 
  assert.equal(replay.musicboxAddedPower,8); // Sforzando +6 and Leader +1 per Resonator.
  assert.equal(replay.sources.find(s=>s.name === "Performance Enthusiast")?.addedPower,1);
 });
+
+test('Slime ranges include supported effects without changing the printed baseline', () => {
+ const main = [{ name: 'Limitless Slime', quantity: 4 }, { name: 'Slimeshield', quantity: 3 }];
+ const material = [{ name: 'Silvie, Slime Sovereign', quantity: 1 }];
+ const full = computeCombatAccessForecast(main, material, cards, 60, 1);
+ assert.deepEqual(full.printedRange, { low: 4, median: 4, high: 4 });
+ assert.deepEqual(full.boostedRange, { low: 15, median: 15, high: 15 });
+ const none = computeCombatAccessForecast(main, material, cards, 0, 32);
+ assert.deepEqual(none.boostedRange, { low: 0, median: 0, high: 0 });
+ const sampled = computeCombatAccessForecast(main, material, cards, 10);
+ assert.ok(sampled.printedRange.low <= sampled.printedRange.median && sampled.printedRange.median <= sampled.printedRange.high);
+ assert.ok(sampled.boostedPower > sampled.printedPower);
+ assert.ok(!sampled.unmodeled.includes('Limitless Slime'));
+});

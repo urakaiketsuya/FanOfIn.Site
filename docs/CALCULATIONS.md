@@ -5868,3 +5868,29 @@ in banishment. The report shows 1 damage per banished Slime with conditional exa
 60-card case has 39.9%, 52.8%, 69.4%, 81.3% source access. Covenant of Thorns' same-clause
 incoming-damage redirection is excluded from outgoing damage detection. Independent
 outgoing clauses on a card remain eligible. Existing quantified distributions are unchanged.
+
+### Slime attack coverage and automatic power ranges
+
+Limitless Slime adds +1 power to itself with a matching champion class at level 2+;
+at level 3+ its first attack adds one buff counter for another +1. Each physical
+Limitless copy receives its own bonuses once; no repeated attacks or prior counters
+are assumed. Slimeshield adds one buff counter to one Slime ally per resolved copy.
+Its class/level condition discounts its cost and does not gate the separate buff.
+These rules are verified against committed catalog text and applied only in the
+supported-boost scenario. They do not change printed power or direct damage.
+
+Combat access preserves its seeded draw sampling and existing mean values. It also
+returns separate printed/boosted 10th, 50th and 90th percentiles from the same trial
+outputs using inverse empirical CDF (ceil(p * n) − 1). Reports show medians and the
+middle-80% ranges together for 7/10/15/20 cards seen, without a metric selector.
+Both use a common scale. Boosted results assume the listed champion is reached and
+sources resolve before one attack; neither range predicts actual damage dealt.
+Memory reveals, banishment costs, rested sources and prior attacks are not inferred.
+Baby Red Slime, Ethereal Slime, Forest Cake, Lustrous Slime and Verdant Scepter remain
+unmodeled power effects for xenbr4. This is deliberate incomplete coverage.
+
+Local verification: damage-source and combat reports fit 360px, 390px and 1280px,
+with visible card-link keyboard focus and no horizontal page overflow. Card links
+meet 48px touch targets; desktop chart rows align and browser errors are absent. Test fixtures cover class/level
+boundaries, self-only buffs, target limits, no targets, deterministic distributions,
+empty draws, and missing catalog data.

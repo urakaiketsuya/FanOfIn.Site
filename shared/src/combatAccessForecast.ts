@@ -4,7 +4,10 @@ import { FORESE_NAME } from "./foreseForecast.js";
 import { resolveForeseEntryChain } from "./foreseEntryChain.js";
 import { musicboxReplayCandidates, type MusicboxReplayState } from "./musicboxReplay.js";
 type Line = { name: string; quantity: number };
+export interface CombatPowerRange { low: number; median: number; high: number }
 export interface CombatAccessForecast {
+  printedRange: CombatPowerRange;
+  boostedRange: CombatPowerRange;
   seen: number;
   printedPower: number;
   boostedPower: number;
@@ -30,9 +33,10 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
   const deck = main.flatMap(l => Array.from({length: Math.max(0, Math.floor(l.quantity))}, () => l.name));
   while (deck.length < 60) deck.push("");
   const seen = Math.max(0, Math.min(deck.length, Math.floor(cardsSeen)));
-  const result: CombatAccessForecast = { seen, printedPower: 0, boostedPower: 0, foreseDeploymentChance: 0, foreseAddedPower: 0, musicboxAddedPower: 0, sources: [], unmodeled: [], unavailable: [...main, ...material].some(l => l.quantity > 0 && !cards.has(l.name)) };
+  const result: CombatAccessForecast = { printedRange: { low: 0, median: 0, high: 0 }, boostedRange: { low: 0, median: 0, high: 0 }, seen, printedPower: 0, boostedPower: 0, foreseDeploymentChance: 0, foreseAddedPower: 0, musicboxAddedPower: 0, sources: [], unmodeled: [], unavailable: [...main, ...material].some(l => l.quantity > 0 && !cards.has(l.name)) };
   if (result.unavailable || samples < 1) return result;
   const evidence = new Map<string, number>(), unmodeled = new Set<string>();
+  const printedSamples: number[] = [], boostedSamples: number[] = [];
   let seed = 0x4f1ab27;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   for (let trial = 0; trial < samples; trial++) {
@@ -50,7 +54,9 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
       unique.add(card.name);
       for (let i = 0; i < (card.types.includes("UNIQUE") ? 1 : line.quantity); i++) attackers.push({ name: card.name, power: card.power, unblockable: false });
     }
-    result.printedPower += attackers.reduce((sum, a) => sum + a.power, 0);
+    const printed = attackers.reduce((sum, a) => sum + a.power, 0);
+    printedSamples.push(printed);
+    result.printedPower += printed;
     const forese = attackers.findIndex(a => a.name === FORESE_NAME);
     const song = drawn.some(name => cards.get(name)?.subtypes.some(s => s === "HARMONY" || s === "MELODY"));
     if (forese >= 0 && song) attackers.splice(forese, 1);
@@ -81,12 +87,21 @@ export function computeCombatAccessForecast(main: Line[], material: Line[], card
     }
     result.musicboxAddedPower += totalPower(boosted) - beforeReplay;
     if (arrival !== undefined) result.foreseAddedPower += boosted.attackers[arrival].power;
-    result.boostedPower += boosted.attackers.reduce((sum, a) => sum + a.power, 0);
+    const power = totalPower(boosted);
+    boostedSamples.push(power);
+    result.boostedPower += power;
     for (const item of boosted.evidence) {
       if (item.status === "modeled") evidence.set(item.name, (evidence.get(item.name) ?? 0) + item.addedPower);
       if (item.status === "review") unmodeled.add(item.name);
     }
   }
+  const range = (values: number[]): CombatPowerRange => {
+    values.sort((a, b) => a - b);
+    const at = (p: number) => values[Math.max(0, Math.ceil(p * values.length) - 1)] ?? 0;
+    return { low: at(0.1), median: at(0.5), high: at(0.9) };
+  };
+  result.printedRange = range(printedSamples);
+  result.boostedRange = range(boostedSamples);
   result.printedPower /= samples;
   result.boostedPower /= samples;
   result.foreseDeploymentChance /= samples;

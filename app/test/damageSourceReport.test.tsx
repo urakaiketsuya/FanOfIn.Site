@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
+import CombatAccessReport from '../src/features/analytics/CombatAccessReport';
 import DamageStatisticalReport from '../src/features/analytics/DamageStatisticalReport';
 import { computeAggressionForecast } from '../src/lib/aggressionForecast';
 const cards = JSON.parse(readFileSync(new URL('../../data/card-catalog.json', import.meta.url), 'utf8')).cards as Card[];
@@ -24,4 +25,15 @@ test('quantified damage retains distribution; empty and missing data remain expl
   assert.match(render(report(['Fireball'])), /median/);
   assert.match(render(report([])), /No direct damage in this model/);
   assert.match(render(report(['Missing card'])), /Damage amount not modeled/);
+});
+
+test('combat report shows both ranges automatically and handles missing/empty decks', () => {
+  const renderCombat = (main: {name: string; quantity: number}[]) => renderToStaticMarkup(<MemoryRouter><CombatAccessReport deck={{main, material: [{name: 'Silvie, Slime Sovereign', quantity: 1}]}} cardsByName={catalog} /></MemoryRouter>);
+  const html = renderCombat([{name: 'Limitless Slime', quantity: 4}]);
+  assert.match(html, /Printed ally power/);
+  assert.match(html, /With supported boosts/);
+  assert.match(html, /middle 80%/);
+  assert.doesNotMatch(html, /aria-pressed/);
+  assert.match(renderCombat([]), /No attacking allies found/);
+  assert.match(renderCombat([{name: 'Missing', quantity: 1}]), /attack report unavailable/);
 });
