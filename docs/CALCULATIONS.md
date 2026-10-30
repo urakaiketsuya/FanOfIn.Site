@@ -6104,7 +6104,7 @@ not the event venue. Unassigned players never become a fourth competitive region
   “Small sample” label (a display heuristic, not a significance test). No strongest-
   region winner is inferred from these observational, travel-selected samples.
 - Rating distribution: overall Omnidex Elo from the latest checkpoint at/before the
-  endpoint, restricted to assigned players with at least ten observed matches in the
+  endpoint, restricted to assigned players with at least five observed matches in the
   selected season and format. Never use present-day ratings for earlier seasons.
   Sorted values yield linearly interpolated quartiles, median and 90th percentile.
   All regional plots share one axis. The box is the middle half, line the median,
@@ -6138,7 +6138,7 @@ The Period selector defaults to **All time** (`strengthSeason=0`, a reserved rep
 ID rather than an Omnidex season). This aggregates raw eligible events across all
 recorded dates, including events without a season, up to the common source cutoff.
 It does not average seasonal rates or add seasonal player counts. Event IDs and
-players are deduplicated, formats remain separate, and ratings require ten recorded
+players are deduplicated, formats remain separate, and ratings require five recorded
 matches across the selected format's full history. Rating values are the latest
 available overall Elo checkpoints, not averages or peak ratings.
 
@@ -6157,3 +6157,7 @@ All-time UI verification: 390px and 1280px layouts, 48px selectors, no horizonta
 page overflow, default selection, and switching back to historical seasons passed.
 Eight regional-strength tests and app/shared/pipeline typechecks passed. Network
 failure and text-zoom behavior were not re-tested for this selector extension.
+
+Regional rating eligibility now starts at five recorded matches in the selected
+period and format, for both seasonal and all-time views. Nine focused tests pass,
+including the exact four/five-match boundary; the published report was rebuilt.

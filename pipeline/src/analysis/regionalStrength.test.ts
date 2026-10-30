@@ -52,7 +52,7 @@ test('table IDs restarting each round do not erase later matches; repeated round
 test('all time pools raw history including unseasoned events, counts players once, and uses latest ratings',()=>{
  const expanded={...index,events:[...events,event(11,'NY','2023-01-01',{seasonId:null}),event(11,'NY','2023-01-01',{seasonId:null}),event(12,'NY','2026-01-01')]};
  const stable={...players,players:players.players.map(p=>p.id===1 ? {...p,eventIds:[1,2,3,7]} : p)};
- const records=[{id:7,matches:matches.slice(0,5),finishes:evidence[0].finishes},{id:11,matches:matches.slice(5),finishes:null},{id:12,matches,finishes:null}];
+ const records=[{id:7,matches:matches.slice(0,4),finishes:evidence[0].finishes},{id:11,matches:matches.slice(4),finishes:null},{id:12,matches,finishes:null}];
  const data=buildRegionalStrength(expanded,stable,history,records,'2025-03-01');
  const all=data.seasons.find(s=>s.seasonId===0)!;
  assert.equal(data.seasons[0].name,'All time');
@@ -65,4 +65,15 @@ test('all time uses current inferred cohorts rather than summing historical regi
  const all=buildRegionalStrength(index,players,history,evidence,'2025-03-01').seasons.find(s=>s.seasonId===0)!;
  // Player 1 has mixed East/West local attendance by March and is no longer assigned East.
  assert.equal(all.regions[0].active,0);assert.equal(all.pairs.length,0);assert.equal(all.unassigned,2);
+});
+
+test('rating eligibility includes exactly five matches and excludes four in both periods',()=>{
+ const stable={...players,players:players.players.map(p=>p.id===1 ? {...p,eventIds:[1,2,3,7]} : p)};
+ for (const count of [4,5]) {
+  const reports=buildRegionalStrength(index,stable,history,[{id:7,matches:matches.slice(0,count),finishes:null}],'2025-03-01').seasons;
+  for (const report of reports) {
+   assert.deepEqual(report.regions[0].ratings,count===5 ? [report.seasonId===0 ? 2100 : 1700] : []);
+   assert.deepEqual(report.regions[2].ratings,count===5 ? [1600] : []);
+  }
+ }
 });

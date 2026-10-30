@@ -47,7 +47,7 @@ function StrengthCharts({ report }: { report: StrengthSeason }) {
     </section>
     <section aria-labelledby="strength-ratings">
       <h2 id="strength-ratings" className="text-lg font-semibold">Rating depth</h2>
-      <p className="mb-3 text-sm text-ctp-subtext0">{allTime ? 'Current Elo · 10+ recorded matches in this format' : 'Overall Elo · players with 10+ matches this season and format'}</p>
+      <p className="mb-3 text-sm text-ctp-subtext0">{allTime ? 'Current Elo · 5+ recorded matches in this format' : 'Overall Elo · players with 5+ matches this season and format'}</p>
       <div className="grid gap-3 sm:grid-cols-3">{report.regions.map(r => {
         const q1=ratingQuantile(r.ratings,.25),q3=ratingQuantile(r.ratings,.75),median=ratingQuantile(r.ratings,.5),top=ratingQuantile(r.ratings,.9);
         return <Panel key={r.region}><h3 className="font-semibold">{label(r.region)} <span className="font-normal text-ctp-subtext0">· {r.ratings.length} players</span></h3>

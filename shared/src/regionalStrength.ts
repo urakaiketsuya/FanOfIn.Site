@@ -93,8 +93,8 @@ export function buildRegionalStrength(index: OmnidexIndexData, players: OmnidexP
         const region = regionFor(id), row = region ? byRegion.get(region) : undefined;
         if (!row) { unassigned++; continue; }
         row.active++;
-        // Require ten observed matches in this format and period, independent of present-day totals.
-        if ((matchesByPlayer.get(id) ?? 0) < 10) continue;
+        // Require five observed matches in this format and period, independent of present-day totals.
+        if ((matchesByPlayer.get(id) ?? 0) < 5) continue;
         const checkpoint = (history.history[String(id)] ?? []).filter(p => Date.parse(p.date) <= end && Number.isFinite(p.rating)).sort((a,b) => Date.parse(b.date) - Date.parse(a.date))[0];
         if (checkpoint) row.ratings.push(checkpoint.rating);
       }
