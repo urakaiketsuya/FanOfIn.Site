@@ -1,6 +1,6 @@
 import { useEffect, useRef, useTransition } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ratingQuantile, STRENGTH_REGIONS, type RegionalStrengthData, type StrengthSeason } from '@gatcg/shared';
+import { ALL_TIME_STRENGTH_ID, ratingQuantile, STRENGTH_REGIONS, type RegionalStrengthData, type StrengthSeason } from '@gatcg/shared';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import PublishedSourceStatus from '../../components/PublishedSourceStatus';
 import Panel from '../../components/ui/Panel';
@@ -11,6 +11,7 @@ const rounded = (value: number | null) => value === null ? '—' : Math.round(va
 const percent = (n: number, d: number) => d ? `${(100*n/d).toFixed(1)}%` : '—';
 
 function StrengthCharts({ report }: { report: StrengthSeason }) {
+  const allTime = report.seasonId === ALL_TIME_STRENGTH_ID;
   const ratings = report.regions.flatMap(r => r.ratings);
   const min = ratings.length ? Math.floor(Math.min(...ratings)/100)*100 : 1000;
   const max = ratings.length ? Math.max(min+100,Math.ceil(Math.max(...ratings)/100)*100) : 2000;
@@ -19,14 +20,14 @@ function StrengthCharts({ report }: { report: StrengthSeason }) {
     <div className="grid grid-cols-3 gap-2">{report.regions.map(r => <Panel key={r.region} padding="sm">
       <h3 className="font-semibold">{label(r.region)}</h3>
       <div className="mt-2 text-2xl font-semibold tabular-nums">{r.active.toLocaleString()}</div>
-      <p className="text-sm text-ctp-subtext0">active players</p>
+      <p className="text-sm text-ctp-subtext0">{allTime ? 'recorded players' : 'active players'}</p>
     </Panel>)}</div>
     <section aria-labelledby="strength-head-to-head">
       <h2 id="strength-head-to-head" className="text-lg font-semibold">Cross-region results</h2>
       <p className="mb-3 text-sm text-ctp-subtext0">Row region’s win rate · W–L–D</p>
       <Panel padding="sm">
         <table className="w-full table-fixed text-center text-xs sm:text-sm">
-          <thead><tr><th scope="col" className="py-3">vs.</th>{STRENGTH_REGIONS.map(r => <th scope="col" key={r}>{label(r)}</th>)}</tr></thead>
+          <thead><tr><th scope="col" className="w-1/6 py-3">vs.</th>{STRENGTH_REGIONS.map(r => <th scope="col" key={r}>{label(r)}</th>)}</tr></thead>
           <tbody>{STRENGTH_REGIONS.map(a => <tr key={a}><th scope="row" className="py-5">{label(a)}</th>{STRENGTH_REGIONS.map(b => {
             const pair = report.pairs.find(p => (p.a === a && p.b === b) || (p.a === b && p.b === a));
             if (a === b) return <td key={b} aria-label="Same region">—</td>;
@@ -42,11 +43,11 @@ function StrengthCharts({ report }: { report: StrengthSeason }) {
           })}</tr>)}</tbody>
         </table>
       </Panel>
-      <p className="mt-2 text-xs text-ctp-subtext0">{report.pairingEvents} of {report.events} events have recorded matches · {report.unassigned} active US players unassigned</p>
+      <p className="mt-2 text-xs text-ctp-subtext0">{report.pairingEvents} of {report.events} events have recorded matches · {report.unassigned} {allTime ? 'recorded' : 'active'} US players unassigned</p>
     </section>
     <section aria-labelledby="strength-ratings">
       <h2 id="strength-ratings" className="text-lg font-semibold">Rating depth</h2>
-      <p className="mb-3 text-sm text-ctp-subtext0">Overall Elo · players with 10+ matches this season and format</p>
+      <p className="mb-3 text-sm text-ctp-subtext0">{allTime ? 'Current Elo · 10+ recorded matches in this format' : 'Overall Elo · players with 10+ matches this season and format'}</p>
       <div className="grid gap-3 sm:grid-cols-3">{report.regions.map(r => {
         const q1=ratingQuantile(r.ratings,.25),q3=ratingQuantile(r.ratings,.75),median=ratingQuantile(r.ratings,.5),top=ratingQuantile(r.ratings,.9);
         return <Panel key={r.region}><h3 className="font-semibold">{label(r.region)} <span className="font-normal text-ctp-subtext0">· {r.ratings.length} players</span></h3>
@@ -99,11 +100,11 @@ export default function RegionalStrength() {
     {data && !data.seasons.length && <EmptyState title="No regional strength results yet" />}
     {report && <>
       <div className="mb-5 flex flex-wrap gap-3">
-        <label className="min-w-0 flex-1 text-sm">Season<select className="mt-1 block min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={season} onChange={e => change('strengthSeason',e.target.value)}>{seasons.map(([id,name]) => <option key={id} value={id}>{name}</option>)}</select></label>
+        <label className="min-w-0 flex-1 text-sm">Period<select className="mt-1 block min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={season} onChange={e => change('strengthSeason',e.target.value)}>{seasons.map(([id,name]) => <option key={id} value={id}>{name}</option>)}</select></label>
         <label className="min-w-0 text-sm">Format<select className="mt-1 block min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" value={format} onChange={e => change('strengthFormat',e.target.value)}>{formats.map(f => <option key={f} value={f}>{f}</option>)}</select></label>
       </div>
       {pending && <p role="status">Recalculating…</p>}
-      <p className="mb-3 text-xs text-ctp-subtext0">US play regions inferred through {report.asOf.slice(0,10)}</p>
+      <p className="mb-3 text-xs text-ctp-subtext0">{report.seasonId === ALL_TIME_STRENGTH_ID ? 'Current inferred US regions · all recorded results' : 'US play regions inferred'} through {report.asOf.slice(0,10)}</p>
       <StrengthCharts report={report} />
     </>}
   </div>;

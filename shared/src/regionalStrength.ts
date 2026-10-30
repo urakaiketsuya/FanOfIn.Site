@@ -2,6 +2,7 @@ import { assignUSPlayerRegions } from './playerRegions';
 import type { OmnidexIndexData, OmnidexPlayersData } from './omnidex-index-types';
 import type { EloHistoryData } from './analysis-types';
 
+export const ALL_TIME_STRENGTH_ID = 0;
 export const STRENGTH_REGIONS = ['us-east', 'us-central', 'us-west'] as const;
 export interface StrengthEvent {
   id: number;
@@ -42,13 +43,15 @@ export function buildRegionalStrength(index: OmnidexIndexData, players: OmnidexP
   const source = new Map(evidence.map(e => [e.id, e]));
   const usPlayers = new Set(players.players.filter(p => p.country.toUpperCase() === 'US').map(p => p.id));
   const seasons: StrengthSeason[] = [];
-  for (const season of index.seasons) {
+  const periods = [{ id: ALL_TIME_STRENGTH_ID, name: 'All time', dateStart: '1970-01-01', dateEnd: generatedAt }, ...index.seasons];
+  for (const season of periods) {
+    const allTime = season.id === ALL_TIME_STRENGTH_ID;
     const end = Math.min(Date.parse(season.dateEnd), Date.parse(generatedAt));
     if (!Number.isFinite(end) || end < Date.parse(season.dateStart)) continue;
     const asOf = new Date(end).toISOString();
-    const past = index.events.filter(e => Date.parse(e.date) <= end);
+    const past = [...new Map(index.events.map(e => [e.id, e])).values()].filter(e => Date.parse(e.date) <= end);
     const assignments = assignUSPlayerRegions(players.players, past, [], asOf);
-    const eligible = past.filter(e => e.seasonId === season.id && e.status === 'complete' && e.setting === 'physical' && source.has(e.id));
+    const eligible = past.filter(e => (allTime || e.seasonId === season.id) && e.status === 'complete' && e.setting === 'physical' && source.has(e.id));
     for (const format of [...new Set(eligible.map(e => e.format))].sort()) {
       const events = eligible.filter(e => e.format === format);
       const regions: StrengthRegion[] = STRENGTH_REGIONS.map(region => ({ region, active: 0, ratings: [], majorEntries: 0, topCuts: 0 }));
@@ -90,7 +93,7 @@ export function buildRegionalStrength(index: OmnidexIndexData, players: OmnidexP
         const region = regionFor(id), row = region ? byRegion.get(region) : undefined;
         if (!row) { unassigned++; continue; }
         row.active++;
-        // Require ten observed matches in this format/season, independent of present-day totals.
+        // Require ten observed matches in this format and period, independent of present-day totals.
         if ((matchesByPlayer.get(id) ?? 0) < 10) continue;
         const checkpoint = (history.history[String(id)] ?? []).filter(p => Date.parse(p.date) <= end && Number.isFinite(p.rating)).sort((a,b) => Date.parse(b.date) - Date.parse(a.date))[0];
         if (checkpoint) row.ratings.push(checkpoint.rating);
@@ -100,5 +103,5 @@ export function buildRegionalStrength(index: OmnidexIndexData, players: OmnidexP
         pairs:[...pairs.values()].map(({eventIds,playerIds,...row}) => ({...row,events:eventIds.size,players:playerIds.size})) });
     }
   }
-  return { generatedAt, seasons: seasons.sort((a,b) => b.asOf.localeCompare(a.asOf) || a.format.localeCompare(b.format)) };
+  return { generatedAt, seasons: seasons.sort((a,b) => Number(b.seasonId === ALL_TIME_STRENGTH_ID) - Number(a.seasonId === ALL_TIME_STRENGTH_ID) || b.asOf.localeCompare(a.asOf) || a.format.localeCompare(b.format)) };
 }

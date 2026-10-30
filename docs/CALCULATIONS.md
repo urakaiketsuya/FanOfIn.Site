@@ -6131,3 +6131,29 @@ horizontal overflow, season/format selection, keyboard tab navigation, loading a
 sparse-format empty states. Forced network failure/retry and text zoom were not
 exercised. Other precomputed competition reports will pick up the shared round/table
 identity correction on the next analysis rebuild; this new artifact is already rebuilt.
+
+#### All-time regional strength
+
+The Period selector defaults to **All time** (`strengthSeason=0`, a reserved report
+ID rather than an Omnidex season). This aggregates raw eligible events across all
+recorded dates, including events without a season, up to the common source cutoff.
+It does not average seasonal rates or add seasonal player counts. Event IDs and
+players are deduplicated, formats remain separate, and ratings require ten recorded
+matches across the selected format's full history. Rating values are the latest
+available overall Elo checkpoints, not averages or peak ratings.
+
+All-time cohorts use the current inferred US play regions at the source cutoff,
+with the same trailing-year attendance rules as seasonal cohorts. Consequently,
+historical results are attributed to a player's current inferred region; the UI
+labels this explicitly. Inactive or mixed-evidence players without a current region
+remain unassigned. Historical seasonal reports retain their own as-of cohorts and
+ratings. Top-cut conversion and head-to-head rates pool their original numerators
+and denominators; they do not sum percentages.
+
+Two additional fixtures verify unseasoned/duplicate/future events, lifetime match
+thresholds, latest rating selection, unique player counts, and current versus
+historical region assignment.
+All-time UI verification: 390px and 1280px layouts, 48px selectors, no horizontal
+page overflow, default selection, and switching back to historical seasons passed.
+Eight regional-strength tests and app/shared/pipeline typechecks passed. Network
+failure and text-zoom behavior were not re-tested for this selector extension.
