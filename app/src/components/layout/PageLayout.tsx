@@ -1,12 +1,13 @@
 import type { ElementType, HTMLAttributes, ReactNode } from "react";
 
-export type PageWidth = "narrow" | "standard" | "wide" | "full";
+export type PageWidth = "narrow" | "standard" | "wide" | "full" | "fluid";
 
 const WIDTH_CLASSES: Record<PageWidth, string> = {
   narrow: "max-w-3xl",
   standard: "max-w-4xl",
   wide: "max-w-5xl",
   full: "max-w-6xl",
+  fluid: "max-w-none sm:px-6 lg:px-8",
 };
 
 export default function PageLayout({

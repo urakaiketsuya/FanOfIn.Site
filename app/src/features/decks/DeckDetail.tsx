@@ -311,7 +311,7 @@ export default function DeckDetail() {
 
   if (loading || (!deck && fullUniverseError)) {
     return (
-      <PageLayout data-component="DeckDetail">
+      <PageLayout width="fluid" data-component="DeckDetail">
         {fullUniverseError || popularityStatus.phase === "error" || cardIndexStatus.phase === "error" ? <div role="alert" className="mt-10 rounded-xl border border-ctp-surface1 p-5">
           <h1 className="text-xl font-semibold">This deck couldn’t load</h1>
           <p className="mt-2 text-sm text-ctp-subtext1">{fullUniverseError ?? "Some tournament data is unavailable. Try loading it again."}</p>
@@ -324,7 +324,7 @@ export default function DeckDetail() {
 
   if (!deck) {
     return (
-      <PageLayout data-component="DeckDetail">
+      <PageLayout width="fluid" data-component="DeckDetail">
         <EmptyState
           title="Deck not found"
           description="This deck isn't in the ingested data."
@@ -474,7 +474,7 @@ export default function DeckDetail() {
   }
 
   return (
-    <PageLayout data-component="DeckDetail">
+    <PageLayout width="fluid" data-component="DeckDetail">
       <Link to="/decks?view=builds&minPlayers=2plus" className="text-sm text-ctp-blue hover:underline">
         &larr; Browse Decks
       </Link>

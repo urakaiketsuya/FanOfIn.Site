@@ -235,7 +235,7 @@ export default function ChampionDetail() {
 
   if (archetypeData && !champion) {
     return (
-      <PageLayout width="wide" data-component="ChampionDetail">
+      <PageLayout width="fluid" data-component="ChampionDetail">
         <EmptyState
           title="Champion not found"
           description={<>Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</>}
@@ -246,7 +246,7 @@ export default function ChampionDetail() {
   }
 
   return (
-    <PageLayout width="wide" data-component="ChampionDetail">
+    <PageLayout width="fluid" data-component="ChampionDetail">
       <PublishedSourceStatus label="Champion statistics" status={archetypeStatus} hasData={!!archetypeData} />
       {champion && (
         <>

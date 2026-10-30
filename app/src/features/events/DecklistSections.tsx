@@ -51,7 +51,14 @@ export function DetailedDeckSection({ title, lines, cardsByName, priceByName, sh
   </DeckSection>;
 }
 
-const CARD_SIZE_CLASSES: Record<VisualCardSize, string> = { rows: "grid-cols-1 gap-3", large: "grid-cols-2 gap-3", medium: "grid-cols-3 gap-2 sm:grid-cols-4", compact: "grid-cols-4 gap-2" };
+// Size against the actual deck area, including narrow embedded previews on wide screens.
+// auto-fill keeps small sections from stretching their few cards across an entire row.
+const CARD_SIZE_CLASSES: Record<VisualCardSize, string> = {
+  rows: "grid-cols-1 gap-3",
+  large: "grid-cols-[repeat(auto-fill,minmax(min(100%,9rem),1fr))] gap-3",
+  medium: "grid-cols-[repeat(auto-fill,minmax(min(100%,6.5rem),1fr))] gap-2",
+  compact: "grid-cols-[repeat(auto-fill,minmax(min(100%,4.75rem),1fr))] gap-2",
+};
 
 export function VisualDeckSections({ sections, cardsByName, cardSize, priceByName, priceTrendByName, simulatorEvidenceByName, communityInclusionByName, fields, ownershipByName }: { sections: DecklistSection[]; cardsByName: Map<string, Card>; cardSize: VisualCardSize; priceByName: Map<string, number>; priceTrendByName: Map<string, PriceTrendEntry>; simulatorEvidenceByName: Map<string, SimulatorCardEvidence>; communityInclusionByName: Map<string, CardInclusionEntry> | undefined; fields: VisualFieldVisibility; ownershipByName?: Map<string, DeckCollectionLine> }) {
   return <div className="space-y-6">{sections.map(({ title, lines }) => lines.length > 0 && <DeckSection key={title} title={title} count={title === "Tokens" ? lines.length : lines.reduce((sum, line) => sum + line.quantity, 0)} price={fields.price && computeSectionPrice(lines, priceByName).total > 0 ? formatUsd(computeSectionPrice(lines, priceByName).total) : undefined}><div className={`mt-2 grid ${CARD_SIZE_CLASSES[cardSize]}`}>{printingRows(lines).map(({ line, key, showOwnership, mixed }) => { const missing = showOwnership ? ownershipByName?.get(line.card)?.missing ?? 0 : 0; return <div key={key} className={missing ? "rounded-xl border-2 border-ctp-yellow bg-ctp-yellow/10 p-1" : ""}><VisualCardTile layout={cardSize === "rows" ? "row" : "tile"} line={line} card={cardWithPrinting(cardsByName.get(line.card), line.printings?.[0]?.editionUuid)} unitPrice={priceByName.get(line.card)} priceTrend={priceTrendByName.get(line.card)} communityEntry={communityInclusionByName?.get(line.card)} simulatorEvidence={simulatorEvidenceByName.get(line.card)} fields={fields} footer={<>{cardSize === "rows" && line.location && <p className="mt-1 text-xs text-ctp-subtext1">{line.location}</p>}{missing > 0 ? <p className="mt-1 text-center text-[10px] font-semibold text-ctp-yellow">Missing {missing}{mixed ? " total" : ""}</p> : undefined}</>} />{cardSize !== "rows" && <p className="mt-1 break-words text-xs text-ctp-text">{line.quantity}× {line.card}</p>}{cardSize !== "rows" && line.location && <p className="mt-1 text-xs text-ctp-subtext1">{line.location}</p>}</div>; })}</div></DeckSection>)}</div>;
