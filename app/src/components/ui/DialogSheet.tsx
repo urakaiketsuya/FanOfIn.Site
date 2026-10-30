@@ -4,9 +4,9 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Button from "./Button";
 
 /** Native modal isolation, focus restoration and explicit draft dismissal for all sheets. */
-export default function DialogSheet({ title, children, onDismiss, dismissLabel = "Close", dismissible = true, dirty = false, footer }: {
+export default function DialogSheet({ title, children, onDismiss, dismissLabel = "Close", dismissible = true, dirty = false, footer, fullScreen = false }: {
   title: string; children: ReactNode; onDismiss: () => void; dismissLabel?: string;
-  dismissible?: boolean; dirty?: boolean; footer?: ReactNode;
+  dismissible?: boolean; dirty?: boolean; footer?: ReactNode; fullScreen?: boolean;
 }) {
   const titleId = useId();
   const ref = useRef<HTMLDialogElement>(null);
@@ -63,7 +63,7 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     }} onCancel={event => { event.preventDefault(); event.stopPropagation(); dismiss(); }}
     onClick={event => { if (event.target === event.currentTarget) dismiss(); }}
-    className="motion-sheet fixed inset-y-0 left-auto right-0 m-0 h-dvh max-h-dvh w-full max-w-none overflow-clip border-0 bg-ctp-base p-0 text-ctp-text backdrop:bg-black/60 sm:max-w-xl sm:border-l sm:border-ctp-surface1">
+    className={`motion-sheet fixed inset-y-0 left-auto right-0 m-0 h-dvh max-h-dvh w-full max-w-none overflow-clip border-0 bg-ctp-base p-0 text-ctp-text backdrop:bg-black/60 ${fullScreen ? "" : "sm:max-w-xl sm:border-l sm:border-ctp-surface1"}`}>
     <div inert={closing} className="flex h-full flex-col">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-ctp-surface1 bg-ctp-mantle p-3">
         <h2 id={titleId} className="text-lg font-semibold">{title}</h2>

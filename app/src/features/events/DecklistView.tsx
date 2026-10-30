@@ -1,3 +1,4 @@
+import DeckOverview from "./DeckOverview";
 import DialogSheet from "../../components/ui/DialogSheet";
 import DecklistActions from "./DecklistActions";
 import { arrangeDeckSections, DECK_GROUPS, DECK_SORTS, type DeckGrouping, type DeckSorting } from "../../lib/decklistArrangement";
@@ -81,6 +82,7 @@ export default function DecklistView({
   // Visual mode's optional "sim games" field only – cardId isn't Champion-scoped like the Guided
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
+  const [overview, setOverview] = useState(false);
   const [customizing, setCustomizing] = useState(false);
   const displayMode = displayPrefs.displayMode ?? (defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "visual" : defaultDisplayMode);
   const setDisplayMode = displayPrefs.setDisplayMode;
@@ -150,11 +152,13 @@ export default function DecklistView({
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-ctp-subtext1">{DECK_GROUPS[displayPrefs.grouping]} · {DECK_SORTS[displayPrefs.sorting]}</span>
+          <Button onClick={() => setOverview(true)}>Deck overview</Button>
           <Button onClick={() => setCustomizing(true)}>Customize</Button>
           {collectionControl}
           {showActions && <MenuDetails className="relative"><summary className="flex min-h-control cursor-pointer list-none items-center px-3 text-sm">More <DisclosureChevron /></summary><div className="absolute right-0 top-full z-30 grid w-64 max-w-[calc(100vw-2rem)] gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><DecklistActions decklist={decklist} cardsByName={displayCardsByName} deckTitle={deckTitle} deckOwner={deckOwner} extraSections={extraSections} trailingSections={trailingSections} toolbarActions={toolbarActions} /></div></MenuDetails>}
         </div>
       </div>
+      {overview && <DeckOverview decklist={decklist} extraSections={extraSections} cardsByName={displayCardsByName} onDismiss={() => setOverview(false)} />}
       {customizing && <DialogSheet title="Customize cards" onDismiss={() => setCustomizing(false)} footer={<Button variant="primary" onClick={() => setCustomizing(false)}>Done</Button>}>
         <div className="space-y-4">
           <h3 className="text-sm font-medium">Arrange</h3>
