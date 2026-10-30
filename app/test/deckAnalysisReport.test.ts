@@ -77,3 +77,13 @@ test('other engines increase target access within bounds and deterministically',
  for (const row of report.cards) for (const point of row.checkpoints) assert.ok(point.modeled>=point.natural && point.modeled<=1);
  assert.deepEqual(report,computeDeckAnalysisReport(main,[],catalog));
 });
+
+test('report passes memory destinations to the shared simulation', () => {
+ const main = [{name:'Engine',quantity:60}];
+ const memory = computeDeckAnalysisReport(main,[],new Map([['Engine',card('Engine','Draw a card into your memory.')]]));
+ const hand = computeDeckAnalysisReport(main,[],new Map([['Engine',card('Engine','Draw a card.')]]));
+ assert.equal(memory.checkpoints[0].adjustedSeen,33);
+ assert.equal(memory.checkpoints[0].hand,0);
+ assert.equal(memory.checkpoints[0].memory,9);
+ assert.equal(hand.checkpoints[0].adjustedSeen,60);
+});

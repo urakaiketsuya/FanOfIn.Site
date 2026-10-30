@@ -3563,8 +3563,10 @@ Draw estimates remain separate from natural access. Starting level 0 Champion cl
 from bonus sources because their draws establish the opening. The report uses a fixed-seed,
 512-sample draw-only simulation (`shared/src/drawInfluence.ts`) for each play order. Reserve
 payment moves actual hand cards to memory, excluding the played source itself. Played sources
-leave influence; fixed draws add cards, and explicit “then discard N cards” removes cards from
-hand. Memory returns to hand next turn. Influence is hand + memory at the end of the modeled
+leave influence; fixed draws add cards to their printed hand or memory destination, and explicit
+“then discard N cards” removes cards from hand. Fixed draw clauses resolve in printed order;
+an unspecified destination defaults to hand. Cards drawn into memory cannot fund Reserve
+payments or be played from hand until recollection. Memory returns to hand next turn. Influence is hand + memory at the end of the modeled
 main phase, distinct from cumulative cards seen. Non-engine cards pay costs first; each engine
 copy resolves at most once, including newly drawn engines. Unknown Reserve costs are not free.
 Material draw sources may materialize once per turn from turn 2, paying their printed Memory
@@ -3583,8 +3585,8 @@ access is exact natural access plus this sampled incremental probability, capped
 This paired estimate preserves exact natural odds when there is no extra access and prevents
 a lone draw engine from increasing access to its own first copy. The incremental term
 still has sampling error (512 deterministic trials); the cap keeps reported odds bounded.
-Draw destinations and unsupported activation conditions remain limitations of the underlying
-simulation and are not corrected by this probability change.
+Unsupported activation conditions remain a limitation of the underlying simulation. Fixed
+hand/memory destinations are modeled; this does not establish permission to resolve the effect.
 Printed costs and detected lineage are descriptive; the report does not infer a strategic grade.
 
 ## Draft tribal themes and token engines

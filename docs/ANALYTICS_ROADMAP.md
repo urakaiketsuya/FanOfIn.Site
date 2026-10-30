@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 92% complete: the audit, shared comparison engine,
+Release A is approximately 93% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -377,3 +377,19 @@ calculator also retains its separate legacy approximation. Next: model hand vers
 memory draws and restrict unsupported effects, then finish browser release checks.
 Release A is approximately 92% complete, reflecting completed report integration and
 the first draw-model correction; remaining supported-effect scope is uncertain.
+
+
+Draw destination correction (2026-10-30): fixed draw clauses now retain printed order
+and hand/memory destination through a shared parser. Printed draw totals reuse that
+parser. The report passes the steps to the shared simulation; draws into memory stay
+there until recollection, cannot immediately pay Reserve or chain plays, and survive
+hand-only discards. Existing sources without explicit steps retain hand draws.
+Twenty focused tests cover existing resource/access behavior, memory isolation,
+recollection, mixed-destination exhaustion, published Study the Fables wording, and
+end-to-end report propagation. App/shared type checks and lint pass (existing warnings).
+A catalog check preserves printed draw totals for all 2,535 cards and recognizes 187
+cards with memory draws. No layout changed; browser checks were not repeated.
+Next: restrict unsupported triggers/activation costs, then finish browser release
+checks. Release A is approximately 93% complete: report integration, recovery, access
+probabilities and fixed draw destinations are implemented; supported-effect scope
+and remaining release verification keep this estimate uncertain.

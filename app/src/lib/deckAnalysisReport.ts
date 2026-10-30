@@ -1,4 +1,4 @@
-import { estimateDrawInfluence, type Card } from '@gatcg/shared';
+import { estimateDrawInfluence, fixedDrawSteps, type Card } from '@gatcg/shared';
 import { probabilityAtLeast } from '../features/deckbuilder/synergyReadiness';
 import { drawEngineSources } from '../features/deckbuilder/drawEffects';
 import { inferStartingHandSize, naturalCardsSeenByTurn } from './turnToPlay';
@@ -22,7 +22,7 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
     const source = sources.find((source) => source.name === line.name);
     const words: Record<string, number> = { a: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
     const discard = card?.effect?.match(/\bthen discard (a|one|two|three|four|five|six|seven|\d+) cards?\b/i)?.[1].toLowerCase();
-    return { ...line, draws: source?.perCopy ?? 0, reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: discard ? words[discard] ?? Number(discard) : 0 };
+    return { ...line, draws: source?.perCopy ?? 0, drawSteps: fixedDrawSteps(card?.effect ?? ''), reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: discard ? words[discard] ?? Number(discard) : 0 };
   };
   const estimates = {
     first: estimateDrawInfluence(lines.map(drawSource), material.filter((line) => catalog.get(line.name)?.level !== 0).map(drawSource), opening, 'first'),

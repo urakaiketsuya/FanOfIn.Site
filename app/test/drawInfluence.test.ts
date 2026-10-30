@@ -28,3 +28,30 @@ test('empty decks and exhausted libraries never create cards', () => {
  assert.deepEqual(estimateDrawInfluence([],[],7,'second',1,1),[{seen:0,hand:0,memory:0,influence:0,extraAccess:new Map()}]);
  assert.equal(estimateDrawInfluence([source({quantity:2})],[],7,'second',1,1)[0].seen,2);
 });
+
+test('memory draws cannot chain plays until recollection', () => {
+ const main = [source({quantity:20,reserve:0,draws:1,drawSteps:[{count:1,destination:'memory'}]})];
+ const [first,second] = estimateDrawInfluence(main,[],1,'first',2,1);
+ assert.equal(first.seen,2);
+ assert.equal(first.hand,0);
+ assert.equal(first.memory,1);
+ assert.equal(second.seen,5);
+ assert.equal(second.hand,0);
+ assert.equal(second.memory,2);
+ const hand = estimateDrawInfluence([{...main[0],drawSteps:[{count:1,destination:'hand'}]}],[],1,'first',1,1)[0];
+ assert.equal(hand.seen,20);
+});
+
+test('draws into memory survive a discard from hand', () => {
+ const [point] = estimateDrawInfluence([source({quantity:4,reserve:0,draws:1,discard:1,drawSteps:[{count:1,destination:'memory'}]})],[],1,'first',1,1);
+ assert.equal(point.hand,0);
+ assert.equal(point.memory,1);
+ assert.equal(point.influence,1);
+});
+
+test('mixed destinations preserve printed order at library exhaustion', () => {
+ const [point] = estimateDrawInfluence([source({quantity:2,reserve:0,draws:2,drawSteps:[{count:1,destination:'memory'},{count:1,destination:'hand'}]})],[],1,'first',1,1);
+ assert.equal(point.seen,2);
+ assert.equal(point.memory,1);
+ assert.equal(point.hand,0);
+});

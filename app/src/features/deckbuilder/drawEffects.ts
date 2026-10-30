@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import { fixedDrawSteps, type Card } from "@gatcg/shared";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { earliestReserveCostTurn } from "../../lib/turnToPlay";
 
@@ -7,15 +7,6 @@ import { earliestReserveCostTurn } from "../../lib/turnToPlay";
  * resolution time, so folding in a fixed guess (the way the Imbue calculator defaults X to 2)
  * would compound unpredictably across every draw-effect card in a deck rather than affecting one
  * reported number. Such clauses are simply skipped – undercounted, not wrong. */
-const QUANTITY_WORDS: Record<string, number> = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
-
-const DRAW_RE = /\bdraw\s+(a|an|one|two|three|four|five|six|seven|\d+)\s+cards?\b/gi;
-
-function parseQuantity(raw: string): number | null {
-  if (/^\d+$/.test(raw)) return Number(raw);
-  return QUANTITY_WORDS[raw.toLowerCase()] ?? null;
-}
-
 /**
  * Cards drawn per copy played, summed across every "Draw N card(s)" clause in the card's own effect
  * text – deliberately not distinguishing unconditional ("Draw a card.") from conditional ("If you
@@ -25,13 +16,7 @@ function parseQuantity(raw: string): number | null {
  * from it.
  */
 export function drawnCardsPerCopy(card: Card): number {
-  const effect = card.effect ?? "";
-  let total = 0;
-  for (const m of effect.matchAll(DRAW_RE)) {
-    const qty = parseQuantity(m[1]);
-    if (qty !== null) total += qty;
-  }
-  return total;
+  return fixedDrawSteps(card.effect ?? "").reduce((total, step) => total + step.count, 0);
 }
 
 /**

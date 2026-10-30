@@ -1,8 +1,18 @@
+export interface FixedDrawStep { count: number; destination: 'hand' | 'memory' }
+
+/** Printed fixed draw clauses in order; does not establish activation permission. */
+export function fixedDrawSteps(effect: string): FixedDrawStep[] {
+  const words: Record<string, number> = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 };
+  return [...effect.matchAll(/\bdraw\s+(a|an|one|two|three|four|five|six|seven|\d+)\s+cards?\b(?:\s+into\s+(?:your\s+)?(hand|memory))?/gi)]
+    .map(match => ({ count: words[match[1].toLowerCase()] ?? Number(match[1]), destination: match[2]?.toLowerCase() === 'memory' ? 'memory' : 'hand' }));
+}
+
 /** A bounded draw-only policy, not a full game simulation. */
 export interface InfluenceDrawSource {
   name: string;
   quantity: number;
   draws: number;
+  drawSteps?: FixedDrawStep[];
   reserve: number | null;
   memory?: number | null;
   level?: number | null;
@@ -21,7 +31,13 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
     const available = material.flatMap((source) => Array.from({ length: source.quantity }, () => source));
-    const draw = (count: number) => { for (let i = 0; i < count && seen < library.length; i++) hand.push(library[seen++]); };
+    const draw = (count: number, destination: 'hand' | 'memory' = 'hand') => {
+      const zone = destination === 'memory' ? memory : hand;
+      for (let i = 0; i < count && seen < library.length; i++) zone.push(library[seen++]);
+    };
+    const resolveDraws = (source: InfluenceDrawSource) => {
+      for (const step of source.drawSteps ?? [{ count: source.draws, destination: 'hand' }]) draw(step.count, step.destination);
+    };
     // Preserve draw engines when selecting payment/discard cards; stable order breaks ties.
     const take = (zone: InfluenceDrawSource[], count: number) => {
       zone.sort((a, b) => a.draws - b.draws);
@@ -35,7 +51,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
         if (index >= 0) {
           const [source] = available.splice(index, 1);
           take(memory, source.memory!);
-          draw(source.draws);
+          resolveDraws(source);
           take(hand, source.discard);
         }
       }
@@ -47,7 +63,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
         if (index < 0) break;
         const [source] = hand.splice(index, 1);
         memory.push(...take(hand, source.reserve!));
-        draw(source.draws);
+        resolveDraws(source);
         take(hand, source.discard);
       }
       // Couple the modeled and natural draws to the same shuffled library. Only
