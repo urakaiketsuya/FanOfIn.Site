@@ -586,3 +586,15 @@ Preserve catalog filtering and deck-specific grouping/sorting in their feature c
 Use fullScreen DialogSheet for expanded card/deck views, with controls outside the scrolling
 results, readable names, keyboard dismissal and focus restoration. Small screens may scroll;
 never shrink controls or names simply to fit everything into one screen.
+
+Player card patterns offers All champions alongside individual champions. Main, Material,
+and Sideboard remain peer sections; Sideboard shows how many public decks contain cards.
+Champion-specific Unique choices leads with artwork and brief usage counts, compared with
+other players' public decks for that champion. Show the peer sample and missing-list count;
+keep the definition in calculation docs. Never claim uniqueness when no peer lists exist.
+
+Player card scope verification (2026-10-30): checked 390px and 1280px layouts,
+48px report controls, no horizontal overflow, keyboard section navigation, expanded
+usage lists, all-champion sideboards, and empty format/unique-choice states. Six report
+fixtures pass, including cross-section uniqueness and empty-sideboard denominators.
+Forced source failures, text zoom, and populated unique-card UI were not exercised.

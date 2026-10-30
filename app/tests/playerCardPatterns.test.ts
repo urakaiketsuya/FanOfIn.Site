@@ -48,3 +48,22 @@ test('compares adjacent periods and excludes the player from the peer baseline',
   const sparse = playerCardPatterns({ ...index, decks: decks.slice(1) }, comparisonEntries, comparisonEvents, 1, 'standard', 'Alice', '2026-10-30');
   assert.deepEqual(sparse.trends.main, []); assert.deepEqual(sparse.signatures.main, []);
 });
+test('all champions pools only this player and keeps sideboard denominators', () => {
+  const r = playerCardPatterns(index, entries, events, 1, 'standard', '', '2026-10-29');
+  assert.equal(r.champion, ''); assert.equal(r.decks, 3); assert.equal(r.sideboards, 1);
+  assert.deepEqual(r.sections.main, [{ name: 'New', decks: 2, copies: 7 }, { name: 'Old', decks: 2, copies: 6 }]);
+  assert.deepEqual(r.sections.sideboard, [{ name: 'Old', decks: 1, copies: 1 }]);
+  assert.equal(r.newCards.find(c => c.name === 'New' && c.section === 'main')?.eventId, 2);
+  assert.deepEqual(r.uniqueCards.main, []);
+});
+test('unique choices compare other players on the same champion across all sections and history', () => {
+  const r = playerCardPatterns(index, entries, events, 1, 'standard', 'Alice', '2026-10-29');
+  assert.equal(r.peers.decks, 1);
+  assert.deepEqual(r.uniqueCards.main, [{ name: 'Old', decks: 2, copies: 6 }]);
+  assert.deepEqual(r.uniqueCards.sideboard, [{ name: 'Old', decks: 1, copies: 1 }]);
+  const oldPeer = { deckId: '1:2', eventId: 1, player: 2, championName: 'Alice' } as DeckPopularityEntry;
+  const older = playerCardPatterns({ ...index, decks: [...index.decks, { deckId: '1:2', main: [[0, 1]], material: [], sideboard: [] }] }, [...entries, oldPeer], events, 1, 'standard', 'Alice', '2026-10-29');
+  assert.deepEqual(older.uniqueCards.main, []);
+  assert.deepEqual(older.uniqueCards.sideboard, []);
+  assert.deepEqual(playerCardPatterns(index, entries, events, 1, 'standard', 'Rai', '2026-10-29').uniqueCards.main, []);
+});

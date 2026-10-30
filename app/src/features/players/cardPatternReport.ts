@@ -8,7 +8,7 @@ export function playerCardPatterns(index: DeckCardIndexData, entries: DeckPopula
   const usage = champion ? metagameReport(index, playerEntries, events, { format, days: 0, champion }, asOf) : all;
   const end = Date.parse(asOf), start = end - 90 * 86400000;
   const eventById = new Map(events.filter(e => e.format === format && e.status === 'complete' && Date.parse(e.date) <= end).map(e => [e.id, e]));
-  const eligible = new Map(playerEntries.filter(e => (e.championName ?? 'Unknown') === champion && eventById.has(e.eventId)).map(e => [e.deckId, e]));
+  const eligible = new Map(playerEntries.filter(e => (!champion || (e.championName ?? 'Unknown') === champion) && eventById.has(e.eventId)).map(e => [e.deckId, e]));
   const seen = new Set<string>();
   const firsts = new Map<string, { name: string; section: Section; date: string; eventId: number; decks: number }>();
   for (const deck of index.decks) {
@@ -25,6 +25,11 @@ export function playerCardPatterns(index: DeckCardIndexData, entries: DeckPopula
       }
     }
   }
+  const peers = metagameReport(index, entries.filter(e => e.player !== playerId), events, { format, days: 0, champion }, asOf);
+  const peerNames = new Set(Object.values(peers.sections).flatMap(rows => rows.map(row => row.name)));
+  const uniqueCards = Object.fromEntries((['main', 'material', 'sideboard'] as const).map(section => {
+    return [section, champion && peers.decks > 0 ? usage.sections[section].filter(row => !peerNames.has(row.name)) : []];
+  })) as typeof usage.sections;
   const scope = { format, days: 90, champion };
   const recent = metagameReport(index, playerEntries, events, scope, asOf);
   const previous = metagameReport(index, playerEntries, events, scope, new Date(start).toISOString());
@@ -45,5 +50,5 @@ export function playerCardPatterns(index: DeckCardIndexData, entries: DeckPopula
     })) as Record<Section, { name: string; leftCount: number; rightCount: number; leftPercent: number; rightPercent: number; delta: number }[]>;
   }
   const trends = compare(recent, previous, false), signatures = compare(recent, others, true);
-  return { ...usage, recent, previous, others, trends, signatures, champions: all.champions, champion, newCards: [...firsts.values()].filter(r => Date.parse(r.date) > start).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.name.localeCompare(b.name)), historyStart: [...firsts.values()].map(r => r.date).sort()[0] };
+  return { ...usage, peers, uniqueCards, recent, previous, others, trends, signatures, champions: all.champions, champion, newCards: [...firsts.values()].filter(r => Date.parse(r.date) > start).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.name.localeCompare(b.name)), historyStart: [...firsts.values()].map(r => r.date).sort()[0] };
 }

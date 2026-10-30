@@ -5908,3 +5908,21 @@ Scepter's one activation requires resting and spending refinement; it buffs up t
 two distinct Slime allies once and draws one. No future activations or net board
 power after sacrificing/banishing an ally are inferred. These examples do not
 change the forecast's unmodeled list or sampled totals. Sideboard is excluded.
+
+### Player card scope and unique choices
+
+Player Cards allows an explicit All champions selection (`cards-champion=`), preserving
+format and section filters. The default remains the most-played champion. All-time
+public registrations are deduplicated by deck ID; inclusion counts each card once per
+registration and combines repeated lines for copies. Sideboard inclusion uses all
+public decks in scope, including empty sideboards; coverage separately counts decks
+with positive sideboard lines. These are registered cards, not in-match boarding actions.
+
+Unique choices are cards in this player's selected champion/format/section that appear
+in zero available public decks from other players on that same champion/format (checking
+Main, Material and Sideboard together),
+across all available history through the report date. Exclude the target player entirely
+from the comparison; retain usage ordering. No peer decks means unavailable, not unique.
+Missing peer lists remain visible. Uniqueness describes the observed public sample only.
+The all-champion view omits this champion-specific comparison. Existing recent signature
+choices remain a separate 90-day inclusion-rate comparison.
