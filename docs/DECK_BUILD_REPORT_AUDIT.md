@@ -127,3 +127,24 @@ unused basic-stat categories or cache per-list projections, then integrate the c
 report and verify mobile/desktop behavior. No browser verification or deployment is
 claimed for this calculation-layer change. Release A is approximately 35% complete;
 UI integration/parity/placement, performance and validation remain.
+
+
+### Background comparison execution — 2026-10-30
+
+`node --import tsx scripts/benchmark-deck-build-report.ts` now reproduces two real
+cohorts, checks structured-clone worker-job parity against direct calculation, and emits
+five calculation-only timings plus SHA-256 fingerprints. Baseline fingerprints:
+
+- `szgmmc`, `21122:104`, 1,894 references:
+  `8ebc76e283802c36ce760277e91059b06c050a5c79b236db7f15fea9be009536`.
+- `e0ums8`, `31437:12728`, 416 references:
+  `2de4836b0b40c1afcf3af575d82be5ea3f91241235574b96ebc5cf3352471d42`.
+
+Both remain identical after moving execution into a browser worker. The latest local
+five-run samples span 366–392ms and 74–85ms respectively, excluding file reads, parsing,
+cloning and rendering. Machine load makes comparisons with prior dates unsuitable as
+speedup claims. Worker startup and input transfer remain additional costs. The production
+worker bundle is approximately 100.5kB uncompressed. Browser verification confirmed
+1,894 references and 2,340 sightings on the Diao Chan sample; that tournament consumer
+passes a partial catalog, leaving composition coverage at 0/1,894. This is a separate
+catalog-input gap to resolve before claiming full comparison coverage there.

@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 70% complete: the audit, shared comparison engine,
+Release A is approximately 75% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -56,7 +56,13 @@ state and reuses the same comparison controller, including target exclusion and 
 coverage. Report-tab navigation and reload retain the snapshot; unrelated builds reject it.
 “View all recorded lists” explicitly switches to the existing sightings-based report.
 Copied URLs and new tabs open that broader report; comparison snapshots are not shared URLs.
-Next: large-cohort performance and compact Browse placements. Release checks
+The comparison resolver and projection now run in a dedicated browser worker. Changed
+inputs cancel the previous worker; results are bound to their input and failures expose
+Retry comparison. Decoded reference records stay in the worker. Calculation formulas
+are unchanged; this removes computation from the UI thread, not total calculation time.
+Next: complete catalog coverage for tournament-page comparisons, then compact Browse
+placements. The 1,894-list tournament sample currently supplies a partial catalog and
+therefore correctly withholds derived composition references. Release checks
 and extra-draw model validation remain. The percentage is approximate because that
 validated model scope remains undecided.
 
@@ -78,6 +84,16 @@ warnings only). Browser checks at 390×844 and 1280×900 confirm identical 416-l
 references, reload and tab retention, Main/Material keyboard switching, reference-only
 cards, 48px exit action and no horizontal overflow. Loading was observed. Forced
 network failures, empty/stale-assignment UI, text zoom and signed-in flows remain unverified.
+
+Worker increment verification (2026-10-30): 21 focused tests, app type check, app lint
+(existing warnings outside this change), and Vite production bundle pass. Real-data
+benchmark checks structured-clone job parity against direct calculation for 1,894- and
+416-reference builds; complete output fingerprints match the pre-change baselines.
+Browser checks cover both builds, deck-to-archetype navigation, 390px/1280px overflow,
+and keyboard Main/Material selection. Loading was observed; worker failure responses
+are unit-tested. Forced browser worker failure/retry, rapid-input cancellation, signed-in
+flows and device-level frame timing remain unverified. Input cloning and rendering still
+run on the UI thread; no end-to-end speedup or frame-time threshold is claimed.
 
 **Question:** How does this exact list differ from comparable lists?
 

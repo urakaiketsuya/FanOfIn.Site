@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deckBuildComparison, resolveDeckBuildCohort, shortHash, MIN_QUANTITY_EVIDENCE_LISTS, type Card, type DeckDetailData, type DeckFormat, type OmnidexDecklist } from '@gatcg/shared';
+import { shortHash, MIN_QUANTITY_EVIDENCE_LISTS, type Card, type DeckDetailData, type DeckFormat, type OmnidexDecklist } from '@gatcg/shared';
 import { useArchetypeTaxonomyData } from '../archetypes/data';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import Button from '../../components/ui/Button';
 import DeckBuildSummary from './DeckBuildSummary';
+import { useDeckBuildComparison } from './useDeckBuildComparison';
 import { buildComparisonState } from './buildComparisonHandoff';
 
 type Props = { expectedBuildId?: string; decklist: Pick<OmnidexDecklist, 'main' | 'material'>; format?: DeckFormat; championName?: string | null; cardsByName: Map<string, Card> };
@@ -27,20 +28,16 @@ function Evidence({ decklist, championName, cardsByName, expectedBuildId }: Prop
   }), []);
   const onData = useCallback((name: string, data: DeckDetailData) => setPartitions(previous => previous.get(name) === data ? previous : new Map(previous).set(name, data)), []);
   const target = useMemo(() => ({ main: decklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: decklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }), [decklist]);
-  const [computed, setComputed] = useState<{ target: typeof target; report: ReturnType<typeof resolveDeckBuildCohort>; comparison: ReturnType<typeof deckBuildComparison> } | null>(null);
-  const [pending, startTransition] = useTransition();
-  useEffect(() => {
-    if (taxonomy && partitions.has(championName)) startTransition(() => {
-      const cohort = resolveDeckBuildCohort(target, 'STANDARD', taxonomy.clusters, partitions);
-      setComputed({ target, report: cohort, comparison: deckBuildComparison(target, cohort, cardsByName) });
-    });
-  }, [target, taxonomy, partitions, championName, cardsByName]);
-  const report = computed?.target === target ? computed.report : null;
+  const input = useMemo(() => taxonomy && partitions.has(championName)
+    ? { target, clusters: taxonomy.clusters, partitions, cards: cardsByName } : null,
+  [target, taxonomy, partitions, championName, cardsByName]);
+  const { result: computed, pending, error, retry } = useDeckBuildComparison(input);
+  const report = computed?.report;
   const champions = [...new Set([championName, ...(report?.champions ?? [])])];
   return <div aria-busy={pending} className="space-y-3">
     {champions.map(name => <Partition key={name} champion={name} onData={onData} onFailure={onFailure} />)}
     {taxonomyStatus.error && <p role="alert" className="text-sm text-ctp-yellow">Build assignments could not be refreshed. <Button onClick={taxonomyStatus.retry}>Retry builds</Button></p>}
-    {!report || report.status === 'loading' ? <p role="status" className="text-sm text-ctp-subtext1">{failures.size || taxonomyStatus.error ? 'Comparable lists unavailable.' : 'Loading comparable lists…'}</p> : expectedBuildId && report.cluster?.id !== expectedBuildId ? <p role="status" className="text-sm text-ctp-subtext1">This deck no longer has a matching assignment in this build.</p> : <>
+    {error ? <p role="alert" className="text-sm text-ctp-yellow">{error} <Button onClick={retry}>Retry comparison</Button></p> : !report || report.status === 'loading' ? <p role="status" className="text-sm text-ctp-subtext1">{failures.size || taxonomyStatus.error ? 'Comparable lists unavailable.' : 'Loading comparable lists…'}</p> : expectedBuildId && report.cluster?.id !== expectedBuildId ? <p role="status" className="text-sm text-ctp-subtext1">This deck no longer has a matching assignment in this build.</p> : <>
       {report.cluster && <div>{!expectedBuildId && <Link className="inline-flex min-h-control items-center text-sm font-medium text-ctp-blue" to={`/archetypes/${report.cluster.id}`} state={buildComparisonState(report.cluster.id, championName, decklist)}>{report.cluster.name}</Link>}<p className="mt-1 text-xs text-ctp-subtext1">Standard tournaments · all recorded events{report.period && <span className="mt-1 block">{report.period.first} – {report.period.last}</span>}</p></div>}
       {report.status === 'unmatched' || report.status === 'ambiguous' ? <p role="status" className="text-sm text-ctp-subtext1">{report.status === 'ambiguous' ? 'This exact list has conflicting published build assignments.' : 'No published build assignment for this exact list.'}</p> : <>
         <p role="status" className="text-xs text-ctp-subtext1">{report.lists} distinct lists · {report.sightings} sightings · this list excluded{pending ? ' · Recalculating…' : ''}</p>
