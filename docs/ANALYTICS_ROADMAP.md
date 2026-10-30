@@ -412,3 +412,25 @@ Release A is approximately 94% complete based on completed report/discovery inte
 recovery tests and the bounded model corrections. Next: verify the complete analysis
 flow and remaining browser release checks. Broader effect support is a separate
 expansion; release verification remains the blocker, and the percentage is estimated.
+
+Full scenario-flow verification (2026-10-30): imported a local test list with four
+each of Creative Tinder, Pyretic Prognosis, Storm Slime and Ordinary Bear, plus
+Spirit of Fire and Silvie, With the Pack in Material. Import correctly blocks a
+missing Champion; adding the Material cards permits opening Analysis. Navigated
+Calculators → Scenario overview. At 390px and 1280px, source coverage is 2/4:
+Creative Tinder and Pyretic Prognosis modeled; Storm Slime and Silvie not modeled.
+The forecast caps at the actual 16-card Main size. Switching first → second updates
+natural cards seen from 9/11 to 10/12 at turns 3/5. Selecting Storm Slime updates the
+tracked card; keyboard Tab reaches the timeline with a visible solid outline.
+Visible selects are 48px high; neither viewport has horizontal overflow. No account
+save or publication was performed. Browser error/retry, text zoom and signed-in
+flows remain unverified. These were browser checks only; no runtime code changed.
+
+New release blocker: the same imported 16-card fixture's main Deck Report displays
+60-card-library damage/card-effect reports and 39.9% access for four copies at seven
+cards seen; Deck stats and Scenario overview correctly show 16 cards and 93.1%.
+Investigate the automatic report models' default/minimum library size and make the
+actual-size contract consistent, with an incomplete-list status. Next work is this
+denominator correction before further release checks. Release A stays approximately
+94% complete: scenario verification progressed, but this newly observed inconsistency
+prevents declaring the integrated report ready.
