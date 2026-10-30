@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 89% complete: the audit, shared comparison engine,
+Release A is approximately 90% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -346,3 +346,17 @@ event-deck request retry, text zoom, and signed-in flows remain unverified; extr
 model validation remains separately pending. Release A is approximately 89% complete,
 based on completed discovery/report integration and worker lifecycle coverage; the
 remaining model scope makes this an estimate.
+
+
+Event-load retry checks (2026-10-30): fixed a shared-cache race where a failed older
+request could evict a newer retry for the same event. Event loading is now isolated
+behind the existing hook, retaining the twelve-event limit and shared in-flight loads.
+Seven request-layer tests cover shared loads, network/HTTP/JSON failures, successful
+retry, late failure during and after retry, explicit refresh of published errors, and
+bounded eviction without cancelling existing consumers. Twenty-one combined focused
+tests, app type check and lint pass (existing warnings). Homepage comparison loading
+and keyboard collapse/reopen pass at 390px and 1280px, with 48px controls and no
+horizontal overflow. Browser-forced errors, text zoom, and signed-in flows remain
+unverified. Next: finish those browser checks and validate the extra-draw model.
+Release A is approximately 90% complete based on implemented report/discovery scope
+and worker/request recovery coverage; extra-draw scope remains uncertain.

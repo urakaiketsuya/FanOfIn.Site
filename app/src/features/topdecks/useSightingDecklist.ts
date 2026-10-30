@@ -1,40 +1,12 @@
 import { useEffect, useState } from "react";
-import type { DeckFormat, OmnidexDecklist, OmnidexDecklistEntry } from "@gatcg/shared";
+import { sightingEventLoader } from "./sightingEventLoader";
+import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 
 interface SightingDecklistState {
   loading: boolean;
   format?: DeckFormat;
   decklist: OmnidexDecklist | null;
   error: string | null;
-}
-
-interface PublishedEventBundle {
-  event?: { format: string };
-  decklists: OmnidexDecklistEntry[] | { error: string };
-}
-
-const eventBundleRequests = new Map<number, Promise<PublishedEventBundle>>();
-const MAX_CACHED_EVENT_BUNDLES = 12;
-
-function loadEventBundle(eventId: number): Promise<PublishedEventBundle> {
-  let request = eventBundleRequests.get(eventId);
-  if (!request) {
-    request = fetch(`/data/omnidex/events/${eventId}.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`${res.status}`);
-        return res.json() as Promise<PublishedEventBundle>;
-      })
-      .catch((error: unknown) => {
-        eventBundleRequests.delete(eventId);
-        throw error;
-      });
-    eventBundleRequests.set(eventId, request);
-    if (eventBundleRequests.size > MAX_CACHED_EVENT_BUNDLES) {
-      const oldest = eventBundleRequests.keys().next().value;
-      if (oldest !== undefined) eventBundleRequests.delete(oldest);
-    }
-  }
-  return request;
 }
 
 /**
@@ -51,7 +23,7 @@ export function useSightingDecklist(eventId: number, playerId: number, enabled: 
     let cancelled = false;
     setState({ loading: true, decklist: null, error: null });
 
-    loadEventBundle(eventId)
+    sightingEventLoader.load(eventId)
       .then((bundle) => {
         if (cancelled) return;
         if (!Array.isArray(bundle.decklists)) {
@@ -76,7 +48,7 @@ export function useSightingDecklist(eventId: number, playerId: number, enabled: 
   }, [eventId, playerId, enabled, attempt]);
 
   return { ...state, retry: () => {
-    eventBundleRequests.delete(eventId);
+    sightingEventLoader.invalidate(eventId);
     setState({ loading: true, decklist: null, error: null });
     setAttempt(value => value + 1);
   } };
