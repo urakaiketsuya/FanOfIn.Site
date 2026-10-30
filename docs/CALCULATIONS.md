@@ -6075,3 +6075,59 @@ and store-address fallback conflicts. Browser checks covered 390px and 1280px la
 48px filter targets, page overflow, region filtering, unassigned players, empty search,
 loading, and keyboard activation of the profile region link. Forced source failure and
 text zoom were not exercised.
+
+### US regional player strength
+
+`shared/src/regionalStrength.ts` produces season × format comparisons, published as
+`analysis/regional-strength.json` by the analysis pipeline. A focused rebuild is
+`node --import tsx pipeline/scripts/build-regional-strength.ts`; it updates only that
+artifact and its manifest entry. The Regions → Player strength surface loads this
+compact report without downloading individual tournament bundles.
+
+Cohorts use US account-country players and the existing inferred-play-region rules,
+with an endpoint of the earlier of season end or source snapshot timestamps. Only
+attendance up to that endpoint votes. Current store-address fallback is intentionally
+not applied to historical cohorts: historical event addresses are the evidence.
+Account country itself is the current public snapshot, not a historical residence
+record. Seasons are taken from explicit event season IDs. Results include completed
+physical individual events worldwide, separated by format; online/team events are
+excluded. No public decklist is required. Regions describe where players usually play,
+not the event venue. Unassigned players never become a fourth competitive region.
+
+- Active population: unique players in observed matches or complete major standings.
+- Head-to-head: completed two-player matches between different assigned US regions.
+  Byes, incomplete/malformed results and duplicate stage/round/table records are
+  excluded. Omnidex table IDs restart each round; numeric and object-form stage/round
+  IDs are supported by the shared match reader. Cells show wins / all matches,
+  W–L–D, and unique event counts. Draws remain in the denominator; opposing cell
+  percentages therefore need not sum to 100%. Fewer than 30 matches gets a compact
+  “Small sample” label (a display heuristic, not a significance test). No strongest-
+  region winner is inferred from these observational, travel-selected samples.
+- Rating distribution: overall Omnidex Elo from the latest checkpoint at/before the
+  endpoint, restricted to assigned players with at least ten observed matches in the
+  selected season and format. Never use present-day ratings for earlier seasons.
+  Sorted values yield linearly interpolated quartiles, median and 90th percentile.
+  All regional plots share one axis. The box is the middle half, line the median,
+  dot the top-decile threshold. Empty populations have no rating, not zero.
+- Major conversion: Worlds, Nationals, Ascent and Regionals. Require complete unique
+  individual standings covering the full roster, valid positive final placements,
+  a cut size of at least two and smaller than the roster, and a completed elimination
+  stage. Numerator: placements within the cut; denominator: assigned regional
+  player-event entries at those same eligible majors. Repeat entrants count once per
+  event, not once per season. Missing standings/cuts never count as failed conversion.
+  The UI shows covered/total majors and top cuts/entries.
+
+Coverage is visible beside results. Rating pools, attendance frequency, travel,
+format mix, missing pairings and inferred cohorts limit comparisons; the interface
+shows three complementary views rather than a synthetic ranking or causal claim.
+Tests cover historical cutoffs, unassigned/non-US exclusions, draws/orientation,
+format isolation, sparse/missing evidence, quantiles, full-field cut validation,
+byes, teams, and table-ID reuse across rounds.
+
+Verification (2026-10-30): six focused regional-strength fixtures and five existing
+competition-report tests passed, along with app/shared/pipeline typechecks and focused
+UI lint. Browser checks covered 390px mobile and 1280px desktop, 48px controls, no
+horizontal overflow, season/format selection, keyboard tab navigation, loading and
+sparse-format empty states. Forced network failure/retry and text zoom were not
+exercised. Other precomputed competition reports will pick up the shared round/table
+identity correction on the next analysis rebuild; this new artifact is already rebuilt.

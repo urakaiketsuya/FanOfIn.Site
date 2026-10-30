@@ -1,3 +1,4 @@
+import { writeRegionalStrength } from "./regionalStrength.js";
 import { writeCompetitionReports } from "./competitionReports.js";
 import { buildDeckPriceIndex } from "./deckPriceIndex.js";
 import { computeBudgetDecks } from "./budgetDecks.js";
@@ -116,6 +117,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     }),
     "utf-8",
   );
+
+  await writeRegionalStrength(DATA_DIR, completed, { generatedAt: new Date().toISOString(), history: Object.fromEntries(history) });
 
   const rivals = computeRivals(completed);
   await writeFile(

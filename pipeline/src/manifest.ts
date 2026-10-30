@@ -7,6 +7,7 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
 
 /** Every published dataset the app fetches via `usePublishedData` — key must match the `key` argument used at each call site (see app/src/features/.../data.ts), or the app won't recognize a change. */
 export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
+  { key: "regional-strength", file: "analysis/regional-strength.json" },
   { key: "community-collected", file: "community/collected.json" },
   { key: "prices", file: "prices.json" },
   { key: "price-history", file: "priceHistory.json" },

@@ -9,11 +9,14 @@ export const recordPercent = (r: RecordCount) => recordSize(r) ? 100 * r.wins / 
 export function addRecord(target: RecordCount, source: RecordCount) { target.wins += source.wins; target.losses += source.losses; target.ties += source.ties; }
 /** One completed two-person match; byes, malformed results, and repeated pairing IDs excluded. */
 export function competitionMatches(rounds: (OmnidexPairingsResponse | OmnidexApiError)[]) {
-  const seen = new Set<number>();
+  const seen = new Set<string>();
   const result: { a: number; b: number; winner: number | null }[] = [];
-  for (const round of rounds) if (!('error' in round)) for (const pair of round.pairings) {
-    if (seen.has(pair.id)) continue;
-    seen.add(pair.id);
+  for (const [index, round] of rounds.entries()) if (!('error' in round)) for (const pair of round.pairings) {
+    // Omnidex table IDs restart each round; published round/stage values may be objects.
+    const id = (value: unknown) => typeof value === 'number' ? value : value && typeof value === 'object' && 'id' in value ? value.id : undefined;
+    const key = `${id(round.stage) ?? ''}:${id(round.round) ?? index}:${pair.id}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
     if (pair.status !== 'complete' || pair.pairing.length !== 2) continue;
     const [a, b] = pair.pairing;
     if (a.id === b.id || a.id <= 0 || b.id <= 0) continue;

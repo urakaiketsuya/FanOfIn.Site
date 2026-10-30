@@ -1,3 +1,4 @@
+import RegionalStrength from "./RegionalStrength";
 import RegionalCompetitionReport from "../competition/RegionalCompetitionReport";
 import { useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -16,7 +17,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import type { RegionGroupMode } from "../../lib/regions";
 import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import Button from "../../components/ui/Button";
 import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
@@ -26,16 +27,17 @@ import { CardLiftList, KeywordLiftList } from "./RegionalLiftLists";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Countries", region: "Regions" };
-type ViewMode = "single" | "compare";
-const VIEW_MODES: ViewMode[] = ["single", "compare"];
+type ViewMode = "single" | "compare" | "strength";
+const VIEW_MODES: ViewMode[] = ["single", "compare", "strength"];
 type ContentTab = "archetypes" | "champions" | "cards" | "keywords" | "venues";
 const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords", "venues"];
-type Surface = "overview" | "insights" | "places" | "compare";
+type Surface = "overview" | "insights" | "places" | "compare" | "strength";
 const SURFACES: { key: Surface; label: string }[] = [
   { key: "overview", label: "Overview" },
   { key: "insights", label: "Insights" },
   { key: "places", label: "Places" },
   { key: "compare", label: "Compare" },
+  { key: "strength", label: "Player strength" },
 ];
 const MAX_VENUE_EVENTS_SHOWN = 3;
 
@@ -92,7 +94,7 @@ export default function RegionsIndex() {
   const { loading, options, regionByDeckId } = useRegionalDecks(group);
   const selectedRegion = regionOverride && options.some((option) => option.code === regionOverride) ? regionOverride : (options[0]?.code ?? null);
   const selectedOption = options.find((option) => option.code === selectedRegion);
-  const surface: Surface = view === "compare" ? "compare" : tab === "cards" || tab === "keywords" ? "insights" : tab === "venues" ? "places" : "overview";
+  const surface: Surface = view === "strength" ? "strength" : view === "compare" ? "compare" : tab === "cards" || tab === "keywords" ? "insights" : tab === "venues" ? "places" : "overview";
   const overviewTab: "archetypes" | "champions" = tab === "champions" ? "champions" : "archetypes";
   const insightTab: "cards" | "keywords" = tab === "keywords" ? "keywords" : "cards";
 
@@ -110,7 +112,7 @@ export default function RegionsIndex() {
   function selectSurface(next: Surface) {
     startTransition(() => setSearchParams((previous) => {
       const params = new URLSearchParams(previous);
-      if (next === "compare") params.set("view", "compare");
+      if (next === "compare" || next === "strength") params.set("view", next);
       else {
         params.delete("view");
         params.set("tab", next === "overview" ? "archetypes" : next === "insights" ? "cards" : "venues");
@@ -129,9 +131,9 @@ export default function RegionsIndex() {
 
   return (
     <PageLayout width="fluid" data-component="RegionsIndex">
-      <PageHeader title="Regions" description="See what players bring, then compare local metas." />
+      <PageHeader title="Regions" description={surface === "strength" ? "Compare US player results across seasons." : "See what players bring, then compare local metas."} />
 
-      <FilterBar>
+      {surface !== "strength" && <FilterBar>
         <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto text-xs text-ctp-subtext0">
           Area
           <select value={selectedRegion ?? ""} onChange={(event) => selectRegion(event.target.value)} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text sm:max-w-xs">
@@ -151,15 +153,18 @@ export default function RegionsIndex() {
             }}>{GROUP_LABELS[mode]}</Button>
           ))}
         </div>
-      </FilterBar>
+      </FilterBar>}
 
       {recalculating && <p role="status" className="text-sm text-ctp-subtext1">Recalculating…</p>}
-      {loading && <InlineState className="mt-6">Loading…</InlineState>}
-      {!loading && options.length === 0 && <EmptyState className="mt-6" title="Not enough regional data yet" />}
+      {surface !== "strength" && loading && <InlineState className="mt-6">Loading…</InlineState>}
+      {surface !== "strength" && !loading && options.length === 0 && <EmptyState className="mt-6" title="Not enough regional data yet" />}
 
-      {!loading && options.length > 0 && (
-        <>
-          <div className="mt-4"><Tabs tabs={SURFACES} active={surface} onChange={selectSurface} label="Regional analysis" variant="pill" /></div>
+      <div className="mt-4"><Tabs tabs={SURFACES} active={surface} onChange={selectSurface} baseId="regional-analysis" label="Regional analysis" variant="pill" wrap /></div>
+      <TabPanel baseId="regional-analysis" tab="strength" active={surface}><RegionalStrength /></TabPanel>
+
+      {surface !== "strength" && !loading && options.length > 0 && (
+        <TabPanel baseId="regional-analysis" tab={surface} active={surface}>
+
 
           {surface === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
 
@@ -222,7 +227,7 @@ export default function RegionsIndex() {
               </>}
             </div>
           )}
-        </>
+        </TabPanel>
       )}
     </PageLayout>
   );
