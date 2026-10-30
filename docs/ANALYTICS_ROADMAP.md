@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 80% complete: the audit, shared comparison engine,
+Release A is approximately 83% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -63,7 +63,9 @@ are unchanged; this removes computation from the UI thread, not total calculatio
 Comparison consumers now supplement page-scoped cards with the reactive local catalog,
 using the same catalog for calculation, artwork and detail links. The 1,894-list tournament
 sample now has complete composition references, matching its archetype handoff.
-Next: compact Browse placements. Release checks
+Most Played now offers an on-demand, three-card comparison preview using the same
+worker result and target-excluded cohort. Closed previews load no comparison partitions.
+Next: reuse the compact preview for tournament sightings and homepage discovery. Release checks
 and extra-draw model validation remain. The percentage is approximate because that
 validated model scope remains undecided.
 
@@ -296,3 +298,16 @@ joins and arithmetic. Local browser verification and release verification are tr
 passed on 2026-10-26 at revision `7a88075d3`.
 
 Release D / #4 is complete: 100% of the bounded scope (all eight page groups implemented, locally verified, deployed and live verified). No release blockers remain. Earlier continuation notes above record historical milestones; this completion record supersedes their pending work. Next recommended work is release A’s cohort/model audit and mobile-first deck-versus-build design. Player comprehension remains an ongoing evaluation, not a claimed release test.
+
+
+Browse preview increment (2026-10-30): Most Played expansions show the three largest
+absolute card-count differences from build medians, across Main and Material. Card
+art, names and links remain visible; reference-only cards retain zero current copies.
+The full comparison link carries the exact list snapshot. Expanded results retain
+cohort counts, dates and missing coverage. This is descriptive ordering, not advice.
+Twenty-four focused tests, app type check and lint pass (existing warnings). Mobile 390px
+and desktop 1280px checks cover loading, expansion/collapse, keyboard access, 48px
+controls and overflow. Full-report navigation preserves the 1,475-list / 1,873-sighting
+Silvie comparison and nine unavailable assigned lists. Forced failure/retry, empty-match UI and text zoom remain
+unverified in the browser. Sparse/missing references are covered by existing engine
+tests; preview ordering and unavailable references have focused tests.

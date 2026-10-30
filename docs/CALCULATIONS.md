@@ -5666,7 +5666,12 @@ The deck-page card comparison uses this resolver for Main and Material, includin
 reference-only cards with zero current copies. Its median and middle-50% range include
 absent cards as zero copies; inclusion uses all eligible distinct lists. The legacy
 Main-only bucket calculation remains available for other consumers.
-The new comparison projection is not yet displayed in the UI.
+The projection is used on deck pages, target-scoped archetype reports, and on-demand
+Most Played previews. The preview selects up to three nonzero absolute differences
+between current copies and the reference median across Main and Material. Ties use
+inclusion count descending, section and name ascending. It preserves reference-only
+cards, excludes unavailable distributions, and does not recompute the cohort or infer
+recommendations. Closed previews do not mount comparison data loaders or workers.
 
 
 ### Deck-to-archetype comparison context

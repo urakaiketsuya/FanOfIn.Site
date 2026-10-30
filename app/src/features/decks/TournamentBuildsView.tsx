@@ -222,7 +222,7 @@ export default function TournamentBuildsView({
         </label>}
       </DeckResultsOrder>
 
-      <div className={`mt-2 grid gap-3 transition-opacity grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] ${isPending ? "opacity-50" : ""}`}>
+      <div className={`mt-2 grid items-start gap-3 transition-opacity grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (
           <BrowseComparisonChoice key={deck.signature} deck={buildComparison(deck)}><PopularDeckRow
             deck={deck}
