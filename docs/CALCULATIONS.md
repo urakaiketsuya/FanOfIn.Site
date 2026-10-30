@@ -5894,3 +5894,17 @@ with visible card-link keyboard focus and no horizontal page overflow. Card link
 meet 48px touch targets; desktop chart rows align and browser errors are absent. Test fixtures cover class/level
 boundaries, self-only buffs, target limits, no targets, deterministic distributions,
 empty draws, and missing catalog data.
+
+### Conditional Slime outcomes
+
+The combat report now illustrates the five remaining reviewed Slime effects separately
+from its draw distributions. These are per-copy outcomes for the stated game state,
+not predicted activation rates. Baby Red requires class bonus and a Fire discard;
+Ethereal requires class bonus and a Tamer banished from Material; Cake requires class
+bonus, an entering Animal/Beast and sacrifice. Each contributes one power/buff.
+Lustrous examples reveal 0/2/4 Slimes: printed 1 plus that many buffs yields 1/3/5
+power and 0/2/4 recovery on death, assuming no other buffs or counter changes.
+Scepter's one activation requires resting and spending refinement; it buffs up to
+two distinct Slime allies once and draws one. No future activations or net board
+power after sacrificing/banishing an ally are inferred. These examples do not
+change the forecast's unmodeled list or sampled totals. Sideboard is excluded.

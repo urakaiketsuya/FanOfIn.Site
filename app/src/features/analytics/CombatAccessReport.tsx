@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { computeCombatAccessForecast, REPORT_DRAW_CHECKPOINTS, type AnalyticsDeck, type Card } from '@gatcg/shared';
+import { CONDITIONAL_COMBAT_RESULTS, computeCombatAccessForecast, REPORT_DRAW_CHECKPOINTS, type AnalyticsDeck, type Card } from '@gatcg/shared';
 import AssociatedCards from '../../components/AssociatedCards';
 import Panel from '../../components/ui/Panel';
 
@@ -9,6 +9,8 @@ export default function CombatAccessReport({ deck, cardsByName }: { deck: Analyt
   const boosts = new Set(points.flatMap(point => point.sources.filter(source => source.addedPower > 0).map(source => source.name)));
   const lines = [...deck.main, ...deck.material].filter(line => allies.has(line.name) || boosts.has(line.name));
   const unmodeled = [...new Set(points.flatMap(point => point.unmodeled))];
+  const conditional = [...deck.main, ...deck.material].filter(line => line.quantity > 0 && cardsByName.has(line.name) && CONDITIONAL_COMBAT_RESULTS[line.name]);
+  const remaining = unmodeled.filter(name => !conditional.some(line => line.name === name));
   const different = points.some(point => point.printedPower !== point.boostedPower);
   const scale = Math.max(1, ...points.flatMap(point => [point.printedRange.high, point.boostedRange.high]));
   const models = different ? ['printedRange', 'boostedRange'] as const : ['printedRange'] as const;
@@ -33,7 +35,20 @@ export default function CombatAccessReport({ deck, cardsByName }: { deck: Analyt
         })}</div>
       </section>)}</div>
       <AssociatedCards lines={lines} cardsByName={cardsByName} />
-      {unmodeled.length > 0 && <p role="status" className="mt-3 text-xs text-ctp-yellow">Other conditional effects not counted: {unmodeled.join(' · ')}</p>}
+      {conditional.length > 0 && <section className="mt-5" data-component="ConditionalCombatResults">
+        <h4 className="font-semibold">Conditional outcomes</h4>
+        <p className="mt-1 text-xs text-ctp-subtext1">Per copy · separate from draw ranges</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">{conditional.map(line => {
+          const result = CONDITIONAL_COMBAT_RESULTS[line.name];
+          return <article key={line.name} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
+            <AssociatedCards lines={[line]} cardsByName={cardsByName} />
+            <p className="my-3 text-xs text-ctp-subtext1">{result.condition}</p>
+            <dl className="flex flex-wrap gap-4">{result.outcomes.map(outcome => <div key={outcome.label}><dt className="text-xs text-ctp-subtext1">{outcome.label}</dt><dd className="text-sm font-semibold">{outcome.value}</dd></div>)}</dl>
+            {line.name === 'Lustrous Slime' && <p className="mt-2 text-xs text-ctp-subtext1">Power on entry · recovery on death</p>}
+          </article>;
+        })}</div>
+      </section>}
+      {remaining.length > 0 && <p role="status" className="mt-3 text-xs text-ctp-yellow">Other conditional effects not counted: {remaining.join(' · ')}</p>}
     </>}
   </Panel>;
 }

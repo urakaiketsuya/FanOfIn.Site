@@ -37,3 +37,13 @@ test('combat report shows both ranges automatically and handles missing/empty de
   assert.match(renderCombat([]), /No attacking allies found/);
   assert.match(renderCombat([{name: 'Missing', quantity: 1}]), /attack report unavailable/);
 });
+
+test('conditional Slime outcomes are separate from draw ranges and exclude sideboard', () => {
+  const html = renderToStaticMarkup(<MemoryRouter><CombatAccessReport deck={{main: [{name: 'Lustrous Slime', quantity: 3}, {name: 'Ethereal Slime', quantity: 4}], material: [{name: 'Verdant Scepter', quantity: 1}], sideboard: [{name: 'Forest Cake', quantity: 4}]}} cardsByName={catalog} /></MemoryRouter>);
+  assert.match(html, /Conditional outcomes/);
+  assert.match(html, /separate from draw ranges/);
+  assert.match(html, /5 power · 4 recovery/);
+  assert.match(html, /banish a Tamer from Material/);
+  assert.match(html, /rest and spend 1 refinement/);
+  assert.doesNotMatch(html, /Forest Cake|Other conditional effects not counted/);
+});

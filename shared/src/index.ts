@@ -138,3 +138,4 @@ export * from './cardAccess.js';
 export * from './deckQuantityEvidence.js';
 
 export * from "./deckBuildComparison.js";
+export * from "./conditionalCombatResults.js";
