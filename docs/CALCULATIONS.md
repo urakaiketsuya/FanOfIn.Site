@@ -6161,3 +6161,23 @@ failure and text-zoom behavior were not re-tested for this selector extension.
 Regional rating eligibility now starts at five recorded matches in the selected
 period and format, for both seasonal and all-time views. Nine focused tests pass,
 including the exact four/five-match boundary; the published report was rebuilt.
+
+### Regional strength visual comparisons
+
+The regional strength view shows each unordered regional matchup once. Bar segments
+are the left region's wins, draws, and right region's wins, divided by all recorded
+matches between the pair; draws remain in both win-rate denominators. Text shows
+counts, percentages, event counts, and the existing under-30-match sample label.
+
+Season trends exclude All time, use the selected format, and order seasons by their
+as-of date. Median and 90th-percentile Elo reuse `ratingQuantile`; top-cut conversion
+uses top cuts / major entries. Missing ratings or zero major entries are gaps, not
+zero results. Seasons are equally spaced. Selecting a season updates the period URL
+and all supporting views; the measure also persists in the URL. Region line patterns
+and labels supplement color. Existing rating-depth and major conversion views remain.
+
+Visual verification: 390px mobile and 1280px desktop, keyboard season selection,
+all three measures, linked period/format changes, 48px controls, no horizontal
+overflow, loading/recalculation and real empty free-play results checked. Existing
+error/retry handling is unchanged; a network failure was not injected in this pass.
+The nine regional-strength analysis tests pass.

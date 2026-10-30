@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ALL_TIME_STRENGTH_ID, ratingQuantile, STRENGTH_REGIONS, type RegionalStrengthData, type StrengthSeason } from '@gatcg/shared';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import PublishedSourceStatus from '../../components/PublishedSourceStatus';
+import StrengthTrends from './StrengthTrends';
 import Panel from '../../components/ui/Panel';
 import { EmptyState } from '../../components/ui/ContentState';
 
@@ -24,25 +25,24 @@ function StrengthCharts({ report }: { report: StrengthSeason }) {
     </Panel>)}</div>
     <section aria-labelledby="strength-head-to-head">
       <h2 id="strength-head-to-head" className="text-lg font-semibold">Cross-region results</h2>
-      <p className="mb-3 text-sm text-ctp-subtext0">Row region’s win rate · W–L–D</p>
-      <Panel padding="sm">
-        <table className="w-full table-fixed text-center text-xs sm:text-sm">
-          <thead><tr><th scope="col" className="w-1/6 py-3">vs.</th>{STRENGTH_REGIONS.map(r => <th scope="col" key={r}>{label(r)}</th>)}</tr></thead>
-          <tbody>{STRENGTH_REGIONS.map(a => <tr key={a}><th scope="row" className="py-5">{label(a)}</th>{STRENGTH_REGIONS.map(b => {
-            const pair = report.pairs.find(p => (p.a === a && p.b === b) || (p.a === b && p.b === a));
-            if (a === b) return <td key={b} aria-label="Same region">—</td>;
-            if (!pair) return <td key={b}>No matches</td>;
-            const wins = pair.a === a ? pair.wins : pair.losses, losses = pair.a === a ? pair.losses : pair.wins;
-            const n = wins+losses+pair.draws;
-            return <td key={b} className={`rounded-lg px-1 py-4 ${wins > losses ? 'bg-ctp-blue/15' : 'bg-ctp-surface0/50'}`}>
-              <div className="text-base font-semibold tabular-nums sm:text-xl">{percent(wins,n)}</div>
-              <div className="mt-1 tabular-nums">{wins}–{losses}–{pair.draws}</div>
-              <div className="mt-1 text-ctp-subtext0">{pair.events} {pair.events === 1 ? "event" : "events"}</div>
-              {n < 30 && <div className="mt-1 text-ctp-subtext0">Small sample</div>}
-            </td>;
-          })}</tr>)}</tbody>
-        </table>
-      </Panel>
+      <Panel><div className="space-y-6">{STRENGTH_REGIONS.flatMap((a, i) => STRENGTH_REGIONS.slice(i+1).map(b => {
+        const pair = report.pairs.find(p => (p.a === a && p.b === b) || (p.a === b && p.b === a));
+        const wins = pair ? (pair.a === a ? pair.wins : pair.losses) : 0;
+        const losses = pair ? (pair.a === a ? pair.losses : pair.wins) : 0;
+        const draws = pair?.draws ?? 0, total = wins+losses+draws;
+        return <div key={`${a}-${b}`}>
+          <div className="mb-2 flex justify-between text-sm font-semibold"><span>{label(a)}</span><span>{label(b)}</span></div>
+          {total ? <>
+            <div className="flex h-7 overflow-hidden rounded-full bg-ctp-surface0" role="img" aria-label={`${label(a)} ${wins} wins, ${draws} draws, ${label(b)} ${losses} wins`}>
+              <div className="bg-ctp-blue" style={{width: `${100*wins/total}%`}} />
+              <div className="bg-ctp-overlay1" style={{width: `${100*draws/total}%`}} />
+              <div className="bg-ctp-mauve" style={{width: `${100*losses/total}%`}} />
+            </div>
+            <div className="mt-2 flex justify-between gap-2 text-xs tabular-nums"><span>{wins} wins · {percent(wins,total)}</span><span>{draws} draws</span><span>{losses} wins · {percent(losses,total)}</span></div>
+            <p className="mt-2 text-xs text-ctp-subtext0">{total.toLocaleString()} matches · {pair!.events} events{total < 30 ? ' · Small sample' : ''}</p>
+          </> : <p className="text-sm text-ctp-subtext0">No matches</p>}
+        </div>;
+      }))}</div></Panel>
       <p className="mt-2 text-xs text-ctp-subtext0">{report.pairingEvents} of {report.events} events have recorded matches · {report.unassigned} {allTime ? 'recorded' : 'active'} US players unassigned</p>
     </section>
     <section aria-labelledby="strength-ratings">
@@ -105,6 +105,10 @@ export default function RegionalStrength() {
       </div>
       {pending && <p role="status">Recalculating…</p>}
       <p className="mb-3 text-xs text-ctp-subtext0">{report.seasonId === ALL_TIME_STRENGTH_ID ? 'Current inferred US regions · all recorded results' : 'US play regions inferred'} through {report.asOf.slice(0,10)}</p>
+      <StrengthTrends reports={data?.seasons ?? []} format={format} selected={season!}
+        metric={params.get('strengthMetric') ?? 'median'}
+        onMetric={value => change('strengthMetric', value)}
+        onSelect={id => change('strengthSeason', String(id))} />
       <StrengthCharts report={report} />
     </>}
   </div>;
