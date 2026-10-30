@@ -495,3 +495,19 @@ and two copies, and Card traits retained the additional charts. Browser loading,
 partial coverage, unmatched and Pantheon states were checked. Sparse, ambiguous,
 invalid and duplicate-cohort cases are covered by calculation tests; forced network
 failure/retry, text zoom, and signed-in saved-deck flows were not browser-tested.
+
+## Tournament player pages
+
+Player profiles open on recent results: format-specific win percentages and match counts,
+with champion artwork identifying builds and opponents. Use a common 0–100% bar scale;
+card size does not encode performance. Keep the period and event scope visible once.
+The compact identity header retains all-time rating and W–L–T; rating history and
+milestones follow recent results. Cards, Opponents, Events, and Judged are peer views.
+Preserve event filters and card expansions when switching tabs; link tabs through the URL.
+
+The Cards view uses all-time public-deck inclusion (decks containing a card divided by
+all public decks for that player), split by Main, Material, and Sideboard. Show percentages,
+counts, artwork and names together. Start with six cards per section and allow expansion.
+Do not mix this denominator with recent match results. Rankings stay ordered by rating and
+use wrapping rows on phones, with all-time record separate from recent Standard wins.
+Use explicit provisional labels and loading, unavailable, retry and empty states.

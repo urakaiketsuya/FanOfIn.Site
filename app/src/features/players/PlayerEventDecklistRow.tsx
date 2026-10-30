@@ -28,12 +28,12 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
 
   return (
     <div data-component="PlayerEventDecklistRow">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
         <div className="min-w-0 flex-1">
           <EventRow event={event} />
         </div>
         {event.decklists && (
-          <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)} className="shrink-0">
+          <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded} className="shrink-0">
             {expanded ? "Hide decklist" : "View decklist"}
           </Button>
         )}
@@ -49,7 +49,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
                   {topDecks.bestOverall && (
                     <Link
                       to={`/compare?add=${deckId},${topDecks.bestOverall.eventId}:${topDecks.bestOverall.player}`}
-                      className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                      className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
                     >
                       Compare with best {championName} deck &rarr;
                     </Link>
@@ -57,7 +57,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
                   {topDecks.bestArchetype && (
                     <Link
                       to={`/compare?add=${deckId},${topDecks.bestArchetype.eventId}:${topDecks.bestArchetype.player}`}
-                      className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                      className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
                     >
                       Compare with top {topDecks.bestArchetype.clusterName} build &rarr;
                     </Link>

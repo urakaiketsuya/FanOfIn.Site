@@ -16,9 +16,12 @@ import { useChampionCardImages } from "./useChampionCardImages";
 import PlayerEventDecklistRow from "./PlayerEventDecklistRow";
 import { championNameToSlug } from "../../lib/championSlug";
 import EventRow from "../tournaments/EventRow";
-import CardImage from "../../components/CardImage";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import TopCardsSections from "../../components/TopCardsSections";
+import CardArtTile from "../../components/CardArtTile";
+import Button from "../../components/ui/Button";
+import { Bar } from "../events/EventReportVisuals";
+import PlayerCardUsage from "./PlayerCardUsage";
+import { useTabParam } from "../../lib/useTabParam";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatCountry } from "../../lib/format";
@@ -30,7 +33,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { EmptyState } from "../../components/ui/ContentState";
 import PlayerEventFilters from "./PlayerEventFilters";
 
-type PlayerTab = "overview" | "events" | "judged";
+type PlayerTab = "overview" | "cards" | "events" | "opponents" | "judged";
 const PAGE_SIZE = 50;
 
 export default function PlayerProfile() {
@@ -39,6 +42,12 @@ export default function PlayerProfile() {
 
   const playersData = useOmnidexPlayers();
   const judgesData = useOmnidexJudges();
+  const playersStatus = usePublishedDataStatus("omnidex-players", "/data/omnidex/players.json");
+  const judgesStatus = usePublishedDataStatus("omnidex-judges", "/data/omnidex/judges.json");
+  const rivalsStatus = usePublishedDataStatus("analysis-rivals", "/data/analysis/rivals.json");
+  const eloStatus = usePublishedDataStatus("analysis-elo", "/data/analysis/elo.json");
+  const eventsStatus = usePublishedDataStatus("omnidex-index", "/data/omnidex/index.json");
+  const decksStatus = usePublishedDataStatus("analysis-player-decks", "/data/analysis/player-decks.json");
   const eloData = useEloData();
   const eloHistoryData = useEloHistoryData();
   const hipsterData = useHipsterData();
@@ -99,7 +108,6 @@ export default function PlayerProfile() {
   const eventChampion = deckFilter.champion || null;
   const setEventChampion = (champion: string | null) => setDeckFilter(f => ({ ...f, champion: champion ?? "" }));
   const [eventSeasonId, setEventSeasonId] = useState<number | null>(null);
-  const [manualTab, setManualTab] = useState<PlayerTab | null>(null);
   const [eventsVisibleCount, setEventsVisibleCount] = useState(PAGE_SIZE);
   const [judgedVisibleCount, setJudgedVisibleCount] = useState(PAGE_SIZE);
 
@@ -158,13 +166,15 @@ export default function PlayerProfile() {
   const availableTabs = useMemo(() => {
     const list: { key: PlayerTab; label: string }[] = [];
     if (player) {
-      list.push({ key: "overview", label: "Overview" });
+      list.push({ key: "overview", label: "Results" });
+      list.push({ key: "cards", label: "Cards" });
       list.push({ key: "events", label: `Events (${events.length})` });
+      list.push({ key: "opponents", label: "Opponents" });
     }
     if (judge) list.push({ key: "judged", label: `Judged (${judgedEvents.length})` });
     return list;
   }, [player, judge, events.length, judgedEvents.length]);
-  const tab = manualTab ?? availableTabs[0]?.key ?? "overview";
+  const [tab, setManualTab] = useTabParam<PlayerTab>("tab", availableTabs.map(t => t.key), availableTabs[0]?.key ?? "overview");
 
   const championImages = useChampionCardImages(deckProfile?.topChampions.map((c) => c.name) ?? []);
   const allTopCardNames = useMemo(() => {
@@ -189,40 +199,65 @@ export default function PlayerProfile() {
 
   return (
     <PageLayout data-component="PlayerProfile">
-      <Link to="/players" className="text-sm text-ctp-blue hover:underline">
+      <Link to="/players" className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">
         &larr; All players
       </Link>
 
+      <PublishedSourceStatus label="Players" status={playersStatus} hasData={!!playersData} />
+      {!player && <PublishedSourceStatus label="Judges" status={judgesStatus} hasData={!!judgesData} />}
       {(player || judge) && (
         <>
-          <Panel elevation={1} className="mt-3 overflow-hidden">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <h1 className="text-2xl font-bold text-ctp-text">{player?.username ?? judge?.username}</h1>
+          <Panel elevation={1} className="mt-3 overflow-hidden border-t-4 border-t-ctp-blue">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="mb-1 text-xs font-medium uppercase tracking-wide text-ctp-subtext0">{player ? "Player record" : "Judge record"}</p>
+                <h1 className="break-words text-3xl font-bold text-ctp-text sm:text-4xl">{player?.username ?? judge?.username}</h1>
                 {(() => {
                   const code = player?.country ?? judge?.country ?? "";
                   const region = formatCountry(code);
                   return region && (
-                    <Link to={`/regions?group=country&region=${code}`} className="mt-1 inline-block text-sm text-ctp-subtext0 hover:text-ctp-blue hover:underline">
+                    <Link to={`/regions?group=country&region=${code}`} className="mt-1 inline-flex min-h-control items-center text-sm text-ctp-subtext0 hover:text-ctp-blue hover:underline">
                       {region}
                     </Link>
                   );
                 })()}
               </div>
+              {deckProfile?.topChampions[0] && <Link to={`/champions/${championNameToSlug(deckProfile.topChampions[0].name)}`} className="w-20 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={championImages.get(deckProfile.topChampions[0].name)} name={deckProfile.topChampions[0].name} artworkOnly /><span className="mt-1 block text-center text-xs">{deckProfile.topChampions[0].name}</span></Link>}
+
+            </div>
+
               {isProvisionalRating(rating?.matches ?? 0) && rating && (
-                <Link to="/methodology#elo" className="rounded-full bg-ctp-yellow/10 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:underline">
+                <Link to="/methodology#elo" className="inline-flex min-h-control items-center rounded-full bg-ctp-yellow/10 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:underline">
                   Provisional rating
                 </Link>
               )}
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {player && <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />}
+            <div className={`mt-3 grid gap-2 ${judge ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-[1fr_1.5fr_1fr]"}`}>
               {rating && <ProfileMetric label="Rating" value={Math.round(rating.rating).toLocaleString()} />}
-              {rating && <ProfileMetric label="Record" value={`${rating.wins}-${rating.losses}${rating.ties ? `-${rating.ties}` : ""}`} />}
-              {player && <ProfileMetric label="Events" value={allEvents.length.toLocaleString()} />}
+              {rating && <ProfileMetric label="All-time W–L–T" value={`${rating.wins}–${rating.losses}–${rating.ties}`} />}
+              {player && <ProfileMetric label="Events" value={index ? allEvents.length.toLocaleString() : "—"} />}
               {judge && <ProfileMetric label="Judge level" value={judge.judgeLevel} />}
+              {!player && judge && <><ProfileMetric label="Experience" value={judge.judgeExperience.toLocaleString()} /><ProfileMetric label="Judged events" value={judge.eventIds.length} /></>}
             </div>
 
+
+          </Panel>
+        </>
+      )}
+
+      {availableTabs.length > 0 && (
+        <div className="mt-5"><Tabs tabs={availableTabs} active={tab} onChange={setManualTab} label="Player profile view" baseId="player-profile" variant="pill" wrap /></div>
+      )}
+
+      <TabPanel baseId="player-profile" tab="overview" active={tab}>
+      {player && <PlayerCompetitionReport playerId={playerId} />}
+      {recentEvents.length > 0 && (
+        <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <Button variant="ghost" size="sm" onClick={() => setManualTab("events")}>View all {allEvents.length}</Button> : undefined}>
+          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />)}</div>
+        </Section>
+      )}
+
+      {((ratingHistory?.length ?? 0) >= 2 || hipster || playerAchievements.length > 0) && <Section className="mt-6" heading="compact" title="Rating & milestones">
             {ratingHistory && ratingHistory.length >= 2 && (
               <div className="mt-4 border-t border-ctp-surface1 pt-3">
                 <p className="text-xs font-medium text-ctp-subtext0">Rating trend</p>
@@ -230,81 +265,31 @@ export default function PlayerProfile() {
               </div>
             )}
 
-            {(hipster || judge || (!player && judge) || playerAchievements.length > 0) && (
-              <details className="mt-4 border-t border-ctp-surface1 pt-3">
-                <summary className="cursor-pointer text-sm font-medium text-ctp-blue">More profile details</summary>
-                <div className="mt-3 space-y-2 text-sm text-ctp-subtext1">
-                  {hipster && <p>Build novelty {(hipster.avgScore * 100).toFixed(0)} across {hipster.deckCount} deck{hipster.deckCount === 1 ? "" : "s"}.</p>}
-                  {judge && <p>{judge.judgeExperience.toLocaleString()} judge experience.</p>}
-                  {!player && judge && <p className="text-ctp-subtext0">This judge is not in the ingested player roster.</p>}
-                  {playerAchievements.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {playerAchievements.map(({ unlock, definition }) => (
-                        <span key={definition.id} title={`${definition.description} (${unlock.context})`} className="rounded-full border border-ctp-yellow px-2 py-0.5 text-xs text-ctp-yellow">
-                          {definition.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </details>
-            )}
-          </Panel>
-        </>
-      )}
-
-      {availableTabs.length > 1 && (
-        <div className="mt-5"><Tabs tabs={availableTabs} active={tab} onChange={setManualTab} label="Player profile view" baseId="player-profile" variant="pill" /></div>
-      )}
-
-      <TabPanel baseId="player-profile" tab="overview" active={tab}>
-      {player && <PlayerCompetitionReport playerId={playerId} />}
-      {recentEvents.length > 0 && (
-        <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <button type="button" onClick={() => setManualTab("events")} className="text-xs font-medium text-ctp-blue hover:underline">View all {allEvents.length}</button> : undefined}>
-          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />)}</div>
-        </Section>
-      )}
-
-      {deckProfile && deckProfile.topChampions.length > 0 && (
-        <Section className="mt-6" heading="compact" title={`Most played champions (${deckProfile.totalDecks} decks)`}>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2">
-            {deckProfile.topChampions.map((c) => {
-              const card = championImages.get(c.name);
-              return (
-                <CardHoverPreview key={c.name} image={card?.editions[0]?.image} alt={c.name}>
-                  <Link
-                    to={`/champions/${championNameToSlug(c.name)}`}
-                    className="flex items-center gap-2 text-sm hover:text-ctp-blue"
-                  >
-                    {card?.editions[0] ? (
-                      <CardImage
-                        image={card.editions[0].image}
-                        alt={c.name}
-                        className="h-14 w-10 rounded object-cover object-top"
-                      />
-                    ) : (
-                      <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
-                    )}
-                    <span className="flex-1 text-ctp-text">{c.name}</span>
-                    <span className="text-ctp-subtext0">{c.deckCount} decks</span>
-                  </Link>
-                </CardHoverPreview>
-              );
-            })}
-          </div>
-        </Section>
-      )}
-
-      {allTopCardNames.length > 0 && deckProfile && (
-        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Most played cards">
-          <div className="mt-2">
-            <TopCardsSections topCards={deckProfile.topCards} cardImages={cardImages} />
-          </div>
-        </Section>
-      )}
-
+            {(hipster || judge || playerAchievements.length > 0) && <div className="mt-4 flex flex-wrap gap-2 border-t border-ctp-surface1 pt-3 text-xs text-ctp-subtext1">
+              {hipster && <span className="rounded-md bg-ctp-base/70 px-3 py-2">Build novelty {(hipster.avgScore * 100).toFixed(0)} · {hipster.deckCount} decks</span>}
+              {judge && <span className="rounded-md bg-ctp-base/70 px-3 py-2">{judge.judgeExperience.toLocaleString()} judge XP</span>}
+              {playerAchievements.map(({ definition }) => <span key={definition.id} className="rounded-md bg-ctp-yellow/10 px-3 py-2 text-ctp-yellow">{definition.name}</span>)}
+            </div>}
+      </Section>}
+      </TabPanel>
+      <TabPanel baseId="player-profile" tab="cards" active={tab} keepMounted>
+      <Section className="mt-6" heading="compact" title="Most played champions">
+        <PublishedSourceStatus label="Player decks" status={decksStatus} hasData={!!playerDecksData} />
+        {deckProfile && <p className="mb-4 text-xs text-ctp-subtext1">All-time · {deckProfile.totalDecks} public decks · Deck inclusion</p>}
+        {playerDecksData && !deckProfile && <p className="text-sm text-ctp-subtext1">No public decks recorded.</p>}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">{deckProfile?.topChampions.map(c => {
+          const value = deckProfile.totalDecks ? c.deckCount / deckProfile.totalDecks * 100 : 0;
+          return <article key={c.name} className="min-w-0 space-y-2"><Link to={`/champions/${championNameToSlug(c.name)}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile name={c.name} card={championImages.get(c.name)} artworkOnly /><span className="mt-2 block text-sm font-semibold">{c.name}</span></Link><div className="flex flex-wrap justify-between gap-1 text-sm"><strong>{value.toFixed(0)}%</strong><span className="text-xs text-ctp-subtext1">{c.deckCount}/{deckProfile.totalDecks} decks</span></div><Bar value={value} label={`${c.name} deck inclusion`} blue /></article>;
+        })}</div>
+      </Section>
+      {allTopCardNames.length > 0 && deckProfile && <Section className="mt-6" heading="compact" title="Most played cards"><PlayerCardUsage topCards={deckProfile.topCards} cards={cardImages} totalDecks={deckProfile.totalDecks} /></Section>}
+      </TabPanel>
+      <TabPanel baseId="player-profile" tab="opponents" active={tab}>
+      <PublishedSourceStatus label="Opponents" status={rivalsStatus} hasData={!!rivalsData} />
+      <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />
+      {rivalsData && eloData && upsets.length === 0 && !rivalsProfile?.rivals.length && <p className="mt-6 text-sm text-ctp-subtext1">No recorded opponents.</p>}
       {(upsets.length > 0 || (rivalsProfile && rivalsProfile.rivals.length > 0)) && (
-        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Competitive context" description="Notable rating swings and frequently faced opponents.">
+        <Section className="mt-6" heading="compact" title="Head-to-head · All-time">
           {upsets.length > 0 && (
             <div className="space-y-1 text-sm">
               <h3 className="mb-2 font-medium text-ctp-text">Notable upsets</h3>
@@ -317,7 +302,7 @@ export default function PlayerProfile() {
               <div className="space-y-1">
                 {rivalsProfile.rivals.map((r) => {
                   const opponent = playersData?.players.find((p) => p.id === r.opponentId);
-                  return <Link key={r.opponentId} to={`/players/${r.opponentId}`} className="flex items-center gap-2 text-sm hover:text-ctp-blue"><span className="flex-1 truncate text-ctp-text">{opponent?.username ?? `Player #${r.opponentId}`}</span><span className="text-ctp-subtext0">{r.wins}-{r.losses}{r.ties > 0 ? `-${r.ties}` : ""}</span><span className={r.winRate < 0.5 ? "text-ctp-red" : r.winRate > 0.5 ? "text-ctp-green" : "text-ctp-subtext1"}>{(r.winRate * 100).toFixed(0)}%</span></Link>;
+                  return <Link key={r.opponentId} to={`/players/${r.opponentId}`} className="flex min-h-control flex-wrap items-center gap-2 rounded border-b border-ctp-surface1 py-2 text-sm hover:text-ctp-blue focus-visible:outline-2"><span className="min-w-0 flex-1 break-words text-ctp-text">{opponent?.username ?? `Player #${r.opponentId}`}</span><span className="text-ctp-subtext0">{r.wins}-{r.losses}{r.ties > 0 ? `-${r.ties}` : ""}</span><span className={r.winRate < 0.5 ? "text-ctp-red" : r.winRate > 0.5 ? "text-ctp-green" : "text-ctp-subtext1"}>{(r.winRate * 100).toFixed(0)}%</span></Link>;
                 })}
               </div>
             </div>
@@ -326,18 +311,20 @@ export default function PlayerProfile() {
       )}
       </TabPanel>
 
-      <TabPanel baseId="player-profile" tab="events" active={tab}>
+      <TabPanel baseId="player-profile" tab="events" active={tab} keepMounted>
       {player && (
         <Section
           className="mt-6"
           heading="compact"
           title={`Events (${events.length}${events.length !== allEvents.length ? ` of ${allEvents.length}` : ""})`}
         >
+          <PublishedSourceStatus label="Events" status={eventsStatus} hasData={!!index} />
           <DeckSearchFilters cards={deckFilter.cards} onCardsChange={cards => setDeckFilter(f => ({ ...f, cards }))} />
           {!!deckFilter.cards.length && <PublishedSourceStatus label="Deck cards" status={cardMatches.status} hasData={cardMatches.hasData} />}
           <PlayerEventFilters categories={categoriesPresent} champions={championsPresent} seasons={seasonsPresent} category={eventCategory} champion={eventChampion} seasonId={eventSeasonId} onCategoryChange={setEventCategory} onChampionChange={setEventChampion} onSeasonChange={setEventSeasonId} />
 
           <div className="mt-2 space-y-2">
+            {index && events.length === 0 && <p className="py-4 text-sm text-ctp-subtext1">No events match these filters.</p>}
             {visibleEvents.map((event) => (
               <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />
             ))}
@@ -369,5 +356,5 @@ export default function PlayerProfile() {
 }
 
 function ProfileMetric({ label, value }: { label: string; value: string | number }) {
-  return <div className="rounded-lg bg-ctp-base/70 px-3 py-2"><div className="text-lg font-semibold tabular-nums text-ctp-text">{value}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>;
+  return <div className="min-w-0 rounded-lg bg-ctp-base/70 px-3 py-2"><div className="break-words text-lg font-semibold tabular-nums sm:text-2xl text-ctp-text">{value}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>;
 }

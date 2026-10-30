@@ -13,8 +13,10 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
-import { isProvisionalRating, PROVISIONAL_MATCH_THRESHOLD } from "../../lib/eloProvisional";
+import { isProvisionalRating } from "../../lib/eloProvisional";
 import PageLayout from "../../components/layout/PageLayout";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 50;
@@ -62,28 +64,14 @@ export default function PlayersIndex() {
         title="Players"
         description={
           tab === "players"
-            ? "Ratings are reconstructed from Omnidex's own per-match Elo deltas across every ingested event."
-            : "Everyone who's judged an ingested event, sorted by judge level."
+            ? "Player rankings, results, and decks."
+            : "Judges by level and experience."
         }
       />
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {TABS.map((mode) => (
-          <button
-            key={mode}
-            type="button"
-            onClick={() => setTab(mode)}
-            aria-pressed={tab === mode}
-            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-              tab === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {TAB_LABELS[mode]}
-          </button>
-        ))}
-      </div>
-
-      {tab === "players" ? <PlayerRankingView topChampionById={topChampionById} /> : <JudgesView topChampionById={topChampionById} />}
+      <div className="mt-4"><Tabs tabs={TABS.map(key => ({ key, label: TAB_LABELS[key] }))} active={tab} onChange={setTab} baseId="player-directory" label="Players and judges" variant="pill" /></div>
+      <TabPanel baseId="player-directory" tab="players" active={tab} keepMounted><PlayerRankingView topChampionById={topChampionById} /></TabPanel>
+      <TabPanel baseId="player-directory" tab="judges" active={tab} keepMounted><JudgesView topChampionById={topChampionById} /></TabPanel>
     </PageLayout>
   );
 }
@@ -93,6 +81,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
   const recentById = useMemo(() => new Map(recent?.rows.map(p => [p.playerId, p.formats.find(f => f.format === "standard")]) ?? []), [recent]);
   const playersData = useOmnidexPlayers();
   const eloData = useEloData();
+  const playersStatus = usePublishedDataStatus("omnidex-players", "/data/omnidex/players.json");
+  const eloStatus = usePublishedDataStatus("analysis-elo", "/data/analysis/elo.json");
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -130,66 +120,38 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
         placeholder="Search by username…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
+        className="mt-4 min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
       />
 
-      {(!playersData || !eloData) && <InlineState className="mt-6">Loading…</InlineState>}
+      <PublishedSourceStatus label="Players" status={playersStatus} hasData={!!playersData} />
+      <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />
       {playersData && eloData && rows.length === 0 && (
         <InlineState className="mt-6">No rated players match "{search}".</InlineState>
       )}
       {playersData && eloData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {rows.length} rated player{rows.length === 1 ? "" : "s"}
-          {" · "}
-          <span className="text-ctp-yellow">*</span> provisional – fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches ({" "}
-          <Link to="/methodology#elo" className="text-ctp-blue hover:underline">learn more</Link>)
+
         </p>
       )}
 
       <PublishedSourceStatus label="Recent records" status={recentStatus} hasData={!!recent} />
       {recent && <p className="mt-4 text-xs text-ctp-subtext1">Recent record · Standard · {recent.from} – {recent.to} · Individual events · All tiers · Ranked + unranked</p>}
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1 pr-6">#</th>
-              <th className="py-1 pr-6">Player</th>
-              <th className="py-1 pr-6">Rating</th>
-              <th className="py-1 pr-6">All-time record</th>
-              <th className="py-1 pr-6">Recent Standard</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {visible.map(({ player, rating, rank }) => {
-              const topChampion = topChampionById.get(player.id);
-              const card = topChampion ? championImages.get(topChampion) : namelessCard;
-              return (
-                <tr key={player.id}>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
-                  <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <Link to={`/players/${player.id}`} className="flex min-h-control items-center gap-2 rounded text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
-                      <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
-                      {player.username}
-                    </Link>
-                  </td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">
-                    {Math.round(rating?.rating ?? 0)}
-                    {rating && isProvisionalRating(rating.matches) && (
-                      <span className="ml-1 text-ctp-yellow" title={`Provisional – only ${rating.matches} recorded match${rating.matches === 1 ? "" : "es"}`}>
-                        *
-                      </span>
-                    )}
-                  </td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">
-                    {rating?.wins}-{rating?.losses}-{rating?.ties}
-                  </td>
-                  <td className="py-2 pr-3">{(() => { const row = recentById.get(player.id); return row && recordSize(row.record) ? <><strong>{recordPercent(row.record)!.toFixed(1)}%</strong><span className="block whitespace-nowrap text-xs text-ctp-subtext1">{row.record.wins}W · {row.record.losses}L · {row.record.ties}T</span></> : <span className="text-xs">Unavailable</span>; })()}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <ol aria-label="Player rankings" className="mt-4 space-y-3">
+        {visible.map(({ player, rating, rank }) => {
+          const topChampion = topChampionById.get(player.id);
+          const card = topChampion ? championImages.get(topChampion) : namelessCard;
+          const recentRow = recentById.get(player.id);
+          return <li key={player.id}><Link to={`/players/${player.id}`} className="grid min-h-control min-w-0 gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue sm:grid-cols-[minmax(0,1fr)_minmax(18rem,1fr)]">
+            <div className="flex min-w-0 items-center gap-3"><span className="text-sm tabular-nums text-ctp-subtext0">#{rank}</span><PersonAvatar championName={topChampion ?? 'Nameless Champion'} card={card} /><div className="min-w-0"><span className="block break-words font-semibold">{player.username}</span><span className="text-xs text-ctp-subtext1">{topChampion ?? 'No public decks'}</span></div></div>
+            <div className="grid grid-cols-[0.85fr_1.3fr_1fr] gap-2">
+              <div><strong className="text-lg tabular-nums">{Math.round(rating?.rating ?? 0)}</strong><span className="block text-xs text-ctp-subtext1">Rating</span>{rating && isProvisionalRating(rating.matches) && <span className="block text-xs text-ctp-yellow">Provisional</span>}</div>
+              <div><strong className="break-words text-sm tabular-nums">{rating?.wins}–{rating?.losses}–{rating?.ties}</strong><span className="block text-xs text-ctp-subtext1">All-time W–L–T</span></div>
+              <div><strong className="text-lg tabular-nums">{recentRow && recordSize(recentRow.record) ? `${recordPercent(recentRow.record)!.toFixed(0)}%` : '—'}</strong><span className="block text-xs text-ctp-subtext1">Recent wins</span><span className="block text-xs text-ctp-subtext1">{recentRow ? `${recordSize(recentRow.record)} matches` : recent ? 'No recent record' : 'Unavailable'}</span></div>
+            </div>
+          </Link></li>;
+        })}
+      </ol>
 
       <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </>
@@ -198,6 +160,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
 
 function JudgesView({ topChampionById }: { topChampionById: Map<number, string> }) {
   const judgesData = useOmnidexJudges();
+  const judgesStatus = usePublishedDataStatus("omnidex-judges", "/data/omnidex/judges.json");
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -227,43 +190,16 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
         placeholder="Search by username…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
+        className="mt-4 min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
       />
 
-      {!judgesData && <InlineState className="mt-6">Loading…</InlineState>}
+      <PublishedSourceStatus label="Judges" status={judgesStatus} hasData={!!judgesData} />
       {judgesData && judges.length === 0 && <InlineState className="mt-6">No judges match "{search}".</InlineState>}
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1 pr-6">Judge</th>
-              <th className="py-1 pr-6">Level</th>
-              <th className="py-1 pr-6">Experience</th>
-              <th className="py-1 pr-6">Events judged</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {visibleJudges.map((judge) => {
-              const topChampion = topChampionById.get(judge.id);
-              const card = topChampion ? championImages.get(topChampion) : namelessCard;
-              return (
-                <tr key={judge.id}>
-                  <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <Link to={`/players/${judge.id}`} className="flex min-h-control items-center gap-2 rounded text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
-                      <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
-                      {judge.username}
-                    </Link>
-                  </td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeLevel}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.eventIds.length}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <ul aria-label="Judges" className="mt-4 space-y-3">{visibleJudges.map(judge => {
+        const topChampion = topChampionById.get(judge.id);
+        return <li key={judge.id}><Link to={`/players/${judge.id}`} className="grid min-w-0 gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue sm:grid-cols-2"><div className="flex min-w-0 items-center gap-3"><PersonAvatar championName={topChampion ?? 'Nameless Champion'} card={topChampion ? championImages.get(topChampion) : namelessCard} /><span className="break-words font-semibold">{judge.username}</span></div><div className="grid grid-cols-3 gap-2 text-sm"><div><strong>{judge.judgeLevel}</strong><span className="block text-xs text-ctp-subtext1">Level</span></div><div><strong>{judge.judgeExperience.toLocaleString()}</strong><span className="block text-xs text-ctp-subtext1">Experience</span></div><div><strong>{judge.eventIds.length}</strong><span className="block text-xs text-ctp-subtext1">Events judged</span></div></div></Link></li>;
+      })}</ul>
 
       <LoadMore remaining={judges.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </>
