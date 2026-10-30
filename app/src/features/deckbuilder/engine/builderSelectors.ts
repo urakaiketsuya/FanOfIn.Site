@@ -55,7 +55,7 @@ export function deriveReviewGroups(removals: SuggestedCard[], suggestions: Sugge
     const contextualName = removal.contextualReplacement?.cardName;
     const matchIndex = contextualName
       ? available.findIndex((addition) => addition.cardName === contextualName)
-      : available.findIndex((addition) => addition.section === removal.section);
+      : -1;
     if (matchIndex < 0) unpairedRemovals.push(removal);
     else pairs.push({ removal, addition: available.splice(matchIndex, 1)[0] });
   }

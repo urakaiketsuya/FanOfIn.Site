@@ -32,3 +32,13 @@ test("section and quantity helpers retain plurality and modal tie behavior", () 
   assert.equal(modalQuantity(rows, "material", "Mixed", undefined as Card | undefined), 1);
   assert.equal(modalSectionTotal(rows, "material", 12), 1);
 });
+
+test('full-list fallback prefers comparable exact-Spirit decks for additions', () => {
+  const cards = new Map(['Core', 'A', 'B'].map(name => [name, { name, types: ['ACTION'] } as Card]));
+  const peers = Array.from({ length: 12 }, (_, i) => row(String(i), { Core: 52, [i < 6 ? 'A' : 'B']: 4 }, {}, 0.5));
+  const unrelated = Array.from({ length: 20 }, (_, i) => row(`other-${i}`, { Unrelated: 60 }, {}, 0.5));
+  const selected = selectSuggestedBuildPopulation([...peers, ...unrelated], 'Spirit', new Map([['Core', 52], ['A', 4], ['B', 4]]), cards, 5, 10);
+  assert.equal(selected.usedFallback, true);
+  assert.equal(selected.rankingRows.length, 12);
+  assert.ok(selected.rankingRows.every(r => !r.deckId.startsWith('other')));
+});

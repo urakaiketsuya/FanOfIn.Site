@@ -1,3 +1,5 @@
+import { reviewSelections } from './reviewSelections';
+import { toSuggested } from '../deckbuilder/suggestedBuild/cardScoringAndQuantities';
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { computeDeckCollectionStatus, type Card } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -47,16 +49,13 @@ const EMPTY_BUILD_COUNTERS: BuildCounters = {
 function loadSessionSeed() {
   const workspace = loadActiveDeckWorkspace(sessionStorage);
   if (workspace?.championName && (workspace.main.length > 0 || workspace.material.length > 0)) {
-    const selections = [
-      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
-      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
-      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
-    ];
+    const selections = reviewSelections(workspace);
     return {
       championName: workspace.championName,
       spiritFilter: workspace.spiritName,
-      lockedCards: new Map(selections.map((line) => [line.name, line.quantity])),
-      lockedSections: new Map(selections.map((line) => [line.name, line.section])),
+      lockedCards: selections.cards,
+      splitSideboard: selections.sideboard,
+      lockedSections: selections.sections,
       rejectedCards: new Set<string>(),
       populationSource: "balanced" as ReviewPopulationSource,
       format: workspace.format,
@@ -92,6 +91,7 @@ export default function DeckReviewIndex() {
   );
 
   const sessionSeed = useMemo(() => loadSessionSeed(), []);
+  const [splitSideboard, setSplitSideboard] = useState<Map<string, number>>(sessionSeed && "splitSideboard" in sessionSeed ? (sessionSeed.splitSideboard ?? new Map()) : new Map());
   const workflow = useBuilderWorkflowState({
     championName: sessionSeed?.championName ?? null,
     spiritFilter: sessionSeed?.spiritFilter ?? null,
@@ -122,10 +122,10 @@ export default function DeckReviewIndex() {
       spiritName: spiritFilter,
       main: lines.filter((line) => line.section === "main").map(({ name, quantity }) => ({ name, quantity })),
       material: lines.filter((line) => line.section === "material").map(({ name, quantity }) => ({ name, quantity })),
-      sideboard: lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })),
+      sideboard: [...lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })), ...Array.from(splitSideboard, ([name, quantity]) => ({ name, quantity }))],
       maybeboard: [],
     });
-  }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat]);
+  }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat, splitSideboard]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
@@ -199,7 +199,12 @@ export default function DeckReviewIndex() {
     rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections, cardQuantityStatsData, championCard,
     null, communityInclusionByName, decayingCardBoost,
   );
-  const build = populationSource === "tournament" ? tournamentBuild : balancedBuild;
+  const rankedBuild = populationSource === "tournament" ? tournamentBuild : balancedBuild;
+  const build = useMemo(() => ({
+    ...rankedBuild,
+    sideboard: [...rankedBuild.sideboard.filter(c => !splitSideboard.has(c.cardName)), ...Array.from(splitSideboard, ([name, quantity]) => toSuggested(name, quantity, true, undefined, 'ranked', 'sideboard'))],
+    suggestions: rankedBuild.suggestions.filter(c => !splitSideboard.has(c.cardName)),
+  }), [rankedBuild, splitSideboard]);
 
   const reviewSuggestions = useMemo(
     () => derivePendingSuggestions(build).filter((card) => !dismissedReviewCards.has(card.cardName)),
@@ -335,18 +340,15 @@ export default function DeckReviewIndex() {
   }
 
   function loadWorkspace(workspace: Omit<DeckWorkspace, "version" | "updatedAt">) {
-    const selections = [
-      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
-      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
-      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
-    ];
+    const selections = reviewSelections(workspace);
     saveActiveDeckWorkspace(sessionStorage, workspace);
     startTransition(() => {
       setDeckFormat(workspace.format);
       setChampionName(workspace.championName);
       setSpiritFilter(workspace.spiritName);
-      setLockedCards(new Map(selections.map((line) => [line.name, line.quantity])));
-      setLockedSections(new Map(selections.map((line) => [line.name, line.section])));
+      setLockedCards(selections.cards);
+      setSplitSideboard(selections.sideboard);
+      setLockedSections(selections.sections);
       setRejectedCards(new Set());
       setDismissedReviewCards(new Set());
       setTab("review");
@@ -354,6 +356,7 @@ export default function DeckReviewIndex() {
   }
 
   function startOver() {
+    setSplitSideboard(new Map());
     startTransition(() => {
       setChampionName(null);
       setSpiritFilter(null);
@@ -420,7 +423,16 @@ export default function DeckReviewIndex() {
                 {keptSideboard.length > 0 && (
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Sideboard ({sideboardTotal})</h3>
-                    <BuilderCardGrid section="sideboard" cards={keptSideboard} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
+                    <BuilderCardGrid section="sideboard" cards={keptSideboard} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} onToggleLock={(name, quantity, section) => {
+                      if (splitSideboard.has(name)) setSplitSideboard(prev => { const next = new Map(prev); next.delete(name); return next; });
+                      else toggleLock(name, quantity, section);
+                    }} onChangeQuantity={(name, quantity) => {
+                      if (splitSideboard.has(name)) setSplitSideboard(prev => new Map(prev).set(name, quantity));
+                      else setLockedQuantity(name, quantity);
+                    }} onRemove={(name, locked) => {
+                      if (splitSideboard.has(name)) setSplitSideboard(prev => { const next = new Map(prev); next.delete(name); return next; });
+                      else removeCard(name, locked);
+                    }} />
                   </div>
                 )}
               </div>
@@ -513,6 +525,7 @@ export default function DeckReviewIndex() {
               clarentUrl={copyState.clarentUrl}
               onExportTts={copyState.handleExportTts}
               onCopyShareLink={copyState.handleCopyShareLink}
+              shareUnavailableReason={splitSideboard.size ? "Builder recipe links cannot preserve split-section cards. Use Copy decklist." : undefined}
               shareCopyState={copyState.shareCopyState}
               hideFullDeckOption
             />

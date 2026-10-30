@@ -1,3 +1,4 @@
+import { comparableReviewRows } from './reviewContext';
 import type { Card } from "@gatcg/shared";
 import { weightedJaccard } from "../../../lib/decodedDecks";
 import type { DeckBuilderRow } from "../useDeckBuilderPopulation";
@@ -33,6 +34,7 @@ export function selectSuggestedBuildPopulation(
   cardsByName: Map<string, Card>,
   minSampleSize: number,
   minRankingPopulation: number,
+  lockedSections: ReadonlyMap<string, "main" | "material" | "sideboard"> = new Map(),
 ): SelectedPopulation {
   const exactSpiritRows = spiritFilter === null ? rows : rows.filter((row) => row.spiritName === spiritFilter);
   let spiritRows = exactSpiritRows;
@@ -71,10 +73,16 @@ export function selectSuggestedBuildPopulation(
   const conditionalWinRate = conditionalRows.length > 0 ? conditionalRows.reduce((sum, row) => sum + row.winRate, 0) / conditionalRows.length : null;
   const usedFallback = lockedNames.size > 0 && conditionalRows.length < minRankingPopulation;
 
+  const acceptedMain = new Map([...lockedCards].filter(([name]) => {
+    if (lockedSections.has(name) && lockedSections.get(name) !== "main") return false;
+    const card = cardsByName.get(name);
+    return card && !card.types.some(t => ['CHAMPION', 'REGALIA', 'TOKEN'].includes(t));
+  }));
+  const similarRows = comparableReviewRows(exactSpiritRows, acceptedMain);
   return {
     spiritRows,
     conditionalRows,
-    rankingRows: usedFallback ? spiritRows : conditionalRows,
+    rankingRows: usedFallback ? (similarRows.length >= minRankingPopulation ? similarRows : spiritRows) : conditionalRows,
     baselineWinRate,
     conditionalWinRate,
     usedFallback,

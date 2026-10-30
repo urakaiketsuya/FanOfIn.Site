@@ -16,7 +16,7 @@ export default function BuilderCopyPanel({
   saveNote, onSaveNoteChange, saveTitle, onSaveTitleChange, saveCopyCount, saveState, onSave,
   savedDeckId, saveKeptOnly, onSaveKeptOnlyChange, keptCopyCount, decklist, catalogByName,
   onCopy, copyState, fullCopyCount, onCopyAndOpen, massEntryUrl, clarentUrl, onExportTts,
-  onCopyShareLink, shareCopyState, hideFullDeckOption = false,
+  onCopyShareLink, shareCopyState, hideFullDeckOption = false, shareUnavailableReason,
 }: {
   validation: DeckValidationResult;
   validationComplete: boolean;
@@ -44,6 +44,7 @@ export default function BuilderCopyPanel({
   clarentUrl: string;
   onExportTts: () => void;
   onCopyShareLink: () => void;
+  shareUnavailableReason?: string;
   shareCopyState: "idle" | "copied" | "failed";
   /** Hides the "Copy full deck" option and "Save only kept cards" checkbox – for a caller (the suggestions-only Deck Review page) where every card is already kept by construction, so a "full vs. kept" distinction doesn't exist. */
   hideFullDeckOption?: boolean;
@@ -143,13 +144,14 @@ export default function BuilderCopyPanel({
         <button
           type="button"
           onClick={onCopyShareLink}
+          disabled={!!shareUnavailableReason}
           aria-live="polite"
-          title="Copies a link that reopens this Champion/Spirit and every user-choice card"
+          title={shareUnavailableReason ?? "Copies a link that reopens this Champion/Spirit and every user-choice card"}
           className={`rounded-md border px-2 py-1 text-xs ${
             shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
         >
-          {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+          {shareUnavailableReason ? "Copy decklist to share split-section cards" : shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
         </button>
       </div>
       </details>

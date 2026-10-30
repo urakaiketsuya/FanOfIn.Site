@@ -1,3 +1,4 @@
+import { contextualCutImpact, engineDependencies } from './reviewContext';
 import {
   computeCardImpactEntries,
   computeSingleCardImpact,
@@ -233,7 +234,7 @@ export function buildTournamentSuggestedDeck(
         loading,
       };
 
-    const population = selectSuggestedBuildPopulation(rows, spiritFilter, lockedCards, cardsByName, MIN_SAMPLE_SIZE, MIN_RANKING_POPULATION);
+    const population = selectSuggestedBuildPopulation(rows, spiritFilter, lockedCards, cardsByName, MIN_SAMPLE_SIZE, MIN_RANKING_POPULATION, lockedSections);
     const {
       spiritRows,
       conditionalRows,
@@ -596,9 +597,17 @@ export function buildTournamentSuggestedDeck(
       );
     }
     const championLevelCeiling = intendedChampionLevel(lockedCards, cardsByName, intendedChampionIdentity);
+    const acceptedLines = [...material, ...main, ...sideboard].filter(c => c.locked);
+    const dependencyProtected = engineDependencies(acceptedLines, cardsByName);
+    const acceptedMain = new Map(acceptedLines.filter(c => c.section === 'main').map(c => [c.cardName, c.quantity]));
+    const exactSpiritPeers = spiritRows.filter(r => r.spiritName === spiritFilter);
     const eligibleRemovalSuggestions = [...material, ...main, ...sideboard]
+      .map(c => {
+        const impact = c.locked ? contextualCutImpact(exactSpiritPeers, acceptedMain, c.cardName, c.section) : null;
+        return { ...c, adjustedLift: impact?.adjustedLift ?? null, sample: impact ? { with: impact.deckCountWith, without: impact.deckCountWithout } : null };
+      })
       .filter((c) => {
-        if (!c.locked || c.adjustedLift === null || c.adjustedLift > REMOVAL_LIFT_CEILING) return false;
+        if (dependencyProtected.has(c.cardName) || !c.locked || c.adjustedLift === null || c.adjustedLift > REMOVAL_LIFT_CEILING) return false;
         const card = cardsByName.get(c.cardName);
         const isRequiredChampionProgression =
           championLevelCeiling !== null &&
