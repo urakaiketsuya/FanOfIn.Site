@@ -29,7 +29,7 @@ function Report({ playerId }: { playerId: number }) {
   const section = (['main', 'material', 'sideboard'].includes(params.get('cards-section') ?? '') ? params.get('cards-section') : 'main') as Section;
   const asOf = [index?.generatedAt, popularity?.generatedAt, events?.generatedAt].filter((s): s is string => !!s).sort()[0] ?? '';
   const report = useMemo(() => index && popularity && events ? playerCardPatterns(index, popularity.entries, events.events, playerId, format, selected, asOf) : undefined, [index, popularity, events, playerId, format, selected, asOf]);
-  const names = useMemo(() => [...(report?.sections[section].slice(0, limit).map(r => r.name) ?? []), ...(report?.newCards.filter(r => r.section === section).slice(0, newLimit).map(r => r.name) ?? [])], [report, section, limit, newLimit]);
+  const names = useMemo(() => [...(report?.sections[section].slice(0, limit).map(r => r.name) ?? []), ...(report?.trends[section].slice(0, 6).map(r => r.name) ?? []), ...(report?.signatures[section].slice(0, 6).map(r => r.name) ?? []), ...(report?.newCards.filter(r => r.section === section).slice(0, newLimit).map(r => r.name) ?? [])], [report, section, limit, newLimit]);
   const cards = useCardsByNames(names);
   function change(key: string, value: string) { transition(() => { setLimit(6); setNewLimit(6); setParams(prev => { const next = new URLSearchParams(prev); next.set(key, value); if (key === 'cards-format') next.delete('cards-champion'); return next; }); }); }
   const rows = report?.sections[section] ?? [], newRows = report?.newCards.filter(r => r.section === section) ?? [];
@@ -58,6 +58,24 @@ function Report({ playerId }: { playerId: number }) {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{newRows.slice(0, newLimit).map(row => <article key={row.name} className="min-w-0 space-y-2 rounded-xl border border-ctp-surface0 p-4"><CardIdentity name={row.name} card={cards.get(row.name)} /><Link className="inline-flex min-h-control items-center text-sm text-ctp-blue underline" to={`/events/${row.eventId}?player=${playerId}`}>First seen {row.date.slice(0, 10)}</Link><p className="text-sm">{row.decks} {row.decks === 1 ? 'appearance' : 'appearances'}</p></article>)}</div>
           {newLimit < newRows.length && <Button onClick={() => setNewLimit(n => n + 12)}>More newly seen cards</Button>}
         </section>
+        {([
+          { title: 'Recent changes', rows: report.trends[section], other: report.previous, label: 'Previous 90 days', minimum: 3, signature: false },
+          { title: 'Signature choices', rows: report.signatures[section], other: report.others, label: 'Other players', minimum: 10, signature: true },
+        ] as const).map(group => <section key={group.title} className="space-y-3">
+          <h3 className="text-lg font-semibold">{group.title}</h3>
+          <p className="text-sm text-ctp-subtext1">{group.signature ? 'Last 90 days · same champion' : 'Last 90 days vs. previous 90 days'} · {asOf.slice(0, 10)}</p>
+          {report.recent.decks < 3 || group.other.decks < group.minimum
+            ? <p className="text-sm">{report.recent.decks} recent decks · {group.other.decks} {group.signature ? 'other-player' : 'previous-period'} decks. Needs 3 recent and {group.minimum} {group.signature ? 'other-player' : 'previous-period'} decks.</p>
+            : !group.rows.length ? <p>{group.signature ? 'No standout choices in this section.' : 'No inclusion changes in this section.'}</p> : null}
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{group.rows.slice(0, 6).map(row => <article key={row.name} className="min-w-0 space-y-3 rounded-xl border border-ctp-surface0 p-4">
+            <CardIdentity name={row.name} card={cards.get(row.name)} />
+            <strong className="block">{row.delta > 0 ? '+' : '−'}{Number(Math.abs(row.delta).toFixed(1))} pp {group.signature ? 'vs. others' : row.delta > 0 ? 'increase' : 'decrease'}</strong>
+            {[
+              { label: 'Recent decks', percent: row.leftPercent, count: row.leftCount, total: report.recent.decks, blue: true },
+              { label: group.label, percent: row.rightPercent, count: row.rightCount, total: group.other.decks, blue: false },
+            ].map(value => <div key={value.label} className="space-y-1"><div className="flex flex-wrap justify-between gap-2 text-sm"><span>{value.label}</span><strong>{Number(value.percent.toFixed(1))}% · {value.count}/{value.total}</strong></div><Bar value={value.percent} label={`${row.name}: ${value.label}`} blue={value.blue} /></div>)}
+          </article>)}</div>
+        </section>)}
       </TabPanel>
     </>}
   </section>;

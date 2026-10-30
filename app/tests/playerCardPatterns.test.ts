@@ -27,3 +27,24 @@ test('champion switching and empty format retain truthful history', () => {
   const empty = playerCardPatterns(index, entries, events, 1, 'draft', null, '2026-10-29');
   assert.equal(empty.decks, 0); assert.equal(empty.newCards.length, 0);
 });
+test('compares adjacent periods and excludes the player from the peer baseline', () => {
+  const comparisonEvents = [
+    { id: 10, date: '2026-10-20' },
+    { id: 11, date: '2026-08-01' }, // exact recent-window boundary: previous only
+  ].map(e => ({ ...e, format: 'standard', status: 'complete' })) as OmnidexEventSummary[];
+  const comparisonEntries: DeckPopularityEntry[] = [];
+  const decks: DeckCardIndexData['decks'] = [];
+  for (let i = 0; i < 16; i++) {
+    const eventId = i < 3 || i >= 6 ? 10 : 11;
+    const deckId = `${eventId}:fixture-${i}`;
+    comparisonEntries.push({ deckId, eventId, player: i < 6 ? 1 : i, championName: 'Alice' } as DeckPopularityEntry);
+    decks.push({ deckId, main: i < 3 ? [[1, 4]] : [[0, 4]], material: [], sideboard: [] });
+  }
+  const r = playerCardPatterns({ ...index, decks }, comparisonEntries, comparisonEvents, 1, 'standard', 'Alice', '2026-10-30');
+  assert.equal(r.recent.decks, 3); assert.equal(r.previous.decks, 3); assert.equal(r.others.decks, 10);
+  assert.deepEqual(r.trends.main.map(r => [r.name, r.delta]), [['New', 100], ['Old', -100]]);
+  assert.deepEqual(r.signatures.main.map(r => [r.name, r.leftCount, r.rightCount, r.delta]), [['New', 3, 0, 100]]);
+  assert.deepEqual(r.trends.sideboard, []);
+  const sparse = playerCardPatterns({ ...index, decks: decks.slice(1) }, comparisonEntries, comparisonEvents, 1, 'standard', 'Alice', '2026-10-30');
+  assert.deepEqual(sparse.trends.main, []); assert.deepEqual(sparse.signatures.main, []);
+});

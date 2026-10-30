@@ -538,3 +538,5 @@ card identities; usage covers all available history, while First seen uses a lab
 scope and missing-list counts visible. Persist champion, format and section in distinct
 URL parameters; retain expanded card lists when switching profile tabs. Fetch the card
 index only after Cards is visited. Preserve the all-time champion overview above it.
+
+Player Cards adds Recent changes and Signature choices below usage and first appearances. Both show up to six named card images with paired percentage bars on a shared 0–100 scale and visible sample counts. Recent changes uses adjacent 90-day periods; signature choices uses other players on the same champion and format. Insufficient history shows available versus required deck counts. Existing format/champion/section controls scope every report together, without additional setup.

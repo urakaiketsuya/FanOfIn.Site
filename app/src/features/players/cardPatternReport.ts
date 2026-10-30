@@ -25,5 +25,25 @@ export function playerCardPatterns(index: DeckCardIndexData, entries: DeckPopula
       }
     }
   }
-  return { ...usage, champions: all.champions, champion, newCards: [...firsts.values()].filter(r => Date.parse(r.date) > start).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.name.localeCompare(b.name)), historyStart: [...firsts.values()].map(r => r.date).sort()[0] };
+  const scope = { format, days: 90, champion };
+  const recent = metagameReport(index, playerEntries, events, scope, asOf);
+  const previous = metagameReport(index, playerEntries, events, scope, new Date(start).toISOString());
+  const others = metagameReport(index, entries.filter(e => e.player !== playerId), events, scope, asOf);
+  function compare(left: typeof recent, right: typeof recent, signature: boolean) {
+    return Object.fromEntries((['main', 'material', 'sideboard'] as const).map(section => {
+      const a = new Map(left.sections[section].map(r => [r.name, r.decks]));
+      const b = new Map(right.sections[section].map(r => [r.name, r.decks]));
+      const rows = left.decks >= 3 && right.decks >= (signature ? 10 : 3)
+        ? [...new Set([...a.keys(), ...b.keys()])].map(name => {
+          const leftCount = a.get(name) ?? 0, rightCount = b.get(name) ?? 0;
+          const leftPercent = 100 * leftCount / left.decks, rightPercent = 100 * rightCount / right.decks;
+          return { name, leftCount, rightCount, leftPercent, rightPercent, delta: leftPercent - rightPercent };
+        }).filter(r => signature ? r.delta >= 0.05 && r.leftCount >= 2 : Math.abs(r.delta) >= 0.05)
+          .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta) || b.leftCount - a.leftCount || a.name.localeCompare(b.name))
+        : [];
+      return [section, rows];
+    })) as Record<Section, { name: string; leftCount: number; rightCount: number; leftPercent: number; rightPercent: number; delta: number }[]>;
+  }
+  const trends = compare(recent, previous, false), signatures = compare(recent, others, true);
+  return { ...usage, recent, previous, others, trends, signatures, champions: all.champions, champion, newCards: [...firsts.values()].filter(r => Date.parse(r.date) > start).sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.name.localeCompare(b.name)), historyStart: [...firsts.values()].map(r => r.date).sort()[0] };
 }
