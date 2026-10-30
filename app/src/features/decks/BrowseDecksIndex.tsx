@@ -8,13 +8,15 @@ import { useTabParam } from "../../lib/useTabParam";
 import BrowseComparison from "./BrowseComparison";
 import CombinedDecksView from "./CombinedDecksView";
 import TournamentBuildsView from "./TournamentBuildsView";
+import BudgetDecksView from "./BudgetDecksView";
 import { emptyDeckContentFilters } from "./deckContentFilters";
 
-type ViewMode = "all" | "builds";
-const VIEW_TABS: readonly ViewMode[] = ["all", "builds"];
+type ViewMode = "all" | "builds" | "budget";
+const VIEW_TABS: readonly ViewMode[] = ["all", "builds", "budget"];
 const VIEW_LABELS: Record<ViewMode, string> = {
   all: "All Decks",
   builds: "Most Played",
+  budget: "Budget picks",
 };
 
 export default function BrowseDecksIndex() {
@@ -52,6 +54,7 @@ export default function BrowseDecksIndex() {
       <TabPanel baseId="deck-view" tab="builds" active={view}>
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       </TabPanel>
+      <TabPanel baseId="deck-view" tab="budget" active={view}><BudgetDecksView /></TabPanel>
     </BrowseComparison></PageLayout>
   );
 }

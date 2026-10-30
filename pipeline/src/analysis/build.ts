@@ -1,5 +1,6 @@
 import { writeCompetitionReports } from "./competitionReports.js";
 import { buildDeckPriceIndex } from "./deckPriceIndex.js";
+import { computeBudgetDecks } from "./budgetDecks.js";
 import { computeCommunityCardStaples } from "./communityCardStaples.js";
 import { loadCommunityStaples } from "./loadCommunityStaples.js";
 import { computeFieldHistory } from "./fieldHistory.js";
@@ -82,12 +83,14 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   const cardIndex = buildCardIndex(catalog);
   const ctx = createAnalysisContext(cardIndex);
   const priceByName = await loadPriceByName(cardIndex);
+  const budgetPrices = await readFile(PRICES_PATH, 'utf8').then(text => JSON.parse(text) as PriceData).catch(() => null);
 
   function cardStatsFor(bundles: typeof completed): CardStat[] {
     return computeCardStats(bundles, cardIndex).map((stat) => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null }));
   }
 
   await mkdir(DATA_DIR, { recursive: true });
+  await writeJsonAtomic(path.join(DATA_DIR, 'budget-decks.json'), computeBudgetDecks(completed, ctx, budgetPrices, new Date().toISOString()), 0);
   await writeJsonAtomic(path.join(DATA_DIR, "card-staples.json"), computeCardStaples(allBundles, cardIndex), 0);
   await writeJsonAtomic(path.join(DATA_DIR, "community-card-staples.json"), computeCommunityCardStaples(await loadCommunityStaples(), cardIndex), 0);
 

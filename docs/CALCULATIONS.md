@@ -5675,3 +5675,74 @@ Tournament evidence joins the existing main+material canonical hash (with deckId
 The shared minimum quantity of each card is retained. Known registered/approved package member quantities remain exactly as in the base in each section; the blend does not introduce partial donor packages. For each remaining card, the target quantity is its weighted mean across the compatible sources (absence counts as zero). Each additional copy is ranked by its marginal reduction in squared distance to that target (`target - currentCopies - 0.5`), with base quantity and card name as deterministic tie-breaks. This produces integer quantities while keeping the base section size, rather than automatically taking all flex slots from the winning source. Allocation enforces catalog format copy limits across all sections, section eligibility, element identity, and the existing 15-point Sideboard budget. Missing card data blocks generation. The existing deck validator checks the finished draft; shortages and legality issues remain visible. Card-text exceptions and unregistered dependencies are not inferred.
 
 The Blended deck comparison tab automatically shows cards, quantities and changes from the base, with Balanced as its initial mode. The base selector appears only for conflicting identities. Visited reports retain mode and base choices when switching tabs; removing the base invalidates that choice. The report updates with the compared sources and creates no saved deck. Create editable copy takes an explicit snapshot into the existing deck workspace with the generated sections and format; later report changes cannot mutate that copy. Saving uses the workspace's existing account flow. Source decks remain unchanged.
+
+## Budget deck recommendations (`shared/src/budgetDecks.ts`, `pipeline/src/analysis/budgetDecks.ts`)
+
+Browse Decks → Budget picks recommends actual Standard tournament registrations. It never
+constructs a cheaper list or transfers a champion/archetype win rate to a budget variant.
+The pipeline publishes `analysis/budget-decks.json`; `pipeline/scripts/rebuild-budget-decks.ts`
+rebuilds just this artifact and its manifest entry from published local inputs.
+
+- Scope: completed Standard events in the last 180 days, measured against generation time.
+  The UI defaults to 90 days and offers 30/90/180, measured against the current time. Future,
+  invalid and out-of-window dates are excluded. Catalog-resolved cards, a known champion,
+  at least 60 Main cards, 1–12 Material cards, supported catalog copy limits and at most 15
+  sideboard points are required. Unknown legality and banned cards are excluded. These are
+  static catalog checks, not a new rules engine for card-text exceptions.
+- Results: completed two-player pairings with consistent winner/loser or tied/tied outcomes.
+  Byes, teams, unfinished/contradictory results and self-pairings never count. Match identities
+  include event, stage, round and pairing ID because pairing IDs restart between rounds.
+  Repeated events, deck registrations and match records are deduplicated. Opponents do not
+  need a public decklist. Missing rounds contribute no inferred wins or losses.
+- Prices: minimum finite nonnegative market quote across released printings and both finishes.
+  Explicit catalog/TCGCSV set aliases resolve differing set labels; a joined product must
+  also match the card name (an edition annotation in parentheses is allowed). Unknown quotes
+  are recorded as missing names. Section totals use integer cents; the budget includes Main,
+  Material and the registration's actual Sideboard. No shipping or tax is estimated. The
+  published pricing timestamp, not the analysis generation timestamp, controls freshness.
+  Missing, future or older-than-10-day prices disable recommendations (pricing updates weekly).
+- Candidate registration: complete prices, at least five recorded matches, and more wins than
+  losses. Within each exact Main + Material build, choose the cheapest qualifying registration
+  within budget, breaking ties by newest event then deck ID. Keep its original Sideboard,
+  source link and individual W–L–T. An empty registered sideboard costs zero.
+- Build evidence: pool **all** eligible records of that exact Main + Material build in the
+  selected period, including losses and registrations with incomplete prices. Sideboard never
+  changes build identity or statistical grouping. Display that scope separately from the
+  selected tournament list's own record. Draws count half: adjusted rate is
+  `(wins + ties / 2 + 5) / (matches + 10)`, using `shrinkWinRate`. Require adjusted rate >50%.
+- Evidence labels: repeated results require at least 20 matches, three distinct players and
+  three distinct events. Otherwise label “Promising · Limited results.” These are evidence
+  thresholds, not calibrated predictions or skill-adjusted estimates. Default ranking orders
+  repeated evidence first, then adjusted rate, players, events, price and stable deck ID.
+  Lowest-cost ranking orders price first with the same tie-breakers. No performance/price ratio.
+- Shortlist: first offer one build per champion in ranked order, then fill to six with at most
+  two per champion. Show all exposes all qualifying builds. No matches stays empty; raising
+  the cap to the cheapest qualifying total requires an explicit user action.
+- Compact publication retains only builds with at least one potentially qualifying registration,
+  while retaining all eligible records of those builds. Audit totals describe the entire
+  180-day input scope before this size reduction, not just the currently selected period.
+
+Initial audit (2026-10-30): 12,313 public Standard registrations in the 180-day archive;
+5,987 passed static/card/result checks, of which 372 had complete market prices. The 90-day
+window had two qualifying builds below $500 and none below $250. Missing market quotes and
+product collisions in the upstream price feed remain coverage limits; never fill them with zero.
+The compact artifact is approximately 157 KB rather than a full card-index download.
+
+Budget controls preserve their `budget-*` URL parameters across navigation. Saving is an
+explicit account action using the existing save endpoint with a stable source identity;
+failures retain the recommendation and expose retry. Collection-aware costs and suggested
+substitutions are outside this first version.
+
+Verification (2026-10-30): seven focused tests cover price aliases/finishes, missing quotes,
+price freshness, exact identity, sample thresholds, ranking, duplicate matches, byes, numeric
+and expanded round IDs, catalog exclusions, and retention of losing records. The pipeline
+suite passed 258 tests before the final additional retention test. App, shared and pipeline
+TypeScript checks, the Vite production build and the published-artifact integrity check passed.
+Lint reported warnings only in unrelated files. Browser checks at
+390×844, 360×800 and 1280×900 found no page overflow; controls met 48px targets. Checked
+loading, empty and invalid-budget states, the explicit budget increase, 90/180-day windows,
+shortlist expansion, card-sheet section defaults, keyboard expansion/Escape/focus restoration,
+exact event/player navigation and Back restoration. Save failure retained the result and
+provided retry. Successful signed-in saving, forced dataset-network failure/retry, browser
+stale-price rendering and on-screen-keyboard behavior were not exercised; price-expiry logic
+is covered by calculation tests.
