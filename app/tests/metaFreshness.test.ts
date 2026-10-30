@@ -66,3 +66,19 @@ test('seasons use assigned IDs, chronological predecessors and the publication c
  const champion=seasonalMetaFreshness(index,entries,assigned,taxonomy,seasons,{format:'standard',champion:'Silvie'},'2026-10-30');
  assert.equal(champion[0].report.current.decks,0);
 });
+
+test('linked comparison includes disappeared builds and section-specific card changes',()=>{
+ const {index,entries,taxonomy}=fixture(true);
+ taxonomy.clusters[0].deckIds=entries.slice(3).map(e=>e.deckId);
+ taxonomy.clusters.push({...taxonomy.clusters[0],id:'new',name:'New build',deckIds:entries.slice(0,3).map(e=>e.deckId)});
+ const r=metaFreshness(index,entries,events,taxonomy,scope,'2026-10-30');
+ assert.equal(r.buildChanges.find(b=>b.id==='a')?.change,-100);
+ assert.equal(r.buildChanges.find(b=>b.id==='new')?.change,100);
+ assert.equal(r.cardChanges.find(s=>s.section==='main')?.rows.find(c=>c.name==='Old')?.change,-100);
+ assert.equal(r.cardChanges.find(s=>s.section==='sideboard')?.rows[0].change,100);
+ const selected=metaFreshness(index,entries,events,taxonomy,{...scope,buildId:'a'},'2026-10-30');
+ assert.deepEqual(selected.cardDecks,{current:0,previous:3});
+ assert.equal(selected.cardChanges[0].rows[0].current,null);
+ assert.deepEqual(selected.buildChanges,r.buildChanges);
+ assert.equal(selected.returning,r.returning);
+});
