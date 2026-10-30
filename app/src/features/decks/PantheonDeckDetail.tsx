@@ -63,10 +63,10 @@ export default function PantheonDeckDetail() {
     };
   }, [deck, cardsByName]);
 
-  if (deck === undefined) return <PageLayout data-component="PantheonDeckDetail"><InlineState className="mt-10">Loading Pantheon deck…</InlineState></PageLayout>;
-  if (deck === null) return <PageLayout data-component="PantheonDeckDetail"><EmptyState title="Pantheon deck not found" action={<Link to="/pantheon/decks" className="text-ctp-blue hover:underline">← Browse Pantheon decks</Link>} /></PageLayout>;
+  if (deck === undefined) return <PageLayout width="fluid" data-component="PantheonDeckDetail"><InlineState className="mt-10">Loading Pantheon deck…</InlineState></PageLayout>;
+  if (deck === null) return <PageLayout width="fluid" data-component="PantheonDeckDetail"><EmptyState title="Pantheon deck not found" action={<Link to="/pantheon/decks" className="text-ctp-blue hover:underline">← Browse Pantheon decks</Link>} /></PageLayout>;
 
-  return <PageLayout data-component="PantheonDeckDetail">
+  return <PageLayout width="fluid" data-component="PantheonDeckDetail">
     <Link to="/pantheon/decks" className="text-sm text-ctp-blue hover:underline">← Browse Pantheon decks</Link>
     <UserDeckHeader actions={<><Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Playtest</Link><MenuDetails className="relative"><summary className="flex min-h-control cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm">More <DisclosureChevron className="ml-1" /></summary><div className="absolute right-0 top-full z-30 mt-2 grid max-h-[60dvh] w-64 max-w-[calc(100vw-2rem)] gap-1 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-control items-center px-3 text-sm">Compare deck</Link><DecklistActions showBuilderAction decklist={decklist} cardsByName={cardsByName} deckTitle={title} /></div></MenuDetails></>} decklist={decklist} title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
 

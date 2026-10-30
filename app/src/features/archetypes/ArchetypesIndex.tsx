@@ -188,7 +188,7 @@ export default function ArchetypesIndex() {
     : view === "builds" ? visibleRows.flatMap((row) => row.definingCards.slice(0, 3)) : []);
 
   return (
-    <PageLayout data-component="ArchetypesIndex" width="wide">
+    <PageLayout width="fluid" data-component="ArchetypesIndex">
       <PageHeader
         title="Archetypes"
         actions={

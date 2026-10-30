@@ -124,7 +124,7 @@ export default function RegionsIndex() {
   const venues = useRegionalVenues(group, selectedRegion, surface === "places");
 
   return (
-    <PageLayout data-component="RegionsIndex">
+    <PageLayout width="fluid" data-component="RegionsIndex">
       <PageHeader title="Regions" description="See what players bring, then compare local metas." />
 
       <FilterBar>

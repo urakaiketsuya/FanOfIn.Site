@@ -7,7 +7,7 @@ const WIDTH_CLASSES: Record<PageWidth, string> = {
   standard: "max-w-4xl",
   wide: "max-w-5xl",
   full: "max-w-6xl",
-  fluid: "max-w-none sm:px-6 lg:px-8",
+  fluid: "max-w-none",
 };
 
 export default function PageLayout({
@@ -22,5 +22,5 @@ export default function PageLayout({
   children: ReactNode;
   className?: string;
 } & HTMLAttributes<HTMLElement>) {
-  return <Tag data-component="PageLayout" className={`mx-auto px-4 py-8 ${WIDTH_CLASSES[width]} ${className}`} {...props}>{children}</Tag>;
+  return <Tag data-component="PageLayout" className={`mx-auto w-full min-w-0 px-4 py-6 sm:px-6 sm:py-8 lg:px-8 ${WIDTH_CLASSES[width]} ${className}`} {...props}>{children}</Tag>;
 }

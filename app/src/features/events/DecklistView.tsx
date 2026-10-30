@@ -1,3 +1,4 @@
+import CardLayoutControls from "../../components/CardLayoutControls";
 import DeckOverview from "./DeckOverview";
 import DialogSheet from "../../components/ui/DialogSheet";
 import DecklistActions from "./DecklistActions";
@@ -140,16 +141,11 @@ export default function DecklistView({
     <DeckSectionExpansion><div data-component="DecklistView">
       <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div role="group" aria-label="Card layout" className="flex flex-wrap gap-1">
-          {(["Grid", "Rows", "List"] as const).map(layout => {
-            const selected = layout === "List" ? displayMode === "detailed" : displayMode === "visual" && (layout === "Rows" ? displayPrefs.visualCardSize === "rows" : displayPrefs.visualCardSize !== "rows");
-            return <Button key={layout} aria-pressed={selected} variant={selected ? "primary" : "secondary"} onClick={() => {
-              setDisplayMode(layout === "List" ? "detailed" : "visual");
-              if (layout === "Rows") displayPrefs.setVisualCardSize("rows");
-              else if (layout === "Grid" && displayPrefs.visualCardSize === "rows") displayPrefs.setVisualCardSize("medium");
-            }}>{layout}</Button>;
-          })}
-        </div>
+        <CardLayoutControls value={displayMode === "detailed" ? "List" : displayPrefs.visualCardSize === "rows" ? "Rows" : "Grid"} onChange={layout => {
+          setDisplayMode(layout === "List" ? "detailed" : "visual");
+          if (layout === "Rows") displayPrefs.setVisualCardSize("rows");
+          else if (layout === "Grid" && displayPrefs.visualCardSize === "rows") displayPrefs.setVisualCardSize("medium");
+        }} />
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-ctp-subtext1">{DECK_GROUPS[displayPrefs.grouping]} · {DECK_SORTS[displayPrefs.sorting]}</span>
           <Button onClick={() => setOverview(true)}>Deck overview</Button>

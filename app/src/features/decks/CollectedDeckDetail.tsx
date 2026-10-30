@@ -45,7 +45,7 @@ export default function CollectedDeckDetail() {
   const [error, setError] = useState<string | null>(null);
   useEffect(() => { let active = true; void accountApi.session().then(s => { if (active) setSignedIn(!!s.user); }).catch(() => {}); return () => { active = false; }; }, []);
   useDocumentTitle(deck?.title ?? 'Collected build');
-  if (!data || !deck || !decklist) return <PageLayout><PublishedSourceStatus label="Collected builds" status={status} hasData={!!data} /><InlineState>{data ? 'Collected build not found.' : status.phase === 'error' ? 'Collected builds are unavailable.' : 'Loading collected build…'}</InlineState><Link className="inline-flex min-h-control items-center text-ctp-blue" to="/decks?source=collected">Browse collected builds</Link></PageLayout>;
+  if (!data || !deck || !decklist) return <PageLayout width="fluid"><PublishedSourceStatus label="Collected builds" status={status} hasData={!!data} /><InlineState>{data ? 'Collected build not found.' : status.phase === 'error' ? 'Collected builds are unavailable.' : 'Loading collected build…'}</InlineState><Link className="inline-flex min-h-control items-center text-ctp-blue" to="/decks?source=collected">Browse collected builds</Link></PageLayout>;
   const custom = encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist, format: deck.format }]));
   const actionClass = 'inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm';
   async function save() {
@@ -55,7 +55,7 @@ export default function CollectedDeckDetail() {
     catch (reason) { setError(reason instanceof Error ? reason.message : 'Could not save a copy. Try again.'); }
     finally { setBusy(false); }
   }
-  return <PageLayout>
+  return <PageLayout width="fluid">
     <Link className="inline-flex min-h-control items-center text-sm text-ctp-blue" to="/decks?source=collected">← Collected builds</Link>
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} decklist={decklist} eyebrow="Collected build" actions={<>
       {signedIn ? <Button disabled={busy} onClick={() => void save()}>{busy ? 'Saving…' : 'Save copy'}</Button> : <Link className={actionClass} to="/account">Sign in to save</Link>}

@@ -126,7 +126,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
 
 
   return (
-    <PageLayout data-component="CommunityDecksIndex" width="wide">
+    <PageLayout width="fluid" data-component="CommunityDecksIndex">
       <PageHeader
         title={isPantheon ? "Pantheon Decks" : "Deck Trends"}
         actions={<div className="flex flex-wrap gap-x-4 gap-y-1"><Link to="/community-decks/search" className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Search decklists →</Link><Link to="/deck-builder" className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Build a deck →</Link></div>}

@@ -109,7 +109,7 @@ export default function TournamentsIndex() {
   }
 
   return (
-    <PageLayout data-component="TournamentsIndex">
+    <PageLayout width="fluid" data-component="TournamentsIndex">
       <PageHeader
         title="Browse Events"
         description="Find an event directly across every season. Search and filters stay in the URL so this view can be shared."

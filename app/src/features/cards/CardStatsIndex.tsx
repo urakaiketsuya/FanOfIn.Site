@@ -165,7 +165,7 @@ export default function CardStatsIndex() {
   }
 
   return (
-    <PageLayout data-component="CardStatsIndex">
+    <PageLayout width="fluid" data-component="CardStatsIndex">
       <PageHeader
         title="Card Stats"
         actions={

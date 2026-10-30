@@ -125,7 +125,7 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <PageLayout data-component="EventDetail" width="standard">
+      <PageLayout width="fluid" data-component="EventDetail">
         <InlineState className="mt-10">Loading event {eventId}…</InlineState>
       </PageLayout>
     );
@@ -133,7 +133,7 @@ export default function EventDetail() {
 
   if (error && !bundle) {
     return (
-      <PageLayout data-component="EventDetail" width="standard">
+      <PageLayout width="fluid" data-component="EventDetail">
         <EmptyState
           title="Event unavailable"
           description={error}
@@ -163,7 +163,7 @@ export default function EventDetail() {
   const secondaryActive = secondaryTabs.some((item) => item.key === activeTab);
 
   return (
-    <PageLayout data-component="EventDetail" width="standard">
+    <PageLayout width="fluid" data-component="EventDetail">
       <Link to="/tournaments" className="inline-flex min-h-control items-center rounded-md text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">
         &larr; Back to Tournaments
       </Link>

@@ -67,10 +67,10 @@ export default function PublicDeckDetail() {
     return () => { if (created) meta?.remove(); else if (meta) meta.content = "index,follow"; };
   }, [deck?.visibility]);
 
-  if (deck === undefined) return <PageLayout data-component="PublicDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
-  if (!deck) return <PageLayout data-component="PublicDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
+  if (deck === undefined) return <PageLayout width="fluid" data-component="PublicDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (!deck) return <PageLayout width="fluid" data-component="PublicDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
 
-  return <PageLayout data-component="PublicDeckDetail">
+  return <PageLayout width="fluid" data-component="PublicDeckDetail">
     <UserDeckHeader actions={<>
 
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.copyDeck(publicSlug); navigate(`/decks/${encodeURIComponent(result.id)}`, { state: { notice: result.created ? "Copied to your decks." : "You already had this build; opened the existing deck." } }); })} className="min-h-control rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Save copy</button>

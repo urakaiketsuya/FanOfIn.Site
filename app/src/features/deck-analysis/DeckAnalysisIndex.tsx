@@ -182,12 +182,12 @@ export default function DeckAnalysisIndex() {
     persistAnalysisProfile({ ...analysisProfile, reviewedAt: new Date().toISOString() });
   }
 
-  if (requestedDeck.pending) return <PageLayout><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
-  if (requestedDeck.error) return <PageLayout><PageHeader title="Deck Analysis" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
+  if (requestedDeck.pending) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
+  if (requestedDeck.error) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
 
-  if (!workspace || mainTotal === 0) return <PageLayout><PageHeader title="Deck Analysis" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
+  if (!workspace || mainTotal === 0) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
 
-  return <PageLayout>
+  return <PageLayout width="fluid">
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Deck Report" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>

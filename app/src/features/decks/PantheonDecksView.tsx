@@ -50,7 +50,7 @@ export default function PantheonDecksView() {
     <PublishedSourceStatus label="Pantheon decks" status={status} hasData={!!index} />
     {deckFilter.cards.length > 0 && decks.some(deck => !deck.searchCardNames) && <InlineState>Card membership is unavailable for some lists.</InlineState>}
     {index && filtered.length === 0 && <InlineState className="mt-5 text-sm">No Pantheon decklists match these filters.</InlineState>}
-    <div className="mt-3 grid gap-3 sm:grid-cols-2 sm:items-start">{filtered.slice(0, visibleCount).map((deck) => <PantheonDeckRow key={deck.id} deck={deck} cardsByName={cardsByName} />)}</div>
+    <div className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] items-start gap-3">{filtered.slice(0, visibleCount).map((deck) => <PantheonDeckRow key={deck.id} deck={deck} cardsByName={cardsByName} />)}</div>
     {visibleCount < filtered.length && <Button variant="secondary" onClick={() => setVisibleCount((count) => count + 30)} className="mt-4">Load more</Button>}
   </div>;
 }

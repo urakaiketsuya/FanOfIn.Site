@@ -203,17 +203,17 @@ export default function ComboLabIndex() {
     setTab("analyze");
   }
 
-  if (requestedDeck.pending) return <PageLayout>
+  if (requestedDeck.pending) return <PageLayout width="fluid">
 <InlineState className="mt-10">Loading the selected deck…</InlineState>
 </PageLayout>;
-  if (requestedDeck.error) return <PageLayout>
+  if (requestedDeck.error) return <PageLayout width="fluid">
 <Panel tone="danger" className="mt-10">
 <InlineState tone="danger">{requestedDeck.error}</InlineState>
 <button type="button" onClick={requestedDeck.retry} className="mt-3 text-sm text-ctp-blue">Try again</button>
 </Panel>
 </PageLayout>;
 
-  return <PageLayout data-component="ComboLabIndex" width="wide">
+  return <PageLayout width="fluid" data-component="ComboLabIndex">
     <PageHeader title="Combo Lab" description="Choose the pieces. See the odds." actions={<div className="flex w-full flex-wrap gap-2 sm:w-auto">
 <button type="button" aria-expanded={libraryOpen} onClick={() => setLibraryOpen((open) => !open)} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">{libraryOpen ? "Close library" : "Combo library"}</button><Link to="/cards/packages" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">Packages</Link>{workspace && <DeckWorkspacePicker compact catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />}</div>} />
     <div className={libraryOpen ? "" : "hidden"}><ComboLibrary localCombos={savedCombos} format={workspace?.format} championName={workspace?.championName} onMigrated={finishLocalMigration} onLoad={(combo) => { openLibraryCombo(combo); setLibraryOpen(false); }} /></div>

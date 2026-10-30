@@ -19,7 +19,7 @@ export default function DeckBuilderIndex() {
 function DeckBuilderPage() {
   const b = useDeckBuilder();
   const c = b.copyPanel;
-  return <PageLayout width="full" data-component="DeckBuilderIndex" className="[&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
+  return <PageLayout width="fluid" data-component="DeckBuilderIndex" className="[&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
     <DeckBuilderHeader />
     {b.isPending && <p role="status" className="text-xs text-ctp-subtext1">Updating deck…</p>}
     <BuilderBuildPanel />

@@ -570,3 +570,19 @@ rename, keyboard tab navigation, retained Stats section, card action sheets, par
 quantity changes and Undo. Checked 360/390px mobile and 1280px desktop, both display layouts,
 48px controls and no page overflow. Seven existing deck-editing tests pass. Signed-in saves,
 forced network failures, text zoom and on-screen keyboard behavior were not exercised.
+
+## Page width and collection views
+
+Use PageLayout width="fluid" for card/deck browsing, deck details, comparison, building,
+and analysis workspaces. Shared gutters are 16px on phones, 24px on tablets, and 32px
+on desktop. Keep account forms and prose pages on bounded widths; constrain individual
+reading blocks rather than the entire workspace. Loading, empty and error states use
+the same page width as the loaded content.
+
+Collections add columns using available container width rather than stretching a fixed
+number of cards. Use CardLayoutControls for Grid / Rows / List. Compatible catalog and
+deck surfaces share useDecklistDisplayPrefs so layout and grid density survive navigation.
+Preserve catalog filtering and deck-specific grouping/sorting in their feature controllers.
+Use fullScreen DialogSheet for expanded card/deck views, with controls outside the scrolling
+results, readable names, keyboard dismissal and focus restoration. Small screens may scroll;
+never shrink controls or names simply to fit everything into one screen.

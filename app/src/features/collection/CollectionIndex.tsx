@@ -177,18 +177,18 @@ export default function CollectionIndex() {
     finally {savingRef.current=false; setBusy(false);setSaveProgress("");}
   }
 
-  if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
+  if (user === undefined) return <PageLayout width="fluid" data-component="CollectionIndex"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
   const quickBuyPanel = <TabPanel baseId="collection-browse" tab="quick-buy" active={view} keepMounted>
     {catalogPhase === "error" ? <div role="alert">Cards could not load. <Button onClick={() => window.location.reload()}>Retry</Button></div> : <CollectionBrowser cards={cards} entries={savedEntries} quickBuy preview={!user} ownershipReady={!!user && collectionReady && !collectionError} />}
   </TabPanel>;
   const browseTabs = <Tabs baseId="collection-browse" label="Collection view" variant="pill" wrap tabs={user ? [{ key: "sets", label: "Collection" }, { key: "quick-buy", label: "Quick Buy" }, { key: "progress", label: "Progress" }, { key: "merchandise", label: "Merchandise" }] : [{ key: "sets", label: "Collection" }, { key: "quick-buy", label: "Quick Buy" }]} active={view} onChange={setView} />;
-  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><PageHeader title="My Collection" description={view === "quick-buy" ? "Choose cards and shop on TCGplayer." : "Sign in to track your cards and build decks from what you own."} />{browseTabs}{quickBuyPanel}<TabPanel baseId="collection-browse" tab="sets" active={view}><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></TabPanel></PageLayout>;
+  if (!user) return <PageLayout width="fluid" data-component="CollectionIndex"><PageHeader title="My Collection" description={view === "quick-buy" ? "Choose cards and shop on TCGplayer." : "Sign in to track your cards and build decks from what you own."} />{browseTabs}{quickBuyPanel}<TabPanel baseId="collection-browse" tab="sets" active={view}><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionBrowser cards={cards} entries={[]} preview /></TabPanel></PageLayout>;
 
   const collectionTools = <div className="grid gap-2"><Link to="/card-locations" className="flex min-h-12 items-center rounded-lg border border-ctp-surface1 px-3 text-sm">Where are my cards? →</Link>{([
     ["sets", "Cards"], ["progress", "Progress"], ["merchandise", "Merchandise"], ["add", "Bulk add"], ["import", "Import / export"], ["coverage", "Deck ownership check"], ["history", "Recent changes"],
   ] as const).map(([destination, label]) => <button key={destination} type="button" onClick={() => {setView(destination); setToolsOpen(false);}} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-left text-sm">{label}</button>)}</div>;
 
-  return <PageLayout data-component="CollectionIndex" width="wide">
+  return <PageLayout width="fluid" data-component="CollectionIndex">
     <section className="identity-surface rounded-2xl border border-ctp-surface1 p-4 sm:p-6" aria-labelledby="collection-title">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-sm text-ctp-subtext1">Your cards and collectibles</p><h1 id="collection-title" className="mt-1 text-3xl font-bold text-ctp-text sm:text-4xl">My Collection</h1></div><Button onClick={() => setToolsOpen(true)}>Collection tools</Button></div>
       {view !== "merchandise" && view !== "quick-buy" && collectionReady && !collectionError && <dl className="mt-5 grid grid-cols-2 gap-3">

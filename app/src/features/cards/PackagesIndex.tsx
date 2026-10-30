@@ -38,7 +38,7 @@ function PublishedPackages({ packageId, visible }: { packageId: string; visible:
   const normalized = query.trim().toLowerCase();
   const packages = PUBLISHED_PACKAGE_CATALOG.packages.filter(pkg =>
     !normalized || [pkg.label, ...pkg.memberCards].some(value => value.toLowerCase().includes(normalized)));
-  return <PageLayout width="wide">
+  return <PageLayout width="fluid">
     <PageHeader title="Card Packages" actions={<Link to="/cards/packages?review=1" className="inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-teal focus-visible:outline-2 focus-visible:outline-ctp-teal">Package research</Link>} />
     <label className="block text-sm">Find a package or card
       <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Argus, Turbo Charge…" className="mt-2 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-ctp-teal" />

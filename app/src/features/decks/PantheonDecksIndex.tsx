@@ -10,7 +10,7 @@ export default function PantheonDecksIndex() {
   );
 
   return (
-    <PageLayout data-component="PantheonDecksIndex" width="wide">
+    <PageLayout width="fluid" data-component="PantheonDecksIndex">
       <PageHeader
         title="Browse Pantheon Decks"
       />

@@ -41,7 +41,7 @@ export default function BrowseDecksIndex() {
   }
 
   return (
-    <PageLayout data-component="BrowseDecksIndex" width="wide"><BrowseComparison>
+    <PageLayout width="fluid" data-component="BrowseDecksIndex"><BrowseComparison>
       <PageHeader
         title="Browse Decks"
       />

@@ -249,7 +249,7 @@ export default function CompareIndex() {
   }
 
   return (
-    <PageLayout data-component="CompareIndex" width="full">
+    <PageLayout width="fluid" data-component="CompareIndex">
       <PageHeader title="Compare" />
       {browseReturnTo && <Link to={browseReturnTo} className="mt-2 inline-flex min-h-12 items-center rounded px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">← Browse decks</Link>}
       {!handoffSaved && <p role="status" className="text-sm text-ctp-yellow">This browser cannot retain the comparison after a refresh.</p>}
