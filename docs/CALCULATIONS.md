@@ -2504,6 +2504,23 @@ data change rather than copying its snapshot values into UI claims.
 
 ## Price history (`pipeline/src/pricing/history.ts`, `app/src/features/pricing/usePriceHistory.ts`)
 
+Edition quotes select one TCGplayer product deterministically (`pipeline/src/pricing/select.ts`).
+Ordinary names take precedence over parenthesized collector variants sharing a collector number;
+ties prefer a Normal market quote, then the lowest available market, then product ID. Both finishes
+and the outbound link always belong to that one product. Invalid or negative amounts become null;
+zero remains a valid quote. This prevents an unpriced Curio product from overwriting an ordinary quote.
+
+New history points record the selected product ID. Charts and trends use only the uninterrupted
+tail matching the current product, and trends compare the same finish. Legacy points remain stored
+but their product identity is unknown, so they are excluded from current trends. Charts reappear
+after two comparable samples. Retrying the same snapshot timestamp replaces its point.
+
+`node --import tsx pipeline/scripts/refresh-budget-pricing.ts` refreshes public quotes and budget
+recommendations from published tournament inputs without a tournament crawl. It completes fetching
+and computation before writing artifacts, uses atomic file replacement, and updates the manifest
+last. The October 30, 2026 refresh increased fully priced eligible lists from 372 to 2,412 of 5,987;
+this reflects both corrected product selection and refreshed market quotes.
+
 `buildPrices()` (`pipeline/src/pricing/build.ts`) has always overwritten `data/prices.json`
 wholesale every run — only ever "the price right now." The overall data-refresh job
 (`.github/workflows/data-refresh.yml`) runs daily, but pricing specifically still only actually

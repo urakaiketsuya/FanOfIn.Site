@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { cardPageMetadata, cardSocialImage, priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
+import { cardPageMetadata, cardSocialImage, currentProductHistory, priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
@@ -332,7 +332,7 @@ export default function CardDetail() {
   const edition = card.editions[editionIndex] ?? card.editions[0];
   const price = edition ? prices.get(priceKey(edition.set.prefix, edition.collector_number)) : undefined;
   const priceHistoryPoints = edition ? priceHistoryData?.history[priceKey(edition.set.prefix, edition.collector_number)] : undefined;
-  const priceSeries = priceHistoryPoints ? selectPriceSeries(priceHistoryPoints) : null;
+  const priceSeries = priceHistoryPoints ? selectPriceSeries(currentProductHistory(priceHistoryPoints, price?.tcgplayerProductId)) : null;
 
   return (
     <PageLayout data-component="CardDetail" width="standard">

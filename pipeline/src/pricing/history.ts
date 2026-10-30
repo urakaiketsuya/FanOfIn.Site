@@ -1,7 +1,9 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { PRICE_HISTORY_MAX_POINTS, type PriceData, type PriceHistoryData, type PriceHistoryPoint } from "@gatcg/shared";
+
+import { writeJsonAtomic } from "../lib/atomicWrite.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data");
 const HISTORY_PATH = path.join(DATA_DIR, "priceHistory.json");
@@ -24,19 +26,23 @@ async function readExistingHistory(): Promise<Record<string, PriceHistoryPoint[]
  * TCGCSV briefly missing a product) are left untouched — a gap in that edition's series, not a
  * forced null point or a deletion.
  */
-export async function updatePriceHistory(current: PriceData): Promise<PriceHistoryData> {
-  const history = await readExistingHistory();
+export function appendPriceHistory(previous: Record<string, PriceHistoryPoint[]>, current: PriceData): PriceHistoryData {
+  const history = { ...previous };
 
   for (const [key, entry] of Object.entries(current.prices)) {
-    const points = history[key] ?? [];
-    points.push({ date: current.generatedAt, normalMarket: entry.normal?.market ?? null, foilMarket: entry.foil?.market ?? null });
+    const points = (history[key] ?? []).filter(point => point.date !== current.generatedAt);
+    points.push({ tcgplayerProductId: entry.tcgplayerProductId, date: current.generatedAt, normalMarket: entry.normal?.market ?? null, foilMarket: entry.foil?.market ?? null });
     history[key] = points.length > PRICE_HISTORY_MAX_POINTS ? points.slice(-PRICE_HISTORY_MAX_POINTS) : points;
   }
 
   return { generatedAt: current.generatedAt, history };
 }
 
+export async function updatePriceHistory(current: PriceData): Promise<PriceHistoryData> {
+  return appendPriceHistory(await readExistingHistory(), current);
+}
+
 export async function writePriceHistory(data: PriceHistoryData): Promise<void> {
   await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(HISTORY_PATH, JSON.stringify(data), "utf-8");
+  await writeJsonAtomic(HISTORY_PATH, data, 0);
 }

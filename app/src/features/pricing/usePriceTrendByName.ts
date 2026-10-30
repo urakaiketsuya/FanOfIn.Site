@@ -1,3 +1,4 @@
+import { currentProductHistory } from "@gatcg/shared";
 import { useMemo } from "react";
 import { usePriceLookup } from "./usePriceLookup";
 import { usePriceHistoryData } from "./usePriceHistory";
@@ -35,13 +36,13 @@ export function usePriceTrendByName(enabled = true): Map<string, PriceTrendEntry
     }
 
     for (const [name, { key }] of cheapestKeyByName) {
-      const points = priceHistoryData.history[key];
+      const points = currentProductHistory(priceHistoryData.history[key] ?? [], prices.get(key)?.tcgplayerProductId);
       if (!points || points.length < 2) continue;
       const latest = points[points.length - 1];
       const priorIndex = Math.max(0, points.length - 1 - TREND_WINDOW_POINTS);
       const prior = points[priorIndex];
       const latestPrice = latest.normalMarket ?? latest.foilMarket;
-      const priorPrice = prior.normalMarket ?? prior.foilMarket;
+      const priorPrice = latest.normalMarket !== null ? prior.normalMarket : prior.foilMarket;
       if (latestPrice === null || priorPrice === null || priorPrice === 0) continue;
       byName.set(name, { pctChange: (latestPrice - priorPrice) / priorPrice, points: points.length - priorIndex });
     }

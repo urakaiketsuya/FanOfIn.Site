@@ -33,6 +33,8 @@ export const PRICE_HISTORY_MAX_POINTS = 52;
 
 /** One snapshot of a single edition's market price. Only `market` is tracked (not the full low/mid/high spread) — a trend line only needs one number per point, and `market` is already the number treated as "the real price" everywhere else in this codebase. */
 export interface PriceHistoryPoint {
+  /** Product provenance; absent on legacy snapshots whose variant identity is unknown. */
+  tcgplayerProductId?: number;
   /** The pipeline run's `generatedAt` that produced this point. */
   date: string;
   normalMarket: number | null;
@@ -43,4 +45,13 @@ export interface PriceHistoryData {
   generatedAt: string;
   /** Keyed by `priceKey(setPrefix, collectorNumber)` — same join key as `PriceData.prices`. Chronological oldest-first, capped to `PRICE_HISTORY_MAX_POINTS` per edition. */
   history: Record<string, PriceHistoryPoint[]>;
+}
+
+/** Only the uninterrupted tail for the currently quoted product can describe its price trend.
+ * Keep legacy samples in storage, but never compare an ordinary printing with a Curio variant. */
+export function currentProductHistory(points: readonly PriceHistoryPoint[], productId: number | undefined): PriceHistoryPoint[] {
+  if (productId === undefined) return [];
+  let start = points.length;
+  while (start > 0 && points[start - 1].tcgplayerProductId === productId) start--;
+  return points.slice(start);
 }

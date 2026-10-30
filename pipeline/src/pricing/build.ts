@@ -1,21 +1,14 @@
-import { writeFile, mkdir } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { CardPriceEntry, PriceData, PriceQuote } from "@gatcg/shared";
-import { priceKey } from "@gatcg/shared";
+import type { CardPriceEntry, PriceData } from "@gatcg/shared";
+import { selectGroupPrices } from "./select.js";
+import { writeJsonAtomic } from "../lib/atomicWrite.js";
 import { sleep } from "../lib/http.js";
-import { findGrandArchiveCategoryId, fetchGroups, fetchProducts, fetchPrices, type TcgcsvProduct } from "./tcgcsv.js";
+import { findGrandArchiveCategoryId, fetchGroups, fetchProducts, fetchPrices } from "./tcgcsv.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data");
 const GROUP_REQUEST_DELAY_MS = 150;
-
-function extendedValue(product: TcgcsvProduct, name: string): string | undefined {
-  return product.extendedData.find((f) => f.name === name)?.value;
-}
-
-function toQuote(p: { lowPrice: number | null; midPrice: number | null; highPrice: number | null; marketPrice: number | null }): PriceQuote {
-  return { low: p.lowPrice, mid: p.midPrice, high: p.highPrice, market: p.marketPrice };
-}
 
 export async function buildPrices(): Promise<PriceData> {
   const categoryId = await findGrandArchiveCategoryId();
@@ -30,31 +23,7 @@ export async function buildPrices(): Promise<PriceData> {
       fetchPrices(categoryId, group.groupId),
     ]);
 
-    const pricesByProduct = new Map<number, typeof priceRows>();
-    for (const row of priceRows) {
-      const list = pricesByProduct.get(row.productId) ?? [];
-      list.push(row);
-      pricesByProduct.set(row.productId, list);
-    }
-
-    for (const product of products) {
-      const collectorNumber = extendedValue(product, "Number");
-      if (!collectorNumber) continue; // sealed product (booster pack, box, etc.), not a card
-
-      const rows = pricesByProduct.get(product.productId) ?? [];
-      const normalRow = rows.find((r) => r.subTypeName === "Normal");
-      const foilRow = rows.find((r) => r.subTypeName === "Foil");
-      if (!normalRow && !foilRow) continue;
-
-      const key = priceKey(group.abbreviation, collectorNumber);
-      prices[key] = {
-        cardName: product.name,
-        tcgplayerProductId: product.productId,
-        tcgplayerUrl: product.url,
-        normal: normalRow ? toQuote(normalRow) : null,
-        foil: foilRow ? toQuote(foilRow) : null,
-      };
-    }
+    Object.assign(prices, selectGroupPrices(group, products, priceRows));
 
     await sleep(GROUP_REQUEST_DELAY_MS);
   }
@@ -66,5 +35,5 @@ export async function buildPrices(): Promise<PriceData> {
 
 export async function writePrices(data: PriceData): Promise<void> {
   await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(path.join(DATA_DIR, "prices.json"), JSON.stringify(data), "utf-8");
+  await writeJsonAtomic(path.join(DATA_DIR, "prices.json"), data, 0);
 }
