@@ -1,3 +1,4 @@
+import PlayerComparison from "./PlayerComparison";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
 import PlayerCompetitionReport from "../competition/PlayerCompetitionReport";
@@ -34,7 +35,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { EmptyState } from "../../components/ui/ContentState";
 import PlayerEventFilters from "./PlayerEventFilters";
 
-type PlayerTab = "overview" | "cards" | "events" | "opponents" | "judged";
+type PlayerTab = "overview" | "cards" | "events" | "opponents" | "compare" | "judged";
 const PAGE_SIZE = 50;
 
 export default function PlayerProfile() {
@@ -178,6 +179,7 @@ export default function PlayerProfile() {
       list.push({ key: "cards", label: "Cards" });
       list.push({ key: "events", label: `Events (${events.length})` });
       list.push({ key: "opponents", label: "Opponents" });
+      list.push({ key: "compare", label: "Compare player" });
     }
     if (judge) list.push({ key: "judged", label: `Judged (${judgedEvents.length})` });
     return list;
@@ -288,6 +290,7 @@ export default function PlayerProfile() {
       </Section>
       <PlayerCardPatterns playerId={playerId} active={tab === "cards"} />
       </TabPanel>
+      <TabPanel baseId="player-profile" tab="compare" active={tab}>{tab === "compare" && <PlayerComparison playerId={playerId} />}</TabPanel>
       <TabPanel baseId="player-profile" tab="opponents" active={tab}>
       <PublishedSourceStatus label="Opponents" status={rivalsStatus} hasData={!!rivalsData} />
       <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />

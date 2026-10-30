@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { buildRegionalStrength, competitionMatches, type StrengthEvent, type OmnidexIndexData, type OmnidexPlayersData, type EloHistoryData } from '@gatcg/shared';
+import { buildRegionalStrength, competitionMatches, type PlayerComparisonData, type StrengthEvent, type OmnidexIndexData, type OmnidexPlayersData, type EloHistoryData } from '@gatcg/shared';
 import type { OmnidexEventBundle } from '../omnidex/cache.js';
 import { writeJsonAtomic } from '../lib/atomicWrite.js';
 
@@ -26,4 +26,11 @@ export async function writeRegionalStrength(directory: string, bundles: OmnidexE
   const data = buildRegionalStrength(index,players,history,evidence,generatedAt);
   data.generatedAt = new Date().toISOString();
   await writeJsonAtomic(path.join(directory,'regional-strength.json'),data,0);
+  const physical = new Set(index.events.filter(e => e.setting === 'physical' && Date.parse(e.date) <= Date.parse(generatedAt)).map(e => e.id));
+  await writePlayerComparison(directory, evidence.filter(e => physical.has(e.id)), data.generatedAt);
+}
+
+export async function writePlayerComparison(directory: string, evidence: StrengthEvent[], generatedAt: string) {
+  const data: PlayerComparisonData = {generatedAt, events:evidence.map(e => ({id:e.id,matches:e.matches.map(m => [m.a,m.b,m.winner])}))};
+  await writeJsonAtomic(path.join(directory,'player-comparison.json'),data,0);
 }

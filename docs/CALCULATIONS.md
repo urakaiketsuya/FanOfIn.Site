@@ -6181,3 +6181,55 @@ all three measures, linked period/format changes, 48px controls, no horizontal
 overflow, loading/recalculation and real empty free-play results checked. Existing
 error/retry handling is unchanged; a network failure was not injected in this pass.
 The nine regional-strength analysis tests pass.
+
+## Individual player comparisons
+
+Player profiles now have a Compare player tab: one player against another, or one
+player against a US regional rating distribution. Period, format, and comparison
+target are URL state. The compact `player-comparison.json` artifact stores individual
+completed two-person physical-event matches as `[a, b, winner|null]`, grouped by
+event. It uses the corrected round-aware match reader and the same team validation
+as regional strength; byes, incomplete and malformed results are excluded. The
+analysis pipeline publishes it with regional strength; `build-player-comparison.ts`
+can rebuild it independently without refreshing unrelated analysis artifacts.
+
+Counts are restricted to the selected format and season (or all time), completed
+physical events at or before the selected regional report's as-of cutoff, with one
+event bundle per ID. All time includes events with no season. Eligibility for an
+Elo display requires at least five recorded matches in that selection. Elo itself
+is the existing overall rating, using the latest finite checkpoint at or before
+that cutoff; it is not a new format-specific rating. Inferred US region membership
+uses the same historical/current cohort rules and no current-store fallback as
+regional strength. Non-US and unassigned opponents remain Other / unassigned.
+
+Regional percentile is `100 × (count below + 0.5 × count equal) / eligible population`.
+No eligible rating or an empty comparison population yields unavailable, not zero.
+The player can be included in their own region's population. Percentiles are
+relative to that region and are not comparable proof of absolute skill.
+
+Opponent strength uses the latest finite rating checkpoint strictly before the
+event date. Source history contains event-final checkpoints, not match-time Elo;
+checkpoints at the same timestamp are conservatively excluded. Missing earlier
+ratings remain unavailable (no invented starting rating). Per-region average
+opponent Elo is match-weighted over known earlier ratings, accompanied by rated /
+recorded match coverage. Result-lane plots use a common Elo axis for both players;
+points can overlap, so visible dots are not a count of matches.
+
+Head-to-head and common-opponent records use direct observed wins, losses, and
+draws. Win/loss/draw bars include draws in their denominator. Common opponents are
+ranked by combined match volume, with the top ten displayed and the total count
+visible. Regional membership is determined at the selection endpoint, not the
+player's residence at match time. No winner prediction, confidence verdict, or
+causal skill claim is generated from these descriptive comparisons. Existing
+opponent/rival reports are unchanged.
+
+Validation includes orientation, exact five-match eligibility, seasonal/format/
+physical-event cutoffs, all-time unseasoned events, duplicate event bundles,
+same-event rating leakage, missing ratings, and percentile ties/empty populations.
+
+UI verification: 390px mobile and 1280px desktop, keyboard player selection,
+player/region switching, seasonal and all-time scope, free-play empty results,
+loading/recalculation, 48px controls, and no horizontal overflow. Network failure
+was not injected; all four sources use the shared visible error/retry component.
+Thirteen comparison/regional tests, app/shared/pipeline typechecks, and focused
+lint passed. The match dataset is fetched only when the comparison tab is mounted.
