@@ -9,7 +9,6 @@ import { useDeckBuilderController } from "./useDeckBuilderController";
 import { DeckBuilderProvider } from "./DeckBuilderContext";
 import { useDeckBuilder } from "./useDeckBuilder";
 import { DeckBuilderHeader } from "./components/DeckBuilderSetup";
-import { DeckBuilderMethodology } from "./components/DeckBuilderWorkbenchStatus";
 
 export default function DeckBuilderIndex() {
   useDocumentTitle("Deck Workbench", "Find cards, edit your deck, and save drafts. Ask for suggestions when you need them.");
@@ -30,6 +29,5 @@ function DeckBuilderPage() {
       {b.tab === "copy" && <BuilderCopyPanel hideFullDeckOption validation={b.validation} validationComplete={b.validationComplete} reviewComplete={b.reviewComplete} improveDeckId={b.improveDeckId || c.savedDeckId} championName={b.championName}
         saveNote={c.saveNote} onSaveNoteChange={c.setSaveNote} saveTitle={c.saveTitle} onSaveTitleChange={c.setSaveTitle} saveCopyCount={c.saveCopyCount} saveState={c.saveState} onSave={()=>void c.handleSaveToMyDecks()} savedDeckId={c.savedDeckId} saveKeptOnly={c.saveKeptOnly} onSaveKeptOnlyChange={c.setSaveKeptOnly} keptCopyCount={c.keptCopyCount} decklist={b.decklist} catalogByName={b.catalogByName} onCopy={keptOnly=>void c.handleCopy(keptOnly)} copyState={c.copyState} fullCopyCount={c.fullCopyCount} onCopyAndOpen={url=>void c.handleCopyAndOpen(url)} massEntryUrl={c.massEntryUrl} clarentUrl={c.clarentUrl} onExportTts={c.handleExportTts} onCopyShareLink={()=>void c.handleCopyShareLink()} shareCopyState={c.shareCopyState} />}
     </EditorDialog>}
-    <DeckBuilderMethodology />
   </PageLayout>;
 }

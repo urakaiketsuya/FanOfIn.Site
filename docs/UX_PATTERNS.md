@@ -553,3 +553,20 @@ URL parameters; retain expanded card lists when switching profile tabs. Fetch th
 index only after Cards is visited. Preserve the all-time champion overview above it.
 
 Player Cards adds Recent changes and Signature choices below usage and first appearances. Both show up to six named card images with paired percentage bars on a shared 0–100 scale and visible sample counts. Recent changes uses adjacent 90-day periods; signature choices uses other players on the same champion and format. Insufficient history shows available versus required deck counts. Existing format/champion/section controls scope every report together, without additional setup.
+
+## Deck workbench
+
+Lead with the editable deck: champion-led card artwork, a compact tap-to-rename title, format, save status and Save.
+Keep Deck and Stats as peer views; preserve deck edits and visited statistics controls when
+switching views. Show artwork, linked names and quantity controls on each card. On phones and in Rows, place controls beside the artwork; larger Card art grids keep quantities on one horizontal row. Use one
+Actions sheet for moves, removal and printing choices. Keep one Add action per section;
+empty optional sections use compact Add buttons. Suggestions opens optional card suggestions
+or cheaper replacements, each requiring explicit acceptance. Do not repeat introductory
+instructions, card-stat disclosures, methodology or missing-build notices in the editing flow.
+Keep construction problems and save/recovery failures actionable and visible.
+
+Workbench verification (2026-10-30): checked initial loading/empty browsing, imported draft,
+rename, keyboard tab navigation, retained Stats section, card action sheets, partial moves,
+quantity changes and Undo. Checked 360/390px mobile and 1280px desktop, both display layouts,
+48px controls and no page overflow. Seven existing deck-editing tests pass. Signed-in saves,
+forced network failures, text zoom and on-screen keyboard behavior were not exercised.

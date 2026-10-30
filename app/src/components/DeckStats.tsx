@@ -28,7 +28,7 @@ function StatChart({ title, rows, cardsByName, curve = false, control }: { contr
   </section>;
 }
 
-export default function DeckStats({ decklist, cardsByName, format, championName, onExplore }: { format?: DeckFormat; championName?: string | null; onExplore?: (name: string) => void; decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
+export default function DeckStats({ decklist, cardsByName, format, championName, onExplore, showBuildComparison = true }: { showBuildComparison?: boolean; format?: DeckFormat; championName?: string | null; onExplore?: (name: string) => void; decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
   const id = useId();
   const [section, setSection] = useState<Section>("main");
   const [breakdown, setBreakdown] = useState<Breakdown>("elements");
@@ -48,7 +48,7 @@ export default function DeckStats({ decklist, cardsByName, format, championName,
         <div className="border-t border-ctp-surface1 pt-2">
           <StatChart key={breakdown} title="Breakdown" rows={stats[breakdown]} cardsByName={cardsByName} control={<select aria-label="Deck stats breakdown" className="min-h-control max-w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm" value={breakdown} onChange={event => setBreakdown(event.target.value as Breakdown)}><option value="elements">Elements</option><option value="copies">Copies per card</option><option value="subtypes">Subtypes</option><option value="keywords">Keywords</option></select>} />
         </div>
-        {section === "main" && <DeckQuantityEvidence decklist={decklist} format={format} championName={championName} cardsByName={cardsByName} />}
+        {showBuildComparison && section === "main" && <DeckQuantityEvidence decklist={decklist} format={format} championName={championName} cardsByName={cardsByName} />}
       </div>}
     </TabPanel>
   </Panel>;
