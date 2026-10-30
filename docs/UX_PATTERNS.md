@@ -22,6 +22,19 @@ The theme in `app/src/index.css` owns colors and typography. `--spacing-control`
 
 Show one primary action per task region. Navigation uses links; mutations use buttons. Require explicit acceptance before recommendations change a deck. Keep the selected deck, format, and relevant scope visible when crossing tools.
 
+## Concise recommendations and comparisons
+
+Lead with the actual cards and the decision: savings, a few short tradeoff labels, and one explicit
+accept action. Prefer sensible initial selections so results appear without an empty setup step.
+Keep common controls compact and touch-friendly. A result should be understandable by scanning
+its cards and labels, without reading paragraphs.
+
+Do not repeat full card rules, introductory instructions, methodology, missing-evidence notices,
+or cautionary prose across result cards. Use existing card/detail links for deeper reading. Do not
+replace removed text with new disclosures or accordions. Qualify estimates in their labels; show
+errors, unavailable prices and other blockers only when relevant. Preserve evidence and limitations
+in calculation docs without presenting untested recommendations as demonstrated outcomes.
+
 ## Collection language
 
 Use `CollectionCopyStatus` and `CollectionStatusHelp` for location summaries. Counts must come from `cardLocationState` or `collectionLocationIndex` in shared; never duplicate their arithmetic in presentation.

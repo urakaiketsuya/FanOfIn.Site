@@ -4,6 +4,7 @@ import { deckDestinationEligibility, type EditableDeckDestination } from "./deck
 export type DeckEditSection = EditableDeckDestination;
 export type EditableDeck = Record<DeckEditSection, OmnidexDecklistCardLine[]>;
 export type DeckEdit =
+  | { type: "replace-main"; name: string; replacement: string; quantity: number }
   | { type: "add-many"; additions: { name: string; section: DeckEditSection; quantity: number }[] }
   | { type: "printings"; section: DeckEditSection; name: string; printings: CardPrintingAllocation[] }
   | { type: "quantity"; printings?: CardPrintingAllocation[]; section: DeckEditSection; name: string; quantity: number }
@@ -12,6 +13,13 @@ export type DeckEdit =
 
 /** Immutable, section-aware edits. Limits are validation feedback, never silent truncation. */
 export function editDeck(deck: EditableDeck, edit: DeckEdit, catalog: ReadonlyMap<string, Card>): EditableDeck {
+  if (edit.type === "replace-main") {
+    const source = deck.main.find(line => line.card === edit.name);
+    if (!source || source.printings?.length || edit.name === edit.replacement || !Number.isSafeInteger(edit.quantity) || edit.quantity < 1 || edit.quantity > source.quantity || !catalog.has(edit.replacement) || !deckDestinationEligibility(catalog.get(edit.replacement), "main").allowed) return deck;
+    const target = deck.main.find(line => line.card === edit.replacement);
+    if (!Number.isSafeInteger((target?.quantity ?? 0) + edit.quantity)) return deck;
+    return { ...deck, main: deck.main.flatMap(line => line === source ? (line.quantity === edit.quantity ? [] : [{ ...line, quantity: line.quantity - edit.quantity }]) : [line === target ? { ...line, quantity: line.quantity + edit.quantity } : line]).concat(target ? [] : [{ card: edit.replacement, quantity: edit.quantity }]) };
+  }
   if (edit.type === "add-many") {
     let next = deck;
     for (const item of edit.additions) {

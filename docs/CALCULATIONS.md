@@ -5746,3 +5746,58 @@ exact event/player navigation and Back restoration. Save failure retained the re
 provided retry. Successful signed-in saving, forced dataset-network failure/retry, browser
 stale-price rendering and on-screen-keyboard behavior were not exercised; price-expiry logic
 is covered by calculation tests.
+
+## Budget card replacements (Standard Main Deck)
+
+`features/deckbuilder/budgetReplacements.ts` proposes quantity-preserving swaps for the actual
+editor draft. `Find cheaper alternatives` opens the shared sheet; accepting a proposal uses one
+immutable `replace-main` edit in `lib/deckEditing.ts`, so existing Undo/Redo restores both sides.
+Material, Sideboard and Maybeboard remain unchanged. Suggestions never mutate a draft by merely
+selecting a card or quantity, and no tournament result is transferred to the modified list.
+
+Candidate generation reuses the card similarity tiers: full normalized effect pattern first, core
+effect second. Broader concept matches require explicit opt-in and must preserve all detected
+concrete roles of the source (draw, damage, recover, negate, glimpse or protection); generic banish,
+memory or graveyard mentions alone cannot nominate a broader replacement. Same core effect is a
+textual relationship, not equivalence: numbers and conditional bonuses may differ. The UI shows card art, up to three short match/tradeoff labels, savings and one accept action.
+Full printed rules are available through the existing card links. Comparable numeric cost/power/
+life/durability deltas and speed changes supply the short labels.
+Candidates share a card type and payment-cost type. Printed element access comes from the actual
+Material lineage through shared `availableDeckElements` / `isDeckElementCompatible`.
+
+Gates exclude Champion/Regalia/Token cards, unknown or banned Standard legality, quantities beyond
+the source, and additions above the lesser of four copies and a catalog restriction. Existing
+copies in Main, Material and Sideboard count toward the destination limit. Active registered and
+approved local package protection is reused from `findActiveDeckPackages`; unreadable local package
+storage pauses proposals. Source cards with assigned printings are excluded to avoid discarding
+printing allocations. New copies do not inherit the removed card's printing choices.
+
+Intent checks compare directed validated `feeds` and `poweredBy` relationships between the source
+and remaining active deck cards. A candidate must retain each relationship's direction, counterpart,
+and resource name. Named-reference links protect the source; candidates with named dependencies
+are excluded. Candidates cannot introduce new detected validated token/subtype consumption
+requirements. Full token catalog entries remain available when resolving token-to-subtype links.
+Experimental links do not confer protection or compatibility. These checks preserve detected links,
+not resource output quantities, timing, hidden conditions, or proof of equal gameplay performance.
+Each acceptance reruns current checks and pricing, and subsequent proposals use the changed draft.
+
+Prices reuse shared `budgetCardPrices` and the cached price snapshot: cheapest released quoted
+printing/finish, verified product names/set aliases, finite nonnegative market quotes, and a maximum
+age of ten days. Missing or future snapshots fail closed. Savings are
+`quantity × (round(sourcePrice × 100) − round(candidatePrice × 100)) / 100` and must be positive.
+Full-list totals cover Main + Material + Sideboard; incomplete coverage is labeled as the priced
+portion with an unpriced-card count. Shipping, tax and collection ownership are excluded.
+
+Order is similarity tier, matching tournament deck usage when available from the existing
+Tournament-mode suggestion context, savings, then card name. Community and simulator rows are not
+labeled as tournament evidence. The first twelve alternatives are displayed. Usage supports
+comparison and does not estimate a swap's win-rate change; the UI does not attach tournament records or predicted win rates to modified lists. Collection-aware purchasing and multi-card package replacements remain future scope.
+Unrecognized cards in active sections pause dependency checks until resolved; Maybeboard cards do
+not enter those checks. The quantity picker offers at most four copies per proposal.
+
+Verification (2026-10-30): focused replacement, editor mutation and package-guardrail tests; app
+TypeScript and production bundle checks. Browser QA covered 390px and 360px mobile and 1280px
+desktop, empty results, recalculation, three-copy acceptance, refreshed remaining quantity,
+Undo restoration, Escape/focus restoration, card links, 48px controls and horizontal overflow.
+Price failure/retry and stale-price displays were not forced in-browser; missing/stale/future price
+logic is covered by unit tests. Account saving and a physical on-screen keyboard were not retested.

@@ -206,7 +206,7 @@ const NAME_MENTION_MIN_LENGTH = 7;
  * the caller (see `intentCards` – those duplicate the Summon/sacrifice token track instead of
  * adding new information).
  */
-function mentionsCardName(text: string, name: string): boolean {
+export function mentionsCardName(text: string, name: string): boolean {
   return name.length >= NAME_MENTION_MIN_LENGTH && text.toLowerCase().includes(name.toLowerCase());
 }
 

@@ -1,3 +1,4 @@
+import BudgetReplacementPanel from "../BudgetReplacementPanel";
 import DeckStats from "../../../components/DeckStats";
 import { useBuilderCardStats } from "../components/BuilderCardStats";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -25,6 +26,7 @@ export default function BuilderBuildPanel() {
   }, []);
   const hasCards = EDITOR_SECTIONS.some(({key})=>b.editor.deck[key].length > 0);
   const [starting, setStarting] = useState(!hasCards);
+  const [budgetOpen, setBudgetOpen] = useState(false);
   const [browserOpen, setBrowserOpen] = useState(false);
   const [browserDestination, setBrowserDestination] = useState<"automatic" | "main" | "material" | "sideboard" | "maybeboard">("automatic");
   const total = EDITOR_SECTIONS.reduce((sum,{key})=>sum+b.editor.deck[key].reduce((n,line)=>n+line.quantity,0),0);
@@ -67,11 +69,13 @@ export default function BuilderBuildPanel() {
       <div className="flex flex-wrap gap-2 text-xs text-ctp-subtext1">{EDITOR_SECTIONS.map(({key,title})=><span key={key}>{title} {b.editor.deck[key].reduce((sum,line)=>sum+line.quantity,0)}</span>)}</div>
       <details className="mt-2 rounded-lg border border-ctp-surface1 px-3"><summary className={`flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm ${b.validation.status==="Illegal" ? "text-ctp-yellow" : "text-ctp-subtext1"}`}>{b.validation.status==="Legal" ? "Construction checks pass" : b.validation.status==="Illegal" ? "Construction issues" : "Draft · construction incomplete"}<DisclosureChevron /></summary><div className="pb-3 text-xs text-ctp-subtext1">{b.validation.reasons.map(reason=><p className="mb-2" key={reason}>{reason}</p>)}<p>Incomplete decks can be saved. These checks do not cover every card-text exception.</p></div></details>
       {!hasCards && <p className="py-8 text-sm text-ctp-subtext1">Your deck is empty. Use Add cards to get started.</p>}
+      <Button className="my-3" onClick={() => setBudgetOpen(true)}>Find cheaper alternatives</Button>
       {cardStats.controls}
       <DeckEditor onAdd={section => { setBrowserDestination(section); setBrowserOpen(true); }} format={b.deckFormat} renderStats={name => cardStats.renderStats(name, true)} deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
       <DeckStats decklist={b.editor.deck} cardsByName={b.catalogByName} format={b.deckFormat} championName={b.championName} />
     </section>}
 
+    {budgetOpen && <EditorDialog title="Cheaper alternatives" doneLabel="Back to workbench" onDismiss={() => setBudgetOpen(false)}><BudgetReplacementPanel /></EditorDialog>}
     {browserOpen && <EditorDialog count={total} onDismiss={()=>setBrowserOpen(false)}>{cardBrowser}</EditorDialog>}
   </section>;
 }
