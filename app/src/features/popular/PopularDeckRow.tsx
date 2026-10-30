@@ -1,12 +1,11 @@
 import { formatUsd } from "../../lib/format";
 import { useDeckArchetypeLabel } from "../decks/useDeckArchetypeLabel";
-import { useId, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { shortHash } from "../../lib/hash";
 import type { PopularDeck } from "./useDeckPopularity";
-import Button from "../../components/ui/Button";
-import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckBuildComparisonDisclosure from "../decks/DeckBuildComparisonDisclosure";
 import DeckQuantityEvidence from "../decks/DeckQuantityEvidence";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 
@@ -20,8 +19,6 @@ export default function PopularDeckRow({
   price?: number | null;
 }) {
 
-  const [comparisonOpen, setComparisonOpen] = useState(false);
-  const comparisonId = useId();
   const archetypeLabel = useDeckArchetypeLabel(deck.deckIds);
   const decklist: OmnidexDecklist = useMemo(
     () => ({
@@ -45,13 +42,8 @@ export default function PopularDeckRow({
       {price !== undefined && <p>{price === null ? "Price unavailable" : `Estimated price ${formatUsd(price)}`}</p>}
     </>,
   }} view={{ to: `/decks/${shortHash(deck.signature)}` }} />
-    <div className="rounded-b-xl bg-ctp-mantle px-3 pb-2">
-      <Button className="flex w-full items-center justify-between gap-2" aria-expanded={comparisonOpen} aria-controls={comparisonId} onClick={() => setComparisonOpen(value => !value)}>
-        Compare with build<DisclosureChevron className={comparisonOpen ? "rotate-180" : ""} />
-      </Button>
-      <div id={comparisonId} hidden={!comparisonOpen}>
-        {comparisonOpen && <DeckQuantityEvidence compact decklist={decklist} format="STANDARD" championName={deck.championName} cardsByName={cardsByName} />}
-      </div>
-    </div>
+    <DeckBuildComparisonDisclosure>
+      <DeckQuantityEvidence compact decklist={decklist} format="STANDARD" championName={deck.championName} cardsByName={cardsByName} />
+    </DeckBuildComparisonDisclosure>
   </>;
 }

@@ -10,6 +10,7 @@ import { useSightingDecklist } from "./useSightingDecklist";
 import { formatUsd } from "../../lib/format";
 import { InlineState } from "../../components/ui/ContentState";
 import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPreviewCard";
+import SightingBuildComparison from "../decks/SightingBuildComparison";
 import DisclosureChevron from "../../components/DisclosureChevron";
 
 export default function DeckSightingRow({ sighting, playerName, championCard, onAdd, added, browseCard = false }: {
@@ -68,5 +69,6 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
         {onAdd && <button type="button" onClick={onAdd} aria-pressed={added ?? false} className={`${deckPreviewActionClass} border ${added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{added ? "Remove from compare" : "Compare"}</button>}
       </>,
     }} view={{ to: sighting.deckHash ? `/decks/${sighting.deckHash}` : `/decks/event/${sighting.eventId}/${sighting.player}` }} />
+    {browseCard && <SightingBuildComparison eventId={sighting.eventId} player={sighting.player} championName={sighting.championName} />}
   </div>;
 }

@@ -1,5 +1,6 @@
 import type { HomepageData } from "@gatcg/shared";
 import { Link } from "react-router-dom";
+import SightingBuildComparison from "../features/decks/SightingBuildComparison";
 import CardArtTile from "../components/CardArtTile";
 import DeckPreviewCard from "../components/DeckPreviewCard";
 import PublishedSourceStatus from "../components/PublishedSourceStatus";
@@ -24,9 +25,10 @@ export default function HomeDiscovery() {
       <p className="mb-4 text-sm text-ctp-subtext1">Recent published results, across different champions.</p>
       <PublishedSourceStatus label="Homepage discovery" status={status} hasData={!!data} />
       {data && !recent.length && <p className="py-4 text-ctp-subtext1">No tournament decks are available yet.</p>}
-      <div className="grid gap-4 md:grid-cols-3">{recent.map(sighting => <div key={sighting.id} className="min-w-0">
+      <div className="grid items-start gap-4 md:grid-cols-3">{recent.map(sighting => <div key={sighting.id} className="min-w-0">
         <p className="mb-2 text-xs text-ctp-subtext0">{new Date(sighting.eventDate).toLocaleDateString(undefined, { dateStyle: "medium", timeZone: "UTC" })}</p>
         <DeckPreviewCard presentation="cover" cardsByName={cards} model={{ decklist: null, id: sighting.id, title: sighting.championName, championName: sighting.championName, archetypeLabel: sighting.archetype, materialPreview: sighting.material, source: { kind: "event", label: "Tournament" }, metadata: <p>{sighting.placement ? `#${sighting.placement} · ` : ""}{sighting.eventName}</p> }} view={{ to: sighting.to }} />
+        <SightingBuildComparison eventId={Number(sighting.id.split(":")[0])} player={Number(sighting.id.split(":")[1])} championName={sighting.championName} />
       </div>)}</div>
     </section>
     <section aria-labelledby="home-archetypes-heading">

@@ -42,7 +42,8 @@ function loadEventBundle(eventId: number): Promise<PublishedEventBundle> {
  * a player-profile's arbitrary event history – this can always read the static per-event bundle
  * (data/omnidex/events/{id}.json) instead of hitting the live Omnidex API.
  */
-export function useSightingDecklist(eventId: number, playerId: number, enabled: boolean): SightingDecklistState {
+export function useSightingDecklist(eventId: number, playerId: number, enabled: boolean): SightingDecklistState & { retry: () => void } {
+  const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<SightingDecklistState>({ loading: false, decklist: null, error: null });
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export function useSightingDecklist(eventId: number, playerId: number, enabled: 
           loading: false,
           format: bundle.event?.format.toLowerCase() === "standard" ? "STANDARD" : bundle.event?.format.toLowerCase() === "pantheon" ? "PANTHEON" : "UNKNOWN",
           decklist: entry?.decklist ?? null,
-          error: entry ? null : "Decklist not found for this player.",
+          error: entry?.decklist ? null : "Decklist not found for this player.",
         });
       })
       .catch(() => {
@@ -72,7 +73,11 @@ export function useSightingDecklist(eventId: number, playerId: number, enabled: 
     return () => {
       cancelled = true;
     };
-  }, [eventId, playerId, enabled]);
+  }, [eventId, playerId, enabled, attempt]);
 
-  return state;
+  return { ...state, retry: () => {
+    eventBundleRequests.delete(eventId);
+    setState({ loading: true, decklist: null, error: null });
+    setAttempt(value => value + 1);
+  } };
 }

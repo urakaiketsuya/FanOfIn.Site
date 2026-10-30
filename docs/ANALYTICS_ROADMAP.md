@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 83% complete: the audit, shared comparison engine,
+Release A is approximately 87% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -65,8 +65,11 @@ using the same catalog for calculation, artwork and detail links. The 1,894-list
 sample now has complete composition references, matching its archetype handoff.
 Most Played now offers an on-demand, three-card comparison preview using the same
 worker result and target-excluded cohort. Closed previews load no comparison partitions.
-Next: reuse the compact preview for tournament sightings and homepage discovery. Release checks
-and extra-draw model validation remain. The percentage is approximate because that
+The same disclosure and comparison now appear on Browse tournament sightings and
+homepage discovery cards. Homepage event lists and comparison partitions load on expansion;
+the published event supplies the actual format. Failed deck loads offer Retry deck.
+Next: release validation, including comparison failure/retry and cancellation.
+Extra-draw model validation remains. The percentage is approximate because that
 validated model scope remains undecided.
 
 Previous increment verification: 21 focused calculation tests; app/shared type checks; app lint (existing
@@ -311,3 +314,19 @@ controls and overflow. Full-report navigation preserves the 1,475-list / 1,873-s
 Silvie comparison and nine unavailable assigned lists. Forced failure/retry, empty-match UI and text zoom remain
 unverified in the browser. Sparse/missing references are covered by existing engine
 tests; preview ordering and unavailable references have focused tests.
+
+
+Discovery preview reuse (2026-10-30): shared disclosure now serves Most Played,
+Browse tournament sightings, and homepage recent results. Sighting previews resolve
+the published event's exact list and format; the homepage's Material-only teaser
+is never used as the comparison target. The bounded event-request cache is reused.
+Failed or absent deck loads expose Retry deck, which clears that event's cached
+response; a null deck no longer remains in a loading state. Closing unmounts the
+comparison consumer and terminates its worker.
+Seven focused preview/worker/handoff tests, app type check and lint pass (existing
+warnings). Mobile 390px and desktop 1280px checks cover both placements, loading,
+collapse/reopen, keyboard focus, 48px controls, and overflow. Homepage and Browse
+resolve event 66963/player 3753 to the same 1,282 reference lists, 1,578 sightings,
+103 unavailable assigned lists, and three card differences. The homepage Ciel
+list correctly reports no published assignment. Forced deck-load failure/retry,
+text zoom, and signed-in flows remain unverified.

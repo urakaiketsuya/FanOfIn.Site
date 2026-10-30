@@ -5667,7 +5667,7 @@ reference-only cards with zero current copies. Its median and middle-50% range i
 absent cards as zero copies; inclusion uses all eligible distinct lists. The legacy
 Main-only bucket calculation remains available for other consumers.
 The projection is used on deck pages, target-scoped archetype reports, and on-demand
-Most Played previews. The preview selects up to three nonzero absolute differences
+Most Played, tournament-sighting and homepage previews. The preview selects up to three nonzero absolute differences
 between current copies and the reference median across Main and Material. Ties use
 inclusion count descending, section and name ascending. It preserves reference-only
 cards, excludes unavailable distributions, and does not recompute the cohort or infer
