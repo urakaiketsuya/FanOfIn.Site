@@ -148,3 +148,18 @@ worker bundle is approximately 100.5kB uncompressed. Browser verification confir
 1,894 references and 2,340 sightings on the Diao Chan sample; that tournament consumer
 passes a partial catalog, leaving composition coverage at 0/1,894. This is a separate
 catalog-input gap to resolve before claiming full comparison coverage there.
+
+
+### Tournament catalog coverage — 2026-10-30
+
+The shared comparison controller now reads the reactive local card catalog and merges
+it with caller-provided cards. Catalog records take precedence; caller-only cards remain
+available while local sync is incomplete. Both the worker and card presentation receive
+this merged map. Recalculation follows catalog updates; unresolved catalog entries still
+withhold derived composition rather than becoming zeros.
+
+The `21122:104` browser sample now shows Main type medians Action 28, Ally 10,
+Phantasia 22 and Unique 6 over all 1,894 reference lists, identical on the receiving
+archetype page. Material cards absent from the target now have art and links (for example,
+Tariff Ring, Wind Resonance Bauble and Portentous Tanggu). The 130 unavailable assigned
+lists remain unavailable; catalog enrichment does not change cohort membership.

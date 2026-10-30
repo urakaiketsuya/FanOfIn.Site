@@ -38,3 +38,20 @@ test('worker entry point returns a result and reports malformed-input failures',
     else Reflect.deleteProperty(globalThis, 'self');
   }
 });
+
+test('reference-only catalog cards restore composition coverage without changing the cohort', () => {
+  const input = fixture();
+  const partition = input.partitions.get('Champion')!;
+  partition.cards.cardNames.push('Reference only');
+  for (const deck of partition.cards.decks) if (deck.main[0][1] !== 3) deck.main.push([2, 1]);
+  const incomplete = runBuildComparison(input);
+  assert.equal(incomplete.comparison.sections[0].complete, 0);
+  assert.equal(incomplete.comparison.sections[0].metrics.find(row => row.group === 'types')?.reference, null);
+  input.cards.set('Reference only', { ...input.cards.get('A')!, name: 'Reference only', types: ['ALLY'] });
+  const complete = runBuildComparison(input);
+  assert.deepEqual(complete.report, incomplete.report);
+  assert.equal(complete.comparison.sections[0].complete, 5);
+  assert.equal(complete.comparison.sections[0].metrics.find(row => row.group === 'types' && row.label === 'ALLY')?.reference?.median, 1);
+  assert.equal(complete.comparison.sections[0].cards.find(row => row.name === 'Reference only')?.current, 0);
+  assert.deepEqual(complete.comparison.sections[0].cards, incomplete.comparison.sections[0].cards);
+});

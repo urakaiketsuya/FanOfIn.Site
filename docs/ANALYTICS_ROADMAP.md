@@ -41,7 +41,7 @@ each release's audit establishes data coverage and implementation size.
 ## A — This deck versus its archetype (first release)
 
 2026-10-29: [cohort and model audit](DECK_BUILD_REPORT_AUDIT.md) complete.
-Release A is approximately 75% complete: the audit, shared comparison engine,
+Release A is approximately 80% complete: the audit, shared comparison engine,
 compact deck-page composition and card comparison views are implemented. Main and Material show
 current copies, build medians and middle-50% ranges with one selectable breakdown.
 Card-first Main and Material views show current copies, zero-inclusive build medians,
@@ -60,9 +60,10 @@ The comparison resolver and projection now run in a dedicated browser worker. Ch
 inputs cancel the previous worker; results are bound to their input and failures expose
 Retry comparison. Decoded reference records stay in the worker. Calculation formulas
 are unchanged; this removes computation from the UI thread, not total calculation time.
-Next: complete catalog coverage for tournament-page comparisons, then compact Browse
-placements. The 1,894-list tournament sample currently supplies a partial catalog and
-therefore correctly withholds derived composition references. Release checks
+Comparison consumers now supplement page-scoped cards with the reactive local catalog,
+using the same catalog for calculation, artwork and detail links. The 1,894-list tournament
+sample now has complete composition references, matching its archetype handoff.
+Next: compact Browse placements. Release checks
 and extra-draw model validation remain. The percentage is approximate because that
 validated model scope remains undecided.
 
@@ -94,6 +95,14 @@ and keyboard Main/Material selection. Loading was observed; worker failure respo
 are unit-tested. Forced browser worker failure/retry, rapid-input cancellation, signed-in
 flows and device-level frame timing remain unverified. Input cloning and rendering still
 run on the UI thread; no end-to-end speedup or frame-time threshold is claimed.
+
+Catalog increment verification (2026-10-30): 20 focused tests, app type check and lint
+(existing warnings only). Browser checks at 390×844 and 1280×900 confirm restored Main
+composition references, Material reference-only artwork/links, 51-card expansion/collapse,
+keyboard section switching and no horizontal overflow. Tournament and archetype values
+match for the 1,894-reference sample. Loading was observed; missing-catalog behavior is
+unit-tested. Forced sync failure/recovery, empty local catalog, text zoom and signed-in
+flows remain unverified in the browser.
 
 **Question:** How does this exact list differ from comparable lists?
 

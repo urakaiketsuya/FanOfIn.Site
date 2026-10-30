@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { shortHash, MIN_QUANTITY_EVIDENCE_LISTS, type Card, type DeckDetailData, type DeckFormat, type OmnidexDecklist } from '@gatcg/shared';
+import { useCardCatalog } from '../cards/useCardCatalog';
 import { useArchetypeTaxonomyData } from '../archetypes/data';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import Button from '../../components/ui/Button';
@@ -18,6 +19,9 @@ function Partition({ champion, onData, onFailure }: { champion: string; onData: 
   return status.error ? <p role="alert" className="text-sm text-ctp-yellow">{champion} lists could not be refreshed. <Button onClick={status.retry}>Retry lists</Button></p> : null;
 }
 function Evidence({ decklist, championName, cardsByName, expectedBuildId }: Props & { championName: string }) {
+  // Page callers may only resolve the selected deck. References need the whole catalog.
+  const catalog = useCardCatalog();
+  const comparisonCards = useMemo(() => new Map([...cardsByName, ...catalog.map(card => [card.name, card] as const)]), [cardsByName, catalog]);
   const taxonomy = useArchetypeTaxonomyData();
   const taxonomyStatus = usePublishedDataStatus('analysis-archetype-taxonomy', '/data/analysis/archetype-taxonomy.json');
   const [partitions, setPartitions] = useState<Map<string, DeckDetailData>>(new Map());
@@ -29,8 +33,8 @@ function Evidence({ decklist, championName, cardsByName, expectedBuildId }: Prop
   const onData = useCallback((name: string, data: DeckDetailData) => setPartitions(previous => previous.get(name) === data ? previous : new Map(previous).set(name, data)), []);
   const target = useMemo(() => ({ main: decklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: decklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }), [decklist]);
   const input = useMemo(() => taxonomy && partitions.has(championName)
-    ? { target, clusters: taxonomy.clusters, partitions, cards: cardsByName } : null,
-  [target, taxonomy, partitions, championName, cardsByName]);
+    ? { target, clusters: taxonomy.clusters, partitions, cards: comparisonCards } : null,
+  [target, taxonomy, partitions, championName, comparisonCards]);
   const { result: computed, pending, error, retry } = useDeckBuildComparison(input);
   const report = computed?.report;
   const champions = [...new Set([championName, ...(report?.champions ?? [])])];
@@ -43,7 +47,7 @@ function Evidence({ decklist, championName, cardsByName, expectedBuildId }: Prop
         <p role="status" className="text-xs text-ctp-subtext1">{report.lists} distinct lists · {report.sightings} sightings · this list excluded{pending ? ' · Recalculating…' : ''}</p>
         {report.missing > 0 && <p className="text-xs text-ctp-yellow">{report.missing} assigned lists unavailable.</p>}
         {report.status === 'sparse' ? <p role="status" className="text-sm text-ctp-subtext1">At least {MIN_QUANTITY_EVIDENCE_LISTS} other distinct lists needed.</p> : <>
-          <DeckBuildSummary comparison={computed!.comparison} cardsByName={cardsByName} />
+          <DeckBuildSummary comparison={computed!.comparison} cardsByName={comparisonCards} />
         </>}
       </>}
     </>}
