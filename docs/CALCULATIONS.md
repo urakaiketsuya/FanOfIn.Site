@@ -5852,3 +5852,19 @@ catalog summon-token text. Exclude the payoff itself from that support pool.
 Draw access does not assert legal deployment, survival, class activation, or attacks.
 Material and Sideboard cards do not contribute to these Main support probabilities.
 Genesis buff power and reservable payments remain outside this extension.
+
+### Damage-source report: unknown is not zero
+
+The automatic report is titled Damage sources. Render numeric damage distributions only
+when at least one checkpoint has positive modeled expected damage. A partial or unreviewed
+card alone does not justify a zero-damage distribution. Unquantified Main sources instead
+show the exact chance of drawing at least one copy at 7/10/15/20 cards seen, using the
+forecast library size. This is source access, not a probability of activating its effect.
+Material effects remain separate from draw probabilities.
+
+Storm Slime's reviewed On Enter spell deals damage to a target unit equal to Slime cards
+in banishment. The report shows 1 damage per banished Slime with conditional examples
+2/4/6; these are not projected banishment counts or expected game damage. The four-copy
+60-card case has 39.9%, 52.8%, 69.4%, 81.3% source access. Covenant of Thorns' same-clause
+incoming-damage redirection is excluded from outgoing damage detection. Independent
+outgoing clauses on a card remain eligible. Existing quantified distributions are unchanged.

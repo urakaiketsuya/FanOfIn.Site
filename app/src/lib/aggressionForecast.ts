@@ -106,6 +106,7 @@ function damageConditions(card: Card): string | null {
 function hasUnmodeledDamageText(card: Card): boolean {
   const clauses = (card.effect ?? "").replace(/\*\*/g, "").split(/[.\n]+/);
   return clauses.some((clause) => /\bdamage\b/i.test(clause)
+    && !/if damage would be dealt[^.]*that damage is dealt[^.]*instead/i.test(clause)
     && (!/\bprevent(?:s|ed|ing|ion)?\b/i.test(clause) || /\bdeals?\b[^.]*\bdamage\b/i.test(clause)));
 }
 
