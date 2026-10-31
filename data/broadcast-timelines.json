@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:26:16.663Z",
+  "generatedAt": "2026-10-31T21:27:51.644Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -13038,12 +13038,12 @@
       "id": "worlds-swiss-2026-round4-superior-raingoddess",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 4: Water Genbu against Wind Razorgale Arisana",
+      "round": "Round 4: Water Genbu against Wind Razorgale Arisanna",
       "players": [
         {
           "id": "p1",
           "name": "Superior",
-          "deck": "Water Genbu from Canada (Genbu, Black Tortoise; Seaside Ringleader; Frostsworn Paladin; Tidestone Bovine; Throne-Keeper Bullfrog; Resonating Fugue; Polar Depths; Song of Frost; Frostbind; Nullifying Lantern; Censer of Restful Peace; Unbroken Mustang x2; Cyclical Breeze; Safeguard Amulet; Mystic Purifier; Beastbond Boots and Expel the Departed in the side)",
+          "deck": "Water Genbu / Guo Jia (Tidestone Bovine, Frostsworn Paladin, Seaside Ringleader, Resonating Fugue, Fractal of Polar Depths)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 12286,
@@ -13229,7 +13229,7 @@
         {
           "id": "p2",
           "name": "TheRainGoddess",
-          "deck": "Wind Razorgale Arisana (Razorgale, Essence Crucible, Floral Arrangement, Turbo Charge, Ensnaring Fumes, Veiling Breeze, Three Visits, Fairy Whispers, Cyclical Breeze, Purifying Thurible, Windmill Engineer, Scout the Land, Cleansing Reunion; Obscured Offering, Verdigris Decree and Siphoning Gale in the side)",
+          "deck": "Wind Razorgale Arisanna (Essence Crucible, Censer of Restful Peace, Nullifying Lantern, Verdigris Decree, Veiling Breeze)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 231,
@@ -13426,28 +13426,29 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "The casters list TheRainGoddess's side options: Mystic Purifier, Obscured Offering to protect the Sensor, Essence Crucible or Nullifying Lantern, and Siphoning Gale and Verdigris Decree, which are good for hitting Paladins and breaking Fantasia."
+          "text": "The casters discuss Mystic Purifier, Obscured Offering, and Verdigris Decree as options for TheRainGoddess. These are suggestions, not confirmed boarding quantities."
         },
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "Superior has Beastbond Boots as a very good sideboard call. The casters explain that Razorgale is not a \"may\", so with spell shroud the Razorgale player is forced to target themself. They also note Expel the Departed as a strong answer to a Razorgale on the field, but Superior does not have another fate stone in the deck."
+          "text": "Beastbond Boots and Expel the Departed are identified in Superior’s game-two deck; Expel is milled, not played. Blanche, Sheltering Saint is later seen in hand. The broadcast does not establish boarding quantities or cuts."
         }
       ],
       "games": [
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Superior wins — Sensor and Lantern slow the Arisana start, then Genbu, Black Tortoise and Resonating Fugue push 18",
+          "summary": "Superior wins — Enfeebling Orb clears the way for Genbu and Resonating Fugue, backed by Frostbind",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Superior has the classic anti-Razorgale tech: a Censer of Restful Peace and a Nullifying Lantern, with only two Unbroken Mustangs in the deck. The casters call it the anti-Razorgale attack, and note TheRainGoddess has to deal with the Sensor first.",
+              "actor": "p2",
+              "text": "TheRainGoddess uses Censer of Restful Peace to shut off Superior’s graveyard abilities, with Nullifying Lantern also available in the material deck. The casters note Superior has only two Unbroken Mustangs and may need Fracturize to answer the Censer.",
               "cards": [
                 "Censer of Restful Peace",
                 "Nullifying Lantern",
-                "Unbroken Mustang"
+                "Unbroken Mustang",
+                "Fracturize"
               ]
             },
             {
@@ -13467,10 +13468,15 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Superior brings out the Tidestone Bovine and the Frostsworn Paladin for steady damage, destroys a Fractal of Rain with a Verdigris Decree and uses Seaside Ringleader to fill the graveyard. Genbu, Black Tortoise arrives for the first time in the Swiss stage, with Resonating Fugue for an 18-damage push. TheRainGoddess has Veiling Breeze in the stock and goes into the tank, but cannot stop the onslaught.",
+              "text": "TheRainGoddess’s Verdigris Decree destroys Superior’s Fractal of Rain. Superior uses Primordial Ritual and continues building his graveyard, then uses Enfeebling Orb to leave TheRainGoddess unable to pay for Ensnaring Fumes. Genbu and Resonating Fugue threaten 18 damage; Superior’s Frostbind stops Veiling Breeze to close the game.",
               "cards": [
+                "Verdigris Decree",
+                "Fractal of Rain",
+                "Primordial Ritual",
+                "Enfeebling Orb",
+                "Ensnaring Fumes",
                 "Resonating Fugue",
-                "Seaside Ringleader",
+                "Frostbind",
                 "Veiling Breeze"
               ],
               "tags": [
@@ -13483,17 +13489,19 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "Superior wins by game loss — TheRainGoddess takes a card from a Nullifying Lantern lock, a ruling that is upheld on appeal while Superior is in a commanding position",
+          "summary": "Superior wins by game loss — the broadcast reports an illegal Cyclical Breeze retrieval under Nullifying Lantern, upheld on appeal",
           "beats": [
             {
               "order": 1,
-              "actor": "p2",
-              "text": "Superior puts in Beastbond Boots and Expel the Departed and bounces back with a Throne-Keeper Bullfrog to protect the Bovine. TheRainGoddess holds up three cards with a Fracturize in hand, but Superior keeps building a board with Seaside Ringleaders and the Bullfrog, which gets a +2 buff and swings for nine.",
+              "actor": "p1",
+              "text": "Superior shows Beastbond Boots and mills Expel the Departed. He holds Fracturize and removes TheRainGoddess’s Censer of Restful Peace. Later, Throne-Keeper Bullfrog enters with two buff counters alongside Tidestone Bovine and the growing ally board.",
               "cards": [
                 "Beastbond Boots",
                 "Expel the Departed",
+                "Fracturize",
+                "Censer of Restful Peace",
                 "Throne-Keeper Bullfrog",
-                "Fracturize"
+                "Tidestone Bovine"
               ],
               "tags": [
                 "sideboard"
@@ -13502,9 +13510,9 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "TheRainGoddess uses Purifying Thurible and a Turbo Charge to draw, and Superior holds six cards of influence. The casters note Superior does not have to bring out the turtle at all when he is pressuring this hard, and TheRainGoddess is one turn from the Essence Crucible but at 22 life.",
+              "text": "TheRainGoddess materializes Backup Charger, then later uses Turbo Charge on the Powercell. Superior keeps applying ally pressure while holding further options; TheRainGoddess still needs Arisanna and Essence Crucible to bring the potion engine online.",
               "cards": [
-                "Purifying Thurible",
+                "Backup Charger",
                 "Turbo Charge",
                 "Essence Crucible"
               ],
@@ -13515,21 +13523,20 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "TheRainGoddess uses a Cyclical Breeze to add a Fairy Whispers to her hand while the Nullifying Lantern stops her taking a card from a graveyard without an element. The table judge rules that too much has happened to fix it and issues a game loss. The appeal to a higher judge fails, and Superior wins the match 2-0.",
+              "text": "TheRainGoddess uses Cyclical Breeze to retrieve Fairy Whispers while Nullifying Lantern makes graveyard cards norm element. The casters report that the table judge issues a game loss because the state cannot be rewound, then confirm that the ruling stands on appeal. Superior wins 2–0.",
               "cards": [
                 "Cyclical Breeze",
                 "Fairy Whispers",
                 "Nullifying Lantern"
               ],
               "tags": [
-                "ruling",
-                "lethal"
+                "ruling"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 feature match. Casters call the players \"Superior\" and \"Rain Goddess\" (Omnidex usernames Superior and TheRainGoddess). Result per Omnidex (Superior 2-0). The casters report the game 2 ruling from the headset: a game loss for TheRainGoddess after a card was added from the graveyard under Nullifying Lantern, with the appeal failing. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 4. Targeted caption checks confirm TheRainGoddess’s Censer/Lantern/Verdigris ownership, Superior’s Genbu finish and game-two boarding observations. The game-loss explanation and failed appeal are attributed to the casters’ judge reports at 359:49–360:08 and 363:58–364:13; no independent ruling document was reviewed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
     },
     {
       "id": "worlds-swiss-2026-round4-bonus-raylam-gerthos",

@@ -249,3 +249,16 @@ test('Worlds round two separates the survived Burst from the later Missile finis
   assert.match(match.games[2].beats.at(-1)!.text, /third Oblation resolves/);
   assert.doesNotMatch(JSON.stringify(match), /Measure of Arar|Burst of Thunder|Nasome Blast|Incapacitate x1/);
 });
+
+test('Worlds round four keeps graveyard hate with Arisanna and boarding evidence with Superior', () => {
+  const match = find('round4-superior-raingoddess');
+  assert.equal(match.games[0].beats[0].actor, 'p2');
+  assert.doesNotMatch(match.players[0].deck, /Censer|Lantern|Verdigris/);
+  assert.match(match.games[0].beats[2].text, /TheRainGoddess’s Verdigris Decree destroys Superior’s/);
+  assert.ok(match.games[0].beats[2].cards!.includes('Frostbind'));
+  assert.equal(match.games[1].beats[0].actor, 'p1');
+  assert.ok(match.games[1].beats[1].cards!.includes('Backup Charger'));
+  assert.match(match.sideboardNotes![1].text, /Expel is milled, not played/);
+  assert.match(match.games[1].beats[2].text, /norm element/);
+  assert.deepEqual(match.games[1].beats[2].tags, ['ruling']);
+});
