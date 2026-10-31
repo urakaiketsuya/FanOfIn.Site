@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:57:35.729Z",
+  "generatedAt": "2026-10-31T22:15:51.426Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -6051,7 +6051,7 @@
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Dragowil wins — the official 2–0 record assigns game one to Tristan",
+          "summary": "Dragowil wins — Arg0naut94 receives a game loss for a sideboard/main-deck error",
           "beats": [
             {
               "order": 1,
@@ -6064,8 +6064,8 @@
             },
             {
               "order": 2,
-              "actor": "both",
-              "text": "A sideboard/main-deck error prompts a judge call. The captions contradict themselves about the game-loss recipient and immediately correct “game loss” to “game win” for Dragowil; they do not establish a ruling against him. The official 2–0 record is retained.",
+              "actor": "p1",
+              "text": "Arg0naut94 receives a game-loss penalty for a sideboard/main-deck error, giving Dragowil game one.",
               "tags": [
                 "ruling"
               ]
@@ -6102,7 +6102,7 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 137:05–145:44, 167:01–170:12. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 137:05–145:44, 167:01–170:12. Recap claims were checked in these windows; this is not an exhaustive reading of every turn. User confirmation on 2026-10-31 resolves the caption ambiguity: Arg0naut94 received the game loss (Ascent London Day 1, 2:25:27)."
     },
     {
       "id": "ascent-london-day1-round3-henti-lucas",

@@ -31584,9 +31584,7 @@
       ]
     }
   ],
-  "sourceFollowUp": [
-    "Resolve the London Round 2 penalty recipient only with clearer footage or official ruling evidence; do not assign the ambiguous broadcast penalty to a player."
-  ],
+  "sourceFollowUp": [],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
     "sourceArchive": "/Users/avery/Downloads/transcripts.zip",
@@ -33040,12 +33038,7 @@
         "reviewMode": "recap-claims"
       }
     ],
-    "unresolved": [
-      {
-        "matchId": "ascent-london-day1-round2-argonaut-dragoill",
-        "reason": "The original captions do not reliably identify which player received the game-one deck-error penalty. Official result is Dragowil2–0; earlier claim that Dragowil was penalized is withdrawn."
-      }
-    ],
+    "unresolved": [],
     "stageDecklists": {
       "eventId": 60488,
       "stage": "Swiss",
@@ -33227,7 +33220,8 @@
       "worldsSwissDecklists": "resolved: 22 stage-specific attachments across 11 matches",
       "europeanRound7": "resolved: the previously omitted game two is a MaruX win; game three draws, consistent with official 1–1",
       "worldsQuarterfinalGyre": "resolved: Jett names Ghosts of Pendragon against GlenyBoi",
-      "cardOwnership": "Completed recap-claim verification across all published matches; corrected ownership and separated proposed lines from observed plays."
+      "cardOwnership": "Completed recap-claim verification across all published matches; corrected ownership and separated proposed lines from observed plays.",
+      "londonRound2Penalty": "resolved by user confirmation on 2026-10-31: Arg0naut94 received the game loss; Dragowil won game one and the match 2–0."
     },
     "verification": {
       "checks": [
@@ -33241,8 +33235,7 @@
       ],
       "limitations": [
         "Data-only change; no UI implementation changed or browser verification required.",
-        "Most of this batch uses source windows to verify recap claims rather than exhaustive full-match transcript or video review.",
-        "London Round 2 penalty recipient remains ambiguous in the captions; official match result preserved and no penalty assigned to a player."
+        "Most of this batch uses source windows to verify recap claims rather than exhaustive full-match transcript or video review."
       ]
     },
     "coverage": {
@@ -33466,6 +33459,15 @@
         "eu-nationals-2026-day1-round7-marux-pewpewstan"
       ],
       "awaitingRecordedSourceReview": []
-    }
+    },
+    "userCorrections": [
+      {
+        "matchId": "ascent-london-day1-round2-argonaut-dragoill",
+        "date": "2026-10-31",
+        "source": "User confirmation: “Argo got the game loss”",
+        "videoUrl": "https://www.youtube.com/watch?v=E8MyaSKtI_U&t=8727s",
+        "finding": "Arg0naut94 received the game-loss penalty. Supersedes the unresolved recipient in the earlier caption review; official Dragowil 2–0 result unchanged."
+      }
+    ]
   }
 }
