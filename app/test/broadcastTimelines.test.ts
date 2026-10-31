@@ -222,3 +222,18 @@ test('SEA finishers preserve Ciel omen ownership and Topsy spellshroud timing', 
   assert.ok(second.beats[1].cards!.includes('Feu Awakening'));
   assert.equal(second.winner, 'p1');
 });
+
+test('Worlds opening match preserves Alice card ownership and the game-three sequence', () => {
+  const match = find('round1-proan-duckhats');
+  assert.deepEqual(match.games.map(game => game.winner), ['p2', 'p1', 'p2']);
+  assert.doesNotMatch(match.players[1].deck, /Reflected Blight|Ducal Seal/);
+  const third = match.games[2];
+  assert.ok(third.beats[0].cards!.includes('Purifying Thurible'));
+  assert.ok(third.beats[1].cards!.includes('Extricating Touch'));
+  assert.equal(third.beats[1].actor, 'both');
+  assert.match(third.beats[2].text, /DuckHats uses Cleansing Reunion/);
+  assert.ok(third.beats[2].cards!.includes('Reflected Blight'));
+  assert.doesNotMatch(JSON.stringify(third), /Dynastic Whirlpool/);
+  assert.doesNotMatch(match.sideboardNotes![0].text, /Lustrous Slime/);
+  assert.match(match.sideboardNotes![0].text, /boarding suggestions/);
+});

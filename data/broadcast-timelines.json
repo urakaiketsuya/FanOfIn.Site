@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:17:28.282Z",
+  "generatedAt": "2026-10-31T21:24:21.771Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -11444,12 +11444,12 @@
       "id": "worlds-swiss-2026-round1-proan-duckhats",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 1: Water Umbra Alice mill against Wind Krux Lorraine",
+      "round": "Round 1: Water Umbra Alice mill against Wind Crux Lorraine",
       "players": [
         {
           "id": "p1",
           "name": "ProAnnn",
-          "deck": "Water Umbra Alice, Phantom Monarch mill (Dynastic Whirlpool x2, Regal Inquisition x2, Phantasmagoria, Pearled Prayer, Abnegation, Engulf, Cerulean Decree, Angel Attendant, Windmill Engineer, Maledictum Vitae, Backup Charger, Fracturize, Resolute Stand)",
+          "deck": "Water Umbra Alice, Phantom Monarch mill (Dynastic Whirlpool, Regal Inquisition, Reflected Blight, Pearled Prayer, Abnegation)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 1133,
@@ -11623,7 +11623,7 @@
         {
           "id": "p2",
           "name": "DuckHats",
-          "deck": "Wind Krux Lorraine, TM32 list (Lorraine, Blademaster; Sword of Seeking; Spirit Blade: Retribution; Aella; Ghosts of Pendragon x2; Dungeon Guide x2; Fluffy Shopkeep; Escape the Wreckage; Ducal Seal; Enfeebling Orb; Lost Providence; Cleansing Reunion and Reflected Blight main-deck tech; Obscured Offering x1)",
+          "deck": "Wind Crux Lorraine, Spirit Ruler (Ghosts of Pendragon, Spirit Blade: Ascension, Aella, Cleansing Reunion, Purifying Thurible)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 331,
@@ -11824,14 +11824,14 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "The casters expect ProAnnn to look for ways to clear the Krux board and name Bandersnatch as one idea. They also note a Lustrous Slime, which is not a Carter but a big body, as a possible tech against the windmill-style damage."
+          "text": "The casters discuss Bandersnatch as a taunt-and-recovery option, along with Slip Away and Nullifying Mirror. These are boarding suggestions; the broadcast does not establish which copies ProAnnn brings in."
         }
       ],
       "games": [
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "DuckHats wins — Aella suppresses the Ducal Seal at end of turn and ProAnnn has no recovery left",
+          "summary": "DuckHats wins — Cleansing Reunion disrupts the mill plan and Aella suppresses Ducal Seal",
           "beats": [
             {
               "order": 1,
@@ -11841,17 +11841,23 @@
                 "Lorraine, Blademaster",
                 "Sword of Seeking",
                 "Dungeon Guide",
-                "Angel Attendant"
+                "Angel Attendant",
+                "Cerulean Decree"
               ]
             },
             {
               "order": 2,
-              "actor": "p2",
-              "text": "A second Dungeon Guide takes DuckHats to level three, and he puts in Enfeebling Orb as his next material. With Ducal Seal and Spirit Blade: Retribution, the Alice player must recover again and again just to stay level. ProAnnn's Maledictum Vitae and a second Regal Inquisition are in the mix, and a full Regal mill takes nine cards each.",
+              "actor": "both",
+              "text": "DuckHats uses a second Dungeon Guide to reach Lorraine, Spirit Ruler, then materializes Enfeebling Orb. ProAnnn uses Maledictum Vitae for recovery and Regal Inquisition to discard Ghosts of Pendragon; DuckHats retrieves a Ghost with Crux Sight. ProAnnn materializes Ducal Seal to tax the incoming attacks.",
               "cards": [
-                "Spirit Blade: Retribution",
+                "Dungeon Guide",
+                "Lorraine, Spirit Ruler",
+                "Enfeebling Orb",
                 "Maledictum Vitae",
-                "Regal Inquisition"
+                "Regal Inquisition",
+                "Ghosts of Pendragon",
+                "Crux Sight",
+                "Ducal Seal"
               ],
               "tags": [
                 "swing"
@@ -11860,8 +11866,12 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "DuckHats suppresses with Aella on the Ducal Seal at the end of the turn. ProAnnn sees he has no recovery left and concedes game one.",
+              "text": "DuckHats’s Cleansing Reunion denies ProAnnn’s Reflected Blight retrieval of Dynastic Whirlpool. Imperious Galebind lets Aella return at end of turn to suppress ProAnnn’s Ducal Seal. Facing the next attack turn, ProAnnn concedes.",
               "cards": [
+                "Cleansing Reunion",
+                "Reflected Blight",
+                "Dynastic Whirlpool",
+                "Imperious Galebind",
                 "Aella, Zephyr's Hand",
                 "Ducal Seal"
               ],
@@ -11879,11 +11889,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "DuckHats has an amazing hand with an ultimate spell and a Ghosts of Pendragon, but he cannot find the Dungeon Guide to get to level three. ProAnnn goes up to Alice level two with Phantasmagoria and ships the rest of the graveyard to the bottom of the deck to mill two instead.",
+              "text": "ProAnnn’s Regal Inquisition strips DuckHats’s hand, but the replacement draws still miss Dungeon Guide. ProAnnn later uses Phantasmagoria to recycle his graveyard and mills an Engulf.",
               "cards": [
-                "Ghosts of Pendragon",
+                "Regal Inquisition",
                 "Dungeon Guide",
-                "Phantasmagoria"
+                "Phantasmagoria",
+                "Engulf"
               ]
             },
             {
@@ -11902,10 +11913,12 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "The casters call the mill of 15 a done deal. They note that ProAnnn forgot his Lost Providence in game one but now remembers it. Two Dynastic Whirlpools finish DuckHats's deck, and ProAnnn ties the match.",
+              "text": "DuckHats eventually finds Dungeon Guide, then levels to Lorraine, Spirit Ruler through materialization. ProAnnn materializes Bauble of Abundance and finishes with two Dynastic Whirlpools, tying the match.",
               "cards": [
-                "Dynastic Whirlpool",
-                "Lost Providence"
+                "Dungeon Guide",
+                "Lorraine, Spirit Ruler",
+                "Bauble of Abundance",
+                "Dynastic Whirlpool"
               ],
               "tags": [
                 "lethal"
@@ -11916,24 +11929,30 @@
         {
           "gameNumber": 3,
           "winner": "p2",
-          "summary": "DuckHats wins — main-deck Cleansing Reunion and Reflected Blight stop the Whirlpool plan, and ProAnnn scoops with no recovery",
+          "summary": "DuckHats wins — Cleansing Reunion disrupts Reflected Blight and ProAnnn concedes",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "DuckHats holds the third Dungeon Guide and does not activate it in the recollection phase, the way many players would. He pays Escape the Wreckage with the Dungeon Guide in memory as a bait, and the casters say ProAnnn has to decide whether to take it.",
+              "text": "DuckHats holds Purifying Thurible to threaten ProAnnn’s Fracturize setup, then uses it before leveling with Dungeon Guide. Lorraine, Blademaster clears Angel Attendant and draws a card.",
               "cards": [
+                "Purifying Thurible",
+                "Fracturize",
                 "Dungeon Guide",
-                "Escape the Wreckage"
+                "Lorraine, Blademaster",
+                "Angel Attendant"
               ]
             },
             {
               "order": 2,
-              "actor": "p2",
-              "text": "DuckHats tries again to take down the Angel Attendant for a draw. He has a Reflected Blight in the graveyard, and the casters say it stops a spell from resolving and does not go under Alice as a curse. The Cleansing Reunion and Reflected Blight, in the main deck, are the choices DuckHats made for this event.",
+              "actor": "both",
+              "text": "ProAnnn plays Extricating Touch. DuckHats responds with Escape the Wreckage, putting Dungeon Guide into memory. ProAnnn removes Spirit Blade: Ascension instead; DuckHats then materializes Lorraine, Spirit Ruler.",
               "cards": [
-                "Reflected Blight",
-                "Cleansing Reunion"
+                "Extricating Touch",
+                "Escape the Wreckage",
+                "Dungeon Guide",
+                "Spirit Blade: Ascension",
+                "Lorraine, Spirit Ruler"
               ],
               "tags": [
                 "swing"
@@ -11942,10 +11961,11 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "ProAnnn tries a Dynastic Whirlpool plus a second one back in the deck, but DuckHats's Cleansing Reunion answers it. ProAnnn has only a Resolute Stand and no recovery, so he scoops the game. DuckHats wins the match 2-1 and goes 1-0, and the casters note his main-deck reads of the room.",
+              "text": "After ProAnnn reaches Alice level two, DuckHats uses Cleansing Reunion to remove the target of Reflected Blight. The failed retrieval also leaves Alice without that curse in her lineage. With Resolute Stand but no recovery available, ProAnnn concedes.",
               "cards": [
-                "Dynastic Whirlpool",
+                "Alice, Phantom Monarch",
                 "Cleansing Reunion",
+                "Reflected Blight",
                 "Resolute Stand"
               ],
               "tags": [
@@ -11955,7 +11975,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 1 feature match. Casters call the players \"Proan\" and \"Duck Hats\" (Omnidex usernames ProAnnn and DuckHats). Result per Omnidex (DuckHats 2-1). The VOD later replays the end of game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 1: captions reviewed from 54:32–103:00 against the Swiss lists and local card text. DuckHats wins 2–1, consistent with Omnidex. Boarding suggestions remain distinct from observed plays. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
     },
     {
       "id": "worlds-swiss-2026-round2-raylam-caven",
