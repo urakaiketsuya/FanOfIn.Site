@@ -146,3 +146,14 @@ test('Niagara semifinal includes both captioned games and correct deck ownership
   assert.equal(match.sideboardNotes![0].actor, 'p1');
   assert.match(match.sideboardNotes![0].text, /Suspicious Concoction/);
 });
+
+test('Diana boarding notes distinguish predictions from observed cards', () => {
+  const final = find('grand-finals-quarax-jett');
+  assert.match(final.sideboardNotes![0].text, /casters recommend/);
+  assert.doesNotMatch(final.sideboardNotes![0].text, /brings in three|Drown in Aether/);
+  assert.match(final.sideboardNotes![1].text, /Topsy Decree is later identified in Jett’s game-two hand/);
+  assert.doesNotMatch(final.sideboardNotes![1].text, /stay out/);
+  const round4 = find('shuteemdown-zetdivx');
+  assert.doesNotMatch(round4.sideboardNotes!.find(note => note.actor === 'p1')!.text, /Aetheric Reforging/);
+  assert.match(round4.sideboardNotes!.find(note => note.actor === 'p2')!.text, /Aetheric Reforging/);
+});

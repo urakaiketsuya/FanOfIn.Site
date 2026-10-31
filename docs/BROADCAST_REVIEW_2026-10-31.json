@@ -1147,6 +1147,26 @@
       "path": "ascent-niagara-falls-top4-sf-fruitcake-bratis/sourceNote",
       "before": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Top 4 semifinal (game 1 shown). Casters call the players \"Fruitcake/Fruitkick\" (Omnidex username Fruitcake) and \"Bratis\" (Bratus). Result per Omnidex (Bratus 2-0, round 14). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain.",
       "after": "Reviewed full Ascent Niagara Falls Day 2 captions, semifinal at 504:56–526:39. Both games are shown. Casters call Bratus “Bratis” and Fruitcake “Fruitkick”; registered lists corroborate their deck identities. Game one ends in concession with Polaris resolution uncertain; game two ends with Arcane Blast. Sideboard predictions are not treated as confirmed changes."
+    },
+    {
+      "path": "na-nationals-2026-grand-finals-quarax-jett/sideboardNotes/0/text",
+      "before": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess. The casters say his sideboard differs from Zetdivx's.",
+      "after": "The casters recommend Expel the Departed, Aetheric Reforging, Nullifying Mirror and Shademist Priestess for Quarax. Mirror appears in game two; Priestess and Expel are seen in game three, when Expel removes Razorgale Calling."
+    },
+    {
+      "path": "na-nationals-2026-grand-finals-quarax-jett/sideboardNotes/1/text",
+      "before": "Jett brings in Obscured Offering, an extra Zephyr, possibly an extra Fluffy Shopkeep, and he considers Stifling Gyre. Blessed Clergy and Topsy Decree stay out.",
+      "after": "The casters suggest Obscured Offering and another Zephyr, with Fluffy Shopkeep and Stifling Gyre as possibilities. Topsy Decree is later identified in Jett’s game-two hand; the full boarding package is not confirmed."
+    },
+    {
+      "path": "na-nationals-2026-day1-round4-shuteemdown-zetdivx/sideboardNotes/0/text",
+      "before": "Shuteemdown looks at Dynastic Whirlpool, Regal Inquisition, Viridian Protective Trinket, Engulf, Song of Frost and Shademist Priestess. The casters expect Trinket, Engulf, Song of Frost and Aetheric Reforging to come in.",
+      "after": "The casters suggest Viridian Protective Trinket, Engulf and Song of Frost for Shuteemdown. Trinket and Engulf appear in game two."
+    },
+    {
+      "path": "na-nationals-2026-day1-round4-shuteemdown-zetdivx/sideboardNotes/1/text",
+      "before": "The casters expect Zetdivx to bring in Expel the Departed against the Fantasia plan. One is seen played; the number boarded in is unconfirmed.",
+      "after": "The casters suggest Expel the Departed and Aetheric Reforging for Zetdivx. Expel is played in game two; the number boarded in is unconfirmed."
     }
   ],
   "sourceFollowUp": [
@@ -1154,8 +1174,7 @@
     "Obtain stage-specific Worlds Swiss decklists before restoring attachments, including lists whose champion family matches.",
     "Reconcile European Round 7 game two with the official 1–1 result using video or an official ruling; game one is verified.",
     "Manila Mantra ownership is verified. Verify remaining Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
-    "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed.",
-    "Zetdivx’s game-three Drown in Aether is verified from captions. Confirm remaining Diana boarding claims and quantities, especially Quarax in the final."
+    "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed."
   ],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
@@ -1256,6 +1275,28 @@
           "524:25–526:39"
         ],
         "finding": "Both games are present. Restores Bratus’s generated Arcane Blast as a game-one threat and game-two finisher; earlier champion-only inference missed the transformed Fatestone. Trained Hawk and Regal Inquisition belong to Bratus, not Fruitcake. Game-one casters revise their apparent Polaris resolution into a concession; preserve that uncertainty. Suspicious Concoction is confirmed boarded, while other sideboard discussion is prediction. Adds missing game two. Local catalog omits Seiryuu’s reverse face, so no exact empower formula is asserted."
+      },
+      {
+        "matchId": "na-nationals-2026-grand-finals-quarax-jett",
+        "archiveEntry": "Water Aetherwing Diana vs Razorgale Arisanna  Grand Archive TCG NA Nationals Grand Finals.txt",
+        "sha256": "1e63ebff1fcb70470a84b4d5b2f4a833219394fb6a8758f86908da952ec59bd7",
+        "ranges": [
+          "36:44–38:32",
+          "49:42–50:03",
+          "65:31–66:43",
+          "68:17–68:51"
+        ],
+        "finding": "Pre-game boarding discussion is predictive and explicitly uncertain. Topsy Decree is identified in Jett’s game-two hand, contradicting the previous stay-out claim. Quarax’s Priestess and Expel are seen in game three, with Expel played. Three registered Expels do not prove three boarded copies. Drown in Aether discussion refers to Zetdivx’s earlier semifinal, not Quarax."
+      },
+      {
+        "matchId": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+        "archiveEntry": "Water Tera Diao Chan vs Water Aetherwing Diana  Grand Archive TCG North American Nationals Round 4.txt",
+        "sha256": "a99265d1694845e07f2cf2b4496b631012daa13f6f513f1268993c4f6c9fb19c",
+        "ranges": [
+          "13:02–14:44",
+          "22:41–23:28"
+        ],
+        "finding": "Aetheric Reforging recommendation belongs to Zetdivx, after the commentary switches players at 13:48. Four Expels are discussed as available/recommended; one observed activation does not prove the boarded quantity. Expel is observed in game two; casters revise the possible target from Fractal of Waves to Eventide Lure."
       }
     ],
     "unresolved": [
