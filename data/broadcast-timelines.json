@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T23:23:38.768109Z",
+  "generatedAt": "2026-10-31T23:33:43.658350Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -22496,6 +22496,413 @@
         "id": "O9EzTt7ffVc",
         "kind": "broadcast",
         "startSeconds": 27646
+      }
+    },
+    {
+      "id": "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Lifdrasyl",
+          "deck": "Fire Ciel control"
+        },
+        {
+          "id": "p2",
+          "name": "Shina2486",
+          "deck": "Fire Exia Jin"
+        }
+      ],
+      "result": "Lifdrasyl wins 1–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Regal Inquisition forces a deck-out",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lifdrasyl repeatedly reuses Regal Inquisition to strip Shina2486’s threats.",
+              "cards": [
+                "Regal Inquisition"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Lifdrasyl activates another Regal Inquisition through Ciel’s lineage release; Shina2486 runs out of cards.",
+              "cards": [
+                "Regal Inquisition"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 7052
+      },
+      "sourceNote": "Selected Game 1 finish. Official result 1-0; the second game reaches overtime, despite a closing commentary guess of 2-0."
+    },
+    {
+      "id": "ascent-taipei-2025-round-4-aw5459-menbao",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Aw5459",
+          "deck": "Wind Nico allies"
+        },
+        {
+          "id": "p2",
+          "name": "MenBao",
+          "deck": "Water Genbu Guo Jia"
+        }
+      ],
+      "result": "Aw5459 wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Dream Fairy removes Genbu",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "MenBao flips Genbu and uses it to attack an ally."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Aw5459 answers Genbu with Dream Fairy, leaving MenBao without the centerpiece of his board.",
+              "cards": [
+                "Dream Fairy"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 18257
+      },
+      "sourceNote": "Selected Game 2 plays; official result 2-0. The closing attack falls in a caption gap."
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 7 (Day 1, bonus match)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Quikk",
+          "deck": "Water Diana Aetherwing"
+        },
+        {
+          "id": "p2",
+          "name": "ChemCollapse",
+          "deck": "Wind Guo Jia / Seiryuu"
+        }
+      ],
+      "result": "ChemCollapse wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "ChemCollapse survives the early rush",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse survives Quikk’s early pressure, then uses Seiryuu’s Command and Arcane Blast to win the first game.",
+              "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected Game 1 finish; match result from official standings.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 36185
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 2 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Kibbles",
+          "deck": "Wind Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "Hyouka",
+          "deck": "Wind Arcane Rai"
+        }
+      ],
+      "result": "Hyouka wins 1-0 on broadcast",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Hyouka wins — Arcane Elemental returns for exact lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Hyouka uses Disorienting Winds to return and replay Arcane Elemental, attacking again for exact lethal after Kibbles commits his resources.",
+              "cards": [
+                "Arcane Elemental",
+                "Disorienting Winds"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Broadcast: Hyouka 1-0 at time. Official result: 2-0. Selected Game 1 finish.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 6720
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round3-centai-superior",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 3 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Centai",
+          "deck": "Fire Tonoris Suited"
+        },
+        {
+          "id": "p2",
+          "name": "Superior",
+          "deck": "Water Guo Jia Genbu"
+        }
+      ],
+      "result": "Centai wins 2-1 on broadcast",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Superior wins — Strategem of Myriad Ice finds lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Superior mills with Fractal of Polar Depths while Strategem of Myriad Ice is pending and finds enough damage to win.",
+              "cards": [
+                "Strategem of Myriad Ice",
+                "Fractal of Polar Depths"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Centai wins — Blazing Throw closes the ally assault",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Arthur-backed attacks from Red Hare and Three of Hearts put Superior in range of the finishing Blazing Throw.",
+              "cards": [
+                "Arthur, Young Heir",
+                "Red Hare, Unrivaled Stallion",
+                "Three of Hearts",
+                "Blazing Throw"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Centai wins — a second Red Hare finishes the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Centai pressures through Genbu with his suited allies. After Genbu falls, a second Red Hare supplies the finishing attack.",
+              "cards": [
+                "Red Hare, Unrivaled Stallion"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Broadcast and interview: Centai 2-1. Official result: 2-0.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 11087
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 5 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Fruitcake",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "RNg",
+          "deck": "Wind Tristan Distant"
+        }
+      ],
+      "result": "RNg wins 2-1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Fruitcake wins — Cometfall prompts RNg’s concession",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fruitcake uses Cometfall to remove Mad Hatter and damage Tristan. RNg concedes after losing his board and Ranger Strides.",
+              "cards": [
+                "Cometfall"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "RNg wins — Incapacitate protects the lethal attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "RNg rebuilds his ally pressure. Fruitcake attempts Zephyr against the lethal board, but RNg answers with Incapacitate and wins the game.",
+              "cards": [
+                "Incapacitate",
+                "Zephyr"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "RNg wins — Fruitcake receives a deck-error game loss",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "The casters report that Fruitcake presents his deck with generated Cosmic Bolts still shuffled in. The resulting game loss ends the match at 2-1 for RNg.",
+              "cards": [
+                "Cosmic Bolt"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Two played games; a deck-error game loss decides Game 3.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 23109
+      }
+    },
+    {
+      "id": "na-nationals-2026-day1-round5-superior-elian",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 5 (Day 1, bonus match)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Superior",
+          "deck": "Water Guo Jia / Genbu"
+        },
+        {
+          "id": "p2",
+          "name": "Elian",
+          "deck": "Fire Crux Lorraine"
+        }
+      ],
+      "result": "Superior wins 2-1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Superior disrupts Elian’s setup",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Superior counters Creative Shock with Cerulean Decree, then removes Inert Sword with Fracturize to slow Elian’s setup.",
+              "cards": [
+                "Creative Shock",
+                "Cerulean Decree",
+                "Inert Sword",
+                "Fracturize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Elian uses Flame Sweep while leveling Lorraine, then plays Angel Attendant to defend against Genbu.",
+              "cards": [
+                "Flame Sweep",
+                "Angel Attendant"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Selected Game 1 plays; the overlay shows 0-0 at 7:26:01. The broadcast cuts away before the finish and later confirms Superior won games one and three.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast",
+        "startSeconds": 26719
       }
     }
   ]

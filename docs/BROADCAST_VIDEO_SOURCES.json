@@ -2567,6 +2567,62 @@
       "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
       "startSeconds": 27646,
       "startEvidence": "Broadcast transcript O9EzTt7ffVc at 7:40:46: uh I think we have a water mirror for round six."
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "startSeconds": 7052,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 1:57:32: And we are going to see our first game.",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-4-aw5459-menbao",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "startSeconds": 18257,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 5:04:17: End of a floating memory, right, for both vine. And we are going to see the players getting ready here. we are going to get this really really interesting matchup. Honestly speaking, I have no",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "startSeconds": 36185,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 10:03:05: Uh but we are going to head over now for real this time to our backup match and let's go see what's going on.",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "startSeconds": 6720,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 1:52:00: Hello. And welcome back to round two of SN Niagara Falls. Seems that both of our players are ready and set up. We're",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round3-centai-superior",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "startSeconds": 11087,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 3:04:47: Uh we have Superior running uh what looks like a uh pretty typical Genu",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "startSeconds": 23109,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 6:25:09: pairing's going to be, and it's good looking, very spicy. One of them we saw pre in the previous round. It's RNG on",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round5-superior-elian",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "startSeconds": 26719,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 7:25:19: It is. But the good news, Terry, and for everyone at home, we have a bonus feature match coming up. And it sounds",
+      "basis": "Held-finding follow-up; exact pairing and source evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
     }
   ]
 }

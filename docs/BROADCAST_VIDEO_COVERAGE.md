@@ -4,9 +4,9 @@ Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtub
 
 ## Video links
 
-All 196 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
+All 203 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
 
-Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 103 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
+Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 110 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
 
 ## Transcript backfill
 
@@ -52,7 +52,11 @@ New captures are in `pipeline/.cache/broadcast-transcripts/`, with JSON and plai
 
 The first pass covered 14/14 recovered sources. All 196 recaps link uniquely to official pairings across 15 events. Ten selected matches received an independent second-agent review; the parent additionally checked the Quarax and YojiAh penalty windows and the Superior–Elian bonus excerpt.
 
-Twelve held findings remain in the review record, including missing broadcast portions and an existing recap without a verifiable start. Four score conflicts need further review: Los Angeles Round 1, Niagara Rounds 2 and 3, and Taipei Round 2. Two identity cases remain unresolved: Taipei Round 4 and the SEA quarterfinal opponent called Justin LJW versus official NoobTinnn. The NA Superior–Elian bonus has a verified match result but an unnumbered excerpt and no shown finish. These held additions are not published.
+All 12 held findings received a parallel follow-up in [the resolution record](BROADCAST_HELD_RESOLUTIONS_2026-10-31.json), adding seven recaps (203 total). Taipei Round 4 identity and the NA Superior–Elian game number were verified from played video overlays. Taipei Round 2 publishes its verified Game 1 with the official 1–0 result; the closing “2–0” guess is not adopted. LA Round 7 publishes only the shown Game 1. Niagara Round 5 is resolved: Fruitcake receives a deciding game loss for generated Cosmic Bolts left in the presented deck.
+
+Two published Niagara recaps retain explicit broadcast/official score differences: Hyouka 1–0 versus official 2–0, and Centai 2–1 versus official 2–0. Official bracket data is unchanged. These conflicts are documented, not reconciled.
+
+Five findings produce no new recap: LA Round 1 still conflicts on the match winner (broadcast draw, official SpaghettiSr 2–1); SEA’s Justinljw/NoobTinnn alias needs an authoritative bridge; LA Round 2 has no identifiable match during the technical break; LA Round 9 lies beyond the captured source; NA Round 9’s upload ends during deck discussion, so its existing recap keeps the whole-broadcast link. These are evidence blockers, not pending transcript-reading tasks.
 
 Full gameplay annotation remains for all 14 sources. Several new recaps contain only a reviewed closing game; earlier games are not reconstructed from the match score. Earlier result-only game stubs were omitted from the Asia additions; original game numbers remain intact. The SEA final retains its broadcast link without an offset because captions skip its introduction. Osaka Day 1 and Los Angeles Day 2 still lack available captions; the older 50-stream backlog is separate.
 
@@ -116,3 +120,5 @@ These streams predate the current recap collection and were inventoried, not dow
 App/shared typechecks, focused lint and 49 relevant tests pass. Every published addition and offset joins an exact official event/stage/round/pairing and the same two players. Source hashes and timestamp quotes were checked against local captures. Original 110 recap contents are unchanged apart from verified video offsets.
 
 Checked 390px mobile and 1280px desktop: grouped results, Game 2 selected by default for partial coverage, named card artwork, 48px watch links, Akihabara Top Cut recap attachment, keyboard Results/Timeline switching, empty search and recovery, and no horizontal overflow. Initial loading was observed. Network failure, text zoom and on-screen keyboards were not re-tested.
+
+Follow-up verification: all 12 dispositions recorded; quoted captions and new card references checked against local sources/catalog. Existing 196 recaps preserved. 51 focused tests, app typecheck, focused lint and diff checks pass. The new Niagara penalty recap was checked at 390px and 1280px, with no overflow, a 48px video link, and keyboard game switching. Initial loading was observed. Network failure, empty search, text zoom, and on-screen keyboard states were not re-tested for this data-only change.

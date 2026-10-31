@@ -1,0 +1,1643 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-31",
+  "scope": "Parallel follow-up of all 12 held findings. Source-specific windows and selected video overlays; not full sequential video review. Published source-score disagreements remain disagreements, not reconciled official corrections.",
+  "baselineRecapCount": 196,
+  "newRecapIds": [
+    "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+    "ascent-taipei-2025-round-4-aw5459-menbao",
+    "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+    "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+    "ascent-niagara-falls-2025-day1-round3-centai-superior",
+    "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+    "na-nationals-2026-day1-round5-superior-elian"
+  ],
+  "records": [
+    {
+      "videoId": "694jDw5rGqg",
+      "startSeconds": 22861,
+      "startEvidence": {
+        "row": 2472,
+        "timestamp": "6:21:01",
+        "quote": "that will be talking about shown on stream. Dragon J uh JG versus Justin LJW from Singapore."
+      },
+      "evidence": [
+        {
+          "row": 2472,
+          "timestamp": "6:21:01",
+          "quote": "that will be talking about shown on stream. Dragon J uh JG versus Justin LJW from Singapore."
+        },
+        {
+          "row": 2485,
+          "timestamp": "6:22:33",
+          "quote": "versus Dragon JG. Dragon being on the higher seed chooses to go first and just plays out some defensive cards. plays that Angel tendant and we kill the fountain saraphim here."
+        },
+        {
+          "row": 2486,
+          "timestamp": "6:22:43",
+          "quote": "Yeah, going into this current game uh in the middle of the game state, we are looking at I believe both players are already okay. Alice justice at Diana"
+        },
+        {
+          "row": 3052,
+          "timestamp": "7:24:05",
+          "quote": "And I think this regal just regal. It's cheaper. We might as well just go for the regal. And that's it."
+        },
+        {
+          "row": 3053,
+          "timestamp": "7:24:10",
+          "quote": "Justin just scoops it. He falls into the waves and just drowns in all of Dragon JG's advantage. Completely decked out there."
+        },
+        {
+          "row": 3054,
+          "timestamp": "7:24:19",
+          "quote": "Yeah. And Dragon takes that game, securing his slot to the Grand Archives World 2026."
+        }
+      ],
+      "evidenceRange": {
+        "from": "6:21:01",
+        "to": "7:24:19",
+        "reviewMode": "targeted windows, not uninterrupted gameplay read"
+      },
+      "officialPairing": {
+        "eventId": 56265,
+        "stage": 2,
+        "round": 1,
+        "id": 4,
+        "players": [
+          {
+            "id": 2302,
+            "name": "DragonJG",
+            "score": 2
+          },
+          {
+            "id": 10891,
+            "name": "NoobTinnn",
+            "score": 0
+          }
+        ]
+      },
+      "readWindows": [
+        {
+          "fromRow": 2472,
+          "toRow": 2472,
+          "fromTimestamp": "6:21:01",
+          "toTimestamp": "6:21:01",
+          "kind": "quoted evidence row explicitly read"
+        },
+        {
+          "fromRow": 2485,
+          "toRow": 2485,
+          "fromTimestamp": "6:22:33",
+          "toTimestamp": "6:22:33",
+          "kind": "quoted evidence row explicitly read"
+        },
+        {
+          "fromRow": 2486,
+          "toRow": 2486,
+          "fromTimestamp": "6:22:43",
+          "toTimestamp": "6:22:43",
+          "kind": "quoted evidence row explicitly read"
+        },
+        {
+          "fromRow": 3052,
+          "toRow": 3052,
+          "fromTimestamp": "7:24:05",
+          "toTimestamp": "7:24:05",
+          "kind": "quoted evidence row explicitly read"
+        },
+        {
+          "fromRow": 3053,
+          "toRow": 3053,
+          "fromTimestamp": "7:24:10",
+          "toTimestamp": "7:24:10",
+          "kind": "quoted evidence row explicitly read"
+        },
+        {
+          "fromRow": 3054,
+          "toRow": 3054,
+          "fromTimestamp": "7:24:19",
+          "toTimestamp": "7:24:19",
+          "kind": "quoted evidence row explicitly read"
+        }
+      ],
+      "matchId": "sea-national-2026-quarterfinal-dragonjg-noobtinnn",
+      "reviewerBatch": "asia",
+      "players": [
+        "DragonJG",
+        "NoobTinnn"
+      ],
+      "round": "Quarterfinal",
+      "resolutionReviewedAt": "2026-10-31",
+      "fullVideoReviewed": false,
+      "disposition": "blocked",
+      "resolution": "Video overlay confirms DragonJG versus Justinljw in Quarter-Finals at 6:22:40. It does not corroborate the official alias NoobTinnn. Need an authoritative player rename/profile bridge before attaching this recap to account10891.",
+      "videoEvidence": [
+        {
+          "timestamp": "6:22:40",
+          "observed": "DragonJG versus Justinljw; Quarter-Finals",
+          "url": "https://www.youtube.com/watch?v=694jDw5rGqg&t=22960s"
+        }
+      ],
+      "profileCheck": {
+        "url": "https://omni.gatcg.com/players/10891",
+        "result": "Page not found; no authoritative rename evidence obtained."
+      },
+      "originalUncertainties": [
+        "Broadcast calls opponent Justin LJW; official quarterfinal pairs DragonJG with NoobTinnn. Same bracket/deck fit, but confirm alias/overlay before publishing."
+      ]
+    },
+    {
+      "videoId": "gL-S2tAI6bk",
+      "startSeconds": 7052,
+      "startEvidence": {
+        "row": 965,
+        "timestamp": "1:57:32",
+        "quote": "And we are going to see our first game."
+      },
+      "evidence": [
+        {
+          "row": 976,
+          "text": "So we are going to be seeing uh Liv Drezel here. Uh he is going to start off with that looking glass. Yeah.",
+          "timestamp": "1:58:34"
+        },
+        {
+          "row": 978,
+          "text": "Yep. He is going to be the C player. is going to be a serene spirit of fire.",
+          "timestamp": "1:58:43"
+        },
+        {
+          "row": 992,
+          "text": "level one Jin here. Unfortunately, I don't think that Jin level one, level two is a bit weaker comparing to Se.",
+          "timestamp": "2:00:30"
+        },
+        {
+          "row": 1173,
+          "text": "So we're lineage releasing on the stack to pick up regal inquisition and sorry no he's going to activate",
+          "timestamp": "2:21:09"
+        },
+        {
+          "row": 1174,
+          "text": "regal inquisition at that six omen count. Yep.",
+          "timestamp": "2:21:16"
+        },
+        {
+          "row": 1177,
+          "text": "Shea is going to draw 10 cards and lose the game off of deck out against, ladies and gentle.",
+          "timestamp": "2:21:45"
+        },
+        {
+          "row": 1326,
+          "text": "And remember, Sheena is the one on the clock here. Leo already won game one.",
+          "timestamp": "2:38:20"
+        },
+        {
+          "row": 1488,
+          "text": "So we are going to see lizel pass. We are going to head into overtime here. So the result of this match is either going to be one zero for Lift Dil or a 1-1",
+          "timestamp": "2:56:24"
+        },
+        {
+          "row": 1489,
+          "text": "draw if Sheena is able to pull out a victory here. But again, no Shangi.",
+          "timestamp": "2:56:33"
+        },
+        {
+          "row": 1523,
+          "text": "No way. That is going to be six damage prevented. Shida passes third. He's so",
+          "timestamp": "3:00:04"
+        },
+        {
+          "row": 1528,
+          "text": "scooping it up, I believe. So, there's the fist bomb. It is confirmed over.",
+          "timestamp": "3:00:39"
+        },
+        {
+          "row": 1529,
+          "text": "Limbrail takes the series, I believe, two zero.",
+          "timestamp": "3:00:43"
+        }
+      ],
+      "evidenceRange": {
+        "from": "1:57:32",
+        "to": "3:00:48",
+        "reviewMode": "targeted windows, not uninterrupted gameplay read"
+      },
+      "officialPairing": {
+        "eventId": 33786,
+        "stage": 1,
+        "round": 2,
+        "id": 71,
+        "players": [
+          {
+            "id": 291,
+            "name": "Lifdrasyl",
+            "score": 1
+          },
+          {
+            "id": 8476,
+            "name": "Shina2486",
+            "score": 0
+          }
+        ]
+      },
+      "readWindows": [
+        {
+          "fromRow": 965,
+          "toRow": 1539,
+          "fromTimestamp": "1:57:32",
+          "toTimestamp": "3:02:00",
+          "kind": "continuous cached caption read; not full video"
+        }
+      ],
+      "matchId": "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+      "reviewerBatch": "asia",
+      "players": [
+        "Lifdrasyl",
+        "Shina2486"
+      ],
+      "round": "Round 2",
+      "resolutionReviewedAt": "2026-10-31",
+      "fullVideoReviewed": false,
+      "disposition": "publish",
+      "resolution": "Confirmed Game1 deck-out and a second game reaching overtime. Retain official match result1–0; publish only verified Game1. The closing commentary guess2–0 is not used. No invented second-game win.",
+      "recap": {
+        "id": "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+        "event": "Ascent Taipei",
+        "eventId": 33786,
+        "round": "Round 2",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Lifdrasyl",
+            "deck": "Fire Ciel control"
+          },
+          {
+            "id": "p2",
+            "name": "Shina2486",
+            "deck": "Fire Exia Jin"
+          }
+        ],
+        "result": "Lifdrasyl wins 1–0",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p1",
+            "summary": "Regal Inquisition forces a deck-out",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Lifdrasyl repeatedly reuses Regal Inquisition to strip Shina2486’s threats.",
+                "cards": [
+                  "Regal Inquisition"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Lifdrasyl activates another Regal Inquisition through Ciel’s lineage release; Shina2486 runs out of cards.",
+                "cards": [
+                  "Regal Inquisition"
+                ]
+              }
+            ]
+          }
+        ],
+        "video": {
+          "id": "gL-S2tAI6bk",
+          "kind": "broadcast",
+          "startSeconds": 7052
+        },
+        "sourceNote": "Selected Game 1 finish. Official result 1-0; the second game reaches overtime, despite a closing commentary guess of 2-0."
+      },
+      "originalUncertainties": [
+        "Score conflict: official result is Lifdrasyl 1–0; commentary at 3:00:43 guesses 2–0. Do not publish guessed score or game count."
+      ],
+      "published": true
+    },
+    {
+      "videoId": "gL-S2tAI6bk",
+      "startSeconds": 18257,
+      "startEvidence": {
+        "row": 2431,
+        "timestamp": "5:04:17",
+        "quote": "End of a floating memory, right, for both vine. And we are going to see the players getting ready here. we are going to get this really really interesting matchup. Honestly speaking, I have no"
+      },
+      "evidence": [
+        {
+          "row": 2458,
+          "text": "Yeah. So far from the game plan, it looks like um the uh it looks like uh R5459. I guess it's actually just",
+          "timestamp": "5:07:17"
+        },
+        {
+          "row": 2464,
+          "text": "Meambo is just deciding how this game plan is going to look like right now. We're also on the Eternal Magistrate.",
+          "timestamp": "5:08:01"
+        },
+        {
+          "row": 2603,
+          "text": "And like his opponent is showing him a lot. They even show him the Nether Lantern in main. So he he is aware of more information maybe getting ready and better to play the next game. Yeah.",
+          "timestamp": "5:22:58"
+        },
+        {
+          "row": 2611,
+          "text": "I think there's also no wind or wobble as well. So he has two cleanse in the side, so he can put in more cleans. That's all right. Saw frost is a really good card.",
+          "timestamp": "5:23:45"
+        },
+        {
+          "row": 2631,
+          "text": "We are going to see the polar death again open. Pol is a quite an uh important opening for the water deck. Uh",
+          "timestamp": "5:25:52"
+        },
+        {
+          "row": 2692,
+          "text": "He is going to go for it. He is going to flip it. And now a big boy is here to try to protect you from any harm's danger.",
+          "timestamp": "5:38:38"
+        },
+        {
+          "row": 2694,
+          "text": "Big a lot a lot of things to worry about because of the dream fairy. Genu Gamu swinging in. Interesting.",
+          "timestamp": "5:38:56"
+        },
+        {
+          "row": 2707,
+          "text": "Oh, wait. No, he has a dream bear. Had one to begin with. It was it was it was tucked away there in stuck there. Yeah, we couldn't see it like but it's fine. I",
+          "timestamp": "5:40:14"
+        },
+        {
+          "row": 2708,
+          "text": "think I mean what we discussed like this is why like has to be careful with the gamble flip. Like now member just lost",
+          "timestamp": "5:40:22"
+        },
+        {
+          "row": 2709,
+          "text": "the main reason why he's painted that gamble. Yeah, he has no board.",
+          "timestamp": "5:40:29"
+        },
+        {
+          "row": 2730,
+          "text": "want to flip the gamut. Nah, I have prim fairy. It's just so so you know the worst part of this game is we're not even going to get to see the the Nico level one.",
+          "timestamp": "5:42:51"
+        },
+        {
+          "row": 2760,
+          "text": "Mhm. So yeah, that that's it. That's it for the round. It was a pretty one-sided game, you know. You know, unfortunately our water mirror was water mirror mirror",
+          "timestamp": "5:48:45"
+        }
+      ],
+      "evidenceRange": {
+        "from": "5:04:17",
+        "to": "5:48:45",
+        "reviewMode": "targeted windows, not uninterrupted gameplay read"
+      },
+      "officialPairing": {
+        "eventId": 33786,
+        "stage": 1,
+        "round": 4,
+        "id": 11,
+        "players": [
+          {
+            "id": 1228,
+            "name": "Aw5459",
+            "score": 2
+          },
+          {
+            "id": 11746,
+            "name": "MenBao",
+            "score": 0
+          }
+        ]
+      },
+      "readWindows": [
+        {
+          "fromRow": 2431,
+          "toRow": 2767,
+          "kind": "cached caption sequence read, including supplemental2580–2614; source gaps retained"
+        }
+      ],
+      "matchId": "ascent-taipei-2025-round-4-aw5459-menbao",
+      "reviewerBatch": "asia",
+      "players": [
+        "Aw5459",
+        "MenBao"
+      ],
+      "round": "Round 4",
+      "resolutionReviewedAt": "2026-10-31",
+      "fullVideoReviewed": false,
+      "disposition": "publish",
+      "resolution": "Identity confirmed directly by played video overlay at5:05:19: Aw5459 versus MenBao, Round4, score0–0. Game2 follows first-game cleanup/sideboarding and new opening at5:25:52. Official2–0 fixes winner; caption gap5:45:11–5:47:31 means final attack is not described.",
+      "videoEvidence": [
+        {
+          "timestamp": "5:05:19",
+          "observed": "Aw5459 versus MenBao; Round4;0–0",
+          "url": "https://www.youtube.com/watch?v=gL-S2tAI6bk&t=18319s",
+          "screenshot": "/tmp/taipei-r4-identity.png"
+        }
+      ],
+      "recap": {
+        "id": "ascent-taipei-2025-round-4-aw5459-menbao",
+        "event": "Ascent Taipei",
+        "eventId": 33786,
+        "round": "Round 4",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Aw5459",
+            "deck": "Wind Nico allies"
+          },
+          {
+            "id": "p2",
+            "name": "MenBao",
+            "deck": "Water Genbu Guo Jia"
+          }
+        ],
+        "result": "Aw5459 wins 2–0",
+        "games": [
+          {
+            "gameNumber": 2,
+            "winner": "p1",
+            "summary": "Dream Fairy removes Genbu",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "MenBao flips Genbu and uses it to attack an ally."
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Aw5459 answers Genbu with Dream Fairy, leaving MenBao without the centerpiece of his board.",
+                "cards": [
+                  "Dream Fairy"
+                ]
+              }
+            ]
+          }
+        ],
+        "video": {
+          "id": "gL-S2tAI6bk",
+          "kind": "broadcast",
+          "startSeconds": 18257
+        },
+        "sourceNote": "Selected Game 2 plays; official result 2-0. The closing attack falls in a caption gap."
+      },
+      "originalUncertainties": [
+        "Player identity inferred from unique round-four pairing with Wind Nico vs Water Genbu decklists. Caption names are weak; confirm video overlay before publishing."
+      ],
+      "published": true
+    },
+    {
+      "round": 1,
+      "players": [
+        "RoxanneKaiser",
+        "SpaghettiSr"
+      ],
+      "disposition": "blocked-score-conflict",
+      "officialPairing": {
+        "eventId": 48556,
+        "stage": 1,
+        "id": "1:1:3",
+        "round": 1,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 25922,
+            "name": "RoxanneKaiser",
+            "score": 1,
+            "status": "loser",
+            "spirits": [
+              "Spirit of Water"
+            ]
+          },
+          {
+            "id": 24291,
+            "name": "SpaghettiSr",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Spirit of Slime"
+            ]
+          }
+        ],
+        "winner": 24291
+      },
+      "conclusion": "Official pairing records SpaghettiSr 2–1. Commentary explicitly calls a draw after the camera cuts away before Game 3 finishes. No later correction found in caption text. Do not assert a draw or reconstruct the official deciding-game win.",
+      "evidence": [
+        {
+          "row": 184,
+          "text": "just talking about here as we see player Roxan Kaiser on Water Diana. Oh no, wait a second. This is not the Aether. This",
+          "timestamp": "31:50"
+        },
+        {
+          "row": 187,
+          "text": "which version. Uh it is the Advent Oblation CL from Spaghetti Senior. So, uh let's uh I uh or Spaghetti Senior I",
+          "timestamp": "32:13"
+        },
+        {
+          "row": 188,
+          "text": "think XJX. I have to make sure we have the right deck list here. Um no, it's Yeah, we don't have the right deck list.",
+          "timestamp": "32:22"
+        },
+        {
+          "row": 360,
+          "text": "that was that was submitted. Um, so that does mean that what's gonna happen is Roxan Kaiser is going to get a game loss for this round. Uh, and Grand Archive",
+          "timestamp": "54:25"
+        },
+        {
+          "row": 373,
+          "text": "So Sylvie won a game that yeah that that has to feel pretty rough with such a good position that Roxan had. But of course like you were saying CLM you know there there is an",
+          "timestamp": "56:06"
+        },
+        {
+          "row": 376,
+          "text": "the game loss for Roxan here. Now, they're going into game two. And Roxan still with I'd say the commanding deck",
+          "timestamp": "56:32"
+        },
+        {
+          "row": 545,
+          "text": "All right. So, a lot of damage coming through. That is going to be should be lethal. Yep.",
+          "timestamp": "1:16:39"
+        },
+        {
+          "row": 546,
+          "text": "And it seems that Spaghetti Ser also knows that. Yep. And scooping the game up here. Well, not scooping. He was",
+          "timestamp": "1:16:46"
+        },
+        {
+          "row": 547,
+          "text": "taken out, but yeah, scooping scooping up the game here. Um, I believe he doesn't he's he's not going to bring",
+          "timestamp": "1:16:54"
+        },
+        {
+          "row": 680,
+          "text": "looks like we did cut back to us. So, I don't know if we hit the time limit in this. I know they had an extension of some amount, but I don't think we heard what the extension was specifically.",
+          "timestamp": "1:31:35"
+        },
+        {
+          "row": 715,
+          "text": "Yeah. Yeah. We we we unfortunately won't know. It looks like they did go to time.",
+          "timestamp": "1:35:56"
+        },
+        {
+          "row": 716,
+          "text": "So, uh, because of the game loss and then the win on the slime side, then we're looking at a, uh, or the win on",
+          "timestamp": "1:36:00"
+        },
+        {
+          "row": 717,
+          "text": "the Diana side, sorry, we're looking at a draw for for round one of that. So, um, I'm going to be very curious. Obviously,",
+          "timestamp": "1:36:09"
+        }
+      ],
+      "reviewedWindows": [
+        "31:25–33:13 identity and mistaken Ciel deck-list correction",
+        "54:25–56:40 game-loss confirmation",
+        "1:12:35–1:17:09 Game 2 closing",
+        "1:31:35–1:38:43 end and score conflict"
+      ],
+      "nextEvidenceNeeded": "Visual final scoreboard, player/judge confirmation, or later correction explaining official 2–1 versus commentary draw.",
+      "safeAlternative": "Game 2-only highlight with official-result provenance is supportable, but does not reconcile score conflict.",
+      "videoId": "iwjvP7O9ytM",
+      "reviewerBatch": "la"
+    },
+    {
+      "round": 2,
+      "disposition": "closed-no-captioned-match",
+      "conclusion": "Technical break begins at 1:38:14. Music captions continue through 4:41:38. Broadcast returns at 4:41:52 and introduces a prerecorded NEETfull–TLux match (official Round 3, already published). No Round 2 match can be identified from this transcript.",
+      "evidence": [
+        {
+          "row": 736,
+          "text": "that we have had a number of technical issues. Uh, and so what we're going to do is take a pretty long break. We're going to take this long break so that",
+          "timestamp": "1:38:14"
+        },
+        {
+          "row": 737,
+          "text": "all of the technical issues can be addressed. And when we do come back, we're hoping to have the stream locked down, and we're going to have a really, really excellent uh continuation of the",
+          "timestamp": "1:38:22"
+        },
+        {
+          "row": 740,
+          "text": "one of Ascent Los Angeles. So, I hope you don't go too far, but we're going to get all our stuff fixed and then we'll be back then. So, I guess we'll see you guys real soon or not.",
+          "timestamp": "1:38:43"
+        },
+        {
+          "row": 1188,
+          "text": "Make you change. Heat.",
+          "timestamp": "4:41:19"
+        },
+        {
+          "row": 1189,
+          "text": "Heat.",
+          "timestamp": "4:41:38"
+        },
+        {
+          "row": 1190,
+          "text": "Thank you so much for your patience. My name is Clen and I'm here with Valkyrie. How are you doing?",
+          "timestamp": "4:41:52"
+        },
+        {
+          "row": 1192,
+          "text": "which is super cool to see. Uh we've, as you mentioned, had a little bit of technical difficulties. We apologize for that. and everything is hopefully now",
+          "timestamp": "4:42:05"
+        },
+        {
+          "row": 1193,
+          "text": "sorted and we're ready to, you know, jump into these games here. And we just want to explain a little bit here that the game we'll be jumping into has been pre-recorded and we're just going to go",
+          "timestamp": "4:42:13"
+        },
+        {
+          "row": 1194,
+          "text": "ahead and review sort of the round that we missed uh during this technical difficulties. And very interesting uh matchup. It is Slimes versus uh Ally",
+          "timestamp": "4:42:22"
+        },
+        {
+          "row": 1195,
+          "text": "Seru. Yes. And it's going to be really cool to see how this plays out. Uh we will be jumping in into game two of this",
+          "timestamp": "4:42:31"
+        },
+        {
+          "row": 1196,
+          "text": "uh round here where the slimes player Neatful did take that game one. We are going to be getting into a point where it's going to be post sideboard as well.",
+          "timestamp": "4:42:38"
+        }
+      ],
+      "reviewedWindows": [
+        "1:38:14–4:42:54; full caption interval inspected/search checked"
+      ],
+      "nextEvidenceNeeded": "Alternate recording or original feature-table footage for Round 2; no guessed recap.",
+      "videoId": "iwjvP7O9ytM",
+      "reviewerBatch": "la"
+    },
+    {
+      "round": 7,
+      "players": [
+        "Quikk",
+        "ChemCollapse"
+      ],
+      "disposition": "publish-selected-game",
+      "officialPairing": {
+        "eventId": 48556,
+        "stage": 1,
+        "id": "1:7:3",
+        "round": 7,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 6648,
+            "name": "Quikk",
+            "score": 0,
+            "status": "loser",
+            "spirits": [
+              "Spirit of Water"
+            ]
+          },
+          {
+            "id": 15095,
+            "name": "ChemCollapse",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Spirit of Wind"
+            ]
+          }
+        ],
+        "winner": 15095
+      },
+      "conclusion": "Game 1 finish is explicitly called for ChemCollapse. Publish that finish and official 2–0 match result; omit unshown Game 2 finish. The initial Tristan read is corrected to Guo Jia / Seiryuu at 10:05:27–54.",
+      "recap": {
+        "id": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+        "event": "Ascent Los Angeles",
+        "eventId": 48556,
+        "round": "Round 7 (Day 1, bonus match)",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Quikk",
+            "deck": "Water Diana Aetherwing"
+          },
+          {
+            "id": "p2",
+            "name": "ChemCollapse",
+            "deck": "Wind Guo Jia / Seiryuu"
+          }
+        ],
+        "result": "ChemCollapse wins 2-0",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "ChemCollapse survives the early rush",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "ChemCollapse survives Quikk’s early pressure, then uses Seiryuu’s Command and Arcane Blast to win the first game.",
+                "cards": [
+                  "Seiryuu's Command",
+                  "Arcane Blast"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Ascent Los Angeles Day 1. Selected Game 1 finish; match result from official standings.",
+        "video": {
+          "id": "iwjvP7O9ytM",
+          "kind": "broadcast",
+          "startSeconds": 36185
+        }
+      },
+      "startEvidence": {
+        "row": 3665,
+        "text": "Uh but we are going to head over now for real this time to our backup match and let's go see what's going on.",
+        "timestamp": "10:03:05",
+        "quote": "Uh but we are going to head over now for real this time to our backup match and let's go see what's going on."
+      },
+      "evidence": [
+        {
+          "row": 3673,
+          "text": "I'm locked into Tristan. And I got a sneak peek of Quick's hand over to the left and it is Water Aetherwing, a deck",
+          "timestamp": "10:04:04"
+        },
+        {
+          "row": 3682,
+          "text": "collapse. Looking at already a pretty stocked hand thanks to finding that uh unmake duality on the first turn, going",
+          "timestamp": "10:05:12"
+        },
+        {
+          "row": 3684,
+          "text": "That's my guess. We're going to see the Never mind. This is Sereio. It's Serio. It's We were wrong.",
+          "timestamp": "10:05:27"
+        },
+        {
+          "row": 3688,
+          "text": "has happened but in this case no it all led to Siru Goja. This is the iconic match in the metag game right now. This",
+          "timestamp": "10:05:54"
+        },
+        {
+          "row": 3728,
+          "text": "That's a Veiling Breeze. That's Veil. We're going to have Veiling Breeze for one on the Charge of the Soul. That is crazy.",
+          "timestamp": "10:10:58"
+        },
+        {
+          "row": 3729,
+          "text": "Okay, that does that does allow Chem Collapse to survive. That is absolutely nuts though. What an aggressive line from quick and well found with that charge the soul to get that final point",
+          "timestamp": "10:11:08"
+        },
+        {
+          "row": 3832,
+          "text": "But Chemlapse is actually out for blood a little bit here with the Seru's command coming out. And the Seru's command going to allow a triple attack",
+          "timestamp": "10:23:42"
+        },
+        {
+          "row": 3835,
+          "text": "generate empower empower on the seru putting the uh arcane blast in the banishment and now setting up to free cast that arcane blast for lethal on Diana. She's got to have a response.",
+          "timestamp": "10:24:01"
+        },
+        {
+          "row": 3836,
+          "text": "We love free activating cards here and that's just enough. One ser command can",
+          "timestamp": "10:24:13"
+        },
+        {
+          "row": 3847,
+          "text": "You were one damage point away from losing that game, but you hung on. You were still there and in the end took the",
+          "timestamp": "10:25:34"
+        },
+        {
+          "row": 3848,
+          "text": "game one victory. We're going to game two sideboards. And wow, it's Let's take a look at Let's start with Aether Wings",
+          "timestamp": "10:25:43"
+        },
+        {
+          "row": 4044,
+          "text": "We are uh unfortunately though as as close as we are to Chemlabs potentially going for it. We are going to cut this one short because we are live coming at",
+          "timestamp": "10:48:46"
+        },
+        {
+          "row": 4045,
+          "text": "you with round eight here shortly. So let's head uh we're going to head to that really shortly. But man, Valk, we",
+          "timestamp": "10:48:54"
+        },
+        {
+          "row": 4049,
+          "text": "know Dan we didn't get to see the conclusion but I just have a feeling that Guoji is our hero it it really feels like it really feels like that's what what it's going to be right now but",
+          "timestamp": "10:49:25"
+        }
+      ],
+      "reviewedWindows": [
+        "10:03:05–10:25:43 full Game 1 caption window",
+        "10:43–10:49:33 Game 2 closing/cutaway"
+      ],
+      "videoId": "iwjvP7O9ytM",
+      "reviewerBatch": "la",
+      "matchId": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+      "published": true
+    },
+    {
+      "round": 9,
+      "disposition": "closed-outside-captured-transcript",
+      "conclusion": "Last match commentary concerns Round 8; Sano interview ends with Round 9 announcement at 11:50:26. Remaining six rows are music, ending 11:52:44. No Round 9 identities or gameplay present.",
+      "evidence": [
+        {
+          "row": 4503,
+          "text": "I'm here joined with the round eight winner. Damn, it's been a long day.",
+          "timestamp": "11:45:53"
+        },
+        {
+          "row": 4504,
+          "text": "Sono, congratulations. You are now locked for day two on the deck that also got you your first Ascent Spirit over in London. How are you feeling right now?",
+          "timestamp": "11:45:57"
+        },
+        {
+          "row": 4532,
+          "text": "after talking with with Duck Hats. But uh so you're locked in for day two. You got one more round to go.",
+          "timestamp": "11:49:23"
+        },
+        {
+          "row": 4540,
+          "text": "it's a good thing. You know, you're you're here locked for day two. But uh yeah, again, Tano TM32, congratulations on your winning in so far. Uh good luck",
+          "timestamp": "11:50:18"
+        },
+        {
+          "row": 4541,
+          "text": "on the next round. And guys, we'll be bringing you round nine shortly.",
+          "timestamp": "11:50:26"
+        },
+        {
+          "row": 4542,
+          "text": "One, two, three. Let's go.",
+          "timestamp": "11:51:10"
+        },
+        {
+          "row": 4546,
+          "text": "1 2 3",
+          "timestamp": "11:52:44"
+        }
+      ],
+      "reviewedWindows": [
+        "11:42:01–11:52:44 transcript tail"
+      ],
+      "nextEvidenceNeeded": "Longer/alternate broadcast or additional captions beyond this capture; absence from captions does not prove no video footage.",
+      "videoId": "iwjvP7O9ytM",
+      "reviewerBatch": "la"
+    },
+    {
+      "round": 2,
+      "videoId": "O9EzTt7ffVc",
+      "disposition": "publish-with-preserved-score-conflict",
+      "officialPairing": {
+        "eventId": 36225,
+        "stage": 1,
+        "id": "1:2:1",
+        "round": 2,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 10454,
+            "name": "Kibbles",
+            "score": 0,
+            "status": "loser",
+            "spirits": [
+              "Spirit of Wind"
+            ]
+          },
+          {
+            "id": 418,
+            "name": "Hyouka",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Spirit of Fortuitous Wind"
+            ]
+          }
+        ],
+        "winner": 418
+      },
+      "evidence": [
+        {
+          "row": 749,
+          "text": "Hello. And welcome back to round two of SN Niagara Falls. Seems that both of our players are ready and set up. We're",
+          "timestamp": "1:52:00"
+        },
+        {
+          "row": 750,
+          "text": "going straight into game one. Wind versus wind. Kibles versus Huka. It's going to be a very, very fun matchup.",
+          "timestamp": "1:52:07"
+        },
+        {
+          "row": 923,
+          "text": "For free. It's incredible. It is exact lethal. He he could baited kibbles to go",
+          "timestamp": "2:13:34"
+        },
+        {
+          "row": 1274,
+          "text": "Then the question is will Hoka win two zero? Why is that relevant and why am I like placing emphasis on it?",
+          "timestamp": "2:55:00"
+        },
+        {
+          "row": 1290,
+          "text": "So, because Hugo has the second arcane blast, as long Oh, but five minutes is up. As I said, I was going to say as",
+          "timestamp": "2:56:53"
+        },
+        {
+          "row": 1291,
+          "text": "long as he can pass the turn here, it would be enough. But that I believe is going to be there. One to zero for Hookah.",
+          "timestamp": "2:57:00"
+        },
+        {
+          "row": 1299,
+          "text": "it would have been enough to take the game because he had everything. He could protect himself. And next turn he had the arcane blast to win. And",
+          "timestamp": "2:57:51"
+        }
+      ],
+      "reviewedRanges": [
+        [
+          749,
+          760
+        ],
+        [
+          910,
+          938
+        ],
+        [
+          1265,
+          1305
+        ]
+      ],
+      "recap": {
+        "id": "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+        "event": "Ascent Niagara Falls",
+        "eventId": 36225,
+        "round": "Round 2 (Day 1)",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Kibbles",
+            "deck": "Wind Tristan"
+          },
+          {
+            "id": "p2",
+            "name": "Hyouka",
+            "deck": "Wind Arcane Rai"
+          }
+        ],
+        "result": "Hyouka wins 1-0 on broadcast",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Hyouka wins — Arcane Elemental returns for exact lethal",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Hyouka uses Disorienting Winds to return and replay Arcane Elemental, attacking again for exact lethal after Kibbles commits his resources.",
+                "cards": [
+                  "Arcane Elemental",
+                  "Disorienting Winds"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Broadcast: Hyouka 1-0 at time. Official result: 2-0. Selected Game 1 finish.",
+        "video": {
+          "id": "O9EzTt7ffVc",
+          "kind": "broadcast",
+          "startSeconds": 6720
+        }
+      },
+      "resolution": "The transcript repeatedly confirms 1-0 at time, not merely a single ASR number. Official pairing has same players and winner but 2-0. Publish source-attributed broadcast result and keep official bracket unchanged; do not fabricate a game-two win.",
+      "startEvidence": {
+        "timestamp": "1:52:00",
+        "quote": "Hello. And welcome back to round two of SN Niagara Falls. Seems that both of our players are ready and set up. We're",
+        "row": 749
+      },
+      "reviewerBatch": "niagara",
+      "matchId": "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+      "published": true
+    },
+    {
+      "round": 3,
+      "videoId": "O9EzTt7ffVc",
+      "disposition": "publish-with-preserved-score-conflict",
+      "officialPairing": {
+        "eventId": 36225,
+        "stage": 1,
+        "id": "1:3:8",
+        "round": 3,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 12609,
+            "name": "Centai",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Spirit of Fire"
+            ]
+          },
+          {
+            "id": 12286,
+            "name": "Superior",
+            "score": 0,
+            "status": "loser",
+            "spirits": [
+              "Spirit of Water"
+            ]
+          }
+        ],
+        "winner": 12609
+      },
+      "evidence": [
+        {
+          "row": 1353,
+          "text": "Uh we have Superior running uh what looks like a uh pretty typical Genu",
+          "timestamp": "3:04:47"
+        },
+        {
+          "row": 1359,
+          "text": "Yeah, speaking of suited, we have his opponent Senti here on Tonoris suited.",
+          "timestamp": "3:05:36"
+        },
+        {
+          "row": 1407,
+          "text": "in spirit. So, maybe that looks like that is more than enough. That is lethal out of nowhere.",
+          "timestamp": "3:11:22"
+        },
+        {
+          "row": 1471,
+          "text": "when you died to that strategy in game one. You get a little scared. It influences your play patterns. Yeah, absolutely.",
+          "timestamp": "3:18:46"
+        },
+        {
+          "row": 1490,
+          "text": "the red hair is coming in for five damage. The three of hearts coming in for another three damage. And that's it. That blazing throw is all she wrote.",
+          "timestamp": "3:21:07"
+        },
+        {
+          "row": 1502,
+          "text": "Yeah. And so, Superhero will be starting for this this game three. Always a good thing. Uh",
+          "timestamp": "3:22:22"
+        },
+        {
+          "row": 1601,
+          "text": "Yep. Going for the kill there. Wow, such an aggressive showing from Senti. Very well played, very well put together.",
+          "timestamp": "3:33:33"
+        },
+        {
+          "row": 1610,
+          "text": "didn't see a single Frostworn Paladin out of Superior in all three games.",
+          "timestamp": "3:34:39"
+        },
+        {
+          "row": 1648,
+          "text": "Hey got lock in. You did you did manage to take the win there. So 2-1 against superior. One of the players that did make it to uh the world stage at uh",
+          "timestamp": "3:39:06"
+        }
+      ],
+      "reviewedRanges": [
+        [
+          1348,
+          1368
+        ],
+        [
+          1400,
+          1660
+        ]
+      ],
+      "recap": {
+        "id": "ascent-niagara-falls-2025-day1-round3-centai-superior",
+        "event": "Ascent Niagara Falls",
+        "eventId": 36225,
+        "round": "Round 3 (Day 1)",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Centai",
+            "deck": "Fire Tonoris Suited"
+          },
+          {
+            "id": "p2",
+            "name": "Superior",
+            "deck": "Water Guo Jia Genbu"
+          }
+        ],
+        "result": "Centai wins 2-1 on broadcast",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Superior wins — Strategem of Myriad Ice finds lethal",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Superior mills with Fractal of Polar Depths while Strategem of Myriad Ice is pending and finds enough damage to win.",
+                "cards": [
+                  "Strategem of Myriad Ice",
+                  "Fractal of Polar Depths"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p1",
+            "summary": "Centai wins — Blazing Throw closes the ally assault",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Arthur-backed attacks from Red Hare and Three of Hearts put Superior in range of the finishing Blazing Throw.",
+                "cards": [
+                  "Arthur, Young Heir",
+                  "Red Hare, Unrivaled Stallion",
+                  "Three of Hearts",
+                  "Blazing Throw"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "winner": "p1",
+            "summary": "Centai wins — a second Red Hare finishes the match",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Centai pressures through Genbu with his suited allies. After Genbu falls, a second Red Hare supplies the finishing attack.",
+                "cards": [
+                  "Red Hare, Unrivaled Stallion"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Broadcast and interview: Centai 2-1. Official result: 2-0.",
+        "video": {
+          "id": "O9EzTt7ffVc",
+          "kind": "broadcast",
+          "startSeconds": 11087
+        }
+      },
+      "resolution": "Not a single-score slip: game one Superior lethal, game two Centai lethal, explicit game three start, game three Centai lethal and interview 2-1 corroborate each other. Preserve broadcast 2-1 vs official 2-0.",
+      "startEvidence": {
+        "timestamp": "3:04:47",
+        "quote": "Uh we have Superior running uh what looks like a uh pretty typical Genu",
+        "row": 1353
+      },
+      "reviewerBatch": "niagara",
+      "matchId": "ascent-niagara-falls-2025-day1-round3-centai-superior",
+      "published": true
+    },
+    {
+      "round": 5,
+      "videoId": "O9EzTt7ffVc",
+      "disposition": "resolved-publish",
+      "officialPairing": {
+        "eventId": 36225,
+        "stage": 1,
+        "id": "1:5:2",
+        "round": 5,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 12950,
+            "name": "Fruitcake",
+            "score": 1,
+            "status": "loser",
+            "spirits": [
+              "Fragmented Spirit of Wind"
+            ]
+          },
+          {
+            "id": 6057,
+            "name": "RNg",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Spirit of Wind"
+            ]
+          }
+        ],
+        "winner": 6057
+      },
+      "evidence": [
+        {
+          "row": 2826,
+          "text": "pairing's going to be, and it's good looking, very spicy. One of them we saw pre in the previous round. It's RNG on",
+          "timestamp": "6:25:09"
+        },
+        {
+          "row": 2829,
+          "text": "Um, versus fruit cake. Now, this is the actual spice. Uhhuh.",
+          "timestamp": "6:25:22"
+        },
+        {
+          "row": 2830,
+          "text": "On fragmented wind Arizona. Mhm.",
+          "timestamp": "6:25:28"
+        },
+        {
+          "row": 3076,
+          "text": "There's the Astra side coming out into a comet fall into a comet fall which means that that",
+          "timestamp": "6:55:39"
+        },
+        {
+          "row": 3078,
+          "text": "So I think that is going to be game one for that that looks like RNG seeing the writing on the wall and kind of all right you know what if you can handle",
+          "timestamp": "6:55:53"
+        },
+        {
+          "row": 3085,
+          "text": "you throw at them. So now we're going to be going into game two. We saw an incredible game from Food Cake here and",
+          "timestamp": "6:56:46"
+        },
+        {
+          "row": 3254,
+          "text": "Yeah. So, lethal on the board. Lethal staring fruit cake in the face. What is he going to do about it?",
+          "timestamp": "7:18:05"
+        },
+        {
+          "row": 3255,
+          "text": "Yeah. Does he have what he needs to survive? Because even surviving one more turn is good enough. Zephyr. Oh, there is the incapacitate.",
+          "timestamp": "7:18:10"
+        },
+        {
+          "row": 3256,
+          "text": "And another incapacitate. Oh, no. Incapacitate is the king of this deck.",
+          "timestamp": "7:18:17"
+        },
+        {
+          "row": 3270,
+          "text": "which was which is exactly what we said is going to happen here. And it seems there is a judge call in progress because exactly what we're talking",
+          "timestamp": "7:20:09"
+        },
+        {
+          "row": 3271,
+          "text": "about. The Polaris did get popped and there was um Cosmic Bolt shuffled into the deck.",
+          "timestamp": "7:20:16"
+        },
+        {
+          "row": 3272,
+          "text": "Oh no, he psychic. I do I do believe that Fuk presented his deck to be cut before taking out the cosmic bolt.",
+          "timestamp": "7:20:22"
+        },
+        {
+          "row": 3281,
+          "text": "Yeah. It seems like it, as procedure dictates, it was unfortunately a game",
+          "timestamp": "7:21:28"
+        },
+        {
+          "row": 3282,
+          "text": "loss for Fruit Cake because the generated cards are not supposed to be in there. you're having well instead of four you have seven cosmic bolts in your",
+          "timestamp": "7:21:36"
+        },
+        {
+          "row": 3286,
+          "text": "Uh but it just it just it just sucks for a match down this way and it's it's a bummer. But you know what happens to the best of us and after like four grueling",
+          "timestamp": "7:22:02"
+        },
+        {
+          "row": 3289,
+          "text": "Yeah. But we still saw two incredible games of Grand A being played. Like both of them I really respect especially in",
+          "timestamp": "7:22:24"
+        }
+      ],
+      "reviewedRanges": [
+        [
+          2817,
+          2895
+        ],
+        [
+          2920,
+          2950
+        ],
+        [
+          3065,
+          3095
+        ],
+        [
+          3130,
+          3148
+        ],
+        [
+          3245,
+          3300
+        ]
+      ],
+      "recap": {
+        "id": "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+        "event": "Ascent Niagara Falls",
+        "eventId": 36225,
+        "round": "Round 5 (Day 1)",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Fruitcake",
+            "deck": "Wind Astra Arisanna"
+          },
+          {
+            "id": "p2",
+            "name": "RNg",
+            "deck": "Wind Tristan Distant"
+          }
+        ],
+        "result": "RNg wins 2-1",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p1",
+            "summary": "Fruitcake wins — Cometfall prompts RNg’s concession",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Fruitcake uses Cometfall to remove Mad Hatter and damage Tristan. RNg concedes after losing his board and Ranger Strides.",
+                "cards": [
+                  "Cometfall"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p2",
+            "summary": "RNg wins — Incapacitate protects the lethal attack",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "RNg rebuilds his ally pressure. Fruitcake attempts Zephyr against the lethal board, but RNg answers with Incapacitate and wins the game.",
+                "cards": [
+                  "Incapacitate",
+                  "Zephyr"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "winner": "p2",
+            "summary": "RNg wins — Fruitcake receives a deck-error game loss",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "The casters report that Fruitcake presents his deck with generated Cosmic Bolts still shuffled in. The resulting game loss ends the match at 2-1 for RNg.",
+                "cards": [
+                  "Cosmic Bolt"
+                ],
+                "tags": [
+                  "ruling"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Two played games; a deck-error game loss decides Game 3.",
+        "video": {
+          "id": "O9EzTt7ffVc",
+          "kind": "broadcast",
+          "startSeconds": 23109
+        }
+      },
+      "resolution": "Resolved: not merely interrupted coverage. Fruitcake wins game one, RNg wins game two, Fruitcake receives a game-three loss for generated Cosmic Bolts left in presented deck. At 1-1 this penalty ends match 2-1.",
+      "startEvidence": {
+        "timestamp": "6:25:09",
+        "quote": "pairing's going to be, and it's good looking, very spicy. One of them we saw pre in the previous round. It's RNG on",
+        "row": 2826
+      },
+      "reviewerBatch": "niagara",
+      "matchId": "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+      "published": true
+    },
+    {
+      "videoId": "ljQZR8Yu1XM",
+      "round": 5,
+      "disposition": "resolved-publish",
+      "recap": {
+        "id": "na-nationals-2026-day1-round5-superior-elian",
+        "event": "North American Nationals 2026",
+        "eventId": 52777,
+        "round": "Round 5 (Day 1, bonus match)",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Superior",
+            "deck": "Water Guo Jia / Genbu"
+          },
+          {
+            "id": "p2",
+            "name": "Elian",
+            "deck": "Fire Crux Lorraine"
+          }
+        ],
+        "result": "Superior wins 2-1",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p1",
+            "summary": "Superior disrupts Elian’s setup",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Superior counters Creative Shock with Cerulean Decree, then removes Inert Sword with Fracturize to slow Elian’s setup.",
+                "cards": [
+                  "Creative Shock",
+                  "Cerulean Decree",
+                  "Inert Sword",
+                  "Fracturize"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Elian uses Flame Sweep while leveling Lorraine, then plays Angel Attendant to defend against Genbu.",
+                "cards": [
+                  "Flame Sweep",
+                  "Angel Attendant"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Selected Game 1 plays; the overlay shows 0-0 at 7:26:01. The broadcast cuts away before the finish and later confirms Superior won games one and three.",
+        "video": {
+          "id": "ljQZR8Yu1XM",
+          "kind": "broadcast",
+          "startSeconds": 26719
+        }
+      },
+      "officialPairing": {
+        "id": "1:5:8",
+        "round": 5,
+        "label": "",
+        "bronze": false,
+        "players": [
+          {
+            "id": 605,
+            "name": "Elian",
+            "score": 1,
+            "status": "loser",
+            "spirits": [
+              "Spirit of Fire"
+            ]
+          },
+          {
+            "id": 12286,
+            "name": "Superior",
+            "score": 2,
+            "status": "winner",
+            "spirits": [
+              "Sabrina, Spirit of Water"
+            ]
+          }
+        ],
+        "winner": 12286,
+        "eventId": 52777,
+        "stage": 1
+      },
+      "startEvidence": {
+        "row": 3380,
+        "timestamp": "7:25:19",
+        "quote": "It is. But the good news, Terry, and for everyone at home, we have a bonus feature match coming up. And it sounds"
+      },
+      "evidence": [
+        {
+          "row": 3382,
+          "timestamp": "7:25:35",
+          "quote": "We have a It's Gamu. It's Gamu Superior again."
+        },
+        {
+          "row": 3395,
+          "timestamp": "7:26:58",
+          "quote": "And of course, Fluffy. So, yeah, we can get there. We can get some pretty early rendings that we'll hit pretty hard. Um, and back over to the game. Looks like we've got a creative shock here."
+        },
+        {
+          "row": 3402,
+          "timestamp": "7:27:42",
+          "quote": "Oh, that that is an unfortunate your greedy play of double creative met by a water deck saying I'm going to negate"
+        },
+        {
+          "row": 3407,
+          "timestamp": "7:28:14",
+          "quote": "So we just get to put it in the yard. So let me put it this way. We're glad that it was a ceruan if we're the fire player because we get to keep it in the graveyard."
+        },
+        {
+          "row": 3422,
+          "timestamp": "7:30:03",
+          "quote": "pretty is pretty rough. But we're going to see a fracture rise here. We're going to deal with that inert right away. This Cheshire cat is now only going to swing at you for one instead of three."
+        },
+        {
+          "row": 3479,
+          "timestamp": "7:36:52",
+          "quote": "some of our crux endame? Because we're going to have to hard level up most likely here. Yep. Here comes the flame sweep. This is going to come across with"
+        },
+        {
+          "row": 3487,
+          "timestamp": "7:37:57",
+          "quote": "But ooh, the angelic intendant being imbued. This intercept may be stopping again. Boo. Yeah. Yeah. Know that's"
+        },
+        {
+          "row": 3493,
+          "timestamp": "7:38:37",
+          "quote": "And we're activating the Diamond of Rivens, but we're going to actually be ending the bonus match here as we're going to be jumping into the next round."
+        },
+        {
+          "row": 3494,
+          "timestamp": "7:38:44",
+          "quote": "Superior ended up taking that bonus match 2 to one. Okay, against our uh Firecrux Lorraine player,"
+        },
+        {
+          "row": 3495,
+          "timestamp": "7:38:52",
+          "quote": "which is, you know, that means they secured game one uh superior very handily. Game two, the Luring came back and game three, Gamu closed it out."
+        }
+      ],
+      "visualEvidence": {
+        "timestamp": "7:26:01",
+        "url": "https://www.youtube.com/watch?v=ljQZR8Yu1XM&t=26761s",
+        "observation": "Played video frame labels Elian left and Superior right; score 0-0, timer 59:32, both at spirit. This is the first game. Screenshot reviewed locally /tmp/na-superior-elian-overlay.png."
+      },
+      "reviewedRanges": [
+        [
+          3376,
+          3498
+        ]
+      ],
+      "resolution": "Game number verified from scoreboard; publish observed plays, no invented finish. Winner supported by explicit later game-order commentary.",
+      "reviewerBatch": "na",
+      "matchId": "na-nationals-2026-day1-round5-superior-elian",
+      "published": true
+    },
+    {
+      "videoId": "ljQZR8Yu1XM",
+      "round": 9,
+      "existingMatchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
+      "disposition": "closed-source-ends-before-play",
+      "evidence": [
+        {
+          "row": 5462,
+          "timestamp": "11:50:08",
+          "quote": "Hello and welcome back to round nine of the North American National Championships. Viva Las Vegas. Dan, you're here with me."
+        },
+        {
+          "row": 5489,
+          "timestamp": "11:53:12",
+          "quote": "We're ready to go. So, we have a match with Oas S, known as Venosius, a very super super well-known uh member of the"
+        },
+        {
+          "row": 5492,
+          "timestamp": "11:53:26",
+          "quote": "Yeah, you probably bought and sold to him if you've been playing the game for a while. And then we of course have like Bailey as well."
+        },
+        {
+          "row": 5502,
+          "timestamp": "11:54:36",
+          "quote": "Um, well, yeah, it's right here. Here is Vern on the on the water lock and we're taking a look at the list and I man, I see some cool stuff going on here, too."
+        },
+        {
+          "row": 5505,
+          "timestamp": "11:54:52",
+          "quote": "prayer was activated or as we were watching water jin we were casting"
+        }
+      ],
+      "reviewedRanges": [
+        [
+          5400,
+          5505
+        ]
+      ],
+      "resolution": "Player introductions exist, but video duration is 11:54:55 and final caption 11:54:52 is still deck discussion. Preserve existing recap and whole-broadcast URL; no match-play offset can be recovered from this upload.",
+      "nextEvidenceNeeded": "Separate complete Round 9 recording or official match upload.",
+      "reviewerBatch": "na"
+    }
+  ]
+}

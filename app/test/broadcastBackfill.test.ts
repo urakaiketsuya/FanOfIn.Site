@@ -7,6 +7,7 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(`../../${path}`, 
 const data: BroadcastTimelines = read('data/broadcast-timelines.json');
 const maps: BroadcastEventMaps = read('data/broadcast-events.json');
 const review = read('docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json');
+const resolutions = read('docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json');
 const registry = read('docs/BROADCAST_VIDEO_SOURCES.json');
 const match = (id: string) => {
   const found = data.matches.find(m => m.id === id);
@@ -18,7 +19,7 @@ test('recovered coverage retains the baseline and accounts for every new recap',
   assert.equal(review.baselineRecapIds.length, 110);
   assert.equal(review.newRecapIds.length, 86);
   assert.equal(review.updatedOffsetIds.length, 18);
-  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds].sort(), data.matches.map(m => m.id).sort());
+  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds, ...resolutions.newRecapIds].sort(), data.matches.map(m => m.id).sort());
   assert.equal(new Set(review.sources.map((s: { videoId: string }) => s.videoId)).size, 14);
   for (const source of review.sources) {
     assert.equal(source.fullGameplayReviewed, false);
@@ -60,4 +61,36 @@ test('partial coverage preserves game numbers, draws, penalties and missing star
   assert.deepEqual(exhibition.games.map(g => g.gameNumber), [1, 2]);
   assert.equal(match('sea-national-2026-grand-final-raylam-dragonjg').video?.startSeconds, undefined);
   assert.equal(match('na-nationals-2026-day1-round9-likebailey-vernosius').video?.startSeconds, undefined);
+});
+
+
+test('all twelve held findings have explicit dispositions and exact published pairings', () => {
+  assert.equal(resolutions.records.length, 12);
+  assert.equal(resolutions.newRecapIds.length, 7);
+  for (const record of resolutions.records) {
+    assert.ok(record.disposition);
+    assert.ok(record.resolution || record.conclusion);
+    if (!record.published) continue;
+    const m = match(record.matchId);
+    const pair = record.officialPairing;
+    const id = typeof pair.id === 'number' ? `${pair.stage}:${pair.round}:${pair.id}` : pair.id;
+    const official = maps.events.find(e => e.id === pair.eventId)!.stages.find(s => s.id === pair.stage)!.matches.find(p => p.id === id)!;
+    assert.equal(official.recapId, m.id);
+    assert.deepEqual(m.players.map(p => p.name).sort(), pair.players.map((p: { name: string }) => p.name).sort());
+    assert.equal(m.video?.startSeconds, record.startEvidence.timestamp.split(':').reduce((n: number, p: string) => n * 60 + Number(p), 0));
+    assert.equal(registry.matches.find((r: { matchId: string }) => r.matchId === m.id).startSeconds, m.video?.startSeconds);
+  }
+});
+
+test('resolved holds preserve source conflicts, partial games and the deciding penalty', () => {
+  assert.equal(match('ascent-niagara-falls-2025-day1-round2-kibbles-hyouka').result, 'Hyouka wins 1-0 on broadcast');
+  assert.equal(match('ascent-niagara-falls-2025-day1-round3-centai-superior').result, 'Centai wins 2-1 on broadcast');
+  const penalty = match('ascent-niagara-falls-2025-day1-round5-fruitcake-rng');
+  assert.deepEqual(penalty.games.map(g => g.winner), ['p1', 'p2', 'p2']);
+  assert.match(penalty.games[2].beats[0].text, /game loss ends the match at 2-1/);
+  assert.deepEqual(match('ascent-los-angeles-2026-day1-round7-quikk-chemcollapse').games.map(g => g.gameNumber), [1]);
+  assert.deepEqual(match('na-nationals-2026-day1-round5-superior-elian').games.map(g => g.gameNumber), [1]);
+  assert.deepEqual(match('ascent-taipei-2025-round-2-lifdrasyl-shina2486').games.map(g => g.gameNumber), [1]);
+  assert.deepEqual(match('ascent-taipei-2025-round-4-aw5459-menbao').games.map(g => g.gameNumber), [2]);
+  assert.ok(!data.matches.some(m => m.id === 'sea-national-2026-quarterfinal-dragonjg-noobtinnn'));
 });
