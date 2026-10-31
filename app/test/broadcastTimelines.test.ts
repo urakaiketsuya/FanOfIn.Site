@@ -283,3 +283,16 @@ test('Worlds round five game one distinguishes hypothetical Destiny from the obs
   assert.ok(game.beats[2].cards!.includes('Veiling Breeze'));
   assert.match(game.beats[2].text, /winning before Breeze resolves/);
 });
+
+test('Worlds round five closing games preserve the denied level and actual finishing attack', () => {
+  const match = find('round5-gerthos-jet');
+  assert.deepEqual(match.games.map(game => game.winner), ['p1', 'p2', 'p2']);
+  assert.match(match.games[1].beats[1].text, /Jett plays Aella/);
+  assert.match(match.games[1].beats[2].text, /concedes without executing/);
+  assert.match(match.sideboardNotes![1].text, /correct their initial Flamewreath Call/);
+  const finish = match.games[2].beats.at(-1)!;
+  assert.match(finish.text, /has Baleful Oblation and Feu Awakening/);
+  assert.match(finish.text, /denies Ciel level three/);
+  assert.match(finish.text, /Lorraine’s Prismatic Edge attack finishes/);
+  assert.doesNotMatch(finish.text, /never finds|chances of moving on/);
+});

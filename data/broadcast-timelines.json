@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:29:57.954Z",
+  "generatedAt": "2026-10-31T21:30:53.903Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -14311,7 +14311,7 @@
         {
           "beforeGame": 3,
           "actor": "p1",
-          "text": "Guruthos sides out Nocturne's Oblivion and the casters note he does not want to remove anything on Jett's board. They like Flamewreath Call for dealing with the Eternal Magistrate, and say Guruthos is the one who would go first in game three."
+          "text": "Before game three, the casters correct their initial Flamewreath Call boarding claim after noticing Guruthos is holding his sideboard. They report Flamewreath Call, Nocturne’s Oblivion, and Heavenly Guide being left out or removed. They discuss Call as a possible answer to Eternal Magistrate; no copy counts are established."
         }
       ],
       "games": [
@@ -14368,15 +14368,19 @@
         {
           "gameNumber": 2,
           "winner": "p2",
-          "summary": "Jett wins — Eternal Magistrate stalls the Oblation turn and Spirit Blade: Ascension with Prismatic Edge pushes through",
+          "summary": "Jett wins — Eternal Magistrate delays Guruthos, and Imperious Galebind stops the Grande Sonnerie finish",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Jett starts game two and puts out the Eternal Magistrate. He uses Cleansing Reunion to deny floating memory, and Lorraine reaches level three. Jett gets Orb of Sealing out and plays defensively, letting the weapon pressure wait.",
+              "text": "Jett uses Purifying Thurible to deny Guruthos’s floating memory, then Dungeon Guide and Displace to reach Lorraine, Spirit Ruler. Eternal Magistrate shuts off Guruthos’s Guide plays and Lost Providence activation outside materialization. Jett then materializes Orb of Sealing.",
               "cards": [
+                "Purifying Thurible",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
                 "Eternal Magistrate",
-                "Cleansing Reunion",
+                "Lost Providence",
                 "Orb of Sealing"
               ],
               "tags": [
@@ -14386,9 +14390,12 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Jett gets a Ghost of Pendragon, a Reclaim and a Spirit Blade: Ascension and pushes ally damage into Guruthos, who is in Chalice of Blood range. He strips two cards with a Dungeon Guide level up and a Prismatic Edge. The casters say Jett's Aella is not played yet.",
+              "text": "Jett plays Aella during recollection and attacks with his allies. Guruthos uses Chalice of Blood, Umbra Sight, and Abnegation to stay alive. Jett responds to Abnegation with two Spirit Blade: Ascensions: Prismatic Edge draws cards and removes two from Guruthos’s memory, but deals no fire damage. Abnegation then recovers ten.",
               "cards": [
-                "Ghosts of Pendragon",
+                "Aella, Zephyr's Hand",
+                "Chalice of Blood",
+                "Umbra Sight",
+                "Abnegation",
                 "Spirit Blade: Ascension",
                 "Prismatic Edge"
               ],
@@ -14399,8 +14406,10 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Guruthos draws the fifteen-cost off the top, but with Grande Sonnerie instead of the Armoire he cannot make the full play, and Jett's Imperious Galebind denies the Grande Sonnerie damage. Feu Awakening plus the Array is not enough, the Oblation turn does not happen, and Jett takes game two.",
+              "text": "Resolute Stand buys Guruthos another turn. He retains Baleful Oblation and materializes Grande Sonnerie, then finds another fifteen-cost card. Jett’s Imperious Galebind denies the weapon damage needed to finish. Guruthos concedes without executing the proposed Oblation–Feu Awakening line.",
               "cards": [
+                "Resolute Stand",
+                "Baleful Oblation",
                 "Grande Sonnerie",
                 "Imperious Galebind",
                 "Feu Awakening"
@@ -14415,26 +14424,30 @@
         {
           "gameNumber": 3,
           "winner": "p2",
-          "summary": "Jett wins — Eternal Magistrate, Enfeebling Orb and Zephyr's Hand keep Guruthos's hand locked, and a final Prismatic Edge swing ends it",
+          "summary": "Jett wins — Aella and Prismatic Edge deny Ciel level three, then Lorraine lands the final weapon attack",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Guruthos goes first, which the casters say should let him level faster than Jett, whose list likes to take turns off for Turbo Charge and Backup Charger. He banishes at random to get the Golden Checkmate into the omens right away, and does not stop to build influence.",
+              "text": "Guruthos goes first and uses Creative Shock to discard Golden Checkmate before leveling, choosing speed over a Backup Charger turn. Gentle Respite gives him another draw and floating memory.",
               "cards": [
+                "Creative Shock",
                 "Golden Checkmate",
-                "Flamewreath Call"
+                "Gentle Respite"
               ]
             },
             {
               "order": 2,
               "actor": "p2",
-              "text": "Jett's Fluffy Shopkeep and a Fairy Whispers find the Windmill Engineer for more influence. The Eternal Magistrate denies Guruthos's options, delaying the Oblation about as much as the Manxome Armoire matters. Aella, Zephyr's Hand is played on the Prismatic Edge.",
+              "text": "Jett plays Eternal Magistrate to block Guruthos’s Guide acceleration, then uses Dungeon Guide and Displace to reach Lorraine, Spirit Ruler himself. Ghosts of Pendragon builds his board. Spirit Blade: Ascension brings in Prismatic Edge, which reveals wind, water, and Guruthos’s fire card for the full effect, including three damage.",
               "cards": [
-                "Fluffy Shopkeep",
-                "Fairy Whispers",
-                "Windmill Engineer",
-                "Eternal Magistrate"
+                "Eternal Magistrate",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
+                "Ghosts of Pendragon",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
               ],
               "tags": [
                 "swing"
@@ -14443,11 +14456,15 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Jett plays the Enfeebling Orb once more and uses Zephyr's Hand during the materialization, locking Guruthos's hand and his chances of moving on to the top eight. Guruthos has an Angel Attendant and a Golden Checkmate and needs to pop off, but never finds the Oblation. Jett wins the match 2-1, a match the casters say the sideboard changed.",
+              "text": "Guruthos has Baleful Oblation and Feu Awakening, and uses Resolute Stand’s alternate cost to preserve cards for leveling. Jett’s Aella suppresses Prismatic Edge; its end-step return removes memory and denies Ciel level three. Guruthos materializes Chalice of Blood instead. On Jett’s next turn, ally attacks trigger the Chalice draw, but Guruthos finds Gentle Respite rather than another Resolute Stand. Lorraine’s Prismatic Edge attack finishes the game.",
               "cards": [
-                "Enfeebling Orb",
+                "Baleful Oblation",
+                "Feu Awakening",
+                "Resolute Stand",
                 "Aella, Zephyr's Hand",
-                "Golden Checkmate"
+                "Prismatic Edge",
+                "Chalice of Blood",
+                "Gentle Respite"
               ],
               "tags": [
                 "lethal"
@@ -14456,7 +14473,7 @@
           ]
         }
       ],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one closing sequence checked against captions at 406:02–417:43: three Oblations span two turns, and Crystallized Destiny is a hypothetical sideboard answer, not an observed play. Games two and three retain sampled-caption summaries pending fuller verification. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
     },
     {
       "id": "worlds-swiss-2026-round6-noel-asa",
