@@ -895,6 +895,75 @@
         "Windmill Engineer",
         "Aesan Protector"
       ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/1/beats/0/text",
+      "before": "Lifdrasyl digs for specific cards, does not find the Dungeon Guide and decides to influence-max. He plays Fluffy Shopkeep again and draws reclaims. Asuna answers with Three Visits and a reclaim.",
+      "after": "Lifdrasyl builds influence with Fluffy Shopkeep and reclaims. The casters are unsure whether he lacks Dungeon Guide or is playing around Stifling Trap. Asuna finds Three Visits and a reclaim for the closing push."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/1/beats/1/text",
+      "before": "Asuna has three Razorgales to Lifdrasyl's one answer, a single Vertigris Degree. He gets Speed Potion agility from the gather cards and reserves the most agility-three cards of anyone in the field. Three Visits plus a reclaim brings Lorraine's attack down.",
+      "after": "Asuna finds all three Razorgales, while the casters identify a single Verdigris Decree as Lifdrasyl’s answer. Speed Potion helps Asuna recover cards, and Three Visits plus a reclaim set up the remaining damage."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/1/beats/2/text",
+      "before": "Razorgale number three puts two Razorgale triggers on the stack. Enfeebling Orb puts Asuna's hand down, but the Essence Crucible makes the damage anyway and Asuna ties the match. The casters say the Crucible can be a real game-winner.",
+      "after": "Asuna plays the second and third Razorgales, adding their damage triggers. Essence Crucible boosts the closing damage; the casters explain that Annul Spell cannot stop the Razorgale triggers even if it negates the spell. Asuna ties the match."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/1/beats/2/cards",
+      "before": [
+        "Razorgale Calling",
+        "Essence Crucible"
+      ],
+      "after": [
+        "Razorgale Calling",
+        "Essence Crucible",
+        "Annul Spell"
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/2/beats/0/text",
+      "before": "Lifdrasyl goes first in game three with about 13 minutes left, and finds a Vertigris Degree early to take out one Razorgale. Asuna plays an imbued Eternal Magistrate and a Windmill Engineer, which is promptly reclaimed.",
+      "after": "Lifdrasyl opens with Verdigris Decree and Windmill Engineer. Asuna’s imbued Eternal Magistrate attacks the Engineer, which Lifdrasyl reclaims. Lifdrasyl then levels to Lorraine, Wandering Warrior and brings out Sword of Seeking."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/2/beats/0/cards",
+      "before": [
+        "Eternal Magistrate",
+        "Windmill Engineer"
+      ],
+      "after": [
+        "Verdigris Decree",
+        "Eternal Magistrate",
+        "Windmill Engineer",
+        "Lorraine, Wandering Warrior",
+        "Sword of Seeking"
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/2/beats/1/actor",
+      "before": "p1",
+      "after": "both"
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/2/beats/1/text",
+      "before": "Asuna brings out Dream Fairy and uses Escape the Wreckage to get it back and replay it the next turn. The casters say Lifdrasyl has few fast burn spells and cannot punish this. Asuna holds a Cleansing Reunion and Aella, and Lifdrasyl needs to find the Dungeon Guide to push.",
+      "after": "Lifdrasyl plays Dream Fairy to remove Eternal Magistrate. Asuna responds with Escape the Wreckage to save his Magistrate, but does not replay it on the following turn. Asuna keeps digging for Razorgale while Lifdrasyl builds influence."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games/2/beats/1/cards",
+      "before": [
+        "Dream Fairy",
+        "Escape the Wreckage",
+        "Cleansing Reunion"
+      ],
+      "after": [
+        "Dream Fairy",
+        "Eternal Magistrate",
+        "Escape the Wreckage"
+      ]
     }
   ],
   "sourceFollowUp": [
@@ -979,6 +1048,19 @@
           "540:30–541:46"
         ],
         "finding": "Game five: Zero rebuilds with Ghosts of Pendragon. Jett responds to Regal Inquisition with Lightweaver’s Assault, revealing two Gleaming Cuts for four draws and dealing eight damage. Assassin’s Ripper deals three; Windmill Engineer/Aesan Protector finish the remaining five. Restores Gleaming Cut with the correct actor and replaces the unsupported Poisoned Dagger finishing summary. Exact final ally attack allocation is not asserted because the captions compress the sequence."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "269:28–269:46",
+          "273:17–273:56",
+          "277:15–278:49",
+          "280:24–282:04",
+          "283:56–284:09"
+        ],
+        "finding": "Game two closing commentary identifies Annul Spell and surviving Razorgale triggers, not Enfeebling Orb. Guide absence is uncertain. Game three: Lifdrasyl reclaims his Engineer and levels Lorraine to obtain Sword of Seeking; Asuna saves Eternal Magistrate from Lifdrasyl’s Dream Fairy with Escape the Wreckage and does not replay it next turn. Opening Verdigris is seen in hand, not used to destroy a Razorgale. Catalog corroborates Dream Fairy targeting an opposing ally and Escape targeting an owned ally. Swiss deck attachments remain unverified."
       }
     ],
     "unresolved": [

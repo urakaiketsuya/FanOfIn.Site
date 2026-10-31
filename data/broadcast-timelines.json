@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:00:58.043Z",
+  "generatedAt": "2026-10-31T21:02:31.127Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -11764,7 +11764,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Lifdrasyl digs for specific cards, does not find the Dungeon Guide and decides to influence-max. He plays Fluffy Shopkeep again and draws reclaims. Asuna answers with Three Visits and a reclaim.",
+              "text": "Lifdrasyl builds influence with Fluffy Shopkeep and reclaims. The casters are unsure whether he lacks Dungeon Guide or is playing around Stifling Trap. Asuna finds Three Visits and a reclaim for the closing push.",
               "cards": [
                 "Fluffy Shopkeep",
                 "Three Visits"
@@ -11773,7 +11773,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Asuna has three Razorgales to Lifdrasyl's one answer, a single Vertigris Degree. He gets Speed Potion agility from the gather cards and reserves the most agility-three cards of anyone in the field. Three Visits plus a reclaim brings Lorraine's attack down.",
+              "text": "Asuna finds all three Razorgales, while the casters identify a single Verdigris Decree as Lifdrasyl’s answer. Speed Potion helps Asuna recover cards, and Three Visits plus a reclaim set up the remaining damage.",
               "cards": [
                 "Razorgale Calling",
                 "Three Visits"
@@ -11785,10 +11785,11 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Razorgale number three puts two Razorgale triggers on the stack. Enfeebling Orb puts Asuna's hand down, but the Essence Crucible makes the damage anyway and Asuna ties the match. The casters say the Crucible can be a real game-winner.",
+              "text": "Asuna plays the second and third Razorgales, adding their damage triggers. Essence Crucible boosts the closing damage; the casters explain that Annul Spell cannot stop the Razorgale triggers even if it negates the spell. Asuna ties the match.",
               "cards": [
                 "Razorgale Calling",
-                "Essence Crucible"
+                "Essence Crucible",
+                "Annul Spell"
               ],
               "tags": [
                 "combo",
@@ -11805,20 +11806,23 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Lifdrasyl goes first in game three with about 13 minutes left, and finds a Vertigris Degree early to take out one Razorgale. Asuna plays an imbued Eternal Magistrate and a Windmill Engineer, which is promptly reclaimed.",
+              "text": "Lifdrasyl opens with Verdigris Decree and Windmill Engineer. Asuna’s imbued Eternal Magistrate attacks the Engineer, which Lifdrasyl reclaims. Lifdrasyl then levels to Lorraine, Wandering Warrior and brings out Sword of Seeking.",
               "cards": [
+                "Verdigris Decree",
                 "Eternal Magistrate",
-                "Windmill Engineer"
+                "Windmill Engineer",
+                "Lorraine, Wandering Warrior",
+                "Sword of Seeking"
               ]
             },
             {
               "order": 2,
-              "actor": "p1",
-              "text": "Asuna brings out Dream Fairy and uses Escape the Wreckage to get it back and replay it the next turn. The casters say Lifdrasyl has few fast burn spells and cannot punish this. Asuna holds a Cleansing Reunion and Aella, and Lifdrasyl needs to find the Dungeon Guide to push.",
+              "actor": "both",
+              "text": "Lifdrasyl plays Dream Fairy to remove Eternal Magistrate. Asuna responds with Escape the Wreckage to save his Magistrate, but does not replay it on the following turn. Asuna keeps digging for Razorgale while Lifdrasyl builds influence.",
               "cards": [
                 "Dream Fairy",
-                "Escape the Wreckage",
-                "Cleansing Reunion"
+                "Eternal Magistrate",
+                "Escape the Wreckage"
               ],
               "tags": [
                 "stabilize"

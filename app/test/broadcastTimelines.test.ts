@@ -118,3 +118,19 @@ test('Manila source distinguishes boarding and interrupted plays from prediction
   assert.doesNotMatch(beat.text, /brings out all four|forgets/);
   assert.ok(!beat.tags!.includes('ruling'));
 });
+
+test('Worlds Swiss captions keep Lorraine and Dream Fairy plays with Lifdrasyl', () => {
+  const match = find('second-asa-liftdraasil');
+  const closingBeat = match.games[1].beats.at(-1)!;
+  assert.ok(closingBeat.cards!.includes('Annul Spell'));
+  assert.doesNotMatch(closingBeat.text, /Enfeebling Orb/);
+  const opening = match.games[2].beats[0];
+  assert.equal(opening.actor, 'p2');
+  assert.match(opening.text, /Lifdrasyl then levels to Lorraine/);
+  assert.ok(opening.cards!.includes('Sword of Seeking'));
+  const response = match.games[2].beats[1];
+  assert.equal(response.actor, 'both');
+  assert.match(response.text, /Lifdrasyl plays Dream Fairy/);
+  assert.match(response.text, /Asuna responds with Escape the Wreckage to save his Magistrate/);
+  assert.match(response.text, /does not replay it/);
+});
