@@ -150,14 +150,30 @@ function MatchDecklistsForEvent({ match, eventId }: { match: BroadcastTimelineMa
   return (
     <div>
       <div className="mt-3 flex flex-col gap-4 sm:flex-row">
-        <PlayerDecklistSlot caster={match.players[0]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-blue" />
-        <PlayerDecklistSlot caster={match.players[1]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-mauve" />
+        {match.players.map((player, index) => player.stageDecklist
+          ? <StageDecklist key={player.id} caster={player} />
+          : <PlayerDecklistSlot key={player.id} caster={player} eventId={eventId} decklists={decklists} players={players} accent={index === 0 ? "text-ctp-blue" : "text-ctp-mauve"} />)}
       </div>
     </div>
   );
 }
 
+function StageDecklist({ caster }: { caster: BroadcastTimelinePlayer }) {
+  const verified = caster.stageDecklist!;
+  const names = useMemo(() => Object.values(verified.decklist).flat().map(line => line.card), [verified.decklist]);
+  const cardsByName = useCardsByNames(names);
+  return <div className="min-w-0 flex-1">
+    <p className="text-sm font-semibold">{caster.name}</p>
+    <a href={verified.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-control items-center text-sm text-ctp-blue">{verified.stage} decklist · Source</a>
+    <DecklistView deckOwner={caster.name} decklist={verified.decklist} cardsByName={cardsByName}
+      showAnalysis={false} showDeckStats={false} showThumbnails defaultDisplayMode="visual" />
+  </div>;
+}
+
 export default function MatchDecklists({ match }: { match: BroadcastTimelineMatch }) {
+  if (match.players.every(player => player.stageDecklist)) return <div className="mt-3 flex flex-col gap-4 sm:flex-row">
+    {match.players.map(player => <StageDecklist key={player.id} caster={player} />)}
+  </div>;
   if (match.eventId === undefined) return null;
   return <MatchDecklistsForEvent match={match} eventId={match.eventId} />;
 }

@@ -1554,13 +1554,1109 @@
         "Cheshire Cat, Impish Grin",
         "Liu Bei, Oathkeeper"
       ]
+    },
+    {
+      "path": "worlds-2026-championship-sunday-semifinal2-zero-livil/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins — Spirit Blade: Retribution with banished allies deals 15 to a Lifdrasyl who cannot find his Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl goes first as the higher seed and opens with Fairy Whispers and a Surveil the Winds, which the casters call a great start. Zero0000000000 shows Backup Charger and holds a hedge deck, because TheRainGoddess was expected on Razor Gale and TeamTrueCaban on fractals.",
+              "cards": [
+                "Fairy Whispers",
+                "Surveil the Winds",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zero0000000000 plays Aesan Protector with a reclaim and Windmill Engineer, and loses allies to Lifdrasyl's Serro operative but keeps banishing the high-power allies. The casters say Ghosts of Pendragon is the pressure and that Prismatic Edge threatens three damage a turn.",
+              "cards": [
+                "Aesan Protector",
+                "Windmill Engineer",
+                "Ghosts of Pendragon",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Spirit Blade: Retribution comes for 15 damage with a sword added, compared with seven against TheRainGoddess, because the high-power allies are in banishment. Lifdrasyl has only nine life at Zander level two and needs a Veiling Breeze off a surveil, but he finds a Luxem Sight, and Zero0000000000 takes game one.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Veiling Breeze",
+                "Luxem Sight"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins — Regal Inquisition reveals the hand and a zero-cost Retribution for 16 beats one Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zero0000000000 casts Regal Inquisition and sees Lifdrasyl's hand, and the casters say Lifdrasyl has Dungeon Guide-like lose conditions while the rest are minor annoyances. Lifdrasyl cannot play all his cards in the same turn, and Zero0000000000 uses Displace and Scout the Land to dig for Heavenly Guide.",
+              "cards": [
+                "Regal Inquisition",
+                "Dungeon Guide",
+                "Scout the Land"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Lifdrasyl never gets a big influence start. He has Windmill Engineer, Sadi and Incapacitate, and a Veiling Breeze helps him survive one turn by preventing seven, but he sits on three cards while Zero0000000000 recovers influence with Windmill and Sadi bounces.",
+              "cards": [
+                "Windmill Engineer",
+                "Sadi, Blood Harvester",
+                "Incapacitate",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Zero0000000000 takes Spirit Blade: Retribution from the graveyard at zero cost for 16 damage, and a free one-use Ghosts of Pendragon swings are added on top. Lifdrasyl loses, which ends the last Southeast Asia and North America hope in the final, and Zero0000000000 meets Jett. The casters call Zero0000000000 the player with a 0 percent win rate against everyone in Hong Kong.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Ghosts of Pendragon"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins — Spirit Blade: Retribution with banished allies deals 15 to a Lifdrasyl who cannot find his Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl goes first as the higher seed and opens with Fairy Whispers and a Surveil the Winds, which the casters call a great start. Zero0000000000 shows Backup Charger and holds a hedge deck, because TheRainGoddess was expected on Razor Gale and TeamTrueCaban on fractals.",
+              "cards": [
+                "Fairy Whispers",
+                "Surveil the Winds",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zero0000000000 plays Aesan Protector with a reclaim and Windmill Engineer, and loses allies to Lifdrasyl's Serro operative but keeps banishing the high-power allies. The casters say Ghosts of Pendragon is the pressure and that Prismatic Edge threatens three damage a turn.",
+              "cards": [
+                "Aesan Protector",
+                "Windmill Engineer",
+                "Ghosts of Pendragon",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Spirit Blade: Retribution comes for 15 damage with a sword added, compared with seven against TheRainGoddess, because the high-power allies are in banishment. Lifdrasyl has only nine life at Zander level two and needs a Veiling Breeze off a surveil, but he finds a Luxem Sight, and Zero0000000000 takes game one.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Veiling Breeze",
+                "Luxem Sight"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins — Regal Inquisition reveals the hand and a zero-cost Retribution for 16 beats one Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zero0000000000 uses Regal Inquisition to remove Lifdrasyl’s Dungeon Guide and Luxem Sight, leaving the Incapacitates. Lifdrasyl draws Turbo Charge and Lightweaver’s Assault, but struggles to reach level three without his Guide.",
+              "cards": [
+                "Regal Inquisition",
+                "Dungeon Guide",
+                "Luxem Sight",
+                "Incapacitate",
+                "Turbo Charge",
+                "Lightweaver's Assault"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Lifdrasyl never gets a big influence start. He has Windmill Engineer, Sadi and Incapacitate, and a Veiling Breeze helps him survive one turn by preventing seven, but he sits on three cards while Zero0000000000 recovers influence with Windmill and Sadi bounces.",
+              "cards": [
+                "Windmill Engineer",
+                "Sadi, Blood Harvester",
+                "Incapacitate",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Zero0000000000 takes Spirit Blade: Retribution from the graveyard at zero cost for 16 damage, and a free one-use Ghosts of Pendragon swings are added on top. Lifdrasyl loses, which ends the last Southeast Asia and North America hope in the final, and Zero0000000000 meets Jett. The casters call Zero0000000000 the player with a 0 percent win rate against everyone in Hong Kong.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Ghosts of Pendragon"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/round",
+      "before": "Round 7 (Day 1): Wind Krux Lorraine against Wind Luxom Zander",
+      "after": "Round 7 (Day 1): Wind Crux Lorraine against Fire Luxem Zander"
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "MaruX",
+          "deck": "Wind Krux Lorraine (Lorraine, Spirit Ruler; Ghosts of Pendragon; Prismatic Edge; Clarent, Reimagined; Sword of Seeking; Drawn Blade; Creative Shock; Dungeon Guide; Spirit Blade: Ascension; Gale Bind; Orb of Sealing)"
+        },
+        {
+          "id": "p2",
+          "name": "PewPewStan",
+          "deck": "Wind Luxom Zander (Lightweaver's Assault, Striking Illuminance, Luxem Sight, Regal Inquisition, Vanish from Sight, Resolute Stand, Dream Fairy, Gentle Respite, Ayella, Corhazi insignia)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "MaruX",
+          "deck": "Wind Krux Lorraine (Lorraine, Spirit Ruler; Ghosts of Pendragon; Prismatic Edge; Clarent, Reimagined; Sword of Seeking; Drawn Blade; Creative Shock; Dungeon Guide; Spirit Blade: Ascension; Gale Bind; Orb of Sealing)"
+        },
+        {
+          "id": "p2",
+          "name": "PewPewStan",
+          "deck": "Fire Luxem Zander (Spirit of Serene Fire; Lightweaver’s Assault, Striking Illuminance, Luxem Sight, Regal Inquisition, Angelic Channeling)"
+        }
+      ]
+    },
+    {
+      "path": "worlds-2026-top8-qf4-glennyboy-jet/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Jett wins — a free Zander level-up with Blinding Steel and a Lightweaver's Assault line beat GlenyBoi's greedy Pendragon turn",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi opens with Dungeon Guide and Aesan Protector, the high-pressure start a Wind Krux deck needs. Jett keeps Ensnaring Fumes and Veiling Breeze, and the casters note he has Heavenly Guide to re-use.",
+              "cards": [
+                "Dungeon Guide",
+                "Aesan Protector",
+                "Heavenly Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett resolves a level-up to Zander with Blinding Steel without losing a single card, which the casters call a blinding lead. GlenyBoi looks for Verdigris Decree to unlock the Pendragons and Sadi draws a Turbo Charge.",
+              "cards": [
+                "Zander, Blinding Steel",
+                "Sadi, Blood Harvester"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "GlenyBoi uses Imperious Galebind to take the Lost Providence, the Poisoned Dagger and the Drawn Blade, and has three Ghosts of Pendragon to play for nine damage. He then plays Prismatic Edge instead of Clarent, Reimagined, which the casters call a little too greedy.",
+              "cards": [
+                "Imperious Galebind",
+                "Ghosts of Pendragon",
+                "Prismatic Edge",
+                "Clarent, Reimagined"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Jett suppresses the Ghosts and calms the damage with Calming Breeze. His Poisoned Dagger for one and a revealed Lightweaver's Assault deal eight damage to the face, and Jett wins game one.",
+              "cards": [
+                "Calming Breeze",
+                "Poisoned Dagger",
+                "Lightweaver's Assault",
+                "Fairy Whispers"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jett wins — a Veiling Breeze for one keeps him alive for exactly one more turn, then Lightweaver's Assaults finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett brings in three cards and plays Sadi back from the banishment with only three cards in hand. GlenyBoi has no Stifling Trap to snipe Sadi on its return. Jett swings face rather than into the Aesan Protector and Scout the Land for a better position.",
+              "cards": [
+                "Sadi, Blood Harvester",
+                "Aesan Protector",
+                "Scout the Land"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi uses Fluffy Shopkeep again and sends Clarent to the banishment. Jett uses Heavenly Guide to go up to level three and the casters say it is juicy, because GlenyBoi has no Stifling Trap. The Ensnaring Fumes, with a floating memory, are a big blowout.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Heavenly Guide",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "The casters count 12.5 percent to find a Luxom card and Jett finds a Luxem Sight. GlenyBoi has two Veiling Breezes and a Retribution in hand. Jett has ten cards in hand and could play a raw Slice and Dice into Lightweaver's Assaults, and a Veiling Breeze for one barely keeps him alive for one more turn.",
+              "cards": [
+                "Luxem Sight",
+                "Veiling Breeze",
+                "Spirit Blade: Retribution",
+                "Slice and Dice"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Jett finishes with Lightweaver's Assaults and the damage stays just above GlenyBoi's reach. Jett wins 2-0 and moves to the semifinals against TheRainGoddess, a Wind Luxom against Wind Krux match.",
+              "cards": [
+                "Lightweaver's Assault"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Jett wins — a free Zander level-up with Blinding Steel and a Lightweaver's Assault line beat GlenyBoi's greedy Pendragon turn",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi opens with Dungeon Guide and Aesan Protector, the high-pressure start a Wind Krux deck needs. Jett keeps Ensnaring Fumes and Veiling Breeze, and the casters note he has Heavenly Guide to re-use.",
+              "cards": [
+                "Dungeon Guide",
+                "Aesan Protector",
+                "Heavenly Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Stifling Gyre naming Ghosts of Pendragon, making GlenyBoi pay four extra cards to resolve its on-enter draw. GlenyBoi levels to Lorraine, Wandering Warrior and brings out Sword of Seeking; Verdigris Decree is his potential answer to the Gyre.",
+              "cards": [
+                "Stifling Gyre",
+                "Ghosts of Pendragon",
+                "Lorraine, Wandering Warrior",
+                "Sword of Seeking",
+                "Verdigris Decree"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "GlenyBoi uses Imperious Galebind to take the Lost Providence, the Poisoned Dagger and the Drawn Blade, and has three Ghosts of Pendragon to play for nine damage. He then plays Prismatic Edge instead of Clarent, Reimagined, which the casters call a little too greedy.",
+              "cards": [
+                "Imperious Galebind",
+                "Ghosts of Pendragon",
+                "Prismatic Edge",
+                "Clarent, Reimagined"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Jett suppresses the Ghosts and calms the damage with Calming Breeze. His Poisoned Dagger for one and a revealed Lightweaver's Assault deal eight damage to the face, and Jett wins game one.",
+              "cards": [
+                "Calming Breeze",
+                "Poisoned Dagger",
+                "Lightweaver's Assault",
+                "Fairy Whispers"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jett wins — a Veiling Breeze for one keeps him alive for exactly one more turn, then Lightweaver's Assaults finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett brings in three cards and plays Sadi back from the banishment with only three cards in hand. GlenyBoi has no Stifling Trap to snipe Sadi on its return. Jett swings face rather than into the Aesan Protector and Scout the Land for a better position.",
+              "cards": [
+                "Sadi, Blood Harvester",
+                "Aesan Protector",
+                "Scout the Land"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi uses Fluffy Shopkeep again and sends Clarent to the banishment. Jett uses Heavenly Guide to go up to level three and the casters say it is juicy, because GlenyBoi has no Stifling Trap. The Ensnaring Fumes, with a floating memory, are a big blowout.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Heavenly Guide",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "The casters count 12.5 percent to find a Luxom card and Jett finds a Luxem Sight. GlenyBoi has two Veiling Breezes and a Retribution in hand. Jett has ten cards in hand and could play a raw Slice and Dice into Lightweaver's Assaults, and a Veiling Breeze for one barely keeps him alive for one more turn.",
+              "cards": [
+                "Luxem Sight",
+                "Veiling Breeze",
+                "Spirit Blade: Retribution",
+                "Slice and Dice"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Jett finishes with Lightweaver's Assaults and the damage stays just above GlenyBoi's reach. Jett wins 2-0 and moves to the semifinals against TheRainGoddess, a Wind Luxom against Wind Krux match.",
+              "cards": [
+                "Lightweaver's Assault"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round1-proan-duckhats/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round1-proan-duckhats/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round1-proan-duckhats/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 1 feature match. Casters call the players \"Proan\" and \"Duck Hats\" (Omnidex usernames ProAnnn and DuckHats). Result per Omnidex (DuckHats 2-1). The VOD later replays the end of game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 1 feature match. Casters call the players \"Proan\" and \"Duck Hats\" (Omnidex usernames ProAnnn and DuckHats). Result per Omnidex (DuckHats 2-1). The VOD later replays the end of game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 2 feature match. Casters call the players \"Ray Lam\" and \"Caven\" (Omnidex usernames Raylam and TeamTrueCaban). Result per Omnidex (Raylam 2-1). The order of games 2 and 3 is partly uncertain because the VOD cuts to an interview and later replays highlights. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 2 feature match. Casters call the players \"Ray Lam\" and \"Caven\" (Omnidex usernames Raylam and TeamTrueCaban). Result per Omnidex (Raylam 2-1). The order of games 2 and 3 is partly uncertain because the VOD cuts to an interview and later replays highlights. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, second featured match of the round, which is Omnidex Round 3 (the old entry was labelled Round 2). Casters call the players \"Asa\" and \"Lifteril\" (Omnidex usernames Asuna and Lifdrasyl). Result per Omnidex (1-1, a draw); under the Worlds Swiss and Gauntlet format a draw counts as a loss for both players. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, second featured match of the round, which is Omnidex Round 3 (the old entry was labelled Round 2). Casters call the players \"Asa\" and \"Lifteril\" (Omnidex usernames Asuna and Lifdrasyl). Result per Omnidex (1-1, a draw); under the Worlds Swiss and Gauntlet format a draw counts as a loss for both players. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round4-superior-raingoddess/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round4-superior-raingoddess/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round4-superior-raingoddess/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 feature match. Casters call the players \"Superior\" and \"Rain Goddess\" (Omnidex usernames Superior and TheRainGoddess). Result per Omnidex (Superior 2-0). The casters report the game 2 ruling from the headset: a game loss for TheRainGoddess after a card was added from the graveyard under Nullifying Lantern, with the appeal failing. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 feature match. Casters call the players \"Superior\" and \"Rain Goddess\" (Omnidex usernames Superior and TheRainGoddess). Result per Omnidex (Superior 2-0). The casters report the game 2 ruling from the headset: a game loss for TheRainGoddess after a card was added from the graveyard under Nullifying Lantern, with the appeal failing. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match (Raylam against Guruthos; casters call them \"Rayam\" and \"Gerthos\"). The VOD shows the first game only up to a break, and the casters stop before the result of that game; they announce afterwards that Raylam won the match 2-1 (result confirmed by Omnidex). Because the winner of game 1 is not shown, no game recap is listed. What the VOD does show: an Oblation mirror where Raylam goes first with a Backup Charger, plays his main-deck Incapacitate to stop a Creative Shock and Guruthos answers with his own Backup Charger, Turbo Charge, Liminal Guide and Cremation Ritual; the casters say it is a coin flip of who draws Creative Shocks and gets the 15-cost cards first, neither player had found an Oblation by the break, and Guruthos uses Lost Providence and Manxome Armoire to dig toward the late game. Card names are as called by the casters and may contain minor ASR errors.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match (Raylam against Guruthos; casters call them \"Rayam\" and \"Gerthos\"). The VOD shows the first game only up to a break, and the casters stop before the result of that game; they announce afterwards that Raylam won the match 2-1 (result confirmed by Omnidex). Because the winner of game 1 is not shown, no game recap is listed. What the VOD does show: an Oblation mirror where Raylam goes first with a Backup Charger, plays his main-deck Incapacitate to stop a Creative Shock and Guruthos answers with his own Backup Charger, Turbo Charge, Liminal Guide and Cremation Ritual; the casters say it is a coin flip of who draws Creative Shocks and gets the 15-cost cards first, neither player had found an Oblation by the break, and Guruthos uses Lost Providence and Manxome Armoire to dig toward the late game. Card names are as called by the casters and may contain minor ASR errors. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round5-gerthos-jet/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round5-gerthos-jet/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round5-gerthos-jet/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 5 feature match. Casters call the players \"Gerthos\" and \"Jet\" (Omnidex usernames Guruthos and Jett). Result per Omnidex (Jett 2-1). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 5 feature match. Casters call the players \"Gerthos\" and \"Jet\" (Omnidex usernames Guruthos and Jett). Result per Omnidex (Jett 2-1). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 feature match. Casters call the players \"Noel\" and \"Asa\" (Omnidex usernames Noel and Asuna). Result per Omnidex (Asuna 2-1). The VOD later replays game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 feature match. Casters call the players \"Noel\" and \"Asa\" (Omnidex usernames Noel and Asuna). Result per Omnidex (Asuna 2-1). The VOD later replays game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 bonus feature match (a fast best-of-three recorded while the main match ran). Casters call the players \"Ray Lam\" and \"Jair/JR\" (Omnidex usernames Raylam and Jayare). Result per Omnidex (Raylam 2-1); the casters confirm Raylam took the match into a game 3 that the VOD does not show. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 bonus feature match (a fast best-of-three recorded while the main match ran). Casters call the players \"Ray Lam\" and \"Jair/JR\" (Omnidex usernames Raylam and Jayare). Result per Omnidex (Raylam 2-1); the casters confirm Raylam took the match into a game 3 that the VOD does not show. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 feature match. Casters call the players \"Glenny Boy\" and \"Duck Hats\" (Omnidex usernames GlenyBoi and DuckHats). Result per Omnidex (GlenyBoi 2-0). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain, especially for the mirror's stack interactions.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 feature match. Casters call the players \"Glenny Boy\" and \"Duck Hats\" (Omnidex usernames GlenyBoi and DuckHats). Result per Omnidex (GlenyBoi 2-0). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain, especially for the mirror's stack interactions. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 recorded bonus match. Casters call the players \"Dragon JG\" and \"Sono\" (Omnidex usernames DragonJG and Sano). The VOD ends before the finish of game 1; the casters announce that DragonJG won game 1 and the match 2-0 (result confirmed by Omnidex). Game 2 is not shown. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 recorded bonus match. Casters call the players \"Dragon JG\" and \"Sono\" (Omnidex usernames DragonJG and Sano). The VOD ends before the finish of game 1; the casters announce that DragonJG won game 1 and the match 2-0 (result confirmed by Omnidex). Game 2 is not shown. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/players/0/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/players/1/eventDecklist",
+      "before": "unverified-stage",
+      "after": null
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 8 feature match. Casters call the players \"Caven\" and \"Sono\" (Omnidex usernames TeamTrueCaban and Sano). Result per Omnidex (TeamTrueCaban 2-0). The VOD later replays the end of game 2. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "after": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 8 feature match. Casters call the players \"Caven\" and \"Sono\" (Omnidex usernames TeamTrueCaban and Sano). Result per Omnidex (TeamTrueCaban 2-0). The VOD later replays the end of game 2. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "na-nationals-2026-top8-qf-jett-chemcollapse/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "ChemCollapse wins — Tricastles of Lucenia locks Razorgale, then Seiryuu's Command",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse uses Beseech the Winds to reach Guo Jia level one on turn one and builds quest counters with Scout the Land and Tangu. Jett responds with Fluffy Shopkeep, Backup Charger, and Windmill Engineer's Reclaim and trades.",
+              "cards": [
+                "Beseech the Winds",
+                "Scout the Land",
+                "Portentous Tanggu",
+                "Fluffy Shopkeep",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "After Dungeon Guide takes Guo Jia to level three, ChemCollapse plays Tricastles of Lucenia, preventing non-advanced element card activations. Once per turn, any player may banish a norm or advanced element card from hand to make Tricastles lose all abilities until end of turn.",
+              "cards": [
+                "Tricastles of Lucenia",
+                "Dungeon Guide",
+                "Bandit, Gaze Leader",
+                "Protector Raccoon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "ChemCollapse follows with Uther (removing a Razorgale), Aella and a Royal Oathguard. Jett plays three Dream Fairies, a Zephyr and Purifying Thurible but drops below six cards, which turns off Ensnaring Fumes. Aella suppresses Jett's Essence Crucible.",
+              "cards": [
+                "Uther, Illustrious King",
+                "Aella, Zephyr's Hand",
+                "Dream Fairy",
+                "Royal Oathguard",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "ChemCollapse flips Seiryuu, plays Seiryuu's Command (triple on-enter) to generate an Arcane Blast and empower it by eight. The Blast costs nothing and finishes Jett.",
+              "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jett wins — Aesan Protector chip damage, then Zephyr and Veiling Breeze on the last Razorgale trigger",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jett brings in Turbo Charge, plays Windmill Engineer and Aesan Protector early, and wants a board that can kill Tricastles of Lucenia in two turns. Fairy Whispers finds Razorgale Calling.",
+              "cards": [
+                "Turbo Charge",
+                "Windmill Engineer",
+                "Aesan Protector",
+                "Fairy Whispers",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "ChemCollapse levels with Beseech and Dungeon Guide and draws with Incandescent Reliquary, but a Tricastle banished by Throne-keeper mill and a Purifying Thurible deny him the lock.",
+              "cards": [
+                "Beseech the Winds",
+                "Incandescent Reliquary",
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jett plays two Razorgales and Essence Crucible with Distilled Water potions. Imperial Countermeasure absorbs the first trigger. Jett Zephyrs his own Aesan Protector and then uses Veiling Breeze as the final Razorgale trigger for lethal. The Aesan Protector is the MVP of the game.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Imperial Countermeasure",
+                "Zephyr",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Jett wins the deciding game (not shown in full)",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse goes first for the first time in the match, uses Beseech the Winds on turn one and Portentous Tanggu, and holds Blanch and Dungeon Guide. Jett opens with Windmill Engineer, Aesan Protector and Fluffy Shopkeep, to keep at least four damage of allies on board against another Tricastle.",
+              "cards": [
+                "Beseech the Winds",
+                "Portentous Tanggu",
+                "Blanche, Sheltering Saint",
+                "Windmill Engineer",
+                "Aesan Protector"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jett finds Razorgale Calling, Aesan Protector and Ensnaring Fumes with Fairy Whispers and keeps six cards in hand so the dragon stays locked. The broadcast cuts to the semifinal and confirms Jett closed out the game 2-1 within the next couple of turns.",
+              "cards": [
+                "Fairy Whispers",
+                "Razorgale Calling",
+                "Ensnaring Fumes",
+                "Imperial Countermeasure"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "ChemCollapse wins — Tricastles of Lucenia locks Razorgale, then Seiryuu's Command",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse uses Beseech the Winds to reach Guo Jia level one on turn one and builds quest counters with Scout the Land and Tangu. Jett responds with Fluffy Shopkeep, Backup Charger, and Windmill Engineer's Reclaim and trades.",
+              "cards": [
+                "Beseech the Winds",
+                "Scout the Land",
+                "Portentous Tanggu",
+                "Fluffy Shopkeep",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "After Dungeon Guide takes Guo Jia to level three, ChemCollapse plays Tricastles of Lucenia, preventing non-advanced element card activations. Once per turn, any player may banish a norm or advanced element card from hand to make Tricastles lose all abilities until end of turn.",
+              "cards": [
+                "Tricastles of Lucenia",
+                "Dungeon Guide",
+                "Bandit, Gaze Leader",
+                "Protector Raccoon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "ChemCollapse follows with Uther (removing a Razorgale), Aella and a Royal Oathguard. Jett plays three Dream Fairies, a Zephyr and Purifying Thurible but drops below six cards, which turns off Ensnaring Fumes. Aella suppresses Jett's Essence Crucible.",
+              "cards": [
+                "Uther, Illustrious King",
+                "Aella, Zephyr's Hand",
+                "Dream Fairy",
+                "Royal Oathguard",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "ChemCollapse flips Seiryuu, plays Seiryuu's Command (triple on-enter) to generate an Arcane Blast and empower it by eight. The Blast costs nothing and finishes Jett.",
+              "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jett wins — Aesan Protector chip damage, then Zephyr and Veiling Breeze on the last Razorgale trigger",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jett brings in Turbo Charge, plays Windmill Engineer and Aesan Protector early, and wants a board that can kill Tricastles of Lucenia in two turns. Fairy Whispers finds Razorgale Calling.",
+              "cards": [
+                "Turbo Charge",
+                "Windmill Engineer",
+                "Aesan Protector",
+                "Fairy Whispers",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "ChemCollapse levels with Beseech and Dungeon Guide and draws with Incandescent Reliquary, but a Tricastle banished by Throne-keeper mill and a Purifying Thurible deny him the lock. ChemCollapse plays Regal Inquisition on Jett, discarding Ensnaring Fumes, but Jett draws another copy. The replacement keeps Seiryuu locked down.",
+              "cards": [
+                "Beseech the Winds",
+                "Incandescent Reliquary",
+                "Purifying Thurible",
+                "Regal Inquisition",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jett plays two Razorgales and Essence Crucible with Distilled Water potions. Imperial Countermeasure absorbs the first trigger. Jett Zephyrs his own Aesan Protector and then uses Veiling Breeze as the final Razorgale trigger for lethal. The Aesan Protector is the MVP of the game.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Imperial Countermeasure",
+                "Zephyr",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Jett wins the deciding game (not shown in full)",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse goes first for the first time in the match, uses Beseech the Winds on turn one and Portentous Tanggu, and holds Blanch and Dungeon Guide. Jett opens with Windmill Engineer, Aesan Protector and Fluffy Shopkeep, to keep at least four damage of allies on board against another Tricastle.",
+              "cards": [
+                "Beseech the Winds",
+                "Portentous Tanggu",
+                "Blanche, Sheltering Saint",
+                "Windmill Engineer",
+                "Aesan Protector"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jett finds Razorgale Calling, Aesan Protector and Ensnaring Fumes with Fairy Whispers and keeps six cards in hand so the dragon stays locked. The broadcast cuts to the semifinal and confirms Jett closed out the game 2-1 within the next couple of turns.",
+              "cards": [
+                "Fairy Whispers",
+                "Razorgale Calling",
+                "Ensnaring Fumes",
+                "Imperial Countermeasure"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "PewPewStan wins — MaruX concedes at 27 damage",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MaruX opens with a hand that is hard to use: the casters say it is a choice between holding a whole hand of good cards or leveling. He draws many cards with Creative Shock to look for Dungeon Guide, and has Clarent, Reimagined on the board to protect his allies.",
+              "cards": [
+                "Creative Shock",
+                "Dungeon Guide",
+                "Clarent, Reimagined"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "PewPewStan plays cautiously and uses Imperious Galebind, a Dream Fairy that goes the distance every time, and a Corhazi insignia for preparation counters so Striking Illuminance can deal real damage. Ayella suppresses MaruX's Prismatic Edge. The casters say the deck with the draw-focused start has a big advantage in this matchup.",
+              "cards": [
+                "Imperious Galebind",
+                "Dream Fairy",
+                "Striking Illuminance",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "PewPewStan finds Striking Illuminance and double Lightweaver's Assault, plus a Regal Inquisition, while MaruX has Lorraine, Spirit Ruler and a Prismatic Edge out. A rules question about the Drawn Blade that Sabella put into play is explained to the players.",
+              "cards": [
+                "Lightweaver's Assault",
+                "Regal Inquisition"
+              ],
+              "tags": [
+                "lethal",
+                "ruling"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "unknown",
+          "summary": "Outcome unconfirmed",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MaruX takes the first turn and baits out the Purifying Thurible. He plays Sword of Seeking, which had been replaced by the distortion versions for a while, and a Gentle Respite comes down for PewPewStan to get influence. There are no more preparation counters for MaruX.",
+              "cards": [
+                "Sword of Seeking",
+                "Gentle Respite"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "MaruX plays Aesan Protector for three and follows up with Spirit Blade: Ascension. He uses a Clarent instead of the Sword of Seeking to kill the Dungeon Guide. PewPewStan keeps Resolute Stand, Vanish from Sight and two Luxem Sights in hand.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Resolute Stand",
+                "Vanish from Sight",
+                "Luxem Sight"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Zander and cannot get there. Time is called; the recorded match result is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "PewPewStan wins — MaruX concedes at 27 damage",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MaruX opens with a hand that is hard to use: the casters say it is a choice between holding a whole hand of good cards or leveling. He draws many cards with Creative Shock to look for Dungeon Guide, and has Clarent, Reimagined on the board to protect his allies.",
+              "cards": [
+                "Creative Shock",
+                "Dungeon Guide",
+                "Clarent, Reimagined"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "PewPewStan plays cautiously and uses Imperious Galebind, a Dream Fairy that goes the distance every time, and a Corhazi insignia for preparation counters so Striking Illuminance can deal real damage. Ayella suppresses MaruX's Prismatic Edge. The casters say the deck with the draw-focused start has a big advantage in this matchup.",
+              "cards": [
+                "Imperious Galebind",
+                "Dream Fairy",
+                "Striking Illuminance",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "PewPewStan finds Striking Illuminance and double Lightweaver's Assault, plus a Regal Inquisition, while MaruX has Lorraine, Spirit Ruler and a Prismatic Edge out. A rules question about the Drawn Blade that Sabella put into play is explained to the players.",
+              "cards": [
+                "Lightweaver's Assault",
+                "Regal Inquisition"
+              ],
+              "tags": [
+                "lethal",
+                "ruling"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "draw",
+          "summary": "Draw — time expires",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MaruX takes the first turn and baits out the Purifying Thurible. He plays Sword of Seeking, which had been replaced by the distortion versions for a while, and a Gentle Respite comes down for PewPewStan to get influence. There are no more preparation counters for MaruX.",
+              "cards": [
+                "Sword of Seeking",
+                "Gentle Respite"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "MaruX plays Aesan Protector for three and follows up with Spirit Blade: Ascension. He uses a Clarent instead of the Sword of Seeking to kill the Dungeon Guide. PewPewStan keeps Resolute Stand, Vanish from Sight and two Luxem Sights in hand.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Resolute Stand",
+                "Vanish from Sight",
+                "Luxem Sight"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Zander and cannot get there. Time is called; the recorded match result is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/sourceNote",
+      "before": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The captions confirm PewPewStan wins game one at 535:38–535:55. At 571:50–573:25 they describe game two and the match as draws, conflicting with the recorded 1–1 score; game two remains unconfirmed.",
+      "after": "European Nationals Day 1 broadcast, Round 7. Full captions and source footage confirm MaruX concedes the first shown game (535:38–535:55) and the last shown game ends at time (571:50–573:25). Omnidex records the match as a 1–1 draw. The broadcast game sequence does not explain that score; no additional game, penalty or concession is inferred. PewPewStan plays Fire Luxem Zander. Video: https://www.youtube.com/watch?v=JKKl7AYwv3c&t=34310s."
     }
   ],
   "sourceFollowUp": [
-    "Obtain stage-specific Worlds Swiss decklists before restoring attachments, including lists whose champion family matches.",
-    "Reconcile European Round 7 game two with the official 1–1 result using video or an official ruling; game one is verified.",
-    "Manila Mantra ownership is verified. Verify remaining Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
-    "Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed."
+    "Reconcile European Round 7’s broadcast game outcomes with the official 1–1 result; source footage inspection is recorded separately.",
+    "Continue full-source verification beyond these targeted follow-ups; the initial 110-match audit was not an exhaustive caption review."
   ],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
@@ -1718,6 +2814,45 @@
           "161:03–161:20"
         ],
         "finding": "Game two finishing Lou B is Liu Bei, consistent with earlier captions, shared distant ability and four registered copies. Cheshire Cat/champion attacks precede it. CasuaL digs with Backstep and uses Second Wind to wake Perse; bait intent is not established. Corrected Tariff Ring controller and banish activation using its opponent-recollection restriction. Yuan Shao is discussed as hoped-for after the match, not verified played; removed from game-two played-card list."
+      },
+      {
+        "matchId": "worlds-2026-top8-qf4-glennyboy-jet",
+        "file": "Worlds 2026 Top 8  Grand Archive TCG.txt",
+        "sha256": "f7123b278a6aa20c5785045eb2782ad976991cf12dcc17cde4edb255002240e7",
+        "ranges": [
+          "455:36–457:27"
+        ],
+        "finding": "Wider context explicitly identifies Jett playing Stifling Gyre; at 456:58–457:12 the casters name Ghosts of Pendragon and GlenyBoi’s four-card on-enter tax. GlenyBoi levels Lorraine and brings Sword of Seeking. This resolves the earlier narrow-window actor/target uncertainty."
+      },
+      {
+        "matchId": "worlds-2026-championship-sunday-semifinal2-zero-livil",
+        "file": "Championship Sunday Worlds 2026  Grand Archive TCG.txt",
+        "sha256": "694bd42f2b9a2fa154948af6de3324d5503bf14a53e73a7f112307a80b432aca",
+        "ranges": [
+          "279:55–283:17"
+        ],
+        "finding": "Zero’s Regal removes Lifdrasyl’s Dungeon Guide and Luxem Sight; Incapacitates are left, and the replacements include Turbo Charge and Lightweaver’s Assault. Replaces the vague lose-conditions summary."
+      },
+      {
+        "matchId": "na-nationals-2026-top8-qf-jett-chemcollapse",
+        "archiveEntry": "Razorgale Arisanna vs Wind Seiryuu Guo Jia  Grand Archive TCG NA Nationals Quarterfinals.txt",
+        "sha256": "9fab31bce315d6ff06811f15615ba049a7fad012ca19b19747c368e90af0d6c1",
+        "ranges": [
+          "39:43–43:60"
+        ],
+        "finding": "ChemCollapse is the Regal controller; Jett is the opponent whose hand/memory is exposed. At 43:28–43:60 the casters explicitly confirm Ensnaring Fumes discarded and replaced by another Fumes. Resolves the previously removed reversed-owner claim."
+      },
+      {
+        "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
+        "file": "European Nationals Day 1  Grand Archive TCG.txt",
+        "sha256": "bf977419983ec1d63ebc5af421b8b8407829db25ce7ae81d853a67be2e86521c",
+        "ranges": [
+          "503:21–504:23",
+          "535:38–535:55",
+          "571:50–573:25"
+        ],
+        "videoUrl": "https://www.youtube.com/watch?v=JKKl7AYwv3c&t=34310s",
+        "finding": "Inspected source footage at 8:24:00–8:24:23 and 9:31:50–9:32:04. Final shown game ends with both champions alive and players collecting cards, consistent with the captioned draw. Restored broadcast game-two outcome as draw, retaining the separate official 1–1 match result. No footage evidence explains the score discrepancy; needs an organizer/judge ruling or corrected official record. Fire Luxem identity independently explicit in captions."
       }
     ],
     "unresolved": [
@@ -1725,18 +2860,209 @@
         "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
         "source": "European Nationals Day 1  Grand Archive TCG.txt",
         "ranges": [
+          "535:38–535:55",
           "571:50–573:25"
         ],
-        "finding": "Full captions repeat the conflicting game/match draw. Video or an official ruling is needed to reconcile the recorded 1–1 score."
-      },
-      {
-        "matchId": "worlds-2026-top8-qf4-glennyboy-jet",
-        "source": "Worlds 2026 Top 8  Grand Archive TCG.txt",
-        "ranges": [
-          "456:06–456:42"
-        ],
-        "finding": "Captions name Stifling Gyre and its four-card tax, but do not clearly establish the original asserted actor/target. Do not restore the removed ownership clause."
+        "videoUrl": "https://www.youtube.com/watch?v=JKKl7AYwv3c&t=34310s",
+        "finding": "Footage and captions establish a PewPewStan win followed by a drawn game. Official match result is 1–1 tied. The available footage does not explain the difference. An organizer/judge ruling or correction is required to reconcile official game attribution; do not infer a MaruX win or penalty."
       }
-    ]
+    ],
+    "stageDecklists": {
+      "eventId": 60488,
+      "stage": "Swiss",
+      "sourceUrl": "https://silvie.gg/event/60488",
+      "retrievedAt": "2026-10-31T21:17:28.280377+00:00",
+      "sourceSha256": "8a2be157ffec19310399e381a2ef503e3744ecf397f5f13df35c3ff41dd85dad",
+      "matches": 11,
+      "attachments": 22,
+      "finding": "Source separates Swiss and Top8 with explicit deck_phase labels. All 22 broadcast player slots matched by exact registered username and numeric player ID; all card names checked against the local catalog. Curated stage lists are isolated from the current event API and tournament analytics.",
+      "attachmentsByMatch": [
+        {
+          "matchId": "worlds-swiss-2026-round1-proan-duckhats",
+          "players": [
+            {
+              "name": "ProAnnn",
+              "playerId": 1133,
+              "sourceUrl": "https://silvie.gg/decklist/52104"
+            },
+            {
+              "name": "DuckHats",
+              "playerId": 331,
+              "sourceUrl": "https://silvie.gg/decklist/52085"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round2-raylam-caven",
+          "players": [
+            {
+              "name": "Raylam",
+              "playerId": 1246,
+              "sourceUrl": "https://silvie.gg/decklist/52086"
+            },
+            {
+              "name": "TeamTrueCaban",
+              "playerId": 1,
+              "sourceUrl": "https://silvie.gg/decklist/52113"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+          "players": [
+            {
+              "name": "Asuna",
+              "playerId": 9281,
+              "sourceUrl": "https://silvie.gg/decklist/52107"
+            },
+            {
+              "name": "Lifdrasyl",
+              "playerId": 291,
+              "sourceUrl": "https://silvie.gg/decklist/52111"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round4-superior-raingoddess",
+          "players": [
+            {
+              "name": "Superior",
+              "playerId": 12286,
+              "sourceUrl": "https://silvie.gg/decklist/52084"
+            },
+            {
+              "name": "TheRainGoddess",
+              "playerId": 231,
+              "sourceUrl": "https://silvie.gg/decklist/52106"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round4-bonus-raylam-gerthos",
+          "players": [
+            {
+              "name": "Raylam",
+              "playerId": 1246,
+              "sourceUrl": "https://silvie.gg/decklist/52086"
+            },
+            {
+              "name": "Guruthos",
+              "playerId": 327,
+              "sourceUrl": "https://silvie.gg/decklist/52093"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round5-gerthos-jet",
+          "players": [
+            {
+              "name": "Guruthos",
+              "playerId": 327,
+              "sourceUrl": "https://silvie.gg/decklist/52093"
+            },
+            {
+              "name": "Jett",
+              "playerId": 679,
+              "sourceUrl": "https://silvie.gg/decklist/52109"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round6-noel-asa",
+          "players": [
+            {
+              "name": "Noel",
+              "playerId": 276,
+              "sourceUrl": "https://silvie.gg/decklist/52108"
+            },
+            {
+              "name": "Asuna",
+              "playerId": 9281,
+              "sourceUrl": "https://silvie.gg/decklist/52107"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round6-bonus-raylam-jair",
+          "players": [
+            {
+              "name": "Raylam",
+              "playerId": 1246,
+              "sourceUrl": "https://silvie.gg/decklist/52086"
+            },
+            {
+              "name": "Jayare",
+              "playerId": 10149,
+              "sourceUrl": "https://silvie.gg/decklist/52082"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round7-glennyboy-duckhats",
+          "players": [
+            {
+              "name": "GlenyBoi",
+              "playerId": 672,
+              "sourceUrl": "https://silvie.gg/decklist/52110"
+            },
+            {
+              "name": "DuckHats",
+              "playerId": 331,
+              "sourceUrl": "https://silvie.gg/decklist/52085"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
+          "players": [
+            {
+              "name": "DragonJG",
+              "playerId": 2302,
+              "sourceUrl": "https://silvie.gg/decklist/52083"
+            },
+            {
+              "name": "Sano",
+              "playerId": 4458,
+              "sourceUrl": "https://silvie.gg/decklist/52088"
+            }
+          ]
+        },
+        {
+          "matchId": "worlds-swiss-2026-round8-caven-sono",
+          "players": [
+            {
+              "name": "TeamTrueCaban",
+              "playerId": 1,
+              "sourceUrl": "https://silvie.gg/decklist/52113"
+            },
+            {
+              "name": "Sano",
+              "playerId": 4458,
+              "sourceUrl": "https://silvie.gg/decklist/52088"
+            }
+          ]
+        }
+      ]
+    },
+    "targetedFollowUpStatus": {
+      "worldsSwissDecklists": "resolved: 22 stage-specific attachments across 11 matches",
+      "europeanRound7": "broadcast outcomes verified; official score reconciliation blocked on organizer/judge evidence",
+      "worldsQuarterfinalGyre": "resolved: Jett names Ghosts of Pendragon against GlenyBoi",
+      "cardOwnership": "resolved for the flagged clauses: ChemCollapse Regal on Jett, Zero Regal on Lifdrasyl, and previously verified Lifdrasyl Lorraine/Sword of Seeking; broader match audit remains separate"
+    },
+    "verification": {
+      "checks": [
+        "15 broadcast timeline regression tests passed",
+        "App TypeScript build check passed",
+        "Shared TypeScript check passed",
+        "Targeted app lint passed",
+        "Mobile 390px and desktop 1280px deck attachments inspected; source links are 48px high, keyboard reachable, and mobile document width matches viewport",
+        "Initial loading state and existing card-name fallback observed"
+      ],
+      "limitations": [
+        "Network-error state was not forced; curated Swiss lists render without fetching the current event bundle.",
+        "European official-score discrepancy remains unresolved despite footage review."
+      ]
+    }
   }
 }

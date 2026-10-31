@@ -9,6 +9,8 @@
  * Published as `data/broadcast-timelines.json` — no pipeline crawler produces this, it is curated
  * by hand from source VOD transcripts.
  */
+import type { OmnidexDecklist } from "./omnidex-types.js";
+
 export interface BroadcastTimelines {
   schemaVersion: 1;
   generatedAt: string;
@@ -44,6 +46,13 @@ export interface BroadcastTimelinePlayer {
   deck: string;
   /** Suppress event-level deck attachment when identity or the broadcast stage is unverified. */
   eventDecklist?: "unverified-identity" | "unverified-stage";
+  /** A source explicitly identifying this player's list for the broadcast stage. Overrides the event's current list. */
+  stageDecklist?: {
+    stage: "Swiss" | "Top 8";
+    playerId: number;
+    sourceUrl: string;
+    decklist: OmnidexDecklist;
+  };
 }
 
 export interface BroadcastTimelineMatch {

@@ -40,20 +40,54 @@ test('published recaps have valid actors, outcomes, sequences and canonical card
   assert.equal(read('manifest.json')['broadcast-timelines'], data.generatedAt);
 });
 
-test('verified SEA identities resolve while Swiss-stage lists remain unavailable', () => {
+test('verified SEA identities resolve and Swiss attachments use explicit stage lists', () => {
   const sea = find('ai-sentus');
   assert.deepEqual(sea.players.map(p => p.name), ['Awi', 'Centratus']);
   assert.ok(sea.players.every(p => p.eventDecklist === undefined));
   assert.doesNotMatch(JSON.stringify(sea), /Aidan047|TWLien/);
   const swiss = data.matches.filter(m => m.id.startsWith('worlds-swiss-'));
   assert.ok(swiss.length > 0);
-  assert.ok(swiss.every(m => m.players.every(p => p.eventDecklist === 'unverified-stage')));
+  assert.equal(swiss.length, 11);
+  const roster = read('omnidex/events/60488.json').players;
+  const catalog = new Set(read('card-catalog.json').cards.map((c: { name: string }) => c.name));
+  for (const match of swiss) for (const player of match.players) {
+    assert.equal(player.eventDecklist, undefined);
+    assert.equal(player.stageDecklist?.stage, 'Swiss');
+    const source = player.stageDecklist!;
+    assert.equal(roster.find((p: { id: number }) => p.id === source.playerId)?.username, player.name);
+    assert.match(source.sourceUrl, /^https:\/\/silvie\.gg\/decklist\/\d+$/);
+    for (const lines of Object.values(source.decklist)) for (const line of lines) {
+      assert.ok(catalog.has(line.card), line.card);
+      assert.ok(Number.isInteger(line.quantity) && line.quantity > 0);
+    }
+    assert.equal(source.decklist.material.reduce((sum, line) => sum + line.quantity, 0), 12);
+    assert.ok(source.decklist.main.reduce((sum, line) => sum + line.quantity, 0) >= 60);
+  }
+  const jett = find('round5-gerthos-jet').players[1].stageDecklist!;
+  assert.ok(jett.decklist.material.some(line => line.card === 'Lorraine, Spirit Ruler'));
+  assert.ok(!jett.decklist.material.some(line => line.card.startsWith('Zander,')));
+  const noel = find('round6-noel-asa').players[0].stageDecklist!;
+  assert.ok(noel.decklist.material.some(line => line.card === 'Diao Chan, Enchantress'));
 });
 
-test('disputed game boundaries do not override official match draws', () => {
+test('wider source windows resolve Gyre and Regal ownership', () => {
+  const gyre = find('qf4-glennyboy-jet').games[0].beats[1];
+  assert.equal(gyre.actor, 'p2');
+  assert.match(gyre.text, /Jett plays Stifling Gyre naming Ghosts of Pendragon/);
+  assert.ok(gyre.cards!.includes('Stifling Gyre'));
+  const regal = find('qf-jett-chemcollapse').games[1].beats[1];
+  assert.equal(regal.actor, 'p2');
+  assert.match(regal.text, /ChemCollapse plays Regal Inquisition on Jett/);
+  assert.match(regal.text, /Jett draws another copy/);
+  assert.match(find('semifinal2-zero-livil').games[1].beats[0].text, /leaving the Incapacitates/);
+});
+
+test('verified broadcast draws stay separate from conflicting official match scores', () => {
   const match = find('marux-pewpewstan');
   assert.equal(match.result, 'Draw 1–1');
-  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'unknown']);
+  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'draw']);
+  assert.match(match.sourceNote, /does not explain that score/);
+  assert.match(match.players[1].deck, /^Fire Luxem Zander/);
 });
 
 test('London finishing sequences restore source-verified Liu Bei identities', () => {
