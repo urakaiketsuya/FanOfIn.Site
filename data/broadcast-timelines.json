@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T23:48:36.322Z",
+  "generatedAt": "2026-10-31T23:58:28.786Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -18903,7 +18903,7 @@
         {
           "id": "p1",
           "name": "Kafit5566",
-          "deck": "Fire Krux Lorraine"
+          "deck": "Fire Sword Saint Lorraine"
         },
         {
           "id": "p2",
@@ -18914,6 +18914,21 @@
       "result": "HenkieTheGoat wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "HenkieTheGoat wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "HenkieTheGoat levels Ciel and plays two Baleful Oblations to finish game 1.",
+              "cards": [
+                "Baleful Oblation"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "HenkieTheGoat wins game 2",
@@ -18921,8 +18936,10 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "HenkieTheGoat closes another game with Baleful Oblation.",
+              "text": "HenkieTheGoat turns two low-cost omens face down with Orb of Sealing, attacks with Grande Sonnerie, then finishes with Baleful Oblation.",
               "cards": [
+                "Orb of Sealing",
+                "Grande Sonnerie",
                 "Baleful Oblation"
               ]
             }
@@ -18934,7 +18951,7 @@
         "kind": "broadcast",
         "startSeconds": 1557
       },
-      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+      "sourceNote": "Ascent Akihabara Day 2. Round 10 introduction, both games, and immediate post-match commentary reviewed sequentially in the captions. Deck identity corroborated by the official decklist."
     },
     {
       "id": "ascent-akihabara-2025-round-11-zer-limbo",
@@ -20432,24 +20449,71 @@
       "result": "ZutomayoEnjoyer wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "ZutomayoEnjoyer wins game 2",
+          "summary": "ZutomayoEnjoyer protects the ally board to take game 1",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "ZutomayoEnjoyer keeps a wide board after bobolas’s damage line falls short."
+              "text": "Song of Frost ends bobolas’s Beguiling Coup attack.",
+              "cards": [
+                "Song of Frost",
+                "Beguiling Coup"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The allies finish the game, ending bobolas’s attempt to force game three."
+              "text": "Nightframe, Hound's Bike protects Aquifer Seneschal from Ciel’s damage triggers.",
+              "cards": [
+                "Nightframe, Hound's Bike",
+                "Aquifer Seneschal"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The surviving allies keep attacking, giving ZutomayoEnjoyer a 1–0 lead."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "ZutomayoEnjoyer survives the Feu Awakening chain and wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Song of Frost stops Carter, Synthetic Reaper’s cleave attack, preserving the ally board.",
+              "cards": [
+                "Song of Frost",
+                "Carter, Synthetic Reaper"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Fracturize targets Chalice of Blood during bobolas’s Feu Awakening chain. The revised damage line falls short of lethal.",
+              "cards": [
+                "Fracturize",
+                "Chalice of Blood",
+                "Feu Awakening"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Poisoned Dagger and the remaining allies finish the match before bobolas can force game three.",
+              "cards": [
+                "Poisoned Dagger"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2. Round 9 introduction, both games, and post-match interview reviewed sequentially in the captions.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20798,24 +20862,80 @@
       "result": "Corgis wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Corgis wins game 2",
+          "summary": "Corgis finishes with Smoke Out",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Corgis sustains the attack with recurring allies and burn."
+              "text": "Corgis develops an aggressive board backed by Arthur, Young Heir.",
+              "cards": [
+                "Arthur, Young Heir"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Yamikin uses Perse, Relentless Raptor to suppress Arthur, reducing the damage from Corgis’s allies.",
+              "cards": [
+                "Perse, Relentless Raptor"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "After Rococo, Explosive Maven applies pressure, Smoke Out supplies the last point of damage.",
+              "cards": [
+                "Rococo, Explosive Maven",
+                "Smoke Out"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Impact Hammer and Rending Flames close the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Corgis repeatedly brings March Hare, Mottled Host back while clearing Yamikin’s allies.",
+              "cards": [
+                "March Hare, Mottled Host"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Yamikin finds no answer to the final pressure, and Corgis wins 2-0."
+              "text": "Smoke Out removes Cheshire Cat, Impish Grin while Yamikin has no cards in hand.",
+              "cards": [
+                "Smoke Out",
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Corgis materializes Impact Hammer and attacks with Rending Flames.",
+              "cards": [
+                "Impact Hammer",
+                "Rending Flames"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Skirting Step fails to find enough protection, and Corgis wins 2-0.",
+              "cards": [
+                "Skirting Step"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1. Round 1 introduction, both games, and post-match interview reviewed sequentially in the captions.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",

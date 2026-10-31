@@ -134,3 +134,9 @@ Follow-up verification: all 12 dispositions recorded; quoted captions and new ca
 Additional follow-up verification: 35 recap/backfill tests and diff checks pass. This pass changes evidence documentation only; published data and UI remain unchanged.
 
 SEA sequence follow-up verification: 37 recap, backfill, and video-link tests pass; all 203 prior recap objects remain unchanged. The new result and timestamped video link were verified in local search. No UI code changed; mobile/desktop layout and error states were not re-tested in this pass.
+
+### Sequential caption review follow-up
+
+Three selected matches received sequential caption review of both games: Melbourne Day 2 Round 9, Akihabara Day 2 Round 10, and Auckland Day 1 Round 1. Each recap now includes its previously omitted first game and a more specific second-game finish. Akihabara’s Kafit5566 deck is corrected to Fire Sword Saint Lorraine, supported by the commentary correction and official decklist. Match results, pairing associations and video offsets are unchanged. Exact ranges and findings are in [the sequential review record](BROADCAST_SEQUENTIAL_REVIEW_2026-10-31.json). This is caption review, not video review or completion of any entire stream. The six unresolved held cases remain unchanged.
+
+Verification: 37 recap, backfill and video-link tests pass. Exactly three of 204 recap objects changed; all results and video links are preserved. No UI code changed; responsive layouts and error states were not re-tested.

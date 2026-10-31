@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "scope": "Sequential cached-caption review of three selected matches from recovered broadcasts. No video review or full-stream completion claimed. Previously held cases unchanged.",
+  "rowIndexing": "Zero-based inclusive ranges",
+  "records": [
+    {
+      "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
+      "videoId": "qQrV2I2Uiac",
+      "scope": "Sequential cached-caption review of one match, not video review or full-stream review.",
+      "rowsZeroBased": [
+        [
+          126,
+          635
+        ],
+        [
+          646,
+          691
+        ]
+      ],
+      "timeRange": "22:42–1:30:32 (music rows 636–645 also inspected)",
+      "findings": [
+        "Published game 2 closing summary supported. Game 1 was omitted despite complete caption sequence and explicit 1–0 transition.",
+        "Caster predictions of game 2 lethal at 1:16:38 are subsequently corrected at 1:18:45–1:19:18; final recap follows the corrected sequence."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            347,
+            350
+          ],
+          "time": "49:20–49:44",
+          "claim": "Song of Frost ends game 1 Beguiling Coup attack."
+        },
+        {
+          "rows": [
+            367,
+            375
+          ],
+          "time": "51:50–52:38",
+          "claim": "Nightframe attached to Aquifer Seneschal; casters resolve protection from both Ciel triggers."
+        },
+        {
+          "rows": [
+            392,
+            398
+          ],
+          "time": "54:33–55:18",
+          "claim": "Explicit ZutomayoEnjoyer 1–0 transition and ally-pressure recap."
+        },
+        {
+          "rows": [
+            502,
+            504
+          ],
+          "time": "1:08:18–1:08:36",
+          "claim": "Game 2 Carter cleave stopped by Song of Frost."
+        },
+        {
+          "rows": [
+            574,
+            600
+          ],
+          "time": "1:16:14–1:19:18",
+          "claim": "Feu Awakening chain, Fracturize targeting Chalice, and corrected nonlethal finish."
+        },
+        {
+          "rows": [
+            601,
+            618
+          ],
+          "time": "1:19:28–1:21:39",
+          "claim": "Poisoned Dagger and allies finish game 2; no game 3."
+        }
+      ],
+      "catalogVerified": [
+        "Song of Frost",
+        "Beguiling Coup",
+        "Nightframe, Hound's Bike",
+        "Aquifer Seneschal",
+        "Carter, Synthetic Reaper",
+        "Fracturize",
+        "Chalice of Blood",
+        "Feu Awakening",
+        "Poisoned Dagger"
+      ],
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a"
+    },
+    {
+      "videoId": "L72HwYWAQAY",
+      "matchId": "ascent-akihabara-2025-round-10-kafit5566-henkiethegoat",
+      "reviewScope": {
+        "type": "sequential cached caption review",
+        "rows": [
+          83,
+          412
+        ],
+        "rowIndexing": "zero-based inclusive",
+        "timestamps": [
+          "25:57",
+          "1:04:49"
+        ],
+        "fullVideoReviewed": false,
+        "fullStreamReviewed": false,
+        "note": "Read introduction context rows 30-82 also. All selected-match gameplay caption rows and immediate postmatch commentary read. No video frames inspected."
+      },
+      "findings": [
+        {
+          "severity": "correction",
+          "path": "players[0].deck",
+          "before": "Fire Krux Lorraine",
+          "after": "Fire Sword Saint Lorraine",
+          "evidence": [
+            {
+              "rows": [
+                123,
+                130
+              ],
+              "timestamps": [
+                "30:44",
+                "31:34"
+              ],
+              "detail": "Caster explicitly corrects Krux Knight to Spirit Ruler and discusses Sword Saint's Vow."
+            },
+            {
+              "rows": [
+                267,
+                273
+              ],
+              "timestamps": [
+                "47:29",
+                "48:17"
+              ],
+              "detail": "Game 2 Lorraine Spirit Ruler brings Sword Saint's Vow from banishment."
+            }
+          ],
+          "catalogEvidence": "data/analysis/deck-card-index.json deckId 38740:15191 material contains Lorraine, Spirit Ruler and Sword Saint's Vow; no Lorraine, Crux Knight."
+        },
+        {
+          "severity": "clear omitted game",
+          "path": "games",
+          "proposal": {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "HenkieTheGoat wins game 1",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "HenkieTheGoat levels Ciel and plays two Baleful Oblations to finish game 1.",
+                "cards": [
+                  "Baleful Oblation"
+                ]
+              }
+            ]
+          },
+          "evidence": [
+            {
+              "rows": [
+                164,
+                179
+              ],
+              "timestamps": [
+                "35:25",
+                "37:13"
+              ],
+              "detail": "Levels to Ciel 3, first Oblation 35:32, second 36:31; game over 37:05."
+            },
+            {
+              "rows": [
+                188,
+                194
+              ],
+              "timestamps": [
+                "38:05",
+                "38:54"
+              ],
+              "detail": "Explicit game-one win and sideboard transition to game two."
+            },
+            {
+              "rows": [
+                216,
+                224
+              ],
+              "timestamps": [
+                "41:33",
+                "42:31"
+              ],
+              "detail": "Game two starts and commentary recalls double Oblation in game one."
+            }
+          ],
+          "caution": "Do not state detailed Clarent prevention timing or precise damage total: postgame commentary contradicts itself on prevention/timing."
+        },
+        {
+          "severity": "optional richer existing beat",
+          "path": "games[gameNumber=2].beats",
+          "proposal": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "HenkieTheGoat turns two low-cost omens face down with Orb of Sealing, attacks with Grande Sonnerie, then finishes with Baleful Oblation.",
+              "cards": [
+                "Orb of Sealing",
+                "Grande Sonnerie",
+                "Baleful Oblation"
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "rows": [
+                356,
+                364
+              ],
+              "timestamps": [
+                "58:06",
+                "59:04"
+              ],
+              "detail": "Orb materialized, two three-cost omens face down, Grande Sonnerie attack, Oblation for game."
+            }
+          ]
+        }
+      ],
+      "unchanged": [
+        "2–0 match result supported by two explicit game finishes and interview rows 410–412.",
+        "25:57 video start matches actual game-one introduction.",
+        "Existing game-two Baleful Oblation statement supported."
+      ],
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-1-corgis-yamikin",
+      "videoId": "6XU9azcBukk",
+      "reviewScope": {
+        "kind": "sequential cached-caption review",
+        "zeroBasedRows": [
+          179,
+          497
+        ],
+        "timestamps": [
+          "22:57",
+          "59:32"
+        ],
+        "allRowsRead": true,
+        "videoReviewed": false,
+        "scopeLimit": "Only this first published match, both games and post-match interview; no other Auckland matches reviewed."
+      },
+      "findings": [
+        {
+          "type": "omitted verified game",
+          "detail": "Published recap contains only game 2. Game 1 is fully captioned and ends with Corgis using Smoke Out after Yamikin suppresses Arthur.",
+          "evidence": [
+            {
+              "rows": [
+                179,
+                189
+              ],
+              "time": "22:57–24:03",
+              "detail": "Game one introduction, players, Fire Zander versus Wind wake-up."
+            },
+            {
+              "rows": [
+                245,
+                257
+              ],
+              "time": "30:23–31:48",
+              "detail": "Rococo enters; Perse suppresses Arthur after becoming distant; this leaves Yamikin one damage from defeat, Smoke Out supplies final point."
+            },
+            {
+              "rows": [
+                268,
+                275
+              ],
+              "time": "33:00–33:53",
+              "detail": "Game 2 begins with Yamikin choosing first."
+            }
+          ]
+        },
+        {
+          "type": "replace vague game 2 beats",
+          "detail": "Current generic ally-and-burn finish omits explicit Impact Hammer / Rending Flames finish and Smoke Out removing Cheshire Cat.",
+          "evidence": [
+            {
+              "rows": [
+                343,
+                345
+              ],
+              "time": "41:35–41:55",
+              "detail": "Intensified Pyre brings March Hare back from graveyard."
+            },
+            {
+              "rows": [
+                381,
+                384
+              ],
+              "time": "46:07–46:32",
+              "detail": "Dazzling Courtesan (caption phonetic error) brings March Hare back again. Avoid exact card claim if not corroborated visually."
+            },
+            {
+              "rows": [
+                402,
+                407
+              ],
+              "time": "48:33–49:01",
+              "detail": "Corgis uses Smoke Out to remove Cheshire Cat while Yamikin has no cards in hand."
+            },
+            {
+              "rows": [
+                423,
+                438
+              ],
+              "time": "50:37–52:12",
+              "detail": "Impact Hammer materialized, Rending Flames attack, Skirting Step prevention/draw fails to find needed defense, Corgis wins 2-0."
+            },
+            {
+              "rows": [
+                471,
+                488
+              ],
+              "time": "56:36–58:27",
+              "detail": "Winner interview confirms 2-0, Fire Zander, Smoke Out specifically chosen to answer Cheshire Cat."
+            }
+          ]
+        }
+      ],
+      "proposedGames": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Corgis finishes with Smoke Out",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Corgis develops an aggressive board backed by Arthur, Young Heir."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Yamikin uses Perse, Relentless Raptor to suppress Arthur, reducing the damage from Corgis’s allies."
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "After Rococo, Explosive Maven applies pressure, Smoke Out supplies the last point of damage."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Impact Hammer and Rending Flames close the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Corgis repeatedly brings March Hare, Mottled Host back while clearing Yamikin’s allies."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Smoke Out removes Cheshire Cat, Impish Grin while Yamikin has no cards in hand."
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Corgis materializes Impact Hammer and attacks with Rending Flames."
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Skirting Step fails to find enough protection, and Corgis wins 2-0."
+            }
+          ]
+        }
+      ],
+      "proposedSourceNote": "Ascent Auckland Day 1. Both games and the post-match winner interview.",
+      "catalogVerification": "Canonical names and relevant effects checked in pipeline/.cache/cards.json for Smoke Out, Rococo, Explosive Maven, Arthur, Young Heir, Perse, Relentless Raptor, Impact Hammer, Rending Flames, March Hare, Mottled Host, Skirting Step, Cheshire Cat, Impish Grin. No sideboarding claims proposed: commentary discusses possibilities, not confirmed changes.",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27"
+    }
+  ]
+}
