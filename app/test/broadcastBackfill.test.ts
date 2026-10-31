@@ -66,7 +66,7 @@ test('partial coverage preserves game numbers, draws, penalties and missing star
 
 test('all twelve held findings have explicit dispositions and exact published pairings', () => {
   assert.equal(resolutions.records.length, 12);
-  assert.equal(resolutions.newRecapIds.length, 7);
+  assert.equal(resolutions.newRecapIds.length, 8);
   for (const record of resolutions.records) {
     assert.ok(record.disposition);
     assert.ok(record.resolution || record.conclusion);
@@ -92,5 +92,10 @@ test('resolved holds preserve source conflicts, partial games and the deciding p
   assert.deepEqual(match('na-nationals-2026-day1-round5-superior-elian').games.map(g => g.gameNumber), [1]);
   assert.deepEqual(match('ascent-taipei-2025-round-2-lifdrasyl-shina2486').games.map(g => g.gameNumber), [1]);
   assert.deepEqual(match('ascent-taipei-2025-round-4-aw5459-menbao').games.map(g => g.gameNumber), [2]);
-  assert.ok(!data.matches.some(m => m.id === 'sea-national-2026-quarterfinal-dragonjg-noobtinnn'));
+  const seaQuarterfinal = match('sea-national-2026-quarterfinal-dragonjg-noobtinnn');
+  assert.deepEqual(seaQuarterfinal.games.map(g => [g.gameNumber, g.winner]), [[1, 'p1'], [2, 'p1']]);
+  assert.equal(seaQuarterfinal.players[1].name, 'NoobTinnn');
+  assert.match(seaQuarterfinal.games[0].beats[0].text, /concedes/);
+  assert.match(seaQuarterfinal.games[1].beats[1].text, /deck-out/);
+  assert.equal(seaQuarterfinal.video?.startSeconds, 22861);
 });

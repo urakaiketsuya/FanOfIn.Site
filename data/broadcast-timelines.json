@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T23:33:43.658350Z",
+  "generatedAt": "2026-10-31T23:48:36.322Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -22903,6 +22903,65 @@
         "id": "ljQZR8Yu1XM",
         "kind": "broadcast",
         "startSeconds": 26719
+      }
+    },
+    {
+      "id": "sea-national-2026-quarterfinal-dragonjg-noobtinnn",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Quarterfinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "DragonJG",
+          "deck": "Water Umbra Alice"
+        },
+        {
+          "id": "p2",
+          "name": "NoobTinnn",
+          "deck": "Water Aetherwing Diana"
+        }
+      ],
+      "result": "DragonJG wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "DragonJG forces a concession",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "NoobTinnn concedes after failing to find a way through DragonJG’s defenses."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "DragonJG wins by deck-out",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "DragonJG plays two Dynastic Whirlpools in the closing sequence.",
+              "cards": [
+                "Dynastic Whirlpool"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "NoobTinnn concedes as the commentary confirms the deck-out, sending DragonJG to the semifinals."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Selected finishes from both games. NoobTinnn appears on the broadcast as Justinljw.",
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 22861
       }
     }
   ]

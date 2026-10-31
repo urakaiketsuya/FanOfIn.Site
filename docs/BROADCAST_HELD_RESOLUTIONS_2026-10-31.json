@@ -10,7 +10,8 @@
     "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
     "ascent-niagara-falls-2025-day1-round3-centai-superior",
     "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
-    "na-nationals-2026-day1-round5-superior-elian"
+    "na-nationals-2026-day1-round5-superior-elian",
+    "sea-national-2026-quarterfinal-dragonjg-noobtinnn"
   ],
   "records": [
     {
@@ -129,8 +130,8 @@
       "round": "Quarterfinal",
       "resolutionReviewedAt": "2026-10-31",
       "fullVideoReviewed": false,
-      "disposition": "blocked",
-      "resolution": "Identity bridge resolved: Fractal of Insight explicitly lists Justinljw as past username of NoobTinnn #10891, corroborated by Recollect stable-ID listings. Recap remains held because the selected finish game number has not been established independently of the official 2-0 result.",
+      "disposition": "published",
+      "resolution": "Identity bridge and game sequence resolved. Justin concedes the first game at 6:42:27, sideboard discussion follows, and Justin takes the first turn in the next game. The 7:24:10 deck-out closes Game 2; the post-match discussion explicitly refers back to the first game. Publish selected finishes for both games, consistent with official DragonJG 2-0.",
       "videoEvidence": [
         {
           "timestamp": "6:22:40",
@@ -178,7 +179,7 @@
           }
         ],
         "confidenceLimits": "No primary historical rename log found; two third-party domains explicitly associate broadcast alias with stable Omnidex ID, and one explicitly records past username. Recollect disclaims official affiliation.",
-        "remainingVerification": "Selected finish game number remains unverified. Parent inspected the actual video at 7:24:01; overlay identifies DragonJG/Justinljw and Quarter-Finals, but no unambiguous game number was established. Do not infer Game 2 from official 2-0.",
+        "remainingVerification": "None for publication of the selected finishes. Full sequential gameplay review remains outside this targeted pass.",
         "readWindows": [
           {
             "fromRow": 3028,
@@ -235,6 +236,69 @@
             "timestamp": "7:24:25"
           }
         ]
+      },
+      "published": true,
+      "sequenceFollowUp": {
+        "reviewedAt": "2026-10-31",
+        "rowIndexing": "zero-based, matching captured segments and earlier evidence",
+        "fullVideoReviewed": false,
+        "evidence": [
+          {
+            "row": 2660,
+            "text": "Sorry, the ladies right now just to heal. Oh, Justin just conceds, I think.",
+            "timestamp": "6:42:27"
+          },
+          {
+            "row": 2661,
+            "text": "Wow. Okay, Justin just didn't have a way to get around everything. And actually, yeah, there was no hope there because the resolute would have stopped most of that Cristan archer damage. So, there",
+            "timestamp": "6:42:30"
+          },
+          {
+            "row": 2666,
+            "text": "you're really looking at it, let's look at the side on dragon side. You have the you have the voids cloak. That's a way to stop yourself from getting regal. So void cloak is a regalia that very funny.",
+            "timestamp": "6:43:12"
+          },
+          {
+            "row": 2693,
+            "text": "You give her an inch and she will take a mile. So Justin go getting to go first here as well puts him at an advantage in the tempo game. Just getting that first",
+            "timestamp": "6:46:20"
+          },
+          {
+            "row": 2714,
+            "text": "Yeah. And the big thing here is that Justin LJW presumably went first here and that means that on his on his big",
+            "timestamp": "6:48:32"
+          },
+          {
+            "row": 3053,
+            "text": "Justin just scoops it. He falls into the waves and just drowns in all of Dragon JG's advantage. Completely decked out there.",
+            "timestamp": "7:24:10"
+          },
+          {
+            "row": 3054,
+            "text": "Yeah. And Dragon takes that game, securing his slot to the Grand Archives World 2026.",
+            "timestamp": "7:24:19"
+          },
+          {
+            "row": 3062,
+            "text": "And even then, it's like that first game you saw the power of throwing out the angels, just putting up so much defense.",
+            "timestamp": "7:25:09"
+          }
+        ],
+        "readWindows": [
+          {
+            "fromRow": 2640,
+            "toRow": 2719,
+            "fromTimestamp": "6:40:30",
+            "toTimestamp": "6:48:59"
+          },
+          {
+            "fromRow": 3054,
+            "toRow": 3067,
+            "fromTimestamp": "7:24:19",
+            "toTimestamp": "7:25:45"
+          }
+        ],
+        "conclusion": "Concession, sideboarding, changed starting player, and retrospective first-game reference establish two games independently of the official score."
       }
     },
     {

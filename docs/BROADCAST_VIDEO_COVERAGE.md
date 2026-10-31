@@ -4,7 +4,7 @@ Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtub
 
 ## Video links
 
-All 203 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
+All 204 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
 
 Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 110 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
 
@@ -56,17 +56,17 @@ All 12 held findings received a parallel follow-up in [the resolution record](BR
 
 Two published Niagara recaps retain explicit broadcast/official score differences: Hyouka 1–0 versus official 2–0, and Centai 2–1 versus official 2–0. Official bracket data is unchanged. These conflicts are documented, not reconciled.
 
-Five findings produce no new recap: LA Round 1 still conflicts on the match winner (broadcast draw, official SpaghettiSr 2–1); SEA’s alias is now linked, but its selected finish still needs a verified game number; LA Round 2 has no identifiable match during the technical break; LA Round 9 lies beyond the captured source; NA Round 9’s upload ends during deck discussion, so its existing recap keeps the whole-broadcast link. The three source gaps require alternate footage; the score conflict requires stronger result evidence. SEA still needs focused video review.
+Four findings produce no new recap: LA Round 1 still conflicts on the match winner (broadcast draw, official SpaghettiSr 2–1); LA Round 2 has no identifiable match during the technical break; LA Round 9 lies beyond the captured source; NA Round 9’s upload ends during deck discussion, so its existing recap keeps the whole-broadcast link. The three source gaps require alternate footage; the score conflict requires stronger result evidence.
 
 Full gameplay annotation remains for all 14 sources. Several new recaps contain only a reviewed closing game; earlier games are not reconstructed from the match score. Earlier result-only game stubs were omitted from the Asia additions; original game numbers remain intact. The SEA final retains its broadcast link without an offset because captions skip its introduction. Osaka Day 1 and Los Angeles Day 2 still lack available captions; the older 50-stream backlog is separate.
 
 ### Additional evidence follow-up
 
-The SEA quarterfinal identity bridge is now established: [NoobTinnn’s profile](https://fractalofin.site/player/10891.html) explicitly lists Justinljw as a past username for Omnidex #10891, corroborated by [Recollect’s stable-ID listing](https://recollect.gg/hosts/67). These are third-party historical records, not an official rename log. The recap remains held because the selected finish’s game number is still unverified; the actual closing video at 7:24:01 did not establish it unambiguously. The official 2–0 is not sufficient to label the excerpt Game 2.
+The SEA quarterfinal identity bridge is now established: [NoobTinnn’s profile](https://fractalofin.site/player/10891.html) explicitly lists Justinljw as a past username for Omnidex #10891, corroborated by [Recollect’s stable-ID listing](https://recollect.gg/hosts/67). These are third-party historical records, not an official rename log. A subsequent caption sequence review establishes the game boundary: Justin concedes at 6:42:27, sideboard discussion starts at 6:43:12, and commentary places Justin first in the next game at 6:46:20. The post-match discussion at 7:25:09 explicitly refers back to the first game. The recap now publishes both selected finishes, bringing the total to 204; Game 2 is established from this sequence, not inferred from the official 2–0.
 
 A parallel search found no alternate official footage for LA R2/R9 or NA R9, and no authoritative correction for LA R1 or Niagara R2/R3. This does not establish that no recording or correction exists. The raw cached official scores confirm these are source discrepancies, not application score conversion. Fresh official API reads returned HTTP 403, so current corrections could not be verified. Search evidence and remaining requirements are recorded in `BROADCAST_HELD_RESOLUTIONS_2026-10-31.json`. No recaps, scores, or video offsets changed in this follow-up.
 
-Next: establish the SEA finish’s game number from a continuous video review, then seek alternate recordings or authoritative score confirmation for the six other cases. All seven follow-up cases have been investigated; none is fully cleared by this additional pass. Full gameplay review of the 14 recovered sources remains separate.
+Next: seek alternate recordings or authoritative score confirmation for the six remaining cases (four unpublished findings and two published score disagreements). Eight of the twelve held findings now have published recaps; six of twelve are fully resolved, with two published score disagreements retained explicitly. Full gameplay review of the 14 recovered sources remains separate.
 
 ## Older archive backlog
 
@@ -132,3 +132,5 @@ Checked 390px mobile and 1280px desktop: grouped results, Game 2 selected by def
 Follow-up verification: all 12 dispositions recorded; quoted captions and new card references checked against local sources/catalog. Existing 196 recaps preserved. 51 focused tests, app typecheck, focused lint and diff checks pass. The new Niagara penalty recap was checked at 390px and 1280px, with no overflow, a 48px video link, and keyboard game switching. Initial loading was observed. Network failure, empty search, text zoom, and on-screen keyboard states were not re-tested for this data-only change.
 
 Additional follow-up verification: 35 recap/backfill tests and diff checks pass. This pass changes evidence documentation only; published data and UI remain unchanged.
+
+SEA sequence follow-up verification: 37 recap, backfill, and video-link tests pass; all 203 prior recap objects remain unchanged. The new result and timestamped video link were verified in local search. No UI code changed; mobile/desktop layout and error states were not re-tested in this pass.
