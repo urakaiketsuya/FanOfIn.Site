@@ -168,8 +168,8 @@ test('Worlds Swiss captions keep Lorraine and Dream Fairy plays with Lifdrasyl',
   const response = match.games[2].beats[1];
   assert.equal(response.actor, 'both');
   assert.match(response.text, /Lifdrasyl plays Dream Fairy/);
-  assert.match(response.text, /Asuna responds with Escape the Wreckage to save his Magistrate/);
-  assert.match(response.text, /does not replay it/);
+  assert.match(response.text, /Asuna saves it with Escape the Wreckage/);
+  assert.match(response.text, /Stifling Gyre instead of replaying Magistrate/);
 });
 
 test('Niagara semifinal includes both captioned games and correct deck ownership', () => {
@@ -278,10 +278,10 @@ test('Worlds round five game one distinguishes hypothetical Destiny from the obs
   const game = match.games[0];
   assert.equal(game.winner, 'p1');
   assert.doesNotMatch(JSON.stringify(game), /Crystallized Destiny|wrong time|Three Baleful Oblations resolve/);
-  assert.equal(game.beats[1].actor, 'both');
-  assert.match(game.beats[1].text, /On Jett’s next turn/);
-  assert.ok(game.beats[2].cards!.includes('Veiling Breeze'));
-  assert.match(game.beats[2].text, /winning before Breeze resolves/);
+  const firstOblation = game.beats.find(beat => beat.text.includes('On Jett’s next turn'))!;
+  assert.equal(firstOblation.actor, 'both');
+  assert.ok(game.beats.at(-1)!.cards!.includes('Veiling Breeze'));
+  assert.match(game.beats.at(-1)!.text, /winning before Breeze resolves/);
 });
 
 test('Worlds round five closing games preserve the denied level and actual finishing attack', () => {
@@ -295,4 +295,66 @@ test('Worlds round five closing games preserve the denied level and actual finis
   assert.match(finish.text, /denies Ciel level three/);
   assert.match(finish.text, /Lorraine’s Prismatic Edge attack finishes/);
   assert.doesNotMatch(finish.text, /never finds|chances of moving on/);
+});
+
+test('Worlds round six separates the two openings and uses the actual closing wind spells', () => {
+  const match = find('worlds-swiss-2026-round6-noel-asa');
+  assert.deepEqual(match.games.map(game => game.winner), ['p1', 'p2', 'p2']);
+  assert.match(match.games[1].beats[0].text, /Asuna opens with Fluffy Shopkeep/);
+  assert.match(match.games[2].beats[0].text, /Noel opens with two Fractals of Snow/);
+  assert.doesNotMatch(match.games[2].beats[0].text, /opens with Fluffy/);
+  assert.match(match.games[1].beats.at(-1)!.text, /brewing still gives Essence Crucible its counter/);
+  const finish = match.games[2].beats.at(-1)!;
+  assert.ok(finish.cards!.includes('Calming Breeze'));
+  assert.ok(!finish.cards!.includes('Zephyr'));
+  assert.match(match.games[2].beats[1].text, /Obscured Offering gives Crucible spellshroud/);
+  assert.doesNotMatch(JSON.stringify(match.sideboardNotes), /all four Speed Potions|Fluffy Shopkeep/);
+});
+
+test('Worlds bonus fire matchup preserves ownership and leaves the unseen decider unrecorded', () => {
+  const match = find('worlds-swiss-2026-round6-bonus-raylam-jair');
+  assert.equal(match.games.length, 2);
+  assert.match(match.games[0].beats[0].text, /Jayare’s Three of Hearts attacks Raylam’s Hasty Messenger/);
+  assert.match(match.games[0].beats[0].text, /Raylam plays Escape the Wreckage to save it/);
+  assert.match(match.games[0].beats.at(-1)!.text, /sends Baleful Oblation\. Jayare digs/);
+  assert.match(match.sideboardNotes![0].text, /propose Restorative Flame and Annul Spell/);
+  assert.doesNotMatch(match.sideboardNotes![0].text, /Abnegation/);
+});
+
+test('Worlds Lorraine mirror retains the Annul turning point and Prismatic memory loss', () => {
+  const match = find('worlds-swiss-2026-round7-glennyboy-duckhats');
+  const game = match.games[1];
+  assert.equal(game.beats[0].actor, 'p2');
+  assert.match(game.beats[1].text, /Annul Spell against DuckHats’s Imperious Galebind/);
+  assert.match(game.beats[2].text, /Crux Sight returns Ascension/);
+  assert.match(game.beats[2].text, /another Edge trigger/);
+  assert.ok(match.games.every(game => !game.beats.at(-1)!.tags?.includes('lethal')));
+  assert.match(match.sideboardNotes![1].text, /leaving DuckHats free/);
+});
+
+test('Worlds Alice bonus does not turn deck explanations into completed plays', () => {
+  const match = find('worlds-swiss-2026-round7-bonus-dragonjg-sono');
+  assert.equal(match.games.length, 1);
+  assert.equal(match.games[0].winner, 'p1');
+  assert.match(match.games[0].beats[0].text, /identify Turbo Charge as the play instead/);
+  assert.match(match.games[0].beats[1].text, /bottoms them and takes a blind draw that finds Reclaim/);
+  assert.match(match.games[0].beats[2].text, /cuts off before the level-up/);
+  assert.doesNotMatch(JSON.stringify(match.games), /plays Phantasmagoria|misses on purpose/);
+});
+
+test('Worlds final Swiss match preserves Shopkeep resolution and the Annul payer', () => {
+  const match = find('worlds-swiss-2026-round8-caven-sono');
+  assert.match(match.games[1].beats[0].text, /Sano allows the two-card draw, so Shopkeep resolves/);
+  assert.match(match.games[1].beats[0].text, /kills Shopkeep with Refracting Missile/);
+  assert.match(match.games[1].beats.at(-1)!.text, /TeamTrueCaban pays for Sano’s Annul Spell/);
+  assert.ok(match.games[1].beats.at(-1)!.cards!.includes('Burst Asunder'));
+  assert.match(match.sideboardNotes![0].text, /Quicksilver Grail is a comparison/);
+});
+
+test('Worlds round three names the Gyre target and does not activate unaffordable Retribution', () => {
+  const match = find('second-asa-liftdraasil');
+  assert.match(match.games[2].beats[1].text, /Gyre names Ghosts of Pendragon/);
+  assert.match(match.games[2].beats[1].text, /Incapacitate to stop Ascension/);
+  assert.match(match.games[2].beats.at(-1)!.text, /lacks enough influence to activate it/);
+  assert.match(match.sideboardNotes![0].text, /Blessed Clergy to limit activations/);
 });

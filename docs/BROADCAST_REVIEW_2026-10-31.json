@@ -4284,16 +4284,1889 @@
       "path": "worlds-swiss-2026-round5-gerthos-jet/sourceNote",
       "before": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one closing sequence checked against captions at 406:02–417:43: three Oblations span two turns, and Crystallized Destiny is a hypothetical sideboard answer, not an observed play. Games two and three retain sampled-caption summaries pending fuller verification. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists.",
       "after": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/round",
+      "before": "Round 3 (second featured match): Wind Razorgale Arisana against Wind Krux Lorraine",
+      "after": "Round 3: Wind Razorgale Arisanna against Wind Crux Lorraine"
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "Asuna",
+          "deck": "Wind Razorgale Arisana, Europe's only Swiss player (Razorgale x3, Essence Crucible, Veiling Breeze, Cyclical Breeze, Fairy Whispers, Three Visits, Eternal Magistrate, Aella, Scout the Land, Speed Potion, Windmill Engineer, Dream Fairy, Escape the Wreckage, Stifling Trap, Cleansing Reunion, Tempest Downfall in the side)"
+        },
+        {
+          "id": "p2",
+          "name": "Lifdrasyl",
+          "deck": "Wind Krux Lorraine, Clarent-less build (Lorraine, Wandering Warrior; Sword of Seeking; Drawn Blade; Prismatic Edge; Spirit Blade: Retribution; Aella x3; Ghosts of Pendragon; Fluffy Shopkeep; Imperious Galebind; Obscured Offering; Displace; Dungeon Guide; Inverted Pyro Slash and a one-of fire card)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "Asuna",
+          "deck": "Wind Razorgale Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Lifdrasyl",
+          "deck": "Wind Crux Lorraine"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters list Asuna's options: Dream Fairy, which stops the Krux plan of playing five to seven cards in a turn, and Tempest Downfall, which can kill Aella if Lifdrasyl has not found a second one. They also mention a Blessed Clergy-type body."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters propose Blessed Clergy to limit activations, Dream Fairy to answer Aella, and Tempest Downfall for damage or ally removal. They do not confirm exact boarding changes. Tempest Downfall is later visible in game three."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters discuss Annul Spell, Calming Breeze and more attack cards as Lifdrasyl’s options. Annul Spell is visible in game two; exact swaps are not shown."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Lifdrasyl wins — Prismatic Edge shows all three colors and Asuna has no cards left",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl needs to get rid of Asuna's Eternal Magistrate. He hard levels Lorraine at level one so the on-enter still gives him the sword, and the casters remind that he cannot use Fluffy Shopkeep, Drawn Blade or Obscured Offering that turn. Prismatic Edge is used to rip cards from Asuna's memory.",
+              "cards": [
+                "Eternal Magistrate",
+                "Sword of Seeking",
+                "Prismatic Edge"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Asuna builds with Essence Crucible, Scout the Land and Cyclical Breeze, and stacks age counters on the Crucible with herbs and distilled water. He cannot find a Razorgale or the Veiling Breeze for a while, but then Veiling Breeze comes out and Fairy Whispers shows the first Razorgale. Aella suppresses the Crucible and it loses its age counters.",
+              "cards": [
+                "Essence Crucible",
+                "Cyclical Breeze",
+                "Veiling Breeze",
+                "Fairy Whispers",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Lifdrasyl takes lots of damage from two Razorgales and the speed potion, but plays Enfeebling Orb through his hand. Displace gives a free activation, and the Prismatic Edge shines in every color. Asuna has no hand left, and Lifdrasyl takes game one with about 30 minutes still on the clock.",
+              "cards": [
+                "Displace",
+                "Prismatic Edge",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Asuna wins — three Razorgale triggers with Essence Crucible end the game faster than a Razorgale hit the field in game one",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl builds influence with Fluffy Shopkeep and reclaims. The casters are unsure whether he lacks Dungeon Guide or is playing around Stifling Trap. Asuna finds Three Visits and a reclaim for the closing push.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Three Visits"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Asuna finds all three Razorgales, while the casters identify a single Verdigris Decree as Lifdrasyl’s answer. Speed Potion helps Asuna recover cards, and Three Visits plus a reclaim set up the remaining damage.",
+              "cards": [
+                "Razorgale Calling",
+                "Three Visits"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Asuna plays the second and third Razorgales, adding their damage triggers. Essence Crucible boosts the closing damage; the casters explain that Annul Spell cannot stop the Razorgale triggers even if it negates the spell. Asuna ties the match.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Annul Spell"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "No winner — time runs out with both players in a tense position, and the round ends as a double loss",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl opens with Verdigris Decree and Windmill Engineer. Asuna’s imbued Eternal Magistrate attacks the Engineer, which Lifdrasyl reclaims. Lifdrasyl then levels to Lorraine, Wandering Warrior and brings out Sword of Seeking.",
+              "cards": [
+                "Verdigris Decree",
+                "Eternal Magistrate",
+                "Windmill Engineer",
+                "Lorraine, Wandering Warrior",
+                "Sword of Seeking"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Lifdrasyl plays Dream Fairy to remove Eternal Magistrate. Asuna responds with Escape the Wreckage to save his Magistrate, but does not replay it on the following turn. Asuna keeps digging for Razorgale while Lifdrasyl builds influence.",
+              "cards": [
+                "Dream Fairy",
+                "Eternal Magistrate",
+                "Escape the Wreckage"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Lifdrasyl plays Spirit Blade: Retribution and a Sword of Seeking, but cannot play enough cards for the Retribution. The casters count ten cost and eleven cards needed, and Asuna holds a Veiling Breeze. The game goes to time, the result is a draw, and both players take a loss.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Lifdrasyl wins — repeated Prismatic Edge triggers exhaust Asuna’s hand",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Asuna establishes two imbued Eternal Magistrates. Lifdrasyl suppresses one with Verdigris Decree, removing its imbue, then attacks the other after leveling to Lorraine, Blademaster. Asuna reclaims it, opening the way for Lifdrasyl to reach level three.",
+              "cards": [
+                "Eternal Magistrate",
+                "Verdigris Decree",
+                "Lorraine, Blademaster",
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Asuna eventually finds Razorgale Calling with Fairy Whispers and builds toward multiple Razorgales. Lifdrasyl’s Aella repeatedly suppresses Essence Crucible, removing its accumulated counters, while Asuna uses Veiling Breeze to keep combat damage out.",
+              "cards": [
+                "Razorgale Calling",
+                "Fairy Whispers",
+                "Aella, Zephyr's Hand",
+                "Essence Crucible",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Imperious Galebind reuses Aella, Ghosts of Pendragon and Prismatic Edge, helping Lifdrasyl find his fire card and cut Asuna’s influence. On Asuna’s next turn, Enfeebling Orb forces more cards down. Displace reuses Aella for another Prismatic Edge trigger showing all three elements; Asuna concedes.",
+              "cards": [
+                "Imperious Galebind",
+                "Aella, Zephyr's Hand",
+                "Ghosts of Pendragon",
+                "Prismatic Edge",
+                "Enfeebling Orb",
+                "Displace"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Asuna wins — three Razorgale triggers with Essence Crucible end the game faster than a Razorgale hit the field in game one",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl builds influence with Fluffy Shopkeep and Escape the Wreckage. Asuna levels early, establishes Razorgale Calling and brings out Essence Crucible. The casters later question whether Lifdrasyl lacks Dungeon Guide or is playing around Stifling Trap.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Escape the Wreckage",
+                "Razorgale Calling",
+                "Essence Crucible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Asuna finds all three Razorgales, while the casters identify a single Verdigris Decree as Lifdrasyl’s answer. Speed Potion helps Asuna recover cards, and Three Visits plus a reclaim set up the remaining damage.",
+              "cards": [
+                "Razorgale Calling",
+                "Three Visits"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Asuna plays the second and third Razorgales, adding their damage triggers. Essence Crucible boosts the closing damage; the casters explain that Annul Spell cannot stop the Razorgale triggers even if it negates the spell. Asuna ties the match.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Annul Spell"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "No winner — time runs out with both players in a tense position, and the round ends as a double loss",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lifdrasyl has Verdigris Decree in his opening hand and develops Windmill Engineer. Asuna’s imbued Eternal Magistrate attacks the Engineer, which Lifdrasyl reclaims. Lifdrasyl then levels to Lorraine, Wandering Warrior and brings out Sword of Seeking.",
+              "cards": [
+                "Verdigris Decree",
+                "Eternal Magistrate",
+                "Windmill Engineer",
+                "Lorraine, Wandering Warrior",
+                "Sword of Seeking"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Lifdrasyl plays Dream Fairy targeting Eternal Magistrate. Asuna saves it with Escape the Wreckage and then plays Stifling Gyre instead of replaying Magistrate. The later commentary confirms Gyre names Ghosts of Pendragon. Asuna also uses Incapacitate to stop Ascension after its Sword cost is paid.",
+              "cards": [
+                "Dream Fairy",
+                "Eternal Magistrate",
+                "Escape the Wreckage",
+                "Stifling Gyre",
+                "Ghosts of Pendragon",
+                "Incapacitate",
+                "Spirit Blade: Ascension"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "In overtime, both players keep Veiling Breeze available. Lifdrasyl materializes Sword of Seeking and shows Spirit Blade: Retribution, but lacks enough influence to activate it. Neither player wins the game; the broadcast confirms a 1–1 draw, worth no match points in this Worlds format.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-second-asa-liftdraasil/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, second featured match of the round, which is Omnidex Round 3 (the old entry was labelled Round 2). Casters call the players \"Asa\" and \"Lifteril\" (Omnidex usernames Asuna and Lifdrasyl). Result per Omnidex (1-1, a draw); under the Worlds Swiss and Gauntlet format a draw counts as a loss for both players. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss captions reviewed through all three games (224:52–302:27). The caster discussion at 291:50–292:11 confirms Asuna’s game-three Stifling Gyre names Ghosts of Pendragon. Retribution is shown and counted at the end, not activated. The official 1–1 match draw is preserved; the broadcast describes it as a double loss for standings purposes. The stable ID retains the historical Round 2 label, but this is Round 3. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round5-gerthos-jet/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Guruthos wins — an initial Oblation punishes Orb of Sealing, then two more beat Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Guruthos orders his level-up triggers so Liminal Guide draws Baleful Oblation, leaving another Oblation and a fifteen-cost card near the top. Lost Providence enters play, while Jett’s Orb of Sealing threatens the fifteen-cost omen.",
+              "cards": [
+                "Liminal Guide",
+                "Baleful Oblation",
+                "Lost Providence",
+                "Orb of Sealing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Guruthos plays the first Baleful Oblation in response to Jett’s Orb of Sealing. On Jett’s next turn, Ghosts of Pendragon rebuild the ally board and draw cards; one returns Enfeebling Orb to the material deck, leaving it unavailable to disrupt Guruthos’s next turn.",
+              "cards": [
+                "Baleful Oblation",
+                "Orb of Sealing",
+                "Ghosts of Pendragon",
+                "Enfeebling Orb"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Guruthos materializes Manxome Armoire, draws Advent of the Stormcaller with Umbra Sight, and adds it as an omen at end of turn. He plays Baleful Oblation. Jett digs with Crux Sight and Fairy Whispers, then attempts Veiling Breeze. Guruthos responds with another Oblation and uses Armoire to restore a fifteen-cost omen, winning before Breeze resolves.",
+              "cards": [
+                "Manxome Armoire",
+                "Advent of the Stormcaller",
+                "Umbra Sight",
+                "Baleful Oblation",
+                "Crux Sight",
+                "Fairy Whispers",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jett wins — Eternal Magistrate delays Guruthos, and Imperious Galebind stops the Grande Sonnerie finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett uses Purifying Thurible to deny Guruthos’s floating memory, then Dungeon Guide and Displace to reach Lorraine, Spirit Ruler. Eternal Magistrate shuts off Guruthos’s Guide plays and Lost Providence activation outside materialization. Jett then materializes Orb of Sealing.",
+              "cards": [
+                "Purifying Thurible",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
+                "Eternal Magistrate",
+                "Lost Providence",
+                "Orb of Sealing"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Aella during recollection and attacks with his allies. Guruthos uses Chalice of Blood, Umbra Sight, and Abnegation to stay alive. Jett responds to Abnegation with two Spirit Blade: Ascensions: Prismatic Edge draws cards and removes two from Guruthos’s memory, but deals no fire damage. Abnegation then recovers ten.",
+              "cards": [
+                "Aella, Zephyr's Hand",
+                "Chalice of Blood",
+                "Umbra Sight",
+                "Abnegation",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Resolute Stand buys Guruthos another turn. He retains Baleful Oblation and materializes Grande Sonnerie, then finds another fifteen-cost card. Jett’s Imperious Galebind denies the weapon damage needed to finish. Guruthos concedes without executing the proposed Oblation–Feu Awakening line.",
+              "cards": [
+                "Resolute Stand",
+                "Baleful Oblation",
+                "Grande Sonnerie",
+                "Imperious Galebind",
+                "Feu Awakening"
+              ],
+              "tags": [
+                "stabilize",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Jett wins — Aella and Prismatic Edge deny Ciel level three, then Lorraine lands the final weapon attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Guruthos goes first and uses Creative Shock to discard Golden Checkmate before leveling, choosing speed over a Backup Charger turn. Gentle Respite gives him another draw and floating memory.",
+              "cards": [
+                "Creative Shock",
+                "Golden Checkmate",
+                "Gentle Respite"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Eternal Magistrate to block Guruthos’s Guide acceleration, then uses Dungeon Guide and Displace to reach Lorraine, Spirit Ruler himself. Ghosts of Pendragon builds his board. Spirit Blade: Ascension brings in Prismatic Edge, which reveals wind, water, and Guruthos’s fire card for the full effect, including three damage.",
+              "cards": [
+                "Eternal Magistrate",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
+                "Ghosts of Pendragon",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Guruthos has Baleful Oblation and Feu Awakening, and uses Resolute Stand’s alternate cost to preserve cards for leveling. Jett’s Aella suppresses Prismatic Edge; its end-step return removes memory and denies Ciel level three. Guruthos materializes Chalice of Blood instead. On Jett’s next turn, ally attacks trigger the Chalice draw, but Guruthos finds Gentle Respite rather than another Resolute Stand. Lorraine’s Prismatic Edge attack finishes the game.",
+              "cards": [
+                "Baleful Oblation",
+                "Feu Awakening",
+                "Resolute Stand",
+                "Aella, Zephyr's Hand",
+                "Prismatic Edge",
+                "Chalice of Blood",
+                "Gentle Respite"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Guruthos wins — an initial Oblation punishes Orb of Sealing, then two more beat Veiling Breeze",
+          "beats": [
+            {
+              "actor": "both",
+              "text": "Guruthos uses Creative Shock and Angelic Channeling to prepare fifteen-cost cards and Baleful Oblations. Jett establishes Orb of Sealing, then uses Dungeon Guide and Displace to reach Lorraine, Spirit Ruler before Guruthos reaches level three.",
+              "cards": [
+                "Creative Shock",
+                "Angelic Channeling",
+                "Baleful Oblation",
+                "Orb of Sealing",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler"
+              ],
+              "order": 1
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Guruthos orders his level-up triggers so Liminal Guide draws Baleful Oblation, leaving another Oblation and a fifteen-cost card near the top. Lost Providence enters play, while Jett’s Orb of Sealing threatens the fifteen-cost omen.",
+              "cards": [
+                "Liminal Guide",
+                "Baleful Oblation",
+                "Lost Providence",
+                "Orb of Sealing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Guruthos plays the first Baleful Oblation in response to Jett’s Orb of Sealing. On Jett’s next turn, Ghosts of Pendragon rebuild the ally board and draw cards; one returns Enfeebling Orb to the material deck, leaving it unavailable to disrupt Guruthos’s next turn.",
+              "cards": [
+                "Baleful Oblation",
+                "Orb of Sealing",
+                "Ghosts of Pendragon",
+                "Enfeebling Orb"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Guruthos materializes Manxome Armoire, draws Advent of the Stormcaller with Umbra Sight, and adds it as an omen at end of turn. He plays Baleful Oblation. Jett digs with Crux Sight and Fairy Whispers, then attempts Veiling Breeze. Guruthos responds with another Oblation and uses Armoire to restore a fifteen-cost omen, winning before Breeze resolves.",
+              "cards": [
+                "Manxome Armoire",
+                "Advent of the Stormcaller",
+                "Umbra Sight",
+                "Baleful Oblation",
+                "Crux Sight",
+                "Fairy Whispers",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jett wins — Eternal Magistrate delays Guruthos, and Imperious Galebind stops the Grande Sonnerie finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett uses Purifying Thurible to deny Guruthos’s floating memory, then Dungeon Guide and Displace to reach Lorraine, Spirit Ruler. Eternal Magistrate shuts off Guruthos’s Guide plays and Lost Providence activation outside materialization. Jett then materializes Orb of Sealing.",
+              "cards": [
+                "Purifying Thurible",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
+                "Eternal Magistrate",
+                "Lost Providence",
+                "Orb of Sealing"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Aella during recollection and attacks with his allies. Guruthos uses Chalice of Blood, Umbra Sight, and Abnegation to stay alive. Jett responds to Abnegation with two Spirit Blade: Ascensions: Prismatic Edge draws cards and removes two from Guruthos’s memory, but deals no fire damage. Abnegation then recovers ten.",
+              "cards": [
+                "Aella, Zephyr's Hand",
+                "Chalice of Blood",
+                "Umbra Sight",
+                "Abnegation",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Resolute Stand buys Guruthos another turn. He retains Baleful Oblation and materializes Grande Sonnerie, then finds another fifteen-cost card. Jett’s Imperious Galebind denies the weapon damage needed to finish. Guruthos concedes without executing the proposed Oblation–Feu Awakening line.",
+              "cards": [
+                "Resolute Stand",
+                "Baleful Oblation",
+                "Grande Sonnerie",
+                "Imperious Galebind",
+                "Feu Awakening"
+              ],
+              "tags": [
+                "stabilize",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Jett wins — Aella and Prismatic Edge deny Ciel level three, then Lorraine lands the final weapon attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Guruthos goes first and uses Creative Shock to discard Golden Checkmate before leveling, choosing speed over a Backup Charger turn. Gentle Respite gives him another draw and floating memory.",
+              "cards": [
+                "Creative Shock",
+                "Golden Checkmate",
+                "Gentle Respite"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Eternal Magistrate to block Guruthos’s Guide acceleration, then uses Dungeon Guide and Displace to reach Lorraine, Spirit Ruler himself. Ghosts of Pendragon builds his board. Spirit Blade: Ascension brings in Prismatic Edge, which reveals wind, water, and Guruthos’s fire card for the full effect, including three damage.",
+              "cards": [
+                "Eternal Magistrate",
+                "Dungeon Guide",
+                "Displace",
+                "Lorraine, Spirit Ruler",
+                "Ghosts of Pendragon",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Guruthos has Baleful Oblation and Feu Awakening, and uses Resolute Stand’s alternate cost to preserve cards for leveling. Jett’s Aella suppresses Prismatic Edge; its end-step return removes memory and denies Ciel level three. Guruthos materializes Chalice of Blood instead. On Jett’s next turn, ally attacks trigger the Chalice draw, but Guruthos finds Gentle Respite rather than another Resolute Stand. Lorraine’s Prismatic Edge attack finishes the game.",
+              "cards": [
+                "Baleful Oblation",
+                "Feu Awakening",
+                "Resolute Stand",
+                "Aella, Zephyr's Hand",
+                "Prismatic Edge",
+                "Chalice of Blood",
+                "Gentle Respite"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round5-gerthos-jet/sourceNote",
+      "before": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists.",
+      "after": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists. The game-one opening was also reviewed at 395:19–406:02; the casters speculate about trigger handling while a judge is present, but do not establish a missed-trigger penalty."
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/round",
+      "before": "Round 6: Water Fractals Diao Chan against Wind Razorgale Arisana",
+      "after": "Round 6: Water Fractals Diao Chan against Wind Razorgale Arisanna"
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water Fractals Diao Chan, EU Nationals Gauntlet invite (Fractal of Snow, Fractal of Rain, Fractal of Intrusion, Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Frostsworn Paladin, Zhang Jiao, Nullifying Lantern, Wind Resonance Bauble, Fracturize); undefeated at 5-0 coming in"
+        },
+        {
+          "id": "p2",
+          "name": "Asuna",
+          "deck": "Wind Razorgale Arisana (Razorgale x3, Essence Crucible, all four Speed Potions, Tenderland, Distilled Water, Healing Curb, Eternal Magistrate, Fluffy Shopkeep, Viridian Protective Trinket, Scout the Land, Three Visits, Veiling Breeze, Zephyr, Obscured Offering, Stifling Trap); Europe's only Swiss competitor"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water Fractals Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Asuna",
+          "deck": "Wind Razorgale Arisanna"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "both",
+          "text": "The casters see only small differences between the two lists and the side boards. They mention a two-cost wind ally for pressure, Calming Breeze and Nullifying Lantern as possible changes, and note that Noel read the matchup well going into the next game."
+        },
+        {
+          "beforeGame": 3,
+          "actor": "p2",
+          "text": "The casters call out that Asuna has all four Speed Potions, a greedier choice than the usual Razorgale build. They also say Asuna starts game three with Fluffy Shopkeep, a net-neutral influence card."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters discuss Mystic Purifier, Scatter Essence, Stifling Gyre, Blessed Clergy and additional Calming Breeze as Asuna’s options. They do not confirm the cards exchanged."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters discuss Nullifying Mirror and Jianyu, Fate's Premonition as Noel’s options. Nullifying Mirror is subsequently shown in game two; exact swaps are not reported."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Noel wins — an imbued Eternal Magistrate does not stop a fast Burst Asunder, and Asuna loses within ten minutes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Asuna has the initiative and uses Scout the Land to draw an additional card. His Viridian Protective Trinket makes Noel pay a lot for Refracting Missile at fast speed, and a Purifying Thurible eats the floating memory when Noel passes. Noel has seven cards in hand.",
+              "cards": [
+                "Scout the Land",
+                "Refracting Missile",
+                "Purifying Thurible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Noel plays a Wind Resonance Bauble to draw right away, builds fractals and glimpses two Shimmering Refractions on top. He puts down a Nullifying Lantern early, and Refracting Missile hits Gwendalin, Spirit of Wind for four. Asuna has an imbued Eternal Magistrate and keeps the Three Visits in memory.",
+              "cards": [
+                "Wind Resonance Bauble",
+                "Shimmering Refraction",
+                "Nullifying Lantern",
+                "Eternal Magistrate",
+                "Three Visits"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel sends the Burst Asunder and Asuna has no answer. The casters say Asuna loses within ten minutes of the start of the round, because his Three Visits stayed in memory and his plan never started.",
+              "cards": [
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Asuna wins — a triple Razorgale line, a lucky top-deck run and the Essence Crucible beat Noel's Burst",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel puts out the Fractal of Snow, building fractals, and is two turns away from winning. The casters call Noel's read going into the game insane. Asuna has an Essence Crucible and an Aetherial draw off the on-enter.",
+              "cards": [
+                "Fractal of Snow",
+                "Essence Crucible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Asuna finds Distilled Water, a herb and a Speed Potion, and the casters say it might be enough. He fires off the Burst Asunder-style line: triple Razorgale, can you stop me? Noel's Glimmering Refusal has to hit the Speed Potion, and Acquiescing Rejection and Refracting Missile trade back.",
+              "cards": [
+                "Razorgale Calling",
+                "Glimmering Refusal",
+                "Acquiescing Rejection"
+              ],
+              "tags": [
+                "swing",
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Asuna comes back with three Razorgale triggers and a series of very fortunate top-decks and banishes. Noel scoops to save time for game three; the casters note the 50 minutes on the clock and that both players are on level one.",
+              "cards": [
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Asuna wins — Speed Potions, Zephyr and Obscured Offering protect the Essence Crucible, and win card into win card finishes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Asuna opens with Fluffy Shopkeep and a discounted Razorgale Calling, going to Arisana level one with a Reclaim. Noel plays a raw Fractal of Intrusion without taking extra floating-memory value. The casters say it is a longer, slower game where every marginal gain matters.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Fractal of Intrusion"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Asuna uses Tenderland to gather and draw, setting up another Speed Potion. Noel tries to Fracturize the Essence Crucible in response, but Asuna has six cards in hand, so the Fracturize does not matter. Obscured Offering gives the Crucible spell shroud, and the casters call it a devastating position for Noel.",
+              "cards": [
+                "Essence Crucible",
+                "Fracturize",
+                "Obscured Offering"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Two Speed Potions give agility six and then three again at end phase. Asuna picks up the entire memory and finds three wind cards: a two-cost, a one-cost and a zero-cost for three damage each. Wind card into wind card into wind card is the game, and Asuna wins the match 2-1. There is no longer an undefeated player at Worlds, and the casters say it is revenge for HenkieTheGoat, whom Noel had denied a European Nationals slot.",
+              "cards": [
+                "Speed Potion",
+                "Three Visits",
+                "Veiling Breeze",
+                "Zephyr"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Noel wins — Burst Asunder ends the game while Asuna is still on Gwendalin",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel reserves Fractal of Intrusion to cast Refracting Missile before Intrusion’s on-enter resolves, then uses the floating memory to discard Asuna’s Speed Potion. Asuna has already found an opening Razorgale Calling with Scout the Land.",
+              "cards": [
+                "Fractal of Intrusion",
+                "Refracting Missile",
+                "Speed Potion",
+                "Razorgale Calling",
+                "Scout the Land"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Asuna materializes Viridian Protective Trinket and later plays Eternal Magistrate, imbuing it with two Three Visits. Noel builds fractals, deals four with Refracting Missile and materializes Nullifying Lantern.",
+              "cards": [
+                "Viridian Protective Trinket",
+                "Eternal Magistrate",
+                "Three Visits",
+                "Refracting Missile",
+                "Nullifying Lantern"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel sends Burst Asunder while Asuna remains on Gwendolyn, Spirit of Wind. Asuna has no answer and loses game one. The two Three Visits are in memory; the casters’ discussion of whether keeping one would have saved him is inconclusive.",
+              "cards": [
+                "Burst Asunder",
+                "Gwendolyn, Spirit of Wind"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Asuna wins — three Razorgales and Essence Crucible force Noel’s concession",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Asuna opens with Fluffy Shopkeep. Noel’s Acquiescing Rejection stops Reclaim when Asuna declines the draw. Noel later changes Fractal of Intrusion’s discard choice from Razorgale Calling to Stifling Trap; Asuna levels to Arisanna and establishes three Razorgales.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Acquiescing Rejection",
+                "Reclaim",
+                "Fractal of Intrusion",
+                "Stifling Trap",
+                "Razorgale Calling"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Noel materializes Nullifying Mirror and develops Fractal of Snow. Asuna brings out Essence Crucible, keeps Distilled Water through the level cost and finds Speed Potion for the closing turn.",
+              "cards": [
+                "Nullifying Mirror",
+                "Fractal of Snow",
+                "Essence Crucible",
+                "Distilled Water",
+                "Speed Potion"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Noel contests Speed Potion with Acquiescing Rejection and Glimmering Refusal. The casters explain that brewing still gives Essence Crucible its counter despite the negation. Noel concedes with further Razorgale damage available.",
+              "cards": [
+                "Speed Potion",
+                "Acquiescing Rejection",
+                "Glimmering Refusal",
+                "Essence Crucible",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "combo"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Asuna wins — Obscured Offering protects Crucible, then three wind spells finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Noel opens with two Fractals of Snow and keeps Fracturize for Essence Crucible instead of using it to build another fractal. Asuna uses Reclaim while Noel is committed to Backup Charger, then levels to Arisanna and plays the discounted Razorgale Calling.",
+              "cards": [
+                "Fractal of Snow",
+                "Fracturize",
+                "Essence Crucible",
+                "Reclaim",
+                "Backup Charger",
+                "Razorgale Calling"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Asuna sets up Viridian Protective Trinket, Tend the Land and two Speed Potions. Noel responds to the second brew with Fracturize targeting Essence Crucible. Obscured Offering gives Crucible spellshroud, preserving its counters; the proposed defensive Zephyr is not the play used.",
+              "cards": [
+                "Viridian Protective Trinket",
+                "Tend the Land",
+                "Speed Potion",
+                "Fracturize",
+                "Essence Crucible",
+                "Obscured Offering"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "The Speed Potions recover cards through agility. In the end phase, Asuna plays Veiling Breeze, Calming Breeze and Three Visits for three Razorgale damage each, winning the match 2–1.",
+              "cards": [
+                "Speed Potion",
+                "Veiling Breeze",
+                "Calming Breeze",
+                "Three Visits",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-noel-asa/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 feature match. Casters call the players \"Noel\" and \"Asa\" (Omnidex usernames Noel and Asuna). Result per Omnidex (Asuna 2-1). The VOD later replays game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss captions reviewed from the match opening through its conclusion (480:37–522:09). The “game three” call at 493:33 is corrected to game two at 495:57. The four Speed Potions describe Asuna’s registered list, not a confirmed boarding change. The final wind-spell sequence is called explicitly at 521:02–521:09. Official result: Asuna 2–1. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/round",
+      "before": "Round 6 (bonus feature match): Fire Oblation CL against Fire Suzaku Guo A",
+      "after": "Round 6 (bonus feature match): Fire Oblation Ciel against Fire Suzaku Guo Jia"
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation CL, ally-focused build (Baleful Oblation, Feu Awakening, Manxome Armoire, Hasty Messenger, Three of Hearts, Liminal Guide, Fluffy Shopkeep, Escape the Wreckage, Dungeon Guide x2, Mirage's Grave, Crystallized Destiny)"
+        },
+        {
+          "id": "p2",
+          "name": "Jayare",
+          "deck": "Fire Suzaku Guo A (Fabled Ruby Fatestone, Avatar of Suzaku from Radiant Origins, Peppered Chef, Searing Truth, Fiery Interference, Impact Hammer, Heated Vengeance, Blazing Throw, Loyal Valet, Crystallized Destiny, Restorative Flames; Orb of Sealing)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Jayare",
+          "deck": "Fire Suzaku Guo Jia"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters expect Jayare to bring in Restorative Flames and an Abnegation-style card to answer a single Oblation. They say that after siding, he now has another out in addition to Crystallized Destiny, and that Feu Awakening forces a spell-shroud hand."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters propose Restorative Flame and Annul Spell as Jayare’s options against Baleful Oblation. They discuss Feu Awakening as counterplay to a negate; the recording does not establish the exact boarding changes."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Raylam wins — Hasty Messenger into double Escape the Wreckage, early CL level three, and one Baleful Oblation after Jayare's bluff fails",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Raylam opens with Three of Hearts attacking the Hasty Messenger, and Escape the Wreckage discarded to the Hasty. Jayare can shoot the Hasty but loses a card, because there is no Fabled Ruby Fatestone yet, so he cannot get the quest counter. Raylam has an insane start: Hasty into double Escape plus a 15-cost already in the omens.",
+              "cards": [
+                "Three of Hearts",
+                "Hasty Messenger",
+                "Escape the Wreckage"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jayare plays Guo A level one, puts out the Fabled Ruby Fatestone, a Searing Truth and Peppered Chef, and then Avatar of Suzaku, a new Radiant Origins card he plays for four and keeps two quest counters up. Six damage is marked on CL, but Raylam goes to CL level two with a Liminal Guide and gets a Dungeon Guide down to level three with Mirage's Grave.",
+              "cards": [
+                "Fabled Ruby Fatestone",
+                "Searing Truth",
+                "Peppered Chef",
+                "Dungeon Guide",
+                "Ciel, Mirage's Grave"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jayare uses his own Orb of Sealing to stop Raylam from using the Baleful Oblation on the 15-cost, turning both omens face down, but Raylam has the Manxome Armoire in the material deck. Jayare looks for Crystallized Destiny with Creative Shock and does not find it. He bluffs with six cards in hand, the bluff fails, and Raylam sends the Oblation to win game one.",
+              "cards": [
+                "Orb of Sealing",
+                "Manxome Armoire",
+                "Crystallized Destiny",
+                "Baleful Oblation"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jayare wins — a turn-two Heated Vengeance, Impact Hammer and Blazing Throw line kills before Oblation matters",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jayare opens with Three of Hearts, and Raylam has the Hasty Messenger and Escape the Wreckage start again. Fiery Interference comes down before the Ruby Fate Stone, so Jayare does not get the quest counter. Raylam discards a Liminal Guide, and the casters say a double Three of Hearts would have turned it for him.",
+              "cards": [
+                "Three of Hearts",
+                "Hasty Messenger",
+                "Fiery Interference"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "The casters call out the cards in Jayare's grip: Impact Hammer, Heated Vengeance and Blazing Throw, with all the pieces for a lethal turn two into four.",
+              "cards": [
+                "Impact Hammer",
+                "Heated Vengeance",
+                "Blazing Throw"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jayare plays Heated Vengeance into a big swing at Raylam's face, hits with the Impact Hammer, and throws it with Blazing Throw. Raylam has no answer. The casters call it an insane turn-two Turbo line and say the two games took only 15 minutes. Raylam goes on to win game three, which the VOD does not show.",
+              "cards": [
+                "Heated Vengeance",
+                "Impact Hammer",
+                "Blazing Throw"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Raylam wins — Manxome Armoire restores a fifteen-cost omen for Baleful Oblation",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Jayare’s Three of Hearts attacks Raylam’s Hasty Messenger. Raylam plays Escape the Wreckage to save it, then replays Hasty and discards Ionized Asceticism to set up a fifteen-cost omen.",
+              "cards": [
+                "Three of Hearts",
+                "Hasty Messenger",
+                "Escape the Wreckage",
+                "Ionized Asceticism"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Jayare develops Fabled Ruby Fatestone, Searing Truth and Avatar of Suzaku. Raylam levels to Ciel, Omenbringer, discards Liminal Guide and uses Dungeon Guide to reach Mirage’s Grave; omen damage removes Avatar of Suzaku.",
+              "cards": [
+                "Fabled Ruby Fatestone",
+                "Searing Truth",
+                "Avatar of Suzaku",
+                "Ciel, Omenbringer",
+                "Liminal Guide",
+                "Dungeon Guide",
+                "Ciel, Mirage's Grave"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jayare’s Orb of Sealing turns the omens face down. Raylam uses Manxome Armoire to restore the fifteen-cost omen and sends Baleful Oblation. Jayare digs with Creative Shock and Undeniable Truth but finds no saving Crystallized Destiny; Raylam wins game one.",
+              "cards": [
+                "Orb of Sealing",
+                "Manxome Armoire",
+                "Baleful Oblation",
+                "Creative Shock",
+                "Undeniable Truth",
+                "Crystallized Destiny"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jayare wins — Heated Vengeance, Impact Hammer and Blazing Throw end game two",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jayare opens with Three of Hearts, and Raylam has the Hasty Messenger and Escape the Wreckage start again. Fiery Interference comes down before the Ruby Fate Stone, so Jayare does not get the quest counter. Raylam discards a Liminal Guide, and the casters say a double Three of Hearts would have turned it for him.",
+              "cards": [
+                "Three of Hearts",
+                "Hasty Messenger",
+                "Fiery Interference"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "The casters call out the cards in Jayare's grip: Impact Hammer, Heated Vengeance and Blazing Throw, with all the pieces for a lethal turn two into four.",
+              "cards": [
+                "Impact Hammer",
+                "Heated Vengeance",
+                "Blazing Throw"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jayare plays Heated Vengeance into a big swing at Raylam's face, hits with the Impact Hammer, and throws it with Blazing Throw. Raylam has no answer. The casters call it an insane turn-two Turbo line and say the two games took only 15 minutes. Raylam goes on to win game three, which the VOD does not show.",
+              "cards": [
+                "Heated Vengeance",
+                "Impact Hammer",
+                "Blazing Throw"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round6-bonus-raylam-jair/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 6 bonus feature match (a fast best-of-three recorded while the main match ran). Casters call the players \"Ray Lam\" and \"Jair/JR\" (Omnidex usernames Raylam and Jayare). Result per Omnidex (Raylam 2-1); the casters confirm Raylam took the match into a game 3 that the VOD does not show. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss bonus-match captions reviewed at 538:01–552:20. Escape the Wreckage is explicitly corrected from a discard to a played response at 538:53. Jayare owns the opening Three of Hearts; Crystallized Destiny is his sought answer after Oblation is played. Games one and two are shown. The broadcast announces Raylam’s 2–1 match win, but game three is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/round",
+      "before": "Round 7: Wind Krux Lorraine mirror",
+      "after": "Round 7: Wind Crux Lorraine mirror"
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "GlenyBoi",
+          "deck": "Wind Krux Lorraine, 2024 world champion (Lorraine; Spirit Blade: Ascension; Aella; Ghosts of Pendragon; Spirit Ruler with Drawn Blade; Imperious Galebind; Crux Sight; Reclaim; Fluffy Shopkeep; Dungeon Guide; Turbo Charge; Windmill Engineer; Eternal Magistrate from the side; no Clarent)"
+        },
+        {
+          "id": "p2",
+          "name": "DuckHats",
+          "deck": "Wind Krux Lorraine, TM32 list, nearly card-for-card the same as GlenyBoi's (Lorraine; Dungeon Guide x2; Turbo Charge; Spirit Blade: Retribution; Displace; Fluffy Shopkeep; Eternal Magistrate x2; Psychopomp's Scale in the side; Chamberlain Toad)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "GlenyBoi",
+          "deck": "Wind Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "DuckHats",
+          "deck": "Wind Crux Lorraine"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "both",
+          "text": "The casters discuss Eternal Magistrate in the mirror: when it is imbued, neither player can bring cards out of the material deck, which hits Fluffy Shopkeep, Spirit Blade: Ascension and similar. They also mention Ghost of Pendragon as a mirror tiebreaker and Chamberlain Toad as a possible card to bring in."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters discuss Annul Spell, Calming Breeze, Chamberlain Toad and Psychopomp’s Scale as GlenyBoi’s options. Annul Spell is subsequently played in game two; exact swaps are not shown."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "DuckHats plays imbued Eternal Magistrate in game two. It restricts GlenyBoi’s material deck outside GlenyBoi’s materialize phase, leaving DuckHats free to use his own Dungeon Guides. The broadcast also discusses Annul Spell and Calming Breeze as options."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "GlenyBoi wins — DuckHats sees no path in a mirror that tends to run long and concedes to start game two",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DuckHats gets a smooth Dungeon Guide level up to two and swings with Fluffy Shopkeep, while GlenyBoi has fewer Turbo Charges. The casters say a stack battle is coming, with Displace held up to use on the Dungeon Guide at the end of GlenyBoi's turn.",
+              "cards": [
+                "Dungeon Guide",
+                "Fluffy Shopkeep",
+                "Displace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi plays Ghosts of Pendragon to put the Sword of Seeking back and draw two, finds Fairy Whispers, and the casters explain that the player who draws more Ghosts usually gets ahead on influence. Neither player has found an Aella yet, which the casters say is the card that turns the matchup into a fast-speed war.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Fairy Whispers",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "A fire card drawn off the Purifying Thurible and GlenyBoi's Spirit Blade: Ascension hit hard. DuckHats sees he has no path to winning and, since Krux mirror games can run an hour, decides to go next. GlenyBoi goes 1-0.",
+              "cards": [
+                "Purifying Thurible",
+                "Spirit Blade: Ascension"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "GlenyBoi wins — the Crux Sight line strips DuckHats down and ends the mirror in a very short game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DuckHats opens with Turbo Charge, finds a Dungeon Guide and holds the Eternal Magistrate for Lorraine level two. GlenyBoi reveals the Eternal Magistrate off the imbue, so he knows what DuckHats holds. The casters note DuckHats wishes he had a Hurricane Sweep, but it is not in the deck.",
+              "cards": [
+                "Turbo Charge",
+                "Dungeon Guide",
+                "Eternal Magistrate"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi sniffs out the play and gets a huge push, bringing the Aella to hand and using Imperious Galebind and the Ghost of Pendragon at the right moments. DuckHats's second Eternal Magistrate comes out, and a Windmill Engineer could take out the Pendragon, but GlenyBoi has a Crux Sight.",
+              "cards": [
+                "Aella, Zephyr's Hand",
+                "Imperious Galebind",
+                "Ghosts of Pendragon",
+                "Crux Sight"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "GlenyBoi rips cards with Crux Sight and takes DuckHats's hand down to six, then seven. DuckHats reached level three early but did not have the Krux cards he needed. The casters call it maybe the fastest game of the whole stream, and GlenyBoi wins the mirror 2-0.",
+              "cards": [
+                "Crux Sight",
+                "Spirit Blade: Ascension"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "GlenyBoi wins — repeated Prismatic Edge triggers and Ghosts draws force a concession",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Both players build influence with Fluffy Shopkeep and Backup Charger. DuckHats reaches Lorraine, Blademaster with Dungeon Guide. When GlenyBoi later uses Displace to level, DuckHats responds with his own Displace before the opposing Prismatic Edge engine can strip his memory.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Backup Charger",
+                "Dungeon Guide",
+                "Displace",
+                "Prismatic Edge"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi develops Ghosts of Pendragon and Spirit Blade: Ascension, keeping DuckHats low on influence through Prismatic Edge. A fire card in memory enables damage as well as the wind effect.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Spirit Blade: Ascension",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Imperious Galebind suppresses Prismatic Edge and Ghosts of Pendragon. The returning Ghosts put Sword of Seeking back and draw two. DuckHats draws Retribution without enough influence to use it and concedes.",
+              "cards": [
+                "Imperious Galebind",
+                "Prismatic Edge",
+                "Ghosts of Pendragon",
+                "Sword of Seeking",
+                "Spirit Blade: Retribution"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "GlenyBoi wins — Annul Spell opens the level-up, then Aella and Ascension take over",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DuckHats reveals Eternal Magistrate while imbuing an Engineer, then plays Magistrate to constrain GlenyBoi. DuckHats breaks a hard-materialized Drawn Blade in combat and reaches level three ahead of GlenyBoi.",
+              "cards": [
+                "Eternal Magistrate",
+                "Windmill Engineer",
+                "Drawn Blade",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "GlenyBoi’s Rally the Peasants misses. He later uses Annul Spell against DuckHats’s Imperious Galebind, gets the Lorraine draw and finds Dungeon Guide. That lets him reach Spirit Ruler, then play Ghosts of Pendragon and find Ascension.",
+              "cards": [
+                "Rally the Peasants",
+                "Annul Spell",
+                "Imperious Galebind",
+                "Dungeon Guide",
+                "Ghosts of Pendragon",
+                "Spirit Blade: Ascension"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "GlenyBoi draws more Ghosts, Aella and Ascension. Aella suppresses Prismatic Edge, and Crux Sight returns Ascension for another Edge trigger. DuckHats loses more memory cards and concedes without finding the Crux cards to recover.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Aella, Zephyr's Hand",
+                "Prismatic Edge",
+                "Crux Sight",
+                "Spirit Blade: Ascension"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round7-glennyboy-duckhats/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 feature match. Casters call the players \"Glenny Boy\" and \"Duck Hats\" (Omnidex usernames GlenyBoi and DuckHats). Result per Omnidex (GlenyBoi 2-0). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain, especially for the mirror's stack interactions. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss captions reviewed at 560:00–592:55. Both games end in DuckHats’s concession. Game two’s early push belongs to DuckHats; GlenyBoi’s Annul Spell against Imperious Galebind is the subsequent turning point. Crux Sight retrieves Ascension; Prismatic Edge causes the memory loss. The catalog confirms Eternal Magistrate restricts opponents, not its controller. Official result: GlenyBoi 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/round",
+      "before": "Round 7 (bonus recorded match): Water Umbra Alice mill against Wind Krux Lorraine",
+      "after": "Round 7 (bonus recorded match): Water Umbra Alice against Wind Crux Lorraine"
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "DragonJG",
+          "deck": "Water Umbra Alice, Phantom Monarch mill, the deck's progenitor (Phantasmagoria, Dynastic Whirlpool, Tri-Castles, Maledictum Vitae, Rector's Tiding, Banner Sash, Turbo Charge x1, Backup Charger, Fracturize, Angel Attendant, Benediction Angel; no Fountain Seraphim)"
+        },
+        {
+          "id": "p2",
+          "name": "Sano",
+          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner (Prismatic Edge, Spirit Blade: Ascension, Obscured Offering, Windmill Engineer x2, Fairy Whispers with a low wind count in the low 30s, Turbo Charge, Ghosts of Pendragon, Cleansing Reunion, Displace)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "DragonJG",
+          "deck": "Water Umbra Alice"
+        },
+        {
+          "id": "p2",
+          "name": "Sano",
+          "deck": "Wind Crux Lorraine"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "DragonJG wins — the recording shows only the early and middle game, and the casters confirm the win afterwards",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The casters say this is the same matchup as in CNAT, between the Umbra Mill Alice master and Wind Krux. DragonJG takes an off turn to Backup Charger and Fracturize up to Alice level one. The casters explain that Alice's Phantasmagoria mastery turns off floating-memory and graveyard effects that are not Spectre cards.",
+              "cards": [
+                "Backup Charger",
+                "Fracturize",
+                "Phantasmagoria"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Sano influence-maxes with Windmill Engineer, Cleansing Reunion and Fairy Whispers, and finds Ghosts of Pendragon. He misses on purpose with Fairy Whispers on three Crux cards, a hard decision. The casters say his best route is an Ascension loop that hits every card in DragonJG's hand, which was not enough in CNAT either.",
+              "cards": [
+                "Windmill Engineer",
+                "Cleansing Reunion",
+                "Fairy Whispers",
+                "Ghosts of Pendragon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "DragonJG goes to Alice level two and plays Phantasmagoria, which on his end phase puts the graveyard back into the deck and mills by the number of counters. He adds a Maledictum Vitae, a Turbo Charge that was not in his list at CNAT, and Dynastic Whirlpool as the nasty exalted water card. Sano has Obscured Offering to keep Prismatic Edge from being fracturized. The recording stops here, and the casters announce afterwards that DragonJG won the game and the match 2-0.",
+              "cards": [
+                "Maledictum Vitae",
+                "Turbo Charge",
+                "Dynastic Whirlpool",
+                "Obscured Offering",
+                "Prismatic Edge"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "DragonJG wins — only the opening is shown; the result is announced afterwards",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "DragonJG uses Backup Charger followed by Turbo Charge. The casters first discuss Fracturize as a possible line, then explicitly identify Turbo Charge as the play instead.",
+              "cards": [
+                "Backup Charger",
+                "Turbo Charge"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Sano builds influence with Windmill Engineer and Fairy Whispers. When Fairy Whispers shows three Crux cards, he bottoms them and takes a blind draw that finds Reclaim.",
+              "cards": [
+                "Windmill Engineer",
+                "Fairy Whispers",
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "The casters identify Maledictum Vitae for DragonJG and discuss his next level-up to Alice, Phantom Monarch. Sano’s Turbo Charge finds Ascension and Obscured Offering. The recording cuts off before the level-up or a finishing sequence; the casters then announce DragonJG’s game-one and 2–0 match wins.",
+              "cards": [
+                "Maledictum Vitae",
+                "Alice, Phantom Monarch",
+                "Turbo Charge",
+                "Spirit Blade: Ascension",
+                "Obscured Offering"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round7-bonus-dragonjg-sono/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 7 recorded bonus match. Casters call the players \"Dragon JG\" and \"Sono\" (Omnidex usernames DragonJG and Sano). The VOD ends before the finish of game 1; the casters announce that DragonJG won game 1 and the match 2-0 (result confirmed by Omnidex). Game 2 is not shown. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss bonus-match captions reviewed at 614:24–624:00. The recording ends before DragonJG’s level-two turn; Phantasmagoria and Dynastic Whirlpool are described as the deck’s future plan, not shown resolving. Sano chooses a blind Fairy Whispers draw rather than deliberately retaining all three Crux cards. Game one’s winner and the 2–0 match result are announced at 623:48–623:57; game two is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/round",
+      "before": "Round 8 (last Swiss round, win and in for the asynchronous bracket): Water Fractals Diao Chan against Wind Krux Lorraine",
+      "after": "Round 8: Water Fractals Diao Chan against Wind Crux Lorraine"
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "TeamTrueCaban",
+          "deck": "Water Fractals Diao Chan, EU Nationals winner (Fractal of Rain, Fractal of Snow, Fractal of Intrusion, Fractal of Refreshment, Zhang Jiao x2, Frostsworn Paladin, Refracting Missile, Shimmering Refraction x3, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Purifying Thurible, Return to the Archive, Nullifying Mirror, Calming Breeze; no Captivating Opulence)"
+        },
+        {
+          "id": "p2",
+          "name": "Sano",
+          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner, no Clarent (Lorraine, Blademaster; Drawn Blade; Spirit Blade: Ascension; Prismatic Edge; Fluffy Shopkeep; Windmill Engineer; Fairy Whispers; Veiling Breeze; Verdigris Decree; Reclaim; Imperious Galebind; Crystallized Destiny and Calming Breeze in the side)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "TeamTrueCaban",
+          "deck": "Water Fractals Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Sano",
+          "deck": "Wind Crux Lorraine"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "TeamTrueCaban brings in a Nullifying Mirror, which the casters call a huge card against Veiling Breeze and Windmill Engineer. They note the mirror also turns off Spirit Blade: Ascension's imbue plan. He also keeps an eye on the Quicksilver Grail, which is strong with the Mirror, and Return to the Archive."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters say Sano has little to bring in. Crystallized Destiny can have value against Fractals, but Calming Breeze is the only card really shining in his side."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "TeamTrueCaban brings out Nullifying Mirror in game two. The casters discuss its value against Veiling Breeze and wind imbue effects. Quicksilver Grail is a comparison; his registered divine relic is The Looking Glass."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Sano has Annul Spell in game two and plays it during the final exchange. The casters discuss Calming Breeze and Crystallized Destiny as possible additions; exact swaps are not shown."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "TeamTrueCaban wins — he goes first with five fractals and Zhang Jiao, and Sano concedes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueCaban wins the roll and goes first, which the casters call a pretty big deal for Fractals. He plays an unstable fractal and holds Zhang Jiao. He glimpses and bottoms two cards he does not need.",
+              "cards": [
+                "Fractal of Rain",
+                "Zhang Jiao, Way of Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The casters note that Sano's list has no Clarent, so he has less defense against Burst Asunder. Sano has no Stifling Trap to stop the Zhang Jiao draws. TeamTrueCaban has eight cards in hand and four fractals, effectively 12 influence, with Glimmering Refusals backing up the kill turn.",
+              "cards": [
+                "Burst Asunder",
+                "Glimmering Refusal"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Sano plays Purifying Thurible and stays on his spirit with five fractals staring him down. The casters call it a default win for TeamTrueCaban, who only had to play the cards, and Sano concedes early to keep time for game two. The casters say TM32 are happy to concede early with Wind Krux to avoid a double loss.",
+              "cards": [
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "TeamTrueCaban wins — Nullifying Mirror shuts off the Wind Krux engine and three Shimmering Refractions finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueCaban brings out the Nullifying Mirror early, which stops Veiling Breeze and the imbues of Windmill Engineer and Fluffy Shopkeep. Sano's Fluffy Shopkeep does not resolve, so the Drawn Blade has to be hard materialized or skipped, and TeamTrueCaban draws two off the punish of cutting Clarent.",
+              "cards": [
+                "Nullifying Mirror",
+                "Fluffy Shopkeep",
+                "Drawn Blade"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Sano has a Verdigris Decree for one of the fractals, and Windmill Engineers that are dead cards in hand because of the mirror. Lorraine, Blademaster cannot get anything out of her level and Sano is stuck. TeamTrueCaban holds a Fracturize and Return to the Archive and swings with the Frostsworn Paladin for three.",
+              "cards": [
+                "Verdigris Decree",
+                "Windmill Engineer",
+                "Frostsworn Paladin"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "TeamTrueCaban sends three Shimmering Refractions, a Zhang Jiao poke and a Frostsworn Paladin attack, taking Sano to 15, then 16 with eight damage needed. Sano pays for his null spell, and Veiling Breeze does nothing under the mirror. TeamTrueCaban wins 2-0 and moves toward the asynchronous bracket. The casters call it a really heads-up play.",
+              "cards": [
+                "Shimmering Refraction",
+                "Zhang Jiao, Way of Peace",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "TeamTrueCaban wins — he goes first with five fractals and Zhang Jiao, and Sano concedes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueCaban goes first with an imbued Fractal of Rain and builds toward Zhang Jiao, Way of Peace. He bottoms an extra Acquiescing Rejection and Burst Asunder while setting up the draw.",
+              "cards": [
+                "Fractal of Rain",
+                "Zhang Jiao, Way of Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The casters note that Sano's list has no Clarent, so he has less defense against Burst Asunder. Sano has no Stifling Trap to stop the Zhang Jiao draws. TeamTrueCaban has eight cards in hand and four fractals, effectively 12 influence, with Glimmering Refusals backing up the kill turn.",
+              "cards": [
+                "Burst Asunder",
+                "Glimmering Refusal"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Sano plays Purifying Thurible and stays on his spirit with five fractals staring him down. The casters call it a default win for TeamTrueCaban, who only had to play the cards, and Sano concedes early to keep time for game two. The casters say TM32 are happy to concede early with Wind Krux to avoid a double loss.",
+              "cards": [
+                "Purifying Thurible"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "TeamTrueCaban wins — Nullifying Mirror limits Sano’s answers to the final Burst Asunder",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueCaban uses Acquiescing Rejection on Fluffy Shopkeep. Sano allows the two-card draw, so Shopkeep resolves. TeamTrueCaban later uses Fractal of Intrusion to discard Ghosts of Pendragon, then kills Shopkeep with Refracting Missile.",
+              "cards": [
+                "Acquiescing Rejection",
+                "Fluffy Shopkeep",
+                "Fractal of Intrusion",
+                "Ghosts of Pendragon",
+                "Refracting Missile"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Nullifying Mirror turns Sano’s memory cards norm, limiting Windmill Engineer’s imbue and Veiling Breeze. Sano uses Verdigris Decree on a fractal, but TeamTrueCaban’s Shimmering Refraction removes an Engineer before it can help Lorraine finish Frostsworn Paladin. The Paladin keeps attacking.",
+              "cards": [
+                "Nullifying Mirror",
+                "Windmill Engineer",
+                "Veiling Breeze",
+                "Verdigris Decree",
+                "Shimmering Refraction",
+                "Frostsworn Paladin"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Three Shimmering Refractions and attacks from Frostsworn Paladin and Zhang Jiao set up Burst Asunder. TeamTrueCaban pays for Sano’s Annul Spell. Sano has only one Veiling Breeze against the held Nullifying Mirror and concedes the match.",
+              "cards": [
+                "Shimmering Refraction",
+                "Frostsworn Paladin",
+                "Zhang Jiao, Way of Peace",
+                "Burst Asunder",
+                "Annul Spell",
+                "Veiling Breeze",
+                "Nullifying Mirror"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round8-caven-sono/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 8 feature match. Casters call the players \"Caven\" and \"Sono\" (Omnidex usernames TeamTrueCaban and Sano). Result per Omnidex (TeamTrueCaban 2-0). The VOD later replays the end of game 2. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds Swiss captions reviewed at 632:45–662:38. Game one ends in an early concession. In game two, Sano allows the Acquiescing Rejection draw, so Fluffy Shopkeep resolves; Refracting Missile removes it later. TeamTrueCaban, not Sano, pays for Annul Spell in the final Burst Asunder exchange. The casters discuss Quicksilver Grail as an alternative, not a card in his list. Official result: TeamTrueCaban 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
     }
   ],
   "sourceFollowUp": [
-    "Reconcile European Round 7’s broadcast game outcomes with the official 1–1 result; source footage inspection is recorded separately.",
-    "Continue full-source verification beyond these targeted follow-ups; the initial 110-match audit was not an exhaustive caption review."
+    "Reconcile European Round 7 only when an organizer/judge explanation or corrected official record becomes available; keep official score and observed game outcomes separate.",
+    "Complete non-Swiss full-source verification using sourceReview.coverage: 86 matches have no recorded source-review entry, and 13 other non-Swiss matches have targeted reviews only. Worlds Swiss recap follow-ups are complete."
   ],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
     "sourceArchive": "/Users/avery/Downloads/transcripts.zip",
-    "status": "Sources located; targeted review started, full source verification remains incomplete.",
+    "status": "Worlds Swiss recap verification completed across all 11 listed matches. Other events retain targeted reviews; exhaustive verification of all 110 match recaps remains incomplete.",
     "nameCorrections": {
       "Ry": 5,
       "Xander": 25,
@@ -4544,6 +6417,78 @@
           "419:04–456:34"
         ],
         "finding": "Games two/three follow-up, including game-two opening read during preceding batch. Aella is played before Abnegation/dual Ascension exchange; memory removal is not a Dungeon Guide effect. Game two is a concession after Galebind. Boarding commentary explicitly corrects Flamewreath inclusion. Game three has Oblation and Feu in hand, but Aella/Edge removes memory and prevents level three. Chalice draws Gentle Respite instead of Stand; final Lorraine weapon attack wins. Removed unsupported top-eight elimination claim."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round6-noel-asa",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "480:37–522:09"
+        ],
+        "finding": "Corrected game-two opening, speculative boarding, negated brew counter, protected Crucible and Calming Breeze in the actual final sequence."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round6-bonus-raylam-jair",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "538:01–552:20"
+        ],
+        "finding": "Corrected Three of Hearts ownership, Escape played rather than discarded, Oblation before defensive dig, and Annul Spell as proposed boarding. Game three remains unshown."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round7-glennyboy-duckhats",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "560:00–592:55"
+        ],
+        "finding": "Corrected Magistrate ownership and one-sided restriction, DuckHats early push, Annul Spell turning point, and Crux Sight versus Prismatic Edge effects. Both endings are concessions."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "614:24–624:00"
+        ],
+        "finding": "Turbo Charge replaces the proposed Fracturize line; Fairy Whispers bottoms three Crux cards and draws Reclaim. Level two and mill plan are future commentary; recording cuts off first."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round8-caven-sono",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "632:45–662:38"
+        ],
+        "finding": "Shopkeep resolves after Sano allows Acquiescing draw, then dies to Missile. Corrected actual Mirror timing and final Burst/Annul payer; Grail is only a comparison."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "224:52–302:27"
+        ],
+        "finding": "Completed remaining game-one and game-three source windows. Blessed Clergy is the activation restriction, not Dream Fairy. Confirmed Gyre names Ghosts, Incapacitate stops Ascension, and Retribution is not activated."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round5-gerthos-jet",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "395:19–406:02"
+        ],
+        "finding": "Verified opening prior to previously reviewed closing games. Added Channeling setup and Jett level-up; judge discussion does not establish a penalty."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round4-superior-raingoddess",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "316:03–323:57"
+        ],
+        "finding": "Completed the game-one middle window between earlier reviewed ranges. TheRainGoddess owns Purifying Thurible and Ensnaring Fumes; Superior uses Refracting Missile on Windmill Engineer in response to Aesan Protector. Existing recap remains consistent."
       }
     ],
     "unresolved": [
@@ -4555,7 +6500,13 @@
           "571:50–573:25"
         ],
         "videoUrl": "https://www.youtube.com/watch?v=JKKl7AYwv3c&t=34310s",
-        "finding": "Footage and captions establish a PewPewStan win followed by a drawn game. Official match result is 1–1 tied. The available footage does not explain the difference. An organizer/judge ruling or correction is required to reconcile official game attribution; do not infer a MaruX win or penalty."
+        "finding": "Footage and captions establish a PewPewStan win followed by a drawn game. Official match result is 1–1 tied. The available footage does not explain the difference. An organizer/judge ruling or correction is required to reconcile official game attribution; do not infer a MaruX win or penalty.",
+        "latestCheck": {
+          "checkedAt": "2026-10-31T21:39:13Z",
+          "officialPairingUrl": "https://api.gatcg.com/omnidex/events/54238/pairings?round=7",
+          "result": "Public API request returned HTTP 404. Targeted web searches did not locate an organizer/judge explanation; results repeating this site are not independent evidence. Cached official 1–1 and verified broadcast win/draw remain unchanged.",
+          "requiredEvidence": "Organizer or head-judge ruling, corrected official game record, or an official explanation for why the match was recorded 1–1. No outside party has been contacted."
+        }
       }
     ],
     "stageDecklists": {
@@ -4743,17 +6694,136 @@
     },
     "verification": {
       "checks": [
-        "15 broadcast timeline regression tests passed",
-        "App TypeScript build check passed",
-        "Shared TypeScript check passed",
+        "27 broadcast timeline regression tests passed",
         "Targeted app lint passed",
-        "Mobile 390px and desktop 1280px deck attachments inspected; source links are 48px high, keyboard reachable, and mobile document width matches viewport",
-        "Initial loading state and existing card-name fallback observed"
+        "git diff --check passed",
+        "Catalog validation passed for all 110 recaps; manifest timestamp matches the broadcast artifact"
       ],
       "limitations": [
-        "Network-error state was not forced; curated Swiss lists render without fetching the current event bundle.",
-        "European official-score discrepancy remains unresolved despite footage review."
+        "Data-only change; no UI implementation changed or browser verification performed in this batch.",
+        "European official-score discrepancy still requires organizer/judge evidence; fresh public API request returned HTTP 404.",
+        "86 matches lack a recorded source-review entry. Other non-Swiss source-review entries are targeted, not necessarily complete matches."
       ]
+    },
+    "coverage": {
+      "basis": "Coverage counts source-review log entries, not the initial 110-match structural audit. A targeted entry is not proof that the entire match was read. Swiss coverage is limited to broadcast material available for each recap; unseen games remain unrecorded.",
+      "worldsSwissRecapsReviewed": [
+        "worlds-swiss-2026-round1-proan-duckhats",
+        "worlds-swiss-2026-round2-raylam-caven",
+        "worlds-swiss-2026-round2-second-asa-liftdraasil",
+        "worlds-swiss-2026-round4-superior-raingoddess",
+        "worlds-swiss-2026-round4-bonus-raylam-gerthos",
+        "worlds-swiss-2026-round5-gerthos-jet",
+        "worlds-swiss-2026-round6-noel-asa",
+        "worlds-swiss-2026-round6-bonus-raylam-jair",
+        "worlds-swiss-2026-round7-glennyboy-duckhats",
+        "worlds-swiss-2026-round7-bonus-dragonjg-sono",
+        "worlds-swiss-2026-round8-caven-sono"
+      ],
+      "otherMatchesWithTargetedSourceReview": [
+        "ascent-manila-2026-day2-round10-muck-zero",
+        "worlds-2026-championship-sunday-semifinal2-zero-livil",
+        "worlds-2026-championship-sunday-grandfinals-jet-zero",
+        "ascent-niagara-falls-top4-sf-fruitcake-bratis",
+        "eu-nationals-2026-day1-round7-marux-pewpewstan",
+        "worlds-2026-top8-qf4-glennyboy-jet",
+        "ascent-london-2026-day2-round10-casual-vain",
+        "sea-nationals-2026-day1-round4-ai-sentus",
+        "na-nationals-2026-day1-round3-noel-tress",
+        "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+        "na-nationals-2026-top8-qf-jett-chemcollapse",
+        "na-nationals-2026-top4-semifinal-zetdivx-jett",
+        "na-nationals-2026-grand-finals-quarax-jett"
+      ],
+      "awaitingRecordedSourceReview": [
+        "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+        "ascent-taipei-2026-day1-round9-silvercrowx-limbo",
+        "ascent-manila-2026-day2-round11-two-over9000",
+        "ascent-manila-2026-day2-round12-hanky-zeia",
+        "ascent-manila-2026-day2-round13-egg-lance",
+        "ascent-manila-2026-top8-qf-abby-duo",
+        "ascent-manila-2026-top4-sf2-egg-raylam",
+        "ascent-manila-2026-grand-finals-mike-Raylam",
+        "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
+        "ascent-las-vegas-2026-day2-round10-novafelon-noel",
+        "ascent-las-vegas-2026-day2-round11-mattg-novafelon",
+        "ascent-las-vegas-2026-day2-round12-duckhats-bokal",
+        "ascent-las-vegas-2026-day2-round13-wisp-mechsniper",
+        "ascent-niagara-falls-day2-round7-isaac-tress",
+        "ascent-niagara-falls-day2-round10-hyoka-tepslor",
+        "ascent-niagara-falls-day2-round11-perfy-gurthos",
+        "ascent-niagara-falls-day2-round12-asa-orabomb",
+        "ascent-niagara-falls-top8-qf-perfy-zenadriel",
+        "ascent-niagara-falls-grand-finals-zenadriel-bratis",
+        "eu-nationals-2026-day1-round1-zelage-cubone",
+        "eu-nationals-2026-day1-round2-tatap-nitra",
+        "eu-nationals-2026-day1-round3-asuna-sangorio",
+        "eu-nationals-2026-day1-round5-fdwings-yoyi",
+        "eu-nationals-2026-day1-round6-cabin-sebastian",
+        "eu-nationals-2026-day1-round8-noel-jigjun",
+        "european-nationals-2026-day2-round9-bonnie-shoko",
+        "european-nationals-2026-day2-round10-zelage-sebastian",
+        "european-nationals-2026-day2-round11-heri-casual",
+        "european-nationals-2026-day2-round12-hanky-noel",
+        "european-nationals-2026-day2-top8-qf1-asa-kiddelicious",
+        "european-nationals-2026-day2-top4-semifinal-cabin-sebastian",
+        "worlds-2026-top8-qf1-cabin-raingoddess",
+        "worlds-2026-top8-qf2-noel-liftdrasil",
+        "worlds-2026-top8-qf3-zero-asa",
+        "ascent-london-2026-day2-round11-dinkydane-djnova",
+        "ascent-london-2026-day2-round12-duckhats-dragoill",
+        "ascent-london-2026-top8-qf-fallenbuu-cabin",
+        "ascent-london-2026-top4-sf-superior-djnova",
+        "ascent-london-2026-grand-finals-superior-lifteril",
+        "ascent-london-day1-round1-taylor-steve",
+        "ascent-london-day1-round2-argonaut-dragoill",
+        "ascent-london-day1-round3-henti-lucas",
+        "ascent-london-day1-round4-enderzone-alisarez",
+        "ascent-london-day1-round5-superior-business",
+        "ascent-london-day1-round6-sono-sangorio",
+        "ascent-london-day1-round7-dinkydane-rexarion",
+        "ascent-london-day1-round8-celad-asuna",
+        "sea-nationals-2026-day1-round1-egg-long",
+        "sea-nationals-2026-day1-round2-aqua-haro",
+        "sea-nationals-2026-day1-round3-ruby-zelia-dragon-jg",
+        "sea-nationals-2026-day1-round5-mario-wind-rye",
+        "sea-nationals-2026-day1-round6-zaba-ray-pig",
+        "sea-nationals-2026-day1-round7-joel-neptuno",
+        "sea-nationals-2026-day1-round8-abby-microcanthus",
+        "sea-nationals-2026-day1-round9-megalobana-neptuno",
+        "ascent-taipei-2026-day2-round11-zabishan-quorax",
+        "ascent-taipei-2026-day2-round12-quorax-trueops",
+        "ascent-taipei-2026-day2-round13-apal-kuan",
+        "ascent-taipei-2026-day2-round14-enki-long",
+        "ascent-taipei-2026-day2-top8-qf-yamikin-zero",
+        "ascent-taipei-2026-day2-top4-sf-apal-long",
+        "ascent-taipei-2026-day2-bronze-long-yamikin",
+        "ascent-taipei-2026-day2-grand-finals-proan-apal",
+        "the-gauntlet-2026-round1-hyoka-duckhats",
+        "the-gauntlet-2026-round2-zelenitis-holysamurai",
+        "the-gauntlet-2026-round3-roen-jacepatrick",
+        "the-gauntlet-2026-round4-raingoddess-dal",
+        "the-gauntlet-2026-round5-gerthos-jr",
+        "the-gauntlet-2026-round6-glennyboy-limelight",
+        "the-gauntlet-2026-round7-aqua-apal",
+        "the-gauntlet-2026-round8-emp-yamikin",
+        "the-gauntlet-2026-round9-bailey-leowong",
+        "na-nationals-2026-day1-round1-dit-boeboe",
+        "na-nationals-2026-day1-round2-tlsovotl-aqua",
+        "na-nationals-2026-day1-round4-teamtruecaban-superior",
+        "na-nationals-2026-day1-round5-jett-longn",
+        "na-nationals-2026-day1-round6-celednb-quakems",
+        "na-nationals-2026-day1-round7-anjuhro-hyouka",
+        "na-nationals-2026-day1-round8-zorr-hessu",
+        "na-nationals-2026-day1-round9-likebailey-vernosius",
+        "na-nationals-2026-day2-round10-superior-asuna",
+        "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+        "na-nationals-2026-day2-round12-tlux-superior",
+        "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+        "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+        "na-nationals-2026-top8-qf-zetdivx-stevo7653"
+      ],
+      "totalMatches": 110
     }
   }
 }
