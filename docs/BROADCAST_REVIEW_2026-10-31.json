@@ -1490,13 +1490,77 @@
         "Topsy Decree",
         "Lightweaver's Assault"
       ]
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/0/beats/2/text",
+      "before": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives Liu Bei range with Ranger Strides (range four) and attacks for eight. Second Wind wakes Liu Bei up for eight more damage and the win.",
+      "after": "V41N uses Tariff Ring during CasuaL’s recollection phase to tax attacks. CasuaL makes Liu Bei distant, gives him additional range with Ranger Strides and attacks for eight. Second Wind wakes Liu Bei for eight more damage and the win."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/summary",
+      "before": "CasuaL wins — a Concealed Marksman threat is suppressed every turn, then a Backstep bait and Cheshire Cat damage",
+      "after": "CasuaL wins — Second Wind lets Perse stop a lethal attack, then Cheshire Cat, the champion and Liu Bei finish the match"
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/0/text",
+      "before": "V41N brings in Yuan Shao, Crown General and a Dream Fairy, and plays Concealed Marksman. With Ranger Strides in play, the Marksman hits for five (nine with boots), so it threatens lethal on every turn he can make it distant. Stifling Trap answers the Dream Fairy trigger.",
+      "after": "V41N plays Concealed Marksman and Dream Fairy. Ranger Strides makes the Marksman a major threat whenever it becomes distant, while Perse gives CasuaL a way to suppress it."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/0/cards",
+      "before": [
+        "Yuan Shao, Crown General",
+        "Concealed Marksman",
+        "Ranger Strides",
+        "Dream Fairy",
+        "Stifling Trap"
+      ],
+      "after": [
+        "Concealed Marksman",
+        "Ranger Strides",
+        "Dream Fairy",
+        "Perse, Relentless Raptor"
+      ]
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/2/text",
+      "before": "V41N makes his champion distant and attacks with a lethal Mad Hatter for eight. CasuaL draws Backstep as bait, lets V41N go hands down, then uses Second Wind to wake Perse and suppress the Mad Hatter.",
+      "after": "V41N threatens lethal with an eight-damage Mad Hatter attack. CasuaL digs with Backstep, then uses Second Wind to wake Perse and suppress Mad Hatter. He still holds Cry for Help as further interaction."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/2/cards",
+      "before": [
+        "Mad Hatter, Morose Heritor",
+        "Backstep",
+        "Second Wind"
+      ],
+      "after": [
+        "Mad Hatter, Morose Heritor",
+        "Backstep",
+        "Second Wind",
+        "Perse, Relentless Raptor",
+        "Cry for Help"
+      ]
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/3/text",
+      "before": "V41N has spent his resources and has a big board with slightly less damage than CasuaL. CasuaL puts lethal on the board and the attacking ally finishes the game and the match, 2-0.",
+      "after": "Cheshire Cat attacks for three and CasuaL’s champion adds pressure. Liu Bei comes down with a distant enabler to supply the finishing damage, giving CasuaL the match 2-0."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/1/beats/3/cards",
+      "before": [],
+      "after": [
+        "Cheshire Cat, Impish Grin",
+        "Liu Bei, Oathkeeper"
+      ]
     }
   ],
   "sourceFollowUp": [
     "Obtain stage-specific Worlds Swiss decklists before restoring attachments, including lists whose champion family matches.",
     "Reconcile European Round 7 game two with the official 1–1 result using video or an official ruling; game one is verified.",
     "Manila Mantra ownership is verified. Verify remaining Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
-    "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed."
+    "Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed."
   ],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
@@ -1643,6 +1707,17 @@
           "323:08–326:54"
         ],
         "finding": "Game one Centratus does find the second Oblation; Awi survives through recovery and Centratus concedes. Game two omens belong to Centratus, not Awi. Topsy grants spellshroud after Feu Awakening resolves to stop targeted Mirage’s Grave triggers; it does not draw cards. The supposed loss to Awakening was a hypothetical topdeck, not the result. Luxem Sight supplies recovery when revealed by Assault. Catalog corroborates Feu interdiction, Mirage’s Grave targeting, Topsy modes and Sight recovery."
+      },
+      {
+        "matchId": "ascent-london-2026-day2-round10-casual-vain",
+        "file": "Ascent London Day 2  Grand Archive TCG.txt",
+        "sha256": "37c5a62c061d5b9820104478e762708523d660a5050a276567d248dc529053e2",
+        "ranges": [
+          "136:34–137:14",
+          "157:04–158:35",
+          "161:03–161:20"
+        ],
+        "finding": "Game two finishing Lou B is Liu Bei, consistent with earlier captions, shared distant ability and four registered copies. Cheshire Cat/champion attacks precede it. CasuaL digs with Backstep and uses Second Wind to wake Perse; bait intent is not established. Corrected Tariff Ring controller and banish activation using its opponent-recollection restriction. Yuan Shao is discussed as hoped-for after the match, not verified played; removed from game-two played-card list."
       }
     ],
     "unresolved": [

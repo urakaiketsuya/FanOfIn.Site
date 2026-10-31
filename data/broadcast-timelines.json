@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:08:08.745Z",
+  "generatedAt": "2026-10-31T21:09:39.243Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -5849,7 +5849,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives Liu Bei range with Ranger Strides (range four) and attacks for eight. Second Wind wakes Liu Bei up for eight more damage and the win.",
+              "text": "V41N uses Tariff Ring during CasuaL’s recollection phase to tax attacks. CasuaL makes Liu Bei distant, gives him additional range with Ranger Strides and attacks for eight. Second Wind wakes Liu Bei for eight more damage and the win.",
               "cards": [
                 "Tariff Ring",
                 "Ranger Strides",
@@ -5866,18 +5866,17 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "CasuaL wins — a Concealed Marksman threat is suppressed every turn, then a Backstep bait and Cheshire Cat damage",
+          "summary": "CasuaL wins — Second Wind lets Perse stop a lethal attack, then Cheshire Cat, the champion and Liu Bei finish the match",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "V41N brings in Yuan Shao, Crown General and a Dream Fairy, and plays Concealed Marksman. With Ranger Strides in play, the Marksman hits for five (nine with boots), so it threatens lethal on every turn he can make it distant. Stifling Trap answers the Dream Fairy trigger.",
+              "text": "V41N plays Concealed Marksman and Dream Fairy. Ranger Strides makes the Marksman a major threat whenever it becomes distant, while Perse gives CasuaL a way to suppress it.",
               "cards": [
-                "Yuan Shao, Crown General",
                 "Concealed Marksman",
                 "Ranger Strides",
                 "Dream Fairy",
-                "Stifling Trap"
+                "Perse, Relentless Raptor"
               ],
               "tags": [
                 "sideboard"
@@ -5902,11 +5901,13 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "V41N makes his champion distant and attacks with a lethal Mad Hatter for eight. CasuaL draws Backstep as bait, lets V41N go hands down, then uses Second Wind to wake Perse and suppress the Mad Hatter.",
+              "text": "V41N threatens lethal with an eight-damage Mad Hatter attack. CasuaL digs with Backstep, then uses Second Wind to wake Perse and suppress Mad Hatter. He still holds Cry for Help as further interaction.",
               "cards": [
                 "Mad Hatter, Morose Heritor",
                 "Backstep",
-                "Second Wind"
+                "Second Wind",
+                "Perse, Relentless Raptor",
+                "Cry for Help"
               ],
               "tags": [
                 "swing"
@@ -5915,8 +5916,11 @@
             {
               "order": 4,
               "actor": "p1",
-              "text": "V41N has spent his resources and has a big board with slightly less damage than CasuaL. CasuaL puts lethal on the board and the attacking ally finishes the game and the match, 2-0.",
-              "cards": [],
+              "text": "Cheshire Cat attacks for three and CasuaL’s champion adds pressure. Liu Bei comes down with a distant enabler to supply the finishing damage, giving CasuaL the match 2-0.",
+              "cards": [
+                "Cheshire Cat, Impish Grin",
+                "Liu Bei, Oathkeeper"
+              ],
               "tags": [
                 "lethal"
               ]

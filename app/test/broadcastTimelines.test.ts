@@ -56,11 +56,14 @@ test('disputed game boundaries do not override official match draws', () => {
   assert.deepEqual(match.games.map(g => g.winner), ['p2', 'unknown']);
 });
 
-test('London game one restores the source-verified Liu Bei identity', () => {
+test('London finishing sequences restore source-verified Liu Bei identities', () => {
   const match = find('casual-vain');
   assert.ok(match.games[0].beats.at(-1)!.cards!.includes('Liu Bei, Oathkeeper'));
   assert.match(match.games[0].summary, /Liu Bei/);
-  assert.ok(!match.games[1].beats.at(-1)!.cards!.includes('Liu Bei, Oathkeeper'));
+  assert.ok(match.games[1].beats.at(-1)!.cards!.includes('Liu Bei, Oathkeeper'));
+  assert.match(match.games[0].beats.at(-1)!.text, /V41N uses Tariff Ring during CasuaL’s recollection/);
+  assert.ok(!match.games[1].beats[0].cards!.includes('Yuan Shao, Crown General'));
+  assert.doesNotMatch(match.games[1].beats[2].text, /bait/);
 });
 
 test('verified NA Round 3 game outcomes produce the recorded match draw', () => {
