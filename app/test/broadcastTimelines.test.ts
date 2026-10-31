@@ -51,11 +51,25 @@ test('unverified identities and Swiss-stage lists cannot auto-attach tournament 
 });
 
 test('disputed game boundaries do not override official match draws', () => {
-  for (const id of ['marux-pewpewstan', 'noel-tress']) {
+  for (const id of ['marux-pewpewstan']) {
     const match = find(id);
     assert.equal(match.result, 'Draw 1–1');
     assert.ok(match.games.every(g => g.winner === 'unknown'));
   }
+});
+
+test('verified NA Round 3 game outcomes produce the recorded match draw', () => {
+  const match = find('noel-tress');
+  assert.equal(match.result, 'Draw 1–1');
+  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'p1']);
+});
+
+test('recap prose uses canonical champion names without rewriting source aliases', () => {
+  for (const match of data.matches) {
+    const { sourceNote: _sourceNote, ...recap } = match;
+    assert.doesNotMatch(JSON.stringify(recap), /\b(?:Ry|Xander|Diaochan)\b/, match.id);
+  }
+  assert.match(find('round5-mario-wind-rye').sourceNote!, /"Ry"/);
 });
 
 test('unsupported card identities, ownership and sideboard counts stay out of recaps', () => {

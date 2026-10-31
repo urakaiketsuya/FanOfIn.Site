@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:22:16.565Z",
+  "generatedAt": "2026-10-31T20:50:48.943Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
       "event": "Ascent Akihabara",
       "eventId": 38740,
-      "round": "Round 9 (final round, Day 1): Fire Diaochan against Wind Umbra Tristan",
+      "round": "Round 9 (final round, Day 1): Fire Diao Chan against Wind Umbra Tristan",
       "players": [
         {
           "id": "p1",
           "name": "Z3US",
-          "deck": "Fire Diaochan aggro from Indonesia (Firebloom Flourish x3, Searing Rebuke x3, Fractal of Sparks, Shimmering Refraction, Ravenous Pyre, Ashwick Cremator, Necklace of Foresight, Fanatical Devotee, Acolyte of Cultivation, Wind Resonance Bauble, Grand Crusader's Ring, Spirit of Fire with alternate art; Scatter Essence x3-4, Safeguard Amulet, Blanche and Staggering Strike in the side)"
+          "deck": "Fire Diao Chan aggro from Indonesia (Firebloom Flourish x3, Searing Rebuke x3, Fractal of Sparks, Shimmering Refraction, Ravenous Pyre, Ashwick Cremator, Necklace of Foresight, Fanatical Devotee, Acolyte of Cultivation, Wind Resonance Bauble, Grand Crusader's Ring, Spirit of Fire with alternate art; Scatter Essence x3-4, Safeguard Amulet, Blanche and Staggering Strike in the side)"
         },
         {
           "id": "p2",
@@ -24,7 +24,7 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "The casters think Schwarzer should bring in Blanche, Safeguard Amulet and Scatter Essence to deal with Firebloom Flourish, and the three Staggering Strikes to keep Z3US from a lethal line. They say cards like Ensnaring Fumes are too spell-based to matter, and even Guan Yu does little, because Diaochan seldom fights a board. A printout issue with the sideboard list was sorted out by the judges before game two."
+          "text": "The casters think Schwarzer should bring in Blanche, Safeguard Amulet and Scatter Essence to deal with Firebloom Flourish, and the three Staggering Strikes to keep Z3US from a lethal line. They say cards like Ensnaring Fumes are too spell-based to matter, and even Guan Yu does little, because Diao Chan seldom fights a board. A printout issue with the sideboard list was sorted out by the judges before game two."
         },
         {
           "beforeGame": 2,
@@ -51,7 +51,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Z3US plays Spirit of Fire and starts with two Firebloom Flourishes, the card that lets Diaochan sit at low influence: at the beginning of the end phase, with four or fewer influence, he draws a card into memory and puts a glimmer counter on his champion. He dumps his hand each turn and goes from three up to five influence, always with six cards or more.",
+              "text": "Z3US plays Spirit of Fire and starts with two Firebloom Flourishes, the card that lets Diao Chan sit at low influence: at the beginning of the end phase, with four or fewer influence, he draws a card into memory and puts a glimmer counter on his champion. He dumps his hand each turn and goes from three up to five influence, always with six cards or more.",
               "cards": [
                 "Firebloom Flourish",
                 "Ravenous Pyre"
@@ -270,12 +270,12 @@
       "id": "ascent-manila-2026-day2-round10-muck-zero",
       "event": "Ascent Manila",
       "eventId": 42040,
-      "round": "Round 10 (Day 2, Round 1) — Normal Ry (Arcane spell combo) against Fire Merlin",
+      "round": "Round 10 (Day 2, Round 1) — Normal Rai (Arcane spell combo) against Fire Merlin",
       "players": [
         {
           "id": "p1",
           "name": "Muck1234",
-          "deck": "Normal Ry (all-Arcane brew with about 30 Arcane spells: Careful Study, Power Overwhelming, Tome of Sacred Lightning, Arcane Blast, Erratic Bolt, Advent of the Stormcaller, Shattering Discharge, Peer into Mana, Crystallized Destiny, Topsy Decree)"
+          "deck": "Normal Rai (all-Arcane brew with about 30 Arcane spells: Careful Study, Power Overwhelming, Tome of Sacred Lightning, Arcane Blast, Erratic Bolt, Advent of the Stormcaller, Shattering Discharge, Peer into Mana, Crystallized Destiny, Topsy Decree)"
         },
         {
           "id": "p2",
@@ -288,7 +288,7 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "ZeRoMagus has few options. The casters note that Ry has no fast-speed cards except Shattering Discharge and that Topsy Decree is Muck1234's only way to stop Merlin's Crystallized Destiny."
+          "text": "ZeRoMagus has few options. The casters note that Rai has no fast-speed cards except Shattering Discharge and that Topsy Decree is Muck1234's only way to stop Merlin's Crystallized Destiny."
         }
       ],
       "games": [
@@ -300,7 +300,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ZeRoMagus starts with Three of Hearts and plays Orb of Sealing, which flips all Muck1234's banished Arcane cards face down. The casters say this is the problem card for Ry: Muck1234 must play an Arcane Sight to break the Orb and turn them face up. Muck1234 stays at level 2 and does not find a Dungeon Guide.",
+              "text": "ZeRoMagus starts with Three of Hearts and plays Orb of Sealing, which flips all Muck1234's banished Arcane cards face down. The casters say this is the problem card for Rai: Muck1234 must play an Arcane Sight to break the Orb and turn them face up. Muck1234 stays at level 2 and does not find a Dungeon Guide.",
               "cards": [
                 "Three of Hearts",
                 "Orb of Sealing",
@@ -324,7 +324,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Muck1234 keeps two Arcane Blasts on top of the deck and throws nine banished cards into Erratic Bolt. Nine damage plus two Arcane Blasts is 18, and ZeRoMagus, on Merlin, has no answer. The casters say that this is the most extreme version of a Ry turn they have seen.",
+              "text": "Muck1234 keeps two Arcane Blasts on top of the deck and throws nine banished cards into Erratic Bolt. Nine damage plus two Arcane Blasts is 18, and ZeRoMagus, on Merlin, has no answer. The casters say that this is the most extreme version of a Rai turn they have seen.",
               "cards": [
                 "Erratic Bolt",
                 "Arcane Blast",
@@ -524,7 +524,7 @@
       "id": "ascent-manila-2026-day2-round12-hanky-zeia",
       "event": "Ascent Manila",
       "eventId": 42040,
-      "round": "Round 12 (Day 2, Round 3) — Wind Tristan against Wind Luxom Xander, both at 8-2-1 and fighting for Top 8",
+      "round": "Round 12 (Day 2, Round 3) — Wind Tristan against Wind Luxom Zander, both at 8-2-1 and fighting for Top 8",
       "players": [
         {
           "id": "p1",
@@ -534,7 +534,7 @@
         {
           "id": "p2",
           "name": "Zefier",
-          "deck": "Wind Luxom Xander (Lightweaver's Assault, Luxem Sight, Gleaming Cut, Vanish from Sight, Juggle Knives, Backup Charger, Turbo Charge, Unmake Duality, Prismspire Scepter, Creative Shock, Regal Inquisition)"
+          "deck": "Wind Luxom Zander (Lightweaver's Assault, Luxem Sight, Gleaming Cut, Vanish from Sight, Juggle Knives, Backup Charger, Turbo Charge, Unmake Duality, Prismspire Scepter, Creative Shock, Regal Inquisition)"
         }
       ],
       "result": "HenkieTheGoat wins 2-1 (game 2 awarded to Zefier by a game loss for an illegal play)",
@@ -1341,12 +1341,12 @@
       "id": "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
       "event": "Worlds 2026",
       "eventId": 60488,
-      "round": "Championship Sunday — Semifinal 1: Wind Luxom Xander against Wind Krux Lorraine",
+      "round": "Championship Sunday — Semifinal 1: Wind Luxom Zander against Wind Krux Lorraine",
       "players": [
         {
           "id": "p1",
           "name": "Jett",
-          "deck": "Wind Luxom Xander (TM32 build; Lightweaver's Assault x3, Luxem Sight, Gleaming Cut, Heavenly Guide, Dungeon Guide, Poisoned Dagger, Assassin's Ripper, Slice and Dice, Sadi, Veiling Breeze, Nullifying Mirror, Incapacitate, Ensnaring Fumes, Fairy Whispers, Benediction Angel, Candlelight Hourglass)"
+          "deck": "Wind Luxom Zander (TM32 build; Lightweaver's Assault x3, Luxem Sight, Gleaming Cut, Heavenly Guide, Dungeon Guide, Poisoned Dagger, Assassin's Ripper, Slice and Dice, Sadi, Veiling Breeze, Nullifying Mirror, Incapacitate, Ensnaring Fumes, Fairy Whispers, Benediction Angel, Candlelight Hourglass)"
         },
         {
           "id": "p2",
@@ -1465,7 +1465,7 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "TheRainGoddess goes first and Jett starts with a Windmill Engineer. Verdigris Decree, Calming Breeze and Spirit Blade: Ascension arrive, and TheRainGoddess levels Lorraine to two. The casters wait for Jett to find his Dungeon Guide and note he has not yet hit Xander level one.",
+              "text": "TheRainGoddess goes first and Jett starts with a Windmill Engineer. Verdigris Decree, Calming Breeze and Spirit Blade: Ascension arrive, and TheRainGoddess levels Lorraine to two. The casters wait for Jett to find his Dungeon Guide and note he has not yet hit Zander level one.",
               "cards": [
                 "Windmill Engineer",
                 "Verdigris Decree",
@@ -1490,7 +1490,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Jett plays defensively with Veiling Breeze, Nullifying Mirror and Incapacitate and gets Sadi back with Ensnaring Fumes. TheRainGoddess needs a Spirit Blade: Retribution for twelve, but a Candlelight Hourglass makes it cost more, and Jett has nine cards in hand. The casters say the longer the game goes, the more Xander's Blinding Steel chips away.",
+              "text": "Jett plays defensively with Veiling Breeze, Nullifying Mirror and Incapacitate and gets Sadi back with Ensnaring Fumes. TheRainGoddess needs a Spirit Blade: Retribution for twelve, but a Candlelight Hourglass makes it cost more, and Jett has nine cards in hand. The casters say the longer the game goes, the more Zander's Blinding Steel chips away.",
               "cards": [
                 "Veiling Breeze",
                 "Nullifying Mirror",
@@ -1527,7 +1527,7 @@
       "id": "worlds-2026-championship-sunday-semifinal2-zero-livil",
       "event": "Worlds 2026",
       "eventId": 60488,
-      "round": "Championship Sunday — Semifinal 2: Wind Krux Lorraine against Wind Luxom Xander",
+      "round": "Championship Sunday — Semifinal 2: Wind Krux Lorraine against Wind Luxom Zander",
       "players": [
         {
           "id": "p1",
@@ -1537,7 +1537,7 @@
         {
           "id": "p2",
           "name": "Lifdrasyl",
-          "deck": "Wind Luxom Xander (TM32; higher seed; Lightweaver's Assault, Luxem Sight, Surveil the Winds, Fairy Whispers, Veiling Breeze, Nullifying Mirror, Incapacitate, Windmill Engineer, Sadi, Serro operative)"
+          "deck": "Wind Luxom Zander (TM32; higher seed; Lightweaver's Assault, Luxem Sight, Surveil the Winds, Fairy Whispers, Veiling Breeze, Nullifying Mirror, Incapacitate, Windmill Engineer, Sadi, Serro operative)"
         }
       ],
       "result": "Zero0000000000 wins 2-0 and reaches the final",
@@ -1575,7 +1575,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Spirit Blade: Retribution comes for 15 damage with a sword added, compared with seven against TheRainGoddess, because the high-power allies are in banishment. Lifdrasyl has only nine life at Xander level two and needs a Veiling Breeze off a surveil, but he finds a Luxem Sight, and Zero0000000000 takes game one.",
+              "text": "Spirit Blade: Retribution comes for 15 damage with a sword added, compared with seven against TheRainGoddess, because the high-power allies are in banishment. Lifdrasyl has only nine life at Zander level two and needs a Veiling Breeze off a surveil, but he finds a Luxem Sight, and Zero0000000000 takes game one.",
               "cards": [
                 "Spirit Blade: Retribution",
                 "Veiling Breeze",
@@ -1637,12 +1637,12 @@
       "id": "worlds-2026-championship-sunday-grandfinals-jet-zero",
       "event": "Worlds 2026",
       "eventId": 60488,
-      "round": "Championship Sunday — Grand Finals (best of 5, untimed): Wind Luxom Xander against Wind Krux Lorraine",
+      "round": "Championship Sunday — Grand Finals (best of 5, untimed): Wind Luxom Zander against Wind Krux Lorraine",
       "players": [
         {
           "id": "p1",
           "name": "Jett",
-          "deck": "Wind Luxom Xander (TM32; Lightweaver's Assault, Luxem Sight, Gleaming Cut, Turbo Charge x3, Heavenly Guide, Dungeon Guide, Poisoned Dagger, Assassin's Ripper, Slice and Dice, Sadi, Veiling Breeze, Nullifying Mirror, Incapacitate, Purifying Thurible, Benediction Angel, Fairy Whispers, Lost Providence)"
+          "deck": "Wind Luxom Zander (TM32; Lightweaver's Assault, Luxem Sight, Gleaming Cut, Turbo Charge x3, Heavenly Guide, Dungeon Guide, Poisoned Dagger, Assassin's Ripper, Slice and Dice, Sadi, Veiling Breeze, Nullifying Mirror, Incapacitate, Purifying Thurible, Benediction Angel, Fairy Whispers, Lost Providence)"
         },
         {
           "id": "p2",
@@ -1799,7 +1799,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Zero0000000000 goes first and plays Turbo Charge to build influence and level fast. Jett needs to win one game to become champion and plays more aggressively, going to Xander with a prepared Scout. The casters say this will be an absolute banger.",
+              "text": "Zero0000000000 goes first and plays Turbo Charge to build influence and level fast. Jett needs to win one game to become champion and plays more aggressively, going to Zander with a prepared Scout. The casters say this will be an absolute banger.",
               "cards": [
                 "Turbo Charge",
                 "Scout the Land"
@@ -1850,7 +1850,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Jett levels to Xander one to turn on his class bonuses, pops the Poisoned Dagger and swings with everything through a possible Veiling Breeze. He keeps the Heavenly Guide to wait for Zero0000000000's Dungeon Guide. Zero0000000000 stays alive and brings back the Drawn Blade with Lorraine, and a Verdigris Decree comes down.",
+              "text": "Jett levels to Zander one to turn on his class bonuses, pops the Poisoned Dagger and swings with everything through a possible Veiling Breeze. He keeps the Heavenly Guide to wait for Zero0000000000's Dungeon Guide. Zero0000000000 stays alive and brings back the Drawn Blade with Lorraine, and a Verdigris Decree comes down.",
               "cards": [
                 "Poisoned Dagger",
                 "Heavenly Guide",
@@ -4136,7 +4136,7 @@
       "id": "eu-nationals-2026-day1-round7-marux-pewpewstan",
       "event": "European Nationals 2026",
       "eventId": 54238,
-      "round": "Round 7 (Day 1): Wind Krux Lorraine against Wind Luxom Xander",
+      "round": "Round 7 (Day 1): Wind Krux Lorraine against Wind Luxom Zander",
       "players": [
         {
           "id": "p1",
@@ -4146,7 +4146,7 @@
         {
           "id": "p2",
           "name": "PewPewStan",
-          "deck": "Wind Luxom Xander (Lightweaver's Assault, Striking Illuminance, Luxem Sight, Regal Inquisition, Vanish from Sight, Resolute Stand, Dream Fairy, Gentle Respite, Ayella, Corhazi insignia)"
+          "deck": "Wind Luxom Zander (Lightweaver's Assault, Striking Illuminance, Luxem Sight, Regal Inquisition, Vanish from Sight, Resolute Stand, Dream Fairy, Gentle Respite, Ayella, Corhazi insignia)"
         }
       ],
       "result": "Draw 1–1",
@@ -4227,7 +4227,7 @@
             {
               "order": 3,
               "actor": "both",
-              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Xander and cannot get there. Time is called; the recorded match result is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
+              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Zander and cannot get there. Time is called; the recorded match result is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
               "cards": [
                 "Ghosts of Pendragon"
               ],
@@ -5318,7 +5318,7 @@
       "id": "worlds-2026-top8-qf2-noel-liftdrasil",
       "event": "Worlds 2026",
       "eventId": 60488,
-      "round": "Top 8 — Quarterfinal 2: Fire Vanitas \"horses and taxes\" against Wind Luxom Xander",
+      "round": "Top 8 — Quarterfinal 2: Fire Vanitas \"horses and taxes\" against Wind Luxom Zander",
       "players": [
         {
           "id": "p1",
@@ -5328,7 +5328,7 @@
         {
           "id": "p2",
           "name": "Lifdrasyl",
-          "deck": "Wind Luxom Xander (one Fluffy Shopkeep in the main, Windmill Engineer, Sadi, Purifying Thurible, Nullifying Mirror, Dream Fairy, Incapacitate, Lightweaver's Assault, Luxem Sight, Blinding Steel, Surveil the Winds, Slice and Dice; Ayella-style card flow)"
+          "deck": "Wind Luxom Zander (one Fluffy Shopkeep in the main, Windmill Engineer, Sadi, Purifying Thurible, Nullifying Mirror, Dream Fairy, Incapacitate, Lightweaver's Assault, Luxem Sight, Blinding Steel, Surveil the Winds, Slice and Dice; Ayella-style card flow)"
         }
       ],
       "result": "Lifdrasyl wins 2-1",
@@ -5337,7 +5337,7 @@
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Lifdrasyl wins — he reaches Xander level three through Noel's taxes and wins the damage race",
+          "summary": "Lifdrasyl wins — he reaches Zander level three through Noel's taxes and wins the damage race",
           "beats": [
             {
               "order": 1,
@@ -5584,7 +5584,7 @@
       "id": "worlds-2026-top8-qf4-glennyboy-jet",
       "event": "Worlds 2026",
       "eventId": 60488,
-      "round": "Top 8 — Quarterfinal 4: Wind Krux Lorraine against Wind Luxom Xander",
+      "round": "Top 8 — Quarterfinal 4: Wind Krux Lorraine against Wind Luxom Zander",
       "players": [
         {
           "id": "p1",
@@ -5594,7 +5594,7 @@
         {
           "id": "p2",
           "name": "Jett",
-          "deck": "Wind Luxom Xander (TM32 build; Lightweaver's Assault x3, Luxem Sight, Gleaming Cut, Blinding Steel, Heavenly Guide, Dungeon Guide, Slice and Dice, Poisoned Dagger, Veiling Breeze, Calming Breeze, Ensnaring Fumes, Surveil the Winds, Fairy Whispers, Incapacitate)"
+          "deck": "Wind Luxom Zander (TM32 build; Lightweaver's Assault x3, Luxem Sight, Gleaming Cut, Blinding Steel, Heavenly Guide, Dungeon Guide, Slice and Dice, Poisoned Dagger, Veiling Breeze, Calming Breeze, Ensnaring Fumes, Surveil the Winds, Fairy Whispers, Incapacitate)"
         }
       ],
       "result": "Jett wins 2-0",
@@ -5609,7 +5609,7 @@
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Jett wins — a free Xander level-up with Blinding Steel and a Lightweaver's Assault line beat GlenyBoi's greedy Pendragon turn",
+          "summary": "Jett wins — a free Zander level-up with Blinding Steel and a Lightweaver's Assault line beat GlenyBoi's greedy Pendragon turn",
           "beats": [
             {
               "order": 1,
@@ -5624,7 +5624,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Jett resolves a level-up to Xander with Blinding Steel without losing a single card, which the casters call a blinding lead. GlenyBoi looks for Verdigris Decree to unlock the Pendragons and Sadi draws a Turbo Charge.",
+              "text": "Jett resolves a level-up to Zander with Blinding Steel without losing a single card, which the casters call a blinding lead. GlenyBoi looks for Verdigris Decree to unlock the Pendragons and Sadi draws a Turbo Charge.",
               "cards": [
                 "Zander, Blinding Steel",
                 "Sadi, Blood Harvester"
@@ -8448,12 +8448,12 @@
       "id": "sea-nationals-2026-day1-round4-ai-sentus",
       "event": "Southeast Asia Nationals 2026",
       "eventId": 56265,
-      "round": "Round 4 (Day 1): Fire Luxom Xander against Water Ciel Oblation",
+      "round": "Round 4 (Day 1): Fire Luxom Zander against Water Ciel Oblation",
       "players": [
         {
           "id": "p1",
           "name": "AI",
-          "deck": "Fire Luxom Xander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Excalibur and Incapacitate options, Backup Charger, Foe awakening; a Luxom/Exia Angelic Channeling)",
+          "deck": "Fire Luxom Zander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Excalibur and Incapacitate options, Backup Charger, Foe awakening; a Luxom/Exia Angelic Channeling)",
           "eventDecklist": "unverified-identity"
         },
         {
@@ -10335,12 +10335,12 @@
       "id": "the-gauntlet-2026-round2-zelenitis-holysamurai",
       "event": "The Gauntlet 2026",
       "eventId": 60363,
-      "round": "Round 2: Water Fractals Diaochan against Fire Slimes Sylvia",
+      "round": "Round 2: Water Fractals Diao Chan against Fire Slimes Sylvia",
       "players": [
         {
           "id": "p1",
           "name": "Xaleonidas",
-          "deck": "Water Fractals Diaochan (Fractal of Rain, Fractal of Snow, Fractal of Insight, Fractal of Refreshment, Captivating Opulence, Glimmering Refusal, Refracting Missile, Fracturize, Burst Asunder, Frostsworn Paladin, Bullfrog, Backup Charger)"
+          "deck": "Water Fractals Diao Chan (Fractal of Rain, Fractal of Snow, Fractal of Insight, Fractal of Refreshment, Captivating Opulence, Glimmering Refusal, Refracting Missile, Fracturize, Burst Asunder, Frostsworn Paladin, Bullfrog, Backup Charger)"
         },
         {
           "id": "p2",
@@ -11516,7 +11516,7 @@
       "id": "worlds-swiss-2026-round2-raylam-caven",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 2: Fire Oblation CL against Water Fractals Diaochan",
+      "round": "Round 2: Fire Oblation CL against Water Fractals Diao Chan",
       "players": [
         {
           "id": "p1",
@@ -11527,7 +11527,7 @@
         {
           "id": "p2",
           "name": "TeamTrueCaban",
-          "deck": "Water Fractals Diaochan, his signature list (Fractal of Rain, Fractal of Insight, Fractal of Intrusion, Refracting Missile x3, Shimmering Refraction x2, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Enfeebling Orb, Frostsworn Paladin, Zhang Jiao; Song of Frost, Nullifying Mirror, Overlapping Visages in the side)",
+          "deck": "Water Fractals Diao Chan, his signature list (Fractal of Rain, Fractal of Insight, Fractal of Intrusion, Refracting Missile x3, Shimmering Refraction x2, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Enfeebling Orb, Frostsworn Paladin, Zhang Jiao; Song of Frost, Nullifying Mirror, Overlapping Visages in the side)",
           "eventDecklist": "unverified-stage"
         }
       ],
@@ -12157,12 +12157,12 @@
       "id": "worlds-swiss-2026-round6-noel-asa",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 6: Water Fractals Diaochan against Wind Razorgale Arisana",
+      "round": "Round 6: Water Fractals Diao Chan against Wind Razorgale Arisana",
       "players": [
         {
           "id": "p1",
           "name": "Noel",
-          "deck": "Water Fractals Diaochan, EU Nationals Gauntlet invite (Fractal of Snow, Fractal of Rain, Fractal of Intrusion, Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Frostsworn Paladin, Zhang Jiao, Nullifying Lantern, Wind Resonance Bauble, Fracturize); undefeated at 5-0 coming in",
+          "deck": "Water Fractals Diao Chan, EU Nationals Gauntlet invite (Fractal of Snow, Fractal of Rain, Fractal of Intrusion, Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Frostsworn Paladin, Zhang Jiao, Nullifying Lantern, Wind Resonance Bauble, Fracturize); undefeated at 5-0 coming in",
           "eventDecklist": "unverified-stage"
         },
         {
@@ -12634,12 +12634,12 @@
       "id": "worlds-swiss-2026-round8-caven-sono",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 8 (last Swiss round, win and in for the asynchronous bracket): Water Fractals Diaochan against Wind Krux Lorraine",
+      "round": "Round 8 (last Swiss round, win and in for the asynchronous bracket): Water Fractals Diao Chan against Wind Krux Lorraine",
       "players": [
         {
           "id": "p1",
           "name": "TeamTrueCaban",
-          "deck": "Water Fractals Diaochan, EU Nationals winner (Fractal of Rain, Fractal of Snow, Fractal of Intrusion, Fractal of Refreshment, Zhang Jiao x2, Frostsworn Paladin, Refracting Missile, Shimmering Refraction x3, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Purifying Thurible, Return to the Archive, Nullifying Mirror, Calming Breeze; no Captivating Opulence)",
+          "deck": "Water Fractals Diao Chan, EU Nationals winner (Fractal of Rain, Fractal of Snow, Fractal of Intrusion, Fractal of Refreshment, Zhang Jiao x2, Frostsworn Paladin, Refracting Missile, Shimmering Refraction x3, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Purifying Thurible, Return to the Archive, Nullifying Mirror, Calming Breeze; no Captivating Opulence)",
           "eventDecklist": "unverified-stage"
         },
         {
@@ -13177,8 +13177,8 @@
       "games": [
         {
           "gameNumber": 1,
-          "winner": "unknown",
-          "summary": "Outcome unconfirmed",
+          "winner": "p2",
+          "summary": "Tress wins — survives Noel’s final attack to complete the mill-out",
           "beats": [
             {
               "order": 1,
@@ -13260,8 +13260,8 @@
         },
         {
           "gameNumber": 2,
-          "winner": "unknown",
-          "summary": "Outcome unconfirmed",
+          "winner": "p1",
+          "summary": "Noel wins — Tress runs out of healing, tying the match 1–1",
           "beats": [
             {
               "order": 1,
@@ -13305,8 +13305,8 @@
             },
             {
               "order": 4,
-              "actor": "both",
-              "text": "Tress digs for a heal using Tome of Abyssal Heaven but cannot find a second one. Time expires; the recorded match result is a draw. The casters praise Noel for playing to outs.",
+              "actor": "p1",
+              "text": "Tress digs for a heal using Tome of Abyssal Heaven but cannot find a second one. Noel wins game two with damage, tying the match 1–1 as time expires. The casters praise Noel for playing to outs.",
               "cards": [
                 "Tome of Abyssal Heaven"
               ]
@@ -13314,7 +13314,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. The recorded match result is 1–1; game boundaries and outcomes require source verification."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. Game outcomes verified against the supplied Round 3 captions: Tress wins game one at 40:53–41:16; Noel wins game two and ties the match at 65:35–66:44."
     },
     {
       "id": "na-nationals-2026-day1-round4-teamtruecaban-superior",
