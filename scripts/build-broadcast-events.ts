@@ -3,10 +3,12 @@ import { buildBroadcastEventMap, type BroadcastEventSource } from '../shared/src
 import type { BroadcastTimelines } from '../shared/src/broadcast-timeline-types.ts';
 const data = new URL('../data/', import.meta.url);
 const recaps: BroadcastTimelines = JSON.parse(await readFile(new URL('broadcast-timelines.json', data), 'utf8'));
+const catalog = JSON.parse(await readFile(new URL("card-catalog.json", data), "utf8"));
+const spirits = new Set<string>(catalog.cards.filter((card: { types: string[]; subtypes: string[] }) => card.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT")).map((card: { name: string }) => card.name));
 const ids = [...new Set(recaps.matches.flatMap(m => m.eventId ? [m.eventId] : []))];
 const events = await Promise.all(ids.map(async id => {
   const source: BroadcastEventSource = JSON.parse(await readFile(new URL(`omnidex/events/${id}.json`, data), 'utf8'));
-  return buildBroadcastEventMap(source, recaps.matches.filter(m => m.eventId === id));
+  return buildBroadcastEventMap(source, recaps.matches.filter(m => m.eventId === id), spirits);
 }));
 events.sort((a, b) => b.date.localeCompare(a.date));
 const generatedAt = new Date().toISOString();

@@ -14,3 +14,9 @@ test('multiword names match and unknown decks retain their fallback', () => {
   assert.deepEqual(championsForDeck('Merlin', []), []);
   assert.deepEqual(championsForDeck('Merlina', cards), []);
 });
+
+test('spirit portraits do not become named champion matches or filters', () => {
+  const spirit = {name:'Spirit of Wind',subtypes:['SPIRIT']} as Card;
+  assert.deepEqual(championsForDeck('Spirit of Wind', [spirit]), []);
+  assert.deepEqual(championsForDeck('Alice / Spirit of Wind', [...cards, spirit]).map(c=>c.name), ["Alice, Whim's Monarch"]);
+});

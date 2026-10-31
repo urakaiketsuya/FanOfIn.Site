@@ -16,7 +16,7 @@ import TimelineStatus from "./TimelineStatus";
 export default function TimelinesIndex() {
   useDocumentTitle("Match Timelines", "Players, cards and key moments from broadcast matches.");
   const data = useBroadcastTimelines();
-  const champions = useTimelineChampions();
+  const champions = useTimelineChampions(true);
   const eventMaps = usePublishedData<BroadcastEventMaps>("broadcast-events", "/data/broadcast-events.json");
   const eventStatus = usePublishedDataStatus("broadcast-events", "/data/broadcast-events.json");
   const [params, setParams] = useSearchParams();

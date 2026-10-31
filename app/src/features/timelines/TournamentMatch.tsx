@@ -10,11 +10,15 @@ export default function TournamentMatch({ match, recap, champions, highlighted, 
     {match.players.map(player => {
       const deck = recap?.players.find(p => p.name.toLowerCase() === player.name.toLowerCase())?.deck;
       const cards = championsForDeck(deck ?? '', champions);
+      const portraits = cards.length ? cards.map(card => ({ card, name: card.name.split(',')[0] })) : (player.spirits ?? []).map(name => ({ card: champions?.find(card => card.name === name), name }));
       return <div key={player.id} className={`flex min-w-0 items-center gap-2 border-b border-ctp-surface1 px-3 py-3 last:border-0 ${match.winner === player.id ? 'bg-ctp-blue/5' : ''}`}>
-        {!!cards.length && <div className="flex max-w-28 flex-wrap gap-1">
-          {cards.map(card => <div key={card.slug} className="w-12 [&_[data-component=CardArtTile]]:aspect-square [&_[data-component=CardArtTile]]:rounded-full [&_img]:!w-[160%] [&_img]:!left-[-30%] [&_img]:!top-[-25%]">
-            <CardArtTile card={card} name={card.name} artworkOnly /><span className="mt-1 block break-words text-center text-[11px] text-ctp-subtext1">{card.name.split(',')[0]}</span>
-          </div>)}
+        {!!portraits.length && <div className="flex max-w-40 flex-wrap gap-1">
+          {portraits.map(({ card, name }) => {
+            const portrait = <><CardArtTile card={card} name={name} artworkOnly /><span className="mt-1 block break-words text-center text-[11px] text-ctp-subtext1">{name}</span></>;
+            return <div key={name} className={`${cards.length ? "w-12" : "w-20"} [&_[data-component=CardArtTile]]:aspect-square [&_[data-component=CardArtTile]]:rounded-full [&_img]:!w-[160%] [&_img]:!left-[-30%] [&_img]:!top-[-25%] [&_[data-component=CardArtTile]]:mx-auto [&_[data-component=CardArtTile]]:w-12`}>
+              {!recap && card ? <Link to={`/cards/${card.slug}`} className="block min-h-control rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{portrait}</Link> : portrait}
+            </div>;
+          })}
         </div>}
         <div className="min-w-0 flex-1"><p className="break-words text-sm font-semibold">{player.name}</p>{match.winner === player.id && <span className="text-xs text-ctp-blue">Winner</span>}{player.status === 'tied' && <span className="text-xs text-ctp-subtext1">Draw</span>}{player.status === 'byed' && <span className="text-xs text-ctp-subtext1">Bye</span>}</div>
         <span className="text-lg font-semibold tabular-nums">{['winner', 'loser', 'tied', 'byed'].includes(player.status) ? player.score : '—'}</span>

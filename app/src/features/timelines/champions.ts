@@ -2,8 +2,8 @@ import { useLiveQuery } from "dexie-react-hooks";
 import type { Card } from "@gatcg/shared";
 import { db } from "../../lib/db";
 
-export function useTimelineChampions() {
-  return useLiveQuery(() => db.cards.filter(card => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT")).toArray(), []);
+export function useTimelineChampions(includeSpirits = false) {
+  return useLiveQuery(() => db.cards.filter(card => card.types.includes("CHAMPION") && (includeSpirits || !card.subtypes.includes("SPIRIT"))).toArray(), [includeSpirits]);
 }
 
 // One representative card per explicitly named champion, in deck-description order.
@@ -13,6 +13,7 @@ export function championsForDeck(deck: string, cards: Card[] = []) {
   const words = ` ${normalize(deck)} `;
   const matches = new Map<string, { card: Card; position: number }>();
   for (const card of cards) {
+    if (card.subtypes?.includes("SPIRIT")) continue;
     const name = normalize(card.name.split(",")[0]);
     const position = words.indexOf(` ${name} `);
     if (position >= 0 && !matches.has(name)) matches.set(name, { card, position });

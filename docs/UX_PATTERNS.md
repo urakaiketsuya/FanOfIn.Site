@@ -681,3 +681,14 @@ and URL state. Worlds shows six verified advancement edges and a separate bronze
 TheRainGoddess highlights stop before the championship final. All 36 timeline tests,
 app/shared typechecks and focused lint pass. Larger-cut windows have synthetic coverage;
 forced network failure/retry, text zoom and on-screen keyboard behavior were not exercised.
+
+Tournament portrait fallback: use the player's public Material-deck spirit when no
+named champion is available. Keep the spirit name visible and link result-only portraits
+to card details. Prefer explicit stage lists; never guess a spirit from the deck's element
+or substitute another stage's list where stage-specific evidence is required.
+
+Spirit fallback verification (2026-10-31): checked Las Vegas Top Cut at 390px and
+1280px, readable spirit names, keyboard card links, 48px targets, round navigation
+and no horizontal overflow. App/shared typechecks, focused lint and 39 timeline tests
+pass, including private/conflicting lists and Swiss-stage isolation. Forced image/network
+failures, text zoom and on-screen keyboard behavior were not retested.

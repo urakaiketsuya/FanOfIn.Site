@@ -1,6 +1,6 @@
 import type { BroadcastTimelineMatch } from './broadcast-timeline-types.js';
 
-export interface BroadcastEventPlayer { id: number; name: string; score: number; status: string }
+export interface BroadcastEventPlayer { id: number; name: string; score: number; status: string; spirits?: string[] }
 export interface BroadcastEventPairing {
   id: string; round: number; label: string; bronze: boolean; players: BroadcastEventPlayer[];
   winner?: number; next?: string; recapId?: string;
@@ -21,13 +21,23 @@ export interface BroadcastEventSource {
   id: number;
   event: { date: string; players: number[]; name: string; stages: { id: number; type: string }[] };
   players: { id: number; username: string }[];
+  decklists?: { player: number; visible: boolean; decklist: { material: { card: string; quantity: number }[] } }[];
   pairingsByRound: { error?: string; stage?: number | { id: number }; round?: number | { id: number }; pairings?: { id: number; label?: string; status: string; pairing: { id: number; score: number; status: string }[] }[] }[];
 }
 const numericId = (value: number | { id: number } | undefined) => typeof value === 'number' ? value : value?.id;
 const nameKey = (name: string) => name.trim().toLowerCase();
 
-export function buildBroadcastEventMap(source: BroadcastEventSource, recaps: BroadcastTimelineMatch[]): BroadcastEventMap {
+export function buildBroadcastEventMap(source: BroadcastEventSource, recaps: BroadcastTimelineMatch[], spiritNames: ReadonlySet<string> = new Set()): BroadcastEventMap {
   const names = new Map(source.players.map(p => [p.id, p.username]));
+  const explicitLists = recaps.flatMap(m => m.players.flatMap(p => p.stageDecklist ? [p.stageDecklist] : []));
+  const scopedTypes = new Set<string>(explicitLists.map(list => list.stage === 'Swiss' ? 'swiss' : 'single-elimination'));
+  function spiritsFor(player: number, type: string): string[] {
+    const explicit = explicitLists.filter(list => list.playerId === player && (list.stage === 'Swiss' ? 'swiss' : 'single-elimination') === type);
+    const lists = explicit.length ? explicit.map(list => list.decklist) : scopedTypes.has(type) ? [] : (source.decklists ?? []).filter(list => list.player === player && list.visible).map(list => list.decklist);
+    const variants = lists.map(list => [...new Set(list.material.filter(line => line.quantity > 0 && spiritNames.has(line.card)).map(line => line.card))].sort());
+    // Conflicting registrations are not a reliable portrait source.
+    return variants.length && variants.every(names => JSON.stringify(names) === JSON.stringify(variants[0])) ? variants[0] : [];
+  }
   const stages: BroadcastEventStage[] = source.event.stages.map(stage => {
     const matches: BroadcastEventPairing[] = [];
     for (const row of source.pairingsByRound) {
@@ -36,7 +46,7 @@ export function buildBroadcastEventMap(source: BroadcastEventSource, recaps: Bro
       for (const pairing of row.pairings ?? []) {
         const winners = pairing.pairing.filter(p => p.status === 'winner');
         matches.push({ id: `${stage.id}:${round}:${pairing.id}`, round, label: pairing.label ?? '', bronze: /bronze|third place/i.test(pairing.label ?? ''),
-          players: pairing.pairing.map(p => ({ id: p.id, name: names.get(p.id) ?? `Player ${p.id}`, score: p.score, status: p.status })),
+          players: pairing.pairing.map(p => ({ id: p.id, name: names.get(p.id) ?? `Player ${p.id}`, score: p.score, status: p.status, ...(spiritsFor(p.id, stage.type).length ? { spirits: spiritsFor(p.id, stage.type) } : {}) })),
           ...(pairing.status === 'complete' && winners.length === 1 ? { winner: winners[0].id } : {}),
         });
       }

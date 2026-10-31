@@ -20,8 +20,8 @@ recap links. There is no fuzzy name join. The current 110 recaps all attach uniq
 
 The map presents official scores, not inferred broadcast game counts. Worlds 2026's
 final is 2–1 in the official snapshot and 3–2 in the broadcast recap. Both are retained
-in their respective contexts. Only recap-specific deck descriptions supply portraits;
-event-level lists are not assumed to describe a player's Top Cut deck.
+in their respective contexts. Only recap-specific deck descriptions supply named champion portraits; spirit fallbacks
+follow the source rules below.
 
 Desktop windows show up to three consecutive rounds ending at one selected match,
 using verified predecessor links. Larger cuts offer branch selection; a window ending
@@ -30,3 +30,11 @@ source matches are displayed separately rather than attached to invented slots.
 Mobile shows one round with pagination. Event, stage, round, branch, page, query and
 champion filters use URL state. IndexedDB caches the published map, and failed refreshes
 keep cached results with Retry available.
+
+When a recap has no named champion portrait, the map falls back to catalog-verified
+SPIRIT champions in that player's public Material deck. Names, not guessed elements,
+are projected into each pairing. Stage-specific lists take precedence; when a stage
+has its own list evidence, players without that evidence do not inherit another stage's
+registration. Conflicting lists, private lists and zero-quantity lines provide no fallback.
+Spirit portraits remain separate from champion identification and filtering. Missing
+catalog artwork retains the spirit name; result-only spirit portraits link to card details.
