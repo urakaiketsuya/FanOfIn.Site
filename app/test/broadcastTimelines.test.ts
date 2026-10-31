@@ -173,3 +173,15 @@ test('SEA identity restoration agrees with official pairing, countries and decks
   assert.deepEqual(pairing.pairing.map((p: { id: number; score: number }) => [p.id, p.score]), [[15277, 0], [16320, 2]]);
   assert.match(sea.games[0].beats[0].text, /Centratus’s non-imbued Topsy Decree makes Awi banish/);
 });
+
+test('SEA finishers preserve Ciel omen ownership and Topsy spellshroud timing', () => {
+  const match = find('ai-sentus');
+  assert.match(match.games[0].beats.at(-1)!.text, /Centratus plays two Baleful Oblations/);
+  assert.match(match.games[0].summary, /recovery survives/);
+  const second = match.games[1];
+  assert.match(second.beats[1].text, /Once it resolves, Awi uses Topsy Decree’s spellshroud/);
+  assert.match(second.beats[2].text, /Centratus reaches six omens/);
+  assert.doesNotMatch(JSON.stringify(second), /Awi has six omens|give himself cards|lost to a Foe awakening/);
+  assert.ok(second.beats[1].cards!.includes('Feu Awakening'));
+  assert.equal(second.winner, 'p1');
+});

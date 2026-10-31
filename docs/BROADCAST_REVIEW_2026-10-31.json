@@ -1380,6 +1380,116 @@
       "path": "sea-nationals-2026-day1-round4-ai-sentus/sourceNote",
       "before": "Southeast Asia Nationals Day 1, Round 4. Broadcast names: AI and Sentus; tournament identities unconfirmed.",
       "after": "Southeast Asia Nationals Day 1, Round 4. Full captions at 276:16–281:52 identify Awi (Brunei, Fire Luxem Zander) and Centratus (Singapore, Fire Ciel); captions also render their names as “AI” and “Sentus”. Omnidex event 56265 round 4 pairing 10, player countries and registered decks corroborate both identities and Awi’s 2-0 win."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/0/summary",
+      "before": "Awi wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Centratus concedes after 30 minutes",
+      "after": "Awi wins — recovery survives Centratus’s double Oblation turn, and Centratus concedes"
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/0/beats/2/text",
+      "before": "Awi plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Centratus calls it quits at 30 minutes in. The casters say Centratus lost many cards to the banishes.",
+      "after": "Awi pressures with Planted Explosive and Striking Illuminance. Centratus plays two Baleful Oblations around Awi’s Incapacitate and uses Feu Awakening. Awi survives with recovery from Luxem Sight revealed by Lightweaver’s Assault and his Serene release. Centratus concedes after exhausting his Oblations."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/0/beats/2/cards",
+      "before": [
+        "Planted Explosive",
+        "Striking Illuminance"
+      ],
+      "after": [
+        "Planted Explosive",
+        "Striking Illuminance",
+        "Baleful Oblation",
+        "Incapacitate",
+        "Feu Awakening",
+        "Luxem Sight",
+        "Lightweaver's Assault"
+      ]
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/0/text",
+      "before": "Awi starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
+      "after": "Awi uses Angelic Channeling to set up Lightweaver’s Assault and Luxem Sight. Centratus reaches level three with Dungeon Guide and threatens Baleful Oblation and Feu Awakening."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/0/actor",
+      "before": "p1",
+      "after": "both"
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/0/cards",
+      "before": [
+        "Dungeon Guide",
+        "Lightweaver's Assault",
+        "Luxem Sight"
+      ],
+      "after": [
+        "Angelic Channeling",
+        "Lightweaver's Assault",
+        "Luxem Sight",
+        "Dungeon Guide",
+        "Baleful Oblation",
+        "Feu Awakening"
+      ]
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/1/text",
+      "before": "Centratus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and Awi uses Topsy Decree again to give himself cards. The casters say Centratus lost to a Foe awakening because he had no card to stop it.",
+      "after": "Centratus deals 15 with Baleful Oblation, then uses Feu Awakening. Once it resolves, Awi uses Topsy Decree’s spellshroud against the two Mirage’s Grave triggers. Centratus keeps attacking, forcing Awi’s Serene release, but Awi reaches his Luxem cards and recovers."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/1/actor",
+      "before": "p2",
+      "after": "both"
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/1/cards",
+      "before": [
+        "Angelic Channeling",
+        "Baleful Oblation",
+        "Topsy Decree"
+      ],
+      "after": [
+        "Baleful Oblation",
+        "Feu Awakening",
+        "Topsy Decree",
+        "Ciel, Mirage's Grave",
+        "Luxem Sight"
+      ]
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/2/text",
+      "before": "Awi has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Centratus looks defeated with zero cards in hand, and that Awi would just win at full health with no response from his opponent.",
+      "after": "Centratus reaches six omens and tries Feu Awakening again. Awi answers the resulting Mirage’s Grave triggers with Topsy Decree’s spellshroud and graveyard banishment. With Centratus out of cards, Awi finishes with Lightweaver’s Assault to win 2-0."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/1/beats/2/cards",
+      "before": [
+        "Lightweaver's Assault"
+      ],
+      "after": [
+        "Feu Awakening",
+        "Ciel, Mirage's Grave",
+        "Topsy Decree",
+        "Lightweaver's Assault"
+      ]
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/0/beats/1/text",
+      "before": "Awi draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Centratus is not allowed to draw many cards, which spoils the double Oblation plan.",
+      "after": "Awi uses Topsy Decree to disrupt Centratus’s graveyard setup. The casters initially identify Regal Inquisition in Awi’s hand, then correct it to Lightweaver’s Assault. Centratus struggles to build enough influence for his double Oblation plan."
+    },
+    {
+      "path": "sea-nationals-2026-day1-round4-ai-sentus/games/0/beats/1/cards",
+      "before": [
+        "Topsy Decree",
+        "Regal Inquisition"
+      ],
+      "after": [
+        "Topsy Decree",
+        "Lightweaver's Assault"
+      ]
     }
   ],
   "sourceFollowUp": [
@@ -1520,6 +1630,19 @@
           "281:02–281:52"
         ],
         "finding": "Resolved AI/Awi and Sentus/Centratus using caption names, countries, Fire Zander/Fire Ciel decks and event 56265 round 4 pairing 10 (Awi 16320 beats Centratus 15277, 2-0). Removed identity attachment blocks. Corrected reversed country and initial Topsy ownership: Centratus makes Awi banish Channeling. Later game details remain subject to source review."
+      },
+      {
+        "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
+        "file": "South East Asia Nationals Day 1  Grand Archive TCG.txt",
+        "sha256": "80d8ff8368df64dd90ccaa02e5ecc83318ce45222645673bae2dac81e4b349dd",
+        "ranges": [
+          "300:03–302:18",
+          "302:18–306:44",
+          "314:46–317:58",
+          "319:34–320:59",
+          "323:08–326:54"
+        ],
+        "finding": "Game one Centratus does find the second Oblation; Awi survives through recovery and Centratus concedes. Game two omens belong to Centratus, not Awi. Topsy grants spellshroud after Feu Awakening resolves to stop targeted Mirage’s Grave triggers; it does not draw cards. The supposed loss to Awakening was a hypothetical topdeck, not the result. Luxem Sight supplies recovery when revealed by Assault. Catalog corroborates Feu interdiction, Mirage’s Grave targeting, Topsy modes and Sight recovery."
       }
     ],
     "unresolved": [

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:06:59.102Z",
+  "generatedAt": "2026-10-31T21:08:08.745Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -8531,7 +8531,7 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Awi wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Centratus concedes after 30 minutes",
+          "summary": "Awi wins — recovery survives Centratus’s double Oblation turn, and Centratus concedes",
           "beats": [
             {
               "order": 1,
@@ -8545,10 +8545,10 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Awi draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Centratus is not allowed to draw many cards, which spoils the double Oblation plan.",
+              "text": "Awi uses Topsy Decree to disrupt Centratus’s graveyard setup. The casters initially identify Regal Inquisition in Awi’s hand, then correct it to Lightweaver’s Assault. Centratus struggles to build enough influence for his double Oblation plan.",
               "cards": [
                 "Topsy Decree",
-                "Regal Inquisition"
+                "Lightweaver's Assault"
               ],
               "tags": [
                 "swing"
@@ -8557,10 +8557,15 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Awi plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Centratus calls it quits at 30 minutes in. The casters say Centratus lost many cards to the banishes.",
+              "text": "Awi pressures with Planted Explosive and Striking Illuminance. Centratus plays two Baleful Oblations around Awi’s Incapacitate and uses Feu Awakening. Awi survives with recovery from Luxem Sight revealed by Lightweaver’s Assault and his Serene release. Centratus concedes after exhausting his Oblations.",
               "cards": [
                 "Planted Explosive",
-                "Striking Illuminance"
+                "Striking Illuminance",
+                "Baleful Oblation",
+                "Incapacitate",
+                "Feu Awakening",
+                "Luxem Sight",
+                "Lightweaver's Assault"
               ],
               "tags": [
                 "lethal"
@@ -8575,22 +8580,27 @@
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Awi starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
+              "actor": "both",
+              "text": "Awi uses Angelic Channeling to set up Lightweaver’s Assault and Luxem Sight. Centratus reaches level three with Dungeon Guide and threatens Baleful Oblation and Feu Awakening.",
               "cards": [
-                "Dungeon Guide",
+                "Angelic Channeling",
                 "Lightweaver's Assault",
-                "Luxem Sight"
+                "Luxem Sight",
+                "Dungeon Guide",
+                "Baleful Oblation",
+                "Feu Awakening"
               ]
             },
             {
               "order": 2,
-              "actor": "p2",
-              "text": "Centratus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and Awi uses Topsy Decree again to give himself cards. The casters say Centratus lost to a Foe awakening because he had no card to stop it.",
+              "actor": "both",
+              "text": "Centratus deals 15 with Baleful Oblation, then uses Feu Awakening. Once it resolves, Awi uses Topsy Decree’s spellshroud against the two Mirage’s Grave triggers. Centratus keeps attacking, forcing Awi’s Serene release, but Awi reaches his Luxem cards and recovers.",
               "cards": [
-                "Angelic Channeling",
                 "Baleful Oblation",
-                "Topsy Decree"
+                "Feu Awakening",
+                "Topsy Decree",
+                "Ciel, Mirage's Grave",
+                "Luxem Sight"
               ],
               "tags": [
                 "swing"
@@ -8599,8 +8609,11 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Awi has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Centratus looks defeated with zero cards in hand, and that Awi would just win at full health with no response from his opponent.",
+              "text": "Centratus reaches six omens and tries Feu Awakening again. Awi answers the resulting Mirage’s Grave triggers with Topsy Decree’s spellshroud and graveyard banishment. With Centratus out of cards, Awi finishes with Lightweaver’s Assault to win 2-0.",
               "cards": [
+                "Feu Awakening",
+                "Ciel, Mirage's Grave",
+                "Topsy Decree",
                 "Lightweaver's Assault"
               ],
               "tags": [
