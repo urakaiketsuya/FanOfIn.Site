@@ -606,3 +606,26 @@ and status component verified first-load failure → Retry → results, and cach
 surviving a failed refresh → Retry; the selected filter stayed intact. The harness used
 its own cache key and temporary endpoints, without changing production datasets. Full
 app typechecking now passes. Text zoom and live deployment remain unverified.
+
+## Broadcast match recaps
+
+Match timelines lead with player names, representative champion art, and the recorded
+result. Use one quiet Broadcast recap label; keep methodology on its own page, without
+warning panels or explanatory accordions. Search and event/champion filters live in the
+URL. Preserve the supplied result and uncertainty; never derive a match score from the
+subset of games shown on broadcast.
+
+Games are peer tabs with URL-backed selection and visible winner labels. Use a single
+reading column on phones and a compact game navigator on desktop. Show named, linked
+CardArtTile artwork for mentioned cards, with text fallbacks. Sideboard commentary sits
+before its game; Cards discussed does not assert that every mentioned card was boarded
+in. Keep predictions explicit in the source text. Approximate life remains labeled.
+Decklists retain their own view and player selection across tab changes; roster correction
+uses DialogSheet. Do not infer champion identity from ambiguous multi-champion descriptions.
+
+Recap verification (2026-10-31): checked 360/390px mobile and 1280px desktop,
+search/empty results, champion-art fallbacks, game selection with arrow keys, 48px game
+controls, URL state, decklist loading, and the roster sheet's empty search/dismissal.
+No horizontal overflow in the checked views. App typechecking and lint pass (existing
+warnings elsewhere). Forced network failure/retry, text zoom and on-screen keyboards
+were not browser-tested. Transcript corrections remain separate from this UI change.

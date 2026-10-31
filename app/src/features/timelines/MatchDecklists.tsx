@@ -5,6 +5,8 @@ import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "../events/useEventBundle";
 import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
+import DialogSheet from "../../components/ui/DialogSheet";
+import Button from "../../components/ui/Button";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 function normalize(s: string): string {
@@ -57,7 +59,7 @@ function PlayerDecklistSlot({
   const [explicitId, setExplicitId] = useState<number | undefined>(undefined);
   const [searchVisible, setSearchVisible] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
+
 
   const selectedId = explicitId ?? autoMatch?.id;
   const selectedEntry = entriesWithDecklist.find((d) => d.player === selectedId);
@@ -83,7 +85,7 @@ function PlayerDecklistSlot({
 
   if (entriesWithDecklist.length === 0) return null;
 
-  const showSearch = searchVisible || !selectedPlayer;
+  const showSearch = searchVisible;
 
   return (
     <div className="min-w-0 flex-1">
@@ -92,62 +94,19 @@ function PlayerDecklistSlot({
         <span className="text-xs text-ctp-subtext0">({caster.deck})</span>
       </div>
 
-      {selectedPlayer ? (
-        <p className="mt-1 text-xs text-ctp-subtext1">
-          {explicitId === undefined ? "Auto-matched to " : "Showing "}
-          <Link to={`/events/${eventId}?tab=decklists&player=${selectedPlayer.id}`} className="text-ctp-blue hover:underline">
-            {selectedPlayer.username}
-          </Link>
-          {"'s decklist. "}
-          <button type="button" className="text-ctp-subtext0 hover:text-ctp-text hover:underline" onClick={() => setSearchVisible((v) => !v)}>
-            {showSearch ? "Hide search" : "Not them? Search roster"}
-          </button>
-        </p>
-      ) : (
-        <p className="mt-1 text-xs text-ctp-subtext1">Not auto-matched – search the tournament roster below.</p>
-      )}
-
-      {showSearch && (
-        <div className="relative mt-2 max-w-xs">
-          <input
-            type="text"
-            aria-label={`Search players for ${caster.name}`}
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setSearchOpen(true);
-            }}
-            onFocus={() => setSearchOpen(true)}
-            onBlur={() => setTimeout(() => setSearchOpen(false), 100)}
-            placeholder="Search tournament roster…"
-            className="w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-          />
-          {searchOpen && search.trim() !== "" && (
-            <div className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-ctp-surface1 bg-ctp-mantle shadow-lg">
-              {searchMatches.length > 0 ? (
-                searchMatches.map(({ player }) => (
-                  <button
-                    key={player.id}
-                    type="button"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => {
-                      setExplicitId(player.id);
-                      setSearch("");
-                      setSearchOpen(false);
-                      setSearchVisible(false);
-                    }}
-                    className="block w-full px-3 py-1.5 text-left text-sm text-ctp-text hover:bg-ctp-surface0"
-                  >
-                    {player.username}
-                  </button>
-                ))
-              ) : (
-                <p className="px-3 py-1.5 text-sm text-ctp-subtext0">No players match &ldquo;{search.trim()}&rdquo;.</p>
-              )}
-            </div>
-          )}
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        {selectedPlayer ? <Link to={`/events/${eventId}?tab=decklists&player=${selectedPlayer.id}`} className="inline-flex min-h-control items-center text-sm text-ctp-blue">{selectedPlayer.username} · Event decklist</Link> : <p className="text-sm text-ctp-subtext1">Player decklist not linked</p>}
+        <Button variant="ghost" onClick={() => setSearchVisible(true)}>Change player</Button>
+      </div>
+      {showSearch && <DialogSheet title={`Decklist for ${caster.name}`} onDismiss={() => setSearchVisible(false)}>
+        <label className="block text-sm">Search tournament roster
+          <input type="search" value={search} onChange={e => setSearch(e.target.value)} className="mt-2 min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-sm" />
+        </label>
+        <div className="mt-3 space-y-1">
+          {searchMatches.map(({ player }) => <Button key={player.id} className="w-full text-left" onClick={() => { setExplicitId(player.id); setSearch(""); setSearchVisible(false); }}>{player.username}</Button>)}
+          {search.trim() && searchMatches.length === 0 && <p className="text-sm text-ctp-subtext1">No matching players</p>}
         </div>
-      )}
+      </DialogSheet>}
 
       {selectedEntry && (
         <div className="mt-2">
@@ -156,6 +115,8 @@ function PlayerDecklistSlot({
             decklist={selectedEntry.decklist}
             cardsByName={cardsByName}
             deckId={`${eventId}:${selectedEntry.player}`}
+            showAnalysis={false}
+            showDeckStats={false}
             showThumbnails
             defaultDisplayMode="visual"
           />
@@ -181,13 +142,6 @@ function MatchDecklistsForEvent({ match, eventId }: { match: BroadcastTimelineMa
 
   return (
     <div>
-      <p className="text-xs text-ctp-subtext1">
-        Pulled from{" "}
-        <Link to={`/events/${eventId}?tab=decklists`} className="text-ctp-blue hover:underline">
-          {bundle.event.name}
-        </Link>
-        &rsquo;s public tournament decklists.
-      </p>
       <div className="mt-3 flex flex-col gap-4 sm:flex-row">
         <PlayerDecklistSlot caster={match.players[0]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-blue" />
         <PlayerDecklistSlot caster={match.players[1]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-mauve" />

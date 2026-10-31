@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageLayout from "../../components/layout/PageLayout";
-import Tabs from "../../components/ui/Tabs";
-import { InlineState, EmptyState } from "../../components/ui/ContentState";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { EmptyState } from "../../components/ui/ContentState";
 import { useBroadcastTimelineMatch, useBroadcastTimelines } from "./data";
 import MatchTimeline, { MatchTimelineHeader } from "./MatchTimeline";
 import MatchDecklists from "./MatchDecklists";
+import TimelineStatus from "./TimelineStatus";
 
 type DetailTab = "timeline" | "decklists";
 const ALL_DETAIL_TABS: DetailTab[] = ["timeline", "decklists"];
@@ -19,16 +21,17 @@ export default function TimelineDetail() {
 
   useDocumentTitle(
     match ? `${match.event} – ${match.round}` : "Match Timeline",
-    "Experimental – reconstructed from broadcast VOD commentary.",
+    "Players, cards and key moments from the broadcast.",
   );
 
   const tabs: { key: DetailTab; label: string }[] = [{ key: "timeline", label: "Timeline" }];
   if (match?.eventId !== undefined) tabs.push({ key: "decklists", label: "Decklists" });
+  const [decklistsVisited, setDecklistsVisited] = useState(tab === "decklists");
   const activeTab = tabs.some((t) => t.key === tab) ? tab : "timeline";
 
   return (
-    <PageLayout data-component="TimelineDetail" width="standard">
-      {!data && <InlineState>Loading…</InlineState>}
+    <PageLayout data-component="TimelineDetail" width="fluid">
+      <TimelineStatus loading={!data} />
       {data && !match && (
         <EmptyState
           title="Timeline not found"
@@ -42,20 +45,18 @@ export default function TimelineDetail() {
       )}
       {match && (
         <>
-          <Link to="/timelines" className="mb-4 inline-block text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
+          <Link to="/timelines" className="mb-4 inline-flex min-h-control items-center text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
             &larr; Match Timelines
           </Link>
           <MatchTimelineHeader match={match} />
 
-          {tabs.length > 1 && (
-            <div className="mt-4">
-              <Tabs tabs={tabs} active={activeTab} onChange={setTab} label="Match view" />
+          <div className="mt-4">
+              <Tabs baseId="match-view" variant="pill" tabs={tabs} active={activeTab} onChange={next => { if (next === "decklists") setDecklistsVisited(true); setTab(next); }} label="Match view" />
             </div>
-          )}
 
           <div className="mt-4">
-            {activeTab === "timeline" && <MatchTimeline match={match} />}
-            {activeTab === "decklists" && <MatchDecklists match={match} />}
+            <TabPanel baseId="match-view" tab="timeline" active={activeTab} keepMounted><MatchTimeline match={match} /></TabPanel>
+            {tabs.length > 1 && (decklistsVisited || activeTab === "decklists") && <TabPanel baseId="match-view" tab="decklists" active={activeTab} keepMounted><MatchDecklists match={match} /></TabPanel>}
           </div>
         </>
       )}

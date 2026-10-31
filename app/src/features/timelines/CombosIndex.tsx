@@ -4,8 +4,8 @@ import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMat
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
-import { InlineState, EmptyState } from "../../components/ui/ContentState";
-import BroadcastDataNotice from "../../components/BroadcastDataNotice";
+import { EmptyState } from "../../components/ui/ContentState";
+import TimelineStatus from "./TimelineStatus";
 import CardMentions from "./CardMentions";
 import { useBroadcastTimelines, useCardsByMentions } from "./data";
 
@@ -28,7 +28,7 @@ function ComboCard({ entry, cardsByName }: { entry: ComboEntry; cardsByName: Map
   return (
     <Panel elevation={1} padding="md">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <Link to={`/timelines/${match.id}`} className="text-sm font-medium text-ctp-text hover:text-ctp-blue hover:underline">
+        <Link to={`/timelines/${match.id}?game=${game.gameNumber}`} className="text-sm font-medium text-ctp-text hover:text-ctp-blue hover:underline">
           {match.event} – {match.round}
         </Link>
         <span className="text-xs text-ctp-subtext0">Game {game.gameNumber}</span>
@@ -78,22 +78,14 @@ export default function CombosIndex() {
   }, [combos, search]);
 
   return (
-    <PageLayout data-component="CombosIndex">
-      <Link to="/timelines" className="mb-4 inline-block text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
+    <PageLayout width="fluid" data-component="CombosIndex">
+      <Link to="/timelines" className="mb-4 inline-flex min-h-control items-center text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
         &larr; Match Timelines
       </Link>
       <h1 className="text-2xl font-bold text-ctp-blue">Notable Combos</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Every beat casters called out as a combo line across the Match Timelines dataset – a discovery tool for
-        interesting card interactions actually played on stream, not a ranked or comprehensive combo list.
-      </p>
+      <p className="mt-1 text-sm text-ctp-subtext1">Broadcast highlights</p>
+      <TimelineStatus loading={!data} />
 
-      <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
-        <p className="font-semibold text-ctp-peach">Experimental – commentary-derived, not tournament data</p>
-        <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
-      </div>
-
-      {!data && <InlineState className="mt-6">Loading…</InlineState>}
 
       {data && combos.length === 0 && <EmptyState className="mt-6" title="No combos tagged yet" />}
 
@@ -101,10 +93,11 @@ export default function CombosIndex() {
         <>
           <input
             type="text"
+            aria-label="Search combos"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by card, event, or description…"
-            className="mt-6 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+            className="mt-6 min-h-control w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
           />
           <p className="mt-2 text-xs text-ctp-subtext0">
             {filtered.length} combo{filtered.length === 1 ? "" : "s"}

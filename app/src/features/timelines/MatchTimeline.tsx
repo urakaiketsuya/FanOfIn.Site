@@ -2,9 +2,14 @@ import { useMemo } from "react";
 import type { Card } from "@gatcg/shared";
 import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMatch, BroadcastTimelineTag } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
-import Section from "../../components/ui/Section";
-import BroadcastDataNotice from "../../components/BroadcastDataNotice";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { Link } from "react-router-dom";
+import { useTabParam } from "../../lib/useTabParam";
+import MatchIdentity from "./MatchIdentity";
+import { useTimelineChampions, roundLabel } from "./champions";
+
 import CardMentions from "./CardMentions";
+import SideboardNotes from "./SideboardNotes";
 import { useCardsByMentions } from "./data";
 
 const ACTOR_COLOR: Record<"p1" | "p2" | "both", string> = {
@@ -39,23 +44,23 @@ const TAG_CLASS: Record<BroadcastTimelineTag, string> = {
 
 function BeatRow({ beat, playerName, cardsByName }: { beat: BroadcastTimelineBeat; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
   return (
-    <li className="relative pb-5 pl-8 last:pb-0">
+    <li className="relative pb-8 pl-5 sm:pl-8 last:pb-0">
       <span className="absolute left-0 top-0 bottom-0 w-px bg-ctp-surface1" aria-hidden="true" />
       <span className={`absolute left-0 top-1 h-3 w-3 -translate-x-1/2 rounded-full border-2 bg-ctp-base ${ACTOR_COLOR[beat.actor]}`} aria-hidden="true" />
       <div className="flex flex-wrap items-center gap-2">
         <span className={`text-xs font-semibold uppercase tracking-wide ${ACTOR_TEXT[beat.actor]}`}>{playerName(beat.actor)}</span>
-        {beat.tags?.map((tag) => (
-          <span key={tag} className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${TAG_CLASS[tag]}`}>
+        {beat.tags?.slice(0, 1).map((tag) => (
+          <span key={tag} className={`rounded-full border px-2 py-0.5 text-xs font-medium ${TAG_CLASS[tag]}`}>
             {TAG_LABEL[tag]}
           </span>
         ))}
         {beat.approxLife && (
-          <span className="rounded-full border border-ctp-surface1 px-2 py-0.5 text-[10px] font-medium text-ctp-subtext1">
-            {playerName(beat.approxLife.player)}: {beat.approxLife.life} life
+          <span className="rounded-full border border-ctp-surface1 px-2 py-0.5 text-xs font-medium text-ctp-subtext1">
+            {playerName(beat.approxLife.player)}: ≈{beat.approxLife.life} life
           </span>
         )}
       </div>
-      <p className="mt-1 text-sm text-ctp-text">{beat.text}</p>
+      <p className="mt-2 max-w-prose text-sm leading-relaxed text-ctp-text">{beat.text}</p>
       {beat.cards && beat.cards.length > 0 && <CardMentions names={beat.cards} cardsByName={cardsByName} />}
     </li>
   );
@@ -72,9 +77,9 @@ function GameTimeline({
 }) {
   return (
     <Panel elevation={1} padding="md">
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="mb-6 space-y-1">
         <h3 className="text-sm font-semibold text-ctp-text">Game {game.gameNumber}</h3>
-        <span className="text-xs font-medium text-ctp-subtext1">{game.summary}</span>
+        <p className="text-sm text-ctp-subtext1">{game.summary}</p>
       </div>
       <ol>
         {game.beats.map((beat) => (
@@ -86,25 +91,14 @@ function GameTimeline({
 }
 
 export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }) {
-  return (
-    <div>
-      <Panel tone="info" padding="md">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary – not tournament data</p>
-        <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
-      </Panel>
-
-      <div className="mt-4">
-        <h1 className="text-2xl font-bold text-ctp-blue">
-          {match.event} – {match.round}
-        </h1>
-        <p className="mt-1 text-sm text-ctp-subtext1">
-          <span className="font-medium text-ctp-blue">{match.players[0].name}</span> ({match.players[0].deck}) vs.{" "}
-          <span className="font-medium text-ctp-mauve">{match.players[1].name}</span> ({match.players[1].deck})
-        </p>
-        <p className="mt-1 text-sm font-medium text-ctp-text">{match.result}</p>
-      </div>
-    </div>
-  );
+  const champions = useTimelineChampions();
+  return <header className="max-w-3xl">
+    <p className="text-xs text-ctp-subtext0">Broadcast recap</p>
+    <h1 className="mt-1 text-2xl font-bold">{match.players[0].name} vs. {match.players[1].name}</h1>
+    <p className="mt-1 text-sm text-ctp-subtext1">{match.event} · {roundLabel(match.round)}</p>
+    <div className="mt-5"><MatchIdentity match={match} champions={champions} linked /></div>
+    <p className="mt-4 text-lg font-semibold">{match.result}</p>
+  </header>;
 }
 
 export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch }) {
@@ -117,30 +111,21 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
   );
   const cardsByName = useCardsByMentions(allCardNames);
 
-  return (
-    <div data-component="MatchTimeline" className="space-y-4">
-      {match.games.map((game) => {
-        const notes = match.sideboardNotes?.filter((n) => n.beforeGame === game.gameNumber) ?? [];
-        return (
-          <div key={game.gameNumber} className="space-y-3">
-            {notes.length > 0 && (
-              <Section heading="dense" title="Sideboard">
-                <ul className="space-y-1">
-                  {notes.map((note, i) => (
-                    <li key={i} className="text-sm text-ctp-subtext1">
-                      <span className={`font-medium ${ACTOR_TEXT[note.actor]}`}>{playerName(note.actor)}: </span>
-                      {note.text}
-                    </li>
-                  ))}
-                </ul>
-              </Section>
-            )}
-            <GameTimeline game={game} playerName={playerName} cardsByName={cardsByName} />
-          </div>
-        );
-      })}
-
-      <p className="text-xs text-ctp-subtext0">{match.sourceNote}</p>
+  const gameKeys = match.games.map(game => String(game.gameNumber));
+  const [activeGame, setActiveGame] = useTabParam("game", gameKeys, gameKeys[0] ?? "1");
+  const baseId = `games-${match.id}`;
+  return <div data-component="MatchTimeline" className="grid items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
+    <nav aria-label="Games" className="lg:sticky lg:top-20">
+      <Tabs baseId={baseId} variant="pill" wrap label="Game" active={activeGame} onChange={setActiveGame}
+        tabs={match.games.map(game => ({ key: String(game.gameNumber), label: `Game ${game.gameNumber} · ${game.winner === "draw" ? "Draw" : playerName(game.winner)}` }))} />
+    </nav>
+    <div className="min-w-0 max-w-3xl">
+      {match.games.length === 0 && <p className="text-sm text-ctp-subtext1">No game recap available.</p>}
+      {match.games.map(game => <TabPanel key={game.gameNumber} baseId={baseId} tab={String(game.gameNumber)} active={activeGame}>
+        <SideboardNotes match={match} gameNumber={game.gameNumber} />
+        <GameTimeline game={game} playerName={playerName} cardsByName={cardsByName} />
+      </TabPanel>)}
+      <footer className="mt-6 text-xs text-ctp-subtext0"><p>{match.sourceNote}</p><Link to="/methodology" className="inline-flex min-h-control items-center text-ctp-blue">About broadcast recaps</Link></footer>
     </div>
-  );
+  </div>;
 }
