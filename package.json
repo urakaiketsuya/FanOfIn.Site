@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=app",
-    "build": "npm run build --workspace=app",
+    "build": "npm run pipeline:broadcast-events && npm run build --workspace=app",
     "pipeline": "npm run start --workspace=pipeline",
     "pipeline:analysis": "GATCG_ANALYSIS_ONLY=1 npm run start --workspace=pipeline",
     "pipeline:backfill-year": "GATCG_OMNIDEX_MODE=backfill GATCG_FETCH_ONLY=1 npm run start --workspace=pipeline",
@@ -44,7 +44,8 @@
     "release:check": "node scripts/release-check.mjs",
     "release:data": "node --import tsx scripts/check-release-data.ts",
     "release:smoke": "node scripts/smoke-release.mjs",
-    "pipeline:catalog:publish": "node --import tsx pipeline/src/public-api/publishCatalog.ts"
+    "pipeline:catalog:publish": "node --import tsx pipeline/src/public-api/publishCatalog.ts",
+    "pipeline:broadcast-events": "node --import tsx scripts/build-broadcast-events.ts"
   },
   "overrides": {
     "sharp": "0.35.5",

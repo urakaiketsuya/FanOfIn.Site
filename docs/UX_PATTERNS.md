@@ -654,3 +654,30 @@ paired champion identities, Merlin filtering, empty search and clearing filters,
 keyboard result focus, 48px controls and no horizontal overflow. App typecheck,
 focused lint and 32 timeline tests pass. Forced network failure, text zoom and
 on-screen keyboard behavior were not retested.
+
+## Tournament maps in Match Timelines
+
+Group broadcasts by official event ID, combining Swiss and Top Cut coverage. Open the
+latest matching event, with a dated event selector, field size and recap count. Swiss
+and Top Cut are peer URL-backed tabs. Use official pairing scores in the tournament
+map and retain broadcast result wording on recap pages. Label the map “Official results”
+and distinguish “Broadcast recap” from “Result only”; never derive a bracket from a
+subset of broadcast games.
+
+Top Cut opens on the last three rounds. Desktop shows one verified branch of at most
+three rounds, with section selection for larger cuts. Draw connectors only from a
+unique official winner ID to the immediately following round. Bronze matches stay
+outside the championship branch. Phones show one round at a time with Previous/Next
+and explicit advancement actions. Swiss shows one round, twelve matches per page.
+Player search highlights that player's actual matches, including losses, without
+extending their path through an opponent's later wins. Champion/card filtering only
+uses known broadcast identities; result-only matches do not acquire inferred decks.
+Keep every named champion visible in a matched recap's portrait row.
+
+Tournament-map verification (2026-10-31): checked 390px mobile and 1280px desktop,
+48px controls and no horizontal overflow, round navigation, advancement focus restoration,
+keyboard stage switching, Swiss pagination, mixed-champion search, empty search/recovery,
+and URL state. Worlds shows six verified advancement edges and a separate bronze match;
+TheRainGoddess highlights stop before the championship final. All 36 timeline tests,
+app/shared typechecks and focused lint pass. Larger-cut windows have synthetic coverage;
+forced network failure/retry, text zoom and on-screen keyboard behavior were not exercised.

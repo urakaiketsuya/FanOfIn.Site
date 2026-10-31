@@ -146,3 +146,4 @@ export * from "./usRegions.js";
 export * from "./playerRegions.js";
 export * from './regionalStrength';
 export * from './playerComparison';
+export * from './broadcastEventMap.js';

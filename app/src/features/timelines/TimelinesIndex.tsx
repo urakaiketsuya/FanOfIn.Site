@@ -1,4 +1,7 @@
-import { useEffect, useRef } from "react";
+import type { BroadcastEventMaps } from "@gatcg/shared";
+import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import EventTournament from "./EventTournament";
+import { useEffect, useRef, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
@@ -14,22 +17,34 @@ export default function TimelinesIndex() {
   useDocumentTitle("Match Timelines", "Players, cards and key moments from broadcast matches.");
   const data = useBroadcastTimelines();
   const champions = useTimelineChampions();
+  const eventMaps = usePublishedData<BroadcastEventMaps>("broadcast-events", "/data/broadcast-events.json");
+  const eventStatus = usePublishedDataStatus("broadcast-events", "/data/broadcast-events.json");
   const [params, setParams] = useSearchParams();
   const pendingParams = useRef(params);
+  const [recalculating, startTransition] = useTransition();
   useEffect(() => { pendingParams.current = params; }, [params]);
   const search = params.get("q") ?? "";
   const event = params.get("event") ?? "";
   const champion = params.get("champion") ?? "";
-  function update(key: string, value: string) {
+  function updateValues(values: Record<string, string>) {
     const next = new URLSearchParams(pendingParams.current);
-    if (value) next.set(key, value); else next.delete(key);
+    for (const [key, value] of Object.entries(values)) { if (value) next.set(key, value); else next.delete(key); }
     pendingParams.current = next;
-    setParams(next, { replace: true });
+    startTransition(() => setParams(next, { replace: true }));
+  }
+  function update(key: string, value: string) {
+    updateValues({ [key]: value, stage: "", round: "", branch: "", page: "" });
   }
   const matches = data?.matches ?? [];
-  const events = [...new Set(matches.map(match => match.event))].sort();
+  const events = eventMaps?.events ?? [];
   const championNames = [...new Set(matches.flatMap(match => match.players.flatMap(player => championsForDeck(player.deck, champions).map(card => card.name.split(",")[0]))))].sort();
-  const filtered = matches.filter(match => (!event || match.event === event) && (!champion || match.players.some(player => championsForDeck(player.deck, champions).some(card => card.name.split(",")[0] === champion))) && [match.event, match.round, ...match.players.flatMap(player => [player.name, player.deck]), ...match.games.flatMap(game => game.beats.flatMap(beat => beat.cards ?? []))].join(" ").toLowerCase().includes(search.trim().toLowerCase()));
+  const filtered = matches.filter(match => (!champion || match.players.some(player => championsForDeck(player.deck, champions).some(card => card.name.split(",")[0] === champion))) && [match.event, match.round, ...match.players.flatMap(player => [player.name, player.deck]), ...match.games.flatMap(game => game.beats.flatMap(beat => beat.cards ?? []))].join(" ").toLowerCase().includes(search.trim().toLowerCase()));
+  const matchingRecaps = new Set(filtered.map(m => m.id));
+  const query = search.trim().toLowerCase();
+  const matchingEvents = events.filter(e => (!query && !champion) || e.recapIds.some(id => matchingRecaps.has(id)) || (!champion && e.stages.some(stage => stage.matches.some(m => m.players.some(p => p.name.toLowerCase().includes(query))))));
+  const selectedEvent = events.find(e => String(e.id) === event || e.aliases.includes(event)) ?? matchingEvents[0];
+  const eventOptions = (query || champion) ? events.filter(e => matchingEvents.includes(e) || (event && e.id === selectedEvent?.id)) : events;
+  const extraRecaps = selectedEvent ? filtered.filter(m => selectedEvent.unlinkedRecapIds.includes(m.id)) : [];
   const control = "min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue";
   return <PageLayout width="fluid" data-component="TimelinesIndex">
     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -37,23 +52,21 @@ export default function TimelinesIndex() {
       <Link to="/timelines/combos" className="inline-flex min-h-control items-center text-sm text-ctp-blue">Notable combos →</Link>
     </div>
     <TimelineStatus loading={!data} />
+    {recalculating && <p role="status" className="text-xs text-ctp-subtext1">Recalculating…</p>}
     <div className="my-6 grid gap-3 sm:grid-cols-[2fr_1fr_1fr]">
       <label className="text-xs text-ctp-subtext1">Search<input className={`${control} mt-1`} value={search} onChange={e => update("q", e.target.value)} placeholder="Player or card" /></label>
-      <label className="text-xs text-ctp-subtext1">Event<select className={`${control} mt-1`} value={event} onChange={e => update("event", e.target.value)}><option value="">All events</option>{events.map(name => <option key={name}>{name}</option>)}</select></label>
+      <label className="text-xs text-ctp-subtext1">Event<select className={`${control} mt-1`} value={event ? String(selectedEvent?.id ?? event) : ""} onChange={e => update("event", e.target.value)}><option value="">Latest matching event</option>{eventOptions.map(item => <option key={item.id} value={item.id}>{item.name} · {item.recapIds.length} {item.recapIds.length === 1 ? "recap" : "recaps"}</option>)}</select></label>
       <label className="text-xs text-ctp-subtext1">Champion<select className={`${control} mt-1`} value={champion} onChange={e => update("champion", e.target.value)}><option value="">All champions</option>{championNames.map(name => <option key={name}>{name}</option>)}</select></label>
     </div>
-    {!data ? null : <>
-      <p className="mb-3 text-sm text-ctp-subtext1" aria-live="polite">{filtered.length} matches</p>
-      {!filtered.length && <EmptyState title={matches.length ? "No matches found" : "No timelines published yet"} action={matches.length ? <Button onClick={() => { pendingParams.current = new URLSearchParams(); setParams({}); }}>Clear filters</Button> : undefined} />}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {filtered.map(match => <Link key={match.id} to={`/timelines/${match.id}`} className="min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-ctp-blue">
-          <Panel elevation={1} padding="md" className="h-full transition-colors hover:bg-ctp-surface1">
-            <p className="mb-3 text-xs text-ctp-subtext1">{match.event} · {roundLabel(match.round)}</p>
-            <MatchIdentity match={match} champions={champions} />
-            <p className="mt-4 border-t border-ctp-surface1 pt-3 text-sm font-medium">{match.result}</p>
-          </Panel>
-        </Link>)}
-      </div>
+    {eventStatus.error && <div role="alert" className="mb-4 flex flex-wrap items-center gap-3 text-sm text-ctp-red"><span>Couldn’t refresh tournament results.</span><Button onClick={eventStatus.retry}>Retry</Button></div>}
+    {!eventMaps && !eventStatus.error && <p role="status" className="text-sm text-ctp-subtext1">Loading tournament results…</p>}
+    {eventMaps && data && <>
+      {(search || champion) && <p className="mb-4 text-sm text-ctp-subtext1" aria-live="polite">{matchingEvents.length} matching {matchingEvents.length === 1 ? "event" : "events"}</p>}
+      {!selectedEvent && <EmptyState title="No matches found" action={<Button onClick={() => { pendingParams.current = new URLSearchParams(); setParams({}); }}>Clear filters</Button>} />}
+      {selectedEvent && <EventTournament key={selectedEvent.id} event={selectedEvent} recaps={matches} champions={champions} params={params} update={updateValues} matchingRecaps={matchingRecaps} search={search} />}
+      {!!extraRecaps.length && <section className="mt-6"><h2 className="mb-3 text-lg font-semibold">More broadcast recaps</h2><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {extraRecaps.map(match => <Link key={match.id} to={`/timelines/${match.id}`} className="min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-ctp-blue"><Panel elevation={1} padding="md"><p className="mb-3 text-xs text-ctp-subtext1">{roundLabel(match.round)}</p><MatchIdentity match={match} champions={champions} /><p className="mt-3 text-sm">{match.result}</p></Panel></Link>)}
+      </div></section>}
     </>}
   </PageLayout>;
 }
