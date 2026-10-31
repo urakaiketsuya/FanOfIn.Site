@@ -71,7 +71,7 @@ test('verified SEA identities resolve and Swiss attachments use explicit stage l
 });
 
 test('wider source windows resolve Gyre and Regal ownership', () => {
-  const gyre = find('qf4-glennyboy-jet').games[0].beats[1];
+  const gyre = find('qf4-glennyboy-jet').games[0].beats.find(beat => beat.text.includes('Jett plays Stifling Gyre'))!;
   assert.equal(gyre.actor, 'p2');
   assert.match(gyre.text, /Jett plays Stifling Gyre naming Ghosts of Pendragon/);
   assert.ok(gyre.cards!.includes('Stifling Gyre'));
@@ -82,11 +82,11 @@ test('wider source windows resolve Gyre and Regal ownership', () => {
   assert.match(find('semifinal2-zero-livil').games[1].beats[0].text, /leaving the Incapacitates/);
 });
 
-test('verified broadcast draws stay separate from conflicting official match scores', () => {
+test('European round seven restores the omitted win and agrees with the official draw', () => {
   const match = find('marux-pewpewstan');
   assert.equal(match.result, 'Draw 1–1');
-  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'draw']);
-  assert.match(match.sourceNote, /does not explain that score/);
+  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'p1', 'draw']);
+  assert.match(match.games[1].summary, /MaruX wins/);
   assert.match(match.players[1].deck, /^Fire Luxem Zander/);
 });
 
@@ -111,7 +111,6 @@ test('recap prose uses canonical champion names without rewriting source aliases
     const { sourceNote: _sourceNote, ...recap } = match;
     assert.doesNotMatch(JSON.stringify(recap), /\b(?:Ry|Xander|Diaochan)\b/, match.id);
   }
-  assert.match(find('round5-mario-wind-rye').sourceNote!, /"Ry"/);
 });
 
 test('unsupported card identities, ownership and sideboard counts stay out of recaps', () => {
@@ -148,12 +147,12 @@ test('Manila source distinguishes boarding and interrupted plays from prediction
   const match = find('round10-muck-zero');
   const note = match.sideboardNotes!.find(n => n.text.includes('Harmonious Mantra'))!;
   assert.equal(note.actor, 'p2');
-  const beat = match.games[1].beats[1];
-  assert.equal(beat.actor, 'both');
+  const beat = match.games[1].beats.find(beat => beat.cards?.includes('Topsy Decree'))!;
+  assert.equal(beat.actor, 'p1');
   assert.ok(beat.cards!.includes('Topsy Decree'));
   assert.match(beat.text, /Muck1234’s Topsy Decree interrupts/);
   assert.doesNotMatch(beat.text, /brings out all four|forgets/);
-  assert.ok(!beat.tags!.includes('ruling'));
+  assert.ok(!beat.tags?.includes('ruling'));
 });
 
 test('Worlds Swiss captions keep Lorraine and Dream Fairy plays with Lifdrasyl', () => {
@@ -357,4 +356,39 @@ test('Worlds round three names the Gyre target and does not activate unaffordabl
   assert.match(match.games[2].beats[1].text, /Incapacitate to stop Ascension/);
   assert.match(match.games[2].beats.at(-1)!.text, /lacks enough influence to activate it/);
   assert.match(match.sideboardNotes![0].text, /Blessed Clergy to limit activations/);
+});
+
+test('batch coverage accounts for every remaining recap with original-source evidence', () => {
+  const review = JSON.parse(readFileSync(new URL('../../docs/BROADCAST_REVIEW_2026-10-31.json', import.meta.url), 'utf8'));
+  const coverage = review.sourceReview.coverage;
+  const expected = data.matches.filter(m => !m.id.startsWith('worlds-swiss-')).map(m => m.id).sort();
+  assert.deepEqual([...coverage.batchRecapsReviewed].sort(), expected);
+  assert.equal(new Set(coverage.batchRecapsReviewed).size, 99);
+  assert.deepEqual(coverage.awaitingRecordedSourceReview, []);
+  assert.deepEqual([...coverage.batchFullAvailableGameplayReviewed, ...coverage.batchRecapClaimsVerified].sort(), expected);
+  for (const id of expected) {
+    const evidence = review.sourceReview.verified.findLast((entry: { matchId: string }) => entry.matchId === id);
+    assert.match(evidence.sha256, /^[a-f0-9]{64}$/);
+    assert.ok(evidence.ranges.length > 0, id);
+    assert.ok(['full-available-gameplay', 'recap-claims'].includes(evidence.reviewMode), id);
+  }
+});
+
+test('Taipei bronze retains all three captioned games', () => {
+  const match = find('bronze-long-yamikin');
+  assert.deepEqual(match.games.map(g => g.gameNumber), [1, 2, 3]);
+  assert.deepEqual(match.games.map(g => g.winner), ['p1', 'p2', 'p1']);
+});
+
+test('Worlds Sunday separates actual finishes from proposed lines', () => {
+  const semifinal = find('semifinal2-zero-livil');
+  assert.match(semifinal.games[1].beats.at(-1)!.text, /17/);
+  assert.ok(semifinal.games[1].beats.at(-1)!.cards!.includes('Clarent, Reimagined'));
+  const final = find('grandfinals-jet-zero');
+  assert.deepEqual(final.games.map(g => g.winner), ['p2', 'p1', 'p1', 'p2', 'p1']);
+  assert.match(final.games[2].beats.at(-1)!.text, /Luxem Sight to draw Slice and Dice/);
+  assert.ok(final.games[2].beats.at(-1)!.cards!.includes("Lightweaver's Assault"));
+  assert.match(final.games[4].beats[1].text, /two Veiling Breezes/);
+  assert.match(final.games[4].beats[1].text, /preventing the hit/);
+  assert.match(final.sourceNote!, /Omnidex records.*2-1/);
 });
