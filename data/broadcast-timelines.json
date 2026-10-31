@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:15:40.960Z",
+  "generatedAt": "2026-10-31T20:22:16.565Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -354,11 +354,10 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. Topsy Decree from ZeRoMagus hits him, and the casters say Muck1234 draws many cards but has no influence left.",
+              "text": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. The casters say Muck1234 draws many cards but has no influence left.",
               "cards": [
                 "Dungeon Guide",
                 "Hasty Messenger",
-                "Topsy Decree",
                 "Peer into Mana"
               ],
               "tags": [
@@ -1865,9 +1864,8 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Zero0000000000 builds a large influence lead with Gleaming Cuts, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion.",
+              "text": "Zero0000000000 builds a large influence lead, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion.",
               "cards": [
-                "Gleaming Cut",
                 "Assassin's Ripper",
                 "Incapacitate"
               ],
@@ -3411,10 +3409,8 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Bratus starts with his Spirit and builds quest counters. The casters explain that Arisana is known for defense and burst once it reaches level three, and Bratus can empower for two plus the number of arcane cards in his banishment. He needs to answer every threat Fruitcake plays.",
-              "cards": [
-                "Arcane Blast"
-              ]
+              "text": "Bratus starts with his Spirit and builds quest counters. The casters explain that Arisana is known for defense and burst once it reaches level three. He needs to answer every threat Fruitcake plays.",
+              "cards": []
             },
             {
               "order": 2,
@@ -13827,7 +13823,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Celednb sees the board and scoops to get to game three, since a water mirror game that is losing cannot be won."
+              "text": "Celednb concedes to Quakems’s Astra setup."
             }
           ]
         },
@@ -13880,7 +13876,7 @@
         {
           "gameNumber": 3,
           "winner": "p2",
-          "summary": "Quakems wins — Cosmic Focus swing one damage short of the point of defeat",
+          "summary": "Quakems wins — survives Celednb’s attack, then finishes with Cosmic Focus",
           "beats": [
             {
               "order": 1,

@@ -442,6 +442,64 @@
       "path": "na-nationals-2026-grand-finals-quarax-jett/sideboardNotes/0/text",
       "before": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess and Dissuading Aether. The casters say his sideboard differs from Zetdivx's.",
       "after": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess. The casters say his sideboard differs from Zetdivx's."
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/text",
+      "before": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. Topsy Decree from ZeRoMagus hits him, and the casters say Muck1234 draws many cards but has no influence left.",
+      "after": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. The casters say Muck1234 draws many cards but has no influence left."
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/cards",
+      "before": [
+        "Dungeon Guide",
+        "Hasty Messenger",
+        "Topsy Decree",
+        "Peer into Mana"
+      ],
+      "after": [
+        "Dungeon Guide",
+        "Hasty Messenger",
+        "Peer into Mana"
+      ]
+    },
+    {
+      "path": "ascent-niagara-falls-top4-sf-fruitcake-bratis/games/0/beats/0/text",
+      "before": "Bratus starts with his Spirit and builds quest counters. The casters explain that Arisana is known for defense and burst once it reaches level three, and Bratus can empower for two plus the number of arcane cards in his banishment. He needs to answer every threat Fruitcake plays.",
+      "after": "Bratus starts with his Spirit and builds quest counters. The casters explain that Arisana is known for defense and burst once it reaches level three. He needs to answer every threat Fruitcake plays."
+    },
+    {
+      "path": "ascent-niagara-falls-top4-sf-fruitcake-bratis/games/0/beats/0/cards",
+      "before": [
+        "Arcane Blast"
+      ],
+      "after": []
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/beats/2/text",
+      "before": "Zero0000000000 builds a large influence lead with Gleaming Cuts, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion.",
+      "after": "Zero0000000000 builds a large influence lead, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion."
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/beats/2/cards",
+      "before": [
+        "Gleaming Cut",
+        "Assassin's Ripper",
+        "Incapacitate"
+      ],
+      "after": [
+        "Assassin's Ripper",
+        "Incapacitate"
+      ]
+    },
+    {
+      "path": "na-nationals-2026-day1-round6-celednb-quakems/games/0/beats/2/text",
+      "before": "Celednb sees the board and scoops to get to game three, since a water mirror game that is losing cannot be won.",
+      "after": "Celednb concedes to Quakems’s Astra setup."
+    },
+    {
+      "path": "na-nationals-2026-day1-round6-celednb-quakems/games/2/summary",
+      "before": "Quakems wins — Cosmic Focus swing one damage short of the point of defeat",
+      "after": "Quakems wins — survives Celednb’s attack, then finishes with Cosmic Focus"
     }
   ],
   "sourceFollowUp": [
@@ -450,6 +508,9 @@
     "Verify game boundaries/outcomes for MaruX–PewPewStan and Noel–Tress; retain official match draws.",
     "Verify removed Mantra, Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
     "Confirm the London CasuaL ally and Worlds GlenyBoi spell against captions/video; do not silently substitute Liu Bei or Stifling Gyre.",
-    "Confirm Diana sideboard cards and quantities from footage; Drown in Aether registration does not prove a boarding action."
+    "Confirm Diana sideboard cards and quantities from footage; Drown in Aether registration does not prove a boarding action.",
+    "Verify the Manila Round 10 game 2 Topsy Decree action: ZeRoMagus has no registered copy; do not reassign the play to Muck1234 solely from card ownership.",
+    "Verify the Niagara semifinal opening explanation: neither registered champion supports the stated Arcane-banishment empower claim.",
+    "Verify the Worlds final game 5 influence sequence: Gleaming Cut belongs to Jett’s deck, and the claim that Zero built influence with it is unsupported."
   ]
 }

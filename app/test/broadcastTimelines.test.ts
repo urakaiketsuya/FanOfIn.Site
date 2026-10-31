@@ -64,7 +64,21 @@ test('unsupported card identities, ownership and sideboard counts stay out of re
   assert.doesNotMatch(JSON.stringify(find('second-asa-liftdraasil')), /Asuna uses the reclaim to level to Lorraine/);
   assert.doesNotMatch(JSON.stringify(find('semifinal-zetdivx-jett')), /Dissuading Aether|Tariff Ring and Tariff Ring|dead from one HP/);
   assert.doesNotMatch(JSON.stringify(find('grand-finals-quarax-jett')), /Dissuading Aether/);
+  assert.doesNotMatch(JSON.stringify(find('round10-muck-zero')), /Topsy Decree from ZeRoMagus/);
+  assert.doesNotMatch(JSON.stringify(find('sf-fruitcake-bratis')), /Bratus can empower/);
+  const finalBeat = find('grandfinals-jet-zero').games.find(g => g.gameNumber === 5)!.beats.at(-1)!;
+  assert.doesNotMatch(finalBeat.text, /Gleaming Cuts/);
+  assert.ok(!finalBeat.cards?.includes('Gleaming Cut'));
   const note = find('shuteemdown-zetdivx').sideboardNotes!.find(n => n.actor === 'p2')!;
   assert.match(note.text, /number boarded in is unconfirmed/);
   assert.doesNotMatch(note.text, /four/);
+});
+
+test('Celednb–Quakems summaries agree with their recorded game sequences', () => {
+  const match = find('celednb-quakems');
+  assert.doesNotMatch(JSON.stringify(match.games[0]), /get to game three/);
+  const decidingGame = match.games.find(g => g.gameNumber === 3)!;
+  assert.equal(decidingGame.winner, 'p2');
+  assert.match(decidingGame.summary, /survives Celednb/);
+  assert.match(decidingGame.beats.at(-1)!.text, /Cosmic Focus for lethal/);
 });
