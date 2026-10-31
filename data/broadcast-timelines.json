@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:53:46.779Z",
+  "generatedAt": "2026-10-31T20:58:48.922Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -288,7 +288,7 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "ZeRoMagus has few options. The casters note that Rai has no fast-speed cards except Shattering Discharge and that Topsy Decree is Muck1234's only way to stop Merlin's Crystallized Destiny."
+          "text": "ZeRoMagus boards Harmonious Mantra and uses Kongming’s Shifting Currents to support healing through Rai’s damage."
         }
       ],
       "games": [
@@ -353,15 +353,15 @@
             },
             {
               "order": 2,
-              "actor": "p2",
-              "text": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. The casters say Muck1234 draws many cards but has no influence left.",
+              "actor": "both",
+              "text": "Muck1234 draws with Peer into Mana but runs low on influence. ZeRoMagus levels to three; the casters anticipate four Dungeon Guides and two Hasty Messengers. Muck1234’s Topsy Decree interrupts the Guide sequence, leaving ZeRoMagus low on influence.",
               "cards": [
+                "Peer into Mana",
                 "Dungeon Guide",
                 "Hasty Messenger",
-                "Peer into Mana"
+                "Topsy Decree"
               ],
               "tags": [
-                "ruling",
                 "swing"
               ]
             },

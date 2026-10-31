@@ -102,3 +102,15 @@ test('Celednb–Quakems summaries agree with their recorded game sequences', () 
   assert.match(decidingGame.summary, /survives Celednb/);
   assert.match(decidingGame.beats.at(-1)!.text, /Cosmic Focus for lethal/);
 });
+
+test('Manila source distinguishes boarding and interrupted plays from predictions', () => {
+  const match = find('round10-muck-zero');
+  const note = match.sideboardNotes!.find(n => n.text.includes('Harmonious Mantra'))!;
+  assert.equal(note.actor, 'p2');
+  const beat = match.games[1].beats[1];
+  assert.equal(beat.actor, 'both');
+  assert.ok(beat.cards!.includes('Topsy Decree'));
+  assert.match(beat.text, /Muck1234’s Topsy Decree interrupts/);
+  assert.doesNotMatch(beat.text, /brings out all four|forgets/);
+  assert.ok(!beat.tags!.includes('ruling'));
+});

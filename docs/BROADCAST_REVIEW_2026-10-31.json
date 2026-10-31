@@ -812,16 +812,66 @@
         "Fluffy Shopkeep",
         "Drown in Aether"
       ]
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "ZeRoMagus has few options. The casters note that Rai has no fast-speed cards except Shattering Discharge and that Topsy Decree is Muck1234's only way to stop Merlin's Crystallized Destiny."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "ZeRoMagus boards Harmonious Mantra and uses Kongming’s Shifting Currents to support healing through Rai’s damage."
+        }
+      ]
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/actor",
+      "before": "p2",
+      "after": "both"
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/text",
+      "before": "ZeRoMagus levels to three and brings out all four Dungeon Guides and two Hasty Messengers. Muck1234 forgets his Enlightenment counters at one point, then fixes the mistake. The casters say Muck1234 draws many cards but has no influence left.",
+      "after": "Muck1234 draws with Peer into Mana but runs low on influence. ZeRoMagus levels to three; the casters anticipate four Dungeon Guides and two Hasty Messengers. Muck1234’s Topsy Decree interrupts the Guide sequence, leaving ZeRoMagus low on influence."
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/cards",
+      "before": [
+        "Dungeon Guide",
+        "Hasty Messenger",
+        "Peer into Mana"
+      ],
+      "after": [
+        "Peer into Mana",
+        "Dungeon Guide",
+        "Hasty Messenger",
+        "Topsy Decree"
+      ]
+    },
+    {
+      "path": "ascent-manila-2026-day2-round10-muck-zero/games/1/beats/1/tags",
+      "before": [
+        "ruling",
+        "swing"
+      ],
+      "after": [
+        "swing"
+      ]
     }
   ],
   "sourceFollowUp": [
     "Confirm AI and Sentus identities from the SEA Round 4 broadcast; do not restore Aidan047/TWLien by pairing score alone.",
     "Obtain stage-specific Worlds Swiss decklists before restoring attachments, including lists whose champion family matches.",
     "Reconcile European Round 7 game two with the official 1–1 result using video or an official ruling; game one is verified.",
-    "Verify removed Mantra, Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
+    "Manila Mantra ownership is verified. Verify remaining Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
     "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed.",
     "Zetdivx’s game-three Drown in Aether is verified from captions. Confirm remaining Diana boarding claims and quantities, especially Quarax in the final.",
-    "Verify the Manila Round 10 game 2 Topsy Decree action: ZeRoMagus has no registered copy; do not reassign the play to Muck1234 solely from card ownership.",
     "Verify the Niagara semifinal opening explanation: neither registered champion supports the stated Arcane-banishment empower claim.",
     "Verify the Worlds final game 5 influence sequence: Gleaming Cut belongs to Jett’s deck, and the claim that Zero built influence with it is unsupported."
   ],
@@ -874,6 +924,19 @@
           "80:06–80:19"
         ],
         "finding": "Caster corrects Dissuading Aether to Drown in Aether for Zetdivx’s game-three play on Bandit, later identifying its rested-ally life reduction. Supported by the registered card and catalog rules; does not verify Quarax’s boarding or quantities."
+      },
+      {
+        "matchId": "ascent-manila-2026-day2-round10-muck-zero",
+        "file": "Ascent Manila Day 2  Grand Archive TCG.txt",
+        "sha256": "a7b39380755521ea45028ddf0a0a7981929f9132536b3cb8d766aaa53ed7edf2",
+        "ranges": [
+          "42:33–42:46",
+          "46:53–47:44",
+          "53:09–53:35",
+          "54:01–55:30",
+          "57:10–58:28"
+        ],
+        "finding": "ZeRoMagus boards Harmonious Mantra with Kongming/Shifting Currents. Captions explicitly identify Muck (Mark) as the Topsy Decree player interrupting the anticipated Guide sequence; do not claim all four Guides entered. Registered lists corroborate Mantra/Kongming on ZeRoMagus and Topsy on Muck. Counter discussion is calculation checking, not evidence of a forgotten-counter violation; removed the ruling tag and mistake assertion. No boarding quantity inferred."
       }
     ],
     "unresolved": [
