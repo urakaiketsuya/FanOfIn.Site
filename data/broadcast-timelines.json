@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:28:58.356Z",
+  "generatedAt": "2026-10-31T21:29:57.954Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -13918,12 +13918,12 @@
       "id": "worlds-swiss-2026-round5-gerthos-jet",
       "event": "Worlds 2026 Swiss Stage",
       "eventId": 60488,
-      "round": "Round 5: Fire Oblation CL against Wind Krux Lorraine",
+      "round": "Round 5: Fire Oblation Ciel against Wind Crux Lorraine",
       "players": [
         {
           "id": "p1",
           "name": "Guruthos",
-          "deck": "Fire Oblation CL, the Gauntlet champion (Baleful Oblation x4, Feu Awakening, Manxome Armoire, Grande Sonnerie, Chalice of Blood, Golden Checkmate, Fluffy Shopkeep, Liminal Guide, Lost Providence, Angel Attendant, Creative Shock, Nocturne's Oblivion, Flamewreath Call; Orb of Sealing in the side)",
+          "deck": "Fire Oblation Ciel, Mirage's Grave (Baleful Oblation, Feu Awakening, Manxome Armoire, Grande Sonnerie, Orb of Sealing; Flamewreath Call in the sideboard)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 327,
@@ -14105,7 +14105,7 @@
         {
           "id": "p2",
           "name": "Jett",
-          "deck": "Wind Krux Lorraine, TM32 list, North American Nationals champion (Lorraine, Wandering Warrior; Spirit Blade: Ascension; Prismatic Edge; Aella; Ghosts of Pendragon x3; Eternal Magistrate from the side; Enfeebling Orb; Orb of Sealing; Crystallized Destiny; Imperious Galebind; Fairy Whispers; Windmill Engineer; Reclaim; Fluffy Shopkeep; Cleansing Reunion; Inverted Pyro Slash; Dungeon Guide; Lost Providence; Turbo Charge; Backup Charger)",
+          "deck": "Wind Crux Lorraine, Spirit Ruler (Ghosts of Pendragon, Spirit Blade: Ascension, Prismatic Edge, Aella; Eternal Magistrate and Crystallized Destiny in the sideboard)",
           "stageDecklist": {
             "stage": "Swiss",
             "playerId": 679,
@@ -14318,25 +14318,28 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Guruthos wins — a multi-Baleful Oblation turn with Manxome Armoire, and Jett's Orb of Sealing comes too late",
+          "summary": "Guruthos wins — an initial Oblation punishes Orb of Sealing, then two more beat Veiling Breeze",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "The casters say the Clarent nerf makes CL stronger against Wind Krux, and Guruthos has an easy time setting up. Both players generate influence and reach level three; Jett has no Stifling Trap-style card to play around, and the casters expect a game of Oblation timing.",
+              "text": "Guruthos orders his level-up triggers so Liminal Guide draws Baleful Oblation, leaving another Oblation and a fifteen-cost card near the top. Lost Providence enters play, while Jett’s Orb of Sealing threatens the fifteen-cost omen.",
               "cards": [
-                "Dungeon Guide",
-                "Liminal Guide"
+                "Liminal Guide",
+                "Baleful Oblation",
+                "Lost Providence",
+                "Orb of Sealing"
               ]
             },
             {
               "order": 2,
-              "actor": "p2",
-              "text": "Jett puts out the Enfeebling Orb and pushes ally damage with the Ghosts of Pendragon, but Guruthos is at healthy life. The casters say Jett cannot use Orb of Sealing right before the Oblation: he turns it at the wrong time, thinking he can seal, and is punished on the stack.",
+              "actor": "both",
+              "text": "Guruthos plays the first Baleful Oblation in response to Jett’s Orb of Sealing. On Jett’s next turn, Ghosts of Pendragon rebuild the ally board and draw cards; one returns Enfeebling Orb to the material deck, leaving it unavailable to disrupt Guruthos’s next turn.",
               "cards": [
-                "Enfeebling Orb",
+                "Baleful Oblation",
+                "Orb of Sealing",
                 "Ghosts of Pendragon",
-                "Orb of Sealing"
+                "Enfeebling Orb"
               ],
               "tags": [
                 "swing"
@@ -14345,11 +14348,15 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Guruthos pays three cards for Baleful Oblation and Manxome Armoire puts a fifteen-cost in. Jett's Crystallized Destiny is the card he needed, but the Armoire line gets around it. Three Baleful Oblations resolve, Jett cannot reveal how many win cards he has, and Guruthos takes game one.",
+              "text": "Guruthos materializes Manxome Armoire, draws Advent of the Stormcaller with Umbra Sight, and adds it as an omen at end of turn. He plays Baleful Oblation. Jett digs with Crux Sight and Fairy Whispers, then attempts Veiling Breeze. Guruthos responds with another Oblation and uses Armoire to restore a fifteen-cost omen, winning before Breeze resolves.",
               "cards": [
-                "Baleful Oblation",
                 "Manxome Armoire",
-                "Crystallized Destiny"
+                "Advent of the Stormcaller",
+                "Umbra Sight",
+                "Baleful Oblation",
+                "Crux Sight",
+                "Fairy Whispers",
+                "Veiling Breeze"
               ],
               "tags": [
                 "combo",
@@ -14449,7 +14456,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 5 feature match. Casters call the players \"Gerthos\" and \"Jet\" (Omnidex usernames Guruthos and Jett). Result per Omnidex (Jett 2-1). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one closing sequence checked against captions at 406:02–417:43: three Oblations span two turns, and Crystallized Destiny is a hypothetical sideboard answer, not an observed play. Games two and three retain sampled-caption summaries pending fuller verification. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
     },
     {
       "id": "worlds-swiss-2026-round6-noel-asa",

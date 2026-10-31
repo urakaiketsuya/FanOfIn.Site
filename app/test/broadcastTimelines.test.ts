@@ -272,3 +272,14 @@ test('Worlds bonus mirror does not infer a game winner from the announced match 
   assert.match(match.sourceNote, /sacrifices Angel Attendant to Cremation Ritual/);
   assert.match(match.sourceNote, /possible follow-up, not confirmed completed/);
 });
+
+test('Worlds round five game one distinguishes hypothetical Destiny from the observed Breeze', () => {
+  const match = find('round5-gerthos-jet');
+  const game = match.games[0];
+  assert.equal(game.winner, 'p1');
+  assert.doesNotMatch(JSON.stringify(game), /Crystallized Destiny|wrong time|Three Baleful Oblations resolve/);
+  assert.equal(game.beats[1].actor, 'both');
+  assert.match(game.beats[1].text, /On Jett’s next turn/);
+  assert.ok(game.beats[2].cards!.includes('Veiling Breeze'));
+  assert.match(game.beats[2].text, /winning before Breeze resolves/);
+});
