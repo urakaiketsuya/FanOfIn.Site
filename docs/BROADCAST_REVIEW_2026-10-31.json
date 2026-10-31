@@ -2985,6 +2985,351 @@
       "path": "worlds-swiss-2026-round1-proan-duckhats/sourceNote",
       "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 1 feature match. Casters call the players \"Proan\" and \"Duck Hats\" (Omnidex usernames ProAnnn and DuckHats). Result per Omnidex (DuckHats 2-1). The VOD later replays the end of game 1. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
       "after": "Worlds 2026 Swiss Stage VOD, Round 1: captions reviewed from 54:32–103:00 against the Swiss lists and local card text. DuckHats wins 2–1, consistent with Omnidex. Boarding suggestions remain distinct from observed plays. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/round",
+      "before": "Round 2: Fire Oblation CL against Water Fractals Diao Chan",
+      "after": "Round 2: Fire Oblation Ciel against Water Fractals Diao Chan"
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Topsy Decree, Incapacitate x1, Chalice of Blood, Manxome Armoire, Fluffy Shopkeep, Liminal Guide, Hasty Messenger, Three of Hearts, Dungeon Guide, Lost Providence, Measure of Arar)"
+        },
+        {
+          "id": "p2",
+          "name": "TeamTrueCaban",
+          "deck": "Water Fractals Diao Chan, his signature list (Fractal of Rain, Fractal of Insight, Fractal of Intrusion, Refracting Missile x3, Shimmering Refraction x2, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Enfeebling Orb, Frostsworn Paladin, Zhang Jiao; Song of Frost, Nullifying Mirror, Overlapping Visages in the side)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation Ciel, Mirage's Grave (Baleful Oblation, Feu Awakening, Hasty Messenger, Three of Hearts, Incapacitate)"
+        },
+        {
+          "id": "p2",
+          "name": "TeamTrueCaban",
+          "deck": "Water Fractals Diao Chan, Enchantress (Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection)"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/sideboardNotes",
+      "before": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters go through TeamTrueCaban's side. Crimson Protective Trinket does not stop fire. Nullifying Mirror and Overlapping Visages are not useful in this matchup. Song of Frost could be the one card to bring in against Devastating Blow variants, but he feels strong about his Oblation matchup."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "In the post-match interview Raylam explains the single Incapacitate in his deck and says it can be used to stop an opponent from drawing off a Creative Shock, or to cut the cost of a negate down to five fractals. He also says Nasome Blast in the main deck over the side is a flexible choice."
+        }
+      ],
+      "after": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters go through TeamTrueCaban's side. Crimson Protective Trinket does not stop fire. Nullifying Mirror and Overlapping Visages are not useful in this matchup. Song of Frost could be the one card to bring in against Devastating Blow variants, but he feels strong about his Oblation matchup."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Raylam plays Rictus Tiding in game two; his registered Swiss list places it in the sideboard. The captions do not establish how many copies he brings in or which cards he removes."
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/games",
+      "before": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Raylam wins — an Enfeebling Orb at the wrong moment leaves TeamTrueCaban without the Burst Asunder he needed",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "TeamTrueCaban uses a Fracturize to eat Raylam's floating memory, draws, and commits an ally to kill the Hasty Messenger. The casters note that Three of Hearts is a card many players cut as the format moved away from allies, and Raylam keeps it.",
+              "cards": [
+                "Fracturize",
+                "Hasty Messenger",
+                "Three of Hearts"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Raylam goes to CL level two, opens his omens and gets a Liminal Guide trigger to draw. TeamTrueCaban sees that without the Frostsworn Paladin he cannot control the board, so he builds fractals, with six now in play, double Shimmering Refraction and a Burst of Thunder ready.",
+              "cards": [
+                "Liminal Guide",
+                "Frostsworn Paladin",
+                "Shimmering Refraction"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "TeamTrueCaban plays the Enfeebling Orb to put two cards of Raylam's hand down and tries to survive. The casters say he drew his first Burst Asunder in the materialize phase; if he had known it was there, he would have played a different line. Raylam takes game one.",
+              "cards": [
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "TeamTrueCaban wins — Raylam goes to zero influence to make Topsy Decree unnegatable, but the Burst Asunder still finishes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "TeamTrueCaban opens with an imbued Fractal of Rain and a hand with Refracting Missile, Zhang Jiao and a Glimmering Refusal, everything a Fractals player wants except more fractals. He takes far less pressure than in game one.",
+              "cards": [
+                "Fractal of Rain",
+                "Refracting Missile",
+                "Glimmering Refusal"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "TeamTrueCaban holds a second and third Refracting Missile, Burst of Thunder and a Fractal of Insight. He finds the exact lethal line each turn, and the casters note he has Acquiescing Rejection in hand to negate or draw. Raylam's Chalice of Blood brings him to 20.",
+              "cards": [
+                "Refracting Missile",
+                "Fractal of Insight",
+                "Chalice of Blood"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Raylam goes to zero influence so that his Topsy Decree cannot be negated and gains spell shroud, a line the casters say they did not think they would see. It is not enough: TeamTrueCaban does not have to give up anything for the Burst Asunder, and takes game two.",
+              "cards": [
+                "Topsy Decree",
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Raylam wins — wide ally pressure, a Lost Providence draw and two Oblations through Acquiescing Rejection",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Raylam plays a wide aggressive ally strategy, which the casters say is not what Oblation CL usually does but works to pressure Fractals. Fluffy Shopkeep banishes a key card, and Raylam discards a Floating Memory he does not need.",
+              "cards": [
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "TeamTrueCaban spends a Refracting Missile on an ally to take control of the board back, but Raylam has Incapacitate, a unique card in the deck, to answer. The casters note the Enfeebling Orb can put the rest of Raylam's hand down, so the Glimmering Refusal is not needed to push through.",
+              "cards": [
+                "Refracting Missile",
+                "Incapacitate",
+                "Enfeebling Orb"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Raylam uses Lost Providence in the pre-wreck step, pulls the Manxome Armoire out of the material deck and recollects a full five-card hand. TeamTrueCaban pays Acquiescing Rejection, but two cards are not enough to save him. Baleful Oblation resolves, the units go to the graveyard, and the Measure of Arar delivers the final blow. Raylam takes down the Omnidex number one.",
+              "cards": [
+                "Lost Providence",
+                "Manxome Armoire",
+                "Baleful Oblation",
+                "Acquiescing Rejection"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Raylam wins — ally pressure and Feu Awakening overwhelm Caban’s defense",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "TeamTrueCaban Fracturizes his Powercell, then uses its floating-memory card for Frostsworn Paladin. Raylam sacrifices the threatened Hasty Messenger to Undeniable Truth. Three of Hearts and another Messenger later clear the Paladin.",
+              "cards": [
+                "Fracturize",
+                "Frostsworn Paladin",
+                "Hasty Messenger",
+                "Undeniable Truth",
+                "Three of Hearts"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Raylam reaches Ciel, Omenbringer and draws from Liminal Guide, then uses Dungeon Guide to reach Mirage’s Grave. Caban builds fractals but remains at level zero after materializing Enfeebling Orb; the casters calculate that his available damage and influence fall short.",
+              "cards": [
+                "Ciel, Omenbringer",
+                "Liminal Guide",
+                "Dungeon Guide",
+                "Ciel, Mirage's Grave",
+                "Enfeebling Orb"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Raylam attacks with his allies. Caban uses Enfeebling Orb and targets Hasty Messenger with Shimmering Refraction, but Raylam shows Feu Awakening and Caban concedes. The casters discuss leveling to Diao Chan as a possible alternative in hindsight, not an established misplay.",
+              "cards": [
+                "Enfeebling Orb",
+                "Hasty Messenger",
+                "Shimmering Refraction",
+                "Feu Awakening"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "TeamTrueCaban wins — Raylam survives Burst Asunder, but later falls to Refracting Missile",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "TeamTrueCaban opens with an imbued Fractal of Rain and a hand with Refracting Missile, Zhang Jiao and a Glimmering Refusal, everything a Fractals player wants except more fractals. He takes far less pressure than in game one.",
+              "cards": [
+                "Fractal of Rain",
+                "Refracting Missile",
+                "Glimmering Refusal"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Caban develops his fractals and deals damage with Refracting Missile. Raylam reaches Ciel, Omenbringer but cannot find Dungeon Guide. Caban holds Glimmering Refusal for Raylam’s defensive Topsy Decree.",
+              "cards": [
+                "Refracting Missile",
+                "Ciel, Omenbringer",
+                "Dungeon Guide",
+                "Glimmering Refusal",
+                "Topsy Decree"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Caban answers Topsy Decree with two Glimmering Refusals. Raylam uses Feu Awakening at level two, discarding his hand and memory so Topsy resolves and grants spellshroud against Burst Asunder. Caban retains his fractals. On a later turn, Shimmering Refraction adds damage; Enfeebling Orb empties Raylam’s hand before Refracting Missile finishes the game.",
+              "cards": [
+                "Topsy Decree",
+                "Glimmering Refusal",
+                "Feu Awakening",
+                "Burst Asunder",
+                "Shimmering Refraction",
+                "Enfeebling Orb",
+                "Refracting Missile"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Raylam wins — a third Baleful Oblation breaks through after two are negated",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Raylam plays a wide aggressive ally strategy, which the casters say is not what Oblation CL usually does but works to pressure Fractals. Fluffy Shopkeep banishes a key card, and Raylam discards a Floating Memory he does not need.",
+              "cards": [
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Caban spends Refracting Missile to remove Hasty Messenger. Fractal of Intrusion later discards Raylam’s Incapacitate from memory. Caban then uses Glimmering Refusal on Fluffy Shopkeep to deny Raylam its draw.",
+              "cards": [
+                "Refracting Missile",
+                "Hasty Messenger",
+                "Fractal of Intrusion",
+                "Incapacitate",
+                "Glimmering Refusal",
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Caban negates Raylam’s first two Baleful Oblations. On the following turn, Raylam materializes Manxome Armoire and uses Lost Providence before recollection. A third Oblation resolves after Acquiescing Rejection; the ensuing omen damage and Armoire activation finish the game.",
+              "cards": [
+                "Baleful Oblation",
+                "Glimmering Refusal",
+                "Manxome Armoire",
+                "Lost Providence",
+                "Acquiescing Rejection"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round2-raylam-caven/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 2 feature match. Casters call the players \"Ray Lam\" and \"Caven\" (Omnidex usernames Raylam and TeamTrueCaban). Result per Omnidex (Raylam 2-1). The order of games 2 and 3 is partly uncertain because the VOD cuts to an interview and later replays highlights. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds 2026 Swiss Stage VOD, Round 2. Captions at 138:31–183:14 establish the game order and Raylam’s 2–1 win; targeted interview passages at 191:38–193:55 were also checked. Recap corrections were cross-checked against the Swiss lists and local card text. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
     }
   ],
   "sourceFollowUp": [
@@ -3195,6 +3540,17 @@
           "54:32–103:00"
         ],
         "finding": "Reviewed all three games. Reflected Blight and Ducal Seal belong to ProAnnn; DuckHats uses Cleansing Reunion and Purifying Thurible. Corrected Thurible/Dungeon Guide conflation, removed nonexistent game-three Whirlpool line and game-two remembered-Providence claim. Bandersnatch/Slime comparison is not a second boarding card. Deck summaries now agree with Swiss lists rather than treating observed copies as registered quantities."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round2-raylam-caven",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "138:31–161:00",
+          "161:02–183:14",
+          "191:38–193:55"
+        ],
+        "finding": "Game order confirmed. Game-two Feu/Topsy prevents Burst lethal; later Refracting Missile wins. Game-three Intrusion discards Incapacitate, first two Oblations are negated, third resolves; Measure of Arar is mistranscribed Manxome Armoire. Removed false registered quantities and Nascent Blast main-deck claim; retained observed Rictus Tiding boarding without inferring count or cuts. Game-one Fracturize uses Caban’s Powercell, not opposing floating memory."
       }
     ],
     "unresolved": [

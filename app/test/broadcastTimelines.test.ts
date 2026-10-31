@@ -237,3 +237,15 @@ test('Worlds opening match preserves Alice card ownership and the game-three seq
   assert.doesNotMatch(match.sideboardNotes![0].text, /Lustrous Slime/);
   assert.match(match.sideboardNotes![0].text, /boarding suggestions/);
 });
+
+test('Worlds round two separates the survived Burst from the later Missile finish', () => {
+  const match = find('round2-raylam-caven');
+  assert.deepEqual(match.games.map(game => game.winner), ['p1', 'p2', 'p1']);
+  const defense = match.games[1].beats.at(-1)!;
+  assert.equal(defense.actor, 'both');
+  assert.ok(defense.cards!.includes('Feu Awakening'));
+  assert.match(defense.text, /Refracting Missile finishes/);
+  assert.match(match.games[2].beats[1].text, /discards Raylam’s Incapacitate/);
+  assert.match(match.games[2].beats.at(-1)!.text, /third Oblation resolves/);
+  assert.doesNotMatch(JSON.stringify(match), /Measure of Arar|Burst of Thunder|Nasome Blast|Incapacitate x1/);
+});
