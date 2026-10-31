@@ -130,12 +130,17 @@
       "resolutionReviewedAt": "2026-10-31",
       "fullVideoReviewed": false,
       "disposition": "blocked",
-      "resolution": "Video overlay confirms DragonJG versus Justinljw in Quarter-Finals at 6:22:40. It does not corroborate the official alias NoobTinnn. Need an authoritative player rename/profile bridge before attaching this recap to account10891.",
+      "resolution": "Identity bridge resolved: Fractal of Insight explicitly lists Justinljw as past username of NoobTinnn #10891, corroborated by Recollect stable-ID listings. Recap remains held because the selected finish game number has not been established independently of the official 2-0 result.",
       "videoEvidence": [
         {
           "timestamp": "6:22:40",
           "observed": "DragonJG versus Justinljw; Quarter-Finals",
           "url": "https://www.youtube.com/watch?v=694jDw5rGqg&t=22960s"
+        },
+        {
+          "timestamp": "7:24:01",
+          "observed": "Played and paused actual video: DragonJG/Justinljw, Quarter-Finals. No unambiguous game number established.",
+          "url": "https://www.youtube.com/watch?v=694jDw5rGqg&t=26641s"
         }
       ],
       "profileCheck": {
@@ -144,7 +149,93 @@
       },
       "originalUncertainties": [
         "Broadcast calls opponent Justin LJW; official quarterfinal pairs DragonJG with NoobTinnn. Same bracket/deck fit, but confirm alias/overlay before publishing."
-      ]
+      ],
+      "identityResolved": true,
+      "followUp": {
+        "reviewedAt": "2026-10-31",
+        "matchId": "sea-national-2026-quarterfinal-dragonjg-noobtinnn",
+        "identityResolved": true,
+        "identityEvidence": [
+          {
+            "url": "https://fractalofin.site/player/10891.html",
+            "observed": "Player: NoobTinnn; Omnidex ID: #10891; Past usernames: Justinljw",
+            "sourceKind": "third-party explicit historical username"
+          },
+          {
+            "url": "https://recollect.gg/hosts/482",
+            "observed": "Justinljw #10891; link target https://recollect.gg/players/10891",
+            "sourceKind": "third-party stable-ID crossreference"
+          },
+          {
+            "url": "https://recollect.gg/hosts/67",
+            "observed": "Justinljw #10891",
+            "sourceKind": "third-party stable-ID crossreference"
+          },
+          {
+            "url": "https://omni.gatcg.com/events/35238",
+            "observed": "NoobTinnn #10891",
+            "sourceKind": "official current account label"
+          }
+        ],
+        "confidenceLimits": "No primary historical rename log found; two third-party domains explicitly associate broadcast alias with stable Omnidex ID, and one explicitly records past username. Recollect disclaims official affiliation.",
+        "remainingVerification": "Selected finish game number remains unverified. Parent inspected the actual video at 7:24:01; overlay identifies DragonJG/Justinljw and Quarter-Finals, but no unambiguous game number was established. Do not infer Game 2 from official 2-0.",
+        "readWindows": [
+          {
+            "fromRow": 3028,
+            "toRow": 3058,
+            "fromTimestamp": "7:21:45",
+            "toTimestamp": "7:24:46",
+            "kind": "complete selected finish window"
+          }
+        ],
+        "finishEvidence": [
+          {
+            "row": 3047,
+            "text": "This might be a big move. Dragon dragon dragon might just need to go double dynastic here and try to win the game right here. Currently has I think eight cards.",
+            "timestamp": "7:23:35"
+          },
+          {
+            "row": 3048,
+            "text": "That's double ceruan decree. That's not enough. One dynastic here. Dynasty number one.",
+            "timestamp": "7:23:42"
+          },
+          {
+            "row": 3049,
+            "text": "If he has three dynastics, he can go dynastic. Let him negate one. Then dynastic. Dynastic again.",
+            "timestamp": "7:23:49"
+          },
+          {
+            "row": 3050,
+            "text": "Dynasty number two. I think it's let it go. He lets it go.",
+            "timestamp": "7:23:55"
+          },
+          {
+            "row": 3051,
+            "text": "He also has an angelf. He can just end up against two.",
+            "timestamp": "7:24:01"
+          },
+          {
+            "row": 3052,
+            "text": "And I think this regal just regal. It's cheaper. We might as well just go for the regal. And that's it.",
+            "timestamp": "7:24:05"
+          },
+          {
+            "row": 3053,
+            "text": "Justin just scoops it. He falls into the waves and just drowns in all of Dragon JG's advantage. Completely decked out there.",
+            "timestamp": "7:24:10"
+          },
+          {
+            "row": 3054,
+            "text": "Yeah. And Dragon takes that game, securing his slot to the Grand Archives World 2026.",
+            "timestamp": "7:24:19"
+          },
+          {
+            "row": 3055,
+            "text": "Yeah, that's it. So he is at at guaranteed top four here.",
+            "timestamp": "7:24:25"
+          }
+        ]
+      }
     },
     {
       "videoId": "gL-S2tAI6bk",
@@ -1639,5 +1730,106 @@
       "nextEvidenceNeeded": "Separate complete Round 9 recording or official match upload.",
       "reviewerBatch": "na"
     }
-  ]
+  ],
+  "additionalFollowUp": {
+    "reviewedAt": "2026-10-31",
+    "alternateFootage": {
+      "checkedAt": "2026-10-31",
+      "scope": "Alternate official footage lookup for LA 2026 R2/R9 and NA Nationals 2026 R9",
+      "result": "No alternate official match footage found in the checked public searches; this is not proof that no recording exists.",
+      "sourcesChecked": [
+        {
+          "url": "https://www.youtube.com/@gatcg/search?query=Round%209",
+          "observed": "Standalone Round 9 clips for Boston (DohJv2OzcF8), Taipei (7dgCm7_DxD4), and Akihabara (bfhumlDXjrE); no LA or NA Nationals Round 9 clip."
+        },
+        {
+          "url": "https://www.youtube.com/@gatcg/search?query=Los%20Angeles",
+          "observed": "Known LA Day 1 iwjvP7O9ytM and Day 2 Y7WZMR-8ao0 plus Radiant Origins premiere vPfAk2DNnVA; no round clip or continuation."
+        },
+        {
+          "url": "https://www.youtube.com/@gatcg/search?query=North%20American",
+          "observed": "Known 2026 Day 1 ljQZR8Yu1XM and Day 2 tFC-3k0uxcM, both visibly reference official event 52777; no separate Round 9 or continuation."
+        }
+      ],
+      "webQueries": [
+        "site:youtube.com Grand Archive Los Angeles 2026 Round 9",
+        "site:youtube.com Grand Archive North America Nationals 2026 round 9",
+        "site:youtube.com @gatcg Los Angeles 2026 round 2",
+        "\"Grand Archive\" \"Los Angeles\" \"2026\" \"Round\"",
+        "\"Grand Archive\" \"Vernosius\" \"Bailey\"",
+        "\"Grand Archive\" \"Nationals 2026\" youtube"
+      ],
+      "recommendation": "Keep the three source gaps closed pending an original recording, official round upload, or organizer-provided continuation. Do not invent game details or match-play offsets."
+    },
+    "scoreConflicts": {
+      "reviewedAt": "2026-10-31",
+      "scope": "Follow-up search for authoritative reconciliation of three broadcast/official score conflicts",
+      "outcome": "No new authoritative correction found; preserve existing dispositions.",
+      "officialCacheFetchedAt": {
+        "36225": "2026-10-30T20:33:05.411Z",
+        "48556": "2026-10-30T20:31:47.758Z"
+      },
+      "records": [
+        {
+          "eventId": 36225,
+          "round": 2,
+          "pairingId": 1,
+          "players": [
+            10454,
+            418
+          ],
+          "officialScore": [
+            0,
+            2
+          ],
+          "broadcastScore": [
+            0,
+            1
+          ],
+          "finding": "Raw source has 0–2, not an application conversion. Same round contains five 1–0/0–1 results, so 2 is not a generic win encoding."
+        },
+        {
+          "eventId": 36225,
+          "round": 3,
+          "pairingId": 8,
+          "players": [
+            12609,
+            12286
+          ],
+          "officialScore": [
+            2,
+            0
+          ],
+          "broadcastScore": [
+            2,
+            1
+          ],
+          "finding": "Raw source has 2–0. Same round contains 29 three-game 2–1/1–2 results, so 0 is not a generic loss encoding."
+        },
+        {
+          "eventId": 48556,
+          "round": 1,
+          "pairingId": 3,
+          "players": [
+            25922,
+            24291
+          ],
+          "officialScore": [
+            1,
+            2
+          ],
+          "broadcastResult": "draw commentary after camera cut",
+          "finding": "Raw source explicitly records SpaghettiSr winner and RoxanneKaiser loser; no source correction found."
+        }
+      ],
+      "checks": [
+        "Read local raw Omnidex event bundles and exact pairing records.",
+        "Targeted web searches for exact player combinations and event names found no authoritative correction.",
+        "Attempted fresh official API reads for all three pairings; HTTP 403 Forbidden, so fresh scores could not be verified.",
+        "Independent player pages were unavailable through web fetch; indexed secondary pages did not reconcile these exact scores."
+      ],
+      "recommendation": "Retain source-attributed published Niagara scores and hold LA deciding-game reconstruction. Seek final match slips, organizer correction, player confirmation, or final scoreboard footage."
+    },
+    "publishedRecapsAdded": 0
+  }
 }
