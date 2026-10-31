@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:04:05.000Z",
+  "generatedAt": "2026-10-31T20:15:40.960Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -287,11 +287,6 @@
       "sideboardNotes": [
         {
           "beforeGame": 2,
-          "actor": "p1",
-          "text": "Muck1234 brings in Harmonious Mantra, with Shifting Currents to make it castable, to heal through Merlin's damage. The casters note that it is a fast-speed heal that can come close to exact lethal for the Merlin player."
-        },
-        {
-          "beforeGame": 2,
           "actor": "p2",
           "text": "ZeRoMagus has few options. The casters note that Ry has no fast-speed cards except Shattering Discharge and that Topsy Decree is Muck1234's only way to stop Merlin's Crystallized Destiny."
         }
@@ -349,16 +344,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ZeRoMagus has a better game than game 1. Fluffy Shopkeep on turn one, then Liminal Guide and a Backup Charger, with more than seven influence. Muck1234 has few influence sites in hand and plays Harmonious Mantra.",
+              "text": "ZeRoMagus has a better game than game 1. Fluffy Shopkeep on turn one, then Liminal Guide and a Backup Charger, with more than seven influence.",
               "cards": [
                 "Fluffy Shopkeep",
                 "Liminal Guide",
-                "Backup Charger",
-                "Harmonious Mantra",
-                "Shifting Currents"
-              ],
-              "tags": [
-                "sideboard"
+                "Backup Charger"
               ]
             },
             {
@@ -4163,13 +4153,13 @@
           "deck": "Wind Luxom Xander (Lightweaver's Assault, Striking Illuminance, Luxem Sight, Regal Inquisition, Vanish from Sight, Resolute Stand, Dream Fairy, Gentle Respite, Ayella, Corhazi insignia)"
         }
       ],
-      "result": "Draw — PewPewStan wins game 1; game 2 times out in overtime",
+      "result": "Draw 1–1",
       "sideboardNotes": [],
       "games": [
         {
           "gameNumber": 1,
-          "winner": "p2",
-          "summary": "PewPewStan wins — the draw-heavy Luxom start beats MaruX's cautious Krux hand",
+          "winner": "unknown",
+          "summary": "Outcome unconfirmed",
           "beats": [
             {
               "order": 1,
@@ -4198,7 +4188,7 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "PewPewStan finds Striking Illuminance and double Lightweaver's Assault, plus a Regal Inquisition, while MaruX has Lorraine, Spirit Ruler and a Prismatic Edge out. A rules question about the Drawn Blade that Sabella put into play is explained to the players. PewPewStan wins game one.",
+              "text": "PewPewStan finds Striking Illuminance and double Lightweaver's Assault, plus a Regal Inquisition, while MaruX has Lorraine, Spirit Ruler and a Prismatic Edge out. A rules question about the Drawn Blade that Sabella put into play is explained to the players.",
               "cards": [
                 "Lightweaver's Assault",
                 "Regal Inquisition"
@@ -4212,8 +4202,8 @@
         },
         {
           "gameNumber": 2,
-          "winner": "draw",
-          "summary": "Draw — MaruX runs out of time in overtime while PewPewStan still needs 27 damage",
+          "winner": "unknown",
+          "summary": "Outcome unconfirmed",
           "beats": [
             {
               "order": 1,
@@ -4241,7 +4231,7 @@
             {
               "order": 3,
               "actor": "both",
-              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Xander and cannot get there. The game times out and the match is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
+              "text": "Ghosts of Pendragon and a second Ghosts of Pendragon in MaruX's hand build a big board, but it is MaruX's last turn in the overtime procedure. PewPewStan needs 27 damage on his final turn while at Xander and cannot get there. Time is called; the recorded match result is a draw. The casters say that one more turn for MaruX would have made a huge difference.",
               "cards": [
                 "Ghosts of Pendragon"
               ],
@@ -4252,7 +4242,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The recorded match result is 1–1; game boundaries and outcomes require source verification."
     },
     {
       "id": "eu-nationals-2026-day1-round8-noel-jigjun",
@@ -5628,11 +5618,10 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "GlenyBoi opens with Dungeon Guide and Aesan Protector, the high-pressure start a Wind Krux deck needs, and plays Stifling Trap on the on-enter unless Jett pays four. Jett keeps Ensnaring Fumes and Veiling Breeze, and the casters note he has Heavenly Guide to re-use.",
+              "text": "GlenyBoi opens with Dungeon Guide and Aesan Protector, the high-pressure start a Wind Krux deck needs. Jett keeps Ensnaring Fumes and Veiling Breeze, and the casters note he has Heavenly Guide to re-use.",
               "cards": [
                 "Dungeon Guide",
                 "Aesan Protector",
-                "Stifling Trap",
                 "Heavenly Guide"
               ]
             },
@@ -5745,7 +5734,7 @@
         {
           "id": "p1",
           "name": "CasuaL",
-          "deck": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Lu Bu, Indomitable Titan, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)"
+          "deck": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)"
         },
         {
           "id": "p2",
@@ -5770,7 +5759,7 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "CasuaL wins — Perse keeps V41N's Ranger Strides under control, then Lu Bu and Second Wind for 16 damage",
+          "summary": "CasuaL wins — Perse keeps V41N's Ranger Strides under control, then an ally and Second Wind for 16 damage",
           "beats": [
             {
               "order": 1,
@@ -5801,10 +5790,9 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives Lu Bu range with Ranger Strides (range four) and attacks for eight. Second Wind wakes Lu Bu up for eight more damage and the win.",
+              "text": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives the attacking ally range with Ranger Strides (range four) and attacks for eight. Second Wind wakes the attacking ally up for eight more damage and the win.",
               "cards": [
                 "Tariff Ring",
-                "Lu Bu, Indomitable Titan",
                 "Ranger Strides",
                 "Second Wind"
               ],
@@ -5867,10 +5855,8 @@
             {
               "order": 4,
               "actor": "p1",
-              "text": "V41N has spent his resources and has a big board with slightly less damage than CasuaL. CasuaL puts lethal on the board and Lu Bu finishes the game and the match, 2-0.",
-              "cards": [
-                "Lu Bu, Indomitable Titan"
-              ],
+              "text": "V41N has spent his resources and has a big board with slightly less damage than CasuaL. CasuaL puts lethal on the board and the attacking ally finishes the game and the match, 2-0.",
+              "cards": [],
               "tags": [
                 "lethal"
               ]
@@ -8470,27 +8456,29 @@
       "players": [
         {
           "id": "p1",
-          "name": "Aidan047",
-          "deck": "Fire Luxom Xander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Excalibur and Incapacitate options, Backup Charger, Foe awakening; a Luxom/Exia Angelic Channeling)"
+          "name": "AI",
+          "deck": "Fire Luxom Xander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Excalibur and Incapacitate options, Backup Charger, Foe awakening; a Luxom/Exia Angelic Channeling)",
+          "eventDecklist": "unverified-identity"
         },
         {
           "id": "p2",
-          "name": "TWLien",
-          "deck": "Ciel Oblation (from Brunei; Baleful Oblation, Angelic Channeling, Mirage's Grave, Orb of Sealing, Dungeon Guide, Sadi, Liminal Guide, Backup Charger; a deck with many 15-cost cards; usually plays Fire Ciel or water allies Ciel)"
+          "name": "Sentus",
+          "deck": "Ciel Oblation (from Brunei; Baleful Oblation, Angelic Channeling, Mirage's Grave, Orb of Sealing, Dungeon Guide, Sadi, Liminal Guide, Backup Charger; a deck with many 15-cost cards; usually plays Fire Ciel or water allies Ciel)",
+          "eventDecklist": "unverified-identity"
         }
       ],
-      "result": "Aidan047 wins 2-0",
+      "result": "AI wins (broadcast recap)",
       "sideboardNotes": [],
       "games": [
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Aidan047 wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Sentus concedes after 30 minutes",
+          "summary": "AI wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Sentus concedes after 30 minutes",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "The casters feature a Brunei player in Sentus, who is a big Ciel fan. Both decks use Angelic Channeling: Sentus the Umbra version and Aidan047 the Luxom version. An Angelic Channeling is removed from Sentus's graveyard and he banishes the Baleful Oblation.",
+              "text": "The casters feature a Brunei player in Sentus, who is a big Ciel fan. Both decks use Angelic Channeling: Sentus the Umbra version and AI the Luxom version. An Angelic Channeling is removed from Sentus's graveyard and he banishes the Baleful Oblation.",
               "cards": [
                 "Angelic Channeling",
                 "Baleful Oblation"
@@ -8499,7 +8487,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Aidan047 draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Sentus is not allowed to draw many cards, which spoils the double Oblation plan.",
+              "text": "AI draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Sentus is not allowed to draw many cards, which spoils the double Oblation plan.",
               "cards": [
                 "Topsy Decree",
                 "Regal Inquisition"
@@ -8511,7 +8499,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Aidan047 plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Sentus calls it quits at 30 minutes in. The casters say Sentus lost many cards to the banishes.",
+              "text": "AI plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Sentus calls it quits at 30 minutes in. The casters say Sentus lost many cards to the banishes.",
               "cards": [
                 "Planted Explosive",
                 "Striking Illuminance"
@@ -8525,12 +8513,12 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "Aidan047 wins — Sentus starts fast but cannot find a second Oblation, and Lightweaver's Assaults finish",
+          "summary": "AI wins — Sentus starts fast but cannot find a second Oblation, and Lightweaver's Assaults finish",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Aidan047 starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
+              "text": "AI starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
               "cards": [
                 "Dungeon Guide",
                 "Lightweaver's Assault",
@@ -8540,7 +8528,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Sentus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and Aidan047 uses Topsy Decree again to give himself cards. The casters say Sentus lost to a Foe awakening because he had no card to stop it.",
+              "text": "Sentus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and AI uses Topsy Decree again to give himself cards. The casters say Sentus lost to a Foe awakening because he had no card to stop it.",
               "cards": [
                 "Angelic Channeling",
                 "Baleful Oblation",
@@ -8553,7 +8541,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Aidan047 has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Sentus looks defeated with zero cards in hand, and that Aidan047 would just win at full health with no response from his opponent.",
+              "text": "AI has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Sentus looks defeated with zero cards in hand, and that AI would just win at full health with no response from his opponent.",
               "cards": [
                 "Lightweaver's Assault"
               ],
@@ -8564,7 +8552,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Southeast Asia Nationals Day 1 VOD, Round 4 stream match. Casters call the players \"AI\" and \"Sentus\"; these were matched to Omnidex usernames Aidan047 and TWLien from the round 4 pairing (Aidan047 2-0 TWLien) and the previous entry's 2-0 result, so the mapping is probable but not confirmed. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Southeast Asia Nationals Day 1, Round 4. Broadcast names: AI and Sentus; tournament identities unconfirmed."
     },
     {
       "id": "sea-nationals-2026-day1-round5-mario-wind-rye",
@@ -11380,12 +11368,14 @@
         {
           "id": "p1",
           "name": "ProAnnn",
-          "deck": "Water Umbra Alice, Phantom Monarch mill (Dynastic Whirlpool x2, Regal Inquisition x2, Phantasmagoria, Pearled Prayer, Abnegation, Engulf, Cerulean Decree, Angel Attendant, Windmill Engineer, Maledictum Vitae, Backup Charger, Fracturize, Resolute Stand)"
+          "deck": "Water Umbra Alice, Phantom Monarch mill (Dynastic Whirlpool x2, Regal Inquisition x2, Phantasmagoria, Pearled Prayer, Abnegation, Engulf, Cerulean Decree, Angel Attendant, Windmill Engineer, Maledictum Vitae, Backup Charger, Fracturize, Resolute Stand)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "DuckHats",
-          "deck": "Wind Krux Lorraine, TM32 list (Lorraine, Blademaster; Sword of Seeking; Spirit Blade: Retribution; Aella; Ghosts of Pendragon x2; Dungeon Guide x2; Fluffy Shopkeep; Escape the Wreckage; Ducal Seal; Enfeebling Orb; Lost Providence; Cleansing Reunion and Reflected Blight main-deck tech; Obscured Offering x1)"
+          "deck": "Wind Krux Lorraine, TM32 list (Lorraine, Blademaster; Sword of Seeking; Spirit Blade: Retribution; Aella; Ghosts of Pendragon x2; Dungeon Guide x2; Fluffy Shopkeep; Escape the Wreckage; Ducal Seal; Enfeebling Orb; Lost Providence; Cleansing Reunion and Reflected Blight main-deck tech; Obscured Offering x1)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "DuckHats wins 2-1",
@@ -11535,12 +11525,14 @@
         {
           "id": "p1",
           "name": "Raylam",
-          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Topsy Decree, Incapacitate x1, Chalice of Blood, Manxome Armoire, Fluffy Shopkeep, Liminal Guide, Hasty Messenger, Three of Hearts, Dungeon Guide, Lost Providence, Measure of Arar)"
+          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Topsy Decree, Incapacitate x1, Chalice of Blood, Manxome Armoire, Fluffy Shopkeep, Liminal Guide, Hasty Messenger, Three of Hearts, Dungeon Guide, Lost Providence, Measure of Arar)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "TeamTrueCaban",
-          "deck": "Water Fractals Diaochan, his signature list (Fractal of Rain, Fractal of Insight, Fractal of Intrusion, Refracting Missile x3, Shimmering Refraction x2, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Enfeebling Orb, Frostsworn Paladin, Zhang Jiao; Song of Frost, Nullifying Mirror, Overlapping Visages in the side)"
+          "deck": "Water Fractals Diaochan, his signature list (Fractal of Rain, Fractal of Insight, Fractal of Intrusion, Refracting Missile x3, Shimmering Refraction x2, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Enfeebling Orb, Frostsworn Paladin, Zhang Jiao; Song of Frost, Nullifying Mirror, Overlapping Visages in the side)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Raylam wins 2-1",
@@ -11697,12 +11689,14 @@
         {
           "id": "p1",
           "name": "Asuna",
-          "deck": "Wind Razorgale Arisana, Europe's only Swiss player (Razorgale x3, Essence Crucible, Veiling Breeze, Cyclical Breeze, Fairy Whispers, Three Visits, Eternal Magistrate, Aella, Scout the Land, Speed Potion, Windmill Engineer, Dream Fairy, Escape the Wreckage, Stifling Trap, Cleansing Reunion, Tempest Downfall in the side)"
+          "deck": "Wind Razorgale Arisana, Europe's only Swiss player (Razorgale x3, Essence Crucible, Veiling Breeze, Cyclical Breeze, Fairy Whispers, Three Visits, Eternal Magistrate, Aella, Scout the Land, Speed Potion, Windmill Engineer, Dream Fairy, Escape the Wreckage, Stifling Trap, Cleansing Reunion, Tempest Downfall in the side)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Lifdrasyl",
-          "deck": "Wind Krux Lorraine, Clarent-less build (Lorraine, Wandering Warrior; Sword of Seeking; Drawn Blade; Prismatic Edge; Spirit Blade: Retribution; Aella x3; Ghosts of Pendragon; Fluffy Shopkeep; Imperious Galebind; Obscured Offering; Displace; Dungeon Guide; Inverted Pyro Slash and a one-of fire card)"
+          "deck": "Wind Krux Lorraine, Clarent-less build (Lorraine, Wandering Warrior; Sword of Seeking; Drawn Blade; Prismatic Edge; Spirit Blade: Retribution; Aella x3; Ghosts of Pendragon; Fluffy Shopkeep; Imperious Galebind; Obscured Offering; Displace; Dungeon Guide; Inverted Pyro Slash and a one-of fire card)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Draw 1-1 (game 3 ran out of time; double loss)",
@@ -11808,11 +11802,10 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Lifdrasyl goes first in game three with about 13 minutes left, and finds a Vertigris Degree early to take out one Razorgale. Asuna plays an imbued Eternal Magistrate and a Windmill Engineer, which is promptly reclaimed. Asuna uses the reclaim to level to Lorraine one and bring out the Sword of Seeking.",
+              "text": "Lifdrasyl goes first in game three with about 13 minutes left, and finds a Vertigris Degree early to take out one Razorgale. Asuna plays an imbued Eternal Magistrate and a Windmill Engineer, which is promptly reclaimed.",
               "cards": [
                 "Eternal Magistrate",
-                "Windmill Engineer",
-                "Sword of Seeking"
+                "Windmill Engineer"
               ]
             },
             {
@@ -11851,12 +11844,14 @@
         {
           "id": "p1",
           "name": "Superior",
-          "deck": "Water Genbu from Canada (Genbu, Black Tortoise; Seaside Ringleader; Frostsworn Paladin; Tidestone Bovine; Throne-Keeper Bullfrog; Resonating Fugue; Polar Depths; Song of Frost; Frostbind; Nullifying Lantern; Censer of Restful Peace; Unbroken Mustang x2; Cyclical Breeze; Safeguard Amulet; Mystic Purifier; Beastbond Boots and Expel the Departed in the side)"
+          "deck": "Water Genbu from Canada (Genbu, Black Tortoise; Seaside Ringleader; Frostsworn Paladin; Tidestone Bovine; Throne-Keeper Bullfrog; Resonating Fugue; Polar Depths; Song of Frost; Frostbind; Nullifying Lantern; Censer of Restful Peace; Unbroken Mustang x2; Cyclical Breeze; Safeguard Amulet; Mystic Purifier; Beastbond Boots and Expel the Departed in the side)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "TheRainGoddess",
-          "deck": "Wind Razorgale Arisana (Razorgale, Essence Crucible, Floral Arrangement, Turbo Charge, Ensnaring Fumes, Veiling Breeze, Three Visits, Fairy Whispers, Cyclical Breeze, Purifying Thurible, Windmill Engineer, Scout the Land, Cleansing Reunion; Obscured Offering, Verdigris Decree and Siphoning Gale in the side)"
+          "deck": "Wind Razorgale Arisana (Razorgale, Essence Crucible, Floral Arrangement, Turbo Charge, Ensnaring Fumes, Veiling Breeze, Three Visits, Fairy Whispers, Cyclical Breeze, Purifying Thurible, Windmill Engineer, Scout the Land, Cleansing Reunion; Obscured Offering, Verdigris Decree and Siphoning Gale in the side)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Superior wins 2-0 (game 2 awarded after a judge's game loss, upheld on appeal)",
@@ -11978,12 +11973,14 @@
         {
           "id": "p1",
           "name": "Raylam",
-          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Incapacitate x2 in the main deck, Hasty Messenger x3, Three of Hearts, Abnegation x1, Creative Shock, Backup Charger, Turbo Charge, Angelic Channeling, Dungeon Guide, Manxome Armoire, Lost Providence, Fluffy Shopkeep, Devastating Blow)"
+          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Incapacitate x2 in the main deck, Hasty Messenger x3, Three of Hearts, Abnegation x1, Creative Shock, Backup Charger, Turbo Charge, Angelic Channeling, Dungeon Guide, Manxome Armoire, Lost Providence, Fluffy Shopkeep, Devastating Blow)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Guruthos",
-          "deck": "Fire Oblation CL, the Gauntlet's first seed, a comfort pick (Baleful Oblation, Creative Shock, Liminal Guide, Cremation Ritual, Angel Attendant, Angelic Channeling x2, Backup Charger, Turbo Charge, Lost Providence, Manxome Armoire, Golden Checkmate, Fluffy Shopkeep, Devastating Blow; no Hasty Messenger)"
+          "deck": "Fire Oblation CL, the Gauntlet's first seed, a comfort pick (Baleful Oblation, Creative Shock, Liminal Guide, Cremation Ritual, Angel Attendant, Angelic Channeling x2, Backup Charger, Turbo Charge, Lost Providence, Manxome Armoire, Golden Checkmate, Fluffy Shopkeep, Devastating Blow; no Hasty Messenger)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Raylam wins 2-1 (final score announced after the recorded game)",
@@ -12000,12 +11997,14 @@
         {
           "id": "p1",
           "name": "Guruthos",
-          "deck": "Fire Oblation CL, the Gauntlet champion (Baleful Oblation x4, Feu Awakening, Manxome Armoire, Grande Sonnerie, Chalice of Blood, Golden Checkmate, Fluffy Shopkeep, Liminal Guide, Lost Providence, Angel Attendant, Creative Shock, Nocturne's Oblivion, Flamewreath Call; Orb of Sealing in the side)"
+          "deck": "Fire Oblation CL, the Gauntlet champion (Baleful Oblation x4, Feu Awakening, Manxome Armoire, Grande Sonnerie, Chalice of Blood, Golden Checkmate, Fluffy Shopkeep, Liminal Guide, Lost Providence, Angel Attendant, Creative Shock, Nocturne's Oblivion, Flamewreath Call; Orb of Sealing in the side)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Jett",
-          "deck": "Wind Krux Lorraine, TM32 list, North American Nationals champion (Lorraine, Wandering Warrior; Spirit Blade: Ascension; Prismatic Edge; Aella; Ghosts of Pendragon x3; Eternal Magistrate from the side; Enfeebling Orb; Orb of Sealing; Crystallized Destiny; Imperious Galebind; Fairy Whispers; Windmill Engineer; Reclaim; Fluffy Shopkeep; Cleansing Reunion; Inverted Pyro Slash; Dungeon Guide; Lost Providence; Turbo Charge; Backup Charger)"
+          "deck": "Wind Krux Lorraine, TM32 list, North American Nationals champion (Lorraine, Wandering Warrior; Spirit Blade: Ascension; Prismatic Edge; Aella; Ghosts of Pendragon x3; Eternal Magistrate from the side; Enfeebling Orb; Orb of Sealing; Crystallized Destiny; Imperious Galebind; Fairy Whispers; Windmill Engineer; Reclaim; Fluffy Shopkeep; Cleansing Reunion; Inverted Pyro Slash; Dungeon Guide; Lost Providence; Turbo Charge; Backup Charger)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Jett wins 2-1",
@@ -12167,12 +12166,14 @@
         {
           "id": "p1",
           "name": "Noel",
-          "deck": "Water Fractals Diaochan, EU Nationals Gauntlet invite (Fractal of Snow, Fractal of Rain, Fractal of Intrusion, Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Frostsworn Paladin, Zhang Jiao, Nullifying Lantern, Wind Resonance Bauble, Fracturize); undefeated at 5-0 coming in"
+          "deck": "Water Fractals Diaochan, EU Nationals Gauntlet invite (Fractal of Snow, Fractal of Rain, Fractal of Intrusion, Refracting Missile, Shimmering Refraction, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Frostsworn Paladin, Zhang Jiao, Nullifying Lantern, Wind Resonance Bauble, Fracturize); undefeated at 5-0 coming in",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Asuna",
-          "deck": "Wind Razorgale Arisana (Razorgale x3, Essence Crucible, all four Speed Potions, Tenderland, Distilled Water, Healing Curb, Eternal Magistrate, Fluffy Shopkeep, Viridian Protective Trinket, Scout the Land, Three Visits, Veiling Breeze, Zephyr, Obscured Offering, Stifling Trap); Europe's only Swiss competitor"
+          "deck": "Wind Razorgale Arisana (Razorgale x3, Essence Crucible, all four Speed Potions, Tenderland, Distilled Water, Healing Curb, Eternal Magistrate, Fluffy Shopkeep, Viridian Protective Trinket, Scout the Land, Three Visits, Veiling Breeze, Zephyr, Obscured Offering, Stifling Trap); Europe's only Swiss competitor",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Asuna wins 2-1, ending Noel's undefeated run",
@@ -12222,7 +12223,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Noel sends the Burst Asunder and Asuna has no answer. The casters say Asuna loses within ten minutes of the start of the round, because his Three Visits stayed in memory and his plan never started. Noel is 6-0.",
+              "text": "Noel sends the Burst Asunder and Asuna has no answer. The casters say Asuna loses within ten minutes of the start of the round, because his Three Visits stayed in memory and his plan never started.",
               "cards": [
                 "Burst Asunder"
               ],
@@ -12329,12 +12330,14 @@
         {
           "id": "p1",
           "name": "Raylam",
-          "deck": "Fire Oblation CL, ally-focused build (Baleful Oblation, Feu Awakening, Manxome Armoire, Hasty Messenger, Three of Hearts, Liminal Guide, Fluffy Shopkeep, Escape the Wreckage, Dungeon Guide x2, Mirage's Grave, Crystallized Destiny)"
+          "deck": "Fire Oblation CL, ally-focused build (Baleful Oblation, Feu Awakening, Manxome Armoire, Hasty Messenger, Three of Hearts, Liminal Guide, Fluffy Shopkeep, Escape the Wreckage, Dungeon Guide x2, Mirage's Grave, Crystallized Destiny)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Jayare",
-          "deck": "Fire Suzaku Guo A (Fabled Ruby Fatestone, Avatar of Suzaku from Radiant Origins, Peppered Chef, Searing Truth, Fiery Interference, Impact Hammer, Heated Vengeance, Blazing Throw, Loyal Valet, Crystallized Destiny, Restorative Flames; Orb of Sealing)"
+          "deck": "Fire Suzaku Guo A (Fabled Ruby Fatestone, Avatar of Suzaku from Radiant Origins, Peppered Chef, Searing Truth, Fiery Interference, Impact Hammer, Heated Vengeance, Blazing Throw, Loyal Valet, Crystallized Destiny, Restorative Flames; Orb of Sealing)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "Raylam wins 2-1 (game 3 not shown)",
@@ -12450,12 +12453,14 @@
         {
           "id": "p1",
           "name": "GlenyBoi",
-          "deck": "Wind Krux Lorraine, 2024 world champion (Lorraine; Spirit Blade: Ascension; Aella; Ghosts of Pendragon; Spirit Ruler with Drawn Blade; Imperious Galebind; Crux Sight; Reclaim; Fluffy Shopkeep; Dungeon Guide; Turbo Charge; Windmill Engineer; Eternal Magistrate from the side; no Clarent)"
+          "deck": "Wind Krux Lorraine, 2024 world champion (Lorraine; Spirit Blade: Ascension; Aella; Ghosts of Pendragon; Spirit Ruler with Drawn Blade; Imperious Galebind; Crux Sight; Reclaim; Fluffy Shopkeep; Dungeon Guide; Turbo Charge; Windmill Engineer; Eternal Magistrate from the side; no Clarent)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "DuckHats",
-          "deck": "Wind Krux Lorraine, TM32 list, nearly card-for-card the same as GlenyBoi's (Lorraine; Dungeon Guide x2; Turbo Charge; Spirit Blade: Retribution; Displace; Fluffy Shopkeep; Eternal Magistrate x2; Psychopomp's Scale in the side; Chamberlain Toad)"
+          "deck": "Wind Krux Lorraine, TM32 list, nearly card-for-card the same as GlenyBoi's (Lorraine; Dungeon Guide x2; Turbo Charge; Spirit Blade: Retribution; Displace; Fluffy Shopkeep; Eternal Magistrate x2; Psychopomp's Scale in the side; Chamberlain Toad)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "GlenyBoi wins 2-0",
@@ -12567,12 +12572,14 @@
         {
           "id": "p1",
           "name": "DragonJG",
-          "deck": "Water Umbra Alice, Phantom Monarch mill, the deck's progenitor (Phantasmagoria, Dynastic Whirlpool, Tri-Castles, Maledictum Vitae, Rector's Tiding, Banner Sash, Turbo Charge x1, Backup Charger, Fracturize, Angel Attendant, Benediction Angel; no Fountain Seraphim)"
+          "deck": "Water Umbra Alice, Phantom Monarch mill, the deck's progenitor (Phantasmagoria, Dynastic Whirlpool, Tri-Castles, Maledictum Vitae, Rector's Tiding, Banner Sash, Turbo Charge x1, Backup Charger, Fracturize, Angel Attendant, Benediction Angel; no Fountain Seraphim)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Sano",
-          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner (Prismatic Edge, Spirit Blade: Ascension, Obscured Offering, Windmill Engineer x2, Fairy Whispers with a low wind count in the low 30s, Turbo Charge, Ghosts of Pendragon, Cleansing Reunion, Displace)"
+          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner (Prismatic Edge, Spirit Blade: Ascension, Obscured Offering, Windmill Engineer x2, Fairy Whispers with a low wind count in the low 30s, Turbo Charge, Ghosts of Pendragon, Cleansing Reunion, Displace)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "DragonJG wins 2-0 (only part of game 1 shown)",
@@ -12636,12 +12643,14 @@
         {
           "id": "p1",
           "name": "TeamTrueCaban",
-          "deck": "Water Fractals Diaochan, EU Nationals winner (Fractal of Rain, Fractal of Snow, Fractal of Intrusion, Fractal of Refreshment, Zhang Jiao x2, Frostsworn Paladin, Refracting Missile, Shimmering Refraction x3, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Purifying Thurible, Return to the Archive, Nullifying Mirror, Calming Breeze; no Captivating Opulence)"
+          "deck": "Water Fractals Diaochan, EU Nationals winner (Fractal of Rain, Fractal of Snow, Fractal of Intrusion, Fractal of Refreshment, Zhang Jiao x2, Frostsworn Paladin, Refracting Missile, Shimmering Refraction x3, Burst Asunder, Glimmering Refusal, Acquiescing Rejection, Purifying Thurible, Return to the Archive, Nullifying Mirror, Calming Breeze; no Captivating Opulence)",
+          "eventDecklist": "unverified-stage"
         },
         {
           "id": "p2",
           "name": "Sano",
-          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner, no Clarent (Lorraine, Blademaster; Drawn Blade; Spirit Blade: Ascension; Prismatic Edge; Fluffy Shopkeep; Windmill Engineer; Fairy Whispers; Veiling Breeze; Verdigris Decree; Reclaim; Imperious Galebind; Crystallized Destiny and Calming Breeze in the side)"
+          "deck": "Wind Krux Lorraine, TM32 list, OCE Nationals winner, no Clarent (Lorraine, Blademaster; Drawn Blade; Spirit Blade: Ascension; Prismatic Edge; Fluffy Shopkeep; Windmill Engineer; Fairy Whispers; Veiling Breeze; Verdigris Decree; Reclaim; Imperious Galebind; Crystallized Destiny and Calming Breeze in the side)",
+          "eventDecklist": "unverified-stage"
         }
       ],
       "result": "TeamTrueCaban wins 2-0",
@@ -13156,7 +13165,7 @@
           "deck": "Water Exia Jin (Regal mill-out build: four Regals, Dynastic Whirlpool side)"
         }
       ],
-      "result": "Draw — Tress wins game 1, game 2 goes to time (recorded 1-1 on omnidex)",
+      "result": "Draw 1–1",
       "sideboardNotes": [
         {
           "beforeGame": 2,
@@ -13172,8 +13181,8 @@
       "games": [
         {
           "gameNumber": 1,
-          "winner": "p2",
-          "summary": "Tress wins — Noel draws out of cards and cannot finish through the heals",
+          "winner": "unknown",
+          "summary": "Outcome unconfirmed",
           "beats": [
             {
               "order": 1,
@@ -13241,7 +13250,7 @@
             {
               "order": 6,
               "actor": "p2",
-              "text": "Noel has already drawn out of cards. Noel goes all in at the end, but Tress shows a heal and Mend Flesh and survives. Tress wins game 1 after 38 minutes.",
+              "text": "Noel has already drawn out of cards. Noel goes all in at the end, but Tress shows a heal and Mend Flesh and survives.",
               "cards": [
                 "Mend Flesh",
                 "Fracturize"
@@ -13255,8 +13264,8 @@
         },
         {
           "gameNumber": 2,
-          "winner": "draw",
-          "summary": "Draw — time expires with both players alive",
+          "winner": "unknown",
+          "summary": "Outcome unconfirmed",
           "beats": [
             {
               "order": 1,
@@ -13301,7 +13310,7 @@
             {
               "order": 4,
               "actor": "both",
-              "text": "Tress digs for a heal using Tome of Abyssal Heaven but cannot find a second one. Time expires and the game is a draw. The casters praise Noel for playing to outs.",
+              "text": "Tress digs for a heal using Tome of Abyssal Heaven but cannot find a second one. Time expires; the recorded match result is a draw. The casters praise Noel for playing to outs.",
               "cards": [
                 "Tome of Abyssal Heaven"
               ]
@@ -13309,7 +13318,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. The recorded match result is 1–1; game boundaries and outcomes require source verification."
     },
     {
       "id": "na-nationals-2026-day1-round4-teamtruecaban-superior",
@@ -13533,7 +13542,7 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "Zetdivx is expected to bring four Expel the Departed against the Fantasia plan, which is later confirmed when one is played."
+          "text": "The casters expect Zetdivx to bring in Expel the Departed against the Fantasia plan. One is seen played; the number boarded in is unconfirmed."
         }
       ],
       "games": [
@@ -15372,7 +15381,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "After Dungeon Guide takes Guo Jia to level three, ChemCollapse plays Tricastles of Lucenia. Players can't activate non-advanced element cards, and a player must banish a norm card to turn it off once per turn. This locks out Jett's all-wind Razorgale deck, who must discard cards to play anything.",
+              "text": "After Dungeon Guide takes Guo Jia to level three, ChemCollapse plays Tricastles of Lucenia, preventing non-advanced element card activations. Once per turn, any player may banish a norm or advanced element card from hand to make Tricastles lose all abilities until end of turn.",
               "cards": [
                 "Tricastles of Lucenia",
                 "Dungeon Guide",
@@ -15437,12 +15446,10 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "ChemCollapse levels with Beseech and Dungeon Guide and draws with Incandescent Reliquary, but a Tricastle banished by Throne-keeper mill and a Purifying Thurible deny him the lock. Jett's Regal Inquisition strips Ensnaring Fumes so Seiryuu stays unflipped.",
+              "text": "ChemCollapse levels with Beseech and Dungeon Guide and draws with Incandescent Reliquary, but a Tricastle banished by Throne-keeper mill and a Purifying Thurible deny him the lock.",
               "cards": [
                 "Beseech the Winds",
                 "Incandescent Reliquary",
-                "Regal Inquisition",
-                "Ensnaring Fumes",
                 "Purifying Thurible"
               ],
               "tags": [
@@ -15530,7 +15537,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "Zetdivx brings in a second Aetheric Reforging, Nullifying Mirror (to turn off Veiling Breeze), Expel the Departed, Nullifying Lantern as an option, Shademist Priestess and Dissuading Aether."
+          "text": "Zetdivx brings in a second Aetheric Reforging, Nullifying Mirror (to turn off Veiling Breeze), Expel the Departed, Nullifying Lantern as an option, Shademist Priestess."
         }
       ],
       "games": [
@@ -15583,7 +15590,7 @@
             {
               "order": 4,
               "actor": "p1",
-              "text": "Zetdivx tests a Flash Grenade, gets no response, and then plays Krustallan Archer with Ranger Strides, two Take Aims and five Aether Charges in the Whisper. Quickstep Treads makes Jett's responses cost two more. That is a 19-damage swing and Jett is dead from one HP.",
+              "text": "Zetdivx tests a Flash Grenade, gets no response, and then plays Krustallan Archer with Ranger Strides, two Take Aims and five Aether Charges in the Whisper. Quickstep Treads makes Jett's responses cost two more. That is a 19-damage swing and the attack finishes Jett.",
               "cards": [
                 "Flash Grenade",
                 "Krustallan Archer",
@@ -15635,7 +15642,7 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Jett gets Razorgale Calling off Fairy Whispers. Zetdivx has 14 damage and Jett holds 12 cards. Tariff Ring and Tariff Ring (attacks cost two) make attacking impossible and Zetdivx scoops.",
+              "text": "Jett gets Razorgale Calling off Fairy Whispers. Zetdivx has 14 damage and Jett holds 12 cards. Tariff Ring taxes attacks, and Zetdivx concedes.",
               "cards": [
                 "Razorgale Calling",
                 "Tariff Ring",
@@ -15725,7 +15732,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess and Dissuading Aether. The casters say his sideboard differs from Zetdivx's."
+          "text": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess. The casters say his sideboard differs from Zetdivx's."
         },
         {
           "beforeGame": 2,

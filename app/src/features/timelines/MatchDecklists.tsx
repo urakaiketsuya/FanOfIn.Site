@@ -52,9 +52,10 @@ function PlayerDecklistSlot({
   const entriesWithDecklist = useMemo(() => decklists.filter((d) => playerById.has(d.player)), [decklists, playerById]);
 
   const autoMatch = useMemo(() => {
+    if (caster.eventDecklist) return undefined;
     const eligible = entriesWithDecklist.map((d) => playerById.get(d.player)!);
     return autoResolvePlayer(caster.name, eligible);
-  }, [caster.name, entriesWithDecklist, playerById]);
+  }, [caster.name, caster.eventDecklist, entriesWithDecklist, playerById]);
 
   const [explicitId, setExplicitId] = useState<number | undefined>(undefined);
   const [searchVisible, setSearchVisible] = useState(false);
@@ -82,6 +83,12 @@ function PlayerDecklistSlot({
       .filter(({ player }) => player.username.toLowerCase().includes(needle))
       .slice(0, 8);
   }, [entriesWithDecklist, playerById, search]);
+
+  if (caster.eventDecklist) return <div className="min-w-0 flex-1">
+    <p className={`text-sm font-semibold ${accent}`}>{caster.name}</p>
+    <p className="mt-2 text-sm text-ctp-subtext1">{caster.eventDecklist === "unverified-stage" ? "Swiss decklist unavailable" : "Player identity unconfirmed"}</p>
+    <Link to={`/events/${eventId}?tab=decklists`} className="inline-flex min-h-control items-center text-sm text-ctp-blue">Browse event decklists</Link>
+  </div>;
 
   if (entriesWithDecklist.length === 0) return null;
 

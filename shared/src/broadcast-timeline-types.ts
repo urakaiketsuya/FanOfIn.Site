@@ -32,7 +32,7 @@ export interface BroadcastTimelineBeat {
 
 export interface BroadcastTimelineGame {
   gameNumber: number;
-  winner: "p1" | "p2" | "draw";
+  winner: "p1" | "p2" | "draw" | "unknown";
   /** One-line result, e.g. "Zeus wins" or "draw (timed out)". */
   summary: string;
   beats: BroadcastTimelineBeat[];
@@ -42,6 +42,8 @@ export interface BroadcastTimelinePlayer {
   id: "p1" | "p2";
   name: string;
   deck: string;
+  /** Suppress event-level deck attachment when identity or the broadcast stage is unverified. */
+  eventDecklist?: "unverified-identity" | "unverified-stage";
 }
 
 export interface BroadcastTimelineMatch {
@@ -54,7 +56,7 @@ export interface BroadcastTimelineMatch {
   /** Match-level result line, e.g. "Zeus wins 2-0". */
   result: string;
   /** Sideboard-plan beats that happened between named games, not inside one — keyed by the game number they were made ahead of. */
-  sideboardNotes?: { beforeGame: number; actor: "p1" | "p2"; text: string }[];
+  sideboardNotes?: { beforeGame: number; actor: "p1" | "p2" | "both"; text: string }[];
   games: BroadcastTimelineGame[];
   sourceNote: string;
 }

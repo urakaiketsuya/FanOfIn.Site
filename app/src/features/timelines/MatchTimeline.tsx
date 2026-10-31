@@ -117,7 +117,7 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
   return <div data-component="MatchTimeline" className="grid items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
     <nav aria-label="Games" className="lg:sticky lg:top-20">
       <Tabs baseId={baseId} variant="pill" wrap label="Game" active={activeGame} onChange={setActiveGame}
-        tabs={match.games.map(game => ({ key: String(game.gameNumber), label: `Game ${game.gameNumber} · ${game.winner === "draw" ? "Draw" : playerName(game.winner)}` }))} />
+        tabs={match.games.map(game => ({ key: String(game.gameNumber), label: `Game ${game.gameNumber} · ${game.winner === "unknown" ? "Outcome unconfirmed" : game.winner === "draw" ? "Draw" : playerName(game.winner)}` }))} />
     </nav>
     <div className="min-w-0 max-w-3xl">
       {match.games.length === 0 && <p className="text-sm text-ctp-subtext1">No game recap available.</p>}

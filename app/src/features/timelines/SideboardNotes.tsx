@@ -13,7 +13,7 @@ export default function SideboardNotes({ match, gameNumber }: { match: Broadcast
     {notes.map((note, index) => {
       const mentioned = (cards ?? []).filter(card => note.text.toLowerCase().includes(card.name.toLowerCase()));
       return <div key={index} className="mt-3">
-        <p className="text-sm leading-relaxed text-ctp-subtext1"><span className={`font-semibold ${note.actor === "p1" ? "text-ctp-blue" : "text-ctp-mauve"}`}>{match.players.find(player => player.id === note.actor)?.name}: </span>{note.text}</p>
+        <p className="text-sm leading-relaxed text-ctp-subtext1"><span className={`font-semibold ${note.actor === "both" ? "text-ctp-subtext0" : note.actor === "p1" ? "text-ctp-blue" : "text-ctp-mauve"}`}>{note.actor === "both" ? "Both players" : match.players.find(player => player.id === note.actor)?.name}: </span>{note.text}</p>
         {mentioned.length > 0 && <p className="mt-3 text-xs text-ctp-subtext0">Cards discussed</p>}
         <CardMentions names={mentioned.map(card => card.name)} cardsByName={new Map(mentioned.map(card => [card.name, card]))} />
       </div>;

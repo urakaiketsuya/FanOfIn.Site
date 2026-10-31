@@ -629,3 +629,16 @@ controls, URL state, decklist loading, and the roster sheet's empty search/dismi
 No horizontal overflow in the checked views. App typechecking and lint pass (existing
 warnings elsewhere). Forced network failure/retry, text zoom and on-screen keyboards
 were not browser-tested. Transcript corrections remain separate from this UI change.
+
+Broadcast corrections (2026-10-31): unverified player identities and stage-specific
+lists must not auto-attach an event decklist or offer a player override in that recap.
+Keep event browsing available separately. Unknown game outcomes use “Outcome unconfirmed”;
+never infer winners from an official match score or incomplete broadcast coverage.
+Sideboard notes may describe Both players. Original disputed wording is retained in
+`BROADCAST_REVIEW_2026-10-31.json`, outside the public recap payload, for source follow-up.
+
+Correction verification: four corpus/regression tests cover all 110 recaps, including
+canonical mentions and manifest freshness. App/shared typechecks and focused lint pass.
+Checked unavailable Swiss lists, loading, Both players notes, unknown outcomes, keyboard
+game navigation, URL selection, 48px controls, and overflow at 360/390px and 1280px.
+Forced network errors, text zoom and on-screen keyboards were not retested.
