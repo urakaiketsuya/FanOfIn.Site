@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:05:38.795Z",
+  "generatedAt": "2026-10-31T21:06:59.102Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -8512,42 +8512,40 @@
       "id": "sea-nationals-2026-day1-round4-ai-sentus",
       "event": "Southeast Asia Nationals 2026",
       "eventId": 56265,
-      "round": "Round 4 (Day 1): Fire Luxom Zander against Water Ciel Oblation",
+      "round": "Round 4 (Day 1): Fire Luxem Zander against Fire Ciel Oblation",
       "players": [
         {
           "id": "p1",
-          "name": "AI",
-          "deck": "Fire Luxom Zander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Excalibur and Incapacitate options, Backup Charger, Foe awakening; a Luxom/Exia Angelic Channeling)",
-          "eventDecklist": "unverified-identity"
+          "name": "Awi",
+          "deck": "Fire Luxem Zander (Lightweaver's Assault, Luxem Sight, Striking Illuminance, Planted Explosive, Topsy Decree, Regal Inquisition, Dungeon Guide, Angelic Channeling)"
         },
         {
           "id": "p2",
-          "name": "Sentus",
-          "deck": "Ciel Oblation (from Brunei; Baleful Oblation, Angelic Channeling, Mirage's Grave, Orb of Sealing, Dungeon Guide, Sadi, Liminal Guide, Backup Charger; a deck with many 15-cost cards; usually plays Fire Ciel or water allies Ciel)",
-          "eventDecklist": "unverified-identity"
+          "name": "Centratus",
+          "deck": "Fire Ciel Oblation (Baleful Oblation, Angelic Channeling, Orb of Sealing, Dungeon Guide, Liminal Guide, Backup Charger)"
         }
       ],
-      "result": "AI wins (broadcast recap)",
+      "result": "Awi wins 2-0",
       "sideboardNotes": [],
       "games": [
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "AI wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Sentus concedes after 30 minutes",
+          "summary": "Awi wins — Topsy Decree and Striking Illuminance stop the Oblation math, and Centratus concedes after 30 minutes",
           "beats": [
             {
               "order": 1,
-              "actor": "p2",
-              "text": "The casters feature a Brunei player in Sentus, who is a big Ciel fan. Both decks use Angelic Channeling: Sentus the Umbra version and AI the Luxom version. An Angelic Channeling is removed from Sentus's graveyard and he banishes the Baleful Oblation.",
+              "actor": "both",
+              "text": "Awi, from Brunei, faces Singapore’s Centratus. Both use Angelic Channeling to prepare advanced-element cards. Centratus’s non-imbued Topsy Decree makes Awi banish an Angelic Channeling from his graveyard.",
               "cards": [
                 "Angelic Channeling",
-                "Baleful Oblation"
+                "Topsy Decree"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "AI draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Sentus is not allowed to draw many cards, which spoils the double Oblation plan.",
+              "text": "Awi draws a second sight, and the casters say he is not spoiled for choice. A Topsy Decree banishes a Baleful Oblation from the graveyard before it enters the omens, and Regal Inquisition is in his hand. Centratus is not allowed to draw many cards, which spoils the double Oblation plan.",
               "cards": [
                 "Topsy Decree",
                 "Regal Inquisition"
@@ -8559,7 +8557,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "AI plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Sentus calls it quits at 30 minutes in. The casters say Sentus lost many cards to the banishes.",
+              "text": "Awi plays Planted Explosive on the face, an extra four damage, and Striking Illuminance deals damage based on the Luxom cards revealed. He heals six with a Serene, and Centratus calls it quits at 30 minutes in. The casters say Centratus lost many cards to the banishes.",
               "cards": [
                 "Planted Explosive",
                 "Striking Illuminance"
@@ -8573,12 +8571,12 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "AI wins — Sentus starts fast but cannot find a second Oblation, and Lightweaver's Assaults finish",
+          "summary": "Awi wins — Centratus starts fast but cannot find a second Oblation, and Lightweaver's Assaults finish",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "AI starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
+              "text": "Awi starts with a hand full of cards and a Dungeon Guide for the next turn. He goes up to level two with a Lightweaver's Assault and Luxem Sight. Using an Omen from hand is the safer play, but the casters say he would not mind the risk.",
               "cards": [
                 "Dungeon Guide",
                 "Lightweaver's Assault",
@@ -8588,7 +8586,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Sentus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and AI uses Topsy Decree again to give himself cards. The casters say Sentus lost to a Foe awakening because he had no card to stop it.",
+              "text": "Centratus goes off to a crazy start with Angelic Channeling, but cannot find a second Baleful Oblation. Two Mirage's Grave triggers go on the stack, and Awi uses Topsy Decree again to give himself cards. The casters say Centratus lost to a Foe awakening because he had no card to stop it.",
               "cards": [
                 "Angelic Channeling",
                 "Baleful Oblation",
@@ -8601,7 +8599,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "AI has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Sentus looks defeated with zero cards in hand, and that AI would just win at full health with no response from his opponent.",
+              "text": "Awi has six omens and needs only two hits of 15 damage. He heals with Lightweaver's Assaults and wins. The casters say Centratus looks defeated with zero cards in hand, and that Awi would just win at full health with no response from his opponent.",
               "cards": [
                 "Lightweaver's Assault"
               ],
@@ -8612,7 +8610,7 @@
           ]
         }
       ],
-      "sourceNote": "Southeast Asia Nationals Day 1, Round 4. Broadcast names: AI and Sentus; tournament identities unconfirmed."
+      "sourceNote": "Southeast Asia Nationals Day 1, Round 4. Full captions at 276:16–281:52 identify Awi (Brunei, Fire Luxem Zander) and Centratus (Singapore, Fire Ciel); captions also render their names as “AI” and “Sentus”. Omnidex event 56265 round 4 pairing 10, player countries and registered decks corroborate both identities and Awi’s 2-0 win."
     },
     {
       "id": "sea-nationals-2026-day1-round5-mario-wind-rye",

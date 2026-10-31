@@ -40,10 +40,10 @@ test('published recaps have valid actors, outcomes, sequences and canonical card
   assert.equal(read('manifest.json')['broadcast-timelines'], data.generatedAt);
 });
 
-test('unverified identities and Swiss-stage lists cannot auto-attach tournament decks', () => {
+test('verified SEA identities resolve while Swiss-stage lists remain unavailable', () => {
   const sea = find('ai-sentus');
-  assert.deepEqual(sea.players.map(p => p.name), ['AI', 'Sentus']);
-  assert.ok(sea.players.every(p => p.eventDecklist === 'unverified-identity'));
+  assert.deepEqual(sea.players.map(p => p.name), ['Awi', 'Centratus']);
+  assert.ok(sea.players.every(p => p.eventDecklist === undefined));
   assert.doesNotMatch(JSON.stringify(sea), /Aidan047|TWLien/);
   const swiss = data.matches.filter(m => m.id.startsWith('worlds-swiss-'));
   assert.ok(swiss.length > 0);
@@ -156,4 +156,20 @@ test('Diana boarding notes distinguish predictions from observed cards', () => {
   const round4 = find('shuteemdown-zetdivx');
   assert.doesNotMatch(round4.sideboardNotes!.find(note => note.actor === 'p1')!.text, /Aetheric Reforging/);
   assert.match(round4.sideboardNotes!.find(note => note.actor === 'p2')!.text, /Aetheric Reforging/);
+});
+
+test('SEA identity restoration agrees with official pairing, countries and decks', () => {
+  const event = read('omnidex/events/56265.json');
+  const sea = find('ai-sentus');
+  const expected = [{ id: 16320, name: 'Awi', country: 'BN', champion: 'Zander, Blinding Steel' }, { id: 15277, name: 'Centratus', country: 'SG', champion: "Ciel, Mirage's Grave" }];
+  for (const [index, player] of expected.entries()) {
+    assert.equal(sea.players[index].name, player.name);
+    assert.equal(event.players.find((p: { id: number }) => p.id === player.id).country, player.country);
+    const deck = event.decklists.find((d: { player: number }) => d.player === player.id).decklist;
+    assert.ok(deck.material.some((card: { card: string }) => card.card === player.champion));
+  }
+  const round = event.pairingsByRound.find((r: { round: { id: number } }) => r.round.id === 4);
+  const pairing = round.pairings.find((p: { pairing: { id: number }[] }) => p.pairing.some(player => player.id === 16320));
+  assert.deepEqual(pairing.pairing.map((p: { id: number; score: number }) => [p.id, p.score]), [[15277, 0], [16320, 2]]);
+  assert.match(sea.games[0].beats[0].text, /Centratus’s non-imbued Topsy Decree makes Awi banish/);
 });
