@@ -745,15 +745,82 @@
       "path": "na-nationals-2026-day1-round3-noel-tress/sourceNote",
       "before": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. The recorded match result is 1–1; game boundaries and outcomes require source verification.",
       "after": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. Game outcomes verified against the supplied Round 3 captions: Tress wins game one at 40:53–41:16; Noel wins game two and ties the match at 65:35–66:44."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/players/0/deck",
+      "before": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)",
+      "after": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Liu Bei, Oathkeeper, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)"
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/0/summary",
+      "before": "CasuaL wins — Perse keeps V41N's Ranger Strides under control, then an ally and Second Wind for 16 damage",
+      "after": "CasuaL wins — Perse controls Ranger Strides, then Liu Bei and Second Wind deal 16 damage"
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/0/beats/2/text",
+      "before": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives the attacking ally range with Ranger Strides (range four) and attacks for eight. Second Wind wakes the attacking ally up for eight more damage and the win.",
+      "after": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives Liu Bei range with Ranger Strides (range four) and attacks for eight. Second Wind wakes Liu Bei up for eight more damage and the win."
+    },
+    {
+      "path": "ascent-london-2026-day2-round10-casual-vain/games/0/beats/2/cards",
+      "before": [
+        "Tariff Ring",
+        "Ranger Strides",
+        "Second Wind"
+      ],
+      "after": [
+        "Tariff Ring",
+        "Ranger Strides",
+        "Second Wind",
+        "Liu Bei, Oathkeeper"
+      ]
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/games/0/winner",
+      "before": "unknown",
+      "after": "p2"
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/games/0/summary",
+      "before": "Outcome unconfirmed",
+      "after": "PewPewStan wins — MaruX concedes at 27 damage"
+    },
+    {
+      "path": "eu-nationals-2026-day1-round7-marux-pewpewstan/sourceNote",
+      "before": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The recorded match result is 1–1; game boundaries and outcomes require source verification.",
+      "after": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The captions confirm PewPewStan wins game one at 535:38–535:55. At 571:50–573:25 they describe game two and the match as draws, conflicting with the recorded 1–1 score; game two remains unconfirmed."
+    },
+    {
+      "path": "na-nationals-2026-top4-semifinal-zetdivx-jett/games/2/beats/1/text",
+      "before": "Zetdivx trades Weaving Manastream and Krustallan Archer for Aesan Protector, builds Ranger Strides, Inert Sword and Quickstep Treads, and plays Nullifying Mirror to turn off Veiling Breeze. Jett's Fluffy Shopkeep keeps Zetdivx's Cheshire Cat from connecting.",
+      "after": "Zetdivx trades Weaving Manastream and Krustallan Archer for Aesan Protector, builds Ranger Strides, Inert Sword and Quickstep Treads, and plays Nullifying Mirror to turn off Veiling Breeze. Jett's Fluffy Shopkeep keeps Zetdivx's Cheshire Cat from connecting. Zetdivx uses Drown in Aether on a rested Bandit."
+    },
+    {
+      "path": "na-nationals-2026-top4-semifinal-zetdivx-jett/games/2/beats/1/cards",
+      "before": [
+        "Nullifying Mirror",
+        "Ranger Strides",
+        "Inert Sword",
+        "Cheshire Cat, Impish Grin",
+        "Fluffy Shopkeep"
+      ],
+      "after": [
+        "Nullifying Mirror",
+        "Ranger Strides",
+        "Inert Sword",
+        "Cheshire Cat, Impish Grin",
+        "Fluffy Shopkeep",
+        "Drown in Aether"
+      ]
     }
   ],
   "sourceFollowUp": [
     "Confirm AI and Sentus identities from the SEA Round 4 broadcast; do not restore Aidan047/TWLien by pairing score alone.",
     "Obtain stage-specific Worlds Swiss decklists before restoring attachments, including lists whose champion family matches.",
-    "Verify game boundaries/outcomes for MaruX–PewPewStan; retain official match draws.",
+    "Reconcile European Round 7 game two with the official 1–1 result using video or an official ruling; game one is verified.",
     "Verify removed Mantra, Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
-    "Confirm the London CasuaL ally and Worlds GlenyBoi spell against captions/video; do not silently substitute Liu Bei or Stifling Gyre.",
-    "Confirm Diana sideboard cards and quantities from footage; Drown in Aether registration does not prove a boarding action.",
+    "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed.",
+    "Zetdivx’s game-three Drown in Aether is verified from captions. Confirm remaining Diana boarding claims and quantities, especially Quarax in the final.",
     "Verify the Manila Round 10 game 2 Topsy Decree action: ZeRoMagus has no registered copy; do not reassign the play to Muck1234 solely from card ownership.",
     "Verify the Niagara semifinal opening explanation: neither registered champion supports the stated Arcane-banishment empower claim.",
     "Verify the Worlds final game 5 influence sequence: Gleaming Cut belongs to Jett’s deck, and the claim that Zero built influence with it is unsupported."
@@ -777,13 +844,54 @@
           "65:35–66:44"
         ],
         "finding": "Tress wins game one; Noel wins game two. The draw refers to the match, not game two."
+      },
+      {
+        "matchId": "ascent-london-2026-day2-round10-casual-vain",
+        "file": "Ascent London Day 2  Grand Archive TCG.txt",
+        "sha256": "37c5a62c061d5b9820104478e762708523d660a5050a276567d248dc529053e2",
+        "ranges": [
+          "132:54–133:55",
+          "136:34–137:14"
+        ],
+        "finding": "Liu Bei identity confirmed by the captioned shared distant ability, registered Liu Bei, Oathkeeper, and catalog rules. Game one finishing attacks are eight damage twice. Game two finisher remains unidentified."
+      },
+      {
+        "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
+        "file": "European Nationals Day 1  Grand Archive TCG.txt",
+        "sha256": "bf977419983ec1d63ebc5af421b8b8407829db25ce7ae81d853a67be2e86521c",
+        "ranges": [
+          "535:38–535:55",
+          "570:11–573:25"
+        ],
+        "finding": "PewPewStan wins game one. Game two and overall match are described as draws; retain official match score and unknown second-game outcome."
+      },
+      {
+        "matchId": "na-nationals-2026-top4-semifinal-zetdivx-jett",
+        "archiveEntry": "Water Aetherwing Diana vs Razorgale Arisanna  Grand Archive TCG North American Nationals Semifinals.txt",
+        "sha256": "8779b8ab50355c242c997f76ea7ac5a203a2cc9d8832fc821ae6a1ad8370c25f",
+        "ranges": [
+          "67:33–67:52",
+          "80:06–80:19"
+        ],
+        "finding": "Caster corrects Dissuading Aether to Drown in Aether for Zetdivx’s game-three play on Bandit, later identifying its rested-ally life reduction. Supported by the registered card and catalog rules; does not verify Quarax’s boarding or quantities."
       }
     ],
     "unresolved": [
       {
         "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
-        "source": "European Nationals Day 1 (match log).txt",
-        "finding": "Derived match log repeats one win plus a drawn game while reporting an overall draw; requires full caption boundary review."
+        "source": "European Nationals Day 1  Grand Archive TCG.txt",
+        "ranges": [
+          "571:50–573:25"
+        ],
+        "finding": "Full captions repeat the conflicting game/match draw. Video or an official ruling is needed to reconcile the recorded 1–1 score."
+      },
+      {
+        "matchId": "worlds-2026-top8-qf4-glennyboy-jet",
+        "source": "Worlds 2026 Top 8  Grand Archive TCG.txt",
+        "ranges": [
+          "456:06–456:42"
+        ],
+        "finding": "Captions name Stifling Gyre and its four-card tax, but do not clearly establish the original asserted actor/target. Do not restore the removed ownership clause."
       }
     ]
   }

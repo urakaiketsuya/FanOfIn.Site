@@ -51,11 +51,16 @@ test('unverified identities and Swiss-stage lists cannot auto-attach tournament 
 });
 
 test('disputed game boundaries do not override official match draws', () => {
-  for (const id of ['marux-pewpewstan']) {
-    const match = find(id);
-    assert.equal(match.result, 'Draw 1–1');
-    assert.ok(match.games.every(g => g.winner === 'unknown'));
-  }
+  const match = find('marux-pewpewstan');
+  assert.equal(match.result, 'Draw 1–1');
+  assert.deepEqual(match.games.map(g => g.winner), ['p2', 'unknown']);
+});
+
+test('London game one restores the source-verified Liu Bei identity', () => {
+  const match = find('casual-vain');
+  assert.ok(match.games[0].beats.at(-1)!.cards!.includes('Liu Bei, Oathkeeper'));
+  assert.match(match.games[0].summary, /Liu Bei/);
+  assert.ok(!match.games[1].beats.at(-1)!.cards!.includes('Liu Bei, Oathkeeper'));
 });
 
 test('verified NA Round 3 game outcomes produce the recorded match draw', () => {
@@ -77,6 +82,7 @@ test('unsupported card identities, ownership and sideboard counts stay out of re
   assert.doesNotMatch(JSON.stringify(find('jett-chemcollapse')), /Jett's Regal|must discard cards/);
   assert.doesNotMatch(JSON.stringify(find('second-asa-liftdraasil')), /Asuna uses the reclaim to level to Lorraine/);
   assert.doesNotMatch(JSON.stringify(find('semifinal-zetdivx-jett')), /Dissuading Aether|Tariff Ring and Tariff Ring|dead from one HP/);
+  assert.ok(find('semifinal-zetdivx-jett').games[2].beats[1].cards!.includes('Drown in Aether'));
   assert.doesNotMatch(JSON.stringify(find('grand-finals-quarax-jett')), /Dissuading Aether/);
   assert.doesNotMatch(JSON.stringify(find('round10-muck-zero')), /Topsy Decree from ZeRoMagus/);
   assert.doesNotMatch(JSON.stringify(find('sf-fruitcake-bratis')), /Bratus can empower/);

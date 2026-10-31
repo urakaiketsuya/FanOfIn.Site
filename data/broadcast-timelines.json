@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:50:48.943Z",
+  "generatedAt": "2026-10-31T20:53:46.779Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -4154,8 +4154,8 @@
       "games": [
         {
           "gameNumber": 1,
-          "winner": "unknown",
-          "summary": "Outcome unconfirmed",
+          "winner": "p2",
+          "summary": "PewPewStan wins — MaruX concedes at 27 damage",
           "beats": [
             {
               "order": 1,
@@ -4238,7 +4238,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The recorded match result is 1–1; game boundaries and outcomes require source verification."
+      "sourceNote": "Cleaned broadcast transcript, European Nationals Day 1 VOD, Round 7 stream match. Casters call the players \"Maru X\" (Omnidex username MaruX) and \"Pew Pew Stan\" (PewPewStan). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; mid-game plays were summarized from a sampled read of the captions and are partly uncertain. The captions confirm PewPewStan wins game one at 535:38–535:55. At 571:50–573:25 they describe game two and the match as draws, conflicting with the recorded 1–1 score; game two remains unconfirmed."
     },
     {
       "id": "eu-nationals-2026-day1-round8-noel-jigjun",
@@ -5730,7 +5730,7 @@
         {
           "id": "p1",
           "name": "CasuaL",
-          "deck": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)"
+          "deck": "Wind Wake Up (stays at level 0: Perse, Relentless Raptor, Liu Bei, Oathkeeper, Mad Hatter, Cheshire Cat, Concealed Marksman, Enfeebling Orb, Verdigris Decree)"
         },
         {
           "id": "p2",
@@ -5755,7 +5755,7 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "CasuaL wins — Perse keeps V41N's Ranger Strides under control, then an ally and Second Wind for 16 damage",
+          "summary": "CasuaL wins — Perse controls Ranger Strides, then Liu Bei and Second Wind deal 16 damage",
           "beats": [
             {
               "order": 1,
@@ -5786,11 +5786,12 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives the attacking ally range with Ranger Strides (range four) and attacks for eight. Second Wind wakes the attacking ally up for eight more damage and the win.",
+              "text": "V41N has no good ally and plays Tariff Ring to slow the damage. CasuaL sacrifices it in his recollection phase, gives Liu Bei range with Ranger Strides (range four) and attacks for eight. Second Wind wakes Liu Bei up for eight more damage and the win.",
               "cards": [
                 "Tariff Ring",
                 "Ranger Strides",
-                "Second Wind"
+                "Second Wind",
+                "Liu Bei, Oathkeeper"
               ],
               "tags": [
                 "combo",
@@ -15673,13 +15674,14 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Zetdivx trades Weaving Manastream and Krustallan Archer for Aesan Protector, builds Ranger Strides, Inert Sword and Quickstep Treads, and plays Nullifying Mirror to turn off Veiling Breeze. Jett's Fluffy Shopkeep keeps Zetdivx's Cheshire Cat from connecting.",
+              "text": "Zetdivx trades Weaving Manastream and Krustallan Archer for Aesan Protector, builds Ranger Strides, Inert Sword and Quickstep Treads, and plays Nullifying Mirror to turn off Veiling Breeze. Jett's Fluffy Shopkeep keeps Zetdivx's Cheshire Cat from connecting. Zetdivx uses Drown in Aether on a rested Bandit.",
               "cards": [
                 "Nullifying Mirror",
                 "Ranger Strides",
                 "Inert Sword",
                 "Cheshire Cat, Impish Grin",
-                "Fluffy Shopkeep"
+                "Fluffy Shopkeep",
+                "Drown in Aether"
               ],
               "tags": [
                 "stabilize"
