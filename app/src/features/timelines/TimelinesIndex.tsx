@@ -7,7 +7,7 @@ import Button from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/ContentState";
 import { useBroadcastTimelines } from "./data";
 import MatchIdentity from "./MatchIdentity";
-import { championForDeck, useTimelineChampions, roundLabel } from "./champions";
+import { championsForDeck, useTimelineChampions, roundLabel } from "./champions";
 import TimelineStatus from "./TimelineStatus";
 
 export default function TimelinesIndex() {
@@ -28,8 +28,8 @@ export default function TimelinesIndex() {
   }
   const matches = data?.matches ?? [];
   const events = [...new Set(matches.map(match => match.event))].sort();
-  const championNames = [...new Set(matches.flatMap(match => match.players.map(player => championForDeck(player.deck, champions)?.name.split(",")[0]).filter((name): name is string => !!name)))].sort();
-  const filtered = matches.filter(match => (!event || match.event === event) && (!champion || match.players.some(player => championForDeck(player.deck, champions)?.name.split(",")[0] === champion)) && [match.event, match.round, ...match.players.flatMap(player => [player.name, player.deck]), ...match.games.flatMap(game => game.beats.flatMap(beat => beat.cards ?? []))].join(" ").toLowerCase().includes(search.trim().toLowerCase()));
+  const championNames = [...new Set(matches.flatMap(match => match.players.flatMap(player => championsForDeck(player.deck, champions).map(card => card.name.split(",")[0]))))].sort();
+  const filtered = matches.filter(match => (!event || match.event === event) && (!champion || match.players.some(player => championsForDeck(player.deck, champions).some(card => card.name.split(",")[0] === champion))) && [match.event, match.round, ...match.players.flatMap(player => [player.name, player.deck]), ...match.games.flatMap(game => game.beats.flatMap(beat => beat.cards ?? []))].join(" ").toLowerCase().includes(search.trim().toLowerCase()));
   const control = "min-h-control w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue";
   return <PageLayout width="fluid" data-component="TimelinesIndex">
     <div className="flex flex-wrap items-center justify-between gap-3">

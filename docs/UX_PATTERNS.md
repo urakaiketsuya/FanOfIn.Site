@@ -642,3 +642,15 @@ canonical mentions and manifest freshness. App/shared typechecks and focused lin
 Checked unavailable Swiss lists, loading, Both players notes, unknown outcomes, keyboard
 game navigation, URL selection, 48px controls, and overflow at 360/390px and 1280px.
 Forced network errors, text zoom and on-screen keyboards were not retested.
+
+Match search uses opposing champion portraits with a visible VS, player names and the
+recorded result. Show each named champion once per side (deduplicating levels), with
+readable names and wrapping portraits. Champion filters include every named champion
+in mixed builds; recap detail portraits link to their card pages. Keep deck labels
+intact across slashes and retain a text fallback when the catalog has no match.
+
+Portrait verification (2026-10-31): checked 360/390px mobile and 1280px desktop,
+paired champion identities, Merlin filtering, empty search and clearing filters,
+keyboard result focus, 48px controls and no horizontal overflow. App typecheck,
+focused lint and 32 timeline tests pass. Forced network failure, text zoom and
+on-screen keyboard behavior were not retested.

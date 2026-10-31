@@ -6,12 +6,18 @@ export function useTimelineChampions() {
   return useLiveQuery(() => db.cards.filter(card => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT")).toArray(), []);
 }
 
-// Representative champion art only; never infer a registered list from commentary.
-export function championForDeck(deck: string, cards: Card[] = []) {
-  const words = ` ${deck.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `;
-  const matches = cards.filter(card => words.includes(` ${card.name.split(",")[0].toLowerCase()} `));
-  const names = new Set(matches.map(card => card.name.split(",")[0]));
-  return names.size === 1 ? matches[0] : undefined;
+// One representative card per explicitly named champion, in deck-description order.
+// This identifies the recap's deck label, not a reconstructed registered list.
+export function championsForDeck(deck: string, cards: Card[] = []) {
+  const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const words = ` ${normalize(deck)} `;
+  const matches = new Map<string, { card: Card; position: number }>();
+  for (const card of cards) {
+    const name = normalize(card.name.split(",")[0]);
+    const position = words.indexOf(` ${name} `);
+    if (position >= 0 && !matches.has(name)) matches.set(name, { card, position });
+  }
+  return [...matches.values()].sort((a, b) => a.position - b.position).map(({ card }) => card);
 }
 
 export function roundLabel(round: string) {

@@ -1,19 +1,27 @@
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import type { BroadcastTimelineMatch, Card } from "@gatcg/shared";
-import { championForDeck } from "./champions";
+import { championsForDeck } from "./champions";
 import CardArtTile from "../../components/CardArtTile";
 
 export default function MatchIdentity({ match, champions, linked = false }: { match: BroadcastTimelineMatch; champions?: Card[]; linked?: boolean }) {
-  return <div className="grid grid-cols-2 gap-4">
+  return <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-2 sm:gap-3">
     {match.players.map((player, index) => {
-      const card = championForDeck(player.deck, champions);
-      const deckLabel = player.deck.split(/\s*[(/—]/)[0].trim();
-      const artwork = <CardArtTile card={card} name={card?.name ?? deckLabel} artworkOnly />;
-      return <div key={player.id} className="min-w-0">
-        {linked && card ? <Link to={`/cards/${card.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{artwork}</Link> : artwork}
-        <p className={`mt-2 break-words text-lg font-bold ${index === 0 ? "text-ctp-blue" : "text-ctp-mauve"}`}>{player.name}</p>
-        <p className="text-sm text-ctp-subtext1 break-words">{deckLabel}</p>
-      </div>;
+      const cards = championsForDeck(player.deck, champions);
+      const deckLabel = player.deck.split(/\s*[(—]/)[0].trim();
+      return <Fragment key={player.id}>
+        {index > 0 && <span className="self-center rounded-full border border-ctp-surface2 bg-ctp-mantle px-2 py-2 text-xs font-bold text-ctp-subtext1">VS</span>}
+        <div className="min-w-0 text-center">
+          <div className="flex flex-wrap justify-center gap-2 [&_[data-component=CardArtTile]]:aspect-square [&_[data-component=CardArtTile]]:w-12 [&_[data-component=CardArtTile]]:rounded-full [&_[data-component=CardArtTile]]:ring-2 [&_[data-component=CardArtTile]]:ring-ctp-surface2 sm:[&_[data-component=CardArtTile]]:w-16 [&_img]:!w-[160%] [&_img]:!left-[-30%] [&_img]:!top-[-25%]">
+            {cards.length ? cards.map(card => {
+              const artwork = <><CardArtTile card={card} name={card.name} artworkOnly /><span className="mt-1 block text-xs font-medium text-ctp-subtext1">{card.name.split(",")[0]}</span></>;
+              return linked ? <Link key={card.slug} to={`/cards/${card.slug}`} className="flex min-h-control min-w-12 flex-col items-center rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{artwork}</Link> : <div key={card.slug} className="flex min-w-12 flex-col items-center">{artwork}</div>;
+            }) : <CardArtTile card={undefined} name="?" artworkOnly />}
+          </div>
+          <p className={`mt-2 break-words text-lg font-bold ${index === 0 ? "text-ctp-blue" : "text-ctp-mauve"}`}>{player.name}</p>
+          <p className="break-words text-xs text-ctp-subtext1">{deckLabel}</p>
+        </div>
+      </Fragment>;
     })}
   </div>;
 }
