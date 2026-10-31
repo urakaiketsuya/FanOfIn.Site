@@ -49,9 +49,15 @@
         "firstTimestamp": "0:13",
         "lastTimestamp": "10:36:41",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 62616
     },
     {
       "videoId": "W_5i0aO5Es0",
@@ -68,9 +74,15 @@
         "firstTimestamp": "4:49",
         "lastTimestamp": "11:27:28",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 62616
     },
     {
       "videoId": "tVVnZ9yPy5U",
@@ -149,9 +161,15 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "11:33:30",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 56265
     },
     {
       "videoId": "yiXTkbA1am4",
@@ -179,9 +197,15 @@
         "firstTimestamp": "2:36",
         "lastTimestamp": "10:49:28",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 55400
     },
     {
       "videoId": "DPuScrWjjag",
@@ -231,9 +255,15 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "11:47:02",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 52777
     },
     {
       "videoId": "ljQZR8Yu1XM",
@@ -250,9 +280,15 @@
         "firstTimestamp": "0:20",
         "lastTimestamp": "11:54:52",
         "blankSegments": 1,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 52777
     },
     {
       "videoId": "Y7WZMR-8ao0",
@@ -283,9 +319,15 @@
         "firstTimestamp": "8:39",
         "lastTimestamp": "11:52:44",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 48556
     },
     {
       "videoId": "vPfAk2DNnVA",
@@ -353,9 +395,15 @@
         "firstTimestamp": "0:10",
         "lastTimestamp": "11:54:48",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 42040
     },
     {
       "videoId": "JLqoKtL0CSU",
@@ -381,9 +429,15 @@
         "firstTimestamp": "0:22",
         "lastTimestamp": "11:41:26",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 38740
     },
     {
       "videoId": "pYN7DXxQOQc",
@@ -400,9 +454,15 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "11:53:19",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 38740
     },
     {
       "videoId": "-3PN7Lsc99s",
@@ -428,9 +488,15 @@
         "firstTimestamp": "0:13",
         "lastTimestamp": "11:53:47",
         "blankSegments": 1,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 37140
     },
     {
       "videoId": "6XU9azcBukk",
@@ -447,9 +513,15 @@
         "firstTimestamp": "2:06",
         "lastTimestamp": "10:57:45",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 37140
     },
     {
       "videoId": "FwyvGLOxXCA",
@@ -486,9 +558,15 @@
         "firstTimestamp": "0:03",
         "lastTimestamp": "11:05:39",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 36225
     },
     {
       "videoId": "oHCCZOZBvKM",
@@ -516,9 +594,15 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "11:54:49",
         "blankSegments": 0,
-        "reviewStatus": "unreviewed",
+        "reviewStatus": "match-boundaries-and-results-reviewed",
         "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
-      }
+      },
+      "review": {
+        "record": "docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json",
+        "mode": "match-boundaries-and-results",
+        "fullGameplayReviewed": false
+      },
+      "eventId": 33786
     },
     {
       "videoId": "hAx4jQ4VjCs",
@@ -1652,55 +1736,73 @@
       "matchId": "na-nationals-2026-day1-round1-dit-boeboe",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 2117,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 35:17: head right into the stream right now and catch our first round match here at North American Nationals. Let's head to the table. And we have there he is the"
     },
     {
       "matchId": "na-nationals-2026-day1-round2-tlsovotl-aqua",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6918,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 1:55:18: And oh, this is perfect. Right on over, we've got Aqua. And what else? We got Tulso Vodto over here. I probably murdered that"
     },
     {
       "matchId": "na-nationals-2026-day1-round3-noel-tress",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 11975,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 3:19:35: Unfortunately, it got out there. People know about it, but this is a different list, right? This is ostensibly a different version of this. So, we're heading into the game here with uh Gina"
     },
     {
       "matchId": "na-nationals-2026-day1-round4-teamtruecaban-superior",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 16389,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 4:33:09: So, I'm really looking forward to seeing uh seeing what comes up here. But, let's head into the match. We're heading into game four, round four, I should say, of"
     },
     {
       "matchId": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 20786,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 5:46:26: out. But uh without any further ado then why don't we all see together and let's jump into that game and we'll show you guys what happens."
     },
     {
       "matchId": "na-nationals-2026-day1-round5-jett-longn",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 23729,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 6:35:29: I am great. We just had a little bit of lunch. I'm ready for some more Grand Archive. And let me tell you what, we're going to get to see that right now."
     },
     {
       "matchId": "na-nationals-2026-day1-round6-celednb-quakems",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 28411,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 7:53:31: Uh, so here we also have Quums, who's the or Quums. Maybe it's Quigums. That's like fun to say. It's Quum. I apologize"
     },
     {
       "matchId": "na-nationals-2026-day1-round7-anjuhro-hyouka",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 33265,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 9:14:25: Right now, we're going to head right into our match here, round seven, and we have a banger match for you all. And you"
     },
     {
       "matchId": "na-nationals-2026-day1-round8-zorr-hessu",
       "videoId": "ljQZR8Yu1XM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 38003,
+      "startEvidence": "Broadcast transcript ljQZR8Yu1XM at 10:33:23: Oh man. Oh man, Terry, do we have a matchup here for us. We have"
     },
     {
       "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
@@ -1712,55 +1814,759 @@
       "matchId": "na-nationals-2026-day2-round10-superior-asuna",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1657,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 27:37: Yeah. And uh let's see now if the power of turtle friendship is going to be enough to bring him across the finish line once more as we head into this"
     },
     {
       "matchId": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6730,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 1:52:10: to come in the RDO season and the development of the meta, but we just got word our players are ready. And Terry, there's nothing but a boiling chicken happening over here again."
     },
     {
       "matchId": "na-nationals-2026-day2-round12-tlux-superior",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 11036,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 3:03:56: are ready to get jumping in and playing this Guoa versus Guoa matchup. Here we have main deck Tony Tux on the left."
     },
     {
       "matchId": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 20253,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 5:37:33: to my ability to go buy some more packs, we have one more round for you guys to watch. And we're going to head right into the table and go to our bonus backup match here with some really well-known members of the community."
     },
     {
       "matchId": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 15325,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 4:15:25: going to hop into our final round here to see. And I'm pretty sure these players are going to be fighting for"
     },
     {
       "matchId": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 23673,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 6:34:33: Honestly, yeah, this is this has been a great weekend for Diana and we are going to see if that continues. We're going to jump right into this and Z being the"
     },
     {
       "matchId": "na-nationals-2026-top8-qf-jett-chemcollapse",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 26023,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 7:13:43: And the fist bump to start it off. You love to see the camaraderie between the community here. And there they are, right? Wind spirits. Two beautiful ones if I if I do say so myself."
     },
     {
       "matchId": "na-nationals-2026-top4-semifinal-zetdivx-jett",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 30413,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 8:26:53: Yes. I love that you're talking to the aggro guy. All I want to see is some beat down. So, let's get on over to that table and see what we are looking. I"
     },
     {
       "matchId": "na-nationals-2026-grand-finals-quarax-jett",
       "videoId": "tFC-3k0uxcM",
       "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 38011,
+      "startEvidence": "Broadcast transcript tFC-3k0uxcM at 10:33:31: But enough about Ascent Valkyrie. Let's head down to the table here. We have these two incredible players. We got Quax on the left. We got Owli or Jet on"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-1-joyboy-lecithium",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1858,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 30:58: we have tested a little bit and uh we're never sure about it, but we'll have to see if it plays out. Now we are actually heading into the game right now. We have"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-2-obuchi1go-hachico",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 7173,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 1:59:33: So, here we've got uh so we've got Hachiko on water fractals versus Obuichi Ichigo."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-3-fome-roxsas",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 13072,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 3:37:52: Yeah, and it is a bullet. So, it does give you a way to take a shot at your opponent eventually. Uh looks like the players are ready to begin here though."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-4-limelight-thomasli2",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 18128,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 5:02:08: an ascent. But today in this match in round four, we're going in. We see Limelight from Creative Shock. Now, a wellknown member of the community, been"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-5-kingarmo-kuojia",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 23484,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 6:31:24: K U O J I A. He is a famed Guadia Genu player. Has been on it since release."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-6-aqua-jackys",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 28633,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 7:57:13: Yeah, I'm excited about this matchup because we have the one and only Aqua here. Aqua was one of our Worlds 2025 players who took 25th in the event uh"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-7-lancelim0210-proannn",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 33555,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 9:19:15: but here we are heading into the table here. Pro versus and we didn't talk about the opponent at all. Lance Slim 0210. Another 411 player as both of"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-8-glenyboi-sapphicsnake",
+      "videoId": "pYN7DXxQOQc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 38515,
+      "startEvidence": "Broadcast transcript pYN7DXxQOQc at 10:41:55: Now, the spirit of fire is materialized by Glenny Boy, normal spirit. uh not gonna have a fragmented spirit here and we're gonna go immediately to Savic Snake's turn."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-10-kafit5566-henkiethegoat",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1557,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 25:57: You're going to see Kafit now. He is going to start us off today with that spirit of fire. Very nice custom as well"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-11-zer-limbo",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6123,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 1:42:03: wind was really starting to come back a little bit. But we are going to jump right into the game here and Zur is going to win the die roll and get to take the first turn of the game."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-12-hyouka-tetsu",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10281,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 2:51:21: another exciting match that we have to show off with another well-known player in the game. We have Hyoka. And Kiyoka,"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-13-henkiethegoat-limbo",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 14579,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 4:02:59: Hello everyone. Welcome back to Ascent Akihabra. We're at nearly the end of all of the Swiss rounds. Round 13, one after"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-14-gamingsiopao-glenyboi",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 19472,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 5:24:32: Glenny Boy, who is going to be one of our players in this final streamed Swiss round. And uh he is he's going to be"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-quarterfinal-jett-hoyee",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 27262,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 7:34:22: And what are we looking at here? So for this next matchup here, we have Owie who"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-semifinal-raylam-jett",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 33431,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 9:17:11: We are going to be watching Ollie again and he's against one of Hong Kong's most famed players, Ray Lam."
+    },
+    {
+      "matchId": "ascent-akihabara-2025-grand-final-pulse-raylam",
+      "videoId": "L72HwYWAQAY",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 37720,
+      "startEvidence": "Broadcast transcript L72HwYWAQAY at 10:28:40: his turn one play? Yeah, Rayam getting that spirit of fire drawing seven cards."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-1-dlonyer-henkiethegoat",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 2089,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 34:49: be wind Tristan versus Diana here. Oh no. Oh. Oh. Okay. I see. I see this might be Genu."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-2-aqua-jad",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6289,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 1:44:49: makes more sense now fing. And we are going to go into game one here. Aqua versus Jet."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-3-inaki-abbey",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10827,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 3:00:27: last game. We are going to have our feature game. In fact, we know what we're actually fighting. What no not fighting what we are actually watching later."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-4-leowong-yonab",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 18904,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 5:15:04: into one of those ally decks. Speaking of ally decks, the matchup that we're about to find uh later is going to be a water ally deck against that Luxom Xander."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-5-xabichan-mike0615",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 23723,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 6:35:23: So, we have Sabi Chan piloting a really unique water ally. We know Sabi Chan has been piling our water allies. We have been on the stream before, but this time his champion is a bit different. It's Merlin."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-6-truesightleocroix-ameke",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 28123,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 7:48:43: So very heads up play from Mike. But enough talking about them. We are going into our feature game for round six. Interesting decks as well."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-7-chunkie-dennisyao",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 33181,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 9:13:01: So we have Dennis Yao on that deck. And as far as upgrades from the new set, Palver is has made the has made the cut."
+    },
+    {
+      "matchId": "ascent-manila-2026-round-8-dlonyer-chung",
+      "videoId": "PITLBQ2u6gc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 37370,
+      "startEvidence": "Broadcast transcript PITLBQ2u6gc at 10:22:50: Welcome back. It was a really quick break. Uh I don't know if you heard, but right at the end of last round, uh they were already saying round eight"
+    },
+    {
+      "matchId": "sea-national-2026-round-10-ikuri-brai",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1980,
+      "startEvidence": "Broadcast transcript 694jDw5rGqg at 33:00: think we are jumping straight into our game right here. We'll talk about the uh decks represented in day two. But jumping into the game, actually we have"
+    },
+    {
+      "matchId": "sea-national-2026-round-11-frashe-bayabayashi",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6567,
+      "startEvidence": "Broadcast transcript 694jDw5rGqg at 1:49:27: So, it's a pretty big deal. So, it's going to be really important here that Frat and Bayashi from Japan"
+    },
+    {
+      "matchId": "sea-national-2026-round-12-truesightleocroix-zabauu",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10896,
+      "startEvidence": "Broadcast transcript 694jDw5rGqg at 3:01:36: The last one is the fire Suzaku. But we're going to head into our next game, round 12 of Swiss. And we're going to head into a very, very exciting one."
+    },
+    {
+      "matchId": "sea-national-2026-round-13-zero0000000000-joseph",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 15520,
+      "startEvidence": "Broadcast transcript 694jDw5rGqg at 4:18:40: Lots of options still. But now we're going to look at Joseph from Malaysia versus Zero from Hong Kong. And this is going to be again a very fast-paced"
+    },
+    {
+      "matchId": "sea-national-2026-semifinal-lifdrasyl-dragonjg",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 28532,
+      "startEvidence": "Broadcast transcript 694jDw5rGqg at 7:55:32: against Dragon JG. In case you've forgotten, Lift Drazil on that Wind Crux Lorraine. So we'll be doing shenanigans with the prismatic edge. Yeah. So his"
+    },
+    {
+      "matchId": "sea-national-2026-grand-final-raylam-dragonjg",
+      "videoId": "694jDw5rGqg",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-1-glenyboi-ioki46",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 2003,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 33:23: seeing some people get riled up here because it's a fire mirror match. I already I'm already ready to see some bad beats. All right. So, on the left we"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-3-xenon-emp",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 11671,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 3:14:31: We're going to see EMP versus Xenon. Uh, I believe we're going to see Tristan versus Fire Jin."
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-5-yhj0127-ryuta",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 21886,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 6:04:46: So jumping into the game, we have uh why is Sh going to be playing the I believe it is going to be the water all and then"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-6-kyle0809-megalobana",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 26673,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 7:24:33: We are going to see very shortly, but we're heading into the games soon. We have the players getting ready. They're rolling their dice and everything. Uh we"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-7-hachico-long",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 31827,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 8:50:27: other than that yeah I mean devastating blow a card we've seen some Merlin play but Look at that. Hiko is skilled. Opens Riyle with double liinal guide to start the game off. You hate to see it."
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-8-sunset-yungcheng",
+      "videoId": "gL-S2tAI6bk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 36978,
+      "startEvidence": "Broadcast transcript gL-S2tAI6bk at 10:16:18: main since day one if I could have like a what on Jin on enter draw one. It's as simple as that guys. Anyway, jumping the game here. Sunset versus Yuch here."
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-1-aqua-sowa",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 2004,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 33:24: oh, water, allies, Xander is the matchup."
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6843,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 1:54:03: it's just it feels so much slower. And against aggro, I feel like you don't have like the explosive game here. So, we're going to go straight into the game here with Esco versus Hachiko."
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10920,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 3:02:00: know, not new to the stream player, Yamiken."
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 15669,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 4:21:09: Yes. Okay. So, we are going to be having Wind Terra Kongming on stream. It's going to"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 22814,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 6:20:14: stuff. So, I'm really looking forward to see it. And this is a So, Dylan um Fair Jordans who made this deck is a Seru one trick. And because Sarah's gone, they"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-6-quarax-fairjordans",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 26900,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 7:28:20: He I think we just got information he will actually be against Fair Jordan who is the wind guaku"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-7-qadwqr-arod",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 31657,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 8:47:37: Kader versus A-Rod here. Going to bring out both those water spirits. And let's see what the opening hands look like."
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+      "videoId": "W_5i0aO5Es0",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 37152,
+      "startEvidence": "Broadcast transcript W_5i0aO5Es0 at 10:19:12: Yeah, I mean that would be pretty interesting. Uh across from him is going to be Jidan from Apex Players Guild. So is on that Serene Fire Jin that the rest"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1362,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 22:42: But let's look at who we have on stream already. So, we have two players. First,"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-10-pulse-glenyboi",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 5765,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 1:36:05: Welcome back to our 10th round of Swiss here at Asent Melbourne. I'm joined by Gasimus and we are excited to bring you"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-11-launtial-professor",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10305,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 2:51:45: compared to Hatchiko. Hacho is like very umbrella package here. So, we've got Professor"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 14618,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 4:03:38: However, we're going to see already we have Pulse as well as Be Hop on our top table here on stream. We saw Pulse a"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-quarterfinal-noel-zetdivx",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 22779,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 6:19:39: we're going to show on stream, Nol Zet Dix. We have Fractals verse Jin. What are we expecting?"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 26857,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 7:27:37: Welcome back to Ascent Melbourne. We're here at the semifinal. Four players remain and the semifinal is between"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-semifinal-hachico-noel",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 29313,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 8:08:33: Hello everyone. We got the bonus match coming in here. Right when Yamikin won that game around a little bit after"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-final-hachico-yamikin",
+      "videoId": "qQrV2I2Uiac",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 32577,
+      "startEvidence": "Broadcast transcript qQrV2I2Uiac at 9:02:57: explosive final matchup. Of course, if you are just joining us, we are about to have our grand finals. Yamikin from New"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-1-corgis-yamikin",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1377,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 22:57: really strong. So actually we're about to get in the game right here. Game one. Let's go. Yeah. So let's get right into it now."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-2-limelight-liam",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 5018,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 1:23:38: It's really fun. All right. So, we're going to be hopping into the game."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-3-dragowil-teamtrueisaac",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 9335,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 2:35:35: Yeah. Very good. All right. So now we've got a we've got the pairings and the dig list for the next for round three. We've got on stream we've got true team true"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-4-sherlock-endyr",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 13949,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 3:52:29: Yeah. Yeah, for sure. So okay, so it seems like we're having a deck you like Gen baby. Let's go."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-5-quarax-boy",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 21744,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 6:02:24: Yeah, boy from Taiwan. He is on wind crux Lraine. And then we've got Quarax."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-6-pulse-johnbed",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 26546,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 7:22:26: Here we go. John B and Pulse. Paul's from Australia and John B from your hometown."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 30695,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 8:31:35: hype thing is about to happen and I'm going to throw over to you, but what's happening right now for round seven? We are doing a wind mirror match, but uh"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+      "videoId": "6XU9azcBukk",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 35386,
+      "startEvidence": "Broadcast transcript 6XU9azcBukk at 9:49:46: So, it's an assassin. Yes. Wind Luxom on the left, Wind Tristan on the right."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-9-asuna-kitkat",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 572,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 9:32: actually works out. And you know, speaking of tall damage, the deck that we are going to be featuring, one of the decks we're featuring in this, actually, both decks in this first matchup are"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-10-pulse-lucasis",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 5660,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 1:34:20: Good. So here we have on on Yeah. Lucas on the left, Pulse on the right. Pulse from Australia, Lucas from New Zealand."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-11-tien-seiba",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10156,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 2:49:16: Cool. Uh yeah. So, now this next pairing we've got here, we've got uh Saber, who is on wind, Razer Gale, Kong. Yes. Yep."
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 14887,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 4:08:07: So, we've got Wilson, owner of many card merchant shops here from New Zealand versus legit Jesus Ken."
+    },
+    {
+      "matchId": "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 23257,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 6:27:37: So, on the left we've got So, on the left we've got uh Limelight on his Oblation Seal and on the right we've got uh Drago with his Fire Melon."
+    },
+    {
+      "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 30765,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 8:32:45: on screen. It was it is going to be uh true champion gaming on fire firecracks lraine versus Drago on fire."
+    },
+    {
+      "matchId": "ascent-auckland-2025-final-emp-teamtruecaban",
+      "videoId": "idcMDSZRmIE",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 37642,
+      "startEvidence": "Broadcast transcript idcMDSZRmIE at 10:27:22: Welcome back, Grand Archive fans. Of course, Mr. three. And now Fla in for the grand final. Fla, are you hyped?"
+    },
+    {
+      "matchId": "oce-nationals-2026-round-1-blazebeast9612-limelight",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1709,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 28:29: our feature match, we've got um we've got we've got a certain player who I think he he he processed it. He wanted to be"
+    },
+    {
+      "matchId": "oce-nationals-2026-round-2-blink-jayare",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 6231,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 1:43:51: Correct. But luckily, Wookie has set us up. We have here a water fractal and a Taurus deck. Win to Norris."
+    },
+    {
+      "matchId": "oce-nationals-2026-round-3-glenyboi-sano",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 10591,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 2:56:31: So, we have here we've got Glenny Boy who's currently on Wind Krux Lraine."
+    },
+    {
+      "matchId": "oce-nationals-2026-round-4-sapphicsnake-boy",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 16859,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 4:40:59: and yeah. Okay. And we're going to get into our game and I'm super excited for this. Not only is it a deck that I love, but it's also a player that I am good"
+    },
+    {
+      "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 21565,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 5:59:25: So we're going to get into another game thankfully no Siri this time instead we're going to give you we're going to give you the other big rung of the meta game which we haven't shown we've avoided so long watering Diana."
+    },
+    {
+      "matchId": "oce-nationals-2026-round-6-dennisyao-jdavies96",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 25959,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 7:12:39: Right. So, here we have uh we have from team Talis Dennis Yao who is carrying on water athering Diana."
+    },
+    {
+      "matchId": "oce-nationals-2026-round-7-limelight-glenyboi",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 30549,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 8:29:09: he's gonna win the next two. So, we currently are now round seven. We have a treat for you in the in in the stream booth. So, we've got coming up. We've"
+    },
+    {
+      "matchId": "oce-nationals-2026-round-8-kmo-professor",
+      "videoId": "YajGY_RVfD4",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 35058,
+      "startEvidence": "Broadcast transcript YajGY_RVfD4 at 9:44:18: Hello everyone. We are here with our final round of day one of Oceanana Nationals 2026."
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round4-bartleby-phillip",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 20016,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 5:33:36: we go in and you know already starting off our round one and we have a blast from the past Dan."
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round5-duckhats-killydis",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 24135,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 6:42:15: Yeah. Yeah. I think being at a team in a team is a massive advantage. But let's jump in to this game here. We haven't even talked about the decks we play but this is a This is a very fun match up"
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round6-quarax-rexaren",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 28734,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 7:58:54: feature match lined up here. Cororax from Singapore and versus Rex Aaron from Texas, United States."
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round7-weiyee-harunda",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 34106,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 9:28:26: stuff. We have Weii versus Harunda. And we've actually already we're kicking this off right away with a double"
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round8-sano-phantisea",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 39323,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 10:55:23: interesting matchup. On one side, we have a level three deck. On the other side, we have a spirit deck."
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round7-maindeckdan-yojiah",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 32381,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 8:59:41: So, we've just had an update. So, there had been a error in the sideboard for the Merlin player Kira, Yajia. So the"
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round8-hyouka-teamtrueterry",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 36725,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 10:12:05: One of these players we've seen on stream before, Hyoka has been on with his Wind R. So, it's going to be something that we have already seen today, and I'm really excited to see how"
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round3-tlux-neetfull",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 16933,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 4:42:13: sorted and we're ready to, you know, jump into these games here. And we just want to explain a little bit here that the game we'll be jumping into has been pre-recorded and we're just going to go"
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round1-comradecoheed-fome",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 1888,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 31:28: Yeah, it's going to be a very interesting game and matchup to see and both of these players have already went"
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round4-rng-joyboy",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 15408,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 4:16:48: know, you kind of be aware of your surroundings and be awake. Um, yeah, speaking of games, we finally have our"
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round6-superior-killydis",
+      "videoId": "O9EzTt7ffVc",
+      "kind": "broadcast",
+      "basis": "Recovered broadcast transcript and exact official event pairing verified; see docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json.",
+      "startSeconds": 27646,
+      "startEvidence": "Broadcast transcript O9EzTt7ffVc at 7:40:46: uh I think we have a water mirror for round six."
     }
   ]
 }

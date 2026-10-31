@@ -358,11 +358,11 @@ test('Worlds round three names the Gyre target and does not activate unaffordabl
   assert.match(match.sideboardNotes![0].text, /Blessed Clergy to limit activations/);
 });
 
-test('batch coverage accounts for every remaining recap with original-source evidence', () => {
+test('original 99-recap review remains complete as coverage expands', () => {
   const review = JSON.parse(readFileSync(new URL('../../docs/BROADCAST_REVIEW_2026-10-31.json', import.meta.url), 'utf8'));
   const coverage = review.sourceReview.coverage;
-  const expected = data.matches.filter(m => !m.id.startsWith('worlds-swiss-')).map(m => m.id).sort();
-  assert.deepEqual([...coverage.batchRecapsReviewed].sort(), expected);
+  const expected: string[] = [...coverage.batchRecapsReviewed].sort();
+  for (const id of expected) assert.ok(data.matches.some(match => match.id === id), id);
   assert.equal(new Set(coverage.batchRecapsReviewed).size, 99);
   assert.deepEqual(coverage.awaitingRecordedSourceReview, []);
   assert.deepEqual([...coverage.batchFullAvailableGameplayReviewed, ...coverage.batchRecapClaimsVerified].sort(), expected);

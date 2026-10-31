@@ -15,3 +15,10 @@ test('keeps regional events honest and separates known venues from unknown locat
   assert.equal(countryFlag('GB'), '🇬🇧');
   assert.equal(countryFlag(), '');
 });
+
+test('recovered broadcasts remain discoverable in their geographic region', () => {
+  assert.deepEqual(eventLocation('Ascent Melbourne 2026'), { city: 'Melbourne', country: 'AU', region: 'Asia-Pacific' });
+  assert.deepEqual(eventLocation('Ascent Auckland'), { city: 'Auckland', country: 'NZ', region: 'Asia-Pacific' });
+  assert.deepEqual(eventLocation('Ascent Los Angeles'), { city: 'Los Angeles', country: 'US', region: 'Americas' });
+  assert.deepEqual(eventLocation('Oceania Nationals 2026'), { city: 'Oceania', region: 'Asia-Pacific' });
+});

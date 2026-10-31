@@ -4,6 +4,8 @@ export function eventLocation(name: string, id?: number) {
     ['Las Vegas', 'US', 'Americas'], ['Niagara Falls', 'CA', 'Americas'],
     ['London', 'GB', 'Europe'], ['Manila', 'PH', 'Asia-Pacific'],
     ['Akihabara', 'JP', 'Asia-Pacific'], ['Taipei', 'TW', 'Asia-Pacific'],
+    ['Melbourne', 'AU', 'Asia-Pacific'], ['Auckland', 'NZ', 'Asia-Pacific'],
+    ['Los Angeles', 'US', 'Americas'],
   ] as const;
   const place = places.find(([city]) => name.includes(city));
   if (place) return { city: place[0], country: place[1], region: place[2] };
@@ -11,6 +13,7 @@ export function eventLocation(name: string, id?: number) {
   if (id === 60488 || id === 60363) return { city: 'Singapore', country: 'SG', region: 'Asia-Pacific' };
   if (id === 52777) return { city: 'Las Vegas', country: 'US', region: 'Americas' };
   if (/Southeast Asia|SEA National/i.test(name)) return { city: 'Southeast Asia', region: 'Asia-Pacific' };
+  if (/Oceania|Oceanic/i.test(name)) return { city: 'Oceania', region: 'Asia-Pacific' };
   if (/European|EU National/i.test(name)) return { city: 'Europe', region: 'Europe' };
   if (/North American/i.test(name)) return { city: 'North America', region: 'Americas' };
   return { city: name, region: 'Other' };

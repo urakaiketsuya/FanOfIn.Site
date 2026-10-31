@@ -4,9 +4,9 @@ Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtub
 
 ## Video links
 
-All 110 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
+All 196 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
 
-Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Other links open the matching event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links currently point to the corresponding official day broadcast, not an assumed clip URL.
+Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 103 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
 
 ## Transcript backfill
 
@@ -14,39 +14,47 @@ Current collection period means Taipei September 2025 through the latest archive
 
 29 archived competition broadcasts fall in the current period. 13 already had full-stream source files; 14 additional streams now have locally captured captions.
 
-New captures are in `pipeline/.cache/broadcast-transcripts/`, with JSON and plain-text companions named by video ID. This cache is intentionally not committed; the registry records paths, hashes, segment counts and first/last timestamps. Capture means all transcript rows exposed by YouTube, not a claim that every moment of the video has captions. Blank caption rows are retained. These captions are **unreviewed** and have not been converted into published match recaps. Original Downloads files and ZIP are untouched.
+New captures are in `pipeline/.cache/broadcast-transcripts/`, with JSON and plain-text companions named by video ID. This cache is intentionally not committed; the registry records paths, hashes, segment counts and first/last timestamps. Capture means all transcript rows exposed by YouTube, not a claim that every moment of the video has captions. Blank caption rows are retained. All 14 captures have received a **targeted match-boundary/result review**, with selected introduction, transition and closing-sequence windows. This is not full sequential gameplay or video review. The pass added 86 concise recaps and 18 offsets to existing recaps; the original 110 recap texts are unchanged. Exact evidence and remaining cases are recorded in [the backfill review](BROADCAST_BACKFILL_REVIEW_2026-10-31.json). Original Downloads files and ZIP are untouched.
 
 | Stream | Transcript status |
 | --- | --- |
 | [Ascent Osaka Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=g3NNFcNpw3k) | Unavailable in YouTube transcript UI |
-| [Ascent Melbourne Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=qQrV2I2Uiac) | Captured locally · 4,597 segments · unreviewed |
-| [Ascent Melbourne Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=W_5i0aO5Es0) | Captured locally · 4,685 segments · unreviewed |
+| [Ascent Melbourne Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=qQrV2I2Uiac) | Captured locally · 4,597 segments · targeted review |
+| [Ascent Melbourne Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=W_5i0aO5Es0) | Captured locally · 4,685 segments · targeted review |
 | [Championship Sunday Worlds 2026 \| Grand Archive TCG](https://www.youtube.com/watch?v=j-fYPSG3KEA) | Existing source transcript |
 | [Worlds 2026 Top 8 \| Grand Archive TCG](https://www.youtube.com/watch?v=rxlxRXstZS0) | Existing source transcript |
 | [Worlds Swiss Stage 2026 \| Grand Archive TCG](https://www.youtube.com/watch?v=MAgS0ISYLtI) | Existing source transcript |
 | [The Gauntlet 2026 \| Grand Archive TCG](https://www.youtube.com/watch?v=U4RbiOBCC-Q) | Existing source transcript |
-| [South East Asia Nationals Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=694jDw5rGqg) | Captured locally · 4,929 segments · unreviewed |
+| [South East Asia Nationals Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=694jDw5rGqg) | Captured locally · 4,929 segments · targeted review |
 | [South East Asia Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=yiXTkbA1am4) | Existing source transcript |
-| [Oceania Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=YajGY_RVfD4) | Captured locally · 5,342 segments · unreviewed |
+| [Oceania Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=YajGY_RVfD4) | Captured locally · 5,342 segments · targeted review |
 | [European Nationals Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=DPuScrWjjag) | Existing source transcript |
 | [European Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=JKKl7AYwv3c) | Existing source transcript |
 | [Ascent Las Vegas 2026 Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=QX4lJQ5qgNA) | Existing source transcript |
-| [North American Nationals Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=tFC-3k0uxcM) | Captured locally · 5,441 segments · unreviewed |
-| [North American Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=ljQZR8Yu1XM) | Captured locally · 5,506 segments · unreviewed |
+| [North American Nationals Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=tFC-3k0uxcM) | Captured locally · 5,441 segments · targeted review |
+| [North American Nationals Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=ljQZR8Yu1XM) | Captured locally · 5,506 segments · targeted review |
 | [Ascent Los Angeles Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=Y7WZMR-8ao0) | Unavailable in YouTube transcript UI |
-| [Ascent Los Angeles Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=iwjvP7O9ytM) | Captured locally · 4,547 segments · unreviewed |
+| [Ascent Los Angeles Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=iwjvP7O9ytM) | Captured locally · 4,547 segments · targeted review |
 | [Ascent London Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=41aKdQJ7U1c) | Existing source transcript |
 | [Ascent London Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=E8MyaSKtI_U) | Existing source transcript |
 | [Ascent Manila Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=8fnn-hbArSk) | Existing source transcript |
-| [Ascent Manila Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=PITLBQ2u6gc) | Captured locally · 4,915 segments · unreviewed |
-| [Ascent Akihabara Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=L72HwYWAQAY) | Captured locally · 4,153 segments · unreviewed |
-| [Ascent Akihabara Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=pYN7DXxQOQc) | Captured locally · 4,721 segments · unreviewed |
-| [Ascent Auckland Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=idcMDSZRmIE) | Captured locally · 5,428 segments · unreviewed |
-| [Ascent Auckland Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=6XU9azcBukk) | Captured locally · 5,006 segments · unreviewed |
+| [Ascent Manila Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=PITLBQ2u6gc) | Captured locally · 4,915 segments · targeted review |
+| [Ascent Akihabara Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=L72HwYWAQAY) | Captured locally · 4,153 segments · targeted review |
+| [Ascent Akihabara Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=pYN7DXxQOQc) | Captured locally · 4,721 segments · targeted review |
+| [Ascent Auckland Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=idcMDSZRmIE) | Captured locally · 5,428 segments · targeted review |
+| [Ascent Auckland Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=6XU9azcBukk) | Captured locally · 5,006 segments · targeted review |
 | [Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia \| Ascent Niagara Falls Day 2](https://www.youtube.com/watch?v=YEdMx87UqeE) | Existing source transcript |
-| [Ascent Niagara Falls Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=O9EzTt7ffVc) | Captured locally · 4,939 segments · unreviewed |
+| [Ascent Niagara Falls Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=O9EzTt7ffVc) | Captured locally · 4,939 segments · targeted review |
 | [Ascent Taipei Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=oHCCZOZBvKM) | Existing source transcript |
-| [Ascent Taipei Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=gL-S2tAI6bk) | Captured locally · 5,493 segments · unreviewed |
+| [Ascent Taipei Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=gL-S2tAI6bk) | Captured locally · 5,493 segments · targeted review |
+
+## Parallel review follow-up
+
+The first pass covered 14/14 recovered sources. All 196 recaps link uniquely to official pairings across 15 events. Ten selected matches received an independent second-agent review; the parent additionally checked the Quarax and YojiAh penalty windows and the Superior–Elian bonus excerpt.
+
+Twelve held findings remain in the review record, including missing broadcast portions and an existing recap without a verifiable start. Four score conflicts need further review: Los Angeles Round 1, Niagara Rounds 2 and 3, and Taipei Round 2. Two identity cases remain unresolved: Taipei Round 4 and the SEA quarterfinal opponent called Justin LJW versus official NoobTinnn. The NA Superior–Elian bonus has a verified match result but an unnumbered excerpt and no shown finish. These held additions are not published.
+
+Full gameplay annotation remains for all 14 sources. Several new recaps contain only a reviewed closing game; earlier games are not reconstructed from the match score. Earlier result-only game stubs were omitted from the Asia additions; original game numbers remain intact. The SEA final retains its broadcast link without an offset because captions skip its introduction. Osaka Day 1 and Los Angeles Day 2 still lack available captions; the older 50-stream backlog is separate.
 
 ## Older archive backlog
 
@@ -105,4 +113,6 @@ These streams predate the current recap collection and were inventoried, not dow
 
 ## Verification
 
-App/shared typechecks, focused lint and 10 relevant tests pass. Mobile and desktop results/detail links and desktop bracket links were checked, including 48px targets, keyboard navigation, URL destinations and absence of nested links or horizontal overflow. Missing/invalid video metadata is covered by unit tests. Network failure and text zoom were not re-tested.
+App/shared typechecks, focused lint and 49 relevant tests pass. Every published addition and offset joins an exact official event/stage/round/pairing and the same two players. Source hashes and timestamp quotes were checked against local captures. Original 110 recap contents are unchanged apart from verified video offsets.
+
+Checked 390px mobile and 1280px desktop: grouped results, Game 2 selected by default for partial coverage, named card artwork, 48px watch links, Akihabara Top Cut recap attachment, keyboard Results/Timeline switching, empty search and recovery, and no horizontal overflow. Initial loading was observed. Network failure, text zoom and on-screen keyboards were not re-tested.

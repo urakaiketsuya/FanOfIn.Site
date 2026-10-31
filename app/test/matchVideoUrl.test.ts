@@ -26,5 +26,12 @@ test('every published link has an explicit registry association and no transferr
     if (match.video.startSeconds !== undefined) assert.ok(association?.startEvidence);
   }
   assert.equal(data.matches.find((m: { eventId: number }) => m.eventId === 38740).video.id, 'bfhumlDXjrE');
-  for (const m of data.matches.filter((m: { eventId: number }) => m.eventId === 52777)) assert.equal(m.video.startSeconds, undefined);
+  for (const m of data.matches.filter((m: { eventId: number }) => m.eventId === 52777)) {
+    assert.ok(['ljQZR8Yu1XM', 'tFC-3k0uxcM'].includes(m.video.id));
+    if (m.video.startSeconds !== undefined) {
+      const association = links.get(m.id) as { startSeconds: number; startEvidence: string };
+      assert.equal(m.video.startSeconds, association.startSeconds);
+      assert.match(association.startEvidence, /transcript/i);
+    }
+  }
 });

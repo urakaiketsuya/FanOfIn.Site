@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T23:03:17.701Z",
+  "generatedAt": "2026-10-31T23:23:38.768109Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -15499,7 +15499,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 1 VOD. Casters call the players Dit and \"Bobo\" Taylor (omnidex username boeboe); card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 2117
       }
     },
     {
@@ -15690,7 +15691,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 2 VOD, including the post-match interview. Casters call the players \"Savatol/Sevoddo\" and Aqua; the omnidex usernames are TlsoVotl and Aqua. Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 6918
       }
     },
     {
@@ -15866,7 +15868,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. Game outcomes verified against the supplied Round 3 captions: Tress wins game one at 40:53–41:16; Noel wins game two and ties the match at 65:35–66:44.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 11975
       }
     },
     {
@@ -16066,7 +16069,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 VOD. Casters call TeamTrueCaban \"Caban/Kaiba\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 16389
       }
     },
     {
@@ -16220,7 +16224,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 (backup match) VOD. Casters call the players \"Shut Him Down\" and \"Z/Zet DeVex\"; the omnidex usernames are Shuteemdown and Zetdivx. Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 20786
       }
     },
     {
@@ -16332,7 +16337,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 5 VOD. This transcript is partly garbled (some caption lines are out of order or missing), so these beats are limited to what is legible. Casters call the Razorgale player \"Ali\" (omnidex username Jett) and the Genbu player \"Long\" (LongN). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 23729
       }
     },
     {
@@ -16515,7 +16521,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 6 VOD, including a post-match interview with Quakems. Casters call the players \"Celad/Seled NB\" (the Weiss Schwarz world champion, omnidex username Celednb) and \"Quums\" (Quakems). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 28411
       }
     },
     {
@@ -16638,7 +16645,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 7 VOD, including a post-match interview with Hyouka. This transcript is partly garbled (caption lines are interleaved), so beats are limited to what is legible. Casters call the players \"Andro/Andreo\" (Anjuhro) and \"Hyoka\" (Hyouka); \"Ry\" is Rai. Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 33265
       }
     },
     {
@@ -16804,7 +16812,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 8 VOD, including a post-match interview with Hessu. Casters call the Genbu player \"Zor\" (omnidex username Zorr) and Hessu \"Jesus/Hazu\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 38003
       }
     },
     {
@@ -17176,7 +17185,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 10 VOD, including a player intro and a post-match interview with Superior. Casters call the Razorgale player \"Asa\" (omnidex username Asuna). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 1657
       }
     },
     {
@@ -17354,7 +17364,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 11 VOD, including a post-match interview with Tacoboss. Casters call the players \"Taco Boss\" and \"Tempest/Tepe/Teepe Sorn\" (TeppeSlorn). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 6730
       }
     },
     {
@@ -17503,7 +17514,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 12 VOD, including a post-match interview with Superior. Casters call the Seiryuu player \"Tony/Tux\" (omnidex username TLux). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 11036
       }
     },
     {
@@ -17635,7 +17647,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Seiryuu against Genbu table). Casters call the players \"Chem Clash/Chem Collapse\" and \"M Duo\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 20253
       }
     },
     {
@@ -17824,7 +17837,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Diana against Luxem table), including a post-match interview with Yadon. Casters call the players \"Fallen Bu\" (omnidex username Fallinbuu14) and Yadon. Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 15325
       }
     },
     {
@@ -17953,7 +17967,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including an interview with Zetdivx. This transcript is partly garbled (many caption lines are interleaved or missing), so beats are limited to what is legible. Casters call the players \"Zet DeVix\" (Zetdivx) and \"Steo\" (stevo7653). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 23673
       }
     },
     {
@@ -18140,7 +18155,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including a post-match interview with Jett. Game 3 is cut short at the broadcast switch to the semifinal, so only the opening turns are shown. Casters call Jett \"Ali/Jet/Oi\" and ChemCollapse \"Chem Clash/Chem Claps\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 26023
       }
     },
     {
@@ -18349,7 +18365,8 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 4 Semifinal VOD, including an interview with Jett. Casters call the Diana player \"Zed/Zett Divix\" (Zetdivx) and Jett \"Ali/Ollie/Jet\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
-        "kind": "broadcast"
+        "kind": "broadcast",
+        "startSeconds": 30413
       }
     },
     {
@@ -18549,7 +18566,3936 @@
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Grand Finals VOD, including a champion's interview with Jett. Casters call Jett \"Ali/Ollie/Jet\" and Quarax \"Korax/Corax\". Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
         "id": "tFC-3k0uxcM",
+        "kind": "broadcast",
+        "startSeconds": 38011
+      }
+    },
+    {
+      "id": "ascent-akihabara-2025-round-1-joyboy-lecithium",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Joyboy",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Lecithium",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Lecithium wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Lecithium wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Joyboy receives a game loss for a deck-list error; Lecithium wins the match."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 1858
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-2-obuchi1go-hachico",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "obuchi1go",
+          "deck": "Wind Wake Up"
+        },
+        {
+          "id": "p2",
+          "name": "hachico",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "hachico wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "hachico wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "hachico closes the second game after stopping the opposing attack.",
+              "cards": [
+                "Burst Asunder"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 7173
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-3-fome-roxsas",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "fome",
+          "deck": "Fire Umbra Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Roxsas",
+          "deck": "Wind Umbra Diana"
+        }
+      ],
+      "result": "Roxsas wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Roxsas wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Roxsas wins the deciding game with an unexpected reload.",
+              "cards": [
+                "Rapid Reload"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 13072
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-4-limelight-thomasli2",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Limelight",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "ThomasLi2",
+          "deck": "Fire Krux Lorraine"
+        }
+      ],
+      "result": "ThomasLi2 wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "ThomasLi2 wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ThomasLi2 wins the deciding game to complete the comeback."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 18128
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-5-kingarmo-kuojia",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "KingArmo",
+          "deck": "Fire Krux Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "KUOJIA",
+          "deck": "Water Genbu Guo Jia"
+        }
+      ],
+      "result": "KUOJIA wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "KUOJIA wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "KUOJIA decks KingArmo out again to complete the sweep.",
+              "cards": [
+                "Fractal of Polar Depths"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 23484
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-6-aqua-jackys",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Aqua",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "JackYS",
+          "deck": "Wind Wake Up Tristan"
+        }
+      ],
+      "result": "Aqua wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Aqua wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua finds consecutive Cosmic Bolts to finish the second game.",
+              "cards": [
+                "Cosmic Bolt"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 28633
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-7-lancelim0210-proannn",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "lancelim0210",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "ProAnnn",
+          "deck": "Fire Exia Jin"
+        }
+      ],
+      "result": "ProAnnn wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "ProAnnn wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ProAnnn pushes through the final attack to take game three."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 33555
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-8-glenyboi-sapphicsnake",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "GlenyBoi",
+          "deck": "Fire Krux Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "SapphicSnake",
+          "deck": "Water Terra Kongming"
+        }
+      ],
+      "result": "GlenyBoi wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "GlenyBoi wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi finishes the match with the final burst of damage."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "pYN7DXxQOQc",
+        "kind": "broadcast",
+        "startSeconds": 38515
+      },
+      "sourceNote": "Ascent Akihabara Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-10-kafit5566-henkiethegoat",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 10",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Kafit5566",
+          "deck": "Fire Krux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "HenkieTheGoat",
+          "deck": "Fire Oblation Ciel"
+        }
+      ],
+      "result": "HenkieTheGoat wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "HenkieTheGoat wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "HenkieTheGoat closes another game with Baleful Oblation.",
+              "cards": [
+                "Baleful Oblation"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 1557
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-11-zer-limbo",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 11",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zer",
+          "deck": "Water Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Limbo",
+          "deck": "Wind Astra Arisanna"
+        }
+      ],
+      "result": "Zer wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Zer wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zer keeps the pressure on and wins the second game."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 6123
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-12-hyouka-tetsu",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 12",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Hyouka",
+          "deck": "Wind Arcane Rai"
+        },
+        {
+          "id": "p2",
+          "name": "Tetsu",
+          "deck": "Fire Krux Lorraine"
+        }
+      ],
+      "result": "Hyouka wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Hyouka wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Hyouka finishes with a sequence of Arcane spells.",
+              "cards": [
+                "Erratic Bolt",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 10281
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-13-henkiethegoat-limbo",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 13",
+      "players": [
+        {
+          "id": "p1",
+          "name": "HenkieTheGoat",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Limbo",
+          "deck": "Wind Astra Arisanna"
+        }
+      ],
+      "result": "Limbo wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Limbo wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Limbo finds the last Cosmic Bolt in response to the opposing attack.",
+              "cards": [
+                "Cosmic Bolt"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 14579
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-round-14-gamingsiopao-glenyboi",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Round 14",
+      "players": [
+        {
+          "id": "p1",
+          "name": "GamingSiopao",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "GlenyBoi",
+          "deck": "Fire Krux Merlin"
+        }
+      ],
+      "result": "GamingSiopao wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "GamingSiopao wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GamingSiopao holds off the last attempt to remove Seiryuu and takes the match."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 19472
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-quarterfinal-jett-hoyee",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Quarterfinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Jett",
+          "deck": "Fire Sword Saint Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "hoyee",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Jett wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Jett wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jett presses through after a long board battle and wins the deciding game.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 27262
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-semifinal-raylam-jett",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Semifinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Krux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Jett",
+          "deck": "Fire Sword Saint Lorraine"
+        }
+      ],
+      "result": "Raylam wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Raylam wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Raylam finds the closing line and advances to the final."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 33431
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-akihabara-2025-grand-final-pulse-raylam",
+      "event": "Ascent Akihabara",
+      "eventId": 38740,
+      "round": "Grand Final",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Pulse",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Raylam",
+          "deck": "Fire Krux Lorraine"
+        }
+      ],
+      "result": "Raylam wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Raylam wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Raylam survives the final Seiryuu push and completes the comeback.",
+              "cards": [
+                "Crystallized Destiny"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "L72HwYWAQAY",
+        "kind": "broadcast",
+        "startSeconds": 37720
+      },
+      "sourceNote": "Ascent Akihabara Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-1-dlonyer-henkiethegoat",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "dlonyer",
+          "deck": "Water Genbu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "HenkieTheGoat",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "dlonyer wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "dlonyer wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "dlonyer delivers the final damage to close the second game."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 2089
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-2-aqua-jad",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Aqua",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Jad",
+          "deck": "Fire Diao Chan"
+        }
+      ],
+      "result": "Aqua wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Aqua wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua wins after the final exchange is confirmed by the judges.",
+              "cards": [
+                "Cosmic Bolt"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 6289
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-3-inaki-abbey",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Inaki",
+          "deck": "Fire Assassin Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "Abbey",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Inaki wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Inaki wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Inaki delivers the last hit in the deciding game.",
+              "cards": [
+                "Sirocco Operative"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 10827
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-4-leowong-yonab",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Leowong",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Yonab",
+          "deck": "Water Lorraine allies"
+        }
+      ],
+      "result": "Leowong wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Leowong wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Leowong finds the winning line and completes the sweep."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 18904
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-5-xabichan-mike0615",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Xabichan",
+          "deck": "Water Assassin Merlin allies"
+        },
+        {
+          "id": "p2",
+          "name": "Mike0615",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "Mike0615 wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Mike0615 wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Mike0615 reaches level three and wins the deciding game."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 23723
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-6-truesightleocroix-ameke",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TrueSightLeocroix",
+          "deck": "Fire Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Ameke",
+          "deck": "Fire Oblation Ciel"
+        }
+      ],
+      "result": "Ameke wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Ameke wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Ameke closes the deciding game with the Oblation combination.",
+              "cards": [
+                "Baleful Oblation",
+                "Feu Awakening"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 28123
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-7-chunkie-dennisyao",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Chunkie",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Dennisyao",
+          "deck": "Water Aetherwing Diana"
+        }
+      ],
+      "result": "Dennisyao wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Dennisyao wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Dennisyao finishes game three with the final damage from the Aetherwing line.",
+              "cards": [
+                "Charge the Soul"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 33181
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-manila-2026-round-8-dlonyer-chung",
+      "event": "Ascent Manila",
+      "eventId": 42040,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "dlonyer",
+          "deck": "Water Genbu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "CHUNG",
+          "deck": "Fire Krux Merlin"
+        }
+      ],
+      "result": "CHUNG wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "CHUNG wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "CHUNG closes the match after dlonyer’s last damage attempt falls short.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "PITLBQ2u6gc",
+        "kind": "broadcast",
+        "startSeconds": 37370
+      },
+      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-round-10-ikuri-brai",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Round 10",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Ikuri",
+          "deck": "Water Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Brai",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "Brai wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Brai wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Brai closes the second game after a drawn-out fight."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 1980
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-round-11-frashe-bayabayashi",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Round 11",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Frashe",
+          "deck": "Fire Suzaku Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Bayabayashi",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Bayabayashi wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Bayabayashi wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Bayabayashi finishes the deciding game with Seiryuu pressure."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 6567
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-round-12-truesightleocroix-zabauu",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Round 12",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TrueSightLeocroix",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Zabauu",
+          "deck": "Fire Slime Silvie"
+        }
+      ],
+      "result": "Zabauu wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Zabauu wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Zabauu’s Slimes finish another game to complete the sweep."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 10896
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-round-13-zero0000000000-joseph",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Round 13",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zero0000000000",
+          "deck": "Fire Suzaku Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Joseph",
+          "deck": "Water Ciel allies"
+        }
+      ],
+      "result": "Zero0000000000 wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zero0000000000 closes the deciding game with the Suzaku sequence and final burn.",
+              "cards": [
+                "Cinder Geyser"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 15520
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-semifinal-lifdrasyl-dragonjg",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Semifinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Lifdrasyl",
+          "deck": "Wind Krux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "DragonJG",
+          "deck": "Water Umbra Alice"
+        }
+      ],
+      "result": "DragonJG wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "DragonJG wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DragonJG wins the second game after surviving Lifdrasyl’s final push.",
+              "cards": [
+                "Regal Inquisition"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
+        "kind": "broadcast",
+        "startSeconds": 28532
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "sea-national-2026-grand-final-raylam-dragonjg",
+      "event": "Southeast Asia Nationals 2026",
+      "eventId": 56265,
+      "round": "Grand Final",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Water Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "DragonJG",
+          "deck": "Water Umbra Alice"
+        }
+      ],
+      "result": "DragonJG wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "DragonJG wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DragonJG completes the sweep to win Southeast Asia Nationals."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "694jDw5rGqg",
         "kind": "broadcast"
+      },
+      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-1-glenyboi-ioki46",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "GlenyBoi",
+          "deck": "Fire Krux Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "ioki46",
+          "deck": "Fire Diao Chan"
+        }
+      ],
+      "result": "ioki46 wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "ioki46 wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ioki46 closes the deciding game with the final burn sequence before GlenyBoi can take another turn.",
+              "cards": [
+                "Glowering Conflagration",
+                "Everflame Staff"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 2003
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-3-xenon-emp",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Xenon",
+          "deck": "Wind Umbra Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "Emp",
+          "deck": "Fire Exia Jin"
+        }
+      ],
+      "result": "Draw 1–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "Game drawn",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "The deciding game ends in a draw after Emp falls short of lethal."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 11671
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-5-yhj0127-ryuta",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yhj0127",
+          "deck": "Wind Krux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Ryuta",
+          "deck": "Water Lorraine allies"
+        }
+      ],
+      "result": "Yhj0127 wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Yhj0127 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Yhj0127 wins the board fight and finishes the second game.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 21886
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-6-kyle0809-megalobana",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Kyle0809",
+          "deck": "Fire Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "megalobana",
+          "deck": "Water Astra Diana"
+        }
+      ],
+      "result": "Kyle0809 wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Kyle0809 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Kyle0809 shows the final damage and closes another quick game.",
+              "cards": [
+                "Sirocco Operative"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 26673
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-7-hachico-long",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "hachico",
+          "deck": "Fire Krux Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "Long",
+          "deck": "Fire Oblation Ciel"
+        }
+      ],
+      "result": "hachico wins 2–0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "hachico wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "hachico wins the round with Fire Merlin."
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 31827
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-taipei-2025-round-8-sunset-yungcheng",
+      "event": "Ascent Taipei",
+      "eventId": 33786,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Sunset",
+          "deck": "Water Neos Tonoris"
+        },
+        {
+          "id": "p2",
+          "name": "Yungcheng",
+          "deck": "Wind Wake Up"
+        }
+      ],
+      "result": "Sunset wins 2–1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Sunset wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Sunset stabilizes behind the domain board and wins the deciding game.",
+              "cards": [
+                "Diffusive Block"
+              ]
+            }
+          ]
+        }
+      ],
+      "video": {
+        "id": "gL-S2tAI6bk",
+        "kind": "broadcast",
+        "startSeconds": 36978
+      },
+      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+    },
+    {
+      "id": "ascent-melbourne-2026-round-1-aqua-sowa",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Aqua",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Sowa",
+          "deck": "Water allies Zander"
+        }
+      ],
+      "result": "Aqua wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Aqua wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua uses Nascent Barrier to hold off Sowa’s board, then finds Cometfall to remove two allies.",
+              "cards": [
+                "Cometfall",
+                "Nascent Barrier"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Aqua follows with Lunar Conduit; Sowa concedes.",
+              "cards": [
+                "Lunar Conduit"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 2004
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-2-hachico-etsuko",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "hachico",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Etsuko",
+          "deck": "Fire Suzaku Guo Jia"
+        }
+      ],
+      "result": "hachico wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "hachico wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "hachico uses Beguiling Coup and Feu Awakening to press the advantage while Etsuko is short on resources.",
+              "cards": [
+                "Beguiling Coup",
+                "Feu Awakening"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The remaining damage ends the second game and completes the sweep."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 6843
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yamikin",
+          "deck": "Fire aggro Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "ThePuggyTree",
+          "deck": "Fire Arcane Lorraine"
+        }
+      ],
+      "result": "Yamikin wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Yamikin wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Yamikin pushes ThePuggyTree toward lethal with Hasty Messenger and further ally damage.",
+              "cards": [
+                "Hasty Messenger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The final Kindle sequence supplies the last damage before the Arcane plan can take over."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 10920
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Lifdrasyl",
+          "deck": "Wind Terra Kongming"
+        },
+        {
+          "id": "p2",
+          "name": "Blivix",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Lifdrasyl wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Lifdrasyl wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lifdrasyl removes the opposing board while preparing the finishing attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The final large attack is enough; Blivix concedes."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 15669
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "FAirJordans",
+          "deck": "Wind Byakko / Suzaku Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Kixmachina",
+          "deck": "Fire aggro Merlin"
+        }
+      ],
+      "result": "FAirJordans wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "FAirJordans wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "FAirJordans builds a finishing board of allies."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The tiger supplies the last attack, completing a 2-0 win over Kixmachina."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 22814
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-6-quarax-fairjordans",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Quarax",
+          "deck": "Water Nico"
+        },
+        {
+          "id": "p2",
+          "name": "FAirJordans",
+          "deck": "Wind Byakko / Suzaku Guo Jia"
+        }
+      ],
+      "result": "Quarax wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Quarax wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Quarax clears the taunt protecting FAirJordans."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Ravishing Finale empties FAirJordans’s deck and closes the match.",
+              "cards": [
+                "Ravishing Finale"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 26900
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-7-qadwqr-arod",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "QADWQR",
+          "deck": "Water Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Arod",
+          "deck": "Water allies Ciel"
+        }
+      ],
+      "result": "QADWQR wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "QADWQR wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "QADWQR keeps pressure on Arod’s board and prevents the key unique ally from staying in play."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "QADWQR finishes with Uncanny Realization after building the last attack.",
+              "cards": [
+                "Uncanny Realization"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 31657
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Jidan",
+          "deck": "Fire Exia Jin"
+        },
+        {
+          "id": "p2",
+          "name": "WhatDoYouMinh",
+          "deck": "Wind Byakko Guo Jia"
+        }
+      ],
+      "result": "Jidan wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jidan wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jidan recovers while WhatDoYouMinh builds damage with allies and repeated attacks."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jidan commits to Shuang Ji of Sacrifice with two Enrages; WhatDoYouMinh extends the fist.",
+              "cards": [
+                "Enrage",
+                "Shuang Ji of Sacrifice"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "W_5i0aO5Es0",
+        "kind": "broadcast",
+        "startSeconds": 37152
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 9",
+      "players": [
+        {
+          "id": "p1",
+          "name": "ZutomayoEnjoyer",
+          "deck": "Water allies Zander"
+        },
+        {
+          "id": "p2",
+          "name": "bobolas",
+          "deck": "Fire Umbra Ciel"
+        }
+      ],
+      "result": "ZutomayoEnjoyer wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "ZutomayoEnjoyer wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "ZutomayoEnjoyer keeps a wide board after bobolas’s damage line falls short."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The allies finish the game, ending bobolas’s attempt to force game three."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 1362
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-10-pulse-glenyboi",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 10",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Pulse",
+          "deck": "Wind Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "GlenyBoi",
+          "deck": "Water fractals Diao Chan"
+        }
+      ],
+      "result": "Pulse wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Pulse wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Pulse advances Lorraine while GlenyBoi searches for a way to survive the next attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Aesan Protector and Lorraine connect with the final attacks to close game three.",
+              "cards": [
+                "Aesan Protector"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 5765
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-11-launtial-professor",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 11",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Launtial",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Professor",
+          "deck": "Fire burn Arisanna"
+        }
+      ],
+      "result": "Launtial wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Launtial wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Professor cannot assemble the potion engine in game three."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Launtial turns the game around and takes the match after losing the opener."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 10305
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-round-12-bhop-pulse",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Round 12",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Bhop",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Pulse",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Bhop wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Bhop wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Pulse digs through additional cards with both players close to lethal."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Bhop lines up Feu Awakening and the remaining omen damage to finish the deciding game.",
+              "cards": [
+                "Feu Awakening"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 14618
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-quarterfinal-noel-zetdivx",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Quarterfinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water fractals Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Zetdivx",
+          "deck": "Fire Exia Jin"
+        }
+      ],
+      "result": "Noel wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Noel wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zetdivx heals, but Noel retains enough damage to answer."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "After the turn passes, Noel fires Refracting Missile followed by Shimmering Refraction; Zetdivx concedes.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 22779
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Semifinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yamikin",
+          "deck": "Fire aggro Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Bhop",
+          "deck": "Fire Umbra Ciel"
+        }
+      ],
+      "result": "Yamikin wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Yamikin wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Bhop attempts a final damage line while under heavy pressure."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The line falls short and Yamikin advances to the final."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 26857
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-semifinal-hachico-noel",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Semifinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "hachico",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Noel",
+          "deck": "Water fractals Diao Chan"
+        }
+      ],
+      "result": "hachico wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "hachico wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel has damage spells but cannot assemble the resources to finish hachico."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "hachico combines Devastating Blow, Feu Awakening and further omen damage to complete the sweep.",
+              "cards": [
+                "Devastating Blow",
+                "Feu Awakening"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 29313
+      }
+    },
+    {
+      "id": "ascent-melbourne-2026-final-hachico-yamikin",
+      "event": "Ascent Melbourne 2026",
+      "eventId": 62616,
+      "round": "Final",
+      "players": [
+        {
+          "id": "p1",
+          "name": "hachico",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Yamikin",
+          "deck": "Fire aggro Lorraine"
+        }
+      ],
+      "result": "hachico wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "hachico wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Yamikin uses interaction to challenge hachico’s finishing attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "hachico follows with further omen damage and wins the championship."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "qQrV2I2Uiac",
+        "kind": "broadcast",
+        "startSeconds": 32577
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-1-corgis-yamikin",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Corgis",
+          "deck": "Fire aggro Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Yamikin",
+          "deck": "Wind wake-up"
+        }
+      ],
+      "result": "Corgis wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Corgis wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Corgis sustains the attack with recurring allies and burn."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Yamikin finds no answer to the final pressure, and Corgis wins 2-0."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 1377
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-2-limelight-liam",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Limelight",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Liam",
+          "deck": "Water Aetherwing Diana"
+        }
+      ],
+      "result": "Limelight wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Limelight wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Liam looks for an ally line to keep the game going."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Limelight uses Devouring Malice and further omen damage to finish game two.",
+              "cards": [
+                "Devouring Malice"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 5018
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-3-dragowil-teamtrueisaac",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Dragowil",
+          "deck": "Fire Crux Lorraine / Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "TeamTrueIsaac",
+          "deck": "Fire Crux Lorraine"
+        }
+      ],
+      "result": "Dragowil wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Dragowil wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueIsaac commits to a large attack rather than give Merlin more time."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dragowil has Crystallized Destiny again, stopping the large attack; the game ends in his favor.",
+              "cards": [
+                "Crystallized Destiny"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 9335
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-4-sherlock-endyr",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Sherlock",
+          "deck": "Wind Razer Gale Kongming"
+        },
+        {
+          "id": "p2",
+          "name": "endYR",
+          "deck": "Water Genbu Guo Jia"
+        }
+      ],
+      "result": "Sherlock wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Sherlock wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Sherlock applies the last damage before endYR’s level-up can resolve."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The final response is insufficient and Sherlock takes game three."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 13949
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-5-quarax-boy",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Quarax",
+          "deck": "Fire Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Boy",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Quarax wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Quarax wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Boy looks for a defensive route against Quarax’s finishing attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Quarax’s Devastating Blow closes the game despite the defensive cards in Boy’s hand.",
+              "cards": [
+                "Devastating Blow"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 21744
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-6-pulse-johnbed",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Pulse",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "Johnbed",
+          "deck": "Wind wake-up Tristan"
+        }
+      ],
+      "result": "Pulse wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Pulse wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The deciding game reaches overtime with both players looking for a lethal attack."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Pulse uses Byakko’s Command to attack again with the dragon and close the match.",
+              "cards": [
+                "Byakko's Command"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 26546
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Lifdrasyl",
+          "deck": "Wind Razer Gale Kongming"
+        },
+        {
+          "id": "p2",
+          "name": "ShingTsang",
+          "deck": "Wind Astra Arisanna"
+        }
+      ],
+      "result": "Lifdrasyl wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Lifdrasyl wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lifdrasyl chains Tempest Downfall while keeping enough resources for the final exchange.",
+              "cards": [
+                "Tempest Downfall"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "ShingTsang cannot stop the remaining pressure and loses game two."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 30695
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Nathan",
+          "deck": "Wind Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "OneEyedOwl",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "Nathan wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Nathan wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Nathan uses Reclaim on Dungeon Guide to assemble the resources for an exact finishing line.",
+              "cards": [
+                "Dungeon Guide",
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The final damage closes a close second game and secures the 2-0 win."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "6XU9azcBukk",
+        "kind": "broadcast",
+        "startSeconds": 35386
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-9-asuna-kitkat",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 9",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Asuna",
+          "deck": "Wind Umbra Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "KitKat",
+          "deck": "Fire aggro Lorraine"
+        }
+      ],
+      "result": "Asuna wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Asuna wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Asuna uses the defensive window to survive KitKat’s final pressure."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The return attacks finish game three and keep Asuna at the top of the standings."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 572
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-10-pulse-lucasis",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 10",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Pulse",
+          "deck": "Wind Seiryuu Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "lucasis",
+          "deck": "Wind Astra Arisanna"
+        }
+      ],
+      "result": "Pulse wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Pulse wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Pulse presents repeated dragon attacks while lucasis tries to prevent the damage."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "lucasis cannot recover the engine in time and Pulse wins the deciding game."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 5660
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-11-tien-seiba",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 11",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Tien",
+          "deck": "Fire Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Seiba",
+          "deck": "Wind Razer Gale Kongming"
+        }
+      ],
+      "result": "Tien wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Tien wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The deciding game remains close late in the round."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Commentary confirms that Seiba concedes to Tien; the match ends 2-1."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 10156
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Round 12",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Dragowil",
+          "deck": "Fire Crux Lorraine / Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "LegitJesusKun",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "Dragowil wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Dragowil wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dragowil searches for the last damage after the defensive exchange."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The final damage resolves and Dragowil secures a top-eight place."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 14887
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Quarterfinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Dragowil",
+          "deck": "Fire Crux Lorraine / Merlin"
+        },
+        {
+          "id": "p2",
+          "name": "Limelight",
+          "deck": "Fire Oblation Ciel"
+        }
+      ],
+      "result": "Dragowil wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Dragowil wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dragowil lines up Fireball and a Merlin attack while checking Limelight’s last defensive card.",
+              "cards": [
+                "Fireball"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dragowil finds the last damage and wins the quarterfinal 2-1."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 23257
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Semifinal",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TeamTrueCaban",
+          "deck": "Fire Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Dragowil",
+          "deck": "Fire Crux Lorraine / Merlin"
+        }
+      ],
+      "result": "TeamTrueCaban wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "TeamTrueCaban wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TeamTrueCaban calculates a finishing attack through Dragowil’s remaining defense."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Devastating Blow closes game three and sends TeamTrueCaban to the final.",
+              "cards": [
+                "Devastating Blow"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 30765
+      }
+    },
+    {
+      "id": "ascent-auckland-2025-final-emp-teamtruecaban",
+      "event": "Ascent Auckland 2025",
+      "eventId": 37140,
+      "round": "Final",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Emp",
+          "deck": "Wind Razer Gale Kongming"
+        },
+        {
+          "id": "p2",
+          "name": "TeamTrueCaban",
+          "deck": "Fire Crux Lorraine"
+        }
+      ],
+      "result": "Emp wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Emp wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Emp takes time to sequence the final chain of wind damage."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Emp chains Tempest Downfall, including a recovered copy, to finish TeamTrueCaban and win the championship.",
+              "cards": [
+                "Tempest Downfall"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "idcMDSZRmIE",
+        "kind": "broadcast",
+        "startSeconds": 37642
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-1-blazebeast9612-limelight",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Blazebeast9612",
+          "deck": "Wind Razer Gale Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Limelight",
+          "deck": "Fire Oblation Ciel"
+        }
+      ],
+      "result": "Blazebeast9612 wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Blazebeast9612 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Blazebeast9612 clears Limelight’s defensive ally and continues the wind-card sequence."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Limelight extends the fist as the remaining damage completes the sweep."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 1709
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-2-blink-jayare",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Blink",
+          "deck": "Water fractals Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Jayare",
+          "deck": "Wind Neos Tonoris"
+        }
+      ],
+      "result": "Blink wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Blink wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jayare holds the desired setup cards but cannot get past Blink’s interaction."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Blink ends the deciding game quickly after establishing the stronger board."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 6231
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-3-glenyboi-sano",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 3",
+      "players": [
+        {
+          "id": "p1",
+          "name": "GlenyBoi",
+          "deck": "Wind Crux Lorraine"
+        },
+        {
+          "id": "p2",
+          "name": "Sano",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Draw 1-1",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "GlenyBoi wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi keeps drawing and reusing the remaining damage source during overtime."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The last damage levels the match at 1-1 as the round expires."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 10591
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-4-sapphicsnake-boy",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "SapphicSnake",
+          "deck": "Water Terra Kongming"
+        },
+        {
+          "id": "p2",
+          "name": "Boy",
+          "deck": "Wind Seiryuu Guo Jia"
+        }
+      ],
+      "result": "Draw 1-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "Game ends in a draw",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Neither player can assemble enough damage in the last overtime turns."
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "Both players stop with the deciding game unfinished; the match ends 1-1."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 16859
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-5-holysamurai-thomasli2",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "HolySamurai",
+          "deck": "Fire slimes Silvie"
+        },
+        {
+          "id": "p2",
+          "name": "ThomasLi2",
+          "deck": "Water Aetherwing Diana"
+        }
+      ],
+      "result": "HolySamurai wins 2-1",
+      "games": [
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "HolySamurai wins game 3",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "HolySamurai finds Storm Slime to clear the remaining defensive ally.",
+              "cards": [
+                "Storm Slime"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Storm Slime and Limitless Slime finish game three after ThomasLi2 won the opener.",
+              "cards": [
+                "Limitless Slime",
+                "Storm Slime"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 21565
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-6-dennisyao-jdavies96",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Dennisyao",
+          "deck": "Water Aetherwing Diana"
+        },
+        {
+          "id": "p2",
+          "name": "Jdavies96",
+          "deck": "Wind Umbra Tristan"
+        }
+      ],
+      "result": "Dennisyao wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Dennisyao wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dennisyao commits to repeated Cheshire Cat attacks while Jdavies96 struggles to develop a board.",
+              "cards": [
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Repeated attacks finish the second game and complete the sweep."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 25959
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-7-limelight-glenyboi",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Limelight",
+          "deck": "Fire Oblation Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "GlenyBoi",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Limelight wins 2-0",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Limelight wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Limelight combines Extorting Blackjack with Feu Awakening for the finishing damage.",
+              "cards": [
+                "Extorting Blackjack",
+                "Feu Awakening"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "The last damage gets through and locks Limelight into day two."
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 30549
+      }
+    },
+    {
+      "id": "oce-nationals-2026-round-8-kmo-professor",
+      "event": "OCE Nationals 2026",
+      "eventId": 55400,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "KMO",
+          "deck": "Water Exia Jin"
+        },
+        {
+          "id": "p2",
+          "name": "Professor",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "Draw 1-1",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "KMO wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Professor tries to end the game before running out of cards."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "KMO answers with Shuang Ji of Sacrifice and two Enrages to win game two, but time leaves the match tied 1-1.",
+              "cards": [
+                "Enrage",
+                "Shuang Ji of Sacrifice"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "video": {
+        "id": "YajGY_RVfD4",
+        "kind": "broadcast",
+        "startSeconds": 35058
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round4-bartleby-phillip",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 4 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Bartleby",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Phillip",
+          "deck": "Wind Lorraine automatons"
+        }
+      ],
+      "result": "Bartleby wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Bartleby stabilizes and Phillip concedes",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Bartleby recovers through Phillip’s early pressure and removes his Cheshire Cat. Phillip concedes and the players move to sideboarding.",
+              "cards": [
+                "Cheshire Cat, Impish Grin",
+                "Luxem Sight"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Bartleby closes the long second game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Phillip continues attacking with allies, but Bartleby survives the pressure and finds the final damage to complete the sweep.",
+              "cards": [
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 20016
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round5-duckhats-killydis",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 5 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "DuckHats",
+          "deck": "Fire Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "Killydis",
+          "deck": "Water Nico"
+        }
+      ],
+      "result": "DuckHats wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "DuckHats finds lethal before the recovery resolves",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Killydis threatens to recover, but DuckHats sequences his end-of-turn damage and finishes the game before that recovery can save Nico.",
+              "cards": [
+                "Devouring Malice"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "DuckHats wins from an empty deck",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "DuckHats uses Resolute Stand to skip the impending draw, then finds the finishing damage. The casters confirm the Round 5 win over Killydis.",
+              "cards": [
+                "Resolute Stand",
+                "Intensified Pyre"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 24135
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round6-quarax-rexaren",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 6 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Quarax",
+          "deck": "Wind Guo Jia / Seiryuu"
+        },
+        {
+          "id": "p2",
+          "name": "rexaren",
+          "deck": "Water Diao Chan fractals"
+        }
+      ],
+      "result": "Quarax wins 2-1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Quarax wins the opening game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "rexaren responds to Quarax’s late-game threat, but Quarax answers and closes the game with his dragon established.",
+              "cards": [
+                "Song of Frost",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "rexaren receives game two after a game-loss ruling",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "The casters report that Quarax has an eleven-card material deck after sideboarding. Quarax receives a game loss, tying the match at one game each."
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Quarax wins the deciding game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Quarax maintains defensive options while building his dragon board, then closes the game with Arcane Blast to secure his Day 2 qualification.",
+              "cards": [
+                "Arcane Blast",
+                "Scatter Essence"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 28734
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round7-weiyee-harunda",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 7 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Weiyee",
+          "deck": "Water Diao Chan fractals"
+        },
+        {
+          "id": "p2",
+          "name": "Harunda",
+          "deck": "Fire Vanitas horse and taxes"
+        }
+      ],
+      "result": "Weiyee wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Weiyee wins a fast opening game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Weiyee develops fractals and finishes with Refracting Missile followed by Burst Asunder. Harunda has no response to the closing sequence.",
+              "cards": [
+                "Refracting Missile",
+                "Burst Asunder"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Weiyee answers Harunda’s last defense",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Harunda attempts to defend with Searing Rebuke. Weiyee answers with Glimmering Refusal and completes the sweep to qualify for Day 2.",
+              "cards": [
+                "Searing Rebuke",
+                "Glimmering Refusal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 34106
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round8-sano-phantisea",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 8 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Sano",
+          "deck": "Wind Guo Jia / Seiryuu"
+        },
+        {
+          "id": "p2",
+          "name": "Phantisea",
+          "deck": "Wind Wake Up"
+        }
+      ],
+      "result": "Sano wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Sano outlasts the early attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Phantisea develops early allies but cannot keep the pressure ahead of Sano’s growing resources. Sano establishes the dragon and closes game one.",
+              "cards": [
+                "Seiryuu's Command",
+                "Harness Lightning"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Sano completes the sweep",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Sano rebuilds his dragon position and finishes with a sequence of attacks, taking game two over Phantisea’s Wind Wake Up deck.",
+              "cards": [
+                "Harness Lightning"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 39323
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round7-maindeckdan-yojiah",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 7 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "MaindeckDan",
+          "deck": "Wind Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "YojiAh",
+          "deck": "Fire Merlin"
+        }
+      ],
+      "result": "MaindeckDan wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "YojiAh receives a game loss before play",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The broadcast reports a sideboard error for YojiAh and a game-one loss. MaindeckDan begins the played portion of the match ahead one game."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "MaindeckDan wins the played game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MaindeckDan finds a lethal Shadowstrike line and wins the match. The players then agree to a separate post-match exhibition game, which is not part of this result.",
+              "cards": [
+                "Shadowstrike",
+                "Shadow's Claw"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Niagara Falls Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 32381
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round8-hyouka-teamtrueterry",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 8 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Hyouka",
+          "deck": "Wind Rai"
+        },
+        {
+          "id": "p2",
+          "name": "TeamTrueTerry",
+          "deck": "Fire Merlin"
+        }
+      ],
+      "result": "Hyouka wins 2-0 and reaches Day 2",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Hyouka assembles the winning turn",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Hyouka uses deck ordering and card draw to assemble lethal before Terry can take over the game.",
+              "cards": [
+                "Scry the Skies",
+                "Advent of the Stormcaller"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Hyouka finds the last card after Terry’s response",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Terry removes an Arcane Elemental during Hyouka’s finishing attempt. Hyouka draws another card with his book and finds the continuation that wins the match.",
+              "cards": [
+                "Arcane Elemental",
+                "Fireball"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Niagara Falls Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 36725
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round3-tlux-neetfull",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 3 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TLux",
+          "deck": "Wind Guo Jia / Seiryuu"
+        },
+        {
+          "id": "p2",
+          "name": "NEETfull",
+          "deck": "Wind Silvie slimes"
+        }
+      ],
+      "result": "TLux wins 2-1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "NEETfull wins the unshown opening game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "The casters announce that NEETfull won game one before this prerecorded coverage begins."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "TLux levels the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TLux contests NEETfull’s early allies and keeps the slime player short of resources, then closes with his dragon established.",
+              "cards": [
+                "Stifling Trap"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "TLux completes the comeback",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "NEETfull cannot rebuild enough resources to stop TLux’s sustained attacks. TLux takes the deciding game and moves to 3-0.",
+              "cards": [
+                "Byakko's Command",
+                "Baby Silver Slime"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Los Angeles Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 16933
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round1-comradecoheed-fome",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 1 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "ComradeCoheed",
+          "deck": "Fire Lorraine aggro"
+        },
+        {
+          "id": "p2",
+          "name": "fome",
+          "deck": "Fire Umbra Diana"
+        }
+      ],
+      "result": "ComradeCoheed wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "ComradeCoheed wins the early race",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "ComradeCoheed keeps attacking fome’s champion and finds lethal after leveling Lorraine.",
+              "cards": [
+                "Lorraine, Blademaster"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "ComradeCoheed finishes the sweep",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "fome develops defenses and reaches Diana’s later levels, but ComradeCoheed finds enough attack damage to finish before the recovery plan takes over.",
+              "cards": [
+                "Arthur, Young Heir",
+                "Sword of Shadows"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Niagara Falls Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 1888
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round4-rng-joyboy",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 4 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RNg",
+          "deck": "Wind Wake Up Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "Joyboy",
+          "deck": "Water Ciel"
+        }
+      ],
+      "result": "RNg wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "RNg lands the opening burst",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RNg’s ranged attack sequence pushes through Joyboy’s damage reduction and wins the opening game.",
+              "cards": [
+                "Ranger Strides",
+                "Cheshire Cat, Impish Grin"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "RNg finds the final attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Joyboy survives the first big attack turn, but RNg follows with another ally attack sequence and completes the sweep.",
+              "cards": [
+                "Liu Bei, Oathkeeper",
+                "Aether's Embrace"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Niagara Falls Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 15408
+      }
+    },
+    {
+      "id": "ascent-niagara-falls-2025-day1-round6-superior-killydis",
+      "event": "Ascent Niagara Falls",
+      "eventId": 36225,
+      "round": "Round 6 (Day 1)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Superior",
+          "deck": "Water Guo Jia / Genbu"
+        },
+        {
+          "id": "p2",
+          "name": "Killydis",
+          "deck": "Water Astra Diana"
+        }
+      ],
+      "result": "Superior wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Superior punishes the empty hand",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Killydis commits his resources to Meteoric Volley and card selection. With no answer available for Superior’s finishing threat, he concedes.",
+              "cards": [
+                "Meteoric Volley"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Superior closes before Astra comes online",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Killydis remains at level two with advanced-element cards stranded in hand. Superior develops Genbu and finishes before Diana can recover.",
+              "cards": [
+                "Resonating Fugue"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Ascent Niagara Falls Day 1. Selected game results and closing moments.",
+      "video": {
+        "id": "O9EzTt7ffVc",
+        "kind": "broadcast",
+        "startSeconds": 27646
       }
     }
   ]
