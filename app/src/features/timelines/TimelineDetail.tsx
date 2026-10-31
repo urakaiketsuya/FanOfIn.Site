@@ -8,6 +8,7 @@ import { EmptyState } from "../../components/ui/ContentState";
 import { useBroadcastTimelineMatch, useBroadcastTimelines } from "./data";
 import MatchTimeline, { MatchTimelineHeader } from "./MatchTimeline";
 import MatchDecklists from "./MatchDecklists";
+import MatchVideoLink from "./MatchVideoLink";
 import TimelineStatus from "./TimelineStatus";
 
 type DetailTab = "timeline" | "decklists";
@@ -49,6 +50,7 @@ export default function TimelineDetail() {
             &larr; Match Timelines
           </Link>
           <MatchTimelineHeader match={match} />
+          <MatchVideoLink match={match} />
 
           <div className="mt-4">
               <Tabs baseId="match-view" variant="pill" tabs={tabs} active={activeTab} onChange={next => { if (next === "decklists") setDecklistsVisited(true); setTab(next); }} label="Match view" />

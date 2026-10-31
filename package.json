@@ -45,7 +45,8 @@
     "release:data": "node --import tsx scripts/check-release-data.ts",
     "release:smoke": "node scripts/smoke-release.mjs",
     "pipeline:catalog:publish": "node --import tsx pipeline/src/public-api/publishCatalog.ts",
-    "pipeline:broadcast-events": "node --import tsx scripts/build-broadcast-events.ts"
+    "pipeline:broadcast-events": "node --import tsx scripts/build-broadcast-events.ts",
+    "pipeline:broadcast-videos": "node --import tsx scripts/link-broadcast-videos.ts"
   },
   "overrides": {
     "sharp": "0.35.5",

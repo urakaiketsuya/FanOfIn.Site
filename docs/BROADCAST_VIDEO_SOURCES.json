@@ -1,0 +1,1766 @@
+{
+  "verifiedAt": "2026-10-31",
+  "channel": "https://www.youtube.com/@gatcg/streams",
+  "sources": [
+    {
+      "videoId": "LBQGDsYRzcA",
+      "title": ".Asphodel/Cantabile Developer Stream",
+      "kind": "broadcast",
+      "status": "upcoming",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "VOlVotCfOU0",
+      "title": "Ascent Osaka Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "upcoming",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "g3NNFcNpw3k",
+      "title": "Ascent Osaka Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "availability": {
+        "checkedAt": "2026-10-31",
+        "status": "transcript-unavailable",
+        "evidence": "Expanded video description has no Show transcript button. No caption text retrieved."
+      }
+    },
+    {
+      "videoId": "qQrV2I2Uiac",
+      "title": "Ascent Melbourne Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/qQrV2I2Uiac.json",
+        "sha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+        "segments": 4597,
+        "firstTimestamp": "0:13",
+        "lastTimestamp": "10:36:41",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "W_5i0aO5Es0",
+      "title": "Ascent Melbourne Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/W_5i0aO5Es0.json",
+        "sha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+        "segments": 4685,
+        "firstTimestamp": "4:49",
+        "lastTimestamp": "11:27:28",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "tVVnZ9yPy5U",
+      "title": "Grand Archive TCG World Championships Award Ceremony & Closing Presentation",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "j-fYPSG3KEA",
+      "title": "Championship Sunday Worlds 2026 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Championship Sunday Worlds 2026  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "rxlxRXstZS0",
+      "title": "Worlds 2026 Top 8 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Worlds 2026 Top 8  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "MAgS0ISYLtI",
+      "title": "Worlds Swiss Stage 2026 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Worlds Swiss Stage 2026  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "U4RbiOBCC-Q",
+      "title": "The Gauntlet 2026 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "The Gauntlet 2026  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "6WIBvuIItCE",
+      "title": ".asphodel/paradise Developer Stream",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "694jDw5rGqg",
+      "title": "South East Asia Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/694jDw5rGqg.json",
+        "sha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+        "segments": 4929,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:33:30",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "yiXTkbA1am4",
+      "title": "South East Asia Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "South East Asia Nationals Day 1  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "YajGY_RVfD4",
+      "title": "Oceania Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/YajGY_RVfD4.json",
+        "sha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+        "segments": 5342,
+        "firstTimestamp": "2:36",
+        "lastTimestamp": "10:49:28",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "DPuScrWjjag",
+      "title": "European Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "European Nationals Day 2  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "JKKl7AYwv3c",
+      "title": "European Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "European Nationals Day 1  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "QX4lJQ5qgNA",
+      "title": "Ascent Las Vegas 2026 Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Ascent Las Vegas 2026 Day 2  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "tFC-3k0uxcM",
+      "title": "North American Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/tFC-3k0uxcM.json",
+        "sha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+        "segments": 5441,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:47:02",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "ljQZR8Yu1XM",
+      "title": "North American Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/ljQZR8Yu1XM.json",
+        "sha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+        "segments": 5506,
+        "firstTimestamp": "0:20",
+        "lastTimestamp": "11:54:52",
+        "blankSegments": 1,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "Y7WZMR-8ao0",
+      "title": "Ascent Los Angeles Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "availability": {
+        "checkedAt": "2026-10-31",
+        "status": "transcript-unavailable",
+        "evidence": "Expanded video description has no Show transcript button. No caption text retrieved."
+      }
+    },
+    {
+      "videoId": "iwjvP7O9ytM",
+      "title": "Ascent Los Angeles Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/iwjvP7O9ytM.json",
+        "sha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+        "segments": 4547,
+        "firstTimestamp": "8:39",
+        "lastTimestamp": "11:52:44",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "vPfAk2DNnVA",
+      "title": "Radiant Origins World Premiere at Ascent Los Angeles | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "NYn3lGjV_o8",
+      "title": "Radiant Origins Developer Stream | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "41aKdQJ7U1c",
+      "title": "Ascent London Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Ascent London Day 2  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "E8MyaSKtI_U",
+      "title": "Ascent London Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Ascent London Day 1  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "8fnn-hbArSk",
+      "title": "Ascent Manila Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Ascent Manila Day 2  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "PITLBQ2u6gc",
+      "title": "Ascent Manila Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/PITLBQ2u6gc.json",
+        "sha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+        "segments": 4915,
+        "firstTimestamp": "0:10",
+        "lastTimestamp": "11:54:48",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "JLqoKtL0CSU",
+      "title": "Grand Archive TCG Holiday Stream 2025",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "L72HwYWAQAY",
+      "title": "Ascent Akihabara Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/L72HwYWAQAY.json",
+        "sha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+        "segments": 4153,
+        "firstTimestamp": "0:22",
+        "lastTimestamp": "11:41:26",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "pYN7DXxQOQc",
+      "title": "Ascent Akihabara Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/pYN7DXxQOQc.json",
+        "sha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+        "segments": 4721,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:53:19",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "-3PN7Lsc99s",
+      "title": "Phantom Monarch's World Premiere @ Ascent Akihabara | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "idcMDSZRmIE",
+      "title": "Ascent Auckland Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/idcMDSZRmIE.json",
+        "sha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+        "segments": 5428,
+        "firstTimestamp": "0:13",
+        "lastTimestamp": "11:53:47",
+        "blankSegments": 1,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "6XU9azcBukk",
+      "title": "Ascent Auckland Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/6XU9azcBukk.json",
+        "sha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+        "segments": 5006,
+        "firstTimestamp": "2:06",
+        "lastTimestamp": "10:57:45",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "FwyvGLOxXCA",
+      "title": "Phantom Monarchs Developer Stream | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "YEdMx87UqeE",
+      "title": "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia | Ascent Niagara Falls Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Grand Finals Razorgale Kongming vs Wind Seiryuu Guo Jia  Ascent Niagara Falls Day 2.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "O9EzTt7ffVc",
+      "title": "Ascent Niagara Falls Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/O9EzTt7ffVc.json",
+        "sha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+        "segments": 4939,
+        "firstTimestamp": "0:03",
+        "lastTimestamp": "11:05:39",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "oHCCZOZBvKM",
+      "title": "Ascent Taipei Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Ascent Taipei Day 2  Grand Archive TCG.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "gL-S2tAI6bk",
+      "title": "Ascent Taipei Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "current-collection-period",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/gL-S2tAI6bk.json",
+        "sha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+        "segments": 5493,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:54:49",
+        "blankSegments": 0,
+        "reviewStatus": "unreviewed",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      }
+    },
+    {
+      "videoId": "hAx4jQ4VjCs",
+      "title": "Ascent Boston Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "tWjsNOfIW4c",
+      "title": "Ascent Boston Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "I3HVrMEHlrE",
+      "title": "Worlds 2025 Championship Sunday  | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "1oXFzNCvWxI",
+      "title": "Worlds 2025 Quarterfinals  | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "fTyI1MJTbFk",
+      "title": "Worlds Swiss Stage Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "LAIcEltef54",
+      "title": "The Gauntlet | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "BepZE-U6fSo",
+      "title": "2025 North American Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "dE_qRSUX0uU",
+      "title": "2025 North American Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "50WkwpsbP_4",
+      "title": "Oceania Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "Dg6IxmGtlug",
+      "title": "Oceania Nationals Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "GsIs9R_cHCk",
+      "title": "Grand Archive TCG — 2 Year Anniversary Celebration",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "1F9iyMjj61E",
+      "title": "European Nationals 2025 Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "JbVk-zzc9SY",
+      "title": "Ascent Kuala Lumpur Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "8HmzphqlJKw",
+      "title": "European Nationals 2025 Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "ZpUg98K8kVY",
+      "title": "Ascent Kuala Lumpur Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "k0HpThOWnSQ",
+      "title": "Southeast Asia Nationals Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "IL9AXf6i7nQ",
+      "title": "Southeast Asia Nationals 2025 Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "3f7HH-9Ll1I",
+      "title": "Ascent Seattle Day 2 Swiss - Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "jd-wmZsIeAU",
+      "title": "Ascent Seattle Day 1 Swiss - Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "DnFQxej76EE",
+      "title": "Ascent Melbourne Day 2 Swiss - Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "JqthQTQiPFY",
+      "title": "Ascent Melbourne Day 1 Swiss - Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "DwsNN2XRViY",
+      "title": "Grand Archive TCG — Abyssal Heaven Developer Stream and Design Notes",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "wnkgmU5qCQY",
+      "title": "Ascent Utrecht Closing Ceremony and Presentation",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "s-UKsKVQ3Kc",
+      "title": "Ascent Utrecht Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "DV6n1MgNEb0",
+      "title": "Grand Archive TCG Ascent Utrecht Day 1",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "AqBI5O3UNhE",
+      "title": "Grand Archive TCG Holiday Stream 2024",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "C6Xh12TupCc",
+      "title": "Ascent Santa Clara Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "panCSchyYfo",
+      "title": "Ascent Santa Clara Day 1",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "z5PxBM6kHL8",
+      "title": "Ascent Christchurch Keynote | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "0epTDvwp0jY",
+      "title": "Ascent Christchurch Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "ZUA4MfKD0Rw",
+      "title": "Ascent Christchurch Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "-nfzZa3aUGM",
+      "title": "Ascent Toronto Day 2 Top 8 + Grand Finals | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "q4bhTUBpDpI",
+      "title": "Ascent Toronto Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "Te9LaC43keo",
+      "title": "Ascent Toronto Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "15SDumUm4jE",
+      "title": "Ascent Singapore Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "FJDml9-Zrpg",
+      "title": "Ascent Singapore Day 1 Part 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "8oK25My-6co",
+      "title": "Ascent Singapore Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "ChC5vUmEDSM",
+      "title": "Grand Archive TCG — Mortal Ambition Developer Stream",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "EdKAcCJBLqw",
+      "title": "Ascent Chicago Closing Ceremony and Presentation",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "NsUrI8pdGVM",
+      "title": "Ascent Chicago Day 2 Grand Finals | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "S_ypntBzTlE",
+      "title": "Ascent Chicago Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "hWqpnUigK-c",
+      "title": "Ascent Chicago Day 2 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "b1nkzJqBMtw",
+      "title": "Ascent Chicago Day 1 | Grand Archive TCG",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "q6YL7kxaSYY",
+      "title": "Grand Archive Ascent Taipei-Closing Presentation",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "ZszRz4UdtiE",
+      "title": "Grand Archive TCG - Ascent Taipei Day 2 | Swiss into Top 8",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "9h9ppflglEc",
+      "title": "Grand Archive TCG - Ascent Taipei Day 1 | Round 8",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "J0Zk0Duu3uE",
+      "title": "Grand Archive TCG - Ascent Taipei Day 1 | Swiss Rounds",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "PqYNgwvUJgw",
+      "title": "Grand Archive TCG World's Closing Ceremony and Keynote",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "3aWEDJQeKNo",
+      "title": "Grand Archive TCG World Championships Day 3 | Top 4 Semi-Finals and Grand Finals",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "hKt4nyRwY4c",
+      "title": "Grand Archive TCG World Championships Day 2 | Top 8 Single Elimination",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "UCDbE561I-8",
+      "title": "Grand Archive TCG World Championships Day 1 | Swiss Rounds",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "J-tcueFSg8E",
+      "title": "Grand Archive TCG World Championships Day 1 | Swiss Rounds",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "FqdSYup_49k",
+      "title": "Grand Archive TCG World Championships Day 1 | Swiss Rounds",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "MPqR1_BHooY",
+      "title": "Grand Archive TCG — 1 Year Anniversary Celebration",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "78oDYZS7fZs",
+      "title": "Grand Archive TCG —Oceania Nationals 2024 Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "eGCd1r5lLyc",
+      "title": "Grand Archive TCG —Oceania Nationals 2024 Day 1",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "8H5CWyMfGgI",
+      "title": "Grand Archive TCG — South East Asia Nationals 2024 Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "dMqSfF3CPkM",
+      "title": "Grand Archive TCG — South East Asia Nationals 2024 Day 1",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "7ZB0YPfQczc",
+      "title": "Grand Archive TCG Live Stream",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "_Ia27iMaAYQ",
+      "title": "Grand Archive TCG — North America Nationals 2024 Day 2",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "bTb0RMWpZV4",
+      "title": "Grand Archive TCG — North America Nationals 2024 Day 1",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "ns2nffh23v0",
+      "title": "Grand Archive TCG Holiday Stream 2023",
+      "kind": "broadcast",
+      "status": "archived",
+      "competition": false,
+      "transcripts": [],
+      "scope": "older-archive"
+    },
+    {
+      "videoId": "7dgCm7_DxD4",
+      "title": "Silvercrowx (Wind Umbra Tristan) vs Limbo (Water CielNico Level 1 Allies)  Ascent Taipei Round 9",
+      "kind": "match",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Silvercrowx (Wind Umbra Tristan) vs Limbo (Water CielNico Level 1 Allies)  Ascent Taipei Round 9.txt"
+      ],
+      "scope": "current-collection-period"
+    },
+    {
+      "videoId": "bfhumlDXjrE",
+      "title": "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9",
+      "kind": "match",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
+      ],
+      "scope": "current-collection-period"
+    }
+  ],
+  "matches": [
+    {
+      "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+      "videoId": "bfhumlDXjrE",
+      "kind": "match",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day1-round9-silvercrowx-limbo",
+      "videoId": "7dgCm7_DxD4",
+      "kind": "match",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-day2-round10-muck-zero",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-day2-round11-two-over9000",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-day2-round12-hanky-zeia",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-day2-round13-egg-lance",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-top8-qf-abby-duo",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-top4-sf2-egg-raylam",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-manila-2026-grand-finals-mike-Raylam",
+      "videoId": "8fnn-hbArSk",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
+      "videoId": "j-fYPSG3KEA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-championship-sunday-semifinal2-zero-livil",
+      "videoId": "j-fYPSG3KEA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-championship-sunday-grandfinals-jet-zero",
+      "videoId": "j-fYPSG3KEA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-las-vegas-2026-day2-round10-novafelon-noel",
+      "videoId": "QX4lJQ5qgNA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-las-vegas-2026-day2-round11-mattg-novafelon",
+      "videoId": "QX4lJQ5qgNA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-las-vegas-2026-day2-round12-duckhats-bokal",
+      "videoId": "QX4lJQ5qgNA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-las-vegas-2026-day2-round13-wisp-mechsniper",
+      "videoId": "QX4lJQ5qgNA",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-day2-round10-hyoka-tepslor",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-day2-round11-perfy-gurthos",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-day2-round12-asa-orabomb",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-top8-qf-perfy-zenadriel",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-niagara-falls-grand-finals-zenadriel-bratis",
+      "videoId": "YEdMx87UqeE",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round1-zelage-cubone",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round2-tatap-nitra",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round3-asuna-sangorio",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round5-fdwings-yoyi",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round6-cabin-sebastian",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "eu-nationals-2026-day1-round8-noel-jigjun",
+      "videoId": "JKKl7AYwv3c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-round9-bonnie-shoko",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-round10-zelage-sebastian",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-round11-heri-casual",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-round12-hanky-noel",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-top8-qf1-asa-kiddelicious",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "european-nationals-2026-day2-top4-semifinal-cabin-sebastian",
+      "videoId": "DPuScrWjjag",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-top8-qf1-cabin-raingoddess",
+      "videoId": "rxlxRXstZS0",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-top8-qf2-noel-liftdrasil",
+      "videoId": "rxlxRXstZS0",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-top8-qf3-zero-asa",
+      "videoId": "rxlxRXstZS0",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-2026-top8-qf4-glennyboy-jet",
+      "videoId": "rxlxRXstZS0",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-day2-round10-casual-vain",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-day2-round11-dinkydane-djnova",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-day2-round12-duckhats-dragoill",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-top8-qf-fallenbuu-cabin",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-top4-sf-superior-djnova",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-2026-grand-finals-superior-lifteril",
+      "videoId": "41aKdQJ7U1c",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round1-taylor-steve",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round2-argonaut-dragoill",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round3-henti-lucas",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round4-enderzone-alisarez",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round5-superior-business",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round6-sono-sangorio",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round7-dinkydane-rexarion",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-london-day1-round8-celad-asuna",
+      "videoId": "E8MyaSKtI_U",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round1-egg-long",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round2-aqua-haro",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round3-ruby-zelia-dragon-jg",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round5-mario-wind-rye",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round6-zaba-ray-pig",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round7-joel-neptuno",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round8-abby-microcanthus",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "sea-nationals-2026-day1-round9-megalobana-neptuno",
+      "videoId": "yiXTkbA1am4",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-round11-zabishan-quorax",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-round12-quorax-trueops",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-round13-apal-kuan",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-round14-enki-long",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-top8-qf-yamikin-zero",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-top4-sf-apal-long",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
+      "videoId": "oHCCZOZBvKM",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round1-hyoka-duckhats",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round2-zelenitis-holysamurai",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round3-roen-jacepatrick",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round4-raingoddess-dal",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round5-gerthos-jr",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round6-glennyboy-limelight",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round7-aqua-apal",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round8-emp-yamikin",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "the-gauntlet-2026-round9-bailey-leowong",
+      "videoId": "U4RbiOBCC-Q",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round1-proan-duckhats",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round2-raylam-caven",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round4-superior-raingoddess",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round4-bonus-raylam-gerthos",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round5-gerthos-jet",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round6-noel-asa",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round6-bonus-raylam-jair",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round7-glennyboy-duckhats",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "worlds-swiss-2026-round8-caven-sono",
+      "videoId": "MAgS0ISYLtI",
+      "kind": "broadcast",
+      "basis": "Reviewed transcript filename matched to the official upload title."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round1-dit-boeboe",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round2-tlsovotl-aqua",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round3-noel-tress",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round4-teamtruecaban-superior",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round5-jett-longn",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round6-celednb-quakems",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round7-anjuhro-hyouka",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round8-zorr-hessu",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
+      "videoId": "ljQZR8Yu1XM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round10-superior-asuna",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round12-tlux-superior",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-top8-qf-jett-chemcollapse",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-top4-semifinal-zetdivx-jett",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    },
+    {
+      "matchId": "na-nationals-2026-grand-finals-quarax-jett",
+      "videoId": "tFC-3k0uxcM",
+      "kind": "broadcast",
+      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+    }
+  ]
+}

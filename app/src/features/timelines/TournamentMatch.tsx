@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { BroadcastEventPairing, BroadcastTimelineMatch, Card } from '@gatcg/shared';
+import MatchVideoLink from './MatchVideoLink';
 import CardArtTile from '../../components/CardArtTile';
 import { championsForDeck } from './champions';
 
@@ -28,6 +29,7 @@ export default function TournamentMatch({ match, recap, champions, highlighted, 
   </>;
   return <article data-match-id={match.id} className={`min-w-0 rounded-xl border bg-ctp-mantle ${highlighted ? 'border-ctp-blue ring-1 ring-ctp-blue' : 'border-ctp-surface1'}`}>
     {recap ? <Link to={`/timelines/${recap.id}`} className="block rounded-xl focus-visible:outline-2 focus-visible:outline-ctp-blue" aria-label={`${match.players.map(p => p.name).join(' versus ')} — broadcast recap`}>{content}</Link> : content}
+    {recap?.video && <div className="border-t border-ctp-surface1"><MatchVideoLink match={recap} /></div>}
     {nextLabel && onAdvance && <button type="button" onClick={onAdvance} className="min-h-control w-full border-t border-ctp-surface1 px-3 text-left text-xs text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Advances to {nextLabel} →</button>}
   </article>;
 }

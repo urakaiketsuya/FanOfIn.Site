@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T22:15:51.426Z",
+  "generatedAt": "2026-10-31T23:03:17.701Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -136,7 +136,11 @@
           ]
         }
       ],
-      "sourceNote": "Broadcast transcript, Ascent Akihabara Day 1 Round 9. Full match and post-match interview reviewed; Z3US wins 2-0. Sideboard recommendations are distinguished from cards observed in game two."
+      "sourceNote": "Broadcast transcript, Ascent Akihabara Day 1 Round 9. Full match and post-match interview reviewed; Z3US wins 2-0. Sideboard recommendations are distinguished from cards observed in game two.",
+      "video": {
+        "id": "bfhumlDXjrE",
+        "kind": "match"
+      }
     },
     {
       "id": "ascent-taipei-2026-day1-round9-silvercrowx-limbo",
@@ -276,7 +280,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed against the full Ascent Taipei Round 9 broadcast transcript. Limbo wins 2–0; both games are shown. Sideboard discussion is distinguished from cards observed in game 2."
+      "sourceNote": "Reviewed against the full Ascent Taipei Round 9 broadcast transcript. Limbo wins 2–0; both games are shown. Sideboard discussion is distinguished from cards observed in game 2.",
+      "video": {
+        "id": "7dgCm7_DxD4",
+        "kind": "match"
+      }
     },
     {
       "id": "ascent-manila-2026-day2-round10-muck-zero",
@@ -375,7 +383,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-day2-round11-two-over9000",
@@ -462,7 +474,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-day2-round12-hanky-zeia",
@@ -557,7 +573,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-day2-round13-egg-lance",
@@ -619,7 +639,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-top8-qf-abby-duo",
@@ -700,7 +724,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-top4-sf2-egg-raylam",
@@ -809,7 +837,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-manila-2026-grand-finals-mike-Raylam",
@@ -917,7 +949,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Ascent Manila Day 2 broadcast transcript. Proposed lines and sideboard options are distinguished from observed play.",
+      "video": {
+        "id": "8fnn-hbArSk",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
@@ -1029,7 +1065,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Championship Sunday captions reviewed at 60:00–72:00, 109:00–120:00, 153:00–165:00 and 211:00–222:00 for retained recap claims. Game one ends when Aella increases Retribution through Veiling Breeze; game two uses Poisoned Dagger and Lightweaver’s Assault; game three ends in a concession after the Sadi and Windmill Engineer sequence. The memory-reveal judge call results in no penalty. This is a scoped recap-claim review, not a full read of the three-hour match."
+      "sourceNote": "Original Championship Sunday captions reviewed at 60:00–72:00, 109:00–120:00, 153:00–165:00 and 211:00–222:00 for retained recap claims. Game one ends when Aella increases Retribution through Veiling Breeze; game two uses Poisoned Dagger and Lightweaver’s Assault; game three ends in a concession after the Sadi and Windmill Engineer sequence. The memory-reveal judge call results in no penalty. This is a scoped recap-claim review, not a full read of the three-hour match.",
+      "video": {
+        "id": "j-fYPSG3KEA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-championship-sunday-semifinal2-zero-livil",
@@ -1145,7 +1185,11 @@
           ]
         }
       ],
-      "sourceNote": "Championship Sunday broadcast, semifinal 2, 243:00–303:59. Zero0000000000 defeats Lifdrasyl 2-0, matching Omnidex. The final Retribution count is corrected by commentary from 16 to 17."
+      "sourceNote": "Championship Sunday broadcast, semifinal 2, 243:00–303:59. Zero0000000000 defeats Lifdrasyl 2-0, matching Omnidex. The final Retribution count is corrected by commentary from 16 to 17.",
+      "video": {
+        "id": "j-fYPSG3KEA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-championship-sunday-grandfinals-jet-zero",
@@ -1440,7 +1484,11 @@
           ]
         }
       ],
-      "sourceNote": "Championship Sunday broadcast, grand final. Broadcast shows Jett winning five games 3-2; Omnidex records the championship match as 2-1. Recap claims checked against the original captions, including both failed and successful game-five finishing lines."
+      "sourceNote": "Championship Sunday broadcast, grand final. Broadcast shows Jett winning five games 3-2; Omnidex records the championship match as 2-1. Recap claims checked against the original captions, including both failed and successful game-five finishing lines.",
+      "video": {
+        "id": "j-fYPSG3KEA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-las-vegas-2026-day2-round10-novafelon-noel",
@@ -1705,7 +1753,11 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 10. Gameplay reviewed from 64:00–119:59. Sideboard suggestions are distinguished from observed cards; damage totals in the final turn are cumulative."
+      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 10. Gameplay reviewed from 64:00–119:59. Sideboard suggestions are distinguished from observed cards; damage totals in the final turn are cumulative.",
+      "video": {
+        "id": "QX4lJQ5qgNA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-las-vegas-2026-day2-round11-mattg-novafelon",
@@ -1870,7 +1922,11 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 11; gameplay reviewed from 155:00–185:59. Backstep’s general interaction is distinct from the first-game Torching Reach, and Palvor Sword is consumed by Novephilion’s own attack line rather than destroyed by a second Spurn to Ash."
+      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 11; gameplay reviewed from 155:00–185:59. Backstep’s general interaction is distinct from the first-game Torching Reach, and Palvor Sword is consumed by Novephilion’s own attack line rather than destroyed by a second Spurn to Ash.",
+      "video": {
+        "id": "QX4lJQ5qgNA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-las-vegas-2026-day2-round12-duckhats-bokal",
@@ -2047,7 +2103,11 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 12. Gameplay reviewed from 224:00–272:59. The Stifling Gyre target is caster inference; Blanche is seen but not played. The two players each control an Orb of Sealing in game two."
+      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 12. Gameplay reviewed from 224:00–272:59. The Stifling Gyre target is caster inference; Blanche is seen but not played. The two players each control an Orb of Sealing in game two.",
+      "video": {
+        "id": "QX4lJQ5qgNA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-las-vegas-2026-day2-round13-wisp-mechsniper",
@@ -2277,7 +2337,11 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 13; gameplay reviewed from 295:00–342:59. Infernal Vessel was revealed rather than materialized in game two; the first proposed double-Feu line is distinguished from the later attempted finish."
+      "sourceNote": "Ascent Las Vegas Day 2 broadcast transcript, Round 13; gameplay reviewed from 295:00–342:59. Infernal Vessel was revealed rather than materialized in game two; the first proposed double-Feu line is distinguished from the later attempted finish.",
+      "video": {
+        "id": "QX4lJQ5qgNA",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-day2-round7-isaac-tress",
@@ -2465,7 +2529,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Day 2 Round 1. Casters call the players \"Isaac\" (Omnidex username TeamTrueIsaac) and \"Tress\". Omnidex lists this pairing as round 9 (Tress 1-2 TeamTrueIsaac); the previous entry labelled it Round 7. Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Day 2 Round 1. Casters call the players \"Isaac\" (Omnidex username TeamTrueIsaac) and \"Tress\". Omnidex lists this pairing as round 9 (Tress 1-2 TeamTrueIsaac); the previous entry labelled it Round 7. Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-day2-round10-hyoka-tepslor",
@@ -2645,7 +2713,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 10. Casters call the players \"Hyoka\" (Omnidex username Hyouka) and \"Tap/Tepslor\" (TeppeSlorn). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; the decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 10. Casters call the players \"Hyoka\" (Omnidex username Hyouka) and \"Tap/Tepslor\" (TeppeSlorn). Result per Omnidex (1-1, draw). Card names are as called by the casters and may contain minor ASR errors; the decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-day2-round11-perfy-gurthos",
@@ -2806,7 +2878,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 11. Casters call the players \"Perfy\" (Omnidex username Perfy) and \"Gurthos/Goss\" (Guruthos). Result per Omnidex (Perfy 2-1). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 11. Casters call the players \"Perfy\" (Omnidex username Perfy) and \"Gurthos/Goss\" (Guruthos). Result per Omnidex (Perfy 2-1). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-day2-round12-asa-orabomb",
@@ -2930,7 +3006,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 12 (final Swiss round). Casters call the players \"Asa\" (Omnidex username Asuna) and \"Orabomb\" (AuraBomb). Result per Omnidex (Asuna 1-0, game 2 timed out). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Round 12 (final Swiss round). Casters call the players \"Asa\" (Omnidex username Asuna) and \"Orabomb\" (AuraBomb). Result per Omnidex (Asuna 1-0, game 2 timed out). Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-top8-qf-perfy-zenadriel",
@@ -3053,7 +3133,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Top 8 quarterfinal. Casters call the players \"Perfy\" (Omnidex username Perfy) and \"Zenadriel\" (Xenadrael). Result per Omnidex (Xenadrael 2-0, round 13). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Top 8 quarterfinal. Casters call the players \"Perfy\" (Omnidex username Perfy) and \"Zenadriel\" (Xenadrael). Result per Omnidex (Xenadrael 2-0, round 13). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
@@ -3169,7 +3253,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed full Ascent Niagara Falls Day 2 captions, semifinal at 504:56–526:39. Both games are shown. Casters call Bratus “Bratis” and Fruitcake “Fruitkick”; registered lists corroborate their deck identities. Game one ends in concession with Polaris resolution uncertain; game two ends with Arcane Blast. Sideboard predictions are not treated as confirmed changes."
+      "sourceNote": "Reviewed full Ascent Niagara Falls Day 2 captions, semifinal at 504:56–526:39. Both games are shown. Casters call Bratus “Bratis” and Fruitcake “Fruitkick”; registered lists corroborate their deck identities. Game one ends in concession with Polaris resolution uncertain; game two ends with Arcane Blast. Sideboard predictions are not treated as confirmed changes.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-niagara-falls-grand-finals-zenadriel-bratis",
@@ -3295,7 +3383,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Grand Finals. Casters call the players \"Zenadriel\" (Omnidex username Xenadrael) and \"Bratis\" (Bratus). Result per Omnidex (Xenadrael 2-0, round 15). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Grand Finals. Casters call the players \"Zenadriel\" (Omnidex username Xenadrael) and \"Bratis\" (Bratus). Result per Omnidex (Xenadrael 2-0, round 15). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain.",
+      "video": {
+        "id": "YEdMx87UqeE",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round1-zelage-cubone",
@@ -3417,7 +3509,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions, 43:32–82:26. Game-one coverage starts in progress; game two is shown through the finish. Xelomage and Qbone names and the 2–0 result match the event record."
+      "sourceNote": "Original European Nationals Day 1 captions, 43:32–82:26. Game-one coverage starts in progress; game two is shown through the finish. Xelomage and Qbone names and the 2–0 result match the event record.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round2-tatap-nitra",
@@ -3538,7 +3634,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions, 97:36–155:58. Both shown games reviewed through their finishes. TatPap plays Water Crux Merlin; Ravishing Finale belongs to Ne3tra’s Water Nico. The match ends 1–1."
+      "sourceNote": "Original European Nationals Day 1 captions, 97:36–155:58. Both shown games reviewed through their finishes. TatPap plays Water Crux Merlin; Ravishing Finale belongs to Ne3tra’s Water Nico. The match ends 1–1.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round3-asuna-sangorio",
@@ -3696,7 +3796,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions, targeted recap verification at 169:34–188:02 and 201:19–219:44. Game one begins in progress. Game-two Dream Fairy and Thurible plays were previously placed in game one; raccoons belong to Asuna, not sungorio."
+      "sourceNote": "Original European Nationals Day 1 captions, targeted recap verification at 169:34–188:02 and 201:19–219:44. Game one begins in progress. Game-two Dream Fairy and Thurible plays were previously placed in game one; raccoons belong to Asuna, not sungorio.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round5-fdwings-yoyi",
@@ -3810,7 +3914,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions, targeted recap verification at 350:07–370:54 and 380:02–388:43. Corrected the Paladin suppression attempt to FTWwings and retained only supported finishing sequences."
+      "sourceNote": "Original European Nationals Day 1 captions, targeted recap verification at 350:07–370:54 and 380:02–388:43. Corrected the Paladin suppression attempt to FTWwings and retained only supported finishing sequences.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round6-cabin-sebastian",
@@ -3905,7 +4013,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions. Targeted recap verification: 435:01–453:46, 456:00–466:51. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 1 captions. Targeted recap verification: 435:01–453:46, 456:00–466:51. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round7-marux-pewpewstan",
@@ -4006,7 +4118,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions reviewed at 530:00–541:00 and 553:00–574:00 for every retained recap claim. The earlier recap omitted game two: PewPewStan wins game one by concession at 535:38–535:55, MaruX wins game two by concession at approximately 563:00–564:00, and game three ends at time at 571:00–573:33. This agrees with the official 1–1 draw; no unexplained score discrepancy remains. The judge correction moves Drawn Blade to banishment. Unsupported opening claims and incorrectly assigned wind cards have been removed. This was a scoped recap-claim review, not a full-match reread."
+      "sourceNote": "Original European Nationals Day 1 captions reviewed at 530:00–541:00 and 553:00–574:00 for every retained recap claim. The earlier recap omitted game two: PewPewStan wins game one by concession at 535:38–535:55, MaruX wins game two by concession at approximately 563:00–564:00, and game three ends at time at 571:00–573:33. This agrees with the official 1–1 draw; no unexplained score discrepancy remains. The judge correction moves Drawn Blade to banishment. Unsupported opening claims and incorrectly assigned wind cards have been removed. This was a scoped recap-claim review, not a full-match reread.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "eu-nationals-2026-day1-round8-noel-jigjun",
@@ -4090,7 +4206,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 1 captions. Targeted recap verification: 602:00–608:36, 617:00–630:25. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 1 captions. Targeted recap verification: 602:00–608:36, 617:00–630:25. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "JKKl7AYwv3c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-round9-bonnie-shoko",
@@ -4208,7 +4328,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 45:00–67:36, 79:02–93:59. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 45:00–67:36, 79:02–93:59. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-round10-zelage-sebastian",
@@ -4320,7 +4444,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 125:01–132:37, 144:00–150:38, 152:00–160:45. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 125:01–132:37, 144:00–150:38, 152:00–160:45. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-round11-heri-casual",
@@ -4405,7 +4533,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 193:00–210:32. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 193:00–210:32. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-round12-hanky-noel",
@@ -4495,7 +4627,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 276:00–283:40, 298:02–303:42. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 276:00–283:40, 298:02–303:42. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-top8-qf1-asa-kiddelicious",
@@ -4609,7 +4745,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 448:00–452:40, 482:00–487:55, 507:00–510:38, 521:01–527:34. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 448:00–452:40, 482:00–487:55, 507:00–510:38, 521:01–527:34. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "european-nationals-2026-day2-top4-semifinal-cabin-sebastian",
@@ -4719,7 +4859,11 @@
           ]
         }
       ],
-      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 563:01–567:33, 590:02–593:36, 643:00–647:36. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original European Nationals Day 2 captions. Targeted recap verification: 563:01–567:33, 590:02–593:36, 643:00–647:36. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "DPuScrWjjag",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-top8-qf1-cabin-raingoddess",
@@ -4830,7 +4974,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows."
+      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows.",
+      "video": {
+        "id": "rxlxRXstZS0",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-top8-qf2-noel-liftdrasil",
@@ -4985,7 +5133,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows."
+      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows.",
+      "video": {
+        "id": "rxlxRXstZS0",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-top8-qf3-zero-asa",
@@ -5078,7 +5230,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows."
+      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows.",
+      "video": {
+        "id": "rxlxRXstZS0",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-2026-top8-qf4-glennyboy-jet",
@@ -5188,7 +5344,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows."
+      "sourceNote": "Reviewed against the original Worlds 2026 Top 8 broadcast transcript. Both players and the match result retain the event record; recap claims are limited to the cited gameplay windows.",
+      "video": {
+        "id": "rxlxRXstZS0",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-day2-round10-casual-vain",
@@ -5334,7 +5494,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent London Day 2 Round 10 VOD, including a post-match interview with CasuaL. Casters call the players \"Casual\" (Omnidex username CasuaL) and \"Vain\" (V41N). Result per Omnidex (2-0). Card names are as called by the casters and may contain minor ASR errors (for example \"Purse\" is Perse, Relentless Raptor)."
+      "sourceNote": "Cleaned broadcast transcript, Ascent London Day 2 Round 10 VOD, including a post-match interview with CasuaL. Casters call the players \"Casual\" (Omnidex username CasuaL) and \"Vain\" (V41N). Result per Omnidex (2-0). Card names are as called by the casters and may contain minor ASR errors (for example \"Purse\" is Perse, Relentless Raptor).",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-day2-round11-dinkydane-djnova",
@@ -5421,7 +5585,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 208:02–217:42, 223:01–227:42. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 208:02–217:42, 223:01–227:42. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-day2-round12-duckhats-dragoill",
@@ -5591,7 +5759,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent London Day 2 Round 12 VOD. Casters call the players \"Duck Hats\" (Omnidex username DuckHats) and \"Drago/Dragoill\" (Dragowil). Result per Omnidex (1-1). Card names are as called by the casters and may contain minor ASR errors; some mid-game card identities are uncertain."
+      "sourceNote": "Cleaned broadcast transcript, Ascent London Day 2 Round 12 VOD. Casters call the players \"Duck Hats\" (Omnidex username DuckHats) and \"Drago/Dragoill\" (Dragowil). Result per Omnidex (1-1). Card names are as called by the casters and may contain minor ASR errors; some mid-game card identities are uncertain.",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-top8-qf-fallenbuu-cabin",
@@ -5700,7 +5872,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 423:00–426:34, 432:00–436:37, 482:00–487:39. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 423:00–426:34, 432:00–436:37, 482:00–487:39. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-top4-sf-superior-djnova",
@@ -5809,7 +5985,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 506:00–510:38, 535:03–538:42, 551:02–556:43. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 506:00–510:38, 535:03–538:42, 551:02–556:43. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-2026-grand-finals-superior-lifteril",
@@ -5919,7 +6099,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 591:00–596:38, 604:01–617:32, 653:00–657:39, 689:00–694:59. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 2 captions. Targeted recap verification: 591:00–596:38, 604:01–617:32, 653:00–657:39, 689:00–694:59. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "41aKdQJ7U1c",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round1-taylor-steve",
@@ -6026,7 +6210,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 68:04–71:45, 85:01–89:48, 102:02–105:32. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 68:04–71:45, 85:01–89:48, 102:02–105:32. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round2-argonaut-dragoill",
@@ -6102,7 +6290,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 137:05–145:44, 167:01–170:12. Recap claims were checked in these windows; this is not an exhaustive reading of every turn. User confirmation on 2026-10-31 resolves the caption ambiguity: Arg0naut94 received the game loss (Ascent London Day 1, 2:25:27)."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 137:05–145:44, 167:01–170:12. Recap claims were checked in these windows; this is not an exhaustive reading of every turn. User confirmation on 2026-10-31 resolves the caption ambiguity: Arg0naut94 received the game loss (Ascent London Day 1, 2:25:27).",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round3-henti-lucas",
@@ -6163,7 +6355,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 228:00–231:46, 237:01–239:43. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 228:00–231:46, 237:01–239:43. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round4-enderzone-alisarez",
@@ -6264,7 +6460,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 306:03–310:45, 339:00–346:56, 351:02–353:14. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 306:03–310:45, 339:00–346:56, 351:02–353:14. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round5-superior-business",
@@ -6352,7 +6552,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 418:01–427:30, 428:01–433:56, 446:04–450:47. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 418:01–427:30, 428:01–433:56, 446:04–450:47. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round6-sono-sangorio",
@@ -6449,7 +6653,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 495:02–498:44, 529:00–534:42, 544:01–550:38. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 495:02–498:44, 529:00–534:42, 544:01–550:38. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round7-dinkydane-rexarion",
@@ -6566,7 +6774,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 576:03–579:44, 592:00–596:44, 620:00–623:39. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 576:03–579:44, 592:00–596:44, 620:00–623:39. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-london-day1-round8-celad-asuna",
@@ -6645,7 +6857,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 661:00–664:40, 700:00–703:48, 708:00–710:41. Recap claims were checked in these windows; this is not an exhaustive reading of every turn."
+      "sourceNote": "Original Ascent London Day 1 captions. Targeted recap verification: 661:00–664:40, 700:00–703:48, 708:00–710:41. Recap claims were checked in these windows; this is not an exhaustive reading of every turn.",
+      "video": {
+        "id": "E8MyaSKtI_U",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round1-egg-long",
@@ -6761,7 +6977,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round2-aqua-haro",
@@ -6842,7 +7062,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round3-ruby-zelia-dragon-jg",
@@ -6961,7 +7185,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round4-ai-sentus",
@@ -7075,7 +7303,11 @@
           ]
         }
       ],
-      "sourceNote": "Southeast Asia Nationals Day 1, Round 4. Full captions at 276:16–281:52 identify Awi (Brunei, Fire Luxem Zander) and Centratus (Singapore, Fire Ciel); captions also render their names as “AI” and “Sentus”. Omnidex event 56265 round 4 pairing 10, player countries and registered decks corroborate both identities and Awi’s 2-0 win."
+      "sourceNote": "Southeast Asia Nationals Day 1, Round 4. Full captions at 276:16–281:52 identify Awi (Brunei, Fire Luxem Zander) and Centratus (Singapore, Fire Ciel); captions also render their names as “AI” and “Sentus”. Omnidex event 56265 round 4 pairing 10, player countries and registered decks corroborate both identities and Awi’s 2-0 win.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round5-mario-wind-rye",
@@ -7162,7 +7394,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round6-zaba-ray-pig",
@@ -7242,7 +7478,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round7-joel-neptuno",
@@ -7328,7 +7568,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round8-abby-microcanthus",
@@ -7413,7 +7657,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play."
+      "sourceNote": "Reviewed recap claims against the original Southeast Asia Nationals Day 1 broadcast transcript. Proposed lines are distinguished from observed play.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "sea-nationals-2026-day1-round9-megalobana-neptuno",
@@ -7472,7 +7720,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed original SEA Day 1 transcript at700:00–714:56. It shows NeptuneI winning game 1 and only the opening of game 2, ending during a Dungeon Guide discussion. The official 2–1 match result is retained; the missing game results and finish are not reconstructed."
+      "sourceNote": "Reviewed original SEA Day 1 transcript at700:00–714:56. It shows NeptuneI winning game 1 and only the opening of game 2, ending during a Dungeon Guide discussion. The official 2–1 match result is retained; the missing game results and finish are not reconstructed.",
+      "video": {
+        "id": "yiXTkbA1am4",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-round11-zabishan-quorax",
@@ -7582,7 +7834,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed decisive recap claims against the original Taipei Day 2 transcript. KUOJIA wins 2–1. The casters correct their initial explanation of the game 3 attack-activation window; the match, rather than game 3 alone, lasts about 65 minutes."
+      "sourceNote": "Reviewed decisive recap claims against the original Taipei Day 2 transcript. KUOJIA wins 2–1. The casters correct their initial explanation of the game 3 attack-activation window; the match, rather than game 3 alone, lasts about 65 minutes.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-round12-quorax-trueops",
@@ -7667,7 +7923,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Taipei Day 2 transcript. Chuwubs wins 2–0. Game 1 ends in concession; Fireball supplies the game 2 finish."
+      "sourceNote": "Reviewed recap claims against the original Taipei Day 2 transcript. Chuwubs wins 2–0. Game 1 ends in concession; Fireball supplies the game 2 finish.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-round13-apal-kuan",
@@ -7765,7 +8025,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines."
+      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-round14-enki-long",
@@ -7882,7 +8146,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines."
+      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-top8-qf-yamikin-zero",
@@ -7968,7 +8236,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines."
+      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-top4-sf-apal-long",
@@ -8049,7 +8321,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines."
+      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-bronze-long-yamikin",
@@ -8175,7 +8451,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed broadcast recap claims against the original Taipei Day 2 transcript. All three bronze-match games are shown, with Long winning games 1 and 3. The Mad Hatter selection succeeds; Long survives the resulting attacks."
+      "sourceNote": "Reviewed broadcast recap claims against the original Taipei Day 2 transcript. All three bronze-match games are shown, with Long winning games 1 and 3. The Mad Hatter selection succeeds; Long survives the resulting attacks.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "ascent-taipei-2026-day2-grand-finals-proan-apal",
@@ -8293,7 +8573,11 @@
           ]
         }
       ],
-      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines."
+      "sourceNote": "Reviewed recap claims against the original Ascent Taipei Day 2 broadcast transcript. The recap distinguishes observed actions from the casters’ proposed lines.",
+      "video": {
+        "id": "oHCCZOZBvKM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round1-hyoka-duckhats",
@@ -8459,7 +8743,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 1. Recap claims checked against the listed source windows. Game-two Orb of Sealing belongs to DuckHats; the Grande Sonnerie finish belongs to game two, not game three. Game-three alternative Arcane Blast and second-Advent lines remain commentary rather than recorded plays."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 1. Recap claims checked against the listed source windows. Game-two Orb of Sealing belongs to DuckHats; the Grande Sonnerie finish belongs to game two, not game three. Game-three alternative Arcane Blast and second-Advent lines remain commentary rather than recorded plays.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round2-zelenitis-holysamurai",
@@ -8640,7 +8928,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 2. Recap claims checked against source windows, including both finishing sequences and game-three setup. Hypothetical boarding and level-up lines are distinguished from observed plays."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 2. Recap claims checked against source windows, including both finishing sequences and game-three setup. Hypothetical boarding and level-up lines are distinguished from observed plays.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round3-roen-jacepatrick",
@@ -8767,7 +9059,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 3. Recap claims checked against gameplay windows. Folded Shadows protects JacePatrick’s Ciel; Royan removes it with Fracturize before the final Genbu/Fugue line."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 3. Recap claims checked against gameplay windows. Folded Shadows protects JacePatrick’s Ciel; Royan removes it with Fracturize before the final Genbu/Fugue line.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round4-raingoddess-dal",
@@ -8954,7 +9250,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 4. Recap claims checked against opening and finishing windows. The 45-damage recovery and Whirlpool sequence belong to game one, not game three. The 1-1 draw awards neither player a Gauntlet win."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 4. Recap claims checked against opening and finishing windows. The 45-damage recovery and Whirlpool sequence belong to game one, not game three. The 1-1 draw awards neither player a Gauntlet win.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round5-gerthos-jr",
@@ -9136,7 +9436,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 5; gameplay reviewed from 384:00–430:59. Game-two Fiery Interference and Abnegation are not part of the game-three finish. Jayare controls the defensive Orb of Sealing in games two and three."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 5; gameplay reviewed from 384:00–430:59. Game-two Fiery Interference and Abnegation are not part of the game-three finish. Jayare controls the defensive Orb of Sealing in games two and three.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round6-glennyboy-limelight",
@@ -9282,7 +9586,11 @@
           ]
         }
       ],
-      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 6. Recap claims checked against 458:00–496:59. Limelight’s registered sideboard confirms Spirelle, Schwartz Queen. Game-two Galebind targets Manxome Armoire to limit Oblation; the earlier Crux Sight is negated and banished."
+      "sourceNote": "The Gauntlet 2026 broadcast transcript, Round 6. Recap claims checked against 458:00–496:59. Limelight’s registered sideboard confirms Spirelle, Schwartz Queen. Game-two Galebind targets Manxome Armoire to limit Oblation; the earlier Crux Sight is negated and banished.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round7-aqua-apal",
@@ -9362,7 +9670,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Gauntlet broadcast captions reviewed at 525:00–561:00. The spear’s scaling was wrongly attributed to Seiryuu; Daunting Panda belongs to game two. Game two ends in a concession, not the hypothetical Grail–Enrage line."
+      "sourceNote": "Original Gauntlet broadcast captions reviewed at 525:00–561:00. The spear’s scaling was wrongly attributed to Seiryuu; Daunting Panda belongs to game two. Game two ends in a concession, not the hypothetical Grail–Enrage line.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round8-emp-yamikin",
@@ -9439,7 +9751,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Gauntlet broadcast captions reviewed at 596:00–621:00. Death Essence Amulet is sideboard discussion, not a failed game-one play. Corrected the owner of the 19 damage and removed hypothetical Powercell damage."
+      "sourceNote": "Original Gauntlet broadcast captions reviewed at 596:00–621:00. Death Essence Amulet is sideboard discussion, not a failed game-one play. Corrected the owner of the 19 damage and removed hypothetical Powercell damage.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "the-gauntlet-2026-round9-bailey-leowong",
@@ -9497,7 +9813,11 @@
           ]
         }
       ],
-      "sourceNote": "Original Gauntlet broadcast captions reviewed at 675:00–707:00. Only game one’s finish is shown. The source ends during game two after Bailey reaches Arisana level three; the 2–1 match result is retained from the official result, not inferred from the partial footage."
+      "sourceNote": "Original Gauntlet broadcast captions reviewed at 675:00–707:00. Only game one’s finish is shown. The source ends during game two after Bailey reaches Arisana level three; the 2–1 match result is retained from the official result, not inferred from the partial footage.",
+      "video": {
+        "id": "U4RbiOBCC-Q",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round1-proan-duckhats",
@@ -10034,7 +10354,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 1: captions reviewed from 54:32–103:00 against the Swiss lists and local card text. DuckHats wins 2–1, consistent with Omnidex. Boarding suggestions remain distinct from observed plays. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 1: captions reviewed from 54:32–103:00 against the Swiss lists and local card text. DuckHats wins 2–1, consistent with Omnidex. Boarding suggestions remain distinct from observed plays. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round2-raylam-caven",
@@ -10540,7 +10864,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 2. Captions at 138:31–183:14 establish the game order and Raylam’s 2–1 win; targeted interview passages at 191:38–193:55 were also checked. Recap corrections were cross-checked against the Swiss lists and local card text. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 2. Captions at 138:31–183:14 establish the game order and Raylam’s 2–1 win; targeted interview passages at 191:38–193:55 were also checked. Recap corrections were cross-checked against the Swiss lists and local card text. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round2-second-asa-liftdraasil",
@@ -11103,7 +11431,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss captions reviewed through all three games (224:52–302:27). The caster discussion at 291:50–292:11 confirms Asuna’s game-three Stifling Gyre names Ghosts of Pendragon. Retribution is shown and counted at the end, not activated. The official 1–1 match draw is preserved; the broadcast describes it as a double loss for standings purposes. The stable ID retains the historical Round 2 label, but this is Round 3. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss captions reviewed through all three games (224:52–302:27). The caster discussion at 291:50–292:11 confirms Asuna’s game-three Stifling Gyre names Ghosts of Pendragon. Retribution is shown and counted at the end, not activated. The official 1–1 match draw is preserved; the broadcast describes it as a double loss for standings purposes. The stable ID retains the historical Round 2 label, but this is Round 3. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round4-superior-raingoddess",
@@ -11607,7 +11939,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 4. Targeted caption checks confirm TheRainGoddess’s Censer/Lantern/Verdigris ownership, Superior’s Genbu finish and game-two boarding observations. The game-loss explanation and failed appeal are attributed to the casters’ judge reports at 359:49–360:08 and 363:58–364:13; no independent ruling document was reviewed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 4. Targeted caption checks confirm TheRainGoddess’s Censer/Lantern/Verdigris ownership, Superior’s Genbu finish and game-two boarding observations. The game-loss explanation and failed appeal are attributed to the casters’ judge reports at 359:49–360:08 and 363:58–364:13; no independent ruling document was reviewed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round4-bonus-raylam-gerthos",
@@ -11983,7 +12319,11 @@
       "result": "Raylam wins 2-1 (final score announced after the recorded game)",
       "sideboardNotes": [],
       "games": [],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match; captions reviewed at 372:47–387:06. The recording stops before game one finishes. The casters then announce Raylam’s 2–1 match win, consistent with Omnidex; this does not establish the winner of the shown game. Raylam uses Incapacitate on Creative Shock and gains repeated value from Hasty Messenger. Guruthos uses Turbo Charge and sacrifices Angel Attendant to Cremation Ritual, then later reaches level three through Dungeon Guide. Abnegation is identified in Guruthos’s hand, consistent with his one main-deck copy. Raylam also reaches level three, but the casters see neither player holding Baleful Oblation when the recording ends. Manxome Armoire recycling is discussed as a possible follow-up, not confirmed completed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match; captions reviewed at 372:47–387:06. The recording stops before game one finishes. The casters then announce Raylam’s 2–1 match win, consistent with Omnidex; this does not establish the winner of the shown game. Raylam uses Incapacitate on Creative Shock and gains repeated value from Hasty Messenger. Guruthos uses Turbo Charge and sacrifices Angel Attendant to Cremation Ritual, then later reaches level three through Dungeon Guide. Abnegation is identified in Guruthos’s hand, consistent with his one main-deck copy. Raylam also reaches level three, but the casters see neither player holding Baleful Oblation when the recording ends. Manxome Armoire recycling is discussed as a possible follow-up, not confirmed completed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round5-gerthos-jet",
@@ -12558,7 +12898,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists. The game-one opening was also reviewed at 395:19–406:02; the casters speculate about trigger handling while a judge is present, but do not establish a missed-trigger penalty."
+      "sourceNote": "Worlds 2026 Swiss Stage VOD, Round 5; Jett wins 2–1 per Omnidex. Game-one finish checked at 406:02–417:43; games two and three checked at 419:04–456:34. Game two ends in concession after Imperious Galebind stops the proposed weapon finish. In game three Guruthos has Oblation, but Jett prevents Ciel level three before the final weapon attack. Boarding commentary includes an explicit correction about Flamewreath Call. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists. The game-one opening was also reviewed at 395:19–406:02; the casters speculate about trigger handling while a judge is present, but do not establish a missed-trigger penalty.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round6-noel-asa",
@@ -13087,7 +13431,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss captions reviewed from the match opening through its conclusion (480:37–522:09). The “game three” call at 493:33 is corrected to game two at 495:57. The four Speed Potions describe Asuna’s registered list, not a confirmed boarding change. The final wind-spell sequence is called explicitly at 521:02–521:09. Official result: Asuna 2–1. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss captions reviewed from the match opening through its conclusion (480:37–522:09). The “game three” call at 493:33 is corrected to game two at 495:57. The four Speed Potions describe Asuna’s registered list, not a confirmed boarding change. The final wind-spell sequence is called explicitly at 521:02–521:09. Official result: Asuna 2–1. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round6-bonus-raylam-jair",
@@ -13561,7 +13909,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss bonus-match captions reviewed at 538:01–552:20. Escape the Wreckage is explicitly corrected from a discard to a played response at 538:53. Jayare owns the opening Three of Hearts; Crystallized Destiny is his sought answer after Oblation is played. Games one and two are shown. The broadcast announces Raylam’s 2–1 match win, but game three is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss bonus-match captions reviewed at 538:01–552:20. Escape the Wreckage is explicitly corrected from a discard to a played response at 538:53. Jayare owns the opening Three of Hearts; Crystallized Destiny is his sought answer after Oblation is played. Games one and two are shown. The broadcast announces Raylam’s 2–1 match win, but game three is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round7-glennyboy-duckhats",
@@ -14051,7 +14403,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss captions reviewed at 560:00–592:55. Both games end in DuckHats’s concession. Game two’s early push belongs to DuckHats; GlenyBoi’s Annul Spell against Imperious Galebind is the subsequent turning point. Crux Sight retrieves Ascension; Prismatic Edge causes the memory loss. The catalog confirms Eternal Magistrate restricts opponents, not its controller. Official result: GlenyBoi 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss captions reviewed at 560:00–592:55. Both games end in DuckHats’s concession. Game two’s early push belongs to DuckHats; GlenyBoi’s Annul Spell against Imperious Galebind is the subsequent turning point. Crux Sight retrieves Ascension; Prismatic Edge causes the memory loss. The catalog confirms Eternal Magistrate restricts opponents, not its controller. Official result: GlenyBoi 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
@@ -14462,7 +14818,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss bonus-match captions reviewed at 614:24–624:00. The recording ends before DragonJG’s level-two turn; Phantasmagoria and Dynastic Whirlpool are described as the deck’s future plan, not shown resolving. Sano chooses a blind Fairy Whispers draw rather than deliberately retaining all three Crux cards. Game one’s winner and the 2–0 match result are announced at 623:48–623:57; game two is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss bonus-match captions reviewed at 614:24–624:00. The recording ends before DragonJG’s level-two turn; Phantasmagoria and Dynastic Whirlpool are described as the deck’s future plan, not shown resolving. Sano chooses a blind Fairy Whispers draw rather than deliberately retaining all three Crux cards. Game one’s winner and the 2–0 match result are announced at 623:48–623:57; game two is not shown. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "worlds-swiss-2026-round8-caven-sono",
@@ -14926,7 +15286,11 @@
           ]
         }
       ],
-      "sourceNote": "Worlds Swiss captions reviewed at 632:45–662:38. Game one ends in an early concession. In game two, Sano allows the Acquiescing Rejection draw, so Fluffy Shopkeep resolves; Refracting Missile removes it later. TeamTrueCaban, not Sano, pays for Annul Spell in the final Burst Asunder exchange. The casters discuss Quicksilver Grail as an alternative, not a card in his list. Official result: TeamTrueCaban 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists."
+      "sourceNote": "Worlds Swiss captions reviewed at 632:45–662:38. Game one ends in an early concession. In game two, Sano allows the Acquiescing Rejection draw, so Fluffy Shopkeep resolves; Refracting Missile removes it later. TeamTrueCaban, not Sano, pays for Annul Spell in the final Burst Asunder exchange. The casters discuss Quicksilver Grail as an alternative, not a card in his list. Official result: TeamTrueCaban 2–0. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "video": {
+        "id": "MAgS0ISYLtI",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round1-dit-boeboe",
@@ -15132,7 +15496,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 1 VOD. Casters call the players Dit and \"Bobo\" Taylor (omnidex username boeboe); card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 1 VOD. Casters call the players Dit and \"Bobo\" Taylor (omnidex username boeboe); card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round2-tlsovotl-aqua",
@@ -15319,7 +15687,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 2 VOD, including the post-match interview. Casters call the players \"Savatol/Sevoddo\" and Aqua; the omnidex usernames are TlsoVotl and Aqua. Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 2 VOD, including the post-match interview. Casters call the players \"Savatol/Sevoddo\" and Aqua; the omnidex usernames are TlsoVotl and Aqua. Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round3-noel-tress",
@@ -15491,7 +15863,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. Game outcomes verified against the supplied Round 3 captions: Tress wins game one at 40:53–41:16; Noel wins game two and ties the match at 65:35–66:44."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors. Game outcomes verified against the supplied Round 3 captions: Tress wins game one at 40:53–41:16; Noel wins game two and ties the match at 65:35–66:44.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round4-teamtruecaban-superior",
@@ -15687,7 +16063,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 VOD. Casters call TeamTrueCaban \"Caban/Kaiba\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 VOD. Casters call TeamTrueCaban \"Caban/Kaiba\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
@@ -15837,7 +16217,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 (backup match) VOD. Casters call the players \"Shut Him Down\" and \"Z/Zet DeVex\"; the omnidex usernames are Shuteemdown and Zetdivx. Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 (backup match) VOD. Casters call the players \"Shut Him Down\" and \"Z/Zet DeVex\"; the omnidex usernames are Shuteemdown and Zetdivx. Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round5-jett-longn",
@@ -15945,7 +16329,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 5 VOD. This transcript is partly garbled (some caption lines are out of order or missing), so these beats are limited to what is legible. Casters call the Razorgale player \"Ali\" (omnidex username Jett) and the Genbu player \"Long\" (LongN). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 5 VOD. This transcript is partly garbled (some caption lines are out of order or missing), so these beats are limited to what is legible. Casters call the Razorgale player \"Ali\" (omnidex username Jett) and the Genbu player \"Long\" (LongN). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round6-celednb-quakems",
@@ -16124,7 +16512,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 6 VOD, including a post-match interview with Quakems. Casters call the players \"Celad/Seled NB\" (the Weiss Schwarz world champion, omnidex username Celednb) and \"Quums\" (Quakems). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 6 VOD, including a post-match interview with Quakems. Casters call the players \"Celad/Seled NB\" (the Weiss Schwarz world champion, omnidex username Celednb) and \"Quums\" (Quakems). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round7-anjuhro-hyouka",
@@ -16243,7 +16635,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 7 VOD, including a post-match interview with Hyouka. This transcript is partly garbled (caption lines are interleaved), so beats are limited to what is legible. Casters call the players \"Andro/Andreo\" (Anjuhro) and \"Hyoka\" (Hyouka); \"Ry\" is Rai. Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 7 VOD, including a post-match interview with Hyouka. This transcript is partly garbled (caption lines are interleaved), so beats are limited to what is legible. Casters call the players \"Andro/Andreo\" (Anjuhro) and \"Hyoka\" (Hyouka); \"Ry\" is Rai. Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round8-zorr-hessu",
@@ -16405,7 +16801,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 8 VOD, including a post-match interview with Hessu. Casters call the Genbu player \"Zor\" (omnidex username Zorr) and Hessu \"Jesus/Hazu\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 8 VOD, including a post-match interview with Hessu. Casters call the Genbu player \"Zor\" (omnidex username Zorr) and Hessu \"Jesus/Hazu\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day1-round9-likebailey-vernosius",
@@ -16584,7 +16984,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 9 VOD, including a post-match interview with Bailey. Casters call the players \"Bailey\" (likeBAILEY) and \"Vern\" (Vernosius). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 9 VOD, including a post-match interview with Bailey. Casters call the players \"Bailey\" (likeBAILEY) and \"Vern\" (Vernosius). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "ljQZR8Yu1XM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day2-round10-superior-asuna",
@@ -16769,7 +17173,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 10 VOD, including a player intro and a post-match interview with Superior. Casters call the Razorgale player \"Asa\" (omnidex username Asuna). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 10 VOD, including a player intro and a post-match interview with Superior. Casters call the Razorgale player \"Asa\" (omnidex username Asuna). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
@@ -16943,7 +17351,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 11 VOD, including a post-match interview with Tacoboss. Casters call the players \"Taco Boss\" and \"Tempest/Tepe/Teepe Sorn\" (TeppeSlorn). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 11 VOD, including a post-match interview with Tacoboss. Casters call the players \"Taco Boss\" and \"Tempest/Tepe/Teepe Sorn\" (TeppeSlorn). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day2-round12-tlux-superior",
@@ -17088,7 +17500,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 12 VOD, including a post-match interview with Superior. Casters call the Seiryuu player \"Tony/Tux\" (omnidex username TLux). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 12 VOD, including a post-match interview with Superior. Casters call the Seiryuu player \"Tony/Tux\" (omnidex username TLux). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
@@ -17216,7 +17632,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Seiryuu against Genbu table). Casters call the players \"Chem Clash/Chem Collapse\" and \"M Duo\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Seiryuu against Genbu table). Casters call the players \"Chem Clash/Chem Collapse\" and \"M Duo\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
@@ -17401,7 +17821,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Diana against Luxem table), including a post-match interview with Yadon. Casters call the players \"Fallen Bu\" (omnidex username Fallinbuu14) and Yadon. Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Diana against Luxem table), including a post-match interview with Yadon. Casters call the players \"Fallen Bu\" (omnidex username Fallinbuu14) and Yadon. Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
@@ -17526,7 +17950,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including an interview with Zetdivx. This transcript is partly garbled (many caption lines are interleaved or missing), so beats are limited to what is legible. Casters call the players \"Zet DeVix\" (Zetdivx) and \"Steo\" (stevo7653). Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including an interview with Zetdivx. This transcript is partly garbled (many caption lines are interleaved or missing), so beats are limited to what is legible. Casters call the players \"Zet DeVix\" (Zetdivx) and \"Steo\" (stevo7653). Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-top8-qf-jett-chemcollapse",
@@ -17709,7 +18137,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including a post-match interview with Jett. Game 3 is cut short at the broadcast switch to the semifinal, so only the opening turns are shown. Casters call Jett \"Ali/Jet/Oi\" and ChemCollapse \"Chem Clash/Chem Claps\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including a post-match interview with Jett. Game 3 is cut short at the broadcast switch to the semifinal, so only the opening turns are shown. Casters call Jett \"Ali/Jet/Oi\" and ChemCollapse \"Chem Clash/Chem Claps\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-top4-semifinal-zetdivx-jett",
@@ -17914,7 +18346,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 4 Semifinal VOD, including an interview with Jett. Casters call the Diana player \"Zed/Zett Divix\" (Zetdivx) and Jett \"Ali/Ollie/Jet\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 4 Semifinal VOD, including an interview with Jett. Casters call the Diana player \"Zed/Zett Divix\" (Zetdivx) and Jett \"Ali/Ollie/Jet\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     },
     {
       "id": "na-nationals-2026-grand-finals-quarax-jett",
@@ -18110,7 +18546,11 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Grand Finals VOD, including a champion's interview with Jett. Casters call Jett \"Ali/Ollie/Jet\" and Quarax \"Korax/Corax\". Card names are as called by the casters and may contain minor ASR errors."
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Grand Finals VOD, including a champion's interview with Jett. Casters call Jett \"Ali/Ollie/Jet\" and Quarax \"Korax/Corax\". Card names are as called by the casters and may contain minor ASR errors.",
+      "video": {
+        "id": "tFC-3k0uxcM",
+        "kind": "broadcast"
+      }
     }
   ]
 }
