@@ -863,6 +863,38 @@
       "after": [
         "swing"
       ]
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/summary",
+      "before": "Jett wins — an Assassin's Ripper swing and the Poisoned Dagger line finish Zero0000000000 and crown Jett world champion",
+      "after": "Jett wins — Lightweaver's Assault and Gleaming Cut fuel the final push; Assassin's Ripper, Windmill Engineer and Aesan Protector close the match"
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/beats/2/actor",
+      "before": "p2",
+      "after": "p1"
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/beats/2/text",
+      "before": "Zero0000000000 builds a large influence lead, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion.",
+      "after": "Zero0000000000 rebuilds influence with Ghosts of Pendragon and plays Regal Inquisition. Jett responds with Lightweaver's Assault, revealing two Gleaming Cuts to draw four cards and dealing eight damage despite Clarent. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23 damage. Windmill Engineer and Aesan Protector provide the last five damage, making Jett the 2026 world champion."
+    },
+    {
+      "path": "worlds-2026-championship-sunday-grandfinals-jet-zero/games/4/beats/2/cards",
+      "before": [
+        "Assassin's Ripper",
+        "Incapacitate"
+      ],
+      "after": [
+        "Ghosts of Pendragon",
+        "Regal Inquisition",
+        "Lightweaver's Assault",
+        "Gleaming Cut",
+        "Clarent, Reimagined",
+        "Assassin's Ripper",
+        "Windmill Engineer",
+        "Aesan Protector"
+      ]
     }
   ],
   "sourceFollowUp": [
@@ -872,8 +904,7 @@
     "Manila Mantra ownership is verified. Verify remaining Regal Inquisition and Lorraine ownership clauses; registered card presence alone does not establish an action.",
     "London game one Liu Bei is verified; confirm the game two finisher. Worlds GlenyBoi spell is named Stifling Gyre in captions, but actor/target remain unconfirmed.",
     "Zetdivx’s game-three Drown in Aether is verified from captions. Confirm remaining Diana boarding claims and quantities, especially Quarax in the final.",
-    "Verify the Niagara semifinal opening explanation: neither registered champion supports the stated Arcane-banishment empower claim.",
-    "Verify the Worlds final game 5 influence sequence: Gleaming Cut belongs to Jett’s deck, and the claim that Zero built influence with it is unsupported."
+    "Verify the Niagara semifinal opening explanation: neither registered champion supports the stated Arcane-banishment empower claim."
   ],
   "sourceReview": {
     "sourceDirectory": "/Users/avery/Downloads/transcripts",
@@ -937,6 +968,17 @@
           "57:10–58:28"
         ],
         "finding": "ZeRoMagus boards Harmonious Mantra with Kongming/Shifting Currents. Captions explicitly identify Muck (Mark) as the Topsy Decree player interrupting the anticipated Guide sequence; do not claim all four Guides entered. Registered lists corroborate Mantra/Kongming on ZeRoMagus and Topsy on Muck. Counter discussion is calculation checking, not evidence of a forgotten-counter violation; removed the ruling tag and mistake assertion. No boarding quantity inferred."
+      },
+      {
+        "matchId": "worlds-2026-championship-sunday-grandfinals-jet-zero",
+        "file": "Championship Sunday Worlds 2026  Grand Archive TCG.txt",
+        "sha256": "694bd42f2b9a2fa154948af6de3324d5503bf14a53e73a7f112307a80b432aca",
+        "ranges": [
+          "535:03–536:49",
+          "537:28–539:54",
+          "540:30–541:46"
+        ],
+        "finding": "Game five: Zero rebuilds with Ghosts of Pendragon. Jett responds to Regal Inquisition with Lightweaver’s Assault, revealing two Gleaming Cuts for four draws and dealing eight damage. Assassin’s Ripper deals three; Windmill Engineer/Aesan Protector finish the remaining five. Restores Gleaming Cut with the correct actor and replaces the unsupported Poisoned Dagger finishing summary. Exact final ally attack allocation is not asserted because the captions compress the sequence."
       }
     ],
     "unresolved": [

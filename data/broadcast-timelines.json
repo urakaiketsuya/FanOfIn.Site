@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T20:58:48.922Z",
+  "generatedAt": "2026-10-31T21:00:58.043Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -1834,7 +1834,7 @@
         {
           "gameNumber": 5,
           "winner": "p1",
-          "summary": "Jett wins — an Assassin's Ripper swing and the Poisoned Dagger line finish Zero0000000000 and crown Jett world champion",
+          "summary": "Jett wins — Lightweaver's Assault and Gleaming Cut fuel the final push; Assassin's Ripper, Windmill Engineer and Aesan Protector close the match",
           "beats": [
             {
               "order": 1,
@@ -1863,11 +1863,17 @@
             },
             {
               "order": 3,
-              "actor": "p2",
-              "text": "Zero0000000000 builds a large influence lead, and Jett has no realistic way to put Incapacitate on the board. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23, and finds the last five damage to win. Jett is the 2026 world champion.",
+              "actor": "p1",
+              "text": "Zero0000000000 rebuilds influence with Ghosts of Pendragon and plays Regal Inquisition. Jett responds with Lightweaver's Assault, revealing two Gleaming Cuts to draw four cards and dealing eight damage despite Clarent. Jett then swings with Assassin's Ripper for three, taking Zero0000000000 to 23 damage. Windmill Engineer and Aesan Protector provide the last five damage, making Jett the 2026 world champion.",
               "cards": [
+                "Ghosts of Pendragon",
+                "Regal Inquisition",
+                "Lightweaver's Assault",
+                "Gleaming Cut",
+                "Clarent, Reimagined",
                 "Assassin's Ripper",
-                "Incapacitate"
+                "Windmill Engineer",
+                "Aesan Protector"
               ],
               "tags": [
                 "lethal"

@@ -87,8 +87,12 @@ test('unsupported card identities, ownership and sideboard counts stay out of re
   assert.doesNotMatch(JSON.stringify(find('round10-muck-zero')), /Topsy Decree from ZeRoMagus/);
   assert.doesNotMatch(JSON.stringify(find('sf-fruitcake-bratis')), /Bratus can empower/);
   const finalBeat = find('grandfinals-jet-zero').games.find(g => g.gameNumber === 5)!.beats.at(-1)!;
-  assert.doesNotMatch(finalBeat.text, /Gleaming Cuts/);
-  assert.ok(!finalBeat.cards?.includes('Gleaming Cut'));
+  assert.equal(finalBeat.actor, 'p1');
+  assert.match(finalBeat.text, /Jett responds with Lightweaver's Assault, revealing two Gleaming Cuts/);
+  assert.match(finalBeat.text, /Zero0000000000 rebuilds influence with Ghosts of Pendragon/);
+  assert.ok(finalBeat.cards?.includes('Gleaming Cut'));
+  assert.ok(finalBeat.cards?.includes('Aesan Protector'));
+  assert.doesNotMatch(find('grandfinals-jet-zero').games[4].summary, /Poisoned Dagger/);
   const note = find('shuteemdown-zetdivx').sideboardNotes!.find(n => n.actor === 'p2')!;
   assert.match(note.text, /number boarded in is unconfirmed/);
   assert.doesNotMatch(note.text, /four/);
