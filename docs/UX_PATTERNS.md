@@ -706,3 +706,5 @@ round restoration, empty search/recovery, 48px controls and overflow. Grouping f
 retain all 110 recaps across 11 events, including metadata-unavailable fallback. Forced
 network failure/retry, text zoom and on-screen keyboard behavior were not retested.
 App typecheck, focused lint and 11 grouping/champion/tournament tests passed.
+
+Event discovery uses location-led cards and region chips, with a searchable `DialogSheet` grouped by season. Keep the selected event visible on phones and preserve its URL selection between Results and Timeline. Prefer event venue evidence over organizer addresses; retain regional or event-name labels when the city is unknown.

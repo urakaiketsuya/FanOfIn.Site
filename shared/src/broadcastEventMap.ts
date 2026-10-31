@@ -7,7 +7,7 @@ export interface BroadcastEventPairing {
 }
 export interface BroadcastEventStage { id: number; type: string; rounds: number[]; matches: BroadcastEventPairing[] }
 export interface BroadcastEventMap {
-  id: number; name: string; aliases: string[]; date: string; playerCount: number;
+  id: number; name: string; aliases: string[]; date: string; playerCount: number; season?: string;
   stages: BroadcastEventStage[]; recapIds: string[]; unlinkedRecapIds: string[];
 }
 export interface BroadcastEventMaps { generatedAt: string; events: BroadcastEventMap[] }
@@ -19,7 +19,7 @@ export function recapStage(round: string): 'swiss' | 'single-elimination' {
 /** Input reflects the saved API payload, whose round/stage are objects in newer snapshots. */
 export interface BroadcastEventSource {
   id: number;
-  event: { date: string; players: number[]; name: string; stages: { id: number; type: string }[] };
+  event: { date: string; season?: { name: string }; players: number[]; name: string; stages: { id: number; type: string }[] };
   players: { id: number; username: string }[];
   decklists?: { player: number; visible: boolean; decklist: { material: { card: string; quantity: number }[] } }[];
   pairingsByRound: { error?: string; stage?: number | { id: number }; round?: number | { id: number }; pairings?: { id: number; label?: string; status: string; pairing: { id: number; score: number; status: string }[] }[] }[];
@@ -73,5 +73,6 @@ export function buildBroadcastEventMap(source: BroadcastEventSource, recaps: Bro
   }
   return { id: source.id, name: recaps[0]?.event.replace(/ Swiss Stage$/, '') ?? source.event.name,
     aliases: [...new Set(recaps.map(m => m.event))], date: source.event.date, playerCount: source.event.players.length,
+    ...(source.event.season?.name ? { season: source.event.season.name } : {}),
     stages, recapIds: recaps.map(m => m.id), unlinkedRecapIds: recaps.filter(m => !linked.has(m.id)).map(m => m.id) };
 }
