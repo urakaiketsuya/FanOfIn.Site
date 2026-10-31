@@ -657,7 +657,7 @@ on-screen keyboard behavior were not retested.
 
 ## Tournament maps in Match Timelines
 
-Group broadcasts by official event ID, combining Swiss and Top Cut coverage. Open the
+Group broadcasts by official event ID, combining Swiss and Top Cut coverage. In the Timeline tab, open the
 latest matching event, with a dated event selector, field size and recap count. Swiss
 and Top Cut are peer URL-backed tabs. Use official pairing scores in the tournament
 map and retain broadcast result wording on recap pages. Label the map “Official results”
@@ -692,3 +692,17 @@ Spirit fallback verification (2026-10-31): checked Las Vegas Top Cut at 390px an
 and no horizontal overflow. App/shared typechecks, focused lint and 39 timeline tests
 pass, including private/conflicting lists and Swiss-stage isolation. Forced image/network
 failures, text zoom and on-screen keyboard behavior were not retested.
+
+Match Timelines defaults to Results: all broadcast recap cards grouped by event ID,
+with each event named once, newer events first and rounds in order. Keep the portrait
+VS layout, original recap result and spirit fallback. Timeline is a separate peer tab
+containing the official bracket and Swiss round browser. The view uses `view=timeline`;
+search, champion, event and bracket navigation state survive tab switching. Results
+remain available when tournament-map metadata is unavailable.
+
+Results/tab verification (2026-10-31): checked 390px mobile and 1280px desktop,
+portrait VS cards, event headings, keyboard tab switching, search preservation, saved
+round restoration, empty search/recovery, 48px controls and overflow. Grouping fixtures
+retain all 110 recaps across 11 events, including metadata-unavailable fallback. Forced
+network failure/retry, text zoom and on-screen keyboard behavior were not retested.
+App typecheck, focused lint and 11 grouping/champion/tournament tests passed.
