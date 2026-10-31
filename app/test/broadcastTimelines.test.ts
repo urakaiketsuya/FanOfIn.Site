@@ -134,3 +134,15 @@ test('Worlds Swiss captions keep Lorraine and Dream Fairy plays with Lifdrasyl',
   assert.match(response.text, /Asuna responds with Escape the Wreckage to save his Magistrate/);
   assert.match(response.text, /does not replay it/);
 });
+
+test('Niagara semifinal includes both captioned games and correct deck ownership', () => {
+  const match = find('sf-fruitcake-bratis');
+  assert.deepEqual(match.games.map(game => game.winner), ['p2', 'p2']);
+  assert.doesNotMatch(match.players[0].deck, /Trained Hawk|Regal Inquisition|Arcane Blast/);
+  assert.match(match.players[1].deck, /Trained Hawk/);
+  assert.match(match.games[0].beats[1].text, /question whether Polaris was sacrificed/);
+  assert.match(match.games[0].beats[2].text, /concedes/);
+  assert.ok(match.games[1].beats.at(-1)!.cards!.includes('Arcane Blast'));
+  assert.equal(match.sideboardNotes![0].actor, 'p1');
+  assert.match(match.sideboardNotes![0].text, /Suspicious Concoction/);
+});

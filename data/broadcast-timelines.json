@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T21:02:31.127Z",
+  "generatedAt": "2026-10-31T21:04:10.773Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -3391,37 +3391,49 @@
       "id": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
       "event": "Ascent Niagara Falls",
       "eventId": 36225,
-      "round": "Top 4 — Semifinal: Astra Arisana against Wind Seiryuu Guo Jia",
+      "round": "Top 4 — Semifinal: Astra Arisanna against Wind Seiryuu Guo Jia",
       "players": [
         {
           "id": "p1",
           "name": "Fruitcake",
-          "deck": "Astra Arisana (Polaris, Cometfall, Cosmic Bolt, Arcane Blast, Trained Hawk, Fertile Ground, Ingredient Pouch, Regal Inquisition, extra Spellshield; a known defensive deck with burst at level three)"
+          "deck": "Astra Arisanna (Polaris, Twinkling Cauldron; Cometfall; Cosmic Bolt; Fertile Grounds; Ingredient Pouch; Spellshield: Astra)"
         },
         {
           "id": "p2",
           "name": "Bratus",
-          "deck": "Wind Seiryuu Guo Jia (only three Commands: Harness Lightning and Byakko's Command; Seiryuu's Command; Dungeon Guide; Arcane Blast; Baby Green Slime; Beseeching Fatestone; the casters call it a toolbox deck with answers for everything)"
+          "deck": "Wind Seiryuu Guo Jia (Fabled Azurite Fatestone; Harness Lightning; Byakko's Command; Seiryuu's Command; Dungeon Guide; Trained Hawk; Baby Green Slime; Beseeched Fatestone; Regal Inquisition; generated Arcane Blast)"
         }
       ],
-      "result": "Bratus wins 2-0 (the VOD shows game 1 in detail)",
-      "sideboardNotes": [],
+      "result": "Bratus wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Fruitcake brings in Suspicious Concoction, which the casters identify in game two."
+        }
+      ],
       "games": [
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Bratus wins — Fruitcake misses the buff counter on the Seiryuu and cannot kill it, and the big Arcane Blast follows",
+          "summary": "Bratus wins — Fruitcake concedes after his planned Polaris and Cometfall damage falls short of the buffed Seiryuu",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Bratus starts with his Spirit and builds quest counters. The casters explain that Arisana is known for defense and burst once it reaches level three. He needs to answer every threat Fruitcake plays.",
-              "cards": []
+              "text": "Bratus pressures Fruitcake with a Forest Cake-boosted Trained Hawk, then uses Dungeon Guide to reach level three and transform Fabled Azurite Fatestone. Byakko’s Command lets Seiryuu attack again and adds a buff counter.",
+              "cards": [
+                "Forest Cake",
+                "Trained Hawk",
+                "Dungeon Guide",
+                "Fabled Azurite Fatestone",
+                "Byakko's Command"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Fruitcake's damage stacks up and he goes to level two. Polaris cannot kill the Seiryuu without a level-up buffer, and Fruitcake's Cometfall deals 12 total damage to the 13-health dragon. The casters say that is rough: he did not read the buff counter, and usually the answer is that you cannot come back.",
+              "text": "Fruitcake’s planned Polaris activation for eight plus Cometfall would deal 12 damage, one short of the buffed Seiryuu’s 13 life. The casters initially describe the damage resolving, then question whether Polaris was sacrificed before Fruitcake concedes.",
               "cards": [
                 "Polaris, Twinkling Cauldron",
                 "Cometfall"
@@ -3433,9 +3445,54 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Fruitcake cannot survive the Arcane Blast next turn. The casters note that Regal Inquisition cannot get rid of Fruitcake's threats, though it removes spell shields, and a spare spellshield probably comes in for Fruitcake. Bratus wins, and the match goes to Bratus 2-0.",
+              "text": "Fruitcake concedes game one. The casters explain that he cannot survive the threatened Arcane Blast on the next turn.",
               "cards": [
-                "Regal Inquisition"
+                "Arcane Blast"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Bratus wins — Seiryuu attacks through Resolute Stand and Arcane Blast closes the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Fruitcake starts with Fertile Grounds and brings in Suspicious Concoction, then sets up Polaris. Bratus pressures him with Trained Hawk and Shimmercloak Assassin.",
+              "cards": [
+                "Fertile Grounds",
+                "Suspicious Concoction",
+                "Polaris, Twinkling Cauldron",
+                "Trained Hawk",
+                "Shimmercloak Assassin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Bratus reaches level three with Dungeon Guide. Portentous Tanggu supplies the tenth quest counter, letting him transform Fabled Azurite Fatestone and play Seiryuu’s Command.",
+              "cards": [
+                "Dungeon Guide",
+                "Portentous Tanggu",
+                "Fabled Azurite Fatestone",
+                "Seiryuu's Command"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Fruitcake finds Resolute Stand, but Seiryuu’s attacks still push damage through. Bratus follows with Arcane Blast to win game two and the match 2-0.",
+              "cards": [
+                "Resolute Stand",
+                "Arcane Blast"
               ],
               "tags": [
                 "lethal"
@@ -3444,7 +3501,7 @@
           ]
         }
       ],
-      "sourceNote": "Cleaned broadcast transcript, Ascent Niagara Falls Day 2 VOD, Top 4 semifinal (game 1 shown). Casters call the players \"Fruitcake/Fruitkick\" (Omnidex username Fruitcake) and \"Bratis\" (Bratus). Result per Omnidex (Bratus 2-0, round 14). Card names are as called by the casters and may contain minor ASR errors; game details were summarized from a sampled read of the captions and are partly uncertain."
+      "sourceNote": "Reviewed full Ascent Niagara Falls Day 2 captions, semifinal at 504:56–526:39. Both games are shown. Casters call Bratus “Bratis” and Fruitcake “Fruitkick”; registered lists corroborate their deck identities. Game one ends in concession with Polaris resolution uncertain; game two ends with Arcane Blast. Sideboard predictions are not treated as confirmed changes."
     },
     {
       "id": "ascent-niagara-falls-grand-finals-zenadriel-bratis",
