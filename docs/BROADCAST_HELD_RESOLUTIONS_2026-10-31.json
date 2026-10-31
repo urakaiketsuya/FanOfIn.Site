@@ -1894,6 +1894,73 @@
       ],
       "recommendation": "Retain source-attributed published Niagara scores and hold LA deciding-game reconstruction. Seek final match slips, organizer correction, player confirmation, or final scoreboard footage."
     },
-    "publishedRecapsAdded": 0
+    "publishedRecapsAdded": 0,
+    "laterCoverageCheck": {
+      "reviewedAt": "2026-10-31",
+      "scope": "Targeted later mentions and cached official standings; not full sequential review",
+      "evidence": [
+        {
+          "videoId": "tFC-3k0uxcM",
+          "rowIndexing": "zero-based",
+          "evidence": [
+            {
+              "row": 73,
+              "text": "Asana decks that again like to sit at level one. And can I mean the final round yesterday, Valk, that Terry and I",
+              "timestamp": "18:46"
+            },
+            {
+              "row": 74,
+              "text": "had the pleasure to cast, Protector Raccoon came down on Bailey's side and the level three deck just couldn't beat it. Yeah, it is insane. And it's really",
+              "timestamp": "18:54"
+            }
+          ],
+          "conclusion": "Day 2 retrospectively confirms Bailey played Protector Raccoon in the final round. This does not locate the missing match video or establish a gameplay offset."
+        },
+        {
+          "videoId": "O9EzTt7ffVc",
+          "rowIndexing": "zero-based",
+          "evidence": [
+            {
+              "row": 3718,
+              "text": "Hello and welcome back. I'm here with the round six winner of Ascent Niagara Falls. Uh, the second time on stream today, but this time you took the",
+              "timestamp": "8:18:57"
+            },
+            {
+              "row": 3719,
+              "text": "victory here. So congratulations to Superior. Uh you were now 5-1.",
+              "timestamp": "8:19:05"
+            },
+            {
+              "row": 3720,
+              "text": "5-1. Yeah. So I'm I'm guaranteed for day two.",
+              "timestamp": "8:19:08"
+            },
+            {
+              "row": 4925,
+              "text": "shattering discharge, I feel like shattering discharge actually has done really well for you. It did really well in the Tristan match up against the crystallized destiny since it's uh",
+              "timestamp": "11:03:13"
+            },
+            {
+              "row": 4926,
+              "text": "prevents next instance. Being able to use the unpreventable damage to stop that is like really good. I mean, you would know that as a spell shield player. It's kind of like the exact",
+              "timestamp": "11:03:20"
+            }
+          ],
+          "conclusion": "Later interviews corroborate Superior and Hyouka identities and earlier matches, but do not reconcile either disputed game score."
+        }
+      ],
+      "laStandingsCheck": {
+        "eventId": 48556,
+        "source": "pipeline/.cache/omnidex/events/48556.json",
+        "finding": "SpaghettiSr final 3W4L2D (11 points) and RoxanneKaiser final 2W5L2D (8 points), less their respective Round 2–9 records of 2W4L2D, count Round 1 as a SpaghettiSr win. Game totals also match the recorded 2–1.",
+        "limitation": "Standings and pairings are related official records, not independent evidence of the unseen finish."
+      },
+      "clipLookup": {
+        "localSource": "transcripts.zip: Razorgale Arisanna vs Water Luxem Zander  Grand Archive TCG North American Nationals Round 9.txt",
+        "channelSearch": "https://www.youtube.com/@gatcg/search?query=Razorgale%20Arisanna",
+        "result": "No matching standalone video located in the displayed channel search results. The local clip transcript remains available; the missing item is its public video URL."
+      },
+      "outcome": "No further held case resolved. Preserve all published recaps, score attributions, and existing holds. Six of twelve cases fully resolved; three score conflicts and three video gaps remain."
+    }
   }
 }
