@@ -3594,6 +3594,43 @@
       "path": "worlds-swiss-2026-round4-superior-raingoddess/sourceNote",
       "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 feature match. Casters call the players \"Superior\" and \"Rain Goddess\" (Omnidex usernames Superior and TheRainGoddess). Result per Omnidex (Superior 2-0). The casters report the game 2 ruling from the headset: a game loss for TheRainGoddess after a card was added from the graveyard under Nullifying Lantern, with the appeal failing. Card names are as called by the casters and may contain minor ASR errors; decks and mid-game plays were summarized from a sampled read of the captions and are partly uncertain. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
       "after": "Worlds 2026 Swiss Stage VOD, Round 4. Targeted caption checks confirm TheRainGoddess’s Censer/Lantern/Verdigris ownership, Superior’s Genbu finish and game-two boarding observations. The game-loss explanation and failed appeal are attributed to the casters’ judge reports at 359:49–360:08 and 363:58–364:13; no independent ruling document was reviewed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/round",
+      "before": "Round 4 (bonus recorded match): Fire Oblation CL mirror",
+      "after": "Round 4 (bonus recorded match): Fire Oblation Ciel mirror"
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/players",
+      "before": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation CL (Baleful Oblation, Feu Awakening, Incapacitate x2 in the main deck, Hasty Messenger x3, Three of Hearts, Abnegation x1, Creative Shock, Backup Charger, Turbo Charge, Angelic Channeling, Dungeon Guide, Manxome Armoire, Lost Providence, Fluffy Shopkeep, Devastating Blow)"
+        },
+        {
+          "id": "p2",
+          "name": "Guruthos",
+          "deck": "Fire Oblation CL, the Gauntlet's first seed, a comfort pick (Baleful Oblation, Creative Shock, Liminal Guide, Cremation Ritual, Angel Attendant, Angelic Channeling x2, Backup Charger, Turbo Charge, Lost Providence, Manxome Armoire, Golden Checkmate, Fluffy Shopkeep, Devastating Blow; no Hasty Messenger)"
+        }
+      ],
+      "after": [
+        {
+          "id": "p1",
+          "name": "Raylam",
+          "deck": "Fire Oblation Ciel, Mirage's Grave (Baleful Oblation, Feu Awakening, Incapacitate, Hasty Messenger, Three of Hearts)"
+        },
+        {
+          "id": "p2",
+          "name": "Guruthos",
+          "deck": "Fire Oblation Ciel, Mirage's Grave (Baleful Oblation, Feu Awakening, Abnegation, Angel Attendant, Cremation Ritual; no Hasty Messenger)"
+        }
+      ]
+    },
+    {
+      "path": "worlds-swiss-2026-round4-bonus-raylam-gerthos/sourceNote",
+      "before": "Cleaned broadcast transcript, Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match (Raylam against Guruthos; casters call them \"Rayam\" and \"Gerthos\"). The VOD shows the first game only up to a break, and the casters stop before the result of that game; they announce afterwards that Raylam won the match 2-1 (result confirmed by Omnidex). Because the winner of game 1 is not shown, no game recap is listed. What the VOD does show: an Oblation mirror where Raylam goes first with a Backup Charger, plays his main-deck Incapacitate to stop a Creative Shock and Guruthos answers with his own Backup Charger, Turbo Charge, Liminal Guide and Cremation Ritual; the casters say it is a coin flip of who draws Creative Shocks and gets the 15-cost cards first, neither player had found an Oblation by the break, and Guruthos uses Lost Providence and Manxome Armoire to dig toward the late game. Card names are as called by the casters and may contain minor ASR errors. Swiss deck attachments use the explicitly labeled Swiss lists archived by Silvie.gg, rather than the event API’s current Top 8 lists.",
+      "after": "Worlds 2026 Swiss Stage VOD, Round 4 recorded bonus match; captions reviewed at 372:47–387:06. The recording stops before game one finishes. The casters then announce Raylam’s 2–1 match win, consistent with Omnidex; this does not establish the winner of the shown game. Raylam uses Incapacitate on Creative Shock and gains repeated value from Hasty Messenger. Guruthos uses Turbo Charge and sacrifices Angel Attendant to Cremation Ritual, then later reaches level three through Dungeon Guide. Abnegation is identified in Guruthos’s hand, consistent with his one main-deck copy. Raylam also reaches level three, but the casters see neither player holding Baleful Oblation when the recording ends. Manxome Armoire recycling is discussed as a possible follow-up, not confirmed completed. Swiss attachments use Silvie.gg’s explicitly labeled Swiss lists."
     }
   ],
   "sourceFollowUp": [
@@ -3827,6 +3864,15 @@
           "363:58–364:13"
         ],
         "finding": "Targeted review corrects reversed Censer/Lantern/Verdigris ownership. Restores Enfeebling Orb and Frostbind in game-one finish. Game-two Fracturize belongs to Superior; Backup Charger was initially miscalled Thurible; 22 life refers to Guo Jia, and nine potential board damage is not a Bullfrog hit. Boots/Expel/Blanche observed without inferring quantities. Lantern makes graveyard cards norm, not elementless. Game loss and appeal confirmed as broadcast judge reports, not independent ruling evidence."
+      },
+      {
+        "matchId": "worlds-swiss-2026-round4-bonus-raylam-gerthos",
+        "file": "Worlds Swiss Stage 2026  Grand Archive TCG.txt",
+        "sha256": "8152e7fb7768918c3a384ad275837d9488bfe6b2bd2468e2106f31f0fdd65fe2",
+        "ranges": [
+          "372:47–387:06"
+        ],
+        "finding": "Reviewed complete bonus recording. No shown game outcome; retain empty games rather than infer from announced 2–1 match score. Guruthos owns observed Abnegation (one registered main copy; Raylam has two in sideboard). Angel Attendant, not a speculative Liminal Guide, is the early Cremation sacrifice. Manxome recycling is prospective; removed assertion it was used. Removed misleading Angelic Channeling x2 deck quantity (four registered)."
       }
     ],
     "unresolved": [

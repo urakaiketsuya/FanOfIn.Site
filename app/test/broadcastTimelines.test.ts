@@ -262,3 +262,13 @@ test('Worlds round four keeps graveyard hate with Arisanna and boarding evidence
   assert.match(match.games[1].beats[2].text, /norm element/);
   assert.deepEqual(match.games[1].beats[2].tags, ['ruling']);
 });
+
+test('Worlds bonus mirror does not infer a game winner from the announced match score', () => {
+  const match = find('round4-bonus-raylam-gerthos');
+  assert.deepEqual(match.games, []);
+  assert.match(match.result, /Raylam wins 2-1/);
+  assert.doesNotMatch(match.players[0].deck, /Abnegation/);
+  assert.match(match.players[1].deck, /Abnegation/);
+  assert.match(match.sourceNote, /sacrifices Angel Attendant to Cremation Ritual/);
+  assert.match(match.sourceNote, /possible follow-up, not confirmed completed/);
+});
