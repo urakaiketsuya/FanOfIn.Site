@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T16:00:00.000Z",
+  "generatedAt": "2026-10-31T17:52:33.000Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -9412,6 +9412,3159 @@
         }
       ],
       "sourceNote": "Cleaned broadcast transcript, Worlds Swiss Stage 2026 Round 8 VOD (final round of Day One Swiss). Card names/numbers are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round1-dit-boeboe",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 1 (Day 1) — 2025 World Champion in a round-one pairing",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Dit",
+          "deck": "Water Genbu Guo Jia (Fractal of Polar Depths mill-out)"
+        },
+        {
+          "id": "p2",
+          "name": "boeboe",
+          "deck": "Wind Seiryuu Guo Jia (Fatestone / Angelic Channeling main deck)"
+        }
+      ],
+      "result": "Dit wins 2-1 (game 3 awarded after a game loss to boeboe)",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "boeboe sideboards in Nullifying Lantern (turns every graveyard card to no element, so Fractal of Polar Depths mills nothing and Deluge goes offline), Psychopomp's Gale (banishes the whole graveyard) and extra Dream Fairies. The casters also expect fast-speed Fantasia removal to stay out because Dit played an unprotected Polar Depths."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters predict Dit brings in the third Unbroken Mustang, Song of Frost and the last Engulf, to answer the Lantern and the dragon combo. These are caster predictions, not a confirmed list."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Dit wins by Polar Depths mill-out",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dit opens with an early Fractal of Polar Depths and Fabled Sapphire Fatestone, milling Seaside Ringleader and Fractal of Rain on turn one. It is rare to see main-deck Fantasia removal, so the unprotected Polar Depths goes unpunished.",
+              "cards": [
+                "Fractal of Polar Depths",
+                "Seaside Ringleader",
+                "Fractal of Rain"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "boeboe has a clunky opener (three Dungeon Guides and little other Wind). They play Angelic Channeling before levelling, imbue a Windmill Engineer to show a Reclaim, and bank Fatestone of Heaven cards under Channeling for later.",
+              "cards": [
+                "Angelic Channeling",
+                "Dungeon Guide",
+                "Windmill Engineer",
+                "Fatestone of Heaven"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "boeboe levels Guo Jia quickly using Dungeon Guide banishes for quest counters, flips Seiryuu first (ten counters versus Genbu's nine), and sends an Arcane Blast to their banishment off the attack. A short judge ruling checks how Angelic Channeling's top/bottom trigger resolves.",
+              "cards": [
+                "Dungeon Guide",
+                "Angelic Channeling"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Dit plays a defensive Frostsworn Paladin game rather than going for an unsafe lethal swing, and Primordial Ritual answers the attacking Paladin in response to the dragon's attack trigger.",
+              "cards": [
+                "Frostsworn Paladin",
+                "Primordial Ritual",
+                "Song of Frost"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "boeboe plays Optical Control naming action cards, so Dit's Fugue costs four more. Auspicious Manifestation banishes Seiryuu so it returns awake at end of turn and can taunt. The line buys time but cannot beat the mill-out plan.",
+              "cards": [
+                "Optical Control",
+                "Auspicious Manifestation"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 6,
+              "actor": "p1",
+              "text": "Dit plays three Fractal of Polar Depths in a row, stacking them to mill boeboe's library (target self, self, then opponent). boeboe concedes. Naming Fantasia instead of action cards would have been the only way to catch it.",
+              "cards": [
+                "Fractal of Polar Depths"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "boeboe wins with a sideboarded lock and Arcane Blast",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "boeboe opens with an imbued Benediction Angel and Dream Fairies. The fairies stop Dit from playing Bullfrog or Frostsworn Paladin for most of the game.",
+              "cards": [
+                "Benediction Angel",
+                "Dream Fairy",
+                "Throne-Keeper Bullfrog",
+                "Frostsworn Paladin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Nullifying Lantern hits the board. All cards in graveyards become no element, so Dit's Polar Depths mill and Deluge turn off. Dit holds Unbroken Mustang to remove it.",
+              "cards": [
+                "Nullifying Lantern",
+                "Unbroken Mustang"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Dit plays both Unbroken Mustangs. boeboe answers with Stifling Trap, so the Lantern survives. Dit has no Primordial Ritual to sacrifice the Mustang and fizzle the trap.",
+              "cards": [
+                "Unbroken Mustang",
+                "Stifling Trap",
+                "Primordial Ritual"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "boeboe adds Censer of Restful Peace and then Purifying Thurible. Dit's Fracturize answers the Sensor but not the Lantern, because of layering. boeboe keeps Aella, Zephyr's Hand ready to save the Lantern, and holds Psychopomp's Gale.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Purifying Thurible",
+                "Fracturize",
+                "Aella, Zephyr's Hand",
+                "Psychopomp's Gale"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p1",
+              "text": "Dit stays alive with Song of Frost, Enfeebling Orb, Spalling Cleanse and Beastbond Boots, flips Genbu, and tries to dodge the dragon. The round timer runs low as boeboe stays patient.",
+              "cards": [
+                "Song of Frost",
+                "Enfeebling Orb",
+                "Spalling Cleanse"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 6,
+              "actor": "p2",
+              "text": "Dit negates the first dragon attack trigger with Song of Frost. boeboe uses Byakko's Command to wake the dragon so it attacks again, and then fires the stored Arcane Blast for 11 damage that Dit cannot stop.",
+              "cards": [
+                "Byakko's Command",
+                "Song of Frost"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Dit wins — game loss to boeboe for an illegal deck",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "With about three minutes left, both players agree to try game three. In the rush, boeboe shuffles the generated Arcane Blast into their deck. They call the judge themselves, but the judges rule an illegal deck and give a game loss. Dit wins the match 2-1.",
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 1 VOD. Casters call the players Dit and \"Bobo\" Taylor (omnidex username boeboe); card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round2-tlsovotl-aqua",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 2 (Day 1) — Suited debuts against Astra Arisanna",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TlsoVotl",
+          "deck": "Fire Suited (Proxy Vault Duchess's Thorns, Fiery Interference)"
+        },
+        {
+          "id": "p2",
+          "name": "Aqua",
+          "deck": "Wind Astra Arisanna (Polaris, Cosmic Bolt glimpse)"
+        }
+      ],
+      "result": "TlsoVotl wins 2-1 (game 3 won in overtime)",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "TlsoVotl is expected to bring in Infernal Vessel and Safeguard Amulet (the casters doubt Nullifying Mirror makes it, as Aqua does not imbue). In the post-match interview, TlsoVotl also names Pseudo Trickery and Mortal Ambition as side tech against champion-cleave decks such as Lorraine."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Aqua is expected to bring in extra Imperial Countermeasure and Regenerate for more healing. Aqua is on the play for game 2 because they chose after losing game 1."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "TlsoVotl wins on card advantage and a clutch Fiery Interference",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TlsoVotl wins the roll and opens with Four of Spades. Suited cards replace themselves via Cardistry, so TlsoVotl keeps eight or more cards in influence and rebuilds the board quickly after Aqua's sweeps.",
+              "cards": [
+                "Four of Spades",
+                "Two of Hearts",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Aqua levels to Arisanna 2 and sets up the Polaris plan. Herbs sacrificed by pairs draw cards and add counters to Polaris. Calming Breeze (negates up to three damage) holds off early attacks, and Polaris and Meteor Strike clear the ally board twice.",
+              "cards": [
+                "Polaris, Twinkling Cauldron",
+                "Calming Breeze",
+                "Meteor Strike",
+                "Ingredient Pouch"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "TlsoVotl lands Six of Hearts and Arthur, Young Heir for a big swing that puts Aqua's spirit low. Aqua answers with Cosmic Bolt on Arthur and Three Visits to heal.",
+              "cards": [
+                "Duchess, Six of Hearts",
+                "Arthur, Young Heir",
+                "Cosmic Bolt"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "TlsoVotl holds Fiery Interference. In response to Aqua's Serene Spirit heal, it prevents the recovery and the final attacks go through. Aqua cannot stabilize before level three.",
+              "cards": [
+                "Fiery Interference",
+                "Blazing Throw",
+                "Peppered Chef"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Aqua wins with defensive cards and Cosmic Bolts",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Aqua starts with two Calming Breezes, two Gentle Beseeches and Gentle Respite. TlsoVotl's hand has few cheap allies and uses Backup Charger to fix it.",
+              "cards": [
+                "Calming Breeze",
+                "Gentle Respite",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "TlsoVotl commits Three of Hearts, Rouge and Eight of Hearts (sacrificing allies to reduce its cost). Aqua sweeps with Polaris and then Meteor Strike (via Cosmic Astroscope and Star Calling), and holds Safeguard Amulet.",
+              "cards": [
+                "Eight of Hearts",
+                "Polaris, Twinkling Cauldron",
+                "Cosmic Astroscope",
+                "Safeguard Amulet"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Imperial Countermeasure and the Astra Sight glimpse keep Aqua alive. Two Cosmic Bolts take TlsoVotl's spirit down and Aqua closes out the game.",
+              "cards": [
+                "Imperial Countermeasure",
+                "Cosmic Bolt"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "TlsoVotl wins in overtime with Verita and Arthur",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TlsoVotl goes first and opens Four of Hearts into Arthur, Young Heir on turn two. Aqua has no Arisanna on turn one, so Polaris is two turns away.",
+              "cards": [
+                "Four of Hearts",
+                "Arthur, Young Heir",
+                "Two of Spades"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Aqua uses Angelic Channeling to put Meteor Strike on top. After a Dungeon Guide level up, Aqua wipes the board with Meteor Strike via Cosmic Astroscope, and Polaris with Calming Breeze and Stifling Gyre blunt the follow-up.",
+              "cards": [
+                "Angelic Channeling",
+                "Dungeon Guide",
+                "Meteor Strike",
+                "Stifling Gyre"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "TlsoVotl rebuilds with Verita (free by banishing suited allies from the graveyard) and The Duchess. Aqua stays alive with two Imperial Countermeasures but is down to 20 life, and the match enters overtime.",
+              "cards": [
+                "Verita, Queen of Hearts",
+                "Duchess, Six of Hearts",
+                "Imperial Countermeasure"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "TlsoVotl sequences Arthur's swing first, then attacks with Verita and the others. Aqua has only a Cosmic Bolt to answer the board and is one glimpse short of stabilizing. TlsoVotl takes the match 2-1.",
+              "cards": [
+                "Arthur, Young Heir",
+                "Cosmic Bolt"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 2 VOD, including the post-match interview. Casters call the players \"Savatol/Sevoddo\" and Aqua; the omnidex usernames are TlsoVotl and Aqua. Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round3-noel-tress",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 3 (Day 1) — Water Exia Jin mirror",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water Exia Jin (Chess Club build: Huaji of Abyssal Fall, Sunce, Looking Glass)"
+        },
+        {
+          "id": "p2",
+          "name": "Tress",
+          "deck": "Water Exia Jin (Regal mill-out build: four Regals, Dynastic Whirlpool side)"
+        }
+      ],
+      "result": "Draw — Tress wins game 1, game 2 goes to time (recorded 1-1 on omnidex)",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Tress brings in three Dynastic Whirlpool (mill 15) after Noel's deck milled with no anti-mill tech in game 1. The casters also expect Verdant Protective Trinket."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Noel brings in a fourth Regal for the mill race, more Engulfs and Crimson Rupture (Regalia removal). The casters note Noel plays no Dynastic Whirlpool, Tabula or Chime of Eternity."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Tress wins — Noel draws out of cards and cannot finish through the heals",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Both players start the long Jin mirror with Spirit of Serene Water. Noel uses Gentle Respite and Back-up Charger well and uses Dungeon Guide to hit Jin level three first.",
+              "cards": [
+                "Gentle Respite",
+                "Backup Charger",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Noel plays Regal Inquisition to strip Tress's hand, leaving only Angel cards. Tress answers with Angelic Channeling, Fractal of Waves and Quicksilver Grail to rebuild.",
+              "cards": [
+                "Regal Inquisition",
+                "Angelic Channeling",
+                "Fractal of Waves",
+                "Quicksilver Grail"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Seething Intercession finds Return to the Archive, then Enrage, Engulf and a Regal. Banished cards cannot be discarded by a Regal, so these three hits give Tress a protected advantage.",
+              "cards": [
+                "Seething Intercession",
+                "Return to the Archive",
+                "Enrage",
+                "Engulf"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Tress sets up Shade-Mist Priestess (recover one on every damage) and keeps a Regal in banishment. With four Regals, Tress changes the plan to a mill-out, and Noel has no anti-mill tech.",
+              "cards": [
+                "Shademist Priestess",
+                "Regal Inquisition"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p1",
+              "text": "Noel transforms Huaji into Huaji of Abyssal Fall and adds Sunce for big unpreventable-damage attacks. Relentless Outburst deals the damage, but Shademist Priestess recovers the triggers.",
+              "cards": [
+                "Sun Ce, Weaponsmaster",
+                "Relentless Outburst",
+                "Berserker Plate"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 6,
+              "actor": "p2",
+              "text": "Noel has already drawn out of cards. Noel goes all in at the end, but Tress shows a heal and Mend Flesh and survives. Tress wins game 1 after 38 minutes.",
+              "cards": [
+                "Mend Flesh",
+                "Fracturize"
+              ],
+              "tags": [
+                "stabilize",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "draw",
+          "summary": "Draw — time expires with both players alive",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Both players play more carefully: Noel holds Backup Charger for a level up, and Tress plays Topsy Decree to deny Noel's float. The two sides trade Angelic Channeling and Fractal Fracturize tricks to set up top-of-deck cards.",
+              "cards": [
+                "Backup Charger",
+                "Topsy Decree",
+                "Angelic Channeling",
+                "Crimson Rupture"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Tress uses Dynastic Whirlpool to mill the cards Noel put on top with Channeling: three Regals and two Engulfs go to the graveyard. This removes Noel's protection and the main way to mill Tress.",
+              "cards": [
+                "Dynastic Whirlpool",
+                "Regal Inquisition",
+                "Engulf"
+              ],
+              "tags": [
+                "swing",
+                "sideboard"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel switches to a damage plan. Shuangji, Berserker Plate, Fracturize and an Enrage push huge swings, and Tress answers with Crimson Rupture on the Shuangji plus Pearled Prayer, Regenerate and Serene Spirit.",
+              "cards": [
+                "Shuang Ji of Sacrifice",
+                "Berserker Plate",
+                "Crimson Rupture",
+                "Pearled Prayer",
+                "Enrage"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "both",
+              "text": "Tress digs for a heal using Tome of Abyssal Heaven but cannot find a second one. Time expires and the game is a draw. The casters praise Noel for playing to outs.",
+              "cards": [
+                "Tome of Abyssal Heaven"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 3 VOD, including a player intro from Noel. Casters call the players \"Gina/Gino\" (Noel) and \"Garrett\" (Tress). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round4-teamtruecaban-superior",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 4 (Day 1) — Fractals Diao Chan against Genbu",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TeamTrueCaban",
+          "deck": "Water Fractals Diao Chan (influence-denial build: four Fractal of Intrusion, Acquiescing Rejection, Topsy Decree)"
+        },
+        {
+          "id": "p2",
+          "name": "Superior",
+          "deck": "Water Genbu Guo Jia"
+        }
+      ],
+      "result": "Draw — 1-1 in games, game 3 drawn at time",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters predict Caban brings in Crystalline Mirror (to remove Safeguard Amulet), Expel the Departed against Polar Depths, Song of Frost and perhaps Delusional Vapors. These are caster predictions, not a confirmed list."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Superior brings in Expel the Departed, which Caban expected, and adds Regal Inquisition, Engulf and Beastbond Boots. Superior also chooses to play first."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Caban wins — influence denial and a Burst Asunder that Superior cannot stop",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Caban plays a Fractals list that mostly runs Fractal of Intrusion, Acquiescing Rejection and four Topsy Decrees, so Superior's float and memory are banished each turn. The goal is to keep Superior's influence too low to flip Genbu.",
+              "cards": [
+                "Fractal of Intrusion",
+                "Acquiescing Rejection",
+                "Topsy Decree"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Superior starts with imbued Fractal of Rain, then Safeguard Amulet, Tidestone Bovine and Fractal of Polar Depths. But the mills are poor and the key Polar Depths and Stratagem cards fall into the graveyard.",
+              "cards": [
+                "Fractal of Rain",
+                "Safeguard Amulet",
+                "Tidestone Bovine",
+                "Fractal of Polar Depths",
+                "Strategem of Myriad Ice"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Caban Fracturizes cards to add fractals, uses Refracting Missile to pull out Safeguard Amulet, and negates every important play with Glimmering Refusal and Acquiescing Rejection. Superior's Diamond Ribbon gives influence but cannot get a play through.",
+              "cards": [
+                "Fracturize",
+                "Refracting Missile",
+                "Glimmering Refusal",
+                "Diamond Ribbon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "With six or more fractals, Burst Asunder deals 14 or more. Superior responds with Cerulean Decree, but Caban pays and Burst Asunder resolves for lethal.",
+              "cards": [
+                "Burst Asunder",
+                "Cerulean Decree"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Superior wins — Caban's Burst Asunder is Engulfed and Superior steals the race",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Superior plays Fractal of Polar Depths on turn one, unprotected, and Expel the Departed from the side to stop Caban's Zhang Jiao turn. Caban's Sapphire Fatestone mill and Return to the Archive give Caban a good start.",
+              "cards": [
+                "Fractal of Polar Depths",
+                "Expel the Departed",
+                "Zhang Jiao, Way of Peace"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Caban tries an imbued Topsy Decree on Superior's Frostsworn Paladin trigger, but Superior has an imbued Cerulean Decree and a Title Lock. Superior comes out ahead with a 3/4 Paladin.",
+              "cards": [
+                "Topsy Decree",
+                "Cerulean Decree",
+                "Frostsworn Paladin"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Superior double-activates Fugue to threaten lethal, but Caban holds two Glimmering Refusals. Superior then rebuilds influence with Seaside Ringleader and Diamond Ribbon and levels Guo Jia.",
+              "cards": [
+                "Resonating Fugue",
+                "Glimmering Refusal",
+                "Seaside Ringleader"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Caban has Burst Asunder and six fractals (14 damage) but no third Glimmering Refusal, so Superior uses Engulf on the Burst. Caban tests the waters and learns he is out of refusals.",
+              "cards": [
+                "Burst Asunder",
+                "Engulf",
+                "Fracturize"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Superior keeps the board with Shademist Priestess and Frostsworn Paladin. A fast Refracting Missile for eight damage nearly wins for Caban, but Superior activates Genbu to survive and wins the game on Fast Cure.",
+              "cards": [
+                "Refracting Missile",
+                "Shademist Priestess",
+                "Fast Cure"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "Draw — time expires",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "With only nine minutes left, both players have to race. Superior's Shademist Priestess recovers damage, and Caban Fracturizes the Safeguard Amulet and builds fractals.",
+              "cards": [
+                "Shademist Priestess",
+                "Safeguard Amulet",
+                "Fracturize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Caban builds a lethal line in the last turns (Refracting Missile, Glimmering Refusal, extra fractals). Superior holds Engulf and Cerulean Decree. Caban plays two extra fractals to beat an Engulf plus recovery, but Superior has Engulf and Cerulean Decree instead. The game ends in a draw.",
+              "cards": [
+                "Refracting Missile",
+                "Glimmering Refusal",
+                "Engulf",
+                "Cerulean Decree"
+              ],
+              "tags": [
+                "swing"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 VOD. Casters call TeamTrueCaban \"Caban/Kaiba\". Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 4 (Day 1) — Both players 3-0; level-three Diao Chan (Full Bloom) against Aetherwing Diana",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Shuteemdown",
+          "deck": "Water Tera Diao Chan (level 3 Wither plan, Full Bloom, Shademist Priestess)"
+        },
+        {
+          "id": "p2",
+          "name": "Zetdivx",
+          "deck": "Water Aetherwing Diana (Take Aim, Aquamirage Whisper, Nimble Longbowman)"
+        }
+      ],
+      "result": "Zetdivx wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Shuteemdown looks at Dynastic Whirlpool, Regal Inquisition, Viridian Protective Trinket, Engulf, Song of Frost and Shademist Priestess. The casters expect Trinket, Engulf, Song of Frost and Aetheric Reforging to come in."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Zetdivx is expected to bring four Expel the Departed against the Fantasia plan, which is later confirmed when one is played."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Zetdivx wins — Frozen Dismissal forces Shuteemdown hands-down, then Take Aim for 11",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Shuteemdown has two Acquiescing Rejections early. Zetdivx lets them resolve (giving four cards) because he needs to become distant with Undercurrent Vantage, then plays Prudent Nock and Aquamirage Whisper for the first swing.",
+              "cards": [
+                "Acquiescing Rejection",
+                "Undercurrent Vantage",
+                "Prudent Nock",
+                "Aquamirage Whisper"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Zetdivx removes Shademist Priestess with Charge the Soul and uses Aetheric Reforging to banish the float, slowing Diao Chan's level up. Art of War and Fractal of Polar Depths fill out the board.",
+              "cards": [
+                "Charge the Soul",
+                "Aetheric Reforging",
+                "Art of War",
+                "Shademist Priestess"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Shuteemdown reaches Diao Chan level three with Dungeon Guide. Zetdivx answers with Frozen Dismissal and Mana Resonance. Shuteemdown pays four, but everything gets Wither counters and the Wither tax strips the rest of the hand.",
+              "cards": [
+                "Dungeon Guide",
+                "Frozen Dismissal",
+                "Mana Resonance"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "With no Song of Frost, Zetdivx's Take Aim (11 damage, from distant Diana plus the Mirage Whisper) closes out the game.",
+              "cards": [
+                "Take Aim"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Zetdivx wins — plays around Engulf, then Krustallan Archer and Nimble Longbowman close it",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Shuteemdown materializes Viridian Protective Trinket and Engulfs Undercurrent Vantage so Zetdivx cannot become distant. Zetdivx had kept enough other distant enablers to push through.",
+              "cards": [
+                "Viridian Protective Trinket",
+                "Engulf",
+                "Undercurrent Vantage"
+              ],
+              "tags": [
+                "swing",
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Aether Calibration finds Weaving Manastream, and Krustallan Archer plus Diana's glimpse keep the damage flowing. Zetdivx passes up an immediate dive because Diana players tax the opponent first.",
+              "cards": [
+                "Aetheric Calibration",
+                "Weaving Manastream",
+                "Krustallan Archer"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Shuteemdown materializes Crystalline Mirror and tries Fractal of Waves and Even-tide Lure, but Expel the Departed from Zetdivx's side answers the Fantasia.",
+              "cards": [
+                "Crystalline Mirror",
+                "Fractal of Waves",
+                "Expel the Departed"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Zetdivx fractures Ranger Strides in response to hand-down plays, then plays Nimble Longbowman (distant) and Krustallan Archer for lethal.",
+              "cards": [
+                "Nimble Longbowman",
+                "Krustallan Archer"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 4 (backup match) VOD. Casters call the players \"Shut Him Down\" and \"Z/Zet DeVex\"; the omnidex usernames are Shuteemdown and Zetdivx. Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round5-jett-longn",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 5 (Day 1) — Razorgale Arisanna against Genbu, both players chasing a Gauntlet-range record",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Jett",
+          "deck": "Razorgale Arisanna (Essence Crucible, Aesan Protector, Bandit, Gaze Leader)"
+        },
+        {
+          "id": "p2",
+          "name": "LongN",
+          "deck": "Water Genbu Guo Jia (Fractal of Polar Depths, Dream Fairy, Windmill Engineer)"
+        }
+      ],
+      "result": "Jett wins 2-0 (game 2 awarded after a judge ruling against LongN)",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "The casters expect LongN to side in Song of Frost, Excalibur, Unbroken Mustang, Beastbond Boots and Expel the Departed. They say Song of Frost can stop the Razorgale damage stack if Essence Crucible is not on the field."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Jett wins with stacked Razorgale damage",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "LongN has a smooth start: imbued Fractal of Rain, a level up to Guo Jia, Tidestone Bovine and Seaside Ringleader, plus mills that fill the graveyard for Fractal of Polar Depths.",
+              "cards": [
+                "Fractal of Rain",
+                "Tidestone Bovine",
+                "Seaside Ringleader",
+                "Fractal of Polar Depths"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jett builds a large hand with Windmill Engineer and a Bandit, Gaze Leader that eats floating memory. Razorgale Calling and Essence Crucible deal repeated damage. LongN's Dream Fairy and Censer of Restful Peace slow Jett down, but cannot stop the grind.",
+              "cards": [
+                "Windmill Engineer",
+                "Essence Crucible",
+                "Dream Fairy",
+                "Censer of Restful Peace"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jett plays Essence Crucible and stacks Razorgale triggers so that LongN cannot respond with one answer. Aesan Protector holds back LongN's attack. The Genbu player cannot flip the Fatestone in time, and Jett wins game 1.",
+              "cards": [
+                "Essence Crucible",
+                "Aesan Protector"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jett wins — game loss given to LongN after a judge call",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Both players play a long, grinding game. LongN sets up Fractal of Polar Depths and Conniving Plans, and Jett responds with Purifying Thurible, Essence Crucible and Razorgale Calling pressure.",
+              "cards": [
+                "Fractal of Polar Depths",
+                "Conniving Plans",
+                "Purifying Thurible",
+                "Essence Crucible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "A judge reviews an error by the Genbu player. The judge decision is a game loss for LongN, which gives Jett the game and the match. Jett ends Day 1 round 5 at 5-0.",
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 5 VOD. This transcript is partly garbled (some caption lines are out of order or missing), so these beats are limited to what is legible. Casters call the Razorgale player \"Ali\" (omnidex username Jett) and the Genbu player \"Long\" (LongN). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round6-celednb-quakems",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 6 (Day 1) — Aetherwing Diana mirror: beatdown build against Astra build",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Celednb",
+          "deck": "Water Aetherwing Diana (beatdown: Krustallan Archer, Take Aim, Cheshire Cat, Palvor Sword)"
+        },
+        {
+          "id": "p2",
+          "name": "Quakems",
+          "deck": "Water Astra Aetherwing Diana (Cosmic Focus glimpse combo, Angelic Channeling)"
+        }
+      ],
+      "result": "Quakems wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Celednb brings in Topsy Decree and Unbroken Mustang to remove the Aquamirage Whisper before it gains value. The casters also see Palvor Sword and Snow White as options."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Quakems brings in Dissuading Aether (gives an attack -3, so Diana's hit trigger stays off), Engulf and possibly Shademist Priestess. Quakems says later that Lake of Grieving Chill is a fifth Fracturize for Censer of Restful Peace."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Quakems wins — Celednb concedes to the Astra setup",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Quakems opens with Backstep, then Aquamirage Whisper and Diana level one. Tactical Retreat ends combat to deny Celednb the hit trigger, and Quakems keeps three or more float in the graveyard for a free level three.",
+              "cards": [
+                "Backstep",
+                "Aquamirage Whisper",
+                "Tactical Retreat",
+                "Weaving Manastream"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "At level three, Quakems glimpses huge amounts of the deck and sets up Cosmic Focus and Cometary Vantage for the next turn. A Teardrop Diadem threatens a draw-three, with Celednb on the back foot and without Cheshire Cat or Mad Hatter.",
+              "cards": [
+                "Cosmic Focus",
+                "Cometary Vantage",
+                "Teardrop Diadem"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Celednb sees the board and scoops to get to game three, since a water mirror game that is losing cannot be won."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Celednb wins — Krustallan Archer pressure and a Frostbind on Dungeon Guide",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Celednb's list now has Topsy Decree and Unbroken Mustang to take out the Whisper. Aether Calibration and Charge the Soul set up a Weaving Manastream, and Krustallan Archer eats the float for repeated hits.",
+              "cards": [
+                "Topsy Decree",
+                "Unbroken Mustang",
+                "Krustallan Archer",
+                "Weaving Manastream"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Quakems uses Dissuading Aether to give the attack -3, but Celednb adds Take Aim to push the damage anyway. Quakems channels Cosmic Focus, Cometary Vantage and Constellation's Blessing to the top.",
+              "cards": [
+                "Dissuading Aether",
+                "Take Aim",
+                "Angelic Channeling",
+                "Cosmic Focus"
+              ],
+              "tags": [
+                "sideboard",
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Quakems tries Dungeon Guide to hit level three for a seven-damage glimpse-eight swing. Celednb has Frostbind and negates Dungeon Guide. Quakems cannot keep up with the damage and scoops.",
+              "cards": [
+                "Dungeon Guide",
+                "Frostbind"
+              ],
+              "tags": [
+                "swing",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Quakems wins — Cosmic Focus swing one damage short of the point of defeat",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Quakems goes first and passes. Celednb uses Palvor Sword to banish the graveyard, which denies Quakems the free Teardrop Diadem turn, but Quakems is at 25 life with only five damage counters.",
+              "cards": [
+                "Palvor Sword",
+                "Teardrop Diadem"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Quakems sets up Stellar Cosmos and two Cosmic Focuses (stacked two cards apart). Flash Grenade, Refreshing Charge and Diana's negate-unless-two ability absorb Celednb's Archer attacks.",
+              "cards": [
+                "Stellar Cosmos",
+                "Cosmic Focus",
+                "Flash Grenade",
+                "Refreshing Charge",
+                "Lost Providence"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Celednb goes all in with Ranger Strides, three Krustallan Archers and a Charge the Soul. The math is one damage short, and Quakems survives at two life.",
+              "cards": [
+                "Ranger Strides",
+                "Krustallan Archer",
+                "Charge the Soul"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Quakems glimpses into Cometary Vantage and swings with Cosmic Focus for lethal. Celednb has no Frostbind this time.",
+              "cards": [
+                "Cometary Vantage",
+                "Cosmic Focus"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 6 VOD, including a post-match interview with Quakems. Casters call the players \"Celad/Seled NB\" (the Weiss Schwarz world champion, omnidex username Celednb) and \"Quums\" (Quakems). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round7-anjuhro-hyouka",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 7 (Day 1) — Off-meta combo matchup: Umbra Tristan against Arcane Rai",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Anjuhro",
+          "deck": "Wind Umbra Tristan (Stifling Trap, Hexbound Blade, Shadow's Claw, Heavenly Guide)"
+        },
+        {
+          "id": "p2",
+          "name": "Hyouka",
+          "deck": "Wind Arcane Rai (Careful Study, Tome of Sacred Lightning, Ionized Asceticism)"
+        }
+      ],
+      "result": "Hyouka wins 2-0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Hyouka wins — a chained draw turn at level three",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Both players start slowly. Hyouka imbues Windmill Engineer and sets up an Arcane Elemental plan. Anjuhro answers Dungeon Guide twice with Stifling Trap and uses Beseech of the Winds and Purifying Thurible to deny the Reclaim value.",
+              "cards": [
+                "Windmill Engineer",
+                "Dungeon Guide",
+                "Stifling Trap",
+                "Beseech the Winds",
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Hyouka reaches Rai level two and then level three. Lost Providence, Tome of Sacred Lightning and chained Careful Study / Scry the Skies draws rebuild a huge hand from a five-card start.",
+              "cards": [
+                "Lost Providence",
+                "Careful Study",
+                "Scry the Skies",
+                "Tome of Sacred Lightning"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Arcane Elemental and Disorienting Winds return the elemental to hand to attack again. Anjuhro cannot keep up, and Hyouka wins game 1 without losing influence.",
+              "cards": [
+                "Arcane Elemental",
+                "Disorienting Winds"
+              ],
+              "tags": [
+                "swing",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Hyouka wins — Ionized Asceticism and Arcane Blasts through the only Abnegation",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Anjuhro sideboards in answers and goes wide: Tariff Ring, Shadow's Claw, Shadow Dancer and Dungeon Guides to level up. The casters call out that Anjuhro knows Hyouka's hand from the earlier game.",
+              "cards": [
+                "Tariff Ring",
+                "Shadow's Claw",
+                "Heavenly Guide"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Hyouka uses Surveil the Winds, Scry the Skies and Tome of Sacred Lightning to stack the top of the deck. Aella (Zephyr's Hand) and Tariff Ring from Anjuhro threaten to disrupt, and Anjuhro holds Abnegation for protection.",
+              "cards": [
+                "Surveil the Winds",
+                "Scry the Skies",
+                "Aella, Zephyr's Hand",
+                "Abnegation"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Hyouka plays Ionized Asceticism (draw seven, banish everything, lose levels) and Advent-style banish effects. Each Arcane card banished adds Arcane Blast damage, and Shattering Discharge finishes. Anjuhro's lone Abnegation is already used, so the lethal swing resolves.",
+              "cards": [
+                "Ionized Asceticism",
+                "Shattering Discharge",
+                "Abnegation"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 7 VOD, including a post-match interview with Hyouka. This transcript is partly garbled (caption lines are interleaved), so beats are limited to what is legible. Casters call the players \"Andro/Andreo\" (Anjuhro) and \"Hyoka\" (Hyouka); \"Ry\" is Rai. Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round8-zorr-hessu",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 8 (Day 1) — both players 6-1 and already through to Day 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zorr",
+          "deck": "Water Genbu Guo Jia (Fractal of Polar Depths mill, Strategem, Unbroken Mustang)"
+        },
+        {
+          "id": "p2",
+          "name": "Hessu",
+          "deck": "Fire Silvie slimes (Storm Slime, Ethereal Slime, Creative Shock, Nullifying Lantern main)"
+        }
+      ],
+      "result": "Hessu wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters predict Zorr brings in the last Unbroken Mustang, Orb of Sealing (to turn banished slimes face down so Storm Slime hits less), Beastbond Boots and Excalibur."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Hessu's side includes Viridian Protective Trinket and Intensified Pyre. Hessu says in the interview that he plays Nullifying Lantern and Viridian Protective Trinket because they are strong in general, not only against Genbu."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Hessu wins — Ethereal Slimes beat Genbu before it can flip",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Hessu opens with Gentle Respite, levels Silvie and uses Blissful Calling to find Baby Gray Slime. Baby Red Slime kills Zorr's Tidestone Bovine with Silvie's level-one buff counter.",
+              "cards": [
+                "Gentle Respite",
+                "Blissful Calling",
+                "Baby Gray Slime",
+                "Baby Red Slime"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zorr gets a fast start with Fractal Polar Depths, Bovine and several floating memory cards, with six quest counters early. After the Bovines die, Zorr stays near Genbu's flip but is repeatedly short of counters.",
+              "cards": [
+                "Fractal of Polar Depths",
+                "Tidestone Bovine",
+                "Conniving Plans"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Hessu goes to level two, plays Ethereal Slime and Lustrous Slime (play two for each), and clears Frostsworn Paladin. Zorr's Primordial Ritual leaves him unable to hold Title Lock, and slimes flood the board.",
+              "cards": [
+                "Ethereal Slime",
+                "Lustrous Slime",
+                "Frostsworn Paladin",
+                "Primordial Ritual"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Hessu's main-deck Nullifying Lantern blanks the Polar Depths and Strategem combo. Zorr removes it with Unbroken Mustang and flips Genbu at level three, but does not activate Genbu on the first attack, and Hessu uses Slime Eruption (a skill, not a spell) to kill it.",
+              "cards": [
+                "Nullifying Lantern",
+                "Unbroken Mustang",
+                "Slime Eruption"
+              ],
+              "tags": [
+                "swing",
+                "ruling"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "With Genbu dead, Hessu swings with Baby Red and Ethereal Slime for lethal.",
+              "cards": [
+                "Baby Red Slime",
+                "Ethereal Slime"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Hessu wins with double Storm Slime",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Hessu opens with Blissful Calling again. Zorr's Orb of Sealing is a side card meant to limit banished slimes, and the casters track all four Storm Slimes (two in Hessu's hand).",
+              "cards": [
+                "Blissful Calling",
+                "Orb of Sealing",
+                "Storm Slime"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zorr fights for the board with Seaside Ringleader and Primordial Ritual, and plays Frostsworn Paladin. But Hessu's Ghastly Slime, Baby Silver Slime and Ethereal Slime keep the board wide.",
+              "cards": [
+                "Seaside Ringleader",
+                "Primordial Ritual",
+                "Frostsworn Paladin",
+                "Ghastly Slime",
+                "Baby Silver Slime"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Hessu plays Nullifying Lantern and Viridian Protective Trinket against Zorr's graveyard plan, a regalia lock. Zorr uses Unbroken Mustang on the Lantern and Safeguard Amulet, but a Spalling Cleanse is not enough.",
+              "cards": [
+                "Nullifying Lantern",
+                "Viridian Protective Trinket",
+                "Unbroken Mustang",
+                "Safeguard Amulet",
+                "Spalling Cleanse"
+              ],
+              "tags": [
+                "swing",
+                "sideboard"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Hessu sacrifices Horn of Beastcalling to play Storm Slime for free, and then a second Storm Slime. With five or more slimes banished, both hit for lethal through Genbu's spell protection.",
+              "cards": [
+                "Horn of Beastcalling",
+                "Storm Slime"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 8 VOD, including a post-match interview with Hessu. Casters call the Genbu player \"Zor\" (omnidex username Zorr) and Hessu \"Jesus/Hazu\". Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day1-round9-likebailey-vernosius",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 9 (final round, Day 1) — win-and-in for Day 2",
+      "players": [
+        {
+          "id": "p1",
+          "name": "likeBAILEY",
+          "deck": "Razorgale Arisanna (Essence Crucible, Protector Raccoon / Bandit Gaze Leader package)"
+        },
+        {
+          "id": "p2",
+          "name": "Vernosius",
+          "deck": "Water Luxem Zander (Zander Deft Executioner, Lightweaver's Assault, Striking Illuminance)"
+        }
+      ],
+      "result": "likeBAILEY wins 2-1 and reaches Day 2",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Bailey's sideboard has 12 unique main-deck cards and no material-deck cards. The casters expect more Scatter Essence, Purifying Thurible, Topsy Decree, Stifling Gyre and Verdigris Decree against the level-three deck."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Vernosius is expected to add the fourth Engulf and Blanch (holds Razorgale down). He has no real answer to the raccoons other than Engulf or hoping Bailey does not draw one."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Bailey wins — turn-one Protector Raccoon, then Essence Crucible",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Bailey plays Protector Raccoon on turn one, banishing Vernosius's Gentle Respite from the graveyard. Raccoon, Bandit and a reclaim eat floating memory repeatedly and the Luxem deck cannot build influence on its way to level three.",
+              "cards": [
+                "Protector Raccoon",
+                "Bandit, Gaze Leader",
+                "Gentle Respite"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Vernosius is forced to Fracturize his own and Bailey's Power Cell for float, banish cards at random for Zander, and has to level with few cards. Fractal of Waves and Verdigris Decree are all he can find.",
+              "cards": [
+                "Fracturize",
+                "Zander, Deft Executor",
+                "Fractal of Waves",
+                "Verdigris Decree"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Bailey levels to Arisanna, plays two Razorgales, then Essence Crucible. A Speed Potion brewed after the second Razorgale deals big damage with each trigger, and Bailey wins with the potion plus Windmill Engineer.",
+              "cards": [
+                "Essence Crucible",
+                "Razorgale Calling",
+                "Speed Potion",
+                "Windmill Engineer"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Vernosius wins — Striking Illuminance with Incap lethal while Bailey stays on Spirit",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Vernosius goes first and plays Gentle Respite without punishment. Bailey has no raccoon on turn one, only a Razorgale start and Backup Charger.",
+              "cards": [
+                "Gentle Respite",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Bandit scavenges and eats the graveyard again, but Vernosius uses a pair of Exploit Vulnerability to return Zander's card. He hits level three with Dungeon Guide and then Lost Providence, with Zander Blinding Steel in play.",
+              "cards": [
+                "Bandit, Gaze Leader",
+                "Exploit Vulnerability",
+                "Dungeon Guide",
+                "Lost Providence"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Vernosius plays Striking Illuminance with Lightweaver's Assault, and Incap on Bailey's Skirting Step. Bailey is still on Spirit of Wind and takes lethal. The casters say Bailey waited too long to level.",
+              "cards": [
+                "Striking Illuminance",
+                "Lightweaver's Assault",
+                "Skirting Step",
+                "Incapacitate"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Bailey wins — Essence Crucible with Agility Three after Vernosius's Shroud in Mist is illegal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Bailey opens with Bandit and Purifying Thurible, then builds a wide board with Protector Raccoon, a second raccoon and Viridian Protective Trinket. The raccoons make Vernosius's Gentle Respite and channelling bad.",
+              "cards": [
+                "Bandit, Gaze Leader",
+                "Purifying Thurible",
+                "Protector Raccoon",
+                "Viridian Protective Trinket"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Vernosius lands Dungeon Guide with no Stifling Trap. Double Gleaming Cut and Channelling combos restore his influence. He plays Blanch, but Bailey's raccoon board threatens it. Shroud in Mist cannot be paid because of the Trinket's extra cost, and a judge fixes the illegal play.",
+              "cards": [
+                "Dungeon Guide",
+                "Gleaming Cut",
+                "Blanche, Sheltering Saint",
+                "Shroud in Mist"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Bailey reaches Arisanna, plays Razorgale Calling at a reduced price and then Essence Crucible. A Speed Potion, Fairy Whispers and Agility Three give the three wind activations needed, and Bailey wins the match for a 6-3 start to Day 2.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Speed Potion"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 9 VOD, including a post-match interview with Bailey. Casters call the players \"Bailey\" (likeBAILEY) and \"Vern\" (Vernosius). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day2-round10-superior-asuna",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 10 (Day 2, Round 1) — Genbu master against Razorgale Arisanna",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Superior",
+          "deck": "Water Genbu Guo Jia (London-winning list, Diamond Ribbon package, Shademist Priestess)"
+        },
+        {
+          "id": "p2",
+          "name": "Asuna",
+          "deck": "Razorgale Arisanna (Essence Crucible, Stifling Gyre, Obscured Offering, Censer of Restful Peace)"
+        }
+      ],
+      "result": "Superior wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Asuna brings in two Ensnaring Fumes, Scatter Essence and Blessed Clergy, and the casters also suggest Dream Fairy. Asuna's main deck already has two Obscured Offering and two Innervate Agility."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Superior brings in Beastbond Boots, Expel the Departed, an Engulf and the second Excalibur, Cleansing Light, as the only answer to Essence Crucible. These are caster predictions, partly confirmed by the cards that appear in play."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Superior wins on Guo Jia level one — a 31-damage Genbu attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Asuna plays a turn-one Razorgale Calling and Essence Crucible, then Stifling Gyre naming Frostsworn Paladin and an early Censer of Restful Peace.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Stifling Gyre",
+                "Censer of Restful Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Superior has two Fractal of Polar Depths in hand. Fractal of Rain and Tidestone Bovine fill the graveyard, and Safeguard Amulet buys a turn while Guo Jia stays at level one.",
+              "cards": [
+                "Fractal of Rain",
+                "Tidestone Bovine",
+                "Fractal of Polar Depths",
+                "Safeguard Amulet"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Superior flips Genbu on turn three with six quest counters from the Bovine and Fabled Sapphire Fatestone. Resonating Fugue swaps life and power so Genbu is huge (with nine or more water cards, then 31 damage). Asuna has no Veiling Breeze in hand after the Gyre and Razorgale plays, and loses.",
+              "cards": [
+                "Resonating Fugue",
+                "Fabled Sapphire Fatestone",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Asuna wins — Essence Crucible under Quicksilver Grail, then a Tempest Downfall for 11",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Superior has Expel the Departed and Engulf from the sideboard. Unbroken Mustang kills the Censer of Restful Peace, and Superior mills Seaside Ringleader and a second Excalibur, so the answers to Essence Crucible leave his deck.",
+              "cards": [
+                "Unbroken Mustang",
+                "Excalibur, Cleansing Light",
+                "Seaside Ringleader"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Asuna puts Essence Crucible under Quicksilver Grail, which allows a quick surprise Crucible. Purifying Thurible clears Superior's graveyard to deny the Ringleader mill, and Scatter Essence handles Fractal of Rain.",
+              "cards": [
+                "Quicksilver Grail",
+                "Essence Crucible",
+                "Purifying Thurible",
+                "Scatter Essence"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Both players are patient. Superior waits with Engulf, Expel the Departed and Fracturize but never gets to flip Genbu for lethal.",
+              "cards": [
+                "Engulf",
+                "Expel the Departed",
+                "Fracturize"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Asuna brews a Speed Potion with Essence Crucible, protected by two Obscured Offerings. Agility Three returns cards from memory, and Three Visits plus Tempest Downfall deal 11 damage to Guo Jia.",
+              "cards": [
+                "Speed Potion",
+                "Obscured Offering",
+                "Tempest Downfall",
+                "Three Visits"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Superior wins — Infeebling Orb strips Asuna's hand, then a double Fugue",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Asuna opens with Razorgale Calling again and uses Zephyr to kill Superior's Censer of Restful Peace answer. Superior has Unbroken Mustang and Primordial Ritual in hand.",
+              "cards": [
+                "Razorgale Calling",
+                "Zephyr",
+                "Unbroken Mustang",
+                "Primordial Ritual"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Asuna again sets up Essence Crucible with Quicksilver Grail. Superior plays Enfeebling Orb to tax Asuna's hand to four cards, which turns off Ensnaring Fumes.",
+              "cards": [
+                "Quicksilver Grail",
+                "Essence Crucible",
+                "Enfeebling Orb",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Superior levels to Guo Jia level two, flips Genbu (16 life) and plays Resonating Fugue. Asuna cannot find the extra card for Innervate Agility, and Superior Engulfs the Innervate. Genbu's swing is lethal.",
+              "cards": [
+                "Resonating Fugue",
+                "Engulf",
+                "Innervate Agility"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 10 VOD, including a player intro and a post-match interview with Superior. Casters call the Razorgale player \"Asa\" (omnidex username Asuna). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 11 (Day 2, Round 2) — Fire Suzaku against Wind Crux Lorraine, both 8-2 and chasing Top 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Tacoboss",
+          "deck": "Fire Suzaku Guo Jia (Avatar of Suzaku, Peppered Chef, no Liminal Guide)"
+        },
+        {
+          "id": "p2",
+          "name": "TeppeSlorn",
+          "deck": "Wind Crux Lorraine (Aella, Zephyr, Poisonous Breezecap, Clarent)"
+        }
+      ],
+      "result": "Tacoboss wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "TeppeSlorn has two Calming Breezes and Tempestuous Seraphim (a fast ally that deals four damage to an attacking ally) in the sideboard. The casters say the list was not built for a Suzaku deck."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Tacoboss looks at Sparklite (unpreventable damage, a way through Clarent), Gilded Pyre, Intensified Pyre, Restorative Flame and Shatter the Brittle. Sparklite is expected to come in. The Avatar of Suzaku is first seen in game 3."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Tacoboss wins — fast Suzaku flip and a 12-damage Suzaku's Command",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Tacoboss levels Guo Jia into Fabled Ruby Fatestone. Intensified Pyre, Vermilion Decree (two targets, two quest counters) and Impact Hammer build quest counters fast. TeppeSlorn pops Clarent to stop the Fatestone and Impact Hammer damage.",
+              "cards": [
+                "Fabled Ruby Fatestone",
+                "Intensified Pyre",
+                "Vermilion Decree",
+                "Impact Hammer",
+                "Clarent, Sword of Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "TeppeSlorn plays only value cards: Poisonous Breezecap, Jiang Xiao, Stifling Gyre, Purifying Thurible, which eats the graveyard but the Phoenix does not need the graveyard on its first flip. TeppeSlorn has no Calming Breeze and only two Veiling Breezes in the main.",
+              "cards": [
+                "Poisonous Breezecap",
+                "Zhang Jiao, Way of Peace",
+                "Stifling Gyre",
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Blazing Throw adds the last quest counters, Suzaku flips, and Suzaku's Command adds eight unpreventable damage for a 12-damage swing that ends the game.",
+              "cards": [
+                "Blazing Throw",
+                "Suzaku's Command"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "TeppeSlorn wins — Clarent and Numinous Monks stall Suzaku, then Pale Sword sweeps the graveyard",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "TeppeSlorn plays Stifling Gyre on Peppered Chef, and the Thurible turns up early. Clarent is used carefully this time, not wasted on small hits.",
+              "cards": [
+                "Stifling Gyre",
+                "Peppered Chef",
+                "Purifying Thurible",
+                "Clarent, Sword of Peace"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "At 17 of 20 damage counters, TeppeSlorn finds Dungeon Guide and hits level three, then a Palvor Sword to remove the fire graveyard. Two Numinous Monks and Angelic Channeling to the bottom of the deck set up life and defense.",
+              "cards": [
+                "Dungeon Guide",
+                "Palvor Sword",
+                "Numinous Monk",
+                "Angelic Channeling"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Clarent absorbs the Suzaku trigger (both champions take two less), so Tacoboss cannot gain quest counters. At 16 life he cannot swing the Impact Hammer for the extra two, and concedes.",
+              "cards": [
+                "Clarent, Sword of Peace",
+                "Impact Hammer"
+              ],
+              "tags": [
+                "stabilize",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Tacoboss wins — full Peppered Chef combo for 24",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Tacoboss wins the roll and plays Avatar of Suzaku. At 4-3 it swings each turn, and paying two to sacrifice it adds quest counters and can put Fabled Ruby Fatestone back from the material deck or banishment. Fluffy Shopkeep prevents four damage.",
+              "cards": [
+                "Avatar of Suzaku",
+                "Fabled Ruby Fatestone",
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "TeppeSlorn levels with Dungeon Guide and swings into the Avatar, which Tacoboss sacrifices for two quest counters. TeppeSlorn spends a turn on Clarent rather than Thurible, and Enfeebling Orb and Tangu only slow the combo.",
+              "cards": [
+                "Dungeon Guide",
+                "Clarent, Sword of Peace",
+                "Enfeebling Orb"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "At six quest counters, a fate-stone ping and Demolition give the seventh. Tacoboss flips Vermillion Phoenix (4 damage), plays Suzaku's Command first (another four, unblockable) so the sixth fire card is in the graveyard, then Peppered Chef for 16. That is 24 damage.",
+              "cards": [
+                "Suzaku's Command",
+                "Peppered Chef",
+                "Demolition"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 11 VOD, including a post-match interview with Tacoboss. Casters call the players \"Taco Boss\" and \"Tempest/Tepe/Teepe Sorn\" (TeppeSlorn). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day2-round12-tlux-superior",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 12 (Day 2, Round 3) — Seiryuu against Genbu, Superior chasing a Top 8 seat",
+      "players": [
+        {
+          "id": "p1",
+          "name": "TLux",
+          "deck": "Wind Seiryuu Guo Jia (Fatestone of Heaven, Uther, Angelic Channeling, Aella)"
+        },
+        {
+          "id": "p2",
+          "name": "Superior",
+          "deck": "Water Genbu Guo Jia (Diamond Ribbon package, Resonating Fugue)"
+        }
+      ],
+      "result": "Superior wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "TLux brings in Nullifying Lantern, four Expel the Departed, two Psychopomp's Gale, Unbroken Mustang, Song of Frost and perhaps Regal Inquisition. The casters call nearly the whole sideboard relevant."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Superior's side has Beastbond Boots, Orb of Sealing and the second Excalibur. Nothing major is confirmed as swapped."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Superior wins — TLux misses a Fatestone trigger and cannot recover",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TLux wins the roll and plays an ally beatdown start: Forest Cake, Windmill Engineer, Aesan Protector and Purifying Thurible to deny Gentle Respite. Superior answers with Frostsworn Paladin and Fractal of Rain.",
+              "cards": [
+                "Forest Cake",
+                "Windmill Engineer",
+                "Purifying Thurible",
+                "Frostsworn Paladin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "TLux plays Censer of Restful Peace and Angelic Channeling (Aella, Uther and Seiryuu's Command to the top), with a flip of the dragon possible next turn.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Angelic Channeling",
+                "Aella, Zephyr's Hand",
+                "Uther, Illustrious King",
+                "Seiryuu's Command"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Superior plays Unbroken Mustang and then Primordial Ritual to sacrifice it, which targets TLux and mills Aella and Uther off the top before they can be drawn. TLux also misses a trigger and has to recover three, which is a big swing.",
+              "cards": [
+                "Unbroken Mustang",
+                "Primordial Ritual",
+                "Aella, Zephyr's Hand",
+                "Uther, Illustrious King"
+              ],
+              "tags": [
+                "swing",
+                "ruling"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Superior levels to Guo Jia 2, flips Genbu and plays Resonating Fugue, then Frostsworn Paladin and an attack for lethal, with Engulf held up. TLux concedes.",
+              "cards": [
+                "Resonating Fugue",
+                "Engulf",
+                "Frostsworn Paladin"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Superior wins — Genbu swings for 27 through a Psychopomp's Gale",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TLux plays Nullifying Lantern, Expel the Departed on Fractal of Rain, and a Dream Fairy. TLux keeps the dragon unflipped and builds influence with Incandescent Reliquary, using the Fatestone of Heaven to clear Frostsworn Paladin.",
+              "cards": [
+                "Nullifying Lantern",
+                "Expel the Departed",
+                "Dream Fairy",
+                "Fatestone of Heaven",
+                "Incandescent Reliquary"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Superior removes the Lantern with Unbroken Mustang, plays Tidestone Bovine, Throne-keeper Bullfrog and Diamond Ribbon, and mills his own graveyard to 14 water cards. TLux's two Enfeebling Orbs keep the pressure on Superior's hand.",
+              "cards": [
+                "Unbroken Mustang",
+                "Tidestone Bovine",
+                "Throne-Keeper Bullfrog",
+                "Diamond Ribbon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Superior goes to level three and flips Genbu. TLux plays Psychopomp's Gale, but Superior Engulfs it. Pop the Enfeebling Orb forces Superior to put two more cards down, and Veiling Breeze only prevents four. Genbu swings for 27 and Superior is 8-0-4.",
+              "cards": [
+                "Psychopomp's Gale",
+                "Engulf",
+                "Enfeebling Orb",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 12 VOD, including a post-match interview with Superior. Casters call the Seiryuu player \"Tony/Tux\" (omnidex username TLux). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 13 (final Swiss round, Day 2) — Seiryuu against Genbu, a Top 8 race",
+      "players": [
+        {
+          "id": "p1",
+          "name": "ChemCollapse",
+          "deck": "Wind Seiryuu Guo Jia (turbo list: Angelic Channeling, Royal Oathguard, Imperial Countermeasure, Tricastles of Lucenia)"
+        },
+        {
+          "id": "p2",
+          "name": "mDuo13",
+          "deck": "Water Genbu Guo Jia (Song of Frost, Fractal of Polar Depths, Quicksilver Grail)"
+        }
+      ],
+      "result": "ChemCollapse wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "ChemCollapse has a large anti-Genbu side: Tricastles of Lucenia, two Sasha, Purifying Acolyte (banishes every graveyard when it fosters), Scatter Essence, Noble Dissolution, Blanch, Topsy Decree, Tempestuous Seraphim and Sunblessed Gazelle. The casters argue for nearly all of them, and Sasha and Tariff Ring are seen in game 2."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "mDuo13 looks at Regal Inquisition, a fourth Song of Frost and Submerged Fatestone (a Genbu mirror card, not relevant here). Tariff Ring is seen in play."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "ChemCollapse wins — Regal Inquisition clears Song of Frost, then Seiryuu's Command",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "ChemCollapse goes first and turbos: Forest Cake, then Angelic Channeling banishing three advanced-element cards for three quest counters. Guo Jia reaches level three on the third turn.",
+              "cards": [
+                "Forest Cake",
+                "Angelic Channeling",
+                "Dungeon Guide",
+                "Lost Providence"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "mDuo13 holds Throne-keeper Bullfrog as a taunter, plays Fractal of Polar Depths and uses Cerulean Decree to tax ChemCollapse's Dungeon Guide level up. A Tricastles of Lucenia mill would have been the back-breaking card, but the Sapphire Fatestone flip finds a Bullfrog.",
+              "cards": [
+                "Throne-Keeper Bullfrog",
+                "Fractal of Polar Depths",
+                "Cerulean Decree",
+                "Tricastles of Lucenia"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "ChemCollapse waits a turn before flipping the dragon, and uses Aella to suppress his own Bullfrog target. Regal Inquisition makes mDuo13 show a hand with two Song of Frost. ChemCollapse discards both, mDuo13 draws two and misses the third, and Seiryuu's Command for lethal resolves.",
+              "cards": [
+                "Aella, Zephyr's Hand",
+                "Regal Inquisition",
+                "Song of Frost",
+                "Seiryuu's Command"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "ChemCollapse wins — Sasha shuts off the graveyard and Uther removes Genbu",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "mDuo13 starts with Tidestone Bovines and Fractal of Rain, and gets Genbu to 9 quest counters. Purifying Thurible banishes his float and ChemCollapse's Tariff Ring shuts down the Fugue plan, which is one card short anyway.",
+              "cards": [
+                "Tidestone Bovine",
+                "Fractal of Rain",
+                "Purifying Thurible",
+                "Tariff Ring"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "ChemCollapse follows with Censer of Restful Peace, then Uther, Illustrious King, which deletes mDuo13's Fabled Sapphire Fatestone (Guo Jia is only level one). Uther kills the Bovine in combat.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Uther, Illustrious King",
+                "Fabled Sapphire Fatestone"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "ChemCollapse fosters Sasha, Purifying Acolyte, so no graveyard exists for the rest of the game. Smoke Bombs and Aella protect Sasha and Uther, and mDuo13 concedes.",
+              "cards": [
+                "Sasha, Purifying Acolyte",
+                "Smoke Bombs",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "lethal",
+                "sideboard"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Seiryuu against Genbu table). Casters call the players \"Chem Clash/Chem Collapse\" and \"M Duo\". Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Round 13 (final Swiss round, Day 2) — Aetherwing Diana against Fire Luxem Zander, both 8-3-1",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Fallinbuu14",
+          "deck": "Water Aetherwing Diana (Cheshire Cat, Mad Hatter, Inert Sword, Palvor Sword, double Frostsworn Paladin)"
+        },
+        {
+          "id": "p2",
+          "name": "Yadon",
+          "deck": "Fire Luxem Zander (Serene Spirit, Angelic Channeling, Planted Explosive, Insignia of the Corhazi)"
+        }
+      ],
+      "result": "Yadon wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Yadon has Smoke Out main and in the side (to deal with Cheshire Cat), Planted Explosive ×2 and Crystallized Destiny. He says in the interview that he plays one Smoke Out main for turns where he has no preparation counter."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "The casters expect Fallinbuu14 to bring in more Snow White, Weiss Queen and perhaps a third Rude, to stop Yadon levelling."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Fallinbuu14 wins — Krustallan Archer and Ranger Strides for 12 through the Serene Spirit",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fallinbuu14 has no distant enabler in the opener and plays Aetheric Calibration, Inert Sword and Cheshire Cat (a 3/3 with stealth and spell shroud) instead. Yadon uses Incapacitate on Reposition and Planted Explosive on the Cat.",
+              "cards": [
+                "Aetheric Calibration",
+                "Inert Sword",
+                "Cheshire Cat, Impish Grin",
+                "Incapacitate",
+                "Planted Explosive"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Yadon opens with Angelic Channeling to protect Luxem Sight, Uncover the Plot and Lightweaver's Assault, levels Zander twice with Dungeon Guide, and stabilizes with Blinding Steel reveals and Tariff Ring.",
+              "cards": [
+                "Angelic Channeling",
+                "Luxem Sight",
+                "Uncover the Plot",
+                "Lightweaver's Assault",
+                "Tariff Ring"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Fallinbuu14 plays two Frostsworn Paladins, Quickstep Treads and Weaving Manastream. Yadon's Frostbind-able Planted Explosive are answered by a Frostbind. A final Incapacitate stops one distant enabler but Krustallan Archer plus Ranger Strides and a Cheshire Cat swing for 12 through the Serene Spirit.",
+              "cards": [
+                "Frostsworn Paladin",
+                "Quickstep Treads",
+                "Weaving Manastream",
+                "Frostbind",
+                "Krustallan Archer",
+                "Ranger Strides"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Yadon wins — double Lightweaver's Assault for lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fallinbuu14 finds only distant enablers and no Aether Charge, so the damage stays low. Yadon holds Topsy Decree, imbued, to strip the graveyard and levels to Zander level three with zero damage counters.",
+              "cards": [
+                "Topsy Decree",
+                "Dungeon Guide",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Yadon reveals Lightweaver's Assault, Sadi, Gleaming Cut and Luxem Sight through Blinding Steel and Corhazi Insignia, and uses Palvor Sword on Fallinbuu14's graveyard and Planted Explosive for Frostsworn Paladin. Fallinbuu14's Fracturize of the Insignia and Flash Grenade only delay.",
+              "cards": [
+                "Sadi, Blood Harvester",
+                "Gleaming Cut",
+                "Insignia of the Corhazi",
+                "Flash Grenade",
+                "Palvor Sword"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Yadon reveals two Lightweaver's Assaults. Even through Flash Grenade (prevent three), each hits for four. With Exploit Vulnerability and the second Assault, the game ends. The Incapacitate held back covers the last reposition.",
+              "cards": [
+                "Lightweaver's Assault",
+                "Exploit Vulnerability",
+                "Flash Grenade"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Yadon wins — a final Lightweaver's Assault, with Fallinbuu14 two damage short",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fallinbuu14 misses with Aetheric Calibration again and has Frostbind and two Backsteps instead of charges. Yadon removes Frostsworn Paladin and Cheshire Cat with Planted Explosive and a main-phase Topsy Decree.",
+              "cards": [
+                "Aetheric Calibration",
+                "Frostbind",
+                "Cheshire Cat, Impish Grin",
+                "Planted Explosive"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Yadon uses Angelic Channeling again (Luxem Sight, Gleaming Cut, Excalibur) and takes Zander level three, though he forgets Lost Providence. Fallinbuu14 pushes 11 damage with Take Aim, Ranger Strides and a 12-card glimpse. Yadon's Chalice of Blood, Serene Spirit and Tariff Ring survive.",
+              "cards": [
+                "Angelic Channeling",
+                "Gleaming Cut",
+                "Excalibur, Cleansing Light",
+                "Take Aim",
+                "Ranger Strides",
+                "Chalice of Blood"
+              ],
+              "tags": [
+                "combo",
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Fallinbuu14 gets within three, then two, damage of lethal on consecutive turns. Yadon uses Exploit Vulnerability and Mercenary's Blade on the Paladin, and finishes with Sadi and Lightweaver's Assault revealing seven cards.",
+              "cards": [
+                "Exploit Vulnerability",
+                "Mercenary's Blade",
+                "Sadi, Blood Harvester",
+                "Lightweaver's Assault"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 13 VOD (Diana against Luxem table), including a post-match interview with Yadon. Casters call the players \"Fallen Bu\" (omnidex username Fallinbuu14) and Yadon. Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Top 8 — Quarterfinal (Diana beatdown against Exia Jin)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zetdivx",
+          "deck": "Water Aetherwing Diana (Cheshire Cat, Inert Sword, Nimble Longbowman, 17 distant enablers)"
+        },
+        {
+          "id": "p2",
+          "name": "stevo7653",
+          "deck": "Water Exia Jin (Regal Inquisition, Dynastic Whirlpool mill-out)"
+        }
+      ],
+      "result": "Zetdivx wins 2-0",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Zetdivx considers Song of Frost, Annihilation and Crimson Rupture-style cards but sees little that clearly needs to come in. The casters say that Zetdivx wants damage and allies, not more draw."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zetdivx wins — Diana pressure races Stevo before Jin level three",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zetdivx opens with Backstep to become distant, gets Aquamirage Whisper on level up, and uses Refreshing Charge and Aetheric Calibration to glimpse. Stevo, on Fortuitous Water, has a full hand of Regal Inquisition, Frostbind and Fracturize but starts slowly.",
+              "cards": [
+                "Backstep",
+                "Aquamirage Whisper",
+                "Refreshing Charge",
+                "Regal Inquisition",
+                "Frostbind"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Frostsworn Paladin and Krustallan Archer add damage each turn, and Stevo does not get to level three. Stevo's Jin is at 20 total life and cannot heal out of Zetdivx's damage.",
+              "cards": [
+                "Frostsworn Paladin",
+                "Krustallan Archer",
+                "Charge the Soul"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Zetdivx closes out game one with a final Archer attack, while Stevo has no interaction left. The casters note that 14 damage was lethal on that turn.",
+              "cards": [
+                "Krustallan Archer"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Zetdivx wins again — a two-turn kill before Stevo can reach level three",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Stevo starts with Gentle Respite and holds Dungeon Guide, Regal Inquisition and Dynastic Whirlpool. Spirit of Fortuitous Water gives him a slower spirit than serene water, and he plans to Fracturize Zetdivx's board.",
+              "cards": [
+                "Gentle Respite",
+                "Regal Inquisition",
+                "Dynastic Whirlpool",
+                "Fracturize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zetdivx plays Inert Sword, Cheshire Cat, Reposition and Quickstep Treads on turn two. Tactical Retreat saves the Cat and ends Stevo's one big attack, while Fracturize hits the Treads.",
+              "cards": [
+                "Inert Sword",
+                "Cheshire Cat, Impish Grin",
+                "Reposition",
+                "Quickstep Treads",
+                "Tactical Retreat"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Stevo is on 21 life with a Serene Spirit heal but never gets to use his lineage release at the right time. Zetdivx swings for three, then lethal, and Jin dies at 24 total life. Zetdivx secures a Gauntlet invite and moves to the semifinals.",
+              "cards": [
+                "Spirit of Serene Wind",
+                "Aquamirage Whisper"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including an interview with Zetdivx. This transcript is partly garbled (many caption lines are interleaved or missing), so beats are limited to what is legible. Casters call the players \"Zet DeVix\" (Zetdivx) and \"Steo\" (stevo7653). Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-top8-qf-jett-chemcollapse",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Top 8 — Quarterfinal (untimed; the winner locks a Worlds slot)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Jett",
+          "deck": "Razorgale Arisanna (Essence Crucible, raccoon package, Aesan Protector, Ensnaring Fumes, Orbital Ceiling)"
+        },
+        {
+          "id": "p2",
+          "name": "ChemCollapse",
+          "deck": "Wind Seiryuu Guo Jia (turbo list: Tricastles of Lucenia, Uther, Aella, Royal Oathguard, Regal Inquisition)"
+        }
+      ],
+      "result": "Jett wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Jett brings in Turbo Charge (more norm cards, to pay for Tricastles of Lucenia), possibly Blessed Clergy, Topsy Decree and Mystic Purifier. Jett says in the interview that he rarely sides in Blessed Clergy."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "ChemCollapse brings in the third Tricastles of Lucenia, Blanch and possibly Topsy Decree or Scatter Essence and Sasha, Purifying Acolyte, which could remove all Razorgales for good."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "ChemCollapse wins — Tricastles of Lucenia locks Razorgale, then Seiryuu's Command",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse uses Beseech the Winds to reach Guo Jia level one on turn one and builds quest counters with Scout the Land and Tangu. Jett responds with Fluffy Shopkeep, Backup Charger, and Windmill Engineer's Reclaim and trades.",
+              "cards": [
+                "Beseech the Winds",
+                "Scout the Land",
+                "Portentous Tanggu",
+                "Fluffy Shopkeep",
+                "Backup Charger"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "After Dungeon Guide takes Guo Jia to level three, ChemCollapse plays Tricastles of Lucenia. Players can't activate non-advanced element cards, and a player must banish a norm card to turn it off once per turn. This locks out Jett's all-wind Razorgale deck, who must discard cards to play anything.",
+              "cards": [
+                "Tricastles of Lucenia",
+                "Dungeon Guide",
+                "Bandit, Gaze Leader",
+                "Protector Raccoon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "ChemCollapse follows with Uther (removing a Razorgale), Aella and a Royal Oathguard. Jett plays three Dream Fairies, a Zephyr and Purifying Thurible but drops below six cards, which turns off Ensnaring Fumes. Aella suppresses Jett's Essence Crucible.",
+              "cards": [
+                "Uther, Illustrious King",
+                "Aella, Zephyr's Hand",
+                "Dream Fairy",
+                "Royal Oathguard",
+                "Ensnaring Fumes"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "ChemCollapse flips Seiryuu, plays Seiryuu's Command (triple on-enter) to generate an Arcane Blast and empower it by eight. The Blast costs nothing and finishes Jett.",
+              "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast",
+                "Aella, Zephyr's Hand"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jett wins — Aesan Protector chip damage, then Zephyr and Veiling Breeze on the last Razorgale trigger",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jett brings in Turbo Charge, plays Windmill Engineer and Aesan Protector early, and wants a board that can kill Tricastles of Lucenia in two turns. Fairy Whispers finds Razorgale Calling.",
+              "cards": [
+                "Turbo Charge",
+                "Windmill Engineer",
+                "Aesan Protector",
+                "Fairy Whispers",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "ChemCollapse levels with Beseech and Dungeon Guide and draws with Incandescent Reliquary, but a Tricastle banished by Throne-keeper mill and a Purifying Thurible deny him the lock. Jett's Regal Inquisition strips Ensnaring Fumes so Seiryuu stays unflipped.",
+              "cards": [
+                "Beseech the Winds",
+                "Incandescent Reliquary",
+                "Regal Inquisition",
+                "Ensnaring Fumes",
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Jett plays two Razorgales and Essence Crucible with Distilled Water potions. Imperial Countermeasure absorbs the first trigger. Jett Zephyrs his own Aesan Protector and then uses Veiling Breeze as the final Razorgale trigger for lethal. The Aesan Protector is the MVP of the game.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Imperial Countermeasure",
+                "Zephyr",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Jett wins the deciding game (not shown in full)",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ChemCollapse goes first for the first time in the match, uses Beseech the Winds on turn one and Portentous Tanggu, and holds Blanch and Dungeon Guide. Jett opens with Windmill Engineer, Aesan Protector and Fluffy Shopkeep, to keep at least four damage of allies on board against another Tricastle.",
+              "cards": [
+                "Beseech the Winds",
+                "Portentous Tanggu",
+                "Blanche, Sheltering Saint",
+                "Windmill Engineer",
+                "Aesan Protector"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jett finds Razorgale Calling, Aesan Protector and Ensnaring Fumes with Fairy Whispers and keeps six cards in hand so the dragon stays locked. The broadcast cuts to the semifinal and confirms Jett closed out the game 2-1 within the next couple of turns.",
+              "cards": [
+                "Fairy Whispers",
+                "Razorgale Calling",
+                "Ensnaring Fumes",
+                "Imperial Countermeasure"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 8 Quarterfinal VOD, including a post-match interview with Jett. Game 3 is cut short at the broadcast switch to the semifinal, so only the opening turns are shown. Casters call Jett \"Ali/Jet/Oi\" and ChemCollapse \"Chem Clash/Chem Claps\". Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-top4-semifinal-zetdivx-jett",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Top 4 — Semifinal (Apex Players Guild against TM32; the winner reaches the Grand Finals)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zetdivx",
+          "deck": "Water Aetherwing Diana (Apex build: two Aetherwings, Cheshire Cat, Ranger Strides, Take Aim ×2, Aetheric Reforging)"
+        },
+        {
+          "id": "p2",
+          "name": "Jett",
+          "deck": "Razorgale Arisanna (raccoon package: four Bandit, two Protector Raccoon; Essence Crucible, Aesan Protector)"
+        }
+      ],
+      "result": "Jett wins 2-1",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Jett brings in Obscured Offering (to protect Essence Crucible from a Fracturize), Topsy Decree, Turbo Charge, Blessed Clergy and Fluffy Shopkeep."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Zetdivx brings in a second Aetheric Reforging, Nullifying Mirror (to turn off Veiling Breeze), Expel the Departed, Nullifying Lantern as an option, Shademist Priestess and Dissuading Aether."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zetdivx wins — a patient build-up, then a 19-damage one-shot",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zetdivx goes first as the top seed and plays Censer of Restful Peace, which Jett's Fracturize removes. Zetdivx levels Diana, plays Aetheric Calibration to find Aetheric Reforging, and loads the Aquamirage Whisper.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Fracturize",
+                "Aetheric Calibration",
+                "Aetheric Reforging",
+                "Aquamirage Whisper"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett uses Protector Raccoon, Purifying Thurible and Veiling Breeze to blank the Whisper's first hit trigger. Jett has zero damage taken for much of the game and builds a hand of eight cards, while Zetdivx gets no float value.",
+              "cards": [
+                "Protector Raccoon",
+                "Purifying Thurible",
+                "Veiling Breeze",
+                "Aesan Protector"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jett lands two Razorgales and Essence Crucible, but Zetdivx's Fracturize removes the Crucible (Jett has no Obscured Offering). Jett's hand has clunky norm cards, and Cyclical Breeze to get Veiling Breeze back is answered by Aetheric Reforging.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Fracturize",
+                "Cyclical Breeze",
+                "Aetheric Reforging"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Zetdivx tests a Flash Grenade, gets no response, and then plays Krustallan Archer with Ranger Strides, two Take Aims and five Aether Charges in the Whisper. Quickstep Treads makes Jett's responses cost two more. That is a 19-damage swing and Jett is dead from one HP.",
+              "cards": [
+                "Flash Grenade",
+                "Krustallan Archer",
+                "Ranger Strides",
+                "Take Aim",
+                "Quickstep Treads"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jett wins — board control with raccoons and Aesan Protector",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zetdivx starts with a Krustallan Archer to bait Veiling Breeze and holds Expel the Departed, Fracturize and the second Reforging. But Jett's Aesan Protector, Bandit and Protector Raccoon block float, and Dream Fairy locks Cheshire Cat.",
+              "cards": [
+                "Krustallan Archer",
+                "Expel the Departed",
+                "Aesan Protector",
+                "Bandit, Gaze Leader",
+                "Dream Fairy"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett uses Aesan Protector to reclaim his raccoons and Windmill Engineer. Zetdivx plays a Seeker's Aetherwing to remove the Dream Fairy, but Skirting Step prevents the damage, and Zetdivx never gets a glimpse.",
+              "cards": [
+                "Seeker's Aetherwing",
+                "Skirting Step",
+                "Reclaim",
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jett gets Razorgale Calling off Fairy Whispers. Zetdivx has 14 damage and Jett holds 12 cards. Tariff Ring and Tariff Ring (attacks cost two) make attacking impossible and Zetdivx scoops.",
+              "cards": [
+                "Razorgale Calling",
+                "Tariff Ring",
+                "Fairy Whispers"
+              ],
+              "tags": [
+                "stabilize",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Jett wins — Essence Crucible with three counters and double Razorgale",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Bandit finds Bandit with a one-in-six scavenge. Jett denies Zetdivx's float again and strips Backup Charger lines. Shademist Priestess stops Razorgale pings for a while, and Jett needs Dream Fairy to remove it.",
+              "cards": [
+                "Bandit, Gaze Leader",
+                "Protector Raccoon",
+                "Shademist Priestess",
+                "Dream Fairy"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zetdivx trades Weaving Manastream and Krustallan Archer for Aesan Protector, builds Ranger Strides, Inert Sword and Quickstep Treads, and plays Nullifying Mirror to turn off Veiling Breeze. Jett's Fluffy Shopkeep keeps Zetdivx's Cheshire Cat from connecting.",
+              "cards": [
+                "Nullifying Mirror",
+                "Ranger Strides",
+                "Inert Sword",
+                "Cheshire Cat, Impish Grin",
+                "Fluffy Shopkeep"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jett plays Essence Crucible, brews Distilled Water potions through Ingredient Pouch for three counters and a second Razorgale from Fairy Whispers. Each wind card now deals eight damage. Zetdivx's two Shademist Priestesses recover, but Jett responds to each trigger and a Fairy Whispers finishes the game.",
+              "cards": [
+                "Essence Crucible",
+                "Distilled Water",
+                "Ingredient Pouch",
+                "Razorgale Calling",
+                "Fairy Whispers"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Top 4 Semifinal VOD, including an interview with Jett. Casters call the Diana player \"Zed/Zett Divix\" (Zetdivx) and Jett \"Ali/Ollie/Jet\". Card names are as called by the casters and may contain minor ASR errors."
+    },
+    {
+      "id": "na-nationals-2026-grand-finals-quarax-jett",
+      "event": "North American Nationals 2026",
+      "eventId": 52777,
+      "round": "Grand Finals — Apex Players Guild against TM32, both already qualified for Worlds",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Quarax",
+          "deck": "Water Aetherwing Diana (Apex build: Cheshire Cat, Krustallan Archer, Seeker's Aetherwing, Aetheric Reforging, Nullifying Mirror)"
+        },
+        {
+          "id": "p2",
+          "name": "Jett",
+          "deck": "Razorgale Arisanna (raccoon package, Essence Crucible, Viridian Protective Trinket, Tariff Ring)"
+        }
+      ],
+      "result": "Jett wins 2-1 and is the North American Nationals 2026 champion",
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Quarax brings in three Expel the Departed, Aetheric Reforging, Nullifying Mirror, Shademist Priestess and Dissuading Aether. The casters say his sideboard differs from Zetdivx's."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Jett brings in Obscured Offering, an extra Zephyr, possibly an extra Fluffy Shopkeep, and he considers Stifling Gyre. Blessed Clergy and Topsy Decree stay out."
+        }
+      ],
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Jett wins — Purifying Thurible and Protector Raccoon deny the float, then two Razorgales",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett opens with Purifying Thurible (not Censer of Restful Peace) and holds Protector Raccoon. Quarax's Krustallan Archer attack is answered by Protector Raccoon banishing the Charge the Soul float, so no card is drawn. Jett waits for the last moment to respond.",
+              "cards": [
+                "Purifying Thurible",
+                "Protector Raccoon",
+                "Krustallan Archer",
+                "Charge the Soul"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Bandit scavenges into a third raccoon. Fluffy Shopkeep, an animal, is protected by Protector Raccoon, and Viridian Protective Trinket makes Quarax's water cards cost two more. Quarax's Cheshire Cat kills the Fluffy Shopkeep and the Raccoon.",
+              "cards": [
+                "Bandit, Gaze Leader",
+                "Fluffy Shopkeep",
+                "Viridian Protective Trinket",
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jett plays two Razorgales and brews a Speed Potion in Essence Crucible. Quarax's Fracturize removes the Crucible (Jett has no Obscured Offering). Dream Fairy kills the Cheshire Cat, and Aesan Protector returns it to hand. Razorgale pings, Cyclical Breeze and Tariff Ring leave Quarax with one damage from death.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Fracturize",
+                "Dream Fairy",
+                "Aesan Protector",
+                "Tariff Ring"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Calming Breeze prevents the final Razorgale trigger damage. Quarax has no way to deal the last damage to Jett or stop the board, and scoops. Jett leads 1-0.",
+              "cards": [
+                "Calming Breeze",
+                "Cyclical Breeze"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Quarax wins — Krustallan Archer with a float and Jett cannot imbue Skirting Step",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Quarax goes first and passes. He levels Diana on turn two with Backstep and Aquamirage Whisper, then hits with Nullifying Mirror in play, so Veiling Breeze is unavailable to Jett.",
+              "cards": [
+                "Backstep",
+                "Aquamirage Whisper",
+                "Nullifying Mirror",
+                "Prudent Nock"
+              ],
+              "tags": [
+                "sideboard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett plays Purifying Thurible and a Protector Raccoon, but Quarax Fracturizes the Thurible to force the response. Bandit scavenges six cards and puts two Razorgales and a Dream Fairy at the bottom, which hurts Jett's win conditions.",
+              "cards": [
+                "Purifying Thurible",
+                "Protector Raccoon",
+                "Bandit, Gaze Leader",
+                "Razorgale Calling",
+                "Dream Fairy"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Quarax finally keeps a float and attacks with Krustallan Archer for four. Jett plays Skirting Step but cannot imbue it, so it prevents nothing, and Jett drops to one life. Jett is forced to level up and Quarax finishes the game.",
+              "cards": [
+                "Krustallan Archer",
+                "Skirting Step",
+                "Weaving Manastream"
+              ],
+              "tags": [
+                "swing",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Jett wins — Bandit, Protector Raccoon and Razorgale's pings close out the title",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Jett goes first and plays Censer of Restful Peace and two Bandits. Quarax tries Frozen Dismissal on the Bandit, but Jett pays four and scavenges into Protector Raccoon with the fifth card. Quarax has no distant enabler and no Aetherwing, so Diana cannot start.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Bandit, Gaze Leader",
+                "Frozen Dismissal",
+                "Protector Raccoon"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Jett levels to Arisanna with Reclaim and Windmill Engineer, imbues Skirting Step, and plays Razorgale Calling and Dream Fairy on the Cheshire Cat. Quarax finds Seeker's Aetherwing and Prudent Nock, but cannot get damage through the reclaimed Windmill Engineers and Dream Fairy.",
+              "cards": [
+                "Reclaim",
+                "Skirting Step",
+                "Razorgale Calling",
+                "Dream Fairy",
+                "Seeker's Aetherwing"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Jett plays Essence Crucible. Quarax's Expel the Departed removes the first Razorgale, but Jett brews, Cyclical Breeze brings it back and Quarax has no Reforging. Quarax tries Reposition to become distant, and Jett answers with Veiling Breeze. Quarax is 2 damage short and Jett wins the title.",
+              "cards": [
+                "Essence Crucible",
+                "Expel the Departed",
+                "Cyclical Breeze",
+                "Veiling Breeze",
+                "Aesan Protector"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Grand Finals VOD, including a champion's interview with Jett. Casters call Jett \"Ali/Ollie/Jet\" and Quarax \"Korax/Corax\". Card names are as called by the casters and may contain minor ASR errors."
     }
   ]
 }
