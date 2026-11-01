@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T16:45:55.991Z",
+  "generatedAt": "2026-11-01T17:15:06.129Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -10062,7 +10062,11 @@
                 "Concealed Marksman",
                 "Reduce to Ash",
                 "Censer of Restful Peace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "oHCCZOZBvKM",
+                "seconds": 36219
+              }
             },
             {
               "order": 2,
@@ -10078,7 +10082,7 @@
               ],
               "timestamp": {
                 "videoId": "oHCCZOZBvKM",
-                "seconds": 35779
+                "seconds": 36474
               }
             }
           ]
@@ -10101,7 +10105,7 @@
               ],
               "timestamp": {
                 "videoId": "oHCCZOZBvKM",
-                "seconds": 37205
+                "seconds": 37211
               }
             },
             {
@@ -10114,7 +10118,7 @@
               ],
               "timestamp": {
                 "videoId": "oHCCZOZBvKM",
-                "seconds": 37510
+                "seconds": 37509
               }
             },
             {
@@ -10133,7 +10137,7 @@
               ],
               "timestamp": {
                 "videoId": "oHCCZOZBvKM",
-                "seconds": 37861
+                "seconds": 37852
               }
             }
           ]
@@ -19437,7 +19441,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 61
+              }
             },
             {
               "order": 2,
@@ -19451,7 +19459,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 267
+              }
             },
             {
               "order": 3,
@@ -19466,7 +19478,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 456
+              }
             }
           ]
         },
@@ -19482,7 +19498,11 @@
               "cards": [
                 "Gentle Respite",
                 "Backup Charger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 1022
+              }
             },
             {
               "order": 2,
@@ -19496,7 +19516,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 1165
+              }
             },
             {
               "order": 3,
@@ -19510,7 +19534,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 1594
+              }
             }
           ]
         },
@@ -19531,7 +19559,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 1805
+              }
             },
             {
               "order": 2,
@@ -19548,7 +19580,11 @@
               ],
               "tags": [
                 "ruling"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 2274
+              }
             },
             {
               "order": 3,
@@ -19562,15 +19598,19 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "lt8xG0pelpw",
+                "seconds": 2864
+              }
             }
           ]
         }
       ],
       "sourceNote": "Cleaned broadcast transcript, North American Nationals 2026 Round 9 VOD, including a post-match interview with Bailey. Casters call the players \"Bailey\" (likeBAILEY) and \"Vern\" (Vernosius). Card names are as called by the casters and may contain minor ASR errors.",
       "video": {
-        "id": "ljQZR8Yu1XM",
-        "kind": "broadcast"
+        "id": "lt8xG0pelpw",
+        "kind": "match"
       }
     },
     {

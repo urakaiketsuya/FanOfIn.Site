@@ -60,8 +60,8 @@ test('archive backfill retains source excerpts and matches current highlights an
     assert.equal(b.timestamp!.seconds, Math.floor(seconds), key);
     assert.ok(b.timestamp!.seconds >= (match.video!.startSeconds ?? 0), key);
   }
-  assert.equal(seen.size, 1069);
-  assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 203);
+  assert.equal(seen.size, 1079);
+  assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 204);
 });
 
 test('remaining timestamp queue covers every untimed highlight exactly once', () => {
@@ -86,6 +86,32 @@ test('every remaining highlight has a documented source or game-assignment block
     assert.ok(e.reason.length > 0);
     return `${e.matchId}/${e.gameNumber}/${e.order}`;
   });
-  assert.equal(actual.length, 10);
+  assert.equal(actual.length, 0);
   assert.deepEqual(actual.sort(), expected.sort());
+});
+
+test('Taipei game two cues follow the actual removal and winning sequence', () => {
+  const data: BroadcastTimelines = JSON.parse(readFileSync(new URL('../../data/broadcast-timelines.json', import.meta.url), 'utf8'));
+  const match = data.matches.find(m => m.id === 'ascent-taipei-2026-day2-bronze-long-yamikin')!;
+  const game = match.games.find(g => g.gameNumber === 2)!;
+  assert.deepEqual(game.beats.map(b => b.timestamp?.seconds), [36219, 36474]);
+  assert.ok(game.beats.every(b => b.timestamp!.seconds > 591 * 60 && b.timestamp!.seconds < 609 * 60));
+});
+
+test('NA round nine uses its separate replay clock and persistent video mapping', () => {
+  const read = (p: string) => JSON.parse(readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
+  const data: BroadcastTimelines = read('data/broadcast-timelines.json');
+  const registry = read('docs/BROADCAST_VIDEO_SOURCES.json');
+  const match = data.matches.find(m => m.id === 'na-nationals-2026-day1-round9-likebailey-vernosius')!;
+  assert.deepEqual(match.video, { id: 'lt8xG0pelpw', kind: 'match' });
+  const mapping = registry.matches.find((m: { matchId: string }) => m.matchId === match.id);
+  assert.equal(mapping.videoId, match.video!.id);
+  assert.equal(mapping.kind, 'match');
+  const beats = match.games.flatMap(g => g.beats);
+  assert.equal(beats.length, 9);
+  for (const beat of beats) {
+    assert.equal(beat.timestamp?.videoId, match.video!.id);
+    assert.ok(beat.timestamp!.seconds < 59 * 60 + 37);
+    assert.ok(beatVideoLink(beat, match.video));
+  }
 });

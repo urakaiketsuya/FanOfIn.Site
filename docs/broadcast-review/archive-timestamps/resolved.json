@@ -1,0 +1,127 @@
+[
+  {
+    "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
+    "resolution": "The prior review stopped game two too early. Its actual winning sequence ends at 608:28 and game three is announced at 609:34. Both game-two recaps are supported in their original game. Added the missing cue and replaced the earlier nonlethal attack cue; refined three game-three starts. No recap text or game assignment changed.",
+    "sourceFile": "Ascent Taipei Day 2  Grand Archive TCG.txt",
+    "sourceSha256": "740f81acf3981e2a846ed6367e3e54716589e316629980b6d2236eb3a4ffeda1",
+    "gameBoundarySource": [
+      {
+        "row": 15373,
+        "timestamp": "591:27",
+        "text": "going to see y going first here. Going"
+      },
+      {
+        "row": 15374,
+        "timestamp": "591:29",
+        "text": "to spirit of wind wins here. Does it"
+      },
+      {
+        "row": 15375,
+        "timestamp": "591:30",
+        "text": "have the manhatter? We would fire. I see"
+      },
+      {
+        "row": 15376,
+        "timestamp": "591:32",
+        "text": "it. I think I see man. Oh no, that's not"
+      },
+      {
+        "row": 15377,
+        "timestamp": "591:34",
+        "text": "Manhattan. Never mind. Uh is it not? Is"
+      },
+      {
+        "row": 15378,
+        "timestamp": "591:37",
+        "text": "it it? I can't see."
+      },
+      {
+        "row": 15379,
+        "timestamp": "591:38",
+        "text": ">> No, we got a lube bay. But I wonder what"
+      },
+      {
+        "row": 15380,
+        "timestamp": "591:40",
+        "text": "we're going to I think I actually put"
+      },
+      {
+        "row": 15381,
+        "timestamp": "591:42",
+        "text": "down the drought of stamina."
+      },
+      {
+        "row": 15382,
+        "timestamp": "591:44",
+        "text": ">> Oh no, it's a purse again."
+      },
+      {
+        "row": 15383,
+        "timestamp": "591:45",
+        "text": ">> It's a purse again."
+      },
+      {
+        "row": 15384,
+        "timestamp": "591:48",
+        "text": ">> Yeah. So, Pur's going to come down here."
+      },
+      {
+        "row": 15894,
+        "timestamp": "608:24",
+        "text": ">> And that's enough. It was enough. We"
+      },
+      {
+        "row": 15895,
+        "timestamp": "608:26",
+        "text": "were able to get there in the end doing"
+      },
+      {
+        "row": 15896,
+        "timestamp": "608:28",
+        "text": "just slightly over the resolute"
+      },
+      {
+        "row": 15897,
+        "timestamp": "608:31",
+        "text": ">> getting there. The 27 Yavin just the"
+      },
+      {
+        "row": 15898,
+        "timestamp": "608:33",
+        "text": "most patient wind wake up player I've"
+      },
+      {
+        "row": 15899,
+        "timestamp": "608:36",
+        "text": "ever seen playing extremely long game"
+      },
+      {
+        "row": 15900,
+        "timestamp": "608:38",
+        "text": "here but still bakes it there."
+      },
+      {
+        "row": 15929,
+        "timestamp": "609:34",
+        "text": "still make it there. So we are going to"
+      },
+      {
+        "row": 15930,
+        "timestamp": "609:37",
+        "text": "game three here. But long is going to go"
+      },
+      {
+        "row": 15931,
+        "timestamp": "609:39",
+        "text": "to go first cuz he did lose that game."
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
+    "previousVideoId": "ljQZR8Yu1XM",
+    "videoId": "lt8xG0pelpw",
+    "resolution": "Identified and verified the standalone replay. All nine cues use its own transcript clock, with no inferred broadcast offset.",
+    "uploadEvidence": "na-round9-upload.json"
+  }
+]

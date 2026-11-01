@@ -1223,6 +1223,17 @@
         "Z3US (Fire Diao Chan) vs Schwarzer (Wind Umbra Tristan)  Ascent Akihabara Day 1 Round 9.txt"
       ],
       "scope": "current-collection-period"
+    },
+    {
+      "videoId": "lt8xG0pelpw",
+      "title": "Razorgale Arisanna vs Water Luxem Zander | Grand Archive TCG North American Nationals Round 9",
+      "kind": "match",
+      "status": "archived",
+      "competition": true,
+      "transcripts": [
+        "Razorgale Arisanna vs Water Luxem Zander  Grand Archive TCG North American Nationals Round 9.txt"
+      ],
+      "verification": "docs/broadcast-review/archive-timestamps/na-round9-upload.json"
     }
   ],
   "matches": [
@@ -1846,9 +1857,10 @@
     },
     {
       "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
-      "videoId": "ljQZR8Yu1XM",
-      "kind": "broadcast",
-      "basis": "Official event/day broadcast. Local source is a separate match clip; no clip-relative timestamps transferred to the stream."
+      "videoId": "lt8xG0pelpw",
+      "kind": "match",
+      "basis": "Exact standalone replay verified by title, players, event description and live-caption clock alignment. See docs/broadcast-review/archive-timestamps/na-round9-upload.json.",
+      "previousVideoId": "ljQZR8Yu1XM"
     },
     {
       "matchId": "na-nationals-2026-day2-round10-superior-asuna",

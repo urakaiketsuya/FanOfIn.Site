@@ -47,10 +47,17 @@ test('sequential caption review accounts for every recovered source and associat
     }
     assert.equal(coveredThrough, source.segmentCount - 1, source.videoId);
   }
-  const associated = data.matches.filter(m => m.video && sourceIds.has(m.video.id)).map(m => m.id).sort();
+  const previousVideo = (id: string) => registry.matches.find((m: { matchId: string }) => m.matchId === id)?.previousVideoId;
+  const associated = data.matches.filter(m => m.video && (sourceIds.has(m.video.id) || sourceIds.has(previousVideo(m.id)))).map(m => m.id).sort();
   assert.deepEqual(sequential.records.map((r: { matchId: string }) => r.matchId).sort(), associated);
   for (const record of sequential.records) {
-    assert.equal(record.videoId, match(record.matchId).video?.id);
+    if (record.videoId !== match(record.matchId).video?.id) {
+      assert.equal(record.status, 'source_gap_preserve_existing');
+      assert.equal(record.videoId, previousVideo(record.matchId));
+      const resolved = read('docs/broadcast-review/archive-timestamps/resolved.json').find((r: { matchId: string }) => r.matchId === record.matchId);
+      assert.equal(resolved.previousVideoId, record.videoId);
+      assert.equal(resolved.videoId, match(record.matchId).video?.id);
+    }
     const source = sequential.sources.find((s: { videoId: string }) => s.videoId === record.videoId);
     assert.equal(record.sourceSha256, source.sourceSha256, record.matchId);
     const ranges = record.reviewedRowRanges ?? record.rowsZeroBased;

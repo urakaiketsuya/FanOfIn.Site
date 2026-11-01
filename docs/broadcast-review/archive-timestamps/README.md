@@ -1,8 +1,9 @@
 # Archive key-play timestamps
 
 Reviewed all 753 highlights remaining after the initial backfill; added 743 cues.
-Together with the earlier 326 archive cues and Osaka’s 80, **1,149 of 1,159**
-published highlights now have links (99.1%). Archive evidence covers 203 matches.
+A follow-up resolved the last ten cues. Together with the earlier 326 archive cues
+and Osaka’s 80, **1,159 of 1,159** published highlights now have links (100%).
+Archive evidence covers 204 matches.
 
 `beat-timestamps.json` preserves each current highlight's exact text, its upload-bound
 absolute timestamp, the original review name/record index, source-file SHA-256,
@@ -25,25 +26,27 @@ original Downloads transcripts. Repeated plays, wrong-game lexical matches, reca
 montages and commentary about preceding games were checked before accepting cues.
 Sources retain their original transcription errors; published highlight text is unchanged.
 
-All ten untimed highlights are documented in `unresolved.json` and indexed in
-`remaining.json`:
+The remaining queues are empty. `resolved.json` documents the final follow-up:
 
-- Nine NA Nationals Day 1 round 9 highlights: the assigned broadcast captions stop
-  at 11:54:52 during introductions. A complete separate-match transcript exists in
-  `transcripts.zip` (00:00–59:32), but contains no upload ID or broadcast offset.
-  Identify that upload or verify its stream offset before using its clocks.
-- Taipei bronze Long–Yamikin, game 2, beat 1: the described Concealed Marksman /
-  Reduce to Ash exchange appears in game 1 around 571–573 minutes. Correct the
-  recap’s game assignment before attaching a cue; the supporting excerpt is saved.
+- NA Nationals Day 1 round 9: identified the standalone replay `lt8xG0pelpw`.
+  Its title, player names, event description and live-caption clocks match the
+  complete transcript in `transcripts.zip`. `na-round9-upload.json` retains the
+  verification evidence. All nine cues use replay-relative seconds; no broadcast
+  offset was inferred. The video registry now retains this replay association and
+  the previous broadcast ID for historical review provenance.
+- Taipei bronze Long–Yamikin: the previous blocker incorrectly ended game two
+  at 598 minutes. The removal sequence is at 603:39–606:22, and the winning
+  sequence is at 607:54–608:28. The recap's existing game assignment and text were
+  correct. Added the missing cue, corrected the winning cue from an earlier attack,
+  and refined three game-three starts. Saved boundary excerpts document the correction.
 
-The 753-item review is complete; timestamp coverage remains short of complete
-until those two blockers are resolved. This is transcript alignment, not a new
-complete playback review of every video.
+The 753-item review and timestamp backfill are complete. This is transcript
+alignment, not a complete playback review of every video.
 
 Validation: archive evidence/current-text/upload checks, source-row/clock checks,
-existing timestamp-link and Osaka tests, and a before/after comparison confirming
-that only timestamps and freshness metadata changed in published data. No recap,
-result, champion, video assignment or Osaka timestamp was changed.
+video registry and historical review checks, timestamp-link and Osaka tests.
+The final follow-up preserves every recap, result, champion and Osaka timestamp;
+it changes only timestamps, one verified video association and freshness metadata.
 
 Local Melbourne Round 9 checked at 390px and 1280px: visible cue links, 48px
 link targets, no horizontal overflow, keyboard navigation, and Game 2 switching
