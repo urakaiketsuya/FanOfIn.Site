@@ -1,45 +1,93 @@
 /* A single entrance on the detail page; browse results remain still. */
 .match-clash {
   padding-block: 14px;
+  position: relative;
+  isolation: isolate;
 }
 
 .match-clash-player {
   --clash-travel: calc(50% + 4px);
   --clash-scale: 1;
+  --clash-windup: -10px;
+  --clash-tilt: -6deg;
 }
 
 .match-clash-player[data-side="right"] {
   --clash-travel: calc(-50% - 4px);
+  --clash-windup: 10px;
+  --clash-tilt: 6deg;
 }
 
 .match-clash .match-clash-player[data-winner] {
-  --clash-scale: 1.18;
+  --clash-scale: 1.24;
 }
 
 .match-clash .match-clash-portraits {
   transform: scale(var(--clash-scale));
-  animation: champion-clash 1400ms cubic-bezier(.22, .7, .25, 1) both;
+  animation: champion-clash 1700ms cubic-bezier(.2, .75, .25, 1) both;
   margin-bottom: 16px;
 }
 
 .match-clash .match-clash-player[data-winner] [data-component="CardArtTile"] {
   outline: 2px solid var(--color-ctp-yellow);
   outline-offset: 4px;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-ctp-yellow) 28%, transparent);
+  animation: champion-victory 1700ms ease-out both;
 }
 
-/* Stop movement immediately when a keyboard user enters a portrait link. */
-.match-clash:focus-within .match-clash-portraits {
-  animation: none;
+/* A single localized burst at contact, behind the portraits. */
+.match-clash::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  left: 50%;
+  top: 38px;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  border: 2px solid var(--color-ctp-yellow);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-ctp-yellow) 45%, transparent), transparent 68%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.2);
+  animation: champion-impact 1700ms ease-out both;
+}
+
+@media (min-width: 640px) {
+  .match-clash::after { top: 46px; }
 }
 
 @keyframes champion-clash {
-  0%, 15% { transform: translateX(0) scale(1); }
-  42% { transform: translateX(var(--clash-travel)) scale(1.04); }
-  50% { transform: translateX(var(--clash-travel)) scale(.96); }
-  76% { transform: translateX(0) scale(1); }
+  0% { transform: translateX(0) scale(1); }
+  20% { transform: translateX(var(--clash-windup)) rotate(var(--clash-tilt)) scale(.96); animation-timing-function: cubic-bezier(.75, 0, 1, .4); }
+  36% { transform: translateX(var(--clash-travel)) scale(1.12); }
+  41% { transform: translateX(var(--clash-travel)) scale(.94, 1.06); }
+  47% { transform: translateX(var(--clash-travel)) scale(1.02); }
+  70% { transform: translateX(0) scale(.98); }
+  86% { transform: translateX(0) scale(calc(var(--clash-scale) + .06)); }
   100% { transform: translateX(0) scale(var(--clash-scale)); }
 }
 
+@keyframes champion-impact {
+  0%, 34% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+  38% { opacity: .85; transform: translate(-50%, -50%) scale(.7); }
+  62%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.7); }
+}
+
+@keyframes champion-victory {
+  0%, 65% { outline-color: transparent; box-shadow: none; }
+  85% { outline-color: var(--color-ctp-yellow); box-shadow: 0 0 28px color-mix(in srgb, var(--color-ctp-yellow) 45%, transparent); }
+}
+
+/* Keep links still as soon as keyboard navigation enters the matchup. */
+.match-clash:focus-within .match-clash-portraits,
+.match-clash:focus-within [data-component="CardArtTile"],
+.match-clash:focus-within::after {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .match-clash .match-clash-portraits { animation: none; }
+  .match-clash .match-clash-portraits,
+  .match-clash [data-component="CardArtTile"],
+  .match-clash::after { animation: none; }
 }
