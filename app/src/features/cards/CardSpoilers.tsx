@@ -33,7 +33,7 @@ export default function CardSpoilers() {
       <time dateTime={spoilers.capturedAt}>November 1, 2026</time>
       <a href={spoilers.source.streamUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center rounded text-ctp-blue underline focus-visible:outline-2 focus-visible:outline-ctp-blue">CBL developer stream ↗</a>
     </div>
-    <p className="mt-2 max-w-2xl text-sm text-ctp-subtext1">Transcribed from stream screenshots; names, rules text and printing details may change. Existing catalog artwork is shown where available.</p>
+    <p className="mt-2 max-w-2xl text-sm text-ctp-subtext1">Transcribed from stream screenshots; names, rules text and printing details may change. </p>
     <div className="my-5 grid gap-3 sm:grid-cols-2">
       <label className="text-sm">Find a spoiler<input type="search" className={controlClass} value={query} placeholder="Name, rules text, class or element" onChange={event => update("q", event.target.value)} /></label>
       <label className="text-sm">Reveal<select className={controlClass} value={set} onChange={event => update("set", event.target.value)}>
@@ -43,17 +43,14 @@ export default function CardSpoilers() {
     </div>
     <p role="status" className="mb-4 text-sm text-ctp-subtext1">{shown.length} of {spoilers.cards.length} spoilers</p>
     {shown.length === 0 && <div className="space-y-3"><p>No spoilers match your filters.</p><Button onClick={() => setParams({})}>Clear filters</Button></div>}
-    <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-      {shown.map(card => <CardResult key={`${card.setPrefix}:${card.name}`} card={byName.get(card.name)} name={card.name} compactOnMobile>
-        <div className="space-y-2 text-sm">
-          <p className="text-xs text-ctp-subtext1">{card.setPrefix}{card.collectorNumber ? ` · ${card.collectorNumber}` : ""}{card.rarity ? ` · ${card.rarity}` : ""}</p>
-          <div className="flex flex-wrap gap-1 text-xs">
-            {[...card.elements, ...card.types, ...card.classes, ...card.subtypes, ...(card.exalted ? ["Exalted"] : []), ...(card.deckSection === "song" ? ["Song deck"] : []), ...(card.unlocksDeckSection === "song" ? ["Unlocks Song deck"] : []), ...(card.reprintOf ? ["Reprint"] : [])].map(label => <span key={label} className="rounded bg-ctp-surface0 px-2 py-1">{label}</span>)}
-          </div>
-          <p className="text-xs text-ctp-subtext1">{[card.cost ? `${card.cost.value} ${card.cost.type}` : null, card.level != null ? `Level ${card.level}` : null, card.power != null ? `Power ${card.power}` : null, card.life != null ? `Life ${card.life}` : null, card.speed].filter(Boolean).join(" · ")}</p>
-          <p className="whitespace-pre-line break-words">{card.effect}</p>
-        </div>
-      </CardResult>)}
+    <div className="mx-auto grid w-full max-w-sm grid-cols-1 gap-6">
+      {shown.map(card => {
+        const image = (card as { image?: string }).image;
+        return image ? <figure key={`${card.setPrefix}:${card.name}`} className="min-w-0">
+          <img src={`/images/spoilers/${image}`} alt={card.name} loading="lazy" className="h-auto w-full rounded-lg" onError={event => { event.currentTarget.hidden = true; }} />
+          <figcaption className="py-2 text-sm font-medium">{card.name}</figcaption>
+        </figure> : <CardResult key={`${card.setPrefix}:${card.name}`} card={byName.get(card.name)} name={card.name} />;
+      })}
     </div>
   </PageLayout>;
 }
