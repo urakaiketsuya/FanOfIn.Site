@@ -3,7 +3,7 @@ import type { Card } from '@gatcg/shared';
 import { mergePreviewCards, type PreviewCardRecord } from '../../../lib/previewCards';
 
 export function usePreviewCatalog(official: Card[], selectedNames: string[]) {
-  const [enabled, setEnabled] = useState(() => { try { return sessionStorage.getItem('builder-preview-cards') === 'true'; } catch { return false; } });
+  const [enabled, setEnabled] = useState(() => { try { return sessionStorage.getItem('builder-preview-cards') !== 'false'; } catch { return true; } });
   const [previews, setPreviews] = useState<PreviewCardRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);

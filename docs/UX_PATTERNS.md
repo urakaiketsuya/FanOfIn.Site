@@ -712,8 +712,9 @@ Event discovery uses location-led cards and region chips, with a searchable `Dia
 
 ### Unreleased cards and Song decks
 
-The Deck Workbench offers opt-in preview browsing. Selected previews remain in a
-restored draft when browsing is off; preview records never enter the official
+The Deck Workbench includes spoiler cards in browsing by default, with a concise
+Preview label and an “Include spoiler cards” toggle. Honor an explicit choice to
+hide them for the session. Selected previews remain in a restored draft when browsing is off; preview records never enter the official
 catalog or tournament statistics. Official catalog records replace matching
 previews in full, including art, rules, costs, and printing IDs. If a final name
 changes, add its exact name to the preview record's `aliases`; do not fuzzy-match
