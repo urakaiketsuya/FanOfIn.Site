@@ -32,6 +32,16 @@
         "checkedAt": "2026-10-31",
         "status": "transcript-unavailable",
         "evidence": "Expanded video description has no Show transcript button. No caption text retrieved."
+      },
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/g3NNFcNpw3k.json",
+        "sha256": "26d3cf1a066e97bc016549568ed63bc67b736e6950c1a4dd19bc1c85facdde10",
+        "segments": 9182,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:25:39",
+        "blankSegments": 1,
+        "reviewStatus": "machine-transcribed-unreviewed",
+        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp, split into 24 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments). Removed 667 stock phrases such as 'Thanks for watching' over music, 278 looped repeat copies, prompt-echo lines, and junk after 11:29:59. Card and player names are often misheard. Match start offsets are not verified."
       }
     },
     {
