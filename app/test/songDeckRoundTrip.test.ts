@@ -88,6 +88,7 @@ test('preview set filters group all reveals without inventing official editions'
   assert.deepEqual(options, [{ value: 'CBL', text: PREVIEW_SET.name }]);
   assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: 'CBL' }).length, catalog.length);
   assert.equal(filterCatalog(catalog, 'set:CBL', emptyCatalogFilters()).length, catalog.length);
+  assert.deepEqual(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: 'CBL', class: 'CLERIC' }), catalog.filter(card => card.classes.includes('CLERIC')));
   assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: '-CBL' }).length, 0);
   assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: 'DOA' }).length, 0);
   assert.ok(catalog.every(card => card.editions.length === 0));
