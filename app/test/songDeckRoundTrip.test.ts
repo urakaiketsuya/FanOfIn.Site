@@ -61,7 +61,7 @@ test("comparison links preserve Song cards", () => {
 
 test("spoiler art is available in card tiles but never overrides official art", () => {
   const preview = catalog.find(c => c.name === 'Chromatic')!;
-  assert.equal(previewCardImage(preview), '/images/spoilers/chromatic.webp');
+  assert.equal(previewCardImage(preview), '/images/spoilers/chromatic.png');
   const official = { ...preview, uuid: 'official', editions: [] } as Card;
   assert.equal(previewCardImage(mergePreviewCards([official], previews, true).find(c => c.name === 'Chromatic')), undefined);
 });
@@ -69,4 +69,14 @@ test("spoiler art is available in card tiles but never overrides official art", 
 test("partial catalog cards retain the name fallback without an ID", () => {
   assert.equal(isPreviewCard({ name: "Unknown" } as Card), false);
   assert.equal(previewCardImage({ name: "Unknown" } as Card), undefined);
+});
+
+test('revealed Songs retain aria costs and Song deck classification', () => {
+  for (const [name, value] of [['Skyward Requiem', '1'], ['Chromatic', '2'], ['Aiss Yustera', '5'], ['Let My Thunder Be Heard', '3']]) {
+    const card = catalog.find(card => card.name === name)!;
+    assert.deepEqual(card.cost, { type: 'aria', value });
+    assert.ok(card.subtypes.includes('SONG'));
+    assert.equal(card.cost_reserve, null);
+    assert.ok(previewCardImage(card));
+  }
 });

@@ -19,7 +19,8 @@
     "Re:C-SKY": "Casella reveal cards (Cleric, arcane)",
     "Re:C-MST": "Beatrice reveal cards (Tamer, DisCorp Automaton)",
     "CBL": "Set prefix printed on cards shown with the Casella and Beatrice reveals",
-    "CBLP": "Set prefix printed on the Pantheon (boon/devotion) cards"
+    "CBLP": "Set prefix printed on the Pantheon (boon/devotion) cards",
+    "CBLDS": "Song reveal printing"
   },
   "cards": [
     {
@@ -159,7 +160,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "015",
       "rarity": "R",
-      "image": "skyward-requiem.webp",
+      "image": "skyward-requiem.png",
       "types": [
         "ACTION"
       ],
@@ -175,7 +176,7 @@
       ],
       "level": null,
       "cost": {
-        "type": "reserve",
+        "type": "aria",
         "value": "1"
       },
       "power": null,
@@ -190,7 +191,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "014",
       "rarity": "R",
-      "image": "chromatic.webp",
+      "image": "chromatic.png",
       "types": [
         "ACTION"
       ],
@@ -206,7 +207,7 @@
       ],
       "level": null,
       "cost": {
-        "type": "reserve",
+        "type": "aria",
         "value": "2"
       },
       "power": null,
@@ -246,6 +247,37 @@
       "unlockable": true,
       "deckSection": "song",
       "effect": "On Premiere: The next ally card you activate this turn costs (2) less to activate. (Trigger this ability when you activate \"Aiss Yustera\" for the first time each game.)\nIf your influence is seven or less, scavenge 7 for an ally card. (A player's influence is equal to the total amount of cards in their hand and memory.)"
+    },
+    {
+      "name": "Let My Thunder Be Heard",
+      "setPrefix": "CBLDS",
+      "collectorNumber": "001",
+      "rarity": "UR",
+      "image": "let-my-thunder-be-heard.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "SONG"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "aria",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "unlockable": true,
+      "deckSection": "song",
+      "effect": "On Premiere: Banish up to three cards from your memory. For each card banished this way, draw a card.\nFinale — If there are four or more face up cards in your Song deck, each ally you control gets +X power until end of turn, where X is the amount of arcane element cards in your banishment. X is capped at 6."
     },
     {
       "name": "Opening Refrain",
@@ -1533,7 +1565,8 @@
       "cards": [
         "Skyward Requiem",
         "Chromatic",
-        "Aiss Yustera"
+        "Aiss Yustera",
+        "Let My Thunder Be Heard"
       ],
       "unlockedBy": [
         "Casella, Volant Songstress"
