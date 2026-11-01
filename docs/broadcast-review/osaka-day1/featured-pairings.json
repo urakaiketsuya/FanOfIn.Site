@@ -1,0 +1,130 @@
+[
+  {
+    "round": 1,
+    "pairingId": 131,
+    "players": [
+      {
+        "id": 12357,
+        "name": "wenwen",
+        "officialScore": 0
+      },
+      {
+        "id": 7946,
+        "name": "hachico",
+        "officialScore": 2
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "pairingId": 127,
+    "players": [
+      {
+        "id": 15923,
+        "name": "Danriick",
+        "officialScore": 0
+      },
+      {
+        "id": 16501,
+        "name": "Professor",
+        "officialScore": 2
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "pairingId": 8,
+    "players": [
+      {
+        "id": 1266,
+        "name": "Mono",
+        "officialScore": 1
+      },
+      {
+        "id": 636,
+        "name": "Xenadrael",
+        "officialScore": 2
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "pairingId": 10,
+    "players": [
+      {
+        "id": 16723,
+        "name": "Cashkidz",
+        "officialScore": 2
+      },
+      {
+        "id": 18665,
+        "name": "ClourX",
+        "officialScore": 1
+      }
+    ]
+  },
+  {
+    "round": 5,
+    "pairingId": 1,
+    "players": [
+      {
+        "id": 6466,
+        "name": "Rty",
+        "officialScore": 0
+      },
+      {
+        "id": 4091,
+        "name": "Neek0",
+        "officialScore": 1
+      }
+    ]
+  },
+  {
+    "round": 6,
+    "pairingId": 3,
+    "players": [
+      {
+        "id": 7714,
+        "name": "Inaki",
+        "officialScore": 2
+      },
+      {
+        "id": 7777,
+        "name": "Miffy",
+        "officialScore": 1
+      }
+    ]
+  },
+  {
+    "round": 7,
+    "pairingId": 42,
+    "players": [
+      {
+        "id": 2302,
+        "name": "DragonJG",
+        "officialScore": 1
+      },
+      {
+        "id": 792,
+        "name": "Quarax",
+        "officialScore": 2
+      }
+    ]
+  },
+  {
+    "round": 8,
+    "pairingId": 42,
+    "players": [
+      {
+        "id": 28812,
+        "name": "SoSollys",
+        "officialScore": 0
+      },
+      {
+        "id": 10891,
+        "name": "NoobTinnn",
+        "officialScore": 2
+      }
+    ]
+  }
+]
