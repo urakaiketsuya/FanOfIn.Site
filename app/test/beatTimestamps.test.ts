@@ -60,8 +60,8 @@ test('archive backfill retains source excerpts and matches current highlights an
     assert.equal(b.timestamp!.seconds, Math.floor(seconds), key);
     assert.ok(b.timestamp!.seconds >= (match.video!.startSeconds ?? 0), key);
   }
-  assert.equal(seen.size, 326);
-  assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 111);
+  assert.equal(seen.size, 1069);
+  assert.equal(new Set(evidence.map((e: { matchId: string }) => e.matchId)).size, 203);
 });
 
 test('remaining timestamp queue covers every untimed highlight exactly once', () => {
@@ -70,5 +70,22 @@ test('remaining timestamp queue covers every untimed highlight exactly once', ()
   const remaining = read('docs/broadcast-review/archive-timestamps/remaining.json');
   const expected = data.matches.flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
   const actual = remaining.flatMap((m: { matchId: string; beats: { gameNumber: number; order: number }[] }) => m.beats.map(b => `${m.matchId}/${b.gameNumber}/${b.order}`));
+  assert.deepEqual(actual.sort(), expected.sort());
+});
+
+test('every remaining highlight has a documented source or game-assignment blocker', () => {
+  const read = (p: string) => JSON.parse(readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
+  const data: BroadcastTimelines = read('data/broadcast-timelines.json');
+  const unresolved = read('docs/broadcast-review/archive-timestamps/unresolved.json');
+  const expected = data.matches.flatMap(m => m.games.flatMap(g => g.beats.filter(b => !b.timestamp).map(b => `${m.id}/${g.gameNumber}/${b.order}`)));
+  const actual = unresolved.map((e: { matchId: string; gameNumber: number; order: number; text: string; videoId: string; reason: string }) => {
+    const match = data.matches.find(m => m.id === e.matchId)!;
+    const beat = match.games.find(g => g.gameNumber === e.gameNumber)!.beats.find(b => b.order === e.order)!;
+    assert.equal(beat.text, e.text);
+    assert.equal(match.video!.id, e.videoId);
+    assert.ok(e.reason.length > 0);
+    return `${e.matchId}/${e.gameNumber}/${e.order}`;
+  });
+  assert.equal(actual.length, 10);
   assert.deepEqual(actual.sort(), expected.sort());
 });
