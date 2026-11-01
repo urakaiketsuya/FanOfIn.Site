@@ -9,6 +9,7 @@ const maps: BroadcastEventMaps = read('data/broadcast-events.json');
 const review = read('docs/BROADCAST_BACKFILL_REVIEW_2026-10-31.json');
 const resolutions = read('docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json');
 const registry = read('docs/BROADCAST_VIDEO_SOURCES.json');
+const sequential = read('docs/BROADCAST_SEQUENTIAL_REVIEW_2026-10-31.json');
 const match = (id: string) => {
   const found = data.matches.find(m => m.id === id);
   assert.ok(found, id);
@@ -26,6 +27,48 @@ test('recovered coverage retains the baseline and accounts for every new recap',
     assert.equal(source.sha256, registry.sources.find((s: { videoId: string }) => s.videoId === source.videoId).capture.sha256);
   }
   for (const held of review.held) if (held.matchId) assert.ok(!review.newRecapIds.includes(held.matchId));
+});
+
+test('sequential caption review accounts for every recovered source and associated recap', () => {
+  const sourceIds = new Set(review.sources.map((s: { videoId: string }) => s.videoId));
+  assert.equal(sequential.sources.length, sourceIds.size);
+  assert.equal(new Set(sequential.sources.map((s: { videoId: string }) => s.videoId)).size, sourceIds.size);
+  for (const source of sequential.sources) {
+    assert.ok(sourceIds.has(source.videoId));
+    assert.equal(source.fullCaptionReview, true, source.videoId);
+    assert.equal(source.fullGameplayReviewed, false, source.videoId);
+    assert.equal(source.sourceSha256, review.sources.find((s: { videoId: string }) => s.videoId === source.videoId).sha256);
+    let coveredThrough = -1;
+    const ranges = [...source.reviewedRowRanges, ...(source.priorReviewedRowRanges ?? []), ...(source.previouslyReviewedRowRanges ?? [])];
+    for (const [start, end] of ranges.sort((a: number[], b: number[]) => a[0] - b[0])) {
+      assert.ok(start >= 0 && start <= coveredThrough + 1 && end >= start && end < source.segmentCount, source.videoId);
+      coveredThrough = Math.max(coveredThrough, end);
+    }
+    assert.equal(coveredThrough, source.segmentCount - 1, source.videoId);
+  }
+  const associated = data.matches.filter(m => m.video && sourceIds.has(m.video.id)).map(m => m.id).sort();
+  assert.deepEqual(sequential.records.map((r: { matchId: string }) => r.matchId).sort(), associated);
+  for (const record of sequential.records) {
+    assert.equal(record.videoId, match(record.matchId).video?.id);
+    const source = sequential.sources.find((s: { videoId: string }) => s.videoId === record.videoId);
+    assert.equal(record.sourceSha256, source.sourceSha256, record.matchId);
+    const ranges = record.reviewedRowRanges ?? record.rowsZeroBased;
+    assert.ok(ranges.length > 0, record.matchId);
+    for (const [start, end] of ranges) {
+      assert.ok(start >= 0 && end >= start && end < source.segmentCount, record.matchId);
+    }
+  }
+});
+
+test('sequential review preserves the Melbourne final penalty and Niagara timed draw', () => {
+  const final = match('ascent-melbourne-2026-final-hachico-yamikin');
+  assert.deepEqual(final.games.map(g => g.winner), ['p1', 'p1']);
+  assert.equal(final.games[0].beats[0].actor, 'p2');
+  assert.match(final.games[0].beats[0].text, /game loss for Yamikin/);
+  assert.match(final.games[0].beats[0].text, /main-deck card.*material deck/);
+  const timed = match('ascent-niagara-falls-2025-day1-round2-kibbles-hyouka');
+  assert.deepEqual(timed.games.map(g => g.winner), ['p2', 'draw']);
+  assert.equal(timed.result, 'Hyouka wins 1-0 on broadcast');
 });
 
 test('every backfill association joins the exact event, stage, round and two players', () => {
@@ -52,8 +95,7 @@ test('partial coverage preserves game numbers, draws, penalties and missing star
   assert.deepEqual(match('ascent-melbourne-2026-semifinal-hachico-noel').games.map(g => g.gameNumber), [2]);
   const draw = match('oce-nationals-2026-round-8-kmo-professor');
   assert.equal(draw.result, 'Draw 1-1');
-  assert.equal(draw.games[0].gameNumber, 2);
-  assert.equal(draw.games[0].winner, 'p1');
+  assert.deepEqual(draw.games.map(g => [g.gameNumber, g.winner]), [[1, 'p2'], [2, 'p1']]);
   const penalty = match('ascent-los-angeles-2026-day1-round6-quarax-rexaren');
   assert.deepEqual(penalty.games.map(g => g.winner), ['p1', 'p2', 'p1']);
   assert.match(penalty.games[1].beats[0].text, /Quarax receives a game loss/);
@@ -90,12 +132,15 @@ test('resolved holds preserve source conflicts, partial games and the deciding p
   assert.match(penalty.games[2].beats[0].text, /game loss ends the match at 2-1/);
   assert.deepEqual(match('ascent-los-angeles-2026-day1-round7-quikk-chemcollapse').games.map(g => g.gameNumber), [1]);
   assert.deepEqual(match('na-nationals-2026-day1-round5-superior-elian').games.map(g => g.gameNumber), [1]);
-  assert.deepEqual(match('ascent-taipei-2025-round-2-lifdrasyl-shina2486').games.map(g => g.gameNumber), [1]);
-  assert.deepEqual(match('ascent-taipei-2025-round-4-aw5459-menbao').games.map(g => g.gameNumber), [2]);
+  assert.deepEqual(match('ascent-taipei-2025-round-2-lifdrasyl-shina2486').games.map(g => [g.gameNumber, g.winner]), [[1, 'p1'], [2, 'draw']]);
+  assert.match(match('ascent-taipei-2025-round-2-lifdrasyl-shina2486').sourceNote!, /draw inferred from official 1-0/);
+  assert.deepEqual(match('ascent-taipei-2025-round-4-aw5459-menbao').games.map(g => g.gameNumber), [1, 2]);
   const seaQuarterfinal = match('sea-national-2026-quarterfinal-dragonjg-noobtinnn');
   assert.deepEqual(seaQuarterfinal.games.map(g => [g.gameNumber, g.winner]), [[1, 'p1'], [2, 'p1']]);
   assert.equal(seaQuarterfinal.players[1].name, 'NoobTinnn');
-  assert.match(seaQuarterfinal.games[0].beats[0].text, /concedes/);
-  assert.match(seaQuarterfinal.games[1].beats[1].text, /deck-out/);
+  assert.ok(seaQuarterfinal.games.find(g => g.gameNumber === 1)!.beats.some(b => /concedes/i.test(b.text)));
+  const decidingGame = seaQuarterfinal.games.find(g => g.gameNumber === 2)!;
+  assert.ok(decidingGame.beats.some(b => /deck[ -]?out/i.test(b.text)));
+  assert.ok(decidingGame.beats.some(b => b.cards?.includes('Dynastic Whirlpool')));
   assert.equal(seaQuarterfinal.video?.startSeconds, 22861);
 });

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-31T23:58:28.786Z",
+  "generatedAt": "2026-11-01T00:31:58.637Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -15525,7 +15525,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "TlsoVotl is expected to bring in Infernal Vessel and Safeguard Amulet (the casters doubt Nullifying Mirror makes it, as Aqua does not imbue). In the post-match interview, TlsoVotl also names Pseudo Trickery and Mortal Ambition as side tech against champion-cleave decks such as Lorraine."
+          "text": "TlsoVotl is expected to bring in Infernal Vessel and Safeguard Amulet (the casters doubt Nullifying Mirror makes it, as Aqua does not imbue). In the post-match interview, TlsoVotl also names Suited Trickery and Mortal Ambition as side tech against champion-cleave decks such as Lorraine."
         },
         {
           "beforeGame": 2,
@@ -15599,7 +15599,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Aqua starts with two Calming Breezes, two Gentle Beseeches and Gentle Respite. TlsoVotl's hand has few cheap allies and uses Backup Charger to fix it.",
+              "text": "Aqua opens with Calming Breeze, Gentle Respite and Beseech the Winds. TlsoVotl has few cheap allies and uses Backup Charger to improve the hand.",
               "cards": [
                 "Calming Breeze",
                 "Gentle Respite",
@@ -15652,12 +15652,13 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Aqua uses Angelic Channeling to put Meteor Strike on top. After a Dungeon Guide level up, Aqua wipes the board with Meteor Strike via Cosmic Astroscope, and Polaris with Calming Breeze and Stifling Gyre blunt the follow-up.",
+              "text": "Aqua banks Meteor Strike with Angelic Channeling. After a Dungeon Guide level-up, Three Visits glimpses the prepared Meteor Strike to clear the board. Polaris and Stifling Gyre continue to constrain TlsoVotl’s follow-up.",
               "cards": [
                 "Angelic Channeling",
                 "Dungeon Guide",
                 "Meteor Strike",
-                "Stifling Gyre"
+                "Stifling Gyre",
+                "Three Visits"
               ],
               "tags": [
                 "stabilize"
@@ -15842,7 +15843,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Noel switches to a damage plan. Shuangji, Berserker Plate, Fracturize and an Enrage push huge swings, and Tress answers with Crimson Rupture on the Shuangji plus Pearled Prayer, Regenerate and Serene Spirit.",
+              "text": "Noel switches to a damage plan. Shuang Ji of Sacrifice, Berserker Plate and Enrage enable a large attack, with Hemorrhaging Rend adding damage. Tress uses Pearled Prayer earlier, then answers the attack with Crimson Rupture on Shuang Ji, reducing its damage; Noel uses Mend Flesh to stay safe.",
               "cards": [
                 "Shuang Ji of Sacrifice",
                 "Berserker Plate",
@@ -15894,12 +15895,12 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "The casters predict Caban brings in Crystalline Mirror (to remove Safeguard Amulet), Expel the Departed against Polar Depths, Song of Frost and perhaps Delusional Vapors. These are caster predictions, not a confirmed list."
+          "text": "The casters suggest Crystalline Mirror, Expel the Departed and Song of Frost for Caban. These are predictions, not a confirmed swap list."
         },
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "The casters discuss Beastbond Boots, Expel the Departed, Engulf and Regal Inquisition for Superior. Boots appears and Engulf is played in game two; Expel is milled rather than shown stopping a play."
+          "text": "The casters discuss Beastbond Boots, Expel the Departed, Engulf, Regal Inquisition and Delusional Vapors for Superior. Boots appears, Engulf negates Burst Asunder, and Expel removes Fractal of Rain in game two; another Expel is later milled."
         }
       ],
       "games": [
@@ -15982,7 +15983,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Caban responds to Frostsworn Paladin’s trigger with an imbued Topsy Turvy Decree, trying to remove the newly milled floating memory. Superior’s imbued Cerulean Decree negates it, leaving a 3/4 Paladin. Tidal Lock was used in the earlier exchange.",
+              "text": "Caban responds to Frostsworn Paladin’s trigger with an imbued Topsy Decree, trying to remove the newly milled floating memory. Superior’s imbued Cerulean Decree negates it, leaving a 3/4 Paladin. Tidal Lock was used in the earlier exchange.",
               "cards": [
                 "Topsy Decree",
                 "Cerulean Decree",
@@ -16363,7 +16364,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "The casters recommend Topsy Turvy Decree and Unbroken Mustang to disrupt Quakems’s graveyard and Aquamirage Whisper, with Snow White as another option. These are recommendations rather than confirmed swaps."
+          "text": "The casters recommend Topsy Decree and Unbroken Mustang to disrupt Quakems’s graveyard and Aquamirage Whisper, with Snow White as another option. These are recommendations rather than confirmed swaps."
         },
         {
           "beforeGame": 2,
@@ -16421,8 +16422,8 @@
               "actor": "p1",
               "text": "Celednb uses Tactical Retreat to deny Quakems’s attack value, while Aetheric Calibration and the Aether charges build pressure. Krustallan Archer repeatedly attacks using floating memory.",
               "cards": [
-                "Topsy Decree",
-                "Unbroken Mustang",
+                "Tactical Retreat",
+                "Aetheric Calibration",
                 "Krustallan Archer",
                 "Weaving Manastream"
               ]
@@ -16477,7 +16478,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Quakems sets up Stellar Cosmos and two Cosmic Focuses (stacked two cards apart). Flash Grenade, Refreshing Charge and Diana's negate-unless-two ability absorb Celednb's Archer attacks.",
+              "text": "Quakems sets up Stellar Cosmos and keeps two Cosmic Focuses two cards apart in the deck. Refreshing Charge and Flash Grenade buy time while Quakems chooses to glimpse and shoots down Celednb’s allies.",
               "cards": [
                 "Stellar Cosmos",
                 "Cosmic Focus",
@@ -16492,7 +16493,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "After Quakems spends cards removing an Archer, Celednb commits Ranger’s Strides and another Krustallan Archer for a large damage push. The casters count this as the third Archer played across the game, not three simultaneous attackers. Quakems survives; the casters discuss a Charge the Soul in Celednb’s hand as still insufficient.",
+              "text": "After Quakems spends cards removing an Archer, Celednb commits Ranger Strides and another Krustallan Archer for a large damage push. Quakems survives, and a Charge the Soul in Celednb’s hand is still insufficient.",
               "cards": [
                 "Ranger Strides",
                 "Krustallan Archer",
@@ -16709,12 +16710,13 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Hessu goes to level two, plays Ethereal Slime and Lustrous Slime (play two for each), and clears Frostsworn Paladin. Zorr's Primordial Ritual leaves him unable to hold Title Lock, and slimes flood the board.",
+              "text": "Hessu uses Dungeon Guide to reach Silvie level three, then develops Ethereal Slimes and Lustrous Slime. Zorr sacrifices Frostsworn Paladin to Primordial Ritual in response to an attack, and Hessu widens the board.",
               "cards": [
                 "Ethereal Slime",
                 "Lustrous Slime",
                 "Frostsworn Paladin",
-                "Primordial Ritual"
+                "Primordial Ritual",
+                "Dungeon Guide"
               ],
               "tags": [
                 "swing"
@@ -16781,7 +16783,7 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Hessu plays Nullifying Lantern and Viridian Protective Trinket against Zorr's graveyard plan, a regalia lock. Zorr uses Unbroken Mustang on the Lantern and Safeguard Amulet, but a Spalling Cleanse is not enough.",
+              "text": "Hessu combines Nullifying Lantern with Viridian Protective Trinket. Zorr uses Spalling Cleanse and Safeguard Amulet to survive a damage push, then removes the Lantern with Unbroken Mustang on the following turn.",
               "cards": [
                 "Nullifying Lantern",
                 "Viridian Protective Trinket",
@@ -17026,7 +17028,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "Superior brings in Beastbond Boots, Expel the Departed, an Engulf and the second Excalibur, Cleansing Light, as the only answer to Essence Crucible. These are caster predictions, partly confirmed by the cards that appear in play."
+          "text": "The casters recommend Beastbond Boots, Expel the Departed, another Engulf and a second Excalibur, Cleansing Light for Superior. Expel is identified in hand, and both Excaliburs are milled in game two."
         }
       ],
       "games": [
@@ -17038,10 +17040,9 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Asuna opens Razorgale Calling, then develops Censer of Restful Peace and Stifling Gyre naming Frostsworn Paladin. Essence Crucible is discussed as the deck’s later payoff, not a turn-one materialization.",
+              "text": "Asuna opens Razorgale Calling, then develops Censer of Restful Peace and Stifling Gyre naming Frostsworn Paladin.",
               "cards": [
                 "Razorgale Calling",
-                "Essence Crucible",
                 "Stifling Gyre",
                 "Censer of Restful Peace"
               ]
@@ -17121,12 +17122,13 @@
             {
               "order": 4,
               "actor": "p2",
-              "text": "Asuna brews a Speed Potion with Essence Crucible, protected by two Obscured Offerings. Agility Three returns cards from memory, and Three Visits plus Tempest Downfall deal 11 damage to Guo Jia.",
+              "text": "Asuna brews Speed Potion with Essence Crucible, protecting it with two Obscured Offerings. Agility returns cards from memory; Three Visits and Scout the Land trigger Razorgale damage during Superior’s recollection. Tempest Downfall threatens another 11 damage and closes the game.",
               "cards": [
                 "Speed Potion",
                 "Obscured Offering",
                 "Tempest Downfall",
-                "Three Visits"
+                "Three Visits",
+                "Scout the Land"
               ],
               "tags": [
                 "combo",
@@ -17138,7 +17140,7 @@
         {
           "gameNumber": 3,
           "winner": "p1",
-          "summary": "Superior wins — Infeebling Orb strips Asuna's hand, then a double Fugue",
+          "summary": "Superior wins — Enfeebling Orb strips Asuna's hand, then a double Fugue",
           "beats": [
             {
               "order": 1,
@@ -17216,7 +17218,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "Tacoboss looks at Sparklite (unpreventable damage, a way through Clarent), Gilded Pyre, Intensified Pyre, Restorative Flame and Shatter the Brittle. Sparklite is expected to come in. The Avatar of Suzaku is first seen in game 3."
+          "text": "The casters discuss Spark Alight for unpreventable damage through Clarent, along with Gilded Pyre, Intensified Pyre, Restorative Flame and Shatter the Brittle. Avatar of Suzaku appears in game three."
         }
       ],
       "games": [
@@ -17240,7 +17242,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "TeppeSlorn plays only value cards: Poisonous Breezecap, Jiang Xiao, Stifling Gyre, Purifying Thurible, which eats the graveyard but the Phoenix does not need the graveyard on its first flip. TeppeSlorn has no Calming Breeze and only two Veiling Breezes in the main.",
+              "text": "TeppeSlorn develops Poisonous Breezecap and Zhang Jiao, Way of Peace, then uses Stifling Gyre and Purifying Thurible to slow Tacoboss.",
               "cards": [
                 "Poisonous Breezecap",
                 "Zhang Jiao, Way of Peace",
@@ -17448,7 +17450,7 @@
             {
               "order": 4,
               "actor": "p2",
-              "text": "Superior levels to Guo Jia 2, flips Genbu and plays Resonating Fugue, then Frostsworn Paladin and an attack for lethal, with Engulf held up. TLux concedes.",
+              "text": "Superior levels to Guo Jia level two and flips Genbu. Frostsworn Paladin attacks first, then Resonating Fugue sets up the finishing Genbu attack with Engulf held up. TLux concedes.",
               "cards": [
                 "Resonating Fugue",
                 "Engulf",
@@ -17468,7 +17470,7 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "TLux plays Nullifying Lantern, Expel the Departed on Fractal of Rain, and a Dream Fairy. TLux keeps the dragon unflipped and builds influence with Incandescent Reliquary, using the Fatestone of Heaven to clear Frostsworn Paladin.",
+              "text": "TLux uses Expel the Departed on Fractal of Rain, then develops Nullifying Lantern. Fatestone of Heaven removes another Fractal of Rain, while Dream Fairy removes Frostsworn Paladin. TLux keeps the dragon unflipped and later builds influence with Incandescent Reliquary.",
               "cards": [
                 "Nullifying Lantern",
                 "Expel the Departed",
@@ -17545,7 +17547,7 @@
         {
           "beforeGame": 2,
           "actor": "p2",
-          "text": "The casters consider Regal Inquisition, a fourth Song of Frost and Terraforming for mDuo13. They describe Submerged Fatestone as a mirror option. Terraforming is later revealed beneath Quicksilver Grail; Safeguard Amulet also remains available."
+          "text": "The casters consider Regal Inquisition, a fourth Song of Frost and Tariff Ring for mDuo13. They describe Submerged Fatestone as a mirror option. Tariff Ring is later revealed beneath Quicksilver Grail; Safeguard Amulet also remains available."
         }
       ],
       "games": [
@@ -17606,7 +17608,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "mDuo13 develops Tidestone Bovine and Fractal of Rain, while ChemCollapse uses Purifying Thurible to remove floating memory. Genbu eventually transforms. The casters explore several possible lethal lines, but mDuo13 instead takes a nine-damage Resonating Fugue line.",
+              "text": "mDuo13 develops Tidestone Bovine and Fractal of Rain, while ChemCollapse uses Purifying Thurible to remove floating memory. Genbu transforms, and Resonating Fugue enables a nine-damage attack.",
               "cards": [
                 "Tidestone Bovine",
                 "Fractal of Rain",
@@ -17678,7 +17680,7 @@
         {
           "beforeGame": 2,
           "actor": "p1",
-          "text": "The casters expect additional Snow White, Weiss Queen and discuss increasing Rude from three main-deck copies to four. These are boarding predictions, not confirmed changes."
+          "text": "The casters expect an additional Snow White, Weiss Queen, increasing the three main-deck copies to four."
         }
       ],
       "games": [
@@ -17769,7 +17771,7 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "The casters first propose playing two Lightweaver’s Assaults through Flash Grenade. Yadon instead uses Exploit Vulnerability, then activates one Assault while putting the other into memory. The reveal trigger and the activated Assault supply lethal damage. The casters infer that this line also leaves Incapacitate available; it is not played.",
+              "text": "Yadon uses Exploit Vulnerability, then activates Lightweaver’s Assault while putting another Assault into memory. The reveal trigger and activated Assault supply lethal damage.",
               "cards": [
                 "Lightweaver's Assault",
                 "Exploit Vulnerability",
@@ -17980,7 +17982,7 @@
         {
           "id": "p1",
           "name": "Jett",
-          "deck": "Razorgale Arisanna (Essence Crucible, raccoon package, Aesan Protector, Ensnaring Fumes, Orbital Ceiling)"
+          "deck": "Razorgale Arisanna (Essence Crucible, raccoon package, Aesan Protector, Ensnaring Fumes, Orb of Sealing)"
         },
         {
           "id": "p2",
@@ -18126,7 +18128,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ChemCollapse goes first for the first time in the match, uses Beseech the Winds on turn one and Portentous Tanggu, and holds Blanch and Dungeon Guide. Jett opens with Windmill Engineer, Aesan Protector and Fluffy Shopkeep, to keep at least four damage of allies on board against another Tricastle.",
+              "text": "ChemCollapse goes first for the first time in the match, uses Beseech the Winds on turn one and Portentous Tanggu, and holds Blanche and Dungeon Guide. Jett opens with Windmill Engineer, Aesan Protector and Fluffy Shopkeep, to keep at least four damage of allies on board against another Tricastle.",
               "cards": [
                 "Beseech the Winds",
                 "Portentous Tanggu",
@@ -18408,7 +18410,7 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Jett opens with Purifying Thurible (not Censer of Restful Peace) and holds Protector Raccoon. Quarax's Krustallan Archer attack is answered by Protector Raccoon banishing the Charge the Soul float, so no card is drawn. Jett waits for the last moment to respond.",
+              "text": "Jett opens with Purifying Thurible and holds Protector Raccoon. Thurible removes Quarax’s floating memory during a Krustallan Archer attack. Quarax responds with Charge the Soul, but Protector Raccoon removes that float too, denying the Archer’s bonus and draw.",
               "cards": [
                 "Purifying Thurible",
                 "Protector Raccoon",
@@ -18422,7 +18424,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Bandit scavenges into a third raccoon. Fluffy Shopkeep, an animal, is protected by Protector Raccoon, and Viridian Protective Trinket makes Quarax's water cards cost two more. Quarax's Cheshire Cat kills the Fluffy Shopkeep and the Raccoon.",
+              "text": "Bandit finds more raccoons, and Fluffy Shopkeep provides an interceptor. Protector Raccoon prevents Diana’s Inert Sword damage to itself, but Cheshire Cat then defeats it. On a later turn, the Cat removes Fluffy Shopkeep.",
               "cards": [
                 "Bandit, Gaze Leader",
                 "Fluffy Shopkeep",
@@ -18433,14 +18435,15 @@
             {
               "order": 3,
               "actor": "p2",
-              "text": "Jett plays two Razorgales and brews a Speed Potion in Essence Crucible. Quarax's Fracturize removes the Crucible (Jett has no Obscured Offering). Dream Fairy kills the Cheshire Cat, and Aesan Protector returns it to hand. Razorgale pings, Cyclical Breeze and Tariff Ring leave Quarax with one damage from death.",
+              "text": "Jett plays two Razorgales and brews Speed Potion in Essence Crucible. Quarax’s Fracturize removes the Crucible. Dream Fairy sends Cheshire Cat to memory; Verdigris Decree later suppresses the Fairy, and Aesan Protector returns it to hand. Razorgale triggers and Cyclical Breeze push Quarax close to defeat.",
               "cards": [
                 "Razorgale Calling",
                 "Essence Crucible",
                 "Fracturize",
                 "Dream Fairy",
                 "Aesan Protector",
-                "Tariff Ring"
+                "Tariff Ring",
+                "Verdigris Decree"
               ],
               "tags": [
                 "swing"
@@ -18497,7 +18500,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Quarax attacks with Diana, finds floating memory and follows with Krustallan Archer. Jett plays Skirting Step without imbuing it. The casters initially calculate that it saves him at one life and discuss leveling, then correct themselves: the damage prevention also requires imbue. With Topsy Decree among Jett’s cards preventing that imbue, the Archer attack ends game two.",
+              "text": "Quarax attacks with Diana, finds floating memory and follows with Krustallan Archer. Jett plays Skirting Step without imbuing it, so it provides no damage prevention. The Archer attack ends game two.",
               "cards": [
                 "Krustallan Archer",
                 "Skirting Step",
@@ -18532,7 +18535,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Jett levels to Arisanna with Reclaim and Windmill Engineer, imbues Skirting Step, and plays Razorgale Calling and Dream Fairy on the Cheshire Cat. Quarax finds Seeker's Aetherwing and Prudent Nock, but cannot get damage through the reclaimed Windmill Engineers and Dream Fairy.",
+              "text": "Jett levels to Arisanna, imbues Skirting Step, and develops Razorgale Calling. Dream Fairy sends Cheshire Cat to memory. Quarax materializes Seeker’s Aetherwing and loads Prudent Nock, but Jett reclaims Dream Fairy in response to its attack.",
               "cards": [
                 "Reclaim",
                 "Skirting Step",
@@ -18590,6 +18593,23 @@
       "result": "Lecithium wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Lecithium wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Lecithium combines Seiryuu’s Command and Byakko’s Command, then finishes Joyboy with Arcane Blast before Arisanna can remove the dragon.",
+              "cards": [
+                "Seiryuu's Command",
+                "Byakko's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "Lecithium wins game 2",
@@ -18618,7 +18638,7 @@
         {
           "id": "p1",
           "name": "obuchi1go",
-          "deck": "Wind Wake Up"
+          "deck": "Wind Wake Up Lorraine"
         },
         {
           "id": "p2",
@@ -18629,6 +18649,22 @@
       "result": "hachico wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "hachico wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "hachico builds six fractals, then combines Shimmering Refraction and Burst Asunder to finish Lorraine.",
+              "cards": [
+                "Shimmering Refraction",
+                "Burst Asunder"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "hachico wins game 2",
@@ -18636,8 +18672,10 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "hachico closes the second game after stopping the opposing attack.",
+              "text": "Chill to the Bone removes the powered-up Dilu and stops the attack. hachico follows with Shimmering Refraction and Burst Asunder to win.",
               "cards": [
+                "Chill to the Bone",
+                "Shimmering Refraction",
                 "Burst Asunder"
               ]
             }
@@ -18671,6 +18709,38 @@
       "result": "Roxsas wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "fome wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fome uses Diana, Cursebreaker to clear the curses and load additional bullets, then wins with repeated attacks from Shadow’s Twin.",
+              "cards": [
+                "Diana, Cursebreaker",
+                "Shadow's Twin"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Roxsas wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Roxsas lands Tasershot and Creeping Torment before Fome reaches level three. Fome concedes after the damage leaves no safe level-up.",
+              "cards": [
+                "Tasershot",
+                "Creeping Torment"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Roxsas wins game 3",
@@ -18678,9 +18748,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Roxsas wins the deciding game with an unexpected reload.",
+              "text": "Rapid Reload restores the bullet destroyed by Reduce to Ash. Roxsas lands Tasershot and Creeping Torment; Fome’s final draw sequence fails to find the recovery needed to survive.",
               "cards": [
-                "Rapid Reload"
+                "Rapid Reload",
+                "Reduce to Ash",
+                "Tasershot",
+                "Creeping Torment"
               ]
             }
           ]
@@ -18713,6 +18786,37 @@
       "result": "ThomasLi2 wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Limelight wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Limelight lands Baleful Oblation for fifteen, then closes with Spirelle, Schwartz Queen pressure and Ciel’s Omen damage.",
+              "cards": [
+                "Baleful Oblation"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "ThomasLi2 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ThomasLi2 builds an early board and finishes with Rending Flames through Limelight’s Resolute Stand.",
+              "cards": [
+                "Rending Flames",
+                "Resolute Stand"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "ThomasLi2 wins game 3",
@@ -18720,7 +18824,13 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ThomasLi2 wins the deciding game to complete the comeback."
+              "text": "ThomasLi2 uses Spirit Blade: Ascension to bring out Prismatic Edge and consume Crystallized Destiny’s protection. Devastating Blow then finishes Limelight.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Prismatic Edge",
+                "Crystallized Destiny",
+                "Devastating Blow"
+              ]
             }
           ]
         }
@@ -18752,6 +18862,21 @@
       "result": "KUOJIA wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "KUOJIA wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "KUOJIA holds the board with Genbu, then uses Fractal of Polar Depths to empty KingArmo’s deck before Merlin’s draw.",
+              "cards": [
+                "Fractal of Polar Depths"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "KUOJIA wins game 2",
@@ -18759,8 +18884,10 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "KUOJIA decks KingArmo out again to complete the sweep.",
+              "text": "KUOJIA adds water cards to the graveyard with Cerulean Decree and Refracting Missile, then uses Fractal of Polar Depths to empty KingArmo’s remaining deck.",
               "cards": [
+                "Cerulean Decree",
+                "Refracting Missile",
                 "Fractal of Polar Depths"
               ]
             }
@@ -18794,6 +18921,22 @@
       "result": "Aqua wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Aqua wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua stabilizes after JackyS loses Ranger Strides to Mad Hatter, then protects the lethal Cosmic Bolt with Astral Seal.",
+              "cards": [
+                "Cosmic Bolt",
+                "Astral Seal"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Aqua wins game 2",
@@ -18801,9 +18944,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Aqua finds consecutive Cosmic Bolts to finish the second game.",
+              "text": "Aqua builds ten age counters on Polaris and clears the allies through Blanche’s protection. Cosmic Bolts then remove Concealed Marksman and finish JackyS.",
               "cards": [
-                "Cosmic Bolt"
+                "Polaris, Twinkling Cauldron",
+                "Cosmic Bolt",
+                "Concealed Marksman"
               ]
             }
           ]
@@ -18836,6 +18981,37 @@
       "result": "ProAnnn wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "lancelim0210 wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "LanceLim0210 survives Jin’s attack sequence; ProAnnn’s accumulated damage becomes lethal at his own end step.",
+              "cards": [
+                "Enrage"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "ProAnnn wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ProAnnn stacks two Enrages onto Shuang Ji of Sacrifice and pushes through LanceLim0210’s defenses.",
+              "cards": [
+                "Enrage",
+                "Shuang Ji of Sacrifice"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "ProAnnn wins game 3",
@@ -18843,7 +19019,14 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ProAnnn pushes through the final attack to take game three."
+              "text": "ProAnnn uses Proof of Life to build damage, then negates the fast Regal Inquisition with Incapacitate. Varuck, Smoldering Spire disables prevention for the finishing Enrage attack.",
+              "cards": [
+                "Proof of Life",
+                "Regal Inquisition",
+                "Incapacitate",
+                "Varuck, Smoldering Spire",
+                "Enrage"
+              ]
             }
           ]
         }
@@ -18875,6 +19058,21 @@
       "result": "GlenyBoi wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "GlenyBoi wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi follows combat pressure with Fireball to finish SapphicSnake before the preserved spells can take over.",
+              "cards": [
+                "Fireball"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "GlenyBoi wins game 2",
@@ -18882,7 +19080,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "GlenyBoi finishes the match with the final burst of damage."
+              "text": "GlenyBoi pressures with allies while staying on Lorraine. At one remaining life, SapphicSnake plays Extricating Touch; Spark Alight deals the final unpreventable damage in response.",
+              "cards": [
+                "Spark Alight",
+                "Extricating Touch"
+              ]
             }
           ]
         }
@@ -18973,6 +19175,21 @@
       "result": "Zer wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zer wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zer builds Aetherwing pressure and finishes with Carpsong Coda.",
+              "cards": [
+                "Carpsong Coda"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Zer wins game 2",
@@ -18980,7 +19197,8 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Zer keeps the pressure on and wins the second game."
+              "text": "Limbo fails to find Cometfall. Zer adds Cheshire Cat to the threatening ally board, and Limbo concedes.",
+              "cards": []
             }
           ]
         }
@@ -19012,6 +19230,23 @@
       "result": "Hyouka wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Hyouka wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Power Overwhelming enables two Advents of the Stormcaller. The first removes Blanche; the second sets up Arcane Elemental to finish Tetsu.",
+              "cards": [
+                "Power Overwhelming",
+                "Advent of the Stormcaller",
+                "Arcane Elemental"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Hyouka wins game 2",
@@ -19019,8 +19254,10 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Hyouka finishes with a sequence of Arcane spells.",
+              "text": "Tariff Ring limits Tetsu’s follow-up after Devastating Blow. Hyouka survives and finishes with Erratic Bolt followed by Arcane Blast.",
               "cards": [
+                "Tariff Ring",
+                "Devastating Blow",
                 "Erratic Bolt",
                 "Arcane Blast"
               ]
@@ -19055,6 +19292,24 @@
       "result": "Limbo wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Limbo wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Limbo finds a lethal Cosmic Bolt with Necklace of Foresight, then uses Horticounter to stop HenkieTheGoat’s responding Baleful Oblation.",
+              "cards": [
+                "Cosmic Bolt",
+                "Necklace of Foresight",
+                "Horticounter",
+                "Baleful Oblation"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "Limbo wins game 2",
@@ -19062,9 +19317,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Limbo finds the last Cosmic Bolt in response to the opposing attack.",
+              "text": "Limbo uses Astral Seal to stop Baleful Oblation, then finds the final Cosmic Bolt with Wisdom’s Reprise as HenkieTheGoat materializes his weapon.",
               "cards": [
-                "Cosmic Bolt"
+                "Astral Seal",
+                "Baleful Oblation",
+                "Cosmic Bolt",
+                "Wisdom's Reprise"
               ]
             }
           ]
@@ -19097,6 +19355,21 @@
       "result": "GamingSiopao wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "GamingSiopao wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi cannot remove Seiryuu. GamingSiopao reveals Seiryuu’s Command, prompting the concession.",
+              "cards": [
+                "Seiryuu's Command"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "GamingSiopao wins game 2",
@@ -19104,7 +19377,10 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "GamingSiopao holds off the last attempt to remove Seiryuu and takes the match."
+              "text": "Byakko’s Command readies Seiryuu during GlenyBoi’s attack. GlenyBoi cannot find an answer, and Seiryuu’s retaliation ends the match.",
+              "cards": [
+                "Byakko's Command"
+              ]
             }
           ]
         }
@@ -19136,6 +19412,39 @@
       "result": "Jett wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "hoyee wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "hoyee saves Seiryuu with Resolute Stand, then uses Smoke Bombs to bypass Fluffy Shopkeep. Byakko’s Command supplies the winning attack.",
+              "cards": [
+                "Resolute Stand",
+                "Smoke Bombs",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Jett wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jett holds Spirit Blade: Dispersion through hoyee’s turn and casts it in response to Incandescent Reliquary to finish the game.",
+              "cards": [
+                "Spirit Blade: Dispersion",
+                "Incandescent Reliquary"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Jett wins game 3",
@@ -19143,9 +19452,12 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Jett presses through after a long board battle and wins the deciding game.",
+              "text": "Two Immolation Traps remove Seiryuu despite Guo Jia’s lineage release. Four Ghosts of Pendragon overwhelm hoyee’s defenses; Prismatic Edge and Intensified Pyre finish the game.",
               "cards": [
-                "Ghosts of Pendragon"
+                "Immolation Trap",
+                "Ghosts of Pendragon",
+                "Prismatic Edge",
+                "Intensified Pyre"
               ]
             }
           ]
@@ -19178,6 +19490,23 @@
       "result": "Raylam wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Raylam wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Raylam attacks with Devastating Blow. Jett uses Creative Shock but fails to find Resolute Stand and concedes.",
+              "cards": [
+                "Devastating Blow",
+                "Creative Shock",
+                "Resolute Stand"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Raylam wins game 2",
@@ -19185,7 +19514,13 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Raylam finds the closing line and advances to the final."
+              "text": "Raylam uses Clarent, Reimagined to preserve Crystallized Destiny against Jett’s Spirit Blade: Dispersion and Rending Flames. Jett later concedes after failing to find enough damage.",
+              "cards": [
+                "Clarent, Reimagined",
+                "Crystallized Destiny",
+                "Spirit Blade: Dispersion",
+                "Rending Flames"
+              ]
             }
           ]
         }
@@ -19217,6 +19552,41 @@
       "result": "Raylam wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Pulse wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Pulse uses Innervate Agility to avoid Devastating Blow, then finishes with Seiryuu, Harness Lightning and Byakko’s Command.",
+              "cards": [
+                "Innervate Agility",
+                "Devastating Blow",
+                "Harness Lightning",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Raylam wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Raylam uses Spirit Blade: Ascension to bring out Prismatic Edge, then finishes Pulse with Flame Sweep.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Prismatic Edge",
+                "Flame Sweep"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Raylam wins game 3",
@@ -19224,9 +19594,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Raylam survives the final Seiryuu push and completes the comeback.",
+              "text": "Raylam preserves Clarent’s durability and uses Crystallized Destiny to stop the second Arcane Blast. His six-damage sword attack wins the match.",
               "cards": [
-                "Crystallized Destiny"
+                "Clarent, Reimagined",
+                "Crystallized Destiny",
+                "Arcane Blast"
               ]
             }
           ]
@@ -19259,6 +19631,23 @@
       "result": "dlonyer wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "dlonyer wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "dlonyer flips Genbu to absorb Slice and Dice, then uses Enfeebling Orb and Resonating Fugue for a lethal attack.",
+              "cards": [
+                "Enfeebling Orb",
+                "Resonating Fugue",
+                "Slice and Dice"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "dlonyer wins game 2",
@@ -19266,7 +19655,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "dlonyer delivers the final damage to close the second game."
+              "text": "Strategem of Myriad Ice and Fractal of Polar Depths turn dlonyer’s stocked graveyard into the final damage.",
+              "cards": [
+                "Strategem of Myriad Ice",
+                "Fractal of Polar Depths"
+              ]
             }
           ]
         }
@@ -19276,7 +19669,7 @@
         "kind": "broadcast",
         "startSeconds": 2089
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-2-aqua-jad",
@@ -19298,6 +19691,43 @@
       "result": "Aqua wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Jad wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Two Ravenous Pyres punish Aqua’s level-ups, while Infernal Vessel limits recovery. Aqua concedes during the final Cosmic Bolt and Tether in Flames exchange.",
+              "cards": [
+                "Ravenous Pyre",
+                "Infernal Vessel",
+                "Cosmic Bolt",
+                "Tether in Flames"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Aqua wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Alkahest removes Infernal Vessel, and Calming Breeze holds off the burn. Aqua resolves a lethal Cosmic Bolt through Tether in Flames.",
+              "cards": [
+                "Alkahest",
+                "Infernal Vessel",
+                "Calming Breeze",
+                "Cosmic Bolt",
+                "Tether in Flames"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Aqua wins game 3",
@@ -19305,8 +19735,9 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Aqua wins after the final exchange is confirmed by the judges.",
+              "text": "Glowering Conflagration cannot be played in response on Aqua’s turn. Cosmic Bolt resolves to give Aqua the deciding game.",
               "cards": [
+                "Glowering Conflagration",
                 "Cosmic Bolt"
               ]
             }
@@ -19318,7 +19749,7 @@
         "kind": "broadcast",
         "startSeconds": 6289
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-3-inaki-abbey",
@@ -19340,6 +19771,39 @@
       "result": "Inaki wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Abbey wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Ducal Seal stalls Inaki’s attacks. Abbey follows with Seiryuu’s Command and Byakko’s Command, finishing through dragon attacks and Arcane Blast.",
+              "cards": [
+                "Ducal Seal",
+                "Seiryuu's Command",
+                "Byakko's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Inaki wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Inaki uses allies and Molten Echo to remove Seiryuu. Abbey eventually concedes as Inaki keeps applying pressure.",
+              "cards": [
+                "Molten Echo"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Inaki wins game 3",
@@ -19347,9 +19811,9 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Inaki delivers the last hit in the deciding game.",
+              "text": "Inaki uses Molten Echo and its ephemerate activation to remove Blanche and push through the final damage.",
               "cards": [
-                "Sirocco Operative"
+                "Molten Echo"
               ]
             }
           ]
@@ -19360,7 +19824,7 @@
         "kind": "broadcast",
         "startSeconds": 10827
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-4-leowong-yonab",
@@ -19382,6 +19846,22 @@
       "result": "Leowong wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Leowong wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Luxem Sight keeps Leowong alive until Lightweaver’s Assault clears Yonab’s board and prompts a concession.",
+              "cards": [
+                "Luxem Sight",
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Leowong wins game 2",
@@ -19389,7 +19869,12 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Leowong finds the winning line and completes the sweep."
+              "text": "After Resolute Stand and Ducal Seal buy time, Leowong fires Lightweaver’s Assault for lethal damage at the end of Yonab’s turn.",
+              "cards": [
+                "Resolute Stand",
+                "Ducal Seal",
+                "Lightweaver's Assault"
+              ]
             }
           ]
         }
@@ -19399,7 +19884,7 @@
         "kind": "broadcast",
         "startSeconds": 18904
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-5-xabichan-mike0615",
@@ -19421,6 +19906,41 @@
       "result": "Mike0615 wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Mike0615 wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Mike0615 uses Innervate Agility to survive, then prepares Shadowstrike and negates Protect Her At All Costs with Incapacitate for lethal damage.",
+              "cards": [
+                "Innervate Agility",
+                "Shadowstrike",
+                "Protect Her At All Costs",
+                "Incapacitate"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Xabichan wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Snow White keeps Mike0615 from leveling. Xabichan negates Innervate Agility with Song of Frost and finishes with allied attacks.",
+              "cards": [
+                "Snow White, Weiss Queen",
+                "Innervate Agility",
+                "Song of Frost"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Mike0615 wins game 3",
@@ -19428,7 +19948,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Mike0615 reaches level three and wins the deciding game."
+              "text": "Mike0615 prepares Shadowstrike, negates Song of Frost with Incapacitate, and lands the lethal 15-damage attack.",
+              "cards": [
+                "Shadowstrike",
+                "Song of Frost",
+                "Incapacitate"
+              ]
             }
           ]
         }
@@ -19438,7 +19963,7 @@
         "kind": "broadcast",
         "startSeconds": 23723
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-6-truesightleocroix-ameke",
@@ -19460,6 +19985,38 @@
       "result": "Ameke wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "TrueSightLeocroix wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "TrueSightLeocroix combines Burning Aethercharge with Salamander’s Breath and Ranger Strides for the lethal attack.",
+              "cards": [
+                "Burning Aethercharge",
+                "Salamander's Breath",
+                "Ranger Strides"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Ameke wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Ameke reaches level three and deals 15 with Baleful Oblation, closing with Ciel’s Omen damage.",
+              "cards": [
+                "Baleful Oblation"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Ameke wins game 3",
@@ -19467,8 +20024,9 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Ameke closes the deciding game with the Oblation combination.",
+              "text": "Unyielding Wraithguard repeatedly blocks Diana’s attacks. Ameke reaches level three and closes with Baleful Oblation and Feu Awakening.",
               "cards": [
+                "Unyielding Wraithguard",
                 "Baleful Oblation",
                 "Feu Awakening"
               ]
@@ -19481,7 +20039,7 @@
         "kind": "broadcast",
         "startSeconds": 28123
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-7-chunkie-dennisyao",
@@ -19503,6 +20061,39 @@
       "result": "Dennisyao wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Dennisyao wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Dennisyao uses Cheshire Cat and Ranger Strides to turn Inert Sword into the lethal ranged attack.",
+              "cards": [
+                "Cheshire Cat, Impish Grin",
+                "Ranger Strides",
+                "Inert Sword"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Chunkie wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Chunkie survives the damage push, then uses Gleaming Cut and Lightweaver’s Assault to recover and clear allies. Dennisyao concedes as the next reveal is ready.",
+              "cards": [
+                "Gleaming Cut",
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Dennisyao wins game 3",
@@ -19510,8 +20101,9 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Dennisyao finishes game three with the final damage from the Aetherwing line.",
+              "text": "Dennisyao waits for Crystallized Destiny to resolve, breaks it with Charge the Soul, and lands the lethal Aetherwing attack.",
               "cards": [
+                "Crystallized Destiny",
                 "Charge the Soul"
               ]
             }
@@ -19523,7 +20115,7 @@
         "kind": "broadcast",
         "startSeconds": 33181
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "ascent-manila-2026-round-8-dlonyer-chung",
@@ -19545,6 +20137,40 @@
       "result": "CHUNG wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "CHUNG wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "CHUNG uses Flared Iridescence and Spirit Blade: Ascension to build pressure, then finishes with Fireball after dlonyer’s responses.",
+              "cards": [
+                "Flared Iridescence",
+                "Spirit Blade: Ascension",
+                "Fireball"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "dlonyer wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "dlonyer survives Fireball with Cerulean Decree and Blanche, then plays Strategem of Myriad Ice alongside three Fractals of Polar Depths. CHUNG concedes.",
+              "cards": [
+                "Cerulean Decree",
+                "Strategem of Myriad Ice",
+                "Fractal of Polar Depths"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "CHUNG wins game 3",
@@ -19552,9 +20178,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "CHUNG closes the match after dlonyer’s last damage attempt falls short.",
+              "text": "dlonyer’s Strategem of Myriad Ice falls short of lethal. CHUNG responds with Spirit Blade: Ascension, Ghosts of Pendragon, and Sudden Steel to close the match.",
               "cards": [
-                "Ghosts of Pendragon"
+                "Strategem of Myriad Ice",
+                "Spirit Blade: Ascension",
+                "Ghosts of Pendragon",
+                "Sudden Steel"
               ]
             }
           ]
@@ -19565,7 +20194,7 @@
         "kind": "broadcast",
         "startSeconds": 37370
       },
-      "sourceNote": "Ascent Manila Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Manila Day 1."
     },
     {
       "id": "sea-national-2026-round-10-ikuri-brai",
@@ -19587,6 +20216,24 @@
       "result": "Brai wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Brai wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Brai survives with Innervate Agility, returns to Shadow Dancer, and uses Shadowstrike with one preparation counter plus four Ominous Shadows to win through Cerulean Decree.",
+              "cards": [
+                "Innervate Agility",
+                "Shadowstrike",
+                "Ominous Shadow",
+                "Cerulean Decree"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "Brai wins game 2",
@@ -19594,7 +20241,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Brai closes the second game after a drawn-out fight."
+              "text": "Dream Fairy suppresses Ikuri’s Archer. After Tactical Retreat stops Brai’s champion attack, Sadi supplies the last damage in overtime.",
+              "cards": [
+                "Dream Fairy",
+                "Tactical Retreat",
+                "Sadi, Blood Harvester"
+              ]
             }
           ]
         }
@@ -19604,7 +20256,7 @@
         "kind": "broadcast",
         "startSeconds": 1980
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "sea-national-2026-round-11-frashe-bayabayashi",
@@ -19626,6 +20278,39 @@
       "result": "Bayabayashi wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Bayabayashi wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Bayabayashi’s early Seiryuu pressure forces Restorative Flame. Frashe cannot assemble the remaining damage and gives up game one.",
+              "cards": [
+                "Seiryuu's Command",
+                "Restorative Flame"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Frashe wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Frashe forces Innervate Agility with Fiery Interference, then flips Suzaku and finishes with Peppered Chef.",
+              "cards": [
+                "Fiery Interference",
+                "Innervate Agility",
+                "Peppered Chef"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "Bayabayashi wins game 3",
@@ -19633,7 +20318,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Bayabayashi finishes the deciding game with Seiryuu pressure."
+              "text": "Innervate Agility protects Bayabayashi’s board. Enfeebling Orb limits Frashe’s response before Seiryuu attacks and readies with a command to finish.",
+              "cards": [
+                "Innervate Agility",
+                "Enfeebling Orb",
+                "Seiryuu's Command"
+              ]
             }
           ]
         }
@@ -19643,7 +20333,7 @@
         "kind": "broadcast",
         "startSeconds": 6567
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "sea-national-2026-round-12-truesightleocroix-zabauu",
@@ -19665,6 +20355,23 @@
       "result": "Zabauu wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Zabauu wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Zabauu uses Undeniable Truth to turn Baby Silver Slime into cards, reaches level three, and wins with two Storm Slimes.",
+              "cards": [
+                "Undeniable Truth",
+                "Baby Silver Slime",
+                "Storm Slime"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "Zabauu wins game 2",
@@ -19672,7 +20379,12 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Zabauu’s Slimes finish another game to complete the sweep."
+              "text": "Zabauu’s slimes overwhelm Seiryuu despite Veiling Breeze and Imperial Countermeasure. A final Storm Slime closes the match.",
+              "cards": [
+                "Storm Slime",
+                "Veiling Breeze",
+                "Imperial Countermeasure"
+              ]
             }
           ]
         }
@@ -19682,7 +20394,7 @@
         "kind": "broadcast",
         "startSeconds": 10896
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "sea-national-2026-round-13-zero0000000000-joseph",
@@ -19704,6 +20416,40 @@
       "result": "Zero0000000000 wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zero0000000000 wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zero0000000000 removes Aquifer with two Searing Truths, completes the Suzaku quest with Intensified Pyre, and finishes Joseph’s spirit with Peppered Chef.",
+              "cards": [
+                "Searing Truth",
+                "Intensified Pyre",
+                "Peppered Chef"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Joseph wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Joseph’s repeated Nia plays build pressure while Nullifying Lantern blocks Suzaku’s return. Palvor Sword and allies finish the game despite Demolition removing Jing.",
+              "cards": [
+                "Nullifying Lantern",
+                "Palvor Sword",
+                "Demolition"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Zero0000000000 wins game 3",
@@ -19711,8 +20457,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Zero0000000000 closes the deciding game with the Suzaku sequence and final burn.",
+              "text": "After Song of Frost stops Heated Vengeance, Zero0000000000 uses Enfeebling Orb and a Suzaku reset before Cinder Geyser supplies the last four damage.",
               "cards": [
+                "Song of Frost",
+                "Heated Vengeance",
+                "Enfeebling Orb",
                 "Cinder Geyser"
               ]
             }
@@ -19724,7 +20473,7 @@
         "kind": "broadcast",
         "startSeconds": 15520
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "sea-national-2026-semifinal-lifdrasyl-dragonjg",
@@ -19746,6 +20495,23 @@
       "result": "DragonJG wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "DragonJG wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DragonJG survives Spirit Blade: Retribution with Alice’s lineage release and Resolute Stand, then wins by decking Lifdrasyl out with Regal Inquisition.",
+              "cards": [
+                "Spirit Blade: Retribution",
+                "Resolute Stand",
+                "Regal Inquisition"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "DragonJG wins game 2",
@@ -19753,9 +20519,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "DragonJG wins the second game after surviving Lifdrasyl’s final push.",
+              "text": "DragonJG pays through Annul Spell for Regal Inquisition, then holds the second copy. Two Resolute Stands and Alice’s lineage release survive Lifdrasyl’s final push before the last Regal closes the match.",
               "cards": [
-                "Regal Inquisition"
+                "Annul Spell",
+                "Regal Inquisition",
+                "Resolute Stand"
               ]
             }
           ]
@@ -19766,7 +20534,7 @@
         "kind": "broadcast",
         "startSeconds": 28532
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "sea-national-2026-grand-final-raylam-dragonjg",
@@ -19788,6 +20556,23 @@
       "result": "DragonJG wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "DragonJG wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "DragonJG’s Abnegation survives Raylam’s double Take Aim attack. Dynastic Whirlpool then mills the remaining deck to win game one.",
+              "cards": [
+                "Abnegation",
+                "Take Aim",
+                "Dynastic Whirlpool"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p2",
           "summary": "DragonJG wins game 2",
@@ -19795,7 +20580,13 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "DragonJG completes the sweep to win Southeast Asia Nationals."
+              "text": "DragonJG’s first Dynastic Whirlpool removes all four Krustallan Archers. Resolute Stand later stops Raylam’s Ranger Strides push, and a final Dynastic Whirlpool completes the sweep.",
+              "cards": [
+                "Dynastic Whirlpool",
+                "Krustallan Archer",
+                "Resolute Stand",
+                "Ranger Strides"
+              ]
             }
           ]
         }
@@ -19804,7 +20595,7 @@
         "id": "694jDw5rGqg",
         "kind": "broadcast"
       },
-      "sourceNote": "South East Asia Nationals Day 2. Selected game results and closing moments."
+      "sourceNote": "South East Asia Nationals Day 2."
     },
     {
       "id": "ascent-taipei-2025-round-1-glenyboi-ioki46",
@@ -19826,6 +20617,38 @@
       "result": "ioki46 wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "GlenyBoi wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "GlenyBoi reaches level three with Dungeon Guide and finishes with Fireball.",
+              "cards": [
+                "Dungeon Guide",
+                "Fireball"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "ioki46 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "ioki46 removes Blanche with Shimmering Refraction and bypasses Fluffy Shopkeep with Smoke Bombs. GlenyBoi concedes as the burn pressure closes in.",
+              "cards": [
+                "Shimmering Refraction",
+                "Smoke Bombs"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p2",
           "summary": "ioki46 wins game 3",
@@ -19833,8 +20656,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "ioki46 closes the deciding game with the final burn sequence before GlenyBoi can take another turn.",
+              "text": "ioki46 punishes the level-up with two Ravenous Pyres and removes Blanche with Impact Hammer. Demolition, Glowering Conflagration, and Everflame Staff finish the game.",
               "cards": [
+                "Ravenous Pyre",
+                "Impact Hammer",
+                "Demolition",
                 "Glowering Conflagration",
                 "Everflame Staff"
               ]
@@ -19847,7 +20673,7 @@
         "kind": "broadcast",
         "startSeconds": 2003
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-taipei-2025-round-3-xenon-emp",
@@ -19869,6 +20695,39 @@
       "result": "Draw 1–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Emp wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Nullifying Mirror prevents Veiling Breeze from saving Xenon. Emp closes game one with Relentless Outburst.",
+              "cards": [
+                "Nullifying Mirror",
+                "Veiling Breeze",
+                "Relentless Outburst"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Xenon wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Emp commits to Proof of Life, but Censer of Restful Peace blocks the recovery plan. Emp concedes.",
+              "cards": [
+                "Proof of Life",
+                "Censer of Restful Peace"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "draw",
           "summary": "Game drawn",
@@ -19876,7 +20735,11 @@
             {
               "order": 1,
               "actor": "both",
-              "text": "The deciding game ends in a draw after Emp falls short of lethal."
+              "text": "Emp’s Enrage and Flame Sweep sequence falls short of lethal in the deciding game, leaving the match drawn.",
+              "cards": [
+                "Enrage",
+                "Flame Sweep"
+              ]
             }
           ]
         }
@@ -19886,7 +20749,7 @@
         "kind": "broadcast",
         "startSeconds": 11671
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-taipei-2025-round-5-yhj0127-ryuta",
@@ -19908,6 +20771,22 @@
       "result": "Yhj0127 wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yhj0127 wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Yhj0127 establishes Lorraine and two Ghosts of Pendragon. Hurricane Sweep clears two opposing allies, helping secure the board and game one.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Hurricane Sweep"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Yhj0127 wins game 2",
@@ -19915,9 +20794,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Yhj0127 wins the board fight and finishes the second game.",
+              "text": "Yhj0127 uses Reclaim on Ghosts of Pendragon, then returns Aesan Protector with another Pendragon and attacks again to finish the board fight.",
               "cards": [
-                "Ghosts of Pendragon"
+                "Reclaim",
+                "Ghosts of Pendragon",
+                "Aesan Protector"
               ]
             }
           ]
@@ -19928,7 +20809,7 @@
         "kind": "broadcast",
         "startSeconds": 21886
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-taipei-2025-round-6-kyle0809-megalobana",
@@ -19950,6 +20831,23 @@
       "result": "Kyle0809 wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Kyle0809 wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "After megalobana reaches Diana level three and uses Cometary Vantage, Kyle0809’s Firebloom Flourish trigger and revealed Rococo finish game one.",
+              "cards": [
+                "Cometary Vantage",
+                "Firebloom Flourish",
+                "Rococo, Explosive Maven"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Kyle0809 wins game 2",
@@ -19957,9 +20855,10 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Kyle0809 shows the final damage and closes another quick game.",
+              "text": "Kyle0809 keeps up pressure with Shimmering Refraction and Rococo, then reveals the remaining damage to close the match.",
               "cards": [
-                "Sirocco Operative"
+                "Shimmering Refraction",
+                "Rococo, Explosive Maven"
               ]
             }
           ]
@@ -19970,7 +20869,7 @@
         "kind": "broadcast",
         "startSeconds": 26673
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-taipei-2025-round-7-hachico-long",
@@ -19992,6 +20891,23 @@
       "result": "hachico wins 2–0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "hachico wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "hachico builds pressure with Incarnate Majesty, then uses Spirit Blade: Ascension and Devastating Blow. Long concedes.",
+              "cards": [
+                "Incarnate Majesty",
+                "Spirit Blade: Ascension",
+                "Devastating Blow"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "hachico wins game 2",
@@ -19999,7 +20915,13 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "hachico wins the round with Fire Merlin."
+              "text": "Safeguard Amulet lets hachico survive Long’s Baleful Oblation turn. When Long commits the remaining hand to Creative Shock, hachico responds with two Fireballs to finish.",
+              "cards": [
+                "Safeguard Amulet",
+                "Baleful Oblation",
+                "Creative Shock",
+                "Fireball"
+              ]
             }
           ]
         }
@@ -20009,7 +20931,7 @@
         "kind": "broadcast",
         "startSeconds": 31827
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-taipei-2025-round-8-sunset-yungcheng",
@@ -20031,6 +20953,39 @@
       "result": "Sunset wins 2–1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Yungcheng wins game 1",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Yungcheng gives Mad Hatter distance with Backstep, boosts it with Ranger Strides, and uses Second Wind for two eight-damage attacks.",
+              "cards": [
+                "Mad Hatter, Morose Heritor",
+                "Backstep",
+                "Ranger Strides",
+                "Second Wind"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Sunset wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Sunset reaches level three and establishes the domain engine. After playing Mandate of Honor, Sunset creates another drone, leaving Yungcheng unable to stop the growing board.",
+              "cards": [
+                "Mandate of Honor"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Sunset wins game 3",
@@ -20038,9 +20993,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Sunset stabilizes behind the domain board and wins the deciding game.",
+              "text": "Diffusive Block leaves Sunset alive at one life against the early combo. Chamber of Reflections finds Mad Tea Party, and Sunset reaches level three behind the growing domain board, forcing Yungcheng’s concession.",
               "cards": [
-                "Diffusive Block"
+                "Diffusive Block",
+                "Chamber of Reflections",
+                "Mad Tea Party"
               ]
             }
           ]
@@ -20051,7 +21008,7 @@
         "kind": "broadcast",
         "startSeconds": 36978
       },
-      "sourceNote": "Ascent Taipei Day 1. Selected game results and closing moments."
+      "sourceNote": "Ascent Taipei Day 1."
     },
     {
       "id": "ascent-melbourne-2026-round-1-aqua-sowa",
@@ -20072,6 +21029,33 @@
       ],
       "result": "Aqua wins 2-0",
       "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Aqua wins — Polaris clears the board before Cosmic Bolt finishes Zander",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua uses Dungeon Guide to reach Arisanna’s higher levels, then breaks Polaris to clear Sowa’s allies and add Cosmic Bolts to the deck.",
+              "cards": [
+                "Dungeon Guide",
+                "Polaris, Twinkling Cauldron",
+                "Cosmic Bolt"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Cometfall and Meteor Strike answer Sowa’s rebuilt board. Aqua finds an eight-damage Cosmic Bolt during Sowa’s recollection phase to win game one.",
+              "cards": [
+                "Cometfall",
+                "Meteor Strike",
+                "Cosmic Bolt"
+              ]
+            }
+          ]
+        },
         {
           "gameNumber": 2,
           "winner": "p1",
@@ -20097,7 +21081,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20124,12 +21108,46 @@
       "result": "hachico wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "hachico wins — Beguiling Coup and Feu Awakening finish Suzaku",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "hachico reaches Ciel’s third level with Dungeon Guide while Etsuko develops Suzaku and attacks with two commands.",
+              "cards": [
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Condemned Trinket adds an omen. Beguiling Coup followed by Feu Awakening supplies the finishing attack.",
+              "cards": [
+                "Condemned Trinket",
+                "Beguiling Coup",
+                "Feu Awakening"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "hachico wins game 2",
           "beats": [
             {
               "order": 1,
+              "actor": "p1",
+              "text": "An imbued Topsy Decree stops Searing Truth and forces a discard, delaying Etsuko’s Suzaku flip.",
+              "cards": [
+                "Topsy Decree",
+                "Searing Truth"
+              ]
+            },
+            {
+              "order": 2,
               "actor": "p1",
               "text": "hachico uses Beguiling Coup and Feu Awakening to press the advantage while Etsuko is short on resources.",
               "cards": [
@@ -20138,14 +21156,14 @@
               ]
             },
             {
-              "order": 2,
+              "order": 3,
               "actor": "p1",
               "text": "The remaining damage ends the second game and completes the sweep."
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20172,6 +21190,33 @@
       "result": "Yamikin wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yamikin wins — Rending Flames and Blazing Throw close a turn-three kill",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Arthur and Dazzling Courtesan pressure ThePuggyTree alongside Inert Sword. ThePuggyTree clears both allies, adding fire cards to Yamikin’s graveyard.",
+              "cards": [
+                "Arthur, Young Heir",
+                "Dazzling Courtesan",
+                "Inert Sword"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Yamikin follows with Sword of Shadows, Rending Flames and Blazing Throw to finish game one before Arcane Lorraine can develop.",
+              "cards": [
+                "Sword of Shadows",
+                "Rending Flames",
+                "Blazing Throw"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Yamikin wins game 2",
@@ -20187,12 +21232,16 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "The final Kindle sequence supplies the last damage before the Arcane plan can take over."
+              "text": "Yamikin Kindles Dazzling Courtesan; March Hare returns from the graveyard and supplies the final point of damage.",
+              "cards": [
+                "Dazzling Courtesan",
+                "March Hare, Mottled Host"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20219,24 +21268,60 @@
       "result": "Lifdrasyl wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Lifdrasyl wins game 2",
+          "summary": "Lifdrasyl wins — Kongming’s draw engine forces a concession",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Lifdrasyl removes the opposing board while preparing the finishing attack."
+              "text": "Lifdrasyl uses Dungeon Guide and Displace to reach Kongming’s third level, then builds repeated draws with Fan of Seven Debts and suppression effects.",
+              "cards": [
+                "Dungeon Guide",
+                "Displace",
+                "Fan of Seven Debts"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The final large attack is enough; Blivix concedes."
+              "text": "Stifling Gyre names Ghosts of Pendragon. Imperious Galebind protects Lifdrasyl’s board, and Blivix concedes as Kongming’s resources pull ahead.",
+              "cards": [
+                "Stifling Gyre",
+                "Ghosts of Pendragon",
+                "Imperious Galebind"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Lifdrasyl wins — Xukong’s repeated effect damage ends the game",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Stifling Gyre names Heavenly Guide, making Blivix commit extra cards to level up. Lifdrasyl follows with Xukong, Shifted Fates.",
+              "cards": [
+                "Stifling Gyre",
+                "Heavenly Guide",
+                "Xukong, Shifted Fates"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Lifdrasyl rebuilds resources through the draw engine and changes Kongming’s winds to trigger Xukong again. Blivix concedes to the effect-damage finish.",
+              "cards": [
+                "Xukong, Shifted Fates",
+                "Fan of Seven Debts"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20263,6 +21348,30 @@
       "result": "FAirJordans wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "FAirJordans wins — a Suzaku pivot leaves Dilu to finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Kixmachina removes Avatar of Byakko. FAirJordans instead levels Guo Jia and flips Suzaku, pushing Kixmachina close to lethal.",
+              "cards": [
+                "Avatar of Byakko"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Kixmachina removes Suzaku but leaves Dilu in play. Byakko’s Command buffs Dilu for the final attack.",
+              "cards": [
+                "Dilu, Auspicious Charger",
+                "Byakko's Command"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "FAirJordans wins game 2",
@@ -20270,17 +21379,25 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "FAirJordans builds a finishing board of allies."
+              "text": "FAirJordans holds off Kixmachina’s Poisoned Dagger turn with Veiling Breeze and sets up the Byakko flip.",
+              "cards": [
+                "Poisoned Dagger",
+                "Veiling Breeze"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The tiger supplies the last attack, completing a 2-0 win over Kixmachina."
+              "text": "Dilu, Tempest Silverback and Byakko attack to finish the match.",
+              "cards": [
+                "Dilu, Auspicious Charger",
+                "Tempest Silverback"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20307,6 +21424,32 @@
       "result": "Quarax wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Quarax wins — Ravishing Finale mills the remaining deck",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Quarax uses Frozen Dismissal to stop Avatar of Byakko and builds a protected board while preparing Nico’s finish.",
+              "cards": [
+                "Frozen Dismissal",
+                "Avatar of Byakko"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "FAirJordans eventually flips Byakko and attacks with repeated commands, but Spalling Cleanse keeps Quarax alive. Ravishing Finale then mills out FAirJordans through Veiling Breeze.",
+              "cards": [
+                "Spalling Cleanse",
+                "Ravishing Finale",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Quarax wins game 2",
@@ -20327,12 +21470,19 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
         "startSeconds": 26900
-      }
+      },
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "FAirJordans removes Suzaku for game two and brings out the Emerald Fate Stone directly on leveling Guo Jia."
+        }
+      ]
     },
     {
       "id": "ascent-melbourne-2026-round-7-qadwqr-arod",
@@ -20354,6 +21504,32 @@
       "result": "QADWQR wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "QADWQR wins — Diana’s board and resource advantage force a concession",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "QADWQR uses Frozen Dismissal and Topsy Decree to deny Arod’s attempts to rebuild, while Weaving Manastream supports Diana’s attacks and allies.",
+              "cards": [
+                "Frozen Dismissal",
+                "Topsy Decree",
+                "Weaving Manastream"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Frostsworn Paladin and Krustallan Archer leave threats Arod cannot both remove. Arod concedes before QADWQR’s next turn.",
+              "cards": [
+                "Frostsworn Paladin",
+                "Krustallan Archer"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "QADWQR wins game 2",
@@ -20361,20 +21537,26 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "QADWQR keeps pressure on Arod’s board and prevents the key unique ally from staying in play."
+              "text": "Virgil removes Augustine, switching off Jueying. Mercurial Heart then strengthens Virgil for the finishing turn.",
+              "cards": [
+                "Virgil, Altered Future",
+                "Mercurial Heart"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "QADWQR finishes with Uncanny Realization after building the last attack.",
+              "text": "QADWQR finds Uncanny Realization through Diana’s glimpse, draws it with Backstep, and commands Virgil for the finishing attack.",
               "cards": [
-                "Uncanny Realization"
+                "Backstep",
+                "Uncanny Realization",
+                "Virgil, Altered Future"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20401,6 +21583,34 @@
       "result": "Jidan wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Jidan wins — Tome of Abyssal Heaven protects the finishing weapon",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Jidan reaches Jin’s third level and uses Cardiac Vessel to manage the growing damage. WhatDoYouMinh removes the vessel with Scatter Essence and resumes attacking.",
+              "cards": [
+                "Cardiac Vessel",
+                "Scatter Essence"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "After clearing Safeguard Amulet, Jidan brings out Shuang Ji of Sacrifice and uses Enrage. Tome of Abyssal Heaven from Quicksilver Grail stops the attempted suppression, and WhatDoYouMinh concedes.",
+              "cards": [
+                "Safeguard Amulet",
+                "Shuang Ji of Sacrifice",
+                "Enrage",
+                "Tome of Abyssal Heaven",
+                "Quicksilver Grail"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
           "summary": "Jidan wins game 2",
@@ -20422,7 +21632,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 1.",
       "video": {
         "id": "W_5i0aO5Es0",
         "kind": "broadcast",
@@ -20540,6 +21750,58 @@
       "result": "Pulse wins 2-1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "GlenyBoi survives the Ghosts and wins with Shimmering Refraction",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "GlenyBoi uses Frostbind and Enfeebling Orb to stop Pulse’s Ghosts of Pendragon pressure.",
+              "cards": [
+                "Frostbind",
+                "Enfeebling Orb",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Scepter of Fascination helps find Shimmering Refraction for eight, overcoming Clarent’s remaining counters.",
+              "cards": [
+                "Scepter of Fascination",
+                "Shimmering Refraction"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Pulse levels quickly and finishes with Spirit Blade: Dispersion",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Stifling Gyre and Scatter Essence slow GlenyBoi while Pulse prepares to reach Lorraine level three.",
+              "cards": [
+                "Stifling Gyre",
+                "Scatter Essence"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "After Ghosts of Pendragon, Pulse plays Spirit Blade: Dispersion. GlenyBoi responds with Fracturize, but a second Dispersion closes the game.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Spirit Blade: Dispersion",
+                "Fracturize"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 3,
           "winner": "p1",
           "summary": "Pulse wins game 3",
@@ -20560,7 +21822,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20587,24 +21849,92 @@
       "result": "Launtial wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
-          "winner": "p1",
-          "summary": "Launtial wins game 3",
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Professor’s potion engine overwhelms Launtial",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Professor cannot assemble the potion engine in game three."
+              "actor": "p2",
+              "text": "Ignis Deus and Slash and Burn establish Arisanna and herbs; brewed potions build Essence Crucible while Launtial struggles to level.",
+              "cards": [
+                "Ignis Deus",
+                "Slash and Burn",
+                "Essence Crucible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Launtial removes Everflame Staff, but Crucible-enhanced burn and the remaining potions finish the opener.",
+              "cards": [
+                "Everflame Staff",
+                "Essence Crucible"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Safeguard Amulet turns around the double-Pyre lock",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Professor establishes two Ravenous Pyres and builds Essence Crucible, making each level-up dangerous.",
+              "cards": [
+                "Ravenous Pyre",
+                "Essence Crucible"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Launtial turns the game around and takes the match after losing the opener."
+              "text": "Safeguard Amulet protects a double Dungeon Guide turn; Abnegation restores Launtial’s life.",
+              "cards": [
+                "Safeguard Amulet",
+                "Dungeon Guide",
+                "Abnegation"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Launtial follows with Feu Awakening and Professor concedes.",
+              "cards": [
+                "Feu Awakening"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Launtial dismantles the Crucible and wins with repeated Feu Awakening",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Launtial reaches level three and destroys Essence Crucible with Nocturne's Oblivion.",
+              "cards": [
+                "Essence Crucible"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Abnegation keeps Launtial safe; repeated Feu Awakening through Manxome Armoire and Omen Bringer closes the match.",
+              "cards": [
+                "Abnegation",
+                "Feu Awakening",
+                "Manxome Armoire"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20631,27 +21961,95 @@
       "result": "Bhop wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Bhop wins game 3",
+          "summary": "Bhop punishes Pulse’s missing weapon setup",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Pulse digs through additional cards with both players close to lethal."
+              "actor": "p2",
+              "text": "Pulse reaches level three without a sword prepared in banishment, losing the intended weapon setup."
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Bhop lines up Feu Awakening and the remaining omen damage to finish the deciding game.",
+              "text": "Bhop stabilizes with Carter, then chains Feu Awakening through Manxome Armoire and Omen Bringer to win.",
               "cards": [
-                "Feu Awakening"
+                "Feu Awakening",
+                "Manxome Armoire"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Pulse finds effect damage through Resolute Stand",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Imperious Galebind disrupts Carter while Ghosts of Pendragon rebuild Pulse’s hand.",
+              "cards": [
+                "Imperious Galebind",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Suppression and repeated Sabella entries assemble weapons for Numinous Monk and Spirit Blade: Dispersion through Resolute Stand.",
+              "cards": [
+                "Numinous Monk",
+                "Spirit Blade: Dispersion",
+                "Resolute Stand"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Bhop considers Feu Awakening and Chalice of Blood responses, then concedes against Pulse’s remaining board.",
+              "cards": [
+                "Feu Awakening",
+                "Chalice of Blood"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Bhop’s Heavy Swings set up the Feu finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Two Heavy Swings put Pulse under pressure before the final Feu Awakening turn.",
+              "cards": [
+                "Heavy Swing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Pulse digs with Ghosts of Pendragon and suppression but cannot stop the effect-damage line.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Bhop lines up Feu Awakening with Manxome Armoire and Omen Bringer; Pulse concedes.",
+              "cards": [
+                "Feu Awakening",
+                "Manxome Armoire"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20678,20 +22076,54 @@
       "result": "Noel wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Noel wins game 2",
+          "summary": "Noel strips Jin’s protection and fires two Refractions",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Zetdivx heals, but Noel retains enough damage to answer."
+              "text": "Acquiescing Rejection slows Zetdivx’s development. Crystalline Mirror pressures Quicksilver Grail, then Fracturize removes the breastplate.",
+              "cards": [
+                "Acquiescing Rejection",
+                "Crystalline Mirror",
+                "Quicksilver Grail",
+                "Fracturize"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "After the turn passes, Noel fires Refracting Missile followed by Shimmering Refraction; Zetdivx concedes.",
+              "text": "Enfeebling Orb disrupts Mend Flesh; Noel plays Shimmering Refraction at the end of the turn, then a second in response to the spirit’s recovery.",
               "cards": [
+                "Enfeebling Orb",
+                "Mend Flesh",
+                "Shimmering Refraction"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Noel denies resources before the finishing barrage",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Glimmering Refusal stops Dungeon Guide and Fractal of Intrusion delays Jin’s next level-up.",
+              "cards": [
+                "Glimmering Refusal",
+                "Dungeon Guide",
+                "Fractal of Intrusion"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Fracturize removes the breastplate again. After Zetdivx heals and passes, Refracting Missile followed by Shimmering Refraction brings the concession.",
+              "cards": [
+                "Fracturize",
                 "Refracting Missile",
                 "Shimmering Refraction"
               ]
@@ -20699,7 +22131,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20726,24 +22158,63 @@
       "result": "Yamikin wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Yamikin wins game 2",
+          "summary": "Yamikin removes Carter before it can stabilize",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Bhop attempts a final damage line while under heavy pressure."
+              "text": "Cheshire Cat and other early allies pressure Bhop. Yamikin uses Vermilion Decree on his own ally during Bhop’s turn, triggering Death Essence Amulet to discard Carter.",
+              "cards": [
+                "Vermilion Decree",
+                "Death Essence Amulet"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The line falls short and Yamikin advances to the final."
+              "text": "With Bhop’s recovery and board-clear option gone, Peppered Chef closes the opener.",
+              "cards": [
+                "Peppered Chef"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Early pressure leaves Bhop’s Feu line short",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "March Hare, Red Hare and Singed Emotions pressure Bhop; Blazing Throw adds more damage.",
+              "cards": [
+                "March Hare, Mottled Host",
+                "Red Hare, Unrivaled Stallion",
+                "Singed Emotions",
+                "Blazing Throw"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Bhop attempts a Feu Awakening and Manxome Armoire sequence, but runs out of cards in the graveyard to omen.",
+              "cards": [
+                "Feu Awakening",
+                "Manxome Armoire"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Yamikin’s remaining board secures the sweep after the damage line falls short."
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20772,18 +22243,24 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "hachico wins game 2",
+          "summary": "Repeated Disenchants keep Noel’s fractals short",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Noel has damage spells but cannot assemble the resources to finish hachico."
+              "text": "hachico repeatedly removes fractals with Disenchant, including a copy recovered through Manxome Armoire, delaying Noel’s draw engine.",
+              "cards": [
+                "Disenchant",
+                "Manxome Armoire"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "hachico combines Devastating Blow, Feu Awakening and further omen damage to complete the sweep.",
+              "text": "After clearing Frostsworn Paladin and recovering with Abnegation, hachico lands Devastating Blow and follows with Feu Awakening and omen damage to finish the sweep.",
               "cards": [
+                "Frostsworn Paladin",
+                "Abnegation",
                 "Devastating Blow",
                 "Feu Awakening"
               ]
@@ -20791,7 +22268,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2. Game 2 coverage; hachico’s game 1 win occurred off-camera.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20818,24 +22295,62 @@
       "result": "hachico wins 2-0",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yamikin receives a game loss",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Play pauses shortly after the opening. The broadcast reports a game loss for Yamikin after a main-deck card is found in the material deck."
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "hachico wins game 2",
+          "summary": "hachico stabilizes and finishes with omen damage",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Yamikin uses interaction to challenge hachico’s finishing attack."
+              "text": "Resolute Stand buys time against Yamikin’s early allies; hachico reaches Ciel level three and finds Abnegation.",
+              "cards": [
+                "Resolute Stand",
+                "Abnegation"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "hachico follows with further omen damage and wins the championship."
+              "text": "Nullifying Lantern shuts off Yamikin’s graveyard lines, while Manxome Armoire recovers Abnegation for another heal.",
+              "cards": [
+                "Nullifying Lantern",
+                "Manxome Armoire",
+                "Abnegation"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Yamikin stops Beguiling Coup with Break the Line.",
+              "cards": [
+                "Beguiling Coup",
+                "Break the Line"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "hachico follows with Feu Awakening, the end-phase omen trigger and Omen Bringer to win the championship.",
+              "cards": [
+                "Feu Awakening"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Melbourne Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Melbourne Day 2.",
       "video": {
         "id": "qQrV2I2Uiac",
         "kind": "broadcast",
@@ -20962,19 +22477,54 @@
       "result": "Limelight wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Limelight wins game 2",
+          "summary": "Limelight clears the board and finishes with omen damage",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Liam looks for an ally line to keep the game going."
+              "text": "Undying Dreams protects Library Witch from Charge the Soul while Limelight develops toward Ciel level three.",
+              "cards": [
+                "Undying Dreams",
+                "Library Witch",
+                "Charge the Soul"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Limelight uses Devouring Malice and further omen damage to finish game two.",
+              "text": "Baleful Oblation clears Liam’s board. Ally pressure and Manxome Armoire set up the final end-phase omen damage.",
+              "cards": [
+                "Baleful Oblation",
+                "Manxome Armoire"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Devouring Malice and omen damage finish the sweep",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Carter and Sable Remnant provide recovery while Limelight keeps pressure on Liam.",
+              "cards": [
+                "Carter, Synthetic Reaper",
+                "Sable Remnant"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Liam lands a large Diana shot, but cannot finish before the next damage sequence."
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Devouring Malice deals damage and recovers life; two omen triggers close the match.",
               "cards": [
                 "Devouring Malice"
               ]
@@ -20982,7 +22532,7 @@
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21009,27 +22559,59 @@
       "result": "Dragowil wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Dragowil wins game 2",
+          "summary": "Dragowil wins the Ghosts exchange",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "TeamTrueIsaac commits to a large attack rather than give Merlin more time."
+              "text": "Merlin removes Isaac’s Liminal Guide before it can provide its draw, then Dragowil reaches level three and establishes Ghosts of Pendragon.",
+              "cards": [
+                "Liminal Guide",
+                "Ghosts of Pendragon"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Dragowil has Crystallized Destiny again, stopping the large attack; the game ends in his favor.",
+              "text": "Crux Sight recovers key cards; Fireball, Sudden Steel and Ascension pressure bring Isaac’s concession.",
               "cards": [
-                "Crystallized Destiny"
+                "Crux Sight",
+                "Fireball",
+                "Sudden Steel"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Two Crystallized Destinies stop Isaac’s biggest attacks",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dragowil stops the first Rending Flames with Crystallized Destiny, then takes a later Devastating Blow while keeping another defensive answer.",
+              "cards": [
+                "Rending Flames",
+                "Crystallized Destiny",
+                "Devastating Blow"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "A second Crystallized Destiny stops Isaac’s eighteen-damage Rending Flames; Isaac concedes.",
+              "cards": [
+                "Crystallized Destiny",
+                "Rending Flames"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21056,24 +22638,94 @@
       "result": "Sherlock wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
-          "winner": "p1",
-          "summary": "Sherlock wins game 3",
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "endYR’s Genbu board outlasts Sherlock’s defenses",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Sherlock applies the last damage before endYR’s level-up can resolve."
+              "actor": "p2",
+              "text": "endYR establishes a wide board and Genbu while disrupting Sherlock’s setup."
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The final response is insufficient and Sherlock takes game three."
+              "text": "Veiling Breeze and Innervate Agility buy time, but Sherlock cannot clear the remaining attackers.",
+              "cards": [
+                "Veiling Breeze",
+                "Innervate Agility"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Genbu and the surviving allies finish the opener."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Sherlock chains spells before Safeguard Amulet resolves",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Two Razer Gales build pressure; Scatter Essence removes Fractal of Rain.",
+              "cards": [
+                "Razorgale Calling",
+                "Scatter Essence",
+                "Fractal of Rain"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Suppressing Censer of Restful Peace allows Sherlock to spend floating memory before the Censer returns.",
+              "cards": [
+                "Censer of Restful Peace"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Bagua and Fairy Whispers force Safeguard Amulet; another Bagua in response brings endYR’s concession.",
+              "cards": [
+                "Bagua of Cardinal Fate",
+                "Fairy Whispers",
+                "Safeguard Amulet"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Sherlock finishes during Guo Jia’s level-up",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Repeated Scatter Essences disrupt endYR while Razer Gale and Three Visits accumulate damage.",
+              "cards": [
+                "Scatter Essence",
+                "Razorgale Calling",
+                "Three Visits"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Sherlock uses Zephyr and Tempest Downfall in response to Guo Jia’s level-up to close the decider.",
+              "cards": [
+                "Zephyr",
+                "Tempest Downfall"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21100,27 +22752,80 @@
       "result": "Quarax wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Quarax wins game 3",
+          "summary": "Quarax’s faster level-up overwhelms Boy",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Boy looks for a defensive route against Quarax’s finishing attack."
+              "actor": "p2",
+              "text": "Boy loses Dungeon Guide on level-up and remains behind while Quarax develops Ghosts of Pendragon.",
+              "cards": [
+                "Dungeon Guide",
+                "Ghosts of Pendragon"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Quarax’s Devastating Blow closes the game despite the defensive cards in Boy’s hand.",
+              "text": "Quarax’s board and weapon pressure set up Ascension for the opening win."
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Boy’s Ghosts engine turns the match around",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Censer of Restful Peace slows Quarax while Windmill Engineer and Aesan Protector build Boy’s hand.",
               "cards": [
+                "Censer of Restful Peace",
+                "Windmill Engineer",
+                "Aesan Protector"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Displace reuses Ghosts of Pendragon and Crystallized Destiny stops Devastating Blow. Boy’s subsequent weapon pressure wins game two.",
+              "cards": [
+                "Displace",
+                "Ghosts of Pendragon",
+                "Crystallized Destiny",
+                "Devastating Blow"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Varuck opens the way for Devastating Blow",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Quarax keeps rebuilding Ghosts of Pendragon while Boy holds defensive cards.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Varuck, Smoldering Spire prevents Boy’s damage-prevention cards from stopping the finishing Devastating Blow.",
+              "cards": [
+                "Varuck, Smoldering Spire",
                 "Devastating Blow"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21147,27 +22852,92 @@
       "result": "Pulse wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Pulse wins game 3",
+          "summary": "Pulse stabilizes and wins with Seiryuu’s Command",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "The deciding game reaches overtime with both players looking for a lethal attack."
+              "text": "Pulse uses Reclaim on Dream Fairy to preserve its removal through Stifling Trap, then accelerates with Beseeched Fatestone.",
+              "cards": [
+                "Reclaim",
+                "Dream Fairy",
+                "Stifling Trap",
+                "Beseeched Fatestone"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Pulse uses Byakko’s Command to attack again with the dragon and close the match.",
+              "text": "Johnbed stops the first Seiryuu’s Command, but Pulse has another and finishes with the dragon’s attack and Arcane Blast sequence.",
               "cards": [
+                "Seiryuu's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Concealed Marksman breaks through the Dream Fairies",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Three Dream Fairies remove Johnbed’s earlier allies, but leave Pulse short on cards for defense.",
+              "cards": [
+                "Dream Fairy"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Concealed Marksman and Ranger’s Strides deliver the sudden winning attack sequence.",
+              "cards": [
+                "Concealed Marksman",
+                "Ranger Strides"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Pulse protects the dragon’s finishing attacks",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Coronation Ceremony gives Baby Green Slime spellshroud, preventing Pulse’s Reclaim from saving it.",
+              "cards": [
+                "Coronation Ceremony",
+                "Baby Green Slime",
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Pulse survives with Innervate Agility, then prepares Seiryuu and repeated attacks through Byakko’s Command.",
+              "cards": [
+                "Innervate Agility",
                 "Byakko's Command"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Guo Jia’s lineage release stops Squallbind Pounce from suppressing the attacking dragon, securing the match.",
+              "cards": [
+                "Squallbind Pounce"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21194,27 +22964,71 @@
       "result": "Lifdrasyl wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Lifdrasyl wins game 2",
+          "summary": "Lifdrasyl chains Tempest Downfalls through recovery",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Lifdrasyl chains Tempest Downfall while keeping enough resources for the final exchange.",
+              "text": "Windmill Engineer and Aesan Protector establish early pressure before two Razer Gales accelerate the damage.",
               "cards": [
-                "Tempest Downfall"
+                "Windmill Engineer",
+                "Aesan Protector",
+                "Razorgale Calling"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "ShingTsang cannot stop the remaining pressure and loses game two."
+              "text": "Zephyr enables repeated Tempest Downfalls; Cyclical Breeze recovers another as Lifdrasyl pushes through ShingTsang’s healing and defensive response.",
+              "cards": [
+                "Zephyr",
+                "Tempest Downfall",
+                "Cyclical Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Lifdrasyl rebuilds after Scatter Essence",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Lifdrasyl starts with allies before committing Razer Gale, then recovers the Fantasia after Scatter Essence.",
+              "cards": [
+                "Razorgale Calling",
+                "Scatter Essence",
+                "Cyclical Breeze"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Stifling Trap delays Dungeon Guide, and Verdigris Decree removes Fertile Grounds.",
+              "cards": [
+                "Stifling Trap",
+                "Dungeon Guide",
+                "Verdigris Decree",
+                "Fertile Grounds"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "ShingTsang survives the first Tempest Downfall chain with recovery, but Lifdrasyl’s remaining spells and Razer Gale triggers finish the match.",
+              "cards": [
+                "Tempest Downfall",
+                "Razorgale Calling"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21241,28 +23055,65 @@
       "result": "Nathan wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Nathan wins game 2",
+          "summary": "Nathan’s Luxem pressure leaves no defense",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Nathan uses Reclaim on Dungeon Guide to assemble the resources for an exact finishing line.",
+              "text": "Nathan wins early ally exchanges and builds influence, then Zander’s Luxem reveals force OneEyedOwl to commit cards from hand."
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Blinding Orb removes the remaining response cards and Lightweaver’s Assault supplies the finishing damage.",
               "cards": [
-                "Dungeon Guide",
-                "Reclaim"
+                "Blinding Orb",
+                "Lightweaver's Assault"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Reclaim finds the last card for exact lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "OneEyedOwl uses Heavenly Guide and Shadow Reaver to access Nathan’s cards, including Incapacitate to stop Ensnaring Fumes.",
+              "cards": [
+                "Heavenly Guide",
+                "Incapacitate",
+                "Ensnaring Fumes"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The final damage closes a close second game and secures the 2-0 win."
+              "text": "Nathan chips with Mercenary's Blade, then Scout the Land finds Reclaim. Returning Dungeon Guide supplies the extra card needed for the finish.",
+              "cards": [
+                "Mercenary's Blade",
+                "Scout the Land",
+                "Reclaim",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Blinding Orb and Lightweaver’s Assault complete the exact-damage line.",
+              "cards": [
+                "Blinding Orb",
+                "Lightweaver's Assault"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 1.",
       "video": {
         "id": "6XU9azcBukk",
         "kind": "broadcast",
@@ -21289,24 +23140,76 @@
       "result": "Asuna wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "KitKat’s small attacks set up the burn finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "KitKat pressures Asuna’s slow opener with allies while Asuna spends resources rushing to Shadow Dancer."
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "After Nullifying Mirror and Hone by Fire, KitKat forces a redirect. Asuna negates Blazing Throw, but Vermilion Decree finishes the game.",
+              "cards": [
+                "Nullifying Mirror",
+                "Hone by Fire",
+                "Blazing Throw",
+                "Vermilion Decree"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
           "winner": "p1",
-          "summary": "Asuna wins game 3",
+          "summary": "Asuna stabilizes and wins with Slice and Dice",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Asuna uses the defensive window to survive KitKat’s final pressure."
+              "text": "Sadi clears key allies and generates agility triggers, letting Asuna reach level three with preparation counters."
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The return attacks finish game three and keep Asuna at the top of the standings."
+              "text": "Asuna takes the swordless Rending Flames attack, then plays Slice and Dice for the game.",
+              "cards": [
+                "Rending Flames",
+                "Slice and Dice"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Veiling Breeze buys Asuna the final turn",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "KitKat removes Shadow’s Claw and uses Deflecting Edge against Assassin’s Ripper.",
+              "cards": [
+                "Deflecting Edge",
+                "Assassin's Ripper"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Asuna responds to Nullifying Mirror with Veiling Breeze, surviving the last pressure. Return attacks finish the match in overtime.",
+              "cards": [
+                "Nullifying Mirror",
+                "Veiling Breeze"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21333,24 +23236,84 @@
       "result": "Pulse wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "lucasis removes Seiryuu and takes control",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Astral Seal stops Byakko’s Command, buying time to build Polaris while healing through Pulse’s attacks.",
+              "cards": [
+                "Astral Seal",
+                "Byakko's Command",
+                "Polaris, Twinkling Cauldron"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Dungeon Guide chips Seiryuu before an eleven-counter Polaris clears it. Art of War then shuts down Pulse’s remaining ally plan, prompting a concession.",
+              "cards": [
+                "Dungeon Guide",
+                "Polaris, Twinkling Cauldron",
+                "Art of War"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
           "winner": "p1",
-          "summary": "Pulse wins game 3",
+          "summary": "Pulse’s early dragon overwhelms Arisanna",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Pulse presents repeated dragon attacks while lucasis tries to prevent the damage."
+              "text": "Beseeched Fatestone accelerates Pulse’s development while lucasis remains below level three.",
+              "cards": [
+                "Beseeched Fatestone"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "lucasis cannot recover the engine in time and Pulse wins the deciding game."
+              "text": "Byakko’s Command provides another Seiryuu attack and the Arcane Blast sequence finishes through lucasis’s attempted recovery.",
+              "cards": [
+                "Byakko's Command",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Aesan Protector survives Polaris and keeps the pressure on",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Brisk Windtrotter repeatedly buffs Aesan Protector. Baby Green Slime disrupts Polaris, leaving its five-damage clear short of removing the Protector.",
+              "cards": [
+                "Brisk Windtrotter",
+                "Aesan Protector",
+                "Baby Green Slime",
+                "Polaris, Twinkling Cauldron"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "With Aesan still attacking, Pulse develops Seiryuu and finds a second Seiryuu’s Command to overwhelm lucasis’s remaining defenses.",
+              "cards": [
+                "Seiryuu's Command"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21377,24 +23340,82 @@
       "result": "Tien wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Seiba’s Dream Fairies delay Tien’s engine",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Cloud Striker applies pressure while Dream Fairy prevents Tien from replaying Dungeon Guide.",
+              "cards": [
+                "Dream Fairy",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "After exhausting Clarent’s protection, Seiba finishes with Razorgale triggers and Tempest Downfall.",
+              "cards": [
+                "Razorgale Calling",
+                "Tempest Downfall"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
           "winner": "p1",
-          "summary": "Tien wins game 3",
+          "summary": "Devastating Blow breaks through Veiling Breeze",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "The deciding game remains close late in the round."
+              "text": "Tien reaches level three with Ghosts of Pendragon ready, building damage before Seiba’s second Razorgale develops.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Razorgale Calling"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Commentary confirms that Seiba concedes to Tien; the match ends 2-1."
+              "text": "Ghosts reuses a weapon, then Devastating Blow deals enough damage through Veiling Breeze to tie the match.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Devastating Blow",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Seiba concedes in overtime",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Seiba uses Censer of Restful Peace and protects Cloud Striker, but cannot find Razorgale. An attempted Innervate Agility cannot be paid because Seiba has not taken enough damage.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Innervate Agility"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Tien clears Cloud Striker and develops Ghosts of Pendragon. With the game still unresolved in overtime, Seiba concedes to Tien.",
+              "cards": [
+                "Ghosts of Pendragon"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21421,24 +23442,75 @@
       "result": "Dragowil wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Dragowil wins game 2",
+          "summary": "Dragowil’s Ascension opens the Fireball finish",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Dragowil searches for the last damage after the defensive exchange."
+              "text": "Cheshire Cat, Impish Grin and Ghosts of Pendragon pressure LegitJesusKun after Merlin reaches level three.",
+              "cards": [
+                "Cheshire Cat, Impish Grin",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "LegitJesusKun uses Incapacitate on Crux Sight, allowing Dragowil’s subsequent Ascension line through.",
+              "cards": [
+                "Incapacitate",
+                "Crux Sight"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Dragowil shows two Fireballs; LegitJesusKun concedes.",
+              "cards": [
+                "Fireball"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Spark of Light helps set up the last damage",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Three of Hearts puts Liminal Guide in the grave before Merlin’s level-up, unlocking Dragowil’s slow opening. Ghosts of Pendragon and allies build pressure.",
+              "cards": [
+                "Three of Hearts",
+                "Liminal Guide",
+                "Ghosts of Pendragon"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The final damage resolves and Dragowil secures a top-eight place."
+              "text": "Dragowil responds to Regal Inquisition with Ascension, then adds Spark Alight damage during the exchange.",
+              "cards": [
+                "Regal Inquisition",
+                "Spark Alight"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "After LegitJesusKun uses Veiling Breeze, Dragowil waits for the defensive window to end and finishes through Safeguard Amulet with damage followed by Ascension.",
+              "cards": [
+                "Veiling Breeze",
+                "Safeguard Amulet"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21465,27 +23537,104 @@
       "result": "Dragowil wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
-          "winner": "p1",
-          "summary": "Dragowil wins game 3",
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Limelight’s Oblation pressure wins the opener",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Dragowil lines up Fireball and a Merlin attack while checking Limelight’s last defensive card.",
+              "actor": "p2",
+              "text": "Limelight builds omens and pressures Dragowil with Carter and Spirelle, then lands Baleful Oblation.",
               "cards": [
-                "Fireball"
+                "Carter, Synthetic Reaper",
+                "Spirelle, Schwartz Queen",
+                "Baleful Oblation"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Dragowil finds the last damage and wins the quarterfinal 2-1."
+              "text": "Dragowil loses Spirit Blade: Ascension to Drawn Blade. The remaining counterattack falls one damage short, leaving Limelight the first game.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Drawn Blade"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Dragowil breaks the omen setup and forces a decider",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Regal Inquisition strips several key cards from Dragowil’s slow hand, but Merlin eventually reaches level three and finds Ghosts of Pendragon.",
+              "cards": [
+                "Regal Inquisition",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Reduce to Ash destroys Orb of Sealing in response to its activation, disrupting Limelight’s omen plan.",
+              "cards": [
+                "Reduce to Ash",
+                "Orb of Sealing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Spirit Blade: Ascension brings back Prismatic Edge for damage. The following attack and Creative Shock overcome Resolute Stand to tie the match.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Prismatic Edge",
+                "Creative Shock",
+                "Resolute Stand"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Dragowil’s fast start leaves Limelight behind",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Double Creative Shock, Liminal Guide and Cheshire Cat build pressure. Merlin removes Creative Shock from Limelight’s graveyard before it can become an omen.",
+              "cards": [
+                "Creative Shock",
+                "Liminal Guide",
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Limelight uses Resolute Stand’s alternate cost, then a small Baleful Oblation to clear the board.",
+              "cards": [
+                "Resolute Stand",
+                "Baleful Oblation"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Dragowil responds with Creative Shock and follows with Fireball and the sword attack to win 2–1.",
+              "cards": [
+                "Creative Shock",
+                "Fireball"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21512,27 +23661,100 @@
       "result": "TeamTrueCaban wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Merlin’s early pressure sets up Fireball lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Dragowil rushes Merlin to level two, restricting Caban’s floating memory. Cheshire Cat and the other allies keep applying damage.",
+              "cards": [
+                "Cheshire Cat, Impish Grin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Fireball forces a Clarent charge. Dragowil later plays a second Fireball in response to Caban’s level-up, winning before the extra life arrives.",
+              "cards": [
+                "Fireball",
+                "Clarent, Reimagined"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
           "winner": "p1",
-          "summary": "TeamTrueCaban wins game 3",
+          "summary": "Caban’s interceptors buy time for Devastating Blow",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "TeamTrueCaban calculates a finishing attack through Dragowil’s remaining defense."
+              "text": "Fluffy Shopkeep supplies interceptors while Dragowil loses two Ghosts of Pendragon during leveling.",
+              "cards": [
+                "Fluffy Shopkeep",
+                "Ghosts of Pendragon"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Devastating Blow closes game three and sends TeamTrueCaban to the final.",
+              "text": "Surreptitious Scheme slows Merlin’s counters, and Caban builds pressure with Ghosts of Pendragon.",
               "cards": [
+                "Surreptitious Scheme",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "After digging and spending Fireball to clear an interceptor, Dragowil concedes with Caban’s next Devastating Blow still available.",
+              "cards": [
+                "Fireball",
+                "Devastating Blow"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Caban converts the board advantage into a finals berth",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dungeon Guide into Lorraine level two and Flame Sweep clear two allies and draw cards, reversing Dragowil’s early pressure.",
+              "cards": [
+                "Dungeon Guide",
+                "Flame Sweep"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Surreptitious Scheme removes Merlin’s level counter while Ghosts of Pendragon keep the board and hand stocked.",
+              "cards": [
+                "Surreptitious Scheme",
+                "Ghosts of Pendragon"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Spirit Blade: Ascension brings in Prismatic Edge for damage. Devastating Blow then finishes through the remaining defenses.",
+              "cards": [
+                "Spirit Blade: Ascension",
+                "Prismatic Edge",
                 "Devastating Blow"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21559,27 +23781,113 @@
       "result": "Emp wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Emp wins game 3",
+          "summary": "EMP survives Rending Flames and chains Tempest Downfall",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Emp takes time to sequence the final chain of wind damage."
+              "text": "An early Razorgale Calling powers EMP’s cycling. Stifling Trap stops Caban’s Dungeon Guide.",
+              "cards": [
+                "Razorgale Calling",
+                "Stifling Trap",
+                "Dungeon Guide"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Emp chains Tempest Downfall, including a recovered copy, to finish TeamTrueCaban and win the championship.",
+              "text": "Zephyr removes Inert Sword to shrink Caban’s Rending Flames attack, letting EMP survive.",
               "cards": [
+                "Zephyr",
+                "Inert Sword",
+                "Rending Flames"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Ventus enables the Tempest Downfall sequence, and Cyclical Breeze returns another Tempest to finish the opener.",
+              "cards": [
+                "Ventus, Staff of Zephyrs",
+                "Tempest Downfall",
+                "Cyclical Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Caban’s wide start sets up a blow through Veiling Breeze",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Two Three of Hearts pressure EMP while providing floating memory for Caban’s levels.",
+              "cards": [
+                "Three of Hearts"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "The first Devastating Blow pushes damage through Veiling Breeze and leaves EMP close to defeat.",
+              "cards": [
+                "Devastating Blow",
+                "Veiling Breeze"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Caban brings out Clarent and sends another Devastating Blow over the next Veiling Breeze, forcing game three.",
+              "cards": [
+                "Clarent, Reimagined",
+                "Devastating Blow",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "EMP finds Razorgale and wins the Tempest race",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "EMP searches through a slow opening and finds Razorgale Calling on turn two, while Caban begins with Honorable Vanguard.",
+              "cards": [
+                "Razorgale Calling",
+                "Honorable Vanguard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Flame Sweep and the Vanguard attack push EMP to six life remaining, but EMP finds more wind cards and defenses.",
+              "cards": [
+                "Flame Sweep",
+                "Honorable Vanguard"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Ventus and Cyclical Breeze extend the Tempest Downfall chain. Three Tempest copies plus the replay deliver the title-winning burst.",
+              "cards": [
+                "Ventus, Staff of Zephyrs",
+                "Cyclical Breeze",
                 "Tempest Downfall"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Ascent Auckland Day 2. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Ascent Auckland Day 2.",
       "video": {
         "id": "idcMDSZRmIE",
         "kind": "broadcast",
@@ -21606,24 +23914,83 @@
       "result": "Blazebeast9612 wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Blazebeast9612 wins game 2",
+          "summary": "Blazebeast9612 wins — Razorgale damage before Ciel reaches level three",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Blazebeast9612 clears Limelight’s defensive ally and continues the wind-card sequence."
+              "text": "Censer of Restful Peace and Protector Raccoon restrict Limelight’s graveyard while Aesan Protector applies early damage.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Protector Raccoon",
+                "Aesan Protector"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Limelight extends the fist as the remaining damage completes the sweep."
+              "text": "Razorgale Calling and Essence Crucible turn cheap wind cards into damage. Speed Potion extends the turn, and a second Veiling Breeze finishes Limelight in response to the level-three materialization.",
+              "cards": [
+                "Razorgale Calling",
+                "Essence Crucible",
+                "Speed Potion",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Blazebeast9612 wins — Polaris removes Blanche and opens the finish",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Limelight develops Vigil Rempart and Nullifying Lantern, then draws with Library Witch and Cremation Ritual. Expel the Departed removes a Razorgale, but Blazebeast9612 has another.",
+              "cards": [
+                "Vigil Rempart",
+                "Nullifying Lantern",
+                "Library Witch",
+                "Cremation Ritual",
+                "Expel the Departed"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Blanche stops the Razorgale damage. Limelight uses Topsy Decree, then levels to three but loses Feu Awakening in the banish. Extorting Blackjack attacks without its twenty-one-cost bonus, and Veiling Breeze prevents the attack damage.",
+              "cards": [
+                "Blanche, Sheltering Saint",
+                "Topsy Decree",
+                "Extorting Blackjack",
+                "Veiling Breeze"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Blazebeast9612 materializes Polaris and brews Speed Potion, adding counters before Polaris clears Blanche. Windmill Engineer and Scout the Land supply the final Razorgale triggers.",
+              "cards": [
+                "Polaris, Twinkling Cauldron",
+                "Speed Potion",
+                "Windmill Engineer",
+                "Scout the Land",
+                "Razorgale Calling"
+              ],
+              "tags": [
+                "lethal"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including both games and the winner interview.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21650,24 +24017,103 @@
       "result": "Blink wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Blink wins game 3",
+          "summary": "Blink wins — double refusal protects the Burst finish",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Jayare holds the desired setup cards but cannot get past Blink’s interaction."
+              "text": "Return to the Archive sets up Frostsworn Paladin after Jayare uses Bandit, Gaze Leader. Fracturize adds another fractal, and Refracting Missile plus Paladin damage put Tonoris within reach.",
+              "cards": [
+                "Return to the Archive",
+                "Frostsworn Paladin",
+                "Bandit, Gaze Leader",
+                "Fracturize",
+                "Refracting Missile"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Blink ends the deciding game quickly after establishing the stronger board."
+              "text": "Blink commits Burst Asunder and answers both Veiling Breezes with Glimmering Refusal.",
+              "cards": [
+                "Burst Asunder",
+                "Veiling Breeze",
+                "Glimmering Refusal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Jayare wins — a Fabricator sword finds exact lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Scatter Essence slows the fractal setup while Bandit, Gaze Leader and Reclaim build resources. Jayare reaches Tonoris level three.",
+              "cards": [
+                "Scatter Essence",
+                "Bandit, Gaze Leader",
+                "Reclaim"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Jianyu names Apothecary's Harvest, while Captivating Opulence taxes Sentinel Fabricator. Blink builds a large fractal board but cannot force the finish.",
+              "cards": [
+                "Jianyu, Fate's Premonition",
+                "Apothecary's Harvest",
+                "Captivating Opulence",
+                "Sentinel Fabricator"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Dream Fairy removes Fluffy Shopkeep from the way. After the ally attacks connect, Jayare pays the Fabricator tax and creates a sword with a buff counter for four damage and exact lethal.",
+              "cards": [
+                "Dream Fairy",
+                "Fluffy Shopkeep",
+                "Sentinel Fabricator"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Blink wins — Paladin pressure and refusals close the match",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Zhang Jiao draws cards while Frostsworn Paladin pressures Tonoris. Glimmering Refusal stops a second Dungeon Guide and forces Jayare to level manually.",
+              "cards": [
+                "Zhang Jiao, Way of Peace",
+                "Frostsworn Paladin",
+                "Glimmering Refusal",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Blink adds Refracting Missile and ally damage, refuses Apothecary's Harvest, then finishes with Burst Asunder.",
+              "cards": [
+                "Refracting Missile",
+                "Glimmering Refusal",
+                "Apothecary's Harvest",
+                "Burst Asunder"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including all three games.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21694,24 +24140,69 @@
       "result": "Draw 1-1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Sano wins — Seiryuu pressure outruns Lorraine’s setup",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Sano reaches Guo Jia level three and attacks with Seiryuu while Glenyboi remains on Lorraine level one.",
+              "cards": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Baku’s Command readies Seiryuu for another attack, and empowered Arcane Blast damage finishes through Veiling Breeze.",
+              "cards": [
+                "Byakko's Command",
+                "Arcane Blast",
+                "Veiling Breeze"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "GlenyBoi wins game 2",
+          "summary": "Glenyboi wins — the last Prismatic Edge loop ties the match",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "GlenyBoi keeps drawing and reusing the remaining damage source during overtime."
+              "text": "Stifling Trap interrupts Windmill Engineer’s return through Escape the Wreckage. Glenyboi builds a lead with allies and reaches Lorraine level three.",
+              "cards": [
+                "Stifling Trap",
+                "Windmill Engineer",
+                "Escape the Wreckage"
+              ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "The last damage levels the match at 1-1 as the round expires."
+              "text": "Ensnaring Fumes returns the ally boards and removes Seiryuu. Sano stays alive with Innervate Agility, level-three recovery, and Aella repeatedly returning Fatestone of Heaven.",
+              "cards": [
+                "Ensnaring Fumes",
+                "Innervate Agility",
+                "Aella, Zephyr's Hand",
+                "Fatestone of Heaven"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Sano transforms Fatestone of Heaven and uses Optical Control to keep defending. Glenyboi’s final Aella suppression of Prismatic Edge delivers the win in overtime, ending the match 1–1.",
+              "cards": [
+                "Fatestone of Heaven",
+                "Optical Control",
+                "Aella, Zephyr's Hand",
+                "Prismatic Edge"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions. Game one has a broadcast interruption; its returning coverage and result, and game two through overtime, are described.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21738,24 +24229,86 @@
       "result": "Draw 1-1",
       "games": [
         {
-          "gameNumber": 3,
-          "winner": "draw",
-          "summary": "Game ends in a draw",
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "boy wins — Tricastles of Lucenia locks down the response",
           "beats": [
             {
               "order": 1,
-              "actor": "both",
-              "text": "Neither player can assemble enough damage in the last overtime turns."
+              "actor": "p2",
+              "text": "boy brings out Seiryuu and establishes Tricastles of Lucenia, making SapphicSnake’s water interaction expensive.",
+              "cards": []
             },
             {
               "order": 2,
-              "actor": "both",
-              "text": "Both players stop with the deciding game unfinished; the match ends 1-1."
+              "actor": "p1",
+              "text": "Ceasing Edict stops the attack trigger, but SapphicSnake cannot afford Engulf when boy follows with Arcane Blast.",
+              "cards": [
+                "Ceasing Edict",
+                "Engulf",
+                "Arcane Blast"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "SapphicSnake wins — Nimue removes Seiryuu",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Nimue and Reprogram destroy Seiryuu. SapphicSnake develops two Hydroguard Retainers and protects them while building resources.",
+              "cards": [
+                "Reprogram",
+                "Hydroguard Retainer"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "SapphicSnake clears Dream Fairy to recover Nimue, then removes boy’s remaining engines with Fracturize. boy concedes.",
+              "cards": [
+                "Dream Fairy",
+                "Fracturize"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "draw",
+          "summary": "Draw — Nimue and Castle hold each other off",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Two Hydroguard Retainers and Nimue constrain boy’s Seiryuu plan. Regal Inquisition replaces five cards from SapphicSnake’s hand, but Peer Beyond is among the new draws.",
+              "cards": [
+                "Hydroguard Retainer",
+                "Regal Inquisition",
+                "Peer Beyond"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "boy resolves another Tricastles of Lucenia. SapphicSnake keeps Nimue alive through the ally attacks and prevents Uther from completing its removal.",
+              "cards": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Ceasing Edict stops the late Seiryuu attack. SapphicSnake finally breaks the Castle in overtime, but neither player finishes and the match ends 1–1.",
+              "cards": [
+                "Ceasing Edict"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including all three games and the overtime draw.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21782,31 +24335,99 @@
       "result": "HolySamurai wins 2-1",
       "games": [
         {
-          "gameNumber": 3,
-          "winner": "p1",
-          "summary": "HolySamurai wins game 3",
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "thomasli2 wins — Smoke Bombs opens the double Take Aim finish",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "HolySamurai finds Storm Slime to clear the remaining defensive ally.",
+              "text": "HolySamurai reaches level three, clears Paladins, and develops Lustrous Slime to defend Sylvie.",
               "cards": [
+                "Lustrous Slime",
+                "Frostsworn Paladin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Smoke Bombs gets past the taunt. Two Take Aims give thomasli2 the damage to finish.",
+              "cards": [
+                "Smoke Bombs",
+                "Take Aim"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "HolySamurai wins — Covenant protects the slime counterattack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Limitless Slime clears Paladin and later helps remove Krustallan Archers. Undeniable Truth sacrifices Storm Slime during Diana’s attack to deny the glimpse.",
+              "cards": [
+                "Limitless Slime",
+                "Krustallan Archer",
+                "Undeniable Truth",
                 "Storm Slime"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Storm Slime and Limitless Slime finish game three after ThomasLi2 won the opener.",
+              "text": "Covenant of Thorns redirects the committed Diana attack to Dungeon Guide. HolySamurai’s surviving slimes then finish while thomasli2 lacks a distance card for Flash Grenade.",
               "cards": [
+                "Covenant of Thorns",
+                "Dungeon Guide",
+                "Flash Grenade"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "HolySamurai wins — Hymn finds the decisive Storm Slime",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Baby Gray Slime and Baby Silver Slime slow Diana’s opening. Protector Raccoon limits the next attack while Limitless Slime develops.",
+              "cards": [
+                "Baby Gray Slime",
+                "Baby Silver Slime",
+                "Protector Raccoon",
+                "Limitless Slime"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Flash Grenade reduces the Storm Slime turn. thomasli2 builds another attack but holds back from the full commitment and plays Paladin.",
+              "cards": [
+                "Flash Grenade",
+                "Storm Slime",
+                "Frostsworn Paladin"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Hymn of Gaia’s Grace finds Storm Slime during recollection. Storm clears Paladin and Limitless Slime supplies the finishing attack.",
+              "cards": [
+                "Hymn of Gaia's Grace",
+                "Storm Slime",
                 "Limitless Slime",
-                "Storm Slime"
+                "Frostsworn Paladin"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 3 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including all three games.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21833,27 +24454,64 @@
       "result": "Dennisyao wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Dennisyao wins game 2",
+          "summary": "DennisYao wins — Drown removes the Aesan defense",
           "beats": [
             {
               "order": 1,
-              "actor": "p1",
-              "text": "Dennisyao commits to repeated Cheshire Cat attacks while Jdavies96 struggles to develop a board.",
+              "actor": "p2",
+              "text": "jdavies96 uses Incapacitate to stop Backstep and delay DennisYao’s distance setup.",
               "cards": [
-                "Cheshire Cat, Impish Grin"
+                "Incapacitate",
+                "Backstep"
               ]
             },
             {
               "order": 2,
               "actor": "p1",
-              "text": "Repeated attacks finish the second game and complete the sweep."
+              "text": "Drown in Aether kills Windmill Engineer in response to Aesan Protector, forcing Aesan back to hand. DennisYao then finishes with Cheshire Cat and Ranger Strides.",
+              "cards": [
+                "Drown in Aether",
+                "Windmill Engineer",
+                "Aesan Protector",
+                "Cheshire Cat, Impish Grin",
+                "Ranger Strides"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "DennisYao wins — swords power the Cheshire attacks",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Frozen Dismissal stops the opening Sadi. DennisYao stays on Spirit of Water and uses Inert Sword and Palemoon’s sword to power Cheshire Cat through Censer of Restful Peace.",
+              "cards": [
+                "Frozen Dismissal",
+                "Inert Sword",
+                "Cheshire Cat, Impish Grin",
+                "Censer of Restful Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Veiling Breeze and Incapacitate buy time, but repeated Cheshire attacks leave Tristan close to defeat. jdavies96 attempts Dungeon Guide to level three; DennisYao closes the game.",
+              "cards": [
+                "Veiling Breeze",
+                "Incapacitate",
+                "Dungeon Guide",
+                "Cheshire Cat, Impish Grin"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including both games and the winner interview.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21880,28 +24538,75 @@
       "result": "Limelight wins 2-0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Limelight wins game 2",
+          "summary": "Limelight wins — repeated Oblation breaks through Clarent",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Limelight combines Extorting Blackjack with Feu Awakening for the finishing damage.",
+              "text": "Limelight builds resources with ally sacrifices, then uses Devouring Malice and Chalice of Blood to dig for Baleful Oblation.",
               "cards": [
-                "Extorting Blackjack",
-                "Feu Awakening"
+                "Devouring Malice",
+                "Chalice of Blood",
+                "Baleful Oblation"
               ]
             },
             {
               "order": 2,
+              "actor": "p2",
+              "text": "Glenyboi refreshes Clarent with Aella and Spirit Blade: Ascension to reduce successive Oblations. Limelight follows with Devastating Blow and Feu Awakening, prompting the concession.",
+              "cards": [
+                "Clarent, Sword of Peace",
+                "Aella, Zephyr's Hand",
+                "Spirit Blade: Ascension",
+                "Devastating Blow",
+                "Feu Awakening"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Limelight wins — Blackjack finishes after Oblation",
+          "beats": [
+            {
+              "order": 1,
               "actor": "p1",
-              "text": "The last damage gets through and locks Limelight into day two."
+              "text": "Demolition destroys Dungeon Guide in response to Displace, delaying Glenyboi’s level-three setup.",
+              "cards": [
+                "Demolition",
+                "Dungeon Guide",
+                "Displace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Glenyboi reaches level three with Beseech the Winds and develops Ghosts of Pendragon, putting Limelight into Chalice of Blood range.",
+              "cards": [
+                "Beseech the Winds",
+                "Ghosts of Pendragon",
+                "Chalice of Blood"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Baleful Oblation clears the board despite Clarent prevention. Varuckan Acolyte adds damage, then Extorting Blackjack and Feu Awakening finish the match.",
+              "cards": [
+                "Baleful Oblation",
+                "Clarent, Sword of Peace",
+                "Varuckan Acolyte",
+                "Extorting Blackjack",
+                "Feu Awakening"
+              ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including both games and the winner interview.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -21928,28 +24633,71 @@
       "result": "Draw 1-1",
       "games": [
         {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Professor wins — Aella cuts off Jyn’s recovery window",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Professor loops Prismatic Edge to remove cards from KMO’s memory, including Dynastic Whirlpool. Aella suppresses Berserker’s Plate and survives the attempted removal through Displace.",
+              "cards": [
+                "Prismatic Edge",
+                "Dynastic Whirlpool",
+                "Aella, Zephyr's Hand",
+                "Displace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Professor pushes Jyn over the survival threshold. KMO empties Professor’s deck with Dynastic Whirlpool and Regal Inquisition, but cannot heal enough before immortality ends.",
+              "cards": [
+                "Dynastic Whirlpool",
+                "Regal Inquisition"
+              ]
+            }
+          ]
+        },
+        {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "KMO wins game 2",
+          "summary": "KMO wins — double Enrage ties the match in overtime",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Professor tries to end the game before running out of cards."
+              "text": "Nullifying Mirror interrupts the Prismatic Edge plan. KMO follows with Fracturize and uses Regal Inquisition to disrupt Professor’s hand.",
+              "cards": [
+                "Nullifying Mirror",
+                "Prismatic Edge",
+                "Fracturize",
+                "Regal Inquisition"
+              ]
             },
             {
               "order": 2,
-              "actor": "p1",
-              "text": "KMO answers with Shuang Ji of Sacrifice and two Enrages to win game two, but time leaves the match tied 1-1.",
+              "actor": "p2",
+              "text": "Professor attacks KMO’s healing cards with Regal Inquisition and suppresses Berserker’s Plate. KMO survives with healing, while Dynastic Whirlpool pressures Professor’s shrinking deck.",
               "cards": [
-                "Enrage",
-                "Shuang Ji of Sacrifice"
+                "Regal Inquisition",
+                "Dynastic Whirlpool"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Professor uses Resolute Stand to skip draws but leaves the Enrages in KMO’s hand. Shuang Ji of Sacrifice and two Enrages deliver the game-two win in overtime; the match ends 1–1.",
+              "cards": [
+                "Resolute Stand",
+                "Shuang Ji of Sacrifice",
+                "Enrage"
               ]
             }
           ]
         }
       ],
-      "sourceNote": "Oceania Nationals Day 1. Featured-match introduction and game 2 closing sequence.",
+      "sourceNote": "Oceania Nationals Day 1 cached broadcast captions, including both games and the overtime result.",
       "video": {
         "id": "YajGY_RVfD4",
         "kind": "broadcast",
@@ -22640,22 +25388,32 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Regal Inquisition forces a deck-out",
+          "summary": "Lifdrasyl wins game 1",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "Lifdrasyl repeatedly reuses Regal Inquisition to strip Shina2486’s threats.",
+              "text": "Lifdrasyl repeatedly copies Regal Inquisition with Grim Pastiche, then uses Ciel’s lineage release for another Regal Inquisition to deck Shina2486 out.",
               "cards": [
+                "Grim Pastiche",
                 "Regal Inquisition"
               ]
-            },
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "draw",
+          "summary": "Game drawn",
+          "beats": [
             {
-              "order": 2,
-              "actor": "p1",
-              "text": "Lifdrasyl activates another Regal Inquisition through Ciel’s lineage release; Shina2486 runs out of cards.",
+              "order": 1,
+              "actor": "both",
+              "text": "Lifdrasyl survives Shina2486’s overtime attacks with Fast Cure and the spirit’s lineage release, then uses two Resolute Stands against Hemorrhaging Rend. The second game ends without another recorded win.",
               "cards": [
-                "Regal Inquisition"
+                "Fast Cure",
+                "Resolute Stand",
+                "Hemorrhaging Rend"
               ]
             }
           ]
@@ -22666,7 +25424,7 @@
         "kind": "broadcast",
         "startSeconds": 7052
       },
-      "sourceNote": "Selected Game 1 finish. Official result 1-0; the second game reaches overtime, despite a closing commentary guess of 2-0."
+      "sourceNote": "Game 1 deck-out and Game 2 overtime. Game 2 draw inferred from official 1-0; closing commentary guesses 2-0."
     },
     {
       "id": "ascent-taipei-2025-round-4-aw5459-menbao",
@@ -22688,21 +25446,34 @@
       "result": "Aw5459 wins 2–0",
       "games": [
         {
-          "gameNumber": 2,
+          "gameNumber": 1,
           "winner": "p1",
-          "summary": "Dream Fairy removes Genbu",
+          "summary": "Aw5459 wins game 1",
           "beats": [
             {
               "order": 1,
-              "actor": "p2",
-              "text": "MenBao flips Genbu and uses it to attack an ally."
-            },
-            {
-              "order": 2,
               "actor": "p1",
-              "text": "Aw5459 answers Genbu with Dream Fairy, leaving MenBao without the centerpiece of his board.",
+              "text": "Aw5459 builds a wide ally board while Censer of Restful Peace restricts MenBao’s resources. MenBao’s Fractals of Polar Depths do not turn the game around.",
               "cards": [
-                "Dream Fairy"
+                "Censer of Restful Peace",
+                "Fractal of Polar Depths"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Aw5459 wins game 2",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "MenBao flips Genbu and attacks an ally. Aw5459 removes Genbu with Dream Fairy, then answers Refracting Missile with Annul Spell.",
+              "cards": [
+                "Dream Fairy",
+                "Refracting Missile",
+                "Annul Spell"
               ]
             }
           ]
@@ -22713,7 +25484,7 @@
         "kind": "broadcast",
         "startSeconds": 18257
       },
-      "sourceNote": "Selected Game 2 plays; official result 2-0. The closing attack falls in a caption gap."
+      "sourceNote": "Selected plays from both games; official result 2-0. The closing attack of Game 2 falls in a caption gap."
     },
     {
       "id": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
@@ -22795,9 +25566,35 @@
               ]
             }
           ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "draw",
+          "summary": "Time expires during the final attack",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Hyouka uses Shattering Discharge to consume Crystallized Destiny before Arcane Elemental connects.",
+              "cards": [
+                "Shattering Discharge",
+                "Crystallized Destiny",
+                "Arcane Elemental"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Kibbles attempts Slice and Dice into Hyouka’s defensive responses. Time expires with neither player winning the second game.",
+              "cards": [
+                "Slice and Dice",
+                "Spellshield: Arcane"
+              ]
+            }
+          ]
         }
       ],
-      "sourceNote": "Broadcast: Hyouka 1-0 at time. Official result: 2-0. Selected Game 1 finish.",
+      "sourceNote": "Broadcast: Hyouka 1-0 at time. Official result: 2-0.",
       "video": {
         "id": "O9EzTt7ffVc",
         "kind": "broadcast",
@@ -23047,37 +25844,38 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "DragonJG forces a concession",
+          "summary": "DragonJG wins game 1",
           "beats": [
             {
               "order": 1,
-              "actor": "p2",
-              "text": "NoobTinnn concedes after failing to find a way through DragonJG’s defenses."
+              "actor": "p1",
+              "text": "DragonJG recurs Dynastic Whirlpool with Reflected Blight while healing and taxing attacks. NoobTinnn concedes after failing to find a way through the remaining defenses.",
+              "cards": [
+                "Dynastic Whirlpool",
+                "Reflected Blight"
+              ]
             }
           ]
         },
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "DragonJG wins by deck-out",
+          "summary": "DragonJG wins game 2",
           "beats": [
             {
               "order": 1,
               "actor": "p1",
-              "text": "DragonJG plays two Dynastic Whirlpools in the closing sequence.",
+              "text": "DragonJG removes Ranger Strides with Fracturize and builds enough resources to resolve two Dynastic Whirlpools. NoobTinnn concedes as the commentary confirms the deck-out.",
               "cards": [
+                "Ranger Strides",
+                "Fracturize",
                 "Dynastic Whirlpool"
               ]
-            },
-            {
-              "order": 2,
-              "actor": "p2",
-              "text": "NoobTinnn concedes as the commentary confirms the deck-out, sending DragonJG to the semifinals."
             }
           ]
         }
       ],
-      "sourceNote": "Selected finishes from both games. NoobTinnn appears on the broadcast as Justinljw.",
+      "sourceNote": "South East Asia Nationals Day 2. NoobTinnn appears on the broadcast as Justinljw.",
       "video": {
         "id": "694jDw5rGqg",
         "kind": "broadcast",

@@ -1,7 +1,400 @@
 {
   "schemaVersion": 1,
-  "scope": "Sequential cached-caption review of three selected matches from recovered broadcasts. No video review or full-stream completion claimed. Previously held cases unchanged.",
+  "scope": "Sequential cached-caption review of the 14 recovered streams and their 113 published recaps. Caption coverage is recorded per source; no full video review claimed. Missing footage and authoritative-score conflicts remain separate.",
   "rowIndexing": "Zero-based inclusive ranges",
+  "sources": [
+    {
+      "videoId": "pYN7DXxQOQc",
+      "reviewedRowRanges": [
+        [
+          0,
+          4720
+        ]
+      ],
+      "limitations": [
+        "Caption-only review; source ends after Round8 and its interview. Round9 exists as a separate clip outside this source."
+      ],
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "segmentCount": 4721,
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4720
+        ]
+      ]
+    },
+    {
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "segmentCount": 4153,
+      "reviewedRowRanges": [
+        [
+          0,
+          82
+        ],
+        [
+          413,
+          4152
+        ]
+      ],
+      "previouslyReviewedRowRanges": [
+        [
+          83,
+          412
+        ]
+      ],
+      "limitations": [
+        "Caption review only; R10 previously reviewed and excluded from replacements."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4152
+        ]
+      ]
+    },
+    {
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "segmentCount": 4915,
+      "reviewedRowRanges": [
+        [
+          0,
+          4914
+        ]
+      ],
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Reviewed all available captions sequentially. Round 9 Carlos versus Egg begins at row 4814 but captions end mid-game at 11:54:48 (row 4914); no supported result to publish."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4914
+        ]
+      ]
+    },
+    {
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "segmentCount": 4929,
+      "reviewedRowRanges": [
+        [
+          0,
+          4928
+        ]
+      ],
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "notes": [
+        "All cached rows read sequentially including ads and interviews. Seven published matches reviewed.",
+        "Grand-final opening remains unavailable across caption gap 9:45:20–9:49:42; no exact start reconstructed. No additional supported complete match found."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4928
+        ]
+      ]
+    },
+    {
+      "videoId": "W_5i0aO5Es0",
+      "sourcePath": "pipeline/.cache/broadcast-transcripts/W_5i0aO5Es0.json",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          0,
+          4684
+        ]
+      ],
+      "fullGameplayReviewed": false,
+      "findings": [
+        "All eight published featured matches span two captioned games; their omitted first games can be restored. No additional unlisted featured match identified in this source.",
+        "Round 4 game 2 was incorrectly described as a finishing attack; it is Xukong effect damage leading to concession."
+      ],
+      "segmentCount": 4685,
+      "fullCaptionReview": true,
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4684
+        ]
+      ]
+    },
+    {
+      "videoId": "qQrV2I2Uiac",
+      "sourcePath": "pipeline/.cache/broadcast-transcripts/qQrV2I2Uiac.json",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          0,
+          125
+        ],
+        [
+          692,
+          4596
+        ]
+      ],
+      "fullGameplayReviewed": false,
+      "segmentCount": 4597,
+      "fullCaptionReview": true,
+      "priorReviewedRowRanges": [
+        [
+          126,
+          691
+        ]
+      ],
+      "findings": [
+        "All remaining caption rows read sequentially. Prior completed R9 range 126–691 reused from existing audit.",
+        "Only game 2 of hachico–Noel is broadcast; game 1 explicitly occurred off-camera. Final game 1 is a game-loss ruling against Yamikin.",
+        "No additional unlisted featured match found; bronze match mentioned but not shown."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4596
+        ]
+      ]
+    },
+    {
+      "videoId": "6XU9azcBukk",
+      "sourcePath": "pipeline/.cache/broadcast-transcripts/6XU9azcBukk.json",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          0,
+          178
+        ],
+        [
+          498,
+          5005
+        ]
+      ],
+      "fullGameplayReviewed": false,
+      "segmentCount": 5006,
+      "fullCaptionReview": true,
+      "priorReviewedRowRanges": [
+        [
+          179,
+          497
+        ]
+      ],
+      "findings": [
+        "All remaining caption rows read sequentially; prior reviewed R1 rows179–497 reused separately.",
+        "No additional unlisted featured match identified. Commentary includes hypothetical lines and corrected card identifications; recaps retain only supported actions."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5005
+        ]
+      ]
+    },
+    {
+      "videoId": "idcMDSZRmIE",
+      "sourcePath": "pipeline/.cache/broadcast-transcripts/idcMDSZRmIE.json",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          0,
+          5427
+        ]
+      ],
+      "fullGameplayReviewed": false,
+      "segmentCount": 5428,
+      "fullCaptionReview": true,
+      "findings": [
+        "All cached caption rows reviewed sequentially, including breaks and winner interviews. Row2520 has timestamp only in a music break. Other quarterfinal and semifinal results are mentioned, but their games are not covered by these captions. No video or full gameplay review claimed."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5427
+        ]
+      ]
+    },
+    {
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          0,
+          4938
+        ]
+      ],
+      "unreviewedRanges": [],
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "findings": [
+        "All 4,939 cached caption rows read sequentially. Eight published matches account for competitive coverage; Round 7 post-match exhibition remains excluded. No newly identified unpublished match. Caption gaps remain possible; no full video review."
+      ],
+      "segmentCount": 4939,
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4938
+        ]
+      ]
+    },
+    {
+      "videoId": "iwjvP7O9ytM",
+      "path": "pipeline/.cache/broadcast-transcripts/iwjvP7O9ytM.json",
+      "sha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "segmentCount": 4547,
+      "reviewedRowRanges": [
+        [
+          0,
+          4546
+        ]
+      ],
+      "status": "completed",
+      "limitations": [
+        "Cached captions only; no video or full gameplay review.",
+        "Technical break contains music through row 1189. Round 1 held outcome remains unresolved: cut before finish, later draw commentary conflicts with official result."
+      ],
+      "coverageFindings": [
+        "Seven published matches reviewed; Round 1 held remains unresolved.",
+        "Bonus Round 7 Game 2 cuts before conclusion at 10:48:46; preserve official match result and Game 1-only recap.",
+        "Source ends during break before Round 9. No additional completed unlisted match found."
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false,
+      "fullCaptionReview": true,
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          4546
+        ]
+      ]
+    },
+    {
+      "videoId": "ljQZR8Yu1XM",
+      "path": "pipeline/.cache/broadcast-transcripts/ljQZR8Yu1XM.json",
+      "sha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "segmentCount": 5506,
+      "reviewedRowRanges": [
+        [
+          0,
+          5505
+        ]
+      ],
+      "status": "complete",
+      "limitations": [
+        "Cached captions only, not video or complete action log. Round9 gameplay absent from cache; separate original recap preserved. Row5367 has timestamp but no text."
+      ],
+      "coverageFindings": [
+        "Ten published match segments reviewed sequentially; round9 introduction only. Delayed Quakems interview after round7 confirms existing interview claims. No additional complete unpublished match found."
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false,
+      "fullCaptionReview": true,
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5505
+        ]
+      ]
+    },
+    {
+      "videoId": "tFC-3k0uxcM",
+      "path": "pipeline/.cache/broadcast-transcripts/tFC-3k0uxcM.json",
+      "sha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "segmentCount": 5441,
+      "reviewedRowRanges": [
+        [
+          0,
+          5440
+        ]
+      ],
+      "status": "complete",
+      "limitations": [
+        "Cached captions only; no full video review."
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false,
+      "fullCaptionReview": true,
+      "coverageFindings": [
+        "All nine published matches reviewed. Quarterfinal Jett-ChemCollapse G3 replay ends before finish; announced result preserved. Placement matches mentioned in desk recap but not shown; no additional unpublished gameplay match found."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5440
+        ]
+      ]
+    },
+    {
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "segmentCount": 5493,
+      "reviewedRowRanges": [
+        [
+          0,
+          5492
+        ]
+      ],
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "reviewAttribution": [
+        {
+          "reviewer": "parent",
+          "reviewedRowRanges": [
+            [
+              0,
+              4289
+            ]
+          ]
+        },
+        {
+          "reviewer": "review_remaining_a",
+          "reviewedRowRanges": [
+            [
+              4290,
+              5492
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        "Rows 0–4289 reviewed by parent and handed off with sequential evidence notes; remaining rows directly reviewed by subagent.",
+        "Round 4 closing caption gap remains unresolved. Round 9 announced, but remaining captions are music only; no publishable ninth match."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5492
+        ]
+      ]
+    },
+    {
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "segmentCount": 5342,
+      "reviewedRowRanges": [
+        [
+          0,
+          5341
+        ]
+      ],
+      "fullCaptionReview": true,
+      "fullGameplayReviewed": false,
+      "findings": [
+        "All 5342 cached caption rows reviewed sequentially; eight featured recaps covered; no additional complete omitted match identified.",
+        "R3 game-one middle interrupted by broadcast technical trouble. R6 final game-two response unnamed. Caption coverage does not establish full gameplay review."
+      ],
+      "combinedReviewedRowRanges": [
+        [
+          0,
+          5341
+        ]
+      ]
+    }
+  ],
   "records": [
     {
       "matchId": "ascent-melbourne-2026-round-9-zutomayoenjoyer-bobolas",
@@ -83,7 +476,17 @@
         "Feu Awakening",
         "Poisoned Dagger"
       ],
-      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a"
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          126,
+          635
+        ],
+        [
+          646,
+          691
+        ]
+      ]
     },
     {
       "videoId": "L72HwYWAQAY",
@@ -225,7 +628,13 @@
         "25:57 video start matches actual game-one introduction.",
         "Existing game-two Baleful Oblation statement supported."
       ],
-      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f"
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          83,
+          412
+        ]
+      ]
     },
     {
       "matchId": "ascent-auckland-2025-round-1-corgis-yamikin",
@@ -375,7 +784,5028 @@
       ],
       "proposedSourceNote": "Ascent Auckland Day 1. Both games and the post-match winner interview.",
       "catalogVerification": "Canonical names and relevant effects checked in pipeline/.cache/cards.json for Smoke Out, Rococo, Explosive Maven, Arthur, Young Heir, Perse, Relentless Raptor, Impact Hammer, Rending Flames, March Hare, Mottled Host, Skirting Step, Cheshire Cat, Impish Grin. No sideboarding claims proposed: commentary discusses possibilities, not confirmed changes.",
-      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27"
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          179,
+          497
+        ]
+      ]
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-1-joyboy-lecithium",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          135,
+          433
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            227,
+            259
+          ],
+          "detail": "Seiryuu command, Byakko command and Arcane Blast finish G1; concession confirmed45:49."
+        },
+        {
+          "rows": [
+            353,
+            355
+          ],
+          "detail": "G2 deck-list game loss confirmed57:26–42; existing penalty kept."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-2-obuchi1go-hachico",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          619,
+          927
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            687,
+            724
+          ],
+          "detail": "Six fractals; Shimmering Refraction then Burst Asunder; G1 scoop2:10:41."
+        },
+        {
+          "rows": [
+            858,
+            874
+          ],
+          "detail": "Chill to the Bone stops Düdo; refraction and Burst Asunder win2:28:35–52."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-3-fome-roxsas",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          1146,
+          1706
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1313,
+            1328
+          ],
+          "detail": "Casters correct Cursebreaker requirement to four curses; Fome loads bullets and wins G1."
+        },
+        {
+          "rows": [
+            1434,
+            1464
+          ],
+          "detail": "Tasershot and Creeping Torment leave Fome unable to level; G2 concession4:08:13."
+        },
+        {
+          "rows": [
+            1530,
+            1544
+          ],
+          "detail": "Rapid Reload restores destroyed bullet after Reduce to Ash."
+        },
+        {
+          "rows": [
+            1599,
+            1624
+          ],
+          "detail": "Fome cannot find Malevolent Vow to survive; Roxsas match win."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-4-limelight-thomasli2",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          1747,
+          2134
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1835,
+            1859
+          ],
+          "detail": "Baleful Oblation fifteen then Sporel and Omen damage win G1."
+        },
+        {
+          "rows": [
+            1916,
+            1927
+          ],
+          "detail": "Rending Flames through Resolute Stand wins G2."
+        },
+        {
+          "rows": [
+            2065,
+            2076
+          ],
+          "detail": "Spirit Blade Ascension brings Prismatic Edge to consume Crystallized Destiny; Devastating Blow finishes G3."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-5-kingarmo-kuojia",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          2218,
+          2828
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2443,
+            2461
+          ],
+          "detail": "Fractal of Polar Depths mills KingArmo; cannot find third Fireball; G1 deck-out."
+        },
+        {
+          "rows": [
+            2673,
+            2677
+          ],
+          "detail": "Missed Liminal Guide trigger is warning only, not game loss."
+        },
+        {
+          "rows": [
+            2757,
+            2766
+          ],
+          "detail": "Cerulean Decree and Refracting Missile grow graveyard; Fractal of Polar Depths deck-out wins2–0."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-6-aqua-jackys",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          2881,
+          3486
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3069,
+            3079
+          ],
+          "detail": "Astral Seal negates Incapacitate to force lethal Cosmic Bolt G1."
+        },
+        {
+          "rows": [
+            3346,
+            3367
+          ],
+          "detail": "Ten-counter Polaris clears through Blanche."
+        },
+        {
+          "rows": [
+            3401,
+            3406
+          ],
+          "detail": "Two final Cosmic Bolts win G2; casters correct2–1to2–0."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-7-lancelim0210-proannn",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          3504,
+          4140
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3693,
+            3699
+          ],
+          "detail": "Enrage only buffs next attack; ProAnnn lacks second lethal attack and dies at own end step G1."
+        },
+        {
+          "rows": [
+            3840,
+            3857
+          ],
+          "detail": "Double Enrage Shuang Ji attack exceeds defenses and wins G2."
+        },
+        {
+          "rows": [
+            4012,
+            4028
+          ],
+          "detail": "Triple Proof of Life; Incapacitate stops fast Regal Inquisition; Varuck disables prevention then Enrage attack wins."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-8-glenyboi-sapphicsnake",
+      "videoId": "pYN7DXxQOQc",
+      "sourceSha256": "b72b7c9d79917537492e72cde0ece85751077adf1dd3de313de2e2435e1ffba1",
+      "reviewedRowRanges": [
+        [
+          4146,
+          4705
+        ]
+      ],
+      "findings": [
+        "Restored omitted games from sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4381,
+            4409
+          ],
+          "detail": "Fireball after Sudden Steel and Cheshire Cat pressure wins G1."
+        },
+        {
+          "rows": [
+            4527,
+            4531
+          ],
+          "detail": "Spark Alight responds to Extricating Touch to end G2."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-11-zer-limbo",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          532,
+          860
+        ]
+      ],
+      "findings": [
+        "Restored opening game and clarified final-game finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            651,
+            659
+          ],
+          "detail": "Charge the Soul and Aetheric Calibration lead into Carpsong Coda; Zer G1 confirmed1:55:18."
+        },
+        {
+          "rows": [
+            750,
+            764
+          ],
+          "detail": "Failed Cometfall glimpse; Cheshire Cat and second Ranger Strides precede Limbo concession2:07:36."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-12-hyouka-tetsu",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          910,
+          1291
+        ]
+      ],
+      "findings": [
+        "Restored opening game and clarified final-game finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1025,
+            1051
+          ],
+          "detail": "Power Overwhelming; first Advent removes Blanche, second Advent plus Arcane Elemental wins G1."
+        },
+        {
+          "rows": [
+            1220,
+            1255
+          ],
+          "detail": "Tariff Ring restricts Ascension followup; Hyouka survives then Erratic Bolt and Arcane Blast finish."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-13-henkiethegoat-limbo",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          1397,
+          1814
+        ]
+      ],
+      "findings": [
+        "Restored opening game and clarified final-game finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1551,
+            1561
+          ],
+          "detail": "Necklace of Foresight finds lethal Cosmic Bolt; Horticounter stops responding Baleful Oblation G1."
+        },
+        {
+          "rows": [
+            1723,
+            1747
+          ],
+          "detail": "Astral Seal stops Oblation; Wisdom’s Reprise finds final Cosmic Bolt responding to Grand Ecensoria materialization."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-round-14-gamingsiopao-glenyboi",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          1865,
+          2302
+        ]
+      ],
+      "findings": [
+        "Restored opening game and clarified final-game finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2032,
+            2047
+          ],
+          "detail": "GlenyBoi fails to remove Seiryuu; command reveal prompts concession5:43:34."
+        },
+        {
+          "rows": [
+            2187,
+            2196
+          ],
+          "detail": "Byakko’s Command readies Seiryuu for lethal retaliation6:02:47."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-quarterfinal-jett-hoyee",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          2482,
+          3118
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and supported finishing sequence."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2658,
+            2677
+          ],
+          "detail": "Resolute Stand saves Seiryuu, Smoke Bombs bypasses Fluffy Shopkeep; Byakko’s Command wins G1."
+        },
+        {
+          "rows": [
+            2823,
+            2832
+          ],
+          "detail": "Spirit Blade: Dispersion on Incandescent Reliquary wins G2."
+        },
+        {
+          "rows": [
+            2864,
+            2873
+          ],
+          "detail": "Two Immolation Traps defeat lineage-release protection and remove Seiryuu."
+        },
+        {
+          "rows": [
+            3011,
+            3021
+          ],
+          "detail": "Four Ghosts, Prismatic Edge, final Intensified Pyre win G3."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-semifinal-raylam-jett",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          3172,
+          3539
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and supported finishing sequence."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3272,
+            3277
+          ],
+          "detail": "Devastating Blow; Creative Shock fails to find Resolute Stand; Raylam wins G1."
+        },
+        {
+          "rows": [
+            3412,
+            3429
+          ],
+          "detail": "Clarent prevents Dispersion damage, preserving Crystallized Destiny against Rending Flames."
+        },
+        {
+          "rows": [
+            3467,
+            3472
+          ],
+          "detail": "Jett concedes after failing to find sufficient damage; no specific terminal attack established."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-akihabara-2025-grand-final-pulse-raylam",
+      "videoId": "L72HwYWAQAY",
+      "sourceSha256": "92bda13f124cb0cdfb154f81ca8f2ed6c51743493f0f56b843f2196bdbbd332f",
+      "reviewedRowRanges": [
+        [
+          3606,
+          4123
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and supported finishing sequence."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3783,
+            3793
+          ],
+          "detail": "Innervate Agility stops Devastating Blow; Harness Lightning and Byakko’s Command finish G1."
+        },
+        {
+          "rows": [
+            3905,
+            3910
+          ],
+          "detail": "Late dragon flip cannot redirect declared attack; Ascension/Prismatic Edge plus Flame Sweep win G2."
+        },
+        {
+          "rows": [
+            4071,
+            4079
+          ],
+          "detail": "Crystallized Destiny stops second Arcane Blast; Raylam keeps Clarent durability and wins with six-damage swing."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-1-dlonyer-henkiethegoat",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          269,
+          615
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            416,
+            435
+          ],
+          "detail": "Genbu absorbs the attack; Enfeebling Orb and Fugue finish game one."
+        },
+        {
+          "rows": [
+            545,
+            582
+          ],
+          "detail": "Strategem and two Polar Depths grow floating-memory count for damage, not a deckout."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-2-aqua-jad",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          659,
+          1242
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            811,
+            824
+          ],
+          "detail": "Jad wins game one following Aqua concession."
+        },
+        {
+          "rows": [
+            917,
+            924
+          ],
+          "detail": "Alkahest removes Vessel."
+        },
+        {
+          "rows": [
+            1011,
+            1019
+          ],
+          "detail": "Cosmic Bolt game-two finish."
+        },
+        {
+          "rows": [
+            1180,
+            1197
+          ],
+          "detail": "Initial Jad winner call corrected after slow-speed Conflagration ruling; Aqua wins."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-3-inaki-abbey",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          1260,
+          1825
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1393,
+            1419
+          ],
+          "detail": "Ducal Seal, commands, and Arcane Blast finish game one."
+        },
+        {
+          "rows": [
+            1557,
+            1575
+          ],
+          "detail": "Ally pressure and Molten Echo remove Seiryuu."
+        },
+        {
+          "rows": [
+            1635,
+            1636
+          ],
+          "detail": "Abbey concedes game two."
+        },
+        {
+          "rows": [
+            1783,
+            1789
+          ],
+          "detail": "Molten Echo removes Blanche and enables final damage."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-4-leowong-yonab",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          1926,
+          2409
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2194,
+            2212
+          ],
+          "detail": "Lightweaver board clear causes game-one concession."
+        },
+        {
+          "rows": [
+            2336,
+            2339
+          ],
+          "detail": "Resolute Stand buys turn."
+        },
+        {
+          "rows": [
+            2375,
+            2392
+          ],
+          "detail": "Ducal Seal followed by end-step lethal, 2–0 confirmed."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-5-xabichan-mike0615",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          2449,
+          2898
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2589,
+            2606
+          ],
+          "detail": "Innervate into Shadowstrike, Incapacitate stops Protect Her."
+        },
+        {
+          "rows": [
+            2724,
+            2744
+          ],
+          "detail": "Song of Frost negates Innervate; allies finish game two."
+        },
+        {
+          "rows": [
+            2853,
+            2868
+          ],
+          "detail": "Shadowstrike for 15 through Song of Frost; Mike wins game three."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-6-truesightleocroix-ameke",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          2953,
+          3531
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3097,
+            3116
+          ],
+          "detail": "Burning charge and Salamander/Ranger attack finish game one."
+        },
+        {
+          "rows": [
+            3272,
+            3278
+          ],
+          "detail": "15-damage Oblation and end-phase finish, Feu shown."
+        },
+        {
+          "rows": [
+            3455,
+            3458
+          ],
+          "detail": "Resolute preserves Wraithguard."
+        },
+        {
+          "rows": [
+            3501,
+            3508
+          ],
+          "detail": "Oblation into Feu finishes game three."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-7-chunkie-dennisyao",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          3562,
+          4161
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3684,
+            3696
+          ],
+          "detail": "Double Cat/Strides/Inert Sword wins game one."
+        },
+        {
+          "rows": [
+            3847,
+            3895
+          ],
+          "detail": "Chunkie stabilizes and Dennis concedes game two."
+        },
+        {
+          "rows": [
+            4120,
+            4128
+          ],
+          "detail": "Charge the Soul after Destiny resolves opens final attack, Dennis 6–1."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-manila-2026-round-8-dlonyer-chung",
+      "videoId": "PITLBQ2u6gc",
+      "sourceSha256": "81bfed99e2d3d657b6600e52460c1d59c699b95ab6ee25a8e99e680a8903cabf",
+      "reviewedRowRanges": [
+        [
+          4165,
+          4782
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4319,
+            4351
+          ],
+          "detail": "Iridescence, Ascension and final Fireball game one."
+        },
+        {
+          "rows": [
+            4572,
+            4588
+          ],
+          "detail": "Decree and Blanche survive Fireball."
+        },
+        {
+          "rows": [
+            4600,
+            4611
+          ],
+          "detail": "Actual finish is Strategem concession; prior deckout discussion speculative."
+        },
+        {
+          "rows": [
+            4747,
+            4763
+          ],
+          "detail": "Strategem insufficient; Ascension/Pendragon/Sudden Steel win game three."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-round-10-ikuri-brai",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          150,
+          711
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            350,
+            434
+          ],
+          "detail": "First Shadowstrike is prevented; later one-preparation strike with four shadows wins."
+        },
+        {
+          "rows": [
+            683,
+            693
+          ],
+          "detail": "Fairy chip, Tactical Retreat, and Sadi finish game two."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-round-11-frashe-bayabayashi",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          747,
+          1158
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            820,
+            875
+          ],
+          "detail": "Early dragon pressure; Frashe cannot flip Suzaku before game-one concession."
+        },
+        {
+          "rows": [
+            943,
+            975
+          ],
+          "detail": "Interference forces defense, Suzaku and Chef finish game two."
+        },
+        {
+          "rows": [
+            1024,
+            1072
+          ],
+          "detail": "Innervate and Orb support Seiryuu finish; Arcane Blast only hypothetical."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-round-12-truesightleocroix-zabauu",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          1248,
+          1685
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1358,
+            1377
+          ],
+          "detail": "Two Storm Slimes finish game one."
+        },
+        {
+          "rows": [
+            1603,
+            1654
+          ],
+          "detail": "Slime board kills dragon, then final Storm Slime closes game two; not a same-turn triple-Storm kill."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-round-13-zero0000000000-joseph",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          1779,
+          2199
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1875,
+            1903
+          ],
+          "detail": "Searing Truth removal, Pyre quest and Chef kill spirit in game one."
+        },
+        {
+          "rows": [
+            1977,
+            2040
+          ],
+          "detail": "Nia sequence, Lantern, Palver and allies win game two."
+        },
+        {
+          "rows": [
+            2128,
+            2176
+          ],
+          "detail": "Song stops Vengeance; Orb and Suzaku reset followed by Geyser lethal. Missed Omen ruling not a game-loss penalty."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-quarterfinal-dragonjg-noobtinnn",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          2448,
+          3094
+        ]
+      ],
+      "findings": [
+        "Enriched both existing games; preserved IDs, result and start time. Coverage begins mid-game; no opening reconstructed."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2605,
+            2662
+          ],
+          "detail": "Recurring Whirlpool and defensive wall force game-one concession."
+        },
+        {
+          "rows": [
+            2915,
+            2917
+          ],
+          "detail": "Ranger Strides Fracturized."
+        },
+        {
+          "rows": [
+            3016,
+            3054
+          ],
+          "detail": "Bauble/Umbral draw supports double Whirlpool; deckout confirmed. Regal discussed but not confirmed played."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-semifinal-lifdrasyl-dragonjg",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          3175,
+          4048
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and replaced generic closing beats with supported caption evidence; preserved match result and player identifiers."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3522,
+            3543
+          ],
+          "detail": "Retribution survives via lineage/Resolute; Regal deckout."
+        },
+        {
+          "rows": [
+            3913,
+            3968
+          ],
+          "detail": "First Regal resolves through Annul; second held because opponent could reduce hand and survive."
+        },
+        {
+          "rows": [
+            3980,
+            4027
+          ],
+          "detail": "Double Resolute, final Retribution and lineage release, then final Regal wins."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "sea-national-2026-grand-final-raylam-dragonjg",
+      "videoId": "694jDw5rGqg",
+      "sourceSha256": "f7611a76d6a33ec3ed3274e8f598015aa11ae550995f3f69d92edb55e3083f16",
+      "reviewedRowRanges": [
+        [
+          4121,
+          4828
+        ]
+      ],
+      "findings": [
+        "Restored supported game-one finish and detailed game-two finish. Exact match start remains blocked by caption gap; video startSeconds intentionally absent."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4120,
+            4121
+          ],
+          "detail": "Caption gap from 9:45:20 to 9:49:42 leaves opening and exact start unavailable."
+        },
+        {
+          "rows": [
+            4455,
+            4467
+          ],
+          "detail": "Double Take Aim, Abnegation heal, then Whirlpool wins game one."
+        },
+        {
+          "rows": [
+            4700,
+            4719
+          ],
+          "detail": "First mill removes four Archers."
+        },
+        {
+          "rows": [
+            4788,
+            4814
+          ],
+          "detail": "Resolute stops Strides; Take Aim was speculative, not played; actual last card Whirlpool, not Regal."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-1-aqua-sowa",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          231,
+          797
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            391,
+            414
+          ],
+          "start": "51:54",
+          "end": "54:32"
+        },
+        {
+          "rows": [
+            438,
+            473
+          ],
+          "start": "57:23",
+          "end": "1:01:40"
+        },
+        {
+          "rows": [
+            505,
+            508
+          ],
+          "start": "1:05:16",
+          "end": "1:05:35"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-1-aqua-sowa",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          809,
+          1080
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            912,
+            954
+          ],
+          "start": "1:59:22",
+          "end": "2:04:10"
+        },
+        {
+          "rows": [
+            995,
+            1006
+          ],
+          "start": "2:09:06",
+          "end": "2:10:33"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          1248,
+          1458
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1293,
+            1336
+          ],
+          "start": "3:06:23",
+          "end": "3:10:51"
+        },
+        {
+          "rows": [
+            1405,
+            1416
+          ],
+          "start": "3:18:57",
+          "end": "3:20:18"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          1670,
+          2234
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged.",
+        "Corrected game 2 from a generic large attack to Xukong effect damage."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1804,
+            1825
+          ],
+          "start": "4:31:01",
+          "end": "4:33:24"
+        },
+        {
+          "rows": [
+            1839,
+            1876
+          ],
+          "start": "4:35:04",
+          "end": "4:39:39"
+        },
+        {
+          "rows": [
+            1998,
+            2013
+          ]
+        },
+        {
+          "rows": [
+            2045,
+            2062
+          ]
+        },
+        {
+          "rows": [
+            2109,
+            2118
+          ]
+        },
+        {
+          "rows": [
+            2223,
+            2229
+          ]
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          2453,
+          2850
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2521,
+            2535
+          ],
+          "start": "6:25:49",
+          "end": "6:27:29"
+        },
+        {
+          "rows": [
+            2565,
+            2575
+          ],
+          "start": "6:31:05",
+          "end": "6:31:58"
+        },
+        {
+          "rows": [
+            2600,
+            2615
+          ],
+          "start": "6:34:58",
+          "end": "6:36:44"
+        },
+        {
+          "rows": [
+            2714,
+            2748
+          ]
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-6-quarax-fairjordans",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          2934,
+          3409
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3043,
+            3051
+          ],
+          "start": "7:39:06",
+          "end": "7:40:10"
+        },
+        {
+          "rows": [
+            3113,
+            3143
+          ],
+          "start": "7:48:07",
+          "end": "7:51:42"
+        },
+        {
+          "rows": [
+            3163,
+            3172
+          ]
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-6-quarax-fairjordans",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-7-qadwqr-arod",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          3494,
+          3943
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3563,
+            3574
+          ],
+          "start": "8:54:25",
+          "end": "8:55:53"
+        },
+        {
+          "rows": [
+            3615,
+            3646
+          ],
+          "start": "9:00:50",
+          "end": "9:04:46"
+        },
+        {
+          "rows": [
+            3652,
+            3683
+          ],
+          "start": "9:05:19",
+          "end": "9:09:18"
+        },
+        {
+          "rows": [
+            3809,
+            3835
+          ]
+        },
+        {
+          "rows": [
+            3842,
+            3854
+          ]
+        },
+        {
+          "rows": [
+            3904,
+            3908
+          ]
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-7-qadwqr-arod",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+      "videoId": "W_5i0aO5Es0",
+      "sourceSha256": "9a0631b26eb7f6fc8f7ed1c552390b2e0f1e27fa302723d206a9875784dbc6fd",
+      "reviewedRowRanges": [
+        [
+          4099,
+          4684
+        ]
+      ],
+      "findings": [
+        "Restored the omitted first game; the published match result is unchanged."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4145,
+            4156
+          ],
+          "start": "10:22:30",
+          "end": "10:23:41"
+        },
+        {
+          "rows": [
+            4373,
+            4399
+          ],
+          "start": "10:48:39",
+          "end": "10:52:14"
+        },
+        {
+          "rows": [
+            4415,
+            4424
+          ],
+          "start": "10:53:48",
+          "end": "10:54:58"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-10-pulse-glenyboi",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          703,
+          1300
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2; retained the supported game 3 finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            911,
+            938
+          ],
+          "start": "2:01:07",
+          "end": "2:04:27"
+        },
+        {
+          "rows": [
+            1069,
+            1086
+          ],
+          "start": "2:19:23",
+          "end": "2:21:19"
+        },
+        {
+          "rows": [
+            1239,
+            1253
+          ],
+          "start": "2:39:54",
+          "end": "2:41:41"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-10-pulse-glenyboi",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-11-launtial-professor",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          1308,
+          1883
+        ]
+      ],
+      "findings": [
+        "Restored both earlier games and replaced the vague decider with the supported engine removal and Feu line."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1343,
+            1378
+          ],
+          "start": "2:54:19",
+          "end": "2:58:21"
+        },
+        {
+          "rows": [
+            1445,
+            1456
+          ],
+          "start": "3:05:59",
+          "end": "3:07:22"
+        },
+        {
+          "rows": [
+            1493,
+            1555
+          ],
+          "start": "3:11:55",
+          "end": "3:18:35"
+        },
+        {
+          "rows": [
+            1580,
+            1603
+          ],
+          "start": "3:21:06",
+          "end": "3:23:26"
+        },
+        {
+          "rows": [
+            1624,
+            1628
+          ],
+          "start": "3:26:03",
+          "end": "3:26:32"
+        },
+        {
+          "rows": [
+            1749,
+            1751
+          ],
+          "start": "3:39:59",
+          "end": "3:40:16"
+        },
+        {
+          "rows": [
+            1814,
+            1824
+          ],
+          "start": "3:47:26",
+          "end": "3:48:44"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-11-launtial-professor",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          1907,
+          2542
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2. Game 2 commentary briefly announces victory early, then confirms Bhop’s concession after his final response; recap avoids claiming an unanswered immediate lethal."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1987,
+            2001
+          ],
+          "start": "4:12:30",
+          "end": "4:14:13"
+        },
+        {
+          "rows": [
+            2026,
+            2033
+          ],
+          "start": "4:17:18",
+          "end": "4:18:06"
+        },
+        {
+          "rows": [
+            2312,
+            2352
+          ],
+          "start": "4:51:03",
+          "end": "4:54:59"
+        },
+        {
+          "rows": [
+            2504,
+            2509
+          ],
+          "start": "5:13:50",
+          "end": "5:14:27"
+        },
+        {
+          "rows": [
+            2439,
+            2454
+          ],
+          "start": "5:05:20",
+          "end": "5:07:04"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-round-12-bhop-pulse",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-quarterfinal-noel-zetdivx",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          2805,
+          3310
+        ]
+      ],
+      "findings": [
+        "Restored game 1 and the key resource-denial sequence; existing game 2 finish supported."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2863,
+            2875
+          ],
+          "start": "6:25:57",
+          "end": "6:27:18"
+        },
+        {
+          "rows": [
+            2924,
+            2936
+          ],
+          "start": "6:33:47",
+          "end": "6:35:25"
+        },
+        {
+          "rows": [
+            2953,
+            2958
+          ],
+          "start": "6:37:25",
+          "end": "6:38:03"
+        },
+        {
+          "rows": [
+            2982,
+            2997
+          ],
+          "start": "6:40:46",
+          "end": "6:42:53"
+        },
+        {
+          "rows": [
+            3063,
+            3075
+          ],
+          "start": "6:51:10",
+          "end": "6:52:32"
+        },
+        {
+          "rows": [
+            3201,
+            3211
+          ],
+          "start": "7:07:48",
+          "end": "7:08:58"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-quarterfinal-noel-zetdivx",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          3320,
+          3614
+        ]
+      ],
+      "findings": [
+        "Restored game 1 and clarified the failed game 2 Feu line. Commentary corrects its earlier Break the Line identification to Deflecting Edge."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3410,
+            3427
+          ],
+          "start": "7:37:57",
+          "end": "7:40:04"
+        },
+        {
+          "rows": [
+            3462,
+            3483
+          ],
+          "start": "7:44:08",
+          "end": "7:46:43"
+        },
+        {
+          "rows": [
+            3528,
+            3558
+          ],
+          "start": "7:51:42",
+          "end": "7:55:07"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-semifinal-hachico-noel",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          3626,
+          3980
+        ]
+      ],
+      "findings": [
+        "Only game 2 was broadcast: game 1 explicitly ended off-camera. Do not invent game 1 action. Added Disenchant/Mansuum disruption that defines the observed game."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3626,
+            3630
+          ],
+          "start": "8:08:33",
+          "end": "8:09:06"
+        },
+        {
+          "rows": [
+            3688,
+            3696
+          ],
+          "start": "8:15:42",
+          "end": "8:16:38"
+        },
+        {
+          "rows": [
+            3722,
+            3755
+          ],
+          "start": "8:19:45",
+          "end": "8:24:01"
+        },
+        {
+          "rows": [
+            3770,
+            3786
+          ],
+          "start": "8:25:48",
+          "end": "8:27:20"
+        },
+        {
+          "rows": [
+            3864,
+            3876
+          ],
+          "start": "8:36:16",
+          "end": "8:37:36"
+        },
+        {
+          "rows": [
+            3883,
+            3886
+          ],
+          "start": "8:38:31",
+          "end": "8:38:48"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-semifinal-hachico-noel",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-melbourne-2026-final-hachico-yamikin",
+      "videoId": "qQrV2I2Uiac",
+      "sourceSha256": "a68cba473a85ed2e9d7585653f26ffd840d5c903143da8c2de931e54a762bf6a",
+      "reviewedRowRanges": [
+        [
+          4033,
+          4285
+        ]
+      ],
+      "findings": [
+        "Restored game 1 as a reported game-loss ruling against Yamikin, not a played-out victory. Final result unchanged. Clarified game 2 recovery, Lantern and Feu finish."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4054,
+            4079
+          ],
+          "start": "9:05:20",
+          "end": "9:08:27"
+        },
+        {
+          "rows": [
+            4116,
+            4147
+          ],
+          "start": "9:12:24",
+          "end": "9:16:00"
+        },
+        {
+          "rows": [
+            4177,
+            4184
+          ],
+          "start": "9:19:25",
+          "end": "9:20:13"
+        },
+        {
+          "rows": [
+            4224,
+            4228
+          ],
+          "start": "9:25:09",
+          "end": "9:25:42"
+        },
+        {
+          "rows": [
+            4244,
+            4252
+          ],
+          "start": "9:27:44",
+          "end": "9:28:44"
+        }
+      ],
+      "replacementId": "ascent-melbourne-2026-final-hachico-yamikin",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-2-limelight-liam",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          513,
+          985
+        ]
+      ],
+      "findings": [
+        "Restored game 1; Baleful Oblation clears the board but does not immediately end the game. Retained supported Devouring Malice and omen finish in game 2. Omitted unclear ally naming and corrected caster speculation about repeatedly re-banishable negation."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            599,
+            604
+          ],
+          "start": "1:29:47",
+          "end": "1:30:24"
+        },
+        {
+          "rows": [
+            635,
+            639
+          ],
+          "start": "1:33:56",
+          "end": "1:34:17"
+        },
+        {
+          "rows": [
+            680,
+            688
+          ],
+          "start": "1:39:24",
+          "end": "1:40:23"
+        },
+        {
+          "rows": [
+            829,
+            865
+          ],
+          "start": "1:56:32",
+          "end": "2:00:30"
+        },
+        {
+          "rows": [
+            891,
+            893
+          ],
+          "start": "2:03:09",
+          "end": "2:03:24"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-2-limelight-liam",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-3-dragowil-teamtrueisaac",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          1037,
+          1509
+        ]
+      ],
+      "findings": [
+        "Restored game 1 concession and clarified the two distinct Crystallized Destiny stops in game 2; no hypothetical resolved finisher added."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1055,
+            1071
+          ],
+          "start": "2:37:55",
+          "end": "2:39:46"
+        },
+        {
+          "rows": [
+            1212,
+            1226
+          ],
+          "start": "2:54:20",
+          "end": "2:55:50"
+        },
+        {
+          "rows": [
+            1333,
+            1344
+          ],
+          "start": "3:07:04",
+          "end": "3:08:16"
+        },
+        {
+          "rows": [
+            1367,
+            1385
+          ],
+          "start": "3:10:55",
+          "end": "3:13:00"
+        },
+        {
+          "rows": [
+            1430,
+            1448
+          ],
+          "start": "3:17:41",
+          "end": "3:19:18"
+        },
+        {
+          "rows": [
+            1485,
+            1494
+          ],
+          "start": "3:24:32",
+          "end": "3:25:40"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-3-dragowil-teamtrueisaac",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-4-sherlock-endyr",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          1568,
+          2219
+        ]
+      ],
+      "findings": [
+        "Restored both earlier games and clarified the final response to Guo Jia’s level-up."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1809,
+            1828
+          ],
+          "start": "4:18:02",
+          "end": "4:19:56"
+        },
+        {
+          "rows": [
+            1839,
+            1849
+          ],
+          "start": "4:20:51",
+          "end": "4:21:53"
+        },
+        {
+          "rows": [
+            1999,
+            2018
+          ],
+          "start": "4:39:07",
+          "end": "4:41:02"
+        },
+        {
+          "rows": [
+            2064,
+            2078
+          ],
+          "start": "4:45:46",
+          "end": "4:47:09"
+        },
+        {
+          "rows": [
+            2149,
+            2152
+          ],
+          "start": "4:54:46",
+          "end": "4:55:10"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-4-sherlock-endyr",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-5-quarax-boy",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          2491,
+          3058
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2. Game 3 ends with Varuck and Devastating Blow, not the commentators’ earlier hypothetical Ascension line."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2653,
+            2659
+          ],
+          "start": "6:17:17",
+          "end": "6:17:55"
+        },
+        {
+          "rows": [
+            2743,
+            2746
+          ],
+          "start": "6:27:38",
+          "end": "6:27:57"
+        },
+        {
+          "rows": [
+            2801,
+            2822
+          ],
+          "start": "6:34:26",
+          "end": "6:36:29"
+        },
+        {
+          "rows": [
+            2913,
+            2919
+          ],
+          "start": "6:47:11",
+          "end": "6:47:48"
+        },
+        {
+          "rows": [
+            3028,
+            3038
+          ],
+          "start": "7:00:18",
+          "end": "7:01:35"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-5-quarax-boy",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-6-pulse-johnbed",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          3069,
+          3715
+        ]
+      ],
+      "findings": [
+        "Restored both earlier games; game 2 reversal belongs to Concealed Marksman. Game 3 final Squallbind Pounce is stopped by Guo Jia’s lineage release."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3146,
+            3167
+          ],
+          "start": "7:26:34",
+          "end": "7:28:53"
+        },
+        {
+          "rows": [
+            3253,
+            3267
+          ],
+          "start": "7:37:51",
+          "end": "7:39:32"
+        },
+        {
+          "rows": [
+            3399,
+            3413
+          ],
+          "start": "7:53:26",
+          "end": "7:55:04"
+        },
+        {
+          "rows": [
+            3553,
+            3558
+          ],
+          "start": "8:09:52",
+          "end": "8:10:29"
+        },
+        {
+          "rows": [
+            3666,
+            3702
+          ],
+          "start": "8:22:02",
+          "end": "8:26:01"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-6-pulse-johnbed",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          3719,
+          4342
+        ]
+      ],
+      "findings": [
+        "Restored game 1. Game 2’s first Tempest chain is survived; final Razer Gale triggers after Wisdom’s Reprise end the game, not the initial burst alone."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3955,
+            3974
+          ],
+          "start": "8:57:03",
+          "end": "8:59:12"
+        },
+        {
+          "rows": [
+            4018,
+            4039
+          ],
+          "start": "9:04:09",
+          "end": "9:06:24"
+        },
+        {
+          "rows": [
+            4099,
+            4105
+          ],
+          "start": "9:13:26",
+          "end": "9:14:13"
+        },
+        {
+          "rows": [
+            4150,
+            4157
+          ],
+          "start": "9:18:46",
+          "end": "9:19:36"
+        },
+        {
+          "rows": [
+            4217,
+            4249
+          ],
+          "start": "9:26:39",
+          "end": "9:29:55"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+      "videoId": "6XU9azcBukk",
+      "sourceSha256": "d17abf75245d09d6786e8f7aec625f6837158b2793b3cdbd537623947400ed27",
+      "reviewedRowRanges": [
+        [
+          4352,
+          5005
+        ]
+      ],
+      "findings": [
+        "Restored game 1 and preserved exact game 2 lethal. Distinguished game 1 caster confusion about a second Lightweaver’s Assault from the actual single-copy line."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4548,
+            4556
+          ],
+          "start": "10:07:44",
+          "end": "10:08:41"
+        },
+        {
+          "rows": [
+            4599,
+            4610
+          ],
+          "start": "10:13:06",
+          "end": "10:14:09"
+        },
+        {
+          "rows": [
+            4794,
+            4807
+          ],
+          "start": "10:32:34",
+          "end": "10:33:46"
+        },
+        {
+          "rows": [
+            4850,
+            4869
+          ],
+          "start": "10:38:29",
+          "end": "10:40:12"
+        },
+        {
+          "rows": [
+            4883,
+            4895
+          ],
+          "start": "10:41:57",
+          "end": "10:43:13"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-9-asuna-kitkat",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          62,
+          720
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2. G2 commentary initially suggests Penumbra’s Waltz but corrects itself: Asuna takes the six-damage swordless Rending, then wins with Slice and Dice; no Waltz play asserted."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            323,
+            340
+          ],
+          "start": "39:28",
+          "end": "41:16"
+        },
+        {
+          "rows": [
+            459,
+            490
+          ],
+          "start": "54:47",
+          "end": "58:30"
+        },
+        {
+          "rows": [
+            510,
+            527
+          ],
+          "start": "1:00:47",
+          "end": "1:02:53"
+        },
+        {
+          "rows": [
+            637,
+            652
+          ],
+          "start": "1:14:51",
+          "end": "1:16:41"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-9-asuna-kitkat",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-10-pulse-lucasis",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          734,
+          1256
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2. G1 lucasis destroys Seiryuu with Dungeon Guide damage plus eleven-counter Polaris; Pulse concedes after Art of War. G2 avoided speculative Harness Lightning line."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            868,
+            871
+          ],
+          "start": "1:46:11",
+          "end": "1:46:30"
+        },
+        {
+          "rows": [
+            913,
+            950
+          ],
+          "start": "1:51:15",
+          "end": "1:55:15"
+        },
+        {
+          "rows": [
+            1035,
+            1054
+          ],
+          "start": "2:05:06",
+          "end": "2:07:32"
+        },
+        {
+          "rows": [
+            1119,
+            1134
+          ],
+          "start": "2:14:26",
+          "end": "2:15:57"
+        },
+        {
+          "rows": [
+            1185,
+            1194
+          ],
+          "start": "2:21:50",
+          "end": "2:22:47"
+        },
+        {
+          "rows": [
+            1234,
+            1247
+          ],
+          "start": "2:27:59",
+          "end": "2:29:20"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-10-pulse-lucasis",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-11-tien-seiba",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          1306,
+          1977
+        ]
+      ],
+      "findings": [
+        "Restored games 1 and 2; retained the explicit game 3 concession. Commentary’s provisional draw call is corrected to Seiba conceding to Tien, 2–1."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1442,
+            1455
+          ],
+          "start": "3:04:14",
+          "end": "3:05:44"
+        },
+        {
+          "rows": [
+            1599,
+            1611
+          ],
+          "start": "3:21:23",
+          "end": "3:22:28"
+        },
+        {
+          "rows": [
+            1752,
+            1769
+          ],
+          "start": "3:37:04",
+          "end": "3:38:53"
+        },
+        {
+          "rows": [
+            1911,
+            1918
+          ],
+          "start": "3:55:10",
+          "end": "3:55:55"
+        },
+        {
+          "rows": [
+            1937,
+            1943
+          ],
+          "start": "3:57:58",
+          "end": "3:58:44"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-11-tien-seiba",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          1991,
+          2506
+        ]
+      ],
+      "findings": [
+        "Restored game 1: Dragowil shows two Fireballs and gets a concession rather than resolving an invented attack. Clarified game 2 Spark of Light and Ascension finish; no Majestic Spirit claim (not in this build)."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2127,
+            2142
+          ],
+          "start": "4:22:18",
+          "end": "4:23:52"
+        },
+        {
+          "rows": [
+            2169,
+            2170
+          ],
+          "start": "4:26:46",
+          "end": "4:26:52"
+        },
+        {
+          "rows": [
+            2288,
+            2312
+          ],
+          "start": "4:39:05",
+          "end": "4:41:43"
+        },
+        {
+          "rows": [
+            2398,
+            2409
+          ],
+          "start": "4:50:05",
+          "end": "4:51:12"
+        },
+        {
+          "rows": [
+            2422,
+            2427
+          ],
+          "start": "4:52:37",
+          "end": "4:53:15"
+        },
+        {
+          "rows": [
+            2490,
+            2495
+          ],
+          "start": "5:00:56",
+          "end": "5:01:34"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          2707,
+          3852
+        ]
+      ],
+      "findings": [
+        "Restored games1–2. G1 counterattack falls short after losing Ascension; no invented final omen action. G2 Reduce to Ash on Orb of Sealing is confirmed by winner interview. G3 burn and sword finish follows low-value Oblation."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3052,
+            3126
+          ],
+          "start": "6:54:42",
+          "end": "7:03:16"
+        },
+        {
+          "rows": [
+            3481,
+            3497
+          ],
+          "start": "7:40:01",
+          "end": "7:41:48"
+        },
+        {
+          "rows": [
+            3530,
+            3574
+          ],
+          "start": "7:45:40",
+          "end": "7:50:25"
+        },
+        {
+          "rows": [
+            3645,
+            3687
+          ],
+          "start": "7:58:06",
+          "end": "8:02:25"
+        },
+        {
+          "rows": [
+            3763,
+            3789
+          ],
+          "start": "8:10:35",
+          "end": "8:13:16"
+        },
+        {
+          "rows": [
+            3839,
+            3845
+          ],
+          "start": "8:19:36",
+          "end": "8:20:05"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          3879,
+          4787
+        ]
+      ],
+      "findings": [
+        "Restored games1–2. G1 second Fireball is first shown, then played in response to level-up. G2 Prismatic Edge resolution rewind is not a game loss; final concession is to Devastating Blow threat. G3 Clarent response also rewound, not a penalty ending."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3920,
+            3931
+          ],
+          "start": "8:36:26",
+          "end": "8:37:32"
+        },
+        {
+          "rows": [
+            4170,
+            4180
+          ],
+          "start": "9:04:48",
+          "end": "9:05:54"
+        },
+        {
+          "rows": [
+            4287,
+            4297
+          ],
+          "start": "9:17:41",
+          "end": "9:18:38"
+        },
+        {
+          "rows": [
+            4437,
+            4450
+          ],
+          "start": "9:36:20",
+          "end": "9:38:01"
+        },
+        {
+          "rows": [
+            4560,
+            4576
+          ],
+          "start": "9:48:42",
+          "end": "9:50:38"
+        },
+        {
+          "rows": [
+            4624,
+            4632
+          ],
+          "start": "9:56:08",
+          "end": "9:56:48"
+        },
+        {
+          "rows": [
+            4664,
+            4668
+          ],
+          "start": "10:00:37",
+          "end": "10:01:05"
+        },
+        {
+          "rows": [
+            4695,
+            4697
+          ],
+          "start": "10:04:39",
+          "end": "10:04:50"
+        },
+        {
+          "rows": [
+            4752,
+            4766
+          ],
+          "start": "10:11:35",
+          "end": "10:12:55"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-auckland-2025-final-emp-teamtruecaban",
+      "videoId": "idcMDSZRmIE",
+      "sourceSha256": "279a8b6b91e2c2de7243e1c8da7c8e7d61beae62f71703c350ecec7c124cbcbe",
+      "reviewedRowRanges": [
+        [
+          4820,
+          5346
+        ]
+      ],
+      "findings": [
+        "Restored games1–2. G3 initial commentary contradicts itself about turn-one Razorgale; later explicit turn-two discovery and EMP interview settle the sequence. Final chain is three Tempest copies plus Cyclical Breeze recurrence, not four distinct copies."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4907,
+            4909
+          ],
+          "start": "10:37:17",
+          "end": "10:37:26"
+        },
+        {
+          "rows": [
+            4945,
+            4954
+          ],
+          "start": "10:41:25",
+          "end": "10:42:34"
+        },
+        {
+          "rows": [
+            4961,
+            4974
+          ],
+          "start": "10:43:21",
+          "end": "10:44:39"
+        },
+        {
+          "rows": [
+            5033,
+            5043
+          ],
+          "start": "10:51:14",
+          "end": "10:52:20"
+        },
+        {
+          "rows": [
+            5145,
+            5158
+          ],
+          "start": "11:03:36",
+          "end": "11:05:04"
+        },
+        {
+          "rows": [
+            5176,
+            5197
+          ],
+          "start": "11:06:56",
+          "end": "11:09:00"
+        },
+        {
+          "rows": [
+            5268,
+            5277
+          ],
+          "start": "11:16:10",
+          "end": "11:17:06"
+        },
+        {
+          "rows": [
+            5295,
+            5299
+          ],
+          "start": "11:19:50",
+          "end": "11:20:23"
+        }
+      ],
+      "replacementId": "ascent-auckland-2025-final-emp-teamtruecaban",
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round1-comradecoheed-fome",
+      "videoId": "O9EzTt7ffVc",
+      "reviewedRowRanges": [
+        [
+          114,
+          445
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing two game summaries agree with captioned finishes.",
+        "Caption corrections during game two establish bullet destruction rather than confident gun destruction; existing recap appropriately avoids the ambiguous interaction."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            208,
+            218
+          ],
+          "timestamps": [
+            "39:42",
+            "41:00"
+          ],
+          "finding": "Lorraine levels and finds lethal, then sideboarding."
+        },
+        {
+          "rows": [
+            326,
+            353
+          ],
+          "timestamps": [
+            "53:54",
+            "56:35"
+          ],
+          "finding": "Diana Cursebreaker recovery plan fails against Arthur/Sword of Shadows damage."
+        }
+      ],
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          586,
+          1337
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Fully captioned second game ends at time; add drawn game without altering match result conflict."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            916,
+            929
+          ]
+        },
+        {
+          "rows": [
+            1109,
+            1117
+          ]
+        },
+        {
+          "rows": [
+            1284,
+            1299
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round3-centai-superior",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          1348,
+          1687
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Three games support existing broadcast 2-1; official 2-0 conflict remains."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1402,
+            1409
+          ]
+        },
+        {
+          "rows": [
+            1489,
+            1502
+          ]
+        },
+        {
+          "rows": [
+            1596,
+            1602
+          ]
+        },
+        {
+          "rows": [
+            1644,
+            1649
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round4-rng-joyboy",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          1924,
+          2347
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Both finishes support current recap; Game 2 initial burst stopped by Song of Frost, later Liu Bei and Inert Sword lethal."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2081,
+            2094
+          ]
+        },
+        {
+          "rows": [
+            2210,
+            2229
+          ]
+        },
+        {
+          "rows": [
+            2253,
+            2268
+          ]
+        },
+        {
+          "rows": [
+            2330,
+            2335
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          2817,
+          3325
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Game 1 concession, Game 2 Incapacitate against Zephyr, Game 3 Cosmic Bolt deck-error loss support existing recap."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2930,
+            2940
+          ]
+        },
+        {
+          "rows": [
+            3076,
+            3086
+          ]
+        },
+        {
+          "rows": [
+            3240,
+            3259
+          ]
+        },
+        {
+          "rows": [
+            3270,
+            3289
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round6-superior-killydis",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          3384,
+          3755
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Concession to Strategem threat and Genbu/Resonating Fugue win agree with existing recap."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3557,
+            3579
+          ]
+        },
+        {
+          "rows": [
+            3672,
+            3685
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round7-maindeckdan-yojiah",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          3875,
+          4471
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Game loss plus played Shadowstrike win; following game explicitly exhibition, correctly excluded."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3930,
+            3935
+          ]
+        },
+        {
+          "rows": [
+            4124,
+            4153
+          ]
+        },
+        {
+          "rows": [
+            4372,
+            4374
+          ]
+        },
+        {
+          "rows": [
+            4425,
+            4427
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-niagara-falls-2025-day1-round8-hyouka-teamtrueterry",
+      "videoId": "O9EzTt7ffVc",
+      "sourceSha256": "9818edf4bae572c30d086a0d145b4ce53227463c714f2ddb2bd77eb8d7b3825c",
+      "reviewedRowRanges": [
+        [
+          4489,
+          4935
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Two wins agree with recap; closing draw finds continuation but exact final card not specified confidently in captions, retained conservative phrasing."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4627,
+            4646
+          ]
+        },
+        {
+          "rows": [
+            4860,
+            4879
+          ]
+        },
+        {
+          "rows": [
+            4909,
+            4917
+          ]
+        }
+      ],
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round3-tlux-neetfull",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          1190,
+          1562
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and concise closing summaries agree with sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1193,
+            1197
+          ],
+          "timestamps": [
+            "4:42:13",
+            "4:42:47"
+          ],
+          "finding": "Prerecorded coverage starts Game 2; NEETfull announced Game 1 winner."
+        },
+        {
+          "rows": [
+            1393,
+            1417
+          ],
+          "timestamps": [
+            "5:06:39",
+            "5:09:41"
+          ],
+          "finding": "Byakko command and Arcane Blast close TLux Game 2; explicit one each."
+        },
+        {
+          "rows": [
+            1518,
+            1539
+          ],
+          "timestamps": [
+            "5:21:52",
+            "5:24:32"
+          ],
+          "finding": "Byakko command closes TLux Game 3; commentators confirm NEETfull loss."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round4-bartleby-phillip",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          1572,
+          2049
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and concise closing summaries agree with sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1667,
+            1673
+          ],
+          "timestamps": [
+            "5:44:16",
+            "5:45:02"
+          ],
+          "finding": "Cheshire Cat removed; Phillip concedes Game 1."
+        },
+        {
+          "rows": [
+            1911,
+            1924
+          ],
+          "timestamps": [
+            "6:13:06",
+            "6:14:34"
+          ],
+          "finding": "Potential lethal discussed but Phillip passes; do not claim this speculative line happened."
+        },
+        {
+          "rows": [
+            1990,
+            2017
+          ],
+          "timestamps": [
+            "6:23:00",
+            "6:26:11"
+          ],
+          "finding": "Reveal the Hidden countered; eventual double Lightweaver assault closes Bartleby sweep."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round5-duckhats-killydis",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          2070,
+          2633
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and closing summaries agree with sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2304,
+            2319
+          ],
+          "timestamps": [
+            "7:06:09",
+            "7:07:49"
+          ],
+          "finding": "DuckHats stacks damage before Magebane Lash recovery; Game 1 confirmed."
+        },
+        {
+          "rows": [
+            2456,
+            2493
+          ],
+          "timestamps": [
+            "7:23:21",
+            "7:27:33"
+          ],
+          "finding": "Ravishing Finale empties deck; Resolute Stand skips draw; Grim Pastiche/Intensified Pyre finishing line wins Game 2."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round6-quarax-rexaren",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          2700,
+          3201
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and closing summaries agree with sequential captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2847,
+            2855
+          ],
+          "timestamps": [
+            "8:17:53",
+            "8:18:56"
+          ],
+          "finding": "Song of Frost answered by Byakko command, Quarax wins Game 1."
+        },
+        {
+          "rows": [
+            2909,
+            2944
+          ],
+          "timestamps": [
+            "8:25:57",
+            "8:30:29"
+          ],
+          "finding": "Eleven-card material deck confirmed; Quarax game loss; Game 3 begins."
+        },
+        {
+          "rows": [
+            3090,
+            3114
+          ],
+          "timestamps": [
+            "8:48:33",
+            "8:51:28"
+          ],
+          "finding": "Arcane Blast closes Game 3; Quarax 6-0 and rexaren 5-1."
+        },
+        {
+          "rows": [
+            3153,
+            3160
+          ],
+          "timestamps": [
+            "8:56:19",
+            "8:56:58"
+          ],
+          "finding": "Interview confirms self-report of missing Seiryuu and Game 2 penalty."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round7-weiyee-harunda",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          3373,
+          3662
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and concise closing summaries agree with sequential captions; no unsupported missing game added."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3436,
+            3444
+          ],
+          "timestamps": [
+            "9:36:06",
+            "9:37:08"
+          ],
+          "finding": "Refracting Missile and Burst Asunder close Weiyee Game 1."
+        },
+        {
+          "rows": [
+            3566,
+            3576
+          ],
+          "timestamps": [
+            "9:52:09",
+            "9:53:30"
+          ],
+          "finding": "Searing Rebuke answered by Glimmering Refusal; Weiyee wins 2-0."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round7-quikk-chemcollapse",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          3663,
+          4050
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and concise closing summaries agree with sequential captions; no unsupported missing game added."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3682,
+            3691
+          ],
+          "timestamps": [
+            "10:05:12",
+            "10:06:17"
+          ],
+          "finding": "Initial Tristan guess explicitly corrected to Guo Jia/Seiryuu."
+        },
+        {
+          "rows": [
+            3832,
+            3848
+          ],
+          "timestamps": [
+            "10:23:42",
+            "10:25:43"
+          ],
+          "finding": "Seiryuu command and free Arcane Blast close ChemCollapse Game 1."
+        },
+        {
+          "rows": [
+            4034,
+            4049
+          ],
+          "timestamps": [
+            "10:47:35",
+            "10:49:25"
+          ],
+          "finding": "Game 2 potential combo discussed, then coverage cuts before actual finish. Existing official result and selected G1 preserved."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round8-sano-phantisea",
+      "videoId": "iwjvP7O9ytM",
+      "reviewedRowRanges": [
+        [
+          4059,
+          4541
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Existing game winners and concise closing summaries agree with sequential captions; no unsupported missing game added."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4219,
+            4239
+          ],
+          "timestamps": [
+            "11:13:48",
+            "11:16:00"
+          ],
+          "finding": "Guo Jia lineage release stops Perse suppression; Seiryuu command/Harness Lightning close Sano Game 1."
+        },
+        {
+          "rows": [
+            4436,
+            4450
+          ],
+          "timestamps": [
+            "11:38:15",
+            "11:39:39"
+          ],
+          "finding": "Level to Guo Jia 3, dragon flip, Harness Lightning attack closes Game 2."
+        }
+      ],
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round1-dit-boeboe",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          182,
+          713
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Sequential captions confirm game winner sequence and match result."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            349,
+            357
+          ],
+          "timestamps": [
+            "56:30",
+            "57:30"
+          ],
+          "finding": "Third Polar Depths leads Boeboe concession to mill Game 1."
+        },
+        {
+          "rows": [
+            631,
+            642
+          ],
+          "timestamps": [
+            "1:30:31",
+            "1:31:55"
+          ],
+          "finding": "Byakko command responds to Song of Frost; Arcane Blast 11 closes Boeboe Game 2."
+        },
+        {
+          "rows": [
+            663,
+            675
+          ],
+          "timestamps": [
+            "1:34:26",
+            "1:35:57"
+          ],
+          "finding": "Boeboe self-reports generated Arcane Blasts shuffled into Game 3 presented deck."
+        },
+        {
+          "rows": [
+            693,
+            701
+          ],
+          "timestamps": [
+            "1:38:09",
+            "1:39:09"
+          ],
+          "finding": "Judges assign Boeboe Game 3 loss; Dit wins round."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round2-tlsovotl-aqua",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          803,
+          1422
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Confirmed all winners/result. Correct interview Suited Trickery name; remove fabricated Gentle Beseeches/double count; correct Game 3 first Meteor Strike glimpse from Cosmic Astroscope to Three Visits."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            969,
+            981
+          ],
+          "timestamps": [
+            "2:14:49",
+            "2:15:57"
+          ],
+          "finding": "Pepper/Chef and Blazing Throw closing pressure; Fiery Interference stops Serene recovery, suited wins G1."
+        },
+        {
+          "rows": [
+            1187,
+            1201
+          ],
+          "timestamps": [
+            "2:39:35",
+            "2:41:16"
+          ],
+          "finding": "Imperial Countermeasures saves Aqua then glimpse closes Game 2."
+        },
+        {
+          "rows": [
+            1325,
+            1339
+          ],
+          "timestamps": [
+            "2:56:00",
+            "2:57:38"
+          ],
+          "finding": "Overtime ally swings and Spirit attack finish suited 2-1."
+        },
+        {
+          "rows": [
+            1003,
+            1021
+          ],
+          "finding": "Opener discussion names Calming Breeze, Gentle Respite and Beseech; no card called Gentle Beseeches."
+        },
+        {
+          "rows": [
+            1250,
+            1260
+          ],
+          "finding": "After DG, Three Visits in banishment used to glimpse known Meteor Strike before Cosmic Astroscope materialized later."
+        },
+        {
+          "rows": [
+            1408,
+            1418
+          ],
+          "finding": "Interview explicitly discusses Suited Trickery taxing champion attacks."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round3-noel-tress",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          1495,
+          2074
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Tress wins game one; Noel wins game two for 1–1 draw at time. Removed unconfirmed game-two Regenerate/Serene Spirit recovery: casters discuss those as required outs, then Tress fails to find sufficient healing."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1818,
+            1835
+          ],
+          "timestamps": [
+            "3:55:38",
+            "3:57:11"
+          ],
+          "finding": "Tress shows Regenerate and wins game one."
+        },
+        {
+          "rows": [
+            2017,
+            2072
+          ],
+          "timestamps": [
+            "4:16:45",
+            "4:22:37"
+          ],
+          "finding": "Pearled Prayer resolves earlier; Crimson Rupture reduces final swing; Tress fails to find healing after Tome draw. Noel wins game two."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round4-teamtruecaban-superior",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          2148,
+          2710
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Corrected sideboard attribution: Delusional Vapors is discussed for Superior, and Superior does play Expel against Fractal of Rain before another copy is milled. Removed non-catalog Topsy Turvy name. All game outcomes supported."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2323,
+            2341
+          ],
+          "finding": "Sideboard suggestions change to Superior at row2330; Vapors follows."
+        },
+        {
+          "rows": [
+            2367,
+            2379
+          ],
+          "finding": "Expel removes Fractal of Rain; later independent Expel copy milled."
+        },
+        {
+          "rows": [
+            2688,
+            2703
+          ],
+          "finding": "Engulf and Cerulean Decree stop final Refracting Missile; match drawn."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          2720,
+          2938
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Both games and existing corrections supported. No added exact Expel target: commentary remains uncertain."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2792,
+            2827
+          ],
+          "finding": "Frozen Dismissal tax then Diao Chan3; Take Aim lethal."
+        },
+        {
+          "rows": [
+            2920,
+            2933
+          ],
+          "finding": "Strides Fracturized; Longbowman and Krustallan Archer finish."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round5-jett-longn",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          2993,
+          3364
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Both games supported; LongN receives game-two loss after milling error. No specific infraction established."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3179,
+            3194
+          ],
+          "finding": "Razorgale stack damage wins game1."
+        },
+        {
+          "rows": [
+            3354,
+            3363
+          ],
+          "finding": "Production confirms LongN game loss; Jett2–0."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round5-superior-elian",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          3376,
+          3498
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Selected game-one recap supported. Cut occurs before finish; later commentary confirms Superior2–1, winning games1/3. No additional game beats invented."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3493,
+            3497
+          ],
+          "finding": "Cut to desk and match result; no filmed conclusion in captions."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round6-celednb-quakems",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          3575,
+          4149
+        ],
+        [
+          4766,
+          4796
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Later delayed interview at10:18–10:21 confirms Lake of Grieving Chill as fifth Fracturize against Censer."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3666,
+            3669
+          ],
+          "finding": "Celednb concedes game1."
+        },
+        {
+          "rows": [
+            3768,
+            3770
+          ],
+          "finding": "Frostbind stops Dungeon Guide; Quakems concedes."
+        },
+        {
+          "rows": [
+            3920,
+            3946
+          ],
+          "finding": "Negate mode discussed, then actual decision is glimpse; Flash Grenade resolves."
+        },
+        {
+          "rows": [
+            4010,
+            4023
+          ],
+          "finding": "Cometary Vantage and Cosmic Focus finish game3."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round7-anjuhro-hyouka",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          4255,
+          4763
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Both game outcomes and existing detailed corrections supported; no additional changes needed."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4383,
+            4388
+          ],
+          "finding": "Arcane Elemental and Disorienting Winds finish game1."
+        },
+        {
+          "rows": [
+            4509,
+            4519
+          ],
+          "finding": "Heavenly Guide valid from earlier Dungeon Guide to Rai2."
+        },
+        {
+          "rows": [
+            4646,
+            4666
+          ],
+          "finding": "Ionized Asceticism replenishes hand; Shattering Discharge resolves before Abnegation for game2 win."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round8-zorr-hessu",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          4897,
+          5363
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Corrected Silvie level2 to level3 before Tera Slimes; clarified Paladin sacrificed to Ritual. Clarified Zorr uses own Safeguard and Cleanse, then Mustang removes opposing Lantern. Both wins supported."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4963,
+            4994
+          ],
+          "finding": "Dungeon Guide reaches Slime Sovereign; Ethereal Slime attack answered by Primordial Ritual on Paladin."
+        },
+        {
+          "rows": [
+            5253,
+            5275
+          ],
+          "finding": "Cleanse and Safeguard first; Mustang later; doubleStormfinish."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
+      "videoId": "ljQZR8Yu1XM",
+      "reviewedRowRanges": [
+        [
+          5462,
+          5505
+        ]
+      ],
+      "status": "source_gap_preserve_existing",
+      "findings": [
+        "Mainstream cache ends during round9 introduction before gameplay. Preserved existing recap supported by separate supplied round9 transcript; no main-stream verification of those games claimed."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            5489,
+            5505
+          ],
+          "finding": "Vernosius Water Luxem Zander and LikeBailey Wind Arisanna introduced; cache stops11:54:52."
+        }
+      ],
+      "sourceSha256": "51111c57aeca418f680b8ffef85249d1ce2b52f61b2df60a34500c50deb13b94",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round10-superior-asuna",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          138,
+          645
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "All three game outcomes supported. Corrected game2 combined-damage wording: Tempest Downfall alone threatens11, following separate ThreeVisits/Scout damage. Corrected Enfeebling name and removed non-play explanation."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            205,
+            215
+          ],
+          "finding": "31damageGenbu winsgame1."
+        },
+        {
+          "rows": [
+            377,
+            413
+          ],
+          "finding": "DoubleOffering protects Crucible; recoveryfromSpeedPotion; ThreeVisits/Scout then11damageDownfall."
+        },
+        {
+          "rows": [
+            550,
+            554
+          ],
+          "finding": "Engulf answers Innervate,Genbu winsgame3."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          792,
+          1157
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Normalize Spark Alight and Zhang Jiao card names; retain supported 2-1 and game-three Command-before-Chef sequence."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            870,
+            889
+          ],
+          "detail": "Sideboard options discussed, not confirmed swaps."
+        },
+        {
+          "rows": [
+            815,
+            822
+          ],
+          "detail": "Zhang Jiao heals; Vermilion Decree hits champion and ally."
+        },
+        {
+          "rows": [
+            1033,
+            1057
+          ],
+          "detail": "Enfeebling Orb taxes interaction; Command precedes Chef and concession."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round12-tlux-superior",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          1357,
+          1878
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Correct Game1 Paladin-before-Fugue order and Game2 Fatestone of Heaven target: Fractal of Rain, not Frostsworn Paladin."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1494,
+            1502
+          ],
+          "detail": "Paladin attacks before Fugue and concession."
+        },
+        {
+          "rows": [
+            1646,
+            1647
+          ],
+          "detail": "Fatestone removes Fractal of Rain."
+        },
+        {
+          "rows": [
+            1677,
+            1682
+          ],
+          "detail": "Dream Fairy removes Paladin."
+        },
+        {
+          "rows": [
+            1756,
+            1802
+          ],
+          "detail": "Genbu attack sequence supports 2-0."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          1903,
+          2505
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Remove unsupported Rude sideboard claim: caption describes Snow White increasing from three to four; trim speculative finisher commentary."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2061,
+            2067
+          ],
+          "detail": "Additional Snow White discussed, no Rude."
+        },
+        {
+          "rows": [
+            2224,
+            2234
+          ],
+          "detail": "Exploit then Assault and reveal finish."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          2559,
+          2931
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Normalize misheard Terraforming to Tariff Ring; keep actual nine-damage Fugue attack without hypothetical lethal lines."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2860,
+            2867
+          ],
+          "detail": "Nine-damage Fugue; Grail reveals Tariff Ring."
+        },
+        {
+          "rows": [
+            2873,
+            2928
+          ],
+          "detail": "Uther removes Genbu; Sasha fosters, Aella enters, concession."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          2959,
+          3234
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "Both game wins and 2-0 match supported. Aetheric Reforging removes Fracturize; Tactical Retreat cancels combat during Serene heal."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3022,
+            3034
+          ],
+          "detail": "Paladin and Charge the Soul finish G1."
+        },
+        {
+          "rows": [
+            3106,
+            3114
+          ],
+          "detail": "Reforging prevents next level."
+        },
+        {
+          "rows": [
+            3133,
+            3140
+          ],
+          "detail": "Tactical Retreat followed by Diana and Cat lethal."
+        },
+        {
+          "rows": [
+            3211,
+            3213
+          ],
+          "detail": "Interview confirms removed Fracturize."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-top8-qf-jett-chemcollapse",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          3248,
+          3849
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Correct Orbital Ceiling ASR to Orb of Sealing and Blanche spelling. Game3 replay cuts before finish; preserve reported Jett 2-1 and no invented finisher."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3461,
+            3469
+          ],
+          "detail": "Seiryuu Command and Arcane Blast close G1."
+        },
+        {
+          "rows": [
+            3690,
+            3698
+          ],
+          "detail": "Zephyr own Aesan then Veiling Breeze wins G2."
+        },
+        {
+          "rows": [
+            3796,
+            3801
+          ],
+          "detail": "Replay cut, Jett 2-1 announced."
+        },
+        {
+          "rows": [
+            3823,
+            3833
+          ],
+          "detail": "Orb of Sealing discussed in interview."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-top4-semifinal-zetdivx-jett",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          3860,
+          4747
+        ]
+      ],
+      "status": "reviewed_no_correction",
+      "findings": [
+        "All three recaps supported; preserve corrected Game3 Scout the Land survival before Fairy Whispers finisher, not hypothetical trigger-stack lethal."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4079,
+            4129
+          ],
+          "detail": "Reforging denies Veiling recursion; Flash Grenade; nineteen-damage Diana attack."
+        },
+        {
+          "rows": [
+            4340,
+            4359
+          ],
+          "detail": "Expel on Calling, another Calling, Tariff Ring, concession."
+        },
+        {
+          "rows": [
+            4632,
+            4645
+          ],
+          "detail": "Third Crucible counter, second Calling, Scout with recovery resolves, Fairy Whispers ends game."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "na-nationals-2026-grand-finals-quarax-jett",
+      "videoId": "tFC-3k0uxcM",
+      "reviewedRowRanges": [
+        [
+          4799,
+          5433
+        ]
+      ],
+      "status": "corrected",
+      "findings": [
+        "Correct G1 Protector self-protection (Fluffy protection was hypothetical), Dream Fairy sends Cat to memory rather than kills it, and G3 reclaim target is Dream Fairy. Preserve 2-1 and Skirting Step imbue correction."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4902,
+            4919
+          ],
+          "detail": "Thurible then Charge then Protector denies Archer."
+        },
+        {
+          "rows": [
+            4960,
+            4965
+          ],
+          "detail": "Protector shields itself; Cat defeats it."
+        },
+        {
+          "rows": [
+            5003,
+            5008
+          ],
+          "detail": "Cat removes Fluffy on later turn without protection."
+        },
+        {
+          "rows": [
+            5048,
+            5062
+          ],
+          "detail": "Verdigris suppresses Fairy; Aesan returns Fairy."
+        },
+        {
+          "rows": [
+            5204,
+            5207
+          ],
+          "detail": "Unimbued Skirting Step no prevention, Quarax G2."
+        },
+        {
+          "rows": [
+            5334,
+            5335
+          ],
+          "detail": "Fairy reclaimed from Seeker attack."
+        },
+        {
+          "rows": [
+            5348,
+            5368
+          ],
+          "detail": "Expel, Cyclical recursion, Aesan and final Veiling Breeze."
+        }
+      ],
+      "sourceSha256": "caa147c349190906f99f2076c04979c649a0dfe7ed66283c6b7d3d6c3f9065e8",
+      "fullGameplayReviewed": false
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-1-glenyboi-ioki46",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          244,
+          790
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            409,
+            413
+          ],
+          "detail": "Fireball wins game one."
+        },
+        {
+          "rows": [
+            482,
+            566
+          ],
+          "detail": "Shimmering and Smoke Bombs, then concession before pending burn."
+        },
+        {
+          "rows": [
+            731,
+            780
+          ],
+          "detail": "Double Pyre, Hammer, Demolition and Conflagration/Staff finish."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          965,
+          1582
+        ]
+      ],
+      "findings": [
+        "Game 2 draw is an inference from official 1–0 and overtime survival, not an explicit caption result; caster 2–0 conflict remains unresolved. Named Grim Pastiche from interview confirmation."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1296,
+            1306
+          ],
+          "detail": "Annul Spell on copied Regal valid despite initial caster error."
+        },
+        {
+          "rows": [
+            1488,
+            1529
+          ],
+          "detail": "Overtime defensive sequence; caster closing 2–0 guess conflicts official 1–0."
+        },
+        {
+          "rows": [
+            1569,
+            1573
+          ],
+          "detail": "Interview confirms Grim Pastiche as copy card."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-3-xenon-emp",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          1618,
+          2184
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1759,
+            1797
+          ],
+          "detail": "Mirror blocks Breeze; Outburst wins."
+        },
+        {
+          "rows": [
+            2026,
+            2035
+          ],
+          "detail": "Proof of Life blocked by Censer, concession."
+        },
+        {
+          "rows": [
+            2134,
+            2147
+          ],
+          "detail": "Caster lethal call corrected; draw maintained."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-4-aw5459-menbao",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          2438,
+          2759
+        ]
+      ],
+      "findings": [
+        "Restored game one and expanded game two conservatively; exact final attacks unavailable in captions."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2468,
+            2611
+          ],
+          "detail": "Censer, wide allies, Polar sequence and transition into game two; exact last attack not stated."
+        },
+        {
+          "rows": [
+            2692,
+            2740
+          ],
+          "detail": "Genbu attack, actual Dream Fairy answer, Missile/Annul."
+        },
+        {
+          "rows": [
+            2749,
+            2750
+          ],
+          "detail": "Closing caption gap; no exact finish reconstructed."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-5-yhj0127-ryuta",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          2855,
+          3201
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2955,
+            2976
+          ],
+          "detail": "Sweep clears allies; game-one board win without exact final attack."
+        },
+        {
+          "rows": [
+            3002,
+            3063
+          ],
+          "detail": "Mandate played; Snow White later killed by Windmill."
+        },
+        {
+          "rows": [
+            3147,
+            3158
+          ],
+          "detail": "Guan Yu retaliation kills Jing."
+        },
+        {
+          "rows": [
+            3183,
+            3201
+          ],
+          "detail": "Reclaim Pendragon, then Protector returned and repeated attack."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-6-kyle0809-megalobana",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          3500,
+          3768
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3550,
+            3560
+          ],
+          "detail": "Judgment Arrow then Searing Rebuke."
+        },
+        {
+          "rows": [
+            3611,
+            3622
+          ],
+          "detail": "Diana3/Vantage, Firebloom trigger and Rococo finish."
+        },
+        {
+          "rows": [
+            3677,
+            3754
+          ],
+          "detail": "Drown removes Devotee, then Ashwick, Shimmering, trinket and Rococo."
+        },
+        {
+          "rows": [
+            3764,
+            3768
+          ],
+          "detail": "Final hand shown; caption does not securely identify exact finishing card, so removed unsupported Sirocco attribution."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-7-hachico-long",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          4093,
+          4568
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4208,
+            4269
+          ],
+          "detail": "Majesty, Carter/Undying response, Ascension and Devastating Blow, concession."
+        },
+        {
+          "rows": [
+            4489,
+            4498
+          ],
+          "detail": "Oblation and follow-up leave hachico alive after Safeguard."
+        },
+        {
+          "rows": [
+            4499,
+            4518
+          ],
+          "detail": "Consumption delays action; Creative Shock leaves no defense, stacked double Fireball wins."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "ascent-taipei-2025-round-8-sunset-yungcheng",
+      "videoId": "gL-S2tAI6bk",
+      "sourceSha256": "711010c9e8f90843a54b73e335b9a196723d6785b44ac7d5e5730fc1c606b48d",
+      "reviewedRowRanges": [
+        [
+          4779,
+          5240
+        ]
+      ],
+      "findings": [
+        "Restored omitted games and expanded supported closing moments; official result and player identifiers preserved.",
+        "Independent check: Mandate of Honor precedes another drone; its own effect does not create drones."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4824,
+            4831
+          ],
+          "detail": "Backstep, Strides and Second Wind kill game one."
+        },
+        {
+          "rows": [
+            4947,
+            5034
+          ],
+          "detail": "Level three establishes domains; Mandate drone creates decisive board."
+        },
+        {
+          "rows": [
+            5064,
+            5074
+          ],
+          "detail": "Diffusive Block survives lethal combo with one life."
+        },
+        {
+          "rows": [
+            5115,
+            5159
+          ],
+          "detail": "Chamber finds Tea Party; level three and shield board force concession."
+        }
+      ],
+      "status": "corrected"
+    },
+    {
+      "matchId": "oce-nationals-2026-round-1-blazebeast9612-limelight",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          142,
+          488
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Expand closing-only recap to both games using sequential captions; no successful Blackjack combo claimed."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            250,
+            267
+          ],
+          "detail": "Speed Potion extends turn; second Veiling Breeze finishes before level3."
+        },
+        {
+          "rows": [
+            345,
+            409
+          ],
+          "detail": "Expel, replacement Calling, Blanche, Topsy, Feu Awakening lost, Blackjack prevented."
+        },
+        {
+          "rows": [
+            414,
+            428
+          ],
+          "detail": "Polaris clears Blanche after Speed Potion, Scout closes 2-0."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-2-blink-jayare",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          695,
+          1249
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Expand closing-only recap to all three games; game two ends with the paid Fabricator activation, not an Apothecary's Harvest combo."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            823,
+            838
+          ],
+          "detail": "Double Veiling answered, Blink wins G1."
+        },
+        {
+          "rows": [
+            1113,
+            1127
+          ],
+          "detail": "Dream Fairy, ally damage, Fabricator sword wins G2."
+        },
+        {
+          "rows": [
+            1169,
+            1216
+          ],
+          "detail": "Dungeon Guide and Harvest refused, Burst finishes G3."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-3-glenyboi-sano",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          1291,
+          1926
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Expand both games; retain 1–1 result. Game-one middle is interrupted by broadcast technical trouble (1327–1390); do not reconstruct missing turns."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            1390,
+            1419
+          ],
+          "detail": "Return to G1 at Guo Jia3/Lorraine1; Command/Blast finish."
+        },
+        {
+          "rows": [
+            1623,
+            1636
+          ],
+          "detail": "Fumes removes Seiryuu."
+        },
+        {
+          "rows": [
+            1892,
+            1900
+          ],
+          "detail": "Final Aella/Prismatic loop wins G2 at overtime for1–1."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-4-sapphicsnake-boy",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          2203,
+          2876
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Expand all three games; game-two win is concession after board lock, not ultimate lethal; third game is drawn."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            2359,
+            2377
+          ],
+          "detail": "Edict prevents empower; Blast wins without affordable Engulf."
+        },
+        {
+          "rows": [
+            2456,
+            2558
+          ],
+          "detail": "Nimue/Reprogram destroy dragon; concession after Fracturize."
+        },
+        {
+          "rows": [
+            2793,
+            2840
+          ],
+          "detail": "Uther interrupted, Edict stops attack, Castle finally breaks but draw."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          2904,
+          3499
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Restore all three games; G2 Covenant target is Dungeon Guide; G3 finish comes from Hymn finding Storm plus Limitless, not an assumed damage count."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3062,
+            3080
+          ],
+          "detail": "Smoke Bombs/double Take Aim G1 finish."
+        },
+        {
+          "rows": [
+            3255,
+            3278
+          ],
+          "detail": "Covenant targets DG; no distance to defend slime attacks."
+        },
+        {
+          "rows": [
+            3483,
+            3490
+          ],
+          "detail": "Hymn finds Storm; attacks clear Paladin and finish."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-6-dennisyao-jdavies96",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          3548,
+          3904
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Restore both games; G2 final interaction is not named clearly, so no exact finisher or negate invented. Opening Frozen Dismissal confirmed in winner interview."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            3662,
+            3687
+          ],
+          "detail": "Drown removes Engineer forcing Aesan return; Cat/Strides G1."
+        },
+        {
+          "rows": [
+            3719,
+            3767
+          ],
+          "detail": "Sadi dismissed, swords/Cat pressure."
+        },
+        {
+          "rows": [
+            3842,
+            3855
+          ],
+          "detail": "DG attempt and close; specific final response unclear."
+        },
+        {
+          "rows": [
+            3888,
+            3895
+          ],
+          "detail": "Winner confirms sword/Cat line and sideboard Dismissal."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-7-limelight-glenyboi",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          4142,
+          4631
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Expand both games; first game uses Devastating Blow, second uses Extorting Blackjack; avoid caster arithmetic as exact damage claim."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4279,
+            4297
+          ],
+          "detail": "Malice/Chalice draws find Oblation."
+        },
+        {
+          "rows": [
+            4352,
+            4369
+          ],
+          "detail": "Repeated Oblation then Devastating Blow/Feu concession."
+        },
+        {
+          "rows": [
+            4469,
+            4475
+          ],
+          "detail": "Demolition interrupts Displace on Dungeon Guide."
+        },
+        {
+          "rows": [
+            4524,
+            4546
+          ],
+          "detail": "Oblation, Acolyte, Blackjack/Feu finish G2."
+        }
+      ]
+    },
+    {
+      "matchId": "oce-nationals-2026-round-8-kmo-professor",
+      "videoId": "YajGY_RVfD4",
+      "sourceSha256": "02f3d218ce414a5afed8fc1c86f1fd1ac186294e90d2b0a1744cb3f2b1a70e52",
+      "reviewedRowRanges": [
+        [
+          4734,
+          5341
+        ]
+      ],
+      "status": "corrected",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Restore game one, won by Professor despite empty deck because Jyn dies in end phase before a failed draw. Game two won by KMO in overtime; no game three. Do not repeat caster initial misread of Engulf as second Whirlpool."
+      ],
+      "evidence": [
+        {
+          "rows": [
+            4881,
+            4918
+          ],
+          "detail": "Whirlpool banished, Aella suppresses Plate, Displace preserves Aella."
+        },
+        {
+          "rows": [
+            4951,
+            4975
+          ],
+          "detail": "Whirlpool/Regal empty deck but Jyn cannot survive endphase; Professor G1."
+        },
+        {
+          "rows": [
+            5190,
+            5201
+          ],
+          "detail": "One Whirlpool; second suspected copy is corrected to Engulf."
+        },
+        {
+          "rows": [
+            5250,
+            5265
+          ],
+          "detail": "Benediction/Regenerate heal; Resolute avoids draw."
+        },
+        {
+          "rows": [
+            5270,
+            5319
+          ],
+          "detail": "Regal leaves Enrages; double Enrage/Shuang Ji win G2, draw1–1."
+        }
+      ]
     }
-  ]
+  ],
+  "batchSummary": {
+    "changedRecapIds": [
+      "na-nationals-2026-day1-round2-tlsovotl-aqua",
+      "na-nationals-2026-day1-round3-noel-tress",
+      "na-nationals-2026-day1-round4-teamtruecaban-superior",
+      "na-nationals-2026-day1-round6-celednb-quakems",
+      "na-nationals-2026-day1-round8-zorr-hessu",
+      "na-nationals-2026-day2-round10-superior-asuna",
+      "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+      "na-nationals-2026-day2-round12-tlux-superior",
+      "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+      "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+      "na-nationals-2026-top8-qf-jett-chemcollapse",
+      "na-nationals-2026-grand-finals-quarax-jett",
+      "ascent-akihabara-2025-round-1-joyboy-lecithium",
+      "ascent-akihabara-2025-round-2-obuchi1go-hachico",
+      "ascent-akihabara-2025-round-3-fome-roxsas",
+      "ascent-akihabara-2025-round-4-limelight-thomasli2",
+      "ascent-akihabara-2025-round-5-kingarmo-kuojia",
+      "ascent-akihabara-2025-round-6-aqua-jackys",
+      "ascent-akihabara-2025-round-7-lancelim0210-proannn",
+      "ascent-akihabara-2025-round-8-glenyboi-sapphicsnake",
+      "ascent-akihabara-2025-round-11-zer-limbo",
+      "ascent-akihabara-2025-round-12-hyouka-tetsu",
+      "ascent-akihabara-2025-round-13-henkiethegoat-limbo",
+      "ascent-akihabara-2025-round-14-gamingsiopao-glenyboi",
+      "ascent-akihabara-2025-quarterfinal-jett-hoyee",
+      "ascent-akihabara-2025-semifinal-raylam-jett",
+      "ascent-akihabara-2025-grand-final-pulse-raylam",
+      "ascent-manila-2026-round-1-dlonyer-henkiethegoat",
+      "ascent-manila-2026-round-2-aqua-jad",
+      "ascent-manila-2026-round-3-inaki-abbey",
+      "ascent-manila-2026-round-4-leowong-yonab",
+      "ascent-manila-2026-round-5-xabichan-mike0615",
+      "ascent-manila-2026-round-6-truesightleocroix-ameke",
+      "ascent-manila-2026-round-7-chunkie-dennisyao",
+      "ascent-manila-2026-round-8-dlonyer-chung",
+      "sea-national-2026-round-10-ikuri-brai",
+      "sea-national-2026-round-11-frashe-bayabayashi",
+      "sea-national-2026-round-12-truesightleocroix-zabauu",
+      "sea-national-2026-round-13-zero0000000000-joseph",
+      "sea-national-2026-semifinal-lifdrasyl-dragonjg",
+      "sea-national-2026-grand-final-raylam-dragonjg",
+      "ascent-taipei-2025-round-1-glenyboi-ioki46",
+      "ascent-taipei-2025-round-3-xenon-emp",
+      "ascent-taipei-2025-round-5-yhj0127-ryuta",
+      "ascent-taipei-2025-round-6-kyle0809-megalobana",
+      "ascent-taipei-2025-round-7-hachico-long",
+      "ascent-taipei-2025-round-8-sunset-yungcheng",
+      "ascent-melbourne-2026-round-1-aqua-sowa",
+      "ascent-melbourne-2026-round-2-hachico-etsuko",
+      "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+      "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+      "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+      "ascent-melbourne-2026-round-6-quarax-fairjordans",
+      "ascent-melbourne-2026-round-7-qadwqr-arod",
+      "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+      "ascent-melbourne-2026-round-10-pulse-glenyboi",
+      "ascent-melbourne-2026-round-11-launtial-professor",
+      "ascent-melbourne-2026-round-12-bhop-pulse",
+      "ascent-melbourne-2026-quarterfinal-noel-zetdivx",
+      "ascent-melbourne-2026-semifinal-yamikin-bhop",
+      "ascent-melbourne-2026-semifinal-hachico-noel",
+      "ascent-melbourne-2026-final-hachico-yamikin",
+      "ascent-auckland-2025-round-2-limelight-liam",
+      "ascent-auckland-2025-round-3-dragowil-teamtrueisaac",
+      "ascent-auckland-2025-round-4-sherlock-endyr",
+      "ascent-auckland-2025-round-5-quarax-boy",
+      "ascent-auckland-2025-round-6-pulse-johnbed",
+      "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+      "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+      "ascent-auckland-2025-round-9-asuna-kitkat",
+      "ascent-auckland-2025-round-10-pulse-lucasis",
+      "ascent-auckland-2025-round-11-tien-seiba",
+      "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+      "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+      "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+      "ascent-auckland-2025-final-emp-teamtruecaban",
+      "oce-nationals-2026-round-1-blazebeast9612-limelight",
+      "oce-nationals-2026-round-2-blink-jayare",
+      "oce-nationals-2026-round-3-glenyboi-sano",
+      "oce-nationals-2026-round-4-sapphicsnake-boy",
+      "oce-nationals-2026-round-5-holysamurai-thomasli2",
+      "oce-nationals-2026-round-6-dennisyao-jdavies96",
+      "oce-nationals-2026-round-7-limelight-glenyboi",
+      "oce-nationals-2026-round-8-kmo-professor",
+      "ascent-taipei-2025-round-2-lifdrasyl-shina2486",
+      "ascent-taipei-2025-round-4-aw5459-menbao",
+      "ascent-niagara-falls-2025-day1-round2-kibbles-hyouka",
+      "sea-national-2026-quarterfinal-dragonjg-noobtinnn"
+    ],
+    "addedGames": 105
+  }
 }
