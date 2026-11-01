@@ -70,7 +70,7 @@ Next: seek alternate recordings or authoritative score confirmation for the six 
 
 ## Older archive backlog
 
-These streams predate the current recap collection and were inventoried, not downloaded or reviewed. Repeated titles refer to different upload IDs; do not join them by title alone.
+These streams predate the current recap collection. Boston Days 1 and 2 now have cached captions awaiting review; the other 48 competition streams remain inventoried only. Repeated titles refer to different upload IDs; do not join them by title alone.
 
 - [Ascent Boston Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=hAx4jQ4VjCs)
 - [Ascent Boston Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=tWjsNOfIW4c)
@@ -160,3 +160,11 @@ LA Round 1 now publishes the supported opening two games: RoxanneKaiser receives
 Parallel follow-up found no authoritative score correction or alternate footage. The original NA Round 9 ZIP entry contains no source URL or extra metadata; a secondary VOD index’s likeBAILEY Round 9 is Gauntlet 2026, not this match. Nine of the twelve held cases now have recaps, but only six are fully resolved (50%). The recovered-source caption review remains complete; resolving the six open cases requires missing recordings or authoritative result evidence.
 
 Verification: 40 recap, backfill and video-link tests pass; focused lint and diff checks pass. All 204 prior recaps and all official pairing data remain unchanged, with one exact recap association added. Source hash verified and penalty/finish independently checked. Data-only change; mobile/desktop and error states were not re-tested.
+
+### Older archive: Boston captions captured
+
+Both Boston broadcasts now have complete captures of the timestamped rows exposed by YouTube: Day 1 has 5,636 rows (0:00–11:54:54), and Day 2 has 5,015 rows (0:12–11:08:41). Both expanded video descriptions link official event 32243. Source paths, hashes, counts and bounds are recorded in the registry; match review is pending. Captions may have gaps even when all exposed rows are captured.
+
+The built-in export stopped at 5,000 rows, so those incomplete files were replaced with bounded captures of all exposed transcript rows. Hashes, counts, timestamp ordering and bounds were independently verified. No published recaps or UI changed. LA Day 2 and Osaka Day 1 still had no Show transcript control in their expanded descriptions on this check.
+
+Next: review Boston captions against official pairings before publishing recaps. Older-archive caption capture is 4% complete (2/50 competition streams); match review is 0/50. Availability of the remaining 48 is not yet established. The recovered-source review remains complete, and held-case resolution remains 6/12 (50%), blocked on missing footage or authoritative score evidence.

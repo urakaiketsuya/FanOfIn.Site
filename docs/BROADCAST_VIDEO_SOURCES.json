@@ -611,7 +611,19 @@
       "status": "archived",
       "competition": true,
       "transcripts": [],
-      "scope": "older-archive"
+      "scope": "older-archive",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/hAx4jQ4VjCs.json",
+        "sha256": "411b68241f6759117dca3bf7e2c3d20ec1b9e4326dd1d2d3b170ec0a8100bb67",
+        "segments": 5015,
+        "firstTimestamp": "0:12",
+        "lastTimestamp": "11:08:41",
+        "blankSegments": 0,
+        "reviewStatus": "pending",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      },
+      "eventId": 32243,
+      "eventEvidence": "Expanded YouTube description links https://omni.gatcg.com/events/32243"
     },
     {
       "videoId": "tWjsNOfIW4c",
@@ -620,7 +632,19 @@
       "status": "archived",
       "competition": true,
       "transcripts": [],
-      "scope": "older-archive"
+      "scope": "older-archive",
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/tWjsNOfIW4c.json",
+        "sha256": "843be857ed111dccf23189c69e4550e9a26e9aad99e137cc2b6f012130a7b1e3",
+        "segments": 5636,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "11:54:54",
+        "blankSegments": 0,
+        "reviewStatus": "pending",
+        "method": "All rendered timestamped rows from YouTube Show transcript; read in batches to avoid output truncation."
+      },
+      "eventId": 32243,
+      "eventEvidence": "Expanded YouTube description links https://omni.gatcg.com/events/32243"
     },
     {
       "videoId": "I3HVrMEHlrE",
