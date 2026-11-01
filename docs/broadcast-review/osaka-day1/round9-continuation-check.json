@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-31",
+  "matchId": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+  "status": "blocked-missing-continuation",
+  "checks": [
+    {
+      "source": "https://www.youtube.com/watch?v=g3NNFcNpw3k",
+      "method": "Live public video metadata via yt-dlp; no media download",
+      "durationSeconds": 42898,
+      "liveStatus": "was_live",
+      "finding": "Archive duration matches reviewed local audio; no additional tail available."
+    },
+    {
+      "source": "https://www.youtube.com/@gatcg/streams",
+      "method": "Most recent 20 public stream entries",
+      "finding": "Osaka Day 1 and Day 2 listed; no separate Day 1 continuation among checked entries."
+    },
+    {
+      "source": "https://www.youtube.com/@gatcg/videos",
+      "method": "Public uploads listing, requested up to 50; 24 entries returned",
+      "finding": "No Osaka Round 9 upload. Existing standalone Round 9 uploads are other events."
+    },
+    {
+      "source": "/Users/avery/Downloads/transcripts",
+      "method": "Recursive filename inventory",
+      "finding": "No Osaka, Royan, Bayabayashi, or source-video-ID filename found."
+    },
+    {
+      "source": "/Users/avery/Downloads/transcripts.zip",
+      "method": "Archive member-name inventory",
+      "finding": "No Osaka, Royan, or Bayabayashi member name found."
+    }
+  ],
+  "coverage": {
+    "startSeconds": 42720,
+    "sourceEndsSeconds": 42898,
+    "game1Winner": "unknown",
+    "officialMatchScore": "Bayabayashi 1\u20132 Royan",
+    "recapExtended": false
+  },
+  "nextAction": "Obtain a continuation recording or transcript covering the remainder of Round 9. Recheck the official channel when a new upload is available.",
+  "scopeLimit": "Checks establish absence from the inspected sources, not that no recording exists elsewhere."
+}

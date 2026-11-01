@@ -38,3 +38,5 @@ Round 7: DragonJG conceded the match after two games. The corrected match result
 Round 9: the recording ends during game 1 setup at approximately 11:54:58. Royan's 2–1 match win comes from Omnidex; the recap explicitly contains only the opening and no game winner.
 
 Further gameplay coverage requires a continuation of Round 9 or direct video review; the available transcript review is complete. See `review-summary.json` for verification results.
+
+Round 9 continuation recheck (2026-10-31): the live archive metadata still reports 11:54:58. No continuation appeared in the latest 20 official streams, the official uploads listing (24 entries), or matching filenames in the supplied Downloads folder/ZIP. See `round9-continuation-check.json`. Extending the recap is blocked on another source; the existing opening and official result remain unchanged.
