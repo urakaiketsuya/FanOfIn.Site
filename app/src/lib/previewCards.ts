@@ -11,7 +11,7 @@ export function previewCardImage(card: Card | undefined): string | undefined {
   return isPreviewCard(card) ? (card as PreviewCard).previewImage : undefined;
 }
 export const cardNameKey = (name: string) => name.trim().replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
-export const isPreviewCard = (card: Card | undefined) => Boolean(card?.uuid.startsWith('preview:'));
+export const isPreviewCard = (card: Card | undefined) => Boolean(card?.uuid?.startsWith('preview:'));
 
 /** Official records always win in full. Aliases are explicit editorial mappings, never fuzzy guesses. */
 export function mergePreviewCards(official: Card[], previews: PreviewCardRecord[], includePreviews: boolean, selected: string[] = []): Card[] {

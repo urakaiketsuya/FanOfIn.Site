@@ -65,3 +65,8 @@ test("spoiler art is available in card tiles but never overrides official art", 
   const official = { ...preview, uuid: 'official', editions: [] } as Card;
   assert.equal(previewCardImage(mergePreviewCards([official], previews, true).find(c => c.name === 'Chromatic')), undefined);
 });
+
+test("partial catalog cards retain the name fallback without an ID", () => {
+  assert.equal(isPreviewCard({ name: "Unknown" } as Card), false);
+  assert.equal(previewCardImage({ name: "Unknown" } as Card), undefined);
+});

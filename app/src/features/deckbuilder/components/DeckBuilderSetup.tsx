@@ -19,7 +19,7 @@ export function DeckBuilderHeader() {
   const identityCard = identity ? b.catalogByName.get(identity.card) : undefined;
   return <header className="identity-surface rounded-2xl border border-ctp-surface1 p-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-4 sm:p-4">
     <div className="flex items-start gap-3 sm:row-span-2 sm:gap-4">
-    {identity && <div className="w-20 shrink-0 sm:w-24">{identityCard && !identityCard.uuid.startsWith("preview:") ? <Link to={`/cards/${identityCard.slug}`} target="_blank" rel="noreferrer" aria-label={`${identity.card} card details`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={identityCard} name={identity.card} editionUuid={identity.printings?.[0]?.editionUuid} /></Link> : <CardArtTile card={identityCard} name={identity.card} />}</div>}
+    {identity && <div className="w-20 shrink-0 sm:w-24">{identityCard && !identityCard.uuid?.startsWith("preview:") ? <Link to={`/cards/${identityCard.slug}`} target="_blank" rel="noreferrer" aria-label={`${identity.card} card details`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={identityCard} name={identity.card} editionUuid={identity.printings?.[0]?.editionUuid} /></Link> : <CardArtTile card={identityCard} name={identity.card} />}</div>}
     <div className="min-w-0 flex-1">
     <p className="text-xs font-medium uppercase tracking-wide text-ctp-subtext0">Deck Workbench</p>
     <div className="mt-1 flex flex-wrap items-center gap-2">
