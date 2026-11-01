@@ -1,0 +1,7405 @@
+{
+  "sourceFile": "pipeline/.cache/broadcast-transcripts/VOlVotCfOU0.json",
+  "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+  "coverage": {
+    "startSegment": 7198,
+    "endSegmentExclusive": 11720,
+    "method": "Read entire assigned source sequentially, including pre-match, all three games and interview.",
+    "featuredMatches": 1
+  },
+  "matches": [
+    {
+      "id": "ascent-osaka-2026-day2-top8-noel-dudu",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Top 8",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 28562
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water Fractal Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "DuDu",
+          "deck": "Fire Potion Arisanna"
+        }
+      ],
+      "result": "Noel wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "DuDu wins with a burst of burn damage and a Crucible-boosted Everflame Staff.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel opens three Fractals, adds Extinguishing Synchron and Zhang Jiao, then uses Aenean Frozen Shunt during combat to remove DuDu’s Creative Shock from the stack.",
+              "cards": [
+                "Extinguishing Synchron",
+                "Zhang Jiao, Way of Peace",
+                "Aenean Frozen Shunt",
+                "Creative Shock"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 28623
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "DuDu builds Essence Crucible with Explosive Concoction while Noel establishes Safeguard Amulet and pressures with Refracting Missile.",
+              "cards": [
+                "Essence Crucible",
+                "Explosive Concoction",
+                "Safeguard Amulet",
+                "Refracting Missile"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 28983
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Shimmering Refraction threatens a large hit; Noel uses Safeguard Amulet against Searing Rebuke, then commits her hand to regain resources.",
+              "cards": [
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Searing Rebuke",
+                "Backup Charger"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 29630
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "DuDu responds with Explosive Concoction, Scalding Aethercharge and Intensified Pyres. Everflame Staff receives Essence Crucible’s bonus, and Noel concedes.",
+              "cards": [
+                "Explosive Concoction",
+                "Scalding Aethercharge",
+                "Intensified Pyre",
+                "Everflame Staff",
+                "Essence Crucible"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 29782
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Noel survives a long burn exchange and finds exact lethal through Safeguard Amulet.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Nullifying Lantern shuts down Kindle lines, and Fractal of Intrusion strips DuDu’s Combustible Potion before the Crucible engine gets going.",
+              "cards": [
+                "Nullifying Lantern",
+                "Fractal of Intrusion",
+                "Combustible Potion"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 30340
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "After DuDu’s Blanche slows the damage, Noel finds Fracturize and removes Essence Crucible. Safeguard Amulet covers the following Searing Rebuke.",
+              "cards": [
+                "Blanche, Sheltering Saint",
+                "Fracturize",
+                "Essence Crucible",
+                "Safeguard Amulet",
+                "Searing Rebuke"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 31503
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel commits Extinguishing Synchron during the Enfeebling Orb exchange, counters Searing Rebuke with Glimmering Refusal and uses Frostbind against the next burn line. The Synchron’s healing resolves.",
+              "cards": [
+                "Extinguishing Synchron",
+                "Enfeebling Orb",
+                "Glimmering Refusal",
+                "Searing Rebuke",
+                "Frostbind"
+              ],
+              "tags": [
+                "counter"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 32215
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Refracting Missile clears Blanche. Noel adds another Fractal and fires the next Missile for exact lethal through Safeguard Amulet, tying the match.",
+              "cards": [
+                "Refracting Missile",
+                "Blanche, Sheltering Saint",
+                "Safeguard Amulet"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 32581
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Noel removes Essence Crucible early, breaks through Blanche and completes the comeback.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel establishes Nullifying Lantern and Zhang Jiao, finds Fracturize, and removes Essence Crucible as DuDu starts brewing.",
+              "cards": [
+                "Nullifying Lantern",
+                "Zhang Jiao, Way of Peace",
+                "Fracturize",
+                "Essence Crucible"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 33079
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Searing Rebuke turns DuDu’s self-damage from Fractal of Sparks and a potion into nine damage, but also builds Noel’s Extinguishing Synchron. Spalling Cleanse keeps Noel healthy.",
+              "cards": [
+                "Searing Rebuke",
+                "Fractal of Sparks",
+                "Combustible Potion",
+                "Extinguishing Synchron",
+                "Spalling Cleanse"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 33420
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel uses Burst Asunder to remove Blanche, then Tidal Fractal mills another Blanche from DuDu’s deck and increases the damage of her remaining spells.",
+              "cards": [
+                "Burst Asunder",
+                "Blanche, Sheltering Saint",
+                "Tidal Fractal"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 34116
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Refracting Missile adds seven damage as DuDu uses Safeguard Amulet. Noel follows with Enfeebling Orb and retains Frostbind; DuDu cannot find an answer and Noel wins the deciding game.",
+              "cards": [
+                "Refracting Missile",
+                "Safeguard Amulet",
+                "Enfeebling Orb",
+                "Frostbind"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 34240
+              }
+            }
+          ]
+        }
+      ],
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Noel brings out Nullifying Lantern immediately in game two, restricting DuDu’s Slash and Burn and Intensified Pyre lines."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Blanche, Sheltering Saint and Viridian Protective Trinket appear after sideboarding; Blanche repeatedly blocks Noel’s burn damage."
+        }
+      ],
+      "sourceNote": ""
+    }
+  ],
+  "evidence": [
+    {
+      "gameNumber": 1,
+      "order": 1,
+      "sourceRows": [
+        7893,
+        8100
+      ],
+      "source": [
+        {
+          "row": 7893,
+          "text": "we are going to see",
+          "timestamp": "7:57:03"
+        },
+        {
+          "row": 7894,
+          "text": "a triple Fractal",
+          "timestamp": "7:57:04"
+        },
+        {
+          "row": 7895,
+          "text": "opening from Noelle",
+          "timestamp": "7:57:05"
+        },
+        {
+          "row": 7896,
+          "text": "often times",
+          "timestamp": "7:57:06"
+        },
+        {
+          "row": 7897,
+          "text": "you will not see",
+          "timestamp": "7:57:07"
+        },
+        {
+          "row": 7898,
+          "text": "Fractals play",
+          "timestamp": "7:57:08"
+        },
+        {
+          "row": 7899,
+          "text": "triple Fractals",
+          "timestamp": "7:57:09"
+        },
+        {
+          "row": 7900,
+          "text": "against a Fire",
+          "timestamp": "7:57:10"
+        },
+        {
+          "row": 7901,
+          "text": "Aggro deck",
+          "timestamp": "7:57:11"
+        },
+        {
+          "row": 7902,
+          "text": "because of the",
+          "timestamp": "7:57:12"
+        },
+        {
+          "row": 7903,
+          "text": "implication of",
+          "timestamp": "7:57:13"
+        },
+        {
+          "row": 7904,
+          "text": "oh I'm going",
+          "timestamp": "7:57:14"
+        },
+        {
+          "row": 7905,
+          "text": "hands down",
+          "timestamp": "7:57:15"
+        },
+        {
+          "row": 7906,
+          "text": "and now I",
+          "timestamp": "7:57:16"
+        },
+        {
+          "row": 7907,
+          "text": "let my Fire opponent",
+          "timestamp": "7:57:17"
+        },
+        {
+          "row": 7908,
+          "text": "do whatever I want",
+          "timestamp": "7:57:18"
+        },
+        {
+          "row": 7909,
+          "text": "and this Arizona deck",
+          "timestamp": "7:57:19"
+        },
+        {
+          "row": 7910,
+          "text": "is very very capable",
+          "timestamp": "7:57:20"
+        },
+        {
+          "row": 7911,
+          "text": "of going for",
+          "timestamp": "7:57:21"
+        },
+        {
+          "row": 7912,
+          "text": "turn 2 kills",
+          "timestamp": "7:57:22"
+        },
+        {
+          "row": 7913,
+          "text": "and you see the",
+          "timestamp": "7:57:23"
+        },
+        {
+          "row": 7914,
+          "text": "slash and burn",
+          "timestamp": "7:57:24"
+        },
+        {
+          "row": 7915,
+          "text": "in the hand already",
+          "timestamp": "7:57:25"
+        },
+        {
+          "row": 7916,
+          "text": "that is a way",
+          "timestamp": "7:57:26"
+        },
+        {
+          "row": 7917,
+          "text": "of getting more potions",
+          "timestamp": "7:57:27"
+        },
+        {
+          "row": 7918,
+          "text": "especially with",
+          "timestamp": "7:57:28"
+        },
+        {
+          "row": 7919,
+          "text": "these Creative Shocks",
+          "timestamp": "7:57:29"
+        },
+        {
+          "row": 7920,
+          "text": "filling the grave",
+          "timestamp": "7:57:30"
+        },
+        {
+          "row": 7921,
+          "text": "you see the",
+          "timestamp": "7:57:31"
+        },
+        {
+          "row": 7922,
+          "text": "Intensified Pyre",
+          "timestamp": "7:57:32"
+        },
+        {
+          "row": 7923,
+          "text": "and the Searing Rebuke",
+          "timestamp": "7:57:33"
+        },
+        {
+          "row": 7924,
+          "text": "as well",
+          "timestamp": "7:57:34"
+        },
+        {
+          "row": 7925,
+          "text": "as the Combustible Potion",
+          "timestamp": "7:57:35"
+        },
+        {
+          "row": 7926,
+          "text": "no actually",
+          "timestamp": "7:57:36"
+        },
+        {
+          "row": 7927,
+          "text": "this Explosive Concoction",
+          "timestamp": "7:57:37"
+        },
+        {
+          "row": 7928,
+          "text": "so Explosive Concoction",
+          "timestamp": "7:57:38"
+        },
+        {
+          "row": 7929,
+          "text": "is the",
+          "timestamp": "7:57:39"
+        },
+        {
+          "row": 7930,
+          "text": "it is the most",
+          "timestamp": "7:57:40"
+        },
+        {
+          "row": 7931,
+          "text": "high value potion",
+          "timestamp": "7:57:41"
+        },
+        {
+          "row": 7932,
+          "text": "but it is also",
+          "timestamp": "7:57:42"
+        },
+        {
+          "row": 7933,
+          "text": "the hardest one to brew",
+          "timestamp": "7:57:43"
+        },
+        {
+          "row": 7934,
+          "text": "because it requires",
+          "timestamp": "7:57:44"
+        },
+        {
+          "row": 7935,
+          "text": "one leaf",
+          "timestamp": "7:57:45"
+        },
+        {
+          "row": 7936,
+          "text": "and one herb specifically",
+          "timestamp": "7:57:46"
+        },
+        {
+          "row": 7937,
+          "text": "so if you get",
+          "timestamp": "7:57:47"
+        },
+        {
+          "row": 7938,
+          "text": "unlucky",
+          "timestamp": "7:57:48"
+        },
+        {
+          "row": 7939,
+          "text": "and do not hit",
+          "timestamp": "7:57:49"
+        },
+        {
+          "row": 7940,
+          "text": "the leaf and the herb",
+          "timestamp": "7:57:50"
+        },
+        {
+          "row": 7941,
+          "text": "it is potentially",
+          "timestamp": "7:57:51"
+        },
+        {
+          "row": 7942,
+          "text": "unable to actually",
+          "timestamp": "7:57:52"
+        },
+        {
+          "row": 7943,
+          "text": "brew this",
+          "timestamp": "7:57:53"
+        },
+        {
+          "row": 7944,
+          "text": "so they don't find",
+          "timestamp": "7:57:54"
+        },
+        {
+          "row": 7945,
+          "text": "another one",
+          "timestamp": "7:57:55"
+        },
+        {
+          "row": 7946,
+          "text": "I believe the leaf",
+          "timestamp": "7:57:56"
+        },
+        {
+          "row": 7947,
+          "text": "basically means",
+          "timestamp": "7:57:57"
+        },
+        {
+          "row": 7948,
+          "text": "3, 4, 5, 6",
+          "timestamp": "7:57:58"
+        },
+        {
+          "row": 7949,
+          "text": "and root is 1 and 2",
+          "timestamp": "7:57:59"
+        },
+        {
+          "row": 7950,
+          "text": "so you need to actually",
+          "timestamp": "7:58:00"
+        },
+        {
+          "row": 7951,
+          "text": "miss the 1 and 2",
+          "timestamp": "7:58:01"
+        },
+        {
+          "row": 7952,
+          "text": "right there",
+          "timestamp": "7:58:02"
+        },
+        {
+          "row": 7953,
+          "text": "we are going to",
+          "timestamp": "7:58:03"
+        },
+        {
+          "row": 7954,
+          "text": "the Crucible",
+          "timestamp": "7:58:04"
+        },
+        {
+          "row": 7955,
+          "text": "interesting",
+          "timestamp": "7:58:05"
+        },
+        {
+          "row": 7956,
+          "text": "okay loses a Distilled Water",
+          "timestamp": "7:58:06"
+        },
+        {
+          "row": 7957,
+          "text": "for that too",
+          "timestamp": "7:58:07"
+        },
+        {
+          "row": 7958,
+          "text": "so Crucible",
+          "timestamp": "7:58:08"
+        },
+        {
+          "row": 7959,
+          "text": "going to be mad at first",
+          "timestamp": "7:58:09"
+        },
+        {
+          "row": 7960,
+          "text": "so the draw part of this",
+          "timestamp": "7:58:10"
+        },
+        {
+          "row": 7961,
+          "text": "is actually not",
+          "timestamp": "7:58:11"
+        },
+        {
+          "row": 7962,
+          "text": "class bonus",
+          "timestamp": "7:58:12"
+        },
+        {
+          "row": 7963,
+          "text": "it is only the",
+          "timestamp": "7:58:13"
+        },
+        {
+          "row": 7964,
+          "text": "our Arasana bonus",
+          "timestamp": "7:58:14"
+        },
+        {
+          "row": 7965,
+          "text": "is only on the one",
+          "timestamp": "7:58:15"
+        },
+        {
+          "row": 7966,
+          "text": "after that",
+          "timestamp": "7:58:16"
+        },
+        {
+          "row": 7967,
+          "text": "so he is actually",
+          "timestamp": "7:58:17"
+        },
+        {
+          "row": 7968,
+          "text": "choosing to go for",
+          "timestamp": "7:58:18"
+        },
+        {
+          "row": 7969,
+          "text": "an off turn here",
+          "timestamp": "7:58:19"
+        },
+        {
+          "row": 7970,
+          "text": "going for Creative",
+          "timestamp": "7:58:20"
+        },
+        {
+          "row": 7971,
+          "text": "finds a Return to the Archive",
+          "timestamp": "7:58:21"
+        },
+        {
+          "row": 7972,
+          "text": "very strong here",
+          "timestamp": "7:58:22"
+        },
+        {
+          "row": 7973,
+          "text": "allows him to",
+          "timestamp": "7:58:23"
+        },
+        {
+          "row": 7974,
+          "text": "throw that",
+          "timestamp": "7:58:24"
+        },
+        {
+          "row": 7975,
+          "text": "to get a float",
+          "timestamp": "7:58:25"
+        },
+        {
+          "row": 7976,
+          "text": "for the level up",
+          "timestamp": "7:58:26"
+        },
+        {
+          "row": 7977,
+          "text": "but maybe he would",
+          "timestamp": "7:58:27"
+        },
+        {
+          "row": 7978,
+          "text": "actually rather keep it",
+          "timestamp": "7:58:28"
+        },
+        {
+          "row": 7979,
+          "text": "no just going to",
+          "timestamp": "7:58:29"
+        },
+        {
+          "row": 7980,
+          "text": "throw it away",
+          "timestamp": "7:58:30"
+        },
+        {
+          "row": 7981,
+          "text": "it is an easy",
+          "timestamp": "7:58:31"
+        },
+        {
+          "row": 7982,
+          "text": "plus one here",
+          "timestamp": "7:58:32"
+        },
+        {
+          "row": 7983,
+          "text": "so he is able to",
+          "timestamp": "7:58:33"
+        },
+        {
+          "row": 7984,
+          "text": "just straight go",
+          "timestamp": "7:58:34"
+        },
+        {
+          "row": 7985,
+          "text": "level 1",
+          "timestamp": "7:58:35"
+        },
+        {
+          "row": 7986,
+          "text": "this turn",
+          "timestamp": "7:58:36"
+        },
+        {
+          "row": 7987,
+          "text": "yep",
+          "timestamp": "7:58:37"
+        },
+        {
+          "row": 7988,
+          "text": "Ignis Deus here",
+          "timestamp": "7:58:38"
+        },
+        {
+          "row": 7989,
+          "text": "will be able to",
+          "timestamp": "7:58:39"
+        },
+        {
+          "row": 7990,
+          "text": "brew 2",
+          "timestamp": "7:58:40"
+        },
+        {
+          "row": 7991,
+          "text": "and also",
+          "timestamp": "7:58:41"
+        },
+        {
+          "row": 7992,
+          "text": "oh is that another",
+          "timestamp": "7:58:42"
+        },
+        {
+          "row": 7993,
+          "text": "Pyre",
+          "timestamp": "7:58:43"
+        },
+        {
+          "row": 7994,
+          "text": "second Pyre",
+          "timestamp": "7:58:44"
+        },
+        {
+          "row": 7995,
+          "text": "3 Fire Cards Engraved",
+          "timestamp": "7:58:45"
+        },
+        {
+          "row": 7996,
+          "text": "is 100% doable",
+          "timestamp": "7:58:46"
+        },
+        {
+          "row": 7997,
+          "text": "here to actually",
+          "timestamp": "7:58:47"
+        },
+        {
+          "row": 7998,
+          "text": "go for that",
+          "timestamp": "7:58:48"
+        },
+        {
+          "row": 7999,
+          "text": "go for that",
+          "timestamp": "7:58:49"
+        },
+        {
+          "row": 8000,
+          "text": "Kindle 3",
+          "timestamp": "7:58:50"
+        },
+        {
+          "row": 8001,
+          "text": "Kindle 3",
+          "timestamp": "7:58:51"
+        },
+        {
+          "row": 8002,
+          "text": "we get a pass I think",
+          "timestamp": "7:58:52"
+        },
+        {
+          "row": 8003,
+          "text": "there is not much",
+          "timestamp": "7:58:53"
+        },
+        {
+          "row": 8004,
+          "text": "going on right",
+          "timestamp": "7:58:54"
+        },
+        {
+          "row": 8005,
+          "text": "yeah thankfully",
+          "timestamp": "7:58:55"
+        },
+        {
+          "row": 8006,
+          "text": "for Noelle",
+          "timestamp": "7:58:56"
+        },
+        {
+          "row": 8007,
+          "text": "just no Ignis Deus",
+          "timestamp": "7:58:57"
+        },
+        {
+          "row": 8008,
+          "text": "here to be able",
+          "timestamp": "7:58:58"
+        },
+        {
+          "row": 8009,
+          "text": "to rocket up",
+          "timestamp": "7:58:59"
+        },
+        {
+          "row": 8010,
+          "text": "to those high levels",
+          "timestamp": "7:59:00"
+        },
+        {
+          "row": 8011,
+          "text": "but when your",
+          "timestamp": "7:59:01"
+        },
+        {
+          "row": 8012,
+          "text": "dying",
+          "timestamp": "7:59:02"
+        },
+        {
+          "row": 8013,
+          "text": "I imagine",
+          "timestamp": "7:59:03"
+        },
+        {
+          "row": 8014,
+          "text": "Gina is absolutely",
+          "timestamp": "7:59:04"
+        },
+        {
+          "row": 8015,
+          "text": "going to go for the",
+          "timestamp": "7:59:05"
+        },
+        {
+          "row": 8016,
+          "text": "snap drop",
+          "timestamp": "7:59:06"
+        },
+        {
+          "row": 8017,
+          "text": "of the",
+          "timestamp": "7:59:07"
+        },
+        {
+          "row": 8018,
+          "text": "of the",
+          "timestamp": "7:59:08"
+        },
+        {
+          "row": 8019,
+          "text": "Extinguishing Synchron",
+          "timestamp": "7:59:09"
+        },
+        {
+          "row": 8020,
+          "text": "but maybe she",
+          "timestamp": "7:59:10"
+        },
+        {
+          "row": 8021,
+          "text": "could choose to",
+          "timestamp": "7:59:11"
+        },
+        {
+          "row": 8022,
+          "text": "level up",
+          "timestamp": "7:59:12"
+        },
+        {
+          "row": 8023,
+          "text": "there is a lot of",
+          "timestamp": "7:59:13"
+        },
+        {
+          "row": 8024,
+          "text": "options here",
+          "timestamp": "7:59:14"
+        },
+        {
+          "row": 8025,
+          "text": "but almost always",
+          "timestamp": "7:59:15"
+        },
+        {
+          "row": 8026,
+          "text": "against Fire Agu",
+          "timestamp": "7:59:16"
+        },
+        {
+          "row": 8027,
+          "text": "you do want to",
+          "timestamp": "7:59:17"
+        },
+        {
+          "row": 8028,
+          "text": "just go for that",
+          "timestamp": "7:59:18"
+        },
+        {
+          "row": 8029,
+          "text": "immediate Synchron",
+          "timestamp": "7:59:19"
+        },
+        {
+          "row": 8030,
+          "text": "but maybe",
+          "timestamp": "7:59:20"
+        },
+        {
+          "row": 8031,
+          "text": "level up",
+          "timestamp": "7:59:21"
+        },
+        {
+          "row": 8032,
+          "text": "just for the",
+          "timestamp": "7:59:22"
+        },
+        {
+          "row": 8033,
+          "text": "extra 4 life",
+          "timestamp": "7:59:23"
+        },
+        {
+          "row": 8034,
+          "text": "I think Synchron",
+          "timestamp": "7:59:24"
+        },
+        {
+          "row": 8035,
+          "text": "is fine but",
+          "timestamp": "7:59:25"
+        },
+        {
+          "row": 8036,
+          "text": "Fractal in this",
+          "timestamp": "7:59:26"
+        },
+        {
+          "row": 8037,
+          "text": "case right",
+          "timestamp": "7:59:27"
+        },
+        {
+          "row": 8038,
+          "text": "usually because",
+          "timestamp": "7:59:28"
+        },
+        {
+          "row": 8039,
+          "text": "you are so low in",
+          "timestamp": "7:59:29"
+        },
+        {
+          "row": 8040,
+          "text": "influence",
+          "timestamp": "7:59:30"
+        },
+        {
+          "row": 8041,
+          "text": "Noelle just runs",
+          "timestamp": "7:59:31"
+        },
+        {
+          "row": 8042,
+          "text": "the Looking Glass",
+          "timestamp": "7:59:32"
+        },
+        {
+          "row": 8043,
+          "text": "so she still has another option",
+          "timestamp": "7:59:33"
+        },
+        {
+          "row": 8044,
+          "text": "one of the bubbles",
+          "timestamp": "7:59:34"
+        },
+        {
+          "row": 8045,
+          "text": "is really common",
+          "timestamp": "7:59:35"
+        },
+        {
+          "row": 8046,
+          "text": "lying here",
+          "timestamp": "7:59:36"
+        },
+        {
+          "row": 8047,
+          "text": "I do think that",
+          "timestamp": "7:59:37"
+        },
+        {
+          "row": 8048,
+          "text": "if you have a bubble",
+          "timestamp": "7:59:38"
+        },
+        {
+          "row": 8049,
+          "text": "you play the bubble I believe",
+          "timestamp": "7:59:39"
+        },
+        {
+          "row": 8050,
+          "text": "Safeguard would also",
+          "timestamp": "7:59:40"
+        },
+        {
+          "row": 8051,
+          "text": "be a very good",
+          "timestamp": "7:59:41"
+        },
+        {
+          "row": 8052,
+          "text": "pick here",
+          "timestamp": "7:59:42"
+        },
+        {
+          "row": 8053,
+          "text": "Safeguard notably",
+          "timestamp": "7:59:43"
+        },
+        {
+          "row": 8054,
+          "text": "would stop all",
+          "timestamp": "7:59:44"
+        },
+        {
+          "row": 8055,
+          "text": "of the damage",
+          "timestamp": "7:59:45"
+        },
+        {
+          "row": 8056,
+          "text": "from Crucible",
+          "timestamp": "7:59:46"
+        },
+        {
+          "row": 8057,
+          "text": "because Crucible",
+          "timestamp": "7:59:47"
+        },
+        {
+          "row": 8058,
+          "text": "specifically says",
+          "timestamp": "7:59:48"
+        },
+        {
+          "row": 8059,
+          "text": "that if",
+          "timestamp": "7:59:49"
+        },
+        {
+          "row": 8060,
+          "text": "the thing would",
+          "timestamp": "7:59:50"
+        },
+        {
+          "row": 8061,
+          "text": "do damage",
+          "timestamp": "7:59:51"
+        },
+        {
+          "row": 8062,
+          "text": "it would add the",
+          "timestamp": "7:59:52"
+        },
+        {
+          "row": 8063,
+          "text": "plus power",
+          "timestamp": "7:59:53"
+        },
+        {
+          "row": 8064,
+          "text": "it's very much like",
+          "timestamp": "7:59:54"
+        },
+        {
+          "row": 8065,
+          "text": "Poison Dagger",
+          "timestamp": "7:59:55"
+        },
+        {
+          "row": 8066,
+          "text": "in that sense",
+          "timestamp": "7:59:56"
+        },
+        {
+          "row": 8067,
+          "text": "so even if something",
+          "timestamp": "7:59:57"
+        },
+        {
+          "row": 8068,
+          "text": "is coming in for 1",
+          "timestamp": "7:59:58"
+        },
+        {
+          "row": 8069,
+          "text": "and it has a plus 6",
+          "timestamp": "7:59:59"
+        },
+        {
+          "row": 8070,
+          "text": "It's only going to get the plus if it actually does damage.",
+          "timestamp": "7:59:59"
+        },
+        {
+          "row": 8071,
+          "text": "Yeah, exactly. So you need to actually hit above the cap damage of 4 to only deal damage.",
+          "timestamp": "8:00:02"
+        },
+        {
+          "row": 8072,
+          "text": "We are going to see the Extinguishing Synchron right here playing a bit defensive right here.",
+          "timestamp": "8:00:06"
+        },
+        {
+          "row": 8073,
+          "text": "Another notable thing here, Gene actually chose not to imbue the Frackle of Rain,",
+          "timestamp": "8:00:11"
+        },
+        {
+          "row": 8074,
+          "text": "and that is something they were discussing previously, where you don't want to imbue this",
+          "timestamp": "8:00:15"
+        },
+        {
+          "row": 8075,
+          "text": "because it actually fills your grave for the potential Intensified Pyre for 6 damage.",
+          "timestamp": "8:00:18"
+        },
+        {
+          "row": 8076,
+          "text": "There we go, Sang Zhao.",
+          "timestamp": "8:00:22"
+        },
+        {
+          "row": 8077,
+          "text": "I remember when everyone was talking about this, when Frackle was a thing,",
+          "timestamp": "8:00:25"
+        },
+        {
+          "row": 8078,
+          "text": "some were saying this is too strong, some were saying this is fine.",
+          "timestamp": "8:00:29"
+        },
+        {
+          "row": 8079,
+          "text": "Well, I do think that this card is still really, really, really strong when played like this,",
+          "timestamp": "8:00:31"
+        },
+        {
+          "row": 8080,
+          "text": "but it's only for the Frackles, externally speaking.",
+          "timestamp": "8:00:35"
+        },
+        {
+          "row": 8081,
+          "text": "Yeah, and actually another thing about Sang Zhao is the Heal 4 is actually extremely relevant",
+          "timestamp": "8:00:37"
+        },
+        {
+          "row": 8082,
+          "text": "in these Pyre-Aggro matchups. It is very good.",
+          "timestamp": "8:00:42"
+        },
+        {
+          "row": 8083,
+          "text": "Actually, the fact that Noelle went for the 3 Frackle start despite playing against Pyre-Aggro going second",
+          "timestamp": "8:00:45"
+        },
+        {
+          "row": 8084,
+          "text": "shows that she really, really wanted to resolve this Sang Zhao.",
+          "timestamp": "8:00:50"
+        },
+        {
+          "row": 8085,
+          "text": "I think her hand was probably a little bit awkward and felt the Sang Zhao was necessary to stay in this game.",
+          "timestamp": "8:00:53"
+        },
+        {
+          "row": 8086,
+          "text": "You're seeing there the Flurry of Fire on Dudu's side.",
+          "timestamp": "8:00:58"
+        },
+        {
+          "row": 8087,
+          "text": "This is one of the cards that abuses the Essence Crucible because it is able to gain...",
+          "timestamp": "8:01:01"
+        },
+        {
+          "row": 8088,
+          "text": "It swings twice. It hits 2 times for 1 unless you are level 5,",
+          "timestamp": "8:01:06"
+        },
+        {
+          "row": 8089,
+          "text": "and you are not going to hit level 5 in the second unless you somehow hit the 4-level herb,",
+          "timestamp": "8:01:11"
+        },
+        {
+          "row": 8090,
+          "text": "so probably not happening.",
+          "timestamp": "8:01:15"
+        },
+        {
+          "row": 8091,
+          "text": "So instead, what you do is you just use it and it just does 2 pings of 1 damage,",
+          "timestamp": "8:01:17"
+        },
+        {
+          "row": 8092,
+          "text": "but each one individually would get boosted by the Essence Crucible.",
+          "timestamp": "8:01:20"
+        },
+        {
+          "row": 8093,
+          "text": "Yep. Noelle here is going to respond to the Creative Shock right here.",
+          "timestamp": "8:01:23"
+        },
+        {
+          "row": 8094,
+          "text": "I think probably like a...",
+          "timestamp": "8:01:26"
+        },
+        {
+          "row": 8095,
+          "text": "Oh, wow! That's so interesting.",
+          "timestamp": "8:01:29"
+        },
+        {
+          "row": 8096,
+          "text": "So on the Sang Zhao's swing, Dudu uses the Creative Shock,",
+          "timestamp": "8:01:31"
+        },
+        {
+          "row": 8097,
+          "text": "and then Gina goes for the Shunt to banish and negate that Creative Shock.",
+          "timestamp": "8:01:34"
+        },
+        {
+          "row": 8098,
+          "text": "Well, not negate, but to remove it from the stack.",
+          "timestamp": "8:01:39"
+        },
+        {
+          "row": 8099,
+          "text": "Yeah, because when you end a combat stat, you basically remove all the stacks that are involved with it,",
+          "timestamp": "8:01:41"
+        },
+        {
+          "row": 8100,
+          "text": "including the stack of the Creative Shock. Really, really interesting.",
+          "timestamp": "8:01:45"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 1,
+      "order": 2,
+      "sourceRows": [
+        8127,
+        8294
+      ],
+      "source": [
+        {
+          "row": 8127,
+          "text": "So Explosive Concoction is going to be Brewed here,",
+          "timestamp": "8:03:03"
+        },
+        {
+          "row": 8128,
+          "text": "which means it is a deal for damage to target champion and draw a card,",
+          "timestamp": "8:03:05"
+        },
+        {
+          "row": 8129,
+          "text": "but it is hindered, so you can only do that on the next turn.",
+          "timestamp": "8:03:09"
+        },
+        {
+          "row": 8130,
+          "text": "So this is effectively not doing anything now,",
+          "timestamp": "8:03:12"
+        },
+        {
+          "row": 8131,
+          "text": "aside from potentially putting an age counter on the Essence Crucible.",
+          "timestamp": "8:03:14"
+        },
+        {
+          "row": 8132,
+          "text": "Noelle here is taking the time to think,",
+          "timestamp": "8:03:18"
+        },
+        {
+          "row": 8133,
+          "text": "maybe has to Fracturize, maybe doesn't,",
+          "timestamp": "8:03:20"
+        },
+        {
+          "row": 8134,
+          "text": "and is now thinking about what is the best line without that Fracturize.",
+          "timestamp": "8:03:23"
+        },
+        {
+          "row": 8135,
+          "text": "Yeah, I think...",
+          "timestamp": "8:03:27"
+        },
+        {
+          "row": 8136,
+          "text": "Hmm, there isn't much going on here.",
+          "timestamp": "8:03:29"
+        },
+        {
+          "row": 8137,
+          "text": "Is this a Fracturize or is this a Pass?",
+          "timestamp": "8:03:31"
+        },
+        {
+          "row": 8138,
+          "text": "2 Refracting Missiles!",
+          "timestamp": "8:03:33"
+        },
+        {
+          "row": 8139,
+          "text": "Oh, now?",
+          "timestamp": "8:03:34"
+        },
+        {
+          "row": 8140,
+          "text": "Wow, Refracting Missiles here and now is so interesting.",
+          "timestamp": "8:03:35"
+        },
+        {
+          "row": 8141,
+          "text": "That's going to be 4 damage on Dudu.",
+          "timestamp": "8:03:39"
+        },
+        {
+          "row": 8142,
+          "text": "That's going to be 1 potion only.",
+          "timestamp": "8:03:42"
+        },
+        {
+          "row": 8143,
+          "text": "He actually doesn't have a second potion,",
+          "timestamp": "8:03:44"
+        },
+        {
+          "row": 8144,
+          "text": "so this is only actually doing an extra plus 1.",
+          "timestamp": "8:03:46"
+        },
+        {
+          "row": 8145,
+          "text": "Cinder Geyser is now live though, for that reduced cost.",
+          "timestamp": "8:03:48"
+        },
+        {
+          "row": 8146,
+          "text": "Yeah, I think this is the early stages of Defy Ariadne,",
+          "timestamp": "8:03:52"
+        },
+        {
+          "row": 8147,
+          "text": "so it doesn't really have much burst.",
+          "timestamp": "8:03:56"
+        },
+        {
+          "row": 8148,
+          "text": "I think it's really safe to actually go Hands Down right now.",
+          "timestamp": "8:03:58"
+        },
+        {
+          "row": 8149,
+          "text": "This is basically the best opportunity.",
+          "timestamp": "8:04:01"
+        },
+        {
+          "row": 8150,
+          "text": "Oh, that was End Phase!",
+          "timestamp": "8:04:03"
+        },
+        {
+          "row": 8151,
+          "text": "And we're going to go into...",
+          "timestamp": "8:04:05"
+        },
+        {
+          "row": 8152,
+          "text": "Level 1 Diaochan, I believe.",
+          "timestamp": "8:04:07"
+        },
+        {
+          "row": 8153,
+          "text": "We're going into our Council right here,",
+          "timestamp": "8:04:08"
+        },
+        {
+          "row": 8154,
+          "text": "and now we can basically use the effect",
+          "timestamp": "8:04:11"
+        },
+        {
+          "row": 8155,
+          "text": "to basically cast a Reaction Spell during Opponent's turn.",
+          "timestamp": "8:04:13"
+        },
+        {
+          "row": 8156,
+          "text": "I want to say there was a Scalding Aether Charge in the hand,",
+          "timestamp": "8:04:15"
+        },
+        {
+          "row": 8157,
+          "text": "but I'm not 100% sure.",
+          "timestamp": "8:04:18"
+        },
+        {
+          "row": 8158,
+          "text": "I think the Flurry of Fire and the Scalding...",
+          "timestamp": "8:04:20"
+        },
+        {
+          "row": 8159,
+          "text": "No, actually no, that is a Flurry of Fire,",
+          "timestamp": "8:04:22"
+        },
+        {
+          "row": 8160,
+          "text": "so no Scalding Aether Charge,",
+          "timestamp": "8:04:24"
+        },
+        {
+          "row": 8161,
+          "text": "so Gina is not going to get punished here on the level up.",
+          "timestamp": "8:04:25"
+        },
+        {
+          "row": 8162,
+          "text": "Fortunately, not going to have that come in.",
+          "timestamp": "8:04:28"
+        },
+        {
+          "row": 8163,
+          "text": "Remember, the Extinguishing, here's the thing.",
+          "timestamp": "8:04:31"
+        },
+        {
+          "row": 8164,
+          "text": "So many of these cards do increments of damage,",
+          "timestamp": "8:04:33"
+        },
+        {
+          "row": 8165,
+          "text": "which means the Extinguishing is extremely good against them.",
+          "timestamp": "8:04:36"
+        },
+        {
+          "row": 8166,
+          "text": "Yeah.",
+          "timestamp": "8:04:39"
+        },
+        {
+          "row": 8167,
+          "text": "So Noelle is probably going to go for the Frosted Paladin right here.",
+          "timestamp": "8:04:40"
+        },
+        {
+          "row": 8168,
+          "text": "This is just a lot of tempo right here.",
+          "timestamp": "8:04:42"
+        },
+        {
+          "row": 8169,
+          "text": "Doesn't have a float, unfortunately,",
+          "timestamp": "8:04:44"
+        },
+        {
+          "row": 8170,
+          "text": "because we used that Refracting Missiles to level up.",
+          "timestamp": "8:04:46"
+        },
+        {
+          "row": 8171,
+          "text": "So that is, though, an ability for her",
+          "timestamp": "8:04:51"
+        },
+        {
+          "row": 8172,
+          "text": "to use these Glimmer Counters now",
+          "timestamp": "8:04:53"
+        },
+        {
+          "row": 8173,
+          "text": "for Negates and for Shimmering Refractions.",
+          "timestamp": "8:04:55"
+        },
+        {
+          "row": 8174,
+          "text": "Let's see if Noelle is able to find a way",
+          "timestamp": "8:04:58"
+        },
+        {
+          "row": 8175,
+          "text": "to really put the pressure on,",
+          "timestamp": "8:05:01"
+        },
+        {
+          "row": 8176,
+          "text": "because currently, only has to find 14 more damage.",
+          "timestamp": "8:05:03"
+        },
+        {
+          "row": 8177,
+          "text": "There's 3 Fractals on field.",
+          "timestamp": "8:05:05"
+        },
+        {
+          "row": 8178,
+          "text": "That means a Burst of Thunder on its own",
+          "timestamp": "8:05:06"
+        },
+        {
+          "row": 8179,
+          "text": "will be doing 12.",
+          "timestamp": "8:05:08"
+        },
+        {
+          "row": 8180,
+          "text": "Yeah, Burst of Thunder alone will be doing 12.",
+          "timestamp": "8:05:10"
+        },
+        {
+          "row": 8181,
+          "text": "I think it's really, really close right there.",
+          "timestamp": "8:05:12"
+        },
+        {
+          "row": 8182,
+          "text": "Dudu's max HP will only be 19.",
+          "timestamp": "8:05:13"
+        },
+        {
+          "row": 8183,
+          "text": "I also don't believe that Dudu has a lot of recovery",
+          "timestamp": "8:05:15"
+        },
+        {
+          "row": 8184,
+          "text": "or ways to block damage.",
+          "timestamp": "8:05:17"
+        },
+        {
+          "row": 8185,
+          "text": "Aside from the Rebuke.",
+          "timestamp": "8:05:19"
+        },
+        {
+          "row": 8186,
+          "text": "And I think the Rebuke is part of the reason",
+          "timestamp": "8:05:21"
+        },
+        {
+          "row": 8187,
+          "text": "why this matchup can be a bit difficult,",
+          "timestamp": "8:05:23"
+        },
+        {
+          "row": 8188,
+          "text": "because each activation of your...",
+          "timestamp": "8:05:25"
+        },
+        {
+          "row": 8189,
+          "text": "or each ping of your Burst of Thunder",
+          "timestamp": "8:05:28"
+        },
+        {
+          "row": 8190,
+          "text": "is an individual hit,",
+          "timestamp": "8:05:30"
+        },
+        {
+          "row": 8191,
+          "text": "which means it technically actually triggers",
+          "timestamp": "8:05:31"
+        },
+        {
+          "row": 8192,
+          "text": "the Rebuke twice.",
+          "timestamp": "8:05:33"
+        },
+        {
+          "row": 8193,
+          "text": "So that's a lot of damage.",
+          "timestamp": "8:05:35"
+        },
+        {
+          "row": 8194,
+          "text": "That's a lot of damage, but I think you just kill them.",
+          "timestamp": "8:05:36"
+        },
+        {
+          "row": 8195,
+          "text": "You just kill them, I think it'll be good.",
+          "timestamp": "8:05:38"
+        },
+        {
+          "row": 8196,
+          "text": "Noelle is taking his time here.",
+          "timestamp": "8:05:40"
+        },
+        {
+          "row": 8197,
+          "text": "That is an Intrusion that she's putting down.",
+          "timestamp": "8:05:43"
+        },
+        {
+          "row": 8198,
+          "text": "Intrusion is a card that Noelle absolutely loves,",
+          "timestamp": "8:05:45"
+        },
+        {
+          "row": 8199,
+          "text": "but she doesn't...",
+          "timestamp": "8:05:48"
+        },
+        {
+          "row": 8200,
+          "text": "It's obviously not that good into the Fire Agro matchups,",
+          "timestamp": "8:05:50"
+        },
+        {
+          "row": 8201,
+          "text": "but unfortunately she has drawn 2 of them",
+          "timestamp": "8:05:52"
+        },
+        {
+          "row": 8202,
+          "text": "and she just has to activate.",
+          "timestamp": "8:05:54"
+        },
+        {
+          "row": 8203,
+          "text": "No Float, it's actually not really worth it",
+          "timestamp": "8:05:55"
+        },
+        {
+          "row": 8204,
+          "text": "to Intrusion Fire Agro,",
+          "timestamp": "8:05:57"
+        },
+        {
+          "row": 8205,
+          "text": "because usually all their cards do the same thing anyway.",
+          "timestamp": "8:05:59"
+        },
+        {
+          "row": 8206,
+          "text": "Yeah, I think it's only good for higher level plays,",
+          "timestamp": "8:06:01"
+        },
+        {
+          "row": 8207,
+          "text": "like level 3 decks, generally speaking.",
+          "timestamp": "8:06:03"
+        },
+        {
+          "row": 8208,
+          "text": "Those are really good.",
+          "timestamp": "8:06:05"
+        },
+        {
+          "row": 8209,
+          "text": "We are going to back up Charger,",
+          "timestamp": "8:06:06"
+        },
+        {
+          "row": 8210,
+          "text": "arm those Influence,",
+          "timestamp": "8:06:08"
+        },
+        {
+          "row": 8211,
+          "text": "get more cards into our hand right here.",
+          "timestamp": "8:06:09"
+        },
+        {
+          "row": 8212,
+          "text": "Gina does have that Spalling Clans and Refracting,",
+          "timestamp": "8:06:12"
+        },
+        {
+          "row": 8213,
+          "text": "so that's a lot of Float for her.",
+          "timestamp": "8:06:15"
+        },
+        {
+          "row": 8214,
+          "text": "She also has the Negate as well.",
+          "timestamp": "8:06:16"
+        },
+        {
+          "row": 8215,
+          "text": "So lots of interaction here.",
+          "timestamp": "8:06:18"
+        },
+        {
+          "row": 8216,
+          "text": "The Refracting Missiles could be used to do another",
+          "timestamp": "8:06:20"
+        },
+        {
+          "row": 8217,
+          "text": "5 damage onto Dudu,",
+          "timestamp": "8:06:23"
+        },
+        {
+          "row": 8218,
+          "text": "which would be putting him at 10,",
+          "timestamp": "8:06:25"
+        },
+        {
+          "row": 8219,
+          "text": "which means the Burst would be lethal.",
+          "timestamp": "8:06:26"
+        },
+        {
+          "row": 8220,
+          "text": "And while holding the Negate,",
+          "timestamp": "8:06:28"
+        },
+        {
+          "row": 8221,
+          "text": "should be able to stop a Searing Rebuke,",
+          "timestamp": "8:06:29"
+        },
+        {
+          "row": 8222,
+          "text": "but there could be 2.",
+          "timestamp": "8:06:31"
+        },
+        {
+          "row": 8223,
+          "text": "Draws the Scalding Aether Charge.",
+          "timestamp": "8:06:32"
+        },
+        {
+          "row": 8224,
+          "text": "The turn after his opponent leveled up",
+          "timestamp": "8:06:33"
+        },
+        {
+          "row": 8225,
+          "text": "is very unlucky.",
+          "timestamp": "8:06:36"
+        },
+        {
+          "row": 8226,
+          "text": "Yeah, not something you want to see,",
+          "timestamp": "8:06:37"
+        },
+        {
+          "row": 8227,
+          "text": "but is that...",
+          "timestamp": "8:06:39"
+        },
+        {
+          "row": 8228,
+          "text": "2 Liminal Guides.",
+          "timestamp": "8:06:40"
+        },
+        {
+          "row": 8229,
+          "text": "That's 2 Liminal... I mean...",
+          "timestamp": "8:06:41"
+        },
+        {
+          "row": 8230,
+          "text": "Well, when you're not that talented,",
+          "timestamp": "8:06:42"
+        },
+        {
+          "row": 8231,
+          "text": "it is what it is.",
+          "timestamp": "8:06:45"
+        },
+        {
+          "row": 8232,
+          "text": "Unfortunately, when you're creative twice",
+          "timestamp": "8:06:46"
+        },
+        {
+          "row": 8233,
+          "text": "and did not see a Liminal Guide in both,",
+          "timestamp": "8:06:48"
+        },
+        {
+          "row": 8234,
+          "text": "it feels a little bit bad, but...",
+          "timestamp": "8:06:50"
+        },
+        {
+          "row": 8235,
+          "text": "I mean, 2 Pyre...",
+          "timestamp": "8:06:52"
+        },
+        {
+          "row": 8236,
+          "text": "2 Pyre is still really, really good,",
+          "timestamp": "8:06:53"
+        },
+        {
+          "row": 8237,
+          "text": "but noticing Noah's Graveyard is not that filled",
+          "timestamp": "8:06:54"
+        },
+        {
+          "row": 8238,
+          "text": "compared to the normal",
+          "timestamp": "8:06:57"
+        },
+        {
+          "row": 8239,
+          "text": "percent water reduced to seeing it,",
+          "timestamp": "8:06:58"
+        },
+        {
+          "row": 8240,
+          "text": "because you didn't actually",
+          "timestamp": "8:07:00"
+        },
+        {
+          "row": 8241,
+          "text": "imbue the Fractal Reign.",
+          "timestamp": "8:07:01"
+        },
+        {
+          "row": 8242,
+          "text": "Exactly, see, very heads up.",
+          "timestamp": "8:07:02"
+        },
+        {
+          "row": 8243,
+          "text": "Gina is someone who will pretty much",
+          "timestamp": "8:07:04"
+        },
+        {
+          "row": 8244,
+          "text": "always imbue Fractal Reign if she can,",
+          "timestamp": "8:07:05"
+        },
+        {
+          "row": 8245,
+          "text": "but in this matchup specifically,",
+          "timestamp": "8:07:07"
+        },
+        {
+          "row": 8246,
+          "text": "she just cannot do it",
+          "timestamp": "8:07:09"
+        },
+        {
+          "row": 8247,
+          "text": "because it's too risky",
+          "timestamp": "8:07:10"
+        },
+        {
+          "row": 8248,
+          "text": "against a deck that plays 4 Intensified Pyre.",
+          "timestamp": "8:07:11"
+        },
+        {
+          "row": 8249,
+          "text": "Yep, or you can just mill your opponent.",
+          "timestamp": "8:07:13"
+        },
+        {
+          "row": 8250,
+          "text": "I mean, you could,",
+          "timestamp": "8:07:15"
+        },
+        {
+          "row": 8251,
+          "text": "but it's actually really bad to mill",
+          "timestamp": "8:07:16"
+        },
+        {
+          "row": 8252,
+          "text": "because they have all the Kindle cards.",
+          "timestamp": "8:07:18"
+        },
+        {
+          "row": 8253,
+          "text": "You're giving them Kindle,",
+          "timestamp": "8:07:20"
+        },
+        {
+          "row": 8254,
+          "text": "so my opponent doesn't imbue it here.",
+          "timestamp": "8:07:21"
+        },
+        {
+          "row": 8255,
+          "text": "Dude, here, his hand is kind of...",
+          "timestamp": "8:07:23"
+        },
+        {
+          "row": 8256,
+          "text": "It's pretty awkward.",
+          "timestamp": "8:07:25"
+        },
+        {
+          "row": 8257,
+          "text": "It's Scalding, Flurry of Fire,",
+          "timestamp": "8:07:26"
+        },
+        {
+          "row": 8258,
+          "text": "2 of those Intensified Pyres,",
+          "timestamp": "8:07:28"
+        },
+        {
+          "row": 8259,
+          "text": "a Cinder Geyser,",
+          "timestamp": "8:07:31"
+        },
+        {
+          "row": 8260,
+          "text": "and the last card is Rebuke.",
+          "timestamp": "8:07:33"
+        },
+        {
+          "row": 8261,
+          "text": "So here's another thing.",
+          "timestamp": "8:07:36"
+        },
+        {
+          "row": 8262,
+          "text": "Because Fractals is mostly playing Fractals,",
+          "timestamp": "8:07:37"
+        },
+        {
+          "row": 8263,
+          "text": "a lot of times,",
+          "timestamp": "8:07:39"
+        },
+        {
+          "row": 8264,
+          "text": "you cannot get that Cinder Geyser off.",
+          "timestamp": "8:07:40"
+        },
+        {
+          "row": 8265,
+          "text": "It's only really that first turn",
+          "timestamp": "8:07:42"
+        },
+        {
+          "row": 8266,
+          "text": "when they have to establish",
+          "timestamp": "8:07:44"
+        },
+        {
+          "row": 8267,
+          "text": "the 3-4 Fractals,",
+          "timestamp": "8:07:46"
+        },
+        {
+          "row": 8268,
+          "text": "but at this point,",
+          "timestamp": "8:07:48"
+        },
+        {
+          "row": 8269,
+          "text": "they can usually sit under the 4.",
+          "timestamp": "8:07:49"
+        },
+        {
+          "row": 8270,
+          "text": "Yep.",
+          "timestamp": "8:07:51"
+        },
+        {
+          "row": 8271,
+          "text": "I believe this is going to be the...",
+          "timestamp": "8:07:52"
+        },
+        {
+          "row": 8272,
+          "text": "Wait, this is...",
+          "timestamp": "8:07:55"
+        },
+        {
+          "row": 8273,
+          "text": "Refracting Missiles.",
+          "timestamp": "8:07:56"
+        },
+        {
+          "row": 8274,
+          "text": "This is actually notably doing this",
+          "timestamp": "8:07:57"
+        },
+        {
+          "row": 8275,
+          "text": "during her Recollection phase",
+          "timestamp": "8:08:00"
+        },
+        {
+          "row": 8276,
+          "text": "after materializing that Safeguard Amulet.",
+          "timestamp": "8:08:02"
+        },
+        {
+          "row": 8277,
+          "text": "Ooh.",
+          "timestamp": "8:08:04"
+        },
+        {
+          "row": 8278,
+          "text": "Wants to do this to try and avoid",
+          "timestamp": "8:08:05"
+        },
+        {
+          "row": 8279,
+          "text": "getting hit by some kind of burn damage,",
+          "timestamp": "8:08:07"
+        },
+        {
+          "row": 8280,
+          "text": "like a Rebuke.",
+          "timestamp": "8:08:10"
+        },
+        {
+          "row": 8281,
+          "text": "Going to bring out Safeguard first",
+          "timestamp": "8:08:11"
+        },
+        {
+          "row": 8282,
+          "text": "to try and get a block.",
+          "timestamp": "8:08:12"
+        },
+        {
+          "row": 8283,
+          "text": "And now look at that.",
+          "timestamp": "8:08:13"
+        },
+        {
+          "row": 8284,
+          "text": "Safeguard plus Extinguishing Synchron",
+          "timestamp": "8:08:14"
+        },
+        {
+          "row": 8285,
+          "text": "hasn't taken any damage.",
+          "timestamp": "8:08:15"
+        },
+        {
+          "row": 8286,
+          "text": "Level 1 already.",
+          "timestamp": "8:08:17"
+        },
+        {
+          "row": 8287,
+          "text": "Noelle's in an absolutely",
+          "timestamp": "8:08:18"
+        },
+        {
+          "row": 8288,
+          "text": "commanding position in this game,",
+          "timestamp": "8:08:19"
+        },
+        {
+          "row": 8289,
+          "text": "but Dudu does have",
+          "timestamp": "8:08:21"
+        },
+        {
+          "row": 8290,
+          "text": "the insane burst potential",
+          "timestamp": "8:08:23"
+        },
+        {
+          "row": 8291,
+          "text": "of this RE deck.",
+          "timestamp": "8:08:25"
+        },
+        {
+          "row": 8292,
+          "text": "The Crucible has not been dealt with yet,",
+          "timestamp": "8:08:26"
+        },
+        {
+          "row": 8293,
+          "text": "so there's always a chance",
+          "timestamp": "8:08:28"
+        },
+        {
+          "row": 8294,
+          "text": "for an out-of-nowhere OTK turn.",
+          "timestamp": "8:08:29"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 1,
+      "order": 3,
+      "sourceRows": [
+        8533,
+        8674
+      ],
+      "source": [
+        {
+          "row": 8533,
+          "text": "We are going to...",
+          "timestamp": "8:13:50"
+        },
+        {
+          "row": 8534,
+          "text": "Wait.",
+          "timestamp": "8:13:52"
+        },
+        {
+          "row": 8535,
+          "text": "Is it Shimmering?",
+          "timestamp": "8:13:53"
+        },
+        {
+          "row": 8536,
+          "text": "It's a Shimmering Refraction.",
+          "timestamp": "8:13:54"
+        },
+        {
+          "row": 8537,
+          "text": "That would definitely be",
+          "timestamp": "8:13:55"
+        },
+        {
+          "row": 8538,
+          "text": "a strong choice here.",
+          "timestamp": "8:13:56"
+        },
+        {
+          "row": 8539,
+          "text": "That would be doing",
+          "timestamp": "8:13:59"
+        },
+        {
+          "row": 8540,
+          "text": "6 damage,",
+          "timestamp": "8:14:00"
+        },
+        {
+          "row": 8541,
+          "text": "putting Dudu up to 17.",
+          "timestamp": "8:14:01"
+        },
+        {
+          "row": 8542,
+          "text": "And it is going to be",
+          "timestamp": "8:14:03"
+        },
+        {
+          "row": 8543,
+          "text": "a Shimmering Refraction there.",
+          "timestamp": "8:14:04"
+        },
+        {
+          "row": 8544,
+          "text": "Drawing an extra card as well.",
+          "timestamp": "8:14:05"
+        },
+        {
+          "row": 8545,
+          "text": "This is really, really close to game.",
+          "timestamp": "8:14:07"
+        },
+        {
+          "row": 8546,
+          "text": "Just 1 damage.",
+          "timestamp": "8:14:09"
+        },
+        {
+          "row": 8547,
+          "text": "Even if the Sengjiao",
+          "timestamp": "8:14:10"
+        },
+        {
+          "row": 8548,
+          "text": "can end the game next turn,",
+          "timestamp": "8:14:11"
+        },
+        {
+          "row": 8549,
+          "text": "Dudu is in a very dangerous",
+          "timestamp": "8:14:12"
+        },
+        {
+          "row": 8550,
+          "text": "stage right here.",
+          "timestamp": "8:14:13"
+        },
+        {
+          "row": 8551,
+          "text": "Maybe have to consider",
+          "timestamp": "8:14:14"
+        },
+        {
+          "row": 8552,
+          "text": "Searing Rebuke",
+          "timestamp": "8:14:15"
+        },
+        {
+          "row": 8553,
+          "text": "to protect that damage.",
+          "timestamp": "8:14:16"
+        },
+        {
+          "row": 8554,
+          "text": "Or maybe just save it",
+          "timestamp": "8:14:17"
+        },
+        {
+          "row": 8555,
+          "text": "with the 1 damage",
+          "timestamp": "8:14:18"
+        },
+        {
+          "row": 8556,
+          "text": "count from Sengjiao.",
+          "timestamp": "8:14:19"
+        },
+        {
+          "row": 8557,
+          "text": "But I think this is really",
+          "timestamp": "8:14:20"
+        },
+        {
+          "row": 8558,
+          "text": "damage that you cannot",
+          "timestamp": "8:14:21"
+        },
+        {
+          "row": 8559,
+          "text": "actually take this much.",
+          "timestamp": "8:14:22"
+        },
+        {
+          "row": 8560,
+          "text": "I think you have to do it.",
+          "timestamp": "8:14:23"
+        },
+        {
+          "row": 8561,
+          "text": "You have to Rebuke here.",
+          "timestamp": "8:14:24"
+        },
+        {
+          "row": 8562,
+          "text": "I think saving the Rebuke",
+          "timestamp": "8:14:25"
+        },
+        {
+          "row": 8563,
+          "text": "for the Zhangjiao Swing",
+          "timestamp": "8:14:26"
+        },
+        {
+          "row": 8564,
+          "text": "makes sense.",
+          "timestamp": "8:14:27"
+        },
+        {
+          "row": 8565,
+          "text": "But...",
+          "timestamp": "8:14:28"
+        },
+        {
+          "row": 8566,
+          "text": "Look at 11.",
+          "timestamp": "8:14:29"
+        },
+        {
+          "row": 8567,
+          "text": "That's way too much.",
+          "timestamp": "8:14:30"
+        },
+        {
+          "row": 8568,
+          "text": "It's so scary.",
+          "timestamp": "8:14:31"
+        },
+        {
+          "row": 8569,
+          "text": "Maybe actually going to be",
+          "timestamp": "8:14:32"
+        },
+        {
+          "row": 8570,
+          "text": "forced to Rebuke here.",
+          "timestamp": "8:14:33"
+        },
+        {
+          "row": 8571,
+          "text": "And if that does happen,",
+          "timestamp": "8:14:34"
+        },
+        {
+          "row": 8572,
+          "text": "Gina does have",
+          "timestamp": "8:14:35"
+        },
+        {
+          "row": 8573,
+          "text": "1 Fractal 2 cards in hand",
+          "timestamp": "8:14:36"
+        },
+        {
+          "row": 8574,
+          "text": "enough to play that",
+          "timestamp": "8:14:38"
+        },
+        {
+          "row": 8575,
+          "text": "Glimmering Refusal.",
+          "timestamp": "8:14:39"
+        },
+        {
+          "row": 8576,
+          "text": "Yeah.",
+          "timestamp": "8:14:40"
+        },
+        {
+          "row": 8577,
+          "text": "Just noticed",
+          "timestamp": "8:14:41"
+        },
+        {
+          "row": 8578,
+          "text": "Noah didn't play a single",
+          "timestamp": "8:14:42"
+        },
+        {
+          "row": 8579,
+          "text": "I guess besides the...",
+          "timestamp": "8:14:43"
+        },
+        {
+          "row": 8580,
+          "text": "Oh.",
+          "timestamp": "8:14:45"
+        },
+        {
+          "row": 8581,
+          "text": "Searing Rebuke I believe",
+          "timestamp": "8:14:46"
+        },
+        {
+          "row": 8582,
+          "text": "also in the hand.",
+          "timestamp": "8:14:47"
+        },
+        {
+          "row": 8583,
+          "text": "So does have the ability",
+          "timestamp": "8:14:48"
+        },
+        {
+          "row": 8584,
+          "text": "to play that one.",
+          "timestamp": "8:14:49"
+        },
+        {
+          "row": 8585,
+          "text": "So this Searing Rebuke",
+          "timestamp": "8:14:50"
+        },
+        {
+          "row": 8586,
+          "text": "would only deal",
+          "timestamp": "8:14:51"
+        },
+        {
+          "row": 8587,
+          "text": "5 damage.",
+          "timestamp": "8:14:52"
+        },
+        {
+          "row": 8588,
+          "text": "Only 5.",
+          "timestamp": "8:14:53"
+        },
+        {
+          "row": 8589,
+          "text": "Only 5.",
+          "timestamp": "8:14:54"
+        },
+        {
+          "row": 8590,
+          "text": "Oh.",
+          "timestamp": "8:14:55"
+        },
+        {
+          "row": 8591,
+          "text": "She's activating",
+          "timestamp": "8:14:56"
+        },
+        {
+          "row": 8592,
+          "text": "the Safeguard Amulet already.",
+          "timestamp": "8:14:57"
+        },
+        {
+          "row": 8593,
+          "text": "Wow.",
+          "timestamp": "8:14:58"
+        },
+        {
+          "row": 8594,
+          "text": "That's so interesting.",
+          "timestamp": "8:14:59"
+        },
+        {
+          "row": 8595,
+          "text": "That is so early",
+          "timestamp": "8:15:00"
+        },
+        {
+          "row": 8596,
+          "text": "to use that.",
+          "timestamp": "8:15:01"
+        },
+        {
+          "row": 8597,
+          "text": "Maybe just",
+          "timestamp": "8:15:02"
+        },
+        {
+          "row": 8598,
+          "text": "preventing damages",
+          "timestamp": "8:15:03"
+        },
+        {
+          "row": 8599,
+          "text": "in general.",
+          "timestamp": "8:15:04"
+        },
+        {
+          "row": 8600,
+          "text": "I do think that",
+          "timestamp": "8:15:05"
+        },
+        {
+          "row": 8601,
+          "text": "Noah here is playing",
+          "timestamp": "8:15:06"
+        },
+        {
+          "row": 8602,
+          "text": "I don't think it's",
+          "timestamp": "8:15:07"
+        },
+        {
+          "row": 8603,
+          "text": "particularly super safe.",
+          "timestamp": "8:15:08"
+        },
+        {
+          "row": 8604,
+          "text": "I think it's just",
+          "timestamp": "8:15:09"
+        },
+        {
+          "row": 8605,
+          "text": "the max value.",
+          "timestamp": "8:15:10"
+        },
+        {
+          "row": 8606,
+          "text": "If you think about it,",
+          "timestamp": "8:15:11"
+        },
+        {
+          "row": 8607,
+          "text": "this is probably the most",
+          "timestamp": "8:15:12"
+        },
+        {
+          "row": 8608,
+          "text": "damage that a Fire will do.",
+          "timestamp": "8:15:13"
+        },
+        {
+          "row": 8609,
+          "text": "5.",
+          "timestamp": "8:15:14"
+        },
+        {
+          "row": 8610,
+          "text": "But using this",
+          "timestamp": "8:15:15"
+        },
+        {
+          "row": 8611,
+          "text": "means you actually",
+          "timestamp": "8:15:16"
+        },
+        {
+          "row": 8612,
+          "text": "deal 0.",
+          "timestamp": "8:15:17"
+        },
+        {
+          "row": 8613,
+          "text": "There is 4 damage",
+          "timestamp": "8:15:18"
+        },
+        {
+          "row": 8614,
+          "text": "on this Potion",
+          "timestamp": "8:15:19"
+        },
+        {
+          "row": 8615,
+          "text": "plus the...",
+          "timestamp": "8:15:20"
+        },
+        {
+          "row": 8616,
+          "text": "all the cards in hand",
+          "timestamp": "8:15:21"
+        },
+        {
+          "row": 8617,
+          "text": "and there's 3 Fire cards",
+          "timestamp": "8:15:22"
+        },
+        {
+          "row": 8618,
+          "text": "so an Intensified Pyre",
+          "timestamp": "8:15:23"
+        },
+        {
+          "row": 8619,
+          "text": "is actually playable here.",
+          "timestamp": "8:15:24"
+        },
+        {
+          "row": 8620,
+          "text": "So there is potential",
+          "timestamp": "8:15:25"
+        },
+        {
+          "row": 8621,
+          "text": "for maybe 2-3",
+          "timestamp": "8:15:26"
+        },
+        {
+          "row": 8622,
+          "text": "burn spells",
+          "timestamp": "8:15:27"
+        },
+        {
+          "row": 8623,
+          "text": "from hand",
+          "timestamp": "8:15:28"
+        },
+        {
+          "row": 8624,
+          "text": "plus the Potion.",
+          "timestamp": "8:15:29"
+        },
+        {
+          "row": 8625,
+          "text": "So it actually isn't",
+          "timestamp": "8:15:30"
+        },
+        {
+          "row": 8626,
+          "text": "un-infeasible",
+          "timestamp": "8:15:31"
+        },
+        {
+          "row": 8627,
+          "text": "for Dudu",
+          "timestamp": "8:15:32"
+        },
+        {
+          "row": 8628,
+          "text": "to throw 3",
+          "timestamp": "8:15:33"
+        },
+        {
+          "row": 8629,
+          "text": "cards here.",
+          "timestamp": "8:15:34"
+        },
+        {
+          "row": 8630,
+          "text": "So it is definitely",
+          "timestamp": "8:15:35"
+        },
+        {
+          "row": 8631,
+          "text": "a bit of a risk",
+          "timestamp": "8:15:36"
+        },
+        {
+          "row": 8632,
+          "text": "to throw that Safeguard now",
+          "timestamp": "8:15:37"
+        },
+        {
+          "row": 8633,
+          "text": "especially with the",
+          "timestamp": "8:15:38"
+        },
+        {
+          "row": 8634,
+          "text": "Everflame staff as well.",
+          "timestamp": "8:15:39"
+        },
+        {
+          "row": 8635,
+          "text": "The main thing",
+          "timestamp": "8:15:40"
+        },
+        {
+          "row": 8636,
+          "text": "is going to be",
+          "timestamp": "8:15:41"
+        },
+        {
+          "row": 8637,
+          "text": "whether or not",
+          "timestamp": "8:15:42"
+        },
+        {
+          "row": 8638,
+          "text": "the Extinguishing Synchron",
+          "timestamp": "8:15:43"
+        },
+        {
+          "row": 8639,
+          "text": "will heal enough",
+          "timestamp": "8:15:44"
+        },
+        {
+          "row": 8640,
+          "text": "to keep",
+          "timestamp": "8:15:45"
+        },
+        {
+          "row": 8641,
+          "text": "Noelle alive",
+          "timestamp": "8:15:46"
+        },
+        {
+          "row": 8642,
+          "text": "through all of that",
+          "timestamp": "8:15:47"
+        },
+        {
+          "row": 8643,
+          "text": "and whether or not",
+          "timestamp": "8:15:48"
+        },
+        {
+          "row": 8644,
+          "text": "she's found a card",
+          "timestamp": "8:15:49"
+        },
+        {
+          "row": 8645,
+          "text": "that actually lets her",
+          "timestamp": "8:15:50"
+        },
+        {
+          "row": 8646,
+          "text": "end the game.",
+          "timestamp": "8:15:51"
+        },
+        {
+          "row": 8647,
+          "text": "Speaking of finding cards,",
+          "timestamp": "8:15:52"
+        },
+        {
+          "row": 8648,
+          "text": "again, we were mentioning",
+          "timestamp": "8:15:53"
+        },
+        {
+          "row": 8649,
+          "text": "about getting the",
+          "timestamp": "8:15:54"
+        },
+        {
+          "row": 8650,
+          "text": "Influence back",
+          "timestamp": "8:15:55"
+        },
+        {
+          "row": 8651,
+          "text": "after playing back",
+          "timestamp": "8:15:56"
+        },
+        {
+          "row": 8652,
+          "text": "all of these",
+          "timestamp": "8:15:57"
+        },
+        {
+          "row": 8653,
+          "text": "characters.",
+          "timestamp": "8:15:58"
+        },
+        {
+          "row": 8654,
+          "text": "Noelle's",
+          "timestamp": "8:15:59"
+        },
+        {
+          "row": 8655,
+          "text": "Influence is very,",
+          "timestamp": "8:16:00"
+        },
+        {
+          "row": 8656,
+          "text": "very low",
+          "timestamp": "8:16:01"
+        },
+        {
+          "row": 8657,
+          "text": "because all she's been doing",
+          "timestamp": "8:16:02"
+        },
+        {
+          "row": 8658,
+          "text": "is shooting damage",
+          "timestamp": "8:16:03"
+        },
+        {
+          "row": 8659,
+          "text": "with her Missiles",
+          "timestamp": "8:16:04"
+        },
+        {
+          "row": 8660,
+          "text": "with her Swimmering",
+          "timestamp": "8:16:05"
+        },
+        {
+          "row": 8661,
+          "text": "and now going to",
+          "timestamp": "8:16:06"
+        },
+        {
+          "row": 8662,
+          "text": "the Backup Charger.",
+          "timestamp": "8:16:07"
+        },
+        {
+          "row": 8663,
+          "text": "I think this is",
+          "timestamp": "8:16:08"
+        },
+        {
+          "row": 8664,
+          "text": "probably a forced play",
+          "timestamp": "8:16:09"
+        },
+        {
+          "row": 8665,
+          "text": "because you are",
+          "timestamp": "8:16:10"
+        },
+        {
+          "row": 8666,
+          "text": "basically low,",
+          "timestamp": "8:16:11"
+        },
+        {
+          "row": 8667,
+          "text": "very, very low",
+          "timestamp": "8:16:12"
+        },
+        {
+          "row": 8668,
+          "text": "in Influence.",
+          "timestamp": "8:16:13"
+        },
+        {
+          "row": 8669,
+          "text": "You have all the",
+          "timestamp": "8:16:14"
+        },
+        {
+          "row": 8670,
+          "text": "factors in the world",
+          "timestamp": "8:16:15"
+        },
+        {
+          "row": 8671,
+          "text": "so I think you're",
+          "timestamp": "8:16:16"
+        },
+        {
+          "row": 8672,
+          "text": "just farming it.",
+          "timestamp": "8:16:17"
+        },
+        {
+          "row": 8673,
+          "text": "Risky play here.",
+          "timestamp": "8:16:18"
+        },
+        {
+          "row": 8674,
+          "text": "Going to go hands down.",
+          "timestamp": "8:16:19"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 1,
+      "order": 4,
+      "sourceRows": [
+        8677,
+        8838
+      ],
+      "source": [
+        {
+          "row": 8677,
+          "text": "We are going to",
+          "timestamp": "8:16:22"
+        },
+        {
+          "row": 8678,
+          "text": "deal 4 damage here.",
+          "timestamp": "8:16:23"
+        },
+        {
+          "row": 8679,
+          "text": "Explosive Concoction",
+          "timestamp": "8:16:24"
+        },
+        {
+          "row": 8680,
+          "text": "going to deal 4 damage",
+          "timestamp": "8:16:25"
+        },
+        {
+          "row": 8681,
+          "text": "and draw a card as well.",
+          "timestamp": "8:16:26"
+        },
+        {
+          "row": 8682,
+          "text": "Does not get",
+          "timestamp": "8:16:27"
+        },
+        {
+          "row": 8683,
+          "text": "any Everflame",
+          "timestamp": "8:16:28"
+        },
+        {
+          "row": 8684,
+          "text": "and this one",
+          "timestamp": "8:16:29"
+        },
+        {
+          "row": 8685,
+          "text": "going to get",
+          "timestamp": "8:16:30"
+        },
+        {
+          "row": 8686,
+          "text": "4 and then the",
+          "timestamp": "8:16:31"
+        },
+        {
+          "row": 8687,
+          "text": "Extinguishing Synchron",
+          "timestamp": "8:16:32"
+        },
+        {
+          "row": 8688,
+          "text": "does gain 1.",
+          "timestamp": "8:16:33"
+        },
+        {
+          "row": 8689,
+          "text": "Draws into a",
+          "timestamp": "8:16:34"
+        },
+        {
+          "row": 8690,
+          "text": "Return the Archive.",
+          "timestamp": "8:16:35"
+        },
+        {
+          "row": 8691,
+          "text": "Really not the card",
+          "timestamp": "8:16:36"
+        },
+        {
+          "row": 8692,
+          "text": "you want to see.",
+          "timestamp": "8:16:37"
+        },
+        {
+          "row": 8693,
+          "text": "It's going to be",
+          "timestamp": "8:16:38"
+        },
+        {
+          "row": 8694,
+          "text": "throwing a Scalding",
+          "timestamp": "8:16:39"
+        },
+        {
+          "row": 8695,
+          "text": "Aether Charge after.",
+          "timestamp": "8:16:40"
+        },
+        {
+          "row": 8696,
+          "text": "I think Scalding Aether Charge",
+          "timestamp": "8:16:41"
+        },
+        {
+          "row": 8697,
+          "text": "you can keep it",
+          "timestamp": "8:16:42"
+        },
+        {
+          "row": 8698,
+          "text": "in case you have",
+          "timestamp": "8:16:43"
+        },
+        {
+          "row": 8699,
+          "text": "emergency damage",
+          "timestamp": "8:16:44"
+        },
+        {
+          "row": 8700,
+          "text": "but we are going to",
+          "timestamp": "8:16:45"
+        },
+        {
+          "row": 8701,
+          "text": "throw potions",
+          "timestamp": "8:16:46"
+        },
+        {
+          "row": 8702,
+          "text": "into Noelle here.",
+          "timestamp": "8:16:47"
+        },
+        {
+          "row": 8703,
+          "text": "We are going to",
+          "timestamp": "8:16:48"
+        },
+        {
+          "row": 8704,
+          "text": "do the editing.",
+          "timestamp": "8:16:49"
+        },
+        {
+          "row": 8705,
+          "text": "4 right here.",
+          "timestamp": "8:16:50"
+        },
+        {
+          "row": 8706,
+          "text": "Scalding will deal",
+          "timestamp": "8:16:51"
+        },
+        {
+          "row": 8707,
+          "text": "4.",
+          "timestamp": "8:16:52"
+        },
+        {
+          "row": 8708,
+          "text": "So that's going to",
+          "timestamp": "8:16:53"
+        },
+        {
+          "row": 8709,
+          "text": "be another 4",
+          "timestamp": "8:16:54"
+        },
+        {
+          "row": 8710,
+          "text": "that is going to",
+          "timestamp": "8:16:55"
+        },
+        {
+          "row": 8711,
+          "text": "only get 1 ping",
+          "timestamp": "8:16:56"
+        },
+        {
+          "row": 8712,
+          "text": "on the Everflame staff",
+          "timestamp": "8:16:57"
+        },
+        {
+          "row": 8713,
+          "text": "Extinguishing Synchron",
+          "timestamp": "8:16:59"
+        },
+        {
+          "row": 8714,
+          "text": "and then",
+          "timestamp": "8:17:00"
+        },
+        {
+          "row": 8715,
+          "text": "only 2 cards",
+          "timestamp": "8:17:01"
+        },
+        {
+          "row": 8716,
+          "text": "out of the hand.",
+          "timestamp": "8:17:02"
+        },
+        {
+          "row": 8717,
+          "text": "It's double",
+          "timestamp": "8:17:03"
+        },
+        {
+          "row": 8718,
+          "text": "Intensified Pyre.",
+          "timestamp": "8:17:04"
+        },
+        {
+          "row": 8719,
+          "text": "Currently 4 cards",
+          "timestamp": "8:17:05"
+        },
+        {
+          "row": 8720,
+          "text": "in Grave.",
+          "timestamp": "8:17:06"
+        },
+        {
+          "row": 8721,
+          "text": "It will be 5 cards",
+          "timestamp": "8:17:07"
+        },
+        {
+          "row": 8722,
+          "text": "in Grave.",
+          "timestamp": "8:17:08"
+        },
+        {
+          "row": 8723,
+          "text": "Kindle 1.",
+          "timestamp": "8:17:09"
+        },
+        {
+          "row": 8724,
+          "text": "This is going to be",
+          "timestamp": "8:17:13"
+        },
+        {
+          "row": 8725,
+          "text": "1 stack on that",
+          "timestamp": "8:17:14"
+        },
+        {
+          "row": 8726,
+          "text": "Everflame.",
+          "timestamp": "8:17:15"
+        },
+        {
+          "row": 8727,
+          "text": "It's going to be",
+          "timestamp": "8:17:16"
+        },
+        {
+          "row": 8728,
+          "text": "Kindle 3.",
+          "timestamp": "8:17:17"
+        },
+        {
+          "row": 8729,
+          "text": "This is actually",
+          "timestamp": "8:17:18"
+        },
+        {
+          "row": 8730,
+          "text": "double Pyre.",
+          "timestamp": "8:17:19"
+        },
+        {
+          "row": 8731,
+          "text": "It's going to be",
+          "timestamp": "8:17:20"
+        },
+        {
+          "row": 8732,
+          "text": "Pyre right here",
+          "timestamp": "8:17:21"
+        },
+        {
+          "row": 8733,
+          "text": "for...",
+          "timestamp": "8:17:22"
+        },
+        {
+          "row": 8734,
+          "text": "Is this 8?",
+          "timestamp": "8:17:23"
+        },
+        {
+          "row": 8735,
+          "text": "No, this is",
+          "timestamp": "8:17:24"
+        },
+        {
+          "row": 8736,
+          "text": "only 3 cards in Grave.",
+          "timestamp": "8:17:25"
+        },
+        {
+          "row": 8737,
+          "text": "This is going to be",
+          "timestamp": "8:17:26"
+        },
+        {
+          "row": 8738,
+          "text": "Noelle up to 4",
+          "timestamp": "8:17:27"
+        },
+        {
+          "row": 8739,
+          "text": "and then that's going to",
+          "timestamp": "8:17:28"
+        },
+        {
+          "row": 8740,
+          "text": "put the second stack",
+          "timestamp": "8:17:29"
+        },
+        {
+          "row": 8741,
+          "text": "on the",
+          "timestamp": "8:17:30"
+        },
+        {
+          "row": 8742,
+          "text": "Extinguishing Synchron.",
+          "timestamp": "8:17:31"
+        },
+        {
+          "row": 8743,
+          "text": "There's going to be",
+          "timestamp": "8:17:32"
+        },
+        {
+          "row": 8744,
+          "text": "the third stack",
+          "timestamp": "8:17:33"
+        },
+        {
+          "row": 8745,
+          "text": "on the Extinguishing Synchron.",
+          "timestamp": "8:17:34"
+        },
+        {
+          "row": 8746,
+          "text": "Something about the",
+          "timestamp": "8:17:35"
+        },
+        {
+          "row": 8747,
+          "text": "Everflame staff",
+          "timestamp": "8:17:36"
+        },
+        {
+          "row": 8748,
+          "text": "is being discussed here.",
+          "timestamp": "8:17:37"
+        },
+        {
+          "row": 8749,
+          "text": "As we discussed,",
+          "timestamp": "8:17:39"
+        },
+        {
+          "row": 8750,
+          "text": "the Potion one",
+          "timestamp": "8:17:40"
+        },
+        {
+          "row": 8751,
+          "text": "doesn't really count",
+          "timestamp": "8:17:41"
+        },
+        {
+          "row": 8752,
+          "text": "only the spells",
+          "timestamp": "8:17:42"
+        },
+        {
+          "row": 8753,
+          "text": "earlier.",
+          "timestamp": "8:17:43"
+        },
+        {
+          "row": 8754,
+          "text": "Okay, so currently",
+          "timestamp": "8:17:44"
+        },
+        {
+          "row": 8755,
+          "text": "this is going to",
+          "timestamp": "8:17:45"
+        },
+        {
+          "row": 8756,
+          "text": "come in for 4",
+          "timestamp": "8:17:46"
+        },
+        {
+          "row": 8757,
+          "text": "and then another 4",
+          "timestamp": "8:17:47"
+        },
+        {
+          "row": 8758,
+          "text": "and then the Everflame staff",
+          "timestamp": "8:17:48"
+        },
+        {
+          "row": 8759,
+          "text": "for another 4",
+          "timestamp": "8:17:49"
+        },
+        {
+          "row": 8760,
+          "text": "but then Dudu is",
+          "timestamp": "8:17:50"
+        },
+        {
+          "row": 8761,
+          "text": "hands down.",
+          "timestamp": "8:17:51"
+        },
+        {
+          "row": 8762,
+          "text": "And there's still",
+          "timestamp": "8:17:52"
+        },
+        {
+          "row": 8763,
+          "text": "the Extinguishing Synchron.",
+          "timestamp": "8:17:53"
+        },
+        {
+          "row": 8764,
+          "text": "So I don't",
+          "timestamp": "8:17:54"
+        },
+        {
+          "row": 8765,
+          "text": "think this is enough",
+          "timestamp": "8:17:55"
+        },
+        {
+          "row": 8766,
+          "text": "Pyre comes in",
+          "timestamp": "8:17:57"
+        },
+        {
+          "row": 8767,
+          "text": "this is definitely",
+          "timestamp": "8:17:58"
+        },
+        {
+          "row": 8768,
+          "text": "I don't think this is enough.",
+          "timestamp": "8:17:59"
+        },
+        {
+          "row": 8769,
+          "text": "Yeah, this is",
+          "timestamp": "8:18:00"
+        },
+        {
+          "row": 8770,
+          "text": "definitely",
+          "timestamp": "8:18:01"
+        },
+        {
+          "row": 8771,
+          "text": "not enough, right?",
+          "timestamp": "8:18:02"
+        },
+        {
+          "row": 8772,
+          "text": "Wait, okay.",
+          "timestamp": "8:18:03"
+        },
+        {
+          "row": 8773,
+          "text": "He's doing his recollection, right?",
+          "timestamp": "8:18:04"
+        },
+        {
+          "row": 8774,
+          "text": "He does recollect.",
+          "timestamp": "8:18:05"
+        },
+        {
+          "row": 8775,
+          "text": "Yeah, yeah, yeah.",
+          "timestamp": "8:18:06"
+        },
+        {
+          "row": 8776,
+          "text": "This is still",
+          "timestamp": "8:18:07"
+        },
+        {
+          "row": 8777,
+          "text": "this is all in recollection phase",
+          "timestamp": "8:18:08"
+        },
+        {
+          "row": 8778,
+          "text": "and now here comes",
+          "timestamp": "8:18:09"
+        },
+        {
+          "row": 8779,
+          "text": "that Everflame staff",
+          "timestamp": "8:18:10"
+        },
+        {
+          "row": 8780,
+          "text": "it's going to do another 4",
+          "timestamp": "8:18:11"
+        },
+        {
+          "row": 8781,
+          "text": "so that's",
+          "timestamp": "8:18:12"
+        },
+        {
+          "row": 8782,
+          "text": "not enough",
+          "timestamp": "8:18:13"
+        },
+        {
+          "row": 8783,
+          "text": "because this is going to be",
+          "timestamp": "8:18:14"
+        },
+        {
+          "row": 8784,
+          "text": "a heal 6",
+          "timestamp": "8:18:15"
+        },
+        {
+          "row": 8785,
+          "text": "on this Extinguishing Synchron, right?",
+          "timestamp": "8:18:16"
+        },
+        {
+          "row": 8786,
+          "text": "Yeah, but",
+          "timestamp": "8:18:18"
+        },
+        {
+          "row": 8787,
+          "text": "I think",
+          "timestamp": "8:18:19"
+        },
+        {
+          "row": 8788,
+          "text": "Dudu might have more",
+          "timestamp": "8:18:20"
+        },
+        {
+          "row": 8789,
+          "text": "answers, right?",
+          "timestamp": "8:18:21"
+        },
+        {
+          "row": 8790,
+          "text": "Afterwards",
+          "timestamp": "8:18:22"
+        },
+        {
+          "row": 8791,
+          "text": "he will recollect",
+          "timestamp": "8:18:23"
+        },
+        {
+          "row": 8792,
+          "text": "maybe he has ways",
+          "timestamp": "8:18:24"
+        },
+        {
+          "row": 8793,
+          "text": "to turn it off the game.",
+          "timestamp": "8:18:25"
+        },
+        {
+          "row": 8794,
+          "text": "Oh, wow!",
+          "timestamp": "8:18:27"
+        },
+        {
+          "row": 8795,
+          "text": "Okay, so",
+          "timestamp": "8:18:28"
+        },
+        {
+          "row": 8796,
+          "text": "Wait, huh?",
+          "timestamp": "8:18:29"
+        },
+        {
+          "row": 8797,
+          "text": "So",
+          "timestamp": "8:18:30"
+        },
+        {
+          "row": 8798,
+          "text": "Gina's got a scoop here",
+          "timestamp": "8:18:31"
+        },
+        {
+          "row": 8799,
+          "text": "unfortunately",
+          "timestamp": "8:18:32"
+        },
+        {
+          "row": 8800,
+          "text": "Okay, I'm going to have to",
+          "timestamp": "8:18:33"
+        },
+        {
+          "row": 8801,
+          "text": "I'm going to have to confirm",
+          "timestamp": "8:18:34"
+        },
+        {
+          "row": 8802,
+          "text": "whether or not",
+          "timestamp": "8:18:35"
+        },
+        {
+          "row": 8803,
+          "text": "Everflame does get the buff",
+          "timestamp": "8:18:36"
+        },
+        {
+          "row": 8804,
+          "text": "from the",
+          "timestamp": "8:18:37"
+        },
+        {
+          "row": 8805,
+          "text": "from the Crucible",
+          "timestamp": "8:18:39"
+        },
+        {
+          "row": 8806,
+          "text": "Does Everflame",
+          "timestamp": "8:18:42"
+        },
+        {
+          "row": 8807,
+          "text": "because it is as a spell",
+          "timestamp": "8:18:43"
+        },
+        {
+          "row": 8808,
+          "text": "but I can't remember",
+          "timestamp": "8:18:44"
+        },
+        {
+          "row": 8809,
+          "text": "if they changed it",
+          "timestamp": "8:18:45"
+        },
+        {
+          "row": 8810,
+          "text": "where like as a spell source",
+          "timestamp": "8:18:46"
+        },
+        {
+          "row": 8811,
+          "text": "is affected by things",
+          "timestamp": "8:18:47"
+        },
+        {
+          "row": 8812,
+          "text": "that buff spells.",
+          "timestamp": "8:18:48"
+        },
+        {
+          "row": 8813,
+          "text": "Yeah, because I remember",
+          "timestamp": "8:18:50"
+        },
+        {
+          "row": 8814,
+          "text": "discussing this",
+          "timestamp": "8:18:51"
+        },
+        {
+          "row": 8815,
+          "text": "Oh, yes, it's okay.",
+          "timestamp": "8:18:52"
+        },
+        {
+          "row": 8816,
+          "text": "This is a change they made.",
+          "timestamp": "8:18:53"
+        },
+        {
+          "row": 8817,
+          "text": "So now if it says",
+          "timestamp": "8:18:54"
+        },
+        {
+          "row": 8818,
+          "text": "as a spell",
+          "timestamp": "8:18:55"
+        },
+        {
+          "row": 8819,
+          "text": "it does get affected by it.",
+          "timestamp": "8:18:56"
+        },
+        {
+          "row": 8820,
+          "text": "So that was going to be",
+          "timestamp": "8:18:57"
+        },
+        {
+          "row": 8821,
+          "text": "a 6 damage",
+          "timestamp": "8:18:58"
+        },
+        {
+          "row": 8822,
+          "text": "Everflame buff.",
+          "timestamp": "8:18:59"
+        },
+        {
+          "row": 8823,
+          "text": "Yeah, 4 plus 2.",
+          "timestamp": "8:19:00"
+        },
+        {
+          "row": 8824,
+          "text": "Yeah, yeah, yeah.",
+          "timestamp": "8:19:01"
+        },
+        {
+          "row": 8825,
+          "text": "That's just enough!",
+          "timestamp": "8:19:02"
+        },
+        {
+          "row": 8826,
+          "text": "Dudu found the line",
+          "timestamp": "8:19:03"
+        },
+        {
+          "row": 8827,
+          "text": "there to get there",
+          "timestamp": "8:19:04"
+        },
+        {
+          "row": 8828,
+          "text": "so that was going to be",
+          "timestamp": "8:19:05"
+        },
+        {
+          "row": 8829,
+          "text": "she was at 16",
+          "timestamp": "8:19:06"
+        },
+        {
+          "row": 8830,
+          "text": "it was going to do a 4",
+          "timestamp": "8:19:08"
+        },
+        {
+          "row": 8831,
+          "text": "and then she would have",
+          "timestamp": "8:19:09"
+        },
+        {
+          "row": 8832,
+          "text": "healed 6",
+          "timestamp": "8:19:10"
+        },
+        {
+          "row": 8833,
+          "text": "and done 6.",
+          "timestamp": "8:19:11"
+        },
+        {
+          "row": 8834,
+          "text": "Was it not?",
+          "timestamp": "8:19:12"
+        },
+        {
+          "row": 8835,
+          "text": "I'm sure both players",
+          "timestamp": "8:19:13"
+        },
+        {
+          "row": 8836,
+          "text": "I'm sure they",
+          "timestamp": "8:19:14"
+        },
+        {
+          "row": 8837,
+          "text": "did the math correctly",
+          "timestamp": "8:19:15"
+        },
+        {
+          "row": 8838,
+          "text": "but that was insane.",
+          "timestamp": "8:19:17"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 2,
+      "order": 1,
+      "sourceRows": [
+        9220,
+        9362
+      ],
+      "source": [
+        {
+          "row": 9220,
+          "text": "I can do it",
+          "timestamp": "8:25:40"
+        },
+        {
+          "row": 9221,
+          "text": "going to go for",
+          "timestamp": "8:25:41"
+        },
+        {
+          "row": 9222,
+          "text": "Lantern here instead",
+          "timestamp": "8:25:42"
+        },
+        {
+          "row": 9223,
+          "text": "of that",
+          "timestamp": "8:25:43"
+        },
+        {
+          "row": 9224,
+          "text": "Instinguishing Synchron",
+          "timestamp": "8:25:44"
+        },
+        {
+          "row": 9225,
+          "text": "could totally go for",
+          "timestamp": "8:25:45"
+        },
+        {
+          "row": 9226,
+          "text": "an Intrusion here",
+          "timestamp": "8:25:46"
+        },
+        {
+          "row": 9227,
+          "text": "and rip one of these",
+          "timestamp": "8:25:47"
+        },
+        {
+          "row": 9228,
+          "text": "cards could actually",
+          "timestamp": "8:25:48"
+        },
+        {
+          "row": 9229,
+          "text": "hit those Rebukes",
+          "timestamp": "8:25:49"
+        },
+        {
+          "row": 9230,
+          "text": "could be hitting the",
+          "timestamp": "8:25:50"
+        },
+        {
+          "row": 9231,
+          "text": "potions because Dudu",
+          "timestamp": "8:25:51"
+        },
+        {
+          "row": 9232,
+          "text": "is complete hands down",
+          "timestamp": "8:25:52"
+        },
+        {
+          "row": 9233,
+          "text": "except for that",
+          "timestamp": "8:25:53"
+        },
+        {
+          "row": 9234,
+          "text": "one Ignis Deus",
+          "timestamp": "8:25:54"
+        },
+        {
+          "row": 9235,
+          "text": "so it actually",
+          "timestamp": "8:25:55"
+        },
+        {
+          "row": 9236,
+          "text": "might work out",
+          "timestamp": "8:25:56"
+        },
+        {
+          "row": 9237,
+          "text": "for Noelle here",
+          "timestamp": "8:25:57"
+        },
+        {
+          "row": 9238,
+          "text": "I think ripping",
+          "timestamp": "8:25:58"
+        },
+        {
+          "row": 9239,
+          "text": "cards from Fire",
+          "timestamp": "8:25:59"
+        },
+        {
+          "row": 9240,
+          "text": "are really important",
+          "timestamp": "8:26:00"
+        },
+        {
+          "row": 9241,
+          "text": "you don't want them",
+          "timestamp": "8:26:01"
+        },
+        {
+          "row": 9242,
+          "text": "to have too much",
+          "timestamp": "8:26:02"
+        },
+        {
+          "row": 9243,
+          "text": "influence as well",
+          "timestamp": "8:26:03"
+        },
+        {
+          "row": 9244,
+          "text": "so that would",
+          "timestamp": "8:26:04"
+        },
+        {
+          "row": 9245,
+          "text": "definitely help right",
+          "timestamp": "8:26:05"
+        },
+        {
+          "row": 9246,
+          "text": "here",
+          "timestamp": "8:26:06"
+        },
+        {
+          "row": 9247,
+          "text": "if you do hit that",
+          "timestamp": "8:26:07"
+        },
+        {
+          "row": 9248,
+          "text": "like if they only",
+          "timestamp": "8:26:08"
+        },
+        {
+          "row": 9249,
+          "text": "have one",
+          "timestamp": "8:26:09"
+        },
+        {
+          "row": 9250,
+          "text": "if you hit like the",
+          "timestamp": "8:26:10"
+        },
+        {
+          "row": 9251,
+          "text": "one Rebuke",
+          "timestamp": "8:26:11"
+        },
+        {
+          "row": 9252,
+          "text": "you're kind of golden",
+          "timestamp": "8:26:12"
+        },
+        {
+          "row": 9253,
+          "text": "so actually just",
+          "timestamp": "8:26:13"
+        },
+        {
+          "row": 9254,
+          "text": "going to go for a",
+          "timestamp": "8:26:14"
+        },
+        {
+          "row": 9255,
+          "text": "Rain though instead",
+          "timestamp": "8:26:15"
+        },
+        {
+          "row": 9256,
+          "text": "and I'm going to be",
+          "timestamp": "8:26:16"
+        },
+        {
+          "row": 9257,
+          "text": "tapping that Rain",
+          "timestamp": "8:26:17"
+        },
+        {
+          "row": 9258,
+          "text": "into putting",
+          "timestamp": "8:26:18"
+        },
+        {
+          "row": 9259,
+          "text": "oh has Jiang Xiao",
+          "timestamp": "8:26:19"
+        },
+        {
+          "row": 9260,
+          "text": "three down",
+          "timestamp": "8:26:20"
+        },
+        {
+          "row": 9261,
+          "text": "it's going to be",
+          "timestamp": "8:26:21"
+        },
+        {
+          "row": 9262,
+          "text": "that Intrusion",
+          "timestamp": "8:26:22"
+        },
+        {
+          "row": 9263,
+          "text": "it's gambling time",
+          "timestamp": "8:26:23"
+        },
+        {
+          "row": 9264,
+          "text": "it's not gambling",
+          "timestamp": "8:26:24"
+        },
+        {
+          "row": 9265,
+          "text": "it's not random",
+          "timestamp": "8:26:25"
+        },
+        {
+          "row": 9266,
+          "text": "she gets to see",
+          "timestamp": "8:26:26"
+        },
+        {
+          "row": 9267,
+          "text": "and look and choose",
+          "timestamp": "8:26:27"
+        },
+        {
+          "row": 9268,
+          "text": "okay so you're",
+          "timestamp": "8:26:28"
+        },
+        {
+          "row": 9269,
+          "text": "seeing there right",
+          "timestamp": "8:26:29"
+        },
+        {
+          "row": 9270,
+          "text": "so it's going to be",
+          "timestamp": "8:26:30"
+        },
+        {
+          "row": 9271,
+          "text": "so it's a",
+          "timestamp": "8:26:31"
+        },
+        {
+          "row": 9272,
+          "text": "okay so Combustible",
+          "timestamp": "8:26:32"
+        },
+        {
+          "row": 9273,
+          "text": "Potion",
+          "timestamp": "8:26:33"
+        },
+        {
+          "row": 9274,
+          "text": "this is",
+          "timestamp": "8:26:34"
+        },
+        {
+          "row": 9275,
+          "text": "Creative Shock",
+          "timestamp": "8:26:35"
+        },
+        {
+          "row": 9276,
+          "text": "Potion version",
+          "timestamp": "8:26:36"
+        },
+        {
+          "row": 9277,
+          "text": "and then you have",
+          "timestamp": "8:26:37"
+        },
+        {
+          "row": 9278,
+          "text": "so this is a scary",
+          "timestamp": "8:26:39"
+        },
+        {
+          "row": 9279,
+          "text": "hand because",
+          "timestamp": "8:26:40"
+        },
+        {
+          "row": 9280,
+          "text": "the Fractal",
+          "timestamp": "8:26:41"
+        },
+        {
+          "row": 9281,
+          "text": "of Sparks",
+          "timestamp": "8:26:42"
+        },
+        {
+          "row": 9282,
+          "text": "allows Dudu to",
+          "timestamp": "8:26:43"
+        },
+        {
+          "row": 9283,
+          "text": "hit himself",
+          "timestamp": "8:26:44"
+        },
+        {
+          "row": 9284,
+          "text": "to deal extra damage",
+          "timestamp": "8:26:45"
+        },
+        {
+          "row": 9285,
+          "text": "on those Rebukes",
+          "timestamp": "8:26:46"
+        },
+        {
+          "row": 9286,
+          "text": "but you also really",
+          "timestamp": "8:26:47"
+        },
+        {
+          "row": 9287,
+          "text": "want to get it out",
+          "timestamp": "8:26:48"
+        },
+        {
+          "row": 9288,
+          "text": "get that Combustible",
+          "timestamp": "8:26:49"
+        },
+        {
+          "row": 9289,
+          "text": "Potion out of the way",
+          "timestamp": "8:26:50"
+        },
+        {
+          "row": 9290,
+          "text": "because that is",
+          "timestamp": "8:26:51"
+        },
+        {
+          "row": 9291,
+          "text": "Creative Shock",
+          "timestamp": "8:26:52"
+        },
+        {
+          "row": 9292,
+          "text": "it lets you draw",
+          "timestamp": "8:26:53"
+        },
+        {
+          "row": 9293,
+          "text": "to discard",
+          "timestamp": "8:26:54"
+        },
+        {
+          "row": 9294,
+          "text": "so that means",
+          "timestamp": "8:26:55"
+        },
+        {
+          "row": 9295,
+          "text": "looking for more potions",
+          "timestamp": "8:26:56"
+        },
+        {
+          "row": 9296,
+          "text": "and there's going to",
+          "timestamp": "8:26:57"
+        },
+        {
+          "row": 9297,
+          "text": "be four herbs",
+          "timestamp": "8:26:58"
+        },
+        {
+          "row": 9298,
+          "text": "it has to be",
+          "timestamp": "8:26:59"
+        },
+        {
+          "row": 9299,
+          "text": "the Combustible",
+          "timestamp": "8:27:00"
+        },
+        {
+          "row": 9300,
+          "text": "I think because",
+          "timestamp": "8:27:01"
+        },
+        {
+          "row": 9301,
+          "text": "yeah sure you can",
+          "timestamp": "8:27:02"
+        },
+        {
+          "row": 9302,
+          "text": "let the others",
+          "timestamp": "8:27:03"
+        },
+        {
+          "row": 9303,
+          "text": "like it is too",
+          "timestamp": "8:27:04"
+        },
+        {
+          "row": 9304,
+          "text": "dangerous but",
+          "timestamp": "8:27:05"
+        },
+        {
+          "row": 9305,
+          "text": "the Potion is the",
+          "timestamp": "8:27:06"
+        },
+        {
+          "row": 9306,
+          "text": "yes the Potion is",
+          "timestamp": "8:27:07"
+        },
+        {
+          "row": 9307,
+          "text": "dangerous here because",
+          "timestamp": "8:27:08"
+        },
+        {
+          "row": 9308,
+          "text": "not only is it the",
+          "timestamp": "8:27:09"
+        },
+        {
+          "row": 9309,
+          "text": "Crucible stacks",
+          "timestamp": "8:27:10"
+        },
+        {
+          "row": 9310,
+          "text": "it's also the Cycling",
+          "timestamp": "8:27:11"
+        },
+        {
+          "row": 9311,
+          "text": "for more potions",
+          "timestamp": "8:27:12"
+        },
+        {
+          "row": 9312,
+          "text": "it is also damage",
+          "timestamp": "8:27:13"
+        },
+        {
+          "row": 9313,
+          "text": "and another thing is",
+          "timestamp": "8:27:14"
+        },
+        {
+          "row": 9314,
+          "text": "Combustible Potion can",
+          "timestamp": "8:27:15"
+        },
+        {
+          "row": 9315,
+          "text": "also damage your",
+          "timestamp": "8:27:16"
+        },
+        {
+          "row": 9316,
+          "text": "champion which means",
+          "timestamp": "8:27:17"
+        },
+        {
+          "row": 9317,
+          "text": "you can go for example",
+          "timestamp": "8:27:18"
+        },
+        {
+          "row": 9318,
+          "text": "Zhangjiao Swing",
+          "timestamp": "8:27:19"
+        },
+        {
+          "row": 9319,
+          "text": "Rebuke",
+          "timestamp": "8:27:20"
+        },
+        {
+          "row": 9320,
+          "text": "take three or deal three",
+          "timestamp": "8:27:21"
+        },
+        {
+          "row": 9321,
+          "text": "and then you",
+          "timestamp": "8:27:22"
+        },
+        {
+          "row": 9322,
+          "text": "then you Sparks",
+          "timestamp": "8:27:23"
+        },
+        {
+          "row": 9323,
+          "text": "deal one and then",
+          "timestamp": "8:27:24"
+        },
+        {
+          "row": 9324,
+          "text": "you Combustible",
+          "timestamp": "8:27:25"
+        },
+        {
+          "row": 9325,
+          "text": "so you can actually",
+          "timestamp": "8:27:26"
+        },
+        {
+          "row": 9326,
+          "text": "get nine damage",
+          "timestamp": "8:27:27"
+        },
+        {
+          "row": 9327,
+          "text": "off of a single",
+          "timestamp": "8:27:28"
+        },
+        {
+          "row": 9328,
+          "text": "well it would be",
+          "timestamp": "8:27:29"
+        },
+        {
+          "row": 9329,
+          "text": "at that point it would",
+          "timestamp": "8:27:30"
+        },
+        {
+          "row": 9330,
+          "text": "be twelve damage",
+          "timestamp": "8:27:31"
+        },
+        {
+          "row": 9331,
+          "text": "because you actually",
+          "timestamp": "8:27:32"
+        },
+        {
+          "row": 9332,
+          "text": "have a Crucible on",
+          "timestamp": "8:27:33"
+        },
+        {
+          "row": 9333,
+          "text": "field already so",
+          "timestamp": "8:27:34"
+        },
+        {
+          "row": 9334,
+          "text": "very dangerous here",
+          "timestamp": "8:27:35"
+        },
+        {
+          "row": 9335,
+          "text": "finds another Slash",
+          "timestamp": "8:27:37"
+        },
+        {
+          "row": 9336,
+          "text": "and burn no potions",
+          "timestamp": "8:27:38"
+        },
+        {
+          "row": 9337,
+          "text": "in the hand or the",
+          "timestamp": "8:27:39"
+        },
+        {
+          "row": 9338,
+          "text": "memory",
+          "timestamp": "8:27:40"
+        },
+        {
+          "row": 9339,
+          "text": "this is looking",
+          "timestamp": "8:27:41"
+        },
+        {
+          "row": 9340,
+          "text": "really dicey for",
+          "timestamp": "8:27:42"
+        },
+        {
+          "row": 9341,
+          "text": "Dudu",
+          "timestamp": "8:27:43"
+        },
+        {
+          "row": 9342,
+          "text": "that is a",
+          "timestamp": "8:27:44"
+        },
+        {
+          "row": 9343,
+          "text": "singed emotion",
+          "timestamp": "8:27:45"
+        },
+        {
+          "row": 9344,
+          "text": "so that is going to",
+          "timestamp": "8:27:46"
+        },
+        {
+          "row": 9345,
+          "text": "be a way for him to",
+          "timestamp": "8:27:47"
+        },
+        {
+          "row": 9346,
+          "text": "stop Gina from",
+          "timestamp": "8:27:48"
+        },
+        {
+          "row": 9347,
+          "text": "leveling up but I",
+          "timestamp": "8:27:49"
+        },
+        {
+          "row": 9348,
+          "text": "think if you were",
+          "timestamp": "8:27:50"
+        },
+        {
+          "row": 9349,
+          "text": "going to do that",
+          "timestamp": "8:27:51"
+        },
+        {
+          "row": 9350,
+          "text": "she's just going to",
+          "timestamp": "8:27:52"
+        },
+        {
+          "row": 9351,
+          "text": "go okay Extinguishing",
+          "timestamp": "8:27:53"
+        },
+        {
+          "row": 9352,
+          "text": "Synchron instead",
+          "timestamp": "8:27:54"
+        },
+        {
+          "row": 9353,
+          "text": "so there is a lot of",
+          "timestamp": "8:27:55"
+        },
+        {
+          "row": 9354,
+          "text": "ways right here",
+          "timestamp": "8:27:56"
+        },
+        {
+          "row": 9355,
+          "text": "I think Dudu right",
+          "timestamp": "8:27:57"
+        },
+        {
+          "row": 9356,
+          "text": "now with that",
+          "timestamp": "8:27:58"
+        },
+        {
+          "row": 9357,
+          "text": "Potion",
+          "timestamp": "8:27:59"
+        },
+        {
+          "row": 9358,
+          "text": "Dudu's Potion is",
+          "timestamp": "8:28:00"
+        },
+        {
+          "row": 9359,
+          "text": "really huge now",
+          "timestamp": "8:28:01"
+        },
+        {
+          "row": 9360,
+          "text": "because the Crucible",
+          "timestamp": "8:28:02"
+        },
+        {
+          "row": 9361,
+          "text": "won't be at any",
+          "timestamp": "8:28:03"
+        },
+        {
+          "row": 9362,
+          "text": "sort of count here",
+          "timestamp": "8:28:04"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 2,
+      "order": 2,
+      "sourceRows": [
+        9888,
+        9963
+      ],
+      "source": [
+        {
+          "row": 9888,
+          "text": "Those Intensified Pies...",
+          "timestamp": "8:45:03"
+        },
+        {
+          "row": 9889,
+          "text": "Zhang Xiao has been found!",
+          "timestamp": "8:45:04"
+        },
+        {
+          "row": 9890,
+          "text": "Finally!",
+          "timestamp": "8:45:06"
+        },
+        {
+          "row": 9891,
+          "text": "A Ray of Hope here.",
+          "timestamp": "8:45:07"
+        },
+        {
+          "row": 9892,
+          "text": "Can we actually see the Birth of Thunder?",
+          "timestamp": "8:45:09"
+        },
+        {
+          "row": 9893,
+          "text": "No, a Thunderfarm.",
+          "timestamp": "8:45:12"
+        },
+        {
+          "row": 9894,
+          "text": "However, Fracturize is found.",
+          "timestamp": "8:45:13"
+        },
+        {
+          "row": 9895,
+          "text": "Can actually turn off the Crucible right here.",
+          "timestamp": "8:45:14"
+        },
+        {
+          "row": 9896,
+          "text": "Fracturize is so big here.",
+          "timestamp": "8:45:17"
+        },
+        {
+          "row": 9897,
+          "text": "Probably will turn off the Crucible I think.",
+          "timestamp": "8:45:21"
+        },
+        {
+          "row": 9898,
+          "text": "And force Dudu to use any sort of reaction.",
+          "timestamp": "8:45:23"
+        },
+        {
+          "row": 9899,
+          "text": "Swinging one here.",
+          "timestamp": "8:45:26"
+        },
+        {
+          "row": 9900,
+          "text": "Is Dudu going to take the bait?",
+          "timestamp": "8:45:28"
+        },
+        {
+          "row": 9901,
+          "text": "Is he going to throw out the Searing Rebuke here?",
+          "timestamp": "8:45:29"
+        },
+        {
+          "row": 9902,
+          "text": "There's no way you just do that!",
+          "timestamp": "8:45:31"
+        },
+        {
+          "row": 9903,
+          "text": "With Gina having so many cards in hand,",
+          "timestamp": "8:45:33"
+        },
+        {
+          "row": 9904,
+          "text": "she can throw the Shimmering Refractions,",
+          "timestamp": "8:45:35"
+        },
+        {
+          "row": 9905,
+          "text": "the Refracting Missiles.",
+          "timestamp": "8:45:36"
+        },
+        {
+          "row": 9906,
+          "text": "She has so many ways of stopping it.",
+          "timestamp": "8:45:37"
+        },
+        {
+          "row": 9907,
+          "text": "Even a...",
+          "timestamp": "8:45:39"
+        },
+        {
+          "row": 9908,
+          "text": "I mean, there's only one shunt in the deck.",
+          "timestamp": "8:45:40"
+        },
+        {
+          "row": 9909,
+          "text": "So actually, she has a second shunt in...",
+          "timestamp": "8:45:41"
+        },
+        {
+          "row": 9910,
+          "text": "No, no.",
+          "timestamp": "8:45:43"
+        },
+        {
+          "row": 9911,
+          "text": "Only one shunt in the deck total.",
+          "timestamp": "8:45:44"
+        },
+        {
+          "row": 9912,
+          "text": "Nope.",
+          "timestamp": "8:45:46"
+        },
+        {
+          "row": 9913,
+          "text": "Damage is taken.",
+          "timestamp": "8:45:47"
+        },
+        {
+          "row": 9914,
+          "text": "We are going to take one from the Teng Zhao.",
+          "timestamp": "8:45:48"
+        },
+        {
+          "row": 9915,
+          "text": "Well, it's probably just going to...",
+          "timestamp": "8:45:50"
+        },
+        {
+          "row": 9916,
+          "text": "I think you just either pass or set up the Fractal Rain",
+          "timestamp": "8:45:52"
+        },
+        {
+          "row": 9917,
+          "text": "if you really want to pass.",
+          "timestamp": "8:45:55"
+        },
+        {
+          "row": 9918,
+          "text": "She's going to hold up as much cards as possible.",
+          "timestamp": "8:45:56"
+        },
+        {
+          "row": 9919,
+          "text": "And here's the thing about the Fractal Sparks.",
+          "timestamp": "8:45:59"
+        },
+        {
+          "row": 9920,
+          "text": "The Extinguishing is actually going to gain a counter for this.",
+          "timestamp": "8:46:00"
+        },
+        {
+          "row": 9921,
+          "text": "Each Fractal Sparks actually does zero damage.",
+          "timestamp": "8:46:03"
+        },
+        {
+          "row": 9922,
+          "text": "Yeah, that's the thing.",
+          "timestamp": "8:46:06"
+        },
+        {
+          "row": 9923,
+          "text": "We are going to deal one right now.",
+          "timestamp": "8:46:07"
+        },
+        {
+          "row": 9924,
+          "text": "Effectively zero unless Dudu can find",
+          "timestamp": "8:46:09"
+        },
+        {
+          "row": 9925,
+          "text": "one of those fiery interferences",
+          "timestamp": "8:46:11"
+        },
+        {
+          "row": 9926,
+          "text": "in order to stop her from healing.",
+          "timestamp": "8:46:13"
+        },
+        {
+          "row": 9927,
+          "text": "So is this going to be nice?",
+          "timestamp": "8:46:15"
+        },
+        {
+          "row": 9928,
+          "text": "So actually, essentially, you can see this as net neutral.",
+          "timestamp": "8:46:16"
+        },
+        {
+          "row": 9929,
+          "text": "And if she is able to heal off a different card,",
+          "timestamp": "8:46:19"
+        },
+        {
+          "row": 9930,
+          "text": "it's actually positive for her.",
+          "timestamp": "8:46:21"
+        },
+        {
+          "row": 9931,
+          "text": "I think the intention is that on the stack of Synchro,",
+          "timestamp": "8:46:23"
+        },
+        {
+          "row": 9932,
+          "text": "you're probably going to react to damage with it.",
+          "timestamp": "8:46:26"
+        },
+        {
+          "row": 9933,
+          "text": "I think that's what's going to happen.",
+          "timestamp": "8:46:28"
+        },
+        {
+          "row": 9934,
+          "text": "We are going to see the Everstar Flame right here.",
+          "timestamp": "8:46:29"
+        },
+        {
+          "row": 9935,
+          "text": "Going to be getting that counter,",
+          "timestamp": "8:46:31"
+        },
+        {
+          "row": 9936,
+          "text": "trying to make use of it.",
+          "timestamp": "8:46:33"
+        },
+        {
+          "row": 9937,
+          "text": "This is going to be six damage.",
+          "timestamp": "8:46:35"
+        },
+        {
+          "row": 9938,
+          "text": "It will resolve.",
+          "timestamp": "8:46:36"
+        },
+        {
+          "row": 9939,
+          "text": "We are going to see Fractal Rain here",
+          "timestamp": "8:46:37"
+        },
+        {
+          "row": 9940,
+          "text": "targeting the Crucible, I believe.",
+          "timestamp": "8:46:38"
+        },
+        {
+          "row": 9941,
+          "text": "So big here.",
+          "timestamp": "8:46:40"
+        },
+        {
+          "row": 9942,
+          "text": "Hits that Crucible.",
+          "timestamp": "8:46:41"
+        },
+        {
+          "row": 9943,
+          "text": "How many cards does she have?",
+          "timestamp": "8:46:43"
+        },
+        {
+          "row": 9944,
+          "text": "I think she has seven engraved now.",
+          "timestamp": "8:46:44"
+        },
+        {
+          "row": 9945,
+          "text": "So should not be able to force it",
+          "timestamp": "8:46:46"
+        },
+        {
+          "row": 9946,
+          "text": "unless the Zhangjiao dies.",
+          "timestamp": "8:46:48"
+        },
+        {
+          "row": 9947,
+          "text": "If they can kill Zhangjiao,",
+          "timestamp": "8:46:50"
+        },
+        {
+          "row": 9948,
+          "text": "should be able to throw the Intensified Pyres.",
+          "timestamp": "8:46:52"
+        },
+        {
+          "row": 9949,
+          "text": "But because of that Fractal Rain,",
+          "timestamp": "8:46:54"
+        },
+        {
+          "row": 9950,
+          "text": "the Nullifying Lantern actually,",
+          "timestamp": "8:46:57"
+        },
+        {
+          "row": 9951,
+          "text": "cannot really throw out the free kindled Intensified Pyres.",
+          "timestamp": "8:46:59"
+        },
+        {
+          "row": 9952,
+          "text": "So it is going to be a bit harder here.",
+          "timestamp": "8:47:04"
+        },
+        {
+          "row": 9953,
+          "text": "Searing Rebuke in response to Searing,",
+          "timestamp": "8:47:07"
+        },
+        {
+          "row": 9954,
+          "text": "going to Safeguard.",
+          "timestamp": "8:47:10"
+        },
+        {
+          "row": 9955,
+          "text": "So you need to do it now,",
+          "timestamp": "8:47:11"
+        },
+        {
+          "row": 9956,
+          "text": "because if you don't do it in response to the Searing,",
+          "timestamp": "8:47:12"
+        },
+        {
+          "row": 9957,
+          "text": "they can just on the stack fast speed",
+          "timestamp": "8:47:14"
+        },
+        {
+          "row": 9958,
+          "text": "throw the Sparks instead.",
+          "timestamp": "8:47:16"
+        },
+        {
+          "row": 9959,
+          "text": "Yeah, I think this is good.",
+          "timestamp": "8:47:17"
+        },
+        {
+          "row": 9960,
+          "text": "Because now with the Crucible offline,",
+          "timestamp": "8:47:18"
+        },
+        {
+          "row": 9961,
+          "text": "and you are really healthy with the Synchro",
+          "timestamp": "8:47:20"
+        },
+        {
+          "row": 9962,
+          "text": "and only two damage counter,",
+          "timestamp": "8:47:22"
+        },
+        {
+          "row": 9963,
+          "text": "I think you are pretty much set for life.",
+          "timestamp": "8:47:23"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 2,
+      "order": 3,
+      "sourceRows": [
+        10421,
+        10656
+      ],
+      "source": [
+        {
+          "row": 10421,
+          "text": "We are going to",
+          "timestamp": "8:56:55"
+        },
+        {
+          "row": 10422,
+          "text": "I believe Tengu",
+          "timestamp": "8:56:56"
+        },
+        {
+          "row": 10423,
+          "text": "to see more cards here.",
+          "timestamp": "8:56:57"
+        },
+        {
+          "row": 10424,
+          "text": "What are we trying to find?",
+          "timestamp": "8:56:58"
+        },
+        {
+          "row": 10425,
+          "text": "Okay, Cinder Geyser.",
+          "timestamp": "8:56:59"
+        },
+        {
+          "row": 10426,
+          "text": "Cinder Geyser could be played.",
+          "timestamp": "8:57:00"
+        },
+        {
+          "row": 10427,
+          "text": "If we ping off,",
+          "timestamp": "8:57:02"
+        },
+        {
+          "row": 10428,
+          "text": "we are going to do it.",
+          "timestamp": "8:57:03"
+        },
+        {
+          "row": 10429,
+          "text": "If we ping off...",
+          "timestamp": "8:57:04"
+        },
+        {
+          "row": 10430,
+          "text": "Inflimming Orb War!",
+          "timestamp": "8:57:05"
+        },
+        {
+          "row": 10431,
+          "text": "Both players are",
+          "timestamp": "8:57:06"
+        },
+        {
+          "row": 10432,
+          "text": "Inflimming Orbing",
+          "timestamp": "8:57:07"
+        },
+        {
+          "row": 10433,
+          "text": "each other.",
+          "timestamp": "8:57:08"
+        },
+        {
+          "row": 10434,
+          "text": "I do think Doodle",
+          "timestamp": "8:57:09"
+        },
+        {
+          "row": 10435,
+          "text": "will be Inflimming Orb...",
+          "timestamp": "8:57:10"
+        },
+        {
+          "row": 10436,
+          "text": "will be paying the cost first, right?",
+          "timestamp": "8:57:11"
+        },
+        {
+          "row": 10437,
+          "text": "Yes, so",
+          "timestamp": "8:57:12"
+        },
+        {
+          "row": 10438,
+          "text": "it's going to be",
+          "timestamp": "8:57:13"
+        },
+        {
+          "row": 10439,
+          "text": "Noelle's Inflimming Orb",
+          "timestamp": "8:57:14"
+        },
+        {
+          "row": 10440,
+          "text": "on top of the stack",
+          "timestamp": "8:57:15"
+        },
+        {
+          "row": 10441,
+          "text": "which means",
+          "timestamp": "8:57:16"
+        },
+        {
+          "row": 10442,
+          "text": "Doodle has to put",
+          "timestamp": "8:57:17"
+        },
+        {
+          "row": 10443,
+          "text": "these cards on first",
+          "timestamp": "8:57:18"
+        },
+        {
+          "row": 10444,
+          "text": "and then on top",
+          "timestamp": "8:57:19"
+        },
+        {
+          "row": 10445,
+          "text": "she will have to",
+          "timestamp": "8:57:20"
+        },
+        {
+          "row": 10446,
+          "text": "put down 2 more cards",
+          "timestamp": "8:57:21"
+        },
+        {
+          "row": 10447,
+          "text": "and this is the thing, right?",
+          "timestamp": "8:57:22"
+        },
+        {
+          "row": 10448,
+          "text": "She only has",
+          "timestamp": "8:57:24"
+        },
+        {
+          "row": 10449,
+          "text": "3 cards in hand",
+          "timestamp": "8:57:25"
+        },
+        {
+          "row": 10450,
+          "text": "so she's going to be",
+          "timestamp": "8:57:26"
+        },
+        {
+          "row": 10451,
+          "text": "forced to put 2 of those",
+          "timestamp": "8:57:27"
+        },
+        {
+          "row": 10452,
+          "text": "interaction points down.",
+          "timestamp": "8:57:28"
+        },
+        {
+          "row": 10453,
+          "text": "Wait, is it...",
+          "timestamp": "8:57:29"
+        },
+        {
+          "row": 10454,
+          "text": "Is it just 2 cards",
+          "timestamp": "8:57:30"
+        },
+        {
+          "row": 10455,
+          "text": "in the hand?",
+          "timestamp": "8:57:31"
+        },
+        {
+          "row": 10456,
+          "text": "I think it's 2 cards",
+          "timestamp": "8:57:32"
+        },
+        {
+          "row": 10457,
+          "text": "in hand...",
+          "timestamp": "8:57:33"
+        },
+        {
+          "row": 10458,
+          "text": "It's 3 cards in hand, I think",
+          "timestamp": "8:57:34"
+        },
+        {
+          "row": 10459,
+          "text": "so it's going to be",
+          "timestamp": "8:57:35"
+        },
+        {
+          "row": 10460,
+          "text": "forced to put down",
+          "timestamp": "8:57:36"
+        },
+        {
+          "row": 10461,
+          "text": "2 and only 1.",
+          "timestamp": "8:57:37"
+        },
+        {
+          "row": 10462,
+          "text": "This is dangerous, isn't it?",
+          "timestamp": "8:57:38"
+        },
+        {
+          "row": 10463,
+          "text": "Because you have the Rebuke,",
+          "timestamp": "8:57:39"
+        },
+        {
+          "row": 10464,
+          "text": "you have the Sparks.",
+          "timestamp": "8:57:40"
+        },
+        {
+          "row": 10465,
+          "text": "This is...",
+          "timestamp": "8:57:41"
+        },
+        {
+          "row": 10466,
+          "text": "Using the Synchron now!",
+          "timestamp": "8:57:42"
+        },
+        {
+          "row": 10467,
+          "text": "Being forced to use it.",
+          "timestamp": "8:57:43"
+        },
+        {
+          "row": 10468,
+          "text": "Forcing interaction",
+          "timestamp": "8:57:44"
+        },
+        {
+          "row": 10469,
+          "text": "right now.",
+          "timestamp": "8:57:45"
+        },
+        {
+          "row": 10470,
+          "text": "Because it already hits up",
+          "timestamp": "8:57:46"
+        },
+        {
+          "row": 10471,
+          "text": "doesn't want to give",
+          "timestamp": "8:57:47"
+        },
+        {
+          "row": 10472,
+          "text": "the opportunity, right?",
+          "timestamp": "8:57:48"
+        },
+        {
+          "row": 10473,
+          "text": "Yeah, but unfortunately",
+          "timestamp": "8:57:49"
+        },
+        {
+          "row": 10474,
+          "text": "no fire interference",
+          "timestamp": "8:57:50"
+        },
+        {
+          "row": 10475,
+          "text": "in Doodoo's hand",
+          "timestamp": "8:57:51"
+        },
+        {
+          "row": 10476,
+          "text": "so not able to find it.",
+          "timestamp": "8:57:52"
+        },
+        {
+          "row": 10477,
+          "text": "Is the Rebuke",
+          "timestamp": "8:57:53"
+        },
+        {
+          "row": 10478,
+          "text": "going to be played here?",
+          "timestamp": "8:57:54"
+        },
+        {
+          "row": 10479,
+          "text": "Wait, is this on top",
+          "timestamp": "8:57:55"
+        },
+        {
+          "row": 10480,
+          "text": "of the Inflimming Orb?",
+          "timestamp": "8:57:56"
+        },
+        {
+          "row": 10481,
+          "text": "Yes, it's on top",
+          "timestamp": "8:57:57"
+        },
+        {
+          "row": 10482,
+          "text": "of the Inflimming Orb.",
+          "timestamp": "8:57:58"
+        },
+        {
+          "row": 10483,
+          "text": "So...",
+          "timestamp": "8:57:59"
+        },
+        {
+          "row": 10484,
+          "text": "Oh, she's forcing...",
+          "timestamp": "8:58:00"
+        },
+        {
+          "row": 10485,
+          "text": "Yeah, she's forcing",
+          "timestamp": "8:58:01"
+        },
+        {
+          "row": 10486,
+          "text": "cards right now",
+          "timestamp": "8:58:02"
+        },
+        {
+          "row": 10487,
+          "text": "because she can still",
+          "timestamp": "8:58:03"
+        },
+        {
+          "row": 10488,
+          "text": "use Gleaming Refuser",
+          "timestamp": "8:58:04"
+        },
+        {
+          "row": 10489,
+          "text": "right now, right?",
+          "timestamp": "8:58:05"
+        },
+        {
+          "row": 10490,
+          "text": "Yeah, so there's",
+          "timestamp": "8:58:06"
+        },
+        {
+          "row": 10491,
+          "text": "the Searing Rebuke",
+          "timestamp": "8:58:07"
+        },
+        {
+          "row": 10492,
+          "text": "going to use this",
+          "timestamp": "8:58:08"
+        },
+        {
+          "row": 10493,
+          "text": "on the Frackle of Sparks",
+          "timestamp": "8:58:09"
+        },
+        {
+          "row": 10494,
+          "text": "on himself.",
+          "timestamp": "8:58:10"
+        },
+        {
+          "row": 10495,
+          "text": "Still has 2 Cinder Geysers",
+          "timestamp": "8:58:11"
+        },
+        {
+          "row": 10496,
+          "text": "can activate 2 of them.",
+          "timestamp": "8:58:12"
+        },
+        {
+          "row": 10497,
+          "text": "Yeah...",
+          "timestamp": "8:58:13"
+        },
+        {
+          "row": 10498,
+          "text": "I think...",
+          "timestamp": "8:58:14"
+        },
+        {
+          "row": 10499,
+          "text": "Refuser, right?",
+          "timestamp": "8:58:15"
+        },
+        {
+          "row": 10500,
+          "text": "If you can Refuse?",
+          "timestamp": "8:58:16"
+        },
+        {
+          "row": 10501,
+          "text": "I think...",
+          "timestamp": "8:58:17"
+        },
+        {
+          "row": 10502,
+          "text": "Okay.",
+          "timestamp": "8:58:18"
+        },
+        {
+          "row": 10503,
+          "text": "Has the...",
+          "timestamp": "8:58:19"
+        },
+        {
+          "row": 10504,
+          "text": "If you...",
+          "timestamp": "8:58:20"
+        },
+        {
+          "row": 10505,
+          "text": "If you...",
+          "timestamp": "8:58:21"
+        },
+        {
+          "row": 10506,
+          "text": "If you negate this",
+          "timestamp": "8:58:22"
+        },
+        {
+          "row": 10507,
+          "text": "he can go",
+          "timestamp": "8:58:23"
+        },
+        {
+          "row": 10508,
+          "text": "Intensified Pyre",
+          "timestamp": "8:58:24"
+        },
+        {
+          "row": 10509,
+          "text": "I don't think...",
+          "timestamp": "8:58:25"
+        },
+        {
+          "row": 10510,
+          "text": "Yeah, he only has",
+          "timestamp": "8:58:26"
+        },
+        {
+          "row": 10511,
+          "text": "5 cards.",
+          "timestamp": "8:58:27"
+        },
+        {
+          "row": 10512,
+          "text": "He cannot do",
+          "timestamp": "8:58:28"
+        },
+        {
+          "row": 10513,
+          "text": "Double Intensified.",
+          "timestamp": "8:58:29"
+        },
+        {
+          "row": 10514,
+          "text": "He cannot do",
+          "timestamp": "8:58:30"
+        },
+        {
+          "row": 10515,
+          "text": "something truly heinous",
+          "timestamp": "8:58:31"
+        },
+        {
+          "row": 10516,
+          "text": "here, so...",
+          "timestamp": "8:58:32"
+        },
+        {
+          "row": 10517,
+          "text": "Yeah, because",
+          "timestamp": "8:58:33"
+        },
+        {
+          "row": 10518,
+          "text": "this is still Noah's",
+          "timestamp": "8:58:34"
+        },
+        {
+          "row": 10519,
+          "text": "before Recollection.",
+          "timestamp": "8:58:35"
+        },
+        {
+          "row": 10520,
+          "text": "Yes, and she still",
+          "timestamp": "8:58:36"
+        },
+        {
+          "row": 10521,
+          "text": "has 3 cards secondly",
+          "timestamp": "8:58:37"
+        },
+        {
+          "row": 10522,
+          "text": "so she can actually",
+          "timestamp": "8:58:38"
+        },
+        {
+          "row": 10523,
+          "text": "just pop the Frackles.",
+          "timestamp": "8:58:39"
+        },
+        {
+          "row": 10524,
+          "text": "All this will",
+          "timestamp": "8:58:40"
+        },
+        {
+          "row": 10525,
+          "text": "recollect later",
+          "timestamp": "8:58:41"
+        },
+        {
+          "row": 10526,
+          "text": "so this is really",
+          "timestamp": "8:58:42"
+        },
+        {
+          "row": 10527,
+          "text": "do or die for Doodoo, I think.",
+          "timestamp": "8:58:43"
+        },
+        {
+          "row": 10528,
+          "text": "I think just negate it",
+          "timestamp": "8:58:44"
+        },
+        {
+          "row": 10529,
+          "text": "if you can negate this.",
+          "timestamp": "8:58:45"
+        },
+        {
+          "row": 10530,
+          "text": "I think this has to be negated",
+          "timestamp": "8:58:46"
+        },
+        {
+          "row": 10531,
+          "text": "because if this doesn't",
+          "timestamp": "8:58:47"
+        },
+        {
+          "row": 10532,
+          "text": "get negated",
+          "timestamp": "8:58:48"
+        },
+        {
+          "row": 10533,
+          "text": "these 2 Frackle Sparks",
+          "timestamp": "8:58:49"
+        },
+        {
+          "row": 10534,
+          "text": "guarantee this is 6 damage.",
+          "timestamp": "8:58:50"
+        },
+        {
+          "row": 10535,
+          "text": "Yeah, this is",
+          "timestamp": "8:58:51"
+        },
+        {
+          "row": 10536,
+          "text": "way too much damage.",
+          "timestamp": "8:58:52"
+        },
+        {
+          "row": 10537,
+          "text": "I think you just have to",
+          "timestamp": "8:58:53"
+        },
+        {
+          "row": 10538,
+          "text": "get rid of this.",
+          "timestamp": "8:58:54"
+        },
+        {
+          "row": 10539,
+          "text": "Yeah, this is",
+          "timestamp": "8:58:56"
+        },
+        {
+          "row": 10540,
+          "text": "guaranteed 6 damage",
+          "timestamp": "8:58:57"
+        },
+        {
+          "row": 10541,
+          "text": "and then any",
+          "timestamp": "8:58:58"
+        },
+        {
+          "row": 10542,
+          "text": "Burn spell on top",
+          "timestamp": "8:58:59"
+        },
+        {
+          "row": 10543,
+          "text": "I mean, obviously Doodoo",
+          "timestamp": "8:59:00"
+        },
+        {
+          "row": 10544,
+          "text": "can",
+          "timestamp": "8:59:01"
+        },
+        {
+          "row": 10545,
+          "text": "choose to do",
+          "timestamp": "8:59:02"
+        },
+        {
+          "row": 10546,
+          "text": "instead of this.",
+          "timestamp": "8:59:03"
+        },
+        {
+          "row": 10547,
+          "text": "Actually...",
+          "timestamp": "8:59:04"
+        },
+        {
+          "row": 10548,
+          "text": "Can...",
+          "timestamp": "8:59:05"
+        },
+        {
+          "row": 10549,
+          "text": "It has 100%.",
+          "timestamp": "8:59:06"
+        },
+        {
+          "row": 10550,
+          "text": "That is 7 Frackles.",
+          "timestamp": "8:59:07"
+        },
+        {
+          "row": 10551,
+          "text": "Yeah, no.",
+          "timestamp": "8:59:08"
+        },
+        {
+          "row": 10552,
+          "text": "This should be...",
+          "timestamp": "8:59:09"
+        },
+        {
+          "row": 10553,
+          "text": "Actually...",
+          "timestamp": "8:59:10"
+        },
+        {
+          "row": 10554,
+          "text": "1, 2, 3, 4, 5...",
+          "timestamp": "8:59:11"
+        },
+        {
+          "row": 10555,
+          "text": "Actually, can pay for it",
+          "timestamp": "8:59:12"
+        },
+        {
+          "row": 10556,
+          "text": "but Frackles is up to you.",
+          "timestamp": "8:59:13"
+        },
+        {
+          "row": 10557,
+          "text": "Yeah, yeah, yeah.",
+          "timestamp": "8:59:14"
+        },
+        {
+          "row": 10558,
+          "text": "So definitely no there.",
+          "timestamp": "8:59:15"
+        },
+        {
+          "row": 10559,
+          "text": "Also, I forgot",
+          "timestamp": "8:59:16"
+        },
+        {
+          "row": 10560,
+          "text": "Everflame Staff is still here",
+          "timestamp": "8:59:17"
+        },
+        {
+          "row": 10561,
+          "text": "so there's a lot of",
+          "timestamp": "8:59:18"
+        },
+        {
+          "row": 10562,
+          "text": "damage potential.",
+          "timestamp": "8:59:19"
+        },
+        {
+          "row": 10563,
+          "text": "It's really this Lantern",
+          "timestamp": "8:59:20"
+        },
+        {
+          "row": 10564,
+          "text": "that is keeping",
+          "timestamp": "8:59:21"
+        },
+        {
+          "row": 10565,
+          "text": "Doodoo down.",
+          "timestamp": "8:59:22"
+        },
+        {
+          "row": 10566,
+          "text": "False damage from spell, right?",
+          "timestamp": "8:59:23"
+        },
+        {
+          "row": 10567,
+          "text": "That only counts for Doodoo.",
+          "timestamp": "8:59:24"
+        },
+        {
+          "row": 10568,
+          "text": "So if you do",
+          "timestamp": "8:59:25"
+        },
+        {
+          "row": 10569,
+          "text": "like",
+          "timestamp": "8:59:26"
+        },
+        {
+          "row": 10570,
+          "text": "5 and 5",
+          "timestamp": "8:59:27"
+        },
+        {
+          "row": 10571,
+          "text": "with the...",
+          "timestamp": "8:59:28"
+        },
+        {
+          "row": 10572,
+          "text": "Actually, 3 and 3",
+          "timestamp": "8:59:29"
+        },
+        {
+          "row": 10573,
+          "text": "with the Rebuild",
+          "timestamp": "8:59:30"
+        },
+        {
+          "row": 10574,
+          "text": "it just gives 2 counter, I believe?",
+          "timestamp": "8:59:31"
+        },
+        {
+          "row": 10575,
+          "text": "It would give...",
+          "timestamp": "8:59:33"
+        },
+        {
+          "row": 10576,
+          "text": "It's still a spell source",
+          "timestamp": "8:59:34"
+        },
+        {
+          "row": 10577,
+          "text": "so each one would be 1.",
+          "timestamp": "8:59:35"
+        },
+        {
+          "row": 10578,
+          "text": "Yeah, yeah, yeah.",
+          "timestamp": "8:59:36"
+        },
+        {
+          "row": 10579,
+          "text": "That's how this exactly works.",
+          "timestamp": "8:59:37"
+        },
+        {
+          "row": 10580,
+          "text": "I think we are",
+          "timestamp": "8:59:38"
+        },
+        {
+          "row": 10581,
+          "text": "going to be refusing it",
+          "timestamp": "8:59:39"
+        },
+        {
+          "row": 10582,
+          "text": "paying 2",
+          "timestamp": "8:59:40"
+        },
+        {
+          "row": 10583,
+          "text": "of the Frackles there.",
+          "timestamp": "8:59:41"
+        },
+        {
+          "row": 10584,
+          "text": "I do see the Refuser",
+          "timestamp": "8:59:42"
+        },
+        {
+          "row": 10585,
+          "text": "is going to be refused.",
+          "timestamp": "8:59:43"
+        },
+        {
+          "row": 10586,
+          "text": "Yeah, I agree.",
+          "timestamp": "8:59:45"
+        },
+        {
+          "row": 10587,
+          "text": "This has to be done here.",
+          "timestamp": "8:59:46"
+        },
+        {
+          "row": 10588,
+          "text": "This...",
+          "timestamp": "8:59:47"
+        },
+        {
+          "row": 10589,
+          "text": "If you let this Rebuke go",
+          "timestamp": "8:59:48"
+        },
+        {
+          "row": 10590,
+          "text": "this is going to be",
+          "timestamp": "8:59:49"
+        },
+        {
+          "row": 10591,
+          "text": "guaranteed 6 damage.",
+          "timestamp": "8:59:50"
+        },
+        {
+          "row": 10592,
+          "text": "There's no way",
+          "timestamp": "8:59:51"
+        },
+        {
+          "row": 10593,
+          "text": "to put prevention effects",
+          "timestamp": "8:59:52"
+        },
+        {
+          "row": 10594,
+          "text": "on Doodoo himself.",
+          "timestamp": "8:59:53"
+        },
+        {
+          "row": 10595,
+          "text": "So...",
+          "timestamp": "8:59:54"
+        },
+        {
+          "row": 10596,
+          "text": "And because of the way",
+          "timestamp": "8:59:55"
+        },
+        {
+          "row": 10597,
+          "text": "that the",
+          "timestamp": "8:59:56"
+        },
+        {
+          "row": 10598,
+          "text": "prevention of",
+          "timestamp": "8:59:57"
+        },
+        {
+          "row": 10599,
+          "text": "things work...",
+          "timestamp": "8:59:58"
+        },
+        {
+          "row": 10600,
+          "text": "be able to choose that, so it's gonna be negated here, should not be able to stop this if he does choose to pay for all-",
+          "timestamp": "8:59:59"
+        },
+        {
+          "row": 10601,
+          "text": "Actually, wait! He has 3 fractals!",
+          "timestamp": "9:00:04"
+        },
+        {
+          "row": 10602,
+          "text": "Oh yeah, that thing has a fractal.",
+          "timestamp": "9:00:06"
+        },
+        {
+          "row": 10603,
+          "text": "Oh yeah, so actually can do- can pay, but will only be able to use 1 sparks.",
+          "timestamp": "9:00:08"
+        },
+        {
+          "row": 10604,
+          "text": "I don't think it's worth it, though. Do you really wanna pay it?",
+          "timestamp": "9:00:12"
+        },
+        {
+          "row": 10605,
+          "text": "And then you're also completely hands down.",
+          "timestamp": "9:00:15"
+        },
+        {
+          "row": 10606,
+          "text": "Now of course, the Blanche there. So, if you do that, and Noelle finds Paladin, it goes Paladin, Swing, Burst Thunder, and she kills you.",
+          "timestamp": "9:00:16"
+        },
+        {
+          "row": 10607,
+          "text": "So, definitely not the line there.",
+          "timestamp": "9:00:23"
+        },
+        {
+          "row": 10608,
+          "text": "Refuser is refused. We are going to go back into the Synchron stack. Do you want to respond to the Synchron?",
+          "timestamp": "9:00:26"
+        },
+        {
+          "row": 10609,
+          "text": "That's gonna be healing 10.",
+          "timestamp": "9:00:30"
+        },
+        {
+          "row": 10610,
+          "text": "Yep, going back to Dulu here.",
+          "timestamp": "9:00:32"
+        },
+        {
+          "row": 10611,
+          "text": "I don't think Dulu has any response.",
+          "timestamp": "9:00:34"
+        },
+        {
+          "row": 10612,
+          "text": "I don't think so. Noelle is holding a Frostbind as well, so if it is a-",
+          "timestamp": "9:00:36"
+        },
+        {
+          "row": 10613,
+          "text": "Wait, is that double-",
+          "timestamp": "9:00:40"
+        },
+        {
+          "row": 10614,
+          "text": "It is double Cinder Geyser, which is the 8, so it would still not be enough to kill here.",
+          "timestamp": "9:00:42"
+        },
+        {
+          "row": 10615,
+          "text": "But we have the fractals, right? So-",
+          "timestamp": "9:00:46"
+        },
+        {
+          "row": 10616,
+          "text": "So, it's gonna be Cinder Geyser number 1 here, gonna cost 2.",
+          "timestamp": "9:00:49"
+        },
+        {
+          "row": 10617,
+          "text": "I think you just Cinder Geyser, Cinder Geyser, and then maybe you can win the game.",
+          "timestamp": "9:00:54"
+        },
+        {
+          "row": 10618,
+          "text": "Noelle can negate one of them.",
+          "timestamp": "9:01:00"
+        },
+        {
+          "row": 10619,
+          "text": "Wait, is that another Gremling in hand?",
+          "timestamp": "9:01:02"
+        },
+        {
+          "row": 10620,
+          "text": "No, it's a Frostbind. Frostbind in hand.",
+          "timestamp": "9:01:04"
+        },
+        {
+          "row": 10621,
+          "text": "Frostbind in hand?",
+          "timestamp": "9:01:06"
+        },
+        {
+          "row": 10622,
+          "text": "So, it would be Cinder Geyser, then Cinder Geyser 1 plus 1 fractal, so then you negate the second one, force to use the two sparks to stop it.",
+          "timestamp": "9:01:07"
+        },
+        {
+          "row": 10623,
+          "text": "So, it would still not be enough.",
+          "timestamp": "9:01:14"
+        },
+        {
+          "row": 10624,
+          "text": "Okay, that's my fire! Okay, so this is gonna do 6.",
+          "timestamp": "9:01:16"
+        },
+        {
+          "row": 10625,
+          "text": "So, here is the high damage line.",
+          "timestamp": "9:01:19"
+        },
+        {
+          "row": 10626,
+          "text": "Noelle has the Frostbind, but has currently 1, 2, 3, 4 cards in hand-",
+          "timestamp": "9:01:21"
+        },
+        {
+          "row": 10627,
+          "text": "Or, 3 fractals and 1 card in hand.",
+          "timestamp": "9:01:27"
+        },
+        {
+          "row": 10628,
+          "text": "So, that would be-",
+          "timestamp": "9:01:29"
+        },
+        {
+          "row": 10629,
+          "text": "This coming in for 6.",
+          "timestamp": "9:01:31"
+        },
+        {
+          "row": 10630,
+          "text": "Can pay 2.",
+          "timestamp": "9:01:33"
+        },
+        {
+          "row": 10631,
+          "text": "1 card from hand plus the Fracturize.",
+          "timestamp": "9:01:35"
+        },
+        {
+          "row": 10632,
+          "text": "2 cards left.",
+          "timestamp": "9:01:37"
+        },
+        {
+          "row": 10633,
+          "text": "Pop.",
+          "timestamp": "9:01:38"
+        },
+        {
+          "row": 10634,
+          "text": "2, so that would be 6.",
+          "timestamp": "9:01:39"
+        },
+        {
+          "row": 10635,
+          "text": "18, still just slightly off.",
+          "timestamp": "9:01:40"
+        },
+        {
+          "row": 10636,
+          "text": "Just slightly off right here.",
+          "timestamp": "9:01:42"
+        },
+        {
+          "row": 10637,
+          "text": "If Doolu doesn't do anything significant, like maybe-",
+          "timestamp": "9:01:44"
+        },
+        {
+          "row": 10638,
+          "text": "Oh, Frostbind?",
+          "timestamp": "9:01:46"
+        },
+        {
+          "row": 10639,
+          "text": "It is gonna be that Frostbind.",
+          "timestamp": "9:01:47"
+        },
+        {
+          "row": 10640,
+          "text": "Gonna force out-",
+          "timestamp": "9:01:48"
+        },
+        {
+          "row": 10641,
+          "text": "Force out the remaining cards in hand.",
+          "timestamp": "9:01:51"
+        },
+        {
+          "row": 10642,
+          "text": "Gonna pay-",
+          "timestamp": "9:01:52"
+        },
+        {
+          "row": 10643,
+          "text": "Wow, paying 1 from hand is very telegraphed here.",
+          "timestamp": "9:01:53"
+        },
+        {
+          "row": 10644,
+          "text": "So, Doolu, with only 1 card, there's nothing that costs 0.",
+          "timestamp": "9:01:55"
+        },
+        {
+          "row": 10645,
+          "text": "So, it's gonna be paying 1 plus-",
+          "timestamp": "9:01:59"
+        },
+        {
+          "row": 10646,
+          "text": "Wait, keeping 1 card in hand?",
+          "timestamp": "9:02:01"
+        },
+        {
+          "row": 10647,
+          "text": "Yeah, wait.",
+          "timestamp": "9:02:03"
+        },
+        {
+          "row": 10648,
+          "text": "What could that possibly be?",
+          "timestamp": "9:02:05"
+        },
+        {
+          "row": 10649,
+          "text": "What is a 1-cost card in this deck?",
+          "timestamp": "9:02:06"
+        },
+        {
+          "row": 10650,
+          "text": "It's not Cinder Geyser.",
+          "timestamp": "9:02:09"
+        },
+        {
+          "row": 10651,
+          "text": "It's not Scalding.",
+          "timestamp": "9:02:10"
+        },
+        {
+          "row": 10652,
+          "text": "Pyre will be doing 6 damage here.",
+          "timestamp": "9:02:12"
+        },
+        {
+          "row": 10653,
+          "text": "Noelle is down to just-",
+          "timestamp": "9:02:14"
+        },
+        {
+          "row": 10654,
+          "text": "And then Synchron does Resolve.",
+          "timestamp": "9:02:17"
+        },
+        {
+          "row": 10655,
+          "text": "Resolve, and Fling Up activates.",
+          "timestamp": "9:02:19"
+        },
+        {
+          "row": 10656,
+          "text": "So, going back to Noelle, it is still gonna be Recollection.",
+          "timestamp": "9:02:21"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 2,
+      "order": 4,
+      "sourceRows": [
+        10670,
+        10719
+      ],
+      "source": [
+        {
+          "row": 10670,
+          "text": "Oh, Paladin, please.",
+          "timestamp": "9:03:01"
+        },
+        {
+          "row": 10671,
+          "text": "Noelle still can't actually do it.",
+          "timestamp": "9:03:02"
+        },
+        {
+          "row": 10672,
+          "text": "Oh, Noelle is forced to Missile.",
+          "timestamp": "9:03:04"
+        },
+        {
+          "row": 10673,
+          "text": "You can safeguard.",
+          "timestamp": "9:03:06"
+        },
+        {
+          "row": 10674,
+          "text": "Okay, I thought that Missile was going to face, but it's actually on Blanche here.",
+          "timestamp": "9:03:08"
+        },
+        {
+          "row": 10675,
+          "text": "I think you just have to give it, right?",
+          "timestamp": "9:03:11"
+        },
+        {
+          "row": 10676,
+          "text": "She has a second Refracting Missile.",
+          "timestamp": "9:03:13"
+        },
+        {
+          "row": 10677,
+          "text": "So, that would be 1, 2, 3, 4, 5, 6, 7, 8.",
+          "timestamp": "9:03:15"
+        },
+        {
+          "row": 10678,
+          "text": "8 damage, even through the Safeguard, it would be doing 4.",
+          "timestamp": "9:03:18"
+        },
+        {
+          "row": 10679,
+          "text": "Okay, on the stack here, because he knows.",
+          "timestamp": "9:03:22"
+        },
+        {
+          "row": 10680,
+          "text": "If she kills the Blanche, she can throw another Refracting on top.",
+          "timestamp": "9:03:24"
+        },
+        {
+          "row": 10681,
+          "text": "But now, she gets to just pass turn and then Refracting on Dudu's turn.",
+          "timestamp": "9:03:27"
+        },
+        {
+          "row": 10682,
+          "text": "Yup, yup, yup.",
+          "timestamp": "9:03:31"
+        },
+        {
+          "row": 10683,
+          "text": "Oh, one card in hand.",
+          "timestamp": "9:03:32"
+        },
+        {
+          "row": 10684,
+          "text": "He kept that one card in hand, so when he moves to his turn, he will have his Fractals awake.",
+          "timestamp": "9:03:34"
+        },
+        {
+          "row": 10685,
+          "text": "So now, very smart play here from Dudu.",
+          "timestamp": "9:03:38"
+        },
+        {
+          "row": 10686,
+          "text": "1, 2, 3, 4, 5.",
+          "timestamp": "9:03:42"
+        },
+        {
+          "row": 10687,
+          "text": "Yeah, I wonder if Noelle is going to remember.",
+          "timestamp": "9:03:44"
+        },
+        {
+          "row": 10688,
+          "text": "These three Fractals are going to wake up on Dudu's turn,",
+          "timestamp": "9:03:46"
+        },
+        {
+          "row": 10689,
+          "text": "which means that he has that one card left in hand to be able to play something.",
+          "timestamp": "9:03:49"
+        },
+        {
+          "row": 10690,
+          "text": "Wait, isn't it going to be a Refreshment?",
+          "timestamp": "9:03:54"
+        },
+        {
+          "row": 10691,
+          "text": "Oh, an Insight.",
+          "timestamp": "9:03:58"
+        },
+        {
+          "row": 10692,
+          "text": "She has that one last Refracting, but I don't think she can glimpse with this.",
+          "timestamp": "9:04:00"
+        },
+        {
+          "row": 10693,
+          "text": "Wait, yes.",
+          "timestamp": "9:04:03"
+        },
+        {
+          "row": 10694,
+          "text": "If you do this, that means you can't actually cast the Refracting Missile, right?",
+          "timestamp": "9:04:04"
+        },
+        {
+          "row": 10695,
+          "text": "Oh yes, you're right.",
+          "timestamp": "9:04:10"
+        },
+        {
+          "row": 10696,
+          "text": "Because of the Trinket.",
+          "timestamp": "9:04:11"
+        },
+        {
+          "row": 10697,
+          "text": "Yeah, right, right.",
+          "timestamp": "9:04:13"
+        },
+        {
+          "row": 10698,
+          "text": "That VPT is still there.",
+          "timestamp": "9:04:14"
+        },
+        {
+          "row": 10699,
+          "text": "In fact, there's so many things on board, so many things to keep track of.",
+          "timestamp": "9:04:16"
+        },
+        {
+          "row": 10700,
+          "text": "So, 17 damage here.",
+          "timestamp": "9:04:19"
+        },
+        {
+          "row": 10701,
+          "text": "Now, Noelle has to think about whether she...",
+          "timestamp": "9:04:20"
+        },
+        {
+          "row": 10702,
+          "text": "Actually, she can't even play the Refracting anyway because she only has three cards in hand anyway.",
+          "timestamp": "9:04:22"
+        },
+        {
+          "row": 10703,
+          "text": "Safeguard's up, right?",
+          "timestamp": "9:04:25"
+        },
+        {
+          "row": 10704,
+          "text": "So you can't actually shoot...",
+          "timestamp": "9:04:26"
+        },
+        {
+          "row": 10705,
+          "text": "Wait, is it?",
+          "timestamp": "9:04:27"
+        },
+        {
+          "row": 10706,
+          "text": "No, he has to use the Safeguard already.",
+          "timestamp": "9:04:28"
+        },
+        {
+          "row": 10707,
+          "text": "So now it's...",
+          "timestamp": "9:04:30"
+        },
+        {
+          "row": 10708,
+          "text": "Wait.",
+          "timestamp": "9:04:31"
+        },
+        {
+          "row": 10709,
+          "text": "Refracting.",
+          "timestamp": "9:04:32"
+        },
+        {
+          "row": 10710,
+          "text": "When is this happening?",
+          "timestamp": "9:04:33"
+        },
+        {
+          "row": 10711,
+          "text": "Oh wait, that's one extra.",
+          "timestamp": "9:04:34"
+        },
+        {
+          "row": 10712,
+          "text": "That should be enough to kill here.",
+          "timestamp": "9:04:35"
+        },
+        {
+          "row": 10713,
+          "text": "That's going to be 1, 2, 3, 4, 5, 6, 7, 8, 9.",
+          "timestamp": "9:04:37"
+        },
+        {
+          "row": 10714,
+          "text": "Through the Safeguard.",
+          "timestamp": "9:04:40"
+        },
+        {
+          "row": 10715,
+          "text": "Safeguard's preventing 4, so that's going to be 5.",
+          "timestamp": "9:04:41"
+        },
+        {
+          "row": 10716,
+          "text": "It's exact lethal.",
+          "timestamp": "9:04:43"
+        },
+        {
+          "row": 10717,
+          "text": "Gina found the line.",
+          "timestamp": "9:04:45"
+        },
+        {
+          "row": 10718,
+          "text": "She just needed that one more Fractal in order to get there.",
+          "timestamp": "9:04:46"
+        },
+        {
+          "row": 10719,
+          "text": "And she ganks game 2, going 1-1 against Dudu in an insanely tight game here.",
+          "timestamp": "9:04:49"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 3,
+      "order": 1,
+      "sourceRows": [
+        10894,
+        10983
+      ],
+      "source": [
+        {
+          "row": 10894,
+          "text": "Lantern, immediately.",
+          "timestamp": "9:11:19"
+        },
+        {
+          "row": 10895,
+          "text": "Immediately, no hesitation.",
+          "timestamp": "9:11:21"
+        },
+        {
+          "row": 10896,
+          "text": "Even though there's no Fire Cards right now in the grave,",
+          "timestamp": "9:11:22"
+        },
+        {
+          "row": 10897,
+          "text": "you just want to get rid of it.",
+          "timestamp": "9:11:24"
+        },
+        {
+          "row": 10898,
+          "text": "Get the Lantern out",
+          "timestamp": "9:11:25"
+        },
+        {
+          "row": 10899,
+          "text": "so that there is no Thirjanjiao going on.",
+          "timestamp": "9:11:26"
+        },
+        {
+          "row": 10900,
+          "text": "I believe this is going to be the easiest...",
+          "timestamp": "9:11:28"
+        },
+        {
+          "row": 10901,
+          "text": "Thirjanjiao?",
+          "timestamp": "9:11:30"
+        },
+        {
+          "row": 10902,
+          "text": "Is that a turret?",
+          "timestamp": "9:11:31"
+        },
+        {
+          "row": 10903,
+          "text": "Was that the Thirjanjiao?",
+          "timestamp": "9:11:32"
+        },
+        {
+          "row": 10904,
+          "text": "Was that the Thirjanjiao?",
+          "timestamp": "9:11:33"
+        },
+        {
+          "row": 10905,
+          "text": "I think that's the Thirjanjiao.",
+          "timestamp": "9:11:34"
+        },
+        {
+          "row": 10906,
+          "text": "Okay, if Gina is about to show off",
+          "timestamp": "9:11:35"
+        },
+        {
+          "row": 10907,
+          "text": "why she is one of the best Fractal players in the world,",
+          "timestamp": "9:11:36"
+        },
+        {
+          "row": 10908,
+          "text": "she is about to pull it out here.",
+          "timestamp": "9:11:38"
+        },
+        {
+          "row": 10909,
+          "text": "Another Thirjanjiao comes out",
+          "timestamp": "9:11:41"
+        },
+        {
+          "row": 10910,
+          "text": "and the Fracturize as well!",
+          "timestamp": "9:11:42"
+        },
+        {
+          "row": 10911,
+          "text": "I think we...",
+          "timestamp": "9:11:44"
+        },
+        {
+          "row": 10912,
+          "text": "I think this time we have what we needed last game.",
+          "timestamp": "9:11:45"
+        },
+        {
+          "row": 10913,
+          "text": "Thirjanjiao will go in for Phase 4-1.",
+          "timestamp": "9:11:48"
+        },
+        {
+          "row": 10914,
+          "text": "We do...",
+          "timestamp": "9:11:50"
+        },
+        {
+          "row": 10915,
+          "text": "We still have a lot of info.",
+          "timestamp": "9:11:51"
+        },
+        {
+          "row": 10916,
+          "text": "We even have the Frostmourne Paladin",
+          "timestamp": "9:11:52"
+        },
+        {
+          "row": 10917,
+          "text": "to set up in the next turn.",
+          "timestamp": "9:11:53"
+        },
+        {
+          "row": 10918,
+          "text": "I think we just...",
+          "timestamp": "9:11:54"
+        },
+        {
+          "row": 10919,
+          "text": "Asunder this time.",
+          "timestamp": "9:11:55"
+        },
+        {
+          "row": 10920,
+          "text": "Asunder is found.",
+          "timestamp": "9:11:56"
+        },
+        {
+          "row": 10921,
+          "text": "Finally finds a Burst Asunder as well.",
+          "timestamp": "9:11:57"
+        },
+        {
+          "row": 10922,
+          "text": "That's Paladin, Fracturize, Second Zhang.",
+          "timestamp": "9:11:59"
+        },
+        {
+          "row": 10923,
+          "text": "This is such a good hand for her.",
+          "timestamp": "9:12:02"
+        },
+        {
+          "row": 10924,
+          "text": "The only thing that has gone wrong is that mill.",
+          "timestamp": "9:12:04"
+        },
+        {
+          "row": 10925,
+          "text": "But this is such a strong start,",
+          "timestamp": "9:12:06"
+        },
+        {
+          "row": 10926,
+          "text": "especially going second.",
+          "timestamp": "9:12:09"
+        },
+        {
+          "row": 10927,
+          "text": "Well, who cares about that mill anymore?",
+          "timestamp": "9:12:10"
+        },
+        {
+          "row": 10928,
+          "text": "We just have to hit this hand.",
+          "timestamp": "9:12:11"
+        },
+        {
+          "row": 10929,
+          "text": "So we are going to Fractal Rain, I believe,",
+          "timestamp": "9:12:13"
+        },
+        {
+          "row": 10930,
+          "text": "to get the fourth Fractal.",
+          "timestamp": "9:12:15"
+        },
+        {
+          "row": 10931,
+          "text": "And then we're just going to pass, I think.",
+          "timestamp": "9:12:16"
+        },
+        {
+          "row": 10932,
+          "text": "There's nothing much needed to be done here.",
+          "timestamp": "9:12:18"
+        },
+        {
+          "row": 10933,
+          "text": "Instead of being defensive like last game,",
+          "timestamp": "9:12:20"
+        },
+        {
+          "row": 10934,
+          "text": "no one is going to be on the offense.",
+          "timestamp": "9:12:22"
+        },
+        {
+          "row": 10935,
+          "text": "Four Fractal, one Thirjanjiao,",
+          "timestamp": "9:12:24"
+        },
+        {
+          "row": 10936,
+          "text": "one Missile in hand,",
+          "timestamp": "9:12:25"
+        },
+        {
+          "row": 10937,
+          "text": "and also the...",
+          "timestamp": "9:12:26"
+        },
+        {
+          "row": 10938,
+          "text": "Well, the card...",
+          "timestamp": "9:12:28"
+        },
+        {
+          "row": 10939,
+          "text": "Fracturize.",
+          "timestamp": "9:12:29"
+        },
+        {
+          "row": 10940,
+          "text": "Fracturize.",
+          "timestamp": "9:12:30"
+        },
+        {
+          "row": 10941,
+          "text": "And then, well, Asunder.",
+          "timestamp": "9:12:31"
+        },
+        {
+          "row": 10942,
+          "text": "Everything is there.",
+          "timestamp": "9:12:32"
+        },
+        {
+          "row": 10943,
+          "text": "Yeah, everything she needs.",
+          "timestamp": "9:12:33"
+        },
+        {
+          "row": 10944,
+          "text": "This Burst Asunder is already going to come in for 10.",
+          "timestamp": "9:12:34"
+        },
+        {
+          "row": 10945,
+          "text": "So a single Refracting plus a Burst Asunder",
+          "timestamp": "9:12:36"
+        },
+        {
+          "row": 10946,
+          "text": "should be getting towards that lethal line.",
+          "timestamp": "9:12:38"
+        },
+        {
+          "row": 10947,
+          "text": "We are going to go into Arcane Level 1 right there.",
+          "timestamp": "9:12:41"
+        },
+        {
+          "row": 10948,
+          "text": "That's five healers.",
+          "timestamp": "9:12:44"
+        },
+        {
+          "row": 10949,
+          "text": "That's five healers.",
+          "timestamp": "9:12:45"
+        },
+        {
+          "row": 10950,
+          "text": "That's five healing",
+          "timestamp": "9:12:46"
+        },
+        {
+          "row": 10951,
+          "text": "that's potentially coming out from Dudu.",
+          "timestamp": "9:12:47"
+        },
+        {
+          "row": 10952,
+          "text": "So we have to be worried about that.",
+          "timestamp": "9:12:48"
+        },
+        {
+          "row": 10953,
+          "text": "Still no other potions.",
+          "timestamp": "9:12:50"
+        },
+        {
+          "row": 10954,
+          "text": "Ignis, they have drawn the turn.",
+          "timestamp": "9:12:52"
+        },
+        {
+          "row": 10955,
+          "text": "He goes up to Level 1.",
+          "timestamp": "9:12:54"
+        },
+        {
+          "row": 10956,
+          "text": "You know, even though you're not playing Dungeon Guide,",
+          "timestamp": "9:12:55"
+        },
+        {
+          "row": 10957,
+          "text": "you can still have a Dungeon Guide moment.",
+          "timestamp": "9:12:57"
+        },
+        {
+          "row": 10958,
+          "text": "Find the Combustible Potion, though.",
+          "timestamp": "9:12:59"
+        },
+        {
+          "row": 10959,
+          "text": "Combustible Potion will be late here, I believe.",
+          "timestamp": "9:13:01"
+        },
+        {
+          "row": 10960,
+          "text": "Or Distill first.",
+          "timestamp": "9:13:04"
+        },
+        {
+          "row": 10961,
+          "text": "Distill is fine too, right?",
+          "timestamp": "9:13:05"
+        },
+        {
+          "row": 10962,
+          "text": "They're both...",
+          "timestamp": "9:13:06"
+        },
+        {
+          "row": 10963,
+          "text": "They basically do the same thing.",
+          "timestamp": "9:13:07"
+        },
+        {
+          "row": 10964,
+          "text": "But I would do Combustible first because it draws.",
+          "timestamp": "9:13:09"
+        },
+        {
+          "row": 10965,
+          "text": "So you might as well see more things before you commit.",
+          "timestamp": "9:13:11"
+        },
+        {
+          "row": 10966,
+          "text": "Combustible Potion is going to come out here",
+          "timestamp": "9:13:13"
+        },
+        {
+          "row": 10967,
+          "text": "in response to the Brew.",
+          "timestamp": "9:13:14"
+        },
+        {
+          "row": 10968,
+          "text": "Noelle is going to go for that Fracturize.",
+          "timestamp": "9:13:15"
+        },
+        {
+          "row": 10969,
+          "text": "I think Fracturize is going to happen.",
+          "timestamp": "9:13:17"
+        },
+        {
+          "row": 10970,
+          "text": "Oh, it's going to let go.",
+          "timestamp": "9:13:19"
+        },
+        {
+          "row": 10971,
+          "text": "Brew first.",
+          "timestamp": "9:13:21"
+        },
+        {
+          "row": 10972,
+          "text": "Has to use the herbs first.",
+          "timestamp": "9:13:22"
+        },
+        {
+          "row": 10973,
+          "text": "So Brew on the stack of the Essence Crucible.",
+          "timestamp": "9:13:24"
+        },
+        {
+          "row": 10974,
+          "text": "Brew trigger on the stack.",
+          "timestamp": "9:13:26"
+        },
+        {
+          "row": 10975,
+          "text": "Fracturize.",
+          "timestamp": "9:13:28"
+        },
+        {
+          "row": 10976,
+          "text": "Fracturize.",
+          "timestamp": "9:13:29"
+        },
+        {
+          "row": 10977,
+          "text": "Found off the Zhang Xiao.",
+          "timestamp": "9:13:30"
+        },
+        {
+          "row": 10978,
+          "text": "She is so...",
+          "timestamp": "9:13:31"
+        },
+        {
+          "row": 10979,
+          "text": "Look at her.",
+          "timestamp": "9:13:32"
+        },
+        {
+          "row": 10980,
+          "text": "She is feeling so good about the way this game is going right now.",
+          "timestamp": "9:13:33"
+        },
+        {
+          "row": 10981,
+          "text": "Yeah, this is what most people imagine the matchup to be.",
+          "timestamp": "9:13:36"
+        },
+        {
+          "row": 10982,
+          "text": "Draws into a Liminal Guide.",
+          "timestamp": "9:13:39"
+        },
+        {
+          "row": 10983,
+          "text": "Of course, you always draw it after you've already leveled up.",
+          "timestamp": "9:13:40"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 3,
+      "order": 2,
+      "sourceRows": [
+        11102,
+        11125
+      ],
+      "source": [
+        {
+          "row": 11102,
+          "text": "Yeah, we are going to do damage to Sparks, I think.",
+          "timestamp": "9:17:00"
+        },
+        {
+          "row": 11103,
+          "text": "Deal damage to himself.",
+          "timestamp": "9:17:03"
+        },
+        {
+          "row": 11104,
+          "text": "Triggering the Rebuke.",
+          "timestamp": "9:17:05"
+        },
+        {
+          "row": 11105,
+          "text": "And once again, another one.",
+          "timestamp": "9:17:08"
+        },
+        {
+          "row": 11106,
+          "text": "Okay, he's also going to use the final one using that Concoction.",
+          "timestamp": "9:17:10"
+        },
+        {
+          "row": 11107,
+          "text": "He's going to take one damage off this one and do another three.",
+          "timestamp": "9:17:13"
+        },
+        {
+          "row": 11108,
+          "text": "So this is the maximum damage line on your Rebuke.",
+          "timestamp": "9:17:16"
+        },
+        {
+          "row": 11109,
+          "text": "It actually did nine damage, so very strong there.",
+          "timestamp": "9:17:18"
+        },
+        {
+          "row": 11110,
+          "text": "But it also did, in fact, give three stacks on that Extinguishing Circle.",
+          "timestamp": "9:17:20"
+        },
+        {
+          "row": 11111,
+          "text": "Without the Refactorize, this would have been a four.",
+          "timestamp": "9:17:24"
+        },
+        {
+          "row": 11112,
+          "text": "She would be dead.",
+          "timestamp": "9:17:27"
+        },
+        {
+          "row": 11113,
+          "text": "It would be five, five, five.",
+          "timestamp": "9:17:28"
+        },
+        {
+          "row": 11114,
+          "text": "He would have three age counters.",
+          "timestamp": "9:17:29"
+        },
+        {
+          "row": 11115,
+          "text": "He would have used three potions.",
+          "timestamp": "9:17:30"
+        },
+        {
+          "row": 11116,
+          "text": "It would have been six, six, six.",
+          "timestamp": "9:17:32"
+        },
+        {
+          "row": 11117,
+          "text": "Mark of the Beast right there.",
+          "timestamp": "9:17:34"
+        },
+        {
+          "row": 11118,
+          "text": "Damn, are you implying something with this deck?",
+          "timestamp": "9:17:36"
+        },
+        {
+          "row": 11119,
+          "text": "I mean, I think you're a little bit of a demon if you play that way.",
+          "timestamp": "9:17:38"
+        },
+        {
+          "row": 11120,
+          "text": "Spalling Cleanse is going to be used here.",
+          "timestamp": "9:17:41"
+        },
+        {
+          "row": 11121,
+          "text": "You see, she's very tactical when she uses the Spalling.",
+          "timestamp": "9:17:43"
+        },
+        {
+          "row": 11122,
+          "text": "She's trying to use it so that if he does have a Fire Interference,",
+          "timestamp": "9:17:46"
+        },
+        {
+          "row": 11123,
+          "text": "it would only affect her on her turn and not on his turn.",
+          "timestamp": "9:17:49"
+        },
+        {
+          "row": 11124,
+          "text": "Yeah, very heads-up play from Noelle right here.",
+          "timestamp": "9:17:52"
+        },
+        {
+          "row": 11125,
+          "text": "We are, I think, going to be passing the turn back to Dudu right here.",
+          "timestamp": "9:17:54"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 3,
+      "order": 3,
+      "sourceRows": [
+        11525,
+        11578
+      ],
+      "source": [
+        {
+          "row": 11525,
+          "text": "Burst the Blanche!",
+          "timestamp": "9:28:36"
+        },
+        {
+          "row": 11526,
+          "text": "Burst the Blanche!",
+          "timestamp": "9:28:37"
+        },
+        {
+          "row": 11527,
+          "text": "Actually, she's going to Burst the Blanche.",
+          "timestamp": "9:28:38"
+        },
+        {
+          "row": 11528,
+          "text": "She has two Bursts.",
+          "timestamp": "9:28:39"
+        },
+        {
+          "row": 11529,
+          "text": "So she can Burst the Blanche",
+          "timestamp": "9:28:40"
+        },
+        {
+          "row": 11530,
+          "text": "and then she can Burst again next turn.",
+          "timestamp": "9:28:41"
+        },
+        {
+          "row": 11531,
+          "text": "Very heads up from her.",
+          "timestamp": "9:28:43"
+        },
+        {
+          "row": 11532,
+          "text": "Burst the Blanche.",
+          "timestamp": "9:28:45"
+        },
+        {
+          "row": 11533,
+          "text": "Yeah, just do damage.",
+          "timestamp": "9:28:46"
+        },
+        {
+          "row": 11534,
+          "text": "Blanche does not prevent",
+          "timestamp": "9:28:47"
+        },
+        {
+          "row": 11535,
+          "text": "the damage on herself.",
+          "timestamp": "9:28:48"
+        },
+        {
+          "row": 11536,
+          "text": "So Blanche is gone.",
+          "timestamp": "9:28:49"
+        },
+        {
+          "row": 11537,
+          "text": "This is one of two Blanches",
+          "timestamp": "9:28:50"
+        },
+        {
+          "row": 11538,
+          "text": "and remember, there's no Level Urb",
+          "timestamp": "9:28:51"
+        },
+        {
+          "row": 11539,
+          "text": "so Fast Feed Blanche is not an option.",
+          "timestamp": "9:28:52"
+        },
+        {
+          "row": 11540,
+          "text": "And Dudu is really struggling now.",
+          "timestamp": "9:28:54"
+        },
+        {
+          "row": 11541,
+          "text": "He has that return to the Archive,",
+          "timestamp": "9:28:56"
+        },
+        {
+          "row": 11542,
+          "text": "could heal back down to 0",
+          "timestamp": "9:28:58"
+        },
+        {
+          "row": 11543,
+          "text": "but this is currently 5 Fractals",
+          "timestamp": "9:28:59"
+        },
+        {
+          "row": 11544,
+          "text": "which means a Burst of Thunder",
+          "timestamp": "9:29:01"
+        },
+        {
+          "row": 11545,
+          "text": "would be doing 12.",
+          "timestamp": "9:29:02"
+        },
+        {
+          "row": 11546,
+          "text": "So a Fracting plus a Burst",
+          "timestamp": "9:29:03"
+        },
+        {
+          "row": 11547,
+          "text": "would be coming in for",
+          "timestamp": "9:29:05"
+        },
+        {
+          "row": 11548,
+          "text": "6 plus 12, 18.",
+          "timestamp": "9:29:07"
+        },
+        {
+          "row": 11549,
+          "text": "So he just needs to find one more damage.",
+          "timestamp": "9:29:10"
+        },
+        {
+          "row": 11550,
+          "text": "I think you've passed.",
+          "timestamp": "9:29:12"
+        },
+        {
+          "row": 11551,
+          "text": "I think you have enough damage set up.",
+          "timestamp": "9:29:13"
+        },
+        {
+          "row": 11552,
+          "text": "Soon you will have the Fractal in hand.",
+          "timestamp": "9:29:15"
+        },
+        {
+          "row": 11553,
+          "text": "You can even Fractalize one of your Regalias",
+          "timestamp": "9:29:17"
+        },
+        {
+          "row": 11554,
+          "text": "and then turn that to another.",
+          "timestamp": "9:29:19"
+        },
+        {
+          "row": 11555,
+          "text": "Or you can play the Fractal if you have it.",
+          "timestamp": "9:29:21"
+        },
+        {
+          "row": 11556,
+          "text": "Three cards down.",
+          "timestamp": "9:29:23"
+        },
+        {
+          "row": 11557,
+          "text": "Oh, she wants me to Guild us.",
+          "timestamp": "9:29:24"
+        },
+        {
+          "row": 11558,
+          "text": "Oh no, Guilds died already.",
+          "timestamp": "9:29:25"
+        },
+        {
+          "row": 11559,
+          "text": "So three cards.",
+          "timestamp": "9:29:26"
+        },
+        {
+          "row": 11560,
+          "text": "Is it Intrusion?",
+          "timestamp": "9:29:27"
+        },
+        {
+          "row": 11561,
+          "text": "Tidal Fractal?",
+          "timestamp": "9:29:29"
+        },
+        {
+          "row": 11562,
+          "text": "Yeah, it's a Tidal.",
+          "timestamp": "9:29:31"
+        },
+        {
+          "row": 11563,
+          "text": "Oh!",
+          "timestamp": "9:29:33"
+        },
+        {
+          "row": 11564,
+          "text": "Milling opponent?",
+          "timestamp": "9:29:34"
+        },
+        {
+          "row": 11565,
+          "text": "Yeah, okay.",
+          "timestamp": "9:29:36"
+        },
+        {
+          "row": 11566,
+          "text": "She doesn't actually want to mill herself.",
+          "timestamp": "9:29:37"
+        },
+        {
+          "row": 11567,
+          "text": "She just wants to play the Fractal",
+          "timestamp": "9:29:38"
+        },
+        {
+          "row": 11568,
+          "text": "to play the Blanche.",
+          "timestamp": "9:29:39"
+        },
+        {
+          "row": 11569,
+          "text": "It's the Blanche!",
+          "timestamp": "9:29:41"
+        },
+        {
+          "row": 11570,
+          "text": "Oh...",
+          "timestamp": "9:29:42"
+        },
+        {
+          "row": 11571,
+          "text": "That float doesn't matter",
+          "timestamp": "9:29:43"
+        },
+        {
+          "row": 11572,
+          "text": "because she has nothing left in the material deck to use",
+          "timestamp": "9:29:45"
+        },
+        {
+          "row": 11573,
+          "text": "and she also gets the Glimpse as well.",
+          "timestamp": "9:29:47"
+        },
+        {
+          "row": 11574,
+          "text": "So this is absolutely an ideal situation.",
+          "timestamp": "9:29:49"
+        },
+        {
+          "row": 11575,
+          "text": "There's no more Blanches left in the deck.",
+          "timestamp": "9:29:52"
+        },
+        {
+          "row": 11576,
+          "text": "Now the Missile will do 7",
+          "timestamp": "9:29:54"
+        },
+        {
+          "row": 11577,
+          "text": "and then the Ascender will go for 4, 10.",
+          "timestamp": "9:29:55"
+        },
+        {
+          "row": 11578,
+          "text": "Yes, a lot of all that you know that's lethal the only the sacred amulet or another rebuke would save it and no well",
+          "timestamp": "9:29:59"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    },
+    {
+      "gameNumber": 3,
+      "order": 4,
+      "sourceRows": [
+        11587,
+        11617
+      ],
+      "source": [
+        {
+          "row": 11587,
+          "text": "Whoa",
+          "timestamp": "9:30:40"
+        },
+        {
+          "row": 11588,
+          "text": "Being popped here. Yeah, dude. You know that it's gonna just pop it. I think I think it's cuz it's right",
+          "timestamp": "9:30:41"
+        },
+        {
+          "row": 11589,
+          "text": "We are going just and on the stack gonna just refracting miss I believe okay",
+          "timestamp": "9:30:47"
+        },
+        {
+          "row": 11590,
+          "text": "There's a little bit of risk here, but she still has to safeguard. She still has to do it",
+          "timestamp": "9:30:51"
+        },
+        {
+          "row": 11591,
+          "text": "Yeah, I think Ron can activate anything slow speed should be fine. There's gonna be seven damage confer to do-do",
+          "timestamp": "9:30:55"
+        },
+        {
+          "row": 11592,
+          "text": "This is going to be more than enough for lethal if do-do does not have anything to stop this. It's a tinder in hand",
+          "timestamp": "9:31:00"
+        },
+        {
+          "row": 11593,
+          "text": "I think we just go in because I endure geyser your fire right you have my defense",
+          "timestamp": "9:31:06"
+        },
+        {
+          "row": 11594,
+          "text": "I think you actually just go for the business under there's no I see it",
+          "timestamp": "9:31:11"
+        },
+        {
+          "row": 11595,
+          "text": "Well, it's gonna be materializing feebling orb here is most likely going to be the pick",
+          "timestamp": "9:31:14"
+        },
+        {
+          "row": 11596,
+          "text": "It allows her to force cards cans now because she doesn't actually have a glimmering refusal",
+          "timestamp": "9:31:18"
+        },
+        {
+          "row": 11597,
+          "text": "She has a frostbite though. So an infeasible orb would be up quite strong here",
+          "timestamp": "9:31:22"
+        },
+        {
+          "row": 11598,
+          "text": "This will be Noah's game right here",
+          "timestamp": "9:31:26"
+        },
+        {
+          "row": 11599,
+          "text": "Everything will be played forcing to cut down from do this part",
+          "timestamp": "9:31:27"
+        },
+        {
+          "row": 11600,
+          "text": "But I don't think that really matters because the fire again doesn't really have much defensive is always a concern",
+          "timestamp": "9:31:30"
+        },
+        {
+          "row": 11601,
+          "text": "Yeah, but you have a frostbite. I think you're fine forcing two cards down, which means four cards left in hand",
+          "timestamp": "9:31:36"
+        },
+        {
+          "row": 11602,
+          "text": "So a senior Buick would be costing three cards from hand",
+          "timestamp": "9:31:42"
+        },
+        {
+          "row": 11603,
+          "text": "So that means the frostbite would be more than enough here",
+          "timestamp": "9:31:44"
+        },
+        {
+          "row": 11604,
+          "text": "So I think doodoo is going to have to try and activate something, but I don't think there's anything. There's no hope for him",
+          "timestamp": "9:31:46"
+        },
+        {
+          "row": 11605,
+          "text": "Yep. Well, there are the fractals to pay for the cost. That's true, but",
+          "timestamp": "9:31:52"
+        },
+        {
+          "row": 11606,
+          "text": "Yeah, actually, yeah, that's true. I wonder I wonder if it was forgetting about it's so often",
+          "timestamp": "9:31:57"
+        },
+        {
+          "row": 11607,
+          "text": "These fractals are just not used for actually rested. So yeah, that's crazy to me. Like I",
+          "timestamp": "9:32:02"
+        },
+        {
+          "row": 11608,
+          "text": "Decide there's a resource. Oh, he's using it. No, you can't use that for a feeling or if you think orb doesn't say pay",
+          "timestamp": "9:32:06"
+        },
+        {
+          "row": 11609,
+          "text": "Oh",
+          "timestamp": "9:32:12"
+        },
+        {
+          "row": 11610,
+          "text": "Okay, I think he's telling you hey listen like I got nothing I got nothing this is all I have",
+          "timestamp": "9:32:15"
+        },
+        {
+          "row": 11611,
+          "text": "Going to make Oh was fishing for a an urban",
+          "timestamp": "9:32:20"
+        },
+        {
+          "row": 11612,
+          "text": "Okay cycle herb dig through the deck, this is exactly what you want",
+          "timestamp": "9:32:25"
+        },
+        {
+          "row": 11613,
+          "text": "I think you can take I it's a senior Buick Cinder Geyser. He's not gonna do it",
+          "timestamp": "9:32:28"
+        },
+        {
+          "row": 11614,
+          "text": "Yes",
+          "timestamp": "9:32:33"
+        },
+        {
+          "row": 11615,
+          "text": "Gina gonna take this 2-0 after losing game 1 in what seemed like such an advantaged position",
+          "timestamp": "9:32:35"
+        },
+        {
+          "row": 11616,
+          "text": "clawing her way back in the",
+          "timestamp": "9:32:42"
+        },
+        {
+          "row": 11617,
+          "text": "Extremely grindy game 2 and then taking it here with a commanding victory in game 3 on her fractal deck",
+          "timestamp": "9:32:43"
+        }
+      ],
+      "review": "Sequential transcript review; names and relevant mechanics checked against official event decklists and card catalog."
+    }
+  ],
+  "officialResult": {
+    "stage": 2,
+    "round": 1,
+    "table": 4,
+    "players": [
+      {
+        "id": 17399,
+        "name": "DuDu",
+        "score": 1
+      },
+      {
+        "id": 276,
+        "name": "Noel",
+        "score": 2
+      }
+    ]
+  },
+  "corrections": [
+    "Noelle/Noah/Gina resolve to official username Noel (276); Doodoo/Dulu resolve to DuDu (17399).",
+    "Sengchow/Zhangjiao etc. -> Zhang Jiao, Way of Peace; Frosted/Frostmourne Paladin -> Frostsworn Paladin; Burst of Thunder -> Burst Asunder; Refracting Missiles -> Refracting Missile; Scalding Aether Charge -> Scalding Aethercharge; Fire Interference -> Fiery Interference.",
+    "Caster conclusion at 9:32:35 says 2-0 after losing game1. Official result and game sequence establish Noel 2–1.",
+    "Early caster claim that Everflame Staff does not gain Essence Crucible bonus is corrected at 8:18:52. Catalog confirms Spell-source wording. Avoid reproducing incorrect initial claim.",
+    "Caster says DuDu has no level2 and only two Blanches; official submitted decklist contains Arisanna, Master Alchemist and three sideboard Blanches. Recap avoids these unsupported deck-count claims.",
+    "Caster at8:42:45 claims Intensified Pyre hits allies; later corrects at9:26:13. Recap does not repeat incorrect targeting claim."
+  ],
+  "uncertainties": [
+    "No footage was directly replayed; timestamps follow supplied machine transcript.",
+    "Final game3 concession is explicit, but final Burst Asunder resolution is not narrated. Recap stops at observed Missile/Orb and concession instead of inventing the finishing spell.",
+    "Noel G2 precise late stack arithmetic is inconsistently narrated; recap includes confirmed counter/heal sequence and exact-lethal call without reconstructing uncertain damage totals."
+  ],
+  "boundaries": [
+    {
+      "gameNumber": 1,
+      "startRow": 7827,
+      "endRow": 8799
+    },
+    {
+      "gameNumber": 2,
+      "startRow": 9048,
+      "endRow": 10719
+    },
+    {
+      "gameNumber": 3,
+      "startRow": 10806,
+      "endRow": 11617
+    }
+  ],
+  "offCameraResults": [
+    {
+      "winner": "RubyXillia",
+      "loser": "Nosmas",
+      "score": "2–1"
+    },
+    {
+      "winner": "Yadon",
+      "loser": "Sano",
+      "score": "2–1"
+    },
+    {
+      "winner": "PokerKT",
+      "loser": "Tress",
+      "score": "2–1"
+    }
+  ]
+}

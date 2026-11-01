@@ -22,7 +22,7 @@ test('all Osaka highlights have traceable timestamps bound to the reviewed uploa
   const data: BroadcastTimelines = read('data/broadcast-timelines.json');
   const evidence = read('docs/broadcast-review/osaka-day1/beat-timestamps.json');
   let count = 0;
-  for (const match of data.matches.filter(m => m.eventId === 67176)) for (const game of match.games) for (const b of game.beats) {
+  for (const match of data.matches.filter(m => m.video?.id === 'g3NNFcNpw3k')) for (const game of match.games) for (const b of game.beats) {
     const e = evidence.find((e: { matchId: string; gameNumber: number; order: number }) => e.matchId === match.id && e.gameNumber === game.gameNumber && e.order === b.order);
     assert.ok(e);
     assert.equal(e.text, b.text);
@@ -86,7 +86,7 @@ test('every remaining highlight has a documented source or game-assignment block
     assert.ok(e.reason.length > 0);
     return `${e.matchId}/${e.gameNumber}/${e.order}`;
   });
-  assert.equal(actual.length, 0);
+  assert.equal(actual.length, 10);
   assert.deepEqual(actual.sort(), expected.sort());
 });
 

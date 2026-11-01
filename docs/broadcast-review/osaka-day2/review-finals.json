@@ -1,0 +1,4140 @@
+{
+  "source": "pipeline/.cache/broadcast-transcripts/VOlVotCfOU0.json",
+  "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+  "reviewedSegments": [
+    11720,
+    15457
+  ],
+  "method": "Sequential reading of every assigned segment, including transitions/interviews/music. Names checked against official event67176 and card catalog. No full video replay reviewed.",
+  "matches": [
+    {
+      "id": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Semifinal",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 35253
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yadon",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "RubyXillia",
+          "deck": "Fire Suzaku Guo Jia"
+        }
+      ],
+      "result": "RubyXillia wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yadon survives the early pressure and wins with Striking Illuminance and Lightweaver’s Assault.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Singed Emotions delays Yadon’s level-up while RubyXillia builds toward Suzaku.",
+              "cards": [
+                "Singed Emotions",
+                "Backup Charger"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 35636
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Vanish from Sight buys Yadon time to reach level 3 despite repeated burn damage.",
+              "cards": [
+                "Vanish from Sight",
+                "Scalding Aethercharge"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 35909
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
+              "cards": [
+                "Infernal Vessel",
+                "Uncover the Plot",
+                "Striking Illuminance",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36264
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "RubyXillia disrupts Yadon’s resources and burns through Vanish from Sight to equalize.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Embercrypt Burn removes Incapacitate from Yadon’s graveyard before Zander can return it.",
+              "cards": [
+                "Embercrypt Burn",
+                "Incapacitate"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36856
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Impact Hammer and Blazing Throw unlock Suzaku, pushing Yadon into burn range.",
+              "cards": [
+                "Impact Hammer",
+                "Blazing Throw",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36963
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
+              "cards": [
+                "Vanish from Sight",
+                "Cinder Geyser"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37161
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "RubyXillia keeps Yadon off his level-up plan, then closes with Suzaku and Vermilion Decree.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Embercrypt Burn removes Incapacitate again, and Singed Emotions pressures Yadon into another Backup Charger.",
+              "cards": [
+                "Embercrypt Burn",
+                "Singed Emotions",
+                "Backup Charger"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37549
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+              "cards": [
+                "Enfeebling Orb",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37740
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Suzaku’s Command and Peppered Chef force Resolute Stand; Vermilion Decree supplies the last damage.",
+              "cards": [
+                "Suzaku's Command",
+                "Peppered Chef",
+                "Resolute Stand",
+                "Vermilion Decree"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37807
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Semifinal",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 38839
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "PokerKT",
+          "deck": "Water Fractal Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Noel",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "PokerKT wins 2–1",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "PokerKT survives Noel’s early pressure and equalizes with fast-speed damage.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Convergent Beam removes Noel’s Frostsworn Paladin despite Viridian Protective Trinket.",
+              "cards": [
+                "Convergent Beam",
+                "Frostsworn Paladin",
+                "Viridian Protective Trinket"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39355
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Noel negates Zhang Jiao with Glimmering Refusal, keeping the Fractal mirror balanced.",
+              "cards": [
+                "Zhang Jiao, Way of Peace",
+                "Glimmering Refusal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39564
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
+              "cards": [
+                "Safeguard Amulet",
+                "Refracting Missile",
+                "Shimmering Refraction"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39950
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "PokerKT survives Noel’s large Fractal board and wins the final exchange of damage and negates.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Convergent Beam answers Noel’s Frostsworn Paladin again, stopping her early ally pressure.",
+              "cards": [
+                "Convergent Beam",
+                "Frostsworn Paladin"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 40535
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Two Zhang Jiao plays build PokerKT’s resources while Noel struggles to find more damage.",
+              "cards": [
+                "Zhang Jiao, Way of Peace"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 41616
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "PokerKT removes Viridian Protective Trinket and uses consecutive Glimmering Refusals to stop Noel’s lethal Refracting Missile.",
+              "cards": [
+                "Fracturize",
+                "Viridian Protective Trinket",
+                "Glimmering Refusal",
+                "Refracting Missile"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 42199
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Shimmering Refraction sets up PokerKT’s next-turn Refracting Missile, securing the final spot.",
+              "cards": [
+                "Shimmering Refraction",
+                "Refracting Missile"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 42309
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Coverage begins with game 2."
+    },
+    {
+      "id": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Final",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 43199
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "RubyXillia",
+          "deck": "Fire Suzaku Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "PokerKT",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "PokerKT wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "RubyXillia slows PokerKT’s resources and converts Suzaku into the first-game win.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "After PokerKT sacrifices his own Censer of Restful Peace, RubyXillia brings out another to keep floating memory locked.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Return to the Archive"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 43740
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "PokerKT uses Glimmering Refusal to stop Avatar of Suzaku, then Zhang Jiao restores life.",
+              "cards": [
+                "Glimmering Refusal",
+                "Avatar of Suzaku",
+                "Zhang Jiao, Way of Peace"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 43987
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
+              "cards": [
+                "Portentous Tanggu",
+                "Fabled Ruby Fatestone",
+                "Suzaku's Command",
+                "Peppered Chef"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 44409
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "PokerKT stops a lethal Avatar attack and wins through RubyXillia’s recovery.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fiery Interference denies Zhang Jiao’s recovery and brings RubyXillia closer to Suzaku.",
+              "cards": [
+                "Fiery Interference",
+                "Zhang Jiao, Way of Peace"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 45234
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
+              "cards": [
+                "Crystalline Mirror",
+                "Viridian Protective Trinket",
+                "Aenean Frozen Shunt",
+                "Avatar of Suzaku"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 45478
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Frostbind",
+                "Restorative Flame"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 45569
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "PokerKT’s Nullifying Lantern and timed burn spells decide the championship.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Convergent Beam targets Avatar of Suzaku; RubyXillia gives up the ally for quest counters instead.",
+              "cards": [
+                "Convergent Beam",
+                "Avatar of Suzaku"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 45996
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Zhang Jiao draws two cards for PokerKT, giving him more resources for the final exchanges.",
+              "cards": [
+                "Zhang Jiao, Way of Peace"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 46265
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Nullifying Lantern shuts off RubyXillia’s fire graveyard synergies before PokerKT starts firing damage.",
+              "cards": [
+                "Nullifying Lantern",
+                "Refracting Missile"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 46476
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "PokerKT stacks Refracting Missile and Shimmering Refraction before Safeguard Amulet resolves. RubyXillia answers with Shatter the Brittle and Restorative Flame, but Glimmering Refusal seals the title.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Shatter the Brittle",
+                "Restorative Flame",
+                "Glimmering Refusal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 46583
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "text": "Singed Emotions delays Yadon’s level-up while RubyXillia builds toward Suzaku.",
+      "segments": [
+        11979,
+        12016
+      ],
+      "source": [
+        {
+          "row": 11979,
+          "text": "Okay if it is a blazing throw",
+          "timestamp": "9:53:56"
+        },
+        {
+          "row": 11980,
+          "text": "This is a very necessary incapacitate",
+          "timestamp": "9:53:57"
+        },
+        {
+          "row": 11981,
+          "text": "It's way too much damage",
+          "timestamp": "9:54:00"
+        },
+        {
+          "row": 11982,
+          "text": "Singed emotions!",
+          "timestamp": "9:54:01"
+        },
+        {
+          "row": 11983,
+          "text": "See this is the exact kind of situation",
+          "timestamp": "9:54:02"
+        },
+        {
+          "row": 11984,
+          "text": "Singed emotions usually doesn't feel that good",
+          "timestamp": "9:54:04"
+        },
+        {
+          "row": 11985,
+          "text": "When your opponent has time",
+          "timestamp": "9:54:06"
+        },
+        {
+          "row": 11986,
+          "text": "But he is putting Yadon in a situation",
+          "timestamp": "9:54:07"
+        },
+        {
+          "row": 11987,
+          "text": "Where actually he doesn't have time",
+          "timestamp": "9:54:09"
+        },
+        {
+          "row": 11988,
+          "text": "So if he gets singed emotions here",
+          "timestamp": "9:54:11"
+        },
+        {
+          "row": 11989,
+          "text": "He's going to take 8",
+          "timestamp": "9:54:12"
+        },
+        {
+          "row": 11990,
+          "text": "That's going to give the remaining quest counters",
+          "timestamp": "9:54:13"
+        },
+        {
+          "row": 11991,
+          "text": "Necessary for the bird to flip",
+          "timestamp": "9:54:14"
+        },
+        {
+          "row": 11992,
+          "text": "And it also does 8 damage",
+          "timestamp": "9:54:16"
+        },
+        {
+          "row": 11993,
+          "text": "That's way too much for Lux and Xander to deal with",
+          "timestamp": "9:54:17"
+        },
+        {
+          "row": 11994,
+          "text": "That's assuming of course",
+          "timestamp": "9:54:20"
+        },
+        {
+          "row": 11995,
+          "text": "That Yadon draws a dungeon guy",
+          "timestamp": "9:54:21"
+        },
+        {
+          "row": 11996,
+          "text": "We did say that he doesn't have one yet",
+          "timestamp": "9:54:22"
+        },
+        {
+          "row": 11997,
+          "text": "But I don't think Yadon can",
+          "timestamp": "9:54:25"
+        },
+        {
+          "row": 11998,
+          "text": "Delay his level up any longer",
+          "timestamp": "9:54:27"
+        },
+        {
+          "row": 11999,
+          "text": "Second avatar of Byakko as well in the hand",
+          "timestamp": "9:54:30"
+        },
+        {
+          "row": 12000,
+          "text": "Avatar of Suzaku",
+          "timestamp": "9:54:32"
+        },
+        {
+          "row": 12001,
+          "text": "Avatar of Suzaku!",
+          "timestamp": "9:54:33"
+        },
+        {
+          "row": 12002,
+          "text": "We are the red fabled ruby face this time",
+          "timestamp": "9:54:35"
+        },
+        {
+          "row": 12003,
+          "text": "But that being said",
+          "timestamp": "9:54:38"
+        },
+        {
+          "row": 12004,
+          "text": "The avatar could make it's way onto the board",
+          "timestamp": "9:54:39"
+        },
+        {
+          "row": 12005,
+          "text": "But Ruby Zillia actually just electing to",
+          "timestamp": "9:54:41"
+        },
+        {
+          "row": 12006,
+          "text": "End his turn here",
+          "timestamp": "9:54:43"
+        },
+        {
+          "row": 12007,
+          "text": "Not going to rush into things",
+          "timestamp": "9:54:44"
+        },
+        {
+          "row": 12008,
+          "text": "Does not need to flip the bird just yet",
+          "timestamp": "9:54:46"
+        },
+        {
+          "row": 12009,
+          "text": "Of course next turn",
+          "timestamp": "9:54:48"
+        },
+        {
+          "row": 12010,
+          "text": "Naturally gets his 7th quest counter",
+          "timestamp": "9:54:49"
+        },
+        {
+          "row": 12011,
+          "text": "From the fabled ruby face stone",
+          "timestamp": "9:54:51"
+        },
+        {
+          "row": 12012,
+          "text": "Oh my god",
+          "timestamp": "9:54:52"
+        },
+        {
+          "row": 12013,
+          "text": "Yadon just goes for that backup charger",
+          "timestamp": "9:54:53"
+        },
+        {
+          "row": 12014,
+          "text": "Not wanting to play into the singed emotions",
+          "timestamp": "9:54:56"
+        },
+        {
+          "row": 12015,
+          "text": "Getting that parasail yes",
+          "timestamp": "9:54:58"
+        },
+        {
+          "row": 12016,
+          "text": "And drawing more cards",
+          "timestamp": "9:55:00"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 1,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 35636
+      }
+    },
+    {
+      "text": "Vanish from Sight buys Yadon time to reach level 3 despite repeated burn damage.",
+      "segments": [
+        12179,
+        12222
+      ],
+      "source": [
+        {
+          "row": 12179,
+          "text": "Scalding aether charge",
+          "timestamp": "9:58:29"
+        },
+        {
+          "row": 12180,
+          "text": "He's going to take",
+          "timestamp": "9:58:30"
+        },
+        {
+          "row": 12181,
+          "text": "4 damage",
+          "timestamp": "9:58:31"
+        },
+        {
+          "row": 12182,
+          "text": "Because he did level up",
+          "timestamp": "9:58:32"
+        },
+        {
+          "row": 12183,
+          "text": "Once his turn",
+          "timestamp": "9:58:33"
+        },
+        {
+          "row": 12184,
+          "text": "That's going to put him",
+          "timestamp": "9:58:34"
+        },
+        {
+          "row": 12185,
+          "text": "Up to 19",
+          "timestamp": "9:58:35"
+        },
+        {
+          "row": 12186,
+          "text": "19 is a very very",
+          "timestamp": "9:58:36"
+        },
+        {
+          "row": 12187,
+          "text": "Scary number to be at",
+          "timestamp": "9:58:37"
+        },
+        {
+          "row": 12188,
+          "text": "When you only have",
+          "timestamp": "9:58:38"
+        },
+        {
+          "row": 12189,
+          "text": "22 maximum life",
+          "timestamp": "9:58:39"
+        },
+        {
+          "row": 12190,
+          "text": "Of course",
+          "timestamp": "9:58:40"
+        },
+        {
+          "row": 12191,
+          "text": "There is still the",
+          "timestamp": "9:58:41"
+        },
+        {
+          "row": 12192,
+          "text": "Spirit of Serene Fire",
+          "timestamp": "9:58:42"
+        },
+        {
+          "row": 12193,
+          "text": "That Yadan can release",
+          "timestamp": "9:58:43"
+        },
+        {
+          "row": 12194,
+          "text": "To recover 6 here",
+          "timestamp": "9:58:44"
+        },
+        {
+          "row": 12195,
+          "text": "But there is still",
+          "timestamp": "9:58:45"
+        },
+        {
+          "row": 12196,
+          "text": "Kind of",
+          "timestamp": "9:58:46"
+        },
+        {
+          "row": 12197,
+          "text": "Not as much",
+          "timestamp": "9:58:47"
+        },
+        {
+          "row": 12198,
+          "text": "Leeway",
+          "timestamp": "9:58:48"
+        },
+        {
+          "row": 12199,
+          "text": "As you would like",
+          "timestamp": "9:58:49"
+        },
+        {
+          "row": 12200,
+          "text": "Takes 4 here",
+          "timestamp": "9:58:50"
+        },
+        {
+          "row": 12201,
+          "text": "Goes up to 19",
+          "timestamp": "9:58:51"
+        },
+        {
+          "row": 12202,
+          "text": "Vanishes again",
+          "timestamp": "9:58:52"
+        },
+        {
+          "row": 12203,
+          "text": "There is no",
+          "timestamp": "9:58:53"
+        },
+        {
+          "row": 12204,
+          "text": "1 damage",
+          "timestamp": "9:58:54"
+        },
+        {
+          "row": 12205,
+          "text": "Because the Suzaku",
+          "timestamp": "9:58:55"
+        },
+        {
+          "row": 12206,
+          "text": "Is already flipped",
+          "timestamp": "9:58:56"
+        },
+        {
+          "row": 12207,
+          "text": "No longer a fate stone",
+          "timestamp": "9:58:57"
+        },
+        {
+          "row": 12208,
+          "text": "So that means",
+          "timestamp": "9:58:58"
+        },
+        {
+          "row": 12209,
+          "text": "Ruby Zillia does",
+          "timestamp": "9:58:59"
+        },
+        {
+          "row": 12210,
+          "text": "Unless",
+          "timestamp": "9:59:00"
+        },
+        {
+          "row": 12211,
+          "text": "He has another",
+          "timestamp": "9:59:01"
+        },
+        {
+          "row": 12212,
+          "text": "Burn spell",
+          "timestamp": "9:59:02"
+        },
+        {
+          "row": 12213,
+          "text": "He has to have",
+          "timestamp": "9:59:03"
+        },
+        {
+          "row": 12214,
+          "text": "2 burn spells",
+          "timestamp": "9:59:04"
+        },
+        {
+          "row": 12215,
+          "text": "To stack on top",
+          "timestamp": "9:59:05"
+        },
+        {
+          "row": 12216,
+          "text": "Of the Serene Release",
+          "timestamp": "9:59:06"
+        },
+        {
+          "row": 12217,
+          "text": "But then Yadan does",
+          "timestamp": "9:59:07"
+        },
+        {
+          "row": 12218,
+          "text": "Have to incapacitate",
+          "timestamp": "9:59:08"
+        },
+        {
+          "row": 12219,
+          "text": "To stop a lot of that",
+          "timestamp": "9:59:09"
+        },
+        {
+          "row": 12220,
+          "text": "As long as",
+          "timestamp": "9:59:10"
+        },
+        {
+          "row": 12221,
+          "text": "That vanish is used",
+          "timestamp": "9:59:11"
+        },
+        {
+          "row": 12222,
+          "text": "There should be no way",
+          "timestamp": "9:59:12"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 1,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 35909
+      }
+    },
+    {
+      "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
+      "segments": [
+        12322,
+        12354
+      ],
+      "source": [
+        {
+          "row": 12322,
+          "text": "Infernal Vessel here is such a good pickup for the materialization. This is going to make all",
+          "timestamp": "10:04:24"
+        },
+        {
+          "row": 12323,
+          "text": "of the remaining Luxum Scythes heal for 0, because it reduces the heals all by 3.",
+          "timestamp": "10:04:28"
+        },
+        {
+          "row": 12324,
+          "text": "The Suzaku now coming in for 4, the Vermilion Phoenix on the side of Rubyzillia, and Yadon",
+          "timestamp": "10:04:34"
+        },
+        {
+          "row": 12325,
+          "text": "already used his Excalibur to get rid of the Impact Hammer, and maybe didn't consider, oh,",
+          "timestamp": "10:04:40"
+        },
+        {
+          "row": 12326,
+          "text": "what if this Infernal Vessel does hit the board, but maybe more concerned about the Blazing Troll,",
+          "timestamp": "10:04:46"
+        },
+        {
+          "row": 12327,
+          "text": "maybe more concerned about the damage from the swing itself, or the Heat of Vengeance.",
+          "timestamp": "10:04:52"
+        },
+        {
+          "row": 12328,
+          "text": "Rubyzillia has still quite a grip of hand, and only needs to deal 4 damage to finish Game 1",
+          "timestamp": "10:04:55"
+        },
+        {
+          "row": 12329,
+          "text": "in our semi-finals here at Ascent Osaka. And Avatar of Suzaku now going to be put onto the",
+          "timestamp": "10:05:02"
+        },
+        {
+          "row": 12330,
+          "text": "board for 5, trying to come in for final lethal damage. There, I think the only way to stop this",
+          "timestamp": "10:05:08"
+        },
+        {
+          "row": 12331,
+          "text": "is to throw Resolute Stand, and unfortunately, these heals are going to be doing nothing.",
+          "timestamp": "10:05:15"
+        },
+        {
+          "row": 12332,
+          "text": "I think the only thing that saves Yadon here is a... has to use the Resolute Stand here,",
+          "timestamp": "10:05:20"
+        },
+        {
+          "row": 12333,
+          "text": "and then draw Providence, a Excalibur exactly. That would allow him to survive. He's going for",
+          "timestamp": "10:05:25"
+        },
+        {
+          "row": 12334,
+          "text": "Exploit first, yeah, we can dig once again. Striking Illuminance, okay!",
+          "timestamp": "10:05:31"
+        },
+        {
+          "row": 12335,
+          "text": "Uh, he doesn't have the Preparation Counters needed? Not yet.",
+          "timestamp": "10:05:37"
+        },
+        {
+          "row": 12336,
+          "text": "Korhazi Insignia, though. He can't activate it, though. Childs of Blood is...",
+          "timestamp": "10:05:44"
+        },
+        {
+          "row": 12337,
+          "text": "That works? Yeah, if he finds a way to cover the plot off of this.",
+          "timestamp": "10:05:49"
+        },
+        {
+          "row": 12338,
+          "text": "He gets to draw 3 cards now. Excalibur here would also be huge.",
+          "timestamp": "10:05:52"
+        },
+        {
+          "row": 12339,
+          "text": "Excalibur, break the teapot before the Xander trigger.",
+          "timestamp": "10:05:56"
+        },
+        {
+          "row": 12340,
+          "text": "Let's see what Yadon finds. Lightweavers into Striking here. Okay, 3 cards down,",
+          "timestamp": "10:06:01"
+        },
+        {
+          "row": 12341,
+          "text": "that's 2 Incapacitates, 2 Sights that are going to heal for 0, and that's Striking Illuminance.",
+          "timestamp": "10:06:05"
+        },
+        {
+          "row": 12342,
+          "text": "Is there a Lightweavers? If it's Lightweavers, even Lightweavers Striking should...",
+          "timestamp": "10:06:09"
+        },
+        {
+          "row": 12343,
+          "text": "Oh, Uncover the Plot has been found! Uncover the Plot gives him 2 Preparation",
+          "timestamp": "10:06:13"
+        },
+        {
+          "row": 12344,
+          "text": "Counters as well as a draw, and being able to put down all of these Luxem cards,",
+          "timestamp": "10:06:17"
+        },
+        {
+          "row": 12345,
+          "text": "would that be enough to find Lethal? Let's do the math real quick.",
+          "timestamp": "10:06:23"
+        },
+        {
+          "row": 12346,
+          "text": "It really depends on what is drawn off of that Uncover the Plot. Striking Illuminance does 4",
+          "timestamp": "10:06:28"
+        },
+        {
+          "row": 12347,
+          "text": "base, so Uncover plus Striking, if he even reveals... Oh wow, using one of the Preparation...",
+          "timestamp": "10:06:32"
+        },
+        {
+          "row": 12348,
+          "text": "Wait. Wait, is this enough? 5?",
+          "timestamp": "10:06:36"
+        },
+        {
+          "row": 12349,
+          "text": "We have... Okay, so Mercenary Slate has been activated from the material deck for 1",
+          "timestamp": "10:06:40"
+        },
+        {
+          "row": 12350,
+          "text": "Preparation Counter. Now Striking Illuminance is going to be used already.",
+          "timestamp": "10:06:43"
+        },
+        {
+          "row": 12351,
+          "text": "Is there anything else available? Not prepared, so on attack, will not reveal the cards in the memory.",
+          "timestamp": "10:06:46"
+        },
+        {
+          "row": 12352,
+          "text": "Lightweavers found! 4 plus 6 is 10, and that is going to be enough to finish Game 1 for Yadon,",
+          "timestamp": "10:06:52"
+        },
+        {
+          "row": 12353,
+          "text": "revealing 4 cards from the Lightweavers Assault, but that is going to be Yadon taking Game 1",
+          "timestamp": "10:06:59"
+        },
+        {
+          "row": 12354,
+          "text": "here in our Semi-Final at Ascent Osaka, defeating the Immortal Phoenix, showing that Yadon himself",
+          "timestamp": "10:07:06"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 1,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 36264
+      }
+    },
+    {
+      "text": "Embercrypt Burn removes Incapacitate from Yadon’s graveyard before Zander can return it.",
+      "segments": [
+        12436,
+        12445
+      ],
+      "source": [
+        {
+          "row": 12436,
+          "text": "you go up to level 2, you go up to... As long as you have an Assassin action here. Oh, Ember Crypt...",
+          "timestamp": "10:14:16"
+        },
+        {
+          "row": 12437,
+          "text": "Wait. Oh, they take out the Incapacitate here. So very heads up from Ruby Zillia. This is now",
+          "timestamp": "10:14:21"
+        },
+        {
+          "row": 12438,
+          "text": "going to lock out that line and there's no return on Yadon's side. So he no longer is able to do",
+          "timestamp": "10:14:26"
+        },
+        {
+          "row": 12439,
+          "text": "Dungeon Guide up to 3. And he also deals 2 damage to each champion, which means Ruby Zillia gets",
+          "timestamp": "10:14:32"
+        },
+        {
+          "row": 12440,
+          "text": "again the 2 quest counters that he lost from that Scouting Aether Charge. Yeah, so that is going to",
+          "timestamp": "10:14:36"
+        },
+        {
+          "row": 12441,
+          "text": "be a big one here. Actually, when he gives 1 quest counter here, because it does damage to both at",
+          "timestamp": "10:14:41"
+        },
+        {
+          "row": 12442,
+          "text": "the same time, I think. Oh, you're right. He got 1 from the Ruby Fate Stone and then... Okay,",
+          "timestamp": "10:14:45"
+        },
+        {
+          "row": 12443,
+          "text": "so still Dungeon Guide here. It's still life. Listen, it's still life. You cannot say no to that.",
+          "timestamp": "10:14:52"
+        },
+        {
+          "row": 12444,
+          "text": "And both Lightweavers head to the top of the deck and Yadon, of course, has that Lost Providence as",
+          "timestamp": "10:14:56"
+        },
+        {
+          "row": 12445,
+          "text": "well to pick that up. Picks up the Pepper Shift as well. Yeah, so very heads up there. Good Dungeon",
+          "timestamp": "10:15:00"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 2,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 36856
+      }
+    },
+    {
+      "text": "Impact Hammer and Blazing Throw unlock Suzaku, pushing Yadon into burn range.",
+      "segments": [
+        12456,
+        12478
+      ],
+      "source": [
+        {
+          "row": 12456,
+          "text": "Let's see if we can pull it off. Now, Ruby Zillia gonna swing in with the Impact Hammer. Takes 3,",
+          "timestamp": "10:16:03"
+        },
+        {
+          "row": 12457,
+          "text": "gets his 6th quest counter and deals 2 damage to Yadon. That being said, Ruby Zillia has 11 damage",
+          "timestamp": "10:16:09"
+        },
+        {
+          "row": 12458,
+          "text": "counters already. Blazing Throw now for 4 and that will push Yadon up to 10 total damage.",
+          "timestamp": "10:16:15"
+        },
+        {
+          "row": 12459,
+          "text": "7 quest counters removed and Suzaku now makes his advance onto the board. The familiar Phoenix",
+          "timestamp": "10:16:23"
+        },
+        {
+          "row": 12460,
+          "text": "once again. But Peppered Chef will only be 6. 4 plus 4 plus 4. 12 damage. We're still truly short.",
+          "timestamp": "10:16:27"
+        },
+        {
+          "row": 12461,
+          "text": "And that actually puts... I think that gets you killed to... I think that makes you die to the",
+          "timestamp": "10:16:34"
+        },
+        {
+          "row": 12462,
+          "text": "Lightweaver Assault because it'll be Lightweavers for 6. Yeah, no, this is so risky here because",
+          "timestamp": "10:16:39"
+        },
+        {
+          "row": 12463,
+          "text": "now you're gonna put him to 22. He gets to draw. Chalice of Blood, draw the 2 Lightweavers. Play",
+          "timestamp": "10:16:43"
+        },
+        {
+          "row": 12464,
+          "text": "1 Lightweavers and it'll be 4 plus 2, right? That is correct. So 6 damage and then you reveal one.",
+          "timestamp": "10:16:48"
+        },
+        {
+          "row": 12465,
+          "text": "Okay, let's see also the draw from the... Yeah, double Lightweavers here comes and then",
+          "timestamp": "10:16:54"
+        },
+        {
+          "row": 12466,
+          "text": "draw and then you go Lightweavers. Right now, you Lightweavers. That's gonna be 6 damage and",
+          "timestamp": "10:16:59"
+        },
+        {
+          "row": 12467,
+          "text": "then reveal another Lightweavers for another 2. That's 8 damage. I think he just has it.",
+          "timestamp": "10:17:03"
+        },
+        {
+          "row": 12468,
+          "text": "How would he put the cards down? Does he have enough for 4? Does he have 5?",
+          "timestamp": "10:17:09"
+        },
+        {
+          "row": 12469,
+          "text": "He has 4 cards right now. So not able to Lightweaver Pre-Req. So we'll have to see if",
+          "timestamp": "10:17:12"
+        },
+        {
+          "row": 12470,
+          "text": "he can put any cards down now because if he does have a way to use those 2 Lightweavers,",
+          "timestamp": "10:17:17"
+        },
+        {
+          "row": 12471,
+          "text": "it will be 4 damage. Right now, Recollects into 6 card hand Lightweavers for 4 plus 2 plus 1 where",
+          "timestamp": "10:17:22"
+        },
+        {
+          "row": 12472,
+          "text": "1 short. He has to have something that draws. If he has a Gentle Resp... No, that's not gonna",
+          "timestamp": "10:17:28"
+        },
+        {
+          "row": 12473,
+          "text": "do it. It has to be like an Uncover. Let's see what ends up being the draw here for Yadon. I",
+          "timestamp": "10:17:36"
+        },
+        {
+          "row": 12474,
+          "text": "believe it was a Gentle Resp. So not able to find that just yet. But this also means that Rubyzilla",
+          "timestamp": "10:17:41"
+        },
+        {
+          "row": 12475,
+          "text": "cannot afford a single more point of damage. One point here from the Dungeon Guide will take out",
+          "timestamp": "10:17:47"
+        },
+        {
+          "row": 12476,
+          "text": "this Peppered Chef, I would think. I think Yadon's trying to find the Liner. Has a Vanish in sight",
+          "timestamp": "10:17:53"
+        },
+        {
+          "row": 12477,
+          "text": "actually so can stall for another turn. But 3 life is very easy and pretty much any Burn spell",
+          "timestamp": "10:17:57"
+        },
+        {
+          "row": 12478,
+          "text": "in the deck will do it. So let's see. It is going to be take out the Peppered Chef, pass turn,",
+          "timestamp": "10:18:03"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 2,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 36963
+      }
+    },
+    {
+      "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
+      "segments": [
+        12493,
+        12499
+      ],
+      "source": [
+        {
+          "row": 12493,
+          "text": "that is just nothing. Grand Crusader's Ring so going to look to draw Vanish from sight is going",
+          "timestamp": "10:19:21"
+        },
+        {
+          "row": 12494,
+          "text": "to be the play and Rubyzillia saying, okay yeah sure I will try to find effect damage. It looks",
+          "timestamp": "10:19:25"
+        },
+        {
+          "row": 12495,
+          "text": "like we've top decked into Cinder Geyser and that's exactly the amount of damage that he needs",
+          "timestamp": "10:19:30"
+        },
+        {
+          "row": 12496,
+          "text": "and it's going to be enough to finish the game. We'll also do the trick and Rubyzillia brings us",
+          "timestamp": "10:19:35"
+        },
+        {
+          "row": 12497,
+          "text": "back into a 3 game series for our semi-final ladies and gentlemen in the crowd and at home",
+          "timestamp": "10:19:41"
+        },
+        {
+          "row": 12498,
+          "text": "of course. Let me see you in the chat cheering for the man you want to win. Is it Rubyzillia",
+          "timestamp": "10:19:48"
+        },
+        {
+          "row": 12499,
+          "text": "here on this Suzaku who has evened us up on the second game of our semi-final or is it Yadon",
+          "timestamp": "10:19:54"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 2,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 37161
+      }
+    },
+    {
+      "text": "Embercrypt Burn removes Incapacitate again, and Singed Emotions pressures Yadon into another Backup Charger.",
+      "segments": [
+        12566,
+        12586
+      ],
+      "source": [
+        {
+          "row": 12566,
+          "text": "Interference at the side it's gonna be yeah I think it's double Ember Crypt Burn actually so",
+          "timestamp": "10:25:49"
+        },
+        {
+          "row": 12567,
+          "text": "you actually hit both of these Assassin cards but Yadon having five cards left in hand means",
+          "timestamp": "10:25:54"
+        },
+        {
+          "row": 12568,
+          "text": "if there's an exploit could still force it out that is gonna be Ember Crypt Burn immediately",
+          "timestamp": "10:25:58"
+        },
+        {
+          "row": 12569,
+          "text": "picks up the incapacitate and puts it in the banish another quest counter for Rubyzillia so",
+          "timestamp": "10:26:02"
+        },
+        {
+          "row": 12570,
+          "text": "only two away from flipping Suzaku onto the board making its way into the finals hopefully there's",
+          "timestamp": "10:26:07"
+        },
+        {
+          "row": 12571,
+          "text": "also Singed Emotions here which could deny Yadon's level 2 so not only have we denied a card in the",
+          "timestamp": "10:26:15"
+        },
+        {
+          "row": 12572,
+          "text": "graveyard we're also going to deal some damage and make sure that you don't get that additional",
+          "timestamp": "10:26:21"
+        },
+        {
+          "row": 12573,
+          "text": "safety net of the higher maximum life total okay Yadon now needs to make the decision without the",
+          "timestamp": "10:26:26"
+        },
+        {
+          "row": 12574,
+          "text": "dungeon guide only gonna take four from this but it is gonna give a quest counter putting Suzaku",
+          "timestamp": "10:26:34"
+        },
+        {
+          "row": 12575,
+          "text": "up to guaranteed next turn up to seven that is correct six from Singed Emotions seven from the",
+          "timestamp": "10:26:38"
+        },
+        {
+          "row": 12576,
+          "text": "fabled Ruby Fade Stone and that is going to be a four damage attacker that could of course be used",
+          "timestamp": "10:26:44"
+        },
+        {
+          "row": 12577,
+          "text": "over and over there is no undeniable truth in the deck of Rubyzillia so just Peppered Chef only has",
+          "timestamp": "10:26:51"
+        },
+        {
+          "row": 12578,
+          "text": "that as a way to kill his own Suzaku and make it return from the ashes the Singed Emotions now of",
+          "timestamp": "10:27:02"
+        },
+        {
+          "row": 12579,
+          "text": "course is active on Yadon's turn and we're going to see what Yadon ends up materializing the Singed",
+          "timestamp": "10:27:07"
+        },
+        {
+          "row": 12580,
+          "text": "Emotions of course makes his choice a little bit more difficult the level two of course he's set",
+          "timestamp": "10:27:15"
+        },
+        {
+          "row": 12581,
+          "text": "up already with that incapacitate putting the two cards in the memory what else though will Yadon",
+          "timestamp": "10:27:19"
+        },
+        {
+          "row": 12582,
+          "text": "be able to do oh my god double backup into backup is definitely a it is a luxem play of all time and",
+          "timestamp": "10:27:26"
+        },
+        {
+          "row": 12583,
+          "text": "really this is the thing about losing a dungeon guide really wants to find another one fight the",
+          "timestamp": "10:27:34"
+        },
+        {
+          "row": 12584,
+          "text": "turbo charge off of that though that is actually massive will be able to draw even more cards of",
+          "timestamp": "10:27:38"
+        },
+        {
+          "row": 12585,
+          "text": "course and will of course allow Yadon to dig for more of his answers putting the sights down",
+          "timestamp": "10:27:44"
+        },
+        {
+          "row": 12586,
+          "text": "I think Yadon knows it's like hey I need to find an angelic channeling stat and he doesn't find it",
+          "timestamp": "10:27:50"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 3,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 37549
+      }
+    },
+    {
+      "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+      "segments": [
+        12599,
+        12611
+      ],
+      "source": [
+        {
+          "row": 12599,
+          "text": "let's find out what he ends up with materializing first there is the grand crusader's ring of course",
+          "timestamp": "10:29:00"
+        },
+        {
+          "row": 12600,
+          "text": "but we'll go for the enfeebling orb instead trying to reduce the number of actions we do see in",
+          "timestamp": "10:29:04"
+        },
+        {
+          "row": 12601,
+          "text": "Yadon's hand there's about seven and reducing that to five would reduce the number of actions",
+          "timestamp": "10:29:08"
+        },
+        {
+          "row": 12602,
+          "text": "from two to one for sure yeah so with seven cards hand you can do resolute and incapacitate here",
+          "timestamp": "10:29:13"
+        },
+        {
+          "row": 12603,
+          "text": "but now no longer able to do that now he might have to consider maybe doing yeah no I think he's",
+          "timestamp": "10:29:19"
+        },
+        {
+          "row": 12604,
+          "text": "just gonna he has to let go it just cannot preempt these fiery interference now we're gonna use that",
+          "timestamp": "10:29:24"
+        },
+        {
+          "row": 12605,
+          "text": "to get our sixth counter notably we actually haven't gotten our counter from fabled ruby",
+          "timestamp": "10:29:29"
+        },
+        {
+          "row": 12606,
+          "text": "fate stone yet second fiery interference in the hand so Yadon's gonna be forced to get a less than",
+          "timestamp": "10:29:34"
+        },
+        {
+          "row": 12607,
+          "text": "ideal fiery interference uh sorry release because if Rubyzillia had done this after the fabled ruby",
+          "timestamp": "10:29:39"
+        },
+        {
+          "row": 12608,
+          "text": "fate stone had pinged he would have taken he would only recover five uh five instead of six",
+          "timestamp": "10:29:44"
+        },
+        {
+          "row": 12609,
+          "text": "but fiery interference has resolved Yadon has allowed that to happen the",
+          "timestamp": "10:29:50"
+        },
+        {
+          "row": 12610,
+          "text": "fabled ruby fate stone pings happen and now seven quest counters are on",
+          "timestamp": "10:29:54"
+        },
+        {
+          "row": 12611,
+          "text": "Guo Jia, chosen disciple, will Ruby Zillia be doing anything else pre-wreck or are we",
+          "timestamp": "10:29:59"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 3,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 37740
+      }
+    },
+    {
+      "text": "Suzaku’s Command and Peppered Chef force Resolute Stand; Vermilion Decree supplies the last damage.",
+      "segments": [
+        12613,
+        12636
+      ],
+      "source": [
+        {
+          "row": 12613,
+          "text": "If Yadon is banking on this Resolute Stand being enough, that's not gonna work because",
+          "timestamp": "10:30:07"
+        },
+        {
+          "row": 12614,
+          "text": "Ruby Zillia does have the Suzaku's command.",
+          "timestamp": "10:30:11"
+        },
+        {
+          "row": 12615,
+          "text": "That means the Suzaku is gonna flip and he's actually gonna activate the command right",
+          "timestamp": "10:30:13"
+        },
+        {
+          "row": 12616,
+          "text": "here.",
+          "timestamp": "10:30:15"
+        },
+        {
+          "row": 12617,
+          "text": "That is correct.",
+          "timestamp": "10:30:16"
+        },
+        {
+          "row": 12618,
+          "text": "That is Suzaku's command gonna be used right away.",
+          "timestamp": "10:30:17"
+        },
+        {
+          "row": 12619,
+          "text": "That means Suzaku the Vermilion Phoenix is an 8 attack bird and that's only 4 away from",
+          "timestamp": "10:30:20"
+        },
+        {
+          "row": 12620,
+          "text": "taking Yadon into the cemetery where he cannot revive from the ashes.",
+          "timestamp": "10:30:26"
+        },
+        {
+          "row": 12621,
+          "text": "Now Suzaku turns sideways.",
+          "timestamp": "10:30:31"
+        },
+        {
+          "row": 12622,
+          "text": "There was no incapacitate committed there.",
+          "timestamp": "10:30:34"
+        },
+        {
+          "row": 12623,
+          "text": "Going all the way up to 15 is Yadon.",
+          "timestamp": "10:30:36"
+        },
+        {
+          "row": 12624,
+          "text": "No planted explosives to try and remove it.",
+          "timestamp": "10:30:39"
+        },
+        {
+          "row": 12625,
+          "text": "Peppered Chef comes out here.",
+          "timestamp": "10:30:41"
+        },
+        {
+          "row": 12626,
+          "text": "That means Suzaku is gonna be able to swing another time.",
+          "timestamp": "10:30:42"
+        },
+        {
+          "row": 12627,
+          "text": "But this one will not have the buff from the Suzaku's command.",
+          "timestamp": "10:30:45"
+        },
+        {
+          "row": 12628,
+          "text": "That means if the Resolute comes out here, it'll be 1-1, putting him up to 17.",
+          "timestamp": "10:30:49"
+        },
+        {
+          "row": 12629,
+          "text": "That's still enough with any burn spell.",
+          "timestamp": "10:30:54"
+        },
+        {
+          "row": 12630,
+          "text": "That is correct.",
+          "timestamp": "10:30:56"
+        },
+        {
+          "row": 12631,
+          "text": "Now Yadon going to put the cards down into the memory.",
+          "timestamp": "10:30:57"
+        },
+        {
+          "row": 12632,
+          "text": "Going to use the Resolute Stand trying to make his final stand in this game.",
+          "timestamp": "10:31:00"
+        },
+        {
+          "row": 12633,
+          "text": "The Peppered Chef still deals 1 damage and so does Suzaku pushing Yadon up to 17 and",
+          "timestamp": "10:31:04"
+        },
+        {
+          "row": 12634,
+          "text": "the Vermilion Decree will end the game, will end his life and Ruby Zillia in another Asian",
+          "timestamp": "10:31:08"
+        },
+        {
+          "row": 12635,
+          "text": "Ascent in Japan in a long, long time since Ascent Kuala Lumpur has found his way to the",
+          "timestamp": "10:31:15"
+        },
+        {
+          "row": 12636,
+          "text": "finals to the pinnacle of Grand Archive at the Ascent at the Japanese event of today",
+          "timestamp": "10:31:22"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "gameNumber": 3,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 37807
+      }
+    },
+    {
+      "text": "Convergent Beam removes Noel’s Frostsworn Paladin despite Viridian Protective Trinket.",
+      "segments": [
+        12929,
+        12957
+      ],
+      "source": [
+        {
+          "row": 12929,
+          "text": "Okay, it's going to be Viridia, okay, this is so interesting, Noelle is seeing an abusable",
+          "timestamp": "10:55:55"
+        },
+        {
+          "row": 12930,
+          "text": "position here, even though it's not like, oh, she's not going to win this turn, or actually",
+          "timestamp": "10:56:00"
+        },
+        {
+          "row": 12931,
+          "text": "she may be, might be able to win this turn, who knows, Shimmering Refraction being used",
+          "timestamp": "10:56:04"
+        },
+        {
+          "row": 12932,
+          "text": "on...",
+          "timestamp": "10:56:08"
+        },
+        {
+          "row": 12933,
+          "text": "Champion?",
+          "timestamp": "10:56:09"
+        },
+        {
+          "row": 12934,
+          "text": "Champion for three?",
+          "timestamp": "10:56:10"
+        },
+        {
+          "row": 12935,
+          "text": "Oh, she's in the final already?",
+          "timestamp": "10:56:11"
+        },
+        {
+          "row": 12936,
+          "text": "One Fractal Burst to Sunder is lethal, so the question is whether Noelle has it or not.",
+          "timestamp": "10:56:12"
+        },
+        {
+          "row": 12937,
+          "text": "Okay, that's going to be Paladin's swing for five, needs to find ten damage, one Fractal",
+          "timestamp": "10:56:18"
+        },
+        {
+          "row": 12938,
+          "text": "Burst to Sunder is going to be the game, so, is she sniffing it?",
+          "timestamp": "10:56:21"
+        },
+        {
+          "row": 12939,
+          "text": "How many cards does PokerKT have in hand right now?",
+          "timestamp": "10:56:24"
+        },
+        {
+          "row": 12940,
+          "text": "Uh, I don't know, but Frostmourne Paladin is going to swing in for two, and Noelle...",
+          "timestamp": "10:56:26"
+        },
+        {
+          "row": 12941,
+          "text": "Convergent Beam?",
+          "timestamp": "10:56:30"
+        },
+        {
+          "row": 12942,
+          "text": "Oh, Convergent Beam!",
+          "timestamp": "10:56:31"
+        },
+        {
+          "row": 12943,
+          "text": "One of the cards in the sideboard coming in here.",
+          "timestamp": "10:56:34"
+        },
+        {
+          "row": 12944,
+          "text": "This is a card that is two cost, norm element, deal one damage, and if you have a Fractal,",
+          "timestamp": "10:56:36"
+        },
+        {
+          "row": 12945,
+          "text": "you deal three damage instead, and this two damage difference might be the difference",
+          "timestamp": "10:56:41"
+        },
+        {
+          "row": 12946,
+          "text": "between life and death here for PokerKT.",
+          "timestamp": "10:56:45"
+        },
+        {
+          "row": 12947,
+          "text": "The Convergent Beam, I'm not sure if Noelle was aware of, well, I'm sure she knew about",
+          "timestamp": "10:56:49"
+        },
+        {
+          "row": 12948,
+          "text": "it, but maybe wasn't expecting it here, thinking she was safe because of the Viridian Trinket,",
+          "timestamp": "10:56:53"
+        },
+        {
+          "row": 12949,
+          "text": "but Convergent Beam will take out this unbuffed Frostmourne Paladin, and that's where this",
+          "timestamp": "10:56:59"
+        },
+        {
+          "row": 12950,
+          "text": "sensor is also crucial, because if it was buffed, that Convergent Beam wouldn't have",
+          "timestamp": "10:57:04"
+        },
+        {
+          "row": 12951,
+          "text": "done the trick.",
+          "timestamp": "10:57:09"
+        },
+        {
+          "row": 12952,
+          "text": "Well, if you do it in response to the on-enter, but then she still does get the draw at least,",
+          "timestamp": "10:57:10"
+        },
+        {
+          "row": 12953,
+          "text": "so now, Noelle has to reconsider.",
+          "timestamp": "10:57:14"
+        },
+        {
+          "row": 12954,
+          "text": "I think she was really thinking, oh, this is the lethal line, Convergent Beam is a two-off,",
+          "timestamp": "10:57:17"
+        },
+        {
+          "row": 12955,
+          "text": "you don't even know, it's a sideboard card, maybe PokerKT doesn't put it in, but clearly",
+          "timestamp": "10:57:21"
+        },
+        {
+          "row": 12956,
+          "text": "values having a norm card that gets around Viridian Protective Trinket, that gets rid",
+          "timestamp": "10:57:24"
+        },
+        {
+          "row": 12957,
+          "text": "of the Gildas, that gets rid of the Paladins.",
+          "timestamp": "10:57:30"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 2,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 39355
+      }
+    },
+    {
+      "text": "Noel negates Zhang Jiao with Glimmering Refusal, keeping the Fractal mirror balanced.",
+      "segments": [
+        12994,
+        13016
+      ],
+      "source": [
+        {
+          "row": 12994,
+          "text": "Okay, he's going for it!",
+          "timestamp": "10:59:24"
+        },
+        {
+          "row": 12995,
+          "text": "I think PokerKT recognizes he's already behind.",
+          "timestamp": "10:59:25"
+        },
+        {
+          "row": 12996,
+          "text": "He needs to make this flip.",
+          "timestamp": "10:59:29"
+        },
+        {
+          "row": 12997,
+          "text": "Does Noelle have the negate?",
+          "timestamp": "10:59:31"
+        },
+        {
+          "row": 12998,
+          "text": "And even if she does, I'm going to force it out of her.",
+          "timestamp": "10:59:33"
+        },
+        {
+          "row": 12999,
+          "text": "And force it out, he does.",
+          "timestamp": "10:59:35"
+        },
+        {
+          "row": 13000,
+          "text": "Noelle is going to use that Glimmering Refusal on Zhang Jiao.",
+          "timestamp": "10:59:37"
+        },
+        {
+          "row": 13001,
+          "text": "Four Fractals will mean PokerKT can choose to pay four to glimpse and also deal one damage",
+          "timestamp": "10:59:40"
+        },
+        {
+          "row": 13002,
+          "text": "to Noelle.",
+          "timestamp": "10:59:46"
+        },
+        {
+          "row": 13003,
+          "text": "That is, of course, an option.",
+          "timestamp": "10:59:48"
+        },
+        {
+          "row": 13004,
+          "text": "It is an option.",
+          "timestamp": "10:59:49"
+        },
+        {
+          "row": 13005,
+          "text": "I don't think you want to go hands down against the other Fractal player.",
+          "timestamp": "10:59:50"
+        },
+        {
+          "row": 13006,
+          "text": "That's very risky.",
+          "timestamp": "10:59:54"
+        },
+        {
+          "row": 13007,
+          "text": "Especially when you know she had the Burst of Thunder.",
+          "timestamp": "10:59:55"
+        },
+        {
+          "row": 13008,
+          "text": "She has, I believe, still three Fractals.",
+          "timestamp": "10:59:57"
+        },
+        {
+          "row": 13009,
+          "text": "two cards in hand and could go Bobble into like Shimmering into Burst as an option here.",
+          "timestamp": "10:59:59"
+        },
+        {
+          "row": 13010,
+          "text": "So definitely want to be a little bit wary.",
+          "timestamp": "11:00:05"
+        },
+        {
+          "row": 13011,
+          "text": "That being said, Glimmering is on the stack.",
+          "timestamp": "11:00:09"
+        },
+        {
+          "row": 13012,
+          "text": "It is not really possible to negate this.",
+          "timestamp": "11:00:11"
+        },
+        {
+          "row": 13013,
+          "text": "Even if you did negate it, your Chang Qiao still wouldn't draw two.",
+          "timestamp": "11:00:15"
+        },
+        {
+          "row": 13014,
+          "text": "So PokerKT does of course still want to consider his various outs.",
+          "timestamp": "11:00:18"
+        },
+        {
+          "row": 13015,
+          "text": "Maybe there's a universe that it happens, but Chang Qiao does go into the banish, allowing",
+          "timestamp": "11:00:23"
+        },
+        {
+          "row": 13016,
+          "text": "PokerKT to keep his existing Chang Qiao.",
+          "timestamp": "11:00:28"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 2,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 39564
+      }
+    },
+    {
+      "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
+      "segments": [
+        13112,
+        13125
+      ],
+      "source": [
+        {
+          "row": 13112,
+          "text": "And there, it is actually going to be on the Safeguard Amulet in response.",
+          "timestamp": "11:05:50"
+        },
+        {
+          "row": 13113,
+          "text": "Popping it here, no reason not to.",
+          "timestamp": "11:05:54"
+        },
+        {
+          "row": 13114,
+          "text": "But does he have 3?",
+          "timestamp": "11:05:57"
+        },
+        {
+          "row": 13115,
+          "text": "He does have Shimmering Refraction.",
+          "timestamp": "11:05:59"
+        },
+        {
+          "row": 13116,
+          "text": "Wait, that's 5 by 5.",
+          "timestamp": "11:06:00"
+        },
+        {
+          "row": 13117,
+          "text": "This is still the end step of PokerKT, so the Viridian Protective Finger is not online",
+          "timestamp": "11:06:02"
+        },
+        {
+          "row": 13118,
+          "text": "yet.",
+          "timestamp": "11:06:05"
+        },
+        {
+          "row": 13119,
+          "text": "Here is the first shot, 6 damage here, with 5 Fractals plus 1 from the Refracting Missile",
+          "timestamp": "11:06:06"
+        },
+        {
+          "row": 13120,
+          "text": "itself.",
+          "timestamp": "11:06:11"
+        },
+        {
+          "row": 13121,
+          "text": "Noelle says, okay, I will take that damage, and PokerKT now will follow it up with another",
+          "timestamp": "11:06:12"
+        },
+        {
+          "row": 13122,
+          "text": "piece of the puzzle.",
+          "timestamp": "11:06:18"
+        },
+        {
+          "row": 13123,
+          "text": "Two Fractals rested, the Shimmering Refraction into the face of Noelle.",
+          "timestamp": "11:06:20"
+        },
+        {
+          "row": 13124,
+          "text": "It pierces through her and sends her to Game 3.",
+          "timestamp": "11:06:25"
+        },
+        {
+          "row": 13125,
+          "text": "PokerKT equalizes here in the semi-final game to lay his claim on the finals of Ascent Osaka.",
+          "timestamp": "11:06:30"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 2,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 39950
+      }
+    },
+    {
+      "text": "Convergent Beam answers Noel’s Frostsworn Paladin again, stopping her early ally pressure.",
+      "segments": [
+        13309,
+        13320
+      ],
+      "source": [
+        {
+          "row": 13309,
+          "text": "Refracting Missiles in the grave for the Paladin that's about to be drawn.",
+          "timestamp": "11:15:35"
+        },
+        {
+          "row": 13310,
+          "text": "That is correct.",
+          "timestamp": "11:15:38"
+        },
+        {
+          "row": 13311,
+          "text": "And there is the Paladin.",
+          "timestamp": "11:15:39"
+        },
+        {
+          "row": 13312,
+          "text": "Indeed.",
+          "timestamp": "11:15:40"
+        },
+        {
+          "row": 13313,
+          "text": "Negate here would only force three cards down from Noelle and I think she would be happy",
+          "timestamp": "11:15:41"
+        },
+        {
+          "row": 13314,
+          "text": "to pay that to guarantee the...",
+          "timestamp": "11:15:45"
+        },
+        {
+          "row": 13315,
+          "text": "Oh, actually Enflaming Orb Negate is an option.",
+          "timestamp": "11:15:47"
+        },
+        {
+          "row": 13316,
+          "text": "Oh, he did have a Convergent Beam!",
+          "timestamp": "11:15:49"
+        },
+        {
+          "row": 13317,
+          "text": "So he did have both.",
+          "timestamp": "11:15:51"
+        },
+        {
+          "row": 13318,
+          "text": "And of course, the Refracting Missile will still be eaten to draw a card.",
+          "timestamp": "11:15:52"
+        },
+        {
+          "row": 13319,
+          "text": "But once again, no ally on the board for Noelle.",
+          "timestamp": "11:15:56"
+        },
+        {
+          "row": 13320,
+          "text": "No pressure on PokerKT from three damage per turn.",
+          "timestamp": "11:15:58"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 3,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 40535
+      }
+    },
+    {
+      "text": "Two Zhang Jiao plays build PokerKT’s resources while Noel struggles to find more damage.",
+      "segments": [
+        13583,
+        13600
+      ],
+      "source": [
+        {
+          "row": 13583,
+          "text": "Zhangjiao is instead to play another Zhangjiao actually play two Zhangjiaos this turn",
+          "timestamp": "11:33:36"
+        },
+        {
+          "row": 13584,
+          "text": "he can resolve both of them yes he does have the four fractals still ready to draw",
+          "timestamp": "11:33:40"
+        },
+        {
+          "row": 13585,
+          "text": "here once again building the influence of one point of damage from this Zhangjiao",
+          "timestamp": "11:33:44"
+        },
+        {
+          "row": 13586,
+          "text": "and just no burst of thunder in the hand but has the glimmering refusal so very",
+          "timestamp": "11:33:48"
+        },
+        {
+          "row": 13587,
+          "text": "strong there checking the graveyard here now again for PokerKT maybe",
+          "timestamp": "11:33:53"
+        },
+        {
+          "row": 13588,
+          "text": "considering if he wants to get rid of this frostborn paladin or just wants to",
+          "timestamp": "11:33:58"
+        },
+        {
+          "row": 13589,
+          "text": "get that additional bit of poke from these Zhangjiaos again another thing to",
+          "timestamp": "11:34:01"
+        },
+        {
+          "row": 13590,
+          "text": "know here Noel doesn't have a way of putting these cards down no more",
+          "timestamp": "11:34:05"
+        },
+        {
+          "row": 13591,
+          "text": "fractals to pay for anything so there's no one cost cards in this deck so I",
+          "timestamp": "11:34:09"
+        },
+        {
+          "row": 13592,
+          "text": "think it's literally just these two the two cards in the memory if they have to",
+          "timestamp": "11:34:12"
+        },
+        {
+          "row": 13593,
+          "text": "be cards except their fascination can be used on and second Zhangjiao hits the",
+          "timestamp": "11:34:16"
+        },
+        {
+          "row": 13594,
+          "text": "board knowing smile from Noel here one player has found more Zhangjiaos at the",
+          "timestamp": "11:34:20"
+        },
+        {
+          "row": 13595,
+          "text": "other and clearly this is the difference maker in this game and let's see what",
+          "timestamp": "11:34:26"
+        },
+        {
+          "row": 13596,
+          "text": "the draws are he's he's doing it very slowly he's doing it he's doing the",
+          "timestamp": "11:34:30"
+        },
+        {
+          "row": 13597,
+          "text": "Asian thing where you pull the card out little by little from the side and one",
+          "timestamp": "11:34:35"
+        },
+        {
+          "row": 13598,
+          "text": "damaging from this Zhangjiao and does find a shimmering and does see two",
+          "timestamp": "11:34:39"
+        },
+        {
+          "row": 13599,
+          "text": "glimmering refusals as well and they shimmer and they glimmer but they do not",
+          "timestamp": "11:34:43"
+        },
+        {
+          "row": 13600,
+          "text": "burst a thunder and that is what PokerKT needs in order to finish the game",
+          "timestamp": "11:34:46"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 3,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 41616
+      }
+    },
+    {
+      "text": "PokerKT removes Viridian Protective Trinket and uses consecutive Glimmering Refusals to stop Noel’s lethal Refracting Missile.",
+      "segments": [
+        13708,
+        13728
+      ],
+      "source": [
+        {
+          "row": 13708,
+          "text": "that negate but what else is it gonna be refracting missiles finally going to be",
+          "timestamp": "11:43:19"
+        },
+        {
+          "row": 13709,
+          "text": "activated here on face this is going to be another 3 4 5 6 7 8 9 11 damage it's",
+          "timestamp": "11:43:25"
+        },
+        {
+          "row": 13710,
+          "text": "gigalito basically so any of these shots go true it's gonna be curtains for",
+          "timestamp": "11:43:33"
+        },
+        {
+          "row": 13711,
+          "text": "PokerKT and he has rested for already so we can expect it to be maybe that",
+          "timestamp": "11:43:40"
+        },
+        {
+          "row": 13712,
+          "text": "glimmering refusal and he has indeed put another glimmering refusal into the",
+          "timestamp": "11:43:46"
+        },
+        {
+          "row": 13713,
+          "text": "memory Fracture Eye is gonna be on the VBT instead so this does open him up to",
+          "timestamp": "11:43:51"
+        },
+        {
+          "row": 13714,
+          "text": "more uses this means that actually instead of Scepter of Fascination going into a",
+          "timestamp": "11:43:55"
+        },
+        {
+          "row": 13715,
+          "text": "single glimmering refusal is going to be Scepter of Fascination for two negates and that",
+          "timestamp": "11:43:59"
+        },
+        {
+          "row": 13716,
+          "text": "could be a very big difference let's see if this Fracture Eyes is gonna be",
+          "timestamp": "11:44:05"
+        },
+        {
+          "row": 13717,
+          "text": "allowed to resolve this is so tight actually gonna let it go no way of",
+          "timestamp": "11:44:09"
+        },
+        {
+          "row": 13718,
+          "text": "stopping that one that is an extra fractal that's going to be an additional",
+          "timestamp": "11:44:13"
+        },
+        {
+          "row": 13719,
+          "text": "plus one onto this refracting missiles through two more down there's the",
+          "timestamp": "11:44:17"
+        },
+        {
+          "row": 13720,
+          "text": "glimmering refusal still has two potential negates two potential glimmer",
+          "timestamp": "11:44:22"
+        },
+        {
+          "row": 13721,
+          "text": "glimmerings and glimmer counters to use with that Scepter of Fascination",
+          "timestamp": "11:44:27"
+        },
+        {
+          "row": 13722,
+          "text": "Noelle, she can actually pay for this can she not? Yeah it's 9 versus 11 fractals so",
+          "timestamp": "11:44:31"
+        },
+        {
+          "row": 13723,
+          "text": "Noelle's actually resting 9 to pay for this negate and she has her own negate",
+          "timestamp": "11:44:35"
+        },
+        {
+          "row": 13724,
+          "text": "though no it's a Spalding Clads that are chilled to the bone she has literally",
+          "timestamp": "11:44:41"
+        },
+        {
+          "row": 13725,
+          "text": "nothing and this may have been her Hail Mary and unfortunately PokerKT has the",
+          "timestamp": "11:44:44"
+        },
+        {
+          "row": 13726,
+          "text": "answer here's gonna be an answer now two cards down is second glimmering refusal",
+          "timestamp": "11:44:50"
+        },
+        {
+          "row": 13727,
+          "text": "and Noelle with only two cards in hand doesn't represent her own refracting",
+          "timestamp": "11:44:54"
+        },
+        {
+          "row": 13728,
+          "text": "missile is banished but if Noelle has let's say shimmering refraction exactly",
+          "timestamp": "11:44:58"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 3,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 42199
+      }
+    },
+    {
+      "text": "Shimmering Refraction sets up PokerKT’s next-turn Refracting Missile, securing the final spot.",
+      "segments": [
+        13730,
+        13742
+      ],
+      "source": [
+        {
+          "row": 13730,
+          "text": "let's not forget PokerKT doesn't even have shimmering refraction coming out",
+          "timestamp": "11:45:09"
+        },
+        {
+          "row": 13731,
+          "text": "there's a single shimmering refraction first and the Scepter of Fascination is",
+          "timestamp": "11:45:13"
+        },
+        {
+          "row": 13732,
+          "text": "on the board this is nine damage into the face of Noelle and of course a draw",
+          "timestamp": "11:45:17"
+        },
+        {
+          "row": 13733,
+          "text": "into the memory of PokerKT now will there be a second shimmering he's",
+          "timestamp": "11:45:21"
+        },
+        {
+          "row": 13734,
+          "text": "looking for it he's hoping for it has he found it PokerKT may smell the writing",
+          "timestamp": "11:45:26"
+        },
+        {
+          "row": 13735,
+          "text": "on the wall Noelle has a single card in the memory but if that card is shimmering",
+          "timestamp": "11:45:32"
+        },
+        {
+          "row": 13736,
+          "text": "refraction he is going to be sent into oblivion the Viridian Protective Trinket",
+          "timestamp": "11:45:36"
+        },
+        {
+          "row": 13737,
+          "text": "is going to be materialized does Noelle show the shimmering refraction she does",
+          "timestamp": "11:45:42"
+        },
+        {
+          "row": 13738,
+          "text": "not the mill is on Noelle the recollect is for PokerKT",
+          "timestamp": "11:45:47"
+        },
+        {
+          "row": 13739,
+          "text": "and the refracting missile will be used and Noelle raises her hand and PokerKT",
+          "timestamp": "11:45:54"
+        },
+        {
+          "row": 13740,
+          "text": "from Hong Kong will take the game for himself send himself into the final",
+          "timestamp": "11:46:01"
+        },
+        {
+          "row": 13741,
+          "text": "punch his ticket to fight against Ruby Zillia for the right to the Ascent",
+          "timestamp": "11:46:08"
+        },
+        {
+          "row": 13742,
+          "text": "Gauntlet and all of that said this was a tough match a tough fight a difficult",
+          "timestamp": "11:46:14"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "gameNumber": 3,
+      "order": 4,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 42309
+      }
+    },
+    {
+      "text": "After PokerKT sacrifices his own Censer of Restful Peace, RubyXillia brings out another to keep floating memory locked.",
+      "segments": [
+        13968,
+        13995
+      ],
+      "source": [
+        {
+          "row": 13968,
+          "text": "Ooh, censor return!",
+          "timestamp": "12:09:00"
+        },
+        {
+          "row": 13969,
+          "text": "Ooh, censor return, wow!",
+          "timestamp": "12:09:01"
+        },
+        {
+          "row": 13970,
+          "text": "Never seen that coming, honestly speaking, wow.",
+          "timestamp": "12:09:02"
+        },
+        {
+          "row": 13971,
+          "text": "Alright, so now we have all the floating active.",
+          "timestamp": "12:09:05"
+        },
+        {
+          "row": 13972,
+          "text": "That's three floating memory,",
+          "timestamp": "12:09:07"
+        },
+        {
+          "row": 13973,
+          "text": "now unlocked for PokerKT,",
+          "timestamp": "12:09:09"
+        },
+        {
+          "row": 13974,
+          "text": "he's sacrificed his own censor,",
+          "timestamp": "12:09:11"
+        },
+        {
+          "row": 13975,
+          "text": "of course, RubyZillia usually doesn't need",
+          "timestamp": "12:09:13"
+        },
+        {
+          "row": 13976,
+          "text": "the graveyard after all...",
+          "timestamp": "12:09:15"
+        },
+        {
+          "row": 13977,
+          "text": "A censor on a censor!",
+          "timestamp": "12:09:20"
+        },
+        {
+          "row": 13978,
+          "text": "Yeah, nice return, buddy!",
+          "timestamp": "12:09:21"
+        },
+        {
+          "row": 13979,
+          "text": "Why don't I return the favor instead,",
+          "timestamp": "12:09:23"
+        },
+        {
+          "row": 13980,
+          "text": "and materialize my own censor?",
+          "timestamp": "12:09:26"
+        },
+        {
+          "row": 13981,
+          "text": "You can hear the crowd laughing as well,",
+          "timestamp": "12:09:28"
+        },
+        {
+          "row": 13982,
+          "text": "it's a bit of a funny tit-for-tat, but RubyZillia...",
+          "timestamp": "12:09:30"
+        },
+        {
+          "row": 13983,
+          "text": "I didn't mind the censor there, you know,",
+          "timestamp": "12:09:32"
+        },
+        {
+          "row": 13984,
+          "text": "we can have the censor!",
+          "timestamp": "12:09:34"
+        },
+        {
+          "row": 13985,
+          "text": "Yeah, I like that censor, actually,",
+          "timestamp": "12:09:35"
+        },
+        {
+          "row": 13986,
+          "text": "you deny my liminal guide,",
+          "timestamp": "12:09:37"
+        },
+        {
+          "row": 13987,
+          "text": "I'm gonna deny your three floating memory,",
+          "timestamp": "12:09:38"
+        },
+        {
+          "row": 13988,
+          "text": "and RubyZillia's probably very happy with this exchange.",
+          "timestamp": "12:09:40"
+        },
+        {
+          "row": 13989,
+          "text": "Yeah, like, the fact that all the liminal guides",
+          "timestamp": "12:09:42"
+        },
+        {
+          "row": 13990,
+          "text": "are basically useless at this point,",
+          "timestamp": "12:09:45"
+        },
+        {
+          "row": 13991,
+          "text": "you don't really need any,",
+          "timestamp": "12:09:47"
+        },
+        {
+          "row": 13992,
+          "text": "so you're just gonna censor there,",
+          "timestamp": "12:09:48"
+        },
+        {
+          "row": 13993,
+          "text": "and then PokerKT now,",
+          "timestamp": "12:09:49"
+        },
+        {
+          "row": 13994,
+          "text": "all those juicy floating memory just...",
+          "timestamp": "12:09:50"
+        },
+        {
+          "row": 13995,
+          "text": "has no effect, no tax.",
+          "timestamp": "12:09:53"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 1,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 43740
+      }
+    },
+    {
+      "text": "PokerKT uses Glimmering Refusal to stop Avatar of Suzaku, then Zhang Jiao restores life.",
+      "segments": [
+        14110,
+        14161
+      ],
+      "source": [
+        {
+          "row": 14110,
+          "text": "But it is going to be the Glimmering Refusal,",
+          "timestamp": "12:13:07"
+        },
+        {
+          "row": 14111,
+          "text": "it looks like.",
+          "timestamp": "12:13:09"
+        },
+        {
+          "row": 14112,
+          "text": "It has to be a refusal.",
+          "timestamp": "12:13:10"
+        },
+        {
+          "row": 14113,
+          "text": "Like it or not, it's going to be a refusal.",
+          "timestamp": "12:13:11"
+        },
+        {
+          "row": 14114,
+          "text": "You're going to make...",
+          "timestamp": "12:13:13"
+        },
+        {
+          "row": 14115,
+          "text": "Ooh.",
+          "timestamp": "12:13:14"
+        },
+        {
+          "row": 14116,
+          "text": "Yeah, I mean, he can't pay for it,",
+          "timestamp": "12:13:15"
+        },
+        {
+          "row": 14117,
+          "text": "so it just goes straight into the",
+          "timestamp": "12:13:16"
+        },
+        {
+          "row": 14118,
+          "text": "banishment. Of course, it has not been",
+          "timestamp": "12:13:17"
+        },
+        {
+          "row": 14119,
+          "text": "activated, so cannot use its effect",
+          "timestamp": "12:13:19"
+        },
+        {
+          "row": 14120,
+          "text": "to sacrifice itself.",
+          "timestamp": "12:13:21"
+        },
+        {
+          "row": 14121,
+          "text": "It is not technically on the board.",
+          "timestamp": "12:13:23"
+        },
+        {
+          "row": 14122,
+          "text": "Okay, KT now will have to decide,",
+          "timestamp": "12:13:25"
+        },
+        {
+          "row": 14123,
+          "text": "am I going to level up, because",
+          "timestamp": "12:13:27"
+        },
+        {
+          "row": 14124,
+          "text": "I am in giga-danger right now.",
+          "timestamp": "12:13:29"
+        },
+        {
+          "row": 14125,
+          "text": "I am dying.",
+          "timestamp": "12:13:31"
+        },
+        {
+          "row": 14126,
+          "text": "He be dying, he do be dying.",
+          "timestamp": "12:13:33"
+        },
+        {
+          "row": 14127,
+          "text": "With another few points of damage,",
+          "timestamp": "12:13:35"
+        },
+        {
+          "row": 14128,
+          "text": "he's actually in range of Impact Hammer.",
+          "timestamp": "12:13:37"
+        },
+        {
+          "row": 14129,
+          "text": "Yeah.",
+          "timestamp": "12:13:39"
+        },
+        {
+          "row": 14130,
+          "text": "And you don't love seeing that.",
+          "timestamp": "12:13:40"
+        },
+        {
+          "row": 14131,
+          "text": "Whoa!",
+          "timestamp": "12:13:41"
+        },
+        {
+          "row": 14132,
+          "text": "Going to the Mirror.",
+          "timestamp": "12:13:42"
+        },
+        {
+          "row": 14133,
+          "text": "Crystalline Mirror will allow him to",
+          "timestamp": "12:13:43"
+        },
+        {
+          "row": 14134,
+          "text": "glimpse a little bit, and",
+          "timestamp": "12:13:45"
+        },
+        {
+          "row": 14135,
+          "text": "you might wonder, is he going to use",
+          "timestamp": "12:13:47"
+        },
+        {
+          "row": 14136,
+          "text": "Shang Tiao for the Recover 4 on purpose?",
+          "timestamp": "12:13:49"
+        },
+        {
+          "row": 14137,
+          "text": "We're going to mill his opponent.",
+          "timestamp": "12:13:53"
+        },
+        {
+          "row": 14138,
+          "text": "Interesting, this has been a movement",
+          "timestamp": "12:13:54"
+        },
+        {
+          "row": 14139,
+          "text": "that we saw last game as well, right?",
+          "timestamp": "12:13:56"
+        },
+        {
+          "row": 14140,
+          "text": "That is true. I mean, it is a way to",
+          "timestamp": "12:13:57"
+        },
+        {
+          "row": 14141,
+          "text": "deny your opponent of options,",
+          "timestamp": "12:13:59"
+        },
+        {
+          "row": 14142,
+          "text": "especially if they've glimpsed it before.",
+          "timestamp": "12:14:01"
+        },
+        {
+          "row": 14143,
+          "text": "But PokerKT maybe just",
+          "timestamp": "12:14:03"
+        },
+        {
+          "row": 14144,
+          "text": "had a feeling that giving himself",
+          "timestamp": "12:14:05"
+        },
+        {
+          "row": 14145,
+          "text": "more cards in Graveyard is bad,",
+          "timestamp": "12:14:07"
+        },
+        {
+          "row": 14146,
+          "text": "in case there is Intensified Pyre.",
+          "timestamp": "12:14:09"
+        },
+        {
+          "row": 14147,
+          "text": "Rubyzillia is not running any copies of",
+          "timestamp": "12:14:11"
+        },
+        {
+          "row": 14148,
+          "text": "that card in his deck, but maybe",
+          "timestamp": "12:14:13"
+        },
+        {
+          "row": 14149,
+          "text": "PokerKT didn't have enough time to study,",
+          "timestamp": "12:14:15"
+        },
+        {
+          "row": 14150,
+          "text": "and maybe he had a bit of a foregoer moment.",
+          "timestamp": "12:14:17"
+        },
+        {
+          "row": 14151,
+          "text": "Of course, very difficult time.",
+          "timestamp": "12:14:19"
+        },
+        {
+          "row": 14152,
+          "text": "Shang Tiao right here.",
+          "timestamp": "12:14:21"
+        },
+        {
+          "row": 14153,
+          "text": "Is that 1 in MEM?",
+          "timestamp": "12:14:23"
+        },
+        {
+          "row": 14154,
+          "text": "That is Recover 4.",
+          "timestamp": "12:14:24"
+        },
+        {
+          "row": 14155,
+          "text": "Recover 4, we're going to go face for 1.",
+          "timestamp": "12:14:25"
+        },
+        {
+          "row": 14156,
+          "text": "Probably just going to pass here.",
+          "timestamp": "12:14:27"
+        },
+        {
+          "row": 14157,
+          "text": "Notably, PokerKT's influence is very low now.",
+          "timestamp": "12:14:29"
+        },
+        {
+          "row": 14158,
+          "text": "4, 3 in hand, 1 in MEM.",
+          "timestamp": "12:14:31"
+        },
+        {
+          "row": 14159,
+          "text": "Yeah, very very little options for him.",
+          "timestamp": "12:14:33"
+        },
+        {
+          "row": 14160,
+          "text": "He's basically limited to 1 action per turn",
+          "timestamp": "12:14:35"
+        },
+        {
+          "row": 14161,
+          "text": "for the rest of the game, for now.",
+          "timestamp": "12:14:37"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 1,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 43987
+      }
+    },
+    {
+      "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
+      "segments": [
+        14327,
+        14376
+      ],
+      "source": [
+        {
+          "row": 14327,
+          "text": "Portentous Tengu was the materialization of",
+          "timestamp": "12:20:09"
+        },
+        {
+          "row": 14328,
+          "text": "Rupert Celia, so that's where he got the 6",
+          "timestamp": "12:20:11"
+        },
+        {
+          "row": 14329,
+          "text": "quest counter. And then you get the other one on",
+          "timestamp": "12:20:13"
+        },
+        {
+          "row": 14330,
+          "text": "the trigger. That's right. So you are",
+          "timestamp": "12:20:15"
+        },
+        {
+          "row": 14331,
+          "text": "responding on the materialization of the Tengu.",
+          "timestamp": "12:20:17"
+        },
+        {
+          "row": 14332,
+          "text": "That is correct. And what",
+          "timestamp": "12:20:19"
+        },
+        {
+          "row": 14333,
+          "text": "could it be? Of course,",
+          "timestamp": "12:20:21"
+        },
+        {
+          "row": 14334,
+          "text": "it's a little bit difficult to",
+          "timestamp": "12:20:23"
+        },
+        {
+          "row": 14335,
+          "text": "interact with the Fade Stone, but 1-1 goes through, and that's",
+          "timestamp": "12:20:25"
+        },
+        {
+          "row": 14336,
+          "text": "the 7th quest counter for Ruby Celia!",
+          "timestamp": "12:20:27"
+        },
+        {
+          "row": 14337,
+          "text": "That means Suzaku is",
+          "timestamp": "12:20:29"
+        },
+        {
+          "row": 14338,
+          "text": "on line, and maybe on the board.",
+          "timestamp": "12:20:31"
+        },
+        {
+          "row": 14339,
+          "text": "And Fuming Orb",
+          "timestamp": "12:20:33"
+        },
+        {
+          "row": 14340,
+          "text": "going to be used here",
+          "timestamp": "12:20:35"
+        },
+        {
+          "row": 14341,
+          "text": "by Ruby Celia.",
+          "timestamp": "12:20:37"
+        },
+        {
+          "row": 14342,
+          "text": "Forcing out 2 cards",
+          "timestamp": "12:20:39"
+        },
+        {
+          "row": 14343,
+          "text": "down from PokerKT. Maybe",
+          "timestamp": "12:20:41"
+        },
+        {
+          "row": 14344,
+          "text": "Ruby Celia might even display a card to",
+          "timestamp": "12:20:43"
+        },
+        {
+          "row": 14345,
+          "text": "force out and negate. Exactly, I mean,",
+          "timestamp": "12:20:45"
+        },
+        {
+          "row": 14346,
+          "text": "using a card now may even force out",
+          "timestamp": "12:20:47"
+        },
+        {
+          "row": 14347,
+          "text": "the Safeguard Amulet as well. Remember,",
+          "timestamp": "12:20:49"
+        },
+        {
+          "row": 14348,
+          "text": "the Suzaku, of course, does 4, but",
+          "timestamp": "12:20:51"
+        },
+        {
+          "row": 14349,
+          "text": "the bird could also do",
+          "timestamp": "12:20:53"
+        },
+        {
+          "row": 14350,
+          "text": "4 more with the Suzaku's command.",
+          "timestamp": "12:20:55"
+        },
+        {
+          "row": 14351,
+          "text": "It's not going to be the case. Just uses",
+          "timestamp": "12:20:57"
+        },
+        {
+          "row": 14352,
+          "text": "the Tengu to draw an additional card. 9 total",
+          "timestamp": "12:20:59"
+        },
+        {
+          "row": 14353,
+          "text": "influence, including the Fractal. Can",
+          "timestamp": "12:21:01"
+        },
+        {
+          "row": 14354,
+          "text": "we find a lethal",
+          "timestamp": "12:21:03"
+        },
+        {
+          "row": 14355,
+          "text": "line, Ruby Celia? Can you",
+          "timestamp": "12:21:05"
+        },
+        {
+          "row": 14356,
+          "text": "show us the way to the final?",
+          "timestamp": "12:21:07"
+        },
+        {
+          "row": 14357,
+          "text": "It will be a very",
+          "timestamp": "12:21:09"
+        },
+        {
+          "row": 14358,
+          "text": "tough task here. 11 damage.",
+          "timestamp": "12:21:11"
+        },
+        {
+          "row": 14359,
+          "text": "Oh, we gotta flip. The KFC just",
+          "timestamp": "12:21:13"
+        },
+        {
+          "row": 14360,
+          "text": "comes out. Suzaku is here",
+          "timestamp": "12:21:15"
+        },
+        {
+          "row": 14361,
+          "text": "with a 4-3. Does it have",
+          "timestamp": "12:21:17"
+        },
+        {
+          "row": 14362,
+          "text": "the Suzaku's command? I think Suzaku's command would be really, really",
+          "timestamp": "12:21:19"
+        },
+        {
+          "row": 14363,
+          "text": "huge here. Yes, Suzaku's command would be",
+          "timestamp": "12:21:21"
+        },
+        {
+          "row": 14364,
+          "text": "exactly lethal, and there's",
+          "timestamp": "12:21:23"
+        },
+        {
+          "row": 14365,
+          "text": "very little PokerKT can do.",
+          "timestamp": "12:21:25"
+        },
+        {
+          "row": 14366,
+          "text": "But Suzaku's command is going to happen.",
+          "timestamp": "12:21:27"
+        },
+        {
+          "row": 14367,
+          "text": "And now, there is a Peppered Chef that",
+          "timestamp": "12:21:29"
+        },
+        {
+          "row": 14368,
+          "text": "we saw earlier off of the imbue, and",
+          "timestamp": "12:21:31"
+        },
+        {
+          "row": 14369,
+          "text": "that might be the ally that Ruby Celia",
+          "timestamp": "12:21:33"
+        },
+        {
+          "row": 14370,
+          "text": "needs. That might be the ally that he's been",
+          "timestamp": "12:21:35"
+        },
+        {
+          "row": 14371,
+          "text": "hoping for. The Peppered Chef",
+          "timestamp": "12:21:37"
+        },
+        {
+          "row": 14372,
+          "text": "seasons the chicken, and might",
+          "timestamp": "12:21:39"
+        },
+        {
+          "row": 14373,
+          "text": "be the final dish served. PokerKT",
+          "timestamp": "12:21:41"
+        },
+        {
+          "row": 14374,
+          "text": "scoops it up, and",
+          "timestamp": "12:21:43"
+        },
+        {
+          "row": 14375,
+          "text": "that's going to be Game 1! Going to Ruby Celia",
+          "timestamp": "12:21:45"
+        },
+        {
+          "row": 14376,
+          "text": "already!",
+          "timestamp": "12:21:47"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 1,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 44409
+      }
+    },
+    {
+      "text": "Fiery Interference denies Zhang Jiao’s recovery and brings RubyXillia closer to Suzaku.",
+      "segments": [
+        14690,
+        14700
+      ],
+      "source": [
+        {
+          "row": 14690,
+          "text": "We are going to go into a recovery there.",
+          "timestamp": "12:33:54"
+        },
+        {
+          "row": 14691,
+          "text": "I believe it's going to be a recovery 4.",
+          "timestamp": "12:33:57"
+        },
+        {
+          "row": 14692,
+          "text": "That's right, oh, Fiery Interference is an option though, Ruby Zillia.",
+          "timestamp": "12:33:58"
+        },
+        {
+          "row": 14693,
+          "text": "Do you have that card?",
+          "timestamp": "12:34:01"
+        },
+        {
+          "row": 14694,
+          "text": "Denying this recovery would basically mean PokerKT not only didn't draw 2,",
+          "timestamp": "12:34:04"
+        },
+        {
+          "row": 14695,
+          "text": "didn't recover 4, but also took 2 damage.",
+          "timestamp": "12:34:09"
+        },
+        {
+          "row": 14696,
+          "text": "It's going to happen, it's going to happen.",
+          "timestamp": "12:34:11"
+        },
+        {
+          "row": 14697,
+          "text": "If this resolves, PokerKT will be taking 2 damage.",
+          "timestamp": "12:34:14"
+        },
+        {
+          "row": 14698,
+          "text": "The thumbs up is given, and the 6 quest counter is found,",
+          "timestamp": "12:34:18"
+        },
+        {
+          "row": 14699,
+          "text": "and there's no recovery, there's no draw 2, there's a card in the memory,",
+          "timestamp": "12:34:22"
+        },
+        {
+          "row": 14700,
+          "text": "and PokerKT is not happy.",
+          "timestamp": "12:34:26"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 2,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 45234
+      }
+    },
+    {
+      "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
+      "segments": [
+        14778,
+        14789
+      ],
+      "source": [
+        {
+          "row": 14778,
+          "text": "He's going to do it.",
+          "timestamp": "12:37:58"
+        },
+        {
+          "row": 14779,
+          "text": "We're going on to the Viridian Protective Trinket.",
+          "timestamp": "12:37:59"
+        },
+        {
+          "row": 14780,
+          "text": "He's going to let it happen, I believe.",
+          "timestamp": "12:38:02"
+        },
+        {
+          "row": 14781,
+          "text": "Oh, wait.",
+          "timestamp": "12:38:03"
+        },
+        {
+          "row": 14782,
+          "text": "Maybe he's responding.",
+          "timestamp": "12:38:04"
+        },
+        {
+          "row": 14783,
+          "text": "PokerKT has unlocked his Water cards.",
+          "timestamp": "12:38:05"
+        },
+        {
+          "row": 14784,
+          "text": "No longer cost 2 more.",
+          "timestamp": "12:38:07"
+        },
+        {
+          "row": 14785,
+          "text": "The activation is allowed,",
+          "timestamp": "12:38:09"
+        },
+        {
+          "row": 14786,
+          "text": "and Oinion Frozen Shunt is going to be the answer here.",
+          "timestamp": "12:38:11"
+        },
+        {
+          "row": 14787,
+          "text": "It's not going to be a shot,",
+          "timestamp": "12:38:15"
+        },
+        {
+          "row": 14788,
+          "text": "but it's going to be a denial of the 4 damage,",
+          "timestamp": "12:38:18"
+        },
+        {
+          "row": 14789,
+          "text": "and Ruby Zillia now has to decide.",
+          "timestamp": "12:38:21"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 2,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 45478
+      }
+    },
+    {
+      "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
+      "segments": [
+        14815,
+        14858
+      ],
+      "source": [
+        {
+          "row": 14815,
+          "text": "He's going to do it with a missile first.",
+          "timestamp": "12:39:29"
+        },
+        {
+          "row": 14816,
+          "text": "Missile is going to be 5 damage right here,",
+          "timestamp": "12:39:30"
+        },
+        {
+          "row": 14817,
+          "text": "and it's going to be the Amulet right here.",
+          "timestamp": "12:39:32"
+        },
+        {
+          "row": 14818,
+          "text": "Amulet is going to be cracked by Ruby Zillia.",
+          "timestamp": "12:39:35"
+        },
+        {
+          "row": 14819,
+          "text": "Will prevent all but 1 damage from this Reflecting Missile.",
+          "timestamp": "12:39:40"
+        },
+        {
+          "row": 14820,
+          "text": "PokerKT recollects, draws for a turn,",
+          "timestamp": "12:39:44"
+        },
+        {
+          "row": 14821,
+          "text": "has the Scepter of Fascination,",
+          "timestamp": "12:39:47"
+        },
+        {
+          "row": 14822,
+          "text": "can use that to wake his champion up",
+          "timestamp": "12:39:48"
+        },
+        {
+          "row": 14823,
+          "text": "and get the 2 Glimmer counters again.",
+          "timestamp": "12:39:50"
+        },
+        {
+          "row": 14824,
+          "text": "Going to actually be doing it right now.",
+          "timestamp": "12:39:52"
+        },
+        {
+          "row": 14825,
+          "text": "Interesting.",
+          "timestamp": "12:39:55"
+        },
+        {
+          "row": 14826,
+          "text": "So maybe just...",
+          "timestamp": "12:39:55"
+        },
+        {
+          "row": 14827,
+          "text": "I think it's going to be a pass from PokerKT",
+          "timestamp": "12:39:57"
+        },
+        {
+          "row": 14828,
+          "text": "because there's the Amulet on the effect,",
+          "timestamp": "12:39:59"
+        },
+        {
+          "row": 14829,
+          "text": "so you're not going to bother doing anything about it.",
+          "timestamp": "12:40:01"
+        },
+        {
+          "row": 14830,
+          "text": "Ruby Zillia's turn now.",
+          "timestamp": "12:40:04"
+        },
+        {
+          "row": 14831,
+          "text": "What can you materialize?",
+          "timestamp": "12:40:04"
+        },
+        {
+          "row": 14832,
+          "text": "Maybe the Enfeebling Orb?",
+          "timestamp": "12:40:06"
+        },
+        {
+          "row": 14833,
+          "text": "No, Enfeebling Orb is already used right?",
+          "timestamp": "12:40:07"
+        },
+        {
+          "row": 14834,
+          "text": "That's right, Enfeebling Orb I...",
+          "timestamp": "12:40:08"
+        },
+        {
+          "row": 14835,
+          "text": "No, that was the last game.",
+          "timestamp": "12:40:10"
+        },
+        {
+          "row": 14836,
+          "text": "Yeah, Enfeebling Orb is an option,",
+          "timestamp": "12:40:11"
+        },
+        {
+          "row": 14837,
+          "text": "but of course PokerKT,",
+          "timestamp": "12:40:12"
+        },
+        {
+          "row": 14838,
+          "text": "everything in the hand is at fast speed.",
+          "timestamp": "12:40:14"
+        },
+        {
+          "row": 14839,
+          "text": "Let's see what he ends up doing.",
+          "timestamp": "12:40:16"
+        },
+        {
+          "row": 14840,
+          "text": "Ruby Zillia, only 7 life total.",
+          "timestamp": "12:40:17"
+        },
+        {
+          "row": 14841,
+          "text": "Will not be taking more damage.",
+          "timestamp": "12:40:19"
+        },
+        {
+          "row": 14842,
+          "text": "The Fate Stone has already become a bird.",
+          "timestamp": "12:40:20"
+        },
+        {
+          "row": 14843,
+          "text": "PokerKT, 4 cards in hand.",
+          "timestamp": "12:40:22"
+        },
+        {
+          "row": 14844,
+          "text": "There is Missile, there is Shimmering,",
+          "timestamp": "12:40:24"
+        },
+        {
+          "row": 14845,
+          "text": "there is Frostbind.",
+          "timestamp": "12:40:26"
+        },
+        {
+          "row": 14846,
+          "text": "And that might be everything he needs.",
+          "timestamp": "12:40:27"
+        },
+        {
+          "row": 14847,
+          "text": "On the reaction of the Orb,",
+          "timestamp": "12:40:29"
+        },
+        {
+          "row": 14848,
+          "text": "I believe PokerKT is going to miss her.",
+          "timestamp": "12:40:30"
+        },
+        {
+          "row": 14849,
+          "text": "Immediately refracting Missile for 5",
+          "timestamp": "12:40:32"
+        },
+        {
+          "row": 14850,
+          "text": "and 2 more for the Shimmering Refraction.",
+          "timestamp": "12:40:36"
+        },
+        {
+          "row": 14851,
+          "text": "There is the Restoration Flame,",
+          "timestamp": "12:40:39"
+        },
+        {
+          "row": 14852,
+          "text": "that should be enough.",
+          "timestamp": "12:40:40"
+        },
+        {
+          "row": 14853,
+          "text": "But in the memory is the Frostbind",
+          "timestamp": "12:40:41"
+        },
+        {
+          "row": 14854,
+          "text": "that we can use to negate the recovery",
+          "timestamp": "12:40:43"
+        },
+        {
+          "row": 14855,
+          "text": "from Ruby Zillia.",
+          "timestamp": "12:40:46"
+        },
+        {
+          "row": 14856,
+          "text": "And suddenly PokerKT comes back",
+          "timestamp": "12:40:47"
+        },
+        {
+          "row": 14857,
+          "text": "and takes the second game",
+          "timestamp": "12:40:50"
+        },
+        {
+          "row": 14858,
+          "text": "of our Sand Osaka Best of 3 Final Ladies!",
+          "timestamp": "12:40:52"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 2,
+      "order": 3,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 45569
+      }
+    },
+    {
+      "text": "Convergent Beam targets Avatar of Suzaku; RubyXillia gives up the ally for quest counters instead.",
+      "segments": [
+        15058,
+        15066
+      ],
+      "source": [
+        {
+          "row": 15058,
+          "text": "Convergent Beam is going to be the response.",
+          "timestamp": "12:46:36"
+        },
+        {
+          "row": 15059,
+          "text": "Trying to shoot the Avatar Suzaku for 3,",
+          "timestamp": "12:46:38"
+        },
+        {
+          "row": 15060,
+          "text": "Ruby Zillia never seen this card in his life,",
+          "timestamp": "12:46:40"
+        },
+        {
+          "row": 15061,
+          "text": "so had to double-check.",
+          "timestamp": "12:46:43"
+        },
+        {
+          "row": 15062,
+          "text": "Take a look once over,",
+          "timestamp": "12:46:44"
+        },
+        {
+          "row": 15063,
+          "text": "yeah, pays 2,",
+          "timestamp": "12:46:46"
+        },
+        {
+          "row": 15064,
+          "text": "gets the 2 quest counters,",
+          "timestamp": "12:46:46"
+        },
+        {
+          "row": 15065,
+          "text": "so effectively 6 cards down",
+          "timestamp": "12:46:47"
+        },
+        {
+          "row": 15066,
+          "text": "for an additional quest counter today.",
+          "timestamp": "12:46:49"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 3,
+      "order": 1,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 45996
+      }
+    },
+    {
+      "text": "Zhang Jiao draws two cards for PokerKT, giving him more resources for the final exchanges.",
+      "segments": [
+        15208,
+        15223
+      ],
+      "source": [
+        {
+          "row": 15208,
+          "text": "But here comes the Xiang Jiao Railway of Peace.",
+          "timestamp": "12:51:05"
+        },
+        {
+          "row": 15209,
+          "text": "We'll be drawing two cards for PokerKT.",
+          "timestamp": "12:51:08"
+        },
+        {
+          "row": 15210,
+          "text": "And this is the first time we've seen him",
+          "timestamp": "12:51:10"
+        },
+        {
+          "row": 15211,
+          "text": "go for the full draw two",
+          "timestamp": "12:51:12"
+        },
+        {
+          "row": 15212,
+          "text": "instead of the recover four.",
+          "timestamp": "12:51:14"
+        },
+        {
+          "row": 15213,
+          "text": "And let's see if that changes",
+          "timestamp": "12:51:16"
+        },
+        {
+          "row": 15214,
+          "text": "the way this game plays out.",
+          "timestamp": "12:51:17"
+        },
+        {
+          "row": 15215,
+          "text": "Of course, this is our final game",
+          "timestamp": "12:51:19"
+        },
+        {
+          "row": 15216,
+          "text": "in our best of three,",
+          "timestamp": "12:51:21"
+        },
+        {
+          "row": 15217,
+          "text": "in our final game of Ascent Osaka.",
+          "timestamp": "12:51:22"
+        },
+        {
+          "row": 15218,
+          "text": "Return to the archive,",
+          "timestamp": "12:51:24"
+        },
+        {
+          "row": 15219,
+          "text": "going to be used now.",
+          "timestamp": "12:51:25"
+        },
+        {
+          "row": 15220,
+          "text": "Likely on that looking glass.",
+          "timestamp": "12:51:26"
+        },
+        {
+          "row": 15221,
+          "text": "Draws a card, recovers two.",
+          "timestamp": "12:51:29"
+        },
+        {
+          "row": 15222,
+          "text": "No floating memory because of that sensor,",
+          "timestamp": "12:51:31"
+        },
+        {
+          "row": 15223,
+          "text": "but still a good way to cycle out this card.",
+          "timestamp": "12:51:33"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 3,
+      "order": 2,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 46265
+      }
+    },
+    {
+      "text": "PokerKT stacks Refracting Missile and Shimmering Refraction before Safeguard Amulet resolves. RubyXillia answers with Shatter the Brittle and Restorative Flame, but Glimmering Refusal seals the title.",
+      "segments": [
+        15377,
+        15414
+      ],
+      "source": [
+        {
+          "row": 15377,
+          "text": "Safeguard Amulet is his play",
+          "timestamp": "12:56:23"
+        },
+        {
+          "row": 15378,
+          "text": "to instead defend himself more.",
+          "timestamp": "12:56:24"
+        },
+        {
+          "row": 15379,
+          "text": "But the Missile is going to be played on the stack.",
+          "timestamp": "12:56:26"
+        },
+        {
+          "row": 15380,
+          "text": "PokerKT dealing another 5 into the face of Ruby Zillia.",
+          "timestamp": "12:56:29"
+        },
+        {
+          "row": 15381,
+          "text": "And that means he's going up to 15.",
+          "timestamp": "12:56:31"
+        },
+        {
+          "row": 15382,
+          "text": "Another one?",
+          "timestamp": "12:56:33"
+        },
+        {
+          "row": 15383,
+          "text": "Is there another?",
+          "timestamp": "12:56:34"
+        },
+        {
+          "row": 15384,
+          "text": "There is a Shimmering Reflection for 4.",
+          "timestamp": "12:56:35"
+        },
+        {
+          "row": 15385,
+          "text": "That's exactly lethal damage into Ruby Zillia.",
+          "timestamp": "12:56:36"
+        },
+        {
+          "row": 15386,
+          "text": "Is there a response?",
+          "timestamp": "12:56:40"
+        },
+        {
+          "row": 15387,
+          "text": "Is there an out?",
+          "timestamp": "12:56:41"
+        },
+        {
+          "row": 15388,
+          "text": "Is there a way for him to not lose the game here and now?",
+          "timestamp": "12:56:42"
+        },
+        {
+          "row": 15389,
+          "text": "The Nullifying Lantern is on the board.",
+          "timestamp": "12:56:46"
+        },
+        {
+          "row": 15390,
+          "text": "This might actually be...",
+          "timestamp": "12:56:50"
+        },
+        {
+          "row": 15391,
+          "text": "Because I don't see out.",
+          "timestamp": "12:56:51"
+        },
+        {
+          "row": 15392,
+          "text": "Is there any way?",
+          "timestamp": "12:56:52"
+        },
+        {
+          "row": 15393,
+          "text": "Anything that Ruby Zillia do?",
+          "timestamp": "12:56:53"
+        },
+        {
+          "row": 15394,
+          "text": "We are going to attempt to play a card.",
+          "timestamp": "12:56:54"
+        },
+        {
+          "row": 15395,
+          "text": "This is...",
+          "timestamp": "12:56:56"
+        },
+        {
+          "row": 15396,
+          "text": "Shadow the Brittle on the Nullifying Lantern!",
+          "timestamp": "12:56:57"
+        },
+        {
+          "row": 15397,
+          "text": "Means that the Fire cards in the graveyard",
+          "timestamp": "12:56:59"
+        },
+        {
+          "row": 15398,
+          "text": "are unlocked again.",
+          "timestamp": "12:57:02"
+        },
+        {
+          "row": 15399,
+          "text": "Yep, just double-checking the cast of the card.",
+          "timestamp": "12:57:03"
+        },
+        {
+          "row": 15400,
+          "text": "We might just see it happening.",
+          "timestamp": "12:57:06"
+        },
+        {
+          "row": 15401,
+          "text": "We are going to have Fire card element now.",
+          "timestamp": "12:57:08"
+        },
+        {
+          "row": 15402,
+          "text": "I actually see Restoration Flame.",
+          "timestamp": "12:57:10"
+        },
+        {
+          "row": 15403,
+          "text": "But we do know that in PokerKitty's hand,",
+          "timestamp": "12:57:12"
+        },
+        {
+          "row": 15404,
+          "text": "there is the negate.",
+          "timestamp": "12:57:13"
+        },
+        {
+          "row": 15405,
+          "text": "Can he play the negate?",
+          "timestamp": "12:57:14"
+        },
+        {
+          "row": 15406,
+          "text": "He can!",
+          "timestamp": "12:57:15"
+        },
+        {
+          "row": 15407,
+          "text": "Pay for the Glimmering Refusal!",
+          "timestamp": "12:57:16"
+        },
+        {
+          "row": 15408,
+          "text": "And there's the one!",
+          "timestamp": "12:57:17"
+        },
+        {
+          "row": 15409,
+          "text": "PokerKitty is pumped!",
+          "timestamp": "12:57:18"
+        },
+        {
+          "row": 15410,
+          "text": "And so is the crowd!",
+          "timestamp": "12:57:20"
+        },
+        {
+          "row": 15411,
+          "text": "Look at that!",
+          "timestamp": "12:57:22"
+        },
+        {
+          "row": 15412,
+          "text": "Ruby Zillia, unfortunately,",
+          "timestamp": "12:57:23"
+        },
+        {
+          "row": 15413,
+          "text": "just denied of his Ascent Finals victory",
+          "timestamp": "12:57:24"
+        },
+        {
+          "row": 15414,
+          "text": "for the second time.",
+          "timestamp": "12:57:29"
+        }
+      ],
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 3,
+      "order": 4,
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 46583
+      }
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "gameNumber": 3,
+      "order": 3,
+      "text": "Nullifying Lantern shuts off RubyXillia’s fire graveyard synergies before PokerKT starts firing damage.",
+      "timestamp": {
+        "videoId": "VOlVotCfOU0",
+        "seconds": 46476
+      },
+      "segments": [
+        15321,
+        15356
+      ],
+      "source": [
+        {
+          "row": 15321,
+          "text": "And now we've got Lantern.",
+          "timestamp": "12:54:36"
+        },
+        {
+          "row": 15322,
+          "text": "Lantern is a big deal.",
+          "timestamp": "12:54:38"
+        },
+        {
+          "row": 15323,
+          "text": "This means even if you do have the bird,",
+          "timestamp": "12:54:39"
+        },
+        {
+          "row": 15324,
+          "text": "and the bird ended up going to the banishment,",
+          "timestamp": "12:54:40"
+        },
+        {
+          "row": 15325,
+          "text": "you actually can't revive it",
+          "timestamp": "12:54:43"
+        },
+        {
+          "row": 15326,
+          "text": "because you have no fire cards in the graveyard.",
+          "timestamp": "12:54:44"
+        },
+        {
+          "row": 15327,
+          "text": "That's right, the Peppered Chef combo,",
+          "timestamp": "12:54:46"
+        },
+        {
+          "row": 15328,
+          "text": "the 7 herbs and spices,",
+          "timestamp": "12:54:47"
+        },
+        {
+          "row": 15329,
+          "text": "no longer available for Ruby Zillia",
+          "timestamp": "12:54:48"
+        },
+        {
+          "row": 15330,
+          "text": "to do 12 damage in one time.",
+          "timestamp": "12:54:51"
+        },
+        {
+          "row": 15331,
+          "text": "Helpless, basically helpless.",
+          "timestamp": "12:54:52"
+        },
+        {
+          "row": 15332,
+          "text": "That's right.",
+          "timestamp": "12:54:53"
+        },
+        {
+          "row": 15333,
+          "text": "So helpless, herbless,",
+          "timestamp": "12:54:54"
+        },
+        {
+          "row": 15334,
+          "text": "no salt, no pepper,",
+          "timestamp": "12:54:56"
+        },
+        {
+          "row": 15335,
+          "text": "no ladies in his DMs,",
+          "timestamp": "12:54:58"
+        },
+        {
+          "row": 15336,
+          "text": "unfortunately, because of this nullifying Lantern.",
+          "timestamp": "12:55:01"
+        },
+        {
+          "row": 15337,
+          "text": "Are you protecting?",
+          "timestamp": "12:55:04"
+        },
+        {
+          "row": 15338,
+          "text": "Am I protecting?",
+          "timestamp": "12:55:05"
+        },
+        {
+          "row": 15339,
+          "text": "I don't know.",
+          "timestamp": "12:55:06"
+        },
+        {
+          "row": 15340,
+          "text": "You can check.",
+          "timestamp": "12:55:08"
+        },
+        {
+          "row": 15341,
+          "text": "I'll show you.",
+          "timestamp": "12:55:08"
+        },
+        {
+          "row": 15342,
+          "text": "Anyway, back to the actual game.",
+          "timestamp": "12:55:10"
+        },
+        {
+          "row": 15343,
+          "text": "PokerKT here.",
+          "timestamp": "12:55:12"
+        },
+        {
+          "row": 15344,
+          "text": "It still is pre-recollection",
+          "timestamp": "12:55:13"
+        },
+        {
+          "row": 15345,
+          "text": "after materializing the Lantern,",
+          "timestamp": "12:55:15"
+        },
+        {
+          "row": 15346,
+          "text": "see if there's any sort of action he wants to do.",
+          "timestamp": "12:55:17"
+        },
+        {
+          "row": 15347,
+          "text": "We're going to be playing down a Missile here",
+          "timestamp": "12:55:19"
+        },
+        {
+          "row": 15348,
+          "text": "for 5 here.",
+          "timestamp": "12:55:22"
+        },
+        {
+          "row": 15349,
+          "text": "This is really dangerous.",
+          "timestamp": "12:55:23"
+        },
+        {
+          "row": 15350,
+          "text": "Ruby Zillia can't even do Resonant Flame here",
+          "timestamp": "12:55:24"
+        },
+        {
+          "row": 15351,
+          "text": "because all of them are no longer fire cards.",
+          "timestamp": "12:55:26"
+        },
+        {
+          "row": 15352,
+          "text": "And that is the case.",
+          "timestamp": "12:55:28"
+        },
+        {
+          "row": 15353,
+          "text": "PokerKT may have counted that out exactly.",
+          "timestamp": "12:55:30"
+        },
+        {
+          "row": 15354,
+          "text": "And we already talked about it.",
+          "timestamp": "12:55:32"
+        },
+        {
+          "row": 15355,
+          "text": "The Missile plus the Burst is going to be 15 damage.",
+          "timestamp": "12:55:35"
+        },
+        {
+          "row": 15356,
+          "text": "10 more will take Ruby Zillia to his grave.",
+          "timestamp": "12:55:38"
+        }
+      ]
+    }
+  ],
+  "corrections": {
+    "RubyZillia/Ruby Celia": "RubyXillia",
+    "Noelle/Noel/Gina": "Noel",
+    "Xander": "Zander",
+    "Burst of Thunder/Versus Thunder": "Burst Asunder",
+    "Frostborn/Frostmourne": "Frostsworn Paladin",
+    "Ember Crypt Burn": "Embercrypt Burn",
+    "Scalding Aether charge": "Scalding Aethercharge",
+    "Portentous Tengu": "Portentous Tanggu",
+    "Restoration Flames": "Restorative Flame"
+  },
+  "coverage": {
+    "semifinalYadonRubyXillia": "All three games, opening9:47:33 to finish10:31:08.",
+    "semifinalPokerKTNoel": "G2 opening10:49:28, end11:06:25. G3 starts11:09:57, ends11:46:01. G1 off-air; commentary11:06:54–11:07:05 confirms Noel led1–0.",
+    "final": "All3 games, first source segment11:59:59 appears after short missing intro; G1 ends12:21:45,G2 starts12:25:33 ends12:40:50,G3 starts12:44:23 ends12:57:17.",
+    "bronze": "Only matchup announcement11:47:31–11:47:41. No gameplay in assigned source. Official API Noel2–0Yadon."
+  },
+  "uncertainties": [
+    "Do not treat erroneously announced PokerKT win at10:33:03 as result; broadcast immediately corrects graphic at10:33:25.",
+    "Noel–PokerKT G1 not reviewed or recovered: no invented highlights.",
+    "Final G3 last stack: wording intentionally avoids asserting whether Glimmering Refusal targets Shatter the Brittle or Restorative Flame; transcript says both but target is not explicit.",
+    "No bronze timeline candidate: no source-backed plays."
+  ]
+}

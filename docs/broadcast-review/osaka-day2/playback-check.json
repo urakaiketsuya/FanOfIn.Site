@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-01T18:27:06.259381+00:00",
+  "videoId": "VOlVotCfOU0",
+  "metadata": {
+    "title": "Ascent Osaka Day 2 | Grand Archive TCG",
+    "duration": 42899,
+    "live_status": "post_live",
+    "channel": "Grand Archive TCG"
+  },
+  "browser": {
+    "requestedSeconds": 44100,
+    "actualSeconds": 43198,
+    "durationSeconds": 43203,
+    "observed": "Grand Final opening, RubyXillia vs PokerKT, match timer 1:08:28. Request beyond duration clamps to end."
+  },
+  "capturedAudioDurationSeconds": 46938,
+  "fullPlaybackVerified": false,
+  "pendingHighlightCount": 10
+}

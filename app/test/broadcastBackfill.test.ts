@@ -11,6 +11,7 @@ const resolutions = read('docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json');
 const registry = read('docs/BROADCAST_VIDEO_SOURCES.json');
 const sequential = read('docs/BROADCAST_SEQUENTIAL_REVIEW_2026-10-31.json');
 const osaka = read('docs/broadcast-review/osaka-day1/review-summary.json');
+const osakaDay2 = read('docs/broadcast-review/osaka-day2/review-summary.json');
 const match = (id: string) => {
   const found = data.matches.find(m => m.id === id);
   assert.ok(found, id);
@@ -21,7 +22,7 @@ test('recovered coverage retains the baseline and accounts for every new recap',
   assert.equal(review.baselineRecapIds.length, 110);
   assert.equal(review.newRecapIds.length, 86);
   assert.equal(review.updatedOffsetIds.length, 18);
-  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds, ...resolutions.newRecapIds, ...osaka.newRecapIds].sort(), data.matches.map(m => m.id).sort());
+  assert.deepEqual([...review.baselineRecapIds, ...review.newRecapIds, ...resolutions.newRecapIds, ...osaka.newRecapIds, ...osakaDay2.newRecapIds].sort(), data.matches.map(m => m.id).sort());
   assert.equal(new Set(review.sources.map((s: { videoId: string }) => s.videoId)).size, 14);
   for (const source of review.sources) {
     assert.equal(source.fullGameplayReviewed, false);

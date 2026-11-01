@@ -31,8 +31,9 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "12:58:54",
         "blankSegments": 5,
-        "reviewStatus": "machine-transcribed-unreviewed",
-        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp while YouTube listed the stream as post_live (listed length 11:54:59, downloaded audio 13:02:18), split into 27 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments, no prompt). Removed 430 stock phrases such as 'Thanks for watching' over music and 644 looped repeat copies. Card and player names are often misheard. Match start offsets are not verified. Re-check the length once YouTube finishes processing the recording."
+        "reviewStatus": "sequential-transcript-reviewed",
+        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp while YouTube listed the stream as post_live (listed length 11:54:59, downloaded audio 13:02:18), split into 27 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments, no prompt). Removed 430 stock phrases such as 'Thanks for watching' over music and 644 looped repeat copies. Card and player names are often misheard. Published match-start offsets are transcript-aligned; the final offset is withheld while the public replay is truncated. Re-check the length once YouTube finishes processing the recording.",
+        "reviewPath": "docs/broadcast-review/osaka-day2/review-summary.json"
       }
     },
     {
@@ -2778,6 +2779,76 @@
       "startSeconds": 42720,
       "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 42720s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
       "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-round10-metari211-rain8715",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 2402,
+      "startEvidence": "Source segment 312 at 40:02: And we have Metari211 versus Reign8715 here. See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 6855,
+      "startEvidence": "Source segment 997 at 1:54:15: But we are going to go immediately into our game for round 11 See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 11323,
+      "startEvidence": "Source segment 2243 at 3:08:43: Whenever Sean Zhang is on stream, it's always a b-b-b-banger See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-round13-yadon-legilus",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 15757,
+      "startEvidence": "Source segment 4042 at 4:22:37: But going into this game, See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 20379,
+      "startEvidence": "Source segment 5151 at 5:39:39: We are going to be going to the next round, final round. See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-top8-noel-dudu",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 28562,
+      "startEvidence": "Source segment 7832 at 7:56:02: it is going to be See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 35253,
+      "startEvidence": "Source segment 11761 at 9:47:33: That is right See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review.",
+      "startSeconds": 38839,
+      "startEvidence": "Source segment 12766 at 10:47:19: We're going to head right into game two of our other semi-final and find out who is going See docs/broadcast-review/osaka-day2/source-transcript.json and sequential review."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "videoId": "VOlVotCfOU0",
+      "kind": "broadcast",
+      "basis": "Exact official event 67176 stage, round and both player identities; sequential Day 2 transcript review."
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T17:15:06.129Z",
+  "generatedAt": "2026-11-01T18:27:06.259381+00:00",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -31844,6 +31844,1650 @@
         }
       ],
       "sourceNote": "Opening only; the recording ends during game 1."
+    },
+    {
+      "id": "ascent-osaka-2026-day2-round10-metari211-rain8715",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 10",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 2402
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "metari211",
+          "deck": "Water Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Rain8715",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "Rain8715 wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Rain8715 finds Burst Asunder to finish through metari211’s potion recovery.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Aqua Vitae and Revitalizer X Ultra set up recovery while Rain8715 builds a Fractal board.",
+              "cards": [
+                "Aqua Vitae",
+                "Revitalizer X Ultra"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 2577
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Glimmering Refusal stops Dungeon Guide, forcing metari211 to level up with an empty hand.",
+              "cards": [
+                "Glimmering Refusal",
+                "Dungeon Guide"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 2783
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Aqua Vitae and a brewed Soothing Potion refill metari211’s hand before Regal Inquisition strips key cards.",
+              "cards": [
+                "Aqua Vitae",
+                "Soothing Potion",
+                "Regal Inquisition"
+              ],
+              "tags": [
+                "stabilize"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 2930
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Frostsworn Paladin draws the Burst Asunder that closes game one.",
+              "cards": [
+                "Frostsworn Paladin",
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 3156
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Rain8715 fires a lethal missile chain before Arisanna reaches level 3.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Ingredient Pouch brings out Polaris, and Aqua Vitae later restores metari211’s hand.",
+              "cards": [
+                "Ingredient Pouch",
+                "Polaris, Twinkling Cauldron",
+                "Aqua Vitae"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 3699
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Refracting Missile starts the pressure as Rain8715 builds to eight Fractals.",
+              "cards": [
+                "Refracting Missile",
+                "Fractal of Rain",
+                "Unstable Fractal"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 3840
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Rain8715 chains Refracting Missile and Shimmering Refraction into the level-up window; the spirit release and healing herbs cannot save metari211.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction",
+                "Spirit of Serene Water"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 4106
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 11",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 6855
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Zefier",
+          "deck": "Fire Potion Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "ExcitedCat",
+          "deck": "Wind Crux Lorraine"
+        }
+      ],
+      "result": "ExcitedCat wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Zefier punishes two Lorraine level-ups with a burst of Scalding Aethercharge damage.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Reclaim saves Aesan Protector from Cinder Geyser, then another Protector keeps the pressure on Zefier.",
+              "cards": [
+                "Reclaim",
+                "Aesan Protector",
+                "Cinder Geyser"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 7056
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Combustible Potion builds Essence Crucible, and Varuck shuts off fire-damage prevention.",
+              "cards": [
+                "Combustible Potion",
+                "Essence Crucible",
+                "Varuck, Smoldering Spire"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 7342
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Two Scalding Aethercharges and Everflame Staff finish ExcitedCat after Lorraine levels twice in one turn.",
+              "cards": [
+                "Scalding Aethercharge",
+                "Everflame Staff"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 7491
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "ExcitedCat suppresses Essence Crucible and closes with Numinous Monk.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fanned Synchron punishes ExcitedCat’s ally development with repeated damage.",
+              "cards": [
+                "Fanned Synchron"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 7929
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Clarent’s prevention stops Searing Rebuke from converting Zefier’s self-damage into a burst.",
+              "cards": [
+                "Clarent, Reimagined",
+                "Searing Rebuke",
+                "Fractal of Sparks"
+              ],
+              "tags": [
+                "stabilize"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 8361
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Aella suppresses Essence Crucible while Veiling Breeze cuts into the burn sequence.",
+              "cards": [
+                "Aella, Zephyr's Hand",
+                "Essence Crucible",
+                "Veiling Breeze"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 8615
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Annul Spell denies Restorative Flame, and Numinous Monk turns Purifying Thurible into the final damage.",
+              "cards": [
+                "Annul Spell",
+                "Restorative Flame",
+                "Numinous Monk",
+                "Purifying Thurible"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 8770
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "ExcitedCat survives the burn combo and negates Intensified Pyre to win the match.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "An early Fanned Synchron slows ExcitedCat’s Windmill Engineer hand while Zefier struggles to develop.",
+              "cards": [
+                "Fanned Synchron",
+                "Windmill Engineer"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 8958
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Zefier brews to three Essence Crucible counters and uses his own potions to trigger two Searing Rebukes.",
+              "cards": [
+                "Essence Crucible",
+                "Combustible Potion",
+                "Distilled Water",
+                "Searing Rebuke"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 9358
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "ExcitedCat rebuilds after Polaris, then Annul Spell stops the lethal Intensified Pyre and secures the match.",
+              "cards": [
+                "Ghosts of Pendragon",
+                "Polaris, Twinkling Cauldron",
+                "Annul Spell",
+                "Intensified Pyre"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 9513
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 12",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 11323
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "DeRealDeal",
+          "deck": "Fire Umbra Alice"
+        },
+        {
+          "id": "p2",
+          "name": "Lifdrasyl",
+          "deck": "Water Guo Jia Genbu"
+        }
+      ],
+      "result": "DeRealDeal wins 1–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "DeRealDeal’s repeated Poitier attacks exhaust Lifdrasyl’s defenses.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Two Remnants of Will raise DeRealDeal to eight haunt counters, and Phantasmagoria mills Poitier.",
+              "cards": [
+                "Remnant of Will",
+                "Phantasmagoria",
+                "Poitier, Afterlife's Conductor"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 11803
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Slip Away targets a defender and draws Engulf, opening another fight over Lifdrasyl’s blocking board.",
+              "cards": [
+                "Slip Away",
+                "Engulf"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 12489
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Undying Dreams and successive Poitiers force Song of Frost and a Genbu flip; another Slip Away prompts Lifdrasyl’s concession.",
+              "cards": [
+                "Undying Dreams",
+                "Poitier, Afterlife's Conductor",
+                "Song of Frost",
+                "Slip Away"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 12687
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "unknown",
+          "summary": "Game two remains unfinished at time; DeRealDeal wins the match 1–0.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Spirelle negates Memory Invocation, then reloads its three-cost answer to hold up Lifdrasyl’s development.",
+              "cards": [
+                "Spirelle, Schwartz Queen",
+                "Memory Invocation"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 13360
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Remnant of Will restores DeRealDeal’s life while Lifdrasyl mills the remaining Unbroken Mustang.",
+              "cards": [
+                "Remnant of Will",
+                "Unbroken Mustang"
+              ],
+              "tags": [
+                "stabilize"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 13846
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Resolute Stand skips the next draw, and Reflected Blight recovers it as Lifdrasyl sets up repeated Polar Depths.",
+              "cards": [
+                "Resolute Stand",
+                "Reflected Blight",
+                "Fractal of Polar Depths"
+              ],
+              "tags": [
+                "stabilize"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 15003
+              }
+            },
+            {
+              "order": 4,
+              "actor": "both",
+              "text": "Lifdrasyl turns Chime of Endless Dreams into a Fractal, but time ends the unfinished game with DeRealDeal ahead 1–0.",
+              "cards": [
+                "Fracturize",
+                "Chime of Endless Dreams"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 15202
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-round13-yadon-legilus",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 13",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 15757
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yadon",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "Legilus",
+          "deck": "Fire Umbra Ciel"
+        }
+      ],
+      "result": "Yadon wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yadon protects the level-up and outlasts Feu Awakening before closing with Luxem attacks.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Incapacitate stops Topsy Decree, preserving Yadon’s floating memory for level 2 and returning Incapacitate to hand.",
+              "cards": [
+                "Incapacitate",
+                "Topsy Decree",
+                "Zander, Deft Executor"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 15985
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Gleaming Cut and Luxem Sight build Yadon’s hand; Striking Illuminance turns the reveals into pressure and recovery.",
+              "cards": [
+                "Gleaming Cut",
+                "Luxem Sight",
+                "Striking Illuminance"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 16140
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Topsy Decree blocks Ciel’s damage triggers, leaving Yadon free to finish with Lightweaver’s Assault.",
+              "cards": [
+                "Topsy Decree",
+                "Feu Awakening",
+                "Lightweaver's Assault"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 16501
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Yadon’s reveal engine keeps him ahead through Legilus’s Accursed Strength refill.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dungeon Guide reaches Zander level 3 without banishing the key Luxem cards.",
+              "cards": [
+                "Dungeon Guide",
+                "Zander, Blinding Steel"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 17032
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Backup Charger finds Gleaming Cut, and Luxem reveals rebuild Yadon’s hand while recovering damage.",
+              "cards": [
+                "Backup Charger",
+                "Gleaming Cut",
+                "Luxem Sight"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 17184
+              }
+            },
+            {
+              "order": 3,
+              "actor": "both",
+              "text": "Legilus pairs Feu Awakening with Accursed Strength to refill, but Topsy Decree protects Yadon from Ciel’s triggers.",
+              "cards": [
+                "Feu Awakening",
+                "Accursed Strength",
+                "Topsy Decree"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 17330
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Yadon forces Legilus’s hand down and closes with Lightweaver’s Assault.",
+              "cards": [
+                "Prismspire Scepter",
+                "Lightweaver's Assault"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 17460
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 14",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 20379
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "hachico",
+          "deck": "Fire Umbra Ciel"
+        },
+        {
+          "id": "p2",
+          "name": "EnochLok123",
+          "deck": "Water Guo Jia Genbu"
+        }
+      ],
+      "result": "hachico wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "EnochLok123’s fast Genbu setup wins before hachico can reach level 3.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Fractal of Rain and Tidestone Bovine accelerate the quest counters for Genbu.",
+              "cards": [
+                "Fractal of Rain",
+                "Tidestone Bovine"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 20415
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Engulf stops hachico’s Dungeon Guide and keeps Ciel at level 2.",
+              "cards": [
+                "Engulf",
+                "Dungeon Guide"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 20645
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Genbu flips and Resonating Fugue converts its life into a game-ending attack.",
+              "cards": [
+                "Resonating Fugue"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 20708
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "hachico clears the early board and finishes with Feu Awakening and Devouring Malice.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Devastating Blow removes Tidestone Bovine, and Topsy Decree strips EnochLok123’s graveyard resources.",
+              "cards": [
+                "Devastating Blow",
+                "Tidestone Bovine",
+                "Topsy Decree"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 21176
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Manxome Armoire retrieves Devastating Blow and helps clear Frostsworn Paladin before Ciel attacks.",
+              "cards": [
+                "Manxome Armoire",
+                "Devastating Blow",
+                "Frostsworn Paladin"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 21372
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Feu Awakening and Devouring Malice combine during EnochLok123’s materialization to tie the match.",
+              "cards": [
+                "Feu Awakening",
+                "Devouring Malice"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 21582
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Five Guides establish hachico’s lead, and Beguiling Coup bypasses Genbu to close.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Three Liminal Guides refill hachico’s hand, and two Dungeon Guides accelerate Ciel to level 3.",
+              "cards": [
+                "Liminal Guide",
+                "Dungeon Guide"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 21832
+              }
+            },
+            {
+              "order": 2,
+              "actor": "both",
+              "text": "A judge check pauses play over Ciel’s missing mastery marker; the game resumes with the mastery on the board.",
+              "cards": [
+                "Servile Possessions"
+              ],
+              "tags": [
+                "ruling"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 22004
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "The Guides clear Tidestone Bovine, then Devastating Blow puts EnochLok123 within lethal range.",
+              "cards": [
+                "Liminal Guide",
+                "Dungeon Guide",
+                "Tidestone Bovine",
+                "Devastating Blow"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 22567
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Regal Inquisition removes Frostbind and Cerulean Decree; Beguiling Coup bypasses Genbu, and Enfeebling Orb cannot stop the finishing attack.",
+              "cards": [
+                "Regal Inquisition",
+                "Frostbind",
+                "Cerulean Decree",
+                "Beguiling Coup",
+                "Enfeebling Orb",
+                "Devastating Blow"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 22917
+              }
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-top8-noel-dudu",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Top 8",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 28562
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Noel",
+          "deck": "Water Fractal Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "DuDu",
+          "deck": "Fire Potion Arisanna"
+        }
+      ],
+      "result": "Noel wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "DuDu wins with a burst of burn damage and a Crucible-boosted Everflame Staff.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel opens three Fractals, adds Extinguishing Synchron and Zhang Jiao, then uses Aenean Frozen Shunt during combat to remove DuDu’s Creative Shock from the stack.",
+              "cards": [
+                "Extinguishing Synchron",
+                "Zhang Jiao, Way of Peace",
+                "Aenean Frozen Shunt",
+                "Creative Shock"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 28623
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "DuDu builds Essence Crucible with Explosive Concoction while Noel establishes Safeguard Amulet and pressures with Refracting Missile.",
+              "cards": [
+                "Essence Crucible",
+                "Explosive Concoction",
+                "Safeguard Amulet",
+                "Refracting Missile"
+              ],
+              "tags": [],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 28983
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Shimmering Refraction threatens a large hit; Noel uses Safeguard Amulet against Searing Rebuke, then commits her hand to regain resources.",
+              "cards": [
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Searing Rebuke",
+                "Backup Charger"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 29630
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "DuDu responds with Explosive Concoction, Scalding Aethercharge and Intensified Pyres. Everflame Staff receives Essence Crucible’s bonus, and Noel concedes.",
+              "cards": [
+                "Explosive Concoction",
+                "Scalding Aethercharge",
+                "Intensified Pyre",
+                "Everflame Staff",
+                "Essence Crucible"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 29782
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Noel survives a long burn exchange and finds exact lethal through Safeguard Amulet.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Nullifying Lantern shuts down Kindle lines, and Fractal of Intrusion strips DuDu’s Combustible Potion before the Crucible engine gets going.",
+              "cards": [
+                "Nullifying Lantern",
+                "Fractal of Intrusion",
+                "Combustible Potion"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 30340
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "After DuDu’s Blanche slows the damage, Noel finds Fracturize and removes Essence Crucible. Safeguard Amulet covers the following Searing Rebuke.",
+              "cards": [
+                "Blanche, Sheltering Saint",
+                "Fracturize",
+                "Essence Crucible",
+                "Safeguard Amulet",
+                "Searing Rebuke"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 31503
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel commits Extinguishing Synchron during the Enfeebling Orb exchange, counters Searing Rebuke with Glimmering Refusal and uses Frostbind against the next burn line. The Synchron’s healing resolves.",
+              "cards": [
+                "Extinguishing Synchron",
+                "Enfeebling Orb",
+                "Glimmering Refusal",
+                "Searing Rebuke",
+                "Frostbind"
+              ],
+              "tags": [
+                "stabilize"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 32215
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Refracting Missile clears Blanche. Noel adds another Fractal and fires the next Missile for exact lethal through Safeguard Amulet, tying the match.",
+              "cards": [
+                "Refracting Missile",
+                "Blanche, Sheltering Saint",
+                "Safeguard Amulet"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 32581
+              }
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Noel removes Essence Crucible early, breaks through Blanche and completes the comeback.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Noel establishes Nullifying Lantern and Zhang Jiao, finds Fracturize, and removes Essence Crucible as DuDu starts brewing.",
+              "cards": [
+                "Nullifying Lantern",
+                "Zhang Jiao, Way of Peace",
+                "Fracturize",
+                "Essence Crucible"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 33079
+              }
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Searing Rebuke turns DuDu’s self-damage from Fractal of Sparks and a potion into nine damage, but also builds Noel’s Extinguishing Synchron. Spalling Cleanse keeps Noel healthy.",
+              "cards": [
+                "Searing Rebuke",
+                "Fractal of Sparks",
+                "Combustible Potion",
+                "Extinguishing Synchron",
+                "Spalling Cleanse"
+              ],
+              "tags": [
+                "combo"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 33420
+              }
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Noel uses Burst Asunder to remove Blanche, then Tidal Fractal mills another Blanche from DuDu’s deck and increases the damage of her remaining spells.",
+              "cards": [
+                "Burst Asunder",
+                "Blanche, Sheltering Saint",
+                "Tidal Fractal"
+              ],
+              "tags": [
+                "swing"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 34116
+              }
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Refracting Missile adds seven damage as DuDu uses Safeguard Amulet. Noel follows with Enfeebling Orb and retains Frostbind; DuDu cannot find an answer and Noel wins the deciding game.",
+              "cards": [
+                "Refracting Missile",
+                "Safeguard Amulet",
+                "Enfeebling Orb",
+                "Frostbind"
+              ],
+              "tags": [
+                "lethal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 34240
+              }
+            }
+          ]
+        }
+      ],
+      "sideboardNotes": [
+        {
+          "beforeGame": 2,
+          "actor": "p1",
+          "text": "Noel brings out Nullifying Lantern immediately in game two, restricting DuDu’s Slash and Burn and Intensified Pyre lines."
+        },
+        {
+          "beforeGame": 2,
+          "actor": "p2",
+          "text": "Blanche, Sheltering Saint and Viridian Protective Trinket appear after sideboarding; Blanche repeatedly blocks Noel’s burn damage."
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Semifinal",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 35253
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Yadon",
+          "deck": "Fire Luxem Zander"
+        },
+        {
+          "id": "p2",
+          "name": "RubyXillia",
+          "deck": "Fire Suzaku Guo Jia"
+        }
+      ],
+      "result": "RubyXillia wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Yadon survives the early pressure and wins with Striking Illuminance and Lightweaver’s Assault.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Singed Emotions delays Yadon’s level-up while RubyXillia builds toward Suzaku.",
+              "cards": [
+                "Singed Emotions",
+                "Backup Charger"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 35636
+              },
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Vanish from Sight buys Yadon time to reach level 3 despite repeated burn damage.",
+              "cards": [
+                "Vanish from Sight",
+                "Scalding Aethercharge"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 35909
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "With Infernal Vessel blocking his recovery, Yadon finds Uncover the Plot and finishes with Striking Illuminance into Lightweaver’s Assault.",
+              "cards": [
+                "Infernal Vessel",
+                "Uncover the Plot",
+                "Striking Illuminance",
+                "Lightweaver's Assault"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36264
+              },
+              "tags": []
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "RubyXillia disrupts Yadon’s resources and burns through Vanish from Sight to equalize.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Embercrypt Burn removes Incapacitate from Yadon’s graveyard before Zander can return it.",
+              "cards": [
+                "Embercrypt Burn",
+                "Incapacitate"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36856
+              },
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Impact Hammer and Blazing Throw unlock Suzaku, pushing Yadon into burn range.",
+              "cards": [
+                "Impact Hammer",
+                "Blazing Throw",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 36963
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Yadon uses Vanish from Sight, but RubyXillia draws Cinder Geyser for the finishing damage.",
+              "cards": [
+                "Vanish from Sight",
+                "Cinder Geyser"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37161
+              },
+              "tags": []
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "RubyXillia keeps Yadon off his level-up plan, then closes with Suzaku and Vermilion Decree.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Embercrypt Burn removes Incapacitate again, and Singed Emotions pressures Yadon into another Backup Charger.",
+              "cards": [
+                "Embercrypt Burn",
+                "Singed Emotions",
+                "Backup Charger"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37549
+              },
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Enfeebling Orb reduces Yadon’s available responses as RubyXillia reaches seven quest counters.",
+              "cards": [
+                "Enfeebling Orb",
+                "Fabled Ruby Fatestone"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37740
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Suzaku’s Command and Peppered Chef force Resolute Stand; Vermilion Decree supplies the last damage.",
+              "cards": [
+                "Suzaku's Command",
+                "Peppered Chef",
+                "Resolute Stand",
+                "Vermilion Decree"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 37807
+              },
+              "tags": []
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Semifinal",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast",
+        "startSeconds": 38839
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "PokerKT",
+          "deck": "Water Fractal Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Noel",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "PokerKT wins 2–1",
+      "games": [
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "PokerKT survives Noel’s early pressure and equalizes with fast-speed damage.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Convergent Beam removes Noel’s Frostsworn Paladin despite Viridian Protective Trinket.",
+              "cards": [
+                "Convergent Beam",
+                "Frostsworn Paladin",
+                "Viridian Protective Trinket"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39355
+              },
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Noel negates Zhang Jiao with Glimmering Refusal, keeping the Fractal mirror balanced.",
+              "cards": [
+                "Zhang Jiao, Way of Peace",
+                "Glimmering Refusal"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39564
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "PokerKT removes Safeguard Amulet, then chains Refracting Missile and Shimmering Refraction to force game 3.",
+              "cards": [
+                "Safeguard Amulet",
+                "Refracting Missile",
+                "Shimmering Refraction"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 39950
+              },
+              "tags": []
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "PokerKT survives Noel’s large Fractal board and wins the final exchange of damage and negates.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Convergent Beam answers Noel’s Frostsworn Paladin again, stopping her early ally pressure.",
+              "cards": [
+                "Convergent Beam",
+                "Frostsworn Paladin"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 40535
+              },
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Two Zhang Jiao plays build PokerKT’s resources while Noel struggles to find more damage.",
+              "cards": [
+                "Zhang Jiao, Way of Peace"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 41616
+              },
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "PokerKT removes Viridian Protective Trinket and uses consecutive Glimmering Refusals to stop Noel’s lethal Refracting Missile.",
+              "cards": [
+                "Fracturize",
+                "Viridian Protective Trinket",
+                "Glimmering Refusal",
+                "Refracting Missile"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 42199
+              },
+              "tags": []
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Shimmering Refraction sets up PokerKT’s next-turn Refracting Missile, securing the final spot.",
+              "cards": [
+                "Shimmering Refraction",
+                "Refracting Missile"
+              ],
+              "timestamp": {
+                "videoId": "VOlVotCfOU0",
+                "seconds": 42309
+              },
+              "tags": []
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Coverage begins with game 2."
+    },
+    {
+      "id": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Final",
+      "video": {
+        "id": "VOlVotCfOU0",
+        "kind": "broadcast"
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "RubyXillia",
+          "deck": "Fire Suzaku Guo Jia"
+        },
+        {
+          "id": "p2",
+          "name": "PokerKT",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "PokerKT wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "RubyXillia slows PokerKT’s resources and converts Suzaku into the first-game win.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "After PokerKT sacrifices his own Censer of Restful Peace, RubyXillia brings out another to keep floating memory locked.",
+              "cards": [
+                "Censer of Restful Peace",
+                "Return to the Archive"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "PokerKT uses Glimmering Refusal to stop Avatar of Suzaku, then Zhang Jiao restores life.",
+              "cards": [
+                "Glimmering Refusal",
+                "Avatar of Suzaku",
+                "Zhang Jiao, Way of Peace"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Portentous Tanggu and Fabled Ruby Fatestone complete Suzaku’s quest; Suzaku’s Command and Peppered Chef close the game.",
+              "cards": [
+                "Portentous Tanggu",
+                "Fabled Ruby Fatestone",
+                "Suzaku's Command",
+                "Peppered Chef"
+              ],
+              "tags": []
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "PokerKT stops a lethal Avatar attack and wins through RubyXillia’s recovery.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Fiery Interference denies Zhang Jiao’s recovery and brings RubyXillia closer to Suzaku.",
+              "cards": [
+                "Fiery Interference",
+                "Zhang Jiao, Way of Peace"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Crystalline Mirror removes Viridian Protective Trinket, allowing Aenean Frozen Shunt to stop Avatar of Suzaku’s attack.",
+              "cards": [
+                "Crystalline Mirror",
+                "Viridian Protective Trinket",
+                "Aenean Frozen Shunt",
+                "Avatar of Suzaku"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "After forcing Safeguard Amulet, PokerKT fires more damage and uses Frostbind from memory to stop Restorative Flame.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Frostbind",
+                "Restorative Flame"
+              ],
+              "tags": []
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "PokerKT’s Nullifying Lantern and timed burn spells decide the championship.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Convergent Beam targets Avatar of Suzaku; RubyXillia gives up the ally for quest counters instead.",
+              "cards": [
+                "Convergent Beam",
+                "Avatar of Suzaku"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Zhang Jiao draws two cards for PokerKT, giving him more resources for the final exchanges.",
+              "cards": [
+                "Zhang Jiao, Way of Peace"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Nullifying Lantern shuts off RubyXillia’s fire graveyard synergies before PokerKT starts firing damage.",
+              "cards": [
+                "Nullifying Lantern",
+                "Refracting Missile"
+              ],
+              "tags": []
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "PokerKT stacks Refracting Missile and Shimmering Refraction before Safeguard Amulet resolves. RubyXillia answers with Shatter the Brittle and Restorative Flame, but Glimmering Refusal seals the title.",
+              "cards": [
+                "Refracting Missile",
+                "Shimmering Refraction",
+                "Safeguard Amulet",
+                "Shatter the Brittle",
+                "Restorative Flame",
+                "Glimmering Refusal"
+              ],
+              "tags": []
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Reviewed from the captured broadcast audio. The public replay currently ends near the final’s opening."
     }
   ]
 }

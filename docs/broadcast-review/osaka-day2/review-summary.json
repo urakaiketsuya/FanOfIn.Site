@@ -1,0 +1,45 @@
+{
+  "videoId": "VOlVotCfOU0",
+  "eventId": 67176,
+  "sourceSha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+  "segmentCount": 15458,
+  "reviewedRanges": [
+    [
+      0,
+      7198
+    ],
+    [
+      7198,
+      11720
+    ],
+    [
+      11720,
+      15458
+    ]
+  ],
+  "rangeEndExclusive": true,
+  "fullTranscriptReview": true,
+  "fullGameplayReviewed": false,
+  "newRecapIds": [
+    "ascent-osaka-2026-day2-round10-metari211-rain8715",
+    "ascent-osaka-2026-day2-round11-zefier-excitedcat",
+    "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
+    "ascent-osaka-2026-day2-round13-yadon-legilus",
+    "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+    "ascent-osaka-2026-day2-top8-noel-dudu",
+    "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+    "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+    "ascent-osaka-2026-day2-final-rubyxillia-pokerkt"
+  ],
+  "gameCount": 23,
+  "highlightCount": 79,
+  "publishedTimestampCount": 69,
+  "pendingTimestampCount": 10,
+  "omnidexRetrievedAt": "2026-11-01T13:03:54.384Z",
+  "limitations": [
+    "Day 2 begins at round 10; no continuation of Day 1 round 9.",
+    "PokerKT–Noel semifinal joins at game 2; game 1 is not reconstructed.",
+    "No bronze gameplay or other quarterfinals in the supplied transcript.",
+    "Final audio is complete; public replay truncation prevents timestamp links for its ten highlights."
+  ]
+}

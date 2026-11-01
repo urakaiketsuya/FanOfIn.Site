@@ -1,0 +1,182 @@
+[
+  {
+    "matchId": "ascent-osaka-2026-day2-round10-metari211-rain8715",
+    "stage": 1,
+    "round": 10,
+    "pairingId": 8,
+    "players": [
+      {
+        "id": 10199,
+        "name": "metari211",
+        "score": 0,
+        "status": "loser"
+      },
+      {
+        "id": 15433,
+        "name": "Rain8715",
+        "score": 2,
+        "status": "winner"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round11-zefier-excitedcat",
+    "stage": 1,
+    "round": 11,
+    "pairingId": 11,
+    "players": [
+      {
+        "id": 9355,
+        "name": "Zefier",
+        "score": 1,
+        "status": "loser"
+      },
+      {
+        "id": 19685,
+        "name": "ExcitedCat",
+        "score": 2,
+        "status": "winner"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round12-derealdeal-lifdrasyl",
+    "stage": 1,
+    "round": 12,
+    "pairingId": 8,
+    "players": [
+      {
+        "id": 18649,
+        "name": "DeRealDeal",
+        "score": 1,
+        "status": "winner"
+      },
+      {
+        "id": 291,
+        "name": "Lifdrasyl",
+        "score": 0,
+        "status": "loser"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round13-yadon-legilus",
+    "stage": 1,
+    "round": 13,
+    "pairingId": 4,
+    "players": [
+      {
+        "id": 11188,
+        "name": "Yadon",
+        "score": 2,
+        "status": "winner"
+      },
+      {
+        "id": 10493,
+        "name": "Legilus",
+        "score": 0,
+        "status": "loser"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-round14-hachico-enochlok123",
+    "stage": 1,
+    "round": 14,
+    "pairingId": 6,
+    "players": [
+      {
+        "id": 7946,
+        "name": "hachico",
+        "score": 2,
+        "status": "winner"
+      },
+      {
+        "id": 2031,
+        "name": "EnochLok123",
+        "score": 1,
+        "status": "loser"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-top8-noel-dudu",
+    "stage": 2,
+    "round": 1,
+    "pairingId": 4,
+    "players": [
+      {
+        "id": 17399,
+        "name": "DuDu",
+        "score": 1,
+        "status": "loser"
+      },
+      {
+        "id": 276,
+        "name": "Noel",
+        "score": 2,
+        "status": "winner"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-semifinal-yadon-rubyxillia",
+    "stage": 2,
+    "round": 2,
+    "pairingId": 1,
+    "players": [
+      {
+        "id": 17072,
+        "name": "RubyXillia",
+        "score": 2,
+        "status": "winner"
+      },
+      {
+        "id": 11188,
+        "name": "Yadon",
+        "score": 1,
+        "status": "loser"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-semifinal-pokerkt-noel",
+    "stage": 2,
+    "round": 2,
+    "pairingId": 2,
+    "players": [
+      {
+        "id": 15081,
+        "name": "PokerKT",
+        "score": 2,
+        "status": "winner"
+      },
+      {
+        "id": 276,
+        "name": "Noel",
+        "score": 1,
+        "status": "loser"
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-osaka-2026-day2-final-rubyxillia-pokerkt",
+    "stage": 2,
+    "round": 3,
+    "pairingId": 1,
+    "players": [
+      {
+        "id": 17072,
+        "name": "RubyXillia",
+        "score": 1,
+        "status": "loser"
+      },
+      {
+        "id": 15081,
+        "name": "PokerKT",
+        "score": 2,
+        "status": "winner"
+      }
+    ]
+  }
+]

@@ -2,11 +2,15 @@
 
 Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtube.com/@gatcg/streams) and the channel’s Videos tab. The archive listing contained 100 stream entries; two individual match uploads were matched separately.
 
+## Latest review — Osaka Day 2
+
+All 15,458 supplied segments are reviewed: nine new recaps, 23 games and 79 highlights. See [Day 2 review](broadcast-review/osaka-day2/README.md). 69 timestamp links are enabled; the final’s ten links are held because the public player currently ends around its opening, despite the complete captured audio. The source remains `post_live`; verify the processed replay before enabling those links.
+
 ## Video links
 
-All 205 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
+All 223 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
 
-Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 112 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
+At the original audit, two recaps had direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 112 links had transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links opened the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 was subsequently resolved with the standalone replay `lt8xG0pelpw`; see the archive timestamp resolution record.
 
 ## Transcript backfill
 

@@ -1,0 +1,14 @@
+{
+  "reviewed": [
+    "review-top8.json",
+    "review-finals.json"
+  ],
+  "result": "No material actor, canonical-card or game-outcome errors found.",
+  "checks": [
+    "Noel\u2013DuDu Crucible removals and late Frostbind wording checked against complete source windows.",
+    "Final Censer ownership, Avatar negate, recovery and Tanggu quest correction checked.",
+    "All 26 semifinal/final evidence spans match raw source and contain their cue starts."
+  ],
+  "additionalContext": "Final game2 beat2 retains preceding Crystalline Mirror setup rows14761\u201314777 alongside its later cue.",
+  "fullGameplayReviewed": false
+}
