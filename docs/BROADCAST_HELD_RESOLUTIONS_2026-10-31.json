@@ -11,7 +11,8 @@
     "ascent-niagara-falls-2025-day1-round3-centai-superior",
     "ascent-niagara-falls-2025-day1-round5-fruitcake-rng",
     "na-nationals-2026-day1-round5-superior-elian",
-    "sea-national-2026-quarterfinal-dragonjg-noobtinnn"
+    "sea-national-2026-quarterfinal-dragonjg-noobtinnn",
+    "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr"
   ],
   "records": [
     {
@@ -646,7 +647,7 @@
         "RoxanneKaiser",
         "SpaghettiSr"
       ],
-      "disposition": "blocked-score-conflict",
+      "disposition": "published-partial-score-conflict",
       "officialPairing": {
         "eventId": 48556,
         "stage": 1,
@@ -753,7 +754,86 @@
       "nextEvidenceNeeded": "Visual final scoreboard, player/judge confirmation, or later correction explaining official 2–1 versus commentary draw.",
       "safeAlternative": "Game 2-only highlight with official-result provenance is supportable, but does not reconcile score conflict.",
       "videoId": "iwjvP7O9ytM",
-      "reviewerBatch": "la"
+      "reviewerBatch": "la",
+      "matchId": "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr",
+      "published": true,
+      "startEvidence": {
+        "row": 181,
+        "timestamp": "31:25",
+        "quote": "Oh, we're uh we're actually we're jumping right we're jumping right in here. Uh so yeah, there what we're seeing right now, this is a fun thing that we're doing on the stream today,"
+      },
+      "startSeconds": 1885,
+      "resolution": "Publish the caption-supported Game 1 penalty and Game 2 finish with official-result attribution. The unseen Game 3 and commentary/official score conflict remain unresolved.",
+      "publicationEvidence": {
+        "sourcePath": "pipeline/.cache/broadcast-transcripts/iwjvP7O9ytM.json",
+        "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+        "readRanges": [
+          [
+            180,
+            210
+          ],
+          [
+            345,
+            385
+          ],
+          [
+            510,
+            552
+          ],
+          [
+            670,
+            720
+          ]
+        ],
+        "identityRows": [
+          184,
+          187,
+          188,
+          189,
+          196,
+          373
+        ],
+        "penaltyRows": [
+          359,
+          360,
+          362,
+          365,
+          376
+        ],
+        "game2Rows": [
+          511,
+          514,
+          529,
+          530,
+          545,
+          546,
+          547
+        ],
+        "conflictRows": [
+          680,
+          715,
+          716,
+          717
+        ],
+        "officialEventId": 48556,
+        "officialPairing": "1:1:3",
+        "decklistPlayers": [
+          25922,
+          24291
+        ],
+        "cardCatalogChecked": [
+          "Cosmic Focus",
+          "Cometary Vantage",
+          "Constellation's Blessing",
+          "Refurbish"
+        ],
+        "limitations": "Targeted caption review, not full video review. No Game 3 winner or finish reconstructed. Conflict remains unresolved.",
+        "startEvidence": {
+          "row": 181,
+          "timestamp": "31:25",
+          "quote": "Oh, we're uh we're actually we're jumping right we're jumping right in here. Uh so yeah, there what we're seeing right now, this is a fun thing that we're doing on the stream today,"
+        }
+      }
     },
     {
       "round": 2,
@@ -1961,6 +2041,19 @@
         "result": "No matching standalone video located in the displayed channel search results. The local clip transcript remains available; the missing item is its public video URL."
       },
       "outcome": "No further held case resolved. Preserve all published recaps, score attributions, and existing holds. Six of twelve cases fully resolved; three score conflicts and three video gaps remain."
+    },
+    "latestEvidenceCheck": {
+      "reviewedAt": "2026-10-31",
+      "outcome": "No authoritative correction or alternate recording found. Publish supported LA Round 1 games without resolving its score conflict.",
+      "newPathsChecked": [
+        "Original NA Round 9 ZIP entry has no URL, entry comment or extra metadata.",
+        "Exact NA Round 9 transcript-title searches found no matching public upload.",
+        "Fractal Luxem Assassin VOD index: likeBAILEY Round 9 belongs to Gauntlet 2026, not NA Nationals.",
+        "Fresh official event pages returned no readable score data; exact-player searches found no authoritative correction."
+      ],
+      "secondaryIndex": "https://fractalofin.site/deck/luxem-assassin.html",
+      "fullyResolved": 6,
+      "heldTotal": 12
     }
   }
 }

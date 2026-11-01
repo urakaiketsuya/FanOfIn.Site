@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "Sequential cached-caption review of the 14 recovered streams and their 113 published recaps. Caption coverage is recorded per source; no full video review claimed. Missing footage and authoritative-score conflicts remain separate.",
+  "scope": "Sequential cached-caption review of the 14 recovered streams and their 114 published recaps (113 in the original batch plus the LA Round 1 partial follow-up). Caption coverage is recorded per source; no full video review claimed. Missing footage and authoritative-score conflicts remain separate.",
   "rowIndexing": "Zero-based inclusive ranges",
   "sources": [
     {
@@ -5713,6 +5713,104 @@
           "detail": "Regal leaves Enrages; double Enrage/Shuang Ji win G2, draw1–1."
         }
       ]
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr",
+      "videoId": "iwjvP7O9ytM",
+      "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+      "reviewedRowRanges": [
+        [
+          180,
+          210
+        ],
+        [
+          345,
+          385
+        ],
+        [
+          510,
+          552
+        ],
+        [
+          670,
+          720
+        ]
+      ],
+      "status": "published-partial-score-conflict",
+      "fullGameplayReviewed": false,
+      "findings": [
+        "Follow-up publication of observed Game 1 penalty and Game 2 lethal only; no Game 3 reconstructed. Official result attributed; broadcast draw conflict remains unresolved."
+      ],
+      "evidence": {
+        "sourcePath": "pipeline/.cache/broadcast-transcripts/iwjvP7O9ytM.json",
+        "sourceSha256": "db297f527b0f27d5ec00fef352c3f9697fdcc4d291bc07c74f394ed902c9535a",
+        "readRanges": [
+          [
+            180,
+            210
+          ],
+          [
+            345,
+            385
+          ],
+          [
+            510,
+            552
+          ],
+          [
+            670,
+            720
+          ]
+        ],
+        "identityRows": [
+          184,
+          187,
+          188,
+          189,
+          196,
+          373
+        ],
+        "penaltyRows": [
+          359,
+          360,
+          362,
+          365,
+          376
+        ],
+        "game2Rows": [
+          511,
+          514,
+          529,
+          530,
+          545,
+          546,
+          547
+        ],
+        "conflictRows": [
+          680,
+          715,
+          716,
+          717
+        ],
+        "officialEventId": 48556,
+        "officialPairing": "1:1:3",
+        "decklistPlayers": [
+          25922,
+          24291
+        ],
+        "cardCatalogChecked": [
+          "Cosmic Focus",
+          "Cometary Vantage",
+          "Constellation's Blessing",
+          "Refurbish"
+        ],
+        "limitations": "Targeted caption review, not full video review. No Game 3 winner or finish reconstructed. Conflict remains unresolved.",
+        "startEvidence": {
+          "row": 181,
+          "timestamp": "31:25",
+          "quote": "Oh, we're uh we're actually we're jumping right we're jumping right in here. Uh so yeah, there what we're seeing right now, this is a fun thing that we're doing on the stream today,"
+        }
+      }
     }
   ],
   "batchSummary": {

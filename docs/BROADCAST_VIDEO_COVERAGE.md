@@ -4,9 +4,9 @@ Audit date: 2026-10-31. Source: [official livestream archive](https://www.youtub
 
 ## Video links
 
-All 204 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
+All 205 current recaps have an explicit association in `BROADCAST_VIDEO_SOURCES.json`. Run `npm run pipeline:broadcast-videos` after editing that registry. The command validates associations before modifying recap data and is idempotent. Existing recap text is preserved.
 
-Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 111 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
+Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Another 112 links have transcript-verified broadcast introduction offsets and are labeled **Watch match**. The remaining 91 links open the event/day broadcast and are labeled **Watch broadcast**. Match-start offsets require `startEvidence`; do not reuse clip-relative timestamps, recap beat order, or targeted review ranges as full-stream match starts. The North American Nationals sources supplied in the ZIP are individual clips; their published links point to the corresponding official day broadcast. Eighteen now have separately verified full-stream offsets; Round 9 remains without an offset because the captured captions end during deck discussion.
 
 ## Transcript backfill
 
@@ -152,3 +152,11 @@ The [sequential review record](BROADCAST_SEQUENTIAL_REVIEW_2026-10-31.json) reco
 Next: obtain alternate footage or authoritative result evidence for the six unresolved held cases. The recovered-source caption initiative is 100% complete (14/14 streams and 113/113 associated recaps); held-case resolution remains 50% (6/12 fully resolved). Two unavailable-caption streams and the 50-stream older archive remain separate scope.
 
 Verification: 39 recap, backfill and video-link tests pass, along with focused lint and diff checks. All 14 cached source hashes and complete row ranges were checked. All 204 IDs, player names, match results and video links match the pre-batch data; exactly 88 recaps changed and 105 games were added. No UI code changed; mobile/desktop layouts and error states were not re-tested.
+
+### LA Round 1 partial publication
+
+LA Round 1 now publishes the supported opening two games: RoxanneKaiser receives a deck-list game loss, then wins Game 2 with repeated Cosmic Focus. The recap attributes SpaghettiSr’s 2–1 match result to official records and retains the conflicting draw commentary. No deciding-game finish is reconstructed. The introduction at 31:25 supplies a verified video offset; the exact official pairing is linked. Total coverage is 205 recaps, including 114 associated with the recovered sources.
+
+Parallel follow-up found no authoritative score correction or alternate footage. The original NA Round 9 ZIP entry contains no source URL or extra metadata; a secondary VOD index’s likeBAILEY Round 9 is Gauntlet 2026, not this match. Nine of the twelve held cases now have recaps, but only six are fully resolved (50%). The recovered-source caption review remains complete; resolving the six open cases requires missing recordings or authoritative result evidence.
+
+Verification: 40 recap, backfill and video-link tests pass; focused lint and diff checks pass. All 204 prior recaps and all official pairing data remain unchanged, with one exact recap association added. Source hash verified and penalty/finish independently checked. Data-only change; mobile/desktop and error states were not re-tested.

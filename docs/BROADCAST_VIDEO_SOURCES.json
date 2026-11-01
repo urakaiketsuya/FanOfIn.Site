@@ -2631,6 +2631,14 @@
       "startSeconds": 22861,
       "startEvidence": "Broadcast transcript 694jDw5rGqg at 6:21:01: that will be talking about shown on stream. Dragon J uh JG versus Justin LJW from Singapore.",
       "basis": "Held-finding follow-up; identity bridge, game transition and exact pairing evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr",
+      "videoId": "iwjvP7O9ytM",
+      "kind": "broadcast",
+      "startSeconds": 1885,
+      "startEvidence": "Broadcast transcript iwjvP7O9ytM at 31:25: Oh, we're uh we're actually we're jumping right we're jumping right in here. Uh so yeah, there what we're seeing right now, this is a fun thing that we're doing on the stream today,",
+      "basis": "LA Round 1 partial publication; exact pairing and caption evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
     }
   ]
 }

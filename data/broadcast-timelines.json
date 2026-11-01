@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T00:31:58.637Z",
+  "generatedAt": "2026-11-01T00:35:03.643Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -25880,6 +25880,76 @@
         "id": "694jDw5rGqg",
         "kind": "broadcast",
         "startSeconds": 22861
+      }
+    },
+    {
+      "id": "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr",
+      "event": "Ascent Los Angeles",
+      "eventId": 48556,
+      "round": "Round 1 (Day 1, bonus match)",
+      "players": [
+        {
+          "id": "p1",
+          "name": "RoxanneKaiser",
+          "deck": "Water Astra Diana"
+        },
+        {
+          "id": "p2",
+          "name": "SpaghettiSr",
+          "deck": "Wind Slimes Silvie"
+        }
+      ],
+      "result": "SpaghettiSr wins 2-1 (official result)",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "SpaghettiSr wins — RoxanneKaiser receives a deck-list game loss",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "The casters report a game loss for RoxanneKaiser after a 58-card deck list is discovered. They report that two copies of Refurbish are added before Game 2.",
+              "cards": [
+                "Refurbish"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "RoxanneKaiser wins — repeated Cosmic Focus sets up lethal",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "RoxanneKaiser uses Cometary Vantage to find and starcall Cosmic Focus repeatedly, building Diana’s ranged damage. Constellation’s Blessing is loaded during the sequence.",
+              "cards": [
+                "Cometary Vantage",
+                "Cosmic Focus",
+                "Constellation's Blessing"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "RoxanneKaiser attacks for lethal and levels the match at one game each.",
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Game 1 penalty and Game 2 finish. Official result: SpaghettiSr 2-1; commentary calls a draw after coverage cuts away during Game 3.",
+      "video": {
+        "id": "iwjvP7O9ytM",
+        "kind": "broadcast",
+        "startSeconds": 1885
       }
     }
   ]

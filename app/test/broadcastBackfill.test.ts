@@ -108,7 +108,7 @@ test('partial coverage preserves game numbers, draws, penalties and missing star
 
 test('all twelve held findings have explicit dispositions and exact published pairings', () => {
   assert.equal(resolutions.records.length, 12);
-  assert.equal(resolutions.newRecapIds.length, 8);
+  assert.equal(resolutions.newRecapIds.length, 9);
   for (const record of resolutions.records) {
     assert.ok(record.disposition);
     assert.ok(record.resolution || record.conclusion);
@@ -143,4 +143,15 @@ test('resolved holds preserve source conflicts, partial games and the deciding p
   assert.ok(decidingGame.beats.some(b => /deck[ -]?out/i.test(b.text)));
   assert.ok(decidingGame.beats.some(b => b.cards?.includes('Dynastic Whirlpool')));
   assert.equal(seaQuarterfinal.video?.startSeconds, 22861);
+});
+
+
+test('LA Round 1 publishes observed games without inventing the deciding finish', () => {
+  const partial = match('ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr');
+  assert.deepEqual(partial.games.map(g => [g.gameNumber, g.winner]), [[1, 'p2'], [2, 'p1']]);
+  assert.equal(partial.result, 'SpaghettiSr wins 2-1 (official result)');
+  assert.match(partial.games[0].beats[0].text, /game loss for RoxanneKaiser/);
+  assert.match(partial.sourceNote, /commentary calls a draw/);
+  assert.equal(partial.video?.startSeconds, 1885);
+  assert.equal(resolutions.records.find((r: { matchId: string }) => r.matchId === partial.id).disposition, 'published-partial-score-conflict');
 });
