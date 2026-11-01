@@ -1,0 +1,3392 @@
+{
+  "videoId": "g3NNFcNpw3k",
+  "eventId": 67176,
+  "status": "complete-bounded-recovery-review",
+  "reviewedRecoveries": [
+    {
+      "file": "bounded-04-0660.json",
+      "sha256": "0a815e07729214e1f28a2e7ddf3e73b7f56341ddf626f56cdaf29a2d3f5c6cf7",
+      "segmentsRead": [
+        0,
+        10
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-0780.json",
+      "sha256": "042413b035560149347526e204ae4dfbc1a065e115ae90829b986bfa4569e4ba",
+      "segmentsRead": [
+        0,
+        35
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-0900.json",
+      "sha256": "0dae79a29bbbc5aa8200488835e49cf93dbbf5b8674777944cad42e2fe4c9faa",
+      "segmentsRead": [
+        0,
+        33
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1020.json",
+      "sha256": "aab8efb9bf8ad30dd4bd0e8d8d1dbcda5c93ba6f5ba7b9f74f8f03496a2f48d6",
+      "segmentsRead": [
+        0,
+        57
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1140.json",
+      "sha256": "0e18a60ede207c898d7184f111e4a1f2aad5b0180846c0fef6eb6ff4d764d8a8",
+      "segmentsRead": [
+        0,
+        47
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1260.json",
+      "sha256": "14b79b4987564fb999735cf9b45ae0a5192399f02bbfa370bf95fc0c63c0427a",
+      "segmentsRead": [
+        0,
+        38
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1380.json",
+      "sha256": "8e18b84b14c07058f5235849fd03e9ab371ed3c37646e2c8ea7cbdeb5e3f39d3",
+      "segmentsRead": [
+        0,
+        44
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1500.json",
+      "sha256": "e2ab411d16153eda3f8f2b394dc0a1ed0f39a185bfbc5dc20190b575094a0149",
+      "segmentsRead": [
+        0,
+        51
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1620.json",
+      "sha256": "28ae0705cefb74a777326e9626feba3505161fbf88a7dd0667b58c77769d8f70",
+      "segmentsRead": [
+        0,
+        37
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    },
+    {
+      "file": "bounded-04-1740.json",
+      "sha256": "d06ae27e3333839b880440da919d9b6b298f4629504ab35cd7eaf9297ae3e73d",
+      "segmentsRead": [
+        0,
+        32
+      ],
+      "endExclusive": true,
+      "baseSeconds": 7200
+    }
+  ],
+  "normalizedRecoveredSegments": [
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 0,
+      "startSeconds": 7860.0,
+      "endSeconds": 7862.76,
+      "originalText": "(dramatic music)",
+      "text": "(dramatic music)"
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 1,
+      "startSeconds": 7920.0,
+      "endSeconds": 7930.88,
+      "originalText": "Hello everyone, welcome back to the Ascent Osaka Stream. It is me, Flaunin with me, it's",
+      "text": "Hello everyone, welcome back to the Ascent Osaka Stream. It is me, Flaunin with me, it's"
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 2,
+      "startSeconds": 7930.88,
+      "endSeconds": 7931.88,
+      "originalText": "pretty soon.",
+      "text": "pretty soon."
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 3,
+      "startSeconds": 7931.88,
+      "endSeconds": 7935.92,
+      "originalText": "Yep, it's your really, really, really tight streamer. But we are all good here. It's",
+      "text": "Yep, it's your really, really, really tight streamer. But we are all good here. It's"
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 4,
+      "startSeconds": 7935.92,
+      "endSeconds": 7940.08,
+      "originalText": "really, really exciting here in Ascent Osaka. We just saw a really fast game. It was really",
+      "text": "really, really exciting here in Ascent Osaka. We just saw a really fast game. It was really"
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 5,
+      "startSeconds": 7940.08,
+      "endSeconds": 7943.68,
+      "originalText": "quick. I don't even think it was 20 minutes. It was like 25?",
+      "text": "quick. I don't even think it was 20 minutes. It was like 25?"
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 6,
+      "startSeconds": 7943.68,
+      "endSeconds": 7944.68,
+      "originalText": "It was really fast.",
+      "text": "It was really fast."
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 7,
+      "startSeconds": 7944.68,
+      "endSeconds": 7945.68,
+      "originalText": "Really fast.",
+      "text": "Really fast."
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 8,
+      "startSeconds": 7945.68,
+      "endSeconds": 7946.68,
+      "originalText": "It's really hard.",
+      "text": "It's really hard."
+    },
+    {
+      "sourceFile": "bounded-04-0660.json",
+      "sourceIndex": 9,
+      "startSeconds": 7976.68,
+      "endSeconds": 7980.28,
+      "originalText": "you know besides this thing or laboratory fast there I think fire though has a really interesting",
+      "text": "you know besides this thing or laboratory fast there I think fire though has a really interesting"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 0,
+      "startSeconds": 7980.0,
+      "endSeconds": 7982.8,
+      "originalText": "interesting new card from the new altar, right?",
+      "text": "interesting new card from the new altar, right?"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 1,
+      "startSeconds": 7982.8,
+      "endSeconds": 7984.16,
+      "originalText": "That makes Aggressive's deck's",
+      "text": "That makes Aggressive's deck's"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 2,
+      "startSeconds": 7984.16,
+      "endSeconds": 7985.5599999999995,
+      "originalText": "Erylle really, really powerful right now.",
+      "text": "Erylle really, really powerful right now."
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 3,
+      "startSeconds": 7985.5599999999995,
+      "endSeconds": 7987.2,
+      "originalText": "- Yeah, so it's called, it's called an Ether Charge,",
+      "text": "- Yeah, so it's called, it's called Scalding Aethercharge,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 4,
+      "startSeconds": 7987.2,
+      "endSeconds": 7991.2,
+      "originalText": "it's a two cost fast speed spell that does two damage.",
+      "text": "it's a two cost fast speed spell that does two damage."
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 5,
+      "startSeconds": 7991.2,
+      "endSeconds": 7993.0,
+      "originalText": "And if your opponent has leveled up,",
+      "text": "And if your opponent has leveled up,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 6,
+      "startSeconds": 7993.0,
+      "endSeconds": 7996.16,
+      "originalText": "it does two damage, so extra for every time they will drop.",
+      "text": "it does two damage, so extra for every time they will drop."
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 7,
+      "startSeconds": 7996.16,
+      "endSeconds": 7997.0,
+      "originalText": "- Eight, three times.",
+      "text": "- Eight, three times."
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 8,
+      "startSeconds": 7997.0,
+      "endSeconds": 7998.88,
+      "originalText": "- So if your opponent has gone level up",
+      "text": "- So if your opponent has gone level up"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 9,
+      "startSeconds": 7998.88,
+      "endSeconds": 8000.68,
+      "originalText": "to two dungeon guide to three,",
+      "text": "to two Dungeon Guide to three,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 10,
+      "startSeconds": 8000.68,
+      "endSeconds": 8002.8,
+      "originalText": "it does six damage and it's three different pings,",
+      "text": "it does six damage and it's three different pings,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 11,
+      "startSeconds": 8002.8,
+      "endSeconds": 8005.64,
+      "originalText": "which means if your opponent is playing crucible,",
+      "text": "which means if your opponent is playing crucible,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 12,
+      "startSeconds": 8005.64,
+      "endSeconds": 8006.76,
+      "originalText": "it gets extra damage from that,",
+      "text": "it gets extra damage from that,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 13,
+      "startSeconds": 8006.76,
+      "endSeconds": 8008.08,
+      "originalText": "if you play in the swing,",
+      "text": "if you play in the swing,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 14,
+      "startSeconds": 8008.08,
+      "endSeconds": 8013.6,
+      "originalText": "Zaku, it gets multiple quest calendars, that's a really strong card in general, but especially",
+      "text": "Zaku, it gets multiple quest calendars, that's a really strong card in general, but especially"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 15,
+      "startSeconds": 8013.6,
+      "endSeconds": 8019.12,
+      "originalText": "against level 3 decks, being a 2-cost, like a potential 4 or 6 damage is pretty insane.",
+      "text": "against level 3 decks, being a 2-cost, like a potential 4 or 6 damage is pretty insane."
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 16,
+      "startSeconds": 8019.12,
+      "endSeconds": 8023.6,
+      "originalText": "Yeah, because right now in the meta, there are so many different types of decks, like",
+      "text": "Yeah, because right now in the meta, there are so many different types of decks, like"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 17,
+      "startSeconds": 8023.6,
+      "endSeconds": 8027.76,
+      "originalText": "the variety of level 3 decks, variety of aggro decks, it just makes this meta really, really",
+      "text": "the variety of level 3 decks, variety of aggro decks, it just makes this meta really, really"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 18,
+      "startSeconds": 8027.76,
+      "endSeconds": 8032.32,
+      "originalText": "interesting as well. I do want to say that among all the decks I find interesting would",
+      "text": "interesting as well. I do want to say that among all the decks I find interesting would"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 19,
+      "startSeconds": 8032.32,
+      "endSeconds": 8037.68,
+      "originalText": "probably be the arm of Alice decks, because of the new using allied and allied receive,",
+      "text": "probably be the arm of Alice decks, because of the new using allied and allied receive,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 20,
+      "startSeconds": 8037.68,
+      "endSeconds": 8043.28,
+      "originalText": "that you realize basically if you have so much hound counter it's generally I see that people do 10 damage really",
+      "text": "that you realize basically if you have so much hound counter it's generally I see that people do 10 damage really"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 21,
+      "startSeconds": 8043.28,
+      "endSeconds": 8044.28,
+      "originalText": "we point you",
+      "text": "we point you"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 22,
+      "startSeconds": 8044.28,
+      "endSeconds": 8046.28,
+      "originalText": "That feels a bit low to me",
+      "text": "That feels a bit low to me"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 23,
+      "startSeconds": 8046.28,
+      "endSeconds": 8048.78,
+      "originalText": "Usually it's like 12 to 15 from my experience",
+      "text": "Usually it's like 12 to 15 from my experience"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 24,
+      "startSeconds": 8048.88,
+      "endSeconds": 8053.4,
+      "originalText": "because I prefer those you don't know how that deck works basically a reason old car that",
+      "text": "because I prefer those you don't know how that deck works basically a reason old car that"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 25,
+      "startSeconds": 8053.4,
+      "endSeconds": 8059.08,
+      "originalText": "didn't really see much play in the number that's called Remnant of Will it heals you for and it's one cost slow speed",
+      "text": "didn't really see much play in the number that's called Remnant of Will it heals you for and it's one cost slow speed"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 26,
+      "startSeconds": 8059.08,
+      "endSeconds": 8064.08,
+      "originalText": "heals you for and then gives you two hound counters and then it has a femurate one so you play it from hand you do it again",
+      "text": "heals you for and then gives you two hound counters and then it has a femurate one so you play it from hand you do it again"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 27,
+      "startSeconds": 8064.08,
+      "endSeconds": 8069.52,
+      "originalText": "you heal 8 and then you get 4 hantaners and especially when you have a ticket to the afterlife out,",
+      "text": "you heal 8 and then you get 4 hantaners and especially when you have a ticket to the afterlife out,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 28,
+      "startSeconds": 8069.52,
+      "endSeconds": 8074.88,
+      "originalText": "it actually makes it free when it gets a femurator which means either if you mill it from one of your",
+      "text": "it actually makes it free when it gets a femurator which means either if you mill it from one of your"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 29,
+      "startSeconds": 8074.88,
+      "endSeconds": 8078.64,
+      "originalText": "phantasmagorias or if you just play it from Han for 1 and then you play it from Grey for free,",
+      "text": "phantasmagorias or if you just play it from Han for 1 and then you play it from Grey for free,"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 30,
+      "startSeconds": 8078.64,
+      "endSeconds": 8083.12,
+      "originalText": "you could potentially be hitting like the 12 to 15 hantaners and then Puyte obviously has her own",
+      "text": "you could potentially be hitting like the 12 to 15 hantaners and then Poitier obviously has her own"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 31,
+      "startSeconds": 8083.12,
+      "endSeconds": 8088.48,
+      "originalText": "base 12 already or base 2 power already so she can hit really absurd numbers and a lot of times it's",
+      "text": "base 12 already or base 2 power already so she can hit really absurd numbers and a lot of times it's"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 32,
+      "startSeconds": 8088.48,
+      "endSeconds": 8092.88,
+      "originalText": "like oh you play 1 Puyte and then you fMRI another one and then you just play then you swing for like 15",
+      "text": "like oh you play 1 Poitier and then you fMRI another one and then you just play then you swing for like 15"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 33,
+      "startSeconds": 8092.88,
+      "endSeconds": 8097.36,
+      "originalText": "twice. Yeah, yeah, it's really strong. Like the only thing that comes in mind is stopping",
+      "text": "twice. Yeah, yeah, it's really strong. Like the only thing that comes in mind is stopping"
+    },
+    {
+      "sourceFile": "bounded-04-0780.json",
+      "sourceIndex": 34,
+      "startSeconds": 8097.36,
+      "endSeconds": 8101.84,
+      "originalText": "is probably a ton of stuff like that intercepts. Like it's not that it's really really big and",
+      "text": "is probably a ton of stuff like that intercepts. Like it's not that it's really really big and"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 0,
+      "startSeconds": 8100.0,
+      "endSeconds": 8105.38,
+      "originalText": "It's not that it's really really big and it's really fast as well. So I'll be wondering how this method will develop into like",
+      "text": "It's not that it's really really big and it's really fast as well. So I'll be wondering how this method will develop into like"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 1,
+      "startSeconds": 8105.38,
+      "endSeconds": 8109.32,
+      "originalText": "I don't know what do people take for it necessary speaking. I mean the tech for it is the stuff that ever",
+      "text": "I don't know what do people take for it necessary speaking. I mean the tech for it is the stuff that ever"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 2,
+      "startSeconds": 8109.32,
+      "endSeconds": 8115.5599999999995,
+      "originalText": "So yeah, Sash, Topsy, it's all the stuff that people are ready playing and I'm sensor lens. Yeah sensors. Yeah",
+      "text": "So yeah, Sash, Topsy, it's all the stuff that people are ready playing and I'm sensor lens. Yeah sensors. Yeah"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 3,
+      "startSeconds": 8116.92,
+      "endSeconds": 8120.24,
+      "originalText": "Yeah, and another really nice thing is the new card gas fire tormentor",
+      "text": "Yeah, and another really nice thing is the new card Ghastfire Tormentor"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 4,
+      "startSeconds": 8120.24,
+      "endSeconds": 8125.14,
+      "originalText": "She's really strong because she lets you use so many of these fire spells that are actually I mean Riley",
+      "text": "She's really strong because she lets you use so many of these fire spells that are actually I mean Riley"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 5,
+      "startSeconds": 8125.14,
+      "endSeconds": 8127.86,
+      "originalText": "Biz let you use rather is more than once. Yeah, but also let's you",
+      "text": "Biz let you use rather is more than once. Yeah, but also let's you"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 6,
+      "startSeconds": 8128.5599999999995,
+      "endSeconds": 8134.16,
+      "originalText": "Use things like cinder guys or let's you use things like actually intensified pyres",
+      "text": "Use things like Cinder Geyser or let's you use things like actually Intensified Pyre"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 7,
+      "startSeconds": 8134.16,
+      "endSeconds": 8141.4400000000005,
+      "originalText": "Yeah, really strong one because you can actually kindle it so kindle it even when you ephemerate it and also notably gas fire gets around",
+      "text": "Yeah, really strong one because you can actually kindle it so kindle it even when you ephemerate it and also notably Ghastfire gets around"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 8,
+      "startSeconds": 8141.96,
+      "endSeconds": 8144.88,
+      "originalText": "It gets around sensor because it gives that the ephemerate",
+      "text": "It gets around sensor because it gives that the ephemerate"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 9,
+      "startSeconds": 8144.88,
+      "endSeconds": 8148.32,
+      "originalText": "Yeah, the sensor is you can actually use it to use a reduced ash from grave as well",
+      "text": "Yeah, the sensor is you can actually use it to use a Reduce to Ash from grave as well"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 10,
+      "startSeconds": 8148.32,
+      "endSeconds": 8153.24,
+      "originalText": "Mm-hmm. So a lot of cool things you can do with that deck and of course, it's a la so it's a millable essentially",
+      "text": "Mm-hmm. So a lot of cool things you can do with that deck and of course, it's a la so it's a millable essentially"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 11,
+      "startSeconds": 8153.24,
+      "endSeconds": 8156.5,
+      "originalText": "So yes against like again booze against things like no",
+      "text": "So yes against like again booze against things like no"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 12,
+      "startSeconds": 8157.14,
+      "endSeconds": 8164.12,
+      "originalText": "Yeah, world will decks. It's actually really quite strong. So yeah, and of course has the potential to do things like regal",
+      "text": "Yeah, world will decks. It's actually really quite strong. So yeah, and of course has the potential to do things like regal"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 13,
+      "startSeconds": 8164.12,
+      "endSeconds": 8167.16,
+      "originalText": "mail out new excite board plans with reflected light",
+      "text": "mail out new excite board plans with Reflected Blight"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 14,
+      "startSeconds": 8167.16,
+      "endSeconds": 8171.28,
+      "originalText": "So it's a very interesting that I hope to see some I've definitely seen some strong players on it",
+      "text": "So it's a very interesting that I hope to see some I've definitely seen some strong players on it"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 15,
+      "startSeconds": 8171.28,
+      "endSeconds": 8174.8,
+      "originalText": "Mm-hmm based on the omnidex you can actually see right now",
+      "text": "Mm-hmm based on the omnidex you can actually see right now"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 16,
+      "startSeconds": 8174.8,
+      "endSeconds": 8178.24,
+      "originalText": "You can actually go to on the end you can see what you are playing even if you don't see the whole deck",
+      "text": "You can actually go to on the end you can see what you are playing even if you don't see the whole deck"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 17,
+      "startSeconds": 8178.24,
+      "endSeconds": 8181.32,
+      "originalText": "You can see the image so like there's no such thing",
+      "text": "You can see the image so like there's no such thing"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 18,
+      "startSeconds": 8181.32,
+      "endSeconds": 8183.32,
+      "originalText": "You're sure you chose the whole lineage, right?",
+      "text": "You're sure you chose the whole lineage, right?"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 19,
+      "startSeconds": 8183.32,
+      "endSeconds": 8184.32,
+      "originalText": "Not just...",
+      "text": "Not just..."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 20,
+      "startSeconds": 8184.32,
+      "endSeconds": 8185.32,
+      "originalText": "Not just...",
+      "text": "Not just..."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 21,
+      "startSeconds": 8185.32,
+      "endSeconds": 8189.32,
+      "originalText": "For example, if you're only have level one, you only have level one, and then you have level three.",
+      "text": "For example, if you're only have level one, you only have level one, and then you have level three."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 22,
+      "startSeconds": 8189.32,
+      "endSeconds": 8191.32,
+      "originalText": "So that means it's not going to be playing the astral version.",
+      "text": "So that means it's not going to be playing the astral version."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 23,
+      "startSeconds": 8191.32,
+      "endSeconds": 8193.32,
+      "originalText": "So you know your opponent is roughly playing what kind of attack.",
+      "text": "So you know your opponent is roughly playing what kind of attack."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 24,
+      "startSeconds": 8193.32,
+      "endSeconds": 8196.32,
+      "originalText": "Even if you don't have much, I think it's really good for a new place, right?",
+      "text": "Even if you don't have much, I think it's really good for a new place, right?"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 25,
+      "startSeconds": 8196.32,
+      "endSeconds": 8199.32,
+      "originalText": "Because you go in, like, let's say you don't have time to study all the attacks,",
+      "text": "Because you go in, like, let's say you don't have time to study all the attacks,"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 26,
+      "startSeconds": 8199.32,
+      "endSeconds": 8202.32,
+      "originalText": "but if you see your opponent only has level one, you can make an assumption,",
+      "text": "but if you see your opponent only has level one, you can make an assumption,"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 27,
+      "startSeconds": 8202.32,
+      "endSeconds": 8204.32,
+      "originalText": "\"Oh, he's just going to play aggressive or fast attack.\"",
+      "text": "\"Oh, he's just going to play aggressive or fast attack.\""
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 28,
+      "startSeconds": 8204.32,
+      "endSeconds": 8206.32,
+      "originalText": "So you can make assumptions, his aggro, and then you can play more defensive.",
+      "text": "So you can make assumptions, his aggro, and then you can play more defensive."
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 29,
+      "startSeconds": 8206.32,
+      "endSeconds": 8209.32,
+      "originalText": "You see your opponent has a level three that you have, \"Oh, he's a very slow attack.\"",
+      "text": "You see your opponent has a level three that you have, \"Oh, he's a very slow attack.\""
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 30,
+      "startSeconds": 8209.32,
+      "endSeconds": 8213.02,
+      "originalText": "And then yeah, and the correspondent spirit anyway, oh, he's a fire level tree deck",
+      "text": "And then yeah, and the correspondent spirit anyway, oh, he's a fire level tree deck"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 31,
+      "startSeconds": 8213.02,
+      "endSeconds": 8218.14,
+      "originalText": "So he's gonna go fast fast fast fast draw draw so you can make good assumptions just by this information",
+      "text": "So he's gonna go fast fast fast fast draw draw so you can make good assumptions just by this information"
+    },
+    {
+      "sourceFile": "bounded-04-0900.json",
+      "sourceIndex": 32,
+      "startSeconds": 8218.14,
+      "endSeconds": 8223.74,
+      "originalText": "Doesn't need to like go into like heart study mode, which is a really good change. I was just speaking. Yeah, and it just",
+      "text": "Doesn't need to like go into like heart study mode, which is a really good change. I was just speaking. Yeah, and it just"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 0,
+      "startSeconds": 8220.0,
+      "endSeconds": 8222.12,
+      "originalText": "study mode, which actually is a really good change, I'm not",
+      "text": "study mode, which actually is a really good change, I'm not"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 1,
+      "startSeconds": 8222.12,
+      "endSeconds": 8222.68,
+      "originalText": "supposed to be speaking.",
+      "text": "supposed to be speaking."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 2,
+      "startSeconds": 8222.78,
+      "endSeconds": 8226.52,
+      "originalText": "Yeah, and it just takes away some of the conf- the",
+      "text": "Yeah, and it just takes away some of the conf- the"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 3,
+      "startSeconds": 8226.52,
+      "endSeconds": 8227.16,
+      "originalText": "confusion you have.",
+      "text": "confusion you have."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 4,
+      "startSeconds": 8227.16,
+      "endSeconds": 8228.08,
+      "originalText": "Yeah, exactly.",
+      "text": "Yeah, exactly."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 5,
+      "startSeconds": 8228.119999999999,
+      "endSeconds": 8231.24,
+      "originalText": "Especially when you see a lot of decks, like the openings can",
+      "text": "Especially when you see a lot of decks, like the openings can"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 6,
+      "startSeconds": 8231.24,
+      "endSeconds": 8231.96,
+      "originalText": "be very similar.",
+      "text": "be very similar."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 7,
+      "startSeconds": 8232.0,
+      "endSeconds": 8232.52,
+      "originalText": "Yeah, yeah.",
+      "text": "Yeah, yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 8,
+      "startSeconds": 8232.52,
+      "endSeconds": 8234.2,
+      "originalText": "And if they're playing windmill, a sudden it's like, you don't",
+      "text": "And if they're playing windmill, a sudden it's like, you don't"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 9,
+      "startSeconds": 8234.2,
+      "endSeconds": 8235.880000000001,
+      "originalText": "know if they're Crocs or if they're allies.",
+      "text": "know if they're Crocs or if they're allies."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 10,
+      "startSeconds": 8235.880000000001,
+      "endSeconds": 8236.6,
+      "originalText": "They're Luxum.",
+      "text": "They're Luxum."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 11,
+      "startSeconds": 8236.6,
+      "endSeconds": 8237.04,
+      "originalText": "Yeah.",
+      "text": "Yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 12,
+      "startSeconds": 8237.04,
+      "endSeconds": 8239.0,
+      "originalText": "If you're playing, if you're playing as Fire, if they just do",
+      "text": "If you're playing, if you're playing as Fire, if they just do"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 13,
+      "startSeconds": 8239.0,
+      "endSeconds": 8240.96,
+      "originalText": "nothing pass a lot of times, like, okay, it could be Creative",
+      "text": "nothing pass a lot of times, like, okay, it could be Creative"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 14,
+      "startSeconds": 8240.96,
+      "endSeconds": 8244.04,
+      "originalText": "Shockflow, it could be, or it could be Creative Shock",
+      "text": "Shockflow, it could be, or it could be Creative Shock"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 15,
+      "startSeconds": 8244.04,
+      "endSeconds": 8247.36,
+      "originalText": "Liminal, or it could be Double Verme, it could be Vermilion",
+      "text": "Liminal, or it could be Double Verme, it could be Vermilion"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 16,
+      "startSeconds": 8247.36,
+      "endSeconds": 8249.96,
+      "originalText": "into burn spell could be creative and different.",
+      "text": "into burn spell could be creative and different."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 17,
+      "startSeconds": 8249.96,
+      "endSeconds": 8250.8,
+      "originalText": "- It could be anything.",
+      "text": "- It could be anything."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 18,
+      "startSeconds": 8250.8,
+      "endSeconds": 8251.64,
+      "originalText": "- Yeah, exactly.",
+      "text": "- Yeah, exactly."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 19,
+      "startSeconds": 8251.64,
+      "endSeconds": 8252.76,
+      "originalText": "So actually this is a huge change,",
+      "text": "So actually this is a huge change,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 20,
+      "startSeconds": 8252.76,
+      "endSeconds": 8256.0,
+      "originalText": "especially for decks that get a lot of different",
+      "text": "especially for decks that get a lot of different"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 21,
+      "startSeconds": 8256.0,
+      "endSeconds": 8256.84,
+      "originalText": "like opening lines.",
+      "text": "like opening lines."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 22,
+      "startSeconds": 8256.84,
+      "endSeconds": 8257.68,
+      "originalText": "- Yeah, yeah, yeah.",
+      "text": "- Yeah, yeah, yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 23,
+      "startSeconds": 8257.68,
+      "endSeconds": 8258.52,
+      "originalText": "- I think for Atlas is actually a deck",
+      "text": "- I think for Atlas is actually a deck"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 24,
+      "startSeconds": 8258.52,
+      "endSeconds": 8259.6,
+      "originalText": "that benefits a lot from this.",
+      "text": "that benefits a lot from this."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 25,
+      "startSeconds": 8259.6,
+      "endSeconds": 8260.44,
+      "originalText": "So we'll see.",
+      "text": "So we'll see."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 26,
+      "startSeconds": 8260.44,
+      "endSeconds": 8261.8,
+      "originalText": "- Ooh, Ooh, you will see.",
+      "text": "- Ooh, Ooh, you will see."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 27,
+      "startSeconds": 8261.8,
+      "endSeconds": 8263.48,
+      "originalText": "- 'Cause now they, if they know they're playing",
+      "text": "- 'Cause now they, if they know they're playing"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 28,
+      "startSeconds": 8263.48,
+      "endSeconds": 8265.6,
+      "originalText": "level three, they can go for like a full top outline",
+      "text": "level three, they can go for like a full top outline"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 29,
+      "startSeconds": 8265.6,
+      "endSeconds": 8266.96,
+      "originalText": "instead of, you know, when they're playing",
+      "text": "instead of, you know, when they're playing"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 30,
+      "startSeconds": 8266.96,
+      "endSeconds": 8269.16,
+      "originalText": "it's fire ark, or they usually wanna be holding up things.",
+      "text": "it's fire ark, or they usually wanna be holding up things."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 31,
+      "startSeconds": 8269.16,
+      "endSeconds": 8271.56,
+      "originalText": "So definitely decks like that and even like wind crocs.",
+      "text": "So definitely decks like that and even like Wind Crux."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 32,
+      "startSeconds": 8271.56,
+      "endSeconds": 8273.6,
+      "originalText": "Any deck that has like these opening turns",
+      "text": "Any deck that has like these opening turns"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 33,
+      "startSeconds": 8273.6,
+      "endSeconds": 8275.56,
+      "originalText": "where they can actually just dump their whole hand",
+      "text": "where they can actually just dump their whole hand"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 34,
+      "startSeconds": 8275.56,
+      "endSeconds": 8276.64,
+      "originalText": "with impunity.",
+      "text": "with impunity."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 35,
+      "startSeconds": 8276.64,
+      "endSeconds": 8278.52,
+      "originalText": "I think benefit a lot from this change.",
+      "text": "I think benefit a lot from this change."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 36,
+      "startSeconds": 8278.52,
+      "endSeconds": 8282.8,
+      "originalText": "So we'll see if maybe some players, even in game one,",
+      "text": "So we'll see if maybe some players, even in game one,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 37,
+      "startSeconds": 8282.8,
+      "endSeconds": 8284.880000000001,
+      "originalText": "they adjust the way they play their first turns.",
+      "text": "they adjust the way they play their first turns."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 38,
+      "startSeconds": 8284.880000000001,
+      "endSeconds": 8285.880000000001,
+      "originalText": "Yeah.",
+      "text": "Yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 39,
+      "startSeconds": 8285.880000000001,
+      "endSeconds": 8287.64,
+      "originalText": "Yeah, there were all adjustments to be made.",
+      "text": "Yeah, there were all adjustments to be made."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 40,
+      "startSeconds": 8287.64,
+      "endSeconds": 8289.52,
+      "originalText": "I think in the greater narrative,",
+      "text": "I think in the greater narrative,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 41,
+      "startSeconds": 8289.52,
+      "endSeconds": 8292.6,
+      "originalText": "it won't affect too many of their deck choices.",
+      "text": "it won't affect too many of their deck choices."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 42,
+      "startSeconds": 8292.6,
+      "endSeconds": 8293.119999999999,
+      "originalText": "That's specific.",
+      "text": "That's specific."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 43,
+      "startSeconds": 8293.119999999999,
+      "endSeconds": 8295.24,
+      "originalText": "It just affects how you would look into the game now,",
+      "text": "It just affects how you would look into the game now,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 44,
+      "startSeconds": 8295.24,
+      "endSeconds": 8297.0,
+      "originalText": "because now you have more information, right?",
+      "text": "because now you have more information, right?"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 45,
+      "startSeconds": 8297.0,
+      "endSeconds": 8299.48,
+      "originalText": "Thinking of more information, cards like Regu,",
+      "text": "Thinking of more information, cards like Regu,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 46,
+      "startSeconds": 8299.48,
+      "endSeconds": 8301.8,
+      "originalText": "the-- it's been a card that I think",
+      "text": "the-- it's been a card that I think"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 47,
+      "startSeconds": 8301.8,
+      "endSeconds": 8304.24,
+      "originalText": "has been the long stay for almost every level trade deck.",
+      "text": "has been the long stay for almost every level trade deck."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 48,
+      "startSeconds": 8304.24,
+      "endSeconds": 8310.8,
+      "originalText": "see I consider the wind cleanse point. Yeah, Regal is incredibly powerful. It's just with the",
+      "text": "see I consider the wind cleanse point. Yeah, Regal is incredibly powerful. It's just with the"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 49,
+      "startSeconds": 8310.8,
+      "endSeconds": 8315.36,
+      "originalText": "amount of interaction in the game right now, a card like Regal just wins you the game. Sometimes",
+      "text": "amount of interaction in the game right now, a card like Regal just wins you the game. Sometimes"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 50,
+      "startSeconds": 8315.36,
+      "endSeconds": 8322.16,
+      "originalText": "you actually watched Quirax after round one, he was in a position where he was very low influenced",
+      "text": "you actually watched Quarax after round one, he was in a position where he was very low influenced"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 51,
+      "startSeconds": 8322.16,
+      "endSeconds": 8326.56,
+      "originalText": "and getting bullied by fractals, but then just sat there kept drawing cards and then dropped tricos",
+      "text": "and getting bullied by fractals, but then just sat there kept drawing cards and then dropped tricos"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 52,
+      "startSeconds": 8326.56,
+      "endSeconds": 8331.36,
+      "originalText": "and then waited and then Regal into Enrage and killed them. And it's like, okay, you see, they",
+      "text": "and then waited and then Regal into Enrage and killed them. And it's like, okay, you see, they"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 53,
+      "startSeconds": 8331.36,
+      "endSeconds": 8334.0,
+      "originalText": "They have literally no norm cards in hand for Regal,",
+      "text": "They have literally no norm cards in hand for Regal,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 54,
+      "startSeconds": 8334.0,
+      "endSeconds": 8337.16,
+      "originalText": "so they can't turn off the track also and they just won.",
+      "text": "so they can't turn off the track also and they just won."
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 55,
+      "startSeconds": 8337.16,
+      "endSeconds": 8339.56,
+      "originalText": "- Yeah, I saw that exact thing on Thursday,",
+      "text": "- Yeah, I saw that exact thing on Thursday,"
+    },
+    {
+      "sourceFile": "bounded-04-1020.json",
+      "sourceIndex": 56,
+      "startSeconds": 8339.56,
+      "endSeconds": 8341.52,
+      "originalText": "they got, like, cards are just losing,",
+      "text": "they got, like, cards are just losing,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 0,
+      "startSeconds": 8340.0,
+      "endSeconds": 8342.08,
+      "originalText": "Like, like, what I'm just losing is a good structure.",
+      "text": "Like, like, what I'm just losing is a good structure."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 1,
+      "startSeconds": 8342.08,
+      "endSeconds": 8343.16,
+      "originalText": "Then, ah, it's going to lose.",
+      "text": "Then, ah, it's going to lose."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 2,
+      "startSeconds": 8343.16,
+      "endSeconds": 8343.8,
+      "originalText": "Oh, my turn.",
+      "text": "Oh, my turn."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 3,
+      "startSeconds": 8343.8,
+      "endSeconds": 8344.44,
+      "originalText": "Level three.",
+      "text": "Level three."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 4,
+      "startSeconds": 8344.44,
+      "endSeconds": 8345.16,
+      "originalText": "Rego.",
+      "text": "Regal Inquisition."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 5,
+      "startSeconds": 8345.16,
+      "endSeconds": 8346.24,
+      "originalText": "Looks at all this.",
+      "text": "Looks at all this."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 6,
+      "startSeconds": 8346.24,
+      "endSeconds": 8349.44,
+      "originalText": "Send that, send that, send that to the graveyard, your turn.",
+      "text": "Send that, send that, send that to the graveyard, your turn."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 7,
+      "startSeconds": 8349.44,
+      "endSeconds": 8352.24,
+      "originalText": "And then the practice is going to play the game the entire--",
+      "text": "And then the practice is going to play the game the entire--"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 8,
+      "startSeconds": 8352.24,
+      "endSeconds": 8354.6,
+      "originalText": "then it just shows you how powerful Rego is right.",
+      "text": "then it just shows you how powerful Regal Inquisition is right."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 9,
+      "startSeconds": 8354.6,
+      "endSeconds": 8356.08,
+      "originalText": "And of course, you mentioned there's so many interaction,",
+      "text": "And of course, you mentioned there's so many interaction,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 10,
+      "startSeconds": 8356.08,
+      "endSeconds": 8356.24,
+      "originalText": "right?",
+      "text": "right?"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 11,
+      "startSeconds": 8356.24,
+      "endSeconds": 8357.92,
+      "originalText": "You just get rid of that interaction.",
+      "text": "You just get rid of that interaction."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 12,
+      "startSeconds": 8357.92,
+      "endSeconds": 8359.76,
+      "originalText": "They really can't do anything, especially",
+      "text": "They really can't do anything, especially"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 13,
+      "startSeconds": 8359.76,
+      "endSeconds": 8362.08,
+      "originalText": "if you're a level one, deck, or level two deck.",
+      "text": "if you're a level one, deck, or level two deck."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 14,
+      "startSeconds": 8362.08,
+      "endSeconds": 8364.36,
+      "originalText": "You don't have any alcohol seating.",
+      "text": "You don't have any alcohol seating."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 15,
+      "startSeconds": 8364.36,
+      "endSeconds": 8365.880000000001,
+      "originalText": "The seating of power level, where",
+      "text": "The seating of power level, where"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 16,
+      "startSeconds": 8365.880000000001,
+      "endSeconds": 8367.32,
+      "originalText": "it's like, because you're not a level three,",
+      "text": "it's like, because you're not a level three,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 17,
+      "startSeconds": 8367.32,
+      "endSeconds": 8370.32,
+      "originalText": "have no access to all your strong, advanced element cards.",
+      "text": "have no access to all your strong, advanced element cards."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 18,
+      "startSeconds": 8370.32,
+      "endSeconds": 8372.32,
+      "originalText": "So, yeah, we'll see how it goes.",
+      "text": "So, yeah, we'll see how it goes."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 19,
+      "startSeconds": 8372.32,
+      "endSeconds": 8375.32,
+      "originalText": "I do think that it's very interesting right now,",
+      "text": "I do think that it's very interesting right now,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 20,
+      "startSeconds": 8375.32,
+      "endSeconds": 8377.32,
+      "originalText": "as I was watching the game, like back then,",
+      "text": "as I was watching the game, like back then,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 21,
+      "startSeconds": 8377.32,
+      "endSeconds": 8379.32,
+      "originalText": "not only back then, but like, generally speaking,",
+      "text": "not only back then, but like, generally speaking,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 22,
+      "startSeconds": 8379.32,
+      "endSeconds": 8381.32,
+      "originalText": "when you're playing a level tree deck against an egg holder",
+      "text": "when you're playing a level tree deck against an egg holder"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 23,
+      "startSeconds": 8381.32,
+      "endSeconds": 8383.32,
+      "originalText": "of fast deck, you're struggling, right,",
+      "text": "of fast deck, you're struggling, right,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 24,
+      "startSeconds": 8383.32,
+      "endSeconds": 8385.32,
+      "originalText": "because you are trying to prevent your servant dying",
+      "text": "because you are trying to prevent your servant dying"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 25,
+      "startSeconds": 8385.32,
+      "endSeconds": 8388.32,
+      "originalText": "at the same time showing cards out so that you can survive,",
+      "text": "at the same time showing cards out so that you can survive,"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 26,
+      "startSeconds": 8388.32,
+      "endSeconds": 8390.32,
+      "originalText": "but your influence will be low.",
+      "text": "but your influence will be low."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 27,
+      "startSeconds": 8390.32,
+      "endSeconds": 8392.32,
+      "originalText": "But now with so much influence, you can just stop there",
+      "text": "But now with so much influence, you can just stop there"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 28,
+      "startSeconds": 8392.32,
+      "endSeconds": 8395.32,
+      "originalText": "while having no decent influence going to level tree.",
+      "text": "while having no decent influence going to level tree."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 29,
+      "startSeconds": 8395.32,
+      "endSeconds": 8400.74,
+      "originalText": "Yeah, Tricost is strong because yeah of the ability to just like oh you hit level three and against decks like",
+      "text": "Yeah, Tricastles is strong because yeah of the ability to just like oh you hit level three and against decks like"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 30,
+      "startSeconds": 8400.94,
+      "endSeconds": 8403.8,
+      "originalText": "Like the fire-aggard acts. Yeah, I'm like a lot of these like wind decks",
+      "text": "Like the fire-aggard acts. Yeah, I'm like a lot of these like wind decks"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 31,
+      "startSeconds": 8403.8,
+      "endSeconds": 8408.52,
+      "originalText": "They don't have a lot of norm cards to be banishing so you could just drop it and a lot of times they're just stuck there so",
+      "text": "They don't have a lot of norm cards to be banishing so you could just drop it and a lot of times they're just stuck there so"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 32,
+      "startSeconds": 8409.08,
+      "endSeconds": 8415.0,
+      "originalText": "Yeah, it's really interesting and I'm wondering if more people are gonna be on like these kind of like regal tricastle kind of things",
+      "text": "Yeah, it's really interesting and I'm wondering if more people are gonna be on like these kind of like regal tricastle kind of things"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 33,
+      "startSeconds": 8415.0,
+      "endSeconds": 8419.0,
+      "originalText": "But let's get into the next game here is going to be",
+      "text": "But let's get into the next game here is going to be"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 34,
+      "startSeconds": 8419.880000000001,
+      "endSeconds": 8424.28,
+      "originalText": "Wait for it wait for it waiting for waiting for it",
+      "text": "Wait for it wait for it waiting for waiting for it"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 35,
+      "startSeconds": 8425.32,
+      "endSeconds": 8428.880000000001,
+      "originalText": "Okay, and here we go.",
+      "text": "Okay, and here we go."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 36,
+      "startSeconds": 8428.880000000001,
+      "endSeconds": 8430.76,
+      "originalText": "It's going to be, oh, okay.",
+      "text": "It's going to be, oh, okay."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 37,
+      "startSeconds": 8430.76,
+      "endSeconds": 8434.48,
+      "originalText": "So we have professor from Australia versus Danrich.",
+      "text": "So we have professor from Australia versus Danriick."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 38,
+      "startSeconds": 8434.48,
+      "endSeconds": 8437.68,
+      "originalText": "So I am going to tell you now, professor's deck is very interesting.",
+      "text": "So I am going to tell you now, professor's deck is very interesting."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 39,
+      "startSeconds": 8437.68,
+      "endSeconds": 8441.08,
+      "originalText": "It is Wind Umbra Alice.",
+      "text": "It is Wind Umbra Alice."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 40,
+      "startSeconds": 8441.08,
+      "endSeconds": 8442.4,
+      "originalText": "With Umbra Alice?",
+      "text": "With Umbra Alice?"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 41,
+      "startSeconds": 8442.4,
+      "endSeconds": 8443.4,
+      "originalText": "Yes.",
+      "text": "Yes."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 42,
+      "startSeconds": 8443.4,
+      "endSeconds": 8445.72,
+      "originalText": "So this is a Sydney special.",
+      "text": "So this is a Sydney special."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 43,
+      "startSeconds": 8445.72,
+      "endSeconds": 8450.72,
+      "originalText": "I was tipped on this recently and I tried the deck and I don't really get it, but we",
+      "text": "I was tipped on this recently and I tried the deck and I don't really get it, but we"
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 44,
+      "startSeconds": 8450.72,
+      "endSeconds": 8453.84,
+      "originalText": "will see and on the other side it's going to be.",
+      "text": "will see and on the other side it's going to be."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 45,
+      "startSeconds": 8453.84,
+      "endSeconds": 8458.54,
+      "originalText": "seems like Vanitas, Taksitas, seeing the fire and the wind cards.",
+      "text": "seems like Vanitas, Taksitas, seeing the fire and the wind cards."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 46,
+      "startSeconds": 8458.54,
+      "endSeconds": 8460.54,
+      "originalText": "So this is going to be a really interesting one.",
+      "text": "So this is going to be a really interesting one."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 0,
+      "startSeconds": 8460.0,
+      "endSeconds": 8463.48,
+      "originalText": "interesting one the creative shock in the hand is creative liminal as well",
+      "text": "interesting one the creative shock in the hand is creative liminal as well"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 1,
+      "startSeconds": 8463.48,
+      "endSeconds": 8468.2,
+      "originalText": "yeah we're just gonna be a reslow turn I think depending with it okay we are",
+      "text": "yeah we're just gonna be a reslow turn I think depending with it okay we are"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 2,
+      "startSeconds": 8468.2,
+      "endSeconds": 8471.48,
+      "originalText": "gonna go create this shot first see if we can draw any cuts of this with",
+      "text": "gonna go Creative Shock first see if we can draw any cuts of this with"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 3,
+      "startSeconds": 8471.48,
+      "endSeconds": 8475.56,
+      "originalText": "down speaking just one of like farm your hand in for the liminal guide and",
+      "text": "down speaking just one of like farm your hand in for the Liminal Guide and"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 4,
+      "startSeconds": 8475.56,
+      "endSeconds": 8479.64,
+      "originalText": "the hand is perfect the absolute best thing you could throw here and drawing",
+      "text": "the hand is perfect the absolute best thing you could throw here and drawing"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 5,
+      "startSeconds": 8479.64,
+      "endSeconds": 8483.4,
+      "originalText": "it to velocity punches so there's gonna be that liminal guy I can be throwing",
+      "text": "it to Vel-ocity Punches so there's gonna be that Liminal Guide I can be throwing"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 6,
+      "startSeconds": 8483.4,
+      "endSeconds": 8487.68,
+      "originalText": "here see at this point you wouldn't know I'm playing on some like random fire",
+      "text": "here see at this point you wouldn't know I'm playing on some like random fire"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 7,
+      "startSeconds": 8487.68,
+      "endSeconds": 8491.2,
+      "originalText": "level 3, but you know you know you're playing against Vanitas because of the",
+      "text": "level 3, but you know you know you're playing against Vanitas because of the"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 8,
+      "startSeconds": 8491.2,
+      "endSeconds": 8495.68,
+      "originalText": "change here so actually could maybe open up possibilities for opening with like",
+      "text": "change here so actually could maybe open up possibilities for opening with like"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 9,
+      "startSeconds": 8495.68,
+      "endSeconds": 8500.44,
+      "originalText": "a nothing rate guard for instance or an intercept so Vanitas number one I'm",
+      "text": "a nothing rate guard for instance or an intercept so Vanitas number one I'm"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 10,
+      "startSeconds": 8500.44,
+      "endSeconds": 8504.6,
+      "originalText": "gonna come out here the oblivion schemer and what is the follow-up I don't see a",
+      "text": "gonna come out here the Obliviate Schemer and what is the follow-up I don't see a"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 11,
+      "startSeconds": 8504.6,
+      "endSeconds": 8508.8,
+      "originalText": "dungeon guide in this hand though so not gonna be able to rock it up to 3 and",
+      "text": "Dungeon Guide in this hand though so not gonna be able to rock it up to 3 and"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 12,
+      "startSeconds": 8508.8,
+      "endSeconds": 8512.96,
+      "originalText": "start taxing yeah I think we're just gonna punch I believe maybe just to see more",
+      "text": "start taxing yeah I think we're just gonna punch I believe maybe just to see more"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 13,
+      "startSeconds": 8512.96,
+      "endSeconds": 8516.880000000001,
+      "originalText": "cards at this point your hand isn't really doing anything right now right so",
+      "text": "cards at this point your hand isn't really doing anything right now right so"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 14,
+      "startSeconds": 8516.880000000001,
+      "endSeconds": 8520.880000000001,
+      "originalText": "I do see a lot of indirectly as the horse is ready.",
+      "text": "I do see a lot of indirectly as the horse is ready."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 15,
+      "startSeconds": 8520.880000000001,
+      "endSeconds": 8521.880000000001,
+      "originalText": "So we're going to pass here.",
+      "text": "So we're going to pass here."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 16,
+      "startSeconds": 8521.880000000001,
+      "endSeconds": 8522.880000000001,
+      "originalText": "Let's take another slow turn.",
+      "text": "Let's take another slow turn."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 17,
+      "startSeconds": 8522.880000000001,
+      "endSeconds": 8525.68,
+      "originalText": "So here's the thing about this wind on the Aztec.",
+      "text": "So here's the thing about this Wind Umbra Alice deck."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 18,
+      "startSeconds": 8525.68,
+      "endSeconds": 8527.880000000001,
+      "originalText": "They actually play a lot of dungeon guys.",
+      "text": "They actually play a lot of Dungeon Guides."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 19,
+      "startSeconds": 8527.880000000001,
+      "endSeconds": 8531.880000000001,
+      "originalText": "So normally dungeon guys is not a card you see in these decks because you only go up to",
+      "text": "So normally Dungeon Guides is not a card you see in these decks because you only go up to"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 20,
+      "startSeconds": 8531.880000000001,
+      "endSeconds": 8533.880000000001,
+      "originalText": "level 2 so you don't really need dungeon guys.",
+      "text": "level 2 so you don't really need Dungeon Guides."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 21,
+      "startSeconds": 8533.880000000001,
+      "endSeconds": 8538.68,
+      "originalText": "But in this particular build they want to hit level 2 as fast as possible so there are going",
+      "text": "But in this particular build they want to hit level 2 as fast as possible so there are going"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 22,
+      "startSeconds": 8538.68,
+      "endSeconds": 8540.76,
+      "originalText": "to be those dungeon guys in there.",
+      "text": "to be those Dungeon Guides in there."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 23,
+      "startSeconds": 8540.76,
+      "endSeconds": 8544.18,
+      "originalText": "So let's see if you threw the dungeon guy that must mean there must be a second one which",
+      "text": "So let's see if you threw the Dungeon Guide that must mean there must be a second one which"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 24,
+      "startSeconds": 8544.18,
+      "endSeconds": 8545.18,
+      "originalText": "means taxotaz is fought.",
+      "text": "means taxotaz is fought."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 25,
+      "startSeconds": 8545.18,
+      "endSeconds": 8547.380000000001,
+      "originalText": "You're really gonna have a chance to tax at all here.",
+      "text": "You're really gonna have a chance to tax at all here."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 26,
+      "startSeconds": 8547.380000000001,
+      "endSeconds": 8549.84,
+      "originalText": "Yeah, it's really interesting to see that you get right here.",
+      "text": "Yeah, it's really interesting to see that you get right here."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 27,
+      "startSeconds": 8549.84,
+      "endSeconds": 8553.880000000001,
+      "originalText": "This means that it indicates that the umbrella site will be more right",
+      "text": "This means that it indicates that the Umbra Sight will be more right"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 28,
+      "startSeconds": 8553.880000000001,
+      "endSeconds": 8555.24,
+      "originalText": "because you're really more Amazon.",
+      "text": "because you're really more Amazon."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 29,
+      "startSeconds": 8555.24,
+      "endSeconds": 8558.42,
+      "originalText": "Let me just say something because if I'm Derek, I will be like,",
+      "text": "Let me just say something because if I'm Danriick, I will be like,"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 30,
+      "startSeconds": 8558.42,
+      "endSeconds": 8560.619999999999,
+      "originalText": "I would be panicked, but I'll be very confused",
+      "text": "I would be panicked, but I'll be very confused"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 31,
+      "startSeconds": 8560.619999999999,
+      "endSeconds": 8563.16,
+      "originalText": "because this is not really conventional deck, I would say.",
+      "text": "because this is not really conventional deck, I would say."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 32,
+      "startSeconds": 8563.16,
+      "endSeconds": 8565.22,
+      "originalText": "Yes, this is an extremely like unusual.",
+      "text": "Yes, this is an extremely like unusual."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 33,
+      "startSeconds": 8565.22,
+      "endSeconds": 8568.06,
+      "originalText": "I think fire umbrella is like, okay, you kind of understand it.",
+      "text": "I think Fire Umbra is like, okay, you kind of understand it."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 34,
+      "startSeconds": 8568.06,
+      "endSeconds": 8569.72,
+      "originalText": "This one is like, oh, what is going on?",
+      "text": "This one is like, oh, what is going on?"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 35,
+      "startSeconds": 8569.72,
+      "endSeconds": 8572.22,
+      "originalText": "So if I take that stone here, it's gonna be that the siege,",
+      "text": "So if I take that stone here, it's gonna be that Beseech,"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 36,
+      "startSeconds": 8572.22,
+      "endSeconds": 8577.78,
+      "originalText": "the winds going to go up to that Alice, the Phantom Monarch, the namesake of the set that",
+      "text": "the Winds going to go up to that Alice, the Phantom Monarch, the namesake of the set that"
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 37,
+      "startSeconds": 8577.78,
+      "endSeconds": 8582.02,
+      "originalText": "she came out in, into the Umberite here, going to take seven damage from Phantom Monarch's",
+      "text": "she came out in, into the Umbra Sight here, going to take seven damage from Phantom Monarch's"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 0,
+      "startSeconds": 8580.0,
+      "endSeconds": 8584.74,
+      "originalText": "7 damage from Phantom Monarchs effect and then turn this into a curse as well as a",
+      "text": "7 damage from Phantom Monarchs effect and then turn this into a curse as well as a"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 1,
+      "startSeconds": 8584.74,
+      "endSeconds": 8589.2,
+      "originalText": "probably an additional 2 damage to draw an extra card. So this is gonna be Alice",
+      "text": "probably an additional 2 damage to draw an extra card. So this is gonna be Alice"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 2,
+      "startSeconds": 8589.2,
+      "endSeconds": 8593.48,
+      "originalText": "now free to activate all her advanced element cards and let's see if her eye",
+      "text": "now free to activate all her advanced element cards and let's see if her eye"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 3,
+      "startSeconds": 8593.48,
+      "endSeconds": 8597.36,
+      "originalText": "castles maybe drops right after this. That would be devastating for Dan Rick.",
+      "text": "castles maybe drops right after this. That would be devastating for Danriick."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 4,
+      "startSeconds": 8597.36,
+      "endSeconds": 8600.68,
+      "originalText": "Yeah we were just talking about earlier right the power of just Tricaster because",
+      "text": "Yeah we were just talking about earlier right the power of just Tricastles because"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 5,
+      "startSeconds": 8600.68,
+      "endSeconds": 8603.96,
+      "originalText": "so many of you are playing like not so many advanced elements. So if Tricaster",
+      "text": "so many of you are playing like not so many advanced elements. So if Tricastles"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 6,
+      "startSeconds": 8603.96,
+      "endSeconds": 8607.6,
+      "originalText": "drop right now this would be very very huge for Professor. We are going to see",
+      "text": "drop right now this would be very very huge for Professor. We are going to see"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 7,
+      "startSeconds": 8607.6,
+      "endSeconds": 8610.2,
+      "originalText": "the law of providence, just safely played.",
+      "text": "the Lost Providence, just safely played."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 8,
+      "startSeconds": 8610.2,
+      "endSeconds": 8612.86,
+      "originalText": "- Well, there is an Ayla in the hand, I believe,",
+      "text": "- Well, there is an Aella in the hand, I believe,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 9,
+      "startSeconds": 8612.86,
+      "endSeconds": 8615.1,
+      "originalText": "so should have a way of,",
+      "text": "so should have a way of,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 10,
+      "startSeconds": 8615.1,
+      "endSeconds": 8616.52,
+      "originalText": "you're not gonna be able to stop the fan",
+      "text": "you're not gonna be able to stop the fan"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 11,
+      "startSeconds": 8616.52,
+      "endSeconds": 8617.42,
+      "originalText": "and thoughts from piling up,",
+      "text": "and thoughts from piling up,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 12,
+      "startSeconds": 8617.42,
+      "endSeconds": 8618.98,
+      "originalText": "but it's gonna be a fan-taz Magori here,",
+      "text": "but it's gonna be a Phantasmagoria here,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 13,
+      "startSeconds": 8618.98,
+      "endSeconds": 8620.94,
+      "originalText": "and Envay is gonna throw away the cart to the bottom,",
+      "text": "and Envay is gonna throw away the cart to the bottom,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 14,
+      "startSeconds": 8620.94,
+      "endSeconds": 8623.02,
+      "originalText": "and he'll do it, it's too random to wilt.",
+      "text": "and he'll do it, it's too random to wilt."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 15,
+      "startSeconds": 8623.02,
+      "endSeconds": 8625.06,
+      "originalText": "Absolutely fantastic meals there.",
+      "text": "Absolutely fantastic meals there."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 16,
+      "startSeconds": 8625.06,
+      "endSeconds": 8628.32,
+      "originalText": "That means if Dan Rick doesn't get to the next turn,",
+      "text": "That means if Danriick doesn't get to the next turn,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 17,
+      "startSeconds": 8628.32,
+      "endSeconds": 8630.46,
+      "originalText": "professor's gonna be able to heal eight,",
+      "text": "professor's gonna be able to heal eight,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 18,
+      "startSeconds": 8630.46,
+      "endSeconds": 8632.02,
+      "originalText": "and four haunt counters as well.",
+      "text": "and four haunt counters as well."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 19,
+      "startSeconds": 8632.02,
+      "endSeconds": 8633.18,
+      "originalText": "- Yeah, that's four haunt counters,",
+      "text": "- Yeah, that's four haunt counters,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 20,
+      "startSeconds": 8633.18,
+      "endSeconds": 8635.86,
+      "originalText": "but there's this huge four professor at the insane valley",
+      "text": "but there's this huge four professor at the insane valley"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 21,
+      "startSeconds": 8635.86,
+      "endSeconds": 8639.1,
+      "originalText": "right there. So just be better than floating at this point. We are going to see there",
+      "text": "right there. So just be better than floating at this point. We are going to see there"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 22,
+      "startSeconds": 8639.1,
+      "endSeconds": 8644.82,
+      "originalText": "going into the level two and also triggering the lumenar right here. Nothing really going",
+      "text": "going into the level two and also triggering the Liminal Guide right here. Nothing really going"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 23,
+      "startSeconds": 8644.82,
+      "endSeconds": 8649.26,
+      "originalText": "over there as well. Just cause and pretty much that's it. We're going to draw two from",
+      "text": "over there as well. Just cause and pretty much that's it. We're going to draw two from"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 24,
+      "startSeconds": 8649.26,
+      "endSeconds": 8652.06,
+      "originalText": "the vertex degree and then...",
+      "text": "the vertex degree and then..."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 25,
+      "startSeconds": 8652.06,
+      "endSeconds": 8656.06,
+      "originalText": "Okay, cinch emotions. Two cinch emotions is really not what you want to see when you're",
+      "text": "Okay, Singed Emotions. Two Singed Emotions is really not what you want to see when you're"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 26,
+      "startSeconds": 8656.06,
+      "endSeconds": 8661.7,
+      "originalText": "playing as a person who's already hit their stride. And then two resolutes as well.",
+      "text": "playing as a person who's already hit their stride. And then two resolutes as well."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 27,
+      "startSeconds": 8661.7,
+      "endSeconds": 8663.46,
+      "originalText": "Yeah, this is not good.",
+      "text": "Yeah, this is not good."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 28,
+      "startSeconds": 8663.46,
+      "endSeconds": 8664.26,
+      "originalText": "It's not good.",
+      "text": "It's not good."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 29,
+      "startSeconds": 8664.26,
+      "endSeconds": 8666.26,
+      "originalText": "I'm not sure if Professor is playing--",
+      "text": "I'm not sure if Professor is playing--"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 30,
+      "startSeconds": 8666.26,
+      "endSeconds": 8667.98,
+      "originalText": "I assume it's the right course we say the opportunity, right?",
+      "text": "I assume it's the right course we say the opportunity, right?"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 31,
+      "startSeconds": 8667.98,
+      "endSeconds": 8669.619999999999,
+      "originalText": "So you are going to be using allies of hit.",
+      "text": "So you are going to be using allies of hit."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 32,
+      "startSeconds": 8669.619999999999,
+      "endSeconds": 8671.7,
+      "originalText": "Well, it's going to help you to mitigate some damage,",
+      "text": "Well, it's going to help you to mitigate some damage,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 33,
+      "startSeconds": 8671.7,
+      "endSeconds": 8673.3,
+      "originalText": "but it's not going to win you again.",
+      "text": "but it's not going to win you again."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 34,
+      "startSeconds": 8673.3,
+      "endSeconds": 8673.82,
+      "originalText": "That's the problem.",
+      "text": "That's the problem."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 35,
+      "startSeconds": 8673.82,
+      "endSeconds": 8675.66,
+      "originalText": "Yeah, the issue is that Poitier, when she swings,",
+      "text": "Yeah, the issue is that Poitier, when she swings,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 36,
+      "startSeconds": 8675.66,
+      "endSeconds": 8677.86,
+      "originalText": "is usually swinging for like 10 plus.",
+      "text": "is usually swinging for like 10 plus."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 37,
+      "startSeconds": 8677.86,
+      "endSeconds": 8681.9,
+      "originalText": "The rest of it isn't doing that too much in the end.",
+      "text": "The rest of it isn't doing that too much in the end."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 38,
+      "startSeconds": 8681.9,
+      "endSeconds": 8684.74,
+      "originalText": "And especially if Professor is able to find that Argus, that's",
+      "text": "And especially if Professor is able to find that Argus, that's"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 39,
+      "startSeconds": 8684.74,
+      "endSeconds": 8687.86,
+      "originalText": "going to put Danrich in such a difficult position,",
+      "text": "going to put Danriick in such a difficult position,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 40,
+      "startSeconds": 8687.86,
+      "endSeconds": 8689.1,
+      "originalText": "very hard to get rid of that.",
+      "text": "very hard to get rid of that."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 41,
+      "startSeconds": 8689.1,
+      "endSeconds": 8693.52,
+      "originalText": "The extension motions just for the float here, the level up here, just wants to put cards down,",
+      "text": "The Singed Emotions just for the float here, the level up here, just wants to put cards down,"
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 42,
+      "startSeconds": 8693.52,
+      "endSeconds": 8697.02,
+      "originalText": "most likely going to throw the seconds in the motion.",
+      "text": "most likely going to throw the seconds in the motion."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 43,
+      "startSeconds": 8697.02,
+      "endSeconds": 8702.2,
+      "originalText": "And then here goes, so going to get that float there and then level up to Vansas.",
+      "text": "And then here goes, so going to get that float there and then level up to Vanitas."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 0,
+      "startSeconds": 8700.0,
+      "endSeconds": 8701.84,
+      "originalText": "and then level up to Vansas.",
+      "text": "and then level up to Vanitas."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 1,
+      "startSeconds": 8701.84,
+      "endSeconds": 8706.64,
+      "originalText": "What we're thinking about it actually seems to be a little bit of trepidation there.",
+      "text": "What we're thinking about it actually seems to be a little bit of trepidation there."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 2,
+      "startSeconds": 8706.64,
+      "endSeconds": 8709.44,
+      "originalText": "Yeah, for those who are not familiar with the Vansas text,",
+      "text": "Yeah, for those who are not familiar with the Vanitas text,"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 3,
+      "startSeconds": 8709.44,
+      "endSeconds": 8710.84,
+      "originalText": "basically, why is it text?",
+      "text": "basically, why is it text?"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 4,
+      "startSeconds": 8710.84,
+      "endSeconds": 8716.08,
+      "originalText": "Because it has the ability for anyway, it makes me opponent to pay extra",
+      "text": "Because it has the ability for anyway, it makes me opponent to pay extra"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 5,
+      "startSeconds": 8716.08,
+      "endSeconds": 8718.56,
+      "originalText": "costs for cut from memory.",
+      "text": "costs for cut from memory."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 6,
+      "startSeconds": 8718.56,
+      "endSeconds": 8722.04,
+      "originalText": "But the problem is that the professor is so stable that he doesn't really care too much about it.",
+      "text": "But the problem is that the professor is so stable that he doesn't really care too much about it."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 7,
+      "startSeconds": 8722.04,
+      "endSeconds": 8723.48,
+      "originalText": "I think he has thought to pay extra.",
+      "text": "I think he has thought to pay extra."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 8,
+      "startSeconds": 8723.48,
+      "endSeconds": 8726.08,
+      "originalText": "Yeah, could even have a resolute stand here potentially,",
+      "text": "Yeah, could even have a resolute stand here potentially,"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 9,
+      "startSeconds": 8726.08,
+      "endSeconds": 8726.92,
+      "originalText": "try and stop the tax.",
+      "text": "try and stop the tax."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 10,
+      "startSeconds": 8726.92,
+      "endSeconds": 8729.92,
+      "originalText": "because I imagine Professor wants to go for a ticket to the afterlife",
+      "text": "because I imagine Professor wants to go for a ticket to the afterlife"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 11,
+      "startSeconds": 8729.92,
+      "endSeconds": 8732.52,
+      "originalText": "for after this to try and get these remnants for free.",
+      "text": "for after this to try and get these remnants for free."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 12,
+      "startSeconds": 8732.52,
+      "endSeconds": 8735.92,
+      "originalText": "But totally also could just eat this and be fine with that as well.",
+      "text": "But totally also could just eat this and be fine with that as well."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 13,
+      "startSeconds": 8735.92,
+      "endSeconds": 8737.52,
+      "originalText": "And it's going to be a lost promise.",
+      "text": "And it's going to be a Lost Promises."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 14,
+      "startSeconds": 8737.52,
+      "endSeconds": 8740.92,
+      "originalText": "So this is a song of for us, essentially for Alice here.",
+      "text": "So this is a Song of Frost, essentially for Alice here."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 15,
+      "startSeconds": 8740.92,
+      "endSeconds": 8742.82,
+      "originalText": "So it's also going to do an additional three damage",
+      "text": "So it's also going to do an additional three damage"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 16,
+      "startSeconds": 8742.82,
+      "endSeconds": 8744.32,
+      "originalText": "and stops the combat phase.",
+      "text": "and stops the combat phase."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 17,
+      "startSeconds": 8744.32,
+      "endSeconds": 8748.619999999999,
+      "originalText": "So Professor going to stop the tax here loves evade the taxes and",
+      "text": "So Professor going to stop the tax here loves evade the taxes and"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 18,
+      "startSeconds": 8748.619999999999,
+      "endSeconds": 8752.52,
+      "originalText": "it's imagine it's going to be would be Google seal instead very",
+      "text": "it's imagine it's going to be would be Ducal Seal instead very"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 19,
+      "startSeconds": 8752.52,
+      "endSeconds": 8755.72,
+      "originalText": "strong choice against the vanitas with a low influence.",
+      "text": "strong choice against the vanitas with a low influence."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 20,
+      "startSeconds": 8755.72,
+      "endSeconds": 8758.5,
+      "originalText": "not gonna really be able to get a lot of swings in.",
+      "text": "not gonna really be able to get a lot of swings in."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 21,
+      "startSeconds": 8758.5,
+      "endSeconds": 8760.2,
+      "originalText": "Not gonna pop that lost Providence yet.",
+      "text": "Not gonna pop that Lost Providence yet."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 22,
+      "startSeconds": 8760.2,
+      "endSeconds": 8761.44,
+      "originalText": "Okay, I'm gonna pop it now.",
+      "text": "Okay, I'm gonna pop it now."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 23,
+      "startSeconds": 8761.44,
+      "endSeconds": 8764.72,
+      "originalText": "And let's see if Professor can find that Argus",
+      "text": "And let's see if Professor can find that Argus"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 24,
+      "startSeconds": 8764.72,
+      "endSeconds": 8765.56,
+      "originalText": "or the Tricot.",
+      "text": "or the Tricastles."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 25,
+      "startSeconds": 8765.56,
+      "endSeconds": 8769.22,
+      "originalText": "And there he is, the all seeing giant himself",
+      "text": "And there he is, the all seeing giant himself"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 26,
+      "startSeconds": 8769.22,
+      "endSeconds": 8770.64,
+      "originalText": "in that beautiful foil.",
+      "text": "in that beautiful foil."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 27,
+      "startSeconds": 8770.64,
+      "endSeconds": 8772.48,
+      "originalText": "So if you haven't seen Argus, you get to banish",
+      "text": "So if you haven't seen Argus, you get to banish"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 28,
+      "startSeconds": 8772.48,
+      "endSeconds": 8774.44,
+      "originalText": "a two Argus Regalia.",
+      "text": "a two Argus Regalia."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 29,
+      "startSeconds": 8774.44,
+      "endSeconds": 8776.22,
+      "originalText": "So it's an eye of Argus and the...",
+      "text": "So it's an eye of Argus and the..."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 30,
+      "startSeconds": 8778.48,
+      "endSeconds": 8779.56,
+      "originalText": "I can't remember what the other one is.",
+      "text": "I can't remember what the other one is."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 31,
+      "startSeconds": 8779.56,
+      "endSeconds": 8780.4,
+      "originalText": "- Yes, it's probably the Argus.",
+      "text": "- Yes, it's probably the Argus."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 32,
+      "startSeconds": 8780.4,
+      "endSeconds": 8781.72,
+      "originalText": "- And the Argus there is going to,",
+      "text": "- And the Argus there is going to,"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 33,
+      "startSeconds": 8781.72,
+      "endSeconds": 8783.96,
+      "originalText": "he is a 410 that has Omni-Troud.",
+      "text": "he is a 410 that has Omni-Troud."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 34,
+      "startSeconds": 8783.96,
+      "endSeconds": 8786.64,
+      "originalText": "And then he is able to, he gets bigger.",
+      "text": "And then he is able to, he gets bigger."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 35,
+      "startSeconds": 8786.64,
+      "endSeconds": 8788.2,
+      "originalText": "So he's only shot as long as he's awake.",
+      "text": "So he's only shot as long as he's awake."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 36,
+      "startSeconds": 8788.2,
+      "endSeconds": 8790.76,
+      "originalText": "So Alice here is going to now use the two remnants of Will",
+      "text": "So Alice here is going to now use the two Remnants of Will"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 37,
+      "startSeconds": 8790.76,
+      "endSeconds": 8793.08,
+      "originalText": "is gonna pay one for each of those, healing eighth,",
+      "text": "is gonna pay one for each of those, healing eighth,"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 38,
+      "startSeconds": 8793.08,
+      "endSeconds": 8795.48,
+      "originalText": "and then also getting six on counters.",
+      "text": "and then also getting six on counters."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 39,
+      "startSeconds": 8795.48,
+      "endSeconds": 8798.28,
+      "originalText": "So that means now I'm gonna mill six cards here.",
+      "text": "So that means now I'm gonna mill six cards here."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 40,
+      "startSeconds": 8798.28,
+      "endSeconds": 8801.6,
+      "originalText": "If a Poitier is found, it's going to be huge.",
+      "text": "If a Poitier is found, it's going to be huge."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 41,
+      "startSeconds": 8801.6,
+      "endSeconds": 8802.96,
+      "originalText": "Maladico, and a Poitier.",
+      "text": "Maledictum Vitae, and a Poitier."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 42,
+      "startSeconds": 8802.96,
+      "endSeconds": 8804.6,
+      "originalText": "- Oh, that's a Poitier.",
+      "text": "- Oh, that's a Poitier."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 43,
+      "startSeconds": 8804.6,
+      "endSeconds": 8805.44,
+      "originalText": "The next one will be right here.",
+      "text": "The next one will be right here."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 44,
+      "startSeconds": 8805.44,
+      "endSeconds": 8807.8,
+      "originalText": "I think next thing, Professor could be actually aiming",
+      "text": "I think next thing, Professor could be actually aiming"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 45,
+      "startSeconds": 8807.8,
+      "endSeconds": 8809.52,
+      "originalText": "for game at this point.",
+      "text": "for game at this point."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 46,
+      "startSeconds": 8809.52,
+      "endSeconds": 8810.96,
+      "originalText": "This looks great, dire for Derek.",
+      "text": "This looks great, dire for Danriick."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 47,
+      "startSeconds": 8810.96,
+      "endSeconds": 8812.4,
+      "originalText": "Let's see where he can actually pull off here.",
+      "text": "Let's see where he can actually pull off here."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 48,
+      "startSeconds": 8812.4,
+      "endSeconds": 8815.76,
+      "originalText": "I don't even think like, what's it called again?",
+      "text": "I don't even think like, what's it called again?"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 49,
+      "startSeconds": 8815.76,
+      "endSeconds": 8819.68,
+      "originalText": "Any sort of like, Texas or Duke of City here will help,",
+      "text": "Any sort of like, Texas or Duke of City here will help,"
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 50,
+      "startSeconds": 8819.68,
+      "endSeconds": 8820.880000000001,
+      "originalText": "not Duke of City, sorry.",
+      "text": "not Duke of City, sorry."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 0,
+      "startSeconds": 8820.0,
+      "endSeconds": 8823.92,
+      "originalText": "Sorry, but and you there's no way to stop professor right now, right?",
+      "text": "Sorry, but and you there's no way to stop professor right now, right?"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 1,
+      "startSeconds": 8823.92,
+      "endSeconds": 8827.76,
+      "originalText": "Yeah, the thing is because of that Argus being awake has on the show dream fairies",
+      "text": "Yeah, the thing is because of that Argus being awake has on the show dream fairies"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 2,
+      "startSeconds": 8827.76,
+      "endSeconds": 8830.56,
+      "originalText": "Yeah, the work on this smoke bomb will not work on this",
+      "text": "Yeah, the work on this smoke bomb will not work on this"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 3,
+      "startSeconds": 8830.56,
+      "endSeconds": 8837.0,
+      "originalText": "Yeah, every turn professor gets to just swing it when the allies with the Argus and then it just comes well and vigorous itself after so",
+      "text": "Yeah, every turn professor gets to just swing it when the allies with the Argus and then it just comes well and vigorous itself after so"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 4,
+      "startSeconds": 8837.84,
+      "endSeconds": 8842.28,
+      "originalText": "Sensors stop it the stop the poetry, but the problem is that there's an Argus right there. I don't think",
+      "text": "Sensors stop it the stop the poetry, but the problem is that there's an Argus right there. I don't think"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 5,
+      "startSeconds": 8843.08,
+      "endSeconds": 8847.8,
+      "originalText": "Hmm. Yeah, and eventually professor will find an a la to be able to do the sensor",
+      "text": "Hmm. Yeah, and eventually professor will find an a la to be able to do the sensor"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 6,
+      "startSeconds": 8847.8,
+      "endSeconds": 8853.16,
+      "originalText": "so yeah really just needs to try and stabilize here but it's gonna be hard with that dukele seal",
+      "text": "so yeah really just needs to try and stabilize here but it's gonna be hard with that Ducal Seal"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 7,
+      "startSeconds": 8853.16,
+      "endSeconds": 8859.08,
+      "originalText": "it's going to be quite difficult to kill the Argus but actually there's already three, four, five, six",
+      "text": "it's going to be quite difficult to kill the Argus but actually there's already three, four, five, six"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 8,
+      "startSeconds": 8859.08,
+      "endSeconds": 8866.44,
+      "originalText": "there's seven on board so with that using the mantle could definitely threaten but",
+      "text": "there's seven on board so with that using the mantle could definitely threaten but"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 9,
+      "startSeconds": 8866.44,
+      "endSeconds": 8871.880000000001,
+      "originalText": "the dukele seal would not be able to get there in the end yeah like it's looking really really",
+      "text": "the Ducal Seal would not be able to get there in the end yeah like it's looking really really"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 10,
+      "startSeconds": 8871.880000000001,
+      "endSeconds": 8877.72,
+      "originalText": "tough for Derek okay so choosing to bring out that bezel visage here i'm gonna",
+      "text": "tough for Danriick okay so choosing to bring out that Beastsoul Visage here i'm gonna"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 11,
+      "startSeconds": 8877.72,
+      "endSeconds": 8880.68,
+      "originalText": "to put it on the, gonna put it on the deal.",
+      "text": "to put it on the, gonna put it on the deal."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 12,
+      "startSeconds": 8880.68,
+      "endSeconds": 8881.52,
+      "originalText": "- The deal. - The deal actually.",
+      "text": "- The deal. - The deal actually."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 13,
+      "startSeconds": 8881.52,
+      "endSeconds": 8882.36,
+      "originalText": "- Which is very interesting. - Yeah.",
+      "text": "- Which is very interesting. - Yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 14,
+      "startSeconds": 8882.36,
+      "endSeconds": 8883.880000000001,
+      "originalText": "- So can swing one time here,",
+      "text": "- So can swing one time here,"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 15,
+      "startSeconds": 8883.880000000001,
+      "endSeconds": 8886.96,
+      "originalText": "'cause Google seal will confer a three cost tax there,",
+      "text": "'cause Ducal Seal will confer a three cost tax there,"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 16,
+      "startSeconds": 8886.96,
+      "endSeconds": 8889.64,
+      "originalText": "no draw because of the resolute standard reactivation.",
+      "text": "no draw because of the resolute standard reactivation."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 17,
+      "startSeconds": 8889.64,
+      "endSeconds": 8891.2,
+      "originalText": "So actually cannot swing here.",
+      "text": "So actually cannot swing here."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 18,
+      "startSeconds": 8892.64,
+      "endSeconds": 8896.48,
+      "originalText": "So no swinging on this turn means professor gets to",
+      "text": "So no swinging on this turn means professor gets to"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 19,
+      "startSeconds": 8896.48,
+      "endSeconds": 8898.4,
+      "originalText": "just swing at that deal, kill it.",
+      "text": "just swing at that deal, kill it."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 20,
+      "startSeconds": 8898.4,
+      "endSeconds": 8902.6,
+      "originalText": "And now we are in a typical position.",
+      "text": "And now we are in a typical position."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 21,
+      "startSeconds": 8902.6,
+      "endSeconds": 8905.56,
+      "originalText": "- Yeah, we're just conforming the resolution",
+      "text": "- Yeah, we're just conforming the resolution"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 22,
+      "startSeconds": 8905.56,
+      "endSeconds": 8907.2,
+      "originalText": "of our reservation here we are.",
+      "text": "of our reservation here we are."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 23,
+      "startSeconds": 8908.92,
+      "endSeconds": 8912.36,
+      "originalText": "So I believe that was a free played resolution.",
+      "text": "So I believe that was a free played resolution."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 24,
+      "startSeconds": 8912.36,
+      "endSeconds": 8915.96,
+      "originalText": "So I know that that's the thing troubles already in the hand.",
+      "text": "So I know that that's the thing troubles already in the hand."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 25,
+      "startSeconds": 8915.96,
+      "endSeconds": 8917.96,
+      "originalText": "Yeah, actually put it up on top.",
+      "text": "Yeah, actually put it up on top."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 26,
+      "startSeconds": 8917.96,
+      "endSeconds": 8919.48,
+      "originalText": "Yeah, yeah, we're just clarifying stuff.",
+      "text": "Yeah, yeah, we're just clarifying stuff."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 27,
+      "startSeconds": 8919.48,
+      "endSeconds": 8922.04,
+      "originalText": "So then we want the game to be as smooth as possible.",
+      "text": "So then we want the game to be as smooth as possible."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 28,
+      "startSeconds": 8922.04,
+      "endSeconds": 8924.36,
+      "originalText": "Yep, that's confirming that we're checking.",
+      "text": "Yep, that's confirming that we're checking."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 29,
+      "startSeconds": 8924.36,
+      "endSeconds": 8925.68,
+      "originalText": "Well, this one we have just right there.",
+      "text": "Well, this one we have just right there."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 30,
+      "startSeconds": 8925.68,
+      "endSeconds": 8927.04,
+      "originalText": "Two judges in fact.",
+      "text": "Two judges in fact."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 31,
+      "startSeconds": 8927.04,
+      "endSeconds": 8928.44,
+      "originalText": "So it was all good right there.",
+      "text": "So it was all good right there."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 32,
+      "startSeconds": 8928.44,
+      "endSeconds": 8929.8,
+      "originalText": "But looking at the bot state again,",
+      "text": "But looking at the bot state again,"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 33,
+      "startSeconds": 8929.8,
+      "endSeconds": 8931.08,
+      "originalText": "this looks really, really tough.",
+      "text": "this looks really, really tough."
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 34,
+      "startSeconds": 8931.08,
+      "endSeconds": 8932.72,
+      "originalText": "Like what can Derek do?",
+      "text": "Like what can Danriick do?"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 35,
+      "startSeconds": 8932.72,
+      "endSeconds": 8934.96,
+      "originalText": "Like your foot's from Poland is",
+      "text": "Like your foot's from Poland is"
+    },
+    {
+      "sourceFile": "bounded-04-1620.json",
+      "sourceIndex": 36,
+      "startSeconds": 8934.96,
+      "endSeconds": 8939.68,
+      "originalText": "With the game when you see this win amaran and so confused, what are you doing game 2?",
+      "text": "With the game when you see this win amaran and so confused, what are you doing game 2?"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 0,
+      "startSeconds": 8940.0,
+      "endSeconds": 8941.08,
+      "originalText": "Uh, tax them.",
+      "text": "Uh, tax them."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 1,
+      "startSeconds": 8941.08,
+      "endSeconds": 8942.880000000001,
+      "originalText": "Try, I mean, yeah, tax them.",
+      "text": "Try, I mean, yeah, tax them."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 2,
+      "startSeconds": 8942.880000000001,
+      "endSeconds": 8944.0,
+      "originalText": "Quickly as possible, right?",
+      "text": "Quickly as possible, right?"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 3,
+      "startSeconds": 8944.0,
+      "endSeconds": 8948.2,
+      "originalText": "You need to try and hit one of your DEGs or your, or your beseeches or your flagrant",
+      "text": "You need to try and hit one of your DEGs or your, or your beseeches or your flagrant"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 4,
+      "startSeconds": 8948.2,
+      "endSeconds": 8949.76,
+      "originalText": "guys to try and hit level three sooner.",
+      "text": "guys to try and hit level three sooner."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 5,
+      "startSeconds": 8949.76,
+      "endSeconds": 8950.28,
+      "originalText": "Yeah.",
+      "text": "Yeah."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 6,
+      "startSeconds": 8950.28,
+      "endSeconds": 8951.92,
+      "originalText": "You need to tax them before they hit level three.",
+      "text": "You need to tax them before they hit level three."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 7,
+      "startSeconds": 8951.92,
+      "endSeconds": 8954.08,
+      "originalText": "If they get the level three, then you're in a tough spot.",
+      "text": "If they get the level three, then you're in a tough spot."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 8,
+      "startSeconds": 8954.08,
+      "endSeconds": 8956.44,
+      "originalText": "Yeah, four, ten, ten.",
+      "text": "Yeah, four, ten, ten."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 9,
+      "startSeconds": 8956.44,
+      "endSeconds": 8960.44,
+      "originalText": "So there's no point really swinging here because a swing would just force you to put",
+      "text": "So there's no point really swinging here because a swing would just force you to put"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 10,
+      "startSeconds": 8960.44,
+      "endSeconds": 8964.04,
+      "originalText": "three cards down and then, and then you're not getting through this Argus.",
+      "text": "three cards down and then, and then you're not getting through this Argus."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 11,
+      "startSeconds": 8964.04,
+      "endSeconds": 8968.92,
+      "originalText": "So, okay, swinging, I'm gonna have to pay three probably forgot about that, Duke O'Seal.",
+      "text": "So, okay, swinging, I'm gonna have to pay three probably forgot about that, Ducal Seal."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 12,
+      "startSeconds": 8968.92,
+      "endSeconds": 8969.76,
+      "originalText": "So it has to pay three.",
+      "text": "So it has to pay three."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 13,
+      "startSeconds": 8969.76,
+      "endSeconds": 8971.119999999999,
+      "originalText": "This is just upgraded,",
+      "text": "This is just upgraded,"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 14,
+      "startSeconds": 8971.119999999999,
+      "endSeconds": 8972.6,
+      "originalText": "tire frame, but it's exalted.",
+      "text": "Tariff Ring, but it's exalted."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 15,
+      "startSeconds": 8972.6,
+      "endSeconds": 8974.48,
+      "originalText": "So Danrak here really has no recourse",
+      "text": "So Danriick here really has no recourse"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 16,
+      "startSeconds": 8974.48,
+      "endSeconds": 8976.119999999999,
+      "originalText": "to try and get rid of this Argus.",
+      "text": "to try and get rid of this Argus."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 17,
+      "startSeconds": 8976.119999999999,
+      "endSeconds": 8977.28,
+      "originalText": "So instead just gonna pass it back.",
+      "text": "So instead just gonna pass it back."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 18,
+      "startSeconds": 8977.28,
+      "endSeconds": 8978.28,
+      "originalText": "So this is a Nereki.",
+      "text": "So this is a Oneiric Key."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 19,
+      "startSeconds": 8978.28,
+      "endSeconds": 8980.119999999999,
+      "originalText": "This is the Alice backup charger.",
+      "text": "This is the Alice backup charger."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 20,
+      "startSeconds": 8980.119999999999,
+      "endSeconds": 8980.96,
+      "originalText": "It has four costs,",
+      "text": "It has four costs,"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 21,
+      "startSeconds": 8980.96,
+      "endSeconds": 8982.880000000001,
+      "originalText": "but on enter it gives you a ton of time.",
+      "text": "but on enter it gives you a ton of time."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 22,
+      "startSeconds": 8982.880000000001,
+      "endSeconds": 8986.36,
+      "originalText": "So now this Wu-Ji is able to be activated for three.",
+      "text": "So now this Wu-Ji is able to be activated for three."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 23,
+      "startSeconds": 8986.36,
+      "endSeconds": 8988.32,
+      "originalText": "- Yep, we are gonna go Argus for four right here.",
+      "text": "- Yep, we are gonna go Argus for four right here."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 24,
+      "startSeconds": 8988.32,
+      "endSeconds": 8990.84,
+      "originalText": "Just checking if he has any sort of like",
+      "text": "Just checking if he has any sort of like"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 25,
+      "startSeconds": 8990.84,
+      "endSeconds": 8991.68,
+      "originalText": "interaction right here,",
+      "text": "interaction right here,"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 26,
+      "startSeconds": 8991.68,
+      "endSeconds": 8993.44,
+      "originalText": "which I think he does.",
+      "text": "which I think he does."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 27,
+      "startSeconds": 8993.44,
+      "endSeconds": 8994.8,
+      "originalText": "- Does have a--",
+      "text": "- Does have a--"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 28,
+      "startSeconds": 8994.8,
+      "endSeconds": 8995.64,
+      "originalText": "- Searing will be right.",
+      "text": "- Searing Rebuke right."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 29,
+      "startSeconds": 8995.64,
+      "endSeconds": 8996.8,
+      "originalText": "- Has the searing review,",
+      "text": "- Has the Searing Rebuke,"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 30,
+      "startSeconds": 8996.8,
+      "endSeconds": 8998.28,
+      "originalText": "but that's not really gonna help",
+      "text": "but that's not really gonna help"
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 31,
+      "startSeconds": 8998.28,
+      "endSeconds": 8999.92,
+      "originalText": "this position. So good night.",
+      "text": "this position. So good night."
+    }
+  ],
+  "findings": [
+    "Recovered round2 introduction identifies Professor and Danriick at2:20:30.760.",
+    "Earlier broad04 recovery repeated music placeholders over actual dialogue; rejected as gameplay-absence evidence. Bounded2minute passes restore discussion and game1.",
+    "Round2 game1 opening and midgame now supported by recovered audio transcript; original transcript supplies its concession at2:30:30.",
+    "Card names normalized against current data/card-catalog.json and event decklists. Unclear ASR fragments remain literal and are not gameplay evidence."
+  ],
+  "matchUpdate": {
+    "id": "ascent-osaka-2026-r2",
+    "videoStartSeconds": 8430,
+    "replaceGame1": {
+      "gameNumber": 1,
+      "winner": "p2",
+      "summary": "Professor stabilizes with Argus and wins after Poitier reaches the board.",
+      "beats": [
+        {
+          "order": 1,
+          "actor": "p1",
+          "text": "Creative Shock discards Liminal Guide, but Danriick lacks the early Dungeon Guide to accelerate Vanitas.",
+          "cards": [
+            "Creative Shock",
+            "Liminal Guide",
+            "Dungeon Guide"
+          ]
+        },
+        {
+          "order": 2,
+          "actor": "p2",
+          "text": "Beseech the Winds advances Professor to Alice, Phantom Monarch, followed by Umbra Sight.",
+          "cards": [
+            "Beseech the Winds",
+            "Alice, Phantom Monarch",
+            "Umbra Sight"
+          ]
+        },
+        {
+          "order": 3,
+          "actor": "p2",
+          "text": "Phantasmagoria mills two copies of Remnant of Will, setting up healing and Haunt counters.",
+          "cards": [
+            "Phantasmagoria",
+            "Remnant of Will"
+          ]
+        },
+        {
+          "order": 4,
+          "actor": "p2",
+          "text": "Lost Promises ends the combat phase, and Ducal Seal adds another obstacle to Danriick’s attacks.",
+          "cards": [
+            "Lost Promises",
+            "Ducal Seal"
+          ]
+        },
+        {
+          "order": 5,
+          "actor": "p2",
+          "text": "Argus arrives, and two Remnant of Will uses restore Professor’s position before Poitier is milled.",
+          "cards": [
+            "Argus, All-Seeing Giant",
+            "Remnant of Will",
+            "Poitier, Afterlife's Conductor"
+          ]
+        },
+        {
+          "order": 6,
+          "actor": "p2",
+          "text": "Poitier reaches the board as a large ally; Danriick concedes game1.",
+          "cards": [
+            "Poitier, Afterlife's Conductor"
+          ],
+          "tags": [
+            "lethal"
+          ]
+        }
+      ]
+    },
+    "evidence": {
+      "intro": [
+        {
+          "sourceFile": "bounded-04-1140.json",
+          "transcriptionIndices": [
+            33,
+            35,
+            37,
+            39,
+            45
+          ],
+          "baseSeconds": 7200
+        }
+      ],
+      "beats": [
+        {
+          "order": 1,
+          "sources": [
+            {
+              "sourceFile": "bounded-04-1260.json",
+              "transcriptionIndices": [
+                0,
+                2,
+                3,
+                4,
+                5,
+                9,
+                10,
+                11
+              ],
+              "baseSeconds": 7200
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "sources": [
+            {
+              "sourceFile": "bounded-04-1260.json",
+              "transcriptionIndices": [
+                35,
+                36,
+                37
+              ],
+              "baseSeconds": 7200
+            },
+            {
+              "sourceFile": "bounded-04-1380.json",
+              "transcriptionIndices": [
+                0,
+                1,
+                2
+              ],
+              "baseSeconds": 7200
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "sources": [
+            {
+              "sourceFile": "bounded-04-1380.json",
+              "transcriptionIndices": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ],
+              "baseSeconds": 7200
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "sources": [
+            {
+              "sourceFile": "bounded-04-1500.json",
+              "transcriptionIndices": [
+                13,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20
+              ],
+              "baseSeconds": 7200
+            }
+          ]
+        },
+        {
+          "order": 5,
+          "sources": [
+            {
+              "sourceFile": "bounded-04-1500.json",
+              "transcriptionIndices": [
+                25,
+                27,
+                32,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42
+              ],
+              "baseSeconds": 7200
+            }
+          ]
+        },
+        {
+          "order": 6,
+          "sources": [
+            {
+              "sourceFile": "cleaned-transcript.json",
+              "segmentIndices": [
+                786,
+                787,
+                790,
+                794,
+                795
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "sourceNote": "Round2 reviewed using the original machine transcript plus bounded local-audio recovery of the missing2:20–2:30 opening and midgame. Both games and their finishes are narrated. Official round2 pairing confirms Professor2–0. Unclear recovered fragments are excluded from the recap."
+  },
+  "gaps": [
+    "No claim of verbatim-perfect transcription: bounded base.en recovery still contains uncertain words."
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-31",
+  "verifiedAt": "2026-11-01T01:22:30.208275Z",
   "channel": "https://www.youtube.com/@gatcg/streams",
   "sources": [
     {
@@ -40,8 +40,14 @@
         "firstTimestamp": "0:00",
         "lastTimestamp": "11:25:39",
         "blankSegments": 1,
-        "reviewStatus": "machine-transcribed-unreviewed",
-        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp, split into 24 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments). Removed 667 stock phrases such as 'Thanks for watching' over music, 278 looped repeat copies, prompt-echo lines, and junk after 11:29:59. Card and player names are often misheard. Match start offsets are not verified."
+        "reviewStatus": "sequential-transcript-reviewed-with-audio-gap-recovery",
+        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp, split into 24 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments). Removed 667 stock phrases such as 'Thanks for watching' over music, 278 looped repeat copies, prompt-echo lines, and junk after 11:29:59. Card and player names are often misheard. Match offsets are documented in the review evidence. Original capture retained; corrected working copy and recovered gaps stored separately.",
+        "reviewPath": "docs/broadcast-review/osaka-day1/review-summary.json",
+        "workingCopy": {
+          "path": "docs/broadcast-review/osaka-day1/cleaned-transcript.json",
+          "sha256": "f33b9430795358a2d78b4f86a93da8c9dbd7cd7bc443436aa0066cab517871a7",
+          "recoveredAudioReview": "docs/broadcast-review/osaka-day1/audio-recovery.json"
+        }
       }
     },
     {
@@ -2673,6 +2679,78 @@
       "startSeconds": 1885,
       "startEvidence": "Broadcast transcript iwjvP7O9ytM at 31:25: Oh, we're uh we're actually we're jumping right we're jumping right in here. Uh so yeah, there what we're seeing right now, this is a fun thing that we're doing on the stream today,",
       "basis": "LA Round 1 partial publication; exact pairing and caption evidence in docs/BROADCAST_HELD_RESOLUTIONS_2026-10-31.json."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 3599,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 3599s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 8430,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 8430s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 13725,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 13725s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 18317,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 18317s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 23132,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 23132s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 28046,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 28046s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 32838,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 32838s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 37962,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 37962s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
+    },
+    {
+      "matchId": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+      "videoId": "g3NNFcNpw3k",
+      "kind": "broadcast",
+      "startSeconds": 42720,
+      "startEvidence": "Machine transcript and reviewed audio recovery for Osaka Day 1; offset 42720s. See docs/broadcast-review/osaka-day1/review-summary.json and round-specific evidence.",
+      "basis": "Exact Omnidex event67176 Swiss round and both player IDs; sequential transcript review with bounded audio recovery."
     }
   ]
 }

@@ -126,5 +126,21 @@
         "officialScore": 2
       }
     ]
+  },
+  {
+    "round": 9,
+    "pairingId": 21,
+    "players": [
+      {
+        "id": 16112,
+        "name": "Bayabayashi",
+        "officialScore": 1
+      },
+      {
+        "id": 7610,
+        "name": "Royan",
+        "officialScore": 2
+      }
+    ]
   }
 ]

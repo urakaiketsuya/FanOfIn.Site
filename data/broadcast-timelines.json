@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T00:35:03.643Z",
+  "generatedAt": "2026-11-01T01:22:30.208275Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -25951,6 +25951,1263 @@
         "kind": "broadcast",
         "startSeconds": 1885
       }
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 1",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 3599
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "wenwen",
+          "deck": "Wind Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "hachico",
+          "deck": "Fire Umbra Ciel"
+        }
+      ],
+      "result": "hachico wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "hachico wins with Devastating Blow and Feu Awakening.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Creative Tinder and Liminal Guide build hachico’s opening hand.",
+              "cards": [
+                "Creative Tinder",
+                "Liminal Guide"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Judges catch the missing Angelic Channeling draw; the casters describe an easy correction.",
+              "cards": [
+                "Angelic Channeling"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Dungeon Guide advances Ciel to level 3 before Devastating Blow applies pressure.",
+              "cards": [
+                "Dungeon Guide",
+                "Ciel, Mirage's Grave",
+                "Devastating Blow"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Manxome Armoire retrieves Devastating Blow; wenwen releases the spirit and uses healing herbs, but Feu Awakening closes the game.",
+              "cards": [
+                "Manxome Armoire",
+                "Devastating Blow",
+                "Feu Awakening"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "hachico wins through the attempted counter and spirit release.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Two Gentle Respites give wenwen a stronger start.",
+              "cards": [
+                "Gentle Respite"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Beguiling Coup brings Devastating Blow into the attack, pushing wenwen to 14 damage counters.",
+              "cards": [
+                "Beguiling Coup",
+                "Devastating Blow"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Feu Awakening stops the attempted negate; wenwen releases the spirit before Devastating Blow resolves.",
+              "cards": [
+                "Feu Awakening",
+                "Devastating Blow"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Ciel’s end-step damage finishes wenwen; the casters clarify another Feu Awakening is unnecessary.",
+              "cards": [
+                "Ciel, Mirage's Grave"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round2-danriick-professor",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 2",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 8430
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Danriick",
+          "deck": "Fire / Wind Vanitas"
+        },
+        {
+          "id": "p2",
+          "name": "Professor",
+          "deck": "Wind Umbra Alice"
+        }
+      ],
+      "result": "Professor wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Professor stabilizes with Argus and wins after Poitier reaches the board.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Creative Shock discards Liminal Guide, but Danriick lacks the early Dungeon Guide to accelerate Vanitas.",
+              "cards": [
+                "Creative Shock",
+                "Liminal Guide",
+                "Dungeon Guide"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Beseech the Winds advances Professor to Alice, Phantom Monarch, followed by Umbra Sight.",
+              "cards": [
+                "Beseech the Winds",
+                "Alice, Phantom Monarch",
+                "Umbra Sight"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Phantasmagoria mills two copies of Remnant of Will, setting up healing and Haunt counters.",
+              "cards": [
+                "Phantasmagoria",
+                "Remnant of Will"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Lost Promises ends the combat phase, and Ducal Seal adds another obstacle to Danriick’s attacks.",
+              "cards": [
+                "Lost Promises",
+                "Ducal Seal"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Argus arrives, and two Remnant of Will uses restore Professor’s position before Poitier is milled.",
+              "cards": [
+                "Argus, All-Seeing Giant",
+                "Remnant of Will",
+                "Poitier, Afterlife's Conductor"
+              ]
+            },
+            {
+              "order": 6,
+              "actor": "p2",
+              "text": "Poitier reaches the board as a large ally; Danriick concedes game1.",
+              "cards": [
+                "Poitier, Afterlife's Conductor"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "Professor’s Umbra allies force the concession.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Professor advances Alice to level 2 and sets up Umbra Sight.",
+              "cards": [
+                "Alice, Phantom Monarch",
+                "Umbra Sight"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Infernal Vessel threatens the healing plan; Fiery Interference answers the lineage release.",
+              "cards": [
+                "Infernal Vessel",
+                "Fiery Interference"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Beseech the Winds enables the climb to Vanitas level 3, but Imperial Countermeasure stops the attacks.",
+              "cards": [
+                "Beseech the Winds",
+                "Imperial Countermeasure"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Nocturne’s Oblivion removes Infernal Vessel; Remnant of Will restores the healing plan.",
+              "cards": [
+                "Nocturne's Oblivion",
+                "Infernal Vessel",
+                "Remnant of Will"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Poitier and Argus establish the board Danriick cannot break; Professor takes the match.",
+              "cards": [
+                "Poitier, Afterlife's Conductor",
+                "Argus, All-Seeing Giant"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 3",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 13725
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Mono",
+          "deck": "Wind Byakko Guo Jia allies"
+        },
+        {
+          "id": "p2",
+          "name": "Xenadrael",
+          "deck": "Water Ciel allies"
+        }
+      ],
+      "result": "Xenadrael wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Xenadrael wins the board battle.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Dream Fairy returns Aquifer Seneschal to memory; Luster’s Shroud preserves the lock.",
+              "cards": [
+                "Dream Fairy",
+                "Aquifer Seneschal",
+                "Luster's Shroud"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dream Fairy returns Tweedledee, and Rowland helps clear Jueying.",
+              "cards": [
+                "Dream Fairy",
+                "Tweedledee, Contrarian Poet",
+                "Rowland, Schwartz Knight",
+                "Jueying, Shadowmare"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Augustine converts Manxome Armoire into a fractal, giving Xenadrael the resources for Frozen Dismissal against Guan Yu.",
+              "cards": [
+                "Augustine, Votary of Yore",
+                "Manxome Armoire",
+                "Frozen Dismissal",
+                "Guan Yu, Prime Exemplar"
+              ],
+              "tags": [
+                "combo"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "The rebuilt ally board pushes damage and closes game 1.",
+              "cards": [
+                "Aquifer Seneschal",
+                "Tweedledee, Contrarian Poet"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Mono protects Liu Bei and Dilu to even the match.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "After the Avatar is dismissed, Virgil and Liu Bei remove Lucca.",
+              "cards": [
+                "Avatar of Byakko",
+                "Frozen Dismissal",
+                "Virgil, Altered Future",
+                "Liu Bei, Oathkeeper",
+                "Lucca, Gateway Manager"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Dilu removes Portly Raccoon, and Mortal Ambition turns the attempted attack into retaliation.",
+              "cards": [
+                "Dilu, Auspicious Charger",
+                "Portly Raccoon",
+                "Mortal Ambition"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Luster’s Shroud preserves Liu Bei against Bandit; Cyclonic Fatestone later suppresses Jueying.",
+              "cards": [
+                "Luster's Shroud",
+                "Liu Bei, Oathkeeper",
+                "Bandit, Gaze Leader",
+                "Cyclonic Fatestone",
+                "Jueying, Shadowmare"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Mono attacks through Tariff Ring with Dilu and Liu Bei for the last five damage.",
+              "cards": [
+                "Tariff Ring",
+                "Dilu, Auspicious Charger",
+                "Liu Bei, Oathkeeper"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p2",
+          "summary": "Xenadrael wins the race with allies after Mortal Ambition kills the raccoon.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Xenadrael shifts toward direct pressure with Heavy Swing rather than trading into Liu Bei.",
+              "cards": [
+                "Heavy Swing",
+                "Liu Bei, Oathkeeper"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Purifying Thurible removes Heavy Swing before it can become an Omen.",
+              "cards": [
+                "Purifying Thurible",
+                "Heavy Swing"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Veiling Breeze stops the sword attack, and Guo Jia enables Fabled Emerald Fatestone.",
+              "cards": [
+                "Veiling Breeze",
+                "Palvor Sword",
+                "Guo Jia, Chosen Disciple",
+                "Fabled Emerald Fatestone"
+              ],
+              "tags": []
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Mortal Ambition answers the raccoon’s attack and kills the raccoon; it does not damage Xenadrael’s champion.",
+              "cards": [
+                "Mortal Ambition",
+                "Portly Raccoon"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Nia and Jueying provide the final attacks, overcoming Mono’s remaining defenses.",
+              "cards": [
+                "Nia, Mistveiled Scout",
+                "Jueying, Shadowmare"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 18317
+      },
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 4",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Cashkidz",
+          "deck": "Water Neos Tonoris"
+        },
+        {
+          "id": "p2",
+          "name": "ClourX",
+          "deck": "Water Fractal Diao Chan"
+        }
+      ],
+      "result": "Cashkidz wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p1",
+          "summary": "Cashkidz builds the Neos board and takes game 1.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Cashkidz opens The Eternal Kingdom and uses Hulking Rearguard to contest the early Paladin.",
+              "cards": [
+                "The Eternal Kingdom",
+                "Hulking Rearguard"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Enfeebling Orb holds back ClourX’s influence while Cashkidz levels into Tonoris.",
+              "cards": [
+                "Enfeebling Orb"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Reciprocity makes swords, and Atmos Armor Type-Ares establishes shields.",
+              "cards": [
+                "Reciprocity, Dorumegia's Call",
+                "Atmos Armor Type-Ares"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Hulking Rearguard, Ares and the swords finish the game.",
+              "cards": [
+                "Hulking Rearguard",
+                "Atmos Armor Type-Ares",
+                "Aurousteel Greatsword"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "ClourX levels the match with Burst Asunder.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Cashkidz answers the burn exchange with two Storm of Thorns; the first is negated, but the second resolves.",
+              "cards": [
+                "Storm of Thorns"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "ClourX negates Atmos Armor Type-Ares, then finishes with Burst Asunder.",
+              "cards": [
+                "Glimmering Refusal",
+                "Atmos Armor Type-Ares",
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Cashkidz survives the Fractal pressure and wins with Neos weapons and allies.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Frostsworn Paladin applies early pressure while Cashkidz searches for Eternal Kingdom.",
+              "cards": [
+                "Frostsworn Paladin"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Topsy Decree protects Cashkidz during the Refracting Missile exchange.",
+              "cards": [
+                "Topsy Decree",
+                "Refracting Missile"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Cashkidz reaches level 3 and establishes Atmos Armor Type-Ares with shields.",
+              "cards": [
+                "Atmos Armor Type-Ares"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "A second Ares and the final Reciprocity attack close the match.",
+              "cards": [
+                "Atmos Armor Type-Ares",
+                "Reciprocity, Dorumegia's Call"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round5-rty-neek0",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 23132
+      },
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 5",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Rty",
+          "deck": "Wind Tristan"
+        },
+        {
+          "id": "p2",
+          "name": "Neek0",
+          "deck": "Water Genbu Guo Jia"
+        }
+      ],
+      "result": "Neek0 wins 1–0 (official result)",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Rty concedes with Neek0 threatening a Polar Depths mill finish.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Neek0 establishes the Fractal mill engine; Rty uses Purifying Thurible to clear the early graveyard, then advances Tristan with Beseech the Winds.",
+              "cards": [
+                "Fractal of Rain",
+                "Purifying Thurible",
+                "Beseech the Winds"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Rty advances through Shadowreaver into Shadowdancer and establishes Shadows.",
+              "cards": [
+                "Tristan, Shadowreaver",
+                "Tristan, Shadowdancer"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Enfeebling Orb and Cerulean Decree stop Mastermind Scheme.",
+              "cards": [
+                "Enfeebling Orb",
+                "Cerulean Decree",
+                "Mastermind Scheme"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Neek0 builds the graveyard while Rty cannot find enough damage; Rty concedes before the threatened Polar Depths turn.",
+              "cards": [
+                "Fractal of Polar Depths"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "unknown",
+          "summary": "Neek0 holds on through time to preserve the match lead.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Rty develops Tristan after an early missed preparation trigger.",
+              "cards": [
+                "Tristan, Underhanded"
+              ],
+              "tags": [
+                "ruling"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Neek0 responds to Nullifying Lantern with Polar Depths, then uses Song of Frost to disrupt Sadi attacks.",
+              "cards": [
+                "Nullifying Lantern",
+                "Fractal of Polar Depths",
+                "Song of Frost",
+                "Sadi, Blood Harvester"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Cerulean Decree protects Regal Inquisition from Incapacitate, removing key cards from Rty’s hand.",
+              "cards": [
+                "Cerulean Decree",
+                "Regal Inquisition",
+                "Incapacitate"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Ensnaring Fumes clears the board after Genbu transforms.",
+              "cards": [
+                "Ensnaring Fumes",
+                "Fabled Sapphire Fatestone"
+              ]
+            },
+            {
+              "order": 5,
+              "actor": "p2",
+              "text": "Neek0 pays nine to materialize Fabled Sapphire Fatestone again and rebuilds to nine quest counters as the match reaches time.",
+              "cards": [
+                "Fabled Sapphire Fatestone"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Neek0 preserves the match lead through time; game 2 has no confirmed winner."
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round6-inaki-miffy",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 28046
+      },
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 6",
+      "players": [
+        {
+          "id": "p1",
+          "name": "Inaki",
+          "deck": "Water Fractal Diao Chan"
+        },
+        {
+          "id": "p2",
+          "name": "Miffy",
+          "deck": "Fire Umbra Alice"
+        }
+      ],
+      "result": "Inaki wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Miffy survives repeated burn attempts and wins with Poitier.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Inaki opens with three Fractals and follows with Zhang Jiao.",
+              "cards": [
+                "Zhang Jiao, Way of Peace"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Remnant of Will supplies recovery and haunt counters after Alice reaches Umbra.",
+              "cards": [
+                "Remnant of Will"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Safeguard Amulet stops one Burst Asunder; Slip Away later protects Miffy from another.",
+              "cards": [
+                "Safeguard Amulet",
+                "Burst Asunder",
+                "Slip Away"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "Two Remnant of Will activations grow Poitier into the finishing attacker.",
+              "cards": [
+                "Remnant of Will",
+                "Poitier, Afterlife's Conductor"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "Inaki reaches ten Fractals and Miffy concedes to Burst Asunder.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Inaki opens with four Fractals.",
+              "cards": [
+                "Fractal of Snow",
+                "Hydrating Fractal"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Regal Inquisition takes two cards, but leaves Shimmering Refraction in Inaki’s hand.",
+              "cards": [
+                "Regal Inquisition",
+                "Shimmering Refraction"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Remnant of Will provides recovery and the end-step mill finds Poitier.",
+              "cards": [
+                "Remnant of Will",
+                "Poitier, Afterlife's Conductor"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Bifurcating Fractal brings Inaki to ten Fractals; the Burst Asunder threat forces the concession.",
+              "cards": [
+                "Bifurcating Fractal",
+                "Burst Asunder"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 3,
+          "winner": "p1",
+          "summary": "Inaki stops Miffy’s recovery and wins with Burst Asunder plus Shimmering Refraction.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Maledictum Vitae lets Miffy establish Alice’s Umbra access safely.",
+              "cards": [
+                "Maledictum Vitae"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Undying Dreams boosts Poitier enough to remove Fluffy Shopkeep.",
+              "cards": [
+                "Undying Dreams",
+                "Poitier, Afterlife's Conductor",
+                "Fluffy Shopkeep"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p1",
+              "text": "Glimmering Refusal denies the Remnant of Will Miffy needed after drawing with Devouring Malice.",
+              "cards": [
+                "Glimmering Refusal",
+                "Remnant of Will",
+                "Devouring Malice"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Inaki negates both Fleeting Guards, then adds Shimmering Refraction as Miffy uses lineage releases.",
+              "cards": [
+                "Glimmering Refusal",
+                "Fleeting Guard",
+                "Burst Asunder",
+                "Shimmering Refraction"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 32838
+      },
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 7",
+      "players": [
+        {
+          "id": "p1",
+          "name": "DragonJG",
+          "deck": "Fire Astra Arisanna"
+        },
+        {
+          "id": "p2",
+          "name": "Quarax",
+          "deck": "Fire Jin"
+        }
+      ],
+      "result": "Quarax wins 2–1",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Quarax turns a large damage total into a lethal Shuang Ji attack.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "Arisanna builds herbs and Polaris while Quarax struggles to find smooth level progression.",
+              "cards": [
+                "Polaris, Twinkling Cauldron",
+                "Ingredient Pouch"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Prima Materia and Cosmic Bolt pressure Jin, but Quarax reaches level 3 and keeps recovering.",
+              "cards": [
+                "Prima Materia",
+                "Cosmic Bolt",
+                "Mend Flesh"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Quarax uses Auric Persecution to remove Consumption Ring and keep his recovery available.",
+              "cards": [
+                "Auric Persecution",
+                "Consumption Ring"
+              ],
+              "tags": [
+                "stabilize"
+              ]
+            },
+            {
+              "order": 4,
+              "actor": "p2",
+              "text": "After Devil’s Lifeline draws out Astral Seal, Enrage and Shuang Ji of Sacrifice produce the 25-damage attack that ends the game.",
+              "cards": [
+                "Devil's Lifeline",
+                "Astral Seal",
+                "Enrage",
+                "Shuang Ji of Sacrifice"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p1",
+          "summary": "DragonJG breaks through Quarax’s recovery with Cosmic Bolts and four Astral Seals.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p2",
+              "text": "Quarax reaches level 3 first and chips in with his Guides while Arisanna waits for Dungeon Guide.",
+              "cards": [
+                "Liminal Guide",
+                "Dungeon Guide"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Meteor Strike removes Berserker Plate, then destroys Shuang Ji of Sacrifice after Quicksilver Grail brings it out.",
+              "cards": [
+                "Meteor Strike",
+                "Berserker Plate",
+                "Shuang Ji of Sacrifice",
+                "Quicksilver Grail"
+              ],
+              "tags": [
+                "swing"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Tricastles of Lucenia constrains both players; Auric Persecution removes Cosmic Astroscope and slows Arisanna’s glimpses.",
+              "cards": [
+                "Tricastles of Lucenia",
+                "Auric Persecution",
+                "Cosmic Astroscope"
+              ],
+              "tags": []
+            },
+            {
+              "order": 4,
+              "actor": "p1",
+              "text": "Nascent Barrier finds Cosmic Bolt. Astral Seals stop recovery, a second glimpse finds more Bolts, and the fourth Seal answers Topsy Decree for the concession.",
+              "cards": [
+                "Nascent Barrier",
+                "Cosmic Bolt",
+                "Astral Seal",
+                "Topsy Decree"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "DragonJG conceded the match after two games."
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 37962
+      },
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 8",
+      "players": [
+        {
+          "id": "p1",
+          "name": "SoSollys",
+          "deck": "Wind Silvie Clubs"
+        },
+        {
+          "id": "p2",
+          "name": "NoobTinnn",
+          "deck": "Fire Suzaku Guo Jia"
+        }
+      ],
+      "result": "NoobTinnn wins 2–0",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "p2",
+          "summary": "Scalding Aethercharge accelerates Suzaku, and Intensified Pyre finishes the game.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "SoSollys starts establishing a Clubs board with Shamrock Forest.",
+              "cards": [
+                "Shamrock Forest"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p2",
+              "text": "Vermilion Decree pressures an ally and the champion; Scalding Aethercharge then punishes Silvie’s level-up and adds quest counters.",
+              "cards": [
+                "Vermilion Decree",
+                "Scalding Aethercharge"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Nullifying Mirror precedes the finishing push. Skirting Step prevents a point, but a kindled Intensified Pyre supplies the remaining damage.",
+              "cards": [
+                "Nullifying Mirror",
+                "Skirting Step",
+                "Intensified Pyre"
+              ],
+              "tags": [
+                "lethal"
+              ]
+            }
+          ]
+        },
+        {
+          "gameNumber": 2,
+          "winner": "p2",
+          "summary": "NoobTinnn uses Undeniable Truth to bring Suzaku back for another lethal attack.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "p1",
+              "text": "SoSollys develops Six of Clubs and Censer of Restful Peace while NoobTinnn continues building quest counters.",
+              "cards": [
+                "Six of Clubs",
+                "Censer of Restful Peace"
+              ],
+              "tags": []
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Two of Spades and Safeguard Amulet create pressure and protection, but SoSollys stays at spirit level.",
+              "cards": [
+                "Two of Spades",
+                "Safeguard Amulet"
+              ],
+              "tags": []
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Suzaku attacks, then Undeniable Truth enables its sacrifice and return. After a brief judge check about quest counters, casters confirm NoobTinnn’s second win.",
+              "cards": [
+                "Undeniable Truth"
+              ],
+              "tags": [
+                "combo",
+                "lethal"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": ""
+    },
+    {
+      "id": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+      "event": "Ascent Osaka",
+      "eventId": 67176,
+      "round": "Round 9",
+      "video": {
+        "id": "g3NNFcNpw3k",
+        "kind": "broadcast",
+        "startSeconds": 42720
+      },
+      "players": [
+        {
+          "id": "p1",
+          "name": "Bayabayashi",
+          "deck": "Wind Byakko"
+        },
+        {
+          "id": "p2",
+          "name": "Royan",
+          "deck": "Water Genbu"
+        }
+      ],
+      "result": "Royan wins 2–1 (official result)",
+      "games": [
+        {
+          "gameNumber": 1,
+          "winner": "unknown",
+          "summary": "Only the opening is recovered before the local recording ends.",
+          "beats": [
+            {
+              "order": 1,
+              "actor": "both",
+              "text": "Bayabayashi develops Fabled Emerald Fatestone while Royan opens with an imbued Fractal of Rain.",
+              "cards": [
+                "Fabled Emerald Fatestone",
+                "Fractal of Rain"
+              ]
+            },
+            {
+              "order": 2,
+              "actor": "p1",
+              "text": "Portentous Tanggu helps Bayabayashi build Byakko quest counters.",
+              "cards": [
+                "Portentous Tanggu"
+              ]
+            },
+            {
+              "order": 3,
+              "actor": "p2",
+              "text": "Royan brings out his own Portentous Tanggu as both players continue setting up.",
+              "cards": [
+                "Portentous Tanggu"
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceNote": "Opening only; the recording ends during game 1."
     }
   ]
 }

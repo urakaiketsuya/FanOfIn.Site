@@ -1,0 +1,124 @@
+{
+  "reviewedArtifact": "recovery-r4-r5.json",
+  "sha256AtReview": "3a57e78918a6e71338f3151faf007b12c4cf9165b856d0f9b6b494153c428969",
+  "result": "No material unsupported recap claims found. Ready to integrate with round5game2winner left unknown.",
+  "checks": [
+    {
+      "round": 4,
+      "game": 1,
+      "beats": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "status": "supported",
+      "evidence": "Read entire cited bounded10 files0360,0480,0600,0720,0840,1080,1200. Opening Eternal Kingdom, Rearguard removal, Orb influence denial, level-up, Reciprocity token, shields, and final attacks supported.1200indices12–14 explicitly call attack sequence and game1win; this is not merely hypothetical lethal."
+    },
+    {
+      "round": 4,
+      "game": 2,
+      "beats": [
+        1,
+        2
+      ],
+      "status": "supported",
+      "evidence": "Original4242–4250 distinguishes first negated Storm from resolving second Storm.4280–4290confirms Ares negated then Burst Asunder wins for1–1."
+    },
+    {
+      "round": 4,
+      "game": 3,
+      "beats": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "status": "supported",
+      "evidence": "Original4335–4341,4385–4395,4440–4462,4475–4499. Final line explicitly chooses shields, not the earlier hypothetical swords line; second Ares and Reciprocity finish are accurate. Result2–1explicit4492. Current recap avoids erroneous all-swords finish."
+    },
+    {
+      "round": 5,
+      "game": 1,
+      "beats": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "status": "supported",
+      "evidence": "Read bounded12-1560and1680in full; Fractal start, Thurible grave clear, Beseech to Tristan1supported. Original4664–4694advances Tristan;4714–4728Orb+Decree negates Mastermind;5025–5067concession before threatened Polar Depths. Recap correctly does not claim the mill actually resolved."
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "beats": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "status": "supported",
+      "evidence": "Read entire bounded14-0000,0240,0360,0720,0840,1560,1680. Missed prep trigger, PolarDepths response to Lantern, Songs stopping Sadi, Regal/Incapacitate/Decree exchange, actual Fumes board bounce, paid-nine Fatestone and nine-counter rebuild all supported."
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "focus": "Regal Inquisition",
+      "status": "supported-with-appropriate-restraint",
+      "evidence": "14-0840idx2 announces actual Regal;5–9Incapacitate and Decree response;10–20confirms key-card removal. Exact third discarded card is uncertain, so current generic key-cards wording is appropriate."
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "focus": "Ensnaring Fumes",
+      "status": "supported-actual-action",
+      "evidence": "14-1560starts with hypothetical discussion0–2, then3–7Genbu transforms and everything returns,27–30confirms Genbu removed. Do not mistake0–2for only evidence; actual outcome follows. Currentbeat supported."
+    },
+    {
+      "round": 5,
+      "focus": "Guo Jia identity",
+      "status": "supported",
+      "evidence": "12-1560idx20–23explicitChosenDisciple material-reveal/Fatestone;14-0720idx1–3explicitGuoJia3. WaterGenbuGuoJia correct."
+    }
+  ],
+  "normalization": {
+    "curatedCardNames": "All candidate cards exist verbatim in data/card-catalog.json.",
+    "playerNames": "Cashkidz, ClourX, Rty and Neek0 match official pairing names.",
+    "reviewedChangedSegments": "Read every original→normalized changed segment in recovery artifact; no material incorrect player/card substitution found.",
+    "remainingTranscriptNoise": [
+      "Conservative normalized recovery still retains obvious aliases such as Atmos armor type areas, Gorgia/goja, and engineering themes outside corrected instances. These do not enter curated card arrays.",
+      "bounded12-1440idx28 currently reads Neek0 or Neek0 zero, preserving a spoken name variant. Optional display cleanup could make the latter Neek0; not a recap blocker."
+    ]
+  },
+  "findings": [],
+  "limits": [
+    "Independent review checked cited files and surrounding fulltwo-minute chunks, plus all normalized changes; did not independently transcribe audio.",
+    "Round5game2result remainsunknown because official1–0 conflicts with caster2–0; no newresult inferred."
+  ],
+  "followUpAudits": [
+    {
+      "focus": "Round 5 ending and disputed 2–0 transcript",
+      "sourceFile": "/tmp/osaka-review/r5-ending.json",
+      "sha256": "90512b79175b0cdba42a6b351418e4fe67ab62e8186bae84523cfffff4cbd9b3",
+      "segmentsRead": [
+        0,
+        37
+      ],
+      "endExclusive": true,
+      "findings": [
+        "Independent retranscription13–14 explicitly describes taking the set because the score is1–0, matching original5450 and officialpairing.",
+        "Independent19statesNeek0stalled through time;31–35also describes surviving overtime rather than winninggame2.",
+        "Original5455says2–0, but independent15–16 is garbled at that exact passage and does not reproduce2–0. This supports an ASR-error suspicion but does not prove the exact spoken phrase. Do not label it a verified caster scoring error.",
+        "MatchresultNeek01–0iswell-supported. Game2winner/draw declaration isnotexplicitly established; preserve unknown rather than infer a game2win."
+      ],
+      "recommendedText": {
+        "result": "Neek0 wins 1–0",
+        "game2Summary": "Neek0 holds on through time to preserve the match lead.",
+        "sourceNote": "Commentary-sourced review of both games, including recovered audio. Omnidex records Neek0’s 1–0 match win; the final game ends in time procedures."
+      },
+      "documentationTreatment": "Keep the isolated2–0machine-transcript discrepancy in audit evidence; no need to repeat the uncertain phrase as a caster conflict in the public recap."
+    }
+  ]
+}

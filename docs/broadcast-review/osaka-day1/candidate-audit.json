@@ -1,0 +1,1260 @@
+{
+  "scope": "Independent check of every R1–R6 candidate beat against all cited segment evidence, plus remaining R7–R8 aliases using data/card-catalog.json; no other artifacts edited.",
+  "catalogGeneratedAt": "2026-10-29T12:49:18.689Z",
+  "beatChecks": [
+    {
+      "round": 1,
+      "game": 1,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        319,
+        320,
+        325
+      ]
+    },
+    {
+      "round": 1,
+      "game": 1,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        330,
+        333,
+        334,
+        341
+      ]
+    },
+    {
+      "round": 1,
+      "game": 1,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        347,
+        349,
+        353,
+        354
+      ]
+    },
+    {
+      "round": 1,
+      "game": 1,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        367,
+        368,
+        369,
+        370,
+        371,
+        372,
+        373,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388
+      ]
+    },
+    {
+      "round": 1,
+      "game": 2,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        448,
+        456,
+        481,
+        484
+      ]
+    },
+    {
+      "round": 1,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        587,
+        595,
+        598,
+        599
+      ]
+    },
+    {
+      "round": 1,
+      "game": 2,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        641,
+        642,
+        643,
+        644,
+        645,
+        646,
+        647,
+        648,
+        649,
+        650,
+        651,
+        652,
+        653,
+        654,
+        655,
+        656,
+        657,
+        658,
+        659
+      ]
+    },
+    {
+      "round": 1,
+      "game": 2,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        660,
+        661,
+        664,
+        665,
+        666
+      ]
+    },
+    {
+      "round": 2,
+      "game": 1,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        786,
+        787,
+        790,
+        794,
+        795
+      ]
+    },
+    {
+      "round": 2,
+      "game": 2,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        947,
+        963,
+        965,
+        966,
+        968
+      ]
+    },
+    {
+      "round": 2,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        1010,
+        1011,
+        1015,
+        1022,
+        1025,
+        1029
+      ]
+    },
+    {
+      "round": 2,
+      "game": 2,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        1042,
+        1047,
+        1056,
+        1060,
+        1074,
+        1076
+      ]
+    },
+    {
+      "round": 2,
+      "game": 2,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        1140,
+        1141,
+        1142,
+        1146,
+        1147
+      ]
+    },
+    {
+      "round": 2,
+      "game": 2,
+      "beat": 5,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        1220,
+        1230,
+        1344,
+        1352,
+        1356,
+        1376,
+        1383,
+        1384
+      ]
+    },
+    {
+      "round": 3,
+      "game": 1,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        2396,
+        2410,
+        2506,
+        2509
+      ]
+    },
+    {
+      "round": 3,
+      "game": 1,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        2799,
+        2802,
+        2811,
+        2824
+      ]
+    },
+    {
+      "round": 3,
+      "game": 1,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3136,
+        3150,
+        3152,
+        3154,
+        3211,
+        3212
+      ]
+    },
+    {
+      "round": 3,
+      "game": 1,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3175,
+        3177,
+        3183,
+        3184,
+        3194,
+        3195
+      ]
+    },
+    {
+      "round": 3,
+      "game": 2,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3276,
+        3278,
+        3283,
+        3288,
+        3293,
+        3297,
+        3526,
+        3529
+      ]
+    },
+    {
+      "round": 3,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3343,
+        3344,
+        3381,
+        3393,
+        3405,
+        3408
+      ]
+    },
+    {
+      "round": 3,
+      "game": 2,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3419,
+        3423,
+        3427,
+        3428,
+        3484
+      ]
+    },
+    {
+      "round": 3,
+      "game": 2,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3504,
+        3505,
+        3506,
+        3507
+      ]
+    },
+    {
+      "round": 3,
+      "game": 3,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3569,
+        3604,
+        3608,
+        3611
+      ]
+    },
+    {
+      "round": 3,
+      "game": 3,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3626,
+        3627
+      ]
+    },
+    {
+      "round": 3,
+      "game": 3,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3805,
+        3814,
+        3815,
+        3820,
+        3835,
+        3838
+      ]
+    },
+    {
+      "round": 3,
+      "game": 3,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3973,
+        3974,
+        3990,
+        3991,
+        4011
+      ]
+    },
+    {
+      "round": 3,
+      "game": 3,
+      "beat": 5,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        3995,
+        3996,
+        3999,
+        4001,
+        4003,
+        4004,
+        4006,
+        4009
+      ]
+    },
+    {
+      "round": 4,
+      "game": 2,
+      "beat": 1,
+      "verdict": "Supported exchange; revise wording to clarify one Storm was negated and the second resolved.",
+      "segments": [
+        4242,
+        4243,
+        4244,
+        4245,
+        4246,
+        4247,
+        4248,
+        4249,
+        4250
+      ]
+    },
+    {
+      "round": 4,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4280,
+        4281,
+        4282,
+        4283,
+        4284,
+        4285,
+        4286,
+        4287,
+        4288,
+        4289,
+        4290
+      ]
+    },
+    {
+      "round": 4,
+      "game": 3,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4335,
+        4336,
+        4337,
+        4338,
+        4339,
+        4340,
+        4341
+      ]
+    },
+    {
+      "round": 4,
+      "game": 3,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4385,
+        4386,
+        4387,
+        4388,
+        4389,
+        4390,
+        4391,
+        4392,
+        4393,
+        4394,
+        4395
+      ]
+    },
+    {
+      "round": 4,
+      "game": 3,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4440,
+        4441,
+        4442,
+        4443,
+        4444,
+        4445,
+        4446,
+        4447,
+        4448,
+        4449,
+        4450,
+        4451,
+        4452,
+        4453,
+        4454,
+        4455,
+        4456,
+        4457,
+        4458,
+        4459,
+        4460,
+        4461,
+        4462
+      ]
+    },
+    {
+      "round": 4,
+      "game": 3,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4475,
+        4476,
+        4477,
+        4478,
+        4479,
+        4480,
+        4481,
+        4482,
+        4483,
+        4484,
+        4485,
+        4486,
+        4487,
+        4488,
+        4489,
+        4490,
+        4491,
+        4492,
+        4493,
+        4494,
+        4495,
+        4496,
+        4497,
+        4498,
+        4499
+      ]
+    },
+    {
+      "round": 5,
+      "game": 1,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4664,
+        4665,
+        4666,
+        4667,
+        4668,
+        4669,
+        4670,
+        4671,
+        4672,
+        4673,
+        4674,
+        4675,
+        4676,
+        4677,
+        4678,
+        4679,
+        4680,
+        4681,
+        4682,
+        4683,
+        4684,
+        4685,
+        4686,
+        4687,
+        4688,
+        4689,
+        4690,
+        4691,
+        4692,
+        4693,
+        4694
+      ]
+    },
+    {
+      "round": 5,
+      "game": 1,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        4714,
+        4715,
+        4716,
+        4717,
+        4718,
+        4719,
+        4720,
+        4721,
+        4722,
+        4723,
+        4724,
+        4725,
+        4726,
+        4727,
+        4728
+      ]
+    },
+    {
+      "round": 5,
+      "game": 1,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        5025,
+        5026,
+        5027,
+        5028,
+        5029,
+        5030,
+        5031,
+        5032,
+        5033,
+        5034,
+        5035,
+        5036,
+        5037,
+        5038,
+        5039,
+        5040,
+        5041,
+        5042,
+        5043,
+        5044,
+        5045,
+        5046,
+        5047,
+        5048,
+        5049,
+        5050,
+        5051,
+        5052,
+        5053,
+        5054,
+        5055,
+        5056,
+        5057,
+        5058,
+        5059,
+        5060,
+        5061,
+        5062,
+        5063,
+        5064,
+        5065,
+        5066,
+        5067
+      ]
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        5221,
+        5222,
+        5223,
+        5224,
+        5225,
+        5226,
+        5227,
+        5228,
+        5229
+      ]
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        5250,
+        5251,
+        5252,
+        5253,
+        5254,
+        5255,
+        5256,
+        5257,
+        5258,
+        5259,
+        5260,
+        5261,
+        5262,
+        5263,
+        5264,
+        5265,
+        5266,
+        5267,
+        5268,
+        5269,
+        5270,
+        5271,
+        5272,
+        5273,
+        5274,
+        5275,
+        5276,
+        5277,
+        5278,
+        5279,
+        5280,
+        5281,
+        5282,
+        5283
+      ]
+    },
+    {
+      "round": 5,
+      "game": 2,
+      "beat": 3,
+      "verdict": "Narrative supported; wrong attached card (Avatar instead of flipped Fatestone).",
+      "segments": [
+        5442,
+        5449,
+        5450,
+        5456,
+        5458,
+        5465,
+        5469
+      ]
+    },
+    {
+      "round": 6,
+      "game": 1,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        5709,
+        5710,
+        5747,
+        5749,
+        5750
+      ]
+    },
+    {
+      "round": 6,
+      "game": 1,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        5946,
+        5947,
+        5948,
+        5949,
+        5950,
+        5951,
+        5952,
+        5953,
+        5954,
+        5955,
+        5956,
+        5957,
+        5958,
+        5959,
+        5960,
+        5961,
+        5962
+      ]
+    },
+    {
+      "round": 6,
+      "game": 1,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6122,
+        6141,
+        6241,
+        6244,
+        6246
+      ]
+    },
+    {
+      "round": 6,
+      "game": 1,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6281,
+        6282,
+        6283,
+        6284,
+        6285,
+        6286,
+        6287,
+        6288,
+        6289,
+        6290,
+        6291,
+        6292,
+        6293,
+        6294,
+        6295,
+        6296,
+        6297,
+        6298,
+        6299,
+        6300,
+        6301
+      ]
+    },
+    {
+      "round": 6,
+      "game": 2,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6472,
+        6473,
+        6474,
+        6475,
+        6476,
+        6477,
+        6478
+      ]
+    },
+    {
+      "round": 6,
+      "game": 2,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6650,
+        6666,
+        6677,
+        6694,
+        6696,
+        6697
+      ]
+    },
+    {
+      "round": 6,
+      "game": 2,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6722,
+        6725,
+        6727,
+        6737,
+        6742,
+        6743
+      ]
+    },
+    {
+      "round": 6,
+      "game": 2,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6757,
+        6758,
+        6770,
+        6771
+      ]
+    },
+    {
+      "round": 6,
+      "game": 3,
+      "beat": 1,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6796,
+        6798,
+        6800,
+        6853,
+        6858
+      ]
+    },
+    {
+      "round": 6,
+      "game": 3,
+      "beat": 2,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        6936,
+        6951,
+        6952,
+        6964,
+        6965,
+        6966,
+        6967
+      ]
+    },
+    {
+      "round": 6,
+      "game": 3,
+      "beat": 3,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        7008,
+        7009,
+        7011,
+        7016,
+        7018,
+        7019,
+        7020
+      ]
+    },
+    {
+      "round": 6,
+      "game": 3,
+      "beat": 4,
+      "verdict": "supported by cited commentary",
+      "segments": [
+        7100,
+        7101,
+        7102,
+        7103,
+        7104,
+        7105,
+        7106,
+        7107,
+        7108,
+        7109,
+        7110,
+        7111,
+        7112,
+        7113,
+        7128,
+        7129,
+        7130,
+        7131,
+        7132,
+        7133,
+        7134
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "severity": "fix",
+      "round": 5,
+      "game": 2,
+      "beat": 3,
+      "field": "cards",
+      "before": [
+        "Avatar of Genbu"
+      ],
+      "after": [
+        "Fabled Sapphire Fatestone"
+      ],
+      "evidenceSegments": [
+        5456,
+        5457,
+        5461,
+        5462,
+        5465
+      ],
+      "reason": "The commentary describes flipping Genbu and paying nine for the Fatestone. Avatar of Genbu is a different ally; catalog Fabled Sapphire Fatestone has cost9 and its flip configuration is the immortal Genbu."
+    },
+    {
+      "severity": "clarify",
+      "round": 4,
+      "game": 2,
+      "beat": 1,
+      "field": "text",
+      "before": "Two Storm of Thorns effects help Cashkidz survive the first burn exchange.",
+      "after": "Cashkidz answers with two Storm of Thorns; one is negated, but the second resolves and reduces the burn damage.",
+      "evidenceSegments": [
+        4243,
+        4247,
+        4248,
+        4249
+      ],
+      "reason": "Only the second prevention effect is confirmed resolving."
+    },
+    {
+      "severity": "verify",
+      "round": 2,
+      "field": "players[0].deck",
+      "value": "Fire Vanitas",
+      "evidenceSegments": [
+        1042,
+        1043,
+        1046,
+        1047,
+        1056,
+        1060
+      ],
+      "reason": "Transcript explicitly gives Beseech the Winds to Danriick; verify Fire designation against opening spirit or recovered source. The public snapshot has no Danriick list. This does not prove the Fire label wrong, but it is insufficiently corroborated by audited beat evidence."
+    },
+    {
+      "severity": "verified",
+      "round": 1,
+      "reason": "G1 Feu Awakening finish is supported by correction at382 and explicit win384–388. G2 end-step finish is different:664–666 explicitly say two damage suffices and Feu is not needed. Preserve distinct summaries."
+    },
+    {
+      "severity": "verified",
+      "round": 3,
+      "reason": "G1 Xenadrael win3194–3195, G2Mono win3504–3507, G3Xenadrael win3995–4009. Mortal Ambition kills raccoon; hypothetical champion-lethal line is not actual play."
+    },
+    {
+      "severity": "verified",
+      "round": 4,
+      "reason": "ClourX game2 win is explicitly1–1 and heading game3 at4289–4290. Final Cashkidz2–1 stated4492. Keep observed games numbered2,3."
+    },
+    {
+      "severity": "verified",
+      "round": 5,
+      "reason": "Keep game2winnerunknown:5450discusses1–0/time and5455calls2–0, official result1–0; missing middle precludes confident reconciliation."
+    },
+    {
+      "severity": "catalog-update",
+      "round": 8,
+      "reason": "Newer data/card-catalog.json verifies Shamrock Forest, Five of Clubs, Six of Clubs and Scalding Aethercharge. Remove prior missing-catalog limitation; add Shamrock Forest toR8G1beat1 card array."
+    },
+    {
+      "severity": "catalog-update",
+      "round": 7,
+      "reason": "Canonical Horticounter and Astral Seal confirmed. Prior corrections cover singular aliases; extra proposals normalize remaining plural Horticontours/Astra Seals and Tricastles variants."
+    },
+    {
+      "severity": "verified-audio-recovery",
+      "round": 6,
+      "game": 2,
+      "source": "/tmp/osaka-review/r6-finish.json",
+      "sourceSha256": "ca1d83b2c4f9f3caaf8c788a9fac8aeb0211815dc1bbad589b952c7e2ef8658b",
+      "model": {
+        "type": "base",
+        "multilingual": false,
+        "vocab": 51864,
+        "audio": {
+          "ctx": 1500,
+          "state": 512,
+          "head": 8,
+          "layer": 6
+        },
+        "text": {
+          "ctx": 448,
+          "state": 512,
+          "head": 8,
+          "layer": 6
+        },
+        "mels": 80,
+        "ftype": 1
+      },
+      "params": {
+        "model": "/tmp/osaka-review/ggml-base.en.bin",
+        "language": "en",
+        "translate": false
+      },
+      "originalSegments": [
+        6768,
+        6769,
+        6770,
+        6771,
+        6772,
+        6773,
+        6774,
+        6775,
+        6776,
+        6777
+      ],
+      "reviewMethod": "Read every recovered transcription segment from relative00:00:00 through00:04:03 and compared with original6768–6777. Machine-transcription comparison, not direct listening.",
+      "finding": "Collapsing duplicate question6769 does not lose the game2finish: original6770–6771retain tenFractals,22damage BurstAsunder, concession andInaki game2win. Recovery corroborates those details at relative00:00:56.360–00:01:37.440.",
+      "additionalRecoveredContext": "Between the question and finish, recovery states Miffy has exactly three cards, ZhangJiao pokes for one, and a tenth FractalofSnow is played. These details are omitted in original but not required to support its conservative existing recap. Recovery also confirms postgameSlipAway discussion thenMiffy goingfirst andsleevecheck beforegame3.",
+      "action": "Retain original6770–6777; duplicate suppression should remove only6769. No winner or result change required."
+    }
+  ],
+  "additionalCorrections": [
+    {
+      "index": 7786,
+      "before": "And that's Chuang Ji.",
+      "afterPriorReview": "And that's Chuang Ji.",
+      "after": "And that's Shuang Ji.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 7996,
+      "before": "strikes as well another causing well drawn for a turn unfortunately so this meteor strike can",
+      "afterPriorReview": "strikes as well another causing well drawn for a turn unfortunately so this meteor strike can",
+      "after": "strikes as well another Cosmic Bolt drawn for a turn unfortunately so this meteor strike can",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8052,
+      "before": "here as well so could be using that uh to draw more but oh we didn't pay for tri castles did we",
+      "afterPriorReview": "here as well so could be using that uh to draw more but oh we didn't pay for tri castles did we",
+      "after": "here as well so could be using that uh to draw more but oh we didn't pay for Tricastles of Lucenia did we",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8054,
+      "before": "dragon gg is going to just like meteor strike this tri castles away or maybe feels like he can play",
+      "afterPriorReview": "DragonJG is going to just like meteor strike this tri castles away or maybe feels like he can play",
+      "after": "DragonJG is going to just like meteor strike this Tricastles of Lucenia away or maybe feels like he can play",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8056,
+      "before": "but uh what's the target he needs to pay for tri castles first no no crack castles does not stop",
+      "afterPriorReview": "but uh what's the target he needs to pay for tri castles first no no crack castles does not stop",
+      "after": "but uh what's the target he needs to pay for Tricastles of Lucenia first no no Tricastles of Lucenia does not stop",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8083,
+      "before": "creative shop which is not usable at the moment because of the tri castles yeah so this is a ton",
+      "afterPriorReview": "creative shop which is not usable at the moment because of the tri castles yeah so this is a ton",
+      "after": "creative shop which is not usable at the moment because of the Tricastles of Lucenia yeah so this is a ton",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8086,
+      "before": "it's looking more and more dire for dragon jg especially with a tri castle still in field can't",
+      "afterPriorReview": "it's looking more and more dire for DragonJG especially with a tri castle still in field can't",
+      "after": "it's looking more and more dire for DragonJG especially with a Tricastles of Lucenia still in field can't",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8104,
+      "before": "brews the beer and the cauldron is tossed out the eight cosmic boats are tossed in to the deck of",
+      "afterPriorReview": "brews the beer and the cauldron is tossed out the eight cosmic boats are tossed in to the deck of",
+      "after": "brews the beer and the cauldron is tossed out the eight Cosmic Bolts are tossed in to the deck of",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8106,
+      "before": "next cosmic book comes in for seven eight or is it only six i think it's only been one causing",
+      "afterPriorReview": "next cosmic book comes in for seven eight or is it only six i think it's only been one causing",
+      "after": "next Cosmic Bolt comes in for seven eight or is it only six i think it's only been one causing",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8107,
+      "before": "so far so six so not lethal with one cosmic bolt right now yes so one causing ball is going to be",
+      "afterPriorReview": "so far so six so not lethal with one cosmic bolt right now yes so one causing ball is going to be",
+      "after": "so far so six so not lethal with one cosmic bolt right now yes so one Cosmic Bolt is going to be",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8108,
+      "before": "banished on for the tri-cast actually that does power up any further causing balls actually which",
+      "afterPriorReview": "banished on for the tri-cast actually that does power up any further causing balls actually which",
+      "after": "banished on for the Tricastles of Lucenia actually that does power up any further Cosmic Bolts actually which",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8109,
+      "before": "is a quite a nice synergy maybe this is why dragon gg was happy with using that tri-cast",
+      "afterPriorReview": "is a quite a nice synergy maybe this is why DragonJG was happy with using that tri-cast",
+      "after": "is a quite a nice synergy maybe this is why DragonJG was happy with using that Tricastles of Lucenia",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8110,
+      "before": "leaving that tri-castles around actually gives you an option to banishing causing bolts",
+      "afterPriorReview": "leaving that tri-castles around actually gives you an option to banishing causing bolts",
+      "after": "leaving that Tricastles of Lucenia around actually gives you an option to banishing causing bolts",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8112,
+      "before": "now the tri-castles has been shut off so tri-castles is now allowing dragon gg and",
+      "afterPriorReview": "now the tri-castles has been shut off so tri-castles is now allowing DragonJG and",
+      "after": "now the Tricastles of Lucenia has been shut off so Tricastles of Lucenia is now allowing DragonJG and",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8123,
+      "before": "big court counters or big uh negates a lot of actions in one turn and now we're gonna see",
+      "afterPriorReview": "big court counters or big uh negates a lot of actions in one turn and now we're gonna see",
+      "after": "big Horticounter or big uh negates a lot of actions in one turn and now we're gonna see",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8134,
+      "before": "there's only the nascent barriers and the horticontours left horticontours have to negate",
+      "afterPriorReview": "there's only the nascent barriers and the horticontours left horticontours have to negate",
+      "after": "there's only the nascent barriers and the Horticounter left Horticounter have to negate",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8144,
+      "before": "tricastals are still on the board uh what else does dragon jg have for us he he can only activate",
+      "afterPriorReview": "tricastals are still on the board uh what else does DragonJG have for us he he can only activate",
+      "after": "Tricastles of Lucenia are still on the board uh what else does DragonJG have for us he he can only activate",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8151,
+      "before": "there liminal kite swing sorry man it's your own tricastal quirex i was like hmm you caught me",
+      "afterPriorReview": "there liminal kite swing sorry man it's your own tricastal Quarax i was like hmm you caught me",
+      "after": "there liminal kite swing sorry man it's your own Tricastles of Lucenia Quarax i was like hmm you caught me",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8167,
+      "before": "tricastles is still turned off yeah okay i guess your creative shock is now no longer helpful",
+      "afterPriorReview": "tricastles is still turned off yeah okay i guess your creative shock is now no longer helpful",
+      "after": "Tricastles of Lucenia is still turned off yeah okay i guess your creative shock is now no longer helpful",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8178,
+      "before": "this tricastles and you know dragon jg really not having the ability to glimpse deep through the",
+      "afterPriorReview": "this tricastles and you know DragonJG really not having the ability to glimpse deep through the",
+      "after": "this Tricastles of Lucenia and you know DragonJG really not having the ability to glimpse deep through the",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8187,
+      "before": "tricastles is just keeping things under lock greg's actually doing a deck count of himself",
+      "afterPriorReview": "tricastles is just keeping things under lock greg's actually doing a deck count of himself",
+      "after": "Tricastles of Lucenia is just keeping things under lock greg's actually doing a deck count of himself",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8232,
+      "before": "Maybe he's counting out a number that we're not aware of. It's like 3 nascent barriers and 3 astral seals, so I need to have 12 influence before I fire. 13 including the banish for the Tri-castle.",
+      "afterPriorReview": "Maybe he's counting out a number that we're not aware of. It's like 3 nascent barriers and 3 astral seals, so I need to have 12 influence before I fire. 13 including the banish for the Tri-castle.",
+      "after": "Maybe he's counting out a number that we're not aware of. It's like 3 nascent barriers and 3 astral seals, so I need to have 12 influence before I fire. 13 including the banish for the Tricastles of Lucenia.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8238,
+      "before": "His own Tri-castle and Velocity Punch.",
+      "afterPriorReview": "His own Tri-castle and Vel-ocity Punch.",
+      "after": "His own Tricastles of Lucenia and Vel-ocity Punch.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8260,
+      "before": "I mean they're already shut off by the Tri-castle, to be fair.",
+      "afterPriorReview": "I mean they're already shut off by the Tri-castle, to be fair.",
+      "after": "I mean they're already shut off by the Tricastles of Lucenia, to be fair.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8282,
+      "before": "That would not have happened if he just didn't turn off his own Tri-Castles.",
+      "afterPriorReview": "That would not have happened if he just didn't turn off his own Tri-Castles.",
+      "after": "That would not have happened if he just didn't turn off his own Tricastles of Lucenia.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    },
+    {
+      "index": 8288,
+      "before": "I mean, he probably wasn't playing around for Astra Seals.",
+      "afterPriorReview": "I mean, he probably wasn't playing around for Astra Seals.",
+      "after": "I mean, he probably wasn't playing around for Astral Seals.",
+      "evidence": "data/card-catalog.json canonical names; sequential R7 context identifies the named objects. Apply after review-r7-r8 corrections, replacing same-index proposal."
+    }
+  ],
+  "candidateUpdates": [
+    {
+      "round": 8,
+      "game": 1,
+      "beat": 1,
+      "field": "cards",
+      "after": [
+        "Shamrock Forest"
+      ],
+      "evidenceSegments": [
+        8419,
+        8424,
+        8429
+      ]
+    },
+    {
+      "round": 7,
+      "game": 1,
+      "beat": 2,
+      "field": "cards",
+      "note": "All listed cards canonical; do not replace Astral Seal with Astra Seal."
+    }
+  ],
+  "limitations": [
+    "Audit verifies commentary support, not audiovisual board state.",
+    "R2 Fire Vanitas label needs independent spirit verification; no inferred replacement supplied."
+  ]
+}

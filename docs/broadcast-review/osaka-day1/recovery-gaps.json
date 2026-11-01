@@ -1,0 +1,2522 @@
+{
+  "reviewedRecoveries": [
+    {
+      "file": "bounded-22-0000.json",
+      "sha256": "bdf57a1aca2641f14882401afee502468345200566d48d9e8a14517b40025631",
+      "segmentsRead": [
+        0,
+        6
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600
+    },
+    {
+      "file": "bounded-22-0120.json",
+      "sha256": "17880d3b64ba11ef2d11a42f541e10c92c1315add6a9b46e2d9fbe508749d307",
+      "segmentsRead": [
+        0,
+        35
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 120,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0240.json",
+      "sha256": "158189943cdde236ac216277f75874b3821a40edc9c83c4b6097f101276b62a9",
+      "segmentsRead": [
+        0,
+        23
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 240,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0360.json",
+      "sha256": "69f03eb7be58290a7567635961989ae9f6f4aacb45415632f45642b9683568e1",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 360,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0480.json",
+      "sha256": "1724201e46c61d7d7ffde253acde6835bc8abc3c8f81e863fdf0db2372f95933",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 480,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0600.json",
+      "sha256": "4fb0659c487f09e4b11655bb553f1526370260c846da8ff37a94e2532975f3ad",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 600,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0720.json",
+      "sha256": "2e9c5dde4f5ebaa697111e4ed898590db7eea80b823127323912fc262460a108",
+      "segmentsRead": [
+        0,
+        35
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 720,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0840.json",
+      "sha256": "74f72d95ed545be778fc195bb79725c5cab03dfcf5c376c3ac42a425a35b3109",
+      "segmentsRead": [
+        0,
+        15
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 840,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-0960.json",
+      "sha256": "836c220dd6ce078b4198961fa8c1b3bfb394599431dd5e55bc68da016386e4e5",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 960,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1080.json",
+      "sha256": "654248ffc8d5cbeabe7bb8d7b48682e557194855fdd4df245e841546bd196738",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1080,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1200.json",
+      "sha256": "4f91cbb750b80844124fd689a6780bdaba54e792cd5f936d54f83973af770359",
+      "segmentsRead": [
+        0,
+        10
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1200,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1320.json",
+      "sha256": "e2ba56da231ab670c5f8a00a7eefa4f4499937ba5c90c2fbadafe636fa6262f4",
+      "segmentsRead": [
+        0,
+        36
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1320,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1440.json",
+      "sha256": "e9efe8b43a5095d54bfab02384b64885bcc068ecec888ac267abbd00547c2f9d",
+      "segmentsRead": [
+        0,
+        11
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1440,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1560.json",
+      "sha256": "e5d0744f4cdb2b4f65f10851653a68f5a1eba7dbf9e264221796cd5f84c67fe9",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1560,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-22-1680.json",
+      "sha256": "01a41a003777b3824c6a70c6e35be08b01362d1164f886d54bf674e1d09b5b16",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 39600,
+      "windowOffsetSeconds": 1680,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0000.json",
+      "sha256": "9edc0c3ef853bb90a1c822e89483fa71184bfc9fc55b0e120d4d79cbd9261dcf",
+      "segmentsRead": [
+        0,
+        38
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 0,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0120.json",
+      "sha256": "0ff38ff3c2fb9b7e281ef1c029e66b7f23b577cc1df9397496da11025d7a1dbc",
+      "segmentsRead": [
+        0,
+        55
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 120,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0240.json",
+      "sha256": "d2f5bcea569054945a36226705d9aa6db21b686b1eb8149782961c2e75510342",
+      "segmentsRead": [
+        0,
+        7
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 240,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0360.json",
+      "sha256": "81a0492329404f8c05aea4bbf986e4dbb053d747f44831f3d4e79d6a0f3c52b7",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 360,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0480.json",
+      "sha256": "213a50d30633e925e3b3026d93768793458859a09a86831b1ada18984cda3443",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 480,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0600.json",
+      "sha256": "4e9d74a86873700f4a8b984d26d22bac9b5e29e1869404992cbd28ebe1f308f2",
+      "segmentsRead": [
+        0,
+        28
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 600,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0720.json",
+      "sha256": "bce4fa5ce8d1f1ed68fdf92788ca876d1bc5be02fc491b8e7839fc86973f8811",
+      "segmentsRead": [
+        0,
+        22
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 720,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0840.json",
+      "sha256": "6b6a781d9a73bcaa4ca32bcdd070294612954ec618acb0e1584265942bedeb26",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 840,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-0960.json",
+      "sha256": "88e7b9bb8d4adb636ad81ca3cf4f81f25b09dfed516e0148c4d86b6e7a120cdf",
+      "segmentsRead": [
+        0,
+        1
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 960,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-23-1080.json",
+      "sha256": "bffa98aa72c8feca8d421e6c02aaa1f71a9ea4482089ee212d8610e999b5473a",
+      "segmentsRead": [
+        0,
+        16
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 1080,
+      "finding": "Round9introduction"
+    },
+    {
+      "file": "bounded-23-1200.json",
+      "sha256": "dc29d4cb703fdf602964b40823ef11f381851b1c5603ea49441615cafa254e17",
+      "segmentsRead": [
+        0,
+        33
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 1200,
+      "finding": "Round9introduction"
+    },
+    {
+      "file": "bounded-23-1320.json",
+      "sha256": "0f0678315d0e01f95e4f13f448ee7d8b36eeaaa28612c20c4dd45d41d2d2b353",
+      "segmentsRead": [
+        0,
+        38
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 1320,
+      "finding": "Round9 opening gameplay recovered; recording ends during game1."
+    },
+    {
+      "file": "bounded-23-1440.json",
+      "sha256": "9a669cb3193cd86ed049faf0fa05e2177a4ac228ca4fce6c65c1132472b0a230",
+      "segmentsRead": [
+        0,
+        13
+      ],
+      "endExclusive": true,
+      "baseSeconds": 41400,
+      "windowOffsetSeconds": 1440,
+      "finding": "Round9 opening gameplay recovered; recording ends during game1."
+    },
+    {
+      "file": "bounded-03-0000.json",
+      "sha256": "ff8877ffb2ea76e3217cc92e753506c8952bae8e800a4d6531b5f9fc2545d9a4",
+      "segmentsRead": [
+        0,
+        26
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 0,
+      "finding": "Opening interview thanks followed by repetitive ASR thanks, then music/effects; no new gameplay."
+    },
+    {
+      "file": "bounded-03-0120.json",
+      "sha256": "224cdd7bfb0a94f815ef383f13b3fdd86e50abd43defd4220e7f175e3dd08650",
+      "segmentsRead": [
+        0,
+        24
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 120,
+      "finding": "Music and effects only; no intelligible match commentary recovered."
+    },
+    {
+      "file": "bounded-03-0240.json",
+      "sha256": "c32ec6715a2984923cfd77671893969884fe472e59e28f99a2ce51fb3bf58cb4",
+      "segmentsRead": [
+        0,
+        26
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 240,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0360.json",
+      "sha256": "367d2e1e56625414281b5485d01ae4e2cb5bf9b2ddfac31404d5bda28e309609",
+      "segmentsRead": [
+        0,
+        29
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 360,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0480.json",
+      "sha256": "7c817e4535fdd382bb1728a5be8b5f151ef31e0013d525e9d463f03028b22318",
+      "segmentsRead": [
+        0,
+        3
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 480,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0600.json",
+      "sha256": "088145f422f32c1377d7594f7faa5c5dee2de6a1037bfdfe3acde53c07c6a6e3",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 600,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0720.json",
+      "sha256": "44d1e043a5171ff7a71e89ace916fc851b8eb943b2e4a553346c95f7b698c0f2",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 720,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0840.json",
+      "sha256": "e1ebe4af2bbd01276d83531aeeb119689f37af7ca86d7520f2e4799902626429",
+      "segmentsRead": [
+        0,
+        28
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 840,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-0960.json",
+      "sha256": "11d997d45f2dd990e63d66bd002e8758ced30866fd17717eab8903559d9164b6",
+      "segmentsRead": [
+        0,
+        24
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 960,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1080.json",
+      "sha256": "09c3a1cf8fa2a357a1614ad75e8096b5f33d82622dd2d2c78bb0fa568692e769",
+      "segmentsRead": [
+        0,
+        3
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1080,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1200.json",
+      "sha256": "5939f6bdfe8a0b7af7e899c990d55b846725d70984e852d7ea4b2cdc82a61d5f",
+      "segmentsRead": [
+        0,
+        3
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1200,
+      "finding": "Music labels or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1320.json",
+      "sha256": "ad5e6f9a41b2972b31011337ceafff66008069ad7398286ab0fc7b3a28cf1d8c",
+      "segmentsRead": [
+        0,
+        20
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1320,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1440.json",
+      "sha256": "eb96d0993c52b55b27299f9fdc63d5fddd2434ca5b61958db2e202a1fdcd7302",
+      "segmentsRead": [
+        0,
+        38
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1440,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1560.json",
+      "sha256": "e68c23bc78191e9a71fbe8497912d062869f35a3253431e3171e602c39a125e7",
+      "segmentsRead": [
+        0,
+        14
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1560,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-03-1680.json",
+      "sha256": "1de3706563bf51c6fe74f4ce99d0b725b2f59371005c509b9c7f49a2c980a62c",
+      "segmentsRead": [
+        0,
+        2
+      ],
+      "endExclusive": true,
+      "baseSeconds": 5400,
+      "windowOffsetSeconds": 1680,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0000.json",
+      "sha256": "6fb50d3073dfe021143dd478eea28b273bf4098fbc9e2a33452d405a37e7dac2",
+      "segmentsRead": [
+        0,
+        30
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 0,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0120.json",
+      "sha256": "d6abea20df1a16a61517fd970b1f8fa511a312ed73e7cc43b960760442f4d73c",
+      "segmentsRead": [
+        0,
+        1
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 120,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0240.json",
+      "sha256": "57f2d571377e2666d0949f8612245ecffa464e6e89e294d91ab02afbbfdeade8",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 240,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0360.json",
+      "sha256": "3f97ed350223976b967d149283fc4353de8c37226333fead48c0cdaad8aa2804",
+      "segmentsRead": [
+        0,
+        25
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 360,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0480.json",
+      "sha256": "26f759dc28bc97f36516f088ce9dff5b518cf41bed384817e45d51a5b9015d8a",
+      "segmentsRead": [
+        0,
+        37
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 480,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0600.json",
+      "sha256": "5506be9b0eaac512518579763b21e3327c8e5c4082061ba024b8e5c9c28b51e5",
+      "segmentsRead": [
+        0,
+        21
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 600,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0720.json",
+      "sha256": "897b33d2a194cd1e9d1f24fee28e25487e309fc5e8a56ed7eec0a965f691fc13",
+      "segmentsRead": [
+        0,
+        9
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 720,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0840.json",
+      "sha256": "d5933f0be43048412e747050e9990927150956b13697ee1c3ca5d7234f3a4e06",
+      "segmentsRead": [
+        0,
+        4
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 840,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-0960.json",
+      "sha256": "2b36d622b836da91059a738a402654b9d212204a6651ce119c523a2bdeabfd66",
+      "segmentsRead": [
+        0,
+        5
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 960,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1080.json",
+      "sha256": "216d154e2ffe641882f56b9bb9e9498edf38ccccd038f1c52f926a98d63a132e",
+      "segmentsRead": [
+        0,
+        37
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1080,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1200.json",
+      "sha256": "389dd08773583cbe1db4c9092d9b08c0ea9131ec21186e4d6b27755099198940",
+      "segmentsRead": [
+        0,
+        14
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1200,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1320.json",
+      "sha256": "76eea21e846d0170e38a8f008f2e9ef4eaedde15ee54916f99e69d277cb04d3f",
+      "segmentsRead": [
+        0,
+        3
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1320,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1440.json",
+      "sha256": "d4bd0c6634cef6f27b37ea659949cd9cbb1d449f638cadd736c64a335368871a",
+      "segmentsRead": [
+        0,
+        3
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1440,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1560.json",
+      "sha256": "e8349a144d04d3d388f4826879d9eed6acaddae748570896776b986480fe9ebe",
+      "segmentsRead": [
+        0,
+        14
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1560,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    },
+    {
+      "file": "bounded-06-1680.json",
+      "sha256": "015ffe0ecc228cafd518607614925183bab166253378967bebab3f8f29c7b60c",
+      "segmentsRead": [
+        0,
+        35
+      ],
+      "endExclusive": true,
+      "baseSeconds": 10800,
+      "windowOffsetSeconds": 1680,
+      "finding": "Music labels/effects or lyrics only; no intelligible match commentary recovered in this window."
+    }
+  ],
+  "findings": [
+    {
+      "chunk": 22,
+      "sourceSeconds": [
+        39600,
+        41400
+      ],
+      "result": "All15bounded windows read. No intelligible match commentary recovered; music labels/lyrics only. This does not establish audiovisual absence."
+    },
+    {
+      "chunk": 23,
+      "result": "Round9introduction recovered starting source11:48:30. WindByakko versusWaterGenbu. Introduced names match officialround9pairing21:Bayabayashi16112(JP) versusRoyan7610(TW), official1–2. No outcome inferred into observedgameplay.",
+      "evidence": [
+        "bounded-23-1080.json segment1",
+        "bounded-23-1200.json segment32",
+        "omnidex-snapshot.json pairingsByRound[8] pairing21"
+      ]
+    },
+    {
+      "chunk": 23,
+      "sourceSeconds": [
+        41400,
+        42898
+      ],
+      "result": "All13bounded windows read. Music through initial windows, then round9introduction11:48:30 and gameplay11:52:52.1. Recording ends during opening11:54:58. No gamefinish recovered; no gamewinner inferred from official1–2result."
+    },
+    {
+      "round": 9,
+      "result": "Independent beat recheck confirms all3openingbeats. Decklabel limited toWindByakko: champion is noisy GoyaCSR; no need to resolve it for this partial recap. WaterGenbu explicitly named."
+    },
+    {
+      "chunk": 3,
+      "sourceSeconds": [
+        5400,
+        7200
+      ],
+      "result": "All15bounded windows read. Opening interview thanks already covered, then music/effects/lyrics; no new intelligible match commentary recovered. Repetitive thank-you ASR ignored, not treated as meaningful newcontent."
+    },
+    {
+      "chunk": 6,
+      "sourceSeconds": [
+        10800,
+        12600
+      ],
+      "result": "All15bounded windows read. No intelligible match commentary recovered; music/effects/lyrics only. This does not establish audiovisual absence."
+    }
+  ],
+  "transcriptSegmentsToInclude": [
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 1,
+      "startSeconds": 42510.0,
+      "endSeconds": 42531.12,
+      "originalText": "Hello, welcome back everyone to Asen Osaka. I'm joining our week. Here we are going to",
+      "text": "Hello, welcome back everyone to Asen Osaka. I'm joining our week. Here we are going to"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 2,
+      "startSeconds": 42531.12,
+      "endSeconds": 42535.12,
+      "originalText": "be bringing you the last round of today. How you feeling so far?",
+      "text": "be bringing you the last round of today. How you feeling so far?"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 3,
+      "startSeconds": 42535.12,
+      "endSeconds": 42540.64,
+      "originalText": "It has been a long long day of work. It is now I think close to 9 p.m. in Osaka here.",
+      "text": "It has been a long long day of work. It is now I think close to 9 p.m. in Osaka here."
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 4,
+      "startSeconds": 42540.64,
+      "endSeconds": 42545.52,
+      "originalText": "It is very cold outside and it does not help that it's Halloween so it's a bit of a spooky",
+      "text": "It is very cold outside and it does not help that it's Halloween so it's a bit of a spooky"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 5,
+      "startSeconds": 42545.52,
+      "endSeconds": 42550.8,
+      "originalText": "atmosphere too. Spooky cold atmosphere you are right. But it will be even spooky for our players",
+      "text": "atmosphere too. Spooky cold atmosphere you are right. But it will be even spooky for our players"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 6,
+      "startSeconds": 42550.8,
+      "endSeconds": 42554.88,
+      "originalText": "that are on the stream table because they are going to be playing for their win and in to get",
+      "text": "that are on the stream table because they are going to be playing for their win and in to get"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 7,
+      "startSeconds": 42554.88,
+      "endSeconds": 42560.48,
+      "originalText": "that regal inquisitive CPR. Exactly. I believe they probably are extreme I want to say because",
+      "text": "that regal inquisitive CPR. Exactly. I believe they probably are extreme I want to say because"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 8,
+      "startSeconds": 42560.48,
+      "endSeconds": 42568.48,
+      "originalText": "You are guaranteed the top day 2 if you have 18 points so you just need to secure 6 wins and total",
+      "text": "You are guaranteed the top day 2 if you have 18 points so you just need to secure 6 wins and total"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 9,
+      "startSeconds": 42568.48,
+      "endSeconds": 42575.48,
+      "originalText": "and you have a really really interesting matchup here a battle of 2 same lineage but different type of fate stone",
+      "text": "and you have a really really interesting matchup here a battle of 2 same lineage but different type of fate stone"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 10,
+      "startSeconds": 42575.48,
+      "endSeconds": 42581.48,
+      "originalText": "we have on the left well on the left one here we have the fate stone of ammo",
+      "text": "we have on the left well on the left one here we have the fate stone of ammo"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 11,
+      "startSeconds": 42581.48,
+      "endSeconds": 42585.48,
+      "originalText": "ammo fizzo basically Biaku and the other one will be just a fire fate stone",
+      "text": "ammo fizzo basically Biaku and the other one will be just a fire fate stone"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 12,
+      "startSeconds": 42585.48,
+      "endSeconds": 42587.48,
+      "originalText": "I am a",
+      "text": "I am a"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 13,
+      "startSeconds": 42587.48,
+      "endSeconds": 42589.48,
+      "originalText": "Genboo",
+      "text": "Genboo"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 14,
+      "startSeconds": 42589.48,
+      "endSeconds": 42595.6,
+      "originalText": "Black tortoise with the blue deck and the white tiger with the green deck winded vehicle and",
+      "text": "Black tortoise with the blue deck and the white tiger with the green deck winded vehicle and"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 15,
+      "startSeconds": 42596.12,
+      "endSeconds": 42602.72,
+      "originalText": "Water Genboo. Of course, I am a water deck enjoyer. Although I am also a vanitas enjoyer",
+      "text": "Water Genboo. Of course, I am a water deck enjoyer. Although I am also a vanitas enjoyer"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 0,
+      "startSeconds": 42600.0,
+      "endSeconds": 42604.0,
+      "originalText": "I'm also a Vanitas enjoyer, so I'm a bit in the middle.",
+      "text": "I'm also a Vanitas enjoyer, so I'm a bit in the middle."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 1,
+      "startSeconds": 42604.0,
+      "endSeconds": 42608.0,
+      "originalText": "I technically have more wind and water in my lineage, so let's go team back.",
+      "text": "I technically have more wind and water in my lineage, so let's go team back."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 2,
+      "startSeconds": 42608.0,
+      "endSeconds": 42612.0,
+      "originalText": "I think I personally volunteer with Tiger 98.",
+      "text": "I think I personally volunteer with Tiger 98."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 3,
+      "startSeconds": 42612.0,
+      "endSeconds": 42614.0,
+      "originalText": "I wish to speak to you.",
+      "text": "I wish to speak to you."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 4,
+      "startSeconds": 42614.0,
+      "endSeconds": 42616.0,
+      "originalText": "Awesome!",
+      "text": "Awesome!"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 5,
+      "startSeconds": 42616.0,
+      "endSeconds": 42620.0,
+      "originalText": "Not suspicious manifestation.",
+      "text": "Not suspicious manifestation."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 6,
+      "startSeconds": 42620.0,
+      "endSeconds": 42626.0,
+      "originalText": "You support Tiger, Malaya Tiger, Gom, Malayu, let's go.",
+      "text": "You support Tiger, Malaya Tiger, Gom, Malayu, let's go."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 7,
+      "startSeconds": 42626.0,
+      "endSeconds": 42628.96,
+      "originalText": "just talk about, oh there's no bias aside, I don't think that internal",
+      "text": "just talk about, oh there's no bias aside, I don't think that internal"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 8,
+      "startSeconds": 42628.96,
+      "endSeconds": 42633.2,
+      "originalText": "this matter is really interesting because I would call Biako the successor of",
+      "text": "this matter is really interesting because I would call Biako the successor of"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 9,
+      "startSeconds": 42633.2,
+      "endSeconds": 42637.26,
+      "originalText": "Seju because they both are using the wind element and they have similar",
+      "text": "Seju because they both are using the wind element and they have similar"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 10,
+      "startSeconds": 42637.26,
+      "endSeconds": 42642.0,
+      "originalText": "places. The only difference is that Seju was always over picked over Biako",
+      "text": "places. The only difference is that Seju was always over picked over Biako"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 11,
+      "startSeconds": 42642.0,
+      "endSeconds": 42646.52,
+      "originalText": "one reason only. You can flip your stone faster than any other deck. You can",
+      "text": "one reason only. You can flip your stone faster than any other deck. You can"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 12,
+      "startSeconds": 42646.52,
+      "endSeconds": 42650.08,
+      "originalText": "reach a quest counter faster than any deck. However, you're still using the base of a",
+      "text": "reach a quest counter faster than any deck. However, you're still using the base of a"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 13,
+      "startSeconds": 42650.08,
+      "endSeconds": 42653.28,
+      "originalText": "wind deck. So, I think speaking is still there. However, there is a new addition to",
+      "text": "wind deck. So, I think speaking is still there. However, there is a new addition to"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 14,
+      "startSeconds": 42653.28,
+      "endSeconds": 42658.44,
+      "originalText": "the Biacosteq since Melbourne that we've seen the people playing quite a while there, right",
+      "text": "the Biacosteq since Melbourne that we've seen the people playing quite a while there, right"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 15,
+      "startSeconds": 42658.44,
+      "endSeconds": 42659.84,
+      "originalText": "here we will do Jinzoo.",
+      "text": "here we will do Jinzoo."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 16,
+      "startSeconds": 42659.84,
+      "endSeconds": 42664.92,
+      "originalText": "Yeah, that's right. The Proxius vault has given a very nice buff to this deck. It really needed",
+      "text": "Yeah, that's right. The Proxius vault has given a very nice buff to this deck. It really needed"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 17,
+      "startSeconds": 42664.92,
+      "endSeconds": 42665.92,
+      "originalText": "a bit of help, honestly.",
+      "text": "a bit of help, honestly."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 18,
+      "startSeconds": 42665.92,
+      "endSeconds": 42666.92,
+      "originalText": "Really strong, yeah.",
+      "text": "Really strong, yeah."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 19,
+      "startSeconds": 42666.92,
+      "endSeconds": 42671.28,
+      "originalText": "It was struggling to really get the quest counters because you needed to suppress things",
+      "text": "It was struggling to really get the quest counters because you needed to suppress things"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 20,
+      "startSeconds": 42671.28,
+      "endSeconds": 42675.6,
+      "originalText": "to get the quest counters. It's like, have you seen that meme where some guy just exists",
+      "text": "to get the quest counters. It's like, have you seen that meme where some guy just exists"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 21,
+      "startSeconds": 42675.6,
+      "endSeconds": 42679.48,
+      "originalText": "and then the other guy needs to jump through the hoops like a circus clown and that's",
+      "text": "and then the other guy needs to jump through the hoops like a circus clown and that's"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 22,
+      "startSeconds": 42679.48,
+      "endSeconds": 42684.48,
+      "originalText": "Yeah, some people just need to write a train to A and B.",
+      "text": "Yeah, some people just need to write a train to A and B."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 23,
+      "startSeconds": 42684.48,
+      "endSeconds": 42689.48,
+      "originalText": "While this deck needs to write a train, take a bicycle, swing across the ocean, complete",
+      "text": "While this deck needs to write a train, take a bicycle, swing across the ocean, complete"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 24,
+      "startSeconds": 42689.48,
+      "endSeconds": 42694.48,
+      "originalText": "nine questions of the Hercules trial, wherever, and then you can get the equal route there.",
+      "text": "nine questions of the Hercules trial, wherever, and then you can get the equal route there."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 25,
+      "startSeconds": 42694.48,
+      "endSeconds": 42698.48,
+      "originalText": "But basically what we're saying is that to allow to get the equivalent power level of",
+      "text": "But basically what we're saying is that to allow to get the equivalent power level of"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 26,
+      "startSeconds": 42698.48,
+      "endSeconds": 42701.48,
+      "originalText": "the vehicle with area of the day in the middle game, you need to go to a lot of hoops.",
+      "text": "the vehicle with area of the day in the middle game, you need to go to a lot of hoops."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 27,
+      "startSeconds": 42701.48,
+      "endSeconds": 42704.48,
+      "originalText": "But now, what I think is that it doesn't really fix the deck, right?",
+      "text": "But now, what I think is that it doesn't really fix the deck, right?"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 28,
+      "startSeconds": 42704.48,
+      "endSeconds": 42706.48,
+      "originalText": "It just gives that opportunity with a plate of deck.",
+      "text": "It just gives that opportunity with a plate of deck."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 29,
+      "startSeconds": 42706.48,
+      "endSeconds": 42710.28,
+      "originalText": "way to play the deck and I think we are going to be jumping a game right now right here the",
+      "text": "way to play the deck and I think we are going to be jumping a game right now right here the"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 30,
+      "startSeconds": 42710.28,
+      "endSeconds": 42714.32,
+      "originalText": "last game for today who will take it will be a tortoise or a tiger.",
+      "text": "last game for today who will take it will be a tortoise or a tiger."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 31,
+      "startSeconds": 42714.32,
+      "endSeconds": 42719.48,
+      "originalText": "Let's see it's going to be either of these animals on the stage coming up really really",
+      "text": "Let's see it's going to be either of these animals on the stage coming up really really"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 32,
+      "startSeconds": 42719.48,
+      "endSeconds": 42725.6,
+      "originalText": "soon and that is by Abayashi from Japan versus Rogen from Taiwan.",
+      "text": "soon and that is by Abayashi from Japan versus Rogen from Taiwan."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 0,
+      "startSeconds": 42720.0,
+      "endSeconds": 42725.0,
+      "originalText": "that is by Abayashi from Japan versus Rogen from Taiwan.",
+      "text": "that is by Abayashi from Japan versus Rogen from Taiwan."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 1,
+      "startSeconds": 42725.56,
+      "endSeconds": 42728.36,
+      "originalText": "These are players that are also not new to the stream tables.",
+      "text": "These are players that are also not new to the stream tables."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 2,
+      "startSeconds": 42728.36,
+      "endSeconds": 42730.72,
+      "originalText": "Actually 6-2 lines, so neither of these players",
+      "text": "Actually 6-2 lines, so neither of these players"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 3,
+      "startSeconds": 42730.72,
+      "endSeconds": 42732.64,
+      "originalText": "are playing for the win and in both already locked in.",
+      "text": "are playing for the win and in both already locked in."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 4,
+      "startSeconds": 42732.64,
+      "endSeconds": 42735.76,
+      "originalText": "I guess they're playing for a higher score, I believe,",
+      "text": "I guess they're playing for a higher score, I believe,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 5,
+      "startSeconds": 42735.76,
+      "endSeconds": 42738.08,
+      "originalText": "because either way they are locked for day two.",
+      "text": "because either way they are locked for day two."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 6,
+      "startSeconds": 42738.08,
+      "endSeconds": 42739.8,
+      "originalText": "But then again, this is not the end of the road.",
+      "text": "But then again, this is not the end of the road."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 7,
+      "startSeconds": 42739.8,
+      "endSeconds": 42741.84,
+      "originalText": "From what I heard, all the mathematicians",
+      "text": "From what I heard, all the mathematicians"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 8,
+      "startSeconds": 42741.84,
+      "endSeconds": 42745.56,
+      "originalText": "had told me X trees also a chance of bobbing the top eight X.",
+      "text": "had told me X trees also a chance of bobbing the top eight X."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 9,
+      "startSeconds": 42745.56,
+      "endSeconds": 42748.08,
+      "originalText": "So this is their playing for their life or top eight.",
+      "text": "So this is their playing for their life or top eight."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 10,
+      "startSeconds": 42748.08,
+      "endSeconds": 42750.56,
+      "originalText": "Apparently X2 is guaranteed top-way.",
+      "text": "Apparently X2 is guaranteed top-way."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 11,
+      "startSeconds": 42750.56,
+      "endSeconds": 42754.02,
+      "originalText": "Like, not today obviously, but if you play all the way to morrow for firearms, if you're",
+      "text": "Like, not today obviously, but if you play all the way to morrow for firearms, if you're"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 12,
+      "startSeconds": 42754.02,
+      "endSeconds": 42757.62,
+      "originalText": "X2 all the way, generally that's why I make stop it.",
+      "text": "X2 all the way, generally that's why I make stop it."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 13,
+      "startSeconds": 42757.62,
+      "endSeconds": 42760.38,
+      "originalText": "But, uh, this is of course a larger tournament.",
+      "text": "But, uh, this is of course a larger tournament."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 14,
+      "startSeconds": 42760.38,
+      "endSeconds": 42762.76,
+      "originalText": "It is a 618 player tournament.",
+      "text": "It is a 618 player tournament."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 15,
+      "startSeconds": 42762.76,
+      "endSeconds": 42765.14,
+      "originalText": "Uh, so maybe the math does not check out.",
+      "text": "Uh, so maybe the math does not check out."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 16,
+      "startSeconds": 42765.14,
+      "endSeconds": 42768.86,
+      "originalText": "We'll have to look at Akihabara standings to remind ourselves what's the lowest point",
+      "text": "We'll have to look at Akihabara standings to remind ourselves what's the lowest point"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 17,
+      "startSeconds": 42768.86,
+      "endSeconds": 42772.1,
+      "originalText": "total that made it into the top-way cut and got themselves a spirit.",
+      "text": "total that made it into the top-way cut and got themselves a spirit."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 18,
+      "startSeconds": 42772.1,
+      "endSeconds": 42775.86,
+      "originalText": "But, Biabayashi starting us off immediately with a BC.",
+      "text": "But, Biabayashi starting us off immediately with a BC."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 19,
+      "startSeconds": 42775.86,
+      "endSeconds": 42781.14,
+      "originalText": "wins it looks like Rohan had a imbued factor of rain we didn't miss what exactly is going",
+      "text": "wins it looks like Rohan had a imbued factor of rain we didn't miss what exactly is going"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 20,
+      "startSeconds": 42781.14,
+      "endSeconds": 42786.66,
+      "originalText": "to be the Carson memory imbued but there is now the fabled emerald fade stone hitting",
+      "text": "to be the Carson memory imbued but there is now the fabled emerald fade stone hitting"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 21,
+      "startSeconds": 42786.66,
+      "endSeconds": 42792.34,
+      "originalText": "the board also a very nice Goya CSR let's see Rohan can match the bling at least if you",
+      "text": "the board also a very nice Goya CSR let's see Rohan can match the bling at least if you"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 22,
+      "startSeconds": 42792.34,
+      "endSeconds": 42795.86,
+      "originalText": "can't match the quest counters. The interesting choice of divine relic as well as you see",
+      "text": "can't match the quest counters. The interesting choice of divine relic as well as you see"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 23,
+      "startSeconds": 42795.86,
+      "endSeconds": 42801.38,
+      "originalText": "Bailer actually is using the looking glass which is a really popular choice I mean even",
+      "text": "Bailer actually is using the looking glass which is a really popular choice I mean even"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 24,
+      "startSeconds": 42801.38,
+      "endSeconds": 42804.58,
+      "originalText": "without the card that allows you to draw to,",
+      "text": "without the card that allows you to draw to,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 25,
+      "startSeconds": 42804.58,
+      "endSeconds": 42806.62,
+      "originalText": "they do have the replacement re-center archive,",
+      "text": "they do have the replacement re-center archive,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 26,
+      "startSeconds": 42806.62,
+      "endSeconds": 42807.62,
+      "originalText": "which is a good substitute.",
+      "text": "which is a good substitute."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 27,
+      "startSeconds": 42807.62,
+      "endSeconds": 42812.66,
+      "originalText": "Well, Royaln right here, we can see it's chosen to use",
+      "text": "Well, Royaln right here, we can see it's chosen to use"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 28,
+      "startSeconds": 42812.66,
+      "endSeconds": 42816.7,
+      "originalText": "the GCR, a standard choice for most,",
+      "text": "the GCR, a standard choice for most,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 29,
+      "startSeconds": 42816.7,
+      "endSeconds": 42817.9,
+      "originalText": "let me just take a look, let me just say.",
+      "text": "let me just take a look, let me just say."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 30,
+      "startSeconds": 42817.9,
+      "endSeconds": 42819.9,
+      "originalText": "- Yeah, it uses that a lot.",
+      "text": "- Yeah, it uses that a lot."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 31,
+      "startSeconds": 42819.9,
+      "endSeconds": 42821.5,
+      "originalText": "- Royaln here, interestingly,",
+      "text": "- Royaln here, interestingly,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 32,
+      "startSeconds": 42821.5,
+      "endSeconds": 42823.42,
+      "originalText": "the list just looks very, very,",
+      "text": "the list just looks very, very,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 33,
+      "startSeconds": 42823.42,
+      "endSeconds": 42824.86,
+      "originalText": "I would say standard,",
+      "text": "I would say standard,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 34,
+      "startSeconds": 42824.86,
+      "endSeconds": 42827.78,
+      "originalText": "the rest of the play where you can play an L.I. game plan",
+      "text": "the rest of the play where you can play an L.I. game plan"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 35,
+      "startSeconds": 42827.78,
+      "endSeconds": 42829.74,
+      "originalText": "or you can play the gamble into the field.",
+      "text": "or you can play the gamble into the field."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 36,
+      "startSeconds": 42829.74,
+      "endSeconds": 42835.74,
+      "originalText": "Or of course you have the very, we just saw it earlier today, the Poladef.",
+      "text": "Or of course you have the very, we just saw it earlier today, the Poladef."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 37,
+      "startSeconds": 42835.74,
+      "endSeconds": 42841.74,
+      "originalText": "Yeah, of course the factor of Poladef or the Fugue or the strategy of Mjordice also available in the deck.",
+      "text": "Yeah, of course the factor of Poladef or the Fugue or the strategy of Mjordice also available in the deck."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 0,
+      "startSeconds": 42840.0,
+      "endSeconds": 42845.04,
+      "originalText": "available in the deck. Moving on from today, there will be open deck list for all players,",
+      "text": "available in the deck. Moving on from today, there will be open deck list for all players,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 1,
+      "startSeconds": 42845.04,
+      "endSeconds": 42849.04,
+      "originalText": "so we will be able to play around that correctly. But in the meantime for now,",
+      "text": "so we will be able to play around that correctly. But in the meantime for now,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 2,
+      "startSeconds": 42849.04,
+      "endSeconds": 42855.04,
+      "originalText": "I'm not sure what exactly it is. In the deck, there's no good mill, milling, the Polydeaf,",
+      "text": "I'm not sure what exactly it is. In the deck, there's no good mill, milling, the Polydeaf,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 3,
+      "startSeconds": 42855.04,
+      "endSeconds": 42860.8,
+      "originalText": "and also the Proform Paladin, really painful. You want to be milling cards like floating memory",
+      "text": "and also the Proform Paladin, really painful. You want to be milling cards like floating memory"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 4,
+      "startSeconds": 42860.8,
+      "endSeconds": 42865.36,
+      "originalText": "right now. Yes, or the seaside ring leader, the BBC banished to go up to level one. The",
+      "text": "right now. Yes, or the seaside ring leader, the BBC banished to go up to level one. The"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 5,
+      "startSeconds": 42865.36,
+      "endSeconds": 42870.36,
+      "originalText": "The Portentas Tangu is the materialization for Biobayashi who gets a second quest counter.",
+      "text": "The Portentas Tangu is the materialization for Biobayashi who gets a second quest counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 6,
+      "startSeconds": 42870.36,
+      "endSeconds": 42873.36,
+      "originalText": "Yeah, and I believe it has suppressed the Tangu here.",
+      "text": "Yeah, and I believe it has suppressed the Tangu here."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 7,
+      "startSeconds": 42873.36,
+      "endSeconds": 42876.36,
+      "originalText": "This means that on Enter you will be giving another quest counter.",
+      "text": "This means that on Enter you will be giving another quest counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 8,
+      "startSeconds": 42876.36,
+      "endSeconds": 42881.36,
+      "originalText": "Yeah, it goes up to Tree already and that means maybe with a change role on the following turn,",
+      "text": "Yeah, it goes up to Tree already and that means maybe with a change role on the following turn,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 9,
+      "startSeconds": 42881.36,
+      "endSeconds": 42884.36,
+      "originalText": "we can see Biako actually makes its advent on the board already.",
+      "text": "we can see Biako actually makes its advent on the board already."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 10,
+      "startSeconds": 42884.36,
+      "endSeconds": 42889.36,
+      "originalText": "Meanwhile, Ruyang goes for his own Tangu, will set up the fourth counter.",
+      "text": "Meanwhile, Ruyang goes for his own Tangu, will set up the fourth counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 11,
+      "startSeconds": 42889.36,
+      "endSeconds": 42894.36,
+      "originalText": "And interestingly, I think Gamboo actually matches up quite well into Biako decks in general.",
+      "text": "And interestingly, I think Gamboo actually matches up quite well into Biako decks in general."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 12,
+      "startSeconds": 42894.36,
+      "endSeconds": 42897.56,
+      "originalText": "In general, you get a big old hunter and...",
+      "text": "In general, you get a big old hunter and..."
+    }
+  ],
+  "newGameplay": [
+    {
+      "round": 9,
+      "rangeSeconds": [
+        42772.1,
+        42898
+      ],
+      "status": "Partial opening game1 only; official result known separately."
+    }
+  ],
+  "reviewMethod": "Sequential reading of every listed bounded whisper.cpp base.en recovery. Offsets are source-relative within 30-minute chunks; baseSeconds gives chunk start. Context0/no fallback mode; this is transcript review, not direct audiovisual review.",
+  "status": "complete",
+  "normalizedRecoveredSegments": [
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 1,
+      "startSeconds": 42510.0,
+      "endSeconds": 42531.12,
+      "originalText": "Hello, welcome back everyone to Asen Osaka. I'm joining our week. Here we are going to",
+      "text": "Hello, welcome back everyone to Asen Osaka. I'm joining our week. Here we are going to"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 2,
+      "startSeconds": 42531.12,
+      "endSeconds": 42535.12,
+      "originalText": "be bringing you the last round of today. How you feeling so far?",
+      "text": "be bringing you the last round of today. How you feeling so far?"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 3,
+      "startSeconds": 42535.12,
+      "endSeconds": 42540.64,
+      "originalText": "It has been a long long day of work. It is now I think close to 9 p.m. in Osaka here.",
+      "text": "It has been a long long day of work. It is now I think close to 9 p.m. in Osaka here."
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 4,
+      "startSeconds": 42540.64,
+      "endSeconds": 42545.52,
+      "originalText": "It is very cold outside and it does not help that it's Halloween so it's a bit of a spooky",
+      "text": "It is very cold outside and it does not help that it's Halloween so it's a bit of a spooky"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 5,
+      "startSeconds": 42545.52,
+      "endSeconds": 42550.8,
+      "originalText": "atmosphere too. Spooky cold atmosphere you are right. But it will be even spooky for our players",
+      "text": "atmosphere too. Spooky cold atmosphere you are right. But it will be even spooky for our players"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 6,
+      "startSeconds": 42550.8,
+      "endSeconds": 42554.88,
+      "originalText": "that are on the stream table because they are going to be playing for their win and in to get",
+      "text": "that are on the stream table because they are going to be playing for their win and in to get"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 7,
+      "startSeconds": 42554.88,
+      "endSeconds": 42560.48,
+      "originalText": "that regal inquisitive CPR. Exactly. I believe they probably are extreme I want to say because",
+      "text": "that regal inquisitive CPR. Exactly. I believe they probably are extreme I want to say because"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 8,
+      "startSeconds": 42560.48,
+      "endSeconds": 42568.48,
+      "originalText": "You are guaranteed the top day 2 if you have 18 points so you just need to secure 6 wins and total",
+      "text": "You are guaranteed the top day 2 if you have 18 points so you just need to secure 6 wins and total"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 9,
+      "startSeconds": 42568.48,
+      "endSeconds": 42575.48,
+      "originalText": "and you have a really really interesting matchup here a battle of 2 same lineage but different type of fate stone",
+      "text": "and you have a really really interesting matchup here a battle of 2 same lineage but different type of fate stone"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 10,
+      "startSeconds": 42575.48,
+      "endSeconds": 42581.48,
+      "originalText": "we have on the left well on the left one here we have the fate stone of ammo",
+      "text": "we have on the left well on the left one here we have the fate stone of ammo"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 11,
+      "startSeconds": 42581.48,
+      "endSeconds": 42585.48,
+      "originalText": "ammo fizzo basically Biaku and the other one will be just a fire fate stone",
+      "text": "ammo fizzo basically Byakko and the other one will be just a fire fate stone"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 12,
+      "startSeconds": 42585.48,
+      "endSeconds": 42587.48,
+      "originalText": "I am a",
+      "text": "I am a"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 13,
+      "startSeconds": 42587.48,
+      "endSeconds": 42589.48,
+      "originalText": "Genboo",
+      "text": "Genbu"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 14,
+      "startSeconds": 42589.48,
+      "endSeconds": 42595.6,
+      "originalText": "Black tortoise with the blue deck and the white tiger with the green deck winded vehicle and",
+      "text": "Black tortoise with the blue deck and the white tiger with the green deck winded vehicle and"
+    },
+    {
+      "sourceFile": "bounded-23-1080.json",
+      "sourceIndex": 15,
+      "startSeconds": 42596.12,
+      "endSeconds": 42602.72,
+      "originalText": "Water Genboo. Of course, I am a water deck enjoyer. Although I am also a vanitas enjoyer",
+      "text": "Water Genbu. Of course, I am a water deck enjoyer. Although I am also a vanitas enjoyer"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 0,
+      "startSeconds": 42600.0,
+      "endSeconds": 42604.0,
+      "originalText": "I'm also a Vanitas enjoyer, so I'm a bit in the middle.",
+      "text": "I'm also a Vanitas enjoyer, so I'm a bit in the middle."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 1,
+      "startSeconds": 42604.0,
+      "endSeconds": 42608.0,
+      "originalText": "I technically have more wind and water in my lineage, so let's go team back.",
+      "text": "I technically have more wind and water in my lineage, so let's go team back."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 2,
+      "startSeconds": 42608.0,
+      "endSeconds": 42612.0,
+      "originalText": "I think I personally volunteer with Tiger 98.",
+      "text": "I think I personally volunteer with Tiger 98."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 3,
+      "startSeconds": 42612.0,
+      "endSeconds": 42614.0,
+      "originalText": "I wish to speak to you.",
+      "text": "I wish to speak to you."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 4,
+      "startSeconds": 42614.0,
+      "endSeconds": 42616.0,
+      "originalText": "Awesome!",
+      "text": "Awesome!"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 5,
+      "startSeconds": 42616.0,
+      "endSeconds": 42620.0,
+      "originalText": "Not suspicious manifestation.",
+      "text": "Not suspicious manifestation."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 6,
+      "startSeconds": 42620.0,
+      "endSeconds": 42626.0,
+      "originalText": "You support Tiger, Malaya Tiger, Gom, Malayu, let's go.",
+      "text": "You support Tiger, Malaya Tiger, Gom, Malayu, let's go."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 7,
+      "startSeconds": 42626.0,
+      "endSeconds": 42628.96,
+      "originalText": "just talk about, oh there's no bias aside, I don't think that internal",
+      "text": "just talk about, oh there's no bias aside, I don't think that internal"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 8,
+      "startSeconds": 42628.96,
+      "endSeconds": 42633.2,
+      "originalText": "this matter is really interesting because I would call Biako the successor of",
+      "text": "this matter is really interesting because I would call Byakko the successor of"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 9,
+      "startSeconds": 42633.2,
+      "endSeconds": 42637.26,
+      "originalText": "Seju because they both are using the wind element and they have similar",
+      "text": "Seju because they both are using the wind element and they have similar"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 10,
+      "startSeconds": 42637.26,
+      "endSeconds": 42642.0,
+      "originalText": "places. The only difference is that Seju was always over picked over Biako",
+      "text": "places. The only difference is that Seju was always over picked over Byakko"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 11,
+      "startSeconds": 42642.0,
+      "endSeconds": 42646.52,
+      "originalText": "one reason only. You can flip your stone faster than any other deck. You can",
+      "text": "one reason only. You can flip your stone faster than any other deck. You can"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 12,
+      "startSeconds": 42646.52,
+      "endSeconds": 42650.08,
+      "originalText": "reach a quest counter faster than any deck. However, you're still using the base of a",
+      "text": "reach a quest counter faster than any deck. However, you're still using the base of a"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 13,
+      "startSeconds": 42650.08,
+      "endSeconds": 42653.28,
+      "originalText": "wind deck. So, I think speaking is still there. However, there is a new addition to",
+      "text": "wind deck. So, I think speaking is still there. However, there is a new addition to"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 14,
+      "startSeconds": 42653.28,
+      "endSeconds": 42658.44,
+      "originalText": "the Biacosteq since Melbourne that we've seen the people playing quite a while there, right",
+      "text": "the Byakko since Melbourne that we've seen the people playing quite a while there, right"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 15,
+      "startSeconds": 42658.44,
+      "endSeconds": 42659.84,
+      "originalText": "here we will do Jinzoo.",
+      "text": "here we will do Jinzoo."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 16,
+      "startSeconds": 42659.84,
+      "endSeconds": 42664.92,
+      "originalText": "Yeah, that's right. The Proxius vault has given a very nice buff to this deck. It really needed",
+      "text": "Yeah, that's right. The Proxius vault has given a very nice buff to this deck. It really needed"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 17,
+      "startSeconds": 42664.92,
+      "endSeconds": 42665.92,
+      "originalText": "a bit of help, honestly.",
+      "text": "a bit of help, honestly."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 18,
+      "startSeconds": 42665.92,
+      "endSeconds": 42666.92,
+      "originalText": "Really strong, yeah.",
+      "text": "Really strong, yeah."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 19,
+      "startSeconds": 42666.92,
+      "endSeconds": 42671.28,
+      "originalText": "It was struggling to really get the quest counters because you needed to suppress things",
+      "text": "It was struggling to really get the quest counters because you needed to suppress things"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 20,
+      "startSeconds": 42671.28,
+      "endSeconds": 42675.6,
+      "originalText": "to get the quest counters. It's like, have you seen that meme where some guy just exists",
+      "text": "to get the quest counters. It's like, have you seen that meme where some guy just exists"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 21,
+      "startSeconds": 42675.6,
+      "endSeconds": 42679.48,
+      "originalText": "and then the other guy needs to jump through the hoops like a circus clown and that's",
+      "text": "and then the other guy needs to jump through the hoops like a circus clown and that's"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 22,
+      "startSeconds": 42679.48,
+      "endSeconds": 42684.48,
+      "originalText": "Yeah, some people just need to write a train to A and B.",
+      "text": "Yeah, some people just need to write a train to A and B."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 23,
+      "startSeconds": 42684.48,
+      "endSeconds": 42689.48,
+      "originalText": "While this deck needs to write a train, take a bicycle, swing across the ocean, complete",
+      "text": "While this deck needs to write a train, take a bicycle, swing across the ocean, complete"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 24,
+      "startSeconds": 42689.48,
+      "endSeconds": 42694.48,
+      "originalText": "nine questions of the Hercules trial, wherever, and then you can get the equal route there.",
+      "text": "nine questions of the Hercules trial, wherever, and then you can get the equal route there."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 25,
+      "startSeconds": 42694.48,
+      "endSeconds": 42698.48,
+      "originalText": "But basically what we're saying is that to allow to get the equivalent power level of",
+      "text": "But basically what we're saying is that to allow to get the equivalent power level of"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 26,
+      "startSeconds": 42698.48,
+      "endSeconds": 42701.48,
+      "originalText": "the vehicle with area of the day in the middle game, you need to go to a lot of hoops.",
+      "text": "the vehicle with area of the day in the middle game, you need to go to a lot of hoops."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 27,
+      "startSeconds": 42701.48,
+      "endSeconds": 42704.48,
+      "originalText": "But now, what I think is that it doesn't really fix the deck, right?",
+      "text": "But now, what I think is that it doesn't really fix the deck, right?"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 28,
+      "startSeconds": 42704.48,
+      "endSeconds": 42706.48,
+      "originalText": "It just gives that opportunity with a plate of deck.",
+      "text": "It just gives that opportunity with a plate of deck."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 29,
+      "startSeconds": 42706.48,
+      "endSeconds": 42710.28,
+      "originalText": "way to play the deck and I think we are going to be jumping a game right now right here the",
+      "text": "way to play the deck and I think we are going to be jumping a game right now right here the"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 30,
+      "startSeconds": 42710.28,
+      "endSeconds": 42714.32,
+      "originalText": "last game for today who will take it will be a tortoise or a tiger.",
+      "text": "last game for today who will take it will be a tortoise or a tiger."
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 31,
+      "startSeconds": 42714.32,
+      "endSeconds": 42719.48,
+      "originalText": "Let's see it's going to be either of these animals on the stage coming up really really",
+      "text": "Let's see it's going to be either of these animals on the stage coming up really really"
+    },
+    {
+      "sourceFile": "bounded-23-1200.json",
+      "sourceIndex": 32,
+      "startSeconds": 42719.48,
+      "endSeconds": 42725.6,
+      "originalText": "soon and that is by Abayashi from Japan versus Rogen from Taiwan.",
+      "text": "soon and that is Bayabayashi from Japan versus Royan from Taiwan."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 0,
+      "startSeconds": 42720.0,
+      "endSeconds": 42725.0,
+      "originalText": "that is by Abayashi from Japan versus Rogen from Taiwan.",
+      "text": "that is Bayabayashi from Japan versus Royan from Taiwan."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 1,
+      "startSeconds": 42725.56,
+      "endSeconds": 42728.36,
+      "originalText": "These are players that are also not new to the stream tables.",
+      "text": "These are players that are also not new to the stream tables."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 2,
+      "startSeconds": 42728.36,
+      "endSeconds": 42730.72,
+      "originalText": "Actually 6-2 lines, so neither of these players",
+      "text": "Actually 6-2 lines, so neither of these players"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 3,
+      "startSeconds": 42730.72,
+      "endSeconds": 42732.64,
+      "originalText": "are playing for the win and in both already locked in.",
+      "text": "are playing for the win and in both already locked in."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 4,
+      "startSeconds": 42732.64,
+      "endSeconds": 42735.76,
+      "originalText": "I guess they're playing for a higher score, I believe,",
+      "text": "I guess they're playing for a higher score, I believe,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 5,
+      "startSeconds": 42735.76,
+      "endSeconds": 42738.08,
+      "originalText": "because either way they are locked for day two.",
+      "text": "because either way they are locked for day two."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 6,
+      "startSeconds": 42738.08,
+      "endSeconds": 42739.8,
+      "originalText": "But then again, this is not the end of the road.",
+      "text": "But then again, this is not the end of the road."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 7,
+      "startSeconds": 42739.8,
+      "endSeconds": 42741.84,
+      "originalText": "From what I heard, all the mathematicians",
+      "text": "From what I heard, all the mathematicians"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 8,
+      "startSeconds": 42741.84,
+      "endSeconds": 42745.56,
+      "originalText": "had told me X trees also a chance of bobbing the top eight X.",
+      "text": "had told me X trees also a chance of bobbing the top eight X."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 9,
+      "startSeconds": 42745.56,
+      "endSeconds": 42748.08,
+      "originalText": "So this is their playing for their life or top eight.",
+      "text": "So this is their playing for their life or top eight."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 10,
+      "startSeconds": 42748.08,
+      "endSeconds": 42750.56,
+      "originalText": "Apparently X2 is guaranteed top-way.",
+      "text": "Apparently X2 is guaranteed top-way."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 11,
+      "startSeconds": 42750.56,
+      "endSeconds": 42754.02,
+      "originalText": "Like, not today obviously, but if you play all the way to morrow for firearms, if you're",
+      "text": "Like, not today obviously, but if you play all the way to morrow for firearms, if you're"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 12,
+      "startSeconds": 42754.02,
+      "endSeconds": 42757.62,
+      "originalText": "X2 all the way, generally that's why I make stop it.",
+      "text": "X2 all the way, generally that's why I make stop it."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 13,
+      "startSeconds": 42757.62,
+      "endSeconds": 42760.38,
+      "originalText": "But, uh, this is of course a larger tournament.",
+      "text": "But, uh, this is of course a larger tournament."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 14,
+      "startSeconds": 42760.38,
+      "endSeconds": 42762.76,
+      "originalText": "It is a 618 player tournament.",
+      "text": "It is a 618 player tournament."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 15,
+      "startSeconds": 42762.76,
+      "endSeconds": 42765.14,
+      "originalText": "Uh, so maybe the math does not check out.",
+      "text": "Uh, so maybe the math does not check out."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 16,
+      "startSeconds": 42765.14,
+      "endSeconds": 42768.86,
+      "originalText": "We'll have to look at Akihabara standings to remind ourselves what's the lowest point",
+      "text": "We'll have to look at Akihabara standings to remind ourselves what's the lowest point"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 17,
+      "startSeconds": 42768.86,
+      "endSeconds": 42772.1,
+      "originalText": "total that made it into the top-way cut and got themselves a spirit.",
+      "text": "total that made it into the top-way cut and got themselves a spirit."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 18,
+      "startSeconds": 42772.1,
+      "endSeconds": 42775.86,
+      "originalText": "But, Biabayashi starting us off immediately with a BC.",
+      "text": "But, Bayabayashi starting us off immediately with a BC."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 19,
+      "startSeconds": 42775.86,
+      "endSeconds": 42781.14,
+      "originalText": "wins it looks like Rohan had a imbued factor of rain we didn't miss what exactly is going",
+      "text": "wins it looks like Royan had a imbued Fractal of Rain we didn't miss what exactly is going"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 20,
+      "startSeconds": 42781.14,
+      "endSeconds": 42786.66,
+      "originalText": "to be the Carson memory imbued but there is now the fabled emerald fade stone hitting",
+      "text": "to be the Carson memory imbued but there is now the Fabled Emerald Fatestone hitting"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 21,
+      "startSeconds": 42786.66,
+      "endSeconds": 42792.34,
+      "originalText": "the board also a very nice Goya CSR let's see Rohan can match the bling at least if you",
+      "text": "the board also a very nice Goya CSR let's see Royan can match the bling at least if you"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 22,
+      "startSeconds": 42792.34,
+      "endSeconds": 42795.86,
+      "originalText": "can't match the quest counters. The interesting choice of divine relic as well as you see",
+      "text": "can't match the quest counters. The interesting choice of divine relic as well as you see"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 23,
+      "startSeconds": 42795.86,
+      "endSeconds": 42801.38,
+      "originalText": "Bailer actually is using the looking glass which is a really popular choice I mean even",
+      "text": "Bailer actually is using the looking glass which is a really popular choice I mean even"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 24,
+      "startSeconds": 42801.38,
+      "endSeconds": 42804.58,
+      "originalText": "without the card that allows you to draw to,",
+      "text": "without the card that allows you to draw to,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 25,
+      "startSeconds": 42804.58,
+      "endSeconds": 42806.62,
+      "originalText": "they do have the replacement re-center archive,",
+      "text": "they do have the replacement re-center archive,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 26,
+      "startSeconds": 42806.62,
+      "endSeconds": 42807.62,
+      "originalText": "which is a good substitute.",
+      "text": "which is a good substitute."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 27,
+      "startSeconds": 42807.62,
+      "endSeconds": 42812.66,
+      "originalText": "Well, Royaln right here, we can see it's chosen to use",
+      "text": "Well, Royan right here, we can see it's chosen to use"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 28,
+      "startSeconds": 42812.66,
+      "endSeconds": 42816.7,
+      "originalText": "the GCR, a standard choice for most,",
+      "text": "the GCR, a standard choice for most,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 29,
+      "startSeconds": 42816.7,
+      "endSeconds": 42817.9,
+      "originalText": "let me just take a look, let me just say.",
+      "text": "let me just take a look, let me just say."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 30,
+      "startSeconds": 42817.9,
+      "endSeconds": 42819.9,
+      "originalText": "- Yeah, it uses that a lot.",
+      "text": "- Yeah, it uses that a lot."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 31,
+      "startSeconds": 42819.9,
+      "endSeconds": 42821.5,
+      "originalText": "- Royaln here, interestingly,",
+      "text": "- Royan here, interestingly,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 32,
+      "startSeconds": 42821.5,
+      "endSeconds": 42823.42,
+      "originalText": "the list just looks very, very,",
+      "text": "the list just looks very, very,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 33,
+      "startSeconds": 42823.42,
+      "endSeconds": 42824.86,
+      "originalText": "I would say standard,",
+      "text": "I would say standard,"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 34,
+      "startSeconds": 42824.86,
+      "endSeconds": 42827.78,
+      "originalText": "the rest of the play where you can play an L.I. game plan",
+      "text": "the rest of the play where you can play an L.I. game plan"
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 35,
+      "startSeconds": 42827.78,
+      "endSeconds": 42829.74,
+      "originalText": "or you can play the gamble into the field.",
+      "text": "or you can play the gamble into the field."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 36,
+      "startSeconds": 42829.74,
+      "endSeconds": 42835.74,
+      "originalText": "Or of course you have the very, we just saw it earlier today, the Poladef.",
+      "text": "Or of course you have the very, we just saw it earlier today, the Polar Depths."
+    },
+    {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 37,
+      "startSeconds": 42835.74,
+      "endSeconds": 42841.74,
+      "originalText": "Yeah, of course the factor of Poladef or the Fugue or the strategy of Mjordice also available in the deck.",
+      "text": "Yeah, of course the factor of Polar Depths or the Fugue or the strategy of Mjordice also available in the deck."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 0,
+      "startSeconds": 42840.0,
+      "endSeconds": 42845.04,
+      "originalText": "available in the deck. Moving on from today, there will be open deck list for all players,",
+      "text": "available in the deck. Moving on from today, there will be open deck list for all players,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 1,
+      "startSeconds": 42845.04,
+      "endSeconds": 42849.04,
+      "originalText": "so we will be able to play around that correctly. But in the meantime for now,",
+      "text": "so we will be able to play around that correctly. But in the meantime for now,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 2,
+      "startSeconds": 42849.04,
+      "endSeconds": 42855.04,
+      "originalText": "I'm not sure what exactly it is. In the deck, there's no good mill, milling, the Polydeaf,",
+      "text": "I'm not sure what exactly it is. In the deck, there's no good mill, milling, the Polydeaf,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 3,
+      "startSeconds": 42855.04,
+      "endSeconds": 42860.8,
+      "originalText": "and also the Proform Paladin, really painful. You want to be milling cards like floating memory",
+      "text": "and also the Frostsworn Paladin, really painful. You want to be milling cards like floating memory"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 4,
+      "startSeconds": 42860.8,
+      "endSeconds": 42865.36,
+      "originalText": "right now. Yes, or the seaside ring leader, the BBC banished to go up to level one. The",
+      "text": "right now. Yes, or the seaside ring leader, the BBC banished to go up to level one. The"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 5,
+      "startSeconds": 42865.36,
+      "endSeconds": 42870.36,
+      "originalText": "The Portentas Tangu is the materialization for Biobayashi who gets a second quest counter.",
+      "text": "The Portentous Tanggu is the materialization for Bayabayashi who gets a second quest counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 6,
+      "startSeconds": 42870.36,
+      "endSeconds": 42873.36,
+      "originalText": "Yeah, and I believe it has suppressed the Tangu here.",
+      "text": "Yeah, and I believe it has suppressed the Tanggu here."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 7,
+      "startSeconds": 42873.36,
+      "endSeconds": 42876.36,
+      "originalText": "This means that on Enter you will be giving another quest counter.",
+      "text": "This means that on Enter you will be giving another quest counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 8,
+      "startSeconds": 42876.36,
+      "endSeconds": 42881.36,
+      "originalText": "Yeah, it goes up to Tree already and that means maybe with a change role on the following turn,",
+      "text": "Yeah, it goes up to Tree already and that means maybe with a change role on the following turn,"
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 9,
+      "startSeconds": 42881.36,
+      "endSeconds": 42884.36,
+      "originalText": "we can see Biako actually makes its advent on the board already.",
+      "text": "we can see Byakko actually makes its advent on the board already."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 10,
+      "startSeconds": 42884.36,
+      "endSeconds": 42889.36,
+      "originalText": "Meanwhile, Ruyang goes for his own Tangu, will set up the fourth counter.",
+      "text": "Meanwhile, Royan goes for his own Tanggu, will set up the fourth counter."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 11,
+      "startSeconds": 42889.36,
+      "endSeconds": 42894.36,
+      "originalText": "And interestingly, I think Gamboo actually matches up quite well into Biako decks in general.",
+      "text": "And interestingly, I think Genbu actually matches up quite well into Byakko decks in general."
+    },
+    {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 12,
+      "startSeconds": 42894.36,
+      "endSeconds": 42897.56,
+      "originalText": "In general, you get a big old hunter and...",
+      "text": "In general, you get a big old hunter and..."
+    }
+  ],
+  "candidates": [
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r9",
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 9",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 42720
+        },
+        "players": [
+          {
+            "id": "p1",
+            "name": "Bayabayashi",
+            "deck": "Wind Byakko"
+          },
+          {
+            "id": "p2",
+            "name": "Royan",
+            "deck": "Water Genbu"
+          }
+        ],
+        "result": "Royan wins 2–1 (official result)",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "unknown",
+            "summary": "Only the opening is recovered before the local recording ends.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "both",
+                "text": "Bayabayashi develops Fabled Emerald Fatestone while Royan opens with an imbued Fractal of Rain.",
+                "cards": [
+                  "Fabled Emerald Fatestone",
+                  "Fractal of Rain"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Portentous Tanggu helps Bayabayashi build Byakko quest counters.",
+                "cards": [
+                  "Portentous Tanggu"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Royan brings out his own Portentous Tanggu as both players continue setting up.",
+                "cards": [
+                  "Portentous Tanggu"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Only the opening of round9game1 is recovered from the local Day1 audio; the recording ends at11:54:58 during early setup. Game1winner is unknown. Royan2–1 is the official Omnidex result, not an observed finish. Original transcript ended before this round; bounded audio recovery supplies this partial coverage."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 9,
+          "pairingId": 21,
+          "players": [
+            16112,
+            7610
+          ],
+          "scores": [
+            1,
+            2
+          ]
+        },
+        "identity": [
+          {
+            "file": "bounded-23-1200.json",
+            "segments": [
+              32
+            ]
+          },
+          {
+            "file": "bounded-23-1320.json",
+            "segments": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ],
+        "deckIdentity": [
+          {
+            "file": "bounded-23-1080.json",
+            "segments": [
+              9,
+              10,
+              11,
+              13,
+              14,
+              15
+            ]
+          },
+          {
+            "file": "bounded-23-1320.json",
+            "segments": [
+              18,
+              19,
+              20,
+              21,
+              23,
+              27,
+              28
+            ]
+          },
+          {
+            "file": "bounded-23-1440.json",
+            "segments": [
+              5,
+              8,
+              9,
+              10,
+              11
+            ]
+          }
+        ],
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "unknown",
+            "beats": [
+              {
+                "order": 1,
+                "file": "bounded-23-1320.json",
+                "segments": [
+                  18,
+                  19,
+                  20,
+                  21
+                ]
+              },
+              {
+                "order": 2,
+                "file": "bounded-23-1440.json",
+                "segments": [
+                  5,
+                  6,
+                  7,
+                  8
+                ]
+              },
+              {
+                "order": 3,
+                "file": "bounded-23-1440.json",
+                "segments": [
+                  10
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "windowsRead": 58,
+    "chunkWindowCounts": {
+      "03": 15,
+      "06": 15,
+      "22": 15,
+      "23": 13
+    },
+    "newMatchesRecovered": 1,
+    "newMatch": "Round9Bayabayashi versusRoyan, partialgame1 opening only",
+    "scopeLimit": "Every segment of listed58boundedrecoveries read; no direct audiovisual review claimed."
+  }
+}

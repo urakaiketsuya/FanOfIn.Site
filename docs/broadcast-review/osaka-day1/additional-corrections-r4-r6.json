@@ -1,0 +1,531 @@
+{
+  "basis": "Apply review-r4-r6.json corrections first. before values here include that pass. Original machine transcript remains unchanged.",
+  "corrections": [
+    {
+      "index": 4186,
+      "before": "could be a Topsy Decree, could be even a Stormthorn, so going to be a bit risky to try and go",
+      "after": "could be a Topsy Decree, could be even a Storm of Thorns, so going to be a bit risky to try and go",
+      "evidence": [
+        "data/card-catalog.json: Storm of Thorns; sequential local context"
+      ]
+    },
+    {
+      "index": 4228,
+      "before": "Cashkidz has a Storm of Thorns or anything. The Automaton Drone helps take out the Frostmourne",
+      "after": "Cashkidz has a Storm of Thorns or anything. The Automaton Drone helps take out the Frostsworn",
+      "evidence": [
+        "data/card-catalog.json: Frostsworn Paladin; sequential local context"
+      ]
+    },
+    {
+      "index": 4555,
+      "before": "So, no Lantern or Censor.",
+      "after": "So, no Lantern or Censer.",
+      "evidence": [
+        "data/card-catalog.json: Censer of Restful Peace; sequential local context"
+      ]
+    },
+    {
+      "index": 4694,
+      "before": "to try and clear the Frost Warn here.",
+      "after": "to try and clear the Frostsworn here.",
+      "evidence": [
+        "data/card-catalog.json: Frostsworn Paladin; sequential local context"
+      ]
+    },
+    {
+      "index": 4836,
+      "before": "And now, here comes that Torrent Slickrider here,",
+      "after": "And now, here comes that Slick Torrentrider here,",
+      "evidence": [
+        "data/card-catalog.json: Pelagic Fatestone nested Slick Torrentrider face; sequential local context"
+      ]
+    },
+    {
+      "index": 4870,
+      "before": "You're going to get the Thorn Slick Rider,",
+      "after": "You're going to get the Slick Torrentrider,",
+      "evidence": [
+        "data/card-catalog.json: Pelagic Fatestone nested Slick Torrentrider face; sequential local context"
+      ]
+    },
+    {
+      "index": 4913,
+      "before": "Yeah, Bonwai might swing.",
+      "after": "Yeah, Bovine might swing.",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 4926,
+      "before": "Oh, Bonwai number two.",
+      "after": "Oh, Bovine number two.",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 4927,
+      "before": "Oh, Bonwai.",
+      "after": "Oh, Bovine.",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 4946,
+      "before": "I mean, the best way is to break out Lanthorn,",
+      "after": "I mean, the best way is to break out Lantern,",
+      "evidence": [
+        "data/card-catalog.json: Nullifying Lantern; sequential local context"
+      ]
+    },
+    {
+      "index": 4964,
+      "before": "It's Falling Cleanse.",
+      "after": "It's Spalling Cleanse.",
+      "evidence": [
+        "data/card-catalog.json: Spalling Cleanse; sequential local context"
+      ]
+    },
+    {
+      "index": 5037,
+      "before": "Does have a topsy-turvy and just passes it!",
+      "after": "Does have a Topsy Decree and just passes it!",
+      "evidence": [
+        "data/card-catalog.json: Topsy Decree; sequential local context"
+      ]
+    },
+    {
+      "index": 5079,
+      "before": "And another Insanity King could come in,",
+      "after": "And another Ensnaring Fumes could come in,",
+      "evidence": [
+        "data/card-catalog.json: Ensnaring Fumes; sequential local context"
+      ]
+    },
+    {
+      "index": 5123,
+      "before": "just to break the Fractal of Rage",
+      "after": "just to break the Fractal of Rain",
+      "evidence": [
+        "data/card-catalog.json: Fractal of Rain; sequential local context"
+      ]
+    },
+    {
+      "index": 5178,
+      "before": "Or the Censor, which is also...",
+      "after": "Or the Censer, which is also...",
+      "evidence": [
+        "data/card-catalog.json: Censer of Restful Peace; sequential local context"
+      ]
+    },
+    {
+      "index": 5179,
+      "before": "Actually, there is no Censor in this deck.",
+      "after": "Actually, there is no Censer in this deck.",
+      "evidence": [
+        "data/card-catalog.json: Censer of Restful Peace; sequential local context"
+      ]
+    },
+    {
+      "index": 5255,
+      "before": "Anyway, we are going to see Permanent Ritual get...",
+      "after": "Anyway, we are going to see Primordial Ritual get...",
+      "evidence": [
+        "data/card-catalog.json: Primordial Ritual; sequential local context"
+      ]
+    },
+    {
+      "index": 5260,
+      "before": "getting this Fire Fate Stone,",
+      "after": "getting this Pelagic Fatestone,",
+      "evidence": [
+        "data/card-catalog.json: Pelagic Fatestone; sequential local context"
+      ]
+    },
+    {
+      "index": 5268,
+      "before": "So, probably we'll slam that Bonewine or Polar Depths.",
+      "after": "So, probably we'll slam that Bovine or Polar Depths.",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 5269,
+      "before": "I think it might be a Polar Depths into Bonewine.",
+      "after": "I think it might be a Polar Depths into Bovine.",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 5320,
+      "before": "Bonevine is going to come down here,",
+      "after": "Bovine is going to come down here,",
+      "evidence": [
+        "data/card-catalog.json: Tidestone Bovine; sequential local context"
+      ]
+    },
+    {
+      "index": 5443,
+      "before": "Is there a Dream Fairy in this deck? I'm not seeing one, and both Insane Fumes are gone as well.",
+      "after": "Is there a Dream Fairy in this deck? I'm not seeing one, and both Ensnaring Fumes are gone as well.",
+      "evidence": [
+        "data/card-catalog.json: Ensnaring Fumes; sequential local context"
+      ]
+    },
+    {
+      "index": 5565,
+      "before": "Of that much of a Hound Counter",
+      "after": "Of that much of a haunt counter",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 5569,
+      "before": "For each of these Hound Counter",
+      "after": "For each of these haunt counter",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 5570,
+      "before": "And apparently you can farm a lot of Hound Counter",
+      "after": "And apparently you can farm a lot of haunt counter",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 5691,
+      "before": "The Slaughtered Queen, both of them able to",
+      "after": "The Distorted Queen, both of them able to",
+      "evidence": [
+        "data/card-catalog.json: Alice, Distorted Queen; sequential local context"
+      ]
+    },
+    {
+      "index": 5822,
+      "before": "Going into the disordered queen",
+      "after": "Going into the Distorted Queen",
+      "evidence": [
+        "data/card-catalog.json: Alice, Distorted Queen; sequential local context"
+      ]
+    },
+    {
+      "index": 5849,
+      "before": "Abnegation, remnant of the wheel",
+      "after": "Abnegation, Remnant of Will",
+      "evidence": [
+        "data/card-catalog.json: Remnant of Will; sequential local context"
+      ]
+    },
+    {
+      "index": 6180,
+      "before": "And also get to add even more Horncaptors.",
+      "after": "And also get to add even more haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6193,
+      "before": "So it's a bit dangerous here. I believe we are going to go with Tengu here.",
+      "after": "So it's a bit dangerous here. I believe we are going to go with Tanggu here.",
+      "evidence": [
+        "data/card-catalog.json: Portentous Tanggu; sequential local context"
+      ]
+    },
+    {
+      "index": 6254,
+      "before": "So he will actually bump up to 11 town counter.",
+      "after": "So he will actually bump up to 11 haunt counter.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6261,
+      "before": "the possibility of a Neon Frozen Shunt.",
+      "after": "the possibility of a Aenean Frozen Shunt.",
+      "evidence": [
+        "data/card-catalog.json: Aenean Frozen Shunt; sequential local context"
+      ]
+    },
+    {
+      "index": 6283,
+      "before": "Plus 2 more horn counters",
+      "after": "Plus 2 more haunt counters",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6299,
+      "before": "with all of the horn counters",
+      "after": "with all of the haunt counters",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6379,
+      "before": "look at the skill dust",
+      "after": "look at the Gildas",
+      "evidence": [
+        "data/card-catalog.json: Gildas, Chronicler of Aesa; sequential local context"
+      ]
+    },
+    {
+      "index": 6380,
+      "before": "Quizzical Grill maybe",
+      "after": "Quicksilver Grail maybe",
+      "evidence": [
+        "data/card-catalog.json: Quicksilver Grail; sequential local context"
+      ]
+    },
+    {
+      "index": 6381,
+      "before": "Scythe of the Soul",
+      "after": "Silence the Soul",
+      "evidence": [
+        "data/card-catalog.json: Silence the Soul; sequential local context"
+      ]
+    },
+    {
+      "index": 6628,
+      "before": "he needs to build enough Hound Counter",
+      "after": "he needs to build enough haunt counter",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6726,
+      "before": "so we're going to gain 4 Horned Counters",
+      "after": "so we're going to gain 4 haunt counters",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6860,
+      "before": "Now Miffy just needs to farm enough Hound Counter and...",
+      "after": "Now Miffy just needs to farm enough haunt counter and...",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6874,
+      "before": "As an ally that just is 3-4, is a Frostborn Paladin,",
+      "after": "As an ally that just is 3-4, is a Frostsworn Paladin,",
+      "evidence": [
+        "data/card-catalog.json: Frostsworn Paladin; sequential local context"
+      ]
+    },
+    {
+      "index": 6915,
+      "before": "Mithril and Isenia trying to farm enough influence plus the Hound Counter here.",
+      "after": "Mithril and Isenia trying to farm enough influence plus the haunt counter here.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6923,
+      "before": "I think the important thing for him is to get more Hound Counters.",
+      "after": "I think the important thing for him is to get more haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6928,
+      "before": "If you have it in hand, right, it gives you 2 Hound Counters.",
+      "after": "If you have it in hand, right, it gives you 2 haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6929,
+      "before": "And then afterwards, you can infamariate it to give you another Hound Counter.",
+      "after": "And then afterwards, you can infamariate it to give you another haunt counter.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6930,
+      "before": "It basically gives you 4 Hound Counters.",
+      "after": "It basically gives you 4 haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 6946,
+      "before": "And then the Royal Guard, yeah.",
+      "after": "And then the Royal Oathguard, yeah.",
+      "evidence": [
+        "data/card-catalog.json: Royal Oathguard; sequential local context"
+      ]
+    },
+    {
+      "index": 6947,
+      "before": "Royal Guard is one of the allies they have.",
+      "after": "Royal Oathguard is one of the allies they have.",
+      "evidence": [
+        "data/card-catalog.json: Royal Oathguard; sequential local context"
+      ]
+    },
+    {
+      "index": 7011,
+      "before": "Here's the Remnant of Will now, finally gets to add those Horn counters.",
+      "after": "Here's the Remnant of Will now, finally gets to add those haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 7032,
+      "before": "And only 3 hound counters.",
+      "after": "And only 3 haunt counters.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    },
+    {
+      "index": 7139,
+      "before": "The wheels were not resolving.",
+      "after": "The Wills were not resolving.",
+      "evidence": [
+        "data/card-catalog.json: Remnant of Will; sequential local context"
+      ]
+    },
+    {
+      "index": 7140,
+      "before": "Not seeing another wheel.",
+      "after": "Not seeing another Will.",
+      "evidence": [
+        "data/card-catalog.json: Remnant of Will; sequential local context"
+      ]
+    },
+    {
+      "index": 7143,
+      "before": "You need enough helm counters in order for the deck to keep running.",
+      "after": "You need enough haunt counters in order for the deck to keep running.",
+      "evidence": [
+        "data/card-catalog.json: Phantasmagoria; sequential local context"
+      ]
+    }
+  ],
+  "firstPassAudit": {
+    "alias": "Nico",
+    "replacement": "Neek0",
+    "indices": [
+      4579,
+      4598,
+      4600,
+      4620,
+      4674,
+      4682,
+      4688,
+      4707,
+      4716,
+      4740,
+      4757,
+      4767,
+      4942,
+      4953,
+      4959,
+      4968,
+      4981,
+      5028,
+      5046,
+      5057,
+      5058,
+      5232,
+      5277,
+      5282,
+      5301,
+      5329,
+      5450,
+      5452,
+      5455,
+      5457
+    ],
+    "decision": "Retain all 30 replacements.",
+    "evidence": "Every occurrence in the sequential R5 section refers to the Genbu player, paired with Rty. Omnidex stage1/round5/pairing1 identifies Neek0 (4091) vs Rty (6466). No unrelated Nico reference in this range."
+  },
+  "unusableRanges": [
+    {
+      "startIndex": 6768,
+      "endIndexInclusive": 6769,
+      "startTimestamp": "8:29:59",
+      "endTimestamp": "8:30:29",
+      "classification": "Duplicated question; no gameplay evidence",
+      "reason": "Exact same question about Miffy hand/interaction repeated at30-second interval. Annotate both as non-evidentiary, not proof of a specific pause or no play.",
+      "adjacentEvidence": "6770 (8:30:59) states10Fractals/Burst;6771(8:31:29) explicitly says concession/Game2Inaki. These are not repeated and remain usable outcome evidence, but sparse/30-second cadence warrants audio check for precise timing."
+    }
+  ],
+  "stillUnresolved": [
+    {
+      "indices": [
+        5740,
+        5854,
+        6027
+      ],
+      "text": "Nyx's tin / In Yakido / Nukistun",
+      "likelyMeaning": "Inaki turn/name",
+      "reason": "Corrupted connective speech; do not invent exact spoken sentence."
+    },
+    {
+      "indices": [
+        6004
+      ],
+      "text": "Poitier what can he do?",
+      "reason": "May be transition to Inaki turn rather than card; leave intact."
+    },
+    {
+      "indices": [
+        5202,
+        5203
+      ],
+      "text": "Bowman",
+      "likelyMeaning": "Tidestone Bovine",
+      "reason": "Later board Bovine andmill2suggests Bovine but phonetics not enough; audio recovery required."
+    },
+    {
+      "indices": [
+        5456
+      ],
+      "text": "paid VR its actual cost,9",
+      "reason": "Likely transformed Genbu fatestone reference but insufficient exact name."
+    },
+    {
+      "indices": [
+        6915
+      ],
+      "text": "Mithril and Isenia",
+      "reason": "Cannot safely replace malformed phrase."
+    },
+    {
+      "indices": [
+        7139,
+        7140,
+        7141,
+        7142,
+        7143
+      ],
+      "text": "wheels/wheel/wheel counters correction sequence",
+      "reason": "Correct clear Remnant shorthand and final haunt phrase, but retain caster self-correction at7141–7142."
+    }
+  ]
+}

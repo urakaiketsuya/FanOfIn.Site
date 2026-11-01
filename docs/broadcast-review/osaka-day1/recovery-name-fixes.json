@@ -1,0 +1,1210 @@
+{
+  "corrections": [
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 4,
+      "before": "Rego.",
+      "after": "Regal Inquisition.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1140.json",
+      "sourceIndex": 8,
+      "before": "then it just shows you how powerful Rego is right.",
+      "after": "then it just shows you how powerful Regal Inquisition is right.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 2,
+      "before": "gonna go create this shot first see if we can draw any cuts of this with",
+      "after": "gonna go Creative Shock first see if we can draw any cuts of this with",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 10,
+      "before": "gonna come out here the oblivion schemer and what is the follow-up I don't see a",
+      "after": "gonna come out here the Obliviate Schemer and what is the follow-up I don't see a",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 17,
+      "before": "So here's the thing about this wind on the Aztec.",
+      "after": "So here's the thing about this Wind Umbra Alice deck.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 33,
+      "before": "I think fire umbrella is like, okay, you kind of understand it.",
+      "after": "I think Fire Umbra is like, okay, you kind of understand it.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 7,
+      "before": "the law of providence, just safely played.",
+      "after": "the Lost Providence, just safely played.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 25,
+      "before": "Okay, cinch emotions. Two cinch emotions is really not what you want to see when you're",
+      "after": "Okay, Singed Emotions. Two Singed Emotions is really not what you want to see when you're",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 41,
+      "before": "The extension motions just for the float here, the level up here, just wants to put cards down,",
+      "after": "The Singed Emotions just for the float here, the level up here, just wants to put cards down,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 14,
+      "before": "So this is a song of for us, essentially for Alice here.",
+      "after": "So this is a Song of Frost, essentially for Alice here.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-04-1740.json",
+      "sourceIndex": 14,
+      "before": "tire frame, but it's exalted.",
+      "after": "Tariff Ring, but it's exalted.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0240.json",
+      "sourceIndex": 4,
+      "before": "Neos the Norris. That's right and while we have the reservable fractals",
+      "after": "Neos Tonoris. That's right and while we have the reservable fractals",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 0,
+      "before": "version of fractal tia chan and starts us off with a fractal of snow and we'll see if it's joined by another fractal beside it tapping the fractal and also now and another fractal snow snow",
+      "after": "version of fractal Diao Chan and starts us off with a fractal of snow and we'll see if it's joined by another fractal beside it tapping the fractal and also now and another fractal snow snow",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 21,
+      "before": "Contenaurus is not a depth that ends games",
+      "after": "Tonoris is not a depth that ends games",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 24,
+      "before": "since it is sword tenors.",
+      "after": "since it is sword Tonoris.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 28,
+      "before": "See a frost vine in the hand.",
+      "after": "See a Frostbind in the hand.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 29,
+      "before": "And a little burst of sun derol.",
+      "after": "And a little Burst Asunder.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 37,
+      "before": "Having the plus one on the fountain is just so huge here. Thus, loose in aries and because there",
+      "after": "Having the plus one on the fountain is just so huge here. Thus, loose in Ares and because there",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0480.json",
+      "sourceIndex": 25,
+      "before": "Now one thing is that if feeling arms actually very strong against fractals because you can stop",
+      "after": "Now one thing is that if Enfeebling Orb actually very strong against fractals because you can stop",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0480.json",
+      "sourceIndex": 26,
+      "before": "Zhang Jiao's with because there's five fractals can still play it unless Cashkidz might have a frostbite or something that would force other cards down",
+      "after": "Zhang Jiao's with because there's five fractals can still play it unless Cashkidz might have a Frostbind or something that would force other cards down",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0480.json",
+      "sourceIndex": 27,
+      "before": "So in feeling arm here just a nice card to be able to at least stifle some of the fractal game plan to",
+      "after": "So in Enfeebling Orb here just a nice card to be able to at least stifle some of the fractal game plan to",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0600.json",
+      "sourceIndex": 0,
+      "before": "the fractal game plan to versus unders in the hand already. So that would be coming in for",
+      "after": "the fractal game plan to Burst Asunders in the hand already. So that would be coming in for",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0600.json",
+      "sourceIndex": 6,
+      "before": "And feeling also for ClourX now is going to be played.",
+      "after": "Enfeebling Orb also for ClourX now is going to be played.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0600.json",
+      "sourceIndex": 7,
+      "before": "And I think you mentioned it already, but feeling of denying the jungle is going to be very crucial for Cashkidz.",
+      "after": "And I think you mentioned it already, but Enfeebling Orb denying the Zhang Jiao is going to be very crucial for Cashkidz.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0600.json",
+      "sourceIndex": 9,
+      "before": "so having this and feeling of it's a very hit-up choice here from Cashkidz,",
+      "after": "so having this Enfeebling Orb it's a very hit-up choice here from Cashkidz,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0720.json",
+      "sourceIndex": 3,
+      "before": "So yeah, it's gonna be a Topsy degree discard one actually against fractals",
+      "after": "So yeah, it's gonna be a Topsy Decree discard one actually against fractals",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0720.json",
+      "sourceIndex": 6,
+      "before": "But I don't think Cashkidz loves that he had to level up with a top city career is a very crucial defensive spell in this matter as well",
+      "after": "But I don't think Cashkidz loves that he had to level up with a Topsy Decree is a very crucial defensive spell in this matter as well",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0720.json",
+      "sourceIndex": 19,
+      "before": "ClourX definitely behind in this game. Tenors having 25 life has to find 21 damage. That's going",
+      "after": "ClourX definitely behind in this game. Tonoris having 25 life has to find 21 damage. That's going",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0840.json",
+      "sourceIndex": 19,
+      "before": "the Febling Orb would have ruined that day for ClourX.",
+      "after": "the Enfeebling Orb would have ruined that day for ClourX.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0840.json",
+      "sourceIndex": 25,
+      "before": "real god and now i think is the time where we tap our reciprocity so resting our reciprocity",
+      "after": "Rearguard and now i think is the time where we tap our reciprocity so resting our reciprocity",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0840.json",
+      "sourceIndex": 29,
+      "before": "When you play Daenerys, listen, when you play this deck, you need a lot of tokens.",
+      "after": "When you play Tonoris, listen, when you play this deck, you need a lot of tokens.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 4,
+      "before": "So just instead choosing to get every value from every single to nor a swing instead walking them slower and slower down",
+      "after": "So just instead choosing to get every value from every single Tonoris a swing instead walking them slower and slower down",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 10,
+      "before": "Refracting missile burst is little because that would go seven plus fourteen",
+      "after": "Refracting Missile burst is little because that would go seven plus fourteen",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 11,
+      "before": "So exactly though with one fractal plus Burst Asunder and one refactoring missile",
+      "after": "So exactly though with one fractal plus Burst Asunder and one Refracting Missile",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 12,
+      "before": "But again, there is an infieving of available. So I think Cashkidz can deny that",
+      "after": "But again, there is an Enfeebling Orb available. So I think Cashkidz can deny that",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 14,
+      "before": "So let's see whether ClourX can continue to develop his influence has not been allowed his junk yells yet",
+      "after": "So let's see whether ClourX can continue to develop his influence has not been allowed his Zhang Jiaos yet",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 15,
+      "before": "Because again the infieving of still on the board",
+      "after": "Because again the Enfeebling Orb still on the board",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 17,
+      "before": "Yeah, so yeah, but this is the thing about Feeling Orb. It's just so strong against Frackles specifically and",
+      "after": "Yeah, so yeah, but this is the thing about Enfeebling Orb. It's just so strong against Frackles specifically and",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 19,
+      "before": "But let's see what the materialization is here for Cashkidz. It's gonna be a very radiant shrinkage",
+      "after": "But let's see what the materialization is here for Cashkidz. It's gonna be a Viridian Protective Trinket",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-0960.json",
+      "sourceIndex": 20,
+      "before": "So ClourX does have enough hand. I think very intricate does not affect into badly. There's five total fractals",
+      "after": "So ClourX does have enough hand. I think Viridian Protective Trinket does not affect into badly. There's five total fractals",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1080.json",
+      "sourceIndex": 22,
+      "before": "So no glimmering refusal from ClourX.",
+      "after": "So no Glimmering Refusal from ClourX.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1080.json",
+      "sourceIndex": 23,
+      "before": "If he does use the glimmering refusal, he's dead to board.",
+      "after": "If he does use the Glimmering Refusal, he's dead to board.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1080.json",
+      "sourceIndex": 28,
+      "before": "How does that radiant protector shrink in for next turn?",
+      "after": "How does that Viridian Protective Trinket in for next turn?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1080.json",
+      "sourceIndex": 35,
+      "before": "It's a giant job but there's no scene. Immediately Tet not gonna spend a second",
+      "after": "It's a Zhang Jiao but there's no scene. Immediately Tet not gonna spend a second",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1200.json",
+      "sourceIndex": 2,
+      "before": "Clark's still a spirit of water now recovers down to 5 but that's all it's going to be.",
+      "after": "ClourX still a spirit of water now recovers down to 5 but that's all it's going to be.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1200.json",
+      "sourceIndex": 5,
+      "before": "to be really hard for Clark's to actually hit this 21 damage break point that he needs",
+      "after": "to be really hard for ClourX to actually hit this 21 damage break point that he needs",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1200.json",
+      "sourceIndex": 12,
+      "before": "So here comes the Hulking Rearguard and now the Atmos armor type areas and now the swords",
+      "after": "So here comes the Hulking Rearguard and now the Atmos Armor Type-Ares and now the swords",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1200.json",
+      "sourceIndex": 14,
+      "before": "game one taken by Nio Stonoris here at round 4 of Ascent Osaka.",
+      "after": "game one taken by Neos Tonoris here at round 4 of Ascent Osaka.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1320.json",
+      "sourceIndex": 0,
+      "before": "I think you're more focused on getting that defensive option like that tri castles of Lucinia could be very very good in this matchup in particular",
+      "after": "I think you're more focused on getting that defensive option like that Tricastles of Lucenia could be very very good in this matchup in particular",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1320.json",
+      "sourceIndex": 13,
+      "before": "Now other than that we also have Tronkeeper bullfrog as an additional way to protect",
+      "after": "Now other than that we also have Throne-Keeper Bullfrog as an additional way to protect",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1440.json",
+      "sourceIndex": 6,
+      "before": "Upkeep trigger and also generate himself a few more or still group great swords back up charge",
+      "after": "Upkeep trigger and also generate himself a few more Aurousteel Greatswords back up charge",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1440.json",
+      "sourceIndex": 8,
+      "before": "With that floating memory ClourX could definitely go for this rack of intrusion here",
+      "after": "With that floating memory ClourX could definitely go for this Fractal of Intrusion here",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1440.json",
+      "sourceIndex": 15,
+      "before": "We saw the hulking real got ticket early. Oh second time of fractal",
+      "after": "We saw the Hulking Rearguard ticket early. Oh second time of fractal",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1440.json",
+      "sourceIndex": 28,
+      "before": "Hulk can re-regard once again to try",
+      "after": "Hulking Rearguard once again to try",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 9,
+      "before": "Nio's not near. Sorry. He's saying Nio's but it's only level two throwers might of humanity has that plus tree",
+      "after": "Nio's not near. Sorry. He's saying Nio's but it's only level two Tonoris, Might of Humanity has that plus tree",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 10,
+      "before": "We're gonna pay tree for the reciprocity to try to take out this frozen pattern in that was that would get negated",
+      "after": "We're gonna pay tree for the reciprocity to try to take out this Frostsworn Paladin in that was that would get negated",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 11,
+      "before": "by a glimmering here or a frostbine. So it's a bit risky.",
+      "after": "by a glimmering here or a Frostbind. So it's a bit risky.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 19,
+      "before": "Let's go super greedy play does pay off. Now the rest of our teams comes out for zero,",
+      "after": "Let's go super greedy play does pay off. Now the Reciprocity comes out for zero,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 21,
+      "before": "Yeah, this is, oh, this was such a big punish. I definitely saw a glimming refusal in ClourX's hand,",
+      "after": "Yeah, this is, oh, this was such a big punish. I definitely saw a Glimmering Refusal in ClourX's hand,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1560.json",
+      "sourceIndex": 22,
+      "before": "so, fortunately, just gonna lose the Paladin here. Don't you guys gonna swing in for one?",
+      "after": "so, fortunately, just gonna lose the Paladin here. Dungeon Guide gonna swing in for one?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1680.json",
+      "sourceIndex": 0,
+      "before": "I too so definitely had that Fracturize that ready could have used that on the rest of rusty as well",
+      "after": "I too so definitely had that Fracturize that ready could have used that on the Reciprocity as well",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1680.json",
+      "sourceIndex": 11,
+      "before": "creepier already saw and other net swarm of thorns is also very very crucial in a",
+      "after": "creepier already saw and other net Storm of Thorns is also very very crucial in a",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1680.json",
+      "sourceIndex": 12,
+      "before": "way to deny that Bus Asanda and notably no safeguard amulet in Cashkidz deck",
+      "after": "way to deny that Burst Asunder and notably no safeguard amulet in Cashkidz deck",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-10-1680.json",
+      "sourceIndex": 17,
+      "before": "bus son comes in for 8 and another 2 so another fractal I think no return to the",
+      "after": "Burst Asunder comes in for 8 and another 2 so another fractal I think no return to the",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0000.json",
+      "sourceIndex": 35,
+      "before": "Yep, also has some very whispers to throw out here. Oh and there's a one list look out",
+      "after": "Yep, also has some Fairy Whispers to throw out here. Oh and there's a Winbless Lookout",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0120.json",
+      "sourceIndex": 13,
+      "before": "Shock about it. It looks like it's windmill in caps surveil. So definitely don't want to lose that surveil the winds",
+      "after": "Shock about it. It looks like it's windmill in caps surveil. So definitely don't want to lose that Surveil the Winds",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0120.json",
+      "sourceIndex": 24,
+      "before": "Skylight essence is really really good if he's able to execute an extension, but we are just gonna recollect weekly",
+      "after": "Scatter Essence is really really good if he's able to execute an extension, but we are just gonna recollect weekly",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0120.json",
+      "sourceIndex": 25,
+      "before": "I believe we're gonna go into fossil paladin",
+      "after": "I believe we're gonna go into Frostsworn Paladin",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0120.json",
+      "sourceIndex": 26,
+      "before": "But they need to pay an extra four for this one because of that cycling gyre",
+      "after": "But they need to pay an extra four for this one because of that Stifling Gyre",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0240.json",
+      "sourceIndex": 17,
+      "before": "Oh, there is that still in the same few.",
+      "after": "Oh, there is that Ensnaring Fumes.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0240.json",
+      "sourceIndex": 34,
+      "before": "Another one of those class lines now there is a song for us on the coside and I do think it is definitely",
+      "after": "Another one of those class lines now there is a Song of Frost on the coside and I do think it is definitely",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0240.json",
+      "sourceIndex": 38,
+      "before": "in capacity going to be used or is going to be Sadi, return Sadi Sadi again?",
+      "after": "Incapacitate going to be used or is going to be Sadi, return Sadi Sadi again?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0360.json",
+      "sourceIndex": 0,
+      "before": "I think there's a bit dangerous to do it. There should be a second song of Ross in this hand as well",
+      "after": "I think there's a bit dangerous to do it. There should be a second Song of Frost in this hand as well",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0360.json",
+      "sourceIndex": 3,
+      "before": "This is very risky, but there is the lantern so I think our device should be safe from a ganbu",
+      "after": "This is very risky, but there is the lantern so I think our device should be safe from a Genbu",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0360.json",
+      "sourceIndex": 4,
+      "before": "Lethal turn at the very least is Neek0 considering playing the second song of for us here? Well, I",
+      "after": "Lethal turn at the very least is Neek0 considering playing the second Song of Frost here? Well, I",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0480.json",
+      "sourceIndex": 0,
+      "before": "Neek0, maybe forgot about the Skater Essence I was showing right here.",
+      "after": "Neek0, maybe forgot about the Scatter Essence I was showing right here.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0480.json",
+      "sourceIndex": 13,
+      "before": "You can't actually play the server the win to get the fourth counter this proves that",
+      "after": "You can't actually play the Surveil the Winds to get the fourth counter this proves that",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0480.json",
+      "sourceIndex": 17,
+      "before": "Actually, hmm noble disillu- I don't think you really want to keep noble disillusion considering you all have a scatter essence in hand anyway",
+      "after": "Actually, hmm noble disillu- I don't think you really want to keep Noble Dissolution considering you all have a scatter essence in hand anyway",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0600.json",
+      "sourceIndex": 9,
+      "before": "The beginning and the gait, the dagger or maybe fractureize it.",
+      "after": "The beginning and the gait, the dagger or maybe Fracturize it.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0600.json",
+      "sourceIndex": 13,
+      "before": "Incompassive it",
+      "after": "Incapacitate",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0600.json",
+      "sourceIndex": 16,
+      "before": "Okay in capacity has been committed here to try and stop the fresh ice is Neek0 have a second one",
+      "after": "Okay Incapacitate has been committed here to try and stop the Fracturize is Neek0 have a second one",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0600.json",
+      "sourceIndex": 27,
+      "before": "If you are not gonna stop that in capacity you might be in trouble because you notice right like your opponent to the swing five",
+      "after": "If you are not gonna stop that Incapacitate you might be in trouble because you notice right like your opponent to the swing five",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0600.json",
+      "sourceIndex": 32,
+      "before": "I believe and the last problem is also gonna come in the play",
+      "after": "I believe and the Lost Providence is also gonna come in the play",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0720.json",
+      "sourceIndex": 4,
+      "before": "McCoy has a skeleton hand and it's also probably can use that if he really wants to.",
+      "after": "Neek0 has a skeleton hand and it's also probably can use that if he really wants to.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0720.json",
+      "sourceIndex": 29,
+      "before": "You see two shadow strikes, actually.",
+      "after": "You see two Shadowstrikes, actually.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0720.json",
+      "sourceIndex": 31,
+      "before": "done-- very mild to shadow strikes.",
+      "after": "done-- very mild to Shadowstrikes.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0720.json",
+      "sourceIndex": 33,
+      "before": "especially because shadow strikes not use your card that",
+      "after": "especially because Shadowstrikes not use your card that",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0840.json",
+      "sourceIndex": 2,
+      "before": "I like gaming. I mean at this point, oh Rigo we are going to do it. We gotta see it.",
+      "after": "I like gaming. I mean at this point, oh Regal Inquisition we are going to do it. We gotta see it.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0840.json",
+      "sourceIndex": 5,
+      "before": "Curious Try has been activated. I mean now the next reaction is gonna cost one less. It's",
+      "after": "Gearstride Gloves has been activated. I mean now the next reaction is gonna cost one less. It's",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0840.json",
+      "sourceIndex": 10,
+      "before": "Yeah, so that's going to be the Shadowstrike and the massive ice team. That's the third Shadowstrike Tristan",
+      "after": "Yeah, so that's going to be the Shadowstrike and the Mastermind Scheme. That's the third Shadowstrike Tristan",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0840.json",
+      "sourceIndex": 13,
+      "before": "Oh no, oh no, no more ensnaring fumes in your hand. That means you could actually go for the kenku flip here",
+      "after": "Oh no, oh no, no more ensnaring fumes in your hand. That means you could actually go for the Genbu flip here",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 0,
+      "before": "not good. We just draw another sniping trap. I'm not going to help could be",
+      "after": "not good. We just draw another Stifling Trap. I'm not going to help could be",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 1,
+      "before": "the Scout the Land to try and dig for a Zephyr or a incapacitate it. Instead",
+      "after": "the Scout the Land to try and dig for a Zephyr or a Incapacitate. Instead",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 5,
+      "before": "no shadow strikes left in your deck. Scout the Land going to be activated",
+      "after": "no Shadowstrikes left in your deck. Scout the Land going to be activated",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 16,
+      "before": "together the game unless Neek0 sniffs in other instant fumes in this hand I mean",
+      "after": "together the game unless Neek0 sniffs in other Ensnaring Fumes in this hand I mean",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 24,
+      "before": "However, we are going to see artillery doing a bit of allied gaming playing allies down swinging one-on-one trying to poke for game or trying to poke",
+      "after": "However, we are going to see Rty doing a bit of allied gaming playing allies down swinging one-on-one trying to poke for game or trying to poke",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 26,
+      "before": "Oh, there's only two song I've lost in the game, but there's one in the side, so there's one in the side.",
+      "after": "Oh, there's only two Song of Frost in the game, but there's one in the side, so there's one in the side.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-0960.json",
+      "sourceIndex": 28,
+      "before": "method. It is the one method I think that Kristen hates to see it.",
+      "after": "method. It is the one method I think that Tristan hates to see it.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 1,
+      "before": "Fros is one of the main ways to stop a big shot of strike so it's going to be a really",
+      "after": "Song of Frost is one of the main ways to stop a big Shadowstrike so it's going to be a really",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 2,
+      "before": "important card to find here but now with no shot of strikes left maybe this on Fros isn't",
+      "after": "important card to find here but now with no Shadowstrikes left maybe this Song of Frost isn't",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 14,
+      "before": "It could be in fibrilling.",
+      "after": "It could be Enfeebling Orb.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 15,
+      "before": "It's in fibrilling or smoke bomb. It's usually one of those two.",
+      "after": "It's Enfeebling Orb or smoke bomb. It's usually one of those two.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 29,
+      "before": "It looks like trying to basically if it's nickel with this I think it's",
+      "after": "It looks like trying to basically if it's Neek0 with this I think it's",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1080.json",
+      "sourceIndex": 34,
+      "before": "or the shadow strikes, there shouldn't be any other ones so I think maybe reaching the",
+      "after": "or the Shadowstrikes, there shouldn't be any other ones so I think maybe reaching the",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 3,
+      "before": "Like there's no real wincon, shallow stray is gone.",
+      "after": "Like there's no real wincon, Shadowstrike is gone.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 7,
+      "before": "Do I see here probably the inflaming of I believe?",
+      "after": "Do I see here probably the Enfeebling Orb I believe?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 8,
+      "before": "Beeling orb going to be popped, putting two cards down.",
+      "after": "Enfeebling Orb going to be popped, putting two cards down.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 10,
+      "before": "Who's in this missile? No, it seems like I'm just going to let that droid go, which means...",
+      "after": "Frozen Dismissal? No, it seems like I'm just going to let that droid go, which means...",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 12,
+      "before": "Two influence left. There's really really limited amount of play that Artio can do.",
+      "after": "Two influence left. There's really really limited amount of play that Rty can do.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 19,
+      "before": "Yeah, really is starting to get closer and closer. I think you've written another seaside ring leader",
+      "after": "Yeah, really is starting to get closer and closer. I think you've written another Seaside Ringleader",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 26,
+      "before": "- We'll draw, I think we drew in the factorized mode.",
+      "after": "- We'll draw, I think we drew in the Fracturize mode.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 34,
+      "before": "RTYC white, co-white, effectively here.",
+      "after": "Rty white, co-white, effectively here.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1200.json",
+      "sourceIndex": 36,
+      "before": "Well, R.T. was trying to kill the man that's trying to defend this time.",
+      "after": "Well, Rty was trying to kill the man that's trying to defend this time.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 2,
+      "before": "Unless you want to flip the gamble now,",
+      "after": "Unless you want to flip the Genbu now,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 3,
+      "before": "gamble is flipping.",
+      "after": "Genbu is flipping.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 5,
+      "before": "The thing is that if you flip the gamble right here,",
+      "after": "The thing is that if you flip the Genbu right here,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 12,
+      "before": "getting rid of the twinkle here.",
+      "after": "getting rid of the Trinket here.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 29,
+      "before": "so so hard. Okay, just oh, draws another asymptotector. Mm-hmm. Is a potential swing in on the frog",
+      "after": "so so hard. Okay, just oh, draws another Aesan Protector. Mm-hmm. Is a potential swing in on the frog",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1320.json",
+      "sourceIndex": 39,
+      "before": "Oh, the Z side leader right?",
+      "after": "Oh, the Seaside Ringleader right?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1440.json",
+      "sourceIndex": 1,
+      "before": "through with the CD I think CD has accelerated it's agility now going into",
+      "after": "through with the Sadi I think Sadi has accelerated it's agility now going into",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1440.json",
+      "sourceIndex": 2,
+      "before": "no because the CD is miss it he didn't kill it so yeah save for amletio which I",
+      "after": "no because the Sadi is miss it he didn't kill it so yeah Safeguard Amulet which I",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1440.json",
+      "sourceIndex": 33,
+      "before": "Then, play CD, go up to 19. I don't know, the Asen protector could definitely help as well.",
+      "after": "Then, play Sadi, go up to 19. I don't know, the Aesan Protector could definitely help as well.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 2,
+      "before": "really have much protection after this gamble flips and gets fumes away do we",
+      "after": "really have much protection after this Genbu flips and gets fumes away do we",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 3,
+      "before": "do see the black tardis gamble here flipped right here which is glorious yes",
+      "after": "do see the black tardis Genbu here flipped right here which is glorious yes",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 4,
+      "before": "yes yes huh that is a CSR beautiful so we are going to see the gamble being",
+      "after": "yes yes huh that is a CSR beautiful so we are going to see the Genbu being",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 6,
+      "before": "gonna come down here everything that goes back to hand including the gamble",
+      "after": "gonna come down here everything that goes back to hand including the Genbu",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 13,
+      "before": "He doesn't seem to be able to find his other copy of Polydeaf.",
+      "after": "He doesn't seem to be able to find his other copy of Polar Depths.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 21,
+      "before": "In capacitance?",
+      "after": "Incapacitate?",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 26,
+      "before": "remaining two-polar that's but",
+      "after": "remaining two-Polar Depths's but",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 27,
+      "before": "Yep, Gamboo is gonna get flipped out",
+      "after": "Yep, Genbu is gonna get flipped out",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 24,
+      "before": "Hey Bay 9, to bring our back the Sapphire Fade Zone",
+      "after": "Hey Bay 9, to bring our back the Sapphire Fatestone",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 33,
+      "before": "From the Fade Zone, gonna put up with a 7 quest counters",
+      "after": "From the Fatestone, gonna put up with a 7 quest counters",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 39,
+      "before": "Of rain here means",
+      "after": "Of Rain here means",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 40,
+      "before": "Genku is not gonna be able to flip this turn",
+      "after": "Genbu is not gonna be able to flip this turn",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 45,
+      "before": "And there goes another shirugulian decree",
+      "after": "And there goes another Cerulean Decree",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 53,
+      "before": "That should be is it last card is the polydabs",
+      "after": "That should be is it last card is the Polar Depths",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 19,
+      "before": "But just as I talking about Kristen, I think Kristen in terms of matchup, it does have a really good defense once you reach level 3",
+      "after": "But just as I talking about Tristan, I think Tristan in terms of matchup, it does have a really good defense once you reach level 3",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 22,
+      "before": "Jealous right is one of the most I mean it's a new win call you basically farm enough counters",
+      "after": "Shadowstrike is one of the most I mean it's a new win call you basically farm enough counters",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 23,
+      "before": "And you just don't go to town with it. Yeah, and there can be things again boo another matchup",
+      "after": "And you just don't go to town with it. Yeah, and there can be things Genbu another matchup",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 30,
+      "before": "but Gamboo is kind of the talk of the town.",
+      "after": "but Genbu is kind of the talk of the town.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 39,
+      "before": "or why Linton is always like,",
+      "after": "or why Lantern is always like,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 40,
+      "before": "this is a gamboo.",
+      "after": "this is a Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 41,
+      "before": "Gamboo is, if you talk about Linton,",
+      "after": "Genbu is, if you talk about Lantern,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 42,
+      "before": "the conversation is always a gamble because once you have to",
+      "after": "the conversation is always a Genbu because once you have to",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1320.json",
+      "sourceIndex": 43,
+      "before": "then it's very, very hard for the gamble plate of play around it.",
+      "after": "then it's very, very hard for the Genbu plate of play around it.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 5,
+      "before": "very interesting matchup of this. The Christian player trying to have enough counters to go into",
+      "after": "very interesting matchup of this. The Tristan player trying to have enough counters to go into",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 6,
+      "before": "the gamma player and the gamma player being careful not to die.",
+      "after": "the Genbu player and the Genbu player being careful not to die.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 8,
+      "before": "And oftentimes they don't even flip the game because it's because of the same theme.",
+      "after": "And oftentimes they don't even flip the Genbu because it's because of the Ensnaring Fumes.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 9,
+      "before": "So that's only a one of in this Naka but if they find the same theme your",
+      "after": "So that's only a one of in this Naka but if they find the Ensnaring Fumes your",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 10,
+      "before": "Genbo is basically never safe to come out.",
+      "after": "Genbu is basically never safe to come out.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 18,
+      "before": "that it's there and feels milled off already,",
+      "after": "that Ensnaring Fumes milled off already,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 23,
+      "before": "Oh, actually this is playing the briny polywog",
+      "after": "Oh, actually this is playing the Briny Polliwog",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1440.json",
+      "sourceIndex": 28,
+      "before": "Tristan against Neek0 or Neek0 zero on this water ganbu.",
+      "after": "Tristan against Neek0 or Neek0 on this water Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 4,
+      "before": "But factor ring, really, really great start.",
+      "after": "But Fractal of Rain, really, really great start.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 10,
+      "before": "- Yeah, and this is really powerful in Genbo,",
+      "after": "- Yeah, and this is really powerful in Genbu,",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 17,
+      "before": "for fracking missiles just to get rid of this windmill.",
+      "after": "for Refracting Missile just to get rid of this windmill.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 20,
+      "before": "into the level and goja bring out the fate stone.",
+      "after": "into the level and Guo Jia bring out the Fatestone.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 22,
+      "before": "as is part of goja chosen disciples effect.",
+      "after": "as is part of Guo Jia chosen disciples effect.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 23,
+      "before": "show your material deck and then you get to bring out one of your faith stones. So we're seeing the QsG here in",
+      "after": "show your material deck and then you get to bring out one of your Fatestones. So we're seeing the QsG here in",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 25,
+      "before": "which is a card that has been, oh and a pelagic faith stone actually been milled here.",
+      "after": "which is a card that has been, oh and a pelagic Fatestone actually been milled here.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 26,
+      "before": "There's a card that these gendhus have been kind of",
+      "after": "There's a card that these Genbu have been kind of",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 31,
+      "before": "Because back then, Gamboo doesn't really flip as we know.",
+      "after": "Because back then, Genbu doesn't really flip as we know.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 32,
+      "before": "But it's really rare for people to try to flip the Gamboo.",
+      "after": "But it's really rare for people to try to flip the Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 33,
+      "before": "So, a nickel's in place seems to be, I want to flip the Gamboo.",
+      "after": "So, a nickel's in place seems to be, I want to flip the Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 36,
+      "before": "That was a third of all.",
+      "after": "That was a Thurible.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 37,
+      "before": "Third of all, you used four-five to force that grager.",
+      "after": "Thurible, you used four-five to force that grager.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 1,
+      "before": "server will has already been used. That's one of your most powerful tools",
+      "after": "Thurible has already been used. That's one of your most powerful tools",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 2,
+      "before": "against the Genvidek.",
+      "after": "against the Genbu deck.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 19,
+      "before": "Stuyving Jair, not a particularly strong card against Genbu.",
+      "after": "Stifling Gyre, not a particularly strong card against Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 25,
+      "before": "Just surveil the wins, get that preparation counter, train rolling.",
+      "after": "Just Surveil the Winds, get that preparation counter, train rolling.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 33,
+      "before": "And I usually name here for Gamboo.",
+      "after": "And I usually name here for Genbu.",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    },
+    {
+      "sourceFile": "bounded-12-1680.json",
+      "sourceIndex": 41,
+      "before": "on the Gendu deck, but instead going to just feed out a frost bind from Neek0, once it",
+      "after": "on the Genbu deck, but instead going to just feed out a Frostbind from Neek0, once it",
+      "evidence": "Reviewed surrounding recovered narration and official event player identities; canonical card names checked against current data/card-catalog.json. Context-specific name normalization only; hypotheses, game actions and uncertainty preserved."
+    }
+  ],
+  "scope": "Final conservative residual-name pass across recovery-r2 and recovery-r4-r5 normalized recovered segments; music/lyrics excluded.",
+  "unchangedUncertainty": "Malformed phrases without a sufficiently supported card/player identity remain unchanged."
+}

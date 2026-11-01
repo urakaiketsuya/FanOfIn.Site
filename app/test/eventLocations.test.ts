@@ -4,6 +4,7 @@ import { eventLocation, countryFlag } from '../src/features/timelines/eventLocat
 
 test('uses event locations rather than overseas organizer addresses', () => {
   assert.deepEqual(eventLocation('Ascent Manila', 42040), { city: 'Manila', country: 'PH', region: 'Asia-Pacific' });
+  assert.deepEqual(eventLocation('Ascent Osaka', 67176), { city: 'Osaka', country: 'JP', region: 'Asia-Pacific' });
   assert.equal(eventLocation('Ascent London', 43636).city, 'London');
   assert.equal(eventLocation('Ascent Niagara Falls', 36225).country, 'CA');
 });

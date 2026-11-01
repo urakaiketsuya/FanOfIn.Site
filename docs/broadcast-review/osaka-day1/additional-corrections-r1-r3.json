@@ -1,0 +1,374 @@
+{
+  "corrections": [
+    {
+      "index": 85,
+      "before": "But I think that deck, you know, if we ever see Braceless Thunder maybe take a bench, or an actual full ban, or if Aayla ever maybe gets out of here, there's a potential for that deck to actually really jump up in playability.",
+      "after": "But I think that deck, you know, if we ever see Burst Asunder maybe take a bench, or an actual full ban, or if Aayla ever maybe gets out of here, there's a potential for that deck to actually really jump up in playability.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 85 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 325,
+      "before": "Now, leveling up to Ciel Level 1 here does get that on-enter Saval Possessions Mastery. Losing a Beganku into the level, Limnoguide does come out allowing him to draw another card and hachico has added Angelic Channeling to his deck as well.",
+      "after": "Now, leveling up to Ciel Level 1 here does get that on-enter Servile Possessions Mastery. Losing a Beganku into the level, Limnoguide does come out allowing him to draw another card and hachico has added Angelic Channeling to his deck as well.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 325 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 338,
+      "before": "Going to respond is hachico as well with his own Angelic Channeling and going to throw away just an Umbricite. But Umbricite is a really, really strong card.",
+      "after": "Going to respond is hachico as well with his own Angelic Channeling and going to throw away just an Umbra Sight. But Umbra Sight is a really, really strong card.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 338 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 383,
+      "before": "Hainan should have no way of stopping this. Only 2 cards in hand.",
+      "after": "wenwen should have no way of stopping this. Only 2 cards in hand.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 383 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 414,
+      "before": "But one card we do need though is the Chronowarp and the Ciel Astral Projection in wenwen's deck.",
+      "after": "But one card we do need though is the Chronowarp and the Ciel, Astral Projection in wenwen's deck.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 414 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 434,
+      "before": "Yeah but if we do get to see Ciel Astral Projection hit the board.",
+      "after": "Yeah but if we do get to see Ciel, Astral Projection hit the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 434 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 487,
+      "before": "And that's 2nd Dungeon Guy!",
+      "after": "And that's 2nd Dungeon Guide!",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 487 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 488,
+      "before": "So you're going to assume that this other facedown card in the memory is also a Dungeon Guy.",
+      "after": "So you're going to assume that this other facedown card in the memory is also a Dungeon Guide.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 488 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 550,
+      "before": "Arisanna Tree Astral Zenith now hits the board.",
+      "after": "Arisanna 3, Astral Zenith now hits the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 550 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 583,
+      "before": "Has to be Guiling Coup.",
+      "after": "Has the Beguiling Coup.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 583 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 641,
+      "before": "And it's going to be a Horde Encounter using one of the herbs.",
+      "after": "And it's going to be a Horticounter using one of the herbs.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 641 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 655,
+      "before": "The Horde Encounter is going to resolve.",
+      "after": "The Horticounter is going to resolve.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 655 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 698,
+      "before": "Riganku, Devastating Blow, Full Awakening, that's basically the entire deck.",
+      "after": "Beguiling Coup, Devastating Blow, Full Awakening, that's basically the entire deck.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 698 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 724,
+      "before": "But really when you think about it, we're not playing Frail Grounds anymore.",
+      "after": "But really when you think about it, we're not playing Fertile Grounds anymore.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 724 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 867,
+      "before": "Or Besiege, or any of the other ways of leveling up.",
+      "after": "Or Beseech the Winds, or any of the other ways of leveling up.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 867 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 947,
+      "before": "Oh, Besiege! Besiege and Tricastles",
+      "after": "Oh, Beseech the Winds! Beseech the Winds and Tricastles",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 947 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 981,
+      "before": "No Agus?",
+      "after": "No Argus?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 981 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 1004,
+      "before": "Going to be a Spirel and a Humberside,",
+      "after": "Going to be a Spirelle and a Umbra Sight,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1004 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 1144,
+      "before": "So Naukins will make a quick work",
+      "after": "So Nocturne’s Oblivion will make a quick work",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1144 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 1677,
+      "before": "a Besieged",
+      "after": "a Beseech",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1677 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 1678,
+      "before": "to Wins",
+      "after": "the Winds",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1678 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2173,
+      "before": "I want to see a 100-100 pro tier",
+      "after": "I want to see a 100-100 Poitier",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2173 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2452,
+      "before": "I see Frost",
+      "after": "I see Frostsworn",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2452 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2453,
+      "before": "From Paladin",
+      "after": "Paladin",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2453 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2481,
+      "before": "Has now the J-Ink",
+      "after": "Has now the Jueying",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2481 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2593,
+      "before": "The Aquifer Sanadriel",
+      "after": "The Aquifer Seneschal",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2593 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2670,
+      "before": "The Aquifer Sanadriel",
+      "after": "The Aquifer Seneschal",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2670 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2753,
+      "before": "With the Twinkler",
+      "after": "With the Tweedledee",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2753 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2802,
+      "before": "Tweedle D",
+      "after": "Tweedledee",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2802 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 2811,
+      "before": "The Roland Schwarzknight",
+      "after": "The Rowland, Schwartz Knight",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2811 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3058,
+      "before": "Because as we mentioned, Twinkledead, this is a really really painful game for Zenedrill.",
+      "after": "Because as we mentioned, Trinket, this is a really really painful game for Zenedrill.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3058 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3059,
+      "before": "Honestly speaking, will you actually expect Main Deck Twinkled right here?",
+      "after": "Honestly speaking, will you actually expect Main Deck Trinket right here?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3059 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3060,
+      "before": "Yeah, I mean, Main Deck Twinkled seems to be quite powerful because",
+      "after": "Yeah, I mean, Main Deck Trinket seems to be quite powerful because",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3060 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3075,
+      "before": "That is the Sensor of Restful Peace.",
+      "after": "That is the Censer of Restful Peace.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3075 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3078,
+      "before": "Mono just double confirming the text on Luka Gateway in measure.",
+      "after": "Mono just double confirming the text on Lucca, Gateway Manager.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3078 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3205,
+      "before": "Yeah, I mean, we of course saw the Avatar of Yarko get finished.",
+      "after": "Yeah, I mean, we of course saw the Avatar of Byakko get finished.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3205 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3242,
+      "before": "Nightframe Houndbite.",
+      "after": "Nightframe, Hound's Bike.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3242 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3293,
+      "before": "Here's Liu Pei now going to hit the board.",
+      "after": "Here's Liu Bei now going to hit the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3293 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3328,
+      "before": "Yeah, because Xanadriel does come in hindered,",
+      "after": "Yeah, because Aquifer Seneschal does come in hindered,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3328 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3329,
+      "before": "but it's going to be partly Raccoon.",
+      "after": "but it's going to be Portly Raccoon.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3329 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3371,
+      "before": "We do see that Luster's Shroud as well as a Cyclonic Fade Stone.",
+      "after": "We do see that Luster's Shroud as well as a Cyclonic Fatestone.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3371 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3374,
+      "before": "but also helps to get the quest counters for your Fabled Emerald Fade Stone.",
+      "after": "but also helps to get the quest counters for your Fabled Emerald Fatestone.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3374 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3539,
+      "before": "We see that before with the Longtail Growth Sword as well,",
+      "after": "We see that before with the Longtail Grovesward as well,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3539 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3585,
+      "before": "Oh, he has a Nina,",
+      "after": "Oh, he has a Nia,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3585 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3592,
+      "before": "Acid? But even then you have nothing on the board,",
+      "after": "Aesan Protector? But even then you have nothing on the board,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3592 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3593,
+      "before": "so Acid doesn't bounce anything,",
+      "after": "so Aesan Protector doesn't bounce anything,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3593 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3698,
+      "before": "I think he has Slow White Jueying though,",
+      "after": "I think he has Snow White Jueying though,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3698 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3726,
+      "before": "We're going to see a Twinkle right here,",
+      "after": "We're going to see a Tweedledee right here,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3726 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3780,
+      "before": "So we are going to... Is that a Virgil? No. Oh, Vermilion Decay plus 2 onto Liu Bei.",
+      "after": "So we are going to... Is that a Virgil? No. Oh, Verdigris Decree plus 2 onto Liu Bei.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3780 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3785,
+      "before": "And what else is going to be played? Sasha might be put onto the board. There's also a Bludge in hand.",
+      "after": "And what else is going to be played? Sasha might be put onto the board. There's also a Blanche in hand.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3785 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3811,
+      "before": "Veiling Breeze, Blunt. He has a lot of outs. I think he's fine.",
+      "after": "Veiling Breeze, Blanche. He has a lot of outs. I think he's fine.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3811 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3813,
+      "before": "There is a Freezing Hail. Blunt could actually end up being relevant. We'll see.",
+      "after": "There is a Freezing Hail. Blanche could actually end up being relevant. We'll see.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3813 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3852,
+      "before": "Oh, 30 degrees.",
+      "after": "Oh, Cerulean Decree.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3852 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3867,
+      "before": "Of course, we did see the Cyclonic Fates don't get banished for mono,",
+      "after": "Of course, we did see the Cyclonic Fatestone get banished for mono,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3867 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3871,
+      "before": "we know he has Nier,",
+      "after": "we know he has Nia,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3871 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3876,
+      "before": "Nier plus a Chia Ying here, for example,",
+      "after": "Nia plus a Chia Ying here, for example,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3876 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3992,
+      "before": "Mortal takes the 2 points,",
+      "after": "Mono takes the 2 points,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3992 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 3999,
+      "before": "Is there a cheering alongside it?",
+      "after": "Is there a Jueying alongside it?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3999 is a contextual correction; apply alongside prior corrections if same index."
+    },
+    {
+      "index": 4001,
+      "before": "And that does mean the cheering comes in first.",
+      "after": "And that does mean the Jueying comes in first.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 4001 is a contextual correction; apply alongside prior corrections if same index."
+    }
+  ],
+  "round1StartFinding": {
+    "segments": [
+      161,
+      200,
+      201,
+      202,
+      310,
+      311,
+      312,
+      315,
+      316,
+      319
+    ],
+    "finding": "40:32 explicitly says round1 is underway behind the commentators.43:30 announces transition to the match, but supplied source then contains song lyrics through59:38.59:59 introduces champions;1:00:13 dice roll,1:00:26 hachico goes first,1:00:48 first Creative Tinder. No earlier gameplay is evidenced by this transcript. A video/audio gap review could establish whether43:30 transition failed or transcript omitted gameplay; do not infer an extra match."
+  },
+  "integration": "Consolidated into review-r1-r3.json. Do not apply this supplemental pass again."
+}

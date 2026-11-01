@@ -1,0 +1,4631 @@
+{
+  "reviewer": "osaka_r7_r8",
+  "reviewedSegmentRange": {
+    "startInclusive": 7282,
+    "endExclusive": 9182
+  },
+  "reviewMethod": "All segments read sequentially, including inter-round commentary, interview and music tail; transcript only, not direct audiovisual review. API pairing results corroborate outcomes, never supply unseen gameplay.",
+  "proposedCorrections": [
+    {
+      "index": 7309,
+      "timestamp": "9:06:49",
+      "before": "But yeah, why don't you tell us a little bit about the Djinn?",
+      "after": "But yeah, why don't you tell us a little bit about the Jin?",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7311,
+      "timestamp": "9:06:53",
+      "before": "Apex is always kind of going back to that Djinn,",
+      "after": "Apex is always kind of going back to that Jin,",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7355,
+      "timestamp": "9:08:39",
+      "before": "There is a Velocity Punch, which is a good way.",
+      "after": "There is a Vel-ocity Punch, which is a good way.",
+      "evidence": [
+        {
+          "target": "Vel-ocity Punch",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7369,
+      "timestamp": "9:09:09",
+      "before": "It's just going to be a Velocity Punch.",
+      "after": "It's just going to be a Vel-ocity Punch.",
+      "evidence": [
+        {
+          "target": "Vel-ocity Punch",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7385,
+      "timestamp": "9:09:42",
+      "before": "Actually, previously, Dragon JJ did beat",
+      "after": "Actually, previously, DragonJG did beat",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7397,
+      "timestamp": "9:10:08",
+      "before": "I wonder if Dragon JJ maybe can find that",
+      "after": "I wonder if DragonJG maybe can find that",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7412,
+      "timestamp": "9:10:38",
+      "before": "And meanwhile, Dragon JJ going for the",
+      "after": "And meanwhile, DragonJG going for the",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7417,
+      "timestamp": "9:10:48",
+      "before": "on Dragon JJ's side.",
+      "after": "on DragonJG's side.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7436,
+      "timestamp": "9:11:28",
+      "before": "is that Dragon JJ gets to choose.",
+      "after": "is that DragonJG gets to choose.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7438,
+      "timestamp": "9:11:32",
+      "before": "he gets to use Astra Seal on the cards",
+      "after": "he gets to use Astral Seal on the cards",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7446,
+      "timestamp": "9:11:47",
+      "before": "with that Astra Seal.",
+      "after": "with that Astral Seal.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7448,
+      "timestamp": "9:11:49",
+      "before": "Dragon JJ actually is going to bring out the Polaris now.",
+      "after": "DragonJG actually is going to bring out the Polaris now.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7454,
+      "timestamp": "9:12:02",
+      "before": "So you can see Dragon JJ has a bit of a practiced understanding",
+      "after": "So you can see DragonJG has a bit of a practiced understanding",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7456,
+      "timestamp": "9:12:08",
+      "before": "And meanwhile, Querex has to decide",
+      "after": "And meanwhile, Quarax has to decide",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7468,
+      "timestamp": "9:12:34",
+      "before": "Querex is actually passing turn here.",
+      "after": "Quarax is actually passing turn here.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7469,
+      "timestamp": "9:12:36",
+      "before": "Dragon JJ goes up to Arizana level 2",
+      "after": "DragonJG goes up to Arisanna level 2",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7471,
+      "timestamp": "9:12:41",
+      "before": "bringing him up to Arizana level 3.",
+      "after": "bringing him up to Arisanna level 3.",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7476,
+      "timestamp": "9:12:52",
+      "before": "Let's see if Dragon JJ can hit.",
+      "after": "Let's see if DragonJG can hit.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7486,
+      "timestamp": "9:13:15",
+      "before": "There is going to be the Dungeon Guide played for Dragon JJ",
+      "after": "There is going to be the Dungeon Guide played for DragonJG",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7487,
+      "timestamp": "9:13:18",
+      "before": "goes up to Arizana level 3.",
+      "after": "goes up to Arisanna level 3.",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7490,
+      "timestamp": "9:13:24",
+      "before": "The 2 Comet Falls are going to be great to throw away here.",
+      "after": "The 2 Cometfall are going to be great to throw away here.",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7497,
+      "timestamp": "9:13:39",
+      "before": "Now, what is Quarix going to do here at fast speed?",
+      "after": "Now, what is Quarax going to do here at fast speed?",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7503,
+      "timestamp": "9:13:49",
+      "before": "And maybe Quarix is seeing a lot of red right now.",
+      "after": "And maybe Quarax is seeing a lot of red right now.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7509,
+      "timestamp": "9:14:07",
+      "before": "Also gets the Wisdom Reprise off here.",
+      "after": "Also gets the Wisdom's Reprise off here.",
+      "evidence": [
+        {
+          "target": "Wisdom's Reprise",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7514,
+      "timestamp": "9:14:15",
+      "before": "Quarix giving a little bit of nod of approval here.",
+      "after": "Quarax giving a little bit of nod of approval here.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7520,
+      "timestamp": "9:14:30",
+      "before": "And Quarix is also a good sport.",
+      "after": "And Quarax is also a good sport.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7523,
+      "timestamp": "9:14:37",
+      "before": "That is one way for this Djinn deck to really go above and beyond.",
+      "after": "That is one way for this Jin deck to really go above and beyond.",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7525,
+      "timestamp": "9:14:43",
+      "before": "which is the new card that really has rocketed this Djinn deck",
+      "after": "which is the new card that really has rocketed this Jin deck",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7532,
+      "timestamp": "9:14:58",
+      "before": "But Quarix just passing the turn back over once more",
+      "after": "But Quarax just passing the turn back over once more",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7567,
+      "timestamp": "9:16:18",
+      "before": "I mean, Quarix brings out the drum here.",
+      "after": "I mean, Quarax brings out the drum here.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7573,
+      "timestamp": "9:16:30",
+      "before": "who has the potential to throw a Horde Encounter or a Cosmic Seal on you",
+      "after": "who has the potential to throw a Horticounter or a Astral Seal on you",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7575,
+      "timestamp": "9:16:39",
+      "before": "And really the thing is, on Quarix's side,",
+      "after": "And really the thing is, on Quarax's side,",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7578,
+      "timestamp": "9:16:48",
+      "before": "Quarix's face is like, uh, negate me? No?",
+      "after": "Quarax's face is like, uh, negate me? No?",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7585,
+      "timestamp": "9:17:02",
+      "before": "And it looks like Quarix is going to use that Tangu now",
+      "after": "And it looks like Quarax is going to use that Tangu now",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7592,
+      "timestamp": "9:17:23",
+      "before": "And finds another Cosmic Vault off that Orbiting Cosmos.",
+      "after": "And finds another Cosmic Bolt off that Orbiting Cosmos.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7603,
+      "timestamp": "9:17:53",
+      "before": "Oh, Premium Material!",
+      "after": "Oh, Prima Materia!",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7604,
+      "timestamp": "9:17:54",
+      "before": "Oh my god, the Premium Material comes out, and there it is!",
+      "after": "Oh my god, the Prima Materia comes out, and there it is!",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7605,
+      "timestamp": "9:17:57",
+      "before": "It's a Brood, and Quarix has no way of stopping this.",
+      "after": "It's a Brood, and Quarax has no way of stopping this.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7607,
+      "timestamp": "9:18:03",
+      "before": "And now, Dragon GG could potentially ship 10 Cosmic Vaults into his deck",
+      "after": "And now, DragonJG could potentially ship 10 Cosmic Bolt into his deck",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7610,
+      "timestamp": "9:18:11",
+      "before": "For those of you who don't see Premium Material very often,",
+      "after": "For those of you who don't see Prima Materia very often,",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7615,
+      "timestamp": "9:18:26",
+      "before": "So the next Cosmic Vault will come in for 11 instead of 8.",
+      "after": "So the next Cosmic Bolt will come in for 11 instead of 8.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7616,
+      "timestamp": "9:18:29",
+      "before": "And it's not just Cosmic Vaults.",
+      "after": "And it's not just Cosmic Bolt.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7620,
+      "timestamp": "9:18:37",
+      "before": "So Polaris being popped, that's 10 more Cosmic Vaults in the deck.",
+      "after": "So Polaris being popped, that's 10 more Cosmic Bolt in the deck.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7624,
+      "timestamp": "9:18:45",
+      "before": "Probably like a 40-card deck, we're throwing 10 Cosmic Vaults.",
+      "after": "Probably like a 40-card deck, we're throwing 10 Cosmic Bolt.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7625,
+      "timestamp": "9:18:48",
+      "before": "That means if Dragon GG hits off of this glimpse,",
+      "after": "That means if DragonJG hits off of this glimpse,",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7626,
+      "timestamp": "9:18:51",
+      "before": "he is just killing Quarix right here, right now.",
+      "after": "he is just killing Quarax right here, right now.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7629,
+      "timestamp": "9:19:00",
+      "before": "12 total vaults that Dragon GG has the chance to hit on one of his glimpses.",
+      "after": "12 total vaults that DragonJG has the chance to hit on one of his glimpses.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7633,
+      "timestamp": "9:19:17",
+      "before": "not including any further glimpses from the Wizard's Reprise,",
+      "after": "not including any further glimpses from the Wisdom's Reprise,",
+      "evidence": [
+        {
+          "target": "Wisdom's Reprise",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7634,
+      "timestamp": "9:19:20",
+      "before": "not including any further glimpses from Nascent Barrier and Haughty Counter.",
+      "after": "not including any further glimpses from Nascent Barrier and Horticounter.",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7635,
+      "timestamp": "9:19:24",
+      "before": "And that's just so many opportunities for him to send Quarix to game 2.",
+      "after": "And that's just so many opportunities for him to send Quarax to game 2.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7636,
+      "timestamp": "9:19:28",
+      "before": "He has a Wizard's Reprise in hand right now,",
+      "after": "He has a Wisdom's Reprise in hand right now,",
+      "evidence": [
+        {
+          "target": "Wisdom's Reprise",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7638,
+      "timestamp": "9:19:33",
+      "before": "Astrocyte first, let's see if we're feeling lucky.",
+      "after": "Astra Sight first, let's see if we're feeling lucky.",
+      "evidence": [
+        {
+          "target": "Astra Sight",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7639,
+      "timestamp": "9:19:36",
+      "before": "And it's Glimpse 2, Astrocyte 2 by the way,",
+      "after": "And it's Glimpse 2, Astra Sight 2 by the way,",
+      "evidence": [
+        {
+          "target": "Astra Sight",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7641,
+      "timestamp": "9:19:41",
+      "before": "He doesn't even need to hit Cosmic Vault.",
+      "after": "He doesn't even need to hit Cosmic Bolt.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7643,
+      "timestamp": "9:19:45",
+      "before": "Yeah, Cometfall is 7 damage with the premium material.",
+      "after": "Yeah, Cometfall is 7 damage with the Prima Materia.",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7651,
+      "timestamp": "9:20:05",
+      "before": "Okay, we have the Serene Spirit of Fire.",
+      "after": "Okay, we have the Spirit of Serene Fire.",
+      "evidence": [
+        {
+          "target": "Spirit of Serene Fire",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7657,
+      "timestamp": "9:20:17",
+      "before": "Yes, that's right, he has the Serene Spirit of Fire.",
+      "after": "Yes, that's right, he has the Spirit of Serene Fire.",
+      "evidence": [
+        {
+          "target": "Spirit of Serene Fire",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7659,
+      "timestamp": "9:20:20",
+      "before": "So, Dragon GG is going for a, you know what?",
+      "after": "So, DragonJG is going for a, you know what?",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7666,
+      "timestamp": "9:20:33",
+      "before": "And now, premium material on the stack of the Cosmic Vault.",
+      "after": "And now, Prima Materia on the stack of the Cosmic Bolt.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7667,
+      "timestamp": "9:20:37",
+      "before": "Premium material here, going to confer an extra 4 damage to this Cosmic Vault.",
+      "after": "Prima Materia here, going to confer an extra 4 damage to this Cosmic Bolt.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7669,
+      "timestamp": "9:20:46",
+      "before": "the premium material could potentially be increasing the damage.",
+      "after": "the Prima Materia could potentially be increasing the damage.",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7673,
+      "timestamp": "9:20:57",
+      "before": "but takes 11 damage from this Cosmic Vault,",
+      "after": "but takes 11 damage from this Cosmic Bolt,",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7675,
+      "timestamp": "9:21:04",
+      "before": "I mean, can Dragon GG keep going?",
+      "after": "I mean, can DragonJG keep going?",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7681,
+      "timestamp": "9:21:22",
+      "before": "Of course, we do have Portentous Tangu to use here",
+      "after": "Of course, we do have Portentous Tanggu to use here",
+      "evidence": [
+        {
+          "target": "Portentous Tanggu",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7683,
+      "timestamp": "9:21:30",
+      "before": "but while he is immortal, that Cosmic Vault is at fast speed.",
+      "after": "but while he is immortal, that Cosmic Bolt is at fast speed.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7689,
+      "timestamp": "9:21:50",
+      "before": "and losing 3 cards, a Dungeon Guide, a Tune-Up,",
+      "after": "and losing 3 cards, a Dungeon Guide, a Tune Up,",
+      "evidence": [
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7695,
+      "timestamp": "9:22:08",
+      "before": "and it's going to be a Hoarded Counter here, which is going to glimpse even more cards.",
+      "after": "and it's going to be a Horticounter here, which is going to glimpse even more cards.",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7698,
+      "timestamp": "9:22:20",
+      "before": "Yeah, okay, negated here, which means the Hoarded Counter now gets to glimpse 4,",
+      "after": "Yeah, okay, negated here, which means the Horticounter now gets to glimpse 4,",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7699,
+      "timestamp": "9:22:24",
+      "before": "and another Cosmic Vault has been found!",
+      "after": "and another Cosmic Bolt has been found!",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7705,
+      "timestamp": "9:22:45",
+      "before": "There is a Tune-Up and a Creative Shock, Relentless Outburst,",
+      "after": "There is a Tune Up and a Creative Shock, Relentless Outburst,",
+      "evidence": [
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7720,
+      "timestamp": "9:23:48",
+      "before": "I'm checking the Astra Seal, I think.",
+      "after": "I'm checking the Astral Seal, I think.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7722,
+      "timestamp": "9:23:54",
+      "before": "And a very pretty Astra Seal card as well, that's the CPR.",
+      "after": "And a very pretty Astral Seal card as well, that's the CPR.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7729,
+      "timestamp": "9:24:13",
+      "before": "23 life, so it's much safer now that he's already used those Men Fleshes to recover.",
+      "after": "23 life, so it's much safer now that he's already used those Mend Flesh to recover.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7733,
+      "timestamp": "9:24:29",
+      "before": "Oh yeah, this is a really nasty card against decks like Jinn,",
+      "after": "Oh yeah, this is a really nasty card against decks like Jin,",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7736,
+      "timestamp": "9:24:41",
+      "before": "And here comes an Orc Persecution, going to be used...",
+      "after": "And here comes an Auric Persecution, going to be used...",
+      "evidence": [
+        {
+          "target": "Auric Persecution",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7739,
+      "timestamp": "9:24:50",
+      "before": "It actually also stops him from being able to activate those Men Fleshes.",
+      "after": "It actually also stops him from being able to activate those Mend Flesh.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7754,
+      "timestamp": "9:25:35",
+      "before": "plus banish a card, and then use the Astra Seal on that card for free.",
+      "after": "plus banish a card, and then use the Astral Seal on that card for free.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7761,
+      "timestamp": "9:25:55",
+      "before": "And it's another Astra Seal there.",
+      "after": "And it's another Astral Seal there.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7767,
+      "timestamp": "9:26:10",
+      "before": "And he's going to throw this Cosmic Vault here and now.",
+      "after": "And he's going to throw this Cosmic Bolt here and now.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7768,
+      "timestamp": "9:26:12",
+      "before": "Is this going to be a Cosmic Vault for 12 plus 4?",
+      "after": "Is this going to be a Cosmic Bolt for 12 plus 4?",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7796,
+      "timestamp": "9:27:21",
+      "before": "then you get to go for that Cosmic Seal.",
+      "after": "then you get to go for that Astral Seal.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7800,
+      "timestamp": "9:27:28",
+      "before": "Of course, we know that he has an Extra Seal.",
+      "after": "Of course, we know that he has an Astral Seal.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7813,
+      "timestamp": "9:27:50",
+      "before": "Men Flesh is a good choice.",
+      "after": "Mend Flesh is a good choice.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7819,
+      "timestamp": "9:28:00",
+      "before": "Yeah, so he's going to go for the Men Flesh.",
+      "after": "Yeah, so he's going to go for the Mend Flesh.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7820,
+      "timestamp": "9:28:01",
+      "before": "He doesn't want to let Quarks heal back down.",
+      "after": "He doesn't want to let Quarax heal back down.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7822,
+      "timestamp": "9:28:04",
+      "before": "So now, DragonJG has the ability to flex this Cosmic Seal",
+      "after": "So now, DragonJG has the ability to flex this Astral Seal",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7825,
+      "timestamp": "9:28:13",
+      "before": "Oh, Quarks showing that cleave there when he picked it up.",
+      "after": "Oh, Quarax showing that cleave there when he picked it up.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7829,
+      "timestamp": "9:28:24",
+      "before": "because that means he can't cast a raw Extra Seal.",
+      "after": "because that means he can't cast a raw Astral Seal.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7853,
+      "timestamp": "9:29:30",
+      "before": "Here is the Astra Seal going to be played.",
+      "after": "Here is the Astral Seal going to be played.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7858,
+      "timestamp": "9:29:40",
+      "before": "unless DragonJG has a third Cosmic Seal that we didn't see.",
+      "after": "unless DragonJG has a third Astral Seal that we didn't see.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7866,
+      "timestamp": "9:30:11",
+      "before": "here. Swapping a card out from his hand, going to look for another Astra Seal maybe.",
+      "after": "here. Swapping a card out from his hand, going to look for another Astral Seal maybe.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7876,
+      "timestamp": "9:31:07",
+      "before": "damage attack and DragonJG accepts his loss. He did have a second Cosmic Seal too and just",
+      "after": "damage attack and DragonJG accepts his loss. He did have a second Astral Seal too and just",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7885,
+      "timestamp": "9:32:00",
+      "before": "in the banishment yet. Yeah and really it was like oh you know playing the card activated Cosmic Vault",
+      "after": "in the banishment yet. Yeah and really it was like oh you know playing the card activated Cosmic Bolt",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7897,
+      "timestamp": "9:33:01",
+      "before": "take out his four Comet Falls not a very useful card in this matchup but may have put in the",
+      "after": "take out his four Cometfall not a very useful card in this matchup but may have put in the",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7901,
+      "timestamp": "9:33:22",
+      "before": "oh you know choose a mode but no it's like if it's Star-Called it's the inferior Comet Fall",
+      "after": "oh you know choose a mode but no it's like if it's Star-Called it's the inferior Cometfall",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7903,
+      "timestamp": "9:33:35",
+      "before": "Shuang Ji turns actually so a little bit iffy but it can still break Berserker's Plate at the very",
+      "after": "Shuang Ji turns actually so a little bit iffy but it can still break Berserker Plate at the very",
+      "evidence": [
+        {
+          "target": "Berserker Plate",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7904,
+      "timestamp": "9:33:40",
+      "before": "least. And it's better than having Comet Fall in hand at the very minimum because we saw Dragon",
+      "after": "least. And it's better than having Cometfall in hand at the very minimum because we saw Dragon",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7905,
+      "timestamp": "9:33:45",
+      "before": "JG immediately banish two to go up to level two. Yeah 100% so Spell Shield Astra there's another",
+      "after": "JG immediately banish two to go up to level two. Yeah 100% so Spellshield: Astra there's another",
+      "evidence": [
+        {
+          "target": "Spellshield: Astra",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7932,
+      "timestamp": "9:36:02",
+      "before": "of course not banishing Creative Shock because that allows a free Astro Seal on Quarax's own",
+      "after": "of course not banishing Creative Shock because that allows a free Astral Seal on Quarax's own",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7933,
+      "timestamp": "9:36:08",
+      "before": "Creative Shock. That's the thing Astro Seal does not discriminate against on either banish it's",
+      "after": "Creative Shock. That's the thing Astral Seal does not discriminate against on either banish it's",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7956,
+      "timestamp": "9:38:11",
+      "before": "banishment as well because remember Astra Seal very very crucial card in this matchup and we're",
+      "after": "banishment as well because remember Astral Seal very very crucial card in this matchup and we're",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7959,
+      "timestamp": "9:38:25",
+      "before": "Tinder we could use on the following turn. Yeah this is a pretty strong set Men's Flesh is very",
+      "after": "Tinder we could use on the following turn. Yeah this is a pretty strong set Mend Flesh is very",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7962,
+      "timestamp": "9:38:38",
+      "before": "JG rolls into his fourth unique herb so premium material on the table if he finds it but not",
+      "after": "JG rolls into his fourth unique herb so Prima Materia on the table if he finds it but not",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7967,
+      "timestamp": "9:39:03",
+      "before": "the Berserker's Vest plate is going to hit the board Devil's Lifeline lost into the banishment",
+      "after": "the Berserker Plate is going to hit the board Devil's Lifeline lost into the banishment",
+      "evidence": [
+        {
+          "target": "Berserker Plate",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7968,
+      "timestamp": "9:39:08",
+      "before": "and Quiric is going to start building up his influence. Remember last game he didn't even get",
+      "after": "and Quarax is going to start building up his influence. Remember last game he didn't even get",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7976,
+      "timestamp": "9:39:46",
+      "before": "to be another top Seething Decree which is very strong against Arisanna because it lets you get",
+      "after": "to be another Topsy Decree which is very strong against Arisanna because it lets you get",
+      "evidence": [
+        {
+          "target": "Topsy Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7977,
+      "timestamp": "9:39:50",
+      "before": "Spell Shroud to stop those Causing Bolts as well as another Velocity Punch and a tune-up that can",
+      "after": "Spell Shroud to stop those Causing Bolts as well as another Vel-ocity Punch and a Tune Up that can",
+      "evidence": [
+        {
+          "target": "Vel-ocity Punch",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7978,
+      "timestamp": "9:39:55",
+      "before": "be used to bring out that Shuang Ji later in the game but instead Quiric wants to take more damage.",
+      "after": "be used to bring out that Shuang Ji later in the game but instead Quarax wants to take more damage.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7980,
+      "timestamp": "9:40:06",
+      "before": "too special for DragonJG to eat up so probably not going to be seeing any top Seething Decrees",
+      "after": "too special for DragonJG to eat up so probably not going to be seeing any Topsy Decree",
+      "evidence": [
+        {
+          "target": "Topsy Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7993,
+      "timestamp": "9:41:15",
+      "before": "and that's four damage into the face of Khorix who is immortal at the moment so",
+      "after": "and that's four damage into the face of Quarax who is immortal at the moment so",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7994,
+      "timestamp": "9:41:20",
+      "before": "happy to take a little bit of poke let's see a very nice little damage cosmic book counter on",
+      "after": "happy to take a little bit of poke let's see a very nice little damage Cosmic Bolt counter on",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects cosmic book to Cosmic Bolt in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 7997,
+      "timestamp": "9:41:35",
+      "before": "be used here to break that recircus plate so at least Jin does lose the damage as well as",
+      "after": "be used here to break that Berserker Plate so at least Jin does lose the damage as well as",
+      "evidence": [
+        {
+          "target": "Berserker Plate",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 7999,
+      "timestamp": "9:41:48",
+      "before": "a lot of chip from these allies especially without the comet fall going to be pretty unlikely to",
+      "after": "a lot of chip from these allies especially without the Cometfall going to be pretty unlikely to",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8000,
+      "timestamp": "9:41:53",
+      "before": "clear these chalice of blood is the materialization for Khorix of course does not have any more ways",
+      "after": "clear these chalice of blood is the materialization for Quarax of course does not have any more ways",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8001,
+      "timestamp": "9:41:59",
+      "before": "to deal damage to himself with the berserker's plate removed on board but he is still slowly",
+      "after": "to deal damage to himself with the Berserker Plate removed on board but he is still slowly",
+      "evidence": [
+        {
+          "target": "Berserker Plate",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8005,
+      "timestamp": "9:42:21",
+      "before": "it is just a one-off so it's not the most likely thing to find Khorix going to draw up here off of",
+      "after": "it is just a one-off so it's not the most likely thing to find Quarax going to draw up here off of",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8010,
+      "timestamp": "9:42:52",
+      "before": "on Khorix's side because he has that quicksilver grail instead ingredient pouch going to be the",
+      "after": "on Quarax's side because he has that quicksilver grail instead ingredient pouch going to be the",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8015,
+      "timestamp": "9:43:22",
+      "before": "dragon jg has remember also hasn't popped that polaris yet either that's right uh of course",
+      "after": "DragonJG has remember also hasn't popped that polaris yet either that's right uh of course",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8019,
+      "timestamp": "9:43:42",
+      "before": "here uh well more herbs is uh still pretty useful if you have a 40 counter it yeah it would give him",
+      "after": "here uh well more herbs is uh still pretty useful if you have a Horticounter it yeah it would give him",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8021,
+      "timestamp": "9:43:54",
+      "before": "yeah but really khorix is just really rocketing up in the economy war here so",
+      "after": "yeah but really Quarax is just really rocketing up in the economy war here so",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8024,
+      "timestamp": "9:44:09",
+      "before": "heaven yeah and there are a lot of meteor strikes in dragon jg's hand so maybe could consider",
+      "after": "heaven yeah and there are a lot of meteor strikes in DragonJG's hand so maybe could consider",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8028,
+      "timestamp": "9:44:32",
+      "before": "from the seething intercession and we're gonna check dragon jg's hand and see he has a whole",
+      "after": "from the seething intercession and we're gonna check DragonJG's hand and see he has a whole",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8029,
+      "timestamp": "9:44:37",
+      "before": "lot of nothing khorix makes a bit of a stanky face again at the double cosmic bolt the rest",
+      "after": "lot of nothing Quarax makes a bit of a stanky face again at the double cosmic bolt the rest",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8033,
+      "timestamp": "9:45:00",
+      "before": "gonna be the horde counter this is the one piece of interaction in this hand aside from",
+      "after": "gonna be the Horticounter this is the one piece of interaction in this hand aside from",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8042,
+      "timestamp": "9:45:52",
+      "before": "dragon jg so he can banish it at the very least and like you mentioned meteor strike i think could",
+      "after": "DragonJG so he can banish it at the very least and like you mentioned meteor strike i think could",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8044,
+      "timestamp": "9:46:03",
+      "before": "necklace of foresight uh look at the top four does find the astra seal it looks at the top five",
+      "after": "necklace of foresight uh look at the top four does find the Astral Seal it looks at the top five",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8046,
+      "timestamp": "9:46:14",
+      "before": "astra site going to be used for a glimpse to uh trying to look for again more outs more answers",
+      "after": "Astra Sight going to be used for a glimpse to uh trying to look for again more outs more answers",
+      "evidence": [
+        {
+          "target": "Astra Sight",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8050,
+      "timestamp": "9:46:37",
+      "before": "deck a little bit slower but maybe dragon jg is okay with that because he just wants to have",
+      "after": "deck a little bit slower but maybe DragonJG is okay with that because he just wants to have",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8054,
+      "timestamp": "9:47:02",
+      "before": "dragon gg is going to just like meteor strike this tri castles away or maybe feels like he can play",
+      "after": "DragonJG is going to just like meteor strike this tri castles away or maybe feels like he can play",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8058,
+      "timestamp": "9:47:25",
+      "before": "silver grail mark's going to now pop it and what is the hit it's shuangji so i think dragon gg has",
+      "after": "silver grail mark's going to now pop it and what is the hit it's shuangji so i think DragonJG has",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8060,
+      "timestamp": "9:47:36",
+      "before": "he could definitely toss that onto the shuangti correct let's get a draw uh using that tune-up",
+      "after": "he could definitely toss that onto the shuangti correct let's get a draw uh using that Tune Up",
+      "evidence": [
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8063,
+      "timestamp": "9:47:54",
+      "before": "anymore and that's a huge piece of the damage of these jin decks but quirks saw the two meteor",
+      "after": "anymore and that's a huge piece of the damage of these jin decks but Quarax saw the two meteor",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8065,
+      "timestamp": "9:48:08",
+      "before": "let's see what he has in store does have to deal 15 damage to uh finish off dragon gg uh plus the",
+      "after": "let's see what he has in store does have to deal 15 damage to uh finish off DragonJG uh plus the",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8066,
+      "timestamp": "9:48:14",
+      "before": "serene spirit so 21 damage to finish off dragon gg uh and the one healing her yeah so there is still",
+      "after": "serene spirit so 21 damage to finish off DragonJG uh and the one healing her yeah so there is still",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8068,
+      "timestamp": "9:48:24",
+      "before": "might be a little bit early but dragon gg is feeling the pressure here especially with these",
+      "after": "might be a little bit early but DragonJG is feeling the pressure here especially with these",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8070,
+      "timestamp": "9:48:34",
+      "before": "straight so you're seeing now kind of the value of the comet falls and how now they've they've",
+      "after": "straight so you're seeing now kind of the value of the Cometfall and how now they've they've",
+      "evidence": [
+        {
+          "target": "Cometfall",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8071,
+      "timestamp": "9:48:40",
+      "before": "lost so much and look at that hand on quirks aside so ginormous here and safeguard amulet going to be",
+      "after": "lost so much and look at that hand on Quarax aside so ginormous here and safeguard amulet going to be",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8072,
+      "timestamp": "9:48:48",
+      "before": "materialization for dragon jg uh with the loss of the shuangji of course uh relentless outburst is",
+      "after": "materialization for DragonJG uh with the loss of the shuangji of course uh relentless outburst is",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8073,
+      "timestamp": "9:48:54",
+      "before": "one of the key win conditions that choirs can have and just not able to do much else right now",
+      "after": "one of the key win conditions that Quarax can have and just not able to do much else right now",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8079,
+      "timestamp": "9:49:26",
+      "before": "run out of boats in deck and so we're going back to quirks turn and let's see what he has available",
+      "after": "run out of boats in deck and so we're going back to Quarax turn and let's see what he has available",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8081,
+      "timestamp": "9:49:35",
+      "before": "come out here what are the hits it's gonna be a devil's lifeline and another man flesh as well",
+      "after": "come out here what are the hits it's gonna be a devil's lifeline and another Mend Flesh as well",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8084,
+      "timestamp": "9:49:53",
+      "before": "of very powerful cards two met three men fleshes and a devil's lifeline and an end rage all very",
+      "after": "of very powerful cards two met three Mend Flesh and a devil's lifeline and an end rage all very",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8085,
+      "timestamp": "9:49:57",
+      "before": "powerful as well as the topsy decrease still so quarks really in a fantastic spot here i think",
+      "after": "powerful as well as the Topsy Decree still so Quarax really in a fantastic spot here i think",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Topsy Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8086,
+      "timestamp": "9:50:02",
+      "before": "it's looking more and more dire for dragon jg especially with a tri castle still in field can't",
+      "after": "it's looking more and more dire for DragonJG especially with a tri castle still in field can't",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8088,
+      "timestamp": "9:50:13",
+      "before": "creative tenders so christ has kind of shut off the engine that dragon jg has uh in mind with this",
+      "after": "creative tenders so christ has kind of shut off the engine that DragonJG has uh in mind with this",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8089,
+      "timestamp": "9:50:19",
+      "before": "fire arizona deck to draw more cards and also we already talked about it uh the okay on the stack",
+      "after": "fire Arisanna deck to draw more cards and also we already talked about it uh the okay on the stack",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8090,
+      "timestamp": "9:50:25",
+      "before": "on the stack of the swings uh dragon jg considering yeah maybe i've taken enough damage uh from these",
+      "after": "on the stack of the swings uh DragonJG considering yeah maybe i've taken enough damage uh from these",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8091,
+      "timestamp": "9:50:30",
+      "before": "allies and i would like to stop doing that now uh we're gonna put i think that was a cosmic boat",
+      "after": "allies and i would like to stop doing that now uh we're gonna put i think that was a Cosmic Bolt",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8095,
+      "timestamp": "9:50:50",
+      "before": "okay so dragon gg gonna send it all the way up going to throw out the all of the dirty",
+      "after": "okay so DragonJG gonna send it all the way up going to throw out the all of the dirty",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8096,
+      "timestamp": "9:50:58",
+      "before": "water from that polaris i'm going to throw chuck in was an eight causing vaults into the deck",
+      "after": "water from that polaris i'm going to throw chuck in was an eight Cosmic Bolts into the deck",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects causing vaults to Cosmic Bolts in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8105,
+      "timestamp": "9:51:45",
+      "before": "dragon gg and querex is at 21 points of damage remember no berserker's plate and i think the",
+      "after": "DragonJG and Quarax is at 21 points of damage remember no Berserker Plate and i think the",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Berserker Plate",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8109,
+      "timestamp": "9:52:10",
+      "before": "is a quite a nice synergy maybe this is why dragon gg was happy with using that tri-cast",
+      "after": "is a quite a nice synergy maybe this is why DragonJG was happy with using that tri-cast",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8112,
+      "timestamp": "9:52:28",
+      "before": "now the tri-castles has been shut off so tri-castles is now allowing dragon gg and",
+      "after": "now the tri-castles has been shut off so tri-castles is now allowing DragonJG and",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8113,
+      "timestamp": "9:52:34",
+      "before": "quirks to activate their non-advanced element cards and now is quarks going to respond in",
+      "after": "Quarax to activate their non-advanced element cards and now is Quarax going to respond in",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8114,
+      "timestamp": "9:52:39",
+      "before": "kind with anything here yeah i mean a tune-up would put him out of lethal range of a cosmic",
+      "after": "kind with anything here yeah i mean a Tune Up would put him out of lethal range of a cosmic",
+      "evidence": [
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8115,
+      "timestamp": "9:52:45",
+      "before": "remember because dragon gg makes it lose all abilities that includes both players can now use",
+      "after": "remember because DragonJG makes it lose all abilities that includes both players can now use",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8116,
+      "timestamp": "9:52:51",
+      "before": "norm element cards dragon gg speaking of norm element finds three norm element cards in the top",
+      "after": "norm element cards DragonJG speaking of norm element finds three norm element cards in the top",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8119,
+      "timestamp": "9:53:07",
+      "before": "bolt is actually going to be lethal and that's a premium materia and a astral spell shield astra so",
+      "after": "bolt is actually going to be lethal and that's a Prima Materia and a astral Spellshield: Astra so",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Spellshield: Astra",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8120,
+      "timestamp": "9:53:13",
+      "before": "both very strong cards here but actually did throw away all the herbs so the few material",
+      "after": "both very strong cards here but actually did throw away all the herbs so the Prima Materia",
+      "evidence": [
+        {
+          "target": "Prima Materia",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8122,
+      "timestamp": "9:53:22",
+      "before": "of the key ways that dragon jg wins is just by having a ton of influence and then threatening",
+      "after": "of the key ways that DragonJG wins is just by having a ton of influence and then threatening",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8124,
+      "timestamp": "9:53:31",
+      "before": "cosmic extra scope uh materialized for dragon jg what is he going to lose it is a cosmic bolt so",
+      "after": "cosmic extra scope uh materialized for DragonJG what is he going to lose it is a cosmic bolt so",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8125,
+      "timestamp": "9:53:37",
+      "before": "lucky hit for dragon jg third bolt in the banish next one comes in for 10 so that would actually",
+      "after": "lucky hit for DragonJG third bolt in the banish next one comes in for 10 so that would actually",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8126,
+      "timestamp": "9:53:44",
+      "before": "be lethal on quarax one herb now for dragon jg as well uh it's a level herb so not super useful",
+      "after": "be lethal on quarax one herb now for DragonJG as well uh it's a level herb so not super useful",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8127,
+      "timestamp": "9:53:51",
+      "before": "but does draw into astra seal now still has those men fleshes so definitely not dying anytime soon",
+      "after": "but does draw into Astral Seal now still has those Mend Flesh so definitely not dying anytime soon",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8128,
+      "timestamp": "9:53:59",
+      "before": "oh regal inquisition no sorry that is uh or persecution or as i like to call excalus being",
+      "after": "oh regal inquisition no sorry that is uh Auric Persecution or as i like to call excalus being",
+      "evidence": [
+        {
+          "target": "Auric Persecution",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8129,
+      "timestamp": "9:54:05",
+      "before": "used here on the cosmic astroscope and i don't think dragon jg has any way to stop this unless",
+      "after": "used here on the cosmic astroscope and i don't think DragonJG has any way to stop this unless",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8130,
+      "timestamp": "9:54:11",
+      "before": "he might have a cosmic seal or some other negate to try and get in the way of this and losing the",
+      "after": "he might have a Astral Seal or some other negate to try and get in the way of this and losing the",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8131,
+      "timestamp": "9:54:16",
+      "before": "astroscope here is huge especially already used two of those wisdoms reprices there's not that",
+      "after": "astroscope here is huge especially already used two of those Wisdom's Reprise there's not that",
+      "evidence": [
+        {
+          "target": "Wisdom's Reprise",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8132,
+      "timestamp": "9:54:22",
+      "before": "much ways a glimpse outside of that astroscope that is true and that means dragon jg is maybe",
+      "after": "much ways a glimpse outside of that astroscope that is true and that means DragonJG is maybe",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8135,
+      "timestamp": "9:54:39",
+      "before": "something to get the glimpse as well so and of course the spell shield astras so there's still",
+      "after": "something to get the glimpse as well so and of course the Spellshield: Astra so there's still",
+      "evidence": [
+        {
+          "target": "Spellshield: Astra",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8137,
+      "timestamp": "9:54:48",
+      "before": "orbiting cosmos there's not going to be particularly big glimpses either draws into a cosmic seal",
+      "after": "orbiting cosmos there's not going to be particularly big glimpses either draws into a Astral Seal",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8140,
+      "timestamp": "9:55:03",
+      "before": "there is also a safeguard amulet on the side of dragon jg and she passes it back yeah this is uh",
+      "after": "there is also a safeguard amulet on the side of DragonJG and she passes it back yeah this is uh",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8144,
+      "timestamp": "9:55:24",
+      "before": "tricastals are still on the board uh what else does dragon jg have for us he he can only activate",
+      "after": "tricastals are still on the board uh what else does DragonJG have for us he he can only activate",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8145,
+      "timestamp": "9:55:31",
+      "before": "advanced element cards unless he pays the tax and quirex now going to use another auric persecution",
+      "after": "advanced element cards unless he pays the tax and Quarax now going to use another auric persecution",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8148,
+      "timestamp": "9:55:46",
+      "before": "in activating it there quirex has no fast speed effect damage so just gonna let it go",
+      "after": "in activating it there Quarax has no fast speed effect damage so just gonna let it go",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8149,
+      "timestamp": "9:55:50",
+      "before": "gonna get an extra draw for turn and now quirex hmm scratching his chin giving the stank face",
+      "after": "gonna get an extra draw for turn and now Quarax hmm scratching his chin giving the stank face",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8151,
+      "timestamp": "9:55:58",
+      "before": "there liminal kite swing sorry man it's your own tricastal quirex i was like hmm you caught me",
+      "after": "there liminal kite swing sorry man it's your own tricastal Quarax i was like hmm you caught me",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8153,
+      "timestamp": "9:56:14",
+      "before": "the board uh but no instead we're just gonna go for a men flesh uh a rare are you rare uh legally",
+      "after": "the board uh but no instead we're just gonna go for a Mend Flesh uh a rare are you rare uh legally",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8154,
+      "timestamp": "9:56:21",
+      "before": "or uh ethically played men flesh here not for free yeah ingredient pouch once again another",
+      "after": "or uh ethically played Mend Flesh here not for free yeah ingredient pouch once again another",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8155,
+      "timestamp": "9:56:30",
+      "before": "miss on dragon jg sides is such bad luck with these pouches and now here comes astrocyte it",
+      "after": "miss on DragonJG sides is such bad luck with these pouches and now here comes Astra Sight it",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Astra Sight",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8156,
+      "timestamp": "9:56:36",
+      "before": "hits something purple but it seems like it was gentle respite oh never mind another cosmic seal",
+      "after": "hits something purple but it seems like it was gentle respite oh never mind another Astral Seal",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8157,
+      "timestamp": "9:56:41",
+      "before": "once again a reminder there's only 11 minutes left in the clock so dragon jg wants to draw",
+      "after": "once again a reminder there's only 11 minutes left in the clock so DragonJG wants to draw",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8160,
+      "timestamp": "9:56:56",
+      "before": "gonna see quirex actually use the liminal guide to use create a shock uh here unfortunately it",
+      "after": "gonna see Quarax actually use the liminal guide to use create a shock uh here unfortunately it",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8161,
+      "timestamp": "9:57:02",
+      "before": "seems like dragon jg doesn't have a shock only has a tinder in hand can use these nascent barriers",
+      "after": "seems like DragonJG doesn't have a shock only has a tinder in hand can use these nascent barriers",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8165,
+      "timestamp": "9:57:27",
+      "before": "slightly approving nod with his two cards drawn i wonder if dragon gg put in the trine recursions",
+      "after": "slightly approving nod with his two cards drawn i wonder if DragonJG put in the trine recursions",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8170,
+      "timestamp": "9:57:57",
+      "before": "that men flesh that is thrown away here especially considering there's one already in the seating",
+      "after": "that Mend Flesh that is thrown away here especially considering there's one already in the seating",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8172,
+      "timestamp": "9:58:07",
+      "before": "could get into a position where one cosmic bolt puts quarks into lethal range and then you can",
+      "after": "could get into a position where one cosmic bolt puts Quarax into lethal range and then you can",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8173,
+      "timestamp": "9:58:12",
+      "before": "negate both of those men fleshes yeah remember only 11 needed oh topsy decree for quarks discard",
+      "after": "negate both of those Mend Flesh yeah remember only 11 needed oh topsy decree for Quarax discard",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8176,
+      "timestamp": "9:58:29",
+      "before": "points of damage and let's see what else quarks has in store all right drawing deeper and deeper",
+      "after": "points of damage and let's see what else Quarax has in store all right drawing deeper and deeper",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8178,
+      "timestamp": "9:58:39",
+      "before": "this tricastles and you know dragon jg really not having the ability to glimpse deep through the",
+      "after": "this tricastles and you know DragonJG really not having the ability to glimpse deep through the",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8192,
+      "timestamp": "9:59:57",
+      "before": "on the end phase he has the moon flushes he's fine",
+      "after": "on the end phase he has the Mend Flesh he's fine",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8202,
+      "timestamp": "10:01:34",
+      "before": "Really, it comes down to whether or not Dragon GG can hit a Cosmic Bolt sometime soon. Did throw 8 into the deck, so there should be 9 left.",
+      "after": "Really, it comes down to whether or not DragonJG can hit a Cosmic Bolt sometime soon. Did throw 8 into the deck, so there should be 9 left.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8203,
+      "timestamp": "10:01:43",
+      "before": "That is true. Fun fact, the Apex team actually played Jinn at the last Japanese Ascent, Ascent Akihabara. So 2 out of 2 Ascents in Japan, we have Apex on Jinn, which is pretty interesting. But Quarax now thinking of using a Mend Flesh, maybe, but he doesn't have to pay.",
+      "after": "That is true. Fun fact, the Apex team actually played Jin at the last Japanese Ascent, Ascent Akihabara. So 2 out of 2 Ascents in Japan, we have Apex on Jin, which is pretty interesting. But Quarax now thinking of using a Mend Flesh, maybe, but he doesn't have to pay.",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8212,
+      "timestamp": "10:02:27",
+      "before": "I mean, if Dragon GG just pops them, why not? They might as well. I believe they're all 1 cost, let's see.",
+      "after": "I mean, if DragonJG just pops them, why not? They might as well. I believe they're all 1 cost, let's see.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8213,
+      "timestamp": "10:02:35",
+      "before": "We'll find out. On the stack, Dragon GG is using his herbs, I think. Are they doing a quick check on what the cost of herbs are?",
+      "after": "We'll find out. On the stack, DragonJG is using his herbs, I think. Are they doing a quick check on what the cost of herbs are?",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8219,
+      "timestamp": "10:03:03",
+      "before": "Wait, did Dragon GG not pop them?",
+      "after": "Wait, did DragonJG not pop them?",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8225,
+      "timestamp": "10:03:28",
+      "before": "We are just seeing whether Dragon GG can find a way to kill Quarax, and Quarax has recovered 12 in his banishment available.",
+      "after": "We are just seeing whether DragonJG can find a way to kill Quarax, and Quarax has recovered 12 in his banishment available.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8227,
+      "timestamp": "10:03:41",
+      "before": "And Menflesh hovered, not going to be used, and Dragon GG once again rolls for another herb, slowly getting his herbs back in.",
+      "after": "And Mend Flesh hovered, not going to be used, and DragonJG once again rolls for another herb, slowly getting his herbs back in.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8228,
+      "timestamp": "10:03:51",
+      "before": "This is certainly a game. We have a million cards in hand for Dragon GG, but zero ways to take the game off of Quarax.",
+      "after": "This is certainly a game. We have a million cards in hand for DragonJG, but zero ways to take the game off of Quarax.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8229,
+      "timestamp": "10:04:00",
+      "before": "Yeah, I'm wondering if Dragon GG needs to start just pulling the trigger, just banish a card and start sending these nascent barriers.",
+      "after": "Yeah, I'm wondering if DragonJG needs to start just pulling the trigger, just banish a card and start sending these nascent barriers.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8233,
+      "timestamp": "10:04:27",
+      "before": "The crazy thing here is the fact that Dragon GG hasn't seen another crossing but hasn't drawn into one either.",
+      "after": "The crazy thing here is the fact that DragonJG hasn't seen another crossing but hasn't drawn into one either.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8235,
+      "timestamp": "10:04:37",
+      "before": "Menflesh going to be used to recover 6.",
+      "after": "Mend Flesh going to be used to recover 6.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8237,
+      "timestamp": "10:04:44",
+      "before": "So, if Dragon GG has a causing bolt in hand, banish this.",
+      "after": "So, if DragonJG has a Cosmic Bolt in hand, banish this.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8238,
+      "timestamp": "10:04:48",
+      "before": "His own Tri-castle and Velocity Punch.",
+      "after": "His own Tri-castle and Vel-ocity Punch.",
+      "evidence": [
+        {
+          "target": "Vel-ocity Punch",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8244,
+      "timestamp": "10:05:07",
+      "before": "So this would be, I think this is causing bolt number 4, so this should be for 10, which is lethal.",
+      "after": "So this would be, I think this is Cosmic Bolt number 4, so this should be for 10, which is lethal.",
+      "evidence": [
+        {
+          "target": "Cosmic Bolt",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8250,
+      "timestamp": "10:05:38",
+      "before": "Oh! Negate number 2, second cosmic seal comes out!",
+      "after": "Oh! Negate number 2, second Astral Seal comes out!",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8251,
+      "timestamp": "10:05:42",
+      "before": "Another Menflesh from hand, this one is free.",
+      "after": "Another Mend Flesh from hand, this one is free.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8253,
+      "timestamp": "10:05:49",
+      "before": "Does Quarax have any way around the triple cosmic seal?",
+      "after": "Does Quarax have any way around the triple Astral Seal?",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8255,
+      "timestamp": "10:05:58",
+      "before": "There's one more astral seal, I think that's all Menflesh as well, because that's 3 plus that one there, so it would have to be, tune-up is not enough.",
+      "after": "There's one more astral seal, I think that's all Mend Flesh as well, because that's 3 plus that one there, so it would have to be, Tune Up is not enough.",
+      "evidence": [
+        {
+          "target": "Mend Flesh",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        },
+        {
+          "target": "Tune Up",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8256,
+      "timestamp": "10:06:07",
+      "before": "Fourth astral seal is available, we'll see whether JackyGG has it.",
+      "after": "Fourth astral seal is available, we'll see whether DragonJG has it.",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8264,
+      "timestamp": "10:06:28",
+      "before": "Okay, now if JackyGG has a way to-",
+      "after": "Okay, now if DragonJG has a way to-",
+      "evidence": [
+        {
+          "target": "DragonJG",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8273,
+      "timestamp": "10:06:49",
+      "before": "It's a topsy to greet, but he still has another-",
+      "after": "It's a Topsy Decree, but he still has another-",
+      "evidence": [
+        {
+          "target": "Topsy Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8276,
+      "timestamp": "10:06:54",
+      "before": "Yeah, topsy is banished and Astra Seal is in the hand of DragonJG.",
+      "after": "Yeah, topsy is banished and Astral Seal is in the hand of DragonJG.",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8277,
+      "timestamp": "10:06:58",
+      "before": "And after a nail-biting finish, there is a topsy to greet!",
+      "after": "And after a nail-biting finish, there is a Topsy Decree!",
+      "evidence": [
+        {
+          "target": "Topsy Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8278,
+      "timestamp": "10:07:02",
+      "before": "There's the fourth Astra Seal!",
+      "after": "There's the fourth Astral Seal!",
+      "evidence": [
+        {
+          "target": "Astral Seal",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8281,
+      "timestamp": "10:07:14",
+      "before": "And it's because Quarax decided to get a velocity punch on the board.",
+      "after": "And it's because Quarax decided to get a Vel-ocity Punch on the board.",
+      "evidence": [
+        {
+          "target": "Vel-ocity Punch",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8305,
+      "timestamp": "10:08:50",
+      "before": "So QuarX win?",
+      "after": "So Quarax win?",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8308,
+      "timestamp": "10:08:56",
+      "before": "So we actually have a 2-1 finish for QuarX.",
+      "after": "So we actually have a 2-1 finish for Quarax.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8320,
+      "timestamp": "10:09:31",
+      "before": "DragonJG and QuarX, of course, are friends at the end of the day.",
+      "after": "DragonJG and Quarax, of course, are friends at the end of the day.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8335,
+      "timestamp": "10:10:15",
+      "before": "That being said, the Fire Astra Arizana, we can see the strength that it has.",
+      "after": "That being said, the Fire Astra Arisanna, we can see the strength that it has.",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8337,
+      "timestamp": "10:10:21",
+      "before": "when you have Haughty Counter, because it is Giga Frostbite, right?",
+      "after": "when you have Horticounter, because it is Giga Frostbite, right?",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8340,
+      "timestamp": "10:10:29",
+      "before": "if your opponent's Arizana has like 15 cards.",
+      "after": "if your opponent's Arisanna has like 15 cards.",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8341,
+      "timestamp": "10:10:31",
+      "before": "Let's not forget that Haughty Counter also lets you Glimpse,",
+      "after": "Let's not forget that Horticounter also lets you Glimpse,",
+      "evidence": [
+        {
+          "target": "Horticounter",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8344,
+      "timestamp": "10:10:38",
+      "before": "We also see, of course, Fire Jinn has its strengths as well.",
+      "after": "We also see, of course, Fire Jin has its strengths as well.",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8347,
+      "timestamp": "10:10:45",
+      "before": "because Quarrix is now 5-2, heading into the final two rounds of today.",
+      "after": "because Quarax is now 5-2, heading into the final two rounds of today.",
+      "evidence": [
+        {
+          "target": "Quarax",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8348,
+      "timestamp": "10:10:49",
+      "before": "Yeah, and really, Jinn, that just shows his strength.",
+      "after": "Yeah, and really, Jin, that just shows his strength.",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8371,
+      "timestamp": "10:30:13",
+      "before": "Yep, basically playing everything we know from Suzaku, including this new card that we've been talking about hyping up since this very morning, the Scalding Aether Charge.",
+      "after": "Yep, basically playing everything we know from Suzaku, including this new card that we've been talking about hyping up since this very morning, the Scalding Aethercharge.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8372,
+      "timestamp": "10:30:22",
+      "before": "Yeah, and you're seeing, this is the exact situation where Scalding Aether Charge is going to be as useful as possible.",
+      "after": "Yeah, and you're seeing, this is the exact situation where Scalding Aethercharge is going to be as useful as possible.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8412,
+      "timestamp": "10:33:26",
+      "before": "This should be Win...something. WinSylvie.",
+      "after": "This should be Win...something. Wind Silvie.",
+      "evidence": [
+        {
+          "target": "Wind Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8413,
+      "timestamp": "10:33:30",
+      "before": "I think this is WinSylvie.",
+      "after": "I think this is Wind Silvie.",
+      "evidence": [
+        {
+          "target": "Wind Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8414,
+      "timestamp": "10:33:31",
+      "before": "WinSylvie, right.",
+      "after": "Wind Silvie, right.",
+      "evidence": [
+        {
+          "target": "Wind Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8415,
+      "timestamp": "10:33:32",
+      "before": "Yeah, we were told WinSylvie, but it was actually...",
+      "after": "Yeah, we were told Wind Silvie, but it was actually...",
+      "evidence": [
+        {
+          "target": "Wind Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8419,
+      "timestamp": "10:33:39",
+      "before": "We are playing against WinSylvie with Shamrock Forest.",
+      "after": "We are playing against Wind Silvie with Shamrock Forest.",
+      "evidence": [
+        {
+          "target": "Wind Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8461,
+      "timestamp": "10:35:26",
+      "before": "We're going to play the creative shop.",
+      "after": "We're going to play the Creative Shock.",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects creative shop to Creative Shock in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8462,
+      "timestamp": "10:35:27",
+      "before": "Probably going to discard either Floating or the Illumina Guide here.",
+      "after": "Probably going to discard either Floating or the Liminal Guide here.",
+      "evidence": [
+        {
+          "target": "Liminal Guide",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8465,
+      "timestamp": "10:35:33",
+      "before": "That's a really good start for Noobtin here.",
+      "after": "That's a really good start for NoobTinnn here.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8470,
+      "timestamp": "10:35:50",
+      "before": "Going to go into the Ruby Sapphire Stone right here.",
+      "after": "Going to go into the Fabled Ruby Fatestone right here.",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects Ruby Sapphire Stone to Fabled Ruby Fatestone in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8474,
+      "timestamp": "10:36:01",
+      "before": "We are going into the Illumina Guide here, triggering it to draw 1.",
+      "after": "We are going into the Liminal Guide here, triggering it to draw 1.",
+      "evidence": [
+        {
+          "target": "Liminal Guide",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8475,
+      "timestamp": "10:36:04",
+      "before": "And then back to Noobtin's turn.",
+      "after": "And then back to NoobTinnn's turn.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8478,
+      "timestamp": "10:36:12",
+      "before": "Okay, let's see if Noobtin has any other nasty...",
+      "after": "Okay, let's see if NoobTinnn has any other nasty...",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8479,
+      "timestamp": "10:36:17",
+      "before": "I think it's going to be a Vermillion Decree imbued here.",
+      "after": "I think it's going to be a Vermilion Decree imbued here.",
+      "evidence": [
+        {
+          "target": "Vermilion Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8485,
+      "timestamp": "10:36:33",
+      "before": "Because Vermillion Decree has a double trigger, right?",
+      "after": "Because Vermilion Decree has a double trigger, right?",
+      "evidence": [
+        {
+          "target": "Vermilion Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8486,
+      "timestamp": "10:36:35",
+      "before": "It's the reason why we were saying how strong this new scaling Aether Charge is.",
+      "after": "It's the reason why we were saying how strong this new Scalding Aethercharge is.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8490,
+      "timestamp": "10:36:46",
+      "before": "So, I think Noobtin is just going to swing, I believe, to the face.",
+      "after": "So, I think NoobTinnn is just going to swing, I believe, to the face.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8501,
+      "timestamp": "10:37:17",
+      "before": "Noobtin's seeing a lot of cards that want to activate at fast speed",
+      "after": "NoobTinnn's seeing a lot of cards that want to activate at fast speed",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8502,
+      "timestamp": "10:37:21",
+      "before": "including probably that Scalding Aether Charge.",
+      "after": "including probably that Scalding Aethercharge.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8507,
+      "timestamp": "10:37:33",
+      "before": "And we are going to see the Sylvie right here.",
+      "after": "And we are going to see the Silvie right here.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8508,
+      "timestamp": "10:37:35",
+      "before": "Yeah, so the Scalding Aether Charge now is going to be doing an extra 2 damage",
+      "after": "Yeah, so the Scalding Aethercharge now is going to be doing an extra 2 damage",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8514,
+      "timestamp": "10:37:52",
+      "before": "Okay, if we think about it, this is going to be 4 damage off of the Scalding Aether Charge.",
+      "after": "Okay, if we think about it, this is going to be 4 damage off of the Scalding Aethercharge.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8517,
+      "timestamp": "10:37:59",
+      "before": "There it comes, Scalding Aether Charge.",
+      "after": "There it comes, Scalding Aethercharge.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8525,
+      "timestamp": "10:38:19",
+      "before": "I think Noobtin might actually...",
+      "after": "I think NoobTinnn might actually...",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8529,
+      "timestamp": "10:38:30",
+      "before": "Also, it's an Intensified Fire that could be kindled here, doing an extra 2 damage.",
+      "after": "Also, it's an Intensified Pyre that could be kindled here, doing an extra 2 damage.",
+      "evidence": [
+        {
+          "target": "Intensified Pyre",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8545,
+      "timestamp": "10:39:16",
+      "before": "that have a Squalbine Pounce, is what I'm thinking of.",
+      "after": "that have a Squallbind Pounce, is what I'm thinking of.",
+      "evidence": [
+        {
+          "target": "Squallbind Pounce",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8551,
+      "timestamp": "10:39:34",
+      "before": "I do see Sylvie level 2.",
+      "after": "I do see Silvie level 2.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8552,
+      "timestamp": "10:39:36",
+      "before": "Okay, there is a Sylvie level 2.",
+      "after": "Okay, there is a Silvie level 2.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8553,
+      "timestamp": "10:39:38",
+      "before": "Actually, yeah, that's Sylvie level 2 here.",
+      "after": "Actually, yeah, that's Silvie level 2 here.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8560,
+      "timestamp": "10:39:54",
+      "before": "Yup, so Lutin is going to go to Nullifying Mirror",
+      "after": "Yup, so NoobTinnn is going to go to Nullifying Mirror",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8564,
+      "timestamp": "10:40:08",
+      "before": "Probably games here, I think, if Lutin can find it.",
+      "after": "Probably games here, I think, if NoobTinnn can find it.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8570,
+      "timestamp": "10:40:22",
+      "before": "Lutin needs one more damage from anywhere else.",
+      "after": "NoobTinnn needs one more damage from anywhere else.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8575,
+      "timestamp": "10:40:31",
+      "before": "Okay, going to use a Scourging Step just to prevent one damage.",
+      "after": "Okay, going to use a Skirting Step just to prevent one damage.",
+      "evidence": [
+        {
+          "target": "Skirting Step",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8584,
+      "timestamp": "10:40:55",
+      "before": "Lutin goes up 1-0 on Suzaku.",
+      "after": "NoobTinnn goes up 1-0 on Suzaku.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8586,
+      "timestamp": "10:40:59",
+      "before": "You don't need to call yourself Lutin.",
+      "after": "You don't need to call yourself NoobTinnn.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8598,
+      "timestamp": "10:41:17",
+      "before": "Of course, it also showcases why this guilding in the charts deserves its hype.",
+      "after": "Of course, it also showcases why this Scalding Aethercharge deserves its hype.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8603,
+      "timestamp": "10:41:29",
+      "before": "So very well played from Lutin.",
+      "after": "So very well played from NoobTinnn.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8604,
+      "timestamp": "10:41:31",
+      "before": "But at the same time, I'm really curious about the Sylvie deck right here.",
+      "after": "But at the same time, I'm really curious about the Silvie deck right here.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8622,
+      "timestamp": "10:42:15",
+      "before": "from the Sylphid deck.",
+      "after": "from the Silvie deck.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8628,
+      "timestamp": "10:42:27",
+      "before": "So it's going to be definitely up to SoS to kind of force Noobtin",
+      "after": "So it's going to be definitely up to SoS to kind of force NoobTinnn",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8633,
+      "timestamp": "10:42:46",
+      "before": "Sensor, not really.",
+      "after": "Censer of Restful Peace, not really.",
+      "evidence": [
+        {
+          "target": "Censer of Restful Peace",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8636,
+      "timestamp": "10:42:53",
+      "before": "Fan Synchron...",
+      "after": "Fanned Synchron...",
+      "evidence": [
+        {
+          "target": "Fanned Synchron",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8637,
+      "timestamp": "10:42:55",
+      "before": "Fan Synchron is actually quite good against Wind, but not this build.",
+      "after": "Fanned Synchron is actually quite good against Wind, but not this build.",
+      "evidence": [
+        {
+          "target": "Fanned Synchron",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8642,
+      "timestamp": "10:43:12",
+      "before": "Smokeout could also be a thing, because there is a domain that gives stealth",
+      "after": "Smoke Out could also be a thing, because there is a domain that gives stealth",
+      "evidence": [
+        {
+          "target": "Smoke Out",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8645,
+      "timestamp": "10:43:20",
+      "before": "And on the Sylphid side, obviously an Enfeebling Orb is always nice to have.",
+      "after": "And on the Silvie side, obviously an Enfeebling Orb is always nice to have.",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8648,
+      "timestamp": "10:43:33",
+      "before": "For example, just now we see the Scaling, we see the Vermillion Decree,",
+      "after": "For example, just now we see the Scaling, we see the Vermilion Decree,",
+      "evidence": [
+        {
+          "target": "Vermilion Decree",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8660,
+      "timestamp": "10:44:12",
+      "before": "In this case, I do think that the stability for the Sylphid deck seems to be",
+      "after": "In this case, I do think that the stability for the Silvie deck seems to be",
+      "evidence": [
+        {
+          "target": "Silvie",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8669,
+      "timestamp": "10:44:45",
+      "before": "So, really hoping to see if Sosauce has a kind of way to navigate",
+      "after": "So, really hoping to see if SoSollys has a kind of way to navigate",
+      "evidence": [
+        {
+          "target": "SoSollys",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8678,
+      "timestamp": "10:45:15",
+      "before": "Yep, we see Noobtin again opening that guy.",
+      "after": "Yep, we see NoobTinnn again opening that guy.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8680,
+      "timestamp": "10:45:20",
+      "before": "This is a really, really good opening for Noobtin right here.",
+      "after": "This is a really, really good opening for NoobTinnn right here.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8685,
+      "timestamp": "10:45:30",
+      "before": "if Noobtin doesn't care, and is just going to be like,",
+      "after": "if NoobTinnn doesn't care, and is just going to be like,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8711,
+      "timestamp": "10:46:21",
+      "before": "Just going to swing right here, back to Noobtin, I believe.",
+      "after": "Just going to swing right here, back to NoobTinnn, I believe.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8712,
+      "timestamp": "10:46:24",
+      "before": "Maybe after Solace Temporal Monarch.",
+      "after": "Maybe after SoSollys Temporal Monarch.",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects Solace to SoSollys in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8713,
+      "timestamp": "10:46:26",
+      "before": "And also, we see Sensor right here,",
+      "after": "And also, we see Censer of Restful Peace right here,",
+      "evidence": [
+        {
+          "target": "Censer of Restful Peace",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8715,
+      "timestamp": "10:46:30",
+      "before": "Noobtin, I think, not going to care too much about it.",
+      "after": "NoobTinnn, I think, not going to care too much about it.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8717,
+      "timestamp": "10:46:34",
+      "before": "Yeah, pretty smart there for Noobtin to not play out the Searing Truth.",
+      "after": "Yeah, pretty smart there for NoobTinnn to not play out the Searing Truth.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8718,
+      "timestamp": "10:46:37",
+      "before": "Did actually, in fact, put that Fan Synchron in here.",
+      "after": "Did actually, in fact, put that Fanned Synchron in here.",
+      "evidence": [
+        {
+          "target": "Fanned Synchron",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8719,
+      "timestamp": "10:46:39",
+      "before": "So, let's see if Noobtin actually ends up having time to bring it out.",
+      "after": "So, let's see if NoobTinnn actually ends up having time to bring it out.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8726,
+      "timestamp": "10:46:58",
+      "before": "Yep, Noobtin is here,",
+      "after": "Yep, NoobTinnn is here,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8731,
+      "timestamp": "10:47:08",
+      "before": "But that is fine, Noobtin can still find a way to win this",
+      "after": "But that is fine, NoobTinnn can still find a way to win this",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8738,
+      "timestamp": "10:47:23",
+      "before": "force Sosalus to actually swing at it,",
+      "after": "force SoSollys to actually swing at it,",
+      "evidence": [
+        {
+          "target": "SoSollys",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8759,
+      "timestamp": "10:48:07",
+      "before": "Ooh, Save Guide Amulet, very strong here,",
+      "after": "Ooh, Safeguard Amulet, very strong here,",
+      "evidence": [
+        {
+          "target": "Safeguard Amulet",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8760,
+      "timestamp": "10:48:09",
+      "before": "so now Noomdin has to throw out everything.",
+      "after": "so now NoobTinnn has to throw out everything.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8768,
+      "timestamp": "10:48:24",
+      "before": "Noomdin has to consider the fact that",
+      "after": "NoobTinnn has to consider the fact that",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8787,
+      "timestamp": "10:48:46",
+      "before": "so Sosaz is going to start doing a ton of damage here.",
+      "after": "so SoSollys is going to start doing a ton of damage here.",
+      "evidence": [
+        {
+          "target": "SoSollys",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8797,
+      "timestamp": "10:49:02",
+      "before": "Noomdin is just ready to fire",
+      "after": "NoobTinnn is just ready to fire",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8802,
+      "timestamp": "10:49:07",
+      "before": "Noomdin is just trying to, like,",
+      "after": "NoobTinnn is just trying to, like,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8804,
+      "timestamp": "10:49:09",
+      "before": "I think Noomdin can just play a bit more safe here.",
+      "after": "I think NoobTinnn can just play a bit more safe here.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8814,
+      "timestamp": "10:49:20",
+      "before": "my opponent has Censor,",
+      "after": "my opponent has Censer of Restful Peace,",
+      "evidence": [
+        {
+          "target": "Censer of Restful Peace",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8828,
+      "timestamp": "10:49:41",
+      "before": "Noomdin is going to be able to end this game next turn.",
+      "after": "NoobTinnn is going to be able to end this game next turn.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8833,
+      "timestamp": "10:49:50",
+      "before": "and now this Censor,",
+      "after": "and now this Censer of Restful Peace,",
+      "evidence": [
+        {
+          "target": "Censer of Restful Peace",
+          "source": "pipeline/.cache/cards.json",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8836,
+      "timestamp": "10:49:55",
+      "before": "We're going to go with Samurott right here.",
+      "after": "We're going to go with Shamrock Forest right here.",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects Samurott to Shamrock Forest in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8837,
+      "timestamp": "10:49:56",
+      "before": "I'm not sure if the Samurott is really, really good.",
+      "after": "I'm not sure if the Shamrock Forest is really, really good.",
+      "evidence": [
+        {
+          "source": "Sequential surrounding segments; official card catalog/decklist and named player pairing",
+          "context": "Corrects Samurott to Shamrock Forest in this segment only."
+        }
+      ]
+    },
+    {
+      "index": 8900,
+      "timestamp": "10:51:38",
+      "before": "Noctin takes the game,",
+      "after": "NoobTinnn takes the game,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8901,
+      "timestamp": "10:51:39",
+      "before": "Noctin takes the game,",
+      "after": "NoobTinnn takes the game,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8935,
+      "timestamp": "10:52:33",
+      "before": "well played from Noctin,",
+      "after": "well played from NoobTinnn,",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8957,
+      "timestamp": "10:53:00",
+      "before": "after that Skaldic Aethercharge add,",
+      "after": "after that Scalding Aethercharge add,",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8967,
+      "timestamp": "10:53:15",
+      "before": "but with the new Skaldic Aethercharge card,",
+      "after": "but with the new Scalding Aethercharge card,",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 8973,
+      "timestamp": "10:53:25",
+      "before": "if my opponent just goes to level 3 Djinn,",
+      "after": "if my opponent just goes to level 3 Jin,",
+      "evidence": [
+        {
+          "target": "Jin",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 9023,
+      "timestamp": "10:54:26",
+      "before": "like, I think I saw 2-3 Arisana burn.",
+      "after": "like, I think I saw 2-3 Arisanna burn.",
+      "evidence": [
+        {
+          "target": "Arisanna",
+          "source": "Champion identity confirmed by surrounding match introduction and catalog",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 9034,
+      "timestamp": "10:54:41",
+      "before": "with Noob10 himself.",
+      "after": "with NoobTinnn himself.",
+      "evidence": [
+        {
+          "target": "NoobTinnn",
+          "source": "Omnidex event67176 player ID and round7/8 pairing; continuous named match context",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    },
+    {
+      "index": 9066,
+      "timestamp": "10:56:26",
+      "before": "It's called Scalding Aether Charge.",
+      "after": "It's called Scalding Aethercharge.",
+      "evidence": [
+        {
+          "target": "Scalding Aethercharge",
+          "source": "omnidex-snapshot.json public decklists",
+          "context": "Sequential review confirms the name refers to this entity; name normalization only."
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r7-dragonjg-quarax",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 32838
+        },
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Swiss Round 7",
+        "players": [
+          {
+            "id": "p1",
+            "name": "DragonJG",
+            "deck": "Fire Astra Arisanna"
+          },
+          {
+            "id": "p2",
+            "name": "Quarax",
+            "deck": "Fire Jin"
+          }
+        ],
+        "result": "Quarax wins 2–1 after DragonJG concedes the match",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Quarax turns a large damage total into a lethal Shuang Ji attack.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Arisanna builds herbs and Polaris while Quarax struggles to find smooth level progression.",
+                "cards": [
+                  "Polaris, Twinkling Cauldron",
+                  "Ingredient Pouch"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Prima Materia and Cosmic Bolt pressure Jin, but Quarax reaches level 3 and keeps recovering.",
+                "cards": [
+                  "Prima Materia",
+                  "Cosmic Bolt",
+                  "Mend Flesh"
+                ],
+                "tags": []
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Quarax uses Auric Persecution to remove Consumption Ring and keep his recovery available.",
+                "cards": [
+                  "Auric Persecution",
+                  "Consumption Ring"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "After Devil’s Lifeline draws out Astral Seal, Enrage and Shuang Ji of Sacrifice produce the 25-damage attack that ends the game.",
+                "cards": [
+                  "Devil's Lifeline",
+                  "Astral Seal",
+                  "Enrage",
+                  "Shuang Ji of Sacrifice"
+                ],
+                "tags": [
+                  "combo",
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p1",
+            "summary": "DragonJG breaks through Quarax’s recovery with Cosmic Bolts and four Astral Seals.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Quarax reaches level 3 first and chips in with his Guides while Arisanna waits for Dungeon Guide.",
+                "cards": [
+                  "Liminal Guide",
+                  "Dungeon Guide"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Meteor Strike removes Berserker Plate, then destroys Shuang Ji of Sacrifice after Quicksilver Grail brings it out.",
+                "cards": [
+                  "Meteor Strike",
+                  "Berserker Plate",
+                  "Shuang Ji of Sacrifice",
+                  "Quicksilver Grail"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Tricastles of Lucenia constrains both players; Auric Persecution removes Cosmic Astroscope and slows Arisanna’s glimpses.",
+                "cards": [
+                  "Tricastles of Lucenia",
+                  "Auric Persecution",
+                  "Cosmic Astroscope"
+                ],
+                "tags": []
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "Nascent Barrier finds Cosmic Bolt. Astral Seals stop recovery, a second glimpse finds more Bolts, and the fourth Seal answers Topsy Decree for the concession.",
+                "cards": [
+                  "Nascent Barrier",
+                  "Cosmic Bolt",
+                  "Astral Seal",
+                  "Topsy Decree"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Sequential Osaka Day 1 transcript review. Two games are observed. Casters initially report a draw, then explicitly correct it to DragonJG conceding the match and Quarax winning 2–1 (10:08:44–10:08:58); official round 7 pairing42 agrees. No played third game is described."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 7,
+          "pairingId": 42,
+          "players": [
+            2302,
+            792
+          ],
+          "score": [
+            1,
+            2
+          ]
+        },
+        "identitySegments": [
+          7284,
+          7321,
+          7334,
+          7344
+        ],
+        "games": [
+          {
+            "gameNumber": 1,
+            "range": [
+              7339,
+              7886
+            ],
+            "winnerSegments": [
+              7873,
+              7875,
+              7876
+            ],
+            "beatSegments": [
+              [
+                7397,
+                7412,
+                7448,
+                7468
+              ],
+              [
+                7603,
+                7620,
+                7672,
+                7701,
+                7729
+              ],
+              [
+                7732,
+                7736,
+                7737,
+                7738
+              ],
+              [
+                7834,
+                7849,
+                7853,
+                7862,
+                7869,
+                7875,
+                7876
+              ]
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "range": [
+              7909,
+              8279
+            ],
+            "winnerSegments": [
+              8276,
+              8277,
+              8278,
+              8279
+            ],
+            "beatSegments": [
+              [
+                7948,
+                7953,
+                7963,
+                7972
+              ],
+              [
+                7996,
+                7997,
+                8058,
+                8061,
+                8062
+              ],
+              [
+                8039,
+                8085,
+                8086,
+                8128,
+                8129,
+                8131
+              ],
+              [
+                8239,
+                8241,
+                8247,
+                8250,
+                8253,
+                8266,
+                8270,
+                8276,
+                8278,
+                8279
+              ]
+            ]
+          }
+        ],
+        "matchResultSegments": [
+          8291,
+          8292,
+          8304,
+          8305,
+          8307,
+          8308
+        ],
+        "sideboardObservedSegments": [
+          7896,
+          7897,
+          7928
+        ],
+        "sideboardNotes": "Cometfall removal is observed; Meteor Strike is seen in game2. Do not publish speculative suggestions as actual swaps."
+      }
+    },
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r8-sosollys-noobtinnn",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 37962
+        },
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Swiss Round 8",
+        "players": [
+          {
+            "id": "p1",
+            "name": "SoSollys",
+            "deck": "Wind Silvie Clubs"
+          },
+          {
+            "id": "p2",
+            "name": "NoobTinnn",
+            "deck": "Fire Suzaku"
+          }
+        ],
+        "result": "NoobTinnn wins 2–0",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Scalding Aethercharge accelerates Suzaku, and Intensified Pyre finishes the game.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "SoSollys starts establishing a Clubs board with Shamrock Forest.",
+                "cards": [],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Vermilion Decree pressures an ally and the champion; Scalding Aethercharge then punishes Silvie’s level-up and adds quest counters.",
+                "cards": [
+                  "Vermilion Decree",
+                  "Scalding Aethercharge"
+                ],
+                "tags": []
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Nullifying Mirror precedes the finishing push. Skirting Step prevents a point, but a kindled Intensified Pyre supplies the remaining damage.",
+                "cards": [
+                  "Nullifying Mirror",
+                  "Skirting Step",
+                  "Intensified Pyre"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p2",
+            "summary": "NoobTinnn uses Undeniable Truth to bring Suzaku back for another lethal attack.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "SoSollys develops Six of Clubs and Censer of Restful Peace while NoobTinnn continues building quest counters.",
+                "cards": [
+                  "Six of Clubs",
+                  "Censer of Restful Peace"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Two of Spades and Safeguard Amulet create pressure and protection, but SoSollys stays at spirit level.",
+                "cards": [
+                  "Two of Spades",
+                  "Safeguard Amulet"
+                ],
+                "tags": []
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Suzaku attacks, then Undeniable Truth enables its sacrifice and return. After a brief judge check about quest counters, casters confirm NoobTinnn’s second win.",
+                "cards": [
+                  "Undeniable Truth"
+                ],
+                "tags": [
+                  "combo",
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Sequential Osaka Day 1 transcript review; official round8 pairing42 confirms 0–2. The broadcast initially displays a Ciel decklist, then explicitly corrects it to Wind Silvie with Shamrock Forest before gameplay. Judge discussion at10:51 concerns quest counters; no penalty is stated."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 8,
+          "pairingId": 42,
+          "players": [
+            28812,
+            10891
+          ],
+          "score": [
+            0,
+            2
+          ]
+        },
+        "identitySegments": [
+          8399,
+          8404,
+          8409,
+          8410,
+          8419,
+          9040,
+          9041
+        ],
+        "games": [
+          {
+            "gameNumber": 1,
+            "range": [
+              8398,
+              8584
+            ],
+            "winnerSegments": [
+              8581,
+              8582,
+              8583,
+              8584
+            ],
+            "beatSegments": [
+              [
+                8419,
+                8434,
+                8435
+              ],
+              [
+                8479,
+                8481,
+                8482,
+                8507,
+                8517,
+                8518
+              ],
+              [
+                8560,
+                8575,
+                8580,
+                8581,
+                8584
+              ]
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "range": [
+              8678,
+              8902
+            ],
+            "winnerSegments": [
+              8900,
+              8901,
+              8902
+            ],
+            "beatSegments": [
+              [
+                8681,
+                8682,
+                8713,
+                8714,
+                8723,
+                8725
+              ],
+              [
+                8753,
+                8759,
+                8787,
+                8818,
+                8830
+              ],
+              [
+                8855,
+                8862,
+                8870,
+                8872,
+                8873,
+                8875,
+                8878,
+                8880,
+                8900,
+                8901
+              ]
+            ]
+          }
+        ],
+        "matchResultSegments": [
+          8866,
+          8900,
+          8901,
+          9047
+        ],
+        "sideboardObservedSegments": [
+          8718
+        ],
+        "sideboardNotes": "Fanned Synchron appears in game2 according to caster. Earlier sideboarding discussion is hypothetical."
+      }
+    }
+  ],
+  "findings": [
+    {
+      "severity": "important",
+      "segments": [
+        8304,
+        8307,
+        8308
+      ],
+      "finding": "R7 initial draw announcement is explicitly corrected to a match concession by DragonJG; do not publish a draw or fabricate a playedG3."
+    },
+    {
+      "severity": "important",
+      "segments": [
+        8409,
+        8410,
+        8419
+      ],
+      "finding": "R8 early Ciel analysis refers to an incorrect displayed decklist, explicitly corrected to Wind Silvie."
+    },
+    {
+      "severity": "limitation",
+      "segments": [
+        8367,
+        8368
+      ],
+      "finding": "18m12s gap between R7 outro and R8 introduction. No claim about missing audiovisual content."
+    },
+    {
+      "severity": "limitation",
+      "segments": [
+        9087,
+        9088,
+        9181
+      ],
+      "finding": "Interview ends10:57:46; next segment11:13:39 begins music. Remaining94segments are lyrics to11:25:39. No Round9 gameplay or matchup appears in supplied transcript."
+    },
+    {
+      "severity": "limitation",
+      "finding": "Card catalog predates some new cards: Scalding Aethercharge and Six of Clubs verified using official public event decklists. Shamrock Forest/Five of Clubs retained as transcript identity but not listed as canonical beat cards because absent from available catalog and snapshot decklists."
+    },
+    {
+      "severity": "limitation",
+      "finding": "Source contains additional fragmented ASR (e.g. Chuang Ji, Tri-castles variants, isolated bolt abbreviations); these are understandable from context but not blanket-replaced where exact intended wording is uncertain."
+    }
+  ]
+}

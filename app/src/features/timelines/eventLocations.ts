@@ -3,7 +3,7 @@ export function eventLocation(name: string, id?: number) {
   const places = [
     ['Las Vegas', 'US', 'Americas'], ['Niagara Falls', 'CA', 'Americas'],
     ['London', 'GB', 'Europe'], ['Manila', 'PH', 'Asia-Pacific'],
-    ['Akihabara', 'JP', 'Asia-Pacific'], ['Taipei', 'TW', 'Asia-Pacific'],
+    ['Akihabara', 'JP', 'Asia-Pacific'], ['Osaka', 'JP', 'Asia-Pacific'], ['Taipei', 'TW', 'Asia-Pacific'],
     ['Melbourne', 'AU', 'Asia-Pacific'], ['Auckland', 'NZ', 'Asia-Pacific'],
     ['Los Angeles', 'US', 'Americas'],
   ] as const;

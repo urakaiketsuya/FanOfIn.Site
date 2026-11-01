@@ -1,0 +1,3107 @@
+{
+  "videoId": "g3NNFcNpw3k",
+  "eventId": 67176,
+  "reviewedSegmentRange": [
+    0,
+    4108
+  ],
+  "rangeEndExclusive": true,
+  "method": "Every assigned segment read sequentially, including introductions, breaks, interviews. Corrections are proposed against first-pass cleaned text, not the original source. Canonical names checked against local card cache and official event decklists (the older card cache lacks several HVN cards). Additional contextual pass uses data/card-catalog.json dated2026-10-29; corrections consolidated into this array.",
+  "corrections": [
+    {
+      "index": 66,
+      "before": "So if you have to get someone who's kind of big enough, or you have to play Coordination Ceremonies, and also it's just suited cards are so expensive, right?",
+      "after": "So if you have to get someone who's kind of big enough, or you have to play Coronation Ceremonies, and also it's just suited cards are so expensive, right?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 84,
+      "before": "But if they get to the point where they get to hold Aayla's, and if they play Sasha especially, it is quite an uphill battle.",
+      "after": "But if they get to the point where they get to hold Aella's, and if they play Sasha especially, it is quite an uphill battle.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 85,
+      "before": "But I think that deck, you know, if we ever see Braceless Thunder maybe take a bench, or an actual full ban, or if Aayla ever maybe gets out of here, there's a potential for that deck to actually really jump up in playability.",
+      "after": "But I think that deck, you know, if we ever see Burst Asunder maybe take a bench, or an actual full ban, or if Aella ever maybe gets out of here, there's a potential for that deck to actually really jump up in playability.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 85 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 104,
+      "before": "And one of the new trends that we're seeing in fire deck building, because of the release of Creative Tinder, of Velocity Punch,",
+      "after": "And one of the new trends that we're seeing in fire deck building, because of the release of Creative Tinder, of Vel-ocity Punch,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 105,
+      "before": "we're just seeing a bunch of decks going, you know what? 4 Creative Shark, 4 Creative Tinder, 4 Velocity Punch, 4 Accumulation Ritual,",
+      "after": "we're just seeing a bunch of decks going, you know what? 4 Creative Shock, 4 Creative Tinder, 4 Vel-ocity Punch, 4 Accumulation Ritual,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 311,
+      "before": "The Omni you can actually see the champions that they're playing and you can see it's actually Wind Serene Spirit 411, which can mean only a few things but with the sleeves combined you know it is going to be that Serene Wind Arizana.",
+      "after": "The Omni you can actually see the champions that they're playing and you can see it's actually Wind Serene Spirit wenwen, which can mean only a few things but with the sleeves combined you know it is going to be that Serene Wind Arisanna.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 316,
+      "before": "Oh, that's a 7. Alright, not a 6-7 though. So thankfully hachico here going to go first and you're seeing this is going to be a Ciel Double Fu Awakening and a Topsy Decree going to be the open here.",
+      "after": "Oh, that's a 7. Alright, not a 6-7 though. So thankfully hachico here going to go first and you're seeing this is going to be a Ciel Double Feu Awakening and a Topsy Decree going to be the open here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 318,
+      "before": "As you should. Now the 2 down, 411 does draw into an Angelic Channeling as well so that's pretty nice for a start.",
+      "after": "As you should. Now the 2 down, wenwen does draw into an Angelic Channeling as well so that's pretty nice for a start.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 324,
+      "before": "That is true. Of course, recovery is one of the best ways to get out of a Full Awakening because that damage is going to be unpreventable off of the Ciel Level 3 Mirage's Grave.",
+      "after": "That is true. Of course, recovery is one of the best ways to get out of a Feu Awakening because that damage is going to be unpreventable off of the Ciel Level 3 Mirage's Grave.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 325,
+      "before": "Now, leveling up to Ciel Level 1 here does get that on-enter Saval Possessions Mastery. Losing a Beganku into the level, Limnoguide does come out allowing him to draw another card and hachico has added Angelic Channeling to his deck as well.",
+      "after": "Now, leveling up to Ciel Level 1 here does get that on-enter Servile Possessions Mastery. Losing a Beguiling Coup into the level, Liminal Guide does come out allowing him to draw another card and hachico has added Angelic Channeling to his deck as well.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 325 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 329,
+      "before": "It's creative shock for hachico here. Of course, draw is strong so will continue to draw. Has a Limnoguide, like you mentioned, to discard away and will not be doing anything else on the stack of that.",
+      "after": "It's creative shock for hachico here. Of course, draw is strong so will continue to draw. Has a Liminal Guide, like you mentioned, to discard away and will not be doing anything else on the stack of that.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 335,
+      "before": "I believe so. Now let's see what else is going to be played here by 1-1.",
+      "after": "I believe so. Now let's see what else is going to be played here by wenwen.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 338,
+      "before": "Going to respond is hachico as well with his own Angelic Channeling and going to throw away just an Umbricite. But Umbricite is a really, really strong card.",
+      "after": "Going to respond is hachico as well with his own Angelic Channeling and going to throw away just an Umbra Sight. But Umbra Sight is a really, really strong card.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 338 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 344,
+      "before": "Yeah, of course. And now discarding a Full Awakening as well, setting that up into the Omen will be very, very nice.",
+      "after": "Yeah, of course. And now discarding a Feu Awakening as well, setting that up into the Omen will be very, very nice.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 345,
+      "before": "We will have to see whether 1-1 actually has that Silence the Soul tech in the sideboard. But first, Game 1 is still underway.",
+      "after": "We will have to see whether wenwen actually has that Silence the Soul tech in the sideboard. But first, Game 1 is still underway.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 346,
+      "before": "hachico swings in with the two Liminal Guides here, pushing in more and more damage into 1-1.",
+      "after": "hachico swings in with the two Liminal Guides here, pushing in more and more damage into wenwen.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 349,
+      "before": "So off to the races is the Ciel. Going to go up to level 3 here. And Arisana, no Stifling Trap in sight.",
+      "after": "So off to the races is the Ciel. Going to go up to level 3 here. And Arisanna, no Stifling Trap in sight.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 350,
+      "before": "Going to just go straight up, rocketing up to that 3. Going to add that Umbersight back on top of the deck.",
+      "after": "Going to just go straight up, rocketing up to that 3. Going to add that Umbra Sight back on top of the deck.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 351,
+      "before": "And that means a draw next turn, or potentially Creative Shock to draw into the Umbersight right here.",
+      "after": "And that means a draw next turn, or potentially Creative Shock to draw into the Umbra Sight right here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 353,
+      "before": "And now Devastating Blow, actually! Immediately trying to push a bunch of damage into 1-1's face.",
+      "after": "And now Devastating Blow, actually! Immediately trying to push a bunch of damage into wenwen's face.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 355,
+      "before": "Usable off of a Beguine Coup later on. 1-1 going to use that Angelic Channeling once more to banish two more Astra cards into the banish.",
+      "after": "Usable off of a Beguiling Coup later on. wenwen going to use that Angelic Channeling once more to banish two more Astra cards into the banish.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 356,
+      "before": "And then after that, have a Floating Memory to go up to level 2 Arisana as well.",
+      "after": "And then after that, have a Floating Memory to go up to level 2 Arisanna as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 360,
+      "before": "And Arisana's not a deck that's particularly good at gaining influence unless they have the Fertile Grounds there.",
+      "after": "And Arisanna's not a deck that's particularly good at gaining influence unless they have the Fertile Grounds there.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 361,
+      "before": "So just drawing more and more Duds. No Dungeon Guide in his hand as well is not a good sign for 1-1 here.",
+      "after": "So just drawing more and more Duds. No Dungeon Guide in his hand as well is not a good sign for wenwen here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 362,
+      "before": "Because he is definitely at threat of dying next turn from a Manshaum plus Fu Awakening combo.",
+      "after": "Because he is definitely at threat of dying next turn from a Manxome Armoire plus Feu Awakening combo.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 367,
+      "before": "Manshaum is going to be hachico's pick. Do know about that Fu Awakening in the hand as well as in the graveyard.",
+      "after": "Manxome Armoire is going to be hachico's pick. Do know about that Feu Awakening in the hand as well as in the graveyard.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 370,
+      "before": "We are going to push in the damage. Manshaum going to be used now actually on the Devastating Blow.",
+      "after": "We are going to push in the damage. Manxome Armoire going to be used now actually on the Devastating Blow.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 373,
+      "before": "Pushing 1-1 up to 19 already. Devastating Blow is going to devastate 1-1 now with another big swing.",
+      "after": "Pushing wenwen up to 19 already. Devastating Blow is going to devastate wenwen now with another big swing.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 375,
+      "before": "And 1-1 here has to respond with the release of the Spirit of Serene Wind.",
+      "after": "And wenwen here has to respond with the release of the Spirit of Serene Wind.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 381,
+      "before": "So no Fu Awakening in hachico's hand. Last card in hand is that Umbra Scythe.",
+      "after": "So no Feu Awakening in hachico's hand. Last card in hand is that Umbra Sight.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 382,
+      "before": "But, oh no it is Fu Awakening. Ok so that's going to be the game there.",
+      "after": "But, oh no it is Feu Awakening. Ok so that's going to be the game there.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 383,
+      "before": "Hainan should have no way of stopping this. Only 2 cards in hand.",
+      "after": "wenwen should have no way of stopping this. Only 2 cards in hand.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 383 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 386,
+      "before": "That is the case. Of course there is still an opportunity to react here for 1-1.",
+      "after": "That is the case. Of course there is still an opportunity to react here for wenwen.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 407,
+      "before": "From coming back into the hand with Dimensional Armoire.",
+      "after": "From coming back into the hand with Manxome Armoire.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 414,
+      "before": "But one card we do need though is the Chronowarp and the Ciel Astral Projection in wenwen's deck.",
+      "after": "But one card we do need though is the Chronowarp and the Ciel, Astral Projection in wenwen's deck.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 414 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 434,
+      "before": "Yeah but if we do get to see Ciel Astral Projection hit the board.",
+      "after": "Yeah but if we do get to see Ciel, Astral Projection hit the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 434 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 443,
+      "before": "Can deny a lot of the pressure from those early Limno guides.",
+      "after": "Can deny a lot of the pressure from those early Liminal Guides.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 464,
+      "before": "Has that Flamethrower Cell as well.",
+      "after": "Has that Flamme Sorcel as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 466,
+      "before": "Velocity Punch is instead going to be the starting play.",
+      "after": "Vel-ocity Punch is instead going to be the starting play.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 487,
+      "before": "And that's 2nd Dungeon Guy!",
+      "after": "And that's 2nd Dungeon Guide!",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 487 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 488,
+      "before": "So you're going to assume that this other facedown card in the memory is also a Dungeon Guy.",
+      "after": "So you're going to assume that this other facedown card in the memory is also a Dungeon Guide.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 488 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 489,
+      "before": "Velocity Punch now going to be used.",
+      "after": "Vel-ocity Punch now going to be used.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 492,
+      "before": "But instead just going to recollect and draw into another Velocity Punch.",
+      "after": "But instead just going to recollect and draw into another Vel-ocity Punch.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 495,
+      "before": "Also has the Flamme Sorcelle available.",
+      "after": "Also has the Flamme Sorcel available.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 497,
+      "before": "Yeah so Flamme Sorcelle has to have an Omen.",
+      "after": "Yeah so Flamme Sorcel has to have an Omen.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 498,
+      "before": "So could go for Omen Velocity Punch and then Flamme the 2nd.",
+      "after": "So could go for Omen Vel-ocity Punch and then Flamme the 2nd.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 499,
+      "before": "But I think at that point you might as well just go for the Velocity Punch.",
+      "after": "But I think at that point you might as well just go for the Vel-ocity Punch.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 508,
+      "before": "Does he see that Angelic Chandler?",
+      "after": "Does he see that Angelic Channeling?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 517,
+      "before": "Okay so it's going to be another Velocity Punch being played.",
+      "after": "Okay so it's going to be another Vel-ocity Punch being played.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 521,
+      "before": "Of course can go up to Arizana too.",
+      "after": "Of course can go up to Arisanna too.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 532,
+      "before": "And you do see the Beguying Coup in the hand as well.",
+      "after": "And you do see the Beguiling Coup in the hand as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 536,
+      "before": "So unless wenwen is holding that Topsy-Decree to try and stop the Fu Awakening",
+      "after": "So unless wenwen is holding that Topsy-Decree to try and stop the Feu Awakening",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 550,
+      "before": "Arisanna Tree Astral Zenith now hits the board.",
+      "after": "Arisanna 3, Astral Zenith now hits the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 550 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 583,
+      "before": "Has to be Guiling Coup.",
+      "after": "Has the Beguiling Coup.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 583 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 641,
+      "before": "And it's going to be a Horde Encounter using one of the herbs.",
+      "after": "And it's going to be a Horticounter using one of the herbs.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 641 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 647,
+      "before": "Going to throw out this Full Awakening.",
+      "after": "Going to throw out this Feu Awakening.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 650,
+      "before": "that hachico has the access to Full Awakening at the end step as well.",
+      "after": "that hachico has the access to Feu Awakening at the end step as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 651,
+      "before": "And that's another six damage with the Lost Providence Magical Armor combo.",
+      "after": "And that's another six damage with the Lost Providence Manxome Armoire combo.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 655,
+      "before": "The Horde Encounter is going to resolve.",
+      "after": "The Horticounter is going to resolve.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 655 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 656,
+      "before": "It's not going to be able to negate because of the Full Awakening.",
+      "after": "It's not going to be able to negate because of the Feu Awakening.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 660,
+      "before": "And with the release already done, the Full Awakening now added to the Omens.",
+      "after": "And with the release already done, the Feu Awakening now added to the Omens.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 663,
+      "before": "Swap it back into the Omens with the Full Awakening.",
+      "after": "Swap it back into the Omens with the Feu Awakening.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 666,
+      "before": "The Full Awakening is not needed.",
+      "after": "The Feu Awakening is not needed.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 698,
+      "before": "Riganku, Devastating Blow, Full Awakening, that's basically the entire deck.",
+      "after": "Beguiling Coup, Devastating Blow, Feu Awakening, that's basically the entire deck.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 698 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 724,
+      "before": "But really when you think about it, we're not playing Frail Grounds anymore.",
+      "after": "But really when you think about it, we're not playing Fertile Grounds anymore.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 724 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 729,
+      "before": "Yeah, you can do Creator Shock.",
+      "after": "Yeah, you can do Creative Shock.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 730,
+      "before": "Yeah, Creator Shock's very good.",
+      "after": "Yeah, Creative Shock's very good.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 867,
+      "before": "Or Besiege, or any of the other ways of leveling up.",
+      "after": "Or Beseech the Winds, or any of the other ways of leveling up.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 867 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 869,
+      "before": "So really, Dandrick has to have the ideal turn 1 and immediate turn 2",
+      "after": "So really, Danriick has to have the ideal turn 1 and immediate turn 2",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 882,
+      "before": "It's going to be a very uphill battle for Dandrick.",
+      "after": "It's going to be a very uphill battle for Danriick.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 895,
+      "before": "Dandrick can hit that immediate level 2 or level 3.",
+      "after": "Danriick can hit that immediate level 2 or level 3.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 912,
+      "before": "The Illumina guide is also stuck.",
+      "after": "The Liminal Guide is also stuck.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 914,
+      "before": "The fire interference will help at least",
+      "after": "The Fiery Interference will help at least",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 916,
+      "before": "the thing about this Alex deck",
+      "after": "the thing about this Alice deck",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 933,
+      "before": "all this heal that Alex has.",
+      "after": "all this heal that Alice has.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 934,
+      "before": "We are going to Alex level 1 right here.",
+      "after": "We are going to Alice level 1 right here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 944,
+      "before": "considering Danrek can't really get",
+      "after": "considering Danriick can't really get",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 947,
+      "before": "Oh, Besiege! Besiege and Tricastles",
+      "after": "Oh, Beseech the Winds! Beseech the Winds and Tricastles",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 947 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 956,
+      "before": "You see the Slipaway actually",
+      "after": "You see the Slip Away actually",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 963,
+      "before": "Going to lose an Aayla and the Slipaway.",
+      "after": "Going to lose an Aella and the Slip Away.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 966,
+      "before": "Is there the Umbracite?",
+      "after": "Is there the Umbra Sight?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 968,
+      "before": "Umbracite always ready to take 9",
+      "after": "Umbra Sight always ready to take 9",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 981,
+      "before": "No Agus?",
+      "after": "No Argus?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 981 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 992,
+      "before": "And with Damir not having the accelerated start",
+      "after": "And with Danriick not having the accelerated start",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1004,
+      "before": "Going to be a Spirel and a Humberside,",
+      "after": "Going to be a Spirelle and a Umbra Sight,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1004 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 1006,
+      "before": "But I think there was a Reflect of the Blight",
+      "after": "But I think there was a Reflected Blight",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1009,
+      "before": "to gain back the Spirel.",
+      "after": "to gain back the Spirelle.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1032,
+      "before": "with the Nocturne's Oblivion and Aayla's.",
+      "after": "with the Nocturne's Oblivion and Aella's.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1033,
+      "before": "So, now Danrek has a bit more space,",
+      "after": "So, now Danriick has a bit more space,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1037,
+      "before": "Danrek just needs to find 11 more damage.",
+      "after": "Danriick just needs to find 11 more damage.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1043,
+      "before": "on Danrek's side.",
+      "after": "on Danriick's side.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1054,
+      "before": "Danrek finally getting a little bit",
+      "after": "Danriick finally getting a little bit",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1065,
+      "before": "uphill battle for Danrek,",
+      "after": "uphill battle for Danriick,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1081,
+      "before": "and completely lock Danrek out",
+      "after": "and completely lock Danriick out",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1095,
+      "before": "Purifying Turbo will be playing here.",
+      "after": "Purifying Thurible will be playing here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1140,
+      "before": "Not because it's Oblivion.",
+      "after": "Nocturne's Oblivion.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1144,
+      "before": "So Naukins will make a quick work",
+      "after": "So Nocturne’s Oblivion will make a quick work",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1144 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 1163,
+      "before": "Double Poetier has been found!",
+      "after": "Double Poitier has been found!",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1165,
+      "before": "That means Oneriki next turn",
+      "after": "That means Oneiric Key next turn",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1169,
+      "before": "Poetier basically",
+      "after": "Poitier basically",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1177,
+      "before": "with the Oneriki,",
+      "after": "with the Oneiric Key,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1247,
+      "before": "Dendrick can...",
+      "after": "Danriick can...",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1249,
+      "before": "with your Dendrick?",
+      "after": "with your Danriick?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1255,
+      "before": "Purifying Therbal,",
+      "after": "Purifying Thurible,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1258,
+      "before": "Remember, Therbal is",
+      "after": "Remember, Thurible is",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1262,
+      "before": "It just draws a Velocity Punch",
+      "after": "It just draws a Vel-ocity Punch",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1268,
+      "before": "Dendrick's reaction",
+      "after": "Danriick's reaction",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1296,
+      "before": "Oneriki can now also",
+      "after": "Oneiric Key can now also",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1308,
+      "before": "that there's an Aayla",
+      "after": "that there's an Aella",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1327,
+      "before": "The Therbal is not",
+      "after": "The Thurible is not",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1336,
+      "before": "Okay, Therbal is going",
+      "after": "Okay, Thurible is going",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1341,
+      "before": "Dungeon Guide and an Aayla.",
+      "after": "Dungeon Guide and an Aella.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1342,
+      "before": "Aayla, yep.",
+      "after": "Aella, yep.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1375,
+      "before": "protecting the Aayla.",
+      "after": "protecting the Aella.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1424,
+      "before": "Oniric and all this",
+      "after": "Oneiric Key and all this",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1474,
+      "before": "have Ayla, so they can",
+      "after": "have Aella, so they can",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 1677,
+      "before": "a Besieged",
+      "after": "a Beseech",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1677 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 1678,
+      "before": "to Wins",
+      "after": "the Winds",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 1678 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2066,
+      "before": "Creative Shock, Creative Tinder, Velocity Punch",
+      "after": "Creative Shock, Creative Tinder, Vel-ocity Punch",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2173,
+      "before": "I want to see a 100-100 pro tier",
+      "after": "I want to see a 100-100 Poitier",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2173 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2452,
+      "before": "I see Frost",
+      "after": "I see Frostsworn",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2452 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2453,
+      "before": "From Paladin",
+      "after": "Paladin",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2453 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2467,
+      "before": "Frost 1 Paladin",
+      "after": "Frostsworn Paladin",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2481,
+      "before": "Has now the J-Ink",
+      "after": "Has now the Jueying",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2481 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2499,
+      "before": "Twinkledeel",
+      "after": "Tweedledee",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2506,
+      "before": "The Luster Shroud",
+      "after": "The Luster's Shroud",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2542,
+      "before": "Gorgia",
+      "after": "Guo Jia",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2587,
+      "before": "The Luster Shroud",
+      "after": "The Luster's Shroud",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2591,
+      "before": "That Luster Shroud",
+      "after": "That Luster's Shroud",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2593,
+      "before": "The Aquifer Sanadriel",
+      "after": "The Aquifer Seneschal",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2593 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2602,
+      "before": "Drea-Ing",
+      "after": "Jueying",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2607,
+      "before": "The Ascent Protector",
+      "after": "The Aesan Protector",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2610,
+      "before": "To take out Drea-Ing",
+      "after": "To take out Jueying",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2612,
+      "before": "In the hand of Sanadriel",
+      "after": "In the hand of Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2614,
+      "before": "Take out Sanadriel",
+      "after": "Take out Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2634,
+      "before": "From Ascent Protector",
+      "after": "From Aesan Protector",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2636,
+      "before": "Because Twiddle D",
+      "after": "Because Tweedledee",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2643,
+      "before": "So if Sanadriel",
+      "after": "So if Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2644,
+      "before": "Tries to push Drea-Ing",
+      "after": "Tries to push Jueying",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2653,
+      "before": "Sanadriel just had",
+      "after": "Xenadrael just had",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2667,
+      "before": "For Sanadriel",
+      "after": "For Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2670,
+      "before": "The Aquifer Sanadriel",
+      "after": "The Aquifer Seneschal",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2670 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2676,
+      "before": "Of the Ascent Protector",
+      "after": "Of the Aesan Protector",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2678,
+      "before": "The Ascent Protector",
+      "after": "The Aesan Protector",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2680,
+      "before": "And Drea-Ing also",
+      "after": "And Jueying also",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2691,
+      "before": "Of Sanadriel's hand",
+      "after": "Of Xenadrael's hand",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2692,
+      "before": "Sanadriel just thinking",
+      "after": "Xenadrael just thinking",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2712,
+      "before": "From Sanadriel here",
+      "after": "From Xenadrael here",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2714,
+      "before": "The Silurian Decree",
+      "after": "The Cerulean Decree",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2721,
+      "before": "Silurian Decree",
+      "after": "Cerulean Decree",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2740,
+      "before": "By Sanadriel here",
+      "after": "By Xenadrael here",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2744,
+      "before": "From Sanadriel",
+      "after": "From Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2753,
+      "before": "With the Twinkler",
+      "after": "With the Tweedledee",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2753 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2757,
+      "before": "Jain on the board",
+      "after": "Jueying on the board",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2787,
+      "before": "Dreamfairy I think",
+      "after": "Dream Fairy I think",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2789,
+      "before": "The Dreamfairy",
+      "after": "The Dream Fairy",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2799,
+      "before": "Dreamfairy going to be",
+      "after": "Dream Fairy going to be",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2802,
+      "before": "Tweedle D",
+      "after": "Tweedledee",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2802 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2806,
+      "before": "Jiayin no longer has",
+      "after": "Jueying no longer has",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2811,
+      "before": "The Roland Schwarzknight",
+      "after": "The Rowland, Schwartz Knight",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 2811 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 2821,
+      "before": "The Dreamfairy and",
+      "after": "The Dream Fairy and",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2822,
+      "before": "The Roland now",
+      "after": "The Rowland now",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2824,
+      "before": "To get rid of Jiayin",
+      "after": "To get rid of Jueying",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2833,
+      "before": "Of Zenedreal",
+      "after": "Of Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2860,
+      "before": "Zenedreal does have",
+      "after": "Xenadrael does have",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2878,
+      "before": "Zenedreal now though",
+      "after": "Xenadrael now though",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2893,
+      "before": "I smell Frostmourne",
+      "after": "I smell Frostsworn Paladin",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2895,
+      "before": "Frostmourne setup",
+      "after": "Frostsworn Paladin setup",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2896,
+      "before": "Frostmourne setup",
+      "after": "Frostsworn Paladin setup",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2904,
+      "before": "Roland",
+      "after": "Rowland",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2925,
+      "before": "Zenedreal only has",
+      "after": "Xenadrael only has",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2938,
+      "before": "I think Zenedreal",
+      "after": "I think Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2942,
+      "before": "Oh another Roland",
+      "after": "Oh another Rowland",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2951,
+      "before": "Zenedreal can do",
+      "after": "Xenadrael can do",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2958,
+      "before": "Now Zenedreal",
+      "after": "Now Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2962,
+      "before": "The Survival Possessions",
+      "after": "The Servile Possessions",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2967,
+      "before": "No Survival Possessions",
+      "after": "No Servile Possessions",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2972,
+      "before": "Survival Possessions",
+      "after": "Servile Possessions",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2987,
+      "before": "Survival Possessions",
+      "after": "Servile Possessions",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2991,
+      "before": "Back to Zenedreal",
+      "after": "Back to Xenadrael",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 2992,
+      "before": "Zenedreal does not",
+      "after": "Xenadrael does not",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3006,
+      "before": "On the Roland",
+      "after": "On the Rowland",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3015,
+      "before": "There is a Zephyr available for Mono if he really wants to protect this Roland.",
+      "after": "There is a Zephyr available for Mono if he really wants to protect this Rowland.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3016,
+      "before": "Now the goal for Mono and also Zendure is to protect their allies so their allies don't die out of nowhere.",
+      "after": "Now the goal for Mono and also Xenadrael is to protect their allies so their allies don't die out of nowhere.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3050,
+      "before": "Zephyring our Roland, trying to prevent it from taking damage from this Ciel Level 1 once again.",
+      "after": "Zephyring our Rowland, trying to prevent it from taking damage from this Ciel Level 1 once again.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3052,
+      "before": "Now, what else will Zenedrill do?",
+      "after": "Now, what else will Xenadrael do?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3053,
+      "before": "No longer able to take out this Roland that was on the board.",
+      "after": "No longer able to take out this Rowland that was on the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3056,
+      "before": "Since the Dream Fairy is targeting Tweedle D instead.",
+      "after": "Since the Dream Fairy is targeting Tweedledee instead.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3058,
+      "before": "Because as we mentioned, Twinkledead, this is a really really painful game for Zenedrill.",
+      "after": "Because as we mentioned, Trinket, this is a really really painful game for Xenadrael.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3058 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3059,
+      "before": "Honestly speaking, will you actually expect Main Deck Twinkled right here?",
+      "after": "Honestly speaking, will you actually expect Main Deck Trinket right here?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3059 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3060,
+      "before": "Yeah, I mean, Main Deck Twinkled seems to be quite powerful because",
+      "after": "Yeah, I mean, Main Deck Trinket seems to be quite powerful because",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3060 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3061,
+      "before": "Mono's deck is not like the traditional Byaku deck.",
+      "after": "Mono's deck is not like the traditional Byakko deck.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3062,
+      "before": "Ooh, Luka hits the board and that is going to be very very rough.",
+      "after": "Ooh, Lucca hits the board and that is going to be very very rough.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3063,
+      "before": "A double development here of the Aquifer Seneschal plus Luka.",
+      "after": "A double development here of the Aquifer Seneschal plus Lucca.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3064,
+      "before": "And now Zenedrill has to decide if he wants to use that Cascade effect.",
+      "after": "And now Xenadrael has to decide if he wants to use that Cascade effect.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3066,
+      "before": "Let's find out if Luka is going to be used as that Bulwark counter.",
+      "after": "Let's find out if Lucca is going to be used as that Bulwark counter.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3068,
+      "before": "During Mono's turn, Zenedrill can rest Luka again to get a buff counter.",
+      "after": "During Mono's turn, Xenadrael can rest Lucca again to get a buff counter.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3069,
+      "before": "So Luka basically is telling you, look, if you don't get rid of me, every time I rest,",
+      "after": "So Lucca basically is telling you, look, if you don't get rid of me, every time I rest,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3075,
+      "before": "That is the Sensor of Restful Peace.",
+      "after": "That is the Censer of Restful Peace.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3075 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3076,
+      "before": "So trying to deny that Storm of Thorns from Zenedrill, he is level 1 already,",
+      "after": "So trying to deny that Storm of Thorns from Xenadrael, he is level 1 already,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3078,
+      "before": "Mono just double confirming the text on Luka Gateway in measure.",
+      "after": "Mono just double confirming the text on Lucca, Gateway Manager.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3078 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3079,
+      "before": "Honestly speaking, when you look at Luka, it's just really really strong in ally,",
+      "after": "Honestly speaking, when you look at Lucca, it's just really really strong in ally,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3086,
+      "before": "and then Luka will type herself to get a buff,",
+      "after": "and then Lucca will type herself to get a buff,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3087,
+      "before": "so Roland will deal 2, and you need just one more damage.",
+      "after": "so Rowland will deal 2, and you need just one more damage.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3088,
+      "before": "And that will get rid of Luka.",
+      "after": "And that will get rid of Lucca.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3094,
+      "before": "or any sort of damage into Luka.",
+      "after": "or any sort of damage into Lucca.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3095,
+      "before": "This means you leave the 3-4 Aquafina and also the 1-4 alive,",
+      "after": "This means you leave the 3-4 Aquifer Seneschal and also the 1-4 alive,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3100,
+      "before": "So I think Roland can come in this turn.",
+      "after": "So I think Rowland can come in this turn.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3101,
+      "before": "That is right. Roland can take out the Luka now,",
+      "after": "That is right. Rowland can take out the Lucca now,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3116,
+      "before": "getting rid of the Roland.",
+      "after": "getting rid of the Rowland.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3122,
+      "before": "It depends. Okay, he does have Silurian Decree, right?",
+      "after": "It depends. Okay, he does have Cerulean Decree, right?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3123,
+      "before": "So you actually want to have the access to Silurian Decree.",
+      "after": "So you actually want to have the access to Cerulean Decree.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3138,
+      "before": "Xenadrael, of course, does have Frostbite in the Omens.",
+      "after": "Xenadrael, of course, does have Frostbind in the Omens.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3140,
+      "before": "So he could go for the Mangeome.",
+      "after": "So he could go for the Manxome Armoire.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3150,
+      "before": "Oh! He's sacking his Mangeome armoire to give himself a Core Fractal.",
+      "after": "Oh! He's sacking his Manxome Armoire to give himself a Core Fractal.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3172,
+      "before": "Now there is the Wind Resonance Barber going to be materialized as well,",
+      "after": "Now there is the Wind Resonance Bauble going to be materialized as well,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3205,
+      "before": "Yeah, I mean, we of course saw the Avatar of Yarko get finished.",
+      "after": "Yeah, I mean, we of course saw the Avatar of Byakko get finished.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3205 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3210,
+      "before": "to have that Frostbite up because he had enough influence.",
+      "after": "to have that Frostbind up because he had enough influence.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3242,
+      "before": "Nightframe Houndbite.",
+      "after": "Nightframe, Hound's Bike.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3242 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3261,
+      "before": "Meanwhile for Xanadriel, he does have of course the tariff ring as well.",
+      "after": "Meanwhile for Xenadrael, he does have of course the tariff ring as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3281,
+      "before": "Xanadriel now going into his own turn.",
+      "after": "Xenadrael now going into his own turn.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3283,
+      "before": "and we've developed Luka onto the board.",
+      "after": "and we've developed Lucca onto the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3288,
+      "before": "Vergil now going to be played for Mono.",
+      "after": "Virgil now going to be played for Mono.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3291,
+      "before": "Luka can get a bomb counter,",
+      "after": "Lucca can get a bomb counter,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3293,
+      "before": "Here's Liu Pei now going to hit the board.",
+      "after": "Here's Liu Bei now going to hit the board.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3293 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3295,
+      "before": "So can swing into Luka first,",
+      "after": "So can swing into Lucca first,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3297,
+      "before": "Vergil, of course, does also get to swing into the Luka and take her out.",
+      "after": "Virgil, of course, does also get to swing into the Lucca and take her out.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3302,
+      "before": "But Water Resonance Bomber going to be played by Xanadriel,",
+      "after": "But Water Resonance Bauble going to be played by Xenadrael,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3307,
+      "before": "And for Xanadriel, trying to get rid of it, obviously.",
+      "after": "And for Xenadrael, trying to get rid of it, obviously.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3310,
+      "before": "Because at Xanadriel's side,",
+      "after": "Because at Xenadrael's side,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3316,
+      "before": "So it'll be interesting to see how Xanadriel deals with this.",
+      "after": "So it'll be interesting to see how Xenadrael deals with this.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3319,
+      "before": "to boost Vergil up to 3-3.",
+      "after": "to boost Virgil up to 3-3.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3322,
+      "before": "So Xanadriel has to be really careful",
+      "after": "So Xenadrael has to be really careful",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3328,
+      "before": "Yeah, because Xanadriel does come in hindered,",
+      "after": "Yeah, because Aquifer Seneschal does come in hindered,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3328 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3329,
+      "before": "but it's going to be partly Raccoon.",
+      "after": "but it's going to be Portly Raccoon.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3329 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3331,
+      "before": "We'll try to swing into Vergil, take him out here.",
+      "after": "We'll try to swing into Virgil, take him out here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3336,
+      "before": "It is going to be Purifying Turbo instead.",
+      "after": "It is going to be Purifying Thurible instead.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3337,
+      "before": "So it gets rid of all the cards in the graveyard of Xanadriel.",
+      "after": "So it gets rid of all the cards in the graveyard of Xenadrael.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3364,
+      "before": "Xanadu does go for the Inert Sword here.",
+      "after": "Xenadrael does go for the Inert Sword here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3365,
+      "before": "Maybe looking to take out Liu Pei to turn off the Dilu as well.",
+      "after": "Maybe looking to take out Liu Bei to turn off the Dilu as well.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3371,
+      "before": "We do see that Luster's Shroud as well as a Cyclonic Fade Stone.",
+      "after": "We do see that Luster's Shroud as well as a Cyclonic Fatestone.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3371 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3374,
+      "before": "but also helps to get the quest counters for your Fabled Emerald Fade Stone.",
+      "after": "but also helps to get the quest counters for your Fabled Emerald Fatestone.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3374 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3378,
+      "before": "as Xanadu has very limited of allies.",
+      "after": "as Xenadrael has very limited of allies.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3383,
+      "before": "Xanadu's smiling. He's like, come on, if you have any gear, you have it.",
+      "after": "Xenadrael's smiling. He's like, come on, if you have any gear, you have it.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3390,
+      "before": "So basically, Xanadu is going to be taking a lot of damage.",
+      "after": "So basically, Xenadrael is going to be taking a lot of damage.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3393,
+      "before": "Both of these allies now retaliate into Xanadu for a lot of damage.",
+      "after": "Both of these allies now retaliate into Xenadrael for a lot of damage.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3398,
+      "before": "That's going to be 5 damage if Xanadu has nothing to say about it.",
+      "after": "That's going to be 5 damage if Xenadrael has nothing to say about it.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3408,
+      "before": "Prevents 2 of the 5 damage, so Xanadu goes up to 5.",
+      "after": "Prevents 2 of the 5 damage, so Xenadrael goes up to 5.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3409,
+      "before": "And Liu Pei also takes 1 in return from the Storm of Thorns because of that retaliation.",
+      "after": "And Liu Bei also takes 1 in return from the Storm of Thorns because of that retaliation.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3411,
+      "before": "Sorry, 1 attack ally will take out Liu Pei.",
+      "after": "Sorry, 1 attack ally will take out Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3412,
+      "before": "And Xanadu's going to do something.",
+      "after": "And Xenadrael's going to do something.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3419,
+      "before": "and now take out Liu Pei.",
+      "after": "and now take out Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3423,
+      "before": "That's right, Luster Shroud.",
+      "after": "That's right, Luster's Shroud.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3425,
+      "before": "Preventing 3 damage onto Liu Pei.",
+      "after": "Preventing 3 damage onto Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3428,
+      "before": "And also still keeping Liu Pei on the board.",
+      "after": "And also still keeping Liu Bei on the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3432,
+      "before": "I think this is going to be curtains for Zenetra.",
+      "after": "I think this is going to be curtains for Xenadrael.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3438,
+      "before": "So another way to protect this Liu Pei.",
+      "after": "So another way to protect this Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3442,
+      "before": "But instead, just going to have this Liu Pei and Dilu for now.",
+      "after": "But instead, just going to have this Liu Bei and Dilu for now.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3448,
+      "before": "And Liu Pei goes in for 2.",
+      "after": "And Liu Bei goes in for 2.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3455,
+      "before": "Has that Cyclonic Fate Stone that we talked about earlier.",
+      "after": "Has that Cyclonic Fatestone that we talked about earlier.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3458,
+      "before": "No Augustine on the board for Xenadriel this time.",
+      "after": "No Augustine on the board for Xenadrael this time.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3460,
+      "before": "Terrafring here.",
+      "after": "Tariff Ring here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3461,
+      "before": "I think Mono can push through the Terrafring next turn with the influence he has available.",
+      "after": "I think Mono can push through the Tariff Ring next turn with the influence he has available.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3462,
+      "before": "But let's see if Xenadriel has anything else for defense.",
+      "after": "But let's see if Xenadrael has anything else for defense.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3465,
+      "before": "I think as long as we try to get rid of the Liu Pei.",
+      "after": "I think as long as we try to get rid of the Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3469,
+      "before": "Augustine Chia Ying now going to hit the board.",
+      "after": "Augustine Jueying now going to hit the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3470,
+      "before": "Chia Ying going to turn into the Liu Pei.",
+      "after": "Jueying going to turn into the Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3473,
+      "before": "Protecting the Liu Pei right here from swing.",
+      "after": "Protecting the Liu Bei right here from swing.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3474,
+      "before": "So this means that the Liu Pei will be protected from any type of swing.",
+      "after": "So this means that the Liu Bei will be protected from any type of swing.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3477,
+      "before": "But Chia Ying actually has True Sight.",
+      "after": "But Jueying actually has True Sight.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3479,
+      "before": "So I think it is just going to be the Cyclonic Fade Stone here from Mono in order to answer it.",
+      "after": "So I think it is just going to be the Cyclonic Fatestone here from Mono in order to answer it.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3484,
+      "before": "There's the Cyclonic Fade Stone going to suppress the Chia Ying.",
+      "after": "There's the Cyclonic Fatestone going to suppress the Jueying.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3486,
+      "before": "So Xenadriel has to take a quick read.",
+      "after": "So Xenadrael has to take a quick read.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3489,
+      "before": "But because Mono is playing Miyako as a lineage,",
+      "after": "But because Mono is playing Byakko as a lineage,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3493,
+      "before": "And most importantly, Xenadriel also has no more hand cards.",
+      "after": "And most importantly, Xenadrael also has no more hand cards.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3494,
+      "before": "So I think he was really expecting to be able to take out this Liu Pei.",
+      "after": "So I think he was really expecting to be able to take out this Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3497,
+      "before": "So we will see if there's anything else in the tank for Xenadriel here.",
+      "after": "So we will see if there's anything else in the tank for Xenadrael here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3500,
+      "before": "And Chia Ying returns to the board at the end of the turn.",
+      "after": "And Jueying returns to the board at the end of the turn.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3506,
+      "before": "2 damage in from Liu Pei.",
+      "after": "2 damage in from Liu Bei.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3508,
+      "before": "And his own win-ally, Biakko deck.",
+      "after": "And his own win-ally, Byakko deck.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3519,
+      "before": "Mono already hits up being able to deal with the Luka early on,",
+      "after": "Mono already hits up being able to deal with the Lucca early on,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3520,
+      "before": "so the Luka doesn't spiral out of control.",
+      "after": "so the Lucca doesn't spiral out of control.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3521,
+      "before": "But also, Xanadu's hand I think wasn't that great, sadly.",
+      "after": "But also, Xenadrael's hand I think wasn't that great, sadly.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3526,
+      "before": "We did see, of course, Xanadu use the Frozen Nymphs on turn 1.",
+      "after": "We did see, of course, Xenadrael use the Frozen Dismissal on turn 1.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3528,
+      "before": "Or he cannot develop protection for the Luka.",
+      "after": "Or he cannot develop protection for the Lucca.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3530,
+      "before": "take out the Luka with the Vergil alongside it.",
+      "after": "take out the Lucca with the Virgil alongside it.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3531,
+      "before": "And that's one of the powerful parts of this Vergil.",
+      "after": "And that's one of the powerful parts of this Virgil.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3534,
+      "before": "But then he goes for the Grand Crusader's Ring into the Vergil,",
+      "after": "But then he goes for the Grand Crusader's Ring into the Virgil,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3539,
+      "before": "We see that before with the Longtail Growth Sword as well,",
+      "after": "We see that before with the Longtail Grovesward as well,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3539 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3540,
+      "before": "but Vergil just has quite a bit of additional reach,",
+      "after": "but Virgil just has quite a bit of additional reach,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3572,
+      "before": "Mono may not be willing to risk a Frostbite here.",
+      "after": "Mono may not be willing to risk a Frostbind here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3585,
+      "before": "Oh, he has a Nina,",
+      "after": "Oh, he has a Nia,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3585 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3589,
+      "before": "sorry, Guojiao 1 in the final game.",
+      "after": "sorry, Guo Jia 1 in the final game.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3590,
+      "before": "Guojiao 1 right, so you probably won't declare that,",
+      "after": "Guo Jia 1 right, so you probably won't declare that,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3592,
+      "before": "Acid? But even then you have nothing on the board,",
+      "after": "Aesan Protector? But even then you have nothing on the board,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3592 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3593,
+      "before": "so Acid doesn't bounce anything,",
+      "after": "so Aesan Protector doesn't bounce anything,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3593 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3626,
+      "before": "Purifying Terrible prevents the Heavy Swing",
+      "after": "Purifying Thurible prevents the Heavy Swing",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3640,
+      "before": "Powerful Sword Heavy Swing is lethal.",
+      "after": "Palvor Sword Heavy Swing is lethal.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3642,
+      "before": "Is there a Powerful Sword?",
+      "after": "Is there a Palvor Sword?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3643,
+      "before": "There is a Powerful Sword!",
+      "after": "There is a Palvor Sword!",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3644,
+      "before": "There's a Powerful Sword!",
+      "after": "There's a Palvor Sword!",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3645,
+      "before": "Powerful Sword Heavy Swing is lethal,",
+      "after": "Palvor Sword Heavy Swing is lethal,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3661,
+      "before": "this is really, really tough for Zedendrel,",
+      "after": "this is really, really tough for Xenadrael,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3665,
+      "before": "we did mention Powerful Sword Heavy Swing,",
+      "after": "we did mention Palvor Sword Heavy Swing,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3674,
+      "before": "Powerful Sword Heavy Swing actually work,",
+      "after": "Palvor Sword Heavy Swing actually work,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3675,
+      "before": "it's going to be CL1 instead,",
+      "after": "it's going to be Ciel 1 instead,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3682,
+      "before": "so the mobile digital survival possessions",
+      "after": "so the mobile digital Servile Possessions",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3687,
+      "before": "I'm thinking that Zedendrel has",
+      "after": "I'm thinking that Xenadrael has",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3688,
+      "before": "survival possessions,",
+      "after": "Servile Possessions,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3697,
+      "before": "not a fantastic hand for Zedendrel here,",
+      "after": "not a fantastic hand for Xenadrael here,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3698,
+      "before": "I think he has Slow White Jueying though,",
+      "after": "I think he has Snow White Jueying though,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3698 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3707,
+      "before": "but Zedendrel just wants to find,",
+      "after": "but Xenadrael just wants to find,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3716,
+      "before": "Zedendrel, of course,",
+      "after": "Xenadrael, of course,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3726,
+      "before": "We're going to see a Twinkle right here,",
+      "after": "We're going to see a Tweedledee right here,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3726 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3729,
+      "before": "the Liu Pei?",
+      "after": "the Liu Bei?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3738,
+      "before": "So, Zedendrel not giving",
+      "after": "So, Xenadrael not giving",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3751,
+      "before": "to take out Zedendrel.",
+      "after": "to take out Xenadrael.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3762,
+      "before": "Like, this is really really rough. All Monolith needs to do in my opinion is just try to find more ways to stop your opponent from killing you next turn. I think you'll be good.",
+      "after": "Like, this is really really rough. All Mono needs to do in my opinion is just try to find more ways to stop your opponent from killing you next turn. I think you'll be good.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3772,
+      "before": "Xenadrill. If you just... if the math is correct, if the math math, then yes, I think you just...",
+      "after": "Xenadrael. If you just... if the math is correct, if the math math, then yes, I think you just...",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3775,
+      "before": "Okay, putting down cards. Roland and the Liu Bei put down. There's a Zephyr available, so going to use that on",
+      "after": "Okay, putting down cards. Rowland and the Liu Bei put down. There's a Zephyr available, so going to use that on",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3780,
+      "before": "So we are going to... Is that a Virgil? No. Oh, Vermilion Decay plus 2 onto Liu Bei.",
+      "after": "So we are going to... Is that a Virgil? No. Oh, Verdigris Decree plus 2 onto Liu Bei.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3780 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3784,
+      "before": "Dilu is going to take out Xueying, its fellow horse counterpart. The blue version of himself, if you will.",
+      "after": "Dilu is going to take out Jueying, its fellow horse counterpart. The blue version of himself, if you will.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3785,
+      "before": "And what else is going to be played? Sasha might be put onto the board. There's also a Bludge in hand.",
+      "after": "And what else is going to be played? Sasha might be put onto the board. There's also a Blanche in hand.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3785 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3798,
+      "before": "But for Molo, it's a really good unique ally to have so that you can",
+      "after": "But for Mono, it's a really good unique ally to have so that you can",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3804,
+      "before": "His Powerful Sword!",
+      "after": "His Palvor Sword!",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3805,
+      "before": "Powerful Sword comes down right here.",
+      "after": "Palvor Sword comes down right here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3807,
+      "before": "Let's see if Molo is in trouble just yet.",
+      "after": "Let's see if Mono is in trouble just yet.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3809,
+      "before": "Treasure Cat might be enough. We'll see what Molo has in store.",
+      "after": "Cheshire Cat might be enough. We'll see what Mono has in store.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3811,
+      "before": "Veiling Breeze, Blunt. He has a lot of outs. I think he's fine.",
+      "after": "Veiling Breeze, Blanche. He has a lot of outs. I think he's fine.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3811 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3813,
+      "before": "There is a Freezing Hail. Blunt could actually end up being relevant. We'll see.",
+      "after": "There is a Freezing Hail. Blanche could actually end up being relevant. We'll see.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3813 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3814,
+      "before": "Molo now going to have to react to this 2 damage from the Powerful Sword.",
+      "after": "Mono now going to have to react to this 2 damage from the Palvor Sword.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3816,
+      "before": "Something like Double Frostbite of course gets rid of this,",
+      "after": "Something like Double Frostbind of course gets rid of this,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3817,
+      "before": "but then I don't think Xenadrael has the influence to play the Treasure Cat alongside it.",
+      "after": "but then I don't think Xenadrael has the influence to play the Cheshire Cat alongside it.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3824,
+      "before": "This is just really defensive kind of hand from Molo. Molo just showing everything.",
+      "after": "This is just really defensive kind of hand from Mono. Mono just showing everything.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3831,
+      "before": "Snow White and Jering only in the graveyard right now.",
+      "after": "Snow White and Jueying only in the graveyard right now.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3834,
+      "before": "But now Cyclonic Fade Stone is going to be banished.",
+      "after": "But now Cyclonic Fatestone is going to be banished.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3835,
+      "before": "Guojia 1 is actually going to hit the board.",
+      "after": "Guo Jia 1 is actually going to hit the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3838,
+      "before": "But the Fabled Emerald Fade Stone now is available,",
+      "after": "But the Fabled Emerald Fatestone now is available,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3840,
+      "before": "So could use this on the Powerful Sword, for example,",
+      "after": "So could use this on the Palvor Sword, for example,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3852,
+      "before": "Oh, 30 degrees.",
+      "after": "Oh, Cerulean Decree.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3852 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3855,
+      "before": "We have Song of Frostmere and the Snow White,",
+      "after": "We have Song of Frost and the Snow White,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3867,
+      "before": "Of course, we did see the Cyclonic Fates don't get banished for mono,",
+      "after": "Of course, we did see the Cyclonic Fatestone get banished for mono,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3867 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3871,
+      "before": "we know he has Nier,",
+      "after": "we know he has Nia,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3871 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3876,
+      "before": "Nier plus a Chia Ying here, for example,",
+      "after": "Nia plus a Jueying here, for example,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3876 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3885,
+      "before": "Yeah, we're going to swing with the Powerball Sword once again.",
+      "after": "Yeah, we're going to swing with the Palvor Sword once again.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3887,
+      "before": "so the Powerball Sword does leave the board.",
+      "after": "so the Palvor Sword does leave the board.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3893,
+      "before": "Xenedril, considering which ally he wants to play down,",
+      "after": "Xenadrael, considering which ally he wants to play down,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3903,
+      "before": "on the fabled Emerald Face Stone.",
+      "after": "on the fabled Emerald Fatestone.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3907,
+      "before": "Turn just ends there for Xenedril,",
+      "after": "Turn just ends there for Xenadrael,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3932,
+      "before": "But no, it's just going to be Roland.",
+      "after": "But no, it's just going to be Rowland.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3933,
+      "before": "Yeah, Roland is better.",
+      "after": "Yeah, Rowland is better.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3934,
+      "before": "Roland giving Mortal Ambition another 2 points to discount,",
+      "after": "Rowland giving Mortal Ambition another 2 points to discount,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3935,
+      "before": "and that will be 2 damage into the face of Xenadriel once more,",
+      "after": "and that will be 2 damage into the face of Xenadrael once more,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3943,
+      "before": "but remember, this Mortal Ambition could mean lethal for Xenadriel,",
+      "after": "but remember, this Mortal Ambition could mean lethal for Xenadrael,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3946,
+      "before": "We see Xenadriel trying to swing in for a game,",
+      "after": "We see Xenadrael trying to swing in for a game,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3948,
+      "before": "and everything retaliates into Xenadriel,",
+      "after": "and everything retaliates into Xenadrael,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3951,
+      "before": "So, what will Xenadriel do?",
+      "after": "So, what will Xenadrael do?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3956,
+      "before": "Like, Xenadriel has exactly lethal on the board,",
+      "after": "Like, Xenadrael has exactly lethal on the board,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3976,
+      "before": "We play around double Frostbite here.",
+      "after": "We play around double Frostbind here.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3984,
+      "before": "Let's see if Xanadu has 2 Frostbites exactly.",
+      "after": "Let's see if Xenadrael has 2 Frostbinds exactly.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3985,
+      "before": "I think Storm of Torrents may actually also save him.",
+      "after": "I think Storm of Thorns may actually also save him.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3992,
+      "before": "Mortal takes the 2 points,",
+      "after": "Mono takes the 2 points,",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3992 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 3994,
+      "before": "is Xanadu going to be allowed to swing?",
+      "after": "is Xenadrael going to be allowed to swing?",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 3999,
+      "before": "Is there a cheering alongside it?",
+      "after": "Is there a Jueying alongside it?",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 3999 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 4001,
+      "before": "And that does mean the cheering comes in first.",
+      "after": "And that does mean the Jueying comes in first.",
+      "evidence": "Full sequential review of neighboring segments; canonical card spelling checked in data/card-catalog.json (2026-10-29), and official event decklists. Segment 4001 is a contextual correction; already composed with the first sequential-review corrections."
+    },
+    {
+      "index": 4005,
+      "before": "to take the game back from Xanadu.",
+      "after": "to take the game back from Xenadrael.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 4006,
+      "before": "The allies have allowed Xanadu to finish Mono off.",
+      "after": "The allies have allowed Xenadrael to finish Mono off.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 4009,
+      "before": "to answer this Jieying and Nia on the final turn.",
+      "after": "to answer this Jueying and Nia on the final turn.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 4025,
+      "before": "So he just went for playing the Roland down,",
+      "after": "So he just went for playing the Rowland down,",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 4044,
+      "before": "And Xenadriel was able to keep going face.",
+      "after": "And Xenadrael was able to keep going face.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    },
+    {
+      "index": 4047,
+      "before": "with Xenadriel very, very shortly.",
+      "after": "with Xenadrael very, very shortly.",
+      "evidence": "Sequential surrounding narration; player spellings from official round pairing; card spelling from local catalog or official event decklists. Names are normalized without changing the claimed action."
+    }
+  ],
+  "candidates": [
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r1",
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 1",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 3599
+        },
+        "players": [
+          {
+            "id": "p1",
+            "name": "wenwen",
+            "deck": "Wind Astra Arisanna"
+          },
+          {
+            "id": "p2",
+            "name": "hachico",
+            "deck": "Fire Umbra Ciel"
+          }
+        ],
+        "result": "hachico wins 2–0",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "hachico wins with Devastating Blow and Feu Awakening.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Creative Tinder and Liminal Guide build hachico’s opening hand.",
+                "cards": [
+                  "Creative Tinder",
+                  "Liminal Guide"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Judges catch the missing Angelic Channeling draw; the casters describe an easy correction.",
+                "cards": [
+                  "Angelic Channeling"
+                ],
+                "tags": [
+                  "ruling"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Dungeon Guide advances Ciel to level 3 before Devastating Blow applies pressure.",
+                "cards": [
+                  "Dungeon Guide",
+                  "Ciel, Mirage's Grave",
+                  "Devastating Blow"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "Manxome Armoire retrieves Devastating Blow; wenwen releases the spirit and uses healing herbs, but Feu Awakening closes the game.",
+                "cards": [
+                  "Manxome Armoire",
+                  "Devastating Blow",
+                  "Feu Awakening"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p2",
+            "summary": "hachico wins through the attempted counter and spirit release.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Two Gentle Respites give wenwen a stronger start.",
+                "cards": [
+                  "Gentle Respite"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Beguiling Coup brings Devastating Blow into the attack, pushing wenwen to 14 damage counters.",
+                "cards": [
+                  "Beguiling Coup",
+                  "Devastating Blow"
+                ],
+                "tags": [
+                  "combo"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Feu Awakening stops the attempted negate; wenwen releases the spirit before Devastating Blow resolves.",
+                "cards": [
+                  "Feu Awakening",
+                  "Devastating Blow"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "Ciel’s end-step damage finishes wenwen; the casters clarify another Feu Awakening is unnecessary.",
+                "cards": [
+                  "Ciel, Mirage's Grave"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Reviewed sequentially from the Osaka Day 1 machine transcript. Both game finishes are narrated; official round 1 pairing confirms hachico 2–0. Damage-counter figures are not life totals."
+      },
+      "evidence": {
+        "officialRound": 1,
+        "officialPairingId": 131,
+        "games": [
+          {
+            "segments": [
+              311,
+              388
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  319,
+                  320,
+                  325
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  330,
+                  333,
+                  334,
+                  341
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  347,
+                  349,
+                  353,
+                  354
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  367,
+                  368,
+                  369,
+                  370,
+                  371,
+                  372,
+                  373,
+                  374,
+                  375,
+                  376,
+                  377,
+                  378,
+                  379,
+                  380,
+                  381,
+                  382,
+                  383,
+                  384,
+                  385,
+                  386,
+                  387,
+                  388
+                ]
+              }
+            ]
+          },
+          {
+            "segments": [
+              445,
+              680
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  448,
+                  456,
+                  481,
+                  484
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  587,
+                  595,
+                  598,
+                  599
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  641,
+                  642,
+                  643,
+                  644,
+                  645,
+                  646,
+                  647,
+                  648,
+                  649,
+                  650,
+                  651,
+                  652,
+                  653,
+                  654,
+                  655,
+                  656,
+                  657,
+                  658,
+                  659
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  660,
+                  661,
+                  664,
+                  665,
+                  666
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r2",
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 2",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 9000
+        },
+        "players": [
+          {
+            "id": "p1",
+            "name": "Danriick",
+            "deck": "Fire Vanitas"
+          },
+          {
+            "id": "p2",
+            "name": "Professor",
+            "deck": "Wind Umbra Alice"
+          }
+        ],
+        "result": "Professor wins 2–0",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Professor wins; only the closing position is transcribed.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Poitier arrives as a large ally, and Danriick concedes. The earlier game is absent from this transcript.",
+                "cards": [
+                  "Poitier, Afterlife's Conductor"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p2",
+            "summary": "Professor’s Umbra allies force the concession.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Professor advances Alice to level 2 and sets up Umbra Sight.",
+                "cards": [
+                  "Alice, Phantom Monarch",
+                  "Umbra Sight"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Infernal Vessel threatens the healing plan; Fiery Interference answers the lineage release.",
+                "cards": [
+                  "Infernal Vessel",
+                  "Fiery Interference"
+                ],
+                "tags": []
+              },
+              {
+                "order": 3,
+                "actor": "p1",
+                "text": "Beseech the Winds enables the climb to Vanitas level 3, but Imperial Countermeasure stops the attacks.",
+                "cards": [
+                  "Beseech the Winds",
+                  "Imperial Countermeasure"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "Nocturne’s Oblivion removes Infernal Vessel; Remnant of Will restores the healing plan.",
+                "cards": [
+                  "Nocturne's Oblivion",
+                  "Infernal Vessel",
+                  "Remnant of Will"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 5,
+                "actor": "p2",
+                "text": "Poitier and Argus establish the board Danriick cannot break; Professor takes the match.",
+                "cards": [
+                  "Poitier, Afterlife's Conductor",
+                  "Argus, All-Seeing Giant"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Partial round 2 coverage: source jumps from the round 1 interview at 1:30:19 to the end of game 1 at 2:30:00. Game 2 is narrated continuously; official pairing confirms Professor 2–0. No unseen opening sequence reconstructed."
+      },
+      "evidence": {
+        "officialRound": 2,
+        "officialPairingId": 127,
+        "games": [
+          {
+            "segments": [
+              786,
+              795
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  786,
+                  787,
+                  790,
+                  794,
+                  795
+                ]
+              }
+            ]
+          },
+          {
+            "segments": [
+              902,
+              1388
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  947,
+                  963,
+                  965,
+                  966,
+                  968
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  1010,
+                  1011,
+                  1015,
+                  1022,
+                  1025,
+                  1029
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  1042,
+                  1047,
+                  1056,
+                  1060,
+                  1074,
+                  1076
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  1140,
+                  1141,
+                  1142,
+                  1146,
+                  1147
+                ]
+              },
+              {
+                "order": 5,
+                "segments": [
+                  1220,
+                  1230,
+                  1344,
+                  1352,
+                  1356,
+                  1376,
+                  1383,
+                  1384
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "match": {
+        "id": "ascent-osaka-2026-r3",
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 3",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 13725
+        },
+        "players": [
+          {
+            "id": "p1",
+            "name": "Mono",
+            "deck": "Wind Byakko Guo Jia allies"
+          },
+          {
+            "id": "p2",
+            "name": "Xenadrael",
+            "deck": "Water Ciel allies"
+          }
+        ],
+        "result": "Xenadrael wins 2–1",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Xenadrael wins the board battle.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Dream Fairy returns Aquifer Seneschal to memory; Luster’s Shroud preserves the lock.",
+                "cards": [
+                  "Dream Fairy",
+                  "Aquifer Seneschal",
+                  "Luster's Shroud"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Dream Fairy returns Tweedledee, and Rowland helps clear Jueying.",
+                "cards": [
+                  "Dream Fairy",
+                  "Tweedledee, Contrarian Poet",
+                  "Rowland, Schwartz Knight",
+                  "Jueying, Shadowmare"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Augustine converts Manxome Armoire into a fractal, giving Xenadrael the resources for Frozen Dismissal against Guan Yu.",
+                "cards": [
+                  "Augustine, Votary of Yore",
+                  "Manxome Armoire",
+                  "Frozen Dismissal",
+                  "Guan Yu, Prime Exemplar"
+                ],
+                "tags": [
+                  "combo"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "The rebuilt ally board pushes damage and closes game 1.",
+                "cards": [
+                  "Aquifer Seneschal",
+                  "Tweedledee, Contrarian Poet"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p1",
+            "summary": "Mono protects Liu Bei and Dilu to even the match.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "After the Avatar is dismissed, Virgil and Liu Bei remove Lucca.",
+                "cards": [
+                  "Avatar of Byakko",
+                  "Frozen Dismissal",
+                  "Virgil, Altered Future",
+                  "Liu Bei, Oathkeeper",
+                  "Lucca, Gateway Manager"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Dilu removes Portly Raccoon, and Mortal Ambition turns the attempted attack into retaliation.",
+                "cards": [
+                  "Dilu, Auspicious Charger",
+                  "Portly Raccoon",
+                  "Mortal Ambition"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p1",
+                "text": "Luster’s Shroud preserves Liu Bei against Bandit; Cyclonic Fatestone later suppresses Jueying.",
+                "cards": [
+                  "Luster's Shroud",
+                  "Liu Bei, Oathkeeper",
+                  "Bandit, Gaze Leader",
+                  "Cyclonic Fatestone",
+                  "Jueying, Shadowmare"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "Mono attacks through Tariff Ring with Dilu and Liu Bei for the last five damage.",
+                "cards": [
+                  "Tariff Ring",
+                  "Dilu, Auspicious Charger",
+                  "Liu Bei, Oathkeeper"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "winner": "p2",
+            "summary": "Xenadrael wins the race with allies after Mortal Ambition kills the raccoon.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Xenadrael shifts toward direct pressure with Heavy Swing rather than trading into Liu Bei.",
+                "cards": [
+                  "Heavy Swing",
+                  "Liu Bei, Oathkeeper"
+                ],
+                "tags": []
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Purifying Thurible removes Heavy Swing before it can become an Omen.",
+                "cards": [
+                  "Purifying Thurible",
+                  "Heavy Swing"
+                ],
+                "tags": []
+              },
+              {
+                "order": 3,
+                "actor": "p1",
+                "text": "Veiling Breeze stops the sword attack, and Guo Jia enables Fabled Emerald Fatestone.",
+                "cards": [
+                  "Veiling Breeze",
+                  "Palvor Sword",
+                  "Guo Jia, Chosen Disciple",
+                  "Fabled Emerald Fatestone"
+                ],
+                "tags": []
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "Mortal Ambition answers the raccoon’s attack and kills the raccoon; it does not damage Xenadrael’s champion.",
+                "cards": [
+                  "Mortal Ambition",
+                  "Portly Raccoon"
+                ],
+                "tags": [
+                  "swing"
+                ]
+              },
+              {
+                "order": 5,
+                "actor": "p2",
+                "text": "Nia and Jueying provide the final attacks, overcoming Mono’s remaining defenses.",
+                "cards": [
+                  "Nia, Mistveiled Scout",
+                  "Jueying, Shadowmare"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "All three games reviewed sequentially. Earlier Water D speculation is superseded by Ciel level 1 and the official list. The casters’ hypothetical Mortal Ambition champion-lethal line does not occur: the raccoon takes retaliation, then Nia and Jueying finish Mono. Official round 3 pairing confirms Xenadrael 2–1."
+      },
+      "evidence": {
+        "officialRound": 3,
+        "officialPairingId": 8,
+        "games": [
+          {
+            "segments": [
+              2349,
+              3202
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  2396,
+                  2410,
+                  2506,
+                  2509
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  2799,
+                  2802,
+                  2811,
+                  2824
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  3136,
+                  3150,
+                  3152,
+                  3154,
+                  3211,
+                  3212
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  3175,
+                  3177,
+                  3183,
+                  3184,
+                  3194,
+                  3195
+                ]
+              }
+            ]
+          },
+          {
+            "segments": [
+              3266,
+              3509
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  3276,
+                  3278,
+                  3283,
+                  3288,
+                  3293,
+                  3297,
+                  3526,
+                  3529
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  3343,
+                  3344,
+                  3381,
+                  3393,
+                  3405,
+                  3408
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  3419,
+                  3423,
+                  3427,
+                  3428,
+                  3484
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  3504,
+                  3505,
+                  3506,
+                  3507
+                ]
+              }
+            ]
+          },
+          {
+            "segments": [
+              3556,
+              4009
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  3569,
+                  3604,
+                  3608,
+                  3611
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  3626,
+                  3627
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  3805,
+                  3814,
+                  3815,
+                  3820,
+                  3835,
+                  3838
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  3973,
+                  3974,
+                  3990,
+                  3991,
+                  4011
+                ]
+              },
+              {
+                "order": 5,
+                "segments": [
+                  3995,
+                  3996,
+                  3999,
+                  4001,
+                  4003,
+                  4004,
+                  4006,
+                  4009
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "findings": [
+    {
+      "round": 1,
+      "coverage": "Both games and winner interview present.",
+      "gaps": [
+        "Some opening song sections and untranslated interview answers are machine-transcript artifacts, retained."
+      ],
+      "uncertainties": [
+        "Casters call end of match first game / Game 1 at667 and710; actual second game starts445 and official score is0–2. Preserve transcript wording, clarify recap.",
+        "Sideboard discussion is speculative, not proof of actual card swaps."
+      ]
+    },
+    {
+      "round": 2,
+      "coverage": "Game1 closing concession only, game2 complete, winner interview.",
+      "gaps": [
+        "1:30:19 to2:30:00 source gap omits match introduction and most of game1."
+      ],
+      "uncertainties": [
+        "Interview1663–1686 retrospectively describes game1 Beseech the Winds draw; not inserted into live game beats.",
+        "Danriick exact full decklist not public in snapshot; Fire Vanitas established narration and pairings."
+      ]
+    },
+    {
+      "round": 3,
+      "coverage": "All3games plus winner interview.",
+      "gaps": [],
+      "uncertainties": [
+        "Do not turn caster speculation into actions: Mono does not win game3 with Mortal Ambition.",
+        "Card names in brief ambiguous fragments are left unresolved rather than guessed (including fragment990 and Censer/Trinket shorthand).",
+        "Official list confirms Mono Guo Jia with Avatar of Byakko, Xenadrael Ciel; early Water D guess is not deck identity."
+      ]
+    }
+  ]
+}

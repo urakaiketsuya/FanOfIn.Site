@@ -1,0 +1,3304 @@
+{
+  "reviewer": "osaka_r4_r6",
+  "source": "cleaned-transcript.json",
+  "reviewedRange": {
+    "startInclusive": 4108,
+    "endExclusive": 7282,
+    "segmentCount": 3174
+  },
+  "reviewMethod": "Every assigned segment read sequentially, including music, interviews, non-game text and gaps. Official pairing and available player decklists cross-checked; no unseen games reconstructed.",
+  "corrections": [
+    {
+      "index": 4178,
+      "before": "...every single turn, even if you're not Tenoris yet, but he's just going up! We're ripping up",
+      "after": "...every single turn, even if you're not Tonoris yet, but he's just going up! We're ripping up",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4179,
+      "before": "to Level 3 Tenoris already, getting that additional life total, not caring at all about",
+      "after": "to Level 3 Tonoris already, getting that additional life total, not caring at all about",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4186,
+      "before": "could be a Topsy-Decree, could be even a Stormthorn, so going to be a bit risky to try and go",
+      "after": "could be a Topsy Decree, could be even a Stormthorn, so going to be a bit risky to try and go",
+      "evidence": [
+        "Canonical card: Topsy Decree; sequential match context"
+      ]
+    },
+    {
+      "index": 4187,
+      "before": "all in here. Clarix does have the Enthealing Orb, so could just force the hand down if he has a lethal",
+      "after": "all in here. ClourX does have the Enfeebling Orb, so could just force the hand down if he has a lethal",
+      "evidence": [
+        "Canonical card: Enfeebling Orb; sequential match context",
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4189,
+      "before": "Cash Kid's turn either, so don't think that's happening yet. I saw Refracting as well, I think,",
+      "after": "Cashkidz's turn either, so don't think that's happening yet. I saw Refracting as well, I think,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4203,
+      "before": "I mean, Clarex here should just go face, do a little bit more damage into Cashkidz, push him",
+      "after": "I mean, ClourX here should just go face, do a little bit more damage into Cashkidz, push him",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4206,
+      "before": "Clarex has anything else available in hand. And you notice there, the obvious one down in memory,",
+      "after": "ClourX has anything else available in hand. And you notice there, the obvious one down in memory,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4216,
+      "before": "Yeah, definitely needs to have the burst to be able to stop that one. So Respiracity is going",
+      "after": "Yeah, definitely needs to have the burst to be able to stop that one. So Reciprocity is going",
+      "evidence": [
+        "Canonical card: Reciprocity, Dorumegia's Call; sequential match context"
+      ]
+    },
+    {
+      "index": 4221,
+      "before": "Oristeal Greatsword, and... That's one of the cool things about this deck,",
+      "after": "Aurousteel Greatsword, and... That's one of the cool things about this deck,",
+      "evidence": [
+        "Canonical card: Aurousteel Greatsword; sequential match context"
+      ]
+    },
+    {
+      "index": 4227,
+      "before": "drawn Burst of Thunder, and I think that means that he is in range for sure. So we will see if",
+      "after": "drawn Burst Asunder, and I think that means that he is in range for sure. So we will see if",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4228,
+      "before": "Cashkidz has a Storm of Torrents or anything. The Automaton Drone helps take out the Frostmourne",
+      "after": "Cashkidz has a Storm of Thorns or anything. The Automaton Drone helps take out the Frostmourne",
+      "evidence": [
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4233,
+      "before": "Shimmering Refraction going to be used from the memory here, using Drowchan's Glimmer Counters,",
+      "after": "Shimmering Refraction going to be used from the memory here, using Diao Chan's Glimmer Counters,",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 4237,
+      "before": "If Missile deals 7, another Missile and Burst of Thunder kills even through Storm of Torrents. But",
+      "after": "If Missile deals 7, another Missile and Burst Asunder kills even through Storm of Thorns. But",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context",
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4243,
+      "before": "Fractals. What is it? It's a Storm of Torrents! Storm of Torrents in response. ClourX does have",
+      "after": "Fractals. What is it? It's a Storm of Thorns! Storm of Thorns in response. ClourX does have",
+      "evidence": [
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4247,
+      "before": "Second Storm of Torrents though is going to come down on the stack of that Enfeebling Orb. And",
+      "after": "Second Storm of Thorns though is going to come down on the stack of that Enfeebling Orb. And",
+      "evidence": [
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4248,
+      "before": "that means this Storm of Torrents may be negated, but the second one does resolve. And that means",
+      "after": "that means this Storm of Thorns may be negated, but the second one does resolve. And that means",
+      "evidence": [
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4249,
+      "before": "the Burst of Thunder will only be half as effective. And this Refracting Missile also only",
+      "after": "the Burst Asunder will only be half as effective. And this Refracting Missile also only",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4251,
+      "before": "Do we have another shot alongside this Burst of Thunder to finish off the game? Yeah, there's",
+      "after": "Do we have another shot alongside this Burst Asunder to finish off the game? Yeah, there's",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4255,
+      "before": "because the Burst of Thunders are not really usable on this Burst of Thunder turn. Actually,",
+      "after": "because the Burst of Thunders are not really usable on this Burst Asunder turn. Actually,",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4256,
+      "before": "could it be? Despite the Storm of Torrents, each Burst still does 2, so... Oh, Intrusion!",
+      "after": "could it be? Despite the Storm of Thorns, each Burst still does 2, so... Oh, Intrusion!",
+      "evidence": [
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4259,
+      "before": "cards in the deck of this Neos Ternoris deck. Of course, Engulf would be a powerful negate,",
+      "after": "cards in the deck of this Neos Tonoris deck. Of course, Engulf would be a powerful negate,",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4263,
+      "before": "a Burst of Thunder would still do 8. 8 is a little bit short. If it's like",
+      "after": "a Burst Asunder would still do 8. 8 is a little bit short. If it's like",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4275,
+      "before": "to bring out here. I think notably because Cleric still has 4 cards in hand plus 1 active Fractal,",
+      "after": "to bring out here. I think notably because ClourX still has 4 cards in hand plus 1 active Fractal,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4276,
+      "before": "the Viridian Trinket doesn't affect the number of actions that Clerics can take. So that's one of",
+      "after": "the Viridian Trinket doesn't affect the number of actions that ClourX can take. So that's one of",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4285,
+      "before": "to throw this Versus Thunder 4 game. I think that is definitely going to be the case. ClourX now",
+      "after": "to throw this Burst Asunder 4 game. I think that is definitely going to be the case. ClourX now",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4288,
+      "before": "Cashkidz, as the Burst of Thunder is going to make its way onto the board and turn him upside",
+      "after": "Cashkidz, as the Burst Asunder is going to make its way onto the board and turn him upside",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4289,
+      "before": "down, inside out, and Burst of Thunder will tear him apart! That is going to be 1-1 now in our",
+      "after": "down, inside out, and Burst Asunder will tear him apart! That is going to be 1-1 now in our",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4294,
+      "before": "Jiang Shaos, actually able to establish the Paladins, get that Fractal game plan rolling way",
+      "after": "Zhang Jiao, actually able to establish the Paladins, get that Fractal game plan rolling way",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4307,
+      "before": "able to survive one turn of the Burst of Thunder, he wasn't able to win on the turn after, and that's",
+      "after": "able to survive one turn of the Burst Asunder, he wasn't able to win on the turn after, and that's",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4325,
+      "before": "Zhangjiao if possible. So Cashkidz just going for a more defensive play, and also probably",
+      "after": "Zhang Jiao if possible. So Cashkidz just going for a more defensive play, and also probably",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4330,
+      "before": "a little bit about how threatened he feels by that Zhangjiao. But ClourX seeing that the",
+      "after": "a little bit about how threatened he feels by that Zhang Jiao. But ClourX seeing that the",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4335,
+      "before": "Frostmourne Paladin, again, ClourX just loves playing this Frostmourne Paladin without the",
+      "after": "Frostsworn Paladin, again, ClourX just loves playing this Frostsworn Paladin without the",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 4337,
+      "before": "course of a game. And Cashkidz is nowhere near Neo's level 2 just yet, Tenori's level 2, sorry.",
+      "after": "course of a game. And Cashkidz is nowhere near Neo's level 2 just yet, Tonoris's level 2, sorry.",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4340,
+      "before": "use that Backup Charger to try and find more stuff. Just finds a Topsy-Decree, finds the EK",
+      "after": "use that Backup Charger to try and find more stuff. Just finds a Topsy Decree, finds the EK",
+      "evidence": [
+        "Canonical card: Topsy Decree; sequential match context"
+      ]
+    },
+    {
+      "index": 4360,
+      "before": "just a lot of this powerful float value is not coming out here. Denoris is going to come out here",
+      "after": "just a lot of this powerful float value is not coming out here. Tonoris is going to come out here",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4373,
+      "before": "be whether or not Clorox is able to clear this Rearguard, but because of the Tonoris Taunt,",
+      "after": "be whether or not ClourX is able to clear this Rearguard, but because of the Tonoris Taunt,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4377,
+      "before": "a lot of protection for Cashkidz, but Clorox does have a Negate available.",
+      "after": "a lot of protection for Cashkidz, but ClourX does have a Negate available.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4378,
+      "before": "Okay, let's see if Clorox can get there. That Storm of Thorns is definitely going to get in",
+      "after": "Okay, let's see if ClourX can get there. That Storm of Thorns is definitely going to get in",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4389,
+      "before": "Negate available right now. Topsy-Decree! That's even better! So it is going to be a Spell Shroud",
+      "after": "Negate available right now. Topsy Decree! That's even better! So it is going to be a Spell Shroud",
+      "evidence": [
+        "Canonical card: Topsy Decree; sequential match context"
+      ]
+    },
+    {
+      "index": 4390,
+      "before": "Topsy-Decree, which means there is this 2 Floats still there, which means the Paladin that is in",
+      "after": "Topsy Decree, which means there is this 2 Floats still there, which means the Paladin that is in",
+      "evidence": [
+        "Canonical card: Topsy Decree; sequential match context"
+      ]
+    },
+    {
+      "index": 4391,
+      "before": "ClourX's hand can now be used, but cannot clear the Hawking Rearguard because of",
+      "after": "ClourX's hand can now be used, but cannot clear the Hulking Rearguard because of",
+      "evidence": [
+        "Canonical card: Hulking Rearguard; sequential match context"
+      ]
+    },
+    {
+      "index": 4392,
+      "before": "Tenoris however, so. Yeah, we're just checking on, oh, we overpaid, I think? So we should, yeah,",
+      "after": "Tonoris however, so. Yeah, we're just checking on, oh, we overpaid, I think? So we should, yeah,",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4395,
+      "before": "but with the Spell Shroud does mean he is safe from a Burst of Thunder this turn,",
+      "after": "but with the Spell Shroud does mean he is safe from a Burst Asunder this turn,",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4402,
+      "before": "know if there's enough cards in hand to do all of that though. Zhang Zhao hasn't been found though,",
+      "after": "know if there's enough cards in hand to do all of that though. Zhang Jiao hasn't been found though,",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4403,
+      "before": "still hasn't forced out that Enfeebling Orb. That is right, so Cleric still not able to use",
+      "after": "still hasn't forced out that Enfeebling Orb. That is right, so ClourX still not able to use",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4404,
+      "before": "the Zhang Zhao to draw cards yet, and of course we're at 0 damage counters, so Recovery doesn't",
+      "after": "the Zhang Jiao to draw cards yet, and of course we're at 0 damage counters, so Recovery doesn't",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4406,
+      "before": "one extra turn, goes up to Neos, sorry, Tenoris Level 2. Keep saying Neos on Tenoris 2, but",
+      "after": "one extra turn, goes up to Neos, sorry, Tonoris Level 2. Keep saying Neos on Tonoris 2, but",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4408,
+      "before": "Tenoris for very long. That is true, is there a dungeon guy? No dungeon guy that sees him,",
+      "after": "Tonoris for very long. That is true, is there a dungeon guy? No dungeon guy that sees him,",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4411,
+      "before": "this Force 1 Paladin, so swinging in for 4, and now the Rearguard swings into face as well. 14 life",
+      "after": "this Frostsworn Paladin, so swinging in for 4, and now the Rearguard swings into face as well. 14 life",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 4412,
+      "before": "means we need 1 more Fractal if we want to finish the game with Burst of Thunder. Automaton Drone",
+      "after": "means we need 1 more Fractal if we want to finish the game with Burst Asunder. Automaton Drone",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4413,
+      "before": "also going to come in for 1 more point of damage, and Clerics now, will we go up to Taochun 1?",
+      "after": "also going to come in for 1 more point of damage, and ClourX now, will we go up to Diao Chan 1?",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context",
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4416,
+      "before": "3 cards in memory on Cashkidz side, plus another 3, it's going to be a Tarif Ring, so wants to",
+      "after": "3 cards in memory on Cashkidz side, plus another 3, it's going to be a Tariff Ring, so wants to",
+      "evidence": [
+        "Canonical card: Tariff Ring; sequential match context"
+      ]
+    },
+    {
+      "index": 4418,
+      "before": "that Storm of Thorns, holding up 2 more cards in hand. Does Clerics have a negate to stop this?",
+      "after": "that Storm of Thorns, holding up 2 more cards in hand. Does ClourX have a negate to stop this?",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4421,
+      "before": "to be used, Enfeebling Orb does resolve. Notably used Fractals in hand, tells me that Clerics has",
+      "after": "to be used, Enfeebling Orb does resolve. Notably used Fractals in hand, tells me that ClourX has",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4426,
+      "before": "but because of that Tarif Ring, Clerics is probably safe at the very least. That is true.",
+      "after": "but because of that Tariff Ring, ClourX is probably safe at the very least. That is true.",
+      "evidence": [
+        "Canonical card: Tariff Ring; sequential match context",
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4427,
+      "before": "Looks like we're just going to develop another Fractal here. Clerics just wants to put down",
+      "after": "Looks like we're just going to develop another Fractal here. ClourX just wants to put down",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4429,
+      "before": "board is another extra 2 damage on your Burst Ascender. So this would now be a Burst Ascender",
+      "after": "board is another extra 2 damage on your Burst Asunder. So this would now be a Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4430,
+      "before": "coming in for 14. We're just one short, and we can't play the Zhangjiao to swing either because",
+      "after": "coming in for 14. We're just one short, and we can't play the Zhang Jiao to swing either because",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4433,
+      "before": "why it's such an important card that you see even the Zhangjiaos will often bring it out against",
+      "after": "why it's such an important card that you see even the Zhang Jiao will often bring it out against",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4434,
+      "before": "each other in order to try and win that Zhangjiao War. And now it's really up on Clerics to try and",
+      "after": "each other in order to try and win that Zhang Jiao War. And now it's really up on ClourX to try and",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context",
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4435,
+      "before": "force that Enfeebling so that he can finally play the Zhangjiaos. But there's two of them too.",
+      "after": "force that Enfeebling so that he can finally play the Zhang Jiao. But there's two of them too.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4438,
+      "before": "You definitely think, oh, you do one Zhangjiao to force the Enfeebling Orb and then you get the",
+      "after": "You definitely think, oh, you do one Zhang Jiao to force the Enfeebling Orb and then you get the",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4439,
+      "before": "heal anyway, and then you Zhangjiao again the turn after the Enfeebling Orb is resolved. But",
+      "after": "heal anyway, and then you Zhang Jiao again the turn after the Enfeebling Orb is resolved. But",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4441,
+      "before": "to 3 using the Floating... Oh yeah, no, it was a Topsy-Decree last turn. So it gets to level up",
+      "after": "to 3 using the Floating... Oh yeah, no, it was a Topsy Decree last turn. So it gets to level up",
+      "evidence": [
+        "Canonical card: Topsy Decree; sequential match context"
+      ]
+    },
+    {
+      "index": 4443,
+      "before": "the Storm of Toys was negated by Clearing Refusal, so it did go into the banish unfortunately for",
+      "after": "the Storm of Thorns was negated by Glimmering Refusal, so it did go into the banish unfortunately for",
+      "evidence": [
+        "Canonical card: Glimmering Refusal; sequential match context",
+        "Canonical card: Storm of Thorns; sequential match context"
+      ]
+    },
+    {
+      "index": 4444,
+      "before": "Cashkidz. Now Tarith Ring going to be popped, unfortunately also knocks over his",
+      "after": "Cashkidz. Now Tariff Ring going to be popped, unfortunately also knocks over his",
+      "evidence": [
+        "Canonical card: Tariff Ring; sequential match context"
+      ]
+    },
+    {
+      "index": 4448,
+      "before": "And because he went up to level 3, now has 30 life instead, Neo's Sight is going to be used here",
+      "after": "And because he went up to level 3, now has 30 life instead, Neos Sight is going to be used here",
+      "evidence": [
+        "Canonical card: Neos Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 4450,
+      "before": "There's currently 8 objects on field, which means this Neo's Sight is in fact going to draw an extra",
+      "after": "There's currently 8 objects on field, which means this Neos Sight is in fact going to draw an extra",
+      "evidence": [
+        "Canonical card: Neos Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 4451,
+      "before": "card into memory. Very often, an unforgotten effect of that Neo's Sight. That's right,",
+      "after": "card into memory. Very often, an unforgotten effect of that Neos Sight. That's right,",
+      "evidence": [
+        "Canonical card: Neos Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 4456,
+      "before": "That is true, so this Atmos Armor will not be able to clear the Zhangjiao like Cashkidz wanted.",
+      "after": "That is true, so this Atmos Armor will not be able to clear the Zhang Jiao like Cashkidz wanted.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4458,
+      "before": "Diaochan level 1 is going to be the pick here, going to use the Refracting Missiles to level up.",
+      "after": "Diao Chan level 1 is going to be the pick here, going to use the Refracting Missiles to level up.",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 4460,
+      "before": "currently 6 Fractals on field means this is a Burst of Thunder for 14. Getting really close,",
+      "after": "currently 6 Fractals on field means this is a Burst Asunder for 14. Getting really close,",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 4463,
+      "before": "uh life that you don't see. Enfielding Orb is just going to be used here actually,",
+      "after": "uh life that you don't see. Enfeebling Orb is just going to be used here actually,",
+      "evidence": [
+        "Canonical card: Enfeebling Orb; sequential match context"
+      ]
+    },
+    {
+      "index": 4464,
+      "before": "on the attack swing of the Zhangjiao. I think Cashkidz maybe sees that he could end the game",
+      "after": "on the attack swing of the Zhang Jiao. I think Cashkidz maybe sees that he could end the game",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4465,
+      "before": "next turn and is just going to use this Enfielding Orb to try and stop as much damage and as much",
+      "after": "next turn and is just going to use this Enfeebling Orb to try and stop as much damage and as much",
+      "evidence": [
+        "Canonical card: Enfeebling Orb; sequential match context"
+      ]
+    },
+    {
+      "index": 4467,
+      "before": "one of these Atmos shields, but that means the second Zhangjiao is now free to be used.",
+      "after": "one of these Atmos shields, but that means the second Zhang Jiao is now free to be used.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 4473,
+      "before": "ClourX with the Viridian Trinket means Diaochan level 1 effect is also turned off basically,",
+      "after": "ClourX with the Viridian Trinket means Diao Chan level 1 effect is also turned off basically,",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 4513,
+      "before": "with all of those Auresteel Greatswords and Atmos-type Ares.",
+      "after": "with all of those Aurousteel Greatswords and Atmos-type Ares.",
+      "evidence": [
+        "Canonical card: Aurousteel Greatsword; sequential match context"
+      ]
+    },
+    {
+      "index": 4515,
+      "before": "so hear more about that Neos Tenorio deck from him.",
+      "after": "so hear more about that Neos Tonoris deck from him.",
+      "evidence": [
+        "Canonical card: Tonoris, Creation's Will; sequential match context"
+      ]
+    },
+    {
+      "index": 4563,
+      "before": "But, does RTA have another way to gain quest counters?",
+      "after": "But, does Rty have another way to gain quest counters?",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4564,
+      "before": "Because the Preparation counters need to draw into a Sadie or another Surveil in order to get there.",
+      "after": "Because the Preparation counters need to draw into a Sadi or another Surveil in order to get there.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4567,
+      "before": "So, RTA is basically ready to go to level 3, but he's just trying to find the 4th Prep counter in order to draw 2.",
+      "after": "So, Rty is basically ready to go to level 3, but he's just trying to find the 4th Prep counter in order to draw 2.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4570,
+      "before": "He got the Turbocharge and also has a Sadie.",
+      "after": "He got the Turbo Charge and also has a Sadi.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context",
+        "Canonical card: Turbo Charge; sequential match context"
+      ]
+    },
+    {
+      "index": 4571,
+      "before": "So actually, he can Sadie on this Unbroken Mustang, get the Agility trigger and also throw off the Turbocharge.",
+      "after": "So actually, he can Sadi on this Unbroken Mustang, get the Agility trigger and also throw off the Turbo Charge.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context",
+        "Canonical card: Turbo Charge; sequential match context"
+      ]
+    },
+    {
+      "index": 4574,
+      "before": "But basically, right now, RTY is...",
+      "after": "But basically, right now, Rty is...",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4576,
+      "before": "Because what happens is that the Sadie will give the 4th Prep counter eventually.",
+      "after": "Because what happens is that the Sadi will give the 4th Prep counter eventually.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4579,
+      "before": "Well, Neek0 on the other hand, I think he only has a Gamboo Golem for him.",
+      "after": "Well, Neek0 on the other hand, I think he only has a Genbu Golem for him.",
+      "evidence": [
+        "Canonical card: Avatar of Genbu; sequential match context"
+      ]
+    },
+    {
+      "index": 4584,
+      "before": "So this is huge for RTY.",
+      "after": "So this is huge for Rty.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4619,
+      "before": "I don't think at this point, as RTY, you necessarily care about",
+      "after": "I don't think at this point, as Rty, you necessarily care about",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4630,
+      "before": "you're going to pay with Sadie's effect to get the 4th Prep Counter.",
+      "after": "you're going to pay with Sadi's effect to get the 4th Prep Counter.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4632,
+      "before": "in order to activate the Sadie multiple times",
+      "after": "in order to activate the Sadi multiple times",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4638,
+      "before": "The Sadie effect to return herself to hand.",
+      "after": "The Sadi effect to return herself to hand.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4664,
+      "before": "But no, RTY wants to gamble.",
+      "after": "But no, Rty wants to gamble.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4691,
+      "before": "and a Windblast Lookout to go up to that Shadow Dancer.",
+      "after": "and a Winbless Lookout to go up to that Shadow Dancer.",
+      "evidence": [
+        "Canonical card: Winbless Lookout; sequential match context"
+      ]
+    },
+    {
+      "index": 4706,
+      "before": "We are going to try to get rid of the Frost Warn Paladin.",
+      "after": "We are going to try to get rid of the Frostsworn Paladin.",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 4747,
+      "before": "Yeah, notably there are no Dynastic Waterfall I believe in the main deck.",
+      "after": "Yeah, notably there are no Dynastic Whirlpool I believe in the main deck.",
+      "evidence": [
+        "Canonical card: Dynastic Whirlpool; sequential match context"
+      ]
+    },
+    {
+      "index": 4748,
+      "before": "So we are going to be just relying on the Polar Death.",
+      "after": "So we are going to be just relying on the Polar Depths.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4749,
+      "before": "In fact, how many Polar Death do we even run?",
+      "after": "In fact, how many Polar Depths do we even run?",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4759,
+      "before": "That means just needs to find one more Polar Death",
+      "after": "That means just needs to find one more Polar Depths",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4770,
+      "before": "Actually might even reach the point where one Polar Death",
+      "after": "Actually might even reach the point where one Polar Depths",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4781,
+      "before": "Oh, Gearstrike Glove!",
+      "after": "Oh, Gearstride Gloves!",
+      "evidence": [
+        "Canonical card: Gearstride Gloves; sequential match context"
+      ]
+    },
+    {
+      "index": 4806,
+      "before": "Could definitely go for Sadie here to remove this Bovine.",
+      "after": "Could definitely go for Sadi here to remove this Bovine.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4810,
+      "before": "Niko now is going to just take the damage.",
+      "after": "Neek0 now is going to just take the damage.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4813,
+      "before": "Is Rty going to try and commit a Sadie?",
+      "after": "Is Rty going to try and commit a Sadi?",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 4816,
+      "before": "And you must imagine on Niko's side,",
+      "after": "And you must imagine on Neek0's side,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4833,
+      "before": "You're seeing Niko here actually going to level up to 3",
+      "after": "You're seeing Neek0 here actually going to level up to 3",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4837,
+      "before": "the Pelagic Fate Stone, turning into this after being used.",
+      "after": "the Pelagic Fatestone, turning into this after being used.",
+      "evidence": [
+        "Canonical card: Pelagic Fatestone; sequential match context"
+      ]
+    },
+    {
+      "index": 4843,
+      "before": "Going to mill 1, 2, 3, 4 cards is Niko.",
+      "after": "Going to mill 1, 2, 3, 4 cards is Neek0.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4845,
+      "before": "Yep, just to clarify, all is going to be on Niko himself.",
+      "after": "Yep, just to clarify, all is going to be on Neek0 himself.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4864,
+      "before": "Now, RTY has to be really careful.",
+      "after": "Now, Rty has to be really careful.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4865,
+      "before": "The tempo swing starts to favour a bit into Niko in my opinion now",
+      "after": "The tempo swing starts to favour a bit into Neek0 in my opinion now",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4867,
+      "before": "And one thing is, if Niko chooses to flip Genbu",
+      "after": "And one thing is, if Neek0 chooses to flip Genbu",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4877,
+      "before": "I think right now, Niko has a lot of options in the world.",
+      "after": "I think right now, Neek0 has a lot of options in the world.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4883,
+      "before": "But by the looks of it, RTY doesn't really care about Niko's allies.",
+      "after": "But by the looks of it, Rty doesn't really care about Neek0's allies.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4904,
+      "before": "And how many water cards are in Niko's grave?",
+      "after": "And how many water cards are in Neek0's grave?",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4908,
+      "before": "But there still is that Polydeps.",
+      "after": "But there still is that Polar Depths.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4909,
+      "before": "You just need to find the second Polydeps",
+      "after": "You just need to find the second Polar Depths",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4911,
+      "before": "But you do have to worry about RTY potentially having",
+      "after": "But you do have to worry about Rty potentially having",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4943,
+      "before": "Eventually going for that big Polar Death turn.",
+      "after": "Eventually going for that big Polar Depths turn.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 4944,
+      "before": "Is there any way for Arteon to stop the Polar Death at all?",
+      "after": "Is there any way for Rty to stop the Polar Depths at all?",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context",
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4954,
+      "before": "So, it's going to be kind of up to RDY to try and",
+      "after": "So, it's going to be kind of up to Rty to try and",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4955,
+      "before": "dig for this Shadow Strike, dig for those Mastermind schemes,",
+      "after": "dig for this Shadowstrike, dig for those Mastermind schemes,",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 4959,
+      "before": "I think if Neek0 flips the Gamboo,",
+      "after": "I think if Neek0 flips the Genbu,",
+      "evidence": [
+        "Canonical card: Avatar of Genbu; sequential match context"
+      ]
+    },
+    {
+      "index": 4975,
+      "before": "There's the Shadow Strike.",
+      "after": "There's the Shadowstrike.",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 4978,
+      "before": "and Shadow Strike here.",
+      "after": "and Shadowstrike here.",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 4979,
+      "before": "So, maybe RDY has an opportunity to try and go for the game.",
+      "after": "So, maybe Rty has an opportunity to try and go for the game.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 4988,
+      "before": "The Shadow Strike would get over the Paladin",
+      "after": "The Shadowstrike would get over the Paladin",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 4991,
+      "before": "Shadow Strike would be coming in for 13 with the dagger.",
+      "after": "Shadowstrike would be coming in for 13 with the dagger.",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 5009,
+      "before": "Like, Windblast Lookout would be really strong here",
+      "after": "Like, Winbless Lookout would be really strong here",
+      "evidence": [
+        "Canonical card: Winbless Lookout; sequential match context"
+      ]
+    },
+    {
+      "index": 5013,
+      "before": "on Arty White's side right here.",
+      "after": "on Rty's side right here.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5033,
+      "before": "Yeah, there's no way Arty White actually",
+      "after": "Yeah, there's no way Rty actually",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5036,
+      "before": "Seems like Sadie is being fanned over.",
+      "after": "Seems like Sadi is being fanned over.",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 5050,
+      "before": "And even without the Dynasty whirlpool in the main,",
+      "after": "And even without the Dynastic Whirlpool in the main,",
+      "evidence": [
+        "Canonical card: Dynastic Whirlpool; sequential match context"
+      ]
+    },
+    {
+      "index": 5054,
+      "before": "Of course, granted, Arty White didn't have the best of hands.",
+      "after": "Of course, granted, Rty didn't have the best of hands.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5067,
+      "before": "And Arty White has no exact answer.",
+      "after": "And Rty has no exact answer.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5081,
+      "before": "Niko's not really going to be going for the Genbu?",
+      "after": "Neek0's not really going to be going for the Genbu?",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5128,
+      "before": "But on Niko's side,",
+      "after": "But on Neek0's side,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5139,
+      "before": "So a lot of options here on Niko's side",
+      "after": "So a lot of options here on Neek0's side",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5170,
+      "before": "that's going to be a problem for Niko",
+      "after": "that's going to be a problem for Neek0",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5172,
+      "before": "But for now, needs to first deal with RTY going first.",
+      "after": "But for now, needs to first deal with Rty going first.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5185,
+      "before": "we have seen Niko is really, really self-aware",
+      "after": "we have seen Neek0 is really, really self-aware",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5188,
+      "before": "For RTY, I think it's really, really important",
+      "after": "For Rty, I think it's really, really important",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5196,
+      "before": "And for RTY, it's much more important",
+      "after": "And for Rty, it's much more important",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5216,
+      "before": "RTY needs to try and look for a Reclaim here",
+      "after": "Rty needs to try and look for a Reclaim here",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5219,
+      "before": "and then play Sadie, Swing, Agilid...",
+      "after": "and then play Sadi, Swing, Agilid...",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 5230,
+      "before": "Does have that Sadie to try and clear the Bovine,",
+      "after": "Does have that Sadi to try and clear the Bovine,",
+      "evidence": [
+        "Canonical card: Sadi, Blood Harvester; sequential match context"
+      ]
+    },
+    {
+      "index": 5240,
+      "before": "For Artemis' side as well,",
+      "after": "For Rty' side as well,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5266,
+      "before": "So we also have the Polar Death already,",
+      "after": "So we also have the Polar Depths already,",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5268,
+      "before": "So, probably we'll slam that Bonewine or Polar Death.",
+      "after": "So, probably we'll slam that Bonewine or Polar Depths.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5269,
+      "before": "I think it might be a Polar Death into Bonewine.",
+      "after": "I think it might be a Polar Depths into Bonewine.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5270,
+      "before": "Polar Death is a bit risky to play at this stage,",
+      "after": "Polar Depths is a bit risky to play at this stage,",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5272,
+      "before": "obviously you can still activate the Polar Death,",
+      "after": "obviously you can still activate the Polar Depths,",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5278,
+      "before": "That Noble Disillusion was also shown off",
+      "after": "That Noble Dissolution was also shown off",
+      "evidence": [
+        "Canonical card: Noble Dissolution; sequential match context"
+      ]
+    },
+    {
+      "index": 5280,
+      "before": "so that means when RTY does eventually get up to level 3,",
+      "after": "so that means when Rty does eventually get up to level 3,",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5281,
+      "before": "could choose to go for Noble Disillusion on that Polar Death.",
+      "after": "could choose to go for Noble Dissolution on that Polar Depths.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context",
+        "Canonical card: Noble Dissolution; sequential match context"
+      ]
+    },
+    {
+      "index": 5283,
+      "before": "to make it a worthwhile Polar Death.",
+      "after": "to make it a worthwhile Polar Depths.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5285,
+      "before": "probably because RTY has a lot of cards",
+      "after": "probably because Rty has a lot of cards",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5299,
+      "before": "At this point, I think RTY will probably",
+      "after": "At this point, I think Rty will probably",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5314,
+      "before": "No Fractal Reign at all.",
+      "after": "No Fractal of Rain at all.",
+      "evidence": [
+        "Canonical card: Fractal of Rain; sequential match context"
+      ]
+    },
+    {
+      "index": 5315,
+      "before": "Fractal Reign is really important,",
+      "after": "Fractal of Rain is really important,",
+      "evidence": [
+        "Canonical card: Fractal of Rain; sequential match context"
+      ]
+    },
+    {
+      "index": 5317,
+      "before": "We saw how much the Fractal Reign,",
+      "after": "We saw how much the Fractal of Rain,",
+      "evidence": [
+        "Canonical card: Fractal of Rain; sequential match context"
+      ]
+    },
+    {
+      "index": 5318,
+      "before": "the type of Fractal Reign",
+      "after": "the type of Fractal of Rain",
+      "evidence": [
+        "Canonical card: Fractal of Rain; sequential match context"
+      ]
+    },
+    {
+      "index": 5340,
+      "before": "Arcee White is really comfortable right now.",
+      "after": "Rty is really comfortable right now.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5456,
+      "before": "We saw a Campbell Flip twice, paid VR its actual cost, 9!",
+      "after": "We saw a Genbu Flip twice, paid VR its actual cost, 9!",
+      "evidence": [
+        "Canonical card: Avatar of Genbu; sequential match context"
+      ]
+    },
+    {
+      "index": 5459,
+      "before": "You know, in that situation, actually, because of how low the influence was, it was potential for RTY to try and kill Genbu because he could not pay for the increased life, but just didn't have the Ascens, didn't have a lot of the attack cards, unfortunately.",
+      "after": "You know, in that situation, actually, because of how low the influence was, it was potential for Rty to try and kill Genbu because he could not pay for the increased life, but just didn't have the Ascens, didn't have a lot of the attack cards, unfortunately.",
+      "evidence": [
+        "Official featured pairing and sequential match context"
+      ]
+    },
+    {
+      "index": 5463,
+      "before": "I think that's a really creative way to win, because maybe he realized that there's no Shadow Strike, right?",
+      "after": "I think that's a really creative way to win, because maybe he realized that there's no Shadowstrike, right?",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 5464,
+      "before": "He just knew, okay, there's no Shadow Strike, I think we're fine.",
+      "after": "He just knew, okay, there's no Shadowstrike, I think we're fine.",
+      "evidence": [
+        "Canonical card: Shadowstrike; sequential match context"
+      ]
+    },
+    {
+      "index": 5467,
+      "before": "So, yeah, because there's a chance that he might misdraw the Polar Death, right?",
+      "after": "So, yeah, because there's a chance that he might misdraw the Polar Depths, right?",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5468,
+      "before": "Imagine if he misdrew the Polar Death, and then you just lose on the spot.",
+      "after": "Imagine if he misdrew the Polar Depths, and then you just lose on the spot.",
+      "evidence": [
+        "Canonical card: Fractal of Polar Depths; sequential match context"
+      ]
+    },
+    {
+      "index": 5568,
+      "before": "Protier basically gets a plus one, plus one stack",
+      "after": "Poitier basically gets a plus one, plus one stack",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 5714,
+      "before": "Zhang Xiao after this, so you need to",
+      "after": "Zhang Jiao after this, so you need to",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5715,
+      "before": "Draw all 3 fractals and then the Zhang Xiao after",
+      "after": "Draw all 3 fractals and then the Zhang Jiao after",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5747,
+      "before": "Fracture Rise, so no Chang Qiao",
+      "after": "Fracturize, so no Zhang Jiao",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context",
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5749,
+      "before": "Oh there is a Chang Qiao",
+      "after": "Oh there is a Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5750,
+      "before": "Just going to play the Chang Qiao",
+      "after": "Just going to play the Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5755,
+      "before": "Second Chang Qiao is also drawn",
+      "after": "Second Zhang Jiao is also drawn",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5861,
+      "before": "A good way to set up into the Burst of Thunder",
+      "after": "A good way to set up into the Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5862,
+      "before": "Because refracting missile Burst of Thunder",
+      "after": "Because refracting missile Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5875,
+      "before": "If he can find the Burst of Thunder",
+      "after": "If he can find the Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5877,
+      "before": "Yeah the Burst of Thunder is already in hand",
+      "after": "Yeah the Burst Asunder is already in hand",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5881,
+      "before": "The Zhangjiao now",
+      "after": "The Zhang Jiao now",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5889,
+      "before": "But 5 Fractal Burst of Thunder",
+      "after": "But 5 Fractal Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5905,
+      "before": "That Inaki is going to go for the Burst of Thunder here",
+      "after": "That Inaki is going to go for the Burst Asunder here",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 5941,
+      "before": "Let's not forget he is Zhangjia level 1 already",
+      "after": "Let's not forget he is Zhang Jiao level 1 already",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5942,
+      "before": "Diaochan level 1",
+      "after": "Diao Chan level 1",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 5943,
+      "before": "Zhangjia level 1",
+      "after": "Zhang Jiao level 1",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 5945,
+      "before": "At one point we decoyed Zhangjia to that",
+      "after": "At one point we decoyed Zhang Jiao to that",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6009,
+      "before": "Reach to his Burst of Thunder",
+      "after": "Reach to his Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6029,
+      "before": "Yeah, could go for the Fracturize on his Parasail. Also has Burst Ascender brought to the front of the hand.",
+      "after": "Yeah, could go for the Fracturize on his Parasail. Also has Burst Asunder brought to the front of the hand.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6041,
+      "before": "Well, it does look like they are both in a stalemate. Miffy cannot find the Protea.",
+      "after": "Well, it does look like they are both in a stalemate. Miffy cannot find the Poitier.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6051,
+      "before": "Now, will we see a Protea from hand? I doubt so.",
+      "after": "Now, will we see a Poitier from hand? I doubt so.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6053,
+      "before": "With this Protea from hand, wow.",
+      "after": "With this Poitier from hand, wow.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6055,
+      "before": "The Protea, who will now... I think he only gets the...",
+      "after": "The Poitier, who will now... I think he only gets the...",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6096,
+      "before": "We are going to see the Forza Paladin here.",
+      "after": "We are going to see the Frostsworn Paladin here.",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 6145,
+      "before": "But yeah, we are going to see the Force of Paladins swinging in and Inaki just passes here, going back to Miffy's turn here.",
+      "after": "But yeah, we are going to see the Frostsworn Paladins swinging in and Inaki just passes here, going back to Miffy's turn here.",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 6146,
+      "before": "Probably just going to play the Protea this turn, infamariate it, and it's going to be...",
+      "after": "Probably just going to play the Poitier this turn, infamariate it, and it's going to be...",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6157,
+      "before": "But now we can play Protea, infamariated for 3 from the Graveyard and that is exactly what Miffy will do.",
+      "after": "But now we can play Poitier, infamariated for 3 from the Graveyard and that is exactly what Miffy will do.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6167,
+      "before": "Now, what is Inaki to do but try to burst us under again?",
+      "after": "Now, what is Inaki to do but try to Burst Asunder again?",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6177,
+      "before": "Oh, that's the Emerald of Will as well.",
+      "after": "Oh, that's the Remnant of Will as well.",
+      "evidence": [
+        "Canonical card: Remnant of Will; sequential match context"
+      ]
+    },
+    {
+      "index": 6185,
+      "before": "Of course, Inaki is representing a very big burst us under.",
+      "after": "Of course, Inaki is representing a very big Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6200,
+      "before": "The 4th burst us under drawn.",
+      "after": "The 4th Burst Asunder drawn.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6202,
+      "before": "Is it? There's 1 more damage from the Chang Xiao.",
+      "after": "Is it? There's 1 more damage from the Zhang Jiao.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6204,
+      "before": "There's a Fractalize!",
+      "after": "There's a Fracturize!",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6205,
+      "before": "If you Fractalize one of your stuff, that's 10 Fractals.",
+      "after": "If you Fracturize one of your stuff, that's 10 Fractals.",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6206,
+      "before": "Yeah, he can Fractalize the Crystalline Mirror.",
+      "after": "Yeah, he can Fracturize the Crystalline Mirror.",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6208,
+      "before": "So puts down the 2 for burst us under instead.",
+      "after": "So puts down the 2 for Burst Asunder instead.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6212,
+      "before": "Because that's going to be a very very scary burst us under.",
+      "after": "Because that's going to be a very very scary Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6214,
+      "before": "And Abnegation now going to be used in response to the burst us under.",
+      "after": "And Abnegation now going to be used in response to the Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6224,
+      "before": "And burst us under would resolve for 20 if this does resolve right now.",
+      "after": "And Burst Asunder would resolve for 20 if this does resolve right now.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6225,
+      "before": "You do need to play the Fractalize.",
+      "after": "You do need to play the Fracturize.",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6229,
+      "before": "Going to Fractalize his Crystalline Mirror.",
+      "after": "Going to Fracturize his Crystalline Mirror.",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6239,
+      "before": "The Fractalize does resolve.",
+      "after": "The Fracturize does resolve.",
+      "evidence": [
+        "Canonical card: Fracturize; sequential match context"
+      ]
+    },
+    {
+      "index": 6241,
+      "before": "Oh we're going to give ourselves Spell Shroud with the Sleep Away!",
+      "after": "Oh we're going to give ourselves Spell Shroud with the Slip Away!",
+      "evidence": [
+        "Canonical card: Slip Away; sequential match context"
+      ]
+    },
+    {
+      "index": 6248,
+      "before": "And the Shademist Pristess is now going to be hitting the board as well.",
+      "after": "And the Shademist Priestess is now going to be hitting the board as well.",
+      "evidence": [
+        "Canonical card: Shademist Priestess; sequential match context"
+      ]
+    },
+    {
+      "index": 6351,
+      "before": "the 10 Fractal Burst Ascender",
+      "after": "the 10 Fractal Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6358,
+      "before": "We saw Inaki draw 4 Burst Ascenders",
+      "after": "We saw Inaki draw 4 Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6429,
+      "before": "so 2 swings of the Poetia",
+      "after": "so 2 swings of the Poitier",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6505,
+      "before": "does it have no Chang Xiao",
+      "after": "does it have no Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6529,
+      "before": "no floating, no Illumina guy",
+      "after": "no floating, no Liminal Guide",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6531,
+      "before": "I do see Illumina guy",
+      "after": "I do see Liminal Guide",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6558,
+      "before": "triple Zhangjia will also be",
+      "after": "triple Zhang Jiao will also be",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6560,
+      "before": "Illumina guy actually played down here",
+      "after": "Liminal Guide actually played down here",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6564,
+      "before": "sacrificing that Illumina guy",
+      "after": "sacrificing that Liminal Guide",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6577,
+      "before": "Illumina guy is one good example",
+      "after": "Liminal Guide is one good example",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6579,
+      "before": "the second Zhangjia of Miffy",
+      "after": "the second Zhang Jiao of Miffy",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6587,
+      "before": "there's also a Qianyu available",
+      "after": "there's also a Jianyu available",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6589,
+      "before": "so he could call something like Umbra Scythe",
+      "after": "so he could call something like Umbra Sight",
+      "evidence": [
+        "Canonical card: Umbra Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 6602,
+      "before": "the Illumina guy is going to be",
+      "after": "the Liminal Guide is going to be",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6608,
+      "before": "using maybe that Umbra Scythe first",
+      "after": "using maybe that Umbra Sight first",
+      "evidence": [
+        "Canonical card: Umbra Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 6617,
+      "before": "and also get that Umbra Scythe",
+      "after": "and also get that Umbra Sight",
+      "evidence": [
+        "Canonical card: Umbra Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 6623,
+      "before": "reflecting Missile I believe",
+      "after": "Refracting Missile I believe",
+      "evidence": [
+        "Canonical card: Refracting Missile; sequential match context"
+      ]
+    },
+    {
+      "index": 6638,
+      "before": "another Poetia for example",
+      "after": "another Poitier for example",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6639,
+      "before": "last game we saw Miffy played the Poetia down",
+      "after": "last game we saw Miffy played the Poitier down",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6642,
+      "before": "to get the Poetia into the graveyard",
+      "after": "to get the Poitier into the graveyard",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6655,
+      "before": "maybe the Qian Yu that we just saw him put down",
+      "after": "maybe the Jianyu that we just saw him put down",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6664,
+      "before": "the 22 damage from the Burst of Thunder",
+      "after": "the 22 damage from the Burst Asunder",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6668,
+      "before": "just see the 3rd Chang Qiao",
+      "after": "just see the 3rd Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6670,
+      "before": "I think that Chang Qiao",
+      "after": "I think that Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6677,
+      "before": "Chang Qiao goes away",
+      "after": "Zhang Jiao goes away",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6678,
+      "before": "so Qian Yu",
+      "after": "so Jianyu",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6679,
+      "before": "do you actually get rid of Qian Yu",
+      "after": "do you actually get rid of Jianyu",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6680,
+      "before": "I think Qian Yu is probably worth removing",
+      "after": "I think Jianyu is probably worth removing",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6684,
+      "before": "if Qian Yu calls Poitier",
+      "after": "if Jianyu calls Poitier",
+      "evidence": [
+        "Canonical card: Jianyu, Fate's Premonition; sequential match context"
+      ]
+    },
+    {
+      "index": 6715,
+      "before": "and he resolved 2 Zhang Xiao",
+      "after": "and he resolved 2 Zhang Jiao",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6722,
+      "before": "Random of Will is going to be played",
+      "after": "Remnant of Will is going to be played",
+      "evidence": [
+        "Canonical card: Remnant of Will; sequential match context"
+      ]
+    },
+    {
+      "index": 6732,
+      "before": "and our Poetia is already at maximum discount",
+      "after": "and our Poitier is already at maximum discount",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6742,
+      "before": "there's the Poetia",
+      "after": "there's the Poitier",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6748,
+      "before": "and also the Poetia is self-guaranteed",
+      "after": "and also the Poitier is self-guaranteed",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 6753,
+      "before": "Diaochan 1",
+      "after": "Diao Chan 1",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 6759,
+      "before": "so we're only losing to Slipaway right now",
+      "after": "so we're only losing to Slip Away right now",
+      "evidence": [
+        "Canonical card: Slip Away; sequential match context"
+      ]
+    },
+    {
+      "index": 6760,
+      "before": "Slipaway is the only card you can lose to",
+      "after": "Slip Away is the only card you can lose to",
+      "evidence": [
+        "Canonical card: Slip Away; sequential match context"
+      ]
+    },
+    {
+      "index": 6770,
+      "before": "And now, with that critical mass achieved on the board, 10 total fractals, are we going to send our Burst Ascender in for 22 damage?",
+      "after": "And now, with that critical mass achieved on the board, 10 total fractals, are we going to send our Burst Asunder in for 22 damage?",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6812,
+      "before": "Doesn't have the Sangiao.",
+      "after": "Doesn't have the Zhang Jiao.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6851,
+      "before": "Harrow the Sage is going to be banished.",
+      "after": "Harrow the Saved is going to be banished.",
+      "evidence": [
+        "Canonical card: Harrow the Saved; sequential match context"
+      ]
+    },
+    {
+      "index": 6853,
+      "before": "And now, we're going to use the Maledict and Vitae immediately put into the lineage.",
+      "after": "And now, we're going to use the Maledictum Vitae immediately put into the lineage.",
+      "evidence": [
+        "Canonical card: Maledictum Vitae; sequential match context"
+      ]
+    },
+    {
+      "index": 6861,
+      "before": "Umbra Scythe.",
+      "after": "Umbra Sight.",
+      "evidence": [
+        "Canonical card: Umbra Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 6862,
+      "before": "Umbra Scythe as well, taking 2 to draw 1 to hand into memory.",
+      "after": "Umbra Sight as well, taking 2 to draw 1 to hand into memory.",
+      "evidence": [
+        "Canonical card: Umbra Sight; sequential match context"
+      ]
+    },
+    {
+      "index": 6875,
+      "before": "is taken out though immediately by the Reflecting Missile.",
+      "after": "is taken out though immediately by the Refracting Missile.",
+      "evidence": [
+        "Canonical card: Refracting Missile; sequential match context"
+      ]
+    },
+    {
+      "index": 6888,
+      "before": "Zhang Xiao milled out for Inaki.",
+      "after": "Zhang Jiao milled out for Inaki.",
+      "evidence": [
+        "Canonical card: Zhang Jiao, Way of Peace; sequential match context"
+      ]
+    },
+    {
+      "index": 6903,
+      "before": "But we're going to get rid of the Frostmourne Paladin.",
+      "after": "But we're going to get rid of the Frostsworn Paladin.",
+      "evidence": [
+        "Canonical card: Frostsworn Paladin; sequential match context"
+      ]
+    },
+    {
+      "index": 6910,
+      "before": "Yeah, it's Double Glimmering Refusal and a Burst of Summer and a Fracturize.",
+      "after": "Yeah, it's Double Glimmering Refusal and a Burst Asunder and a Fracturize.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6913,
+      "before": "With this setup, I think you probably can just play with 1 Burst of Summer.",
+      "after": "With this setup, I think you probably can just play with 1 Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 6925,
+      "before": "That's why one of the key cards, actually, is the Remnant of Rio.",
+      "after": "That's why one of the key cards, actually, is the Remnant of Will.",
+      "evidence": [
+        "Canonical card: Remnant of Will; sequential match context"
+      ]
+    },
+    {
+      "index": 6926,
+      "before": "Remnant of Rio is really, really important.",
+      "after": "Remnant of Will is really, really important.",
+      "evidence": [
+        "Canonical card: Remnant of Will; sequential match context"
+      ]
+    },
+    {
+      "index": 6927,
+      "before": "Because Remnant of Rio basically gives you, like...",
+      "after": "Because Remnant of Will basically gives you, like...",
+      "evidence": [
+        "Canonical card: Remnant of Will; sequential match context"
+      ]
+    },
+    {
+      "index": 6945,
+      "before": "And Luminal Guard, yes.",
+      "after": "And Liminal Guide, yes.",
+      "evidence": [
+        "Canonical card: Liminal Guide; sequential match context"
+      ]
+    },
+    {
+      "index": 6958,
+      "before": "Because if you have to Glimmer Refuser while you are going for the Burst of Thunder turn,",
+      "after": "Because if you have to Glimmering Refusal while you are going for the Burst Asunder turn,",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context",
+        "Canonical card: Glimmering Refusal; sequential match context"
+      ]
+    },
+    {
+      "index": 7004,
+      "before": "And this Poetia is going to start adding up over the next couple of turns.",
+      "after": "And this Poitier is going to start adding up over the next couple of turns.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 7005,
+      "before": "2 damage now from the Poetia on the board.",
+      "after": "2 damage now from the Poitier on the board.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 7026,
+      "before": "I believe that's Reflecting Blight?",
+      "after": "I believe that's Reflected Blight?",
+      "evidence": [
+        "Canonical card: Reflected Blight; sequential match context"
+      ]
+    },
+    {
+      "index": 7027,
+      "before": "Reflecting Blight as well.",
+      "after": "Reflected Blight as well.",
+      "evidence": [
+        "Canonical card: Reflected Blight; sequential match context"
+      ]
+    },
+    {
+      "index": 7040,
+      "before": "And he also did level up to Tiao Chan level 1.",
+      "after": "And he also did level up to Diao Chan level 1.",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 7041,
+      "before": "That does turn on even more reactions from the inherited effect of Tiao Chan 1.",
+      "after": "That does turn on even more reactions from the inherited effect of Diao Chan 1.",
+      "evidence": [
+        "Canonical card: Diao Chan, Enchantress; sequential match context"
+      ]
+    },
+    {
+      "index": 7066,
+      "before": "It looks like the Burst of Thunder is going to be played.",
+      "after": "It looks like the Burst Asunder is going to be played.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 7084,
+      "before": "Oh, Grimming Refuser.",
+      "after": "Oh, Glimmering Refusal.",
+      "evidence": [
+        "Canonical card: Glimmering Refusal; sequential match context"
+      ]
+    },
+    {
+      "index": 7096,
+      "before": "Miffy needs to recover at least 7 in order to get out of range of the Burst Ascender.",
+      "after": "Miffy needs to recover at least 7 in order to get out of range of the Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 7107,
+      "before": "And that is going to be Shirring Wrection!",
+      "after": "And that is going to be Shimmering Refraction!",
+      "evidence": [
+        "Canonical card: Shimmering Refraction; sequential match context"
+      ]
+    },
+    {
+      "index": 7113,
+      "before": "alongside that 7 Fractal Burst Ascender and Shimmering Refraction.",
+      "after": "alongside that 7 Fractal Burst Asunder and Shimmering Refraction.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 7133,
+      "before": "And the Burst Ascender.",
+      "after": "And the Burst Asunder.",
+      "evidence": [
+        "Canonical card: Burst Asunder; sequential match context"
+      ]
+    },
+    {
+      "index": 7146,
+      "before": "Yeah, I mean, of course, we did see how powerful that Poetia can be when it's unlocked.",
+      "after": "Yeah, I mean, of course, we did see how powerful that Poitier can be when it's unlocked.",
+      "evidence": [
+        "Canonical card: Poitier, Afterlife's Conductor; sequential match context"
+      ]
+    },
+    {
+      "index": 7205,
+      "before": "or Quicksilver Grill.",
+      "after": "or Quicksilver Grail.",
+      "evidence": [
+        "Canonical card: Quicksilver Grail; sequential match context"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "match": {
+        "id": "osaka-2026-r4",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 19799
+        },
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 4",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Cashkidz",
+            "deck": "Water Neos Tonoris"
+          },
+          {
+            "id": "p2",
+            "name": "ClourX",
+            "deck": "Water Fractal Diao Chan"
+          }
+        ],
+        "result": "Cashkidz wins 2–1",
+        "games": [
+          {
+            "gameNumber": 2,
+            "winner": "p2",
+            "summary": "ClourX levels the match with Burst Asunder.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Two Storm of Thorns effects help Cashkidz survive the first burn exchange.",
+                "cards": [
+                  "Storm of Thorns"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "ClourX negates Atmos Armor Type-Ares, then finishes with Burst Asunder.",
+                "cards": [
+                  "Glimmering Refusal",
+                  "Atmos Armor Type-Ares",
+                  "Burst Asunder"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "winner": "p1",
+            "summary": "Cashkidz survives the Fractal pressure and wins with Neos weapons and allies.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Frostsworn Paladin applies early pressure while Cashkidz searches for Eternal Kingdom.",
+                "cards": [
+                  "Frostsworn Paladin"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p1",
+                "text": "Topsy Decree protects Cashkidz during the Refracting Missile exchange.",
+                "cards": [
+                  "Topsy Decree",
+                  "Refracting Missile"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p1",
+                "text": "Cashkidz reaches level 3 and establishes Atmos Armor Type-Ares with shields.",
+                "cards": [
+                  "Atmos Armor Type-Ares"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "A second Ares and the final Reciprocity attack close the match.",
+                "cards": [
+                  "Atmos Armor Type-Ares",
+                  "Reciprocity, Dorumegia's Call"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Partial transcript: game 1 and the opening of game 2 are absent. Games 2–3 are commentary-sourced; official pairing records Cashkidz 2–1."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 4,
+          "pairingId": 10
+        },
+        "games": [
+          {
+            "gameNumber": 2,
+            "resultSegments": [
+              4288,
+              4289,
+              4290
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  4242,
+                  4243,
+                  4244,
+                  4245,
+                  4246,
+                  4247,
+                  4248,
+                  4249,
+                  4250
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  4280,
+                  4281,
+                  4282,
+                  4283,
+                  4284,
+                  4285,
+                  4286,
+                  4287,
+                  4288,
+                  4289,
+                  4290
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "resultSegments": [
+              4492,
+              4493
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  4335,
+                  4336,
+                  4337,
+                  4338,
+                  4339,
+                  4340,
+                  4341
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  4385,
+                  4386,
+                  4387,
+                  4388,
+                  4389,
+                  4390,
+                  4391,
+                  4392,
+                  4393,
+                  4394,
+                  4395
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  4440,
+                  4441,
+                  4442,
+                  4443,
+                  4444,
+                  4445,
+                  4446,
+                  4447,
+                  4448,
+                  4449,
+                  4450,
+                  4451,
+                  4452,
+                  4453,
+                  4454,
+                  4455,
+                  4456,
+                  4457,
+                  4458,
+                  4459,
+                  4460,
+                  4461,
+                  4462
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  4475,
+                  4476,
+                  4477,
+                  4478,
+                  4479,
+                  4480,
+                  4481,
+                  4482,
+                  4483,
+                  4484,
+                  4485,
+                  4486,
+                  4487,
+                  4488,
+                  4489,
+                  4490,
+                  4491,
+                  4492,
+                  4493,
+                  4494,
+                  4495,
+                  4496,
+                  4497,
+                  4498,
+                  4499
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "match": {
+        "id": "osaka-2026-r5",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 23399
+        },
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 5",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Rty",
+            "deck": "Wind Tristan"
+          },
+          {
+            "id": "p2",
+            "name": "Neek0",
+            "deck": "Water Genbu"
+          }
+        ],
+        "result": "Neek0 wins 1–0 (official result)",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Rty concedes with Neek0 threatening a Polar Depths mill finish.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Rty advances through Shadowreaver into Shadowdancer and establishes Shadows.",
+                "cards": [
+                  "Tristan, Shadowreaver",
+                  "Tristan, Shadowdancer"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Enfeebling Orb and Cerulean Decree stop Mastermind Scheme.",
+                "cards": [
+                  "Enfeebling Orb",
+                  "Cerulean Decree",
+                  "Mastermind Scheme"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Neek0 builds the graveyard while Rty cannot find enough damage; Rty concedes before the threatened Polar Depths turn.",
+                "cards": [
+                  "Fractal of Polar Depths"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "unknown",
+            "summary": "The transcript resumes in time procedures; the game result is unresolved in the commentary.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Rty uses Purifying Thurible early and has brought in Noble Dissolution.",
+                "cards": [
+                  "Purifying Thurible",
+                  "Noble Dissolution"
+                ],
+                "tags": [
+                  "sideboard"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Neek0 sacrifices Tidestone Bovine to the ritual and develops the Polar Depths plan.",
+                "cards": [
+                  "Tidestone Bovine",
+                  "Fractal of Polar Depths"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "The late commentary describes Genbu protecting Neek0 through the remaining turns.",
+                "cards": [
+                  "Avatar of Genbu"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Partial transcript: game 1 begins mid-game; game 2 loses most of its middle to repeated non-game text and a gap. The casters call 2–0, but official pairing records 1–0; game 2 winner is left unknown."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 5,
+          "pairingId": 1
+        },
+        "games": [
+          {
+            "gameNumber": 1,
+            "resultSegments": [
+              5037,
+              5038,
+              5040,
+              5041,
+              5046
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  4664,
+                  4665,
+                  4666,
+                  4667,
+                  4668,
+                  4669,
+                  4670,
+                  4671,
+                  4672,
+                  4673,
+                  4674,
+                  4675,
+                  4676,
+                  4677,
+                  4678,
+                  4679,
+                  4680,
+                  4681,
+                  4682,
+                  4683,
+                  4684,
+                  4685,
+                  4686,
+                  4687,
+                  4688,
+                  4689,
+                  4690,
+                  4691,
+                  4692,
+                  4693,
+                  4694
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  4714,
+                  4715,
+                  4716,
+                  4717,
+                  4718,
+                  4719,
+                  4720,
+                  4721,
+                  4722,
+                  4723,
+                  4724,
+                  4725,
+                  4726,
+                  4727,
+                  4728
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  5025,
+                  5026,
+                  5027,
+                  5028,
+                  5029,
+                  5030,
+                  5031,
+                  5032,
+                  5033,
+                  5034,
+                  5035,
+                  5036,
+                  5037,
+                  5038,
+                  5039,
+                  5040,
+                  5041,
+                  5042,
+                  5043,
+                  5044,
+                  5045,
+                  5046,
+                  5047,
+                  5048,
+                  5049,
+                  5050,
+                  5051,
+                  5052,
+                  5053,
+                  5054,
+                  5055,
+                  5056,
+                  5057,
+                  5058,
+                  5059,
+                  5060,
+                  5061,
+                  5062,
+                  5063,
+                  5064,
+                  5065,
+                  5066,
+                  5067
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "resultSegments": [],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  5221,
+                  5222,
+                  5223,
+                  5224,
+                  5225,
+                  5226,
+                  5227,
+                  5228,
+                  5229
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  5250,
+                  5251,
+                  5252,
+                  5253,
+                  5254,
+                  5255,
+                  5256,
+                  5257,
+                  5258,
+                  5259,
+                  5260,
+                  5261,
+                  5262,
+                  5263,
+                  5264,
+                  5265,
+                  5266,
+                  5267,
+                  5268,
+                  5269,
+                  5270,
+                  5271,
+                  5272,
+                  5273,
+                  5274,
+                  5275,
+                  5276,
+                  5277,
+                  5278,
+                  5279,
+                  5280,
+                  5281,
+                  5282,
+                  5283
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  5442,
+                  5449,
+                  5450,
+                  5456,
+                  5458,
+                  5465,
+                  5469
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "match": {
+        "id": "osaka-2026-r6",
+        "video": {
+          "id": "g3NNFcNpw3k",
+          "kind": "broadcast",
+          "startSeconds": 28046
+        },
+        "event": "Ascent Osaka 2026",
+        "eventId": 67176,
+        "round": "Round 6",
+        "players": [
+          {
+            "id": "p1",
+            "name": "Inaki",
+            "deck": "Water Fractal Diao Chan"
+          },
+          {
+            "id": "p2",
+            "name": "Miffy",
+            "deck": "Fire Umbra Alice"
+          }
+        ],
+        "result": "Inaki wins 2–1",
+        "games": [
+          {
+            "gameNumber": 1,
+            "winner": "p2",
+            "summary": "Miffy survives repeated burn attempts and wins with Poitier.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Inaki opens with three Fractals and follows with Zhang Jiao.",
+                "cards": [
+                  "Zhang Jiao, Way of Peace"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Remnant of Will supplies recovery and haunt counters after Alice reaches Umbra.",
+                "cards": [
+                  "Remnant of Will"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Safeguard Amulet stops one Burst Asunder; Slip Away later protects Miffy from another.",
+                "cards": [
+                  "Safeguard Amulet",
+                  "Burst Asunder",
+                  "Slip Away"
+                ],
+                "tags": [
+                  "stabilize"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p2",
+                "text": "Two Remnant of Will activations grow Poitier into the finishing attacker.",
+                "cards": [
+                  "Remnant of Will",
+                  "Poitier, Afterlife's Conductor"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "winner": "p1",
+            "summary": "Inaki reaches ten Fractals and Miffy concedes to Burst Asunder.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p1",
+                "text": "Inaki opens with four Fractals.",
+                "cards": [
+                  "Fractal of Snow",
+                  "Hydrating Fractal"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Regal Inquisition takes two cards, but leaves Shimmering Refraction in Inaki’s hand.",
+                "cards": [
+                  "Regal Inquisition",
+                  "Shimmering Refraction"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p2",
+                "text": "Remnant of Will provides recovery and the end-step mill finds Poitier.",
+                "cards": [
+                  "Remnant of Will",
+                  "Poitier, Afterlife's Conductor"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "Bifurcating Fractal brings Inaki to ten Fractals; the Burst Asunder threat forces the concession.",
+                "cards": [
+                  "Bifurcating Fractal",
+                  "Burst Asunder"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "winner": "p1",
+            "summary": "Inaki stops Miffy’s recovery and wins with Burst Asunder plus Shimmering Refraction.",
+            "beats": [
+              {
+                "order": 1,
+                "actor": "p2",
+                "text": "Maledictum Vitae lets Miffy establish Alice’s Umbra access safely.",
+                "cards": [
+                  "Maledictum Vitae"
+                ]
+              },
+              {
+                "order": 2,
+                "actor": "p2",
+                "text": "Undying Dreams boosts Poitier enough to remove Fluffy Shopkeep.",
+                "cards": [
+                  "Undying Dreams",
+                  "Poitier, Afterlife's Conductor",
+                  "Fluffy Shopkeep"
+                ]
+              },
+              {
+                "order": 3,
+                "actor": "p1",
+                "text": "Glimmering Refusal denies the Remnant of Will Miffy needed after drawing with Devouring Malice.",
+                "cards": [
+                  "Glimmering Refusal",
+                  "Remnant of Will",
+                  "Devouring Malice"
+                ]
+              },
+              {
+                "order": 4,
+                "actor": "p1",
+                "text": "Inaki negates both Fleeting Guards, then adds Shimmering Refraction as Miffy uses lineage releases.",
+                "cards": [
+                  "Glimmering Refusal",
+                  "Fleeting Guard",
+                  "Burst Asunder",
+                  "Shimmering Refraction"
+                ],
+                "tags": [
+                  "lethal"
+                ]
+              }
+            ]
+          }
+        ],
+        "sourceNote": "Sequential transcript review of all three games. Omnidex confirms Inaki 2–1. Card and player spelling normalized against the catalog and public decklists; gameplay remains commentary-sourced."
+      },
+      "evidence": {
+        "officialPairing": {
+          "stage": 1,
+          "round": 6,
+          "pairingId": 3
+        },
+        "games": [
+          {
+            "gameNumber": 1,
+            "resultSegments": [
+              6298,
+              6300,
+              6301
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  5709,
+                  5710,
+                  5747,
+                  5749,
+                  5750
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  5946,
+                  5947,
+                  5948,
+                  5949,
+                  5950,
+                  5951,
+                  5952,
+                  5953,
+                  5954,
+                  5955,
+                  5956,
+                  5957,
+                  5958,
+                  5959,
+                  5960,
+                  5961,
+                  5962
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  6122,
+                  6141,
+                  6241,
+                  6244,
+                  6246
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  6281,
+                  6282,
+                  6283,
+                  6284,
+                  6285,
+                  6286,
+                  6287,
+                  6288,
+                  6289,
+                  6290,
+                  6291,
+                  6292,
+                  6293,
+                  6294,
+                  6295,
+                  6296,
+                  6297,
+                  6298,
+                  6299,
+                  6300,
+                  6301
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 2,
+            "resultSegments": [
+              6771,
+              6772
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  6472,
+                  6473,
+                  6474,
+                  6475,
+                  6476,
+                  6477,
+                  6478
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  6650,
+                  6666,
+                  6677,
+                  6694,
+                  6696,
+                  6697
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  6722,
+                  6725,
+                  6727,
+                  6737,
+                  6742,
+                  6743
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  6757,
+                  6758,
+                  6770,
+                  6771
+                ]
+              }
+            ]
+          },
+          {
+            "gameNumber": 3,
+            "resultSegments": [
+              7108,
+              7109,
+              7110,
+              7113
+            ],
+            "beats": [
+              {
+                "order": 1,
+                "segments": [
+                  6796,
+                  6798,
+                  6800,
+                  6853,
+                  6858
+                ]
+              },
+              {
+                "order": 2,
+                "segments": [
+                  6936,
+                  6951,
+                  6952,
+                  6964,
+                  6965,
+                  6966,
+                  6967
+                ]
+              },
+              {
+                "order": 3,
+                "segments": [
+                  7008,
+                  7009,
+                  7011,
+                  7016,
+                  7018,
+                  7019,
+                  7020
+                ]
+              },
+              {
+                "order": 4,
+                "segments": [
+                  7100,
+                  7101,
+                  7102,
+                  7103,
+                  7104,
+                  7105,
+                  7106,
+                  7107,
+                  7108,
+                  7109,
+                  7110,
+                  7111,
+                  7112,
+                  7113,
+                  7128,
+                  7129,
+                  7130,
+                  7131,
+                  7132,
+                  7133,
+                  7134
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "findings": [
+    {
+      "round": 4,
+      "coverage": "Game 1 absent; game 2 tail and game 3 available.",
+      "gaps": [
+        {
+          "afterIndex": 4177,
+          "beforeIndex": 4178,
+          "from": "4:57:42",
+          "to": "5:29:59"
+        }
+      ],
+      "notes": [
+        "Game 2 explicitly brings score to 1–1 (4289–4290). Game 3 result explicitly Cashkidz 2–1 (4492).",
+        "Do not fabricate game 1 recap from score or retrospective comments.",
+        "Interview says Round 4 then Round 5 at4517/4520; official pairings and match commentary establish Round 4. Preserve spoken inconsistency."
+      ]
+    },
+    {
+      "round": 5,
+      "coverage": "Game 1 partial; game 2 early and final commentary only.",
+      "gaps": [
+        {
+          "afterIndex": 4548,
+          "beforeIndex": 4549,
+          "from": "6:14:10",
+          "to": "6:29:59"
+        },
+        {
+          "startIndex": 5347,
+          "endIndexInclusive": 5441,
+          "from": "6:59:59",
+          "to": "7:16:54",
+          "type": "repeated hallucinated Ascent Osaka Day numbering; not gameplay evidence"
+        },
+        {
+          "afterIndex": 5441,
+          "beforeIndex": 5442,
+          "from": "7:16:54",
+          "to": "7:30:00"
+        }
+      ],
+      "notes": [
+        "Official pairing Rty0–Neek01 conflicts with caster2–0 at5455. Preserve original words, document conflict, use official match score but no inferred game2 winner.",
+        "Most between-game sideboarding commentary is speculative. Only Noble Dissolution explicitly observed in game2 (5221).",
+        "Game1 concession occurs before Polar Depths resolution; avoid saying mill-out was observed."
+      ]
+    },
+    {
+      "round": 6,
+      "coverage": "All three games and winner interview sequentially reviewed.",
+      "notes": [
+        "G1 winner Miffy6300;G2 winner Inaki6771;G3winner Inaki7108–7113.",
+        "G1 private-card error reviewed by judges5765–5811; no match loss or stated penalty inferred.",
+        "Poitier, Afterlife's Conductor absent in older cache but verified in Miffy official decklist.",
+        "G2 Regal selection commentary changes repeatedly; candidate states only two removed and Shimmering left, not exact speculative selections.",
+        "R6 broadcast card count differs from current public API list in some commentary (e.g. Harrow counts); preserve commentary as observed, do not rewrite counts to fit list."
+      ]
+    }
+  ],
+  "unresolvedNames": [
+    {
+      "indices": [
+        4549,
+        5001
+      ],
+      "text": "gamble",
+      "possible": "Genbu",
+      "reason": "Context strongly suggests Genbu, but ordinary word left unchanged pending audio."
+    },
+    {
+      "indices": [
+        5654,
+        5655
+      ],
+      "text": "Bihun Knife 7777 / Inaki Fakker",
+      "reason": "Nickname introductions not fully verified; official display names used in candidates."
+    },
+    {
+      "indices": [
+        5947
+      ],
+      "text": "Magnificent Vitaria",
+      "reason": "Caster immediately corrects to Remnant of Will; retain correction sequence."
+    },
+    {
+      "indices": [
+        6915
+      ],
+      "text": "Mithril and Isenia",
+      "reason": "Likely Miffy plus connective speech, no safe exact correction."
+    }
+  ]
+}
