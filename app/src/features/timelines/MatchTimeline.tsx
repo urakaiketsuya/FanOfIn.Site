@@ -96,12 +96,16 @@ export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }
   const champions = useTimelineChampions(true);
   const maps = usePublishedData<BroadcastEventMaps>("broadcast-events", "/data/broadcast-events.json");
   const pairing = maps?.events.find(event => event.id === match.eventId)?.stages.flatMap(stage => stage.matches).find(pair => pair.recapId === match.id);
+  const officialWinner = pairing?.players.find(player => player.id === pairing.winner);
+  const winner = officialWinner
+    ? match.players.find(player => player.name.toLowerCase() === officialWinner.name.toLowerCase())?.id
+    : match.players.find(player => match.result.toLowerCase().startsWith(`${player.name.toLowerCase()} wins `))?.id;
   const spirits = Object.fromEntries((pairing?.players ?? []).map(player => [player.name.toLowerCase(), player.spirits ?? []]));
   return <header className="max-w-3xl rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 sm:p-6">
     <Link to={`/timelines?event=${encodeURIComponent(String(match.eventId ?? match.event))}`} className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">{match.event}</Link>
     <h1 className="mt-1 text-2xl font-bold">{match.players[0].name} vs. {match.players[1].name}</h1>
     <p className="mt-1 text-sm text-ctp-subtext1">{roundLabel(match.round)} · {match.games.length} {match.games.length === 1 ? "game recapped" : "games recapped"}</p>
-    <div className="mt-5"><MatchIdentity match={match} champions={champions} spirits={spirits} linked /></div>
+    <div className="mt-5"><MatchIdentity key={match.id} match={match} champions={champions} spirits={spirits} linked animate={!!champions && !!maps} winner={winner} /></div>
     <p className="mt-5 border-t border-ctp-surface1 pt-4 text-center text-lg font-semibold">{match.result}</p>
   </header>;
 }
