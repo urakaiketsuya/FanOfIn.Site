@@ -2630,6 +2630,16 @@ prior stopping point — `meta.json` self-corrects to the precise value once tha
 Verified locally: seeding populated all 20,705 cached bundles and the following incremental scan
 started at id ~59,901 (near the real ~60,729 frontier) instead of scanning from 2026's start.
 
+A restored automation cache can predate pairing repairs committed to Git. Every
+`readCachedBundle()` therefore reconciles valid stage/round responses with the published
+snapshot: cached results win for an existing key, while missing published rounds are retained.
+Unscoped error responses cannot replace valid evidence. The reconciliation is idempotent and
+does not mutate either input or roll back other event metadata. The daily refresh rebuilds
+broadcast event joins before committing its data so source snapshots and bracket maps agree.
+An unchanged event map retains its generation timestamp, keeping production builds clean.
+The 2026-11-01 release repair recovered 5,207 missing rounds across 1,136 events from the
+pre-refresh commit `e16fccbcf`, preserving current responses for overlapping keys.
+
 Deliberately not committing `pipeline/.cache/` itself to git instead of doing this: it changes on
 every pipeline run and git doesn't diff JSON blobs efficiently, so the repo/clone size would grow
 by roughly the full cache size every run, forever. The scheduled daily refresh (GitHub Actions)

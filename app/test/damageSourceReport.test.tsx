@@ -16,7 +16,8 @@ test('Storm Slime has access and conditional damage rather than a zero forecast'
   const forecast = report(['Storm Slime']);
   assert.ok(!forecast.audit.some(row => row.name === 'Covenant of Thorns'));
   const html = render(forecast);
-  assert.match(html, /39.9/);
+  assert.match(html, /4-card library/);
+  assert.match(html, /100.0%/);
   assert.match(html, /1 damage per banished Slime/);
   assert.doesNotMatch(html, /median|contain 10\+ damage|Damage coverage incomplete/);
   assert.match(html, /6 damage/);

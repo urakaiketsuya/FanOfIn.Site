@@ -11,7 +11,16 @@ const events = await Promise.all(ids.map(async id => {
   return buildBroadcastEventMap(source, recaps.matches.filter(m => m.eventId === id), spirits);
 }));
 events.sort((a, b) => b.date.localeCompare(a.date));
-const generatedAt = new Date().toISOString();
+// A production build must not dirty a verified checkout just to refresh a timestamp.
+let previous: { generatedAt: string; events: typeof events } | undefined;
+try {
+  previous = JSON.parse(await readFile(new URL('broadcast-events.json', data), 'utf8'));
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+}
+const generatedAt = previous && Number.isFinite(Date.parse(previous.generatedAt)) && JSON.stringify(previous.events) === JSON.stringify(events)
+  ? previous.generatedAt
+  : new Date().toISOString();
 await writeFile(new URL('broadcast-events.json', data), JSON.stringify({ generatedAt, events }));
 const manifest = JSON.parse(await readFile(new URL('manifest.json', data), 'utf8'));
 manifest['broadcast-events'] = generatedAt;

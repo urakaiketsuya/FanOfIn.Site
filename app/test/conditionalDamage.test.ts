@@ -2,12 +2,19 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { computeAggressionForecast } from "../src/lib/aggressionForecast";
+import { computeAggressionForecast as forecast } from "../src/lib/aggressionForecast";
 import { damageDistribution, type DamageGroup } from "../src/lib/damageDistribution";
 
 // Exact catalog text captured 2026-10-07; independent of pipeline/.cache.
 const cards = JSON.parse(readFileSync(new URL("./fixtures/damage-cards.json", import.meta.url), "utf8")) as Card[];
 const catalog = new Map(cards.map((card) => [card.name, card]));
+// These probability contracts use a complete 60-card library with inert filler.
+const computeAggressionForecast: typeof forecast = (main, cards, material, order) => {
+  const filler = { name: "Contract filler", types: ["ACTION"], subtypes: [], classes: [], elements: ["NORM"], effect: "" } as unknown as Card;
+  const remaining = 60 - main.reduce((sum, row) => sum + row.quantity, 0);
+  return forecast([...main, ...(remaining > 0 ? [{ name: filler.name, quantity: remaining }] : [])], new Map([...cards, [filler.name, filler]]), material, order);
+};
+
 const line = (name: string, quantity = 1) => ({ name, quantity });
 const ten = (main: ReturnType<typeof line>[], material: ReturnType<typeof line>[] = []) => computeAggressionForecast(main, catalog, material).points[1];
 

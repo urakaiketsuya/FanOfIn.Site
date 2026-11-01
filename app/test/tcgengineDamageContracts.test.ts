@@ -2,13 +2,20 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { computeAggressionForecast } from "../src/lib/aggressionForecast";
+import { computeAggressionForecast as forecast } from "../src/lib/aggressionForecast";
 import { damageDistribution } from "../src/lib/damageDistribution";
 
 // Reviewed outcome contracts, not generated snapshots or a live PHP dependency.
 const fixture = JSON.parse(readFileSync(new URL("./fixtures/tcgengine-damage-contracts.json", import.meta.url), "utf8"));
 const catalog = new Map<string, Card>(fixture.cards.map((card: Card) => [card.name, card]));
 const contracts = fixture.contracts;
+// These probability contracts use a complete 60-card library with inert filler.
+const computeAggressionForecast: typeof forecast = (main, cards, material, order) => {
+  const filler = { name: "Contract filler", types: ["ACTION"], subtypes: [], classes: [], elements: ["NORM"], effect: "" } as unknown as Card;
+  const remaining = 60 - main.reduce((sum, row) => sum + row.quantity, 0);
+  return forecast([...main, ...(remaining > 0 ? [{ name: filler.name, quantity: remaining }] : [])], new Map([...cards, [filler.name, filler]]), material, order);
+};
+
 const line = (name: string, quantity = 1) => ({ name, quantity });
 const rounded = (value: number) => Math.round(value * 10) / 10;
 

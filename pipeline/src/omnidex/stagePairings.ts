@@ -34,3 +34,17 @@ export async function fetchStagePairings(event: OmnidexEvent, existing: Response
   }
   return [...saved.values()].sort((a,b)=>(identity(a.stage)!-identity(b.stage)!) || (identity(a.round)!-identity(b.round)!));
 }
+
+/** Reconcile a restored automation cache with pairing repairs already published in Git.
+ * Cached responses win for the same stage/round; only absent published rounds are added.
+ */
+export function retainPublishedPairings(current: Response[], published: Response[]): Response[] {
+  const valid = (r: Response): r is OmnidexPairingsResponse => !('error' in r) && identity(r.stage) !== undefined && identity(r.round) !== undefined && Array.isArray(r.pairings);
+  const saved = new Map(current.filter(valid).map(r => [key(r), r]));
+  let recovered = false;
+  for (const round of published.filter(valid)) {
+    if (!saved.has(key(round))) { saved.set(key(round), round); recovered = true; }
+  }
+  if (!recovered) return current;
+  return [...saved.values()].sort((a,b) => (identity(a.stage)! - identity(b.stage)!) || (identity(a.round)! - identity(b.round)!));
+}

@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import type {OmnidexEvent,OmnidexPairingsResponse} from '@gatcg/shared';
-import {fetchStagePairings,missingStagePairings} from './stagePairings.js';
+import {fetchStagePairings,missingStagePairings,retainPublishedPairings} from './stagePairings.js';
 const event={id:1,swissRounds:12,stages:[{id:1,status:'complete',type:'swiss'},{id:2,status:'complete',type:'single-elimination'}]} as OmnidexEvent;
 const round=(stage:number,id:number,total=2)=>({stage:{id:stage},round:{id,total},pairings:[{id:1,status:'complete',pairing:[{id:10,status:'winner'},{id:20,status:'loser'}]}]}) as unknown as OmnidexPairingsResponse;
 test('recovers missing Swiss stage, preserves cut, follows actual totals and is idempotent',async()=>{
@@ -26,4 +26,16 @@ test('repairs holes, deduplicates cached rounds and keeps fast snapshots marked 
 test('rejects missing round totals and leaves unknown-stage legacy bundles untouched',async()=>{
  await assert.rejects(fetchStagePairings(event,[],async()=>({stage:1,round:1,pairings:[]})),/Invalid round total/);
  assert.deepEqual(await fetchStagePairings({...event,stages:[]},[],async()=>{throw Error('unexpected');}),[]);
+});
+
+test('stale automation cache retains published repairs without replacing current results', () => {
+ const current = [round(2,1), {error:'Legacy unscoped fetch failed'}];
+ const published = [round(1,1),round(1,2),round(2,1),round(2,2)];
+ const original = structuredClone(current);
+ const recovered = retainPublishedPairings(current,published);
+ assert.equal(recovered.length,4);
+ assert.equal(recovered[2],current[0]);
+ assert.deepEqual(current,original);
+ assert.equal(retainPublishedPairings(recovered,published),recovered);
+ assert.equal(retainPublishedPairings(current,[{error:'Unavailable'}]),current);
 });

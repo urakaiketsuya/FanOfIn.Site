@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "npm run dev --workspace=app",
     "build": "npm run pipeline:broadcast-events && npm run build --workspace=app",
-    "pipeline": "npm run start --workspace=pipeline",
+    "pipeline": "npm run start --workspace=pipeline && npm run pipeline:broadcast-events",
     "pipeline:analysis": "GATCG_ANALYSIS_ONLY=1 npm run start --workspace=pipeline",
     "pipeline:backfill-year": "GATCG_OMNIDEX_MODE=backfill GATCG_FETCH_ONLY=1 npm run start --workspace=pipeline",
     "pipeline:syd:harvest": "GATCG_SYD_MODE=harvest npm run start --workspace=pipeline",

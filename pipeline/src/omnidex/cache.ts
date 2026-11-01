@@ -1,3 +1,4 @@
+import { retainPublishedPairings } from "./stagePairings.js";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
 import { readFile, writeFile, mkdir, readdir, copyFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -17,7 +18,7 @@ import type {
 const CACHE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../.cache/omnidex");
 const EVENTS_DIR = path.join(CACHE_DIR, "events");
 const META_PATH = path.join(CACHE_DIR, "meta.json");
-/** The published mirror of EVENTS_DIR — verified byte-for-byte identical to the cache across all 20,705 events (see docs/CALCULATIONS.md), since every cached bundle that ever got published went out untouched. Used to bootstrap a fresh checkout's cache instead of re-fetching from Omnidex. */
+/** Published event snapshots seed fresh caches and preserve pairing repairs missing from restored automation caches. */
 const PUBLISHED_DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
 const PUBLISHED_EVENTS_DIR = path.join(PUBLISHED_DATA_DIR, "events");
 const PUBLISHED_INDEX_PATH = path.join(PUBLISHED_DATA_DIR, "index.json");
@@ -96,7 +97,14 @@ function bundlePath(id: number): string {
 
 export async function readCachedBundle(id: number): Promise<OmnidexEventBundle | null> {
   try {
-    return JSON.parse(await readFile(bundlePath(id), "utf-8")) as OmnidexEventBundle;
+    const bundle = JSON.parse(await readFile(bundlePath(id), "utf-8")) as OmnidexEventBundle;
+    try {
+      const published = JSON.parse(await readFile(path.join(PUBLISHED_EVENTS_DIR, `${id}.json`), "utf-8")) as OmnidexEventBundle;
+      bundle.pairingsByRound = retainPublishedPairings(bundle.pairingsByRound, published.pairingsByRound);
+    } catch {
+      // A newly discovered event may not have a published snapshot yet.
+    }
+    return bundle;
   } catch {
     return null;
   }
