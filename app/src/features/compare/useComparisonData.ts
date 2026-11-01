@@ -147,14 +147,14 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
           new Set(
             decks.flatMap((d) => {
               const list = decklists.get(d.key);
-              return list ? list[sectionKey].map((l) => l.card) : [];
+              return list ? (list[sectionKey] ?? []).map((l) => l.card) : [];
             }),
           ),
         );
         const cards: ComparisonCardEntry[] = namesInSection.map((name) => {
           const quantities = decks.map((d) => {
             const list = decklists.get(d.key);
-            const line = list?.[sectionKey].find((l) => l.card === name);
+            const line = list?.[sectionKey]?.find((l) => l.card === name);
             return line?.quantity ?? 0;
           });
           const presentCount = quantities.filter((q) => q > 0).length;

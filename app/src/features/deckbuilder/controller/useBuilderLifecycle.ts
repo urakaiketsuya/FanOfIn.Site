@@ -80,7 +80,7 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     notify({ message: `Decklist imported.${banned.size ? ` Contains ${banned.size} banned card${banned.size === 1 ? "" : "s"}; review the deck warnings.` : ""}${skippedLines.length ? ` ${skippedLines.length} lines were skipped.` : ""}`, tone: banned.size || skippedLines.length ? "warning" : "success", duration: banned.size || skippedLines.length ? null : undefined, key: "import" });
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
-    const selections = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => decklist[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));
+    const selections = selectionsToMaps((["main", "material", "sideboard", "song"] as const).flatMap((section) => (decklist[section] ?? []).map((line) => ({ name: line.card, quantity: line.quantity, section }))));
     setPrintings(extractDeckPrintings(decklist));
     setLockedCards(selections.cards);
     setLockedSections(selections.sections);

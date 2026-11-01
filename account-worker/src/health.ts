@@ -5,6 +5,7 @@ export const REQUIRED_SCHEMA_VERSION = "0036";
 
 export interface ServiceHealth {
   success: boolean;
+  capabilities: { songDeck: boolean };
   service: "fanofin-accounts";
   schema: {
     ready: boolean;
@@ -56,12 +57,14 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
     ]);
     return {
       success: true,
+      capabilities: { songDeck: true },
       service: "fanofin-accounts",
       schema: { ready: true, requiredVersion: REQUIRED_SCHEMA_VERSION },
     };
   } catch {
     return {
       success: false,
+      capabilities: { songDeck: false },
       service: "fanofin-accounts",
       schema: { ready: false, requiredVersion: REQUIRED_SCHEMA_VERSION },
     };

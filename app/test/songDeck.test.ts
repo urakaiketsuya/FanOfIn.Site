@@ -7,7 +7,7 @@ import { isSongCard } from "../src/lib/songDeck.ts";
 import { buildChosenDeck } from "../src/features/deckbuilder/engine/buildChosenDeck.ts";
 import { decodeCardSelections, encodeCardSelections } from "../src/features/deckbuilder/persistence/builderPersistence.ts";
 
-const card = (name: string, types: string[], subtypes: string[] = []) => ({ name, types, subtypes }) as Card;
+const card = (name: string, types: string[], subtypes: string[] = []) => ({ name, types, subtypes, level: name === "Casella, Volant Songstress" ? 1 : null }) as Card;
 const songs = ["Skyward Requiem", "Chromatic", "Aiss Yustera", "Extra Song", "Fifth Song"];
 const catalog = new Map<string, Card>([
   ["Casella, Volant Songstress", card("Casella, Volant Songstress", ["CHAMPION"])],
@@ -78,4 +78,11 @@ test("Song cards survive share-link encoding and stay out of the built Main deck
   const build = buildChosenDeck(new Map([["Chromatic", 1], ["Ally", 4]]), new Map([["Chromatic", "song" as const], ["Ally", "main" as const]]), null, catalog);
   assert.deepEqual(build.main.map(line => line.cardName), ["Ally"]);
   assert.equal([...build.material, ...build.sideboard].length, 0);
+});
+
+
+test("older saved decks can initialize Songs once level one Casella is present", () => {
+  const { song: _song, ...legacy } = deck();
+  assert.deepEqual(add(legacy, "Chromatic").song, [{ card: "Chromatic", quantity: 1 }]);
+  assert.equal("song" in legacy, false);
 });

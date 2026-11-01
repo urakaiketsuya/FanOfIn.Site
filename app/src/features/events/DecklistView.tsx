@@ -131,11 +131,12 @@ export default function DecklistView({
       main: sortDeckCardsByElement(filter(decklist.main), displayCardsByName),
       material: filter(decklist.material),
       sideboard: filter(decklist.sideboard),
+      song: filter(decklist.song ?? []),
       trailing: displayTrailingSections.map((section) => ({ ...section, lines: filter(section.lines) })),
     };
   }, [decklist, displayCardsByName, displayTrailingSections, extraSections, missingCardNames, missingCopies, showMissingOnly, ownershipByName]);
 
-  const arrangedSections = useMemo(() => arrangeDeckSections([...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing], displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting), [visibleSections, displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting]);
+  const arrangedSections = useMemo(() => arrangeDeckSections([...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, { title: "Song", lines: visibleSections.song }, ...visibleSections.trailing], displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting), [visibleSections, displayCardsByName, priceByName, displayPrefs.grouping, displayPrefs.sorting]);
 
   return (
     <DeckSectionExpansion><div data-component="DecklistView">

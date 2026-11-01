@@ -46,6 +46,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     championName: recommendationsEnabled ? championName : null,
     format: deckFormat,
     includeDecodedDecks: false,
+    selectedNames: [...lockedCards.keys()].map(name => name.includes("\0") ? name.split("\0")[1] : name).concat([...maybeboard.keys()]),
     needs: {
       archetypes: recommendationsEnabled || tab === "tools" || archetypeId !== null,
       cardImpact: false,
@@ -210,6 +211,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   ));
 
   return {
+    previewRecords: builderData.previews, previewEnabled: builderData.previewEnabled, setPreviewEnabled: builderData.setPreviewEnabled, previewError: builderData.previewError, previewLoading: builderData.previewLoading, retryPreviews: builderData.retryPreviews,
     collectionOwnedByName, collectionLoaded, collectionError, retryCollection,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,

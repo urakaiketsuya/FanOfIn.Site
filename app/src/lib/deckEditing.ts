@@ -3,7 +3,7 @@ import { deckDestinationEligibility, type EditableDeckDestination } from "./deck
 import { isSongCard, SONG_DECK_MAX_DIFFERENT_CARDS, unlocksSongDeck } from "./songDeck";
 
 export type DeckEditSection = EditableDeckDestination;
-/** `song` exists only on decks that can hold a Song deck (the Deck Builder); saved decks have no Song deck yet. */
+/** Song is optional for older saved decks. */
 export type EditableDeck = Record<Exclude<DeckEditSection, "song">, OmnidexDecklistCardLine[]> & { song?: OmnidexDecklistCardLine[] };
 export type DeckEdit =
   | { type: "replace-main"; name: string; replacement: string; quantity: number }
@@ -13,15 +13,14 @@ export type DeckEdit =
   | { type: "remove"; section: DeckEditSection; name: string }
   | { type: "move"; printings?: CardPrintingAllocation[]; section: DeckEditSection; name: string; destination: DeckEditSection; quantity: number };
 
-/** The Song deck is open to edits only while a Casella Champion is in Material. Cards already in it stay editable. */
+/** The Song deck is open to edits only while level 1 Casella is in Material. Cards already in it stay editable. */
 export function songDeckAvailable(deck: EditableDeck, catalog: ReadonlyMap<string, Card>): boolean {
-  return deck.song !== undefined && deck.material.some(line => unlocksSongDeck(catalog.get(line.card)));
+  return deck.material.some(line => unlocksSongDeck(catalog.get(line.card)));
 }
 
 function canPlaceInSongDeck(deck: EditableDeck, catalog: ReadonlyMap<string, Card>, name: string): boolean {
-  if (deck.song === undefined) return false;
-  if (deck.song.some(line => line.card === name)) return true;
-  return songDeckAvailable(deck, catalog) && deck.song.length < SONG_DECK_MAX_DIFFERENT_CARDS;
+  if (deck.song?.some(line => line.card === name)) return true;
+  return songDeckAvailable(deck, catalog) && (deck.song?.length ?? 0) < SONG_DECK_MAX_DIFFERENT_CARDS;
 }
 
 /** Immutable, section-aware edits. Limits are validation feedback, never silent truncation. */
@@ -56,7 +55,7 @@ export function editDeck(deck: EditableDeck, edit: DeckEdit, catalog: ReadonlyMa
   if (edit.type === "remove" && !current) return deck;
   if (edit.type === "quantity" && current?.quantity === edit.quantity && edit.printings === undefined) return deck;
   const next = Object.fromEntries(Object.entries(deck).map(([section, lines]) => [section, lines.map((line) => ({ ...line }))])) as EditableDeck;
-  const source = next[edit.section]!;
+  const source = next[edit.section] ??= [];
   const index = source.findIndex((line) => line.card === edit.name);
   if (edit.type === "quantity") {
     if (index >= 0) {
@@ -73,7 +72,7 @@ export function editDeck(deck: EditableDeck, edit: DeckEdit, catalog: ReadonlyMa
     if (current!.printings) source[index].printings = remaining;
     source[index].quantity -= edit.quantity;
     if (source[index].quantity === 0) source.splice(index, 1);
-    const destination = next[edit.destination]!;
+    const destination = next[edit.destination] ??= [];
     const target = destination.find((line) => line.card === edit.name);
     if (target) { target.quantity += edit.quantity; if (moved.length) target.printings = mergePrintingAllocations([...(target.printings ?? []), ...moved]); }
     else destination.push({ card: edit.name, quantity: edit.quantity, ...(moved.length ? { printings: moved } : {}) });

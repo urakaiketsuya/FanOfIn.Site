@@ -31,7 +31,7 @@ export function decklistToWorkspace(
     else if (!highestLevelChampion || (card.level ?? 0) > (highestLevelChampion.level ?? 0)) highestLevelChampion = card;
   }
   if (!championName && highestLevelChampion) championName = highestLevelChampion.name.split(",")[0].trim();
-  const lines = (section: keyof OmnidexDecklist) => decklist[section].map(({ card, quantity }) => ({ name: canonicalName(card), quantity }));
+  const lines = (section: keyof OmnidexDecklist) => (decklist[section] ?? []).map(({ card, quantity }) => ({ name: canonicalName(card), quantity }));
   return {
     printings: extractDeckPrintings(decklist),
     source,
@@ -41,6 +41,7 @@ export function decklistToWorkspace(
     format: format === "PANTHEON" ? "PANTHEON" : "STANDARD",
     championName,
     spiritName,
+    song: lines("song"),
     main: lines("main"),
     material: lines("material"),
     sideboard: lines("sideboard"),

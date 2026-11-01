@@ -22,7 +22,7 @@ export function mergePrintingAllocations(values: CardPrintingAllocation[]): Card
 }
 export function extractDeckPrintings(deck: OmnidexDecklist & { maybeboard?: OmnidexDecklistCardLine[] }): DeckPrintings {
   const result: DeckPrintings = {};
-  for (const section of ["main", "material", "sideboard", "maybeboard"] as const) {
+  for (const section of ["main", "material", "sideboard", "song", "maybeboard"] as const) {
     for (const line of deck[section] ?? []) {
       if (!line.printings?.length) continue;
       const rows = result[section] ??= Object.create(null) as Record<string, CardPrintingAllocation[]>;
@@ -35,7 +35,7 @@ export function extractDeckPrintings(deck: OmnidexDecklist & { maybeboard?: Omni
 }
 export function withDeckPrintings<T extends OmnidexDecklist & { maybeboard?: OmnidexDecklistCardLine[] }>(deck: T, printings: DeckPrintings): T {
   const result = { ...deck };
-  for (const section of ["main", "material", "sideboard", "maybeboard"] as const) {
+  for (const section of ["main", "material", "sideboard", "song", "maybeboard"] as const) {
     const lines = deck[section];
     if (!lines) continue;
     Object.assign(result, { [section]: lines.map(line => {

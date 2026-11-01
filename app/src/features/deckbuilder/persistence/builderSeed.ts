@@ -46,6 +46,7 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
   const workspace = loadActiveDeckWorkspace(storage);
   if (workspace?.source === "review" && workspace.championName) {
     const locked = selectionsToMaps([
+      ...(workspace.song ?? []).map((line) => ({ ...line, section: "song" as const })),
       ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
       ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
       ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),

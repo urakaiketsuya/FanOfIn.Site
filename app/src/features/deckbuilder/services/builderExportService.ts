@@ -39,6 +39,7 @@ export function exportBuilderTts(decklist: OmnidexDecklist, cardsByName: Map<str
     { label: "Main", lines: decklist.main },
     { label: "Material", lines: decklist.material },
     { label: "Sideboard", lines: decklist.sideboard },
+    { label: "Song", lines: decklist.song ?? [] },
   ], cardsByName);
   downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
 }

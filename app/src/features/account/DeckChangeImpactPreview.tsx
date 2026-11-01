@@ -91,8 +91,8 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {changes.slice(0, 4).map((change) => {
-            const before = decklist[change.section].find((line) => line.card === change.cardName)?.quantity ?? 0;
-            const after = next[change.section].find((line) => line.card === change.cardName)?.quantity ?? 0;
+            const before = (decklist[change.section] ?? []).find((line) => line.card === change.cardName)?.quantity ?? 0;
+            const after = (next[change.section] ?? []).find((line) => line.card === change.cardName)?.quantity ?? 0;
             return <VisualCardTile key={`${change.section}:${change.cardName}`} line={{ card: change.cardName, quantity: before }} card={cardsByName.get(change.cardName)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} footer={<div className="mt-1.5"><p className="truncate text-xs font-medium text-ctp-text">{change.cardName}</p><p className="mt-1 border-t border-ctp-surface0 pt-1 text-[11px] text-ctp-yellow">{before}× → {after}×</p></div>} />;
           })}
         </div>

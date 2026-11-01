@@ -240,6 +240,7 @@ export function canonicalizeSavedDecklist(decklist: OmnidexDecklist): OmnidexDec
     main: normalizeLines(decklist.main),
     material: normalizeLines(decklist.material),
     sideboard: normalizeLines(decklist.sideboard),
+    ...(decklist.song?.length ? { song: normalizeLines(decklist.song) } : {}),
   };
 }
 

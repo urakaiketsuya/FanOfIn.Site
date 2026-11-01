@@ -1,8 +1,10 @@
+import { cardNameKey, officialCardNames } from "../../lib/previewCards";
+import { mapsToSelections as selectedLines, selectionsToMaps as selectedMaps } from "./model/builderTypes";
 import { automaticDeckSection } from "../../lib/deckEditing";
 import { useBuilderEditing } from "./controller/useBuilderEditing";
 import { useEffect, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import type { DeckFormat } from "@gatcg/shared";
+import { mergePrintingAllocations, type DeckPrintings, type DeckFormat } from "@gatcg/shared";
 import { useTabParam } from "../../lib/useTabParam";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
@@ -19,6 +21,7 @@ export type BuilderTab = BuilderWorkbenchView;
 export type BuilderIntent = "seed" | "scratch";
 import type { BuilderWorkbenchView } from "./components/BuilderWorkbenchNav";
 
+const EMPTY_PRINTINGS: DeckPrintings = {};
 const TAB_KEYS: BuilderTab[] = ["build", "tools", "copy", "log"];
 
 export function useDeckBuilderController() {
@@ -95,6 +98,7 @@ export function useDeckBuilderController() {
   }
 
   const {
+    previewLoading, previewRecords, previewEnabled, setPreviewEnabled, previewError, retryPreviews,
     collectionOwnedByName, collectionLoaded, collectionError, retryCollection,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
@@ -107,6 +111,35 @@ export function useDeckBuilderController() {
     rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
     maybeboard, spiritElement, recommendationsEnabled,
   });
+  const { setLockedCards: setCanonicalCards, setLockedSections: setCanonicalSections, setMaybeboard: setCanonicalMaybeboard, setPrintings: setCanonicalPrintings } = workflow;
+  const selectedPrintings = workflow.state.printings ?? EMPTY_PRINTINGS;
+  useEffect(() => {
+    const canonical = officialCardNames([...liveCatalogByName.values()], previewRecords);
+    const selected = selectedLines(lockedCards, lockedSections);
+    const resolved = selected.map(line => ({ ...line, name: canonical.get(cardNameKey(line.name)) ?? line.name }));
+    if (resolved.some((line, i) => line.name !== selected[i].name)) {
+      const maps = selectedMaps(resolved);
+      setCanonicalCards(maps.cards); setCanonicalSections(maps.sections);
+    }
+    if ([...maybeboard.keys()].some(name => canonical.has(cardNameKey(name)) && canonical.get(cardNameKey(name)) !== name)) {
+      const next = new Map<string, number>();
+      for (const [name, quantity] of maybeboard) {
+        const resolvedName = canonical.get(cardNameKey(name)) ?? name;
+        next.set(resolvedName, (next.get(resolvedName) ?? 0) + quantity);
+      }
+      setCanonicalMaybeboard(next);
+    }
+    const printings: DeckPrintings = {};
+    for (const section of Object.keys(selectedPrintings) as (keyof DeckPrintings)[]) {
+      const rows: NonNullable<DeckPrintings[typeof section]> = {};
+      for (const [name, allocations] of Object.entries(selectedPrintings[section] ?? {})) {
+        const key = cardNameKey(canonical.get(cardNameKey(name)) ?? name);
+        rows[key] = mergePrintingAllocations([...(rows[key] ?? []), ...allocations]);
+      }
+      printings[section] = rows;
+    }
+    if (JSON.stringify(printings) !== JSON.stringify(selectedPrintings)) setCanonicalPrintings(printings);
+  }, [liveCatalogByName, previewRecords, lockedCards, lockedSections, maybeboard, selectedPrintings, setCanonicalCards, setCanonicalSections, setCanonicalMaybeboard, setCanonicalPrintings]);
   const editor = useBuilderEditing(workflow, catalogByName, deckFormat);
   function addCard(name: string, quantity = 1, override?: "automatic" | "maybeboard") {
     if (!cardNameSet.has(name)) return;
@@ -178,6 +211,7 @@ export function useDeckBuilderController() {
 
   return {
     sessionRecoveryAvailable,
+    previewLoading, previewRecords, previewEnabled, setPreviewEnabled, previewError, retryPreviews,
     collectionOwnedByName, collectionLoaded, collectionError, retryCollection, identityElements,
     editor,
     recommendationsEnabled,

@@ -57,6 +57,7 @@ test("health verifies the latest required account schema without exposing data",
   assert.deepEqual(await serviceHealth({ ACCOUNT_DB: database } as Env), {
     success: true,
     service: "fanofin-accounts",
+    capabilities: { songDeck: true },
     schema: { ready: true, requiredVersion: REQUIRED_SCHEMA_VERSION },
   });
   assert.match(queries[0], /profile_discoverable/);

@@ -2,7 +2,7 @@ import { withDeckPrintings, type DeckPrintings } from "@gatcg/shared";
 import { useMemo } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildToDecklist } from "../engine/builderSelectors";
-import type { LockedSection } from "../model/builderTypes";
+import { mapsToSelections, type LockedSection } from "../model/builderTypes";
 import { computeNewReleaseCards } from "../newReleaseCards";
 import type { SuggestedBuild } from "../useSuggestedBuild";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "../validateDeck";
@@ -76,6 +76,7 @@ export function useBuilderPresentationModel({
   );
 
   useBuilderWorkspacePersistence({
+    song: mapsToSelections(lockedCards, lockedSections).filter(line => line.section === "song"),
     printings,
     championName,
     spiritName: spiritFilter,
@@ -93,8 +94,9 @@ export function useBuilderPresentationModel({
       .filter((card): card is Card => card !== undefined);
     return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames, deckFormat);
   }, [buildLines, catalogByName, identityElements, deckFormat]);
-  const decklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build), printings ?? {}), [build, printings]);
-  const keptDecklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build, true), printings ?? {}), [build, printings]);
+  const song = useMemo(() => mapsToSelections(lockedCards, lockedSections).filter(line => line.section === "song").map(line => ({ card: line.name, quantity: line.quantity })), [lockedCards, lockedSections]);
+  const decklist: OmnidexDecklist = useMemo(() => withDeckPrintings({ ...buildToDecklist(build), ...(song.length ? { song } : {}) }, printings ?? {}), [build, printings, song]);
+  const keptDecklist: OmnidexDecklist = useMemo(() => withDeckPrintings({ ...buildToDecklist(build, true), ...(song.length ? { song } : {}) }, printings ?? {}), [build, printings, song]);
   const validation = useMemo(
     () => validateDeck(
       { main: build.main, material: build.material, sideboard: build.sideboard },

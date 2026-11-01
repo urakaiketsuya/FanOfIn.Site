@@ -1,3 +1,4 @@
+import { usePreviewCatalog } from "./usePreviewCatalog";
 import { useMemo } from "react";
 import { buildSpiritCanonicalNames, type DeckFormat } from "@gatcg/shared";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../../community/data";
@@ -29,12 +30,13 @@ const ALL_DATA_NEEDS: Required<DeckBuilderDataNeeds> = {
 };
 
 /** External evidence gateway for the builder. It owns retrieval and source fallback policy, not selections or recommendation logic. */
-export function useDeckBuilderData({ championName, format, includeDecodedDecks, needs = ALL_DATA_NEEDS }: { championName: string | null; format: DeckFormat; includeDecodedDecks: boolean; needs?: DeckBuilderDataNeeds }) {
+export function useDeckBuilderData({ championName, format, includeDecodedDecks, needs = ALL_DATA_NEEDS, selectedNames = [] }: { championName: string | null; format: DeckFormat; includeDecodedDecks: boolean; needs?: DeckBuilderDataNeeds; selectedNames?: string[] }) {
   const hasChampion = championName !== null;
   const popularityIndex = useDeckPopularityIndexData(hasChampion);
   const liveCatalog = useCardCatalog();
   const liveCatalogByName = useMemo(() => new Map(liveCatalog.map((card) => [card.name, card])), [liveCatalog]);
-  const catalog = liveCatalog;
+  const preview = usePreviewCatalog(liveCatalog, selectedNames);
+  const catalog = preview.catalog;
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
@@ -61,7 +63,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
     popularityIndex,
     liveCatalog,
     liveCatalogByName,
-    catalog,
+    ...preview,
     catalogByName,
     spiritCanonicalNames,
     collection,

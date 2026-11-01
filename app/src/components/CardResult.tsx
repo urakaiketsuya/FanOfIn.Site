@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
+import { isPreviewCard } from "../lib/previewCards";
 import { Link } from "react-router-dom";
 import CardArtTile from "./CardArtTile";
 
@@ -13,7 +14,8 @@ export default function CardResult({ card, name, editionUuid, compactOnMobile = 
   return <article data-component="CardResult" className={`${compactOnMobile ? "grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 sm:block" : ""} min-w-0 overflow-hidden rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : "border-ctp-surface1"}`}>
     {onSelect ? <button type="button" className={actionClass} aria-pressed={!!selected} aria-label={`${selected ? "Deselect" : "Select"} ${name}`} onClick={onSelect}>{content}<span className="flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-2 text-sm text-ctp-blue">{selected ? "✓ Selected" : "Select card"}</span></button>
       : onManage ? <button type="button" className={actionClass} aria-label={`Manage ${name}`} onClick={onManage}>{content}</button>
-      : card ? <Link className={actionClass} to={`/cards/${card.slug}`} target={newTab ? "_blank" : undefined} rel={newTab ? "noreferrer" : undefined}>{content}{newTab && <span className="sr-only">Open card details in a new tab</span>}</Link> : content}
+      : card && !isPreviewCard(card) ? <Link className={actionClass} to={`/cards/${card.slug}`} target={newTab ? "_blank" : undefined} rel={newTab ? "noreferrer" : undefined}>{content}{newTab && <span className="sr-only">Open card details in a new tab</span>}</Link> : content}
+    {isPreviewCard(card) && <span className="text-xs text-ctp-subtext1">Preview</span>}
     {compactOnMobile ? <div className="min-w-0">{children}</div> : children}
   </article>;
 }

@@ -23,6 +23,14 @@ if (typeof window !== "undefined") {
 }
 
 async function accountRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  // Older deployed services discard unknown deck sections. Fail before writing.
+  if (typeof init?.body === "string" && path.startsWith("/v1/me/decks")) {
+    const input = JSON.parse(init.body);
+    if (input.decklist?.song?.length) {
+      const health = await performAccountRequest<{ capabilities?: { songDeck?: boolean } }>("/health");
+      if (!health.capabilities?.songDeck) throw new AccountApiError(409, "Song deck saving is not available yet. Your draft is still here.");
+    }
+  }
   const cacheable = !init?.method && path === "/v1/me/collection";
   if ((init?.method && init.method !== "GET") || path.startsWith("/v1/auth/")) collectionReads.clear();
   const existing = cacheable ? collectionReads.get(path) : undefined;

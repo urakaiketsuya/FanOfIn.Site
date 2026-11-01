@@ -52,7 +52,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   function addSelected(quantity: number) {
     const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity: sectionFor(name) === "song" ? 1 : quantity}));
     const songNames = additions.filter(item => item.section === "song" && !(deck.song ?? []).some(line => line.card === item.name)).map(item => item.name);
-    if (songNames.length && !songDeckAvailable(deck, catalog)) { setSelectionError("Add a Casella Champion to the Material Deck to use the Song Deck."); return; }
+    if (songNames.length && !songDeckAvailable(deck, catalog)) { setSelectionError("Add level 1 Casella to the Material Deck to use the Song Deck."); return; }
     if (songNames.length && (deck.song ?? []).length + songNames.length > SONG_DECK_MAX_DIFFERENT_CARDS) { setSelectionError(`The Song Deck holds at most ${SONG_DECK_MAX_DIFFERENT_CARDS} different Song cards.`); return; }
     const invalid = additions.filter(item => !deckDestinationEligibility(catalog.get(item.name), item.section).allowed);
     if (invalid.length) { setSelectionError(`Cannot add ${invalid.map(item=>item.name).join(", ")} to this destination. Choose another destination or deselect these cards.`); return; }

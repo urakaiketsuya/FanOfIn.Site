@@ -21,6 +21,7 @@ export interface DeckWorkspace {
   format: DeckFormat;
   championName: string | null;
   spiritName: string | null;
+  song?: WorkspaceCardLine[];
   main: WorkspaceCardLine[];
   material: WorkspaceCardLine[];
   sideboard: WorkspaceCardLine[];
@@ -48,6 +49,7 @@ export function loadActiveDeckWorkspace(storage: StorageLike): DeckWorkspace | n
       format: parsed.format === "PANTHEON" ? "PANTHEON" : "STANDARD",
       championName: parsed.championName ?? null,
       spiritName: parsed.spiritName ?? null,
+      song: validLines(Array.isArray(parsed.song) ? parsed.song : []),
       main: validLines(parsed.main),
       material: validLines(parsed.material),
       sideboard: validLines(parsed.sideboard),

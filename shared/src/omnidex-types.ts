@@ -159,6 +159,8 @@ export interface OmnidexDecklistCardLine {
  * the CHAMPION-typed entries.
  */
 export interface OmnidexDecklist {
+  /** Optional unlockable Song deck. Excluded from main/material statistical identity. */
+  song?: OmnidexDecklistCardLine[];
   main: OmnidexDecklistCardLine[];
   material: OmnidexDecklistCardLine[];
   sideboard: OmnidexDecklistCardLine[];

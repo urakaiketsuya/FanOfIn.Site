@@ -92,7 +92,7 @@ export default function MyDeckDetail() {
   const editedDecklist = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const maybeboardLines = useMemo(() => parseDecklist(`Main\n${maybeboardText}`).decklist.main, [maybeboardText]);
   const trimPreview = useMemo(() => {
-    const affected = EDIT_SECTIONS.flatMap((section) => editedDecklist[section.key]).filter((line) => line.quantity > trimMax);
+    const affected = EDIT_SECTIONS.flatMap((section) => (editedDecklist[section.key] ?? [])).filter((line) => line.quantity > trimMax);
     return { affected, copiesRemoved: affected.reduce((sum, line) => sum + line.quantity - trimMax, 0) };
   }, [editedDecklist, trimMax]);
   const editedCardNames = useMemo(() => [...editedDecklist.main, ...editedDecklist.material, ...editedDecklist.sideboard].map((line) => line.card), [editedDecklist]);
@@ -100,7 +100,7 @@ export default function MyDeckDetail() {
   const editedChampionName = useMemo(() => findDeckChampionName(editedDecklist.material, editedCardsByName)?.split(",")[0].trim() ?? null, [editedDecklist.material, editedCardsByName]);
   const editedCardChangeCount = useMemo(() => {
     if (!deck) return 0;
-    const quantities = (decklist: OmnidexDecklist) => new Map(EDIT_SECTIONS.flatMap(({ key }) => decklist[key].map((line) => [`${key}:${line.card}`, JSON.stringify([line.quantity, line.printings ?? []])] as const)));
+    const quantities = (decklist: OmnidexDecklist) => new Map(EDIT_SECTIONS.flatMap(({ key }) => (decklist[key] ?? []).map((line) => [`${key}:${line.card}`, JSON.stringify([line.quantity, line.printings ?? []])] as const)));
     const before = quantities(deck.decklist);
     const after = quantities(editedDecklist);
     return new Set([...before.keys(), ...after.keys()]).size === 0 ? 0 : [...new Set([...before.keys(), ...after.keys()])].filter((key) => before.get(key) !== after.get(key)).length;
@@ -234,7 +234,7 @@ export default function MyDeckDetail() {
     const initial: EditableDeck = { ...editedDecklist, maybeboard: maybeboardLines };
     let printingConflict = false;
     const next = cards.reduce((current, selected) => {
-      const quantity = current[selected.section].find((line) => line.card === selected.name)?.quantity;
+      const quantity = (current[selected.section] ?? []).find((line) => line.card === selected.name)?.quantity;
       if (quantity === undefined) return current;
       const action = makeAction(selected, quantity);
       const result = editDeck(current, action, catalogByName);
@@ -268,7 +268,7 @@ export default function MyDeckDetail() {
   function trimToMaxCopies(max: number) {
     const decklist = parseDecklist(deckText).decklist;
     if ([...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => (line.printings ?? []).reduce((sum, p) => sum + p.quantity, 0) > max)) { setNotice("Choose which printings to keep on each card before trimming."); return; }
-    for (const section of EDIT_SECTIONS) for (const line of decklist[section.key]) line.quantity = Math.min(line.quantity, max);
+    for (const section of EDIT_SECTIONS) for (const line of (decklist[section.key] ?? [])) line.quantity = Math.min(line.quantity, max);
     commitEdit(buildDecklistText(decklist));
     setNotice(`Trimmed every card to at most ${max}x.`);
     trackEvent("deck_trimmed", { max });
@@ -377,7 +377,7 @@ export default function MyDeckDetail() {
         <div className="flex flex-wrap items-center justify-between gap-2"><EditorModeSwitch value={editorMode} onChange={setEditorMode} label="Deck editing mode" /><button type="button" onClick={() => { setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>
         <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-2"><span className="mr-auto text-xs text-ctp-subtext1">{hasUnsavedChanges ? "Draft saved on this device" : "No unsaved changes"}</span><button type="button" disabled={editHistory.past.length === 0} onClick={undoEdit} className="min-h-12 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Undo</button><button type="button" disabled={editHistory.future.length === 0} onClick={redoEdit} className="min-h-12 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Redo</button></div>
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
-        {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + editedDecklist[key].reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser format={deck.format} query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}
+        {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + (editedDecklist[key] ?? []).reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser format={deck.format} query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}
         {editingValidation.status === "Illegal" && <div role="status" className="mt-3 rounded-lg border border-ctp-yellow/40 p-3 text-sm text-ctp-yellow">{editingValidation.reasons.map((reason) => <p key={reason}>{reason}</p>)}</div>}
 
         <div className="mt-4">{editorMode === "text" ? <label className="block text-sm">Deck list text<textarea aria-label="Deck list text" rows={18} value={deckText} onChange={event => commitEdit(event.target.value)} className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm" /></label> : <EditableDecklistGrid onAdd={section => { setAddDestination(section); setBrowserOpen(true); }} onPrintings={(section, name, printings) => applySharedEdit({ type: "printings", section, name, printings })} format={deck.format} decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} />}</div>

@@ -72,7 +72,7 @@ export default function BuilderCopyPanel({
         {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
       </div>
       <div className="flex flex-wrap gap-2">
-        <DeckExportActions ownerName={exportOwner} title={saveTitle.trim() || `${championName ?? "Untitled"} deck`} cardsByName={catalogByName} sections={[{ title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }]} />
+        <DeckExportActions ownerName={exportOwner} title={saveTitle.trim() || `${championName ?? "Untitled"} deck`} cardsByName={catalogByName} sections={[{ title: "Material Deck", lines: decklist.material }, { title: "Main Deck", lines: decklist.main }, { title: "Sideboard", lines: decklist.sideboard }, { title: "Song", lines: decklist.song ?? [] }]} />
         {!hideFullDeckOption && <button
           type="button"
           onClick={() => onCopy(false)}
@@ -99,7 +99,7 @@ export default function BuilderCopyPanel({
       <details className="mt-4 rounded-lg border border-ctp-surface1 p-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">{validationComplete ? "Construction checks pass" : `Construction: ${validation.status.toLowerCase()}`}<DisclosureChevron /></summary><p className="mt-2 text-xs text-ctp-subtext1">You can save an incomplete draft.</p>{validation.reasons.map(reason=><p key={reason} className="mt-2 text-xs text-ctp-subtext1">{reason}</p>)}</details>
       <details className="mt-4 rounded-xl border border-ctp-surface1 p-3">
         <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm font-medium text-ctp-subtext1">More export & collection options<DisclosureChevron /></summary>
-        {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <div className="space-y-2"><p className="text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Your saved deck and share link retain them.</p><Button onClick={() => { void navigator.clipboard.writeText(buildEditableDeckText(decklist)).then(() => notify({ message: "Copied with printings. Paste into Fan of Insight to restore them." })).catch(() => notify({ tone: "error", message: "Could not copy. Try again." })); }}>Copy with printings (Fan of Insight)</Button></div>}
+        {[...decklist.main, ...decklist.material, ...decklist.sideboard, ...(decklist.song ?? [])].some(line => line.printings?.length) && <div className="space-y-2"><p className="text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Your saved deck and share link retain them.</p><Button onClick={() => { void navigator.clipboard.writeText(buildEditableDeckText(decklist)).then(() => notify({ message: "Copied with printings. Paste into Fan of Insight to restore them." })).catch(() => notify({ tone: "error", message: "Could not copy. Try again." })); }}>Copy with printings (Fan of Insight)</Button></div>}
         <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Untitled"} deck builder`} />
         <div className="mt-2 flex flex-wrap gap-2">
         {deckBuilderDestinations.map((destination) => (
@@ -136,6 +136,7 @@ export default function BuilderCopyPanel({
         <button
           type="button"
           onClick={onExportTts}
+          disabled={[...decklist.main, ...decklist.material, ...decklist.sideboard, ...(decklist.song ?? [])].some(line => !catalogByName.get(line.card)?.editions[0]?.image)}
           title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
           className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
         >

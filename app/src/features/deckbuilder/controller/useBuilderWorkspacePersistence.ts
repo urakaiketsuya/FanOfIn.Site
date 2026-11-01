@@ -7,11 +7,12 @@ interface DeckLine {
   quantity: number;
 }
 
-export function useBuilderWorkspacePersistence({ printings, championName, spiritName, format, main, material, sideboard, maybeboard }: {
+export function useBuilderWorkspacePersistence({ printings, championName, spiritName, format, main, material, sideboard, song, maybeboard }: {
   printings?: import("@gatcg/shared").DeckPrintings;
   championName: string | null;
   spiritName: string | null;
   format: DeckFormat;
+  song?: DeckLine[];
   main: DeckLine[];
   material: DeckLine[];
   sideboard: DeckLine[];
@@ -26,10 +27,11 @@ export function useBuilderWorkspacePersistence({ printings, championName, spirit
       format,
       championName,
       spiritName,
+      song,
       main,
       material,
       sideboard,
       maybeboard: Array.from(maybeboard, ([name, quantity]) => ({ name, quantity })),
     });
-  }, [printings, championName, format, main, material, maybeboard, sideboard, spiritName]);
+  }, [printings, championName, format, main, material, maybeboard, sideboard, song, spiritName]);
 }

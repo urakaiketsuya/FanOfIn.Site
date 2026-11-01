@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { cardWithPrinting, type Card } from "@gatcg/shared";
+import { previewCardImage } from "../lib/previewCards";
 import CardImage from "./CardImage";
 
 /**
@@ -29,11 +30,15 @@ export default function CardArtTile({
   /** Wide deck covers crop the illustration above the printed rules. */
   artworkOnly?: boolean;
 }) {
+  const [failedPreview, setFailedPreview] = useState<string>();
   card = cardWithPrinting(card, editionUuid);
+  const previewImage = previewCardImage(card);
   return (
     <div data-component="CardArtTile" className={`relative overflow-hidden rounded bg-ctp-surface0 ${artworkOnly ? "aspect-[16/10]" : "aspect-[5/7]"}`}>
       {card?.editions[0] ? (
         <CardImage image={card.editions[0].image} alt={name} loading={loading} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
+      ) : previewImage && failedPreview !== previewImage ? (
+        <img src={previewImage} alt={name} loading={loading ?? "lazy"} onError={() => setFailedPreview(previewImage)} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-contain"} />
       ) : (
         <span className={`flex h-full items-center justify-center text-center text-ctp-subtext0 ${artworkOnly ? "p-6 text-sm" : "p-1 text-[9px]"}`}>{name}</span>
       )}

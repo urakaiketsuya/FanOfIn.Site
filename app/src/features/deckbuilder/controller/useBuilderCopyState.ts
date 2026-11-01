@@ -34,7 +34,7 @@ export function useBuilderCopyState({
   printings, archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
 }: UseBuilderCopyStateArgs) {
   const { notify } = useToast();
-  const massEntryUrl = buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]);
+  const massEntryUrl = buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines, ...(decklist.song ?? []).map(line => ({ name: line.card, quantity: line.quantity }))]);
   const clarentUrl = buildClarentPlaytestUrl(decklist);
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
@@ -45,8 +45,9 @@ export function useBuilderCopyState({
   const [saveKeptOnly, setSaveKeptOnly] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
   const [savedDeckId, setSavedDeckId] = useState<string | null>(null);
-  const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
-  const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
+  const songCount = (decklist.song ?? []).reduce((sum, card) => sum + card.quantity, 0);
+  const fullCopyCount = songCount + [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
+  const keptCopyCount = songCount + [...build.main, ...build.material, ...build.sideboard]
     .filter((card) => card.locked)
     .reduce((sum, card) => sum + card.quantity, 0);
   const deckToSave = saveKeptOnly ? keptDecklist : decklist;
@@ -129,7 +130,7 @@ export function useBuilderCopyState({
       trackEvent("deck_builder_saved", { improving: Boolean(improveDeckId), kept_only: saveKeptOnly, format: deckFormat });
     } catch (reason) {
       setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");
-      notify({ tone: "error", key: "save", message: reason instanceof AccountApiError && reason.status === 401 ? "Sign in to save this deck to your account." : "Could not save your deck. Your draft is still here." });
+      notify({ tone: "error", key: "save", message: reason instanceof AccountApiError && reason.status === 401 ? "Sign in to save this deck to your account." : reason instanceof AccountApiError && reason.status === 409 ? reason.message : "Could not save your deck. Your draft is still here." });
     }
   }
 

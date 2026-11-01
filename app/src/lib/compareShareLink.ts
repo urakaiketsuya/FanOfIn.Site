@@ -6,7 +6,7 @@ export interface CustomDeckShare {
   format?: DeckFormat;
 }
 
-type Section = "main" | "material" | "sideboard";
+type Section = "main" | "material" | "sideboard" | "song";
 
 /** `encodeURIComponent` on every dynamic segment (label, card name) – unlike the Deck Builder's
  * locked-cards encoding, a pasted deck's label is free-text the user typed, not a card name, so it
@@ -14,8 +14,8 @@ type Section = "main" | "material" | "sideboard";
  * inside a label or name never gets misread as a delimiter. */
 function encodeDecklistLines(decklist: OmnidexDecklist): string {
   const parts: string[] = [];
-  for (const section of ["main", "material", "sideboard"] as const) {
-    for (const line of decklist[section]) {
+  for (const section of ["main", "material", "sideboard", "song"] as const) {
+    for (const line of (decklist[section] ?? [])) {
       parts.push(`${section}:${line.quantity}:${encodeURIComponent(line.card)}`);
     }
   }
@@ -29,8 +29,8 @@ function decodeDecklistLines(encoded: string): OmnidexDecklist {
     const [section, qtyStr, encodedName] = entry.split(":");
     const qty = Number(qtyStr);
     if (!encodedName || !Number.isFinite(qty) || qty < 1) continue;
-    if (section !== "main" && section !== "material" && section !== "sideboard") continue;
-    (decklist[section as Section] as { card: string; quantity: number }[]).push({ card: decodeURIComponent(encodedName), quantity: qty });
+    if (section !== "main" && section !== "material" && section !== "sideboard" && section !== "song") continue;
+    (decklist[section as Section] ??= []).push({ card: decodeURIComponent(encodedName), quantity: qty });
   }
   return decklist;
 }

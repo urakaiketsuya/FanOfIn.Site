@@ -7,6 +7,7 @@ function decklistText(decklist: OmnidexDecklist): string {
     ["Main", decklist.main],
     ["Material", decklist.material],
     ["Sideboard", decklist.sideboard],
+    ["Song", decklist.song ?? []],
   ] as const;
 
   return sections

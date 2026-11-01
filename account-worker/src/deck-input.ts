@@ -61,7 +61,7 @@ export async function fullIdentityHash(decklist: OmnidexDecklist, format: DeckFo
 export function validDecklist(value: unknown): value is OmnidexDecklist {
   if (!value || typeof value !== "object") return false;
   const deck = value as Record<string, unknown>;
-  const sections = ["main", "material", "sideboard"];
+  const sections = ["main", "material", "sideboard", ...(deck.song !== undefined ? ["song"] : [])];
   if (!sections.every((section) => Array.isArray(deck[section]))) return false;
   if (sections.reduce((total, section) => total + (deck[section] as unknown[]).length, 0) > MAX_LINES_PER_DECK) return false;
   return sections.every((section) => (deck[section] as unknown[]).every((line) => {

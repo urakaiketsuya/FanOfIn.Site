@@ -6,7 +6,7 @@
  */
 
 export interface CardCost {
-  type: "memory" | "none" | "reserve";
+  type: "memory" | "none" | "reserve" | "aria";
   value: string | null;
 }
 

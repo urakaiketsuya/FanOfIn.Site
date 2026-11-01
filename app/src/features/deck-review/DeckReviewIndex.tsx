@@ -121,6 +121,7 @@ export default function DeckReviewIndex() {
       championName,
       spiritName: spiritFilter,
       main: lines.filter((line) => line.section === "main").map(({ name, quantity }) => ({ name, quantity })),
+      song: lines.filter((line) => line.section === "song").map(({ name, quantity }) => ({ name, quantity })),
       material: lines.filter((line) => line.section === "material").map(({ name, quantity }) => ({ name, quantity })),
       sideboard: [...lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })), ...Array.from(splitSideboard, ([name, quantity]) => ({ name, quantity }))],
       maybeboard: [],
@@ -239,7 +240,7 @@ export default function DeckReviewIndex() {
   const keptSideboard = useMemo(() => build.sideboard.filter((c) => c.locked), [build.sideboard]);
   const keptCount = keptMain.length + keptMaterial.length + keptSideboard.length;
 
-  const keptDecklist = useMemo(() => buildToDecklist(build, true), [build]);
+  const keptDecklist = useMemo(() => ({ ...buildToDecklist(build, true), song: Array.from(lockedCards, ([card, quantity]) => ({ card, quantity })).filter(line => lockedSections.get(line.card) === "song") }), [build, lockedCards, lockedSections]);
   const keptLines = useMemo(() => [...keptDecklist.material, ...keptDecklist.main].map((l) => ({ name: l.card, quantity: l.quantity })), [keptDecklist]);
   const keptSideboardLines = useMemo(() => keptDecklist.sideboard.map((l) => ({ name: l.card, quantity: l.quantity })), [keptDecklist]);
   const keptMainLines = useMemo(() => keptDecklist.main.map((line) => ({ name: line.card, quantity: line.quantity })), [keptDecklist]);

@@ -13,6 +13,8 @@ const SECTION_HEADERS: Record<string, keyof OmnidexDecklist> = {
   materials: "material",
   sideboard: "sideboard",
   side: "sideboard",
+  song: "song",
+  songs: "song",
 };
 
 /** Matches "4x Card Name", "4 Card Name", or "4X Card Name". */
@@ -62,7 +64,7 @@ export function parseDecklist(text: string): ParsedDecklist {
     const printings = annotated?.[2].split(",").map(value => { const [editionUuid, count] = value.split("="); return { editionUuid, quantity: Number(count) }; });
     // Keep invalid annotations visible to validation; never silently discard a choice.
     if (annotated && !validPrintingAllocations(printings, Number(quantityStr))) skippedLines.push(line);
-    decklist[section].push({ card: annotated ? annotated[1].trim() : name.trim(), quantity: Number(quantityStr), ...(printings ? { printings } : {}) });
+    (decklist[section] ??= []).push({ card: annotated ? annotated[1].trim() : name.trim(), quantity: Number(quantityStr), ...(printings ? { printings } : {}) });
   }
 
   return { decklist, skippedLines };

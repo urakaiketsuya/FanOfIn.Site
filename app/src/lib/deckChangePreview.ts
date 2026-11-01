@@ -5,16 +5,18 @@ export interface DeckQuantityChange { cardName: string; section: DeckSection; de
 
 export function applyDeckQuantityChanges(decklist: OmnidexDecklist, changes: DeckQuantityChange[]): OmnidexDecklist {
   const next: OmnidexDecklist = {
+    ...(decklist.song ? { song: decklist.song.map(line => ({ ...line })) } : {}),
     main: decklist.main.map((line) => ({ ...line })),
     material: decklist.material.map((line) => ({ ...line })),
     sideboard: decklist.sideboard.map((line) => ({ ...line })),
   };
   for (const change of changes) {
     if (!Number.isInteger(change.delta) || change.delta === 0) continue;
-    const line = next[change.section].find((candidate) => candidate.card === change.cardName);
+    const lines = next[change.section] ??= [];
+    const line = lines.find((candidate) => candidate.card === change.cardName);
     if (line) line.quantity = Math.max(0, line.quantity + change.delta);
-    else if (change.delta > 0) next[change.section].push({ card: change.cardName, quantity: change.delta });
-    next[change.section] = next[change.section].filter((candidate) => candidate.quantity > 0);
+    else if (change.delta > 0) lines.push({ card: change.cardName, quantity: change.delta });
+    next[change.section] = lines.filter((candidate) => candidate.quantity > 0);
   }
   return next;
 }

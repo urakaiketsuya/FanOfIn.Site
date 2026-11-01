@@ -708,3 +708,23 @@ network failure/retry, text zoom and on-screen keyboard behavior were not retest
 App typecheck, focused lint and 11 grouping/champion/tournament tests passed.
 
 Event discovery uses location-led cards and region chips, with a searchable `DialogSheet` grouped by season. Keep the selected event visible on phones and preserve its URL selection between Results and Timeline. Prefer event venue evidence over organizer addresses; retain regional or event-name labels when the city is unknown.
+
+
+### Unreleased cards and Song decks
+
+The Deck Workbench offers opt-in preview browsing. Selected previews remain in a
+restored draft when browsing is off; preview records never enter the official
+catalog or tournament statistics. Official catalog records replace matching
+previews in full, including art, rules, costs, and printing IDs. If a final name
+changes, add its exact name to the preview record's `aliases`; do not fuzzy-match
+different cards. The workbench migrates selections and printing keys to that name.
+
+Only level 1 Casella in Material unlocks adding Songs. Existing Songs remain
+editable when the unlocking card is removed. Song is an optional persisted
+decklist section, carried through versions, text, workspace, and share links.
+It does not contribute to the main/material statistical identity.
+
+Deploy the account service with Song support before the frontend. Its health
+capability prevents new clients from saving Songs through an older service that
+would discard them. Preview cards without official art cannot be exported to TTS.
+After official cards arrive, verify the catalog match and a saved-deck round trip.

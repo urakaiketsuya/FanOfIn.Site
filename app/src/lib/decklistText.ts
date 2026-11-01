@@ -7,6 +7,7 @@ export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { ti
     ["Main", decklist.main],
     ["Material", decklist.material],
     ["Sideboard", decklist.sideboard],
+    ["Song", decklist.song ?? []],
   ];
   return sections
     .filter(([, lines]) => lines.length > 0)
