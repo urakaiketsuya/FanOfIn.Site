@@ -13,6 +13,7 @@ import { useTimelineChampions, roundLabel } from "./champions";
 import CardMentions from "./CardMentions";
 import SideboardNotes from "./SideboardNotes";
 import { useCardsByMentions } from "./data";
+import { beatVideoLink } from "./matchVideoUrl";
 
 const ACTOR_COLOR: Record<"p1" | "p2" | "both", string> = {
   p1: "border-ctp-blue bg-ctp-blue",
@@ -44,12 +45,14 @@ const TAG_CLASS: Record<BroadcastTimelineTag, string> = {
   stabilize: "border-ctp-green/40 bg-ctp-green/10 text-ctp-green",
 };
 
-function BeatRow({ beat, playerName, cardsByName }: { beat: BroadcastTimelineBeat; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
+function BeatRow({ beat, video, playerName, cardsByName }: { beat: BroadcastTimelineBeat; video: BroadcastTimelineMatch['video']; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
+  const timestamp = beatVideoLink(beat, video);
   return (
     <li className="relative pb-8 pl-5 sm:pl-8 last:pb-0">
       <span className="absolute left-0 top-0 bottom-0 w-px bg-ctp-surface1" aria-hidden="true" />
       <span className={`absolute left-0 top-1 h-3 w-3 -translate-x-1/2 rounded-full border-2 bg-ctp-base ${ACTOR_COLOR[beat.actor]}`} aria-hidden="true" />
       <div className="flex flex-wrap items-center gap-2">
+        {timestamp && <a href={timestamp.url} target="_blank" rel="noopener noreferrer" aria-label={`Watch key play at ${timestamp.label} (opens in a new tab)`} className="inline-flex min-h-control min-w-control items-center justify-center gap-1 rounded px-2 text-xs font-medium tabular-nums text-ctp-blue hover:bg-ctp-blue/10 focus-visible:outline-2 focus-visible:outline-ctp-blue"><span aria-hidden="true">▶</span>{timestamp.label}</a>}
         <span className={`text-xs font-semibold uppercase tracking-wide ${ACTOR_TEXT[beat.actor]}`}>{playerName(beat.actor)}</span>
         {beat.tags?.slice(0, 1).map((tag) => (
           <span key={tag} className={`rounded-full border px-2 py-0.5 text-xs font-medium ${TAG_CLASS[tag]}`}>
@@ -70,10 +73,12 @@ function BeatRow({ beat, playerName, cardsByName }: { beat: BroadcastTimelineBea
 
 function GameTimeline({
   game,
+  video,
   playerName,
   cardsByName,
 }: {
   game: BroadcastTimelineGame;
+  video: BroadcastTimelineMatch['video'];
   playerName: (a: "p1" | "p2" | "both") => string;
   cardsByName: Map<string, Card>;
 }) {
@@ -85,7 +90,7 @@ function GameTimeline({
       </div>
       <ol>
         {game.beats.map((beat) => (
-          <BeatRow key={beat.order} beat={beat} playerName={playerName} cardsByName={cardsByName} />
+          <BeatRow key={beat.order} beat={beat} video={video} playerName={playerName} cardsByName={cardsByName} />
         ))}
       </ol>
     </Panel>
@@ -132,7 +137,7 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
       {match.games.length === 0 && <p className="text-sm text-ctp-subtext1">No game recap available.</p>}
       {match.games.map(game => <TabPanel key={game.gameNumber} baseId={baseId} tab={String(game.gameNumber)} active={activeGame}>
         <SideboardNotes match={match} gameNumber={game.gameNumber} />
-        <GameTimeline game={game} playerName={playerName} cardsByName={cardsByName} />
+        <GameTimeline game={game} video={match.video} playerName={playerName} cardsByName={cardsByName} />
       </TabPanel>)}
       <footer className="mt-6 text-xs text-ctp-subtext0"><p>{match.sourceNote}</p><Link to="/methodology" className="inline-flex min-h-control items-center text-ctp-blue">About broadcast recaps</Link></footer>
     </div>

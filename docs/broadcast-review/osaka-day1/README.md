@@ -40,3 +40,21 @@ Round 9: the recording ends during game 1 setup at approximately 11:54:58. Royan
 Further gameplay coverage requires a continuation of Round 9 or direct video review; the available transcript review is complete. See `review-summary.json` for verification results.
 
 Round 9 continuation recheck (2026-10-31): the live archive metadata still reports 11:54:58. No continuation appeared in the latest 20 official streams, the official uploads listing (24 entries), or matching filenames in the supplied Downloads folder/ZIP. See `round9-continuation-check.json`. Extending the recap is blocked on another source; the existing opening and official result remain unchanged.
+
+### Key-play timestamps
+
+`beat-timestamps.json` maps all 80 published Osaka highlights to the start of their
+supporting commentary. Original transcript segment references use that transcript's
+absolute clock. Recovered audio references use the recorded absolute `startSeconds`,
+or chunk 23's 41,400-second base plus the raw capture offset for Round 9. The
+published `timestamp` binds each offset to its video ID; offsets must not be reused
+when substituting a standalone match upload. These are commentary cue points, not
+frame-exact action boundaries. Multi-action highlights link to their first cited
+segment. Superseded candidate wording was excluded; the corrected Round 4 Storm
+of Thorns highlight retains its original 4242–4250 evidence.
+
+Verification: all 80 associations checked against published highlight text; link
+validation covers zero, hour boundaries, invalid offsets and mismatched uploads.
+Mobile (390px) and desktop (1280px) layouts, 48px targets, keyboard navigation and
+game switching checked. Video playback at every cue and forced network failures
+were not exercised. Earlier events still need per-highlight source alignment.

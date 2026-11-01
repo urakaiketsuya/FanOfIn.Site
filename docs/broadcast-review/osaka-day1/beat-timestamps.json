@@ -1,0 +1,1060 @@
+[
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Creative Tinder and Liminal Guide build hachico\u2019s opening hand.",
+    "startSeconds": 3648,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 319,
+      "seconds": 3648,
+      "text": "hachico now will go for that Creative Tinder. Of course, did get to start first but the glimpse must resolve first. Liminal Guide going to be discarded. Already a good start."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Judges catch the missing Angelic Channeling draw; the casters describe an easy correction.",
+    "startSeconds": 3762,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 330,
+      "seconds": 3762,
+      "text": "The Angelic Channeling now needs to resolve. Still hasn't drawn the two into memory, I believe."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Dungeon Guide advances Ciel to level 3 before Devastating Blow applies pressure.",
+    "startSeconds": 3872,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 347,
+      "seconds": 3872,
+      "text": "Drew Dungeon Guide for a turn, actually. So very fortunate there, especially after all the cycling."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "Manxome Armoire retrieves Devastating Blow; wenwen releases the spirit and uses healing herbs, but Feu Awakening closes the game.",
+    "startSeconds": 3993,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 367,
+      "seconds": 3993,
+      "text": "Manxome Armoire is going to be hachico's pick. Do know about that Feu Awakening in the hand as well as in the graveyard."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Two Gentle Respites give wenwen a stronger start.",
+    "startSeconds": 4273,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 448,
+      "seconds": 4273,
+      "text": "And also has the powerful Turn 1 Gentle Respite available."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Beguiling Coup brings Devastating Blow into the attack, pushing wenwen to 14 damage counters.",
+    "startSeconds": 4651,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 587,
+      "seconds": 4651,
+      "text": "This is going to be a Beguiling Coup coming in just for a measly 4."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Feu Awakening stops the attempted negate; wenwen releases the spirit before Devastating Blow resolves.",
+    "startSeconds": 4836,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 641,
+      "seconds": 4836,
+      "text": "And it's going to be a Horticounter using one of the herbs."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round1-wenwen-hachico",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Ciel\u2019s end-step damage finishes wenwen; the casters clarify another Feu Awakening is unnecessary.",
+    "startSeconds": 4893,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 660,
+      "seconds": 4893,
+      "text": "And with the release already done, the Feu Awakening now added to the Omens."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Professor advances Alice to level 2 and sets up Umbra Sight.",
+    "startSeconds": 9389,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 947,
+      "seconds": 9389,
+      "text": "Oh, Beseech the Winds! Beseech the Winds and Tricastles"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Infernal Vessel threatens the healing plan; Fiery Interference answers the lineage release.",
+    "startSeconds": 9493,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 1010,
+      "seconds": 9493,
+      "text": "It's going to be the Teapot here"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Beseech the Winds enables the climb to Vanitas level 3, but Imperial Countermeasure stops the attacks.",
+    "startSeconds": 9546,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 1042,
+      "seconds": 9546,
+      "text": "Beseech the Winds has been found"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Nocturne\u2019s Oblivion removes Infernal Vessel; Remnant of Will restores the healing plan.",
+    "startSeconds": 9702,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 1140,
+      "seconds": 9702,
+      "text": "Nocturne's Oblivion."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 2,
+    "order": 5,
+    "text": "Poitier and Argus establish the board Danriick cannot break; Professor takes the match.",
+    "startSeconds": 9825,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 1220,
+      "seconds": 9825,
+      "text": "That's an 8, 9 ally"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Dream Fairy returns Aquifer Seneschal to memory; Luster\u2019s Shroud preserves the lock.",
+    "startSeconds": 13773,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 2396,
+      "seconds": 13773,
+      "text": "Aquifer Seneschal"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Dream Fairy returns Tweedledee, and Rowland helps clear Jueying.",
+    "startSeconds": 14181,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 2799,
+      "seconds": 14181,
+      "text": "Dream Fairy going to be"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Augustine converts Manxome Armoire into a fractal, giving Xenadrael the resources for Frozen Dismissal against Guan Yu.",
+    "startSeconds": 14820,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3136,
+      "seconds": 14820,
+      "text": "Guan Yu comes out with a Retort here."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "The rebuilt ally board pushes damage and closes game 1.",
+    "startSeconds": 14913,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3175,
+      "seconds": 14913,
+      "text": "The Senestral now going to push in a bit of damage."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "After the Avatar is dismissed, Virgil and Liu Bei remove Lucca.",
+    "startSeconds": 15152,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3276,
+      "seconds": 15152,
+      "text": "Oh no, he's going to go into the avatar right now."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Dilu removes Portly Raccoon, and Mortal Ambition turns the attempted attack into retaliation.",
+    "startSeconds": 15305,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3343,
+      "seconds": 15305,
+      "text": "We are going to play on the Dilu here."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Luster\u2019s Shroud preserves Liu Bei against Bandit; Cyclonic Fatestone later suppresses Jueying.",
+    "startSeconds": 15507,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3419,
+      "seconds": 15507,
+      "text": "and now take out Liu Bei."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Mono attacks through Tariff Ring with Dilu and Liu Bei for the last five damage.",
+    "startSeconds": 15729,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3504,
+      "seconds": 15729,
+      "text": "And Tariff Ring is going to be used."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 3,
+    "order": 1,
+    "text": "Xenadrael shifts toward direct pressure with Heavy Swing rather than trading into Liu Bei.",
+    "startSeconds": 15879,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3569,
+      "seconds": 15879,
+      "text": "but Liu Bei is going to be the ally of choice here for Mono this time,"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Purifying Thurible removes Heavy Swing before it can become an Omen.",
+    "startSeconds": 15996,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3626,
+      "seconds": 15996,
+      "text": "Purifying Thurible prevents the Heavy Swing"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 3,
+    "order": 3,
+    "text": "Veiling Breeze stops the sword attack, and Guo Jia enables Fabled Emerald Fatestone.",
+    "startSeconds": 16403,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3805,
+      "seconds": 16403,
+      "text": "Palvor Sword comes down right here."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 3,
+    "order": 4,
+    "text": "Mortal Ambition answers the raccoon\u2019s attack and kills the raccoon; it does not damage Xenadrael\u2019s champion.",
+    "startSeconds": 16830,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3973,
+      "seconds": 16830,
+      "text": "Raccoon comes in."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round3-mono-xenadrael",
+    "gameNumber": 3,
+    "order": 5,
+    "text": "Nia and Jueying provide the final attacks, overcoming Mono\u2019s remaining defenses.",
+    "startSeconds": 16879,
+    "review": "review-r1-r3.json",
+    "source": {
+      "segmentIndex": 3995,
+      "seconds": 16879,
+      "text": "Phase 3 for Nia."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "ClourX negates Atmos Armor Type-Ares, then finishes with Burst Asunder.",
+    "startSeconds": 20377,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4280,
+      "seconds": 20377,
+      "text": "action usually. I mean, the Ares gets to come out here now. Is there any response? There is the"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 3,
+    "order": 1,
+    "text": "Frostsworn Paladin applies early pressure while Cashkidz searches for Eternal Kingdom.",
+    "startSeconds": 20675,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4335,
+      "seconds": 20675,
+      "text": "Frostsworn Paladin, again, ClourX just loves playing this Frostsworn Paladin without the"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Topsy Decree protects Cashkidz during the Refracting Missile exchange.",
+    "startSeconds": 20957,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4385,
+      "seconds": 20957,
+      "text": "using a Fractal too, so paying 3 here to use a Missile. The Fractal is the second one. Are we"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 3,
+    "order": 3,
+    "text": "Cashkidz reaches level 3 and establishes Atmos Armor Type-Ares with shields.",
+    "startSeconds": 21274,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4440,
+      "seconds": 21274,
+      "text": "Cashkidz is going to be able to keep this Enfeebling Orb around, and now gets to level up"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 3,
+    "order": 4,
+    "text": "A second Ares and the final Reciprocity attack close the match.",
+    "startSeconds": 21485,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4475,
+      "seconds": 21485,
+      "text": "his turn, negates his own Eternal Kingdom trigger, and the Atmos armor type Ares will start to get"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Rty advances through Shadowreaver into Shadowdancer and establishes Shadows.",
+    "startSeconds": 23782,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4664,
+      "seconds": 23782,
+      "text": "But no, Rty wants to gamble."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Enfeebling Orb and Cerulean Decree stop Mastermind Scheme.",
+    "startSeconds": 23928,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4714,
+      "seconds": 23928,
+      "text": "Mastermind Scheme is going to help us double up that prep counter."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "Neek0 builds the graveyard while Rty cannot find enough damage; Rty concedes before the threatened Polar Depths turn.",
+    "startSeconds": 24599,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 5025,
+      "seconds": 24599,
+      "text": "That Polar Depth's looming."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Inaki opens with three Fractals and follows with Zhang Jiao.",
+    "startSeconds": 28160,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 5709,
+      "seconds": 28160,
+      "text": "Meanwhile Inaki starting us off"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Remnant of Will supplies recovery and haunt counters after Alice reaches Umbra.",
+    "startSeconds": 28636,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 5946,
+      "seconds": 28636,
+      "text": "But here comes one of the most important healing"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Safeguard Amulet stops one Burst Asunder; Slip Away later protects Miffy from another.",
+    "startSeconds": 29181,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6122,
+      "seconds": 29181,
+      "text": "Burst Asunder, the safeguard is going to be used on the stack, so not allowing this Burst Asunder to send Miffy to the afterlife."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "Two Remnant of Will activations grow Poitier into the finishing attacker.",
+    "startSeconds": 29621,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6281,
+      "seconds": 29621,
+      "text": "But Poitier with the Remnant of Will"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Inaki opens with four Fractals.",
+    "startSeconds": 30004,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6472,
+      "seconds": 30004,
+      "text": "now Inaki you are going to start us off"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Regal Inquisition takes two cards, but leaves Shimmering Refraction in Inaki\u2019s hand.",
+    "startSeconds": 30360,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6650,
+      "seconds": 30360,
+      "text": "oh okay regal time"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Remnant of Will provides recovery and the end-step mill finds Poitier.",
+    "startSeconds": 30504,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6722,
+      "seconds": 30504,
+      "text": "Remnant of Will is going to be played"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Bifurcating Fractal brings Inaki to ten Fractals; the Burst Asunder threat forces the concession.",
+    "startSeconds": 30576,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6757,
+      "seconds": 30576,
+      "text": "we're going to bifurcate"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 3,
+    "order": 1,
+    "text": "Maledictum Vitae lets Miffy establish Alice\u2019s Umbra access safely.",
+    "startSeconds": 30878,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6796,
+      "seconds": 30878,
+      "text": "Looks like we're losing a Remnant of Will, and that is actually Vitae in the graveyard."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 3,
+    "order": 2,
+    "text": "Undying Dreams boosts Poitier enough to remove Fluffy Shopkeep.",
+    "startSeconds": 31265,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 6936,
+      "seconds": 31265,
+      "text": "Miffy has the option to Undying Dreams the Poitier to get rid of this Fluffy Shopkeep."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 3,
+    "order": 3,
+    "text": "Glimmering Refusal denies the Remnant of Will Miffy needed after drawing with Devouring Malice.",
+    "startSeconds": 31460,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 7008,
+      "seconds": 31460,
+      "text": "And he is going to deal 8 to himself, it looks like."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round6-inaki-miffy",
+    "gameNumber": 3,
+    "order": 4,
+    "text": "Inaki negates both Fleeting Guards, then adds Shimmering Refraction as Miffy uses lineage releases.",
+    "startSeconds": 31704,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 7100,
+      "seconds": 31704,
+      "text": "So Miffy going to pay 2 again."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Arisanna builds herbs and Polaris while Quarax struggles to find smooth level progression.",
+    "startSeconds": 33008,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7397,
+      "seconds": 33008,
+      "text": "I wonder if DragonJG maybe can find that"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Prima Materia and Cosmic Bolt pressure Jin, but Quarax reaches level 3 and keeps recovering.",
+    "startSeconds": 33473,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7603,
+      "seconds": 33473,
+      "text": "Oh, Prima Materia!"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Quarax uses Auric Persecution to remove Consumption Ring and keep his recovery available.",
+    "startSeconds": 33867,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7732,
+      "seconds": 33867,
+      "text": "And there's the Consumption Ring!"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "After Devil\u2019s Lifeline draws out Astral Seal, Enrage and Shuang Ji of Sacrifice produce the 25-damage attack that ends the game.",
+    "startSeconds": 34119,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7834,
+      "seconds": 34119,
+      "text": "Devil's Lifeline now going to be used from the Banishment."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Quarax reaches level 3 first and chips in with his Guides while Arisanna waits for Dungeon Guide.",
+    "startSeconds": 34649,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7948,
+      "seconds": 34649,
+      "text": "Guide would be great thus have the former. Now we'll go up to JIN level two and finally the"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Meteor Strike removes Berserker Plate, then destroys Shuang Ji of Sacrifice after Quicksilver Grail brings it out.",
+    "startSeconds": 34891,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 7996,
+      "seconds": 34891,
+      "text": "strikes as well another Cosmic Bolt drawn for a turn unfortunately so this meteor strike can"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Tricastles of Lucenia constrains both players; Auric Persecution removes Cosmic Astroscope and slows Arisanna\u2019s glimpses.",
+    "startSeconds": 35135,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8039,
+      "seconds": 35135,
+      "text": "castles of lucina against the back up is like playing like a majority ask for card i mean the"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round7-dragonjg-quarax",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Nascent Barrier finds Cosmic Bolt. Astral Seals stop recovery, a second glimpse finds more Bolts, and the fourth Seal answers Topsy Decree for the concession.",
+    "startSeconds": 36292,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8239,
+      "seconds": 36292,
+      "text": "Okay, nascent barrier going to be used here, going to prevent 4 damage."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "SoSollys starts establishing a Clubs board with Shamrock Forest.",
+    "startSeconds": 38019,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8419,
+      "seconds": 38019,
+      "text": "We are playing against Wind Silvie with Shamrock Forest."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Vermilion Decree pressures an ally and the champion; Scalding Aethercharge then punishes Silvie\u2019s level-up and adds quest counters.",
+    "startSeconds": 38177,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8479,
+      "seconds": 38177,
+      "text": "I think it's going to be a Vermilion Decree imbued here."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Nullifying Mirror precedes the finishing push. Skirting Step prevents a point, but a kindled Intensified Pyre supplies the remaining damage.",
+    "startSeconds": 38394,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8560,
+      "seconds": 38394,
+      "text": "Yup, so NoobTinnn is going to go to Nullifying Mirror"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "SoSollys develops Six of Clubs and Censer of Restful Peace while NoobTinnn continues building quest counters.",
+    "startSeconds": 38723,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8681,
+      "seconds": 38723,
+      "text": "We are going to see Solace right here playing, I believe..."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Two of Spades and Safeguard Amulet create pressure and protection, but SoSollys stays at spirit level.",
+    "startSeconds": 38875,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8753,
+      "seconds": 38875,
+      "text": "Okay, it's going to be a 2 of Spades now coming out here,"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round8-sosollys-noobtinnn",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Suzaku attacks, then Undeniable Truth enables its sacrifice and return. After a brief judge check about quest counters, casters confirm NoobTinnn\u2019s second win.",
+    "startSeconds": 39027,
+    "review": "review-r7-r8.json",
+    "source": {
+      "segmentIndex": 8855,
+      "seconds": 39027,
+      "text": "is going to swing with the Suzaku."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Creative Shock discards Liminal Guide, but Danriick lacks the early Dungeon Guide to accelerate Vanitas.",
+    "startSeconds": 8460,
+    "review": "recovery-r2.json",
+    "source": {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 0,
+      "seconds": 8460.0,
+      "text": "interesting one the creative shock in the hand is creative liminal as well"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Beseech the Winds advances Professor to Alice, Phantom Monarch, followed by Umbra Sight.",
+    "startSeconds": 8569,
+    "review": "recovery-r2.json",
+    "source": {
+      "sourceFile": "bounded-04-1260.json",
+      "sourceIndex": 35,
+      "seconds": 8569.72,
+      "text": "So if I take that stone here, it's gonna be that Beseech,"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Phantasmagoria mills two copies of Remnant of Will, setting up healing and Haunt counters.",
+    "startSeconds": 8617,
+    "review": "recovery-r2.json",
+    "source": {
+      "sourceFile": "bounded-04-1380.json",
+      "sourceIndex": 12,
+      "seconds": 8617.42,
+      "text": "but it's gonna be a Phantasmagoria here,"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "Lost Promises ends the combat phase, and Ducal Seal adds another obstacle to Danriick\u2019s attacks.",
+    "startSeconds": 8735,
+    "review": "recovery-r2.json",
+    "source": {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 13,
+      "seconds": 8735.92,
+      "text": "And it's going to be a Lost Promises."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 5,
+    "text": "Argus arrives, and two Remnant of Will uses restore Professor\u2019s position before Poitier is milled.",
+    "startSeconds": 8765,
+    "review": "recovery-r2.json",
+    "source": {
+      "sourceFile": "bounded-04-1500.json",
+      "sourceIndex": 25,
+      "seconds": 8765.56,
+      "text": "And there he is, the all seeing giant himself"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round2-danriick-professor",
+    "gameNumber": 1,
+    "order": 6,
+    "text": "Poitier reaches the board as a large ally; Danriick concedes game1.",
+    "startSeconds": 9000,
+    "review": "recovery-r2.json",
+    "source": {
+      "segmentIndex": 786,
+      "seconds": 9000,
+      "text": "Dilu is going to be killed here because he wants to just remove as many allies on board."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Cashkidz opens The Eternal Kingdom and uses Hulking Rearguard to contest the early Paladin.",
+    "startSeconds": 18388,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-10-0360.json",
+      "sourceIndex": 4,
+      "seconds": 18388.12,
+      "text": "Ooh, Eternal Kingdom to start."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Enfeebling Orb holds back ClourX\u2019s influence while Cashkidz levels into Tonoris.",
+    "startSeconds": 18630,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-10-0600.json",
+      "sourceIndex": 6,
+      "seconds": 18630.54,
+      "text": "Enfeebling Orb also for ClourX now is going to be played."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Reciprocity makes swords, and Atmos Armor Type-Ares establishes shields.",
+    "startSeconds": 18897,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-10-0840.json",
+      "sourceIndex": 20,
+      "seconds": 18897.36,
+      "text": "Cashkidz goes up to level 3 once again getting further and further out of range."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 1,
+    "order": 4,
+    "text": "Hulking Rearguard, Ares and the swords finish the game.",
+    "startSeconds": 19246,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-10-1200.json",
+      "sourceIndex": 12,
+      "seconds": 19246.7,
+      "text": "So here comes the Hulking Rearguard and now the Atmos Armor Type-Ares and now the swords"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Neek0 establishes the Fractal mill engine; Rty uses Purifying Thurible to clear the early graveyard, then advances Tristan with Beseech the Winds.",
+    "startSeconds": 23169,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-12-1560.json",
+      "sourceIndex": 4,
+      "seconds": 23169.48,
+      "text": "But Fractal of Rain, really, really great start."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Rty develops Tristan after an early missed preparation trigger.",
+    "startSeconds": 25200,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-14-0000.json",
+      "sourceIndex": 0,
+      "seconds": 25200.0,
+      "text": "going to go up the Tristan level one here,"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 2,
+    "order": 2,
+    "text": "Neek0 responds to Nullifying Lantern with Polar Depths, then uses Song of Frost to disrupt Sadi attacks.",
+    "startSeconds": 25476,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-14-0240.json",
+      "sourceIndex": 20,
+      "seconds": 25476.66,
+      "text": "I do lantern here in response to the on enter is Neek0 going to do anything."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 2,
+    "order": 3,
+    "text": "Cerulean Decree protects Regal Inquisition from Incapacitate, removing key cards from Rty\u2019s hand.",
+    "startSeconds": 26047,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-14-0840.json",
+      "sourceIndex": 2,
+      "seconds": 26047.0,
+      "text": "I like gaming. I mean at this point, oh Regal Inquisition we are going to do it. We gotta see it."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 2,
+    "order": 4,
+    "text": "Ensnaring Fumes clears the board after Genbu transforms.",
+    "startSeconds": 26774,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-14-1560.json",
+      "sourceIndex": 3,
+      "seconds": 26774.16,
+      "text": "do see the black tardis Genbu here flipped right here which is glorious yes"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round5-rty-neek0",
+    "gameNumber": 2,
+    "order": 5,
+    "text": "Neek0 pays nine to materialize Fabled Sapphire Fatestone again and rebuilds to nine quest counters as the match reaches time.",
+    "startSeconds": 26912,
+    "review": "recovery-r4-r5.json",
+    "source": {
+      "sourceFile": "bounded-14-1680.json",
+      "sourceIndex": 24,
+      "seconds": 26912.5,
+      "text": "Hey Bay 9, to bring our back the Sapphire Fatestone"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round4-cashkidz-clourx",
+    "gameNumber": 2,
+    "order": 1,
+    "text": "Cashkidz answers the burn exchange with two Storm of Thorns; the first is negated, but the second resolves.",
+    "startSeconds": 20159,
+    "review": "review-r4-r6.json",
+    "source": {
+      "segmentIndex": 4242,
+      "seconds": 20159,
+      "text": "going to be... Yes, it's a Refracting Missile here, going to be swinging in for 7, going to rest 2"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+    "gameNumber": 1,
+    "order": 1,
+    "text": "Bayabayashi develops Fabled Emerald Fatestone while Royan opens with an imbued Fractal of Rain.",
+    "startSeconds": 42775,
+    "review": "audio-recovery.json",
+    "source": {
+      "sourceFile": "bounded-23-1320.json",
+      "sourceIndex": 19,
+      "seconds": 42775.86,
+      "text": " wins it looks like Rohan had a imbued factor of rain we didn't miss what exactly is going"
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+    "gameNumber": 1,
+    "order": 2,
+    "text": "Portentous Tanggu helps Bayabayashi build Byakko quest counters.",
+    "startSeconds": 42865,
+    "review": "audio-recovery.json",
+    "source": {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 5,
+      "seconds": 42865.36,
+      "text": " The Portentas Tangu is the materialization for Biobayashi who gets a second quest counter."
+    }
+  },
+  {
+    "matchId": "ascent-osaka-2026-day1-round9-bayabayashi-royan",
+    "gameNumber": 1,
+    "order": 3,
+    "text": "Royan brings out his own Portentous Tanggu as both players continue setting up.",
+    "startSeconds": 42884,
+    "review": "audio-recovery.json",
+    "source": {
+      "sourceFile": "bounded-23-1440.json",
+      "sourceIndex": 10,
+      "seconds": 42884.36,
+      "text": " Meanwhile, Ruyang goes for his own Tangu, will set up the fourth counter."
+    }
+  }
+]

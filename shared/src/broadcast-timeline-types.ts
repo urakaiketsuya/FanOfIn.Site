@@ -22,6 +22,8 @@ export type BroadcastTimelineTag = "combo" | "swing" | "sideboard" | "ruling" | 
 export interface BroadcastTimelineBeat {
   /** Sequence order within the game — a narrative index, not a real turn number or timestamp. */
   order: number;
+  /** Start of the supporting commentary, in absolute video seconds. Bind to the upload to prevent clip/stream offset reuse. */
+  timestamp?: { videoId: string; seconds: number };
   /** Which player this beat is primarily about; "both" for beats describing an exchange. */
   actor: "p1" | "p2" | "both";
   text: string;
