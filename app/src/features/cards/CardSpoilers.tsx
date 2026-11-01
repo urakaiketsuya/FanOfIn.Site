@@ -43,7 +43,7 @@ export default function CardSpoilers() {
     </div>
     <p role="status" className="mb-4 text-sm text-ctp-subtext1">{shown.length} of {spoilers.cards.length} spoilers</p>
     {shown.length === 0 && <div className="space-y-3"><p>No spoilers match your filters.</p><Button onClick={() => setParams({})}>Clear filters</Button></div>}
-    <div className="mx-auto grid w-full max-w-sm grid-cols-1 gap-6">
+    <div className="mx-auto grid w-full max-w-sm grid-cols-1 items-start gap-6 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {shown.map(card => {
         const image = (card as { image?: string }).image;
         return image ? <figure key={`${card.setPrefix}:${card.name}`} className="min-w-0">
