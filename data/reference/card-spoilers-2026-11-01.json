@@ -12,7 +12,8 @@
     "Cards with null collectorNumber/rarity had unreadable print. Mana-cost orb values were read from the card frame.",
     "Field names and enum values follow data/card-catalog.json (types, subtypes, elements, cost). exalted marks the \"Ex\" frame badge.",
     "reprintOf: the same card text already exists in the catalog under that set prefix.",
-    "Song cards are Unlockable Actions: they can only be registered in an unlockable deck (the Song deck). Opening Refrain is a normal Melody action in Main and copies a card from the Song deck."
+    "Song cards are Unlockable Actions: they can only be registered in an unlockable deck (the Song deck). Opening Refrain is a normal Melody action in Main and copies a card from the Song deck.",
+    "image / altPrintings[].image are crops of the stream screenshots, stored in app/public/images/spoilers/."
   ],
   "sets": {
     "Re:C-SKY": "Casella reveal cards (Cleric, arcane)",
@@ -26,6 +27,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "001",
       "rarity": "C",
+      "image": "spirit-of-wind.webp",
       "types": [
         "CHAMPION"
       ],
@@ -52,6 +54,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "002",
       "rarity": "C",
+      "image": "casella-volant-songstress.webp",
       "types": [
         "CHAMPION"
       ],
@@ -79,7 +82,8 @@
         {
           "rarity": "CSR",
           "setPrefix": "CBL 1st",
-          "collectorNumber": null
+          "collectorNumber": null,
+          "image": "casella-volant-songstress-csr.webp"
         }
       ]
     },
@@ -88,6 +92,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "003",
       "rarity": "C",
+      "image": "casella-wistful-refrain.webp",
       "types": [
         "CHAMPION"
       ],
@@ -117,6 +122,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "004",
       "rarity": "C",
+      "image": "casella-sky-s-cantatrice.webp",
       "types": [
         "CHAMPION"
       ],
@@ -143,7 +149,8 @@
         {
           "rarity": "CSR",
           "setPrefix": "CBL 1st",
-          "collectorNumber": null
+          "collectorNumber": null,
+          "image": "casella-sky-s-cantatrice-csr.webp"
         }
       ]
     },
@@ -152,6 +159,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "015",
       "rarity": "R",
+      "image": "skyward-requiem.webp",
       "types": [
         "ACTION"
       ],
@@ -182,6 +190,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "014",
       "rarity": "R",
+      "image": "chromatic.webp",
       "types": [
         "ACTION"
       ],
@@ -212,6 +221,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "013",
       "rarity": "R",
+      "image": "aiss-yustera.webp",
       "types": [
         "ACTION"
       ],
@@ -242,6 +252,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "021",
       "rarity": "C",
+      "image": "opening-refrain.webp",
       "types": [
         "ACTION"
       ],
@@ -271,6 +282,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "017",
       "rarity": "C",
+      "image": "channeltech-charm-s.webp",
       "types": [
         "ITEM"
       ],
@@ -301,6 +313,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "033",
       "rarity": "SR",
+      "image": "electrostatic-discharge.webp",
       "types": [
         "ACTION"
       ],
@@ -329,6 +342,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "032",
       "rarity": "R",
+      "image": "dielectric-prelate.webp",
       "types": [
         "ALLY"
       ],
@@ -356,6 +370,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "031",
       "rarity": "UR",
+      "image": "final-refrain.webp",
       "types": [
         "UNIQUE",
         "PHANTASIA"
@@ -382,7 +397,8 @@
         {
           "rarity": "CSR",
           "setPrefix": "Re:C-SKY",
-          "collectorNumber": "031"
+          "collectorNumber": "031",
+          "image": "final-refrain-csr.webp"
         }
       ]
     },
@@ -391,6 +407,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "008",
       "rarity": "R",
+      "image": "sapiential-codex.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -421,6 +438,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "005",
       "rarity": "R",
+      "image": "glittering-penlight.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -449,6 +467,7 @@
       "setPrefix": "Re:C-SKY",
       "collectorNumber": "012",
       "rarity": "SR",
+      "image": "sonic-boom-thunder-s-echo.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -478,6 +497,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "001",
       "rarity": "C",
+      "image": "spirit-of-water.webp",
       "types": [
         "CHAMPION"
       ],
@@ -504,6 +524,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "002",
       "rarity": "C",
+      "image": "beatrice-program-architect.webp",
       "types": [
         "CHAMPION"
       ],
@@ -531,7 +552,8 @@
         {
           "rarity": "CSR",
           "setPrefix": "CBL 1st",
-          "collectorNumber": "005"
+          "collectorNumber": "005",
+          "image": "beatrice-program-architect-csr.webp"
         }
       ]
     },
@@ -540,6 +562,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "003",
       "rarity": "C",
+      "image": "beatrice-cybernetic-catalyst.webp",
       "types": [
         "CHAMPION"
       ],
@@ -568,6 +591,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "004",
       "rarity": "C",
+      "image": "beatrice-master-directive.webp",
       "types": [
         "CHAMPION"
       ],
@@ -597,6 +621,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "030",
       "rarity": "C",
+      "image": "protocol-protection.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -624,6 +649,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "033",
       "rarity": "SR",
+      "image": "protocol-virus.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -651,6 +677,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "029",
       "rarity": "U",
+      "image": "protocol-cloud.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -678,6 +705,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "018",
       "rarity": "C",
+      "image": "protocol-aggression.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -706,6 +734,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": null,
       "rarity": null,
+      "image": "protocol-refactor.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -734,6 +763,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": null,
       "rarity": null,
+      "image": "protocol-recursion.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -761,6 +791,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "031",
       "rarity": "R",
+      "image": "protocol-duplication.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -789,6 +820,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "034",
       "rarity": "UR",
+      "image": "virgilian-prime.webp",
       "types": [
         "UNIQUE",
         "PHANTASIA",
@@ -819,6 +851,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "027",
       "rarity": "SR",
+      "image": "hypothermic-biroid.webp",
       "types": [
         "ALLY"
       ],
@@ -848,6 +881,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "026",
       "rarity": "U",
+      "image": "hiemal-droid.webp",
       "types": [
         "ALLY"
       ],
@@ -876,6 +910,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "016",
       "rarity": "U",
+      "image": "modular-armaton.webp",
       "types": [
         "ALLY"
       ],
@@ -904,6 +939,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "014",
       "rarity": "U",
+      "image": "discorp-retainer.webp",
       "types": [
         "ALLY"
       ],
@@ -933,6 +969,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "013",
       "rarity": "C",
+      "image": "collateral-overload.webp",
       "types": [
         "ACTION"
       ],
@@ -962,6 +999,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "028",
       "rarity": "SR",
+      "image": "override-access.webp",
       "types": [
         "ACTION"
       ],
@@ -990,6 +1028,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "006",
       "rarity": "U",
+      "image": "discorp-administrator-card.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -1020,6 +1059,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "009",
       "rarity": "R",
+      "image": "surveillance-module.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -1050,6 +1090,7 @@
       "setPrefix": "Re:C-MST",
       "collectorNumber": "012",
       "rarity": "R",
+      "image": "machine-replicator.webp",
       "types": [
         "REGALIA",
         "ITEM"
@@ -1079,6 +1120,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "044",
       "rarity": "R",
+      "image": "divergent-horizon.webp",
       "types": [
         "ACTION"
       ],
@@ -1107,6 +1149,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "076",
       "rarity": "SR",
+      "image": "spellshield-double.webp",
       "types": [
         "ACTION"
       ],
@@ -1137,6 +1180,7 @@
       "setPrefix": "CBL",
       "collectorNumber": null,
       "rarity": null,
+      "image": "chains-of-absolution.webp",
       "types": [
         "ACTION"
       ],
@@ -1166,6 +1210,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "077",
       "rarity": "C",
+      "image": "stirred-sentiments.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -1194,6 +1239,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "125",
       "rarity": "C",
+      "image": "hyperram-hydroid.webp",
       "types": [
         "ALLY"
       ],
@@ -1222,6 +1268,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "142",
       "rarity": "U",
+      "image": "casella-s-poise.webp",
       "types": [
         "PHANTASIA"
       ],
@@ -1250,6 +1297,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "074",
       "rarity": "R",
+      "image": "sinister-divulgence.webp",
       "types": [
         "ACTION"
       ],
@@ -1278,6 +1326,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "129",
       "rarity": "U",
+      "image": "mindfrost.webp",
       "types": [
         "ACTION"
       ],
@@ -1307,6 +1356,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "182",
       "rarity": "SR",
+      "image": "evil-claw-calcabrina.webp",
       "types": [
         "ALLY"
       ],
@@ -1335,6 +1385,7 @@
       "setPrefix": "CBL",
       "collectorNumber": "185",
       "rarity": "C",
+      "image": "neos-essence.webp",
       "types": [
         "TOKEN",
         "PHANTASIA"
@@ -1364,6 +1415,7 @@
       "setPrefix": "CBLP",
       "collectorNumber": "005",
       "rarity": "U",
+      "image": "feed-the-hungry.webp",
       "types": [
         "ACTION"
       ],
@@ -1393,6 +1445,7 @@
       "setPrefix": "CBLP",
       "collectorNumber": "019",
       "rarity": "U",
+      "image": "show-devotion.webp",
       "types": [
         "ACTION"
       ],
@@ -1421,6 +1474,7 @@
       "setPrefix": "CBLP",
       "collectorNumber": "004",
       "rarity": "U",
+      "image": "extract-consciousness.webp",
       "types": [
         "ACTION"
       ],
