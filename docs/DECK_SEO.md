@@ -143,3 +143,30 @@ The single sitemap supports up to 50,000 URLs; exceeding that bound fails explic
 Deployed account-worker version `be752948-8157-46ed-848a-5ce868a446d2`, account-service deployment `dpl_Dt2K69iU8qZxvaso7qffP2QPJYce`, and edge version `7c7a2761-7b9b-4610-9dd5-fba6825dbcf7`. Verification: 140 account-worker tests, 21 combined sitemap/sharing/edge tests, both service typechecks, and live XML parsing. GET and HEAD return 200/no-store through authoritative Cloudflare routing; one initial HEAD request returned 503, followed by three successful HEAD checks and two successful GET repeats with no edge errors in the observed logs. The local recursive DNS answer still reaches the old origin (404 for this new route) until its previous TTL expires. Privacy/withdrawal checks use local database fixtures, not mutations of real user decks. No visible UI changed.
 
 Next: push/deploy the pending Pages changes (including robots and tournament entries), verify DNS convergence, then submit both sitemaps and inspect representative URLs in Search Console. Signed-in X composer verification remains outstanding. Initial rollout is approximately 85% complete; full historical tournament coverage remains a separate hosting-size decision.
+
+## Broadcast match search and sharing
+
+The production build also runs `scripts/build-timeline-pages.mjs`. It publishes a crawlable
+`/timelines/` event-grouped directory and one directory entry for each curated match (214 at
+implementation). Existing match IDs, including capital letters, remain unchanged. Canonicals
+omit game/tab filters and include the directory's trailing slash; `/timelines/combos` remains
+an application route. The sitemap includes every recap, including partial ones.
+
+Each entry provides readable game summaries and beats before JavaScript loads, Article JSON-LD,
+match-specific title/description, and 1200×630 JPEG Open Graph/X previews. No upload date or
+complete-game claim is inferred. Results come directly from the reviewed recap. Images show
+both players, event, round, result, all explicitly named champions, or recorded spirit fallbacks.
+A missing portrait uses the player's initial. Run
+`node --import tsx scripts/prepare-match-social-art.mjs` when new champion portraits are needed;
+its official source URLs are saved beside the bundled art. Production rendering is offline.
+
+The match landing page shares the same metadata and canonical URL, with visible Watch,
+Copy link, and native Share controls. Clipboard failures reveal a selectable URL; dismissing
+native sharing does not copy unexpectedly. Timeline/decklist and game URL state remain intact.
+
+Verification: SEO/build fixtures cover escaping, existing mixed-case URLs, canonical links,
+sitemap idempotence, partial-game text, multiple champions, spirits, and missing artwork.
+The main flow was checked at 390px and 1280px, including copy confirmation, 48px controls,
+keyboard tab navigation, decklist loading, missing-match recovery, and horizontal overflow.
+Native share completion, forced clipboard/network errors, and social-platform scraper caches
+were not exercised. Validate a published match URL after deployment.

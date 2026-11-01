@@ -1,3 +1,5 @@
+import { timelineMetadata } from "@gatcg/shared";
+import MatchShare from "./MatchShare";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -20,10 +22,8 @@ export default function TimelineDetail() {
   const match = useBroadcastTimelineMatch(id);
   const [tab, setTab] = useTabParam("tab", ALL_DETAIL_TABS, "timeline");
 
-  useDocumentTitle(
-    match ? `${match.event} – ${match.round}` : "Match Timeline",
-    "Players, cards and key moments from the broadcast.",
-  );
+  const metadata = match ? timelineMetadata(match) : undefined;
+  useDocumentTitle(metadata?.title ?? "Match Timeline", metadata?.description ?? "Players, cards and key moments from the broadcast.", metadata?.path, metadata ? { src: metadata.image, alt: metadata.title } : undefined);
 
   const tabs: { key: DetailTab; label: string }[] = [{ key: "timeline", label: "Timeline" }];
   if (match?.eventId !== undefined) tabs.push({ key: "decklists", label: "Decklists" });
@@ -50,7 +50,7 @@ export default function TimelineDetail() {
             &larr; Match Timelines
           </Link>
           <MatchTimelineHeader match={match} />
-          <MatchVideoLink match={match} />
+          <div className="mt-4 flex flex-wrap items-center gap-3"><MatchVideoLink match={match} /><MatchShare key={match.id} match={match} /></div>
 
           <div className="mt-4">
               <Tabs baseId="match-view" variant="pill" tabs={tabs} active={activeTab} onChange={next => { if (next === "decklists") setDecklistsVisited(true); setTab(next); }} label="Match view" />

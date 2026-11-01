@@ -10,6 +10,6 @@ export function isCardPageSlug(slug: string): boolean {
 export function canonicalSiteUrl(pathname: string): string {
   const path = pathname.split(/[?#]/, 1)[0].replace(/\/+$/, "") || "/";
   const card = /^\/cards\/([^/]+)$/.exec(path);
-  const directory = /^\/decks\/[a-z0-9]{1,7}$/.test(path) || /^\/artists(?:\/[^/]+)?$/.test(path) || (card !== null && isCardPageSlug(card[1]));
+  const directory = (path.toLowerCase() !== "/timelines/combos" && /^\/timelines(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/i.test(path)) || /^\/decks\/[a-z0-9]{1,7}$/.test(path) || /^\/artists(?:\/[^/]+)?$/.test(path) || (card !== null && isCardPageSlug(card[1]));
   return `https://fanofin.site${directory ? `${path}/` : path}`;
 }
