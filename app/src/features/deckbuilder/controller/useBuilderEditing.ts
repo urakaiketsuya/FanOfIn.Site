@@ -11,11 +11,11 @@ export function useBuilderEditing(workflow: ReturnType<typeof useBuilderWorkflow
   const { report, clear } = useDeckEditFeedback();
   useEffect(() => { clear(); }, [format, clear]);
   const { lockedCards, lockedSections, maybeboard } = workflow.state;
-  let deck: EditableDeck = { main: [], material: [], sideboard: [], maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })) };
+  let deck: EditableDeck = { main: [], material: [], song: [], sideboard: [], maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })) };
   for (const [key, quantity] of lockedCards) {
     const name = selectionCardName(key);
     const section = lockedSections.get(key) ?? automaticDeckSection(catalog.get(name));
-    deck[section].push({ card: name, quantity });
+    deck[section]!.push({ card: name, quantity });
   }
   deck = withDeckPrintings(deck, workflow.state.printings ?? {});
   const [past, setPast] = useState<EditableDeck[]>([]);
@@ -34,7 +34,7 @@ export function useBuilderEditing(workflow: ReturnType<typeof useBuilderWorkflow
   function apply(next: EditableDeck) {
     workflow.setPrintings(extractDeckPrintings(next));
     expected.current = JSON.stringify(next);
-    const maps = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => next[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));
+    const maps = selectionsToMaps((["main", "material", "song", "sideboard"] as const).flatMap((section) => (next[section] ?? []).map((line) => ({ name: line.card, quantity: line.quantity, section }))));
     workflow.setLockedCards(maps.cards);
     workflow.setLockedSections(maps.sections);
     workflow.setMaybeboard(new Map(next.maybeboard.map((line) => [line.card, line.quantity])));

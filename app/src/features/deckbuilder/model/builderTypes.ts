@@ -1,7 +1,7 @@
 import type { DeckFormat } from "@gatcg/shared";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 
-export type LockedSection = "main" | "material" | "sideboard";
+export type LockedSection = "main" | "material" | "sideboard" | "song";
 export type PopulationSource = "tournament" | "community" | "simulator" | "balanced";
 export type CollectionMode = "all" | "prioritize" | "owned-only";
 

@@ -194,9 +194,20 @@ export default function DeckReviewIndex() {
     [decayReport],
   );
 
-  const tournamentBuild = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections, cardQuantityStatsData, championCard);
+  const engineLocked = useMemo(() => {
+    const cards = new Map<string, number>();
+    const sections = new Map<string, "main" | "material" | "sideboard">();
+    for (const [name, quantity] of lockedCards) {
+      const section = lockedSections.get(name);
+      if (section === "song") continue;
+      cards.set(name, quantity);
+      if (section) sections.set(name, section);
+    }
+    return { cards, sections };
+  }, [lockedCards, lockedSections]);
+  const tournamentBuild = useSuggestedBuild(rows, spiritFilter, engineLocked.cards, rejectedCards, populationLoading, engineLocked.sections, cardQuantityStatsData, championCard);
   const balancedBuild = useSuggestedBuild(
-    rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections, cardQuantityStatsData, championCard,
+    rows, spiritFilter, engineLocked.cards, rejectedCards, populationLoading, engineLocked.sections, cardQuantityStatsData, championCard,
     null, communityInclusionByName, decayingCardBoost,
   );
   const rankedBuild = populationSource === "tournament" ? tournamentBuild : balancedBuild;

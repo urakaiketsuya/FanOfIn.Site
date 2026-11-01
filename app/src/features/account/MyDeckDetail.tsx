@@ -84,7 +84,7 @@ export default function MyDeckDetail() {
   const actionErrorToast = useRef("");
   const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TAB_KEYS, "decklist");
   const [cardInput, setCardInput] = useState("");
-  const [addDestination, setAddDestination] = useState<"automatic" | "main" | "material" | "sideboard" | "maybeboard">("automatic");
+  const [addDestination, setAddDestination] = useState<"automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song">("automatic");
   const cardCatalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);

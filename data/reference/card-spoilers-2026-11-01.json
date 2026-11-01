@@ -11,7 +11,8 @@
     "Names and effect text were read from video screenshots. Collector numbers and rarities come from small print and can be wrong.",
     "Cards with null collectorNumber/rarity had unreadable print. Mana-cost orb values were read from the card frame.",
     "Field names and enum values follow data/card-catalog.json (types, subtypes, elements, cost). exalted marks the \"Ex\" frame badge.",
-    "reprintOf: the same card text already exists in the catalog under that set prefix."
+    "reprintOf: the same card text already exists in the catalog under that set prefix.",
+    "Song cards are Unlockable Actions: they can only be registered in an unlockable deck (the Song deck). Opening Refrain is a normal Melody action in Main and copies a card from the Song deck."
   ],
   "sets": {
     "Re:C-SKY": "Casella reveal cards (Cleric, arcane)",
@@ -72,6 +73,7 @@
       "power": null,
       "life": 19,
       "speed": null,
+      "unlocksDeckSection": "song",
       "effect": "A deck with this card in it unlocks the Song deck. (It's an unordered private deck consisting of a maximum of four different Song cards.)\nOn Enter: Empower 2.\nInherited Effect — If you would empower an amount, you may put that many aria counters on Casella instead.",
       "altPrintings": [
         {
@@ -172,6 +174,7 @@
       "life": null,
       "speed": "fast",
       "unlockable": true,
+      "deckSection": "song",
       "effect": "(Unlockable — This card can only be registered in an unlockable deck.)\nOn Premiere: Empower 2.\nYou may remove three aria counters from your champion. If you do, draw a card into your memory."
     },
     {
@@ -201,6 +204,7 @@
       "life": null,
       "speed": "fast",
       "unlockable": true,
+      "deckSection": "song",
       "effect": "(Remove two aria counters from your champion to pay for this card's aria cost.)\nOn Premiere: For each non-exalted element, put a buff counter on up to one ally of that element.\nPrevent the next 3 damage that would be dealt to up to one target ally this turn."
     },
     {
@@ -230,6 +234,7 @@
       "life": null,
       "speed": "fast",
       "unlockable": true,
+      "deckSection": "song",
       "effect": "On Premiere: The next ally card you activate this turn costs (2) less to activate. (Trigger this ability when you activate \"Aiss Yustera\" for the first time each game.)\nIf your influence is seven or less, scavenge 7 for an ally card. (A player's influence is equal to the total amount of cards in their hand and memory.)"
     },
     {
@@ -1438,5 +1443,19 @@
       "speed": "slow",
       "effect": "Target opponent banishes a card at random from their memory. If you are devoted to Faust, each other opponent also banishes a card at random from their memory. (A player is devoted to Faust as long as they have two or more of Faust's boons in their pantheon.)"
     }
-  ]
+  ],
+  "deckSections": {
+    "song": {
+      "description": "Unordered private deck unlocked by Casella, Volant Songstress. Maximum of four different Song cards. Registered like Main or Material, but only in an unlockable deck.",
+      "cards": [
+        "Skyward Requiem",
+        "Chromatic",
+        "Aiss Yustera"
+      ],
+      "unlockedBy": [
+        "Casella, Volant Songstress"
+      ],
+      "maxDifferentCards": 4
+    }
+  }
 }

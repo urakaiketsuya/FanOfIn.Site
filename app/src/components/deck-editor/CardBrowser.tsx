@@ -8,8 +8,9 @@ import type { DeckFormat } from "@gatcg/shared";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
-import { automaticDeckSection, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
+import { automaticDeckSection, songDeckAvailable, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
+import { SONG_DECK_MAX_DIFFERENT_CARDS } from "../../lib/songDeck";
 import { rarityLabel, rarityOptions } from "../../features/cards/rarities";
 import DialogSheet from "../ui/DialogSheet";
 import DisclosureChevron from "../DisclosureChevron";
@@ -20,7 +21,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   format?: DeckFormat;
   renderStats?: (name: string) => ReactNode; statsControls?: ReactNode;
   query: string; onQuery: (query: string) => void;
-  destination: "automatic" | "main" | "material" | "sideboard" | "maybeboard"; onDestination: (value: "automatic" | "main" | "material" | "sideboard" | "maybeboard") => void;
+  destination: "automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song"; onDestination: (value: "automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song") => void;
   names: string[]; catalog: Map<string, Card>; deck: EditableDeck; onEdit: (edit: DeckEdit) => void; onAdded?: () => void;
   owned?: ReadonlyMap<string, number>; collectionStatus?: string; identityElements?: ReadonlySet<string>;
   sourceControl?: ReactNode; suppressResults?: boolean; suggestedNames?: string[]; evidence?: ReadonlyMap<string, string>;
@@ -43,13 +44,16 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const active = Object.entries(filters).filter(([key, value]) => !["element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
   const labels: Record<keyof CatalogFilters, string> = { rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
-  const quantityFor = (name: string) => deck[sectionFor(name)].find(line => line.card === name)?.quantity ?? 0;
+  const quantityFor = (name: string) => (deck[sectionFor(name)] ?? []).find(line => line.card === name)?.quantity ?? 0;
   function toggleSelection(name: string) {
     setSelected(current => { const next = new Set(current); if (next.has(name)) next.delete(name); else next.add(name); return next; });
     setSelectionError("");
   }
   function addSelected(quantity: number) {
-    const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity}));
+    const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity: sectionFor(name) === "song" ? 1 : quantity}));
+    const songNames = additions.filter(item => item.section === "song" && !(deck.song ?? []).some(line => line.card === item.name)).map(item => item.name);
+    if (songNames.length && !songDeckAvailable(deck, catalog)) { setSelectionError("Add a Casella Champion to the Material Deck to use the Song Deck."); return; }
+    if (songNames.length && (deck.song ?? []).length + songNames.length > SONG_DECK_MAX_DIFFERENT_CARDS) { setSelectionError(`The Song Deck holds at most ${SONG_DECK_MAX_DIFFERENT_CARDS} different Song cards.`); return; }
     const invalid = additions.filter(item => !deckDestinationEligibility(catalog.get(item.name), item.section).allowed);
     if (invalid.length) { setSelectionError(`Cannot add ${invalid.map(item=>item.name).join(", ")} to this destination. Choose another destination or deselect these cards.`); return; }
     if (!additions.length) return;
@@ -64,7 +68,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     <FilterQuery text={query} facets={facets} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
     <div className={`grid w-full items-center gap-2 ${sourceControl ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
       {sourceControl}
-      <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck (automatic)</option><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
+      <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck (automatic)</option><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option>{deck.song !== undefined && <option value="song">Song</option>}<option value="maybeboard">Maybeboard</option></select></label>
       <button type="button" aria-expanded={filterOpen} aria-haspopup="dialog" onClick={event=>{event.currentTarget.focus();setFilterOpen(open=>!open);}} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Options{active.length + Object.values(facets).reduce((n, values) => n + values.size, 0) ? ` (${active.length + Object.values(facets).reduce((n, values) => n + values.size, 0)})` : ""}<DisclosureChevron /></button>
     </div>
 

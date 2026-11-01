@@ -112,8 +112,8 @@ export function useDeckBuilderController() {
     if (!cardNameSet.has(name)) return;
     const destination = override ?? addDestination;
     const section = destination === "automatic" ? automaticDeckSection(catalogByName.get(name)) : destination;
-    const existing = editor.deck[section].find((line) => line.card === name)?.quantity ?? 0;
-    editor.edit({ type: "quantity", section, name, quantity: existing + quantity });
+    const existing = (editor.deck[section] ?? []).find((line) => line.card === name)?.quantity ?? 0;
+    editor.edit({ type: "quantity", section, name, quantity: section === "song" ? Math.max(existing, 1) : existing + quantity });
     setCardInput("");
     setAddDestination("automatic");
   }

@@ -53,7 +53,7 @@ export function decodeCardSelections(encoded: string): CardSelection[] {
     const name = nameParts.join(":");
     const quantity = Number(quantityValue);
     if (!name || !Number.isFinite(quantity) || quantity < 1) continue;
-    const section: LockedSection = sectionValue === "material" || sectionValue === "sideboard" ? sectionValue : "main";
+    const section: LockedSection = sectionValue === "material" || sectionValue === "sideboard" || sectionValue === "song" ? sectionValue : "main";
     selections.push({ name, quantity, section });
   }
   return selections;

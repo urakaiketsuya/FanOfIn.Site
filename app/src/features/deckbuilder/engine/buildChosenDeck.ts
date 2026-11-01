@@ -11,14 +11,17 @@ export function buildChosenDeck(
 ): SuggestedBuild {
   const selected = new Map(choices);
   if (spirit && !selected.has(spirit)) selected.set(spirit, 1);
-  const cards: SuggestedCard[] = Array.from(selected, ([key, quantity]) => { const cardName = selectionCardName(key); return ({
+  const cards: SuggestedCard[] = Array.from(selected).flatMap(([key, quantity]) => { const cardName = selectionCardName(key);
+    // The Song deck is separate from Main/Material/Sideboard, so recommendations and totals never see it.
+    if (sections.get(key) === "song") return [];
+    return [{
     cardName, quantity, locked: true,
-    section: sections.get(key)
+    section: sections.get(key) as Exclude<LockedSection, "song"> | undefined
       ?? (cardName === spirit ? "material" : catalog.get(cardName)?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? "material" : "main"),
     adjustedLift: null, sample: null, optimizedFrom: null,
     quantityEvidence: { source: "matching population", sampleSize: 0 },
     reason: cardName === spirit ? "spirit" : "ranked",
-  }); });
+  }]; });
   return {
     rankingPopulationSize: 0, matchingDeckCount: 0, conditionalWinRate: null, baselineWinRate: null,
     main: cards.filter((card) => card.section === "main"),

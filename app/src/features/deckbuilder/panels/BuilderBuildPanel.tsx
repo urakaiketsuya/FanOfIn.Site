@@ -5,7 +5,7 @@ import CardBrowser from "../../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../../components/deck-editor/EditorDialog";
 import DeckEditor from "../../../components/deck-editor/DeckEditor";
 import DisclosureChevron from "../../../components/DisclosureChevron";
-import { EDITOR_SECTIONS } from "../../../lib/deckEditing";
+import { editorSections } from "../../../lib/deckEditing";
 import { BuilderStartActions, DecklistPaste } from "../components/DeckBuilderSetup";
 import { useDeckBuilder } from "../useDeckBuilder";
 import Button from "../../../components/ui/Button";
@@ -22,12 +22,12 @@ export default function BuilderBuildPanel() {
     if (next === "stats") params.set("workbenchView", next); else params.delete("workbenchView");
     b.setSearchParams(params, { replace: true });
   }
-  const hasCards = EDITOR_SECTIONS.some(({key})=>b.editor.deck[key].length > 0);
+  const hasCards = editorSections(b.editor.deck).some(({key})=>(b.editor.deck[key] ?? []).length > 0);
   const [starting, setStarting] = useState(!hasCards);
   const [budgetOpen, setBudgetOpen] = useState(false);
   const [browserOpen, setBrowserOpen] = useState(false);
-  const [browserDestination, setBrowserDestination] = useState<"automatic" | "main" | "material" | "sideboard" | "maybeboard">("automatic");
-  const total = EDITOR_SECTIONS.reduce((sum,{key})=>sum+b.editor.deck[key].reduce((n,line)=>n+line.quantity,0),0);
+  const [browserDestination, setBrowserDestination] = useState<"automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song">("automatic");
+  const total = editorSections(b.editor.deck).reduce((sum,{key})=>sum+(b.editor.deck[key] ?? []).reduce((n,line)=>n+line.quantity,0),0);
   const evidence = useMemo(()=>new Map(b.cardCategoryRecommendations.map(item=>[item.card.name, `${item.recommendedQuantity} copies suggested. ${item.tournamentDecks > 0 ? `${Math.round(item.tournamentRate*100)}% of matching tournament decks` : `${Math.round(item.communityRate*100)}% community adoption`}.`])),[b.cardCategoryRecommendations]);
   const suggestedNames = useMemo(()=>[...new Set(b.cardCategoryRecommendations.map(item=>item.card.name))],[b.cardCategoryRecommendations]);
   const sourceSelect = useRef<HTMLSelectElement>(null);
