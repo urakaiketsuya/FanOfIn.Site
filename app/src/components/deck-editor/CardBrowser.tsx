@@ -1,3 +1,4 @@
+import FilterGroup from "../filters/FilterGroup";
 import { catalogSetOptions } from "../../lib/previewCards";
 import FilterQuery from "../filters/FilterQuery";
 import SearchSelectFilter from "../filters/SearchSelectFilter";
@@ -74,19 +75,25 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     </div>
 
     <FilterPanel activeCount={active.length + Object.values(facets).reduce((n, values) => n + values.size, 0)} onClear={() => setFilters(emptyCatalogFilters())} resultLabel={`Show ${matches.length} cards`}>
+    <FilterGroup label="Sort">
     <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<span className="relative min-w-0"><select aria-label="Sort cards" value={sort === "recommended" && suggestedNames === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 max-w-full min-w-0 appearance-none rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-10!">{suggestedNames !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
+    </FilterGroup>
     {statsControls}
-      <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
+      <div className="space-y-3 pb-3">
         {Object.entries(facetKeys).map(([key, facet]) => {
           const props = { label: labels[key as keyof typeof facetKeys], options: key === "set" ? catalogSetOptions(cards) : key === "rarity" ? rarityOptions(cards) : options(facet as "classes" | "elements" | "types" | "subtypes").map(value => ({value, text:value})), selected: facets[facet], onToggle: (value: string) => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")})) };
           return key === "set" || key === "subtype" ? <SearchSelectFilter key={key} {...props} /> : <MultiSelectFilter key={key} {...props} iconKind={facet === "classes" || facet === "elements" || facet === "types" ? facet : undefined} />;
         })}
+        <FilterGroup label="Cost"><div className="grid gap-3 sm:grid-cols-2">
         <label className="text-sm">Cost type<select value={filters.costType} onChange={e => setFilters(f=>({...f,costType:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option><option value="memory">Memory</option><option value="reserve">Reserve</option></select></label>
         <label className="text-sm">Maximum cost<input type="number" min={0} value={filters.maxCost} onChange={e=>setFilters(f=>({...f,maxCost:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2" /></label>
+        </div></FilterGroup>
+        <FilterGroup label="Deck and collection">
         <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={filters.availableElements} disabled={!identityElements?.size} onChange={e=>setFilters(f=>({...f,availableElements:e.target.checked}))} />Available deck elements</label>
         <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={filters.ownedOnly} disabled={!owned} onChange={e=>setFilters(f=>({...f,ownedOnly:e.target.checked}))} />Only cards I own</label>
         {!owned && <p className="text-xs text-ctp-subtext0">{collectionStatus ?? "Open your collection to load ownership filters."}</p>}
         {!identityElements?.size && <p className="text-xs text-ctp-subtext0">Add Material cards to enable the element filter.</p>}
+        </FilterGroup>
       </div>
     </FilterPanel>
     {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}

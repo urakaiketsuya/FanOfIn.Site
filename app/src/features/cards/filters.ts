@@ -1,7 +1,7 @@
 import { previewCardSet, PREVIEW_SET } from "../../lib/previewCards";
 import { includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
-import { setFamilyPrefix, type Card } from "@gatcg/shared";
+import { searchSetPrefix, type Card } from "@gatcg/shared";
 import type { CardTagLookup } from "./cardTags";
 
 export type SpeedFilter = "any" | "fast" | "normal";
@@ -45,8 +45,8 @@ export function emptyFilterState(): CardFilterState {
 }
 
 export function matchesEdition(edition: Card["editions"][number], filters: CardFilterState): boolean {
-  const families = new Set([...filters.sets].map(v => (v.startsWith("-") ? "-" : "") + setFamilyPrefix(filterValue(v))));
-  return matchesFilterValues([setFamilyPrefix(edition.set.prefix)], families)
+  const families = new Set([...filters.sets].map(v => (v.startsWith("-") ? "-" : "") + searchSetPrefix(filterValue(v))));
+  return matchesFilterValues([searchSetPrefix(edition.set.prefix)], families)
     && matchesFilterValues([edition.set.prefix], filters.printingSets ?? new Set())
     && matchesFilterValues([String(edition.rarity)], filters.rarities ?? new Set())
     && (!filters.artist.trim() || !!edition.illustrator?.toLowerCase().includes(filters.artist.trim().toLowerCase()));

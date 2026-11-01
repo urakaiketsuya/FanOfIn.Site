@@ -1,3 +1,4 @@
+import { catalogSetOptions } from "../../lib/previewCards";
 import FilterQuery from "../../components/filters/FilterQuery";
 import { useMemo, useTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -16,11 +17,7 @@ export default function DeckContentFilterControls({ filters, setFilters }: {
   const catalog = useCardCatalog();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const [isPending, startTransition] = useTransition();
-  const setOptions = useMemo(() => {
-    const sets = new Map<string, string>();
-    for (const card of catalog) for (const edition of card.editions) sets.set(edition.set.prefix, `${edition.set.name} (${edition.set.prefix})`);
-    return Array.from(sets, ([value, text]) => ({ value, text })).sort((a, b) => a.text.localeCompare(b.text));
-  }, [catalog]);
+  const setOptions = useMemo(() => catalogSetOptions(catalog), [catalog]);
   const update = (fn: (previous: DeckContentFilterState) => DeckContentFilterState) => startTransition(() => setFilters(fn));
 
   return <>

@@ -1,4 +1,4 @@
-import { matchesFilterValues, filterLabel } from "@gatcg/shared";
+import { matchesFilterValues, filterLabel, filterValue, searchSetPrefix } from "@gatcg/shared";
 import type { Card, DeckCardIndexLine } from "@gatcg/shared";
 
 export type DeckSpeedFilter = "any" | "fast" | "normal";
@@ -47,7 +47,7 @@ export function deckMatchesContentFilters(
   if (filters.types.size && !matchesFilterValues(cards.flatMap(card => card.types), filters.types)) return false;
   if (filters.subtypes.size && !matchesFilterValues(cards.flatMap(card => card.subtypes), filters.subtypes)) return false;
   if (filters.elements.size && !matchesFilterValues(cards.flatMap(card => card.elements), filters.elements)) return false;
-  if (filters.sets.size && !matchesFilterValues(cards.flatMap(card => card.editions.map(edition => edition.set.prefix)), filters.sets)) return false;
+  if (filters.sets.size && !matchesFilterValues(cards.flatMap(card => card.editions.map(edition => searchSetPrefix(edition.set.prefix))), new Set([...filters.sets].map(value => (value.startsWith("-") ? "-" : "") + searchSetPrefix(filterValue(value)))))) return false;
   if (filters.speed === "fast" && !cards.some((card) => card.speed === true)) return false;
   if (filters.speed === "normal" && !cards.some((card) => card.speed === false)) return false;
   return true;
@@ -73,7 +73,7 @@ export function deckContentRelevance(
   if (filters.types.size) facets.push((_name, card) => !!card?.types.some((value) => filters.types.has(value)));
   if (filters.subtypes.size) facets.push((_name, card) => !!card?.subtypes.some((value) => filters.subtypes.has(value)));
   if (filters.elements.size) facets.push((_name, card) => !!card?.elements.some((value) => filters.elements.has(value)));
-  if (filters.sets.size) facets.push((_name, card) => !!card?.editions.some((edition) => filters.sets.has(edition.set.prefix)));
+  if (filters.sets.size) facets.push((_name, card) => !!card?.editions.some((edition) => matchesFilterValues([searchSetPrefix(edition.set.prefix)], new Set([...filters.sets].map(searchSetPrefix)))));
   if (filters.speed !== "any") facets.push((_name, card) => card?.speed === (filters.speed === "fast"));
   if (facets.length === 0) return 0;
 

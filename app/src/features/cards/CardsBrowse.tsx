@@ -8,7 +8,7 @@ import { compareCardPrices } from "../../lib/cardPriceSort";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { CARD_TAG_CATEGORIES, cardTagCategory, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
+import { CARD_TAG_CATEGORIES, cardTagCategory, searchSetFamily, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -87,7 +87,7 @@ export default function CardsBrowse() {
     const byPrefix = new Map<string, { name: string; releaseDate: string }>();
     for (const card of cards) {
       for (const ed of card.editions) {
-        const family = setFamily(ed.set);
+        const family = searchSetFamily(ed.set);
         if (!byPrefix.has(family.prefix)) byPrefix.set(family.prefix, { name: family.name, releaseDate: ed.set.release_date });
       }
     }

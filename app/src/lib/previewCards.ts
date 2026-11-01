@@ -1,4 +1,4 @@
-import { setFamily, type Card } from '@gatcg/shared';
+import { searchSetFamily, type Card } from '@gatcg/shared';
 
 export interface PreviewCardRecord {
   image?: string; setPrefix?: string;
@@ -12,7 +12,7 @@ export function previewCardSet(card: Card): string | undefined {
   return isPreviewCard(card) ? (card as PreviewCard).previewSetPrefix : undefined;
 }
 export function catalogSetOptions(cards: Card[]) {
-  const sets = new Map(cards.flatMap(card => card.editions.map(edition => { const family = setFamily(edition.set); return [family.prefix, family.name] as const; })));
+  const sets = new Map(cards.flatMap(card => card.editions.map(edition => { const family = searchSetFamily(edition.set); return [family.prefix, family.name] as const; })));
   if (cards.some(card => previewCardSet(card))) sets.set(PREVIEW_SET.prefix, PREVIEW_SET.name);
   return [...sets].map(([value, text]) => ({ value, text })).sort((a, b) => a.text.localeCompare(b.text));
 }

@@ -729,3 +729,7 @@ Deploy the account service with Song support before the frontend. Its health
 capability prevents new clients from saving Songs through an older service that
 would discard them. Preview cards without official art cannot be exported to TTS.
 After official cards arrive, verify the catalog match and a saved-deck round trip.
+
+## Search filters
+
+Card, deck, and builder searches use the shared FilterPanel and FilterGroup controls. Each group starts collapsed on mobile and desktop and remains keyboard-toggleable. Set search matches names and abbreviations (for example PRD or CBL). Use searchSetFamily/searchSetPrefix to group related starter decks, event packs, and other set products into one search choice; exact printing and collection identities remain separate.

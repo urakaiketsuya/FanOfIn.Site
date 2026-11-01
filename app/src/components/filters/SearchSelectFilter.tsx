@@ -8,7 +8,7 @@ export default function SearchSelectFilter({ label, options, selected, onToggle 
 }) {
   const [input, setInput] = useState("");
   const id = useId();
-  const matches = options.filter(option => option.text.toLowerCase().includes(input.trim().toLowerCase()));
+  const matches = options.filter(option => `${option.text} ${option.value}`.toLowerCase().includes(input.trim().toLowerCase()));
   return <FilterGroup label={label}>
     <div className="flex flex-wrap gap-2">{[...selected].map(value => <Button key={value} size="sm" aria-label={`Remove ${value.startsWith('-') ? 'exclude' : 'include'} ${filterValue(value)}`} onClick={() => onToggle(value)}>
       {value.startsWith('-') ? 'Exclude' : 'Include'}: {options.find(o => o.value.toLowerCase() === filterValue(value).toLowerCase())?.text ?? filterValue(value)} ×
