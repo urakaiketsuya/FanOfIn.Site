@@ -10,14 +10,15 @@ Two recaps have direct match uploads (Akihabara Round 9 and Taipei Round 9). Ano
 
 ## Transcript backfill
 
-Current collection period means Taipei September 2025 through the latest archived Osaka Day 1 stream. Earlier streams are recorded below as a separate backlog. Upcoming streams, developer streams, ceremonies and premieres are not missing match transcripts.
+Current collection period means Taipei September 2025 through the latest archived Osaka Day 2 stream. Earlier streams are recorded below as a separate backlog. Upcoming streams, developer streams, ceremonies and premieres are not missing match transcripts.
 
-29 archived competition broadcasts fall in the current period. 13 already had full-stream source files; 14 additional streams now have locally captured captions. Ascent Osaka Day 1 has no YouTube captions, so it has a separate machine transcription (OpenAI whisper-1 on the downloaded audio). That transcript is not YouTube captions. All 9,182 supplied segments have now been reviewed, with contextual name cleanup and bounded audio recovery; nine featured matches are linked to official pairings. Round 9 coverage is partial.
+30 archived competition broadcasts fall in the current period. Ascent Osaka Day 2 is the newest. It also has no YouTube captions, so it has a machine transcription like Day 1. It was downloaded while YouTube still listed the stream as post_live, with a listed length of 11:54:59 and 13:02:18 of audio. Re-check the length once YouTube finishes processing. 13 already had full-stream source files; 14 additional streams now have locally captured captions. Ascent Osaka Day 1 has no YouTube captions, so it has a separate machine transcription (OpenAI whisper-1 on the downloaded audio). That transcript is not YouTube captions. All 9,182 supplied segments have now been reviewed, with contextual name cleanup and bounded audio recovery; nine featured matches are linked to official pairings. Round 9 coverage is partial.
 
 New captures are in `pipeline/.cache/broadcast-transcripts/`, with JSON and plain-text companions named by video ID. This cache is intentionally not committed; the registry records paths, hashes, segment counts and first/last timestamps. Capture means all transcript rows exposed by YouTube, not a claim that every moment of the video has captions. Blank caption rows are retained. The initial **targeted match-boundary/result review** covered selected introduction, transition and closing-sequence windows. That pass added 86 concise recaps and 18 offsets to existing recaps, preserving the original 110 recap texts at that stage. Exact evidence and remaining cases are recorded in [the backfill review](BROADCAST_BACKFILL_REVIEW_2026-10-31.json). Original Downloads files and ZIP are untouched.
 
 | Stream | Transcript status |
 | --- | --- |
+| [Ascent Osaka Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=VOlVotCfOU0) | Machine transcription (Whisper) · 15,458 segments · unreviewed · no YouTube captions · downloaded while post_live |
 | [Ascent Osaka Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=g3NNFcNpw3k) | Machine transcription (Whisper) · 9,182 segments reviewed · audio gaps recovered · 9 recaps (Round 9 partial) · no YouTube captions |
 | [Ascent Melbourne Day 2 \| Grand Archive TCG](https://www.youtube.com/watch?v=qQrV2I2Uiac) | Captured locally · 4,597 segments · sequential caption review |
 | [Ascent Melbourne Day 1 \| Grand Archive TCG](https://www.youtube.com/watch?v=W_5i0aO5Es0) | Captured locally · 4,685 segments · sequential caption review |

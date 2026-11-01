@@ -15,10 +15,25 @@
       "videoId": "VOlVotCfOU0",
       "title": "Ascent Osaka Day 2 | Grand Archive TCG",
       "kind": "broadcast",
-      "status": "upcoming",
+      "status": "archived",
       "competition": true,
       "transcripts": [],
-      "scope": "current-collection-period"
+      "scope": "current-collection-period",
+      "availability": {
+        "checkedAt": "2026-11-01",
+        "status": "transcript-unavailable",
+        "evidence": "yt-dlp reports no subtitles and no automatic captions."
+      },
+      "capture": {
+        "path": "pipeline/.cache/broadcast-transcripts/VOlVotCfOU0.json",
+        "sha256": "1399756d53dcaa20e34586e5629ed3879917c95ce8acca25f2bec16f2c3f670c",
+        "segments": 15458,
+        "firstTimestamp": "0:00",
+        "lastTimestamp": "12:58:54",
+        "blankSegments": 5,
+        "reviewStatus": "machine-transcribed-unreviewed",
+        "method": "Machine transcription, not YouTube captions. Audio downloaded with yt-dlp while YouTube listed the stream as post_live (listed length 11:54:59, downloaded audio 13:02:18), split into 27 chunks of 30 minutes, transcribed with OpenAI whisper-1 (verbose_json segments, no prompt). Removed 430 stock phrases such as 'Thanks for watching' over music and 644 looped repeat copies. Card and player names are often misheard. Match start offsets are not verified. Re-check the length once YouTube finishes processing the recording."
+      }
     },
     {
       "videoId": "g3NNFcNpw3k",
