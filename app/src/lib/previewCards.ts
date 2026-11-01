@@ -1,12 +1,21 @@
-import type { Card } from '@gatcg/shared';
+import { setFamily, type Card } from '@gatcg/shared';
 
 export interface PreviewCardRecord {
-  image?: string;
+  image?: string; setPrefix?: string;
   name: string; aliases?: string[]; types: string[]; subtypes: string[]; classes: string[]; elements: string[];
   level: number | null; life: number | null; power: number | null; speed: string | null;
   cost: { type: string; value: string | null }; effect: string; flavor?: string;
 }
-type PreviewCard = Card & { previewImage?: string };
+export const PREVIEW_SET = { prefix: "CBL", name: "Asphodel/Cantabile" };
+type PreviewCard = Card & { previewImage?: string; previewSetPrefix?: string };
+export function previewCardSet(card: Card): string | undefined {
+  return isPreviewCard(card) ? (card as PreviewCard).previewSetPrefix : undefined;
+}
+export function catalogSetOptions(cards: Card[]) {
+  const sets = new Map(cards.flatMap(card => card.editions.map(edition => { const family = setFamily(edition.set); return [family.prefix, family.name] as const; })));
+  if (cards.some(card => previewCardSet(card))) sets.set(PREVIEW_SET.prefix, PREVIEW_SET.name);
+  return [...sets].map(([value, text]) => ({ value, text })).sort((a, b) => a.text.localeCompare(b.text));
+}
 export function previewCardImage(card: Card | undefined): string | undefined {
   return isPreviewCard(card) ? (card as PreviewCard).previewImage : undefined;
 }
@@ -24,6 +33,7 @@ export function mergePreviewCards(official: Card[], previews: PreviewCardRecord[
     const slug = card.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const costType = card.cost.type;
     const preview: PreviewCard = {
+      previewSetPrefix: card.setPrefix,
       previewImage: card.image && /^[a-zA-Z0-9_-]+\.(webp|png|jpg|jpeg)$/.test(card.image) ? `/images/spoilers/${card.image}` : undefined,
       uuid: `preview:${slug}`, slug, name: card.name, types: card.types, subtypes: card.subtypes,
       classes: card.classes, elements: card.elements, element: card.elements[0] ?? 'NORM',

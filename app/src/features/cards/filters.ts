@@ -1,3 +1,4 @@
+import { previewCardSet, PREVIEW_SET } from "../../lib/previewCards";
 import { includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
 import { setFamilyPrefix, type Card } from "@gatcg/shared";
@@ -85,7 +86,13 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
     if (filters.types.size && !matchesFilterValues(card.types, filters.types)) return false;
     if (filters.subtypes.size && !matchesFilterValues(card.subtypes, filters.subtypes)) return false;
     if (filters.elements.size && !matchesFilterValues(card.elements, filters.elements)) return false;
-    if ((filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
+    if (filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) {
+      const previewPrefix = previewCardSet(card);
+      const previewMatches = previewPrefix && !filters.rarities?.size && !filters.artist.trim()
+        && matchesFilterValues([PREVIEW_SET.prefix, previewPrefix], filters.sets)
+        && matchesFilterValues([previewPrefix], filters.printingSets ?? new Set());
+      if (!previewMatches && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
+    }
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;
     if (filters.tags?.size && (!tagLookup || !hasAnyTag(tagLookup.cards.get(card.uuid), filters.tags))) return false;

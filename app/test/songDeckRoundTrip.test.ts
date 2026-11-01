@@ -80,3 +80,19 @@ test('revealed Songs retain aria costs and Song deck classification', () => {
     assert.ok(previewCardImage(card));
   }
 });
+
+test('preview set filters group all reveals without inventing official editions', async () => {
+  const { catalogSetOptions, PREVIEW_SET } = await import('../src/lib/previewCards');
+  const { filterCatalog, emptyCatalogFilters } = await import('../src/components/deck-editor/catalogFilters');
+  const options = catalogSetOptions(catalog);
+  assert.deepEqual(options, [{ value: 'CBL', text: PREVIEW_SET.name }]);
+  assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: 'CBL' }).length, catalog.length);
+  assert.equal(filterCatalog(catalog, 'set:CBL', emptyCatalogFilters()).length, catalog.length);
+  assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: '-CBL' }).length, 0);
+  assert.equal(filterCatalog(catalog, '', { ...emptyCatalogFilters(), set: 'DOA' }).length, 0);
+  assert.ok(catalog.every(card => card.editions.length === 0));
+  const official = { ...catalog[0], uuid: 'official', editions: [{ set: { prefix: 'DOA 1st', name: 'Dawn of Ashes' }, rarity: 1 }] } as Card;
+  const merged = mergePreviewCards([official], previews, true);
+  assert.ok(!filterCatalog(merged, '', { ...emptyCatalogFilters(), set: 'CBL' }).includes(official));
+  assert.deepEqual(filterCatalog(merged, '', { ...emptyCatalogFilters(), set: 'DOA' }), [official]);
+});

@@ -1,3 +1,4 @@
+import { catalogSetOptions } from "../../lib/previewCards";
 import FilterQuery from "../filters/FilterQuery";
 import SearchSelectFilter from "../filters/SearchSelectFilter";
 import { toggleFilterValue, type SearchFacet } from "@gatcg/shared";
@@ -41,8 +42,8 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     const pool = [...new Set(suggestedNames ?? names)];
     return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && suggestedNames === undefined ? "name" : sort, prices);
   }, [cards, query, filters, owned, identityElements, suggestedNames, names, catalog, sort, prices]);
-  const active = Object.entries(filters).filter(([key, value]) => !["element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
-  const labels: Record<keyof CatalogFilters, string> = { rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
+  const active = Object.entries(filters).filter(([key, value]) => !["set", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
+  const labels: Record<keyof CatalogFilters, string> = { set: "Set", rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
   const quantityFor = (name: string) => (deck[sectionFor(name)] ?? []).find(line => line.card === name)?.quantity ?? 0;
   function toggleSelection(name: string) {
@@ -62,7 +63,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     setSelectionError("");
     onAdded?.();
   }
-  const facetKeys = { element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
+  const facetKeys = { set: "sets", element: "elements", type: "types", subtype: "subtypes", rarity: "rarities" } as const;
   const facets = Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [facet, new Set(filters[key as keyof typeof facetKeys] ? filters[key as keyof typeof facetKeys]!.split("|") : [])]));
   return <>
     <FilterQuery text={query} facets={facets} allowed={Object.values(facetKeys) as SearchFacet[]} onChange={(text, next) => { onQuery(text); setFilters(f => ({...f, ...Object.fromEntries(Object.entries(facetKeys).map(([key, facet]) => [key, [...next[facet] ?? []].join("|")]))})); }} />
@@ -76,7 +77,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<span className="relative min-w-0"><select aria-label="Sort cards" value={sort === "recommended" && suggestedNames === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 max-w-full min-w-0 appearance-none rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-10!">{suggestedNames !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
     {statsControls}
       <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
-        {Object.entries(facetKeys).map(([key, facet]) => <SearchSelectFilter key={key} label={labels[key as keyof typeof facetKeys]} options={key === "rarity" ? rarityOptions(cards) : options(facet as "elements" | "types" | "subtypes").map(value => ({value, text:value}))} selected={facets[facet]} onToggle={value => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")}))} />)}
+        {Object.entries(facetKeys).map(([key, facet]) => <SearchSelectFilter key={key} label={labels[key as keyof typeof facetKeys]} options={key === "set" ? catalogSetOptions(cards) : key === "rarity" ? rarityOptions(cards) : options(facet as "elements" | "types" | "subtypes").map(value => ({value, text:value}))} selected={facets[facet]} onToggle={value => setFilters(f => ({...f, [key]: [...toggleFilterValue(new Set(f[key as keyof typeof facetKeys]?.split("|").filter(Boolean)), value)].join("|")}))} />)}
         <label className="text-sm">Cost type<select value={filters.costType} onChange={e => setFilters(f=>({...f,costType:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option><option value="memory">Memory</option><option value="reserve">Reserve</option></select></label>
         <label className="text-sm">Maximum cost<input type="number" min={0} value={filters.maxCost} onChange={e=>setFilters(f=>({...f,maxCost:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2" /></label>
         <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={filters.availableElements} disabled={!identityElements?.size} onChange={e=>setFilters(f=>({...f,availableElements:e.target.checked}))} />Available deck elements</label>
