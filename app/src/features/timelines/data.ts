@@ -5,7 +5,7 @@ import { usePublishedData } from "../../lib/sync/usePublishedData";
 import { db } from "../../lib/db";
 
 export function useBroadcastTimelines(): BroadcastTimelines | undefined {
-  return usePublishedData<BroadcastTimelines>("broadcast-timelines", "/data/broadcast-timelines.json");
+  return usePublishedData<BroadcastTimelines>("broadcast-timelines", "/data/broadcast-timelines.json", true, true);
 }
 
 export function useBroadcastTimelineMatch(id: string | undefined): BroadcastTimelineMatch | undefined {

@@ -1,3 +1,5 @@
+import { watchPublishedUpdates } from './watchPublishedUpdates';
+import { createManifestLoader } from './publishedManifest';
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { createSharedLiveQuery } from "../sharedLiveQuery";
 import { db, type PublishedDataRow } from "../db";
@@ -10,25 +12,9 @@ interface Generated {
 /** Sentinel for `useLiveQuery`'s `defaultResult` – the value it returns until the first IndexedDB read resolves. */
 const PENDING = Symbol("published-data-pending");
 
-let manifestPromise: Promise<Record<string, string>> | null = null;
+export const loadManifest = createManifestLoader();
 
-/**
- * Fetched once per page load and cached at module scope – a tiny (~1KB) map of every published
- * dataset's key to its current `generatedAt`. Checked before deciding whether to fetch a real
- * dataset file, some of which are 90MB+. Falls back to `{}` on any failure (offline, or the
- * pipeline hasn't published a manifest yet), which just makes `refresh` behave as it did before
- * this existed – always fetch and compare after the fact.
- */
-export function loadManifest(): Promise<Record<string, string>> {
-  if (!manifestPromise) {
-    manifestPromise = fetch("/data/manifest.json")
-      .then((res) => (res.ok ? (res.json() as Promise<Record<string, string>>) : {}))
-      .catch(() => ({}));
-  }
-  return manifestPromise;
-}
-
-const inFlightRefreshes = new Map<string, Promise<void>>();
+const inFlightRefreshes = new Map<string, Promise<string>>();
 type RefreshStatus = { phase: "idle" | "loading" | "ready" | "error"; error: string | null };
 const IDLE_REFRESH_STATUS: RefreshStatus = { phase: "idle", error: null };
 const refreshStatuses = new Map<string, RefreshStatus>();
@@ -39,23 +25,24 @@ function setRefreshStatus(key: string, status: RefreshStatus): void {
   for (const listener of refreshListeners.get(key) ?? []) listener();
 }
 
-async function doRefresh(key: string, url: string): Promise<void> {
+async function doRefresh(key: string, url: string, revalidate: boolean): Promise<string> {
   const existing = await db.published.get(key);
-  const manifest = await loadManifest();
+  const manifest = await loadManifest(revalidate);
 
   // The whole point of the manifest: if it confirms we already have the current generation
   // cached, skip fetching (and JSON-parsing) the real file entirely. Without this, every mount of
   // a hook using a large dataset re-downloaded and re-parsed the whole thing even when nothing had
   // changed since the last visit – deck-card-index.json alone is 93MB.
-  if (manifest[key] && existing?.generatedAt === manifest[key]) return;
+  if (manifest[key] && existing?.generatedAt === manifest[key]) return existing.generatedAt;
 
-  const res = await fetch(url);
+  const res = await fetch(url, { cache: "no-cache" });
   if (!res.ok) throw new Error(res.status === 404 ? "This dataset has not been published yet." : `Request failed (${res.status}).`);
 
   const data = (await res.json()) as Generated;
-  if (existing?.generatedAt === data.generatedAt) return; // already have this exact generation
+  if (existing?.generatedAt === data.generatedAt) return data.generatedAt; // already have this exact generation
 
   await db.published.put({ key, generatedAt: data.generatedAt, data });
+  return data.generatedAt;
 }
 
 /**
@@ -67,12 +54,12 @@ async function doRefresh(key: string, url: string): Promise<void> {
  * memory pressure that Safari would silently kill and reload the tab, which is exactly what this
  * fixes. One in-flight promise per key, shared by every concurrent caller.
  */
-function refresh(key: string, url: string): Promise<void> {
+function refresh(key: string, url: string, revalidate = false): Promise<string> {
   let inFlight = inFlightRefreshes.get(key);
   if (!inFlight) {
     setRefreshStatus(key, { phase: "loading", error: null });
-    inFlight = doRefresh(key, url)
-      .then(() => setRefreshStatus(key, { phase: "ready", error: null }))
+    inFlight = doRefresh(key, url, revalidate)
+      .then(generation => { setRefreshStatus(key, { phase: "ready", error: null }); return generation; })
       .catch((reason: unknown) => {
         const message = reason instanceof Error ? reason.message : "The published dataset could not be loaded.";
         setRefreshStatus(key, { phase: "error", error: message });
@@ -82,6 +69,11 @@ function refresh(key: string, url: string): Promise<void> {
     inFlightRefreshes.set(key, inFlight);
   }
   return inFlight;
+}
+
+/** Resolves only after the latest checked generation is available in IndexedDB. */
+export function refreshPublishedData(key: string, url: string): Promise<string> {
+  return refresh(key, url, true);
 }
 
 /** Network refresh state for a published dataset. Pair with `usePublishedData` when a surface
@@ -101,7 +93,7 @@ export function usePublishedDataStatus(key: string, url: string, enabled = true)
   const status = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   const retry = useCallback(() => {
     if (!enabled) return;
-    void refresh(key, url).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
+    void refresh(key, url, true).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
   }, [enabled, key, url]);
   return { ...status, retry };
 }
@@ -121,11 +113,18 @@ function datasetQuery(key: string) {
   return query;
 }
 
-export function usePublishedData<T extends Generated>(key: string, url: string, enabled = true): T | undefined {
+export function usePublishedData<T extends Generated>(key: string, url: string, enabled = true, watchForUpdates = false): T | undefined {
   useEffect(() => {
     if (!enabled) return;
-    refresh(key, url).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
-  }, [key, url, enabled]);
+    refresh(key, url, watchForUpdates).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
+  }, [key, url, enabled, watchForUpdates]);
+
+  useEffect(() => {
+    if (!enabled || !watchForUpdates) return;
+    return watchPublishedUpdates(() => {
+      void refresh(key, url, true).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
+    });
+  }, [key, url, enabled, watchForUpdates]);
 
   // `useLiveQuery`'s defaultResult distinguishes "still resolving the IndexedDB read" from
   // "resolved to nothing" (the dataset is genuinely absent) – the latter must not keep the nav

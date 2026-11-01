@@ -99,7 +99,7 @@ function GameTimeline({
 
 export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }) {
   const champions = useTimelineChampions(true);
-  const maps = usePublishedData<BroadcastEventMaps>("broadcast-events", "/data/broadcast-events.json");
+  const maps = usePublishedData<BroadcastEventMaps>("broadcast-events", "/data/broadcast-events.json", true, true);
   const pairing = maps?.events.find(event => event.id === match.eventId)?.stages.flatMap(stage => stage.matches).find(pair => pair.recapId === match.id);
   const officialWinner = pairing?.players.find(player => player.id === pairing.winner);
   const winner = officialWinner

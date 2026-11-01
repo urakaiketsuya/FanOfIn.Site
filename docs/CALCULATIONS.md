@@ -2751,10 +2751,9 @@ key, so this avoids `JSON.parse`-ing files that can be 90MB+ just to check one f
 existed, `usePublishedData` had no way to know a dataset was unchanged without downloading and
 fully parsing it first — every mount of a component using a large dataset (e.g. opening a card's
 "Combos" tab, which uses `deck-card-index.json`) re-paid that cost even when nothing had changed
-since the previous visit. Now the manifest is checked first (cached at module scope, one fetch per
-page load), and the real file is only fetched when its `generatedAt` differs from what's already in
+since the previous visit. Now the manifest is checked first (shared at module scope for up to one minute), and the real file is only fetched when its `generatedAt` differs from what's already in
 IndexedDB. Falls back to the old always-fetch behavior if the manifest is missing or fails to load,
-so this is purely additive — nothing breaks if `manifest.json` is stale or absent.
+so unavailable manifests do not prevent a dataset refresh. Publishers must update each manifest entry when its dataset changes.
 
 **2. Dictionary-encoded `deck-card-index.json` (`pipeline/src/analysis/deckCardIndex.ts`,
 `shared/src/analysis-types.ts`'s `decodeCardLines`)** — this dataset's lines used to be
@@ -6352,3 +6351,22 @@ Live validation on 2026-10-30: 21,680 eligible events; 21,581 with complete decl
 coverage; 93 with unknown stage metadata; six source-unavailable gaps; zero
 available-at-source or unverified gaps. Seven targeted coverage/recovery tests,
 pipeline typecheck, focused lint, and whitespace checks passed. No UI changed.
+
+
+### Timeline cache freshness
+
+Timeline recaps and broadcast event maps opt into visible-tab revalidation every
+60 seconds and on focus, visibility restoration, and reconnection. Mounting these
+hooks and explicit Retry also request a fresh manifest. Concurrent manifest checks
+share one request; concurrent refreshes of a dataset share one fetch/write. Both
+manifest and dataset requests use HTTP revalidation (`cache: no-cache`). Matching
+generations skip the dataset download. IndexedDB live queries update the displayed
+recaps automatically; no full-page reload is required. Background tabs do not poll,
+and failed refreshes retain cached content. Manifest errors are not cached, so a
+later check can recover. Listener and interval cleanup follows hook unmounting.
+
+A direct timeline URL verifies the requested ID against a freshly checked generation
+before declaring it missing. The verified generation must also match the rendered
+IndexedDB snapshot, so a pending live-query update cannot flash a false not-found
+state. Refresh errors use the existing Retry action, and retry re-runs verification.
+Cached matches remain readable throughout refreshes.
