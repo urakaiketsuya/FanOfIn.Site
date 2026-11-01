@@ -1,0 +1,3878 @@
+[
+  {
+    "matchId": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
+    "videoId": "bfhumlDXjrE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day1-round9-silvercrowx-limbo",
+    "videoId": "7dgCm7_DxD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round10-muck-zero",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round11-two-over9000",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round12-hanky-zeia",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-day2-round13-egg-lance",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-top8-qf-abby-duo",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-top4-sf2-egg-raylam",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-manila-2026-grand-finals-mike-Raylam",
+    "videoId": "8fnn-hbArSk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
+    "videoId": "j-fYPSG3KEA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-championship-sunday-semifinal2-zero-livil",
+    "videoId": "j-fYPSG3KEA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-championship-sunday-grandfinals-jet-zero",
+    "videoId": "j-fYPSG3KEA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      },
+      {
+        "gameNumber": 4,
+        "order": 1
+      },
+      {
+        "gameNumber": 4,
+        "order": 2
+      },
+      {
+        "gameNumber": 4,
+        "order": 3
+      },
+      {
+        "gameNumber": 5,
+        "order": 1
+      },
+      {
+        "gameNumber": 5,
+        "order": 2
+      },
+      {
+        "gameNumber": 5,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-las-vegas-2026-day2-round10-novafelon-noel",
+    "videoId": "QX4lJQ5qgNA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 1,
+        "order": 5
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 5
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 4
+      },
+      {
+        "gameNumber": 3,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-las-vegas-2026-day2-round11-mattg-novafelon",
+    "videoId": "QX4lJQ5qgNA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-las-vegas-2026-day2-round12-duckhats-bokal",
+    "videoId": "QX4lJQ5qgNA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 1,
+        "order": 5
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-las-vegas-2026-day2-round13-wisp-mechsniper",
+    "videoId": "QX4lJQ5qgNA",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round7-isaac-tress",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round10-hyoka-tepslor",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round11-perfy-gurthos",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-day2-round12-asa-orabomb",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-top8-qf-perfy-zenadriel",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-niagara-falls-grand-finals-zenadriel-bratis",
+    "videoId": "YEdMx87UqeE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round1-zelage-cubone",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round2-tatap-nitra",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round3-asuna-sangorio",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round5-fdwings-yoyi",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round6-cabin-sebastian",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round7-marux-pewpewstan",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "eu-nationals-2026-day1-round8-noel-jigjun",
+    "videoId": "JKKl7AYwv3c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-round9-bonnie-shoko",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-round10-zelage-sebastian",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-round11-heri-casual",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-round12-hanky-noel",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-top8-qf1-asa-kiddelicious",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "european-nationals-2026-day2-top4-semifinal-cabin-sebastian",
+    "videoId": "DPuScrWjjag",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-top8-qf1-cabin-raingoddess",
+    "videoId": "rxlxRXstZS0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-top8-qf2-noel-liftdrasil",
+    "videoId": "rxlxRXstZS0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-top8-qf3-zero-asa",
+    "videoId": "rxlxRXstZS0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-2026-top8-qf4-glennyboy-jet",
+    "videoId": "rxlxRXstZS0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round10-casual-vain",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round11-dinkydane-djnova",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-day2-round12-duckhats-dragoill",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-top8-qf-fallenbuu-cabin",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-top4-sf-superior-djnova",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-2026-grand-finals-superior-lifteril",
+    "videoId": "41aKdQJ7U1c",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round1-taylor-steve",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round2-argonaut-dragoill",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round3-henti-lucas",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round4-enderzone-alisarez",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round5-superior-business",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round6-sono-sangorio",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round7-dinkydane-rexarion",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-london-day1-round8-celad-asuna",
+    "videoId": "E8MyaSKtI_U",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round1-egg-long",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round2-aqua-haro",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round3-ruby-zelia-dragon-jg",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round4-ai-sentus",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round5-mario-wind-rye",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round6-zaba-ray-pig",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round7-joel-neptuno",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round8-abby-microcanthus",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "sea-nationals-2026-day1-round9-megalobana-neptuno",
+    "videoId": "yiXTkbA1am4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-round11-zabishan-quorax",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-round12-quorax-trueops",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-round13-apal-kuan",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-round14-enki-long",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-top8-qf-yamikin-zero",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-top4-sf-apal-long",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-bronze-long-yamikin",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-taipei-2026-day2-grand-finals-proan-apal",
+    "videoId": "oHCCZOZBvKM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round1-hyoka-duckhats",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round2-zelenitis-holysamurai",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round3-roen-jacepatrick",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round4-raingoddess-dal",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round5-gerthos-jr",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round6-glennyboy-limelight",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round7-aqua-apal",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round8-emp-yamikin",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "the-gauntlet-2026-round9-bailey-leowong",
+    "videoId": "U4RbiOBCC-Q",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round1-proan-duckhats",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round2-raylam-caven",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round2-second-asa-liftdraasil",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round4-superior-raingoddess",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round5-gerthos-jet",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round6-noel-asa",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round6-bonus-raylam-jair",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round7-glennyboy-duckhats",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "worlds-swiss-2026-round8-caven-sono",
+    "videoId": "MAgS0ISYLtI",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round1-dit-boeboe",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 1,
+        "order": 5
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round2-tlsovotl-aqua",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round3-noel-tress",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 1,
+        "order": 5
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round4-teamtruecaban-superior",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 5
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round4-shuteemdown-zetdivx",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round5-jett-longn",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round6-celednb-quakems",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round7-anjuhro-hyouka",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round8-zorr-hessu",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 1,
+        "order": 5
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round9-likebailey-vernosius",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round10-superior-asuna",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round11-tacoboss-teppeslorn",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round12-tlux-superior",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round13-chemcollapse-mduo13",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day2-round13-fallinbuu14-yadon",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-top8-qf-zetdivx-stevo7653",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-top8-qf-jett-chemcollapse",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 3
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-top4-semifinal-zetdivx-jett",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-grand-finals-quarax-jett",
+    "videoId": "tFC-3k0uxcM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 4
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-1-aqua-sowa",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-2-hachico-etsuko",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-3-yamikin-thepuggytree",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-4-lifdrasyl-blivix",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-5-fairjordans-kixmachina",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-6-quarax-fairjordans",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-8-jidan-whatdoyouminh",
+    "videoId": "W_5i0aO5Es0",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-10-pulse-glenyboi",
+    "videoId": "qQrV2I2Uiac",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-round-12-bhop-pulse",
+    "videoId": "qQrV2I2Uiac",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-semifinal-yamikin-bhop",
+    "videoId": "qQrV2I2Uiac",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-melbourne-2026-final-hachico-yamikin",
+    "videoId": "qQrV2I2Uiac",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-1-corgis-yamikin",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-2-limelight-liam",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-4-sherlock-endyr",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 3
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-5-quarax-boy",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-6-pulse-johnbed",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-7-lifdrasyl-shingtsang",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-8-nathan-oneeyedowl",
+    "videoId": "6XU9azcBukk",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-9-asuna-kitkat",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-10-pulse-lucasis",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-11-tien-seiba",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-round-12-dragowil-legitjesuskun",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-quarterfinal-dragowil-limelight",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-semifinal-teamtruecaban-dragowil",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-auckland-2025-final-emp-teamtruecaban",
+    "videoId": "idcMDSZRmIE",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-1-blazebeast9612-limelight",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-2-blink-jayare",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-3-glenyboi-sano",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 2
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-4-sapphicsnake-boy",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-5-holysamurai-thomasli2",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 1
+      },
+      {
+        "gameNumber": 3,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-6-dennisyao-jdavies96",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-7-limelight-glenyboi",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "oce-nationals-2026-round-8-kmo-professor",
+    "videoId": "YajGY_RVfD4",
+    "beats": [
+      {
+        "gameNumber": 2,
+        "order": 1
+      }
+    ]
+  },
+  {
+    "matchId": "na-nationals-2026-day1-round5-superior-elian",
+    "videoId": "ljQZR8Yu1XM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 1,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "matchId": "ascent-los-angeles-2026-day1-round1-roxannekaiser-spaghettisr",
+    "videoId": "iwjvP7O9ytM",
+    "beats": [
+      {
+        "gameNumber": 1,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 1
+      },
+      {
+        "gameNumber": 2,
+        "order": 2
+      }
+    ]
+  }
+]

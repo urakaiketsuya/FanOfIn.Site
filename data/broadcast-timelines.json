@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T14:17:04.339Z",
+  "generatedAt": "2026-11-01T16:13:53.717Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -15393,7 +15393,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 3390
+              }
             }
           ]
         },
@@ -15476,7 +15480,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 5431
+              }
             }
           ]
         },
@@ -15491,7 +15499,11 @@
               "text": "As the players prepare game three near the end of the round, boeboe accidentally shuffles a generated Arcane Blast into the deck and immediately calls a judge. The casters report a game loss for presenting an illegal deck, giving Dit the match 2-1.",
               "tags": [
                 "ruling"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 5666
+              }
             }
           ]
         }
@@ -15587,7 +15599,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 8089
+              }
             }
           ]
         },
@@ -15604,7 +15620,11 @@
                 "Calming Breeze",
                 "Gentle Respite",
                 "Backup Charger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 8301
+              }
             },
             {
               "order": 2,
@@ -15630,7 +15650,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 9575
+              }
             }
           ]
         },
@@ -15662,7 +15686,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 10056
+              }
             },
             {
               "order": 3,
@@ -15684,7 +15712,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 10560
+              }
             }
           ]
         }
@@ -15806,7 +15838,11 @@
               "tags": [
                 "stabilize",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 14138
+              }
             }
           ]
         },
@@ -15853,7 +15889,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 15405
+              }
             },
             {
               "order": 4,
@@ -15978,7 +16018,11 @@
               ],
               "tags": [
                 "sideboard"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 17956
+              }
             },
             {
               "order": 2,
@@ -16062,7 +16106,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 20270
+              }
             }
           ]
         }
@@ -16146,7 +16194,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 21287
+              }
             },
             {
               "order": 4,
@@ -16217,7 +16269,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 22204
+              }
             }
           ]
         }
@@ -16305,7 +16361,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 25003
+              }
             }
           ]
         },
@@ -16330,7 +16390,11 @@
               "text": "After the judge call, the casters report a milling error and a board state that could not be rewound, with a game loss awarded to LongN. This gives Jett the match 2-0 and a 5-0 record. The transcript does not establish a more specific infraction.",
               "tags": [
                 "ruling"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 26250
+              }
             }
           ]
         }
@@ -16408,7 +16472,11 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Celednb concedes to Quakems’s Astra setup."
+              "text": "Celednb concedes to Quakems’s Astra setup.",
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 29044
+              }
             }
           ]
         },
@@ -16454,7 +16522,11 @@
               "tags": [
                 "swing",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 29764
+              }
             }
           ]
         },
@@ -16488,7 +16560,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 30774
+              }
             },
             {
               "order": 3,
@@ -16514,7 +16590,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 31386
+              }
             }
           ]
         }
@@ -16590,7 +16670,11 @@
               "tags": [
                 "swing",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 34182
+              }
             }
           ]
         },
@@ -16638,7 +16722,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 35990
+              }
             }
           ]
         }
@@ -16720,7 +16808,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 38470
+              }
             },
             {
               "order": 4,
@@ -16794,7 +16886,11 @@
               "tags": [
                 "swing",
                 "sideboard"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "ljQZR8Yu1XM",
+                "seconds": 40432
+              }
             },
             {
               "order": 4,
@@ -17070,7 +17166,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 2169
+              }
             }
           ]
         },
@@ -17133,7 +17233,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 3429
+              }
             }
           ]
         },
@@ -17179,7 +17283,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 4658
+              }
             }
           ]
         }
@@ -17358,7 +17466,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 8469
+              }
             }
           ]
         }
@@ -17458,7 +17570,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 12034
+              }
             }
           ]
         },
@@ -17480,7 +17596,11 @@
               ],
               "tags": [
                 "sideboard"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 13101
+              }
             },
             {
               "order": 2,
@@ -17508,7 +17628,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 13914
+              }
             }
           ]
         }
@@ -17614,7 +17738,11 @@
                 "Fractal of Rain",
                 "Purifying Thurible",
                 "Resonating Fugue"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 22434
+              }
             },
             {
               "order": 2,
@@ -17627,7 +17755,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 22519
+              }
             },
             {
               "order": 3,
@@ -17779,7 +17911,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 17607
+              }
             }
           ]
         },
@@ -17913,7 +18049,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 24028
+              }
             }
           ]
         },
@@ -17946,7 +18086,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 24587
+              }
             },
             {
               "order": 3,
@@ -17961,7 +18105,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 24777
+              }
             }
           ]
         }
@@ -18062,7 +18210,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 27344
+              }
             }
           ]
         },
@@ -18116,7 +18268,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 29007
+              }
             }
           ]
         },
@@ -18149,7 +18305,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 29771
+              }
             }
           ]
         }
@@ -18236,7 +18396,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 31919
+              }
             },
             {
               "order": 4,
@@ -18304,7 +18468,11 @@
               "tags": [
                 "stabilize",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 33693
+              }
             }
           ]
         },
@@ -18359,7 +18527,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 35673
+              }
             }
           ]
         }
@@ -18419,7 +18591,11 @@
               ],
               "tags": [
                 "stabilize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 38287
+              }
             },
             {
               "order": 2,
@@ -18430,7 +18606,11 @@
                 "Fluffy Shopkeep",
                 "Viridian Protective Trinket",
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 38709
+              }
             },
             {
               "order": 3,
@@ -18447,7 +18627,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 39329
+              }
             },
             {
               "order": 4,
@@ -18509,7 +18693,11 @@
               "tags": [
                 "swing",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 40525
+              }
             }
           ]
         },
@@ -18545,7 +18733,11 @@
               ],
               "tags": [
                 "swing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 41519
+              }
             },
             {
               "order": 3,
@@ -18561,7 +18753,11 @@
               "tags": [
                 "combo",
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "tFC-3k0uxcM",
+                "seconds": 41633
+              }
             }
           ]
         }
@@ -18605,7 +18801,11 @@
                 "Seiryuu's Command",
                 "Byakko's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 2521
+              }
             }
           ]
         },
@@ -18617,7 +18817,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Joyboy receives a game loss for a deck-list error; Lecithium wins the match."
+              "text": "Joyboy receives a game loss for a deck-list error; Lecithium wins the match.",
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 3446
+              }
             }
           ]
         }
@@ -18660,7 +18864,11 @@
               "cards": [
                 "Shimmering Refraction",
                 "Burst Asunder"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 7639
+              }
             }
           ]
         },
@@ -18677,7 +18885,11 @@
                 "Chill to the Bone",
                 "Shimmering Refraction",
                 "Burst Asunder"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 8867
+              }
             }
           ]
         }
@@ -18720,7 +18932,11 @@
               "cards": [
                 "Diana, Cursebreaker",
                 "Shadow's Twin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 13907
+              }
             }
           ]
         },
@@ -18736,7 +18952,11 @@
               "cards": [
                 "Tasershot",
                 "Creeping Torment"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 14699
+              }
             }
           ]
         },
@@ -18754,7 +18974,11 @@
                 "Reduce to Ash",
                 "Tasershot",
                 "Creeping Torment"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 15305
+              }
             }
           ]
         }
@@ -18796,7 +19020,11 @@
               "text": "Limelight lands Baleful Oblation for fifteen, then closes with Spirelle, Schwartz Queen pressure and Ciel’s Omen damage.",
               "cards": [
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 18716
+              }
             }
           ]
         },
@@ -18812,7 +19040,11 @@
               "cards": [
                 "Rending Flames",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 19328
+              }
             }
           ]
         },
@@ -18830,7 +19062,11 @@
                 "Prismatic Edge",
                 "Crystallized Destiny",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 20416
+              }
             }
           ]
         }
@@ -18872,7 +19108,11 @@
               "text": "KUOJIA holds the board with Genbu, then uses Fractal of Polar Depths to empty KingArmo’s deck before Merlin’s draw.",
               "cards": [
                 "Fractal of Polar Depths"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 25073
+              }
             }
           ]
         },
@@ -18889,7 +19129,11 @@
                 "Cerulean Decree",
                 "Refracting Missile",
                 "Fractal of Polar Depths"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 27293
+              }
             }
           ]
         }
@@ -18932,7 +19176,11 @@
               "cards": [
                 "Cosmic Bolt",
                 "Astral Seal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 29951
+              }
             }
           ]
         },
@@ -18949,7 +19197,11 @@
                 "Polaris, Twinkling Cauldron",
                 "Cosmic Bolt",
                 "Concealed Marksman"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 31895
+              }
             }
           ]
         }
@@ -18991,7 +19243,11 @@
               "text": "LanceLim0210 survives Jin’s attack sequence; ProAnnn’s accumulated damage becomes lethal at his own end step.",
               "cards": [
                 "Enrage"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 34735
+              }
             }
           ]
         },
@@ -19007,7 +19263,11 @@
               "cards": [
                 "Enrage",
                 "Shuang Ji of Sacrifice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 35781
+              }
             }
           ]
         },
@@ -19026,7 +19286,11 @@
                 "Incapacitate",
                 "Varuck, Smoldering Spire",
                 "Enrage"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 37067
+              }
             }
           ]
         }
@@ -19068,7 +19332,11 @@
               "text": "GlenyBoi follows combat pressure with Fireball to finish SapphicSnake before the preserved spells can take over.",
               "cards": [
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 39980
+              }
             }
           ]
         },
@@ -19084,7 +19352,11 @@
               "cards": [
                 "Spark Alight",
                 "Extricating Touch"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "pYN7DXxQOQc",
+                "seconds": 41045
+              }
             }
           ]
         }
@@ -19126,7 +19398,11 @@
               "text": "HenkieTheGoat levels Ciel and plays two Baleful Oblations to finish game 1.",
               "cards": [
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 2125
+              }
             }
           ]
         },
@@ -19143,7 +19419,11 @@
                 "Orb of Sealing",
                 "Grande Sonnerie",
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 3486
+              }
             }
           ]
         }
@@ -19185,7 +19465,11 @@
               "text": "Zer builds Aetherwing pressure and finishes with Carpsong Coda.",
               "cards": [
                 "Carpsong Coda"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 6856
+              }
             }
           ]
         },
@@ -19198,7 +19482,11 @@
               "order": 1,
               "actor": "p1",
               "text": "Limbo fails to find Cometfall. Zer adds Cheshire Cat to the threatening ally board, and Limbo concedes.",
-              "cards": []
+              "cards": [],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 7571
+              }
             }
           ]
         }
@@ -19242,7 +19530,11 @@
                 "Power Overwhelming",
                 "Advent of the Stormcaller",
                 "Arcane Elemental"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 11097
+              }
             }
           ]
         },
@@ -19260,7 +19552,11 @@
                 "Devastating Blow",
                 "Erratic Bolt",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 12539
+              }
             }
           ]
         }
@@ -19305,7 +19601,11 @@
                 "Necklace of Foresight",
                 "Horticounter",
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 15722
+              }
             }
           ]
         },
@@ -19323,7 +19623,11 @@
                 "Baleful Oblation",
                 "Cosmic Bolt",
                 "Wisdom's Reprise"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 16957
+              }
             }
           ]
         }
@@ -19365,7 +19669,11 @@
               "text": "GlenyBoi cannot remove Seiryuu. GamingSiopao reveals Seiryuu’s Command, prompting the concession.",
               "cards": [
                 "Seiryuu's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 20547
+              }
             }
           ]
         },
@@ -19380,7 +19688,11 @@
               "text": "Byakko’s Command readies Seiryuu during GlenyBoi’s attack. GlenyBoi cannot find an answer, and Seiryuu’s retaliation ends the match.",
               "cards": [
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 21708
+              }
             }
           ]
         }
@@ -19424,7 +19736,11 @@
                 "Resolute Stand",
                 "Smoke Bombs",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 28526
+              }
             }
           ]
         },
@@ -19440,7 +19756,11 @@
               "cards": [
                 "Spirit Blade: Dispersion",
                 "Incandescent Reliquary"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 29746
+              }
             }
           ]
         },
@@ -19458,7 +19778,11 @@
                 "Ghosts of Pendragon",
                 "Prismatic Edge",
                 "Intensified Pyre"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 30049
+              }
             }
           ]
         }
@@ -19502,7 +19826,11 @@
                 "Devastating Blow",
                 "Creative Shock",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 34149
+              }
             }
           ]
         },
@@ -19520,7 +19848,11 @@
                 "Crystallized Destiny",
                 "Spirit Blade: Dispersion",
                 "Rending Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 35192
+              }
             }
           ]
         }
@@ -19565,7 +19897,11 @@
                 "Devastating Blow",
                 "Harness Lightning",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 38787
+              }
             }
           ]
         },
@@ -19582,7 +19918,11 @@
                 "Spirit Blade: Ascension",
                 "Prismatic Edge",
                 "Flame Sweep"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 39712
+              }
             }
           ]
         },
@@ -19599,7 +19939,11 @@
                 "Clarent, Reimagined",
                 "Crystallized Destiny",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "L72HwYWAQAY",
+                "seconds": 40934
+              }
             }
           ]
         }
@@ -19643,7 +19987,11 @@
                 "Enfeebling Orb",
                 "Resonating Fugue",
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 3129
+              }
             }
           ]
         },
@@ -19659,7 +20007,11 @@
               "cards": [
                 "Strategem of Myriad Ice",
                 "Fractal of Polar Depths"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 4065
+              }
             }
           ]
         }
@@ -19704,7 +20056,11 @@
                 "Infernal Vessel",
                 "Cosmic Bolt",
                 "Tether in Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 7210
+              }
             }
           ]
         },
@@ -19723,7 +20079,11 @@
                 "Calming Breeze",
                 "Cosmic Bolt",
                 "Tether in Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 7968
+              }
             }
           ]
         },
@@ -19739,7 +20099,11 @@
               "cards": [
                 "Glowering Conflagration",
                 "Cosmic Bolt"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 9833
+              }
             }
           ]
         }
@@ -19784,7 +20148,11 @@
                 "Seiryuu's Command",
                 "Byakko's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 11697
+              }
             }
           ]
         },
@@ -19799,7 +20167,11 @@
               "text": "Inaki uses allies and Molten Echo to remove Seiryuu. Abbey eventually concedes as Inaki keeps applying pressure.",
               "cards": [
                 "Molten Echo"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 12818
+              }
             }
           ]
         },
@@ -19814,7 +20186,11 @@
               "text": "Inaki uses Molten Echo and its ephemerate activation to remove Blanche and push through the final damage.",
               "cards": [
                 "Molten Echo"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 14292
+              }
             }
           ]
         }
@@ -19857,7 +20233,11 @@
               "cards": [
                 "Luxem Sight",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 20351
+              }
             }
           ]
         },
@@ -19874,7 +20254,11 @@
                 "Resolute Stand",
                 "Ducal Seal",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 21317
+              }
             }
           ]
         }
@@ -19919,7 +20303,11 @@
                 "Shadowstrike",
                 "Protect Her At All Costs",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 24707
+              }
             }
           ]
         },
@@ -19936,7 +20324,11 @@
                 "Snow White, Weiss Queen",
                 "Innervate Agility",
                 "Song of Frost"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 25654
+              }
             }
           ]
         },
@@ -19953,7 +20345,11 @@
                 "Shadowstrike",
                 "Song of Frost",
                 "Incapacitate"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 26576
+              }
             }
           ]
         }
@@ -19997,7 +20393,11 @@
                 "Burning Aethercharge",
                 "Salamander's Breath",
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 29040
+              }
             }
           ]
         },
@@ -20012,7 +20412,11 @@
               "text": "Ameke reaches level three and deals 15 with Baleful Oblation, closing with Ciel’s Omen damage.",
               "cards": [
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 30214
+              }
             }
           ]
         },
@@ -20029,7 +20433,11 @@
                 "Unyielding Wraithguard",
                 "Baleful Oblation",
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 31390
+              }
             }
           ]
         }
@@ -20073,7 +20481,11 @@
                 "Cheshire Cat, Impish Grin",
                 "Ranger Strides",
                 "Inert Sword"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 33974
+              }
             }
           ]
         },
@@ -20089,7 +20501,11 @@
               "cards": [
                 "Gleaming Cut",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 35037
+              }
             }
           ]
         },
@@ -20105,7 +20521,11 @@
               "cards": [
                 "Crystallized Destiny",
                 "Charge the Soul"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 36755
+              }
             }
           ]
         }
@@ -20149,7 +20569,11 @@
                 "Flared Iridescence",
                 "Spirit Blade: Ascension",
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 38327
+              }
             }
           ]
         },
@@ -20166,7 +20590,11 @@
                 "Cerulean Decree",
                 "Strategem of Myriad Ice",
                 "Fractal of Polar Depths"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 40024
+              }
             }
           ]
         },
@@ -20184,7 +20612,11 @@
                 "Spirit Blade: Ascension",
                 "Ghosts of Pendragon",
                 "Sudden Steel"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "PITLBQ2u6gc",
+                "seconds": 41165
+              }
             }
           ]
         }
@@ -20229,7 +20661,11 @@
                 "Shadowstrike",
                 "Ominous Shadow",
                 "Cerulean Decree"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 3376
+              }
             }
           ]
         },
@@ -20246,7 +20682,11 @@
                 "Dream Fairy",
                 "Tactical Retreat",
                 "Sadi, Blood Harvester"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 5588
+              }
             }
           ]
         }
@@ -20289,7 +20729,11 @@
               "cards": [
                 "Seiryuu's Command",
                 "Restorative Flame"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 6852
+              }
             }
           ]
         },
@@ -20306,7 +20750,11 @@
                 "Fiery Interference",
                 "Innervate Agility",
                 "Peppered Chef"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 7676
+              }
             }
           ]
         },
@@ -20323,7 +20771,11 @@
                 "Innervate Agility",
                 "Enfeebling Orb",
                 "Seiryuu's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 8226
+              }
             }
           ]
         }
@@ -20367,7 +20819,11 @@
                 "Undeniable Truth",
                 "Baby Silver Slime",
                 "Storm Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 11450
+              }
             }
           ]
         },
@@ -20384,7 +20840,11 @@
                 "Storm Slime",
                 "Veiling Breeze",
                 "Imperial Countermeasure"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 13170
+              }
             }
           ]
         }
@@ -20428,7 +20888,11 @@
                 "Searing Truth",
                 "Intensified Pyre",
                 "Peppered Chef"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 15893
+              }
             }
           ]
         },
@@ -20445,7 +20909,11 @@
                 "Nullifying Lantern",
                 "Palvor Sword",
                 "Demolition"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 16558
+              }
             }
           ]
         },
@@ -20463,7 +20931,11 @@
                 "Heated Vengeance",
                 "Enfeebling Orb",
                 "Cinder Geyser"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 17577
+              }
             }
           ]
         }
@@ -20507,7 +20979,11 @@
                 "Spirit Blade: Retribution",
                 "Resolute Stand",
                 "Regal Inquisition"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 30650
+              }
             }
           ]
         },
@@ -20524,7 +21000,11 @@
                 "Annul Spell",
                 "Regal Inquisition",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 33276
+              }
             }
           ]
         }
@@ -20568,7 +21048,11 @@
                 "Abnegation",
                 "Take Aim",
                 "Dynastic Whirlpool"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 37727
+              }
             }
           ]
         },
@@ -20586,7 +21070,11 @@
                 "Krustallan Archer",
                 "Resolute Stand",
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 39380
+              }
             }
           ]
         }
@@ -20628,7 +21116,11 @@
               "cards": [
                 "Dungeon Guide",
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 3184
+              }
             }
           ]
         },
@@ -20644,7 +21136,11 @@
               "cards": [
                 "Shimmering Refraction",
                 "Smoke Bombs"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 3712
+              }
             }
           ]
         },
@@ -20663,7 +21159,11 @@
                 "Demolition",
                 "Glowering Conflagration",
                 "Everflame Staff"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 5315
+              }
             }
           ]
         }
@@ -20707,7 +21207,11 @@
                 "Nullifying Mirror",
                 "Veiling Breeze",
                 "Relentless Outburst"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 12668
+              }
             }
           ]
         },
@@ -20723,7 +21227,11 @@
               "cards": [
                 "Proof of Life",
                 "Censer of Restful Peace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 14583
+              }
             }
           ]
         },
@@ -20739,7 +21247,11 @@
               "cards": [
                 "Enrage",
                 "Flame Sweep"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 15383
+              }
             }
           ]
         }
@@ -20782,7 +21294,11 @@
               "cards": [
                 "Ghosts of Pendragon",
                 "Hurricane Sweep"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 22574
+              }
             }
           ]
         },
@@ -20799,7 +21315,11 @@
                 "Reclaim",
                 "Ghosts of Pendragon",
                 "Aesan Protector"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 24322
+              }
             }
           ]
         }
@@ -20843,7 +21363,11 @@
                 "Cometary Vantage",
                 "Firebloom Flourish",
                 "Rococo, Explosive Maven"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 27419
+              }
             }
           ]
         },
@@ -20859,7 +21383,11 @@
               "cards": [
                 "Shimmering Refraction",
                 "Rococo, Explosive Maven"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 27896
+              }
             }
           ]
         }
@@ -20903,7 +21431,11 @@
                 "Incarnate Majesty",
                 "Spirit Blade: Ascension",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 32455
+              }
             }
           ]
         },
@@ -20921,7 +21453,11 @@
                 "Baleful Oblation",
                 "Creative Shock",
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 34327
+              }
             }
           ]
         }
@@ -20966,7 +21502,11 @@
                 "Backstep",
                 "Ranger Strides",
                 "Second Wind"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 37309
+              }
             }
           ]
         },
@@ -20981,7 +21521,11 @@
               "text": "Sunset reaches level three and establishes the domain engine. After playing Mandate of Honor, Sunset creates another drone, leaving Yungcheng unable to stop the growing board.",
               "cards": [
                 "Mandate of Honor"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 38115
+              }
             }
           ]
         },
@@ -20998,7 +21542,11 @@
                 "Diffusive Block",
                 "Chamber of Reflections",
                 "Mad Tea Party"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 38891
+              }
             }
           ]
         }
@@ -21042,7 +21590,11 @@
                 "Dungeon Guide",
                 "Polaris, Twinkling Cauldron",
                 "Cosmic Bolt"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 3114
+              }
             },
             {
               "order": 2,
@@ -21052,7 +21604,11 @@
                 "Cometfall",
                 "Meteor Strike",
                 "Cosmic Bolt"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 3443
+              }
             }
           ]
         },
@@ -21118,7 +21674,11 @@
               "text": "hachico reaches Ciel’s third level with Dungeon Guide while Etsuko develops Suzaku and attacks with two commands.",
               "cards": [
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 7162
+              }
             },
             {
               "order": 2,
@@ -21144,7 +21704,11 @@
               "cards": [
                 "Topsy Decree",
                 "Searing Truth"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 7746
+              }
             },
             {
               "order": 2,
@@ -21202,7 +21766,11 @@
                 "Arthur, Young Heir",
                 "Dazzling Courtesan",
                 "Inert Sword"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 11183
+              }
             },
             {
               "order": 2,
@@ -21227,7 +21795,11 @@
               "text": "Yamikin pushes ThePuggyTree toward lethal with Hasty Messenger and further ally damage.",
               "cards": [
                 "Hasty Messenger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 11937
+              }
             },
             {
               "order": 2,
@@ -21280,7 +21852,11 @@
                 "Dungeon Guide",
                 "Displace",
                 "Fan of Seven Debts"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 16261
+              }
             },
             {
               "order": 2,
@@ -21307,7 +21883,11 @@
                 "Stifling Gyre",
                 "Heavenly Guide",
                 "Xukong, Shifted Fates"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 17609
+              }
             },
             {
               "order": 2,
@@ -21316,7 +21896,11 @@
               "cards": [
                 "Xukong, Shifted Fates",
                 "Fan of Seven Debts"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 18387
+              }
             }
           ]
         }
@@ -21358,7 +21942,11 @@
               "text": "Kixmachina removes Avatar of Byakko. FAirJordans instead levels Guo Jia and flips Suzaku, pushing Kixmachina close to lethal.",
               "cards": [
                 "Avatar of Byakko"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 23149
+              }
             },
             {
               "order": 2,
@@ -21367,7 +21955,11 @@
               "cards": [
                 "Dilu, Auspicious Charger",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 23698
+              }
             }
           ]
         },
@@ -21383,7 +21975,11 @@
               "cards": [
                 "Poisoned Dagger",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 24507
+              }
             },
             {
               "order": 2,
@@ -21445,7 +22041,11 @@
                 "Spalling Cleanse",
                 "Ravishing Finale",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 28087
+              }
             }
           ]
         },
@@ -21516,7 +22116,11 @@
                 "Frozen Dismissal",
                 "Topsy Decree",
                 "Weaving Manastream"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 32065
+              }
             },
             {
               "order": 2,
@@ -21525,7 +22129,11 @@
               "cards": [
                 "Frostsworn Paladin",
                 "Krustallan Archer"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 32719
+              }
             }
           ]
         },
@@ -21541,7 +22149,11 @@
               "cards": [
                 "Virgil, Altered Future",
                 "Mercurial Heart"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 33849
+              }
             },
             {
               "order": 2,
@@ -21551,7 +22163,11 @@
                 "Backstep",
                 "Uncanny Realization",
                 "Virgil, Altered Future"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 34092
+              }
             }
           ]
         }
@@ -21594,7 +22210,11 @@
               "cards": [
                 "Cardiac Vessel",
                 "Scatter Essence"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 37350
+              }
             },
             {
               "order": 2,
@@ -21606,7 +22226,11 @@
                 "Enrage",
                 "Tome of Abyssal Heaven",
                 "Quicksilver Grail"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "W_5i0aO5Es0",
+                "seconds": 39228
+              }
             }
           ]
         },
@@ -21670,7 +22294,11 @@
               "cards": [
                 "Song of Frost",
                 "Beguiling Coup"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 2960
+              }
             },
             {
               "order": 2,
@@ -21679,12 +22307,20 @@
               "cards": [
                 "Nightframe, Hound's Bike",
                 "Aquifer Seneschal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 3110
+              }
             },
             {
               "order": 3,
               "actor": "p1",
-              "text": "The surviving allies keep attacking, giving ZutomayoEnjoyer a 1–0 lead."
+              "text": "The surviving allies keep attacking, giving ZutomayoEnjoyer a 1–0 lead.",
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 3273
+              }
             }
           ]
         },
@@ -21700,7 +22336,11 @@
               "cards": [
                 "Song of Frost",
                 "Carter, Synthetic Reaper"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 4098
+              }
             },
             {
               "order": 2,
@@ -21710,7 +22350,11 @@
                 "Fracturize",
                 "Chalice of Blood",
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 4574
+              }
             },
             {
               "order": 3,
@@ -21718,7 +22362,11 @@
               "text": "Poisoned Dagger and the remaining allies finish the match before bobolas can force game three.",
               "cards": [
                 "Poisoned Dagger"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 4768
+              }
             }
           ]
         }
@@ -21762,7 +22410,11 @@
                 "Frostbind",
                 "Enfeebling Orb",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 7267
+              }
             },
             {
               "order": 2,
@@ -21797,7 +22449,11 @@
                 "Ghosts of Pendragon",
                 "Spirit Blade: Dispersion",
                 "Fracturize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 8363
+              }
             }
           ]
         },
@@ -21809,7 +22465,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Pulse advances Lorraine while GlenyBoi searches for a way to survive the next attack."
+              "text": "Pulse advances Lorraine while GlenyBoi searches for a way to survive the next attack.",
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 9594
+              }
             },
             {
               "order": 2,
@@ -21861,7 +22521,11 @@
                 "Ignis Deus",
                 "Slash and Burn",
                 "Essence Crucible"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 10459
+              }
             },
             {
               "order": 2,
@@ -21870,7 +22534,11 @@
               "cards": [
                 "Everflame Staff",
                 "Essence Crucible"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 11159
+              }
             }
           ]
         },
@@ -21886,7 +22554,11 @@
               "cards": [
                 "Ravenous Pyre",
                 "Essence Crucible"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 11515
+              }
             },
             {
               "order": 2,
@@ -21896,7 +22568,11 @@
                 "Safeguard Amulet",
                 "Dungeon Guide",
                 "Abnegation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 12066
+              }
             },
             {
               "order": 3,
@@ -21904,7 +22580,11 @@
               "text": "Launtial follows with Feu Awakening and Professor concedes.",
               "cards": [
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 12363
+              }
             }
           ]
         },
@@ -21919,7 +22599,11 @@
               "text": "Launtial reaches level three and destroys Essence Crucible with Nocturne's Oblivion.",
               "cards": [
                 "Essence Crucible"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 13199
+              }
             },
             {
               "order": 2,
@@ -21929,7 +22613,11 @@
                 "Abnegation",
                 "Feu Awakening",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 13646
+              }
             }
           ]
         }
@@ -21968,7 +22656,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Pulse reaches level three without a sword prepared in banishment, losing the intended weapon setup."
+              "text": "Pulse reaches level three without a sword prepared in banishment, losing the intended weapon setup.",
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 15150
+              }
             },
             {
               "order": 2,
@@ -21977,7 +22669,11 @@
               "cards": [
                 "Feu Awakening",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 15438
+              }
             }
           ]
         },
@@ -22003,7 +22699,11 @@
                 "Numinous Monk",
                 "Spirit Blade: Dispersion",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 17463
+              }
             },
             {
               "order": 3,
@@ -22044,7 +22744,11 @@
               "cards": [
                 "Feu Awakening",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 18320
+              }
             }
           ]
         }
@@ -22089,7 +22793,11 @@
                 "Crystalline Mirror",
                 "Quicksilver Grail",
                 "Fracturize"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 23157
+              }
             },
             {
               "order": 2,
@@ -22099,7 +22807,11 @@
                 "Enfeebling Orb",
                 "Mend Flesh",
                 "Shimmering Refraction"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 24046
+              }
             }
           ]
         },
@@ -22116,7 +22828,11 @@
                 "Glimmering Refusal",
                 "Dungeon Guide",
                 "Fractal of Intrusion"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 24670
+              }
             },
             {
               "order": 2,
@@ -22126,7 +22842,11 @@
                 "Fracturize",
                 "Refracting Missile",
                 "Shimmering Refraction"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 25668
+              }
             }
           ]
         }
@@ -22169,7 +22889,11 @@
               "cards": [
                 "Vermilion Decree",
                 "Death Essence Amulet"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 27477
+              }
             },
             {
               "order": 2,
@@ -22195,7 +22919,11 @@
                 "Red Hare, Unrivaled Stallion",
                 "Singed Emotions",
                 "Blazing Throw"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 27848
+              }
             },
             {
               "order": 2,
@@ -22204,7 +22932,11 @@
               "cards": [
                 "Feu Awakening",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 28302
+              }
             },
             {
               "order": 3,
@@ -22252,7 +22984,11 @@
               "cards": [
                 "Disenchant",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 29985
+              }
             },
             {
               "order": 2,
@@ -22263,7 +22999,11 @@
                 "Abnegation",
                 "Devastating Blow",
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 30976
+              }
             }
           ]
         }
@@ -22302,7 +23042,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "Play pauses shortly after the opening. The broadcast reports a game loss for Yamikin after a main-deck card is found in the material deck."
+              "text": "Play pauses shortly after the opening. The broadcast reports a game loss for Yamikin after a main-deck card is found in the material deck.",
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 32720
+              }
             }
           ]
         },
@@ -22318,7 +23062,11 @@
               "cards": [
                 "Resolute Stand",
                 "Abnegation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 33144
+              }
             },
             {
               "order": 2,
@@ -22328,7 +23076,11 @@
                 "Nullifying Lantern",
                 "Manxome Armoire",
                 "Abnegation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 33565
+              }
             },
             {
               "order": 3,
@@ -22345,7 +23097,11 @@
               "text": "hachico follows with Feu Awakening, the end-phase omen trigger and Omen Bringer to win the championship.",
               "cards": [
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "qQrV2I2Uiac",
+                "seconds": 34064
+              }
             }
           ]
         }
@@ -22395,7 +23151,11 @@
               "text": "Yamikin uses Perse, Relentless Raptor to suppress Arthur, reducing the damage from Corgis’s allies.",
               "cards": [
                 "Perse, Relentless Raptor"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 1868
+              }
             },
             {
               "order": 3,
@@ -22404,7 +23164,11 @@
               "cards": [
                 "Rococo, Explosive Maven",
                 "Smoke Out"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 1877
+              }
             }
           ]
         },
@@ -22419,7 +23183,11 @@
               "text": "Corgis repeatedly brings March Hare, Mottled Host back while clearing Yamikin’s allies.",
               "cards": [
                 "March Hare, Mottled Host"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 2495
+              }
             },
             {
               "order": 2,
@@ -22428,7 +23196,11 @@
               "cards": [
                 "Smoke Out",
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 2913
+              }
             },
             {
               "order": 3,
@@ -22437,7 +23209,11 @@
               "cards": [
                 "Impact Hammer",
                 "Rending Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 3037
+              }
             },
             {
               "order": 4,
@@ -22445,7 +23221,11 @@
               "text": "Skirting Step fails to find enough protection, and Corgis wins 2-0.",
               "cards": [
                 "Skirting Step"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 3095
+              }
             }
           ]
         }
@@ -22489,7 +23269,11 @@
                 "Undying Dreams",
                 "Library Witch",
                 "Charge the Soul"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 5387
+              }
             },
             {
               "order": 2,
@@ -22498,7 +23282,11 @@
               "cards": [
                 "Baleful Oblation",
                 "Manxome Armoire"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 5636
+              }
             }
           ]
         },
@@ -22527,7 +23315,11 @@
               "text": "Devouring Malice deals damage and recovers life; two omen triggers close the match.",
               "cards": [
                 "Devouring Malice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 7389
+              }
             }
           ]
         }
@@ -22570,7 +23362,11 @@
               "cards": [
                 "Liminal Guide",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 9475
+              }
             },
             {
               "order": 2,
@@ -22580,7 +23376,11 @@
                 "Crux Sight",
                 "Fireball",
                 "Sudden Steel"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 10460
+              }
             }
           ]
         },
@@ -22597,7 +23397,11 @@
                 "Rending Flames",
                 "Crystallized Destiny",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 11224
+              }
             },
             {
               "order": 2,
@@ -22606,7 +23410,11 @@
               "cards": [
                 "Crystallized Destiny",
                 "Rending Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 11861
+              }
             }
           ]
         }
@@ -22654,12 +23462,20 @@
               "cards": [
                 "Veiling Breeze",
                 "Innervate Agility"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 15482
+              }
             },
             {
               "order": 3,
               "actor": "p2",
-              "text": "Genbu and the surviving allies finish the opener."
+              "text": "Genbu and the surviving allies finish the opener.",
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 15651
+              }
             }
           ]
         },
@@ -22684,7 +23500,11 @@
               "text": "Suppressing Censer of Restful Peace allows Sherlock to spend floating memory before the Censer returns.",
               "cards": [
                 "Censer of Restful Peace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 16747
+              }
             },
             {
               "order": 3,
@@ -22720,7 +23540,11 @@
               "cards": [
                 "Zephyr",
                 "Tempest Downfall"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 17686
+              }
             }
           ]
         }
@@ -22768,7 +23592,11 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Quarax’s board and weapon pressure set up Ascension for the opening win."
+              "text": "Quarax’s board and weapon pressure set up Ascension for the opening win.",
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 22637
+              }
             }
           ]
         },
@@ -22796,7 +23624,11 @@
                 "Ghosts of Pendragon",
                 "Crystallized Destiny",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 23666
+              }
             }
           ]
         },
@@ -22811,7 +23643,11 @@
               "text": "Quarax keeps rebuilding Ghosts of Pendragon while Boy holds defensive cards.",
               "cards": [
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 24431
+              }
             },
             {
               "order": 2,
@@ -22820,7 +23656,11 @@
               "cards": [
                 "Varuck, Smoldering Spire",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 25218
+              }
             }
           ]
         }
@@ -22865,7 +23705,11 @@
                 "Dream Fairy",
                 "Stifling Trap",
                 "Beseeched Fatestone"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 26794
+              }
             },
             {
               "order": 2,
@@ -22874,7 +23718,11 @@
               "cards": [
                 "Seiryuu's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 27471
+              }
             }
           ]
         },
@@ -22898,7 +23746,11 @@
               "cards": [
                 "Concealed Marksman",
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 28406
+              }
             }
           ]
         },
@@ -22915,7 +23767,11 @@
                 "Coronation Ceremony",
                 "Baby Green Slime",
                 "Reclaim"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 29392
+              }
             },
             {
               "order": 2,
@@ -22924,7 +23780,11 @@
               "cards": [
                 "Innervate Agility",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 30122
+              }
             },
             {
               "order": 3,
@@ -22986,7 +23846,11 @@
                 "Zephyr",
                 "Tempest Downfall",
                 "Cyclical Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 32223
+              }
             }
           ]
         },
@@ -23003,7 +23867,11 @@
                 "Razorgale Calling",
                 "Scatter Essence",
                 "Cyclical Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 32649
+              }
             },
             {
               "order": 2,
@@ -23014,7 +23882,11 @@
                 "Dungeon Guide",
                 "Verdigris Decree",
                 "Fertile Grounds"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 33206
+              }
             },
             {
               "order": 3,
@@ -23023,7 +23895,11 @@
               "cards": [
                 "Tempest Downfall",
                 "Razorgale Calling"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 33999
+              }
             }
           ]
         }
@@ -23062,7 +23938,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Nathan wins early ally exchanges and builds influence, then Zander’s Luxem reveals force OneEyedOwl to commit cards from hand."
+              "text": "Nathan wins early ally exchanges and builds influence, then Zander’s Luxem reveals force OneEyedOwl to commit cards from hand.",
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 36464
+              }
             },
             {
               "order": 2,
@@ -23071,7 +23951,11 @@
               "cards": [
                 "Blinding Orb",
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 36786
+              }
             }
           ]
         },
@@ -23088,7 +23972,11 @@
                 "Heavenly Guide",
                 "Incapacitate",
                 "Ensnaring Fumes"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 37954
+              }
             },
             {
               "order": 2,
@@ -23099,7 +23987,11 @@
                 "Scout the Land",
                 "Reclaim",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "6XU9azcBukk",
+                "seconds": 38517
+              }
             },
             {
               "order": 3,
@@ -23158,7 +24050,11 @@
                 "Hone by Fire",
                 "Blazing Throw",
                 "Vermilion Decree"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 2368
+              }
             }
           ]
         },
@@ -23170,7 +24066,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "Sadi clears key allies and generates agility triggers, letting Asuna reach level three with preparation counters."
+              "text": "Sadi clears key allies and generates agility triggers, letting Asuna reach level three with preparation counters.",
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 3287
+              }
             },
             {
               "order": 2,
@@ -23179,7 +24079,11 @@
               "cards": [
                 "Rending Flames",
                 "Slice and Dice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 3647
+              }
             }
           ]
         },
@@ -23195,7 +24099,11 @@
               "cards": [
                 "Deflecting Edge",
                 "Assassin's Ripper"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 4491
+              }
             },
             {
               "order": 2,
@@ -23248,7 +24156,11 @@
                 "Astral Seal",
                 "Byakko's Command",
                 "Polaris, Twinkling Cauldron"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 6371
+              }
             },
             {
               "order": 2,
@@ -23258,7 +24170,11 @@
                 "Dungeon Guide",
                 "Polaris, Twinkling Cauldron",
                 "Art of War"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 6675
+              }
             }
           ]
         },
@@ -23282,7 +24198,11 @@
               "cards": [
                 "Byakko's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 7506
+              }
             }
           ]
         },
@@ -23300,7 +24220,11 @@
                 "Aesan Protector",
                 "Baby Green Slime",
                 "Polaris, Twinkling Cauldron"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 8066
+              }
             },
             {
               "order": 2,
@@ -23308,7 +24232,11 @@
               "text": "With Aesan still attacking, Pulse develops Seiryuu and finds a second Seiryuu’s Command to overwhelm lucasis’s remaining defenses.",
               "cards": [
                 "Seiryuu's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 8510
+              }
             }
           ]
         }
@@ -23351,7 +24279,11 @@
               "cards": [
                 "Dream Fairy",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 11054
+              }
             },
             {
               "order": 2,
@@ -23360,7 +24292,11 @@
               "cards": [
                 "Razorgale Calling",
                 "Tempest Downfall"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 12083
+              }
             }
           ]
         },
@@ -23386,7 +24322,11 @@
                 "Ghosts of Pendragon",
                 "Devastating Blow",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 13024
+              }
             }
           ]
         },
@@ -23402,7 +24342,11 @@
               "cards": [
                 "Censer of Restful Peace",
                 "Innervate Agility"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 14110
+              }
             },
             {
               "order": 2,
@@ -23410,7 +24354,11 @@
               "text": "Tien clears Cloud Striker and develops Ghosts of Pendragon. With the game still unresolved in overtime, Seiba concedes to Tien.",
               "cards": [
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 14278
+              }
             }
           ]
         }
@@ -23462,7 +24410,11 @@
               "cards": [
                 "Incapacitate",
                 "Crux Sight"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 15738
+              }
             },
             {
               "order": 3,
@@ -23470,7 +24422,11 @@
               "text": "Dragowil shows two Fireballs; LegitJesusKun concedes.",
               "cards": [
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 16006
+              }
             }
           ]
         },
@@ -23487,7 +24443,11 @@
                 "Three of Hearts",
                 "Liminal Guide",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 16745
+              }
             },
             {
               "order": 2,
@@ -23496,7 +24456,11 @@
               "cards": [
                 "Regal Inquisition",
                 "Spark Alight"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 17405
+              }
             },
             {
               "order": 3,
@@ -23505,7 +24469,11 @@
               "cards": [
                 "Veiling Breeze",
                 "Safeguard Amulet"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 17557
+              }
             }
           ]
         }
@@ -23583,7 +24551,11 @@
               "cards": [
                 "Reduce to Ash",
                 "Orb of Sealing"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 27601
+              }
             },
             {
               "order": 3,
@@ -23594,7 +24566,11 @@
                 "Prismatic Edge",
                 "Creative Shock",
                 "Resolute Stand"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 27940
+              }
             }
           ]
         },
@@ -23611,7 +24587,11 @@
                 "Creative Shock",
                 "Liminal Guide",
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 28686
+              }
             },
             {
               "order": 2,
@@ -23629,7 +24609,11 @@
               "cards": [
                 "Creative Shock",
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 29435
+              }
             }
           ]
         }
@@ -23671,7 +24655,11 @@
               "text": "Dragowil rushes Merlin to level two, restricting Caban’s floating memory. Cheshire Cat and the other allies keep applying damage.",
               "cards": [
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 30986
+              }
             },
             {
               "order": 2,
@@ -23680,7 +24668,11 @@
               "cards": [
                 "Fireball",
                 "Clarent, Reimagined"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 32688
+              }
             }
           ]
         },
@@ -23696,7 +24688,11 @@
               "cards": [
                 "Fluffy Shopkeep",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 33461
+              }
             },
             {
               "order": 2,
@@ -23714,7 +24710,11 @@
               "cards": [
                 "Fireball",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 35322
+              }
             }
           ]
         },
@@ -23730,7 +24730,11 @@
               "cards": [
                 "Dungeon Guide",
                 "Flame Sweep"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 35768
+              }
             },
             {
               "order": 2,
@@ -23739,7 +24743,11 @@
               "cards": [
                 "Surreptitious Scheme",
                 "Ghosts of Pendragon"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 36279
+              }
             },
             {
               "order": 3,
@@ -23749,7 +24757,11 @@
                 "Spirit Blade: Ascension",
                 "Prismatic Edge",
                 "Devastating Blow"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 36695
+              }
             }
           ]
         }
@@ -23793,7 +24805,11 @@
                 "Razorgale Calling",
                 "Stifling Trap",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 38237
+              }
             },
             {
               "order": 2,
@@ -23803,7 +24819,11 @@
                 "Zephyr",
                 "Inert Sword",
                 "Rending Flames"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 38485
+              }
             },
             {
               "order": 3,
@@ -23813,7 +24833,11 @@
                 "Ventus, Staff of Zephyrs",
                 "Tempest Downfall",
                 "Cyclical Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 38601
+              }
             }
           ]
         },
@@ -23828,7 +24852,11 @@
               "text": "Two Three of Hearts pressure EMP while providing floating memory for Caban’s levels.",
               "cards": [
                 "Three of Hearts"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 39074
+              }
             },
             {
               "order": 2,
@@ -23847,7 +24875,11 @@
                 "Clarent, Reimagined",
                 "Devastating Blow",
                 "Veiling Breeze"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 39816
+              }
             }
           ]
         },
@@ -23863,7 +24895,11 @@
               "cards": [
                 "Razorgale Calling",
                 "Honorable Vanguard"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 40016
+              }
             },
             {
               "order": 2,
@@ -23882,7 +24918,11 @@
                 "Ventus, Staff of Zephyrs",
                 "Cyclical Breeze",
                 "Tempest Downfall"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "idcMDSZRmIE",
+                "seconds": 40570
+              }
             }
           ]
         }
@@ -23940,7 +24980,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 2495
+              }
             }
           ]
         },
@@ -23959,7 +25003,11 @@
                 "Library Witch",
                 "Cremation Ritual",
                 "Expel the Departed"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 3139
+              }
             },
             {
               "order": 2,
@@ -23985,7 +25033,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 3589
+              }
             }
           ]
         }
@@ -24041,7 +25093,11 @@
                 "Burst Asunder",
                 "Veiling Breeze",
                 "Glimmering Refusal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 7032
+              }
             }
           ]
         },
@@ -24079,7 +25135,11 @@
                 "Dream Fairy",
                 "Fluffy Shopkeep",
                 "Sentinel Fabricator"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 8945
+              }
             }
           ]
         },
@@ -24097,7 +25157,11 @@
                 "Frostsworn Paladin",
                 "Glimmering Refusal",
                 "Dungeon Guide"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 9324
+              }
             },
             {
               "order": 2,
@@ -24148,7 +25212,11 @@
               "order": 1,
               "actor": "p2",
               "text": "Sano reaches Guo Jia level three and attacks with Seiryuu while Glenyboi remains on Lorraine level one.",
-              "cards": []
+              "cards": [],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 11178
+              }
             },
             {
               "order": 2,
@@ -24186,7 +25254,11 @@
                 "Innervate Agility",
                 "Aella, Zephyr's Hand",
                 "Fatestone of Heaven"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 12668
+              }
             },
             {
               "order": 3,
@@ -24197,7 +25269,11 @@
                 "Optical Control",
                 "Aella, Zephyr's Hand",
                 "Prismatic Edge"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 14390
+              }
             }
           ]
         }
@@ -24247,7 +25323,11 @@
                 "Ceasing Edict",
                 "Engulf",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 17801
+              }
             }
           ]
         },
@@ -24263,7 +25343,11 @@
               "cards": [
                 "Reprogram",
                 "Hydroguard Retainer"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 18397
+              }
             },
             {
               "order": 2,
@@ -24303,7 +25387,11 @@
               "text": "Ceasing Edict stops the late Seiryuu attack. SapphicSnake finally breaks the Castle in overtime, but neither player finishes and the match ends 1–1.",
               "cards": [
                 "Ceasing Edict"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 20520
+              }
             }
           ]
         }
@@ -24355,7 +25443,11 @@
               "cards": [
                 "Smoke Bombs",
                 "Take Aim"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 22486
+              }
             }
           ]
         },
@@ -24383,7 +25475,11 @@
                 "Covenant of Thorns",
                 "Dungeon Guide",
                 "Flash Grenade"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 23739
+              }
             }
           ]
         },
@@ -24422,7 +25518,11 @@
                 "Storm Slime",
                 "Limitless Slime",
                 "Frostsworn Paladin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 25188
+              }
             }
           ]
         }
@@ -24477,7 +25577,11 @@
                 "Aesan Protector",
                 "Cheshire Cat, Impish Grin",
                 "Ranger Strides"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 26640
+              }
             }
           ]
         },
@@ -24495,7 +25599,11 @@
                 "Inert Sword",
                 "Cheshire Cat, Impish Grin",
                 "Censer of Restful Peace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 27006
+              }
             },
             {
               "order": 2,
@@ -24506,7 +25614,11 @@
                 "Incapacitate",
                 "Dungeon Guide",
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 27793
+              }
             }
           ]
         }
@@ -24550,7 +25662,11 @@
                 "Devouring Malice",
                 "Chalice of Blood",
                 "Baleful Oblation"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 31365
+              }
             },
             {
               "order": 2,
@@ -24562,7 +25678,11 @@
                 "Spirit Blade: Ascension",
                 "Devastating Blow",
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 31818
+              }
             }
           ]
         },
@@ -24579,7 +25699,11 @@
                 "Demolition",
                 "Dungeon Guide",
                 "Displace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 32535
+              }
             },
             {
               "order": 2,
@@ -24601,7 +25725,11 @@
                 "Varuckan Acolyte",
                 "Extorting Blackjack",
                 "Feu Awakening"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 32860
+              }
             }
           ]
         }
@@ -24646,7 +25774,11 @@
                 "Dynastic Whirlpool",
                 "Aella, Zephyr's Hand",
                 "Displace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 35995
+              }
             },
             {
               "order": 2,
@@ -24655,7 +25787,11 @@
               "cards": [
                 "Dynastic Whirlpool",
                 "Regal Inquisition"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 36501
+              }
             }
           ]
         },
@@ -24682,7 +25818,11 @@
               "cards": [
                 "Regal Inquisition",
                 "Dynastic Whirlpool"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 37998
+              }
             },
             {
               "order": 3,
@@ -24692,7 +25832,11 @@
                 "Resolute Stand",
                 "Shuang Ji of Sacrifice",
                 "Enrage"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "YajGY_RVfD4",
+                "seconds": 38507
+              }
             }
           ]
         }
@@ -24735,7 +25879,11 @@
               "cards": [
                 "Cheshire Cat, Impish Grin",
                 "Luxem Sight"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 20656
+              }
             }
           ]
         },
@@ -24750,7 +25898,11 @@
               "text": "Phillip continues attacking with allies, but Bartleby survives the pressure and finds the final damage to complete the sweep.",
               "cards": [
                 "Lightweaver's Assault"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 22980
+              }
             }
           ]
         }
@@ -24792,7 +25944,11 @@
               "text": "Killydis threatens to recover, but DuckHats sequences his end-of-turn damage and finishes the game before that recovery can save Nico.",
               "cards": [
                 "Devouring Malice"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 25569
+              }
             }
           ]
         },
@@ -24808,7 +25964,11 @@
               "cards": [
                 "Resolute Stand",
                 "Intensified Pyre"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 26601
+              }
             }
           ]
         }
@@ -24851,7 +26011,11 @@
               "cards": [
                 "Song of Frost",
                 "Byakko's Command"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 29873
+              }
             }
           ]
         },
@@ -24863,7 +26027,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "The casters report that Quarax has an eleven-card material deck after sideboarding. Quarax receives a game loss, tying the match at one game each."
+              "text": "The casters report that Quarax has an eleven-card material deck after sideboarding. Quarax receives a game loss, tying the match at one game each.",
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 30357
+              }
             }
           ]
         },
@@ -24879,7 +26047,11 @@
               "cards": [
                 "Arcane Blast",
                 "Scatter Essence"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 31713
+              }
             }
           ]
         }
@@ -24922,7 +26094,11 @@
               "cards": [
                 "Refracting Missile",
                 "Burst Asunder"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 34566
+              }
             }
           ]
         },
@@ -24938,7 +26114,11 @@
               "cards": [
                 "Searing Rebuke",
                 "Glimmering Refusal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 35529
+              }
             }
           ]
         }
@@ -24981,7 +26161,11 @@
               "cards": [
                 "Seiryuu's Command",
                 "Harness Lightning"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 40428
+              }
             }
           ]
         },
@@ -24996,7 +26180,11 @@
               "text": "Sano rebuilds his dragon position and finishes with a sequence of attacks, taking game two over Phantisea’s Wind Wake Up deck.",
               "cards": [
                 "Harness Lightning"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 41895
+              }
             }
           ]
         }
@@ -25035,7 +26223,11 @@
             {
               "order": 1,
               "actor": "p1",
-              "text": "The broadcast reports a sideboard error for YojiAh and a game-one loss. MaindeckDan begins the played portion of the match ahead one game."
+              "text": "The broadcast reports a sideboard error for YojiAh and a game-one loss. MaindeckDan begins the played portion of the match ahead one game.",
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 32381
+              }
             }
           ]
         },
@@ -25051,7 +26243,11 @@
               "cards": [
                 "Shadowstrike",
                 "Shadow's Claw"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 33772
+              }
             }
           ]
         }
@@ -25094,7 +26290,11 @@
               "cards": [
                 "Scry the Skies",
                 "Advent of the Stormcaller"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 37695
+              }
             }
           ]
         },
@@ -25110,7 +26310,11 @@
               "cards": [
                 "Arcane Elemental",
                 "Fireball"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 39322
+              }
             }
           ]
         }
@@ -25149,7 +26353,11 @@
             {
               "order": 1,
               "actor": "p2",
-              "text": "The casters announce that NEETfull won game one before this prerecorded coverage begins."
+              "text": "The casters announce that NEETfull won game one before this prerecorded coverage begins.",
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 16933
+              }
             }
           ]
         },
@@ -25164,7 +26372,11 @@
               "text": "TLux contests NEETfull’s early allies and keeps the slime player short of resources, then closes with his dragon established.",
               "cards": [
                 "Stifling Trap"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 18399
+              }
             }
           ]
         },
@@ -25180,7 +26392,11 @@
               "cards": [
                 "Byakko's Command",
                 "Baby Silver Slime"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 19312
+              }
             }
           ]
         }
@@ -25222,7 +26438,11 @@
               "text": "ComradeCoheed keeps attacking fome’s champion and finds lethal after leveling Lorraine.",
               "cards": [
                 "Lorraine, Blademaster"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 2382
+              }
             }
           ]
         },
@@ -25238,7 +26458,11 @@
               "cards": [
                 "Arthur, Young Heir",
                 "Sword of Shadows"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 3234
+              }
             }
           ]
         }
@@ -25281,7 +26505,11 @@
               "cards": [
                 "Ranger Strides",
                 "Cheshire Cat, Impish Grin"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 16507
+              }
             }
           ]
         },
@@ -25297,7 +26525,11 @@
               "cards": [
                 "Liu Bei, Oathkeeper",
                 "Aether's Embrace"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 17415
+              }
             }
           ]
         }
@@ -25339,7 +26571,11 @@
               "text": "Killydis commits his resources to Meteoric Volley and card selection. With no answer available for Superior’s finishing threat, he concedes.",
               "cards": [
                 "Meteoric Volley"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 28822
+              }
             }
           ]
         },
@@ -25354,7 +26590,11 @@
               "text": "Killydis remains at level two with advanced-element cards stranded in hand. Superior develops Genbu and finishes before Diana can recover.",
               "cards": [
                 "Resonating Fugue"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 29603
+              }
             }
           ]
         }
@@ -25397,7 +26637,11 @@
               "cards": [
                 "Grim Pastiche",
                 "Regal Inquisition"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 9304
+              }
             }
           ]
         },
@@ -25414,7 +26658,11 @@
                 "Fast Cure",
                 "Resolute Stand",
                 "Hemorrhaging Rend"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 10584
+              }
             }
           ]
         }
@@ -25457,7 +26705,11 @@
               "cards": [
                 "Censer of Restful Peace",
                 "Fractal of Polar Depths"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 18507
+              }
             }
           ]
         },
@@ -25474,7 +26726,11 @@
                 "Dream Fairy",
                 "Refracting Missile",
                 "Annul Spell"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "gL-S2tAI6bk",
+                "seconds": 20318
+              }
             }
           ]
         }
@@ -25517,7 +26773,11 @@
               "cards": [
                 "Seiryuu's Command",
                 "Arcane Blast"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "iwjvP7O9ytM",
+                "seconds": 37422
+              }
             }
           ]
         }
@@ -25563,7 +26823,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 7964
+              }
             }
           ]
         },
@@ -25580,7 +26844,11 @@
                 "Shattering Discharge",
                 "Crystallized Destiny",
                 "Arcane Elemental"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 9344
+              }
             },
             {
               "order": 2,
@@ -25589,7 +26857,11 @@
               "cards": [
                 "Slice and Dice",
                 "Spellshield: Arcane"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 10574
+              }
             }
           ]
         }
@@ -25635,7 +26907,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 11447
+              }
             }
           ]
         },
@@ -25656,7 +26932,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 12059
+              }
             }
           ]
         },
@@ -25674,7 +26954,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 12778
+              }
             }
           ]
         }
@@ -25719,7 +27003,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 23869
+              }
             }
           ]
         },
@@ -25738,7 +27026,11 @@
               ],
               "tags": [
                 "lethal"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 24939
+              }
             }
           ]
         },
@@ -25756,7 +27048,11 @@
               ],
               "tags": [
                 "ruling"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "O9EzTt7ffVc",
+                "seconds": 26185
+              }
             }
           ]
         }
@@ -25853,7 +27149,11 @@
               "cards": [
                 "Dynastic Whirlpool",
                 "Reflected Blight"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 23806
+              }
             }
           ]
         },
@@ -25870,7 +27170,11 @@
                 "Ranger Strides",
                 "Fracturize",
                 "Dynastic Whirlpool"
-              ]
+              ],
+              "timestamp": {
+                "videoId": "694jDw5rGqg",
+                "seconds": 25799
+              }
             }
           ]
         }
