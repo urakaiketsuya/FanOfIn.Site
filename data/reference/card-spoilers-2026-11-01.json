@@ -237,7 +237,7 @@
       ],
       "level": null,
       "cost": {
-        "type": "reserve",
+        "type": "aria",
         "value": "5"
       },
       "power": null,
@@ -276,6 +276,35 @@
       "speed": "fast",
       "effect": "Draw a card into your memory.\nCasella Bonus Casella sings. (You may copy a Song card from your Song deck and activate that copy. If you do, turn the copied card face up if it's face down.)",
       "flavor": "It's the opener, I have to make a good impression!"
+    },
+    {
+      "name": "Casella's Indomitable Hymn",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "024",
+      "rarity": "R",
+      "image": "casellas-indomitable-hymn.png",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Allies you control gain immortality until end of turn. (A unit with immortality can't die.)\nCasella Bonus Casella sings. (You may copy a Song card from your Song deck and activate that copy. If you do, turn the copied card face up if it's face down.)"
     },
     {
       "name": "ChannelTech Charm S",
