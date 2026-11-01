@@ -1,0 +1,1442 @@
+{
+  "schemaVersion": 1,
+  "status": "unverified-spoiler",
+  "capturedAt": "2026-11-01",
+  "source": {
+    "description": "Screenshots from the CBL dev stream shared in the Discord community, read by hand from video frames.",
+    "streamUrl": "https://www.youtube.com/watch?v=KvpV9Bwdqxo"
+  },
+  "notes": [
+    "Unreleased cards. Do not merge into card-catalog.json, tournament stats, or Card Impact numbers.",
+    "Names and effect text were read from video screenshots. Collector numbers and rarities come from small print and can be wrong.",
+    "Cards with null collectorNumber/rarity had unreadable print. Mana-cost orb values were read from the card frame.",
+    "Field names and enum values follow data/card-catalog.json (types, subtypes, elements, cost). exalted marks the \"Ex\" frame badge.",
+    "reprintOf: the same card text already exists in the catalog under that set prefix."
+  ],
+  "sets": {
+    "Re:C-SKY": "Casella reveal cards (Cleric, arcane)",
+    "Re:C-MST": "Beatrice reveal cards (Tamer, DisCorp Automaton)",
+    "CBL": "Set prefix printed on cards shown with the Casella and Beatrice reveals",
+    "CBLP": "Set prefix printed on the Pantheon (boon/devotion) cards"
+  },
+  "cards": [
+    {
+      "name": "Spirit of Wind",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "001",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [],
+      "subtypes": [
+        "SPIRIT"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": 0,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": 15,
+      "speed": null,
+      "effect": "On Enter: Draw seven cards.",
+      "flavor": "Leran believed the wind was an echo of Harmonia's song—as beautiful and sweet as the goddess Herself."
+    },
+    {
+      "name": "Casella, Volant Songstress",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "002",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ANGEL",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost": {
+        "type": "memory",
+        "value": "1"
+      },
+      "power": null,
+      "life": 19,
+      "speed": null,
+      "effect": "A deck with this card in it unlocks the Song deck. (It's an unordered private deck consisting of a maximum of four different Song cards.)\nOn Enter: Empower 2.\nInherited Effect — If you would empower an amount, you may put that many aria counters on Casella instead.",
+      "altPrintings": [
+        {
+          "rarity": "CSR",
+          "setPrefix": "CBL 1st",
+          "collectorNumber": null
+        }
+      ]
+    },
+    {
+      "name": "Casella, Wistful Refrain",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "003",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ANGEL",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 2,
+      "cost": {
+        "type": "memory",
+        "value": "2"
+      },
+      "power": null,
+      "life": 22,
+      "speed": null,
+      "effect": "Casella Lineage\nOn Enter: Empower 2. Then if there are five or more aria counters on Casella, draw a card.",
+      "flavor": "In doubt, your encouragement keeps me strong."
+    },
+    {
+      "name": "Casella, Sky's Cantatrice",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "004",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ANGEL",
+        "HUMAN"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": 3,
+      "cost": {
+        "type": "memory",
+        "value": "3"
+      },
+      "power": null,
+      "life": 25,
+      "speed": null,
+      "effect": "Casella Lineage\nOn Enter: Recover X, where X is the amount of arcane element cards in your banishment.\n(3), Banish a non-Spirit champion card from Casella's inner lineage: Casella sings.",
+      "altPrintings": [
+        {
+          "rarity": "CSR",
+          "setPrefix": "CBL 1st",
+          "collectorNumber": null
+        }
+      ]
+    },
+    {
+      "name": "Skyward Requiem",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "015",
+      "rarity": "R",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "SONG"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "unlockable": true,
+      "effect": "(Unlockable — This card can only be registered in an unlockable deck.)\nOn Premiere: Empower 2.\nYou may remove three aria counters from your champion. If you do, draw a card into your memory."
+    },
+    {
+      "name": "Chromatic",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "014",
+      "rarity": "R",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "SONG"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "unlockable": true,
+      "effect": "(Remove two aria counters from your champion to pay for this card's aria cost.)\nOn Premiere: For each non-exalted element, put a buff counter on up to one ally of that element.\nPrevent the next 3 damage that would be dealt to up to one target ally this turn."
+    },
+    {
+      "name": "Aiss Yustera",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "013",
+      "rarity": "R",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "SONG"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "5"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "unlockable": true,
+      "effect": "On Premiere: The next ally card you activate this turn costs (2) less to activate. (Trigger this ability when you activate \"Aiss Yustera\" for the first time each game.)\nIf your influence is seven or less, scavenge 7 for an ally card. (A player's influence is equal to the total amount of cards in their hand and memory.)"
+    },
+    {
+      "name": "Opening Refrain",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "021",
+      "rarity": "C",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Draw a card into your memory.\nCasella Bonus Casella sings. (You may copy a Song card from your Song deck and activate that copy. If you do, turn the copied card face up if it's face down.)",
+      "flavor": "It's the opener, I have to make a good impression!"
+    },
+    {
+      "name": "ChannelTech Charm S",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "017",
+      "rarity": "C",
+      "types": [
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "VELTECH",
+        "DEVICE"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "On Enter: Draw a card into your memory.\nClass Bonus Sacrifice ChannelTech Charm S: Empower 2. (The next Spell card you activate this turn activates and resolves as if your champion got +2 level. Activate this ability only if your champion's class matches this card's class.)",
+      "reprintOf": "PRD"
+    },
+    {
+      "name": "Electrostatic Discharge",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "033",
+      "rarity": "SR",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Class Bonus This card costs 2 less to activate.\nNegate target card activation if that card's reserve cost is less than or equal to X, where X is the amount of arcane element cards in your banishment.\nIf Electrostatic Discharge was empowered, deal X damage to each champion you don't control."
+    },
+    {
+      "name": "Dielectric Prelate",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "032",
+      "rarity": "R",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 3,
+      "life": 3,
+      "speed": null,
+      "effect": "Intercept (Whenever your champion is attacked while this ally is awake, you may redirect that attack to this ally.)\nClass Bonus On Death: Deal X damage to each ally your opponents control, where X is the amount of arcane element cards in your banishment. X is capped at 4."
+    },
+    {
+      "name": "Final Refrain",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "031",
+      "rarity": "UR",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "6"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Efficiency (This card costs LV less to activate. LV refers to your champion's level.)\nOn Enter: Empower 3.\nCasella Bonus Whenever one or more aria counters are removed from your champion, deal 1+X damage to target champion you don't control, where X is the amount of counters removed this way.",
+      "altPrintings": [
+        {
+          "rarity": "CSR",
+          "setPrefix": "Re:C-SKY",
+          "collectorNumber": "031"
+        }
+      ]
+    },
+    {
+      "name": "Sapiential Codex",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "008",
+      "rarity": "R",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "BOOK"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Class Bonus On Enter: Empower 1.\n(3), Banish Sapiential Codex: Draw a card into your memory.",
+      "flavor": "In a world of digital books, there's just something special about holding one in your hands."
+    },
+    {
+      "name": "Glittering Penlight",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "005",
+      "rarity": "R",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ACCESSORY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Ally Link\nWhenever you activate a Harmony or Melody card, cascade—\n1— Linked ally gets +1 POWER until end of turn.\n2— Put a buff counter on linked ally.\n3— Sacrifice Glittering Penlight and draw a card into your memory.\n(This ability changes each cascade.)"
+    },
+    {
+      "name": "Sonic Boom, Thunder's Echo",
+      "setPrefix": "Re:C-SKY",
+      "collectorNumber": "012",
+      "rarity": "SR",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "ACCESSORY"
+      ],
+      "elements": [
+        "ARCANE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Casella Bonus (3), Banish Sonic Boom: Target opponent banishes a card at random from their memory. Empower X, where X is the reserve cost of the card banished this way. X is capped at 4.",
+      "flavor": "Every note, echoed in perfect clarity."
+    },
+    {
+      "name": "Spirit of Water",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "001",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [],
+      "subtypes": [
+        "SPIRIT"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": 0,
+      "cost": {
+        "type": "memory",
+        "value": "0"
+      },
+      "power": null,
+      "life": 15,
+      "speed": null,
+      "effect": "On Enter: Draw seven cards.",
+      "flavor": "It once fed a burgeoning civilization. Now it cools the servers within the Tower of Dis."
+    },
+    {
+      "name": "Beatrice, Program Architect",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "002",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 1,
+      "cost": {
+        "type": "memory",
+        "value": "1"
+      },
+      "power": null,
+      "life": 19,
+      "speed": null,
+      "effect": "Beatrice Bonus Inherited Effect — On Enter: Banish up to two Program cards from your hand and/or memory compiled. Draw a card into your memory for each card banished this way. (You may activate compiled cards from your banishment.)",
+      "flavor": "If my will to good persists, why should the violence of others cause the measure of my merit to be less?",
+      "altPrintings": [
+        {
+          "rarity": "CSR",
+          "setPrefix": "CBL 1st",
+          "collectorNumber": "005"
+        }
+      ]
+    },
+    {
+      "name": "Beatrice, Cybernetic Catalyst",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "003",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": 2,
+      "cost": {
+        "type": "memory",
+        "value": "2"
+      },
+      "power": null,
+      "life": 22,
+      "speed": null,
+      "effect": "Beatrice Lineage\nOn Enter: You may sacrifice a Powercell item or an Automaton ally. If you do, draw a card.\nBeatrice Bonus Inherited Effect — You may activate compiled cards as though they had fast activation."
+    },
+    {
+      "name": "Beatrice, Master Directive",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "004",
+      "rarity": "C",
+      "types": [
+        "CHAMPION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "HUMAN"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": 3,
+      "cost": {
+        "type": "memory",
+        "value": "3"
+      },
+      "power": null,
+      "life": 25,
+      "speed": null,
+      "effect": "Beatrice Lineage\n(2), [rest], Put a compiled card from your banishment into your graveyard: Summon two Servitor tokens. Then if you control seven or more Automaton allies, put a buff counter on each Automaton ally you control.",
+      "flavor": "For mortals, creation is bound to destruction."
+    },
+    {
+      "name": "Protocol/PROTECTION",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "030",
+      "rarity": "C",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally gets +1 LIFE.\nIf linked ally would be dealt damage, prevent 2 of that damage. Apply this replacement effect only once each turn."
+    },
+    {
+      "name": "Protocol/VIRUS",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "033",
+      "rarity": "SR",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nYou may have compiled Program cards you activate enter the field as a copy of Protocol/VIRUS.\nLinked ally gets +1 POWER and +1 LIFE.\n(3), Sacrifice Protocol/VIRUS and two other objects with the same name: Search your deck for a card named Virgilian Prime and put it onto the field. Then shuffle your deck. Activate this ability only if you don't control an ally named Virgilian Prime."
+    },
+    {
+      "name": "Protocol/CLOUD",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "029",
+      "rarity": "U",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally has \"On Death: Recover 3.\"\nClass Bonus Floating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)"
+    },
+    {
+      "name": "Protocol/AGGRESSION",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "018",
+      "rarity": "C",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally gets +1 POWER.\nOn Enter: Linked ally's next attack this turn gets +2 POWER.",
+      "flavor": "VIRUS DETECTED. Threat level: CRITICAL."
+    },
+    {
+      "name": "Protocol/REFACTOR",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": null,
+      "rarity": null,
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally has \"On Death: Summon two Servitor tokens.\"",
+      "flavor": "The nonviable are replaced, not mourned."
+    },
+    {
+      "name": "Protocol/RECURSION",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": null,
+      "rarity": null,
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "1"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nLinked ally gets +1 LIFE.\nOn Enter: You may banish a Program card from your hand or memory compiled. If you do, draw a card into your memory."
+    },
+    {
+      "name": "Protocol/DUPLICATION",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "031",
+      "rarity": "R",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "PROGRAM"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton Ally Link\nOn Enter: Summon a token copy of linked ally.",
+      "flavor": "What has been accomplished once can always be replicated again—even miracles. — Beatrice Othniel"
+    },
+    {
+      "name": "Virgilian Prime",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "034",
+      "rarity": "UR",
+      "types": [
+        "UNIQUE",
+        "PHANTASIA",
+        "ALLY"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "12"
+      },
+      "power": 5,
+      "life": 5,
+      "speed": null,
+      "effect": "Taunt, Vigor\nOn Enter: Link any amount of Program phantasias with Automaton ally link to Virgilian Prime. Then put any amount of Program phantasia cards with Automaton ally link from your hand, memory, and/or graveyard onto the field linked to Virgilian Prime.\n(2), Sacrifice a Program linked to Virgilian Prime: As a Spell, deal 5 damage to target unit."
+    },
+    {
+      "name": "Hypothermic Biroid",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "027",
+      "rarity": "SR",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 4,
+      "life": 4,
+      "speed": null,
+      "exalted": true,
+      "effect": "Class Bonus Taunt\nOn Champion Hit: The hit opponent recollects two less cards during the resolution of their next recollection phase. (They choose which cards to recollect.)"
+    },
+    {
+      "name": "Hiemal Droid",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "026",
+      "rarity": "U",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 3,
+      "speed": null,
+      "effect": "Class Bonus Taunt\nOn Enter: You may banish a Program card or a card with floating memory from your graveyard. If a Program card was banished this way, it becomes compiled. If a card with floating memory was banished this way, draw a card."
+    },
+    {
+      "name": "Modular Armaton",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "016",
+      "rarity": "U",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 1,
+      "speed": null,
+      "effect": "As long as Modular Armaton is linked to two or more objects, Modular Armaton has cleave. (A unit with cleave attacks all objects a chosen opponent controls, and their attacks can't be intercepted.)"
+    },
+    {
+      "name": "DisCorp Retainer",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "014",
+      "rarity": "U",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 2,
+      "life": 3,
+      "speed": null,
+      "effect": "As long as DisCorp Retainer is linked to two or more objects, DisCorp Retainer has \"On Leave: Draw a card into your memory.\"",
+      "flavor": "Have you seen our latest products? I'd be happy to assist you with a recommendation!"
+    },
+    {
+      "name": "Collateral Overload",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "013",
+      "rarity": "C",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "AUTOMATON",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Beatrice Bonus While paying for this card's reserve cost, you may sacrifice an Automaton ally to pay for 3 of that cost.\nDeal 3 damage to target unit.",
+      "flavor": "Those lost to progress will not be forgotten."
+    },
+    {
+      "name": "Override Access",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "028",
+      "rarity": "SR",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "As an additional cost to activate this card, put a compiled card from your banishment into your graveyard.\nChoose one—\n• Negate target trigger or action card activation that targets an Automaton ally you control.\n• If your champion or an Automaton ally you control is defending, end the combat phase."
+    },
+    {
+      "name": "DisCorp Administrator Card",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "006",
+      "rarity": "U",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "ACCESSORY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Banish DisCorp Administrator Card: The next two DisCorp cards you activate this turn cost 1 less to activate.",
+      "flavor": "An administrative identification card that grants only the highest tier of access within DisCorp."
+    },
+    {
+      "name": "Surveillance Module",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "009",
+      "rarity": "R",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "AUTOMATON",
+        "ACCESSORY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Automaton allies you control have true sight. (They can attack objects with stealth.)\n(2), Banish Surveillance Module: Summon a Powercell token rested.",
+      "flavor": "Always watching, always listening, to keep you safe."
+    },
+    {
+      "name": "Machine Replicator",
+      "setPrefix": "Re:C-MST",
+      "collectorNumber": "012",
+      "rarity": "R",
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DEVICE"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "0"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Class Bonus (1), [rest]: Summon a token copy of target token Automaton ally you control with reserve cost 1 or less.",
+      "flavor": "A machine to replicate machines. Forging a future free of scarcity."
+    },
+    {
+      "name": "Divergent Horizon",
+      "setPrefix": "CBL",
+      "collectorNumber": "044",
+      "rarity": "R",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "exalted": true,
+      "effect": "Exalted Resonance (As long as another player has the exalted element enabled, you may play this card ignoring its exalted elemental requirement.)\nDraw a card into your memory. Until end of turn, advanced element cards cost (2) more to activate."
+    },
+    {
+      "name": "Spellshield: Double",
+      "setPrefix": "CBL",
+      "collectorNumber": "076",
+      "rarity": "SR",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "exalted": true,
+      "effect": "(Exalted — This element is enabled for you as long as you have another advanced element enabled.)\nThe next two times your champion would be dealt damage this turn, prevent that damage.",
+      "flavor": "Hm, is that the best you can do?"
+    },
+    {
+      "name": "Chains of Absolution",
+      "setPrefix": "CBL",
+      "collectorNumber": null,
+      "rarity": null,
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL",
+        "REACTION"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "exalted": true,
+      "effect": "Class Bonus This card costs 2 less to activate.\nNegate target non-attack card activation.\nClass Bonus Level 7+: Banish the card that had its activation negated this way. As long as that card remains banished, cards its owner activates with the same name as the banished card cost (4) more to activate."
+    },
+    {
+      "name": "Stirred Sentiments",
+      "setPrefix": "CBL",
+      "collectorNumber": "077",
+      "rarity": "C",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Active Memory (While paying for a memory cost, you may sacrifice this object to pay for 1 of that cost.)\nOn Enter: Recover 2. (To recover, remove that many damage counters from your champion.)",
+      "flavor": "Received memory transfer from Babelia network."
+    },
+    {
+      "name": "HyperRAM Hydroid",
+      "setPrefix": "CBL",
+      "collectorNumber": "125",
+      "rarity": "C",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": 1,
+      "life": 3,
+      "speed": null,
+      "effect": "Active Memory (While paying for a memory cost, you may sacrifice this object to pay for 1 of that cost.)\nClass Bonus Floating Memory (While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)"
+    },
+    {
+      "name": "Casella's Poise",
+      "setPrefix": "CBL",
+      "collectorNumber": "142",
+      "rarity": "U",
+      "types": [
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Active Memory (While paying for a memory cost, you may sacrifice this object to pay for 1 of that cost.)\nCasella Bonus On Enter: Casella sings.",
+      "flavor": "Her natural charisma was undeniable. Seeing her on stage made it impossible not to be a fan."
+    },
+    {
+      "name": "Sinister Divulgence",
+      "setPrefix": "CBL",
+      "collectorNumber": "074",
+      "rarity": "R",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Choose a non-damage counter on target champion you don't control. Remove X of those counters from that champion, where X is half the amount of those counters on that champion, rounded up. X is capped at 4.",
+      "flavor": "The little songbird has yet to outgrow her cage."
+    },
+    {
+      "name": "Mindfrost",
+      "setPrefix": "CBL",
+      "collectorNumber": "129",
+      "rarity": "U",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "WATER"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Class Bonus Target opponent recollects two less cards during the resolution of their next recollection phase. (They choose which cards to recollect.)\nDraw a card into your memory.",
+      "flavor": "Let me put your mind at ease."
+    },
+    {
+      "name": "Evil Claw-Calcabrina",
+      "setPrefix": "CBL",
+      "collectorNumber": "182",
+      "rarity": "SR",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "DISCORP",
+        "AUTOMATON"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": 3,
+      "life": 4,
+      "speed": null,
+      "effect": "Vigor\nBeatrice Bonus On Enter: Choose one—\n• Summon a Neos Essence token.\n• You may sacrifice an object named Neos Essence. When you do, if target opponent has influence eight or more, they banish two cards at random from their memory."
+    },
+    {
+      "name": "Neos Essence",
+      "setPrefix": "CBL",
+      "collectorNumber": "185",
+      "rarity": "C",
+      "types": [
+        "TOKEN",
+        "PHANTASIA"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NEOS"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": null,
+      "effect": "Active Memory (While paying for a memory cost, you may sacrifice this object to pay for 1 of that cost.)",
+      "flavor": "The very essence of creation, ready to become whatever its master wills it to be."
+    },
+    {
+      "name": "Feed the Hungry",
+      "setPrefix": "CBLP",
+      "collectorNumber": "005",
+      "rarity": "U",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "KITCHEN",
+        "SKILL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "You and another target player each summon a Delicious Pastry token. Then you gain the Crowd's Favor status.",
+      "flavor": "A selfless act that wins the hearts of everyone around."
+    },
+    {
+      "name": "Show Devotion",
+      "setPrefix": "CBLP",
+      "collectorNumber": "019",
+      "rarity": "U",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "4"
+      },
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "effect": "Draw a card. If you are devoted, draw another card. (A player is devoted as long as they have two or more boons from the same god or aspect in their pantheon.)",
+      "flavor": "It is belief that manifests strength, both for gods and their believers."
+    },
+    {
+      "name": "Extract Consciousness",
+      "setPrefix": "CBLP",
+      "collectorNumber": "004",
+      "rarity": "U",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Target opponent banishes a card at random from their memory. If you are devoted to Faust, each other opponent also banishes a card at random from their memory. (A player is devoted to Faust as long as they have two or more of Faust's boons in their pantheon.)"
+    }
+  ]
+}
