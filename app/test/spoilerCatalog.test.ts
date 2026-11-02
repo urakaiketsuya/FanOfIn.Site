@@ -23,6 +23,37 @@ import { buildTtsSaveFile } from '../src/lib/ttsExport';
 import { deckImageSections } from '../src/lib/deckImage';
 import { gatcgApi } from '../src/lib/api/client';
 import spoilers from '../../data/reference/card-spoilers-2026-11-01.json';
+import { existsSync } from 'node:fs';
+import { searchSetPrefix } from '@gatcg/shared';
+
+test('gallery additions resolve in CBL searches with artwork and printed costs', () => {
+  const catalog = withSpoilerCards([]);
+  const cbl = filterCards(catalog, { ...emptyFilterState(), sets: new Set(['CBL']) });
+  for (const [name, power, life] of [['Gusty Fan', 2, 3], ['Tailwind Vestal', 1, 4]] as const) {
+    const card = cbl.find(card => card.name === name);
+    assert.ok(card, `${name} is searchable`);
+    assert.equal(card.power, power);
+    assert.equal(card.life, life);
+    assert.equal(card.cost_reserve, 3);
+    assert.ok(existsSync(new URL(`../public${cardImagePath(card)}`, import.meta.url)));
+  }
+  for (const card of catalog.filter(card => card.types.includes('REGALIA'))) {
+    assert.equal(card.cost.type, 'memory', card.name);
+    assert.equal(card.cost_memory, 0, card.name);
+    assert.equal(card.cost_reserve, null, card.name);
+  }
+  assert.equal(searchSetPrefix('CBLOS'), 'CBL');
+  assert.ok(cbl.some(card => card.name === 'Let My Thunder Be Heard'));
+});
+
+test('gallery printing references all have local artwork without duplicate identities', () => {
+  assert.equal(new Set(spoilers.cards.map(card => card.name)).size, spoilers.cards.length);
+  for (const card of spoilers.cards) {
+    for (const printing of [card, ...('altPrintings' in card ? card.altPrintings ?? [] : [])]) {
+      assert.ok(existsSync(new URL(`../public/images/spoilers/${printing.image}`, import.meta.url)), printing.image);
+    }
+  }
+});
 
 test('CBL search, artwork, and both exports retain spoiler copies', () => {
   const catalog = withSpoilerCards([]);

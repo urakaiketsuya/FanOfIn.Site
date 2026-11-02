@@ -30,7 +30,7 @@ const searchProducts: Record<string, readonly string[]> = {
   FTC: ['FTCA'], PTM: ['PTMEVP', 'PTMLGS'],
   RDO: ['RDOA', 'RDOEVP', 'RDOP', 'RDOPD'],
   PRD: ['PRDDP', 'PRDEVP', 'PRDG', 'PRDP', 'PRDSD'],
-  CBL: ['CBLP', 'CBLDS', 'CBL 1st', 'CBL Alter', 'Re:C-SKY', 'Re:C-MST'],
+  CBL: ['CBLP', 'CBLDS', 'CBLOS', 'CBL 1st', 'CBL Alter', 'Re:C-SKY', 'Re:C-MST'],
 };
 const searchAliases = new Map<string, { prefix: string; name: string }>();
 for (const [prefix, products] of Object.entries(searchProducts)) {
