@@ -1,3 +1,4 @@
+import { previewCardSet, PREVIEW_SET } from "./previewCards";
 import { setFamily, type Card, type OmnidexDecklistCardLine } from '@gatcg/shared';
 
 export const DECK_GROUPS = { location: 'Deck location', set: 'Set', element: 'Element', type: 'Card type', none: 'No groups' } as const;
@@ -32,7 +33,7 @@ export function arrangeDeckSections(sections: DisplayDeckSection[], cards: Map<s
       ] : [line];
       allocations.forEach((row, allocation) => {
         const edition = row.printings?.[0] ? card?.editions.find(e => e.uuid === row.printings![0].editionUuid) : [...(card?.editions ?? [])].sort((a, b) => (a.set.release_date || "9999").localeCompare(b.set.release_date || "9999") || a.set.prefix.localeCompare(b.set.prefix))[0];
-        const title = grouping === 'none' ? 'Cards' : grouping === 'set' ? edition ? setFamily(edition.set).name : 'Unknown set' : grouping === 'element' ? card?.element ?? 'Unknown element' : card?.types.join(' / ') || 'Unknown type';
+        const title = grouping === 'none' ? 'Cards' : grouping === 'set' ? edition ? setFamily(edition.set).name : card && previewCardSet(card) ? PREVIEW_SET.name : 'Unknown set' : grouping === 'element' ? card?.element ?? 'Unknown element' : card?.types.join(' / ') || 'Unknown type';
         const rows = groups.get(title) ?? [];
         rows.push({ ...row, location: section.title, displayKey: `${section.title}:${index}:${allocation}` });
         groups.set(title, rows);

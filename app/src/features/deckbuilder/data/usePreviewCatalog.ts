@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Card } from '@gatcg/shared';
-import { mergePreviewCards, type PreviewCardRecord } from '../../../lib/previewCards';
+import { isPreviewCard, mergePreviewCards, type PreviewCardRecord } from '../../../lib/previewCards';
 
 export function usePreviewCatalog(official: Card[], selectedNames: string[]) {
   const [enabled, setEnabled] = useState(() => { try { return sessionStorage.getItem('builder-preview-cards') !== 'false'; } catch { return true; } });
@@ -22,7 +22,7 @@ export function usePreviewCatalog(official: Card[], selectedNames: string[]) {
     return () => abort.abort();
   }, [needed, attempt]);
   const selectedKey = JSON.stringify(selectedNames);
-  const catalog = useMemo(() => mergePreviewCards(official, previews, enabled, JSON.parse(selectedKey)), [official, previews, enabled, selectedKey]);
+  const catalog = useMemo(() => mergePreviewCards(official.filter(card => !isPreviewCard(card)), previews, enabled, JSON.parse(selectedKey)), [official, previews, enabled, selectedKey]);
   function toggle(value: boolean) { setEnabled(value); try { sessionStorage.setItem('builder-preview-cards', String(value)); } catch { /* Draft remains available. */ } }
   return { catalog, previews, previewEnabled: enabled, setPreviewEnabled: toggle, previewError: error, previewLoading: loading, retryPreviews: () => setAttempt(n => n + 1) };
 }

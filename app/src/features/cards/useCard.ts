@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Card } from "@gatcg/shared";
+import { withSpoilerCards } from "../../lib/spoilerCatalog";
 import { db } from "../../lib/db";
 import { gatcgApi } from "../../lib/api/client";
 
@@ -18,7 +19,7 @@ export function useCard(slug: string): CardState {
     setState({ card: undefined, loading: true, error: null });
 
     (async () => {
-      const cached = await db.cards.where("slug").equals(slug).first();
+      const cached = await db.cards.where("slug").equals(slug).first() ?? withSpoilerCards([]).find(card => card.slug === slug);
       if (cancelled) return;
       if (cached) {
         setState({ card: cached, loading: false, error: null });

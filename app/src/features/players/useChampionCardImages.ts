@@ -1,3 +1,4 @@
+import { useCardCatalog } from "../cards/useCardCatalog";
 import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { Card } from "@gatcg/shared";
@@ -22,14 +23,10 @@ export function useNamelessChampionCard(): Card | undefined {
  * matching printing per name, just to have representative art.
  */
 export function useChampionCardImages(championNames: string[]): Map<string, Card> {
-  const key = useMemo(() => [...new Set(championNames)].sort().join("|"), [championNames]);
-
-  const rows = useLiveQuery(async () => {
-    const unique = [...new Set(championNames)];
-    const found = await Promise.all(unique.map((name) => db.cards.where("name").startsWith(`${name}, `).first()));
-    return found.filter((c): c is Card => c !== undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
-
-  return useMemo(() => new Map((rows ?? []).map((c) => [c.name.split(",")[0].trim(), c])), [rows]);
+  const cards = useCardCatalog();
+  const key = JSON.stringify(championNames);
+  return useMemo(() => {
+    const names = new Set<string>(JSON.parse(key));
+    return new Map(cards.filter(card => card.types.includes("CHAMPION") && names.has(card.name.split(",")[0].trim())).map(card => [card.name.split(",")[0].trim(), card]));
+  }, [cards, key]);
 }
