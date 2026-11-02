@@ -39,6 +39,23 @@ test('Deploy the Future is available in CBL deck building and retained in restor
   assert.equal(mergePreviewCards([], spoilers.cards, false, [card.name])[0].name, card.name);
 });
 
+test('Japan conference reveals are searchable and retained in deck drafts', () => {
+  const catalog = withSpoilerCards([]);
+  const cbl = filterCards(catalog, { ...emptyFilterState(), sets: new Set(['CBL']) });
+  for (const [name, type, cost] of [['PlasmaTech Pistol', 'ITEM', 2], ['Request Refund', 'ACTION', 3], ['VelTech Salesperson', 'ALLY', 2]] as const) {
+    const card = cbl.find(card => card.name === name);
+    assert.ok(card, `${name} is searchable`);
+    assert.deepEqual(card.types, [type]);
+    assert.equal(card.cost_reserve, cost);
+    assert.equal(card.element, 'NORM');
+    assert.ok(existsSync(new URL(`../public${cardImagePath(card)}`, import.meta.url)));
+    assert.equal(mergePreviewCards([], spoilers.cards, false, [name])[0].name, name);
+  }
+  assert.equal(cbl.find(card => card.name === 'Request Refund')?.speed, true);
+  assert.equal(cbl.find(card => card.name === 'VelTech Salesperson')?.power, 0);
+  assert.equal(cbl.find(card => card.name === 'VelTech Salesperson')?.life, 1);
+});
+
 test('gallery additions resolve in CBL searches with artwork and printed costs', () => {
   const catalog = withSpoilerCards([]);
   const cbl = filterCards(catalog, { ...emptyFilterState(), sets: new Set(['CBL']) });

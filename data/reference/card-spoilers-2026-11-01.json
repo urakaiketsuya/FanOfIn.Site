@@ -1753,6 +1753,99 @@
       "exalted": true,
       "sourceUrl": "https://x.com/grandarchivetcg/status/2105139806284263519",
       "sourceImageUrl": "https://pbs.twimg.com/media/HTb1P1IXcAAm-aA?format=webp&name=large"
+    },
+    {
+      "setPrefix": "CBL",
+      "collectorNumber": null,
+      "rarity": null,
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "power": null,
+      "life": null,
+      "speed": null,
+      "sourceUrl": "https://x.com/GAFreakJP/status/2117145522419175737",
+      "sourceImageUrl": "https://pbs.twimg.com/media/HWGbO5NbYAAN5Tq?format=webp&name=large",
+      "name": "PlasmaTech Pistol",
+      "image": "plasmatech-pistol.webp",
+      "types": [
+        "ITEM"
+      ],
+      "classes": [
+        "RANGER"
+      ],
+      "subtypes": [
+        "VELTECH",
+        "GUN"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "effect": "Ally Link\nLinked ally has ranged 1. (As long as a unit with ranged 1 is distant, its attacks get +1 power. Multiple instances of ranged stack.)\nOn Enter: Draw a card into your memory."
+    },
+    {
+      "setPrefix": "CBL",
+      "collectorNumber": null,
+      "rarity": null,
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "power": null,
+      "life": null,
+      "speed": "fast",
+      "sourceUrl": "https://x.com/GAFreakJP/status/2117145522419175737",
+      "sourceImageUrl": "https://pbs.twimg.com/media/HWGbO5NbYAAN5Tq?format=webp&name=large",
+      "name": "Request Refund",
+      "image": "request-refund.webp",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "VELTECH",
+        "SKILL"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "3"
+      },
+      "effect": "Return target VelTech item or weapon you control to its owner's memory. If you do, draw a card into your memory.",
+      "flavor": "We can process your refund if it's been less than 30 days since your transaction."
+    },
+    {
+      "setPrefix": "CBL",
+      "collectorNumber": null,
+      "rarity": null,
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "power": 0,
+      "life": 1,
+      "speed": null,
+      "sourceUrl": "https://x.com/GAFreakJP/status/2117145522419175737",
+      "sourceImageUrl": "https://pbs.twimg.com/media/HWGbO5NbYAAN5Tq?format=webp&name=large",
+      "name": "VelTech Salesperson",
+      "image": "veltech-salesperson.webp",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "HUMAN"
+      ],
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "effect": "Taunt (While awake, this ally must be targeted before other objects you control during your opponents' attack declarations if able.)\nOn Death: Reveal any amount of VelTech item cards from your hand and/or memory. Scavenge 2+X for a VelTech item card, where X is twice the amount of cards revealed this way."
     }
   ],
   "deckSections": {
