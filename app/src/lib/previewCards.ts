@@ -1,4 +1,4 @@
-import { searchSetFamily, type Card } from '@gatcg/shared';
+import { searchSetFamily, previewCardSlug, previewCardId, type Card } from '@gatcg/shared';
 
 export interface PreviewCardRecord {
   image?: string; setPrefix?: string;
@@ -30,19 +30,19 @@ export function mergePreviewCards(official: Card[], previews: PreviewCardRecord[
   for (const card of previews) {
     if ([card.name, ...(card.aliases ?? [])].some(name => officialKeys.has(cardNameKey(name)))) continue;
     if (!includePreviews && !selectedKeys.has(cardNameKey(card.name))) continue;
-    const slug = card.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const slug = previewCardSlug(card.name);
     const costType = card.cost.type;
     const preview: PreviewCard = {
       previewSetPrefix: card.setPrefix,
       previewImage: card.image && /^[a-zA-Z0-9_-]+\.(webp|png|jpg|jpeg)$/.test(card.image) ? `/images/spoilers/${card.image}` : undefined,
-      uuid: `preview:${slug}`, slug, name: card.name, types: card.types, subtypes: card.subtypes,
+      uuid: previewCardId(card.name), slug, name: card.name, types: card.types, subtypes: card.subtypes,
       classes: card.classes, elements: card.elements, element: card.elements[0] ?? 'NORM',
       level: card.level, life: card.life, power: card.power, speed: card.speed === null ? null : card.speed === 'fast',
       cost: { type: costType === 'memory' || costType === 'reserve' || costType === 'aria' ? costType : 'none', value: card.cost.value },
       cost_memory: costType === 'memory' ? Number(card.cost.value) : null,
       cost_reserve: costType === 'reserve' ? Number(card.cost.value) : null,
       durability: null, effect: card.effect, effect_raw: card.effect, effect_html: null, flavor: card.flavor ?? null,
-      editions: [], references: [], referenced_by: [], legality: null, last_update: '',
+      editions: [], references: [], referenced_by: [], legality: {}, last_update: '',
     };
     result.push(preview);
   }
@@ -56,4 +56,9 @@ export function officialCardNames(official: Card[], previews: PreviewCardRecord[
     if (canonical) for (const name of [preview.name, ...(preview.aliases ?? [])]) names.set(cardNameKey(name), canonical);
   }
   return names;
+}
+
+/** Artwork path for both published printings and editorial spoilers. */
+export function cardImagePath(card: Card | undefined): string {
+  return card?.editions[0]?.image || previewCardImage(card) || "";
 }

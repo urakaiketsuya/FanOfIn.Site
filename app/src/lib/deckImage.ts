@@ -1,3 +1,4 @@
+import { cardImagePath } from "./previewCards";
 import type { Card, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { gatcgApi } from "./api/client";
 
@@ -19,7 +20,7 @@ export function deckImageSections(sections: DeckImageSection[], cards: Map<strin
         tiles.push({ name: line.card, quantity, image: card?.editions.find(edition => edition.uuid === printing.editionUuid)?.image });
         remaining -= quantity;
       }
-      if (remaining > 0) tiles.push({ name: line.card, quantity: remaining, image: card?.editions[0]?.image });
+      if (remaining > 0) tiles.push({ name: line.card, quantity: remaining, image: cardImagePath(card) || undefined });
       return tiles;
     }),
   })).filter(section => section.tiles.length > 0);

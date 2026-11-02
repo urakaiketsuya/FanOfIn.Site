@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
@@ -54,7 +55,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
               <div className="flex flex-wrap items-center gap-1.5">
                 {card && <ElementIcon element={card.element} size={14} />}
                 {card ? (
-                  <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
+                  <CardHoverPreview image={cardImagePath(card)} alt={signal.cardName}>
                     <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
                       {signal.cardName}
                     </Link>

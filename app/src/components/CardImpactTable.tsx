@@ -1,3 +1,4 @@
+import { cardImagePath } from "../lib/previewCards";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry } from "@gatcg/shared";
 import CardHoverPreview from "./CardHoverPreview";
@@ -36,7 +37,7 @@ export default function CardImpactTable({
             return (
               <tr key={c.cardName}>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={c.cardName}>
+                  <CardHoverPreview image={cardImagePath(card)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={c.cardName}>
                     <span className="inline-flex items-center gap-1.5">
                       {card && <ElementIcon element={card.element} size={14} />}
                       {card ? (

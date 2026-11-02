@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { useRegionalArchetypes } from "./useRegionalArchetypes";
@@ -137,7 +138,7 @@ function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; lab
           <li key={r.name} className="flex flex-wrap items-center gap-1.5 text-sm">
             {card && <ElementIcon element={card.element} size={14} />}
             {card ? (
-              <CardHoverPreview image={card.editions[0]?.image} alt={r.name}>
+              <CardHoverPreview image={cardImagePath(card)} alt={r.name}>
                 <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
                   {r.name}
                 </Link>

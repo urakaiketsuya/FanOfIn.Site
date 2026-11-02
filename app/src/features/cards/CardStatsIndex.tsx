@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } from "@gatcg/shared";
@@ -260,10 +261,10 @@ export default function CardStatsIndex() {
           return (
             <article key={entry.name} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm shadow-black/20">
               <div className="flex items-start gap-3">
-                <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={entry.name}>
-                  {card?.editions[0]?.image ? (
+                <CardHoverPreview image={cardImagePath(card)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={entry.name}>
+                  {card && cardImagePath(card) ? (
                     <Link to={`/cards/${entry.slug ?? card.slug}`} className="block shrink-0" aria-label={`View ${entry.name}`}>
-                      <CardImage image={card.editions[0].image} alt={entry.name} className="h-32 w-24 rounded-md object-cover object-top" />
+                      <CardImage image={cardImagePath(card)} alt={entry.name} className="h-32 w-24 rounded-md object-cover object-top" />
                     </Link>
                   ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
                 </CardHoverPreview>

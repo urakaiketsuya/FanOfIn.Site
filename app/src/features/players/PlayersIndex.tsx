@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
 import { useCompetition } from "../competition/data";
@@ -29,11 +30,11 @@ const TAB_LABELS: Record<TabMode, string> = { players: "Players", judges: "Judge
 
 function PersonAvatar({ championName, card }: { championName: string; card: Card | undefined }) {
   return (
-    <CardHoverPreview image={card?.editions[0]?.image} alt={championName}>
+    <CardHoverPreview image={cardImagePath(card)} alt={championName}>
       <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
-        {card?.editions[0] && (
+        {card && cardImagePath(card) && (
           <CardImage
-            image={card.editions[0].image}
+            image={cardImagePath(card)}
             alt={championName}
             className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
           />

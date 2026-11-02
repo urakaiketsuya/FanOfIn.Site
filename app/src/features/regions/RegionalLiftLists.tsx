@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import CardImage from "../../components/CardImage";
@@ -29,7 +30,7 @@ export function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: Li
         const card = cardsByName.get(row.cardName);
         return (
           <li key={row.cardName} className="flex min-w-0 flex-col rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2">
-            {card?.editions[0]?.image ? <Link to={`/cards/${card.slug}`}><CardImage image={card.editions[0].image} alt={row.cardName} className="aspect-[5/7] w-full rounded-lg object-cover" /></Link> : <div className="aspect-[5/7] rounded-lg bg-ctp-surface0" />}
+            {card && cardImagePath(card) ? <Link to={`/cards/${card.slug}`}><CardImage image={cardImagePath(card)} alt={row.cardName} className="aspect-[5/7] w-full rounded-lg object-cover" /></Link> : <div className="aspect-[5/7] rounded-lg bg-ctp-surface0" />}
             {card ? <Link to={`/cards/${card.slug}`} className="mt-2 line-clamp-2 text-sm font-medium text-ctp-text hover:text-ctp-blue">{row.cardName}</Link> : <div className="mt-2 line-clamp-2 text-sm font-medium text-ctp-text">{row.cardName}</div>}
             <LiftSummary lift={row.lift} sign={sign} regionRate={row.regionRate} globalRate={row.globalRate} />
           </li>

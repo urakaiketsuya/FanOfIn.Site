@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import { Link } from "react-router-dom";
 import type { Card, CardInclusionEntry } from "@gatcg/shared";
 import CardHoverPreview from "../../../components/CardHoverPreview";
@@ -87,7 +88,7 @@ export function CardRow({
         </span>
       )}
       {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
+      <CardHoverPreview image={cardImagePath(cardInfo)} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {card.cardName}
@@ -204,7 +205,7 @@ export function SuggestionRow({
         {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
       </span>
       {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
+      <CardHoverPreview image={cardImagePath(cardInfo)} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {card.cardName}

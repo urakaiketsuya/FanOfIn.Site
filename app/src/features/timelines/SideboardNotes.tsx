@@ -1,12 +1,11 @@
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import type { BroadcastTimelineMatch } from "@gatcg/shared";
-import { db } from "../../lib/db";
 import CardMentions from "./CardMentions";
 
 export default function SideboardNotes({ match, gameNumber }: { match: BroadcastTimelineMatch; gameNumber: number }) {
   const notes = match.sideboardNotes?.filter(note => note.beforeGame === gameNumber) ?? [];
   const text = notes.map(note => note.text).join("\n").toLowerCase();
-  const cards = useLiveQuery(() => text ? db.cards.filter(card => text.includes(card.name.toLowerCase())).toArray() : [], [text]);
+  const cards = useCardCatalog().filter(card => text.includes(card.name.toLowerCase()));
   if (!notes.length) return null;
   return <section className="mb-5 border-l-2 border-ctp-teal pl-4">
     <h2 className="text-sm font-semibold text-ctp-teal">Before game {gameNumber}</h2>

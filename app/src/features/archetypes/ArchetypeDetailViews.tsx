@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
@@ -23,7 +24,7 @@ export function DefiningCardList({ cards, cardImages, tone = "default" }: {
         const card = cardImages.get(entry.name);
         const content = (
           <>
-            {card?.editions[0]?.image ? <CardImage image={card.editions[0].image} alt={entry.name} className="aspect-[5/7] w-full rounded-lg object-cover object-top" /> : <div className="aspect-[5/7] w-full rounded-lg bg-ctp-surface0" />}
+            {cardImagePath(card) ? <CardImage image={cardImagePath(card)} alt={entry.name} className="aspect-[5/7] w-full rounded-lg object-cover object-top" /> : <div className="aspect-[5/7] w-full rounded-lg bg-ctp-surface0" />}
             <span className="mt-2 block truncate text-xs font-medium text-ctp-text">{entry.name}</span>
             <span className="block text-[10px] text-ctp-subtext0">{(entry.prevalence * 100).toFixed(0)}% of decks</span>
           </>

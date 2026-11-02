@@ -91,3 +91,17 @@ test("published validation rejects redirects without following them", async t =>
     assert.equal((await listTagProposals(f.env, f.a, false, 0)).proposals.length, 0);
   } finally { f.db.close(); }
 });
+
+
+test("published spoilers accept gameplay tags without inventing printings", async t => {
+  t.mock.method(globalThis, "fetch", async (url: URL) => Response.json(
+    url.pathname.includes("card-spoilers-") ? { cards: [{ name: "Casella, Sky's Cantatrice" }] }
+      : url.pathname.endsWith("card-tag-targets.json") ? { cards: [] } : { tags: [{ name: "Mill" }] }
+  ));
+  const f = fixture();
+  try {
+    const value = { ...input(), tag: "Mill", targets: [{ cardUuid: "preview:casella-sky-s-cantatrice", editionUuid: null }] };
+    assert.equal((await submitTagProposal(f.env, f.a, value)).status, "pending");
+    await assert.rejects(submitTagProposal(f.env, f.a, { ...value, id: crypto.randomUUID(), targets: [{ cardUuid: "preview:invented", editionUuid: null }] }), /no longer available/);
+  } finally { f.db.close(); }
+});

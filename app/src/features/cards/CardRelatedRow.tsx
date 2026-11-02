@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import type { Card } from "@gatcg/shared";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -9,8 +10,8 @@ export default function CardRelatedRow({ card, summary, detail }: { card: Card; 
   const alternateFace = primaryAlternateFace(card);
   return <li className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2.5">
     <div className="flex items-start gap-3">
-      <CardHoverPreview image={card.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={card.name}>
-        <Link to={`/cards/${card.slug}`} className="shrink-0"><CardImage image={card.editions[0]?.image ?? ""} alt={card.name} className="h-24 w-[69px] rounded-md object-cover" /></Link>
+      <CardHoverPreview image={cardImagePath(card)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={card.name}>
+        <Link to={`/cards/${card.slug}`} className="shrink-0"><CardImage image={cardImagePath(card) ?? ""} alt={card.name} className="h-24 w-[69px] rounded-md object-cover" /></Link>
       </CardHoverPreview>
       <div className="min-w-0 flex-1">
         <Link to={`/cards/${card.slug}`} className="text-sm font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link>

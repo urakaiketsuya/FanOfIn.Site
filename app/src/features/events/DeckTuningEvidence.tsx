@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
@@ -28,7 +29,7 @@ function QuantityRow({ suggestion, cardsByName }: { suggestion: QuantitySuggesti
     <li className="flex flex-wrap items-center gap-1.5 text-sm">
       {card && <ElementIcon element={card.element} size={14} />}
       {card ? (
-        <CardHoverPreview image={card.editions[0]?.image} alt={suggestion.cardName}>
+        <CardHoverPreview image={cardImagePath(card)} alt={suggestion.cardName}>
           <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {suggestion.cardName}
           </Link>
@@ -53,7 +54,7 @@ function EvidenceRow({ entry, cardsByName, tone }: { entry: CardImpactEntry; car
     <li className="flex flex-wrap items-center gap-1.5 text-sm">
       {card && <ElementIcon element={card.element} size={14} />}
       {card ? (
-        <CardHoverPreview image={card.editions[0]?.image} alt={entry.cardName}>
+        <CardHoverPreview image={cardImagePath(card)} alt={entry.cardName}>
           <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {entry.cardName}
           </Link>

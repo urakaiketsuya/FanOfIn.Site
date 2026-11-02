@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import type { CardImpactRole } from "@gatcg/shared";
@@ -449,7 +450,7 @@ export default function ArchetypeDetail() {
                             return (
                               <tr key={`${oa.opponentCardName}::${a.cardName}`}>
                                 <td className="py-1.5 pr-6 whitespace-nowrap">
-                                  <CardHoverPreview image={theirCard?.editions[0]?.image} alt={oa.opponentCardName}>
+                                  <CardHoverPreview image={cardImagePath(theirCard)} alt={oa.opponentCardName}>
                                     {theirCard ? (
                                       <Link to={`/cards/${theirCard.slug}`} className="text-ctp-text hover:text-ctp-blue">
                                         {oa.opponentCardName}
@@ -460,7 +461,7 @@ export default function ArchetypeDetail() {
                                   </CardHoverPreview>
                                 </td>
                                 <td className="py-1.5 pr-6 whitespace-nowrap">
-                                  <CardHoverPreview image={answerCard?.editions[0]?.image} alt={a.cardName}>
+                                  <CardHoverPreview image={cardImagePath(answerCard)} alt={a.cardName}>
                                     {answerCard ? (
                                       <Link to={`/cards/${answerCard.slug}`} className="text-ctp-text hover:text-ctp-blue">
                                         {a.cardName}

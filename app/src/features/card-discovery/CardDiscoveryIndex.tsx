@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { buildSpiritCanonicalNames, type Card } from "@gatcg/shared";
@@ -101,8 +102,8 @@ export default function CardDiscoveryIndex() {
     >
       {discoveries.length === 0 ? <p className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">No designed connections found yet. Add a card you already play to make this lens more specific.</p> : <div className="mt-4 grid gap-4 sm:grid-cols-2">{discoveries.map(({ card, combos, setName, releaseDate }) => <article key={card.uuid} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <Link className="mb-3 block max-w-40 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue" to={`/cards/${card.slug}`}><CardArtTile card={card} name={card.name} /></Link>
-        <div className="flex flex-wrap items-center gap-2"><ElementIcon element={card.element} size={14} /><CardHoverPreview image={card.editions[0]?.image} alt={card.name}><Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link></CardHoverPreview><span className="text-xs text-ctp-subtext0">{setName} · {releaseDate}</span></div>
-        <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <ElementIcon element={combo.with.element} size={14} className="inline-block align-text-bottom" /> <CardHoverPreview image={combo.with.editions[0]?.image} alt={combo.with.name}><Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link></CardHoverPreview> via {combo.via}.</li>)}</ul>
+        <div className="flex flex-wrap items-center gap-2"><ElementIcon element={card.element} size={14} /><CardHoverPreview image={cardImagePath(card)} alt={card.name}><Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link></CardHoverPreview><span className="text-xs text-ctp-subtext0">{setName} · {releaseDate}</span></div>
+        <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <ElementIcon element={combo.with.element} size={14} className="inline-block align-text-bottom" /> <CardHoverPreview image={cardImagePath(combo.with)} alt={combo.with.name}><Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link></CardHoverPreview> via {combo.via}.</li>)}</ul>
       </article>)}</div>}
     </Section>}
   </PageLayout>;

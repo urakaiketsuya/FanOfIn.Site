@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import { useMemo, useState } from "react";
 import CardHoverPreview from "../../../components/CardHoverPreview";
 import type { CardCategoryRecommendation } from "../cardCategoryRecommendations";
@@ -50,7 +51,7 @@ export default function BuilderCardExplorer({
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-blue">#{index + 1} · {subtype || item.subtype}</p>
-                  <CardHoverPreview image={item.card.editions[0]?.image} alt={item.card.name}>
+                  <CardHoverPreview image={cardImagePath(item.card)} alt={item.card.name}>
                     <span className="mt-0.5 block truncate text-sm font-medium text-ctp-text">{item.card.name}</span>
                   </CardHoverPreview>
                 </div>

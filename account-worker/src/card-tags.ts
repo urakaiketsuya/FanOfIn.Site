@@ -1,3 +1,5 @@
+import { CATALOG_CARD_ID_PATTERN } from "@gatcg/shared";
+import { publishedSpoilerTargets } from "./spoiler-catalog";
 import { assertAllowedText } from "./content-policy";
 import { canonicalCardTag, cardTagCategory, type CardTagsData, type TagOverride, type TagProposal, type TagProposalInput, type TagProposalList } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
@@ -17,7 +19,7 @@ export function parseTagProposal(value: unknown): TagProposalInput {
   const targets = input.targets.map((row: unknown) => {
     if (!row || typeof row !== "object") throw badRequest("Invalid target");
     const target = row as Record<string, unknown>;
-    if (typeof target.cardUuid !== "string" || !/^[a-zA-Z0-9-]{1,80}$/.test(target.cardUuid)) throw badRequest("Invalid card ID");
+    if (typeof target.cardUuid !== "string" || !CATALOG_CARD_ID_PATTERN.test(target.cardUuid)) throw badRequest("Invalid card ID");
     if (target.editionUuid !== null && (typeof target.editionUuid !== "string" || !/^[a-zA-Z0-9-]{1,80}$/.test(target.editionUuid))) throw badRequest("Invalid printing ID");
     if ((cardTagCategory(input.tag as string) === "Gameplay") !== (target.editionUuid === null)) throw badRequest("Gameplay tags apply to cards; other tags require a printing");
     return { cardUuid: target.cardUuid, editionUuid: target.editionUuid as string | null };
@@ -39,7 +41,8 @@ async function validatePublishedTargets(env: Env, input: TagProposalInput) {
     console.error("Tag validation asset fetch failed", error instanceof Error ? error.message : "Unknown error");
     throw new ApiError("Card and tag validation is temporarily unavailable. Your draft can be retried.", 503, "tag_catalog_unavailable"); }
   if (!tags.tags.some(tag => canonicalCardTag(tag.name) === input.tag)) throw badRequest("Choose an existing published tag");
-  const cards = new Map(catalog.cards.map(card => [card.uuid, card]));
+  const spoilers = input.targets.some(target => target.cardUuid.startsWith("preview:")) ? await publishedSpoilerTargets(env) : [];
+  const cards = new Map([...catalog.cards, ...spoilers].map(card => [card.uuid, card]));
   for (const target of input.targets) {
     const card = cards.get(target.cardUuid);
     if (!card || (target.editionUuid && !card.editions.some(edition => edition.uuid === target.editionUuid))) throw badRequest("A selected card or printing is no longer available");

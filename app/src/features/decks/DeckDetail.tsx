@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import DeckSightingSummary from "./DeckSightingSummary";
 import DecklistActions from "../events/DecklistActions";
 import DeckStats from "../../components/DeckStats";
@@ -456,7 +457,7 @@ export default function DeckDetail() {
                 <span className="w-6 shrink-0 text-right text-ctp-subtext0">{c.quantity}x</span>
                 {card && <ElementIcon element={card.element} size={14} />}
                 {card ? (
-                  <CardHoverPreview image={card.editions[0]?.image} alt={c.name}>
+                  <CardHoverPreview image={cardImagePath(card)} alt={c.name}>
                     <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
                       {c.name}
                     </Link>

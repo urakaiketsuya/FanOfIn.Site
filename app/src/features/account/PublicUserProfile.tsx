@@ -1,10 +1,9 @@
 import { ProfileFavoritesDisplay } from "./ProfileFavorites";
 import ProfileHeader from "./ProfileHeader";
 import { useEffect, useState } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import type { PublicProfile } from "@gatcg/shared";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { db } from "../../lib/db";
 import CardResult from "../../components/CardResult";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import Button from "../../components/ui/Button";
@@ -21,7 +20,8 @@ export default function PublicUserProfile() {
   const [profile, setProfile] = useState<PublicProfile | null>();
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
-  const cards = useLiveQuery(() => db.cards.bulkGet(profile?.favoriteCardIds ?? []), [profile?.favoriteCardIds?.join("|")]);
+  const catalog = useCardCatalog();
+  const cards = (profile?.favoriteCardIds ?? []).map(id => catalog.find(card => card.uuid === id));
   useDocumentTitle(profile?.displayName ?? "Community profile", profile ? `${profile.displayName}'s favorite cards and public Grand Archive decklists.` : undefined);
   useEffect(() => {
     let active = true;

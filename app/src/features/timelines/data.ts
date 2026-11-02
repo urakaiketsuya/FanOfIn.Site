@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import type { BroadcastTimelineMatch, BroadcastTimelines, Card } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
-import { db } from "../../lib/db";
 
 export function useBroadcastTimelines(): BroadcastTimelines | undefined {
   return usePublishedData<BroadcastTimelines>("broadcast-timelines", "/data/broadcast-timelines.json", true, true);
@@ -26,13 +25,7 @@ export function normalizeCardMention(name: string): string {
  * mentions (a caster's shorthand or an ASR mishearing that isn't just whitespace/case) still won't
  * resolve – fix those in the dataset itself rather than guessing here. */
 export function useCardsByMentions(names: string[]): Map<string, Card> {
-  const key = useMemo(() => [...new Set(names.map(normalizeCardMention))].sort().join("\0"), [names]);
-
-  const rows = useLiveQuery(async () => {
-    const unique = key ? key.split("\0") : [];
-    if (unique.length === 0) return [];
-    return db.cards.where("name").anyOfIgnoreCase(unique).toArray();
-  }, [key]);
+  const rows = useCardCatalog();
 
   return useMemo(() => {
     const byLowerName = new Map((rows ?? []).map((c) => [c.name.toLowerCase(), c]));

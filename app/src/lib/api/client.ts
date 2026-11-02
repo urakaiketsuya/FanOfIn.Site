@@ -144,7 +144,7 @@ export const gatcgApi = {
   getOmnidexStatistics: (eventId: number) => requestMaybe<unknown>(`/omnidex/events/${eventId}/statistics`),
 
   /** Works for both an edition's `image` ("/cards/images/…") and a featured group's `image` ("/featured-sets/images/…"). */
-  imageUrl: (imagePath: string, rounded = false) => `${BASE_URL}${imagePath}${rounded ? "?rounded=true" : ""}`,
+  imageUrl: (imagePath: string, rounded = false) => imagePath.startsWith("/images/spoilers/") ? imagePath : `${BASE_URL}${imagePath}${rounded ? "?rounded=true" : ""}`,
 
   /**
    * Official element/cost/class/type badge icons – same `gatcg.com` root domain as this API, just

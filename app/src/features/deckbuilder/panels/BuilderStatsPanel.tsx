@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CompositionWinRateData } from "@gatcg/shared";
@@ -70,7 +71,7 @@ export default function StatsPanel({
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
                     {card && <ElementIcon element={card.element} size={14} />}
                     {card ? (
-                      <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
+                      <CardHoverPreview image={cardImagePath(card)} alt={signal.cardName}>
                         <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
                           {signal.cardName}
                         </Link>
@@ -97,7 +98,7 @@ export default function StatsPanel({
                       <span>possibly replaced by</span>
                       {replacementCard && <ElementIcon element={replacementCard.element} size={14} />}
                       {replacementCard ? (
-                        <CardHoverPreview image={replacementCard.editions[0]?.image} alt={signal.replacement.cardName}>
+                        <CardHoverPreview image={cardImagePath(replacementCard)} alt={signal.replacement.cardName}>
                           <Link to={`/cards/${replacementCard.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">
                             {signal.replacement.cardName}
                           </Link>
@@ -146,7 +147,7 @@ export default function StatsPanel({
                 <p className="my-2 text-xs text-ctp-subtext0">{setPrefix} · {releaseDate}</p>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <ElementIcon element={card.element} size={14} />
-                  <CardHoverPreview image={card.editions[0]?.image} alt={card.name}>
+                  <CardHoverPreview image={cardImagePath(card)} alt={card.name}>
                     <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
                       {card.name}
                     </Link>

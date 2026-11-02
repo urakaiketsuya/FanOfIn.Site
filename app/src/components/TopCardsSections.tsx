@@ -1,3 +1,4 @@
+import { cardImagePath } from "../lib/previewCards";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardInclusionEntry, PlayerTopCard, TopCardsBySection } from "@gatcg/shared";
@@ -23,8 +24,8 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
   const alternateFace = primaryAlternateFace(resolved);
   const inner = (
     <>
-      {resolved?.editions[0] ? (
-        <CardImage image={resolved.editions[0].image} alt={topCard.name} className="h-14 w-10 shrink-0 rounded object-cover object-top" />
+      {resolved && cardImagePath(resolved) ? (
+        <CardImage image={cardImagePath(resolved)} alt={topCard.name} className="h-14 w-10 shrink-0 rounded object-cover object-top" />
       ) : (
         <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
       )}
@@ -35,7 +36,7 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
     </>
   );
   return (
-    <CardHoverPreview image={resolved?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={topCard.name}>
+    <CardHoverPreview image={cardImagePath(resolved)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={topCard.name}>
       {topCard.slug ? (
         <Link to={`/cards/${topCard.slug}`} className="flex items-center gap-2 text-sm hover:text-ctp-blue">
           {inner}

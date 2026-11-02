@@ -1,3 +1,4 @@
+import { PREVIEW_SET, previewCardSet } from "../../lib/previewCards";
 import { useUrlFilters, CARD_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
 import FilterQuery from "../../components/filters/FilterQuery";
 import { includeFilterValue, filterValue } from "@gatcg/shared";
@@ -91,6 +92,7 @@ export default function CardsBrowse() {
         if (!byPrefix.has(family.prefix)) byPrefix.set(family.prefix, { name: family.name, releaseDate: ed.set.release_date });
       }
     }
+    if (cards.some(card => previewCardSet(card))) byPrefix.set(PREVIEW_SET.prefix, { name: PREVIEW_SET.name, releaseDate: "9999" });
     return Array.from(byPrefix.entries())
       .sort((a, b) => b[1].releaseDate.localeCompare(a[1].releaseDate))
       .map(([prefix, s]) => ({ value: prefix, text: `${s.name} (${prefix})` }));
@@ -145,6 +147,7 @@ export default function CardsBrowse() {
       {tab === "sets" ? (
         <div className="mt-6 space-y-8">
           <p className="text-sm text-ctp-subtext1">Browse expansions and the cards printed in each one.</p>
+          {cards.some(card => previewCardSet(card)) && <Button onClick={() => browseSet(PREVIEW_SET.prefix)}>{PREVIEW_SET.name} · {PREVIEW_SET.prefix} · Previews</Button>}
           {!featuredSets && <InlineState className="mt-6">Loading…</InlineState>}
           {featuredSets && featuredSets.length === 0 && <InlineState className="mt-6">No sets found.</InlineState>}
           {(featuredSets ?? []).map((group) => (

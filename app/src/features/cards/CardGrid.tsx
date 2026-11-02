@@ -52,7 +52,7 @@ function CardGridItem({ card, edition, prices, layout }: { layout: "Grid" | "Row
     <article className={`group min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2 transition-colors hover:border-ctp-blue ${compact ? "flex flex-wrap items-center gap-3" : ""}`}>
       <div className={compact ? `relative shrink-0 ${layout === "List" ? "w-12" : "w-24"}` : "relative"}>
         <Link to={`/cards/${card.slug}`} aria-label={`Open ${faceName}`} className="block rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50">
-          <CardArtTile card={faceEdition ? { ...card, editions: [faceEdition] } : undefined} name={faceName} />
+          <CardArtTile card={faceEdition ? { ...card, editions: [faceEdition] } : card} name={faceName} />
         </Link>
         {reverseFace && (
           <button

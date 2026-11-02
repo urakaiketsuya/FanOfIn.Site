@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import type { DisplayDeckLine } from "../../lib/decklistArrangement";
 import { cardWithPrinting } from "@gatcg/shared";
 import { Link } from "react-router-dom";
@@ -40,9 +41,9 @@ export function DetailedDeckSection({ title, lines, cardsByName, priceByName, sh
   return <DeckSection title={title} count={title === "Tokens" ? lines.length : total} price={price.total > 0 ? formatUsd(price.total) : undefined}>
     <ul className="mt-1 space-y-1">{printingRows(lines).map(({ line, key, showOwnership, mixed }) => { const originalCard = cardsByName.get(line.card); const card = cardWithPrinting(originalCard, line.printings?.[0]?.editionUuid); const unitPrice = priceByName.get(line.card); const ownership = showOwnership ? ownershipByName?.get(line.card) : undefined; return <li key={key} className={`flex flex-wrap min-h-12 items-center gap-1.5 rounded-lg px-1.5 text-sm ${ownership?.missing ? "border border-ctp-yellow/35 bg-ctp-yellow/10" : ""}`}>
       <span className="w-6 shrink-0 text-right text-ctp-subtext0">{line.quantity}x</span>
-      {showThumbnails && (card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-8 w-6 shrink-0 rounded object-cover object-top" /> : <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />)}
+      {showThumbnails && (cardImagePath(card) ? <CardImage image={cardImagePath(card)} alt={line.card} className="h-8 w-6 shrink-0 rounded object-cover object-top" /> : <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />)}
       {card && <ElementIcon element={card.element} size={14} />}
-      {card ? <CardHoverPreview image={card.editions[0]?.image} backImage={primaryAlternateFace(card)?.edition.image} backAlt={primaryAlternateFace(card)?.name} alt={line.card}><Link to={`/cards/${card.slug}`} className="inline-flex min-h-control items-center text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}
+      {card ? <CardHoverPreview image={cardImagePath(card)} backImage={primaryAlternateFace(card)?.edition.image} backAlt={primaryAlternateFace(card)?.name} alt={line.card}><Link to={`/cards/${card.slug}`} className="inline-flex min-h-control items-center text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}
       {line.location && <span className="text-xs text-ctp-subtext1">{line.location}</span>}
       {card?.types.includes("CHAMPION") && <span className="shrink-0 rounded-full border border-ctp-blue px-1.5 text-[10px] text-ctp-blue">Champion</span>}
       {ownership?.missing ? <span className="ml-auto shrink-0 rounded-full bg-ctp-yellow/15 px-2 py-0.5 text-[10px] font-semibold text-ctp-yellow">Missing {ownership.missing}{mixed ? " total" : ""}</span> : null}

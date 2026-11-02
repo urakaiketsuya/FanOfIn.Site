@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -168,7 +169,7 @@ export default function ComparisonGrid({
                       return (
                         <tr key={`${sectionKey}-${name}`}>
                           <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3">
-                            <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
+                            <CardHoverPreview image={cardImagePath(card)} alt={name}>
                               <span className="inline-flex items-center gap-1.5">
                                 {card && <ElementIcon element={card.element} size={14} />}
                                 {card?.slug ? (

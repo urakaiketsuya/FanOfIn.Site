@@ -1,3 +1,4 @@
+import { cardImagePath } from "./previewCards";
 import type { Card, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { gatcgApi } from "./api/client";
 
@@ -66,9 +67,9 @@ export function buildTtsSaveFile(stacks: TtsStackInput[], cardsByName: Map<strin
     let sheetKey = 1;
 
     for (const line of stack.lines) {
-      const image = cardsByName.get(line.card)?.editions[0]?.image;
+      const image = cardImagePath(cardsByName.get(line.card));
       if (!image) continue; // skip cards we don't have a resolved image for, rather than failing the export
-      const url = gatcgApi.imageUrl(image);
+      const url = image.startsWith("/images/spoilers/") ? `https://fanofin.site${image}` : gatcgApi.imageUrl(image);
       const entry: TtsCustomDeckEntry = {
         FaceURL: url,
         BackURL: url,

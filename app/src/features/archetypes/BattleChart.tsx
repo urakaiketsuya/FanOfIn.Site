@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import BattlePeriodReport from "../competition/BattlePeriodReport";
 import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
@@ -204,8 +205,8 @@ export default function BattleChart() {
           {activeChampion && (
             <div className="mt-6">
               <div className="flex flex-wrap items-start gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
-                {championImages.get(activeChampion)?.editions[0]?.image ? (
-                  <CardImage image={championImages.get(activeChampion)!.editions[0].image} alt={activeChampion} className="h-32 w-24 shrink-0 rounded-md object-cover object-top" />
+                {cardImagePath(championImages.get(activeChampion)) ? (
+                  <CardImage image={cardImagePath(championImages.get(activeChampion))} alt={activeChampion} className="h-32 w-24 shrink-0 rounded-md object-cover object-top" />
                 ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
                 <div className="min-w-0 flex-1 basis-48">
                   <div className="text-xs text-ctp-subtext0">Matchups for</div>
@@ -236,7 +237,7 @@ export default function BattleChart() {
                     return (
                       <article key={matchup.opponent} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
                         <div className="flex items-start gap-3">
-                          {opponentCard?.editions[0]?.image ? <CardImage image={opponentCard.editions[0].image} alt={matchup.opponent} className="h-24 w-16 shrink-0 rounded-md object-cover object-top" /> : <div className="h-24 w-16 shrink-0 rounded-md bg-ctp-surface0" />}
+                          {cardImagePath(opponentCard) ? <CardImage image={cardImagePath(opponentCard)} alt={matchup.opponent} className="h-24 w-16 shrink-0 rounded-md object-cover object-top" /> : <div className="h-24 w-16 shrink-0 rounded-md bg-ctp-surface0" />}
                           <div className="min-w-0 flex-1">
                             <button type="button" onClick={() => goToChampion(matchup.opponent)} className="min-h-control rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{matchup.opponent}</button>
                             <div className={`mt-2 text-lg font-semibold ${winRateColor(matchup.winRate)}`}>{matchup.winRate !== null ? `${(matchup.winRate * 100).toFixed(0)}%` : "–"} <span className="text-xs font-normal text-ctp-subtext0">win rate</span></div>

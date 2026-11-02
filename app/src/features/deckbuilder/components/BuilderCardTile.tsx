@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import BuilderCardEvidence from "./BuilderCardEvidence";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -73,7 +74,7 @@ export function CardTile({
   return (
     <div className={`${className ?? ""} overflow-hidden rounded-lg border bg-ctp-mantle shadow-sm transition-shadow hover:shadow-md ${card.locked ? "border-ctp-blue/70" : "border-ctp-surface1"}`}>
       <div className="relative aspect-[5/7] bg-ctp-surface0">
-        <CardHoverPreview artOnly image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
+        <CardHoverPreview artOnly image={cardImagePath(cardInfo)} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
           <button type="button" onClick={() => setDetailsOpen(true)} aria-label={`View ${card.cardName} details`} className="block h-full w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue">
           <CardArtTile card={cardInfo} name={card.cardName} />
           </button>

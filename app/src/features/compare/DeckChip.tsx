@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import type { Card } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardImage from "../../components/CardImage";
@@ -26,11 +27,11 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
   return (
     <div data-component="DeckChip" className={`relative w-32 shrink-0 snap-start overflow-hidden rounded-xl border transition-colors ${isBaseline ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/10" : "border-ctp-surface1 bg-ctp-surface0"}`}>
       <Wrapper onClick={onSetBaseline} aria-pressed={onSetBaseline ? isBaseline : undefined} aria-label={onSetBaseline ? `${deck.label}${isBaseline ? ", comparison baseline" : ", set as comparison baseline"}` : deck.label} className="block w-full text-left">
-        <CardHoverPreview image={championCard?.editions[0]?.image} alt={primary}>
+        <CardHoverPreview image={cardImagePath(championCard)} alt={primary}>
           <div className="relative aspect-[5/3] w-full overflow-hidden bg-ctp-mantle">
-            {championCard?.editions[0] && (
+            {championCard && cardImagePath(championCard) && (
               <CardImage
-                image={championCard.editions[0].image}
+                image={cardImagePath(championCard)}
                 alt={primary}
                 className="h-full w-full object-cover object-[center_22%]"
               />

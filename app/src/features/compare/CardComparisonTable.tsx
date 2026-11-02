@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { Link } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
@@ -42,11 +43,11 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             {rows.map((r) => (
               <th key={r.name} className="min-w-[8rem] py-1 pr-6 font-medium normal-case text-ctp-text">
                 <div className="flex items-center gap-1.5">
-                  <CardHoverPreview image={r.card?.editions[0]?.image} backImage={primaryAlternateFace(r.card)?.edition.image} backAlt={primaryAlternateFace(r.card)?.name} alt={r.name}>
+                  <CardHoverPreview image={cardImagePath(r.card)} backImage={primaryAlternateFace(r.card)?.edition.image} backAlt={primaryAlternateFace(r.card)?.name} alt={r.name}>
                     {r.card?.slug ? (
                       <Link to={`/cards/${r.card.slug}`} className="flex items-center gap-1.5 text-ctp-text hover:text-ctp-blue">
-                        {r.card.editions[0] && (
-                          <CardImage image={r.card.editions[0].image} alt={r.name} className="h-8 w-6 shrink-0 rounded object-cover object-top" />
+                        {r.card && cardImagePath(r.card) && (
+                          <CardImage image={cardImagePath(r.card)} alt={r.name} className="h-8 w-6 shrink-0 rounded object-cover object-top" />
                         )}
                         {r.name}
                       </Link>

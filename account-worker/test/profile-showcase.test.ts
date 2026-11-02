@@ -34,9 +34,17 @@ test("showcases save atomically, survive failed writes, retry safely and respect
       const wrapper = { bind(...values: any[]) { args = values; return wrapper; }, async first() { return statement.get(...args) ?? null; }, async all() { return { results: statement.all(...args) }; } };
       return wrapper;
     } } } as unknown as Env;
-    globalThis.fetch = async () => Response.json({ cards: [{ uuid: "known" }] });
+    globalThis.fetch = async (url) => Response.json(String(url).includes("card-spoilers-") ? { cards: [{ name: "Casella, Sky's Cantatrice" }] } : { cards: [{ uuid: "known" }] });
     const slug = String(db.prepare("SELECT public_slug FROM user_decks LIMIT 1").get()!.public_slug);
     const input = { cardIds: ["known"], deckSlugs: [slug], element: "WATER" as const, portraitCardId: "known", favoriteArtistIds: ["a001"], favoriteSetIds: ["DOA"], revision: 0 };
+    const previewId = "preview:casella-sky-s-cantatrice";
+    const previewInput = { ...input, cardIds: [previewId], portraitCardId: previewId };
+    const previewSaved = await saveShowcase(env, user, previewInput);
+    assert.deepEqual(await saveShowcase(env, user, previewInput), previewSaved);
+    assert.equal((await getShowcase(env, user.id)).portraitCardId, previewId);
+    await assert.rejects(saveShowcase(env, user, { ...previewSaved, cardIds: ["preview:invented"] }), /published catalog/);
+    assert.deepEqual(await getShowcase(env, user.id), previewSaved);
+    db.prepare("DELETE FROM profile_showcases WHERE user_id = ?").run(user.id);
     const saved = await saveShowcase(env, user, input);
     assert.equal(saved.revision, 1);
     assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.favoriteArtistIds, ["a001"]);

@@ -1,3 +1,5 @@
+import { CATALOG_CARD_ID_PATTERN } from "@gatcg/shared";
+import { publishedSpoilerTargets } from "./spoiler-catalog";
 import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
 import { parseProfileFavorites, PROFILE_ELEMENTS, type ProfileElement, type ProfileShowcase } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
@@ -20,10 +22,10 @@ export function parseShowcase(value: unknown): ProfileShowcase {
   const deckOrder = input.deckOrder === undefined ? undefined : ids("deckOrder", 3, /^[a-z0-9]{1,32}$/);
   if (deckOrder && (deckOrder.length !== selected.length || deckOrder.some(id => !selected.includes(id)))) throw badRequest("Deck order must contain every selected deck exactly once");
   if (input.element !== undefined && !PROFILE_ELEMENTS.includes(input.element as ProfileElement)) throw badRequest("Choose a supported element");
-  if (input.portraitCardId !== undefined && (typeof input.portraitCardId !== "string" || !/^[a-zA-Z0-9-]{1,80}$/.test(input.portraitCardId))) throw badRequest("Invalid portrait card");
+  if (input.portraitCardId !== undefined && (typeof input.portraitCardId !== "string" || !CATALOG_CARD_ID_PATTERN.test(input.portraitCardId))) throw badRequest("Invalid portrait card");
   let favorites;
   try { favorites = parseProfileFavorites(input); } catch (error) { throw badRequest((error as Error).message); }
-  return { ...favorites, ...(input.element ? { element: input.element as ProfileElement } : {}), ...(input.portraitCardId ? { portraitCardId: input.portraitCardId as string } : {}), ...(deckOrder ? { deckOrder } : {}), ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
+  return { ...favorites, ...(input.element ? { element: input.element as ProfileElement } : {}), ...(input.portraitCardId ? { portraitCardId: input.portraitCardId as string } : {}), ...(deckOrder ? { deckOrder } : {}), ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, CATALOG_CARD_ID_PATTERN), deckSlugs, revision: Number(input.revision) };
 }
 export async function getShowcase(env: Env, userId: string): Promise<ProfileShowcase> {
   const row = await env.ACCOUNT_DB.prepare("SELECT payload, revision FROM profile_showcases WHERE user_id = ?").bind(userId).first<{ payload: string; revision: number }>();
@@ -34,7 +36,8 @@ export async function saveShowcase(env: Env, user: AuthUser, value: unknown): Pr
   const cardIds = [...input.cardIds, ...(input.portraitCardId ? [input.portraitCardId] : [])];
   if (cardIds.length) {
     const catalog = await assetJson<{ cards: { uuid: string }[] }>(env, "/data/community/card-tag-targets.json");
-    const ids = new Set(catalog.cards.map(card => card.uuid));
+    const spoilers = cardIds.some(id => id.startsWith("preview:")) ? await publishedSpoilerTargets(env) : [];
+    const ids = new Set([...catalog.cards, ...spoilers].map(card => card.uuid));
     if (cardIds.some(id => !ids.has(id))) throw badRequest("Choose cards from the published catalog");
   }
   const hashes = input.tournamentHashes ?? [];

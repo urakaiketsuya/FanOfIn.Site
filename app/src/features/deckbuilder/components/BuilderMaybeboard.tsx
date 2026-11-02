@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import type { Card } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardHoverPreview from "../../../components/CardHoverPreview";
@@ -29,7 +30,7 @@ export default function BuilderMaybeboard({
               <ElementRail elements={card?.elements} />
               <input type="number" min={1} max={4} value={quantity} aria-label={`Copies of ${name} in maybeboard`} onChange={(event) => onQuantityChange(name, Number(event.target.value))} className="w-11 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text" />
               {card && <ElementIcon element={card.element} size={14} />}
-              <CardHoverPreview image={card?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={name}>
+              <CardHoverPreview image={cardImagePath(card)} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={name}>
                 {card ? <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{name}</Link> : <span className="text-ctp-text">{name}</span>}
               </CardHoverPreview>
               <div className="ml-auto flex gap-1.5">

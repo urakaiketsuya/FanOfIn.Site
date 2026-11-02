@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Card, CommunityCoOccurrenceEntry } from "@gatcg/shared";
 import ElementRail from "../../../components/ElementRail";
@@ -174,7 +175,7 @@ function BuddyRelationshipView({
                 >
                   <ElementRail elements={cardInfo?.elements} />
                   <button type="button" aria-pressed={selected?.cardName === group.cardName} onClick={() => setSelectedName(group.cardName)} className="min-w-0 flex-1 text-left">
-                    <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
+                    <CardHoverPreview image={cardImagePath(cardInfo)} alt={group.cardName}>
                       <span className="block truncate text-xs font-semibold text-ctp-text">{group.cardName}</span>
                     </CardHoverPreview>
                     <span className="block text-[10px] text-ctp-subtext0">
@@ -207,7 +208,7 @@ function BuddyRelationshipView({
               <ElementRail elements={cardInfo?.elements} />
               <div className="flex items-center gap-2">
                 <button type="button" aria-expanded={expanded} onClick={() => setExpandedMobile(expanded ? null : group.cardName)} className="min-h-9 min-w-0 flex-1 text-left">
-                  <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
+                  <CardHoverPreview image={cardImagePath(cardInfo)} alt={group.cardName}>
                     <span className="block truncate text-sm font-semibold text-ctp-text">{group.cardName}</span>
                   </CardHoverPreview>
                   <span className="block text-[10px] text-ctp-subtext0">

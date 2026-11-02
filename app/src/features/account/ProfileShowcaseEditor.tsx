@@ -5,10 +5,9 @@ import ProfileAppearanceEditor from "./ProfileAppearanceEditor";
 import { Link } from "react-router-dom";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import { useEffect, useState } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import type { AccountUser, ProfileShowcase, PublicDeckSummary, TournamentDeckFavorite } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
-import { db } from "../../lib/db";
 import DialogSheet from "../../components/ui/DialogSheet";
 import Button from "../../components/ui/Button";
 import CardResult from "../../components/CardResult";
@@ -30,7 +29,7 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
   const [confirmReload, setConfirmReload] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const { notify } = useToast();
-  const catalog = useLiveQuery(() => db.cards.toArray(), []);
+  const catalog = useCardCatalog();
   useEffect(() => {
     let active = true;
     setTournamentError(false);

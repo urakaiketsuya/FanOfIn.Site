@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import type { ProfileAppearance } from "@gatcg/shared";
 import { Link } from "react-router-dom";
-import { db } from "../../lib/db";
 import { profileAppearanceStyle } from "../../lib/elementAppearance";
 import CardArtTile from "../../components/CardArtTile";
 
 export default function ProfileHeader({ displayName, element, portraitCardId, children }: ProfileAppearance & { displayName: string; children?: ReactNode }) {
-  const card = useLiveQuery(async () => portraitCardId ? await db.cards.get(portraitCardId) : undefined, [portraitCardId]);
+  const card = useCardCatalog().find(card => card.uuid === portraitCardId);
   const name = card?.name ?? "Card unavailable";
   return <header data-component="ProfileHeader" className="identity-surface overflow-hidden rounded-3xl" style={profileAppearanceStyle(element)}>
     {portraitCardId && <div className="relative h-48 overflow-hidden sm:h-72" aria-label="Featured card artwork">

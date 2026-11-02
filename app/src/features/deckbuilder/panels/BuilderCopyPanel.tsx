@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../../lib/previewCards";
 import { useEffect, useState } from "react";
 import { accountApi } from "../../../lib/accountApi";
 import DeckExportActions from "../../../components/deck-export/DeckExportActions";
@@ -136,7 +137,7 @@ export default function BuilderCopyPanel({
         <button
           type="button"
           onClick={onExportTts}
-          disabled={[...decklist.main, ...decklist.material, ...decklist.sideboard, ...(decklist.song ?? [])].some(line => !catalogByName.get(line.card)?.editions[0]?.image)}
+          disabled={[...decklist.main, ...decklist.material, ...decklist.sideboard, ...(decklist.song ?? [])].some(line => !cardImagePath(catalogByName.get(line.card)))}
           title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
           className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
         >

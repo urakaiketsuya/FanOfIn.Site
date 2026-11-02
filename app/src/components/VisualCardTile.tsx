@@ -1,3 +1,4 @@
+import { cardImagePath } from "../lib/previewCards";
 import { useMemo, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardInclusionEntry, DeckFormat, OmnidexDecklistCardLine } from "@gatcg/shared";
@@ -127,7 +128,7 @@ export function VisualCardTile({
   );
 
   return (
-    <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={line.card}>
+    <CardHoverPreview image={cardImagePath(card)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={line.card}>
       <div title={line.card} className={layout === "row" ? "grid grid-cols-[88px_minmax(0,1fr)] items-start gap-3 rounded-lg border border-ctp-surface1 p-2 sm:grid-cols-[112px_minmax(0,1fr)]" : undefined}>
         {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="card-art-action block rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{image}</Link> : image}
         <div className="min-w-0">

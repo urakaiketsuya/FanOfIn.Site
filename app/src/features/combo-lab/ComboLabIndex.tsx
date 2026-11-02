@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
@@ -313,7 +314,7 @@ function PackageArtStrip({ names }: { names: string[] }) {
   return <div className="mt-3 grid h-28 grid-cols-5 gap-1.5 overflow-hidden rounded-lg bg-ctp-mantle p-1.5" aria-label="Package cards">
     {visibleNames.map((name) => {
       const card = cardsByName.get(name);
-      return card?.editions[0]?.image ? <Link key={name} to={`/cards/${card.slug}`} title={name} className="min-w-0 overflow-hidden rounded-md"><CardImage image={card.editions[0].image} alt={name} className="h-full w-full object-cover object-top" /></Link> : <div key={name} title={name} className="flex min-w-0 items-center justify-center rounded-md bg-ctp-surface0 p-1 text-center text-[9px] text-ctp-subtext0">{name}</div>;
+      return card && cardImagePath(card) ? <Link key={name} to={`/cards/${card.slug}`} title={name} className="min-w-0 overflow-hidden rounded-md"><CardImage image={cardImagePath(card)} alt={name} className="h-full w-full object-cover object-top" /></Link> : <div key={name} title={name} className="flex min-w-0 items-center justify-center rounded-md bg-ctp-surface0 p-1 text-center text-[9px] text-ctp-subtext0">{name}</div>;
     })}
   </div>;
 }

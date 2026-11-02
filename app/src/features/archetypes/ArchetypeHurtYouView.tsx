@@ -1,3 +1,4 @@
+import { cardImagePath } from "../../lib/previewCards";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { ArchetypeTaxonomyData, CardImpactRole } from "@gatcg/shared";
@@ -131,7 +132,7 @@ export default function ArchetypeHurtYouView({ taxonomy }: { taxonomy: Archetype
                   return (
                     <tr key={row.key}>
                       <td className="py-1.5 pr-6 whitespace-nowrap">
-                        <CardHoverPreview image={card?.editions[0]?.image} alt={row.cardName}>
+                        <CardHoverPreview image={cardImagePath(card)} alt={row.cardName}>
                           <span className="inline-flex items-center gap-1.5">
                             {card && <ElementIcon element={card.element} size={14} />}
                             {card ? (
