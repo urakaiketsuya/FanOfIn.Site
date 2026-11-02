@@ -74,7 +74,8 @@ async function saveDeckAttempt(env: Env, user: AuthUser, input: SaveInput, retry
     .bind(crypto.randomUUID(), deckId, input.source.provider, input.source.externalDeckId, input.source.sourceUrl ?? null,
       input.source.label.slice(0, 240), JSON.stringify(input.source.metadata ?? {}), JSON.stringify(canonical.sideboard), now));
   statements.push(...await initialDeckStatements(env, user, deckId, input, hash, now));
-  if (input.maybeboard !== undefined) {
+  // Re-imports and creation retries must not overwrite an existing owner’s edits.
+  if (input.maybeboard !== undefined && !existing) {
     statements.push(env.ACCOUNT_DB.prepare("UPDATE user_decks SET maybeboard_json = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
       .bind(JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id));
   }

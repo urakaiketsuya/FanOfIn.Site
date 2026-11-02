@@ -53,3 +53,14 @@ test("a final pointer write failure rolls back earlier inserts", async () => {
     assert.equal(f.db.prepare("SELECT count(*) n FROM deck_versions").get()!.n, 0);
   } finally { f.db.close(); }
 });
+
+test("deduplicated creation preserves the existing deck's maybeboard", async () => {
+  const f = fixture();
+  try {
+    const saved = await f.save();
+    const edited = JSON.stringify([{ card: "Owner's later choice", quantity: 3 }]);
+    f.db.prepare("UPDATE user_decks SET maybeboard_json = ? WHERE id = ?").run(edited, saved.id);
+    assert.deepEqual(await f.save(), { id: saved.id, created: false });
+    assert.equal(f.db.prepare("SELECT maybeboard_json FROM user_decks WHERE id = ?").get(saved.id)!.maybeboard_json, edited);
+  } finally { f.db.close(); }
+});

@@ -143,6 +143,8 @@ const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
 const AccountIndex = lazy(() => import("./features/account/AccountIndex"));
 const VerifyEmailPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.VerifyEmailPage })));
 const ResetPasswordPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.ResetPasswordPage })));
+const NewDeck = lazy(() => import("./features/account/NewDeck"));
+const LifeTracker = lazy(() => import("./features/life-tracker/LifeTracker"));
 const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
 const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfile"));
@@ -232,6 +234,8 @@ export default function AppRoutes() {
         <Route path="/decks" element={<BrowseDecksIndex />} />
         <Route path="/decks/shared" element={<SharedDecksIndex />} />
         <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
+        <Route path="/decks/new" element={<NewDeck />} />
+        <Route path="/life-tracker" element={<LifeTracker />} />
         <Route path="/decks/edit" element={<MyDecksIndex />} />
         <Route path="/decks/collected/:id" element={<CollectedDeckDetail />} />
         <Route path="/decks/:id/edit" element={<DeckEditRedirect />} />

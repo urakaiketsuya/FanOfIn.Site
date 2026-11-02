@@ -733,3 +733,26 @@ After official cards arrive, verify the catalog match and a saved-deck round tri
 ## Search filters
 
 Card, deck, and builder searches use the shared FilterPanel and FilterGroup controls. Each group starts collapsed on mobile and desktop and remains keyboard-toggleable. Set search matches names and abbreviations (for example PRD or CBL). Use searchSetFamily/searchSetPrefix to group related starter decks, event packs, and other set products into one search choice; exact printing and collection identities remain separate.
+
+## Life tracker and empty deck creation
+
+Life Tracker lives under Tools at `/life-tracker`. Two labeled player panels start
+at zero, with independent +1/−1 controls and a floor of zero. Stack on phones and
+use two columns on desktop. Totals are session-only; no setup or account is needed.
+
+My Decks → Add deck offers Start empty deck (Resume deck draft when one exists),
+opening `/decks/new` directly in the shared card editor. Keep title, format, cards,
+printings and maybeboard in a local draft until the first successful account save.
+No champion or recommendation setup is required. Empty drafts remain local; account
+saves require a Main or Material card. The first save continues in the saved deck's
+editor. Failed saves and differing duplicate builds preserve the draft. Creation
+retries must not overwrite an existing owner's maybeboard.
+
+Verification (2026-11-02): checked 360/390px and 1280px layouts, independent life
+controls and the zero floor, keyboard activation/tab navigation, card search,
+quantity edits, split section moves, undo/redo, refresh recovery, failed saves, and
+first-save → saved-deck editing with an isolated local account. Visible editor
+controls meet 48px targets; no horizontal page overflow in checked views. App and
+account-service typechecks, app lint (existing warnings), and focused draft/editing/
+persistence tests pass. Native phone keyboard behavior and production deployment
+were not exercised.
