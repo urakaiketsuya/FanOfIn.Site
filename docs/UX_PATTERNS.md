@@ -737,8 +737,9 @@ Card, deck, and builder searches use the shared FilterPanel and FilterGroup cont
 ## Life tracker and empty deck creation
 
 Life Tracker lives under Tools at `/life-tracker`. Two labeled player panels start
-at zero, with independent +1/−1 controls and a floor of zero. Stack on phones and
-use two columns on desktop. Totals are session-only; no setup or account is needed.
+at zero, with independent +1/−1 controls and a floor of zero. Keep the panels stacked at all widths and rotate the top player’s entire panel
+180° so players facing each other can read their own total and controls. Totals
+are session-only; no setup or account is needed.
 
 My Decks → Add deck offers Start empty deck (Resume deck draft when one exists),
 opening `/decks/new` directly in the shared card editor. Keep title, format, cards,
@@ -756,3 +757,8 @@ controls meet 48px targets; no horizontal page overflow in checked views. App an
 account-service typechecks, app lint (existing warnings), and focused draft/editing/
 persistence tests pass. Native phone keyboard behavior and production deployment
 were not exercised.
+
+Opposing-player follow-up: checked the 180° top panel and upright bottom panel at
+390px and 1280px, independent increments, keyboard activation, 80px-high controls,
+and no horizontal overflow. Focused lint passes. Native phone keyboard behavior
+remains untested.
