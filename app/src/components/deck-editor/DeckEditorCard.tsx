@@ -36,8 +36,8 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   const [destination, setDestination] = useState<DeckEditSection>(destinations[0]?.key ?? "maybeboard");
   const [moveQuantity, setMoveQuantity] = useState(line.quantity);
   const title = card && !card.uuid?.startsWith("preview:") ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4 focus-visible:outline-2 focus-visible:outline-ctp-blue">{line.card}<span className="sr-only"> (card details in a new tab)</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
-  return <article ref={changeRef} className={`state-arrive min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
-    <div className={list ? "grid grid-cols-[4.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[6rem_minmax(0,1fr)]" : "grid grid-cols-[4.5rem_minmax(0,1fr)] items-start gap-3 sm:block"}>
+  return <article ref={changeRef} className={`state-arrive @container min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
+    <div className={list ? "grid grid-cols-1 items-start gap-3 @min-[260px]:grid-cols-[4.5rem_minmax(0,1fr)]" : "grid grid-cols-1 items-start gap-3 @min-[260px]:grid-cols-[4.5rem_minmax(0,1fr)] sm:block"}>
       <CardArtTile card={card} editionUuid={line.printings?.[0]?.editionUuid} name={line.card} />
       <div className="min-w-0">
         {title}<CardLegalityBadge card={card} format={format} />
