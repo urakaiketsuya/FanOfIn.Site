@@ -49,7 +49,7 @@ function chanceOfAtLeastOne(deckSize: number, successes: number, draws: number):
   return 1 - choose(deckSize - successes, capped) / choose(deckSize, capped);
 }
 
-const SCAVENGE_RE = /\*\*[Ss]cavenge ([^*]+?)\*\*\s*for ([^.]*)\./g;
+const SCAVENGE_RE = /\bscavenge ([^\s]+)\s+for ([^.]*)\./gi;
 // Denies target phrases this parser can't reduce to a plain type/subtype match: a player-chosen
 // name or subtype ("Business Card", "Musical Curator"), an extra numeric qualifier ("Forese,
 // Fervid Cantor"'s reserve-cost clause), or a repeated-reveal modifier ("Gear Haul"'s "twice").
@@ -96,33 +96,39 @@ function matchesToken(card: Card, token: { kind: "type" | "subtype"; value: stri
   return token.kind === "type" ? card.types.includes(token.value) : card.subtypes.some((s) => s.toUpperCase() === token.value);
 }
 
-/** Every "Scavenge N for a [target]" this deck's Main deck runs, where N is a fixed printed number
- * (not a variable X) and the target reduces to a plain type/subtype/element match. Scavenge only
- * reveals from the Main deck – Material cards are always available, never shuffled in, so they
- * never enter `deckSize` or the matching-card count (same Main-only convention synergyReadiness.ts
- * uses for Imbue). Cards whose Scavenge amount is variable or whose target can't be reduced this
- * way (a player-chosen name, an extra cost/element qualifier, a repeated reveal) are silently
- * excluded rather than guessed at. */
-export function computeScavengeForecasts(mainLines: NamedLine[], cardsByName: Map<string, Card>): ScavengeForecast[] {
-  const deckSize = Math.max(60, mainLines.reduce((sum, line) => sum + line.quantity, 0));
+/** Fixed Scavenge effects in Main or Song, conditional on the effect resolving.
+ * Only Main is searched. One resolving Main source is removed; other copies remain
+ * eligible. Song sources never enter the draw pool. Unsupported qualifiers and
+ * variable reveal amounts are omitted rather than guessed. */
+export function computeScavengeForecasts(mainLines: NamedLine[], cardsByName: Map<string, Card>, songLines: NamedLine[] = []): ScavengeForecast[] {
+  const mainSize = mainLines.reduce((sum, line) => sum + Math.max(0, line.quantity), 0);
   const knownSubtypes = new Set<string>();
   for (const card of cardsByName.values()) for (const s of card.subtypes) knownSubtypes.add(s.toUpperCase());
 
   const results: ScavengeForecast[] = [];
-  for (const line of mainLines) {
-    const card = cardsByName.get(line.name);
+  const sources = new Map<string, { quantity: number; fromMain: boolean }>();
+  for (const [lines, fromMain] of [[mainLines, true], [songLines, false]] as const) {
+    for (const line of lines) if (line.quantity > 0) {
+      const existing = sources.get(line.name);
+      sources.set(line.name, { quantity: (existing?.quantity ?? 0) + line.quantity, fromMain: fromMain || Boolean(existing?.fromMain) });
+    }
+  }
+  for (const [name, source] of sources) {
+    const card = cardsByName.get(name);
     if (!card?.effect) continue;
-    const matches = [...card.effect.matchAll(SCAVENGE_RE)];
+    const matches = [...card.effect.replace(/\*\*/g, "").matchAll(SCAVENGE_RE)];
     for (const match of matches) {
       const rawAmount = match[1].trim();
       if (!/^\d+$/.test(rawAmount)) continue;
       const amount = Number(rawAmount);
       const target = parseScavengeTarget(match[2].replace(/\s+instead$/, ""), knownSubtypes);
       if (!target) continue;
-      const matchingCopies = mainLines.reduce((sum, other) => other.name === line.name || !cardsByName.get(other.name)
-        ? sum : target.matches(cardsByName.get(other.name)!) ? sum + other.quantity : sum, 0);
+      const deckSize = Math.max(0, mainSize - (source.fromMain ? 1 : 0));
+      const matchingCopies = Math.max(0, mainLines.reduce((sum, other) => !cardsByName.get(other.name)
+        ? sum : target.matches(cardsByName.get(other.name)!) ? sum + Math.max(0, other.quantity) : sum, 0)
+        - (source.fromMain && target.matches(card) ? 1 : 0));
       results.push({
-        cardName: line.name, copies: line.quantity, amount, targetLabel: target.label,
+        cardName: name, copies: source.quantity, amount, targetLabel: target.label,
         matchingCopies, deckSize, hitChance: chanceOfAtLeastOne(deckSize, matchingCopies, amount),
       });
     }

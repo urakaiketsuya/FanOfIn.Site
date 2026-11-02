@@ -5,6 +5,7 @@ import FixtureComparison from "../analytics/FixtureComparison";
 import CardScenarios from "../analytics/CardScenarios";
 import DeckAccessSummary from "./DeckAccessSummary";
 import CombatAccessReport from "../analytics/CombatAccessReport";
+import ForeseForecast from "../decks/ForeseForecast";
 import CombatAccessForecast from "../decks/CombatAccessForecast";
 import DeckStatsTabs from "./DeckStatsTabs";
 import { useId, useMemo, useState, type ReactNode } from "react";
@@ -63,10 +64,11 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
   const namedSections = useMemo(() => ({
     main: decklist.main.map((line) => ({ name: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ name: line.card, quantity: line.quantity })),
+    song: (decklist.song ?? []).map((line) => ({ name: line.card, quantity: line.quantity })),
     sideboard: decklist.sideboard.map((line) => ({ name: line.card, quantity: line.quantity })),
   }), [decklist]);
   const identityLines = useMemo(() => [...namedSections.main, ...namedSections.material], [namedSections]);
-  const cardNames = useMemo(() => [...identityLines, ...namedSections.sideboard].map((line) => line.name), [identityLines, namedSections.sideboard]);
+  const cardNames = useMemo(() => [...identityLines, ...namedSections.sideboard, ...namedSections.song].map((line) => line.name), [identityLines, namedSections.sideboard, namedSections.song]);
   const cardsByName = useCardsByNames(cardNames);
   const catalog = useCardCatalog();
   const identity = useMemo(() => computeDeckIdentity(identityLines, cardsByName), [identityLines, cardsByName]);
@@ -78,7 +80,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
     () => computeBreakthroughDamageVsAverage([...namedSections.main, ...namedSections.material], cardsByName),
     [namedSections.main, namedSections.material, cardsByName],
   );
-  const scavengeForecasts = useMemo(() => computeScavengeForecasts(namedSections.main, cardsByName), [namedSections.main, cardsByName]);
+  const scavengeForecasts = useMemo(() => computeScavengeForecasts(namedSections.main, cardsByName, namedSections.song), [namedSections.main, cardsByName, namedSections.song]);
   const delugeForecasts = useMemo(() => computeDelugeForecasts(namedSections.main, namedSections.material, cardsByName), [namedSections.main, namedSections.material, cardsByName]);
   const allyPower = useMemo(() => computeAllyPower(identityLines, cardsByName), [identityLines, cardsByName]);
   const allyPowerSegments = useMemo(() => buildChartSegments(new Map(Array.from(allyPower.byPower, ([power, count]) => [`Power ${power}`, count]))), [allyPower]);
@@ -254,10 +256,11 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
           <div className="mt-3"><CombatAccessReport deck={namedSections} cardsByName={cardsByName} /></div>
         </Panel>
       )}
+      <ForeseForecast mainLines={namedSections.main} cardsByName={cardsByName} seen={10} />
       {scavengeForecasts.length > 0 && (
         <div className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Scavenge</h3>
-          <div className="mt-2"><ScavengeForecastList forecasts={scavengeForecasts} /></div>
+          <div className="mt-2"><ScavengeForecastList forecasts={scavengeForecasts} cardsByName={cardsByName} /></div>
         </div>
       )}
       {delugeForecasts.length > 0 && (

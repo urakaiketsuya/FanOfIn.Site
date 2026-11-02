@@ -2393,22 +2393,27 @@ element timing, or complete game-state affordability are inferred.
 
 ### Scavenge and Deluge forecasts (`app/src/lib/keywordForecast.ts`)
 
-A deck's Analysis tab (`UserDeckStats.tsx`, "Forecasts") shows a compact per-card readout for two
+A deck's Analysis tab (`UserDeckStats.tsx`, "Deck Report") shows a compact per-card readout for two
 keyword mechanics, whenever the deck runs a card with one. Unlike the Direct-damage/Breakthrough
 forecasts above, these numbers are shown with no explanatory prose in the UI (per the site's
 copy-trim pass) — the derivation and disclosed limitations live here instead.
 
 **Scavenge** ("reveal cards from the top of your deck until you reveal that many cards or until
 you reveal the specified card") only ever reveals from the Main deck — Material cards are always
-available and never shuffled in, so they never enter the matching-card count or the assumed
-60-card floor (same Main-only convention `synergyReadiness.ts`'s Imbue forecast uses). For a card
-with a fixed printed **Scavenge N** and a target phrase that reduces to a plain type/subtype/
-element match (e.g. "a Raccoon ally card", "a domain card", "an arcane element card", "a Kitchen
-or Food card"), `computeScavengeForecasts` counts how many *other* Main-deck cards satisfy that
-predicate and reports the exact hypergeometric chance of revealing at least one within the first N
-cards — `1 − C(deckSize − matches, N) / C(deckSize, N)`, the same "at least one success without
-replacement" formula `synergyReadiness.ts`'s `probabilityAtLeast` already uses elsewhere on this
-page, just phrased for a single one-shot reveal instead of a swept "cards seen" checkpoint.
+available and never shuffled in. Song sources are also supported, including Aiss Yustera;
+Song cards never increase the Main search pool. Both bold catalogue text and plain spoiler
+text are parsed. For a fixed printed **Scavenge N** with a plain type/subtype/element target,
+`computeScavengeForecasts` counts matching Main copies and reports
+`1 − C(deckSize − matches, min(N, deckSize)) / C(deckSize, min(N, deckSize))`.
+The pool uses the actual listed Main size (no 60-card floor). For a Main source, remove one
+resolving copy from the pool and, if eligible, from the matches; other copies remain eligible.
+For a Song source, use the full Main pool. Zero targets or an empty pool produce zero hit chance.
+These are conditional-on-resolution composition estimates: no additional drawn/played cards,
+activation costs, influence requirements, or probability of enabling the effect are modeled.
+
+Forese's dedicated joint access/deployment forecast is also shown in Deck Report at ten cards
+seen, with its eligible target artwork. The Calculators view retains adjustable checkpoints.
+Its separate exact calculation above handles targets already drawn and its reserve-cost qualifier.
 
 Verified against the real card pool (`pipeline/.cache/cards.json`, 2026-09-08): of 22 real
 Scavenge instances across 20 cards, this parser resolves 16 to a real hit-chance figure. The other

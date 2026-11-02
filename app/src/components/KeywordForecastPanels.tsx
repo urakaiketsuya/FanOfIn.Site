@@ -1,18 +1,21 @@
+import type { Card } from "@gatcg/shared";
+import AssociatedCards from "./AssociatedCards";
 import type { DelugeForecast, ScavengeForecast } from "../lib/keywordForecast";
 import { titleCase } from "../lib/format";
 
-export function ScavengeForecastList({ forecasts }: { forecasts: ScavengeForecast[] }) {
+export function ScavengeForecastList({ forecasts, cardsByName }: { forecasts: ScavengeForecast[]; cardsByName: Map<string, Card> }) {
   if (forecasts.length === 0) return null;
   return (
     <div data-component="ScavengeForecastList" className="space-y-2">
       {forecasts.map((f) => (
         <div key={`${f.cardName}:${f.amount}:${f.targetLabel}`} className="rounded-lg border border-ctp-surface1 p-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{f.cardName} – Scavenge {f.amount}</h4>
+          <AssociatedCards lines={[{ name: f.cardName, quantity: f.copies }]} cardsByName={cardsByName} />
+          <h4 className="mt-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Scavenge {f.amount} · on resolution</h4>
           <p className="mt-2 text-2xl font-semibold text-ctp-text">
             {Math.round(f.hitChance * 100)}% <span className="text-sm font-normal text-ctp-subtext0">chance to hit {f.targetLabel}</span>
           </p>
           <p className="mt-1 text-xs text-ctp-subtext1">
-            {f.matchingCopies} matching card{f.matchingCopies === 1 ? "" : "s"} in a {f.deckSize}-card deck{f.copies > 1 ? ` · ${f.copies} copies run` : ""}
+            {f.matchingCopies} matching card{f.matchingCopies === 1 ? "" : "s"} in {f.deckSize} cards{f.copies > 1 ? ` · ${f.copies} copies run` : ""}
           </p>
         </div>
       ))}
