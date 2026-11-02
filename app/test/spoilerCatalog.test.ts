@@ -26,6 +26,19 @@ import spoilers from '../../data/reference/card-spoilers-2026-11-01.json';
 import { existsSync } from 'node:fs';
 import { searchSetPrefix } from '@gatcg/shared';
 
+test('Deploy the Future is available in CBL deck building and retained in restored drafts', () => {
+  const cards = filterCards(withSpoilerCards([]), { ...emptyFilterState(), name: 'Deploy the Future', sets: new Set(['CBL']) });
+  assert.equal(cards.length, 1);
+  const card = cards[0];
+  assert.deepEqual(card.types, ['ACTION']);
+  assert.deepEqual(card.classes, ['TAMER']);
+  assert.equal(card.element, 'FIRE');
+  assert.equal(card.cost_reserve, 2);
+  assert.equal(card.speed, false);
+  assert.equal(cardImagePath(card), '/images/spoilers/deploy-the-future.webp');
+  assert.equal(mergePreviewCards([], spoilers.cards, false, [card.name])[0].name, card.name);
+});
+
 test('gallery additions resolve in CBL searches with artwork and printed costs', () => {
   const catalog = withSpoilerCards([]);
   const cbl = filterCards(catalog, { ...emptyFilterState(), sets: new Set(['CBL']) });

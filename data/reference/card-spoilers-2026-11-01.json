@@ -1721,6 +1721,38 @@
       "effect": "Class Bonus On Enter: Empower 3. (The next Spell card you activate this turn activates and resolves as if your champion got +3 level. Apply this effect only if your champion’s class matches this card’s class.)",
       "flavor": "“Harmonia, guide us.”",
       "sourceImageUrl": "https://shoutatyourdecks.com/images/tailwind-vestal-rec-sky.jpg"
+    },
+    {
+      "name": "Deploy the Future",
+      "setPrefix": "CBL",
+      "collectorNumber": "094",
+      "rarity": "R",
+      "image": "deploy-the-future.webp",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "TAMER"
+      ],
+      "subtypes": [
+        "SKILL"
+      ],
+      "elements": [
+        "FIRE"
+      ],
+      "level": null,
+      "cost": {
+        "type": "reserve",
+        "value": "2"
+      },
+      "power": null,
+      "life": null,
+      "speed": "slow",
+      "effect": "Beatrice Bonus You may put an Automaton ally card from your hand onto the field. It enters without any of its on enter abilities.",
+      "flavor": "Dante realized the promise they had made had not been forgotten but twisted into a false paradise.",
+      "exalted": true,
+      "sourceUrl": "https://x.com/grandarchivetcg/status/2105139806284263519",
+      "sourceImageUrl": "https://pbs.twimg.com/media/HTb1P1IXcAAm-aA?format=webp&name=large"
     }
   ],
   "deckSections": {
