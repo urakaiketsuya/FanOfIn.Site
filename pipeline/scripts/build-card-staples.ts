@@ -13,8 +13,13 @@ const bundles: OmnidexEventBundle[] = [];
 for (const file of (await readdir(directory)).filter(file => file.endsWith(".json")).sort()) bundles.push(JSON.parse(await readFile(new URL(file, directory), "utf8")));
 const data = computeCardStaples(bundles, buildCardIndex(catalog.cards));
 await writeJsonAtomic(new URL("data/analysis/card-staples.json", root).pathname, data, 0);
+const manifestPath = new URL("data/manifest.json", root).pathname;
+const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Record<string, string>;
+manifest["analysis-card-staples"] = data.generatedAt;
 console.log(`Published ${data.cards.length} cards in ${data.cohorts.length} cohorts through ${data.throughDate}.`);
 
 const community = computeCommunityCardStaples(await loadCommunityStaples(), buildCardIndex(catalog.cards));
 await writeJsonAtomic(new URL("data/analysis/community-card-staples.json", root).pathname, community, 0);
 console.log(`Published ${community.cards.length} community cards in ${community.cohorts.length} cohorts.`);
+manifest["analysis-community-card-staples"] = community.generatedAt;
+await writeJsonAtomic(manifestPath, manifest, 0);

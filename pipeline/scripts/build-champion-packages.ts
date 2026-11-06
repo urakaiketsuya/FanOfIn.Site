@@ -14,3 +14,7 @@ const { observations, reference } = collectStapleObservations(bundles);
 const data = computeChampionPackages(observations, buildCardIndex(catalog.cards), new Date().toISOString(), reference === null ? null : new Date(reference).toISOString().slice(0, 10));
 await writeJsonAtomic(new URL("data/analysis/champion-packages.json", root).pathname, data, 0);
 console.log(`Published ${data.packages.length} champion packages.`);
+const manifestPath = new URL("data/manifest.json", root).pathname;
+const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Record<string, string>;
+manifest["analysis-champion-packages"] = data.generatedAt;
+await writeJsonAtomic(manifestPath, manifest, 0);
