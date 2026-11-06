@@ -99,8 +99,20 @@ export default function CardStaples() {
       <div className="min-w-0 flex-1"><FilterField label="Find a card"><input type="search" className={fieldClass} value={filters.search} onChange={e => change("q", e.target.value)} placeholder="Card name" /></FilterField></div>
       <Button onClick={() => setShowFilters(true)}>Filters{chips.length ? ` (${chips.length})` : ""}</Button>
     </div>
+    <fieldset className="mt-3 min-w-0">
+      <legend className="mb-1 text-sm font-semibold text-ctp-text">Elements <span className="font-normal text-ctp-subtext0">(choose any)</span></legend>
+      <div className="flex flex-wrap gap-2">
+        {elements.map(value => {
+          const on = filters.elements.includes(value);
+          return <button key={value} type="button" aria-pressed={on} onClick={() => change("element", on ? filters.elements.filter(e => e !== value) : [...filters.elements, value])}
+            className={`inline-flex min-h-control items-center gap-1.5 rounded-full border px-3 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-ctp-blue ${on ? "border-ctp-blue bg-ctp-blue/20 font-semibold text-ctp-text shadow-md" : "border-ctp-surface1 text-ctp-subtext1"}`}>
+            {on && <span aria-hidden="true">✓</span>}{titleCase(value)}
+          </button>;
+        })}
+        {filters.elements.length > 0 && <button type="button" onClick={() => change("element", [])} className="min-h-control rounded-full px-3 text-sm text-ctp-subtext0 underline">Clear elements</button>}
+      </div>
+    </fieldset>
     <div className="mt-3 flex flex-wrap items-end gap-3">
-      <div className="min-w-0 flex-1"><FilterField label="Element"><select className={fieldClass} value={filters.elements.length === 1 ? filters.elements[0] : ""} onChange={e => change("element", e.target.value ? [e.target.value] : [])}><option value="">All elements</option>{elements.map(value => <option key={value} value={value}>{titleCase(value)}</option>)}</select></FilterField></div>
       <div className="min-w-0 flex-1"><FilterField label="Champion"><select className={fieldClass} value={champion} onChange={e => change("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name} value={name}>{name}</option>)}</select></FilterField></div>
       {champion && <div className="min-w-0 flex-1"><FilterField label="Build"><select className={fieldClass} value={build} onChange={e => change("build", e.target.value)}><option value="">All {champion} builds</option>{builds.map(item => <option key={item.card} value={item.card}>{buildLabel(item.card)} ({item.decks.toLocaleString()})</option>)}{build && !builds.some(item => item.card === build) && <option value={build}>{buildLabel(build)}</option>}</select></FilterField></div>}
       <div className="min-w-0 flex-1"><FilterField label="Rank by"><select className={fieldClass} value={filters.sort} onChange={e => change("sort", e.target.value)}><option value="usage">Most played</option>{!community && <option value="winning">Adjusted win rate</option>}<option value="quantity">Average copies</option></select></FilterField></div>
