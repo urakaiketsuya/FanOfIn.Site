@@ -9,6 +9,12 @@ type Bucket = { populations: Record<StapleSection, Map<number, number>>; cohort:
 const DAY = 86_400_000;
 
 export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<string, CardSignature>, generatedAt = new Date().toISOString()): CardStaplesData {
+  const { observations, reference } = collectStapleObservations(bundles);
+  return aggregateStaples(observations, catalog, generatedAt, reference === null ? null : new Date(reference).toISOString().slice(0, 10));
+}
+
+/** One observation per completed event/player, latest event snapshot wins. Shared with package mining. */
+export function collectStapleObservations(bundles: OmnidexEventBundle[]): { observations: StapleObservation[]; reference: number | null } {
   // Latest snapshot wins before aggregation, including when an event loses public deck access.
   const events = new Map<number, OmnidexEventBundle>();
   for (const bundle of bundles) {
@@ -37,7 +43,7 @@ export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<s
       observations.push({ raw, format: bundle.event.format || "Unknown format", periods, win: wins.get(entry.player) });
     }
   }
-  return aggregateStaples(observations, catalog, generatedAt, reference === null ? null : new Date(reference).toISOString().slice(0, 10));
+  return { observations, reference };
 }
 
 export interface StapleObservation {
@@ -45,6 +51,21 @@ export interface StapleObservation {
   format: string;
   periods: StaplePeriod[];
   win?: number;
+}
+
+/** The champion line's highest-level champion card in the material deck: the build's identity card.
+ * Ties on level choose the name that sorts first, so the result never depends on list order.
+ */
+export function topChampionCard(material: { name: string }[], champion: string, catalog: Map<string, CardSignature>): string | null {
+  let best: { name: string; level: number } | null = null;
+  for (const line of material) {
+    const card = resolveCard(catalog, line.name);
+    if (!card || !card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) continue;
+    if ((card.name.includes(",") ? card.name.split(",")[0].trim() : card.name) !== champion) continue;
+    const level = card.level ?? 0;
+    if (!best || level > best.level || (level === best.level && card.name < best.name)) best = { name: card.name, level };
+  }
+  return best?.name ?? null;
 }
 
 /** Common section counting for tournament observations and unique community lists. */
@@ -68,11 +89,11 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
       memoryCost: card?.cost_memory ?? null, reserveCost: card?.cost_reserve ?? null });
     return index;
   }
-  function bucket(period: StaplePeriod, format: string | null, champion: string | null): Bucket {
-    const key = JSON.stringify([period, format, champion]);
+  function bucket(period: StaplePeriod, format: string | null, champion: string | null, championCard: string | null = null): Bucket {
+    const key = JSON.stringify([period, format, champion, championCard]);
     let result = buckets.get(key);
     if (!result) {
-      result = { populations: { main: new Map(), material: new Map(), sideboard: new Map() }, cohort: { period, format, champion, decks: 0, sections: { main: { decks: 0, rows: [] }, material: { decks: 0, rows: [] }, sideboard: { decks: 0, rows: [] } } },
+      result = { populations: { main: new Map(), material: new Map(), sideboard: new Map() }, cohort: { period, format, champion, ...(championCard ? { championCard } : {}), decks: 0, sections: { main: { decks: 0, rows: [] }, material: { decks: 0, rows: [] }, sideboard: { decks: 0, rows: [] } } },
         cards: { main: new Map(), material: new Map(), sideboard: new Map() } };
       buckets.set(key, result);
     }
@@ -81,8 +102,11 @@ export function aggregateStaples(observations: StapleObservation[], catalog: Map
   for (const { raw, format, periods, win } of observations) {
     const signature = buildDeckSignature(0, { main: raw.main ?? [], material: raw.material ?? [], sideboard: raw.sideboard ?? [] }, catalog);
     const champion = signature.championName ?? "Unknown champion";
-    const targets = periods.flatMap(period => [null, format].flatMap(format =>
-      [null, champion].map(name => bucket(period, format, name))));
+    const championCard = signature.championName ? topChampionCard(signature.materialCards, signature.championName, catalog) : null;
+    const targets = periods.flatMap(period => [null, format].flatMap(format => [
+      bucket(period, format, null), bucket(period, format, champion),
+      ...(championCard ? [bucket(period, format, champion, championCard)] : []),
+    ]));
     for (const target of targets) target.cohort.decks++;
     for (const section of STAPLE_SECTIONS) {
       // Absent is unknown; an explicit [] is a reported empty section.

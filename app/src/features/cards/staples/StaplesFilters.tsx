@@ -8,14 +8,13 @@ export function FilterField({ label, children }: { label: string; children: Reac
   return <label className="flex min-w-0 flex-col gap-1 text-sm text-ctp-subtext1"><span>{label}</span>{children}</label>;
 }
 
-export default function StaplesFilters({ community, data, filters, champion, format, period, onChange, onDismiss }: {
-  community: boolean; data: CardStaplesData | undefined; filters: StapleFilters; champion: string; format: string; period: string;
+export default function StaplesFilters({ community, data, filters, format, period, onChange, onDismiss }: {
+  community: boolean; data: CardStaplesData | undefined; filters: StapleFilters; format: string; period: string;
   onChange: (key: string, value: string | string[]) => void; onDismiss: () => void;
 }) {
   const [keywordSearch, setKeywordSearch] = useState("");
   const unique = (values: string[]) => [...new Set(values)].sort();
   const keywords = unique([...(data?.cards.flatMap(card => card.keywords) ?? []), ...filters.keywords]);
-  const champions = unique([...(data?.cohorts.flatMap(cohort => cohort.champion ? [cohort.champion] : []) ?? []), ...(champion ? [champion] : [])]);
   const formats = unique([...(data?.cohorts.flatMap(cohort => cohort.format ? [cohort.format] : []) ?? ["standard"]), ...(format ? [format] : [])]);
   const levels = [...new Set([...(data?.cards.flatMap(card => card.championLevel === null ? [] : [card.championLevel]) ?? []), ...(filters.level ? [Number(filters.level)] : [])])].sort((a, b) => a - b);
   return <DialogSheet title="Filter staples" onDismiss={onDismiss} footer={<Button variant="primary" className="w-full" onClick={onDismiss}>Show cards</Button>}>
@@ -24,7 +23,6 @@ export default function StaplesFilters({ community, data, filters, champion, for
         <FilterField label="Format"><select className={fieldClass} value={format} onChange={e => onChange("format", e.target.value)}><option value="">All formats</option>{formats.map(value => <option key={value} value={value}>{titleCase(value)}</option>)}</select></FilterField>
         {!community && <FilterField label="Results period"><select className={fieldClass} value={period} onChange={e => onChange("period", e.target.value)}><option value="90">Last 90 days</option><option value="30">Last 30 days</option><option value="all">All recorded results</option></select></FilterField>}
       </div>
-      <FilterField label="Champion decks"><select className={fieldClass} value={champion} onChange={event => onChange("champion", event.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name}>{name}</option>)}</select></FilterField>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FilterField label="Card type"><select className={fieldClass} value={filters.type} onChange={e => onChange("type", e.target.value)}><option value="">All types</option>{unique([...(data?.cards.flatMap(card => card.types) ?? []), ...(filters.type ? [filters.type] : [])]).map(type => <option key={type} value={type}>{titleCase(type)}</option>)}</select></FilterField>
         <FilterField label="Card class"><select className={fieldClass} value={filters.cardClass} onChange={e => onChange("class", e.target.value)}><option value="">All classes</option>{unique([...(data?.cards.flatMap(card => card.classes) ?? []), ...(filters.cardClass ? [filters.cardClass] : [])]).map(type => <option key={type} value={type}>{titleCase(type)}</option>)}</select></FilterField>

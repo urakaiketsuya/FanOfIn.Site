@@ -26,6 +26,10 @@ export interface StapleCohort {
   /** null denotes the aggregate, never a missing format/champion label. */
   format: string | null;
   champion: string | null;
+  /** Highest-level champion card of the champion's main-line (e.g. "Jin, Undying Resolve").
+   * null on a champion cohort means all builds of that champion. Absent in older projections.
+   * Cohorts with a card partition their champion's decks: no deck is in two of them. */
+  championCard?: string | null;
   decks: number;
   sections: Record<StapleSection, StapleSectionStats>;
 }
@@ -50,6 +54,11 @@ export interface StapleFilters {
   minDecks: number;
   sort: "usage" | "winning" | "quantity";
 }
+/** No card facets, ranked by usage. Champion pages use this so they match the Staples page defaults. */
+export const DEFAULT_STAPLE_FILTERS: StapleFilters = {
+  search: "", elements: [], keywords: [], keywordMode: "any", type: "", cardClass: "", level: "",
+  costKind: "reserve", maxCost: "", minDecks: 5, sort: "usage",
+};
 /** Card predicates shared by visible rows and their filtered deck denominator. */
 export function matchesStapleCard(card: StapleCard, filters: StapleFilters): boolean {
   if (!card.name.toLowerCase().includes(filters.search.trim().toLowerCase())) return false;
@@ -73,6 +82,19 @@ export function staplePopulation(data: CardStaplesData, stats: StapleSectionStat
   if (!data.sectionPatterns || !stats.populations) return null;
   const matching = new Set(data.cards.flatMap((card, index) => matchesStapleCard(card, filters) ? [index] : []));
   return stats.populations.reduce((total, [pattern, decks]) => total + (data.sectionPatterns![pattern].some(card => matching.has(card)) ? decks : 0), 0);
+}
+
+/** Cohort for one period/format/champion selection. Missing championCard means "all builds". */
+export function findStapleCohort(data: CardStaplesData, period: StaplePeriod, format: string | null, champion: string | null, championCard: string | null): StapleCohort | undefined {
+  return data.cohorts.find(c => c.period === period && c.format === format && c.champion === champion && (c.championCard ?? null) === (champion ? championCard : null));
+}
+
+/** Champion-card builds that have a cohort, most-played first, for one period/format/champion. */
+export function stapleChampionBuilds(data: CardStaplesData, period: StaplePeriod, format: string | null, champion: string): { card: string; decks: number }[] {
+  return data.cohorts
+    .filter(c => c.period === period && c.format === format && c.champion === champion && c.championCard)
+    .map(c => ({ card: c.championCard!, decks: c.decks }))
+    .sort((a, b) => b.decks - a.decks || a.card.localeCompare(b.card));
 }
 
 export function selectStapleRows(cards: StapleCard[], rows: StapleRow[], filters: StapleFilters): StapleRow[] {
@@ -106,7 +128,7 @@ export function blendCardStaples(tournament: CardStaplesData, community: CardSta
     const offset = sectionPatterns.length;
     sectionPatterns.push(...(source.sectionPatterns ?? []).map(pattern => pattern.map(index => remap[index])));
     for (const cohort of source.cohorts.filter(value => value.period === "all")) {
-      const key = JSON.stringify([cohort.format, cohort.champion]);
+      const key = JSON.stringify([cohort.format, cohort.champion, cohort.championCard ?? null]);
       let target = cohorts.get(key);
       if (!target) {
         target = { ...cohort, decks: 0, sections: { main: { decks: 0, rows: [], populations: [] }, material: { decks: 0, rows: [], populations: [] }, sideboard: { decks: 0, rows: [], populations: [] } } };
@@ -129,3 +151,47 @@ export function blendCardStaples(tournament: CardStaplesData, community: CardSta
   }
   return { generatedAt: [tournament.generatedAt, community.generatedAt].sort()[0], throughDate: tournament.throughDate, cards, cohorts: [...cohorts.values()], sectionPatterns };
 }
+
+/** One card of a champion package. Inclusion values are fractions of the build's decks. */
+export interface ChampionPackageCard {
+  name: string;
+  section: "main" | "material";
+  /** Share of all recorded standard decks of this build that contain the card. */
+  allInclusion: number;
+  /** Share of the last-90-day decks. Equal to allInclusion's meaning, never blended with it. */
+  recentInclusion: number | null;
+  /** Most common quantity among decks that contain the card (all recorded decks). */
+  usualCopies: number;
+}
+/** An exact quantity pattern of the core, observed in decks that contain every core card. */
+export interface ChampionPackageVariant {
+  /** Copies per core card, in the same order as `core`. */
+  copies: number[];
+  decks: number;
+  recentDecks: number;
+}
+/** Cards one champion build plays together, measured from the decks that hold them together. */
+export interface ChampionPackage {
+  champion: string;
+  championCard: string | null;
+  decks: number;
+  recentDecks: number;
+  /** Which window defined the core: recent decks when there are enough, otherwise all decks. */
+  basis: "recent" | "all";
+  core: ChampionPackageCard[];
+  options: ChampionPackageCard[];
+  /** Decks (all / last 90 days) that contain every core card. */
+  completeDecks: number;
+  completeRecentDecks: number;
+  variants: ChampionPackageVariant[];
+}
+export interface ChampionPackagesData {
+  generatedAt: string;
+  throughDate: string | null;
+  format: string;
+  packages: ChampionPackage[];
+}
+
+export const CHAMPION_PACKAGE_SETTINGS = {
+  minDecks: 100, minRecentDecks: 30, coreInclusion: 0.75, optionInclusion: 0.25, maxCore: 16, maxOptions: 12, minComplete: 25, maxVariants: 5,
+} as const;

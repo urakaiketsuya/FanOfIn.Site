@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { staplePopulation, selectStapleRows, type StapleFilters } from "@gatcg/shared";
+import { findStapleCohort, stapleChampionBuilds, staplePopulation, selectStapleRows, type StapleFilters } from "@gatcg/shared";
 import { computeCardStaples } from "./cardStaples.js";
 import { buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
@@ -57,7 +57,7 @@ test("format and champion cohorts partition the aggregate without losing unknown
   const other = bundle(2, "2026-10-01", [unknown]); other.event.format = "team-standard-3v3";
   const data = computeCardStaples([standard, other], catalog);
   const overall = data.cohorts.find(c => c.period === "all" && c.format === null && c.champion === null)!;
-  const specific = data.cohorts.filter(c => c.period === "all" && c.format === null && c.champion !== null);
+  const specific = data.cohorts.filter(c => c.period === "all" && c.format === null && c.champion !== null && !c.championCard);
   assert.equal(overall.decks, 2); assert.equal(specific.reduce((sum, c) => sum + c.decks, 0), overall.decks);
   assert.equal(data.cards.filter(c => c.slug === null).length, 1);
   const unknownCohort = specific.find(c => c.champion === "Unknown champion")!;
@@ -110,4 +110,22 @@ test("filtered populations count overlapping matching decks once and ignore rank
   for (const cohort of data.cohorts) for (const section of Object.values(cohort.sections)) {
     assert.equal(section.populations!.reduce((n, [, count]) => n + count, 0), section.decks);
   }
+});
+
+test("champion-card cohorts partition a champion's decks by their highest-level champion card", () => {
+  const index = buildCardIndex([
+    card("Shared"),
+    card("Jin, One", { types: ["CHAMPION"], level: 1 }), card("Jin, Two", { types: ["CHAMPION"], level: 2 }), card("Jin, Three", { types: ["CHAMPION"], level: 3 }),
+    card("Spirit of Fire", { types: ["CHAMPION"], subtypes: ["SPIRIT"], level: 0 }),
+  ]);
+  const entry = (player: number, material: string[]) => ({ player, decklist: { main: [{ card: "Shared", quantity: 4 }], material: material.map(name => ({ card: name, quantity: 1 })), sideboard: [] } });
+  const data = computeCardStaples([bundle(1, "2026-10-01", [
+    entry(1, ["Jin, One", "Jin, Two", "Jin, Three", "Spirit of Fire"]), entry(2, ["Jin, Three", "Jin, One"]), entry(3, ["Jin, One", "Jin, Two"]),
+  ])], index);
+  const all = (card: string | null) => findStapleCohort(data, "all", null, "Jin", card)!;
+  assert.equal(all(null).decks, 3); assert.equal(all("Jin, Three").decks, 2); assert.equal(all("Jin, Two").decks, 1);
+  assert.equal(findStapleCohort(data, "all", null, "Jin", "Jin, One"), undefined);
+  assert.deepEqual(stapleChampionBuilds(data, "all", null, "Jin"), [{ card: "Jin, Three", decks: 2 }, { card: "Jin, Two", decks: 1 }]);
+  assert.equal(findStapleCohort(data, "all", null, null, "Jin, Three")!.championCard ?? null, null);
+  assert.equal(all("Jin, Three").sections.material.rows.find(row => data.cards[row[0]].name === "Spirit of Fire")?.[1], 1);
 });

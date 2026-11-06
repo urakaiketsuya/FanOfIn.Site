@@ -4,6 +4,8 @@ import ReviewedChampionFamilies from "./ReviewedChampionFamilies";
 import DiaoArchetypeFamilies from "./DiaoArchetypeFamilies";
 import ChampionDecks from "./ChampionDecks";
 import ChampionSeasonSnapshot from "./ChampionSeasonSnapshot";
+import ChampionStaples from "./ChampionStaples";
+import ChampionPackage from "./ChampionPackage";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import Button from "../../components/ui/Button";
 import ArchetypePreview from "../archetypes/ArchetypePreview";
@@ -341,19 +343,11 @@ export default function ChampionSynergy() {
 
           <div className="space-y-8">
             <ChampionDecks key={championName} championName={championName} />
-            <Section id="cards" className="scroll-mt-48" title="Cards you'll see most" description="Frequently played main deck cards across this champion's recorded decks. Full lists and filters are available below.">
-              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {champ.topCards.main.slice(0, 4).map((entry) => {
-                  const card = cardImages.get(entry.name) ?? catalogByName.get(entry.name);
-                  const slug = card?.slug ?? entry.slug;
-                  const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-2 block text-sm font-medium text-ctp-text">{entry.name}</span><span className="mt-1 block text-sm text-ctp-subtext1">{entry.deckCount.toLocaleString()} decks</span></>;
-                  return slug ? <Link key={entry.name} to={`/cards/${slug}`} className="min-w-0 rounded-xl bg-ctp-mantle p-3 hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={entry.name} className="min-w-0 rounded-xl bg-ctp-mantle p-3">{content}</div>;
-                })}
-              </div>
-              {champ.topCards.main.length === 0 && <InlineState>No main deck card statistics are available yet.</InlineState>}
+            <Section id="cards" className="scroll-mt-48" title="Staples" description="The cards players bring with this champion, from tournament decks. These are the same numbers as the Staples page. Spirit and element views are available below.">
+              <ChampionStaples key={championName} championName={championName} embedded />
               <details className="group/cards mt-4 border-t border-ctp-surface1">
-                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">Browse cards and filters<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
-                <p className="mb-4 text-sm text-ctp-subtext1">Element and spirit filters apply to these detailed lists and new release connections. The preview above, decks, and season results cover the whole champion.</p>
+                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">Browse by Spirit and element<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
+                <p className="mb-4 text-sm text-ctp-subtext1">Element here means the element of the Spirit a deck plays, not the element of a card. These filters apply to the lists below and to new release connections. Staples above, decks, and season results do not change.</p>
                 {championPrints.length > 1 && (
                   <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
                     <h3 className="text-sm text-ctp-subtext1">Champion print · Lv{selectedPrint?.level ?? "?"}</h3>
@@ -440,12 +434,13 @@ export default function ChampionSynergy() {
                 {displayed && <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} initialVisible={4} />}
               </details>
             </Section>
+            <ChampionPackage key={`package-${championName}`} championName={championName} />
             <ChampionSeasonSnapshot key={`season-${championName}`} championName={championName} />
 
             <Section
               id="new"
               className="scroll-mt-48"
-              description={spiritFilter.kind === "element" ? `Connections for ${titleCase(spiritFilter.element)} decks. Change the scope in Browse cards and filters.` : spiritFilter.kind === "spirit" ? `Connections for ${spiritFilter.spiritName} decks. Change the scope in Browse cards and filters.` : "Connections across this champion’s recorded decks."}
+              description={spiritFilter.kind === "element" ? `Connections for ${titleCase(spiritFilter.element)} decks. Change the scope in Browse by Spirit and element.` : spiritFilter.kind === "spirit" ? `Connections for ${spiritFilter.spiritName} decks. Change the scope in Browse by Spirit and element.` : "Connections across this champion’s recorded decks."}
               title="New release candidates"
             >
               {newReleaseCards.length === 0 ? (

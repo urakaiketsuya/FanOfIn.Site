@@ -19,7 +19,8 @@ import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/ca
 import { computeEloRatings } from "./elo.js";
 import { computeRivals } from "./rivals.js";
 import { computeCardStats } from "./cardStats.js";
-import { computeCardStaples } from "./cardStaples.js";
+import { collectStapleObservations, computeCardStaples } from "./cardStaples.js";
+import { computeChampionPackages } from "./championPackages.js";
 import { computeKeywordStats } from "./keywordStats.js";
 import { computeCardQuantityStats } from "./cardQuantityStats.js";
 import { computeCardStatsByChampion } from "./cardStatsByChampion.js";
@@ -93,6 +94,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   await mkdir(DATA_DIR, { recursive: true });
   await writeJsonAtomic(path.join(DATA_DIR, 'budget-decks.json'), computeBudgetDecks(completed, ctx, budgetPrices, new Date().toISOString()), 0);
   await writeJsonAtomic(path.join(DATA_DIR, "card-staples.json"), computeCardStaples(allBundles, cardIndex), 0);
+  const staple = collectStapleObservations(allBundles);
+  await writeJsonAtomic(path.join(DATA_DIR, "champion-packages.json"), computeChampionPackages(staple.observations, cardIndex, new Date().toISOString(), staple.reference === null ? null : new Date(staple.reference).toISOString().slice(0, 10)), 0);
   await writeJsonAtomic(path.join(DATA_DIR, "community-card-staples.json"), computeCommunityCardStaples(await loadCommunityStaples(), cardIndex), 0);
 
   // Each of these is fast and independent of deck similarity (the one slow, champion-scoped

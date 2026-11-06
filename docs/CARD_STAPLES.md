@@ -22,6 +22,14 @@ or champion means the aggregate, so aggregates must never be summed with their c
 cohorts. Champion identity uses the existing material-deck signature. Unknown identities
 remain explicitly labeled rather than being omitted from aggregate counts.
 
+Champion cohorts also split by build. `championCard` is the highest-level, non-Spirit
+champion card of the champion's line in the deck's material (equal levels pick the name that
+sorts first). A cohort with `championCard: null` is all builds of that champion. The build
+cohorts partition their champion's decks: no deck is in two builds. A deck that lists only
+lower-level champion cards belongs to the build of its highest card, so "Level 1" builds are
+decks that never list a higher level. `findStapleCohort` and `stapleChampionBuilds` in
+`shared/src/cardStaples.ts` select them. Older projections lack the field and read as all builds.
+
 An array means a reported section, including an explicitly empty array. An absent section
 is unknown and excluded from that section's denominator. This is source reporting coverage,
 not a claim that an empty source array proves the player registered no sideboard cards.
@@ -54,8 +62,16 @@ and art tags are not promoted into keywords. Card type, class, and reserve/memor
 catalog metadata. Unknown costs do not match a numeric ceiling.
 
 Champion card level selects CHAMPION cards by their catalog level; it does not infer
-playability, a Level Locked requirement, or the level reached in a game. The champion-decks
-filter is separate. Filters, section, period, format, and sorting round-trip through the URL.
+playability, a Level Locked requirement, or the level reached in a game. The Champion and
+Build selectors (next to Element and Rank by) pick a deck cohort instead and are separate from
+it. They use the `champion` and `build` URL parameters; choosing another champion clears
+`build`. Filters, section, period, format, and sorting round-trip through the URL.
+
+Champion pages show the same cohorts, rows and denominators in a Staples section
+(`ChampionStaples.tsx`, standard format, all recorded results, Main and Material). It links to
+`/cards/staples` with the selected champion, build and section. Spirit element is the element of
+the Spirit a deck plays. It is not a card element and is not a staples cohort, so the Spirit
+breakdown stays a separate view on the champion page.
 Clear filters retains the selected section, format, period, and sort. The filter sheet applies
 changes immediately, so it owns no unsaved selection draft.
 
@@ -91,3 +107,36 @@ match outcomes, so win-rate controls and metrics are hidden. All community cohor
 full archive; fetchedAt selects snapshots but is never treated as a play or creation date.
 Switching sources preserves card filters and remembers tournament period/performance choices;
 community resolves those choices to full archive/most played. Clear filters preserves source.
+
+## Package check: Jin, Undying Resolve (2026-11-06, tournament decks)
+
+Of 1,748 decks listing Jin, Undying Resolve (main + material), counted from
+`deck-card-index.json`: Berserker Plate 1,715, Mend Flesh 1,658, Enrage 1,583, Seething
+Intercession 683. All four together: 625 decks. The usual exact variant of the four is
+Seething Intercession x4, Berserker Plate x1, Mend Flesh x4, Enrage x4 (266 of the 625).
+Seething Intercession is a newer card: 194 of the 203 decks in the last 90 days contain it
+(181 contain all four), against 39% all-time. All-time inclusion alone hides it, so a package
+view must show recent and all-time evidence apart. Per-card usual copies cannot give the exact
+variant: counts must come from decks that contain the whole package.
+
+## Champion packages
+
+`pipeline/src/analysis/championPackages.ts` publishes `analysis/champion-packages.json`
+(rebuild alone with `node --import tsx pipeline/scripts/build-champion-packages.ts`). It uses the
+same observations as Staples, standard format only, main + material, no sideboard. A package
+exists for each champion and each build (`championCard`) with at least 100 decks.
+
+- Core = cards in at least 75% of the build's decks in the primary window: the last 90 days
+  when there are at least 30 such decks, otherwise all decks. Up to 16 cards. If fewer than 25
+  decks hold the whole core, the least common core card moves out until 25 do. Champion cards
+  are left out (they are the build's identity). No win rate is needed.
+- Options = cards in 25% to 75% of the primary window, up to 12. They are not in the core.
+- Exact copies = quantity patterns of the core, counted only in decks that hold every core
+  card, not combined from each card's usual copies. Recent and all-time counts stay apart.
+- Every card shows recent and all-time inclusion side by side; they are never blended.
+
+The champion page shows this in a Package section (`ChampionPackage.tsx`) for the build picked
+in the Staples section. "Add to new deck" is the only action that changes anything: it merges
+the core (with the chosen copy pattern) and any selected options into the new-deck draft on
+this device (`packageDraft.ts`), then opens `/decks/new`. A card already in the draft keeps its
+larger quantity.

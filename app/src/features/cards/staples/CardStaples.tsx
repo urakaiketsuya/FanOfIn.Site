@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { blendCardStaples, staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
-import CardArtTile from "../../../components/CardArtTile";
+import { blendCardStaples, findStapleCohort, stapleChampionBuilds, staplePopulation, selectStapleRows, type CardStaplesData, type StapleFilters, type StaplePeriod, type StapleSection } from "@gatcg/shared";
 import PublishedSourceStatus from "../../../components/PublishedSourceStatus";
 import PageLayout from "../../../components/layout/PageLayout";
 import PageHeader from "../../../components/ui/PageHeader";
@@ -10,13 +9,13 @@ import Tabs, { TabPanel } from "../../../components/ui/Tabs";
 import { usePublishedData, usePublishedDataStatus } from "../../../lib/sync/usePublishedData";
 import { useDocumentTitle } from "../../../lib/useDocumentTitle";
 import { useCardsByNames } from "../../events/useCardsByNames";
+import StapleCardGrid from "./StapleCardGrid";
 import StaplesFilters, { FilterField } from "./StaplesFilters";
 import { fieldClass, titleCase } from "./staplesPresentation";
 
 const PAGE_SIZE = 24;
 const sections: { key: StapleSection; label: string }[] = [{ key: "main", label: "Main" }, { key: "material", label: "Material" }, { key: "sideboard", label: "Sideboard" }];
 const linkClass = "inline-flex min-h-control items-center rounded px-2 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue";
-const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 
 export default function CardStaples() {
   useDocumentTitle("Card Staples", "Discover the most played cards by deck section, element, keyword, and champion.");
@@ -41,6 +40,8 @@ export default function CardStaples() {
   const period: StaplePeriod = community || blended || params.get("period") === "all" ? "all" : params.get("period") === "30" ? "30" : "90";
   const format = params.get("format") ?? "standard";
   const champion = params.get("champion") ?? "";
+  // A build is a champion card of the selected champion; without a champion it means nothing.
+  const build = champion ? params.get("build") ?? "" : "";
   const filters = useMemo<StapleFilters>(() => ({
     search: params.get("q") ?? "", elements: [...new Set(params.getAll("element"))], keywords: [...new Set(params.getAll("keyword"))],
     keywordMode: params.get("match") === "all" ? "all" : "any", type: params.get("type") ?? "", cardClass: params.get("class") ?? "",
@@ -50,19 +51,24 @@ export default function CardStaples() {
     minDecks: [1, 5, 10, 20, 50].includes(Number(params.get("min"))) ? Number(params.get("min")) : 5,
     sort: !community && params.get("sort") === "winning" ? "winning" : params.get("sort") === "quantity" ? "quantity" : "usage",
   }), [params, community]);
-  const cohort = data?.cohorts.find(c => c.period === period && c.format === (format || null) && c.champion === (champion || null));
+  const cohort = data ? findStapleCohort(data, period, format || null, champion || null, build || null) : undefined;
   const stats = cohort?.sections[section];
   const rows = useMemo(() => selectStapleRows(data?.cards ?? [], stats?.rows ?? [], filters), [data, stats, filters]);
   const population = useMemo(() => data && stats ? staplePopulation(data, stats, filters) : null, [data, stats, filters]);
   const count = pagination.key === key ? pagination.count : PAGE_SIZE;
   const visible = rows.slice(0, count);
   const art = useCardsByNames(visible.map(row => data!.cards[row[0]].name));
+  const champions = useMemo(() => [...new Set([...(data?.cohorts.flatMap(c => c.period === period && c.format === (format || null) && c.champion ? [c.champion] : []) ?? []), ...(champion ? [champion] : [])])].sort(), [data, period, format, champion]);
+  const builds = useMemo(() => data && champion ? stapleChampionBuilds(data, period, format || null, champion) : [], [data, period, format, champion]);
+  const buildLabel = (name: string) => { const level = data?.cards.find(card => card.name === name)?.championLevel; return level == null ? name : `${name} · Level ${level}`; };
   const elements = useMemo(() => [...new Set([...(data?.cards.flatMap(card => card.elements) ?? []), ...filters.elements])].sort(), [data, filters.elements]);
   function change(name: string, value: string | string[]) {
     // Router search-param setters do not queue like React state setters. Keep quick
     // successive filter actions based on the latest requested URL during a transition.
     const next = new URLSearchParams(requestedParams.current);
     next.delete(name);
+    // A build belongs to one champion, so choosing another champion drops it.
+    if (name === "champion") next.delete("build");
     if (Array.isArray(value)) value.forEach(item => next.append(name, item));
     else if (value || name === "format") next.set(name, value);
     requestedParams.current = next;
@@ -72,6 +78,7 @@ export default function CardStaples() {
     ...filters.elements.map(value => ({ key: "element", value, label: titleCase(value) })),
     ...filters.keywords.map(value => ({ key: "keyword", value, label: value })),
     ...(champion ? [{ key: "champion", value: champion, label: `${champion} decks` }] : []),
+    ...(build ? [{ key: "build", value: build, label: buildLabel(build) }] : []),
     ...(filters.type ? [{ key: "type", value: filters.type, label: titleCase(filters.type) }] : []),
     ...(filters.cardClass ? [{ key: "class", value: filters.cardClass, label: titleCase(filters.cardClass) }] : []),
     ...(filters.level ? [{ key: "level", value: filters.level, label: `Level ${filters.level} champions` }] : []),
@@ -94,6 +101,8 @@ export default function CardStaples() {
     </div>
     <div className="mt-3 flex flex-wrap items-end gap-3">
       <div className="min-w-0 flex-1"><FilterField label="Element"><select className={fieldClass} value={filters.elements.length === 1 ? filters.elements[0] : ""} onChange={e => change("element", e.target.value ? [e.target.value] : [])}><option value="">All elements</option>{elements.map(value => <option key={value} value={value}>{titleCase(value)}</option>)}</select></FilterField></div>
+      <div className="min-w-0 flex-1"><FilterField label="Champion"><select className={fieldClass} value={champion} onChange={e => change("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name} value={name}>{name}</option>)}</select></FilterField></div>
+      {champion && <div className="min-w-0 flex-1"><FilterField label="Build"><select className={fieldClass} value={build} onChange={e => change("build", e.target.value)}><option value="">All {champion} builds</option>{builds.map(item => <option key={item.card} value={item.card}>{buildLabel(item.card)} ({item.decks.toLocaleString()})</option>)}{build && !builds.some(item => item.card === build) && <option value={build}>{buildLabel(build)}</option>}</select></FilterField></div>}
       <div className="min-w-0 flex-1"><FilterField label="Rank by"><select className={fieldClass} value={filters.sort} onChange={e => change("sort", e.target.value)}><option value="usage">Most played</option>{!community && <option value="winning">Adjusted win rate</option>}<option value="quantity">Average copies</option></select></FilterField></div>
     </div>
     {(chips.length > 0 || filters.search) && <div className="mt-3 flex flex-wrap gap-2" aria-label="Active filters">
@@ -104,27 +113,17 @@ export default function CardStaples() {
     {(community || blended) && <PublishedSourceStatus label="Community staples" status={communityStatus} hasData={!!communityData} />}
     <TabPanel baseId="staples" tab={section} active={section} className="mt-5 focus-visible:outline-2 focus-visible:outline-ctp-blue">
       <div aria-live="polite" className="mb-4 text-sm text-ctp-subtext1">
-        {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${champion}` : ""}` : ""}
+        {pending ? "Recalculating…" : data ? `${rows.length.toLocaleString()} cards · ${population === null ? "Population unavailable" : `${population.toLocaleString()} matching ${section} sections`}${champion ? ` · ${build ? buildLabel(build) : champion}` : ""}` : ""}
         {data && <span className="mt-1 block">{format ? titleCase(format) : "All formats"} · {blended ? "Tournament entries + unique community lists · Full archive" : community ? "Unique community lists · Full archive" : period === "all" ? "All recorded results" : `Last ${period} days`}</span>}
         {data && community && <span className="mt-1 block text-xs text-ctp-subtext0">ShoutAtYourDecks · Sleeved · TcgArchitect{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} lists report a sideboard` : ""}</span>}
         {data?.throughDate && <span className="mt-1 block text-xs text-ctp-subtext0">Results through {data.throughDate}{section === "sideboard" ? ` · ${stats?.decks ?? 0} of ${cohort?.decks ?? 0} decks report a sideboard` : ""}</span>}
       </div>
       {data && rows.length === 0 && <div role="status" className="rounded-xl border border-ctp-surface1 p-5"><p>No cards match this selection.</p><Button className="mt-3" onClick={clearFilters}>Clear card filters</Button></div>}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-busy={pending}>
-        {visible.map((row, index) => {
-          const card = data!.cards[row[0]];
-          const identity = <><div className="w-24 shrink-0"><CardArtTile card={art.get(card.name)} name={card.name} /></div><div className="min-w-0"><span className="text-xs text-ctp-subtext0">#{index + 1}</span><h2 className="mt-1 break-words font-semibold text-ctp-text">{card.name}</h2><p className="mt-2 text-xs text-ctp-subtext1">{card.elements.map(titleCase).join(" · ")}{card.championLevel !== null ? ` · Level ${card.championLevel}` : ""}</p></div></>;
-          return <article key={card.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3" aria-label={card.name}>
-            {card.slug ? <Link to={`/cards/${card.slug}`} className="flex gap-3 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{identity}</Link> : <div className="flex gap-3">{identity}</div>}
-            {card.keywords.length > 0 && <p className="mt-3 break-words text-xs text-ctp-subtext1">{card.keywords.join(" · ")}</p>}
-            <div className="mt-3 flex items-baseline justify-between gap-2"><strong className="text-xl text-ctp-blue">{population === null ? "—" : percent(population ? row[1] / population : 0)}</strong><span className="text-xs text-ctp-subtext1">{row[1].toLocaleString()} {community ? "unique lists" : "decks"}</span></div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: percent(population ? row[1] / population : 0) }} /></div>
-            {!blended && <p className="mt-2 text-xs text-ctp-subtext1">Usually {row[3]} {row[3] === 1 ? "copy" : "copies"}</p>}
-          </article>;
-        })}
+        {data && <StapleCardGrid data={data} rows={visible} population={population} art={art} unit={community ? "unique lists" : "decks"} showCopies={!blended} />}
       </div>
       {rows.length > count && <Button className="mt-5 w-full" onClick={() => setPagination({ key, count: count + PAGE_SIZE })}>Show more cards</Button>}
     </TabPanel>
-    {showFilters && <StaplesFilters community={community || blended} data={data} filters={filters} champion={champion} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
+    {showFilters && <StaplesFilters community={community || blended} data={data} filters={filters} format={format} period={period} onChange={change} onDismiss={() => setShowFilters(false)} />}
   </PageLayout>;
 }

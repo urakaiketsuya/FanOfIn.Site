@@ -22,6 +22,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import ChampionStaples from "./ChampionStaples";
 import { ChampionBonusSection, ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
 
@@ -278,9 +279,11 @@ export default function ChampionDetail() {
             {trendsData && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
           </>}
 
+          {showOverview && <ChampionStaples key={championName} championName={championName} />}
+
           {showOverview && champion.topCards.main.length > 0 && (
-            <Section className="mt-6" heading="compact" title="Most used cards">
-              <p className="mt-2 text-sm text-ctp-subtext1">Explore the cards players bring with {championName}.</p>
+            <Section className="mt-6" heading="compact" title="Most used cards by Spirit">
+              <p className="mt-2 text-sm text-ctp-subtext1">Explore the cards players bring with {championName}, split by the Spirit they play.</p>
               <p className="mt-2 text-sm text-ctp-subtext0">
                 Showing {spiritFilter.kind === "all" ? "all elements and Spirits" : spiritFilter.kind === "element" ? titleCase(spiritFilter.element) : spiritFilter.spiritName}.
                 {typeFilter !== "all" && ` Main cards: ${titleCase(typeFilter)}.`} Card win rates cover all {championName} decks, regardless of these filters.
