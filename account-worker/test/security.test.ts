@@ -355,10 +355,10 @@ test("public profiles include only their public deck summaries", async () => {
   const database = { prepare(query: string) { queries.push(query); return { bind() { return this; }, async first() { return query.includes("profile_showcases") ? null : { id: "pilot", display_name: "Pilot", profile_slug: "b".repeat(24) }; }, async all() { return { results: [] }; } }; } } as unknown as D1Database;
   const profile = await getPublicProfile({ ACCOUNT_DB: database } as Env, "b".repeat(24));
   assert.deepEqual(profile, { displayName: "Pilot", profileSlug: "b".repeat(24), decks: [], favoriteCardIds: [], favoriteArtistIds: undefined, favoriteSetIds: undefined, featuredDecks: [], featuredTournamentDecks: [] });
-  assert.match(queries[0], /profile_discoverable = 1/);
-  assert.match(queries[1], /ud\.visibility = 'public'/);
-  assert.match(queries[1], /moderation_status = 'active'/);
-  assert.equal(await getPublicProfile({ ACCOUNT_DB: database } as Env, "invalid"), null);
+  assert.match(queries[1], /profile_discoverable = 1/);
+  assert.match(queries[2], /ud\.visibility = 'public'/);
+  assert.match(queries[2], /moderation_status = 'active'/);
+  assert.equal(await getPublicProfile({ ACCOUNT_DB: database } as Env, "invalid/address"), null);
 });
 
 test("deck reports are bounded, reject self-reporting, and are idempotent", async () => {

@@ -18,6 +18,8 @@ import { InlineState } from "../../components/ui/ContentState";
 export default function AccountIndex() {
   useDocumentTitle("Account", "Manage your Fan of Insight account and public profile.");
   const [user, setUser] = useState<AccountUser | null>();
+  const [admin, setAdmin] = useState(false);
+  useEffect(() => { let active = true; setAdmin(false); if (user) void accountApi.adminAccess().then(result => { if (active) setAdmin(result.admin); }).catch(() => undefined); return () => { active = false; }; }, [user]);
   const [showShowcase, setShowShowcase] = useState(false);
   const [username, setUsername] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +71,7 @@ export default function AccountIndex() {
   if (!user) return <PageLayout data-component="AccountIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-2 text-ctp-subtext1">Sign in to manage your profile and account.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { setUser((await accountApi.googleSignIn(credential, nonce)).user); setIdentities((await accountApi.authIdentities()).identities); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void accountApi.authIdentities().then((result) => setIdentities(result.identities)); }} /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
 
   return <PageLayout data-component="AccountIndex">
+    {admin && <Link to="/admin" className="mb-4 inline-flex min-h-12 items-center rounded-lg px-3 text-ctp-blue focus-visible:outline-2">Admin dashboard</Link>}
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/decks/edit" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
 

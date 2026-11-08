@@ -37,12 +37,12 @@ export default function PublicUserProfile() {
     let active = true;
     setProfile(undefined); setError(null);
     void accountApi.publicProfile(profileSlug).then(({ profile: result }) => {
-      if (active) setProfile(result);
+      if (active) { setProfile(result); if (result.profileSlug !== profileSlug) navigate(`/users/${encodeURIComponent(result.profileSlug)}`, { replace: true }); }
     }).catch((reason: unknown) => {
       if (active) { setError(reason instanceof Error ? reason.message : "Profile could not be loaded"); setProfile(null); }
     });
     return () => { active = false; };
-  }, [profileSlug, attempt]);
+  }, [profileSlug, attempt, navigate]);
   if (profile === undefined) return <PageLayout data-component="PublicUserProfile" width="wide"><InlineState className="mt-10">Loading profile…</InlineState></PageLayout>;
   if (!profile) return <PageLayout data-component="PublicUserProfile" width="wide"><EmptyState title="Profile unavailable" description={error} action={<Button onClick={() => setAttempt(value => value + 1)}>Retry profile</Button>} /></PageLayout>;
   return <PageLayout data-component="PublicUserProfile" width="wide">

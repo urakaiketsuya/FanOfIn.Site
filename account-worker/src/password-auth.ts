@@ -1,3 +1,4 @@
+import { writeUsernameAddress } from "./profile-address";
 import type { AuthUser, Env } from "./auth";
 import { createSessionForUser, normalizeDisplayName } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -172,11 +173,11 @@ export async function registerPassword(env: Env, rawEmail: unknown, rawPassword:
     (id, user_id, normalized_email, password_hash, password_salt, hash_algorithm, hash_iterations, email_verified, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, 'pbkdf2-sha256', ?, 0, ?, ?)`)
     .bind(credentialId, userId, email, derived.hash, derived.salt, derived.iterations, now, now);
-  if (!currentUser) await env.ACCOUNT_DB.batch([
+  if (!currentUser) await writeUsernameAddress(env, displayName, userId, address => env.ACCOUNT_DB.batch([
     env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
-      VALUES (?, ?, ?, ?, NULL, ?, ?, ?)`).bind(userId, `password:${credentialId}`, email, displayName, crypto.randomUUID().replace(/-/g, "").slice(0, 24), now, now),
+      VALUES (?, ?, ?, ?, NULL, ?, ?, ?)`).bind(userId, `password:${credentialId}`, email, displayName, address, now, now),
     credentialInsert,
-  ]);
+  ]));
   else await credentialInsert.run();
   const token = await issueToken(env, credentialId, "verify-email");
   try {

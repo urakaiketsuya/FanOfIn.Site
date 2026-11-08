@@ -1,3 +1,5 @@
+import { profileAddressChecks } from "./profile-address-checks";
+import { adminWorkspaceChecks } from "./admin-workspace-checks";
 import { restoreChecks } from "../../../scripts/account-restore-check.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
@@ -40,6 +42,8 @@ try {
   assert.deepEqual(after.maybeboard, command.maybeboard);
   assert.deepEqual((await listDecks(env, user))[0].decklist, after.decklist);
   await assert.rejects(createDeckVersion(env, user, id, { ...command, requestId: crypto.randomUUID() }), /changed elsewhere/);
+  await adminWorkspaceChecks(env, user);
+  await profileAddressChecks(env);
   console.log("Local D1: migrations, recovery queries, batch rollback, retry receipts, concurrent retries, and revision conflicts passed.");
 } finally {
   await runtime?.dispose();

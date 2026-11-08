@@ -1,3 +1,4 @@
+import { writeUsernameAddress } from "./profile-address";
 import { validUserFacingName } from "./content-policy";
 
 export interface Env {
@@ -163,13 +164,15 @@ export async function createUserSession(env: Env, provider: AuthProvider, claims
   const userId = linkUser?.id ?? existing?.id ?? crypto.randomUUID();
   const suggestedName = normalizeDisplayName(claims.name) ?? normalizeDisplayName(claims.email.split("@")[0]);
   const displayName = linkUser?.displayName ?? existing?.display_name ?? suggestedName ?? "Deck Player";
-  const profileSlug = linkUser?.profileSlug ?? existing?.profile_slug ?? crypto.randomUUID().replace(/-/g, "").slice(0, 24);
+  let profileSlug = linkUser?.profileSlug ?? existing?.profile_slug;
   // google_subject remains as a compatibility column until a future full users-table rebuild.
   // All authentication lookups use auth_identities; new non-Google users receive an inert unique value.
-  await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
+  const writeUser = (address: string) => env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET updated_at = excluded.updated_at`)
-    .bind(userId, provider === "google" ? claims.sub : `${provider}:${claims.sub}`, claims.email, displayName, claims.picture ?? null, profileSlug, now, now).run();
+    .bind(userId, provider === "google" ? claims.sub : `${provider}:${claims.sub}`, claims.email, displayName, claims.picture ?? null, address, now, now).run();
+  if (profileSlug) await writeUser(profileSlug);
+  else profileSlug = await writeUsernameAddress(env, displayName, userId, writeUser);
   await env.ACCOUNT_DB.prepare(`INSERT INTO auth_identities (id, user_id, provider, provider_subject, provider_email, email_verified, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, 1, ?, ?)
     ON CONFLICT(provider, provider_subject) DO UPDATE SET provider_email = excluded.provider_email, updated_at = excluded.updated_at`)

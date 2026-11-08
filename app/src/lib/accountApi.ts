@@ -1,3 +1,4 @@
+import type { AdminOverview, EditorialPackage, EditorialPackageInput } from "@gatcg/shared";
 import type { MerchandiseCollection, MerchandiseSaveInput } from "@gatcg/shared";
 import type { CollectionProgressGoal } from "@gatcg/shared";
 import type { DeckLinkPreview } from "@gatcg/shared";
@@ -62,6 +63,11 @@ async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> 
 }
 
 export const accountApi = {
+  adminAccess: () => accountRequest<{ admin: boolean }>("/v1/me/admin"),
+  adminOverview: () => accountRequest<AdminOverview>("/v1/admin/overview"),
+  adminPackages: () => accountRequest<{ packages: EditorialPackage[] }>("/v1/admin/packages"),
+  publishedPackages: () => accountRequest<{ packages: EditorialPackage[] }>("/v1/packages"),
+  saveAdminPackage: (id: string, input: EditorialPackageInput) => accountRequest<{ package: EditorialPackage }>(`/v1/admin/packages/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(input) }),
   merchandise: () => accountRequest<MerchandiseCollection>("/v1/me/collection/merchandise"),
   saveMerchandise: (input: MerchandiseSaveInput) => accountRequest<MerchandiseCollection>("/v1/me/collection/merchandise", { method: "PUT", body: JSON.stringify(input) }),
   collectionProgressGoals: () => accountRequest<{ userId: string; goals: CollectionProgressGoal[] }>("/v1/me/collection/goals"),

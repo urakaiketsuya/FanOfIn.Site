@@ -1,3 +1,4 @@
+import EditorialPackages from "../packages/EditorialPackages";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PUBLISHED_PACKAGE_CATALOG } from "@gatcg/shared";
@@ -45,7 +46,8 @@ function PublishedPackages({ packageId, visible }: { packageId: string; visible:
     </label>
     <p role="status" className="my-4 text-sm text-ctp-subtext0">{packages.length} published {packages.length === 1 ? "package" : "packages"}</p>
     {!packages.length && <p>No packages match your search.</p>}
-    <div className="space-y-4">
+    <EditorialPackages query={normalized} />
+    <div className="mt-4 space-y-4">
       {packages.map(pkg => {
         const captions = new Map(pkg.requirements.flatMap(requirement => requirement.cards.map(name => [name,
           `${requirement.section === "main" ? "Main" : "Material"} · ${requirement.minimum === requirement.cards.length ? "Required" : `At least ${requirement.minimum} of ${requirement.cards.length}`}`] as const)));

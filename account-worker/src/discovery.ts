@@ -1,3 +1,4 @@
+import { resolveProfileAddress } from "./profile-address";
 import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
 import { getShowcase } from "./profile-showcase";
 import { databaseAll } from "./database";
@@ -6,7 +7,7 @@ import type { DeckFormat, PublicDeckSummary, PublicProfile } from "@gatcg/shared
 import type { Env } from "./auth";
 import { badRequest } from "./errors";
 
-const PROFILE_SLUG = /^[a-f0-9]{24}$/;
+const PROFILE_SLUG = /^[a-zA-Z0-9_-]{1,80}$/;
 const MAX_QUERY_LENGTH = 80;
 const PAGE_SIZE = 24;
 
@@ -77,6 +78,7 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
 
 export async function getPublicProfile(env: Env, slug: string): Promise<PublicProfile | null> {
   if (!PROFILE_SLUG.test(slug)) return null;
+  slug = await resolveProfileAddress(env, slug);
   const user = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1 AND is_system = 0")
     .bind(slug).first<{ id: string; display_name: string; profile_slug: string }>();
   if (!user) return null;

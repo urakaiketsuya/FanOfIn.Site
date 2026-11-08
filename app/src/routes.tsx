@@ -1,3 +1,4 @@
+const AdminDashboard = lazy(() => import("./features/packages/AdminDashboard"));
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
 import NotFound from "./pages/NotFound";
@@ -196,6 +197,7 @@ export default function AppRoutes() {
         <Route path="/stores" element={<Stores />} />
         <Route path="/stores/:id" element={<Stores />} />
         <Route path="/cards/staples" element={<CardStaples />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/cards/packages" element={<PackagesIndex />} />
         <Route path="/cards/packages/shared" element={<SharedPackagePage />} />
         <Route path="/cards/tags" element={<TagGallery />} />

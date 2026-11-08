@@ -1,3 +1,4 @@
+import { resolveProfileAddress } from "./profile-address";
 import type { AuthUser, Env } from "./auth";
 import type { BinderItem, BinderItemKind, BinderSettings, PublicBinder, Trade, TradeLine, TradeMethod, TradeStatus } from "@gatcg/shared";
 import { effectiveBinderItems, binderItemsMatch, tradeAvailability, isCardFinish, type CardFinish } from "@gatcg/shared";
@@ -41,7 +42,7 @@ export async function myBinder(env: Env, user: AuthUser): Promise<{ settings: Bi
 
 export async function publicBinder(env: Env, profileSlug: string): Promise<PublicBinder | null> {
   const owner = await env.ACCOUNT_DB.prepare(`SELECT u.id, u.display_name, u.profile_slug, s.* FROM users u JOIN binder_settings s ON s.user_id = u.id
-    WHERE u.profile_slug = ? AND u.profile_discoverable = 1 AND s.is_public = 1`).bind(profileSlug).first<Record<string, unknown>>();
+    WHERE u.profile_slug = ? AND u.profile_discoverable = 1 AND s.is_public = 1`).bind(await resolveProfileAddress(env, profileSlug)).first<Record<string, unknown>>();
   if (!owner) return null;
   return { owner: { displayName: String(owner.display_name), profileSlug: String(owner.profile_slug) }, settings: settings(owner), items: await itemsForUser(env, String(owner.id), true) };
 }
@@ -151,7 +152,7 @@ async function tradeFor(env: Env, user: AuthUser, id: string): Promise<Record<st
 export async function createTrade(env: Env, user: AuthUser, value: unknown): Promise<{ id: string }> {
   const input = value as { recipientProfileSlug?: unknown; lines?: unknown; message?: unknown } | null;
   if (!input || typeof input.recipientProfileSlug !== "string") throw badRequest("A trade partner is required");
-  const recipient = await env.ACCOUNT_DB.prepare(`SELECT u.id FROM users u JOIN binder_settings s ON s.user_id = u.id WHERE u.profile_slug = ? AND s.is_public = 1`).bind(input.recipientProfileSlug).first<{ id: string }>();
+  const recipient = await env.ACCOUNT_DB.prepare(`SELECT u.id FROM users u JOIN binder_settings s ON s.user_id = u.id WHERE u.profile_slug = ? AND s.is_public = 1`).bind(await resolveProfileAddress(env, input.recipientProfileSlug)).first<{ id: string }>();
   if (!recipient || recipient.id === user.id) throw badRequest("Trade partner is unavailable");
   const lines = await snapshotLines(env, user.id, recipient.id, input.lines);
   const now = new Date().toISOString(), id = crypto.randomUUID(), message = typeof input.message === "string" ? input.message.trim().slice(0, 1_000) : "";

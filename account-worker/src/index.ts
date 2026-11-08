@@ -1,3 +1,5 @@
+import { writeUsernameAddress, resolveProfileAddress } from "./profile-address";
+import { isAdmin, requireAdmin, adminOverview, listEditorialPackages, saveEditorialPackage } from "./admin-workspace";
 import { listMerchandise, saveMerchandise } from "./merchandise";
 import { listCollectionProgressGoals, saveCollectionProgressGoals } from "./collection-progress-goals";
 import { previewDeckLink } from "./deck-links";
@@ -233,12 +235,12 @@ export default {
         return combo ? response(env, request, { combo }) : response(env, request, { error: "Combo not found" }, 404);
       }
       if (request.method === "GET" && url.pathname === "/v1/discover/profiles") return response(env, request, await discoverProfiles(env, url.searchParams));
-      const publicProfileMatch = url.pathname.match(/^\/v1\/profiles\/([a-f0-9]{24})$/);
+      const publicProfileMatch = url.pathname.match(/^\/v1\/profiles\/([a-zA-Z0-9_-]{1,80})$/);
       if (publicProfileMatch && request.method === "GET") {
         const profile = await getPublicProfile(env, publicProfileMatch[1]);
         return profile ? response(env, request, { profile }) : response(env, request, { error: "Profile not found" }, 404);
       }
-      const publicBinderMatch = url.pathname.match(/^\/v1\/binders\/([a-f0-9]{24})$/);
+      const publicBinderMatch = url.pathname.match(/^\/v1\/binders\/([a-zA-Z0-9_-]{1,80})$/);
       if (publicBinderMatch && request.method === "GET") {
         const binder = await publicBinder(env, publicBinderMatch[1]);
         return binder ? response(env, request, { binder }) : response(env, request, { error: "Binder not found" }, 404);
@@ -251,8 +253,21 @@ export default {
 
       if (request.method === "GET" && url.pathname === "/v1/card-tags") return response(env, request, { overrides: await listTagOverrides(env) });
 
+      if (url.pathname === "/v1/packages" && request.method === "GET") return response(env, request, { packages: await listEditorialPackages(env, true) });
+
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+      if (url.pathname === "/v1/me/admin" && request.method === "GET") return response(env, request, { admin: await isAdmin(env, user) });
+      if (url.pathname.startsWith("/v1/admin/")) {
+        await requireAdmin(env, user);
+        if (url.pathname === "/v1/admin/overview" && request.method === "GET") return response(env, request, await adminOverview(env));
+        if (url.pathname === "/v1/admin/packages" && request.method === "GET") return response(env, request, { packages: await listEditorialPackages(env) });
+        const packageMatch = url.pathname.match(/^\/v1\/admin\/packages\/([a-zA-Z0-9-]+)$/);
+        if (packageMatch && request.method === "PUT") {
+          if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+          return response(env, request, { package: await saveEditorialPackage(env, user, packageMatch[1], await jsonBody(request)) });
+        }
+      }
       if (url.pathname === "/v1/me/showcase" && request.method === "GET") return response(env, request, { showcase: await getShowcase(env, user.id) });
       if (url.pathname === "/v1/me/showcase" && request.method === "PUT") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
@@ -289,8 +304,8 @@ export default {
       if (commentMatch && request.method === "DELETE") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await deleteComment(env, user, commentMatch[1]); return response(env, request, { success: true }); }
       const commentReportMatch = url.pathname.match(/^\/v1\/me\/comments\/([^/]+)\/report$/);
       if (commentReportMatch && request.method === "POST") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await reportComment(env, user, commentReportMatch[1], await jsonBody(request)); return response(env, request, { reported: true }, 201); }
-      const blockMatch = url.pathname.match(/^\/v1\/me\/blocks\/([a-f0-9]{24})$/);
-      if (blockMatch && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await setBlock(env, user, blockMatch[1], (await jsonBody(request) as { blocked?: unknown }).blocked); return response(env, request, { success: true }); }
+      const blockMatch = url.pathname.match(/^\/v1\/me\/blocks\/([a-zA-Z0-9_-]{1,80})$/);
+      if (blockMatch && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await setBlock(env, user, await resolveProfileAddress(env, blockMatch[1]), (await jsonBody(request) as { blocked?: unknown }).blocked); return response(env, request, { success: true }); }
 
       if (url.pathname === "/v1/me/binder" && request.method === "GET") return response(env, request, await myBinder(env, user));
       if (url.pathname === "/v1/me/binder/settings" && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); return response(env, request, { settings: await saveBinderSettings(env, user, await jsonBody(request)) }); }
@@ -480,10 +495,11 @@ export default {
         const displayNameReviewed = body.displayNameReviewed === undefined ? (body.displayName === undefined ? user.displayNameReviewed : true) : body.displayNameReviewed;
         if (typeof deckChecklistDismissed !== "boolean" || typeof displayNameReviewed !== "boolean") throw badRequest("Account preferences must be booleans");
         const now = new Date().toISOString();
-        await env.ACCOUNT_DB.prepare(`UPDATE users SET display_name = ?, profile_discoverable = ?, deck_checklist_dismissed = ?,
+        const writeProfile = (profileSlug: string) => env.ACCOUNT_DB.prepare(`UPDATE users SET profile_slug = ?, display_name = ?, profile_discoverable = ?, deck_checklist_dismissed = ?,
           display_name_reviewed = ?, updated_at = ? WHERE id = ?`)
-          .bind(displayName, profileDiscoverable ? 1 : 0, deckChecklistDismissed ? 1 : 0, displayNameReviewed ? 1 : 0, now, user.id).run();
-        return response(env, request, { user: { ...user, displayName, profileDiscoverable, deckChecklistDismissed, displayNameReviewed } });
+          .bind(profileSlug, displayName, profileDiscoverable ? 1 : 0, deckChecklistDismissed ? 1 : 0, displayNameReviewed ? 1 : 0, now, user.id).run();
+        const profileSlug = body.displayName === undefined ? (await writeProfile(user.profileSlug), user.profileSlug) : await writeUsernameAddress(env, displayName, user.id, writeProfile);
+        return response(env, request, { user: { ...user, profileSlug, displayName, profileDiscoverable, deckChecklistDismissed, displayNameReviewed } });
       }
       if (request.method === "DELETE" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

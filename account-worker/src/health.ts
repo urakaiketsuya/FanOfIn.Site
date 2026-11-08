@@ -1,7 +1,7 @@
 import { databaseBatch } from "./database";
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0036";
+export const REQUIRED_SCHEMA_VERSION = "0039";
 
 export interface ServiceHealth {
   success: boolean;
@@ -24,6 +24,9 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
       user_decks.revision, user_decks.moderation_status, user_decks.primer_markdown, user_decks.tags_json, user_decks.published_title, user_decks.maybeboard_json
       FROM users CROSS JOIN user_decks LIMIT 0`),
       env.ACCOUNT_DB.prepare("SELECT id FROM deck_reports LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT user_id FROM admin_users LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT id, definition_json, status, revision FROM editorial_packages LIMIT 0"),
+      env.ACCOUNT_DB.prepare("SELECT slug, user_id FROM profile_aliases LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, finish, owned_quantity, proxy_quantity FROM collection_entries LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, finish, owned_quantity, proxy_quantity FROM collection_printing_entries LIMIT 0"),
       env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, card_name FROM shared_card_watches LIMIT 0"),
