@@ -87,6 +87,7 @@ export * from './fieldEquilibrium';
 export * from './fieldEquilibriumPool';
 
 export * from "./cardStaples.js";
+export * from "./sharedPackageLink.js";
 
 export * from "./publishedPackages.js";
 

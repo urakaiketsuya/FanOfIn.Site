@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import type { ChampionPackageCard, ChampionPackagesData } from "@gatcg/shared";
-import CardArtTile from "../../components/CardArtTile";
+import CardResult from "../../components/CardResult";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
@@ -9,15 +9,22 @@ import { InlineState } from "../../components/ui/ContentState";
 import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { addPackageToNewDeckDraft } from "../account/packageDraft";
+import { sharedPackageFromLines } from "@gatcg/shared";
+import { packageShareUrl } from "../../lib/packageShareUrl";
+import { useToast } from "../../components/ui/toast/ToastContext";
 
 const pct = (value: number | null) => value === null ? "—" : `${Math.round(value * 100)}%`;
 /** Tonal fill, lift and a check mark mark a selected option; color is never the only cue. */
 const optionClass = "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] aria-pressed:border-ctp-blue aria-pressed:bg-ctp-blue/15 aria-pressed:text-ctp-blue aria-pressed:shadow-md aria-pressed:font-semibold";
-const tileClass = "min-w-0 rounded-xl border bg-ctp-mantle p-3 text-left transition-all duration-200";
 
 /** Cards one champion build plays together, with recent and all-time evidence kept apart.
  * Nothing reaches a deck until the Add button is pressed. */
 export default function ChampionPackage({ championName }: { championName: string }) {
+  const [params] = useSearchParams();
+  return <ChampionPackageSelection key={JSON.stringify([championName, params.get("build") ?? ""])} championName={championName} />;
+}
+
+function ChampionPackageSelection({ championName }: { championName: string }) {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const data = usePublishedData<ChampionPackagesData>("analysis-champion-packages", "/data/analysis/champion-packages.json");
@@ -28,28 +35,39 @@ export default function ChampionPackage({ championName }: { championName: string
   const [variantIndex, setVariantIndex] = useState(0);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
   const [error, setError] = useState("");
+  const { notify } = useToast();
   const names = useMemo(() => pack ? [...pack.core, ...pack.options].map(card => card.name) : [], [pack]);
   const art = useCardsByNames(names);
   if (data && !pack) return mine.length || requested ? <Section id="package" className="scroll-mt-48" heading="compact" title="Package"><InlineState className="text-sm">{requested ? "This build has too few decks for a package." : "No package is available for this champion yet."}</InlineState></Section> : null;
   const variant = pack?.variants[Math.min(variantIndex, (pack?.variants.length ?? 1) - 1)];
   const recentBasis = pack?.basis === "recent";
   const key = (card: ChampionPackageCard) => `${card.section}:${card.name}`;
-  function add() {
-    if (!pack || !variant) return;
-    const lines = [
+  function chosenLines() {
+    if (!pack || !variant) return [];
+    return [
       ...pack.core.map((card, index) => ({ name: card.name, section: card.section, quantity: variant.copies[index] })),
       ...pack.options.filter(card => picked[key(card)]).map(card => ({ name: card.name, section: card.section, quantity: card.usualCopies })),
     ];
+  }
+  async function copyLink() {
+    if (!pack) return;
+    const url = packageShareUrl(sharedPackageFromLines(`${pack.championCard ?? pack.champion} package`, pack.champion, chosenLines()));
+    try { await navigator.clipboard.writeText(url); notify({ message: "Package link copied.", key: "package-link" }); }
+    catch { notify({ tone: "error", message: "Could not copy the package link. Please try again.", key: "package-link" }); }
+  }
+  function add() {
+    if (!pack || !variant) return;
+    const lines = chosenLines();
     if (!addPackageToNewDeckDraft(lines, `${pack.championCard ?? pack.champion} package`)) { setError("Could not save the draft on this device. Check that site storage is allowed."); return; }
     navigate("/decks/new");
   }
   const tile = (card: ChampionPackageCard, copies: number, extra?: { selected: boolean; toggle: () => void }) => {
-    const body = <><div className="w-full"><CardArtTile card={art.get(card.name)} name={card.name} /></div>
-      <span className="mt-2 block break-words text-sm font-medium text-ctp-text">{extra?.selected && "✓ "}{copies}× {card.name}</span>
-      <span className="mt-1 block text-xs text-ctp-subtext1">{card.section === "main" ? "Main" : "Material"} · Recent {pct(card.recentInclusion)} · All-time {pct(card.allInclusion)}</span></>;
-    return extra
-      ? <button key={key(card)} type="button" aria-pressed={extra.selected} onClick={extra.toggle} className={`${tileClass} hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] ${extra.selected ? "border-ctp-blue bg-ctp-blue/10 shadow-md" : "border-ctp-surface1"}`}>{body}</button>
-      : <div key={key(card)} className={`${tileClass} border-ctp-surface1 hover:-translate-y-0.5 hover:shadow-md`}>{body}</div>;
+    const resolved = art.get(card.name);
+    return <CardResult key={key(card)} card={resolved} name={card.name} selected={extra?.selected} onSelect={extra?.toggle}>
+      <span className="mt-2 block text-sm text-ctp-text">{copies} copies · {card.section === "main" ? "Main" : "Material"}</span>
+      <span className="mt-1 block text-xs text-ctp-subtext1">Recent {pct(card.recentInclusion)} · All-time {pct(card.allInclusion)}</span>
+      {extra && resolved && <Link to={`/cards/${resolved.slug}`} className="mt-2 flex min-h-12 items-center rounded px-2 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" aria-label={`Details for ${card.name}`}>Card details</Link>}
+    </CardResult>;
   };
   return <Section id="package" className="scroll-mt-48" heading="compact" title="Package"
     description="Cards that players of this build bring together. Built from decks that contain the whole core, not from each card alone.">
@@ -71,6 +89,7 @@ export default function ChampionPackage({ championName }: { championName: string
       </>}
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <Button variant="primary" onClick={add}>Add to new deck</Button>
+        <Button onClick={() => void copyLink()}>Copy package link</Button>
         <span className="text-xs text-ctp-subtext0">Opens the deck editor with these cards. A deck you are already drafting keeps its cards.</span>
       </div>
       {error && <p role="alert" className="mt-2 text-sm text-ctp-red">{error}</p>}
