@@ -1,4 +1,5 @@
 import type { Card, ConstructionReport, EditorialPackage, PackageCandidatesData, PackageResearchReview, SharedPackageCard, WinRatePackagesData } from '@gatcg/shared';
+import { SHARED_PACKAGE_LIMITS } from '@gatcg/shared';
 import { getRegisteredDeckPackageCatalog } from '../deckbuilder/packageGuardrails';
 import { DECK_PACKAGE_CANDIDATES } from '../deckbuilder/packageCandidates';
 import { buildSuggestedPackages } from '../cards/suggestedPackages';
@@ -70,4 +71,18 @@ export function researchStatus(saved?: EditorialPackage, current?: ResearchFindi
   if (!saved) return 'Needs review';
   if (current && saved.research?.fingerprint !== current.research.fingerprint) return 'Updated evidence';
   return saved.research?.dismissed ? 'Dismissed' : saved.status === 'published' ? 'Approved' : 'Draft';
+}
+
+/** Combine full selected pools, without inheriting approval or asserting joint evidence. */
+export function combinedResearchDraft(findings: ResearchFinding[], catalog: ReadonlyMap<string, Card>, id: string): EditorialPackage {
+  if (new Set(findings.map(f => f.research.key)).size < 2) throw new Error('Select at least two findings.');
+  const names = [...new Set(findings.flatMap(f => f.cards))].sort();
+  if (!names.length) throw new Error('These findings have no cards to combine.');
+  if (names.length > SHARED_PACKAGE_LIMITS.maxCards) throw new Error(`Select fewer findings: a package can hold up to ${SHARED_PACKAGE_LIMITS.maxCards} cards.`);
+  const cards: SharedPackageCard[] = names.map(name => {
+    const sections = new Set(findings.filter(f => f.cards.includes(name)).flatMap(f => f.sections?.has(name) ? [f.sections.get(name)!] : []));
+    if (sections.size > 1) throw new Error(`Conflicting sections for ${name}. Review those findings separately.`);
+    return { name, quantity: 1, section: [...sections][0] ?? (catalog.get(name)?.types.some(type => type === 'CHAMPION' || type === 'REGALIA') ? 'material' : 'main') };
+  });
+  return { id, definition: { v: 1, name: 'Combined package', cards }, revision: 0, status: 'draft', updatedAt: '' };
 }

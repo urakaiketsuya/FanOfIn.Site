@@ -762,3 +762,21 @@ Opposing-player follow-up: checked the 180° top panel and upright bottom panel 
 390px and 1280px, independent increments, keyboard activation, 80px-high controls,
 and no horizontal overflow. Focused lint passes. Native phone keyboard behavior
 remains untested.
+
+## Combining package findings
+
+Admin → Research supports selecting findings across filters, source reports and pagination.
+Combine selected opens a new editorial draft containing the union of their full card pools,
+with each card included once at one copy. Explicit source sections take precedence over
+catalog defaults; conflicting sections and pools over 60 cards produce a visible error
+without truncation. Selections remain available after closing the editor. Clear selection
+is explicit. The draft uses the existing package editor, save validation and publication
+flow. It does not approve, dismiss, replace or inherit evidence from the source findings.
+Combined drafts appear in Admin → Packages after saving.
+
+Verification (2026-11-09): focused fixtures cover overlapping and optional cards,
+deterministic order, section conflicts, oversized pools and independent draft status.
+Browser checks use isolated account/report responses for selection across search and retry,
+one-copy deduplication, quantity editing, failed-save recovery, save/reload, keyboard focus,
+draft dismissal protection, 48px controls and overflow at 360px and 1280px.
+Native phone keyboards and production account saves were not exercised.

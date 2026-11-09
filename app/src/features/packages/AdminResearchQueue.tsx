@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import Panel from '../../components/ui/Panel';
 import PackageCardGrid from '../cards/PackageCardGrid';
 import { useCardCatalog } from '../cards/useCardCatalog';
-import { researchDraft, researchFindings, researchSources, researchStatus, type ResearchFinding, type ResearchKind } from './researchQueue';
+import { combinedResearchDraft, researchDraft, researchFindings, researchSources, researchStatus, type ResearchFinding, type ResearchKind } from './researchQueue';
 
 const field = 'min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 export default function AdminResearchQueue({ packages, onReview, ready }: { packages: EditorialPackage[]; onReview: (pkg: EditorialPackage, finding?: ResearchFinding) => void; ready: boolean }) {
@@ -17,6 +17,9 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
   const [kind, setKind] = useState<ResearchKind | ''>('');
   const [status, setStatus] = useState('Needs review');
   const [limit, setLimit] = useState(12);
+  const [selected, setSelected] = useState<Map<string, ResearchFinding>>(new Map());
+  const [combineError, setCombineError] = useState('');
+  const selectedCards = new Set([...selected.values()].flatMap(f => f.cards)).size;
   const [pending, startTransition] = useTransition();
   const cards = useCardCatalog();
   const catalog = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
@@ -58,6 +61,14 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
     {!!errors.length && <div><p role="alert">{errors.join('. ')}</p><Button onClick={() => setAttempt(a => a + 1)}>Retry research</Button></div>}
     {!ready && <p role="status">Load saved reviews before editing research.</p>}
     {!loading && <p role="status">{filtered.length ? `${filtered.length} ${filtered.length === 1 ? 'finding' : 'findings'}` : 'No findings match these filters.'}</p>}
+    {!!selected.size && <Panel>
+      <p role="status">{selected.size} findings selected · {selectedCards} unique cards</p>
+      <div className="mt-2 flex flex-wrap gap-2"><Button variant="primary" disabled={!ready || selected.size < 2} onClick={() => {
+        try { const draft = combinedResearchDraft([...selected.values()], catalog, crypto.randomUUID()); setCombineError(''); onReview(draft); }
+        catch (reason) { setCombineError(reason instanceof Error ? reason.message : 'Could not combine findings.'); }
+      }}>Combine selected</Button><Button onClick={() => { setSelected(new Map()); setCombineError(''); }}>Clear selection</Button></div>
+      {combineError && <p role="alert" className="mt-2 text-sm text-ctp-red">{combineError}</p>}
+    </Panel>}
     {filtered.slice(0, limit).map(({ finding, saved }) => {
       const research = finding?.research ?? saved!.research!;
       return <Panel key={research.key}>
@@ -65,6 +76,11 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
         <p className="text-sm">{researchSources[research.kind].label} · {researchStatus(saved, finding)}</p>
         <p className="mt-3 text-sm text-ctp-subtext1">{finding ? 'Research card pool' : 'Saved exact card list'}</p>
         <PackageCardGrid names={finding?.cards ?? [...new Set(saved!.definition.cards.map(c => c.name))]} cardsByName={catalog} />
+        {finding && <label className="mt-2 flex min-h-12 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" className="h-6 w-6 shrink-0" checked={selected.has(research.key)} onChange={event => {
+          const checked = event.target.checked;
+          setSelected(current => { const next = new Map(current); if (checked) next.set(research.key, finding); else next.delete(research.key); return next; });
+          setCombineError('');
+        }} aria-label={`Select finding: ${finding.name}`} />Select to combine</label>}
         {finding && <p className="mt-3 break-words text-sm">{finding.summary}</p>}
         {!finding && !loading && !errors.length && <p className="mt-3 text-sm">No longer in the current research report.</p>}
         <div className="mt-3 flex flex-wrap gap-2"><Button disabled={!ready} variant="primary" onClick={() => onReview(saved ?? researchDraft(finding!, catalog), finding)}>Review finding</Button>

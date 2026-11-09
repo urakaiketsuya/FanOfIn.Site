@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { researchFindings, researchDraft, researchStatus } from '../src/features/packages/researchQueue';
+import { combinedResearchDraft, researchFindings, researchDraft, researchStatus, type ResearchFinding } from '../src/features/packages/researchQueue';
 const report = JSON.parse(readFileSync(new URL('../../data/experiments/package-mechanics.json', import.meta.url), 'utf8'));
 test('stable research identities survive evidence refresh and flag changed evidence', async () => {
   const first = (await researchFindings('experimental', { ...report, candidates: [report.candidates[0]] }))[0];
@@ -30,4 +30,32 @@ test('all published research sources adapt without converting pools into asserte
       assert.ok(draft.definition.cards.every(card => card.quantity === 1 && finding.cards.includes(card.name)));
     }
   }
+});
+
+const finding = (key: string, cards: string[], initialCards = cards): ResearchFinding => ({
+  research: { kind: 'experimental', key, fingerprint: key, dismissed: false },
+  name: key, cards, initialCards, summary: '', evidence: [], href: '/cards/packages',
+});
+test('combined findings deduplicate full pools and start an independent unapproved draft', () => {
+  const a = finding('a', ['Shared', 'Optional', 'A'], ['A']);
+  const b = { ...finding('b', ['Shared', 'B']), sections: new Map([['B', 'material' as const]]) };
+  const draft = combinedResearchDraft([a, b], new Map(), 'new-package');
+  assert.deepEqual(draft.definition.cards, [
+    { name: 'A', quantity: 1, section: 'main' }, { name: 'B', quantity: 1, section: 'material' },
+    { name: 'Optional', quantity: 1, section: 'main' }, { name: 'Shared', quantity: 1, section: 'main' },
+  ]);
+  assert.equal(draft.status, 'draft');
+  assert.equal(draft.revision, 0);
+  assert.equal(draft.research, undefined);
+  assert.deepEqual(combinedResearchDraft([b, a], new Map(), 'new-package'), draft);
+  assert.deepEqual(a.initialCards, ['A']);
+});
+test('combination rejects duplicate selections, oversized pools and conflicting sections without truncation', () => {
+  const a = finding('a', ['Shared']);
+  assert.throws(() => combinedResearchDraft([a, a], new Map(), 'id'), /at least two/);
+  assert.throws(() => combinedResearchDraft([a, finding('b', Array.from({ length: 60 }, (_, i) => `Card ${i}`))], new Map(), 'id'), /up to 60/);
+  assert.throws(() => combinedResearchDraft([
+    { ...a, sections: new Map([['Shared', 'main']]) },
+    { ...finding('b', ['Shared']), sections: new Map([['Shared', 'material']]) },
+  ], new Map(), 'id'), /Conflicting sections/);
 });
