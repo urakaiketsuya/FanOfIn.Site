@@ -145,7 +145,7 @@ async function main() {
       console.log(`omnidex: scanned ${result.scanned}, deep-fetched ${result.deepFetched}, max id ${result.maxIdSeen}`);
 
       const { index, players, judges, teams } = await buildOmnidexIndex(await getBundles());
-      await writeOmnidexData(index, players, judges, teams);
+      await writeOmnidexData(index, players, judges, teams, await getBundles());
       console.log(
         `omnidex: published ${index.events.length} events, ${players.length} players, ${judges.length} judges, ${teams.length} team sightings`,
       );

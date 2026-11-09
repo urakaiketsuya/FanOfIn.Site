@@ -1,3 +1,4 @@
+import { buildPlayerDirectory } from './playerDirectory.js';
 import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -11,7 +12,7 @@ import {
   type OmnidexSeasonSummary,
   type OmnidexTeamSighting,
 } from "@gatcg/shared";
-import { readCachedBundle, type OmnidexEventBundle } from "./cache.js";
+import type { OmnidexEventBundle } from "./cache.js";
 import { loadCardCatalog } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "../analysis/decklists.js";
 
@@ -37,7 +38,6 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
   const catalogNames = new Set([...cardIndex.keys()].map(name => name.trim().toLowerCase()));
   const events: OmnidexEventSummary[] = [];
   const seasonsById = new Map<number, OmnidexSeasonSummary>();
-  const playersById = new Map<number, OmnidexPlayerSummary>();
   const judgesById = new Map<number, OmnidexJudgeSummary>();
   const teams: OmnidexTeamSighting[] = [];
 
@@ -88,24 +88,6 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
       });
     }
 
-    for (const player of players) {
-      const existing = playersById.get(player.id);
-      if (existing) {
-        existing.username = player.username;
-        existing.country = player.country;
-        existing.emblem = player.emblem;
-        if (!existing.eventIds.includes(event.id)) existing.eventIds.push(event.id);
-      } else {
-        playersById.set(player.id, {
-          id: player.id,
-          username: player.username,
-          country: player.country,
-          emblem: player.emblem,
-          eventIds: [event.id],
-        });
-      }
-    }
-
     if (!("error" in judges)) {
       for (const judge of judges) {
         const existing = judgesById.get(judge.id);
@@ -153,7 +135,7 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
 
   return {
     index: { generatedAt: new Date().toISOString(), events, seasons: Array.from(seasonsById.values()) },
-    players: Array.from(playersById.values()),
+    players: buildPlayerDirectory(allBundles),
     judges: Array.from(judgesById.values()),
     teams,
   };
@@ -170,6 +152,7 @@ export async function writeOmnidexData(
   players: OmnidexPlayerSummary[],
   judges: OmnidexJudgeSummary[],
   teams: OmnidexTeamSighting[],
+  bundles: readonly OmnidexEventBundle[],
 ): Promise<void> {
   const eventsOutDir = path.join(DATA_DIR, "events");
   await mkdir(eventsOutDir, { recursive: true });
@@ -180,8 +163,7 @@ export async function writeOmnidexData(
   await writeFile(path.join(DATA_DIR, "teams.json"), JSON.stringify({ generatedAt: index.generatedAt, teams }), "utf-8");
 
   // Publish per-event bundles as small standalone files, fetched on-demand by event pages (Phase 8).
-  for (const summary of index.events) {
-    const bundle = await readCachedBundle(summary.id);
-    if (bundle) await writeFile(path.join(eventsOutDir, `${summary.id}.json`), JSON.stringify(bundle), "utf-8");
+  for (const bundle of bundles) {
+    await writeFile(path.join(eventsOutDir, `${bundle.id}.json`), JSON.stringify(bundle), "utf-8");
   }
 }

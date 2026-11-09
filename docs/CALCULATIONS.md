@@ -6378,8 +6378,9 @@ Cached matches remain readable throughout refreshes.
 
 ## Player directory inclusion
 
-Completed Omnidex events are ingested regardless of attendance. The former eight-player
-crawl threshold and `GATCG_MIN_EVENT_PLAYERS` override are removed. Directory membership
+Public Omnidex event rosters establish player identities regardless of attendance or event
+status, including registration, in-progress, and canceled events. Match results and the event
+browser remain based on completed events. The former eight-player crawl threshold and `GATCG_MIN_EVENT_PLAYERS` override are removed. Directory membership
 also has no minimum event or rated-match count: every player in the published roster is
 searchable by username or exact Omni ID. Players without recorded matches appear after
 rated players, alphabetically, with “Not yet rated” and no invented rating, rank, or record.
@@ -6387,14 +6388,17 @@ A ratings fetch failure does not hide the player roster or label unknown ratings
 
 The public Omnidex API discovers identities through event rosters, not a global account
 listing. Removing these thresholds does not claim coverage of accounts absent from those
-sources. A new incremental crawl includes newly completed small events in its lookback;
-older skipped events need a backfill. Use bounded, resumable ranges:
+sources. Incremental crawls collect public rosters in their lookback and revisit cached
+nonterminal events even after they leave that window. Canceled-event rosters are retained.
+Identity fields use the latest fetched observation, and event memberships are deduplicated.
+Older skipped events still need a backfill. Use bounded, resumable ranges:
 
 ```bash
 node --import tsx pipeline/scripts/refresh-omnidex-range.ts START_ID END_ID
 ```
 
-The range refresher reuses newer published snapshots, fetches missing completed events,
+The range refresher reuses newer published snapshots, fetches missing completed events and
+public rosters for other event statuses,
 merges them with the published event corpus, rebuilds directory/browser files, and updates
 their manifest generations. It does not synthesize match results or ratings. Run the regular
 analysis pipeline after a backfill to refresh derived statistics. Interrupted fetches resume

@@ -6,6 +6,7 @@ import { omnidexApi } from "./api.js";
 import { findMaxEventId, findYearStartId } from "./bounds.js";
 import {
   readCachedBundle,
+  listCachedBundles,
   writeCachedBundle,
   readMeta,
   writeMeta,
@@ -74,7 +75,7 @@ export interface CrawlResult {
 }
 
 /**
- * Walks a range of Omnidex event IDs, deep-fetching every completed event regardless of size. Cached completed/canceled events
+ * Walks public Omnidex event IDs, retaining every roster and deep-fetching completed events regardless of size. Cached completed/canceled events
  * are never re-fetched — idempotent re-runs only do work for events that are new or still in
  * progress. The published index (`build.ts`) is a separate step that reads whatever is in the
  * cache, so a crawl and a re-publish can happen independently.
@@ -118,7 +119,14 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
   let maxIdSeen = Math.max(priorMeta?.maxKnownId ?? 0, startId - 1);
   let consecutive404s = 0;
 
-  for (let id = startId; id <= endId; id++) {
+  const ids = new Set(Array.from({ length: endId - startId + 1 }, (_, offset) => startId + offset));
+  // Older registrations may finish after they leave the normal incremental lookback.
+  if (mode.kind === 'incremental' && !config.fastMode) {
+    for (const bundle of await listCachedBundles()) {
+      if (!TERMINAL_STATUSES.has(bundle.event.status)) ids.add(bundle.id);
+    }
+  }
+  for (const id of [...ids].sort((a, b) => a - b)) {
     const cached = await readCachedBundle(id);
     if (cached && TERMINAL_STATUSES.has(cached.event.status)) {
       if (cached.event.status === 'complete' && !config.fastMode && missingStagePairings(cached.event, cached.pairingsByRound)) {
@@ -180,7 +188,18 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
       });
     }
 
-    if (!isDeepFetchWorthy(event)) continue;
+    if (!isDeepFetchWorthy(event)) {
+      // Registration and canceled-event rosters still establish browsable identities.
+      const players = await omnidexApi.getPlayers(id);
+      await sleep(config.crawlRequestDelayMs);
+      const unavailable = { error: "Event has not completed." };
+      await writeCachedBundle({
+        id, event, players, standings: unavailable, pairingsByRound: [],
+        judges: unavailable, teams: unavailable, decklists: unavailable,
+        statistics: unavailable, fetchedAt: new Date().toISOString(),
+      });
+      continue;
+    }
 
     const bundle = await deepFetch(id, event, cached);
     await writeCachedBundle(bundle);
