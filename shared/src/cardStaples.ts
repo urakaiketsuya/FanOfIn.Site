@@ -172,6 +172,8 @@ export interface ChampionPackageVariant {
 }
 /** Cards one champion build plays together, measured from the decks that hold them together. */
 export interface ChampionPackage {
+  /** Absent for the full build package; otherwise restricts its card pool. */
+  element?: string;
   champion: string;
   championCard: string | null;
   decks: number;

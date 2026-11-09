@@ -33,7 +33,7 @@ export function computeChampionPackages(observations: StapleObservation[], catal
       copies.set(k, (copies.get(k) ?? 0) + line.quantity);
     }
     const deck: Deck = { recent: periods.includes("90"), copies };
-    for (const card of [null, championCard]) {
+    for (const card of new Set([null, championCard])) {
       const id = JSON.stringify([signature.championName, card]);
       let group = groups.get(id);
       if (!group) { group = { champion: signature.championName, championCard: card, decks: [] }; groups.set(id, group); }
@@ -45,6 +45,16 @@ export function computeChampionPackages(observations: StapleObservation[], catal
     if (decks.length < S.minDecks) continue;
     const pack = minePackage(champion, championCard, decks);
     if (pack) packages.push(pack);
+    // Pilot the element pool on the validated level-three Jin build.
+    if (championCard === "Jin, Undying Resolve") {
+      const element = "EXIA";
+      const pool = decks.map(deck => ({
+        ...deck,
+        copies: new Map([...deck.copies].filter(([k]) => resolveCard(catalog, split(k).name)?.elements.includes(element))),
+      }));
+      const elemental = minePackage(champion, championCard, pool);
+      if (elemental) packages.push({ ...elemental, element });
+    }
   }
   packages.sort((a, b) => b.decks - a.decks || a.champion.localeCompare(b.champion) || (a.championCard ?? "").localeCompare(b.championCard ?? ""));
   return { generatedAt, throughDate, format: FORMAT, packages };

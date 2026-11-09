@@ -178,3 +178,28 @@ filter-sheet Escape/focus restoration, champion-change build reset, expanded row
 Main/Material switching, preserved deep links, unavailable-build recovery, and Jin
 package display. Loading, empty, error and retry states passed using intercepted
 Staples responses. Mobile and desktop screenshots were visually inspected.
+
+### Published Jin Exia package
+
+The level-three Jin build now offers Full build package and EXIA package selections.
+The EXIA pool uses the same build population and existing mining thresholds, after
+restricting Main/Material cards to catalog EXIA membership. Champion cards and
+Sideboard remain excluded. This is a Jin pilot; other builds retain their full package.
+
+The generated pool has six required core cards and eight optional cards. It extends
+the original four-card validation with Shuang Ji of Sacrifice and Relentless Outburst:
+528 complete observations, including 163 of 192 recent observations. Exact variants
+are recomputed over these six cards; the earlier four-card counts remain a separate
+experiment. Optional additions are user choices, not part of an observed core variant.
+
+The packageElement URL parameter selects the pool. Each pool retains its variant and
+optional selections while switching; changing builds starts a new selection. Package
+links and new-deck drafts include the element in their title. The read-only Jin
+validation checks both published pools against source observations.
+
+Verification: app, pipeline, and shared typechecks passed; focused lint and six
+package mining/draft tests passed. Source validation checks all published Jin
+variants. Browser checks at 360px and 1280px covered pool switching, keyboard
+focus, retained variant choices, 48px buttons, overflow, draft creation, and
+unavailable-selection recovery. Loading, error, and empty states were exercised.
+Native phone keyboards and production deployment were not tested.

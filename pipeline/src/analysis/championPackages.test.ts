@@ -44,3 +44,26 @@ test("package variants require main and material together; sideboard copies cann
     { copies: [3, 1], decks: 30, recentDecks: 30 },
   ]);
 });
+test("Jin Exia pool preserves the build denominator and counts its own complete variants", () => {
+  const index = buildCardIndex([
+    card("A", { elements: ["EXIA"] }), card("B", { elements: ["EXIA"] }),
+    card("Other", { elements: ["FIRE"] }),
+    card("Jin, Undying Resolve", { types: ["CHAMPION"], level: 3, elements: ["EXIA"] }),
+  ]);
+  const entries = obs(100, true, [["A", 4], ["B", 3], ["Other", 4]]);
+  entries.forEach((entry, i) => {
+    entry.raw.material = [{ card: "Jin, Undying Resolve", quantity: 1 }];
+    if (i >= 80) {
+      entry.raw.main = [{ card: "Other", quantity: 4 }];
+      entry.raw.sideboard = [{ card: "A", quantity: 4 }, { card: "B", quantity: 3 }];
+    }
+  });
+  const data = computeChampionPackages(entries, index, "fixed", null);
+  const pack = data.packages.find(p => p.element === "EXIA")!;
+  assert.equal(pack.decks, 100);
+  assert.equal(pack.completeDecks, 80);
+  assert.deepEqual(pack.core.map(c => c.name), ["A", "B"]);
+  assert.ok(pack.core.every(c => c.recentInclusion === 0.8));
+  assert.deepEqual(pack.variants, [{ copies: [4, 3], decks: 80, recentDecks: 80 }]);
+  assert.ok(data.packages.find(p => p.championCard === "Jin, Undying Resolve" && !p.element)?.core.some(c => c.name === "Other"));
+});

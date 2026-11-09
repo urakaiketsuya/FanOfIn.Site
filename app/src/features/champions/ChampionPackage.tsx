@@ -25,22 +25,33 @@ export default function ChampionPackage({ championName }: { championName: string
 }
 
 function ChampionPackageSelection({ championName }: { championName: string }) {
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const data = usePublishedData<ChampionPackagesData>("analysis-champion-packages", "/data/analysis/champion-packages.json");
   const status = usePublishedDataStatus("analysis-champion-packages", "/data/analysis/champion-packages.json");
   const requested = params.get("build") ?? "";
   const mine = useMemo(() => data?.packages.filter(item => item.champion === championName) ?? [], [data, championName]);
-  const pack = mine.find(item => item.championCard === (requested || null)) ?? (requested ? undefined : mine.find(item => item.championCard === null));
-  const [variantIndex, setVariantIndex] = useState(0);
-  const [picked, setPicked] = useState<Record<string, boolean>>({});
+  const choices = mine.filter(item => item.championCard === (requested || null));
+  const element = params.get("packageElement") ?? "";
+  const pack = choices.find(item => (item.element ?? "") === element);
+  function selectPool(value: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set("packageElement", value); else next.delete("packageElement");
+    setParams(next, { preventScrollReset: true });
+  }
+  const [selections, setSelections] = useState<Record<string, { variant: number; picked: Record<string, boolean> }>>({});
+  const selection = selections[element] ?? { variant: 0, picked: {} };
+  const variantIndex = selection.variant;
+  const picked = selection.picked;
+  const setVariantIndex = (variant: number) => setSelections(values => ({ ...values, [element]: { ...selection, variant } }));
+  const toggleOption = (id: string) => setSelections(values => ({ ...values, [element]: { ...selection, picked: { ...picked, [id]: !picked[id] } } }));
   const [error, setError] = useState("");
   const { notify } = useToast();
   const names = useMemo(() => pack ? [...pack.core, ...pack.options].map(card => card.name) : [], [pack]);
   const art = useCardsByNames(names);
-  if (data && !pack) return mine.length || requested ? <Section id="package" className="scroll-mt-48" heading="compact" title="Package"><InlineState className="text-sm">{requested ? "This build has too few decks for a package." : "No package is available for this champion yet."}</InlineState></Section> : null;
+  if (data && !pack) return mine.length || requested ? <Section id="package" className="scroll-mt-48" heading="compact" title="Package"><InlineState className="text-sm">{requested ? "No package is available for this selection." : "No package is available for this champion yet."}</InlineState>{element && <Button onClick={() => selectPool("")}>Show full build package</Button>}</Section> : null;
   const variant = pack?.variants[Math.min(variantIndex, (pack?.variants.length ?? 1) - 1)];
-  const recentBasis = pack?.basis === "recent";
+  const packageName = pack ? `${pack.championCard ?? pack.champion}${pack.element ? ` ${pack.element}` : ""} package` : "";
   const key = (card: ChampionPackageCard) => `${card.section}:${card.name}`;
   function chosenLines() {
     if (!pack || !variant) return [];
@@ -51,14 +62,14 @@ function ChampionPackageSelection({ championName }: { championName: string }) {
   }
   async function copyLink() {
     if (!pack) return;
-    const url = packageShareUrl(sharedPackageFromLines(`${pack.championCard ?? pack.champion} package`, pack.champion, chosenLines()));
+    const url = packageShareUrl(sharedPackageFromLines(packageName, pack.champion, chosenLines()));
     try { await navigator.clipboard.writeText(url); notify({ message: "Package link copied.", key: "package-link" }); }
     catch { notify({ tone: "error", message: "Could not copy the package link. Please try again.", key: "package-link" }); }
   }
   function add() {
     if (!pack || !variant) return;
     const lines = chosenLines();
-    if (!addPackageToNewDeckDraft(lines, `${pack.championCard ?? pack.champion} package`)) { setError("Could not save the draft on this device. Check that site storage is allowed."); return; }
+    if (!addPackageToNewDeckDraft(lines, packageName)) { setError("Could not save the draft on this device. Check that site storage is allowed."); return; }
     navigate("/decks/new");
   }
   const tile = (card: ChampionPackageCard, copies: number, extra?: { selected: boolean; toggle: () => void }) => {
@@ -69,23 +80,24 @@ function ChampionPackageSelection({ championName }: { championName: string }) {
       {extra && resolved && <Link to={`/cards/${resolved.slug}`} className="mt-2 flex min-h-12 items-center rounded px-2 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" aria-label={`Details for ${card.name}`}>Card details</Link>}
     </CardResult>;
   };
-  return <Section id="package" className="scroll-mt-48" heading="compact" title="Package"
-    description="Cards that players of this build bring together. Built from decks that contain the whole core, not from each card alone.">
+  return <Section id="package" className="scroll-mt-48" heading="compact" title="Package">
     <PublishedSourceStatus label="Champion packages" status={status} hasData={!!data} />
     {pack && variant && <>
-      <p className="mt-2 text-sm text-ctp-subtext1">{pack.championCard ?? `All ${pack.champion} builds`} · Standard tournament decks. {recentBasis ? `The core is the cards in at least 75% of the ${pack.recentDecks.toLocaleString()} decks from the last 90 days.` : `Too few recent decks, so the core is the cards in at least 75% of all ${pack.decks.toLocaleString()} decks.`} Recent and all-time shares are shown apart.</p>
-      <h3 className="mt-4 text-sm font-semibold text-ctp-text">Core · {pack.core.length} cards</h3>
+      {choices.length > 1 && <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Package card pool">
+        {choices.map(item => <Button key={item.element ?? "full"} aria-pressed={item === pack} className={optionClass} onClick={() => selectPool(item.element ?? "")}>{item.element ? `${item.element} package` : "Full build package"}</Button>)}
+      </div>}
+      <p className="mt-3 text-sm text-ctp-subtext1">{pack.championCard ?? `All ${pack.champion} builds`} · {pack.element ?? "All elements"} · {pack.core.length + pack.options.length} cards in pool</p>
+      <h3 className="mt-4 text-sm font-semibold text-ctp-text">Required core · {pack.core.length} cards</h3>
       <p className="text-xs text-ctp-subtext0">{pack.completeDecks.toLocaleString()} of {pack.decks.toLocaleString()} decks hold every core card ({pack.completeRecentDecks.toLocaleString()} of {pack.recentDecks.toLocaleString()} recent). Champion cards are not included.</p>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{pack.core.map((card, index) => tile(card, variant.copies[index]))}</div>
-      <h3 className="mt-5 text-sm font-semibold text-ctp-text">Exact copies</h3>
-      <p className="text-xs text-ctp-subtext0">Each pattern is counted only in decks that hold the whole core.</p>
+      <h3 className="mt-5 text-sm font-semibold text-ctp-text">Observed variants</h3>
       <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Exact copy pattern">
         {pack.variants.map((item, index) => <Button key={item.copies.join()} size="sm" className={optionClass} aria-pressed={variant === item} onClick={() => setVariantIndex(index)}>{variant === item && "✓ "}Pattern {index + 1} · {item.decks.toLocaleString()} decks ({item.recentDecks.toLocaleString()} recent)</Button>)}
       </div>
       {pack.options.length > 0 && <>
-        <h3 className="mt-5 text-sm font-semibold text-ctp-text">Options</h3>
+        <h3 className="mt-5 text-sm font-semibold text-ctp-text">Optional cards</h3>
         <p className="text-xs text-ctp-subtext0">Common cards outside the core. Select the ones to add; they use their usual copies.</p>
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{pack.options.map(card => tile(card, card.usualCopies, { selected: !!picked[key(card)], toggle: () => setPicked(value => ({ ...value, [key(card)]: !value[key(card)] })) }))}</div>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{pack.options.map(card => tile(card, card.usualCopies, { selected: !!picked[key(card)], toggle: () => toggleOption(key(card)) }))}</div>
       </>}
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <Button variant="primary" onClick={add}>Add to new deck</Button>

@@ -35,7 +35,7 @@ const decks = observations.filter(({ raw, format }) => {
 const staples: CardStaplesData = await read("data/analysis/card-staples.json");
 assert.equal(findStapleCohort(staples, "all", "standard", "Jin", championCard)?.decks, decks.length, "Published staples must match source build population");
 const packages: ChampionPackagesData = await read("data/analysis/champion-packages.json");
-const published = packages.packages.find(p => p.championCard === championCard)!;
+const published = packages.packages.find(p => p.championCard === championCard && !p.element)!;
 assert.ok(published, "Jin build package exists");
 assert.equal(published.decks, decks.length);
 const completePublished = decks.filter(d => published.core.every(c => d.copies.has(`${c.section}:${c.name}`)));
@@ -43,6 +43,18 @@ assert.equal(published.completeDecks, completePublished.length);
 assert.equal(published.completeRecentDecks, completePublished.filter(d => d.recent).length);
 for (const variant of published.variants) {
   const matching = completePublished.filter(d => published.core.every((c, i) => d.copies.get(`${c.section}:${c.name}`) === variant.copies[i]));
+  assert.equal(variant.decks, matching.length);
+  assert.equal(variant.recentDecks, matching.filter(d => d.recent).length);
+}
+const elemental = packages.packages.find(p => p.championCard === championCard && p.element === "EXIA");
+assert.ok(elemental, "Published Jin Exia package exists");
+assert.equal(elemental.decks, decks.length);
+for (const c of [...elemental.core, ...elemental.options]) assert.ok(resolveCard(catalog, c.name)?.elements.includes("EXIA"));
+const elementalComplete = decks.filter(d => elemental.core.every(c => d.copies.has(`${c.section}:${c.name}`)));
+assert.equal(elemental.completeDecks, elementalComplete.length);
+assert.equal(elemental.completeRecentDecks, elementalComplete.filter(d => d.recent).length);
+for (const variant of elemental.variants) {
+  const matching = elementalComplete.filter(d => elemental.core.every((c, i) => d.copies.get(`${c.section}:${c.name}`) === variant.copies[i]));
   assert.equal(variant.decks, matching.length);
   assert.equal(variant.recentDecks, matching.filter(d => d.recent).length);
 }
