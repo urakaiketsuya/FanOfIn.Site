@@ -237,3 +237,8 @@ passed 360px/1280px browser checks for URL selection, pool switching, keyboard f
 48px pool controls, overflow, and package-to-draft flow. Loading/error/empty handling
 is unchanged from the pilot and was not retested in this data rollout. Native phone
 keyboards and production deployment were not exercised.
+
+Release integration (November 9): merged remote release 54878495a and rebuilt from
+its November 9 events. All 126 packages pass the source audit, including 75 element
+packages across 38 builds / 19 champions and 542 exact variants. Omni artifacts
+match remote main byte-for-byte; all unrelated manifest generations are preserved.
