@@ -203,3 +203,42 @@ variants. Browser checks at 360px and 1280px covered pool switching, keyboard
 focus, retained variant choices, 48px buttons, overflow, draft creation, and
 unavailable-selection recovery. Loading, error, and empty states were exercised.
 Native phone keyboards and production deployment were not tested.
+
+### Element package rollout — November 9, 2026
+
+Element packages now cover every qualifying specific champion build. Candidates
+come from catalog elements on observed Main/Material cards (including NORM and
+multi-element membership), rather than assuming the highest champion card lists
+every element the build plays. Aggregate “All builds” cohorts keep full packages.
+
+Each element pool retains the entire build population, including decks with no
+cards in that element. Existing minimums and ranking remain unchanged: 100 build
+observations, recent basis at 30 recent observations, 75% core inclusion, at least
+two core cards and 25 complete observations. Options require 25% inclusion.
+Sideboard and champion cards remain excluded. Unsupported pools are not published.
+Pool ordering is deterministic, with the full build first and elements alphabetical.
+
+Run `node --import tsx pipeline/scripts/validate-champion-packages.ts` after the
+targeted package rebuild. This read-only audit checks regeneration completeness,
+unique identities, catalog element membership, population denominators, inclusion
+rates, usual quantities, complete-core counts, and independently enumerated exact
+variants against source event observations. It checks full packages as well as
+element packages. No network crawl is needed.
+
+The November 8 source snapshot validates 126 packages, including 75 element
+packages across 38 builds and 19 champions, with 541 exact variants checked.
+See `docs/experiments/champion-element-packages-validation.json`. New event
+backfills are included; historical pilot counts may therefore differ. The rebuild
+updates only the package artifact and its manifest generation.
+
+Rollout verification: pipeline typecheck, seven focused mining/draft tests, and the
+full source audit passed. Merlin Kingslayer, Rai Storm Seer, and Diana Moonpiercer
+passed 360px/1280px browser checks for URL selection, pool switching, keyboard focus,
+48px pool controls, overflow, and package-to-draft flow. Loading/error/empty handling
+is unchanged from the pilot and was not retested in this data rollout. Native phone
+keyboards and production deployment were not exercised.
+
+Release integration (November 9): merged remote release 54878495a and rebuilt from
+its November 9 events. All 126 packages pass the source audit, including 75 element
+packages across 38 builds / 19 champions and 542 exact variants. Omni artifacts
+match remote main byte-for-byte; all unrelated manifest generations are preserved.
