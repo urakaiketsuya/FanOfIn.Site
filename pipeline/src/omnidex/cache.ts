@@ -95,19 +95,19 @@ function bundlePath(id: number): string {
   return path.join(EVENTS_DIR, `${id}.json`);
 }
 
-export async function readCachedBundle(id: number): Promise<OmnidexEventBundle | null> {
-  try {
-    const bundle = JSON.parse(await readFile(bundlePath(id), "utf-8")) as OmnidexEventBundle;
-    try {
-      const published = JSON.parse(await readFile(path.join(PUBLISHED_EVENTS_DIR, `${id}.json`), "utf-8")) as OmnidexEventBundle;
-      bundle.pairingsByRound = retainPublishedPairings(bundle.pairingsByRound, published.pairingsByRound);
-    } catch {
-      // A newly discovered event may not have a published snapshot yet.
-    }
-    return bundle;
-  } catch {
-    return null;
+interface SnapshotDirectories { cache: string; published: string }
+const snapshotDirectories: SnapshotDirectories = { cache: EVENTS_DIR, published: PUBLISHED_EVENTS_DIR };
+
+export async function readCachedBundle(id: number, directories = snapshotDirectories): Promise<OmnidexEventBundle | null> {
+  async function read(directory: string): Promise<OmnidexEventBundle | null> {
+    try { return JSON.parse(await readFile(path.join(directory, `${id}.json`), 'utf8')) as OmnidexEventBundle; }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null; throw error; }
   }
+  const [cached, published] = await Promise.all([read(directories.cache), read(directories.published)]);
+  if (!cached) return published;
+  if (!published) return cached;
+  const [latest, previous] = published.fetchedAt > cached.fetchedAt ? [published, cached] : [cached, published];
+  return { ...latest, pairingsByRound: retainPublishedPairings(latest.pairingsByRound, previous.pairingsByRound) };
 }
 
 export async function writeCachedBundle(bundle: OmnidexEventBundle): Promise<void> {
@@ -115,18 +115,17 @@ export async function writeCachedBundle(bundle: OmnidexEventBundle): Promise<voi
   await writeJsonAtomic(bundlePath(bundle.id), bundle, 0);
 }
 
-/** Every cached bundle regardless of status — callers filter for `complete` as needed. */
-export async function listCachedBundles(): Promise<OmnidexEventBundle[]> {
-  let files: string[] = [];
-  try {
-    files = await readdir(EVENTS_DIR);
-  } catch {
-    return [];
+/** Read the union so a restored automation cache cannot erase published backfills. */
+export async function listCachedBundles(directories = snapshotDirectories): Promise<OmnidexEventBundle[]> {
+  async function files(directory: string): Promise<string[]> {
+    try { return await readdir(directory); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return []; throw error; }
   }
+  const paths = await Promise.all([files(directories.cache), files(directories.published)]);
+  const ids = [...new Set(paths.flat().filter(file => /^\d+\.json$/.test(file)).map(file => Number(file.slice(0, -5))))].sort((a, b) => a - b);
   const bundles: OmnidexEventBundle[] = [];
-  for (const file of files) {
-    if (!file.endsWith(".json")) continue;
-    const bundle = await readCachedBundle(Number(file.slice(0, -".json".length)));
+  for (const id of ids) {
+    const bundle = await readCachedBundle(id, directories);
     if (bundle) bundles.push(bundle);
   }
   return bundles;

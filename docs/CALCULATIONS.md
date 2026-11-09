@@ -6398,4 +6398,11 @@ The range refresher reuses newer published snapshots, fetches missing completed 
 merges them with the published event corpus, rebuilds directory/browser files, and updates
 their manifest generations. It does not synthesize match results or ratings. Run the regular
 analysis pipeline after a backfill to refresh derived statistics. Interrupted fetches resume
-from completed event cache records. Keep production publication as a separate release step.
+from completed event cache records. Use `--fetch-only` to collect cache records without updating published files. Keep production publication as a separate release step.
+
+Published backfills remain part of the input corpus even when a restored automation cache
+predates them. Snapshot loading reads both sources, uses the fresher event record, and
+retains recovered pairing coverage. Invalid stored JSON fails the run instead of silently
+removing players. Focused tests cover one-player events, unrated/zero-event directory entries,
+restored-cache retention, and corrupt snapshot failure; mobile and desktop checks cover
+ID search, empty results, and ratings failure/retry without hiding the player directory.

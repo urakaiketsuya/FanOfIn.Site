@@ -6,8 +6,11 @@ import { readCachedBundle, writeCachedBundle, type OmnidexEventBundle } from '..
 import { buildOmnidexIndex, writeEventBrowserData } from '../src/omnidex/build.js';
 import { writeJsonAtomic } from '../src/lib/atomicWrite.js';
 
-const [startId, endId] = process.argv.slice(2).map(Number);
-if (!Number.isSafeInteger(startId) || !Number.isSafeInteger(endId) || startId < 1 || endId < startId || process.argv.length !== 4) throw new Error('Usage: node --import tsx pipeline/scripts/refresh-omnidex-range.ts START_ID END_ID');
+const args = process.argv.slice(2);
+const fetchOnly = args.includes('--fetch-only');
+const rangeArgs = args.filter(arg => arg !== '--fetch-only');
+const [startId, endId] = rangeArgs.map(Number);
+if (!Number.isSafeInteger(startId) || !Number.isSafeInteger(endId) || startId < 1 || endId < startId || rangeArgs.length !== 2 || args.length > (fetchOnly ? 3 : 2)) throw new Error('Usage: node --import tsx pipeline/scripts/refresh-omnidex-range.ts START_ID END_ID [--fetch-only]');
 const root = new URL('../../data/omnidex/', import.meta.url);
 const before = JSON.parse(await readFile(new URL('players.json', root), 'utf8')) as { players: { id: number }[] };
 const beforeIds = new Set(before.players.map(player => player.id));
@@ -22,6 +25,7 @@ for (let id = startId; id <= endId; id++) {
 }
 console.log('Fetching previously skipped events');
 await crawlEvents({ kind: 'range', startId, endId });
+if (fetchOnly) { console.log('Fetch complete; published data unchanged. Run the same range without --fetch-only to publish.'); process.exit(0); }
 const bundles = new Map<number, OmnidexEventBundle>();
 for (const file of (await readdir(new URL('events/', root))).filter(file => file.endsWith('.json'))) {
   const bundle = JSON.parse(await readFile(new URL(`events/${file}`, root), 'utf8')) as OmnidexEventBundle;
