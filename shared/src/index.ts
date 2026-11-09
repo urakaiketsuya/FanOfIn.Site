@@ -152,4 +152,4 @@ export * from './broadcastEventMap.js';
 export * from "./timelineSeo";
 
 export * from "./previewIdentity";
-export type { EditorialPackage, EditorialPackageInput, AdminOverview } from './adminWorkspace.js';
+export type { EditorialPackage, EditorialPackageInput, PackageResearchReview, AdminOverview } from './adminWorkspace.js';

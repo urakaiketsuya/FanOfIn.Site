@@ -1,3 +1,4 @@
+import { accountApi } from "../../lib/accountApi";
 import { packageBannedCards } from "./packageArchive";
 import ConstructionPackages from "./ConstructionPackages";
 import ExperimentalPackages from "./ExperimentalPackages";
@@ -32,6 +33,12 @@ const approved = (pkg: SavedCardPackage) => pkg.rules.some((rule) => rule.status
 export default function PackageResearch({ active }: { active: boolean }) {
   useDocumentTitle(active ? "Package Research" : undefined);
   const location = useLocation();
+  const [admin, setAdmin] = useState(false);
+  useEffect(() => {
+    let current = true;
+    if (active) void accountApi.adminAccess().then(result => { if (current) setAdmin(result.admin); }).catch(() => { if (current) setAdmin(false); });
+    return () => { current = false; };
+  }, [active]);
   const cards = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cards.map((card) => [card.name, card])), [cards]);
   const data = useMinedPackageCandidates();
@@ -96,7 +103,7 @@ export default function PackageResearch({ active }: { active: boolean }) {
       persist({ ...store, undo: store.packages, packages: [...store.packages.filter((pkg) => pkg.id !== left.id && pkg.id !== right.id), { ...left, subpackageIds: [...new Set([...left.subpackageIds, right.id])] }, right] });
     }
   };
-  return <PageLayout width="wide"><PageHeader title="Package Research" actions={<Link className="min-h-12 py-3 text-ctp-teal" to="/cards/packages">Browse published packages</Link>} />
+  return <PageLayout width="wide"><PageHeader title="Package Research" actions={<div className="flex flex-wrap gap-3"><Link className="min-h-12 py-3 text-ctp-teal" to="/cards/packages">Browse published packages</Link>{admin && <Link className="min-h-12 py-3 text-ctp-teal" to="/admin#research">Review in admin</Link>}</div>} />
     {(store.error || error) && <p role="alert" className="rounded-lg border border-ctp-red p-3">{store.error || error}</p>}
     <label className="block text-sm">Find a package or card<input type="search" className={`${control} mt-2 w-full`} value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} placeholder="Portly Raccoon, Argus…" /></label>
     <section hidden={view === "construction" || view === "experimental" || view === "win-rates" || view === "archived" || view === "synergistic"} className="mt-4 rounded-lg border border-ctp-surface1 p-3"><button className="flex min-h-12 w-full items-center justify-between gap-3 text-left text-sm font-semibold" aria-expanded={policyOpen} onClick={() => setPolicyOpen(!policyOpen)}>Automatic approval · {store.autoEnabled ? "Enabled" : "Dry run"} · {eligible.length} qualifying rules<DisclosureChevron className={policyOpen ? "rotate-180" : ""} /></button>
