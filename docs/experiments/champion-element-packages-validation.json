@@ -1,0 +1,23 @@
+{
+  "throughDate": "2026-11-08",
+  "packagesVerified": 126,
+  "elementPackages": 75,
+  "builds": 38,
+  "champions": 19,
+  "exactVariantsVerified": 541,
+  "elements": [
+    "ARCANE",
+    "ASTRA",
+    "CRUX",
+    "EXALTED",
+    "EXIA",
+    "FIRE",
+    "LUXEM",
+    "NEOS",
+    "NORM",
+    "TERA",
+    "UMBRA",
+    "WATER",
+    "WIND"
+  ]
+}

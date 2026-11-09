@@ -67,3 +67,22 @@ test("Jin Exia pool preserves the build denominator and counts its own complete 
   assert.deepEqual(pack.variants, [{ copies: [4, 3], decks: 80, recentDecks: 80 }]);
   assert.ok(data.packages.find(p => p.championCard === "Jin, Undying Resolve" && !p.element)?.core.some(c => c.name === "Other"));
 });
+
+test("other builds publish supported element pools, including multi-element cards, without pooling sparse builds", () => {
+  const index = buildCardIndex([
+    card("A", { elements: ["FIRE", "WATER"] }), card("B", { elements: ["FIRE"] }),
+    card("C", { elements: ["WATER"] }), card("Sparse", { elements: ["WIND"] }),
+    card("Lorraine, One", { types: ["CHAMPION"], level: 1 }),
+    card("Lorraine, Two", { types: ["CHAMPION"], level: 2 }),
+  ]);
+  const entries = obs(100, false, [["A", 4], ["B", 3], ["C", 2], ["Sparse", 1]]);
+  entries.forEach(entry => { entry.raw.material = [{ card: "Lorraine, One", quantity: 1 }]; });
+  const small = obs(50, true, [["A", 4], ["B", 3]]);
+  small.forEach(entry => { entry.raw.material = [{ card: "Lorraine, Two", quantity: 1 }]; });
+  const data = computeChampionPackages([...entries, ...small], index, "fixed", null);
+  const pools = data.packages.filter(p => p.element);
+  assert.deepEqual(pools.map(p => p.element), ["FIRE", "WATER"]);
+  assert.ok(pools.every(p => p.championCard === "Lorraine, One" && p.decks === 100 && p.basis === "all"));
+  assert.deepEqual(pools.map(p => p.core.map(c => c.name)), [["A", "B"], ["A", "C"]]);
+  assert.deepEqual(computeChampionPackages([...small, ...entries], index, "fixed", null), data);
+});

@@ -45,9 +45,12 @@ export function computeChampionPackages(observations: StapleObservation[], catal
     if (decks.length < S.minDecks) continue;
     const pack = minePackage(champion, championCard, decks);
     if (pack) packages.push(pack);
-    // Pilot the element pool on the validated level-three Jin build.
-    if (championCard === "Jin, Undying Resolve") {
-      const element = "EXIA";
+    // Discover observed catalog elements, but retain every build deck in the denominator.
+    // Aggregate champion cohorts keep only their full package.
+    const elements = championCard ? [...new Set(decks.flatMap(deck =>
+      [...deck.copies.keys()].flatMap(k => resolveCard(catalog, split(k).name)?.elements ?? []),
+    ))].sort() : [];
+    for (const element of elements) {
       const pool = decks.map(deck => ({
         ...deck,
         copies: new Map([...deck.copies].filter(([k]) => resolveCard(catalog, split(k).name)?.elements.includes(element))),
@@ -56,7 +59,7 @@ export function computeChampionPackages(observations: StapleObservation[], catal
       if (elemental) packages.push({ ...elemental, element });
     }
   }
-  packages.sort((a, b) => b.decks - a.decks || a.champion.localeCompare(b.champion) || (a.championCard ?? "").localeCompare(b.championCard ?? ""));
+  packages.sort((a, b) => b.decks - a.decks || a.champion.localeCompare(b.champion) || (a.championCard ?? "").localeCompare(b.championCard ?? "") || (a.element ?? "").localeCompare(b.element ?? ""));
   return { generatedAt, throughDate, format: FORMAT, packages };
 }
 
