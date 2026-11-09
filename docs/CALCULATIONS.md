@@ -6406,3 +6406,10 @@ retains recovered pairing coverage. Invalid stored JSON fails the run instead of
 removing players. Focused tests cover one-player events, unrated/zero-event directory entries,
 restored-cache retention, and corrupt snapshot failure; mobile and desktop checks cover
 ID search, empty results, and ratings failure/retry without hiding the player directory.
+
+Backfill verification (2026-11-09): scanned event IDs 66568–67582 and rebuilt the directory
+from the published corpus plus fetched snapshots. Added 475 completed events (468 with fewer
+than eight entrants), growing the repository roster from 14,543 to 14,726 players. No existing
+players or events were removed; all 14,547 players in the separately refreshed live roster
+remain included. Artifact/manifest validation passes. This bounded pass does not establish
+complete coverage of older skipped events; their historical backfill remains separate.
