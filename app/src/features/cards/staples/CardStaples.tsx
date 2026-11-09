@@ -112,7 +112,7 @@ export default function CardStaples() {
         {filters.elements.length > 0 && <button type="button" onClick={() => change("element", [])} className="min-h-control rounded-full px-3 text-sm text-ctp-subtext0 underline">Clear elements</button>}
       </div>
     </fieldset>
-    <div className="mt-3 flex flex-wrap items-end gap-3">
+    <div className="mt-3 grid grid-cols-1 items-end gap-3 sm:grid-cols-3">
       <div className="min-w-0 flex-1"><FilterField label="Champion"><select className={fieldClass} value={champion} onChange={e => change("champion", e.target.value)}><option value="">All champions</option>{champions.map(name => <option key={name} value={name}>{name}</option>)}</select></FilterField></div>
       {champion && <div className="min-w-0 flex-1"><FilterField label="Build"><select className={fieldClass} value={build} onChange={e => change("build", e.target.value)}><option value="">All {champion} builds</option>{builds.map(item => <option key={item.card} value={item.card}>{buildLabel(item.card)} ({item.decks.toLocaleString()})</option>)}{build && !builds.some(item => item.card === build) && <option value={build}>{buildLabel(build)}</option>}</select></FilterField></div>}
       <div className="min-w-0 flex-1"><FilterField label="Rank by"><select className={fieldClass} value={filters.sort} onChange={e => change("sort", e.target.value)}><option value="usage">Most played</option>{!community && <option value="winning">Adjusted win rate</option>}<option value="quantity">Average copies</option></select></FilterField></div>

@@ -140,3 +140,41 @@ in the Staples section. "Add to new deck" is the only action that changes anythi
 the core (with the chosen copy pattern) and any selected options into the new-deck draft on
 this device (`packageDraft.ts`), then opens `/decks/new`. A card already in the draft keeps its
 larger quantity.
+
+## Reproducible Jin Exia validation (2026-11-08)
+
+Run `node --import tsx pipeline/scripts/validate-jin-exia.ts`. The read-only check uses
+published event bundles, the canonical catalog, and the same latest-event/player selection
+as Staples. It verifies the published level-3 Jin population and every published exact
+core variant against source Main + Material quantities. Sideboard does not complete a core.
+The saved result is `docs/experiments/jin-exia-validation.json`.
+
+This check deliberately uses **standard format and the highest champion card**
+`Jin, Undying Resolve`, matching the build selector. The earlier November 6 check above
+used a different source/scope, so those totals are not directly comparable.
+
+The Exia starter core is Seething Intercession (Main), Berserker Plate (Material),
+Mend Flesh (Main), and Enrage (Main). All four catalog entries are verified as Exia.
+609 of 1,727 observations contain the complete core, including 168 of 192 in the
+last 90 days. In that card order, the leading recent exact variant is **4/1/4/3**
+(169 all-time observations, 79 recent); **4/1/4/4** leads all-time (259, 17 recent).
+These are tournament observations, not unique players or independent validation samples.
+This is descriptive package validation, not a win-rate or causal-strength claim.
+
+The existing champion-page package is a broader ten-card build core, including
+non-Exia cards. Its 443 complete observations and all five published exact variants
+also match the source lists. The four-card Exia starter is a validated subset for
+future element-specific package selection, not a replacement for that broader core.
+
+Champion and build controls use a single column on phones. Unavailable build links
+retain their requested scope and show an empty state with an All builds recovery action;
+they must not silently broaden to the champion aggregate. Build changes use a transition.
+
+Verification for this follow-up: app/pipeline/shared TypeScript checks passed; the
+21 focused staples, community, blended-source, package and draft tests passed.
+App lint passed with existing warnings outside these changes. Browser checks at
+360px and 1280px covered champion/build controls, 48px targets, no page overflow,
+filter-sheet Escape/focus restoration, champion-change build reset, expanded rows,
+Main/Material switching, preserved deep links, unavailable-build recovery, and Jin
+package display. Loading, empty, error and retry states passed using intercepted
+Staples responses. Mobile and desktop screenshots were visually inspected.

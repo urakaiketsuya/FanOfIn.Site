@@ -27,3 +27,20 @@ test("recent decks define the core, variants count only complete decks, champion
 test("builds under the minimum deck count publish nothing", () => {
   assert.equal(computeChampionPackages(obs(50, true, [["A", 4], ["B", 4]]), catalog, "fixed", null).packages.length, 0);
 });
+test("package variants require main and material together; sideboard copies cannot complete a core", () => {
+  const index = buildCardIndex([card("Seething"), card("Plate", { types: ["REGALIA"] }), card("Jin, Three", { types: ["CHAMPION"], level: 3 })]);
+  const entries = obs(100, true, [["Seething", 4]]);
+  entries.forEach((entry, i) => {
+    if (i < 80) entry.raw.material!.push({ card: "Plate", quantity: 1 });
+    else entry.raw.sideboard = [{ card: "Plate", quantity: 1 }];
+    if (i < 30) entry.raw.main = [{ card: "Seething", quantity: 3 }];
+  });
+  const pack = computeChampionPackages(entries, index, "fixed", null).packages.find(p => p.championCard === "Jin, Three")!;
+  assert.equal(pack.completeDecks, 80);
+  assert.equal(pack.completeRecentDecks, 80);
+  assert.deepEqual(pack.core.map(c => [c.section, c.name]), [["main", "Seething"], ["material", "Plate"]]);
+  assert.deepEqual(pack.variants, [
+    { copies: [4, 1], decks: 50, recentDecks: 50 },
+    { copies: [3, 1], decks: 30, recentDecks: 30 },
+  ]);
+});

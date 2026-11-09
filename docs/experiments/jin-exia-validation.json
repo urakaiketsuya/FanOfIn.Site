@@ -1,0 +1,94 @@
+{
+  "throughDate": "2026-11-08",
+  "championCard": "Jin, Undying Resolve",
+  "format": "standard",
+  "element": "EXIA",
+  "scope": "Tournament event/player observations; highest champion card; Main + Material; no Sideboard",
+  "decks": 1727,
+  "recentDecks": 192,
+  "core": [
+    {
+      "section": "main",
+      "name": "Seething Intercession",
+      "decks": 667,
+      "recentDecks": 181
+    },
+    {
+      "section": "material",
+      "name": "Berserker Plate",
+      "decks": 1695,
+      "recentDecks": 192
+    },
+    {
+      "section": "main",
+      "name": "Mend Flesh",
+      "decks": 1638,
+      "recentDecks": 186
+    },
+    {
+      "section": "main",
+      "name": "Enrage",
+      "decks": 1564,
+      "recentDecks": 181
+    }
+  ],
+  "completeDecks": 609,
+  "completeRecentDecks": 168,
+  "variants": [
+    {
+      "copies": [
+        4,
+        1,
+        4,
+        3
+      ],
+      "decks": 169,
+      "recentDecks": 79
+    },
+    {
+      "copies": [
+        4,
+        1,
+        4,
+        2
+      ],
+      "decks": 70,
+      "recentDecks": 59
+    },
+    {
+      "copies": [
+        4,
+        1,
+        4,
+        4
+      ],
+      "decks": 259,
+      "recentDecks": 17
+    },
+    {
+      "copies": [
+        4,
+        1,
+        3,
+        3
+      ],
+      "decks": 4,
+      "recentDecks": 3
+    },
+    {
+      "copies": [
+        3,
+        1,
+        4,
+        4
+      ],
+      "decks": 39,
+      "recentDecks": 2
+    }
+  ],
+  "publishedBuildPackage": {
+    "coreCards": 10,
+    "completeDecks": 443,
+    "exactVariantsVerified": 5
+  }
+}

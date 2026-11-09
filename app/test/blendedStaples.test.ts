@@ -20,3 +20,21 @@ test('missing source patterns do not invent filtered populations', () => {
   const blend = blendCardStaples(source(), old);
   assert.equal(staplePopulation(blend, blend.cohorts[0].sections.main, filters), null);
 });
+test('blended champion builds stay separate from aggregate cohorts', () => {
+  const tournament = source(), community = source(true);
+  for (const data of [tournament, community]) {
+    const aggregate = data.cohorts[0];
+    data.cohorts = [
+      { ...aggregate, champion: 'Jin', championCard: null },
+      { ...aggregate, champion: 'Jin', championCard: 'Jin, Undying Resolve' },
+      { ...aggregate, champion: 'Jin', championCard: 'Jin, Zealous Maverick' },
+    ];
+  }
+  const blended = blendCardStaples(tournament, community);
+  assert.equal(blended.cohorts.length, 3);
+  for (const cohort of blended.cohorts) {
+    assert.equal(cohort.decks, 6);
+    assert.equal(staplePopulation(blended, cohort.sections.main, filters), 4);
+  }
+  assert.deepEqual(blended.cohorts.map(c => c.championCard), [null, 'Jin, Undying Resolve', 'Jin, Zealous Maverick']);
+});
