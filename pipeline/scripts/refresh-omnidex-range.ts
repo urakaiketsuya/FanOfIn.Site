@@ -33,7 +33,7 @@ for (const file of (await readdir(new URL('events/', root))).filter(file => file
 }
 for (let id = startId; id <= endId; id++) {
   const bundle = await readCachedBundle(id);
-  if (!bundle || bundle.event.status !== 'complete') continue;
+  if (!bundle) continue;
   const prior = bundles.get(id);
   if (!prior || bundle.fetchedAt > prior.fetchedAt) {
     bundles.set(id, bundle);

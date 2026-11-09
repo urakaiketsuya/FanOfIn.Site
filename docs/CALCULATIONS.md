@@ -6378,8 +6378,9 @@ Cached matches remain readable throughout refreshes.
 
 ## Player directory inclusion
 
-Completed Omnidex events are ingested regardless of attendance. The former eight-player
-crawl threshold and `GATCG_MIN_EVENT_PLAYERS` override are removed. Directory membership
+Public Omnidex event rosters establish player identities regardless of attendance or event
+status, including registration, in-progress, and canceled events. Match results and the event
+browser remain based on completed events. The former eight-player crawl threshold and `GATCG_MIN_EVENT_PLAYERS` override are removed. Directory membership
 also has no minimum event or rated-match count: every player in the published roster is
 searchable by username or exact Omni ID. Players without recorded matches appear after
 rated players, alphabetically, with “Not yet rated” and no invented rating, rank, or record.
@@ -6387,14 +6388,17 @@ A ratings fetch failure does not hide the player roster or label unknown ratings
 
 The public Omnidex API discovers identities through event rosters, not a global account
 listing. Removing these thresholds does not claim coverage of accounts absent from those
-sources. A new incremental crawl includes newly completed small events in its lookback;
-older skipped events need a backfill. Use bounded, resumable ranges:
+sources. Incremental crawls collect public rosters in their lookback and revisit cached
+nonterminal events even after they leave that window. Canceled-event rosters are retained.
+Identity fields use the latest fetched observation, and event memberships are deduplicated.
+Older skipped events still need a backfill. Use bounded, resumable ranges:
 
 ```bash
 node --import tsx pipeline/scripts/refresh-omnidex-range.ts START_ID END_ID
 ```
 
-The range refresher reuses newer published snapshots, fetches missing completed events,
+The range refresher reuses newer published snapshots, fetches missing completed events and
+public rosters for other event statuses,
 merges them with the published event corpus, rebuilds directory/browser files, and updates
 their manifest generations. It does not synthesize match results or ratings. Run the regular
 analysis pipeline after a backfill to refresh derived statistics. Interrupted fetches resume
@@ -6413,3 +6417,13 @@ than eight entrants), growing the repository roster from 14,543 to 14,726 player
 players or events were removed; all 14,547 players in the separately refreshed live roster
 remain included. Artifact/manifest validation passes. This bounded pass does not establish
 complete coverage of older skipped events; their historical backfill remains separate.
+
+All-status follow-up (2026-11-09): scanned every ID from 65568 through 67582, including
+previously skipped non-completed rosters. Added 1,065 event snapshots: 506 completed events
+(487 below eight entrants) and 559 other public rosters (100 canceled, 448 RSVP, seven
+started, four completable). The directory now contains 14,877 players, 150 more than the
+released baseline. Verified every saved roster identity and event membership appears in
+the directory, every prior player and completed event remains, and all manifest generations
+match. The 2,015-ID scan is complete; all-status coverage below 65568 is not yet established.
+The next contiguous older batch is 64568–65567. Match analyses remain on their separate
+refresh cadence; missing pairing responses do not exclude public roster identities.
