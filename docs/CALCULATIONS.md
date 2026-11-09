@@ -6417,3 +6417,13 @@ than eight entrants), growing the repository roster from 14,543 to 14,726 player
 players or events were removed; all 14,547 players in the separately refreshed live roster
 remain included. Artifact/manifest validation passes. This bounded pass does not establish
 complete coverage of older skipped events; their historical backfill remains separate.
+
+All-status follow-up (2026-11-09): scanned every ID from 65568 through 67582, including
+previously skipped non-completed rosters. Added 1,065 event snapshots: 506 completed events
+(487 below eight entrants) and 559 other public rosters (100 canceled, 448 RSVP, seven
+started, four completable). The directory now contains 14,877 players, 150 more than the
+released baseline. Verified every saved roster identity and event membership appears in
+the directory, every prior player and completed event remains, and all manifest generations
+match. The 2,015-ID scan is complete; all-status coverage below 65568 is not yet established.
+The next contiguous older batch is 64568–65567. Match analyses remain on their separate
+refresh cadence; missing pairing responses do not exclude public roster identities.
