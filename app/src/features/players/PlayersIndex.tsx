@@ -1,3 +1,4 @@
+import { playerDirectoryRows } from "./playerDirectory";
 import { cardImagePath } from "../../lib/previewCards";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
@@ -95,19 +96,11 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const ranked = useMemo(() => {
-    if (!playersData || !eloData) return [];
-    const ratingById = new Map(eloData.ratings.map((r) => [r.playerId, r]));
-    return playersData.players
-      .map((p) => ({ player: p, rating: ratingById.get(p.id) }))
-      .filter((r) => r.rating && r.rating.matches > 0)
-      .sort((a, b) => (b.rating?.rating ?? 0) - (a.rating?.rating ?? 0))
-      .map((r, i) => ({ ...r, rank: i + 1 }));
-  }, [playersData, eloData]);
+  const ranked = useMemo(() => playerDirectoryRows(playersData?.players ?? [], eloData?.ratings ?? []), [playersData, eloData]);
 
   const rows = useMemo(() => {
     const needle = search.trim().toLowerCase();
-    return ranked.filter((r) => (!needle || r.player.username.toLowerCase().includes(needle)) && (!region || (region === "unassigned" ? r.player.country === "US" && regions?.get(r.player.id)?.region === null : regions?.get(r.player.id)?.region === region)));
+    return ranked.filter((r) => (!needle || (r.player.username.toLowerCase().includes(needle) || String(r.player.id) === needle)) && (!region || (region === "unassigned" ? r.player.country === "US" && regions?.get(r.player.id)?.region === null : regions?.get(r.player.id)?.region === region)));
   }, [ranked, search, region, regions]);
 
   useEffect(() => {
@@ -124,8 +117,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
     <>
       <input
         type="text"
-        aria-label="Search by username"
-        placeholder="Search by username…"
+        aria-label="Search by username or Omni ID"
+        placeholder="Username or Omni ID…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="mt-4 min-h-control w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
@@ -144,28 +137,28 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
 
       <PublishedSourceStatus label="Players" status={playersStatus} hasData={!!playersData} />
       <PublishedSourceStatus label="Ratings" status={eloStatus} hasData={!!eloData} />
-      {playersData && eloData && rows.length === 0 && (
-        <InlineState className="mt-6">No rated players match these filters.</InlineState>
+      {playersData && rows.length === 0 && (
+        <InlineState className="mt-6">No players match these filters.</InlineState>
       )}
-      {playersData && eloData && rows.length > 0 && (
+      {playersData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
-          {rows.length} rated player{rows.length === 1 ? "" : "s"}
+          {rows.length} player{rows.length === 1 ? "" : "s"}
 
         </p>
       )}
 
       <PublishedSourceStatus label="Recent records" status={recentStatus} hasData={!!recent} />
       {recent && <p className="mt-4 text-xs text-ctp-subtext1">Recent record · Standard · {recent.from} – {recent.to} · Individual events · All tiers · Ranked + unranked</p>}
-      <ol aria-label="Player rankings" className="mt-4 space-y-3">
+      <ol aria-label="Player directory" className="mt-4 space-y-3">
         {visible.map(({ player, rating, rank }) => {
           const topChampion = topChampionById.get(player.id);
           const card = topChampion ? championImages.get(topChampion) : namelessCard;
           const recentRow = recentById.get(player.id);
           return <li key={player.id}><Link to={`/players/${player.id}`} className="grid min-h-control min-w-0 gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue sm:grid-cols-[minmax(0,1fr)_minmax(18rem,1fr)]">
-            <div className="flex min-w-0 items-center gap-3"><span className="text-sm tabular-nums text-ctp-subtext0">#{rank}</span><PersonAvatar championName={topChampion ?? 'Nameless Champion'} card={card} /><div className="min-w-0"><span className="block break-words font-semibold">{player.username}</span><span className="text-xs text-ctp-subtext1">{topChampion ?? 'No public decks'}</span>{regions?.get(player.id)?.region && <span className="block text-xs text-ctp-subtext1">{REGION_LABELS[regions.get(player.id)!.region!]} · inferred</span>}</div></div>
+            <div className="flex min-w-0 items-center gap-3"><span className="text-sm tabular-nums text-ctp-subtext0">{rank ? `#${rank}` : "—"}</span><PersonAvatar championName={topChampion ?? 'Nameless Champion'} card={card} /><div className="min-w-0"><span className="block break-words font-semibold">{player.username}</span><span className="text-xs text-ctp-subtext1">{topChampion ?? 'No public decks'}</span>{regions?.get(player.id)?.region && <span className="block text-xs text-ctp-subtext1">{REGION_LABELS[regions.get(player.id)!.region!]} · inferred</span>}</div></div>
             <div className="grid grid-cols-[0.85fr_1.3fr_1fr] gap-2">
-              <div><strong className="text-lg tabular-nums">{Math.round(rating?.rating ?? 0)}</strong><span className="block text-xs text-ctp-subtext1">Rating</span>{rating && isProvisionalRating(rating.matches) && <span className="block text-xs text-ctp-yellow">Provisional</span>}</div>
-              <div><strong className="break-words text-sm tabular-nums">{rating?.wins}–{rating?.losses}–{rating?.ties}</strong><span className="block text-xs text-ctp-subtext1">All-time W–L–T</span></div>
+              <div><strong className="text-lg tabular-nums">{rating ? Math.round(rating.rating) : "—"}</strong><span className="block text-xs text-ctp-subtext1">{rating ? "Rating" : eloData ? "Not yet rated" : eloStatus.phase === "error" ? "Unavailable" : "Loading"}</span>{rating && isProvisionalRating(rating.matches) && <span className="block text-xs text-ctp-yellow">Provisional</span>}</div>
+              <div><strong className="break-words text-sm tabular-nums">{rating ? `${rating.wins}–${rating.losses}–${rating.ties}` : "—"}</strong><span className="block text-xs text-ctp-subtext1">All-time W–L–T</span></div>
               <div><strong className="text-lg tabular-nums">{recentRow && recordSize(recentRow.record) ? `${recordPercent(recentRow.record)!.toFixed(0)}%` : '—'}</strong><span className="block text-xs text-ctp-subtext1">Recent wins</span><span className="block text-xs text-ctp-subtext1">{recentRow ? `${recordSize(recentRow.record)} matches` : recent ? 'No recent record' : 'Unavailable'}</span></div>
             </div>
           </Link></li>;

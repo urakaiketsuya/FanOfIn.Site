@@ -6375,3 +6375,27 @@ before declaring it missing. The verified generation must also match the rendere
 IndexedDB snapshot, so a pending live-query update cannot flash a false not-found
 state. Refresh errors use the existing Retry action, and retry re-runs verification.
 Cached matches remain readable throughout refreshes.
+
+## Player directory inclusion
+
+Completed Omnidex events are ingested regardless of attendance. The former eight-player
+crawl threshold and `GATCG_MIN_EVENT_PLAYERS` override are removed. Directory membership
+also has no minimum event or rated-match count: every player in the published roster is
+searchable by username or exact Omni ID. Players without recorded matches appear after
+rated players, alphabetically, with “Not yet rated” and no invented rating, rank, or record.
+A ratings fetch failure does not hide the player roster or label unknown ratings as unrated.
+
+The public Omnidex API discovers identities through event rosters, not a global account
+listing. Removing these thresholds does not claim coverage of accounts absent from those
+sources. A new incremental crawl includes newly completed small events in its lookback;
+older skipped events need a backfill. Use bounded, resumable ranges:
+
+```bash
+node --import tsx pipeline/scripts/refresh-omnidex-range.ts START_ID END_ID
+```
+
+The range refresher reuses newer published snapshots, fetches missing completed events,
+merges them with the published event corpus, rebuilds directory/browser files, and updates
+their manifest generations. It does not synthesize match results or ratings. Run the regular
+analysis pipeline after a backfill to refresh derived statistics. Interrupted fetches resume
+from completed event cache records. Keep production publication as a separate release step.

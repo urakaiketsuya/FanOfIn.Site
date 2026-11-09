@@ -29,13 +29,6 @@ export const config = {
   /** Initial Omnidex backfill is scoped to this year only (Phase 6); see Phase 12 for full history. */
   backfillYear: Number(process.env.GATCG_BACKFILL_YEAR ?? 2026),
 
-  /**
-   * Most Omnidex events are tiny weekly leagues (median ~5-7 players); deep-fetching every
-   * one of the ~18k events/year would mean ~150k+ requests for a single backfill. Only events
-   * at or above this size get the full players/standings/pairings/decklists fetch.
-   */
-  minEventPlayers: Number(process.env.GATCG_MIN_EVENT_PLAYERS ?? 8),
-
   /** Delay between Omnidex requests — politeness over speed; skipped entirely in fast mode. */
   crawlRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_CRAWL_DELAY_MS ?? 150),
 

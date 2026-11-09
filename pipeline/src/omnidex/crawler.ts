@@ -22,8 +22,8 @@ export type CrawlMode =
 /** Completed metadata is stable, but cached pairing coverage may still need repair. */
 const TERMINAL_STATUSES = new Set(["complete", "canceled"]);
 
-function isDeepFetchWorthy(event: OmnidexEvent): boolean {
-  return event.status === "complete" && event.players.length >= config.minEventPlayers;
+export function isDeepFetchWorthy(event: OmnidexEvent): boolean {
+  return event.status === "complete";
 }
 
 async function deepFetch(id: number, event: OmnidexEvent, saved?: OmnidexEventBundle | null): Promise<OmnidexEventBundle> {
@@ -74,8 +74,7 @@ export interface CrawlResult {
 }
 
 /**
- * Walks a range of Omnidex event IDs, deep-fetching events that look substantial enough to
- * matter (see config.minEventPlayers) and skipping the rest. Cached completed/canceled events
+ * Walks a range of Omnidex event IDs, deep-fetching every completed event regardless of size. Cached completed/canceled events
  * are never re-fetched — idempotent re-runs only do work for events that are new or still in
  * progress. The published index (`build.ts`) is a separate step that reads whatever is in the
  * cache, so a crawl and a re-publish can happen independently.
