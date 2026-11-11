@@ -816,3 +816,8 @@ app type checking and lint (existing unrelated warnings). Local browser checks a
 Undo, card-to-saved-deck handoff, keyboard containment, touch targets, and overflow.
 Additional mobile checks covered empty libraries and preserving an existing new-deck draft.
 Account responses were mocked; production saves and native mobile keyboards were not exercised.
+
+Deck Add cards opens on ranked suggestions. Submitting a text or facet search, or applying
+a filter, searches the full catalog; clearing search and filters restores suggestions.
+Keep selected cards across these views. Missing recommendation context or unavailable
+evidence must never block catalog search or manual additions.

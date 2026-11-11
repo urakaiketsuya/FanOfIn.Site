@@ -20,8 +20,9 @@ import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
 import { emptyCatalogFilters, filterCatalog, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
 
-export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destination, onDestination, names, catalog, deck, onEdit, onAdded, owned, collectionStatus, identityElements, suggestedNames, evidence, suppressResults = false, sourceControl, renderStats, statsControls }: {
+export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destination, onDestination, names, catalog, deck, onEdit, onAdded, owned, collectionStatus, identityElements, suggestedNames, evidence, suppressResults = false, sourceControl, renderStats, statsControls, suggestionStatus }: {
   format?: DeckFormat;
+  suggestionStatus?: ReactNode;
   renderStats?: (name: string) => ReactNode; statsControls?: ReactNode;
   query: string; onQuery: (query: string) => void;
   destination: "automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song"; onDestination: (value: "automatic" | "main" | "material" | "sideboard" | "maybeboard" | "song") => void;
@@ -36,13 +37,15 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const prices = priceState.priceByName;
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [selectionError, setSelectionError] = useState("");
+  const searching = Boolean(query.trim()) || Object.values(filters).some(Boolean);
+  const activeSuggestions = searching ? undefined : suggestedNames;
   const cards = useMemo(() => [...catalog.values()], [catalog]);
   const options = (key: "classes" | "elements" | "types" | "subtypes") => [...new Set(cards.flatMap(card => card[key]))].sort();
   const matches = useMemo(() => {
     const allowed = new Set(filterCatalog(cards, query, filters, owned, identityElements).map(card => card.name));
-    const pool = [...new Set(suggestedNames ?? names)];
-    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && suggestedNames === undefined ? "name" : sort, prices);
-  }, [cards, query, filters, owned, identityElements, suggestedNames, names, catalog, sort, prices]);
+    const pool = [...new Set(activeSuggestions ?? names)];
+    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && activeSuggestions === undefined ? "name" : sort, prices);
+  }, [cards, query, filters, owned, identityElements, activeSuggestions, names, catalog, sort, prices]);
   const active = Object.entries(filters).filter(([key, value]) => !["class", "set", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
   const labels: Record<keyof CatalogFilters, string> = { class: "Class", set: "Set", rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
@@ -76,7 +79,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
 
     <FilterPanel activeCount={active.length + Object.values(facets).reduce((n, values) => n + values.size, 0)} onClear={() => setFilters(emptyCatalogFilters())} resultLabel={`Show ${matches.length} cards`}>
     <FilterGroup label="Sort">
-    <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<span className="relative min-w-0"><select aria-label="Sort cards" value={sort === "recommended" && suggestedNames === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 max-w-full min-w-0 appearance-none rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-10!">{suggestedNames !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
+    <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<span className="relative min-w-0"><select aria-label="Sort cards" value={sort === "recommended" && activeSuggestions === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 max-w-full min-w-0 appearance-none rounded-lg border border-ctp-surface1 bg-ctp-base pl-3 pr-10!">{activeSuggestions !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
     </FilterGroup>
     {statsControls}
       <div className="space-y-3 pb-3">
@@ -99,7 +102,9 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}
     {(sort === "price" || sort === "price-desc") && <PriceSortStatus state={priceState} />}
     {(sort === "price" || sort === "price-desc") && <p className="mt-2 text-xs text-ctp-subtext1">Card estimates across printings, in USD. Unpriced cards appear last.</p>}
-    {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults format={format} key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={sort === "price" || sort === "price-desc" ? name => <>{renderStats?.(name)}<p className="text-xs text-ctp-subtext1">{prices.has(name) ? `From ${formatUsd(prices.get(name)!)}` : "Price unavailable"}</p></> : renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
+    {suggestedNames !== undefined && <h3 className="mt-3 text-sm font-semibold">{searching ? "Search results" : "Suggested cards"}</h3>}
+    {!searching && suggestionStatus}
+    {!searching && suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults format={format} key={JSON.stringify([query, filters, sort, activeSuggestions !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={sort === "price" || sort === "price-desc" ? name => <>{renderStats?.(name)}<p className="text-xs text-ctp-subtext1">{prices.has(name) ? `From ${formatUsd(prices.get(name)!)}` : "Price unavailable"}</p></> : renderStats} evidence={searching ? undefined : evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
     {!!selected.size && <div className="sticky bottom-0 z-10 mt-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg">
       <details><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm">{selected.size} selected<DisclosureChevron /></summary><div className="max-h-40 overflow-y-auto">{[...selected].map(name=><button key={name} type="button" onClick={()=>toggleSelection(name)} aria-label={`Deselect ${name}`} className="flex min-h-12 w-full items-center justify-between gap-2 text-left text-sm">{name}<span aria-hidden="true">×</span></button>)}</div></details>
       {[...selected].some(name=>!matches.includes(name)) && <p className="mb-2 text-xs text-ctp-subtext1">{[...selected].filter(name=>!matches.includes(name)).length} selected outside these results.</p>}

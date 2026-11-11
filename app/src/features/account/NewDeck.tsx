@@ -6,7 +6,7 @@ import Button from "../../components/ui/Button";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import DialogSheet from "../../components/ui/DialogSheet";
 import DeckEditor from "../../components/deck-editor/DeckEditor";
-import CardBrowser from "../../components/deck-editor/CardBrowser";
+import DeckAddCardBrowser from "./DeckAddCardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import DeckStats from "../../components/DeckStats";
 import CardLayoutControls from "../../components/CardLayoutControls";
@@ -112,11 +112,11 @@ export default function NewDeck() {
           <CardLayoutControls value={prefs.visualCardSize === "rows" ? "Rows" : prefs.displayMode === "detailed" ? "List" : "Grid"} onChange={layout => { prefs.setDisplayMode(layout === "List" ? "detailed" : "visual"); prefs.setVisualCardSize(layout === "Rows" ? "rows" : "large"); }} />
           <div className="flex gap-2"><Button disabled={busy || !session.editHistory.past.length} onClick={session.undo}>Undo</Button><Button disabled={busy || !session.editHistory.future.length} onClick={session.redo}>Redo</Button></div>
         </div>
-        <DeckEditor deck={deck} catalog={catalog} format={format} onEdit={applyEdit} viewMode={prefs.visualCardSize === "rows" || prefs.displayMode === "detailed" ? "list" : "grid"} onAdd={section => { setDestination(section); setBrowser(true); }} />
+        <DeckEditor deck={deck} catalog={catalog} format={format} onEdit={applyEdit} viewMode={prefs.visualCardSize === "rows" || prefs.displayMode === "detailed" ? "list" : "grid"} onAdd={section => { setDestination(section); setQuery(""); setBrowser(true); }} />
       </fieldset>
     </TabPanel>
     <TabPanel baseId="new-deck" tab="stats" active={tab} keepMounted><DeckStats decklist={decklist} cardsByName={catalog} format={format} championName={champion} /></TabPanel>
-    {browser && <EditorDialog count={count} onDismiss={() => setBrowser(false)}><CardBrowser format={format} query={query} onQuery={setQuery} destination={destination} onDestination={setDestination} names={names} catalog={catalog} deck={deck} onEdit={applyEdit} /></EditorDialog>}
+    {browser && <EditorDialog count={count} onDismiss={() => setBrowser(false)}><DeckAddCardBrowser format={format} query={query} onQuery={setQuery} destination={destination} onDestination={setDestination} names={names} catalog={catalog} deck={deck} onEdit={applyEdit} /></EditorDialog>}
     {rename && <RenameDeck title={title} onDismiss={() => setRename(false)} onApply={value => { setTitle(value); setRename(false); }} />}
   </PageLayout>;
 }

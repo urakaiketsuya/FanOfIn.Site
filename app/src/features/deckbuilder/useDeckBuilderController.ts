@@ -86,7 +86,7 @@ export function useDeckBuilderController() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
-  const [recommendationsEnabled, setRecommendationsEnabled] = useState(false);
+  const [recommendationsEnabled, setRecommendationsEnabled] = useState(true);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
