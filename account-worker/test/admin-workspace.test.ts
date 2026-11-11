@@ -5,7 +5,8 @@ import type { Env, AuthUser } from '../src/auth';
 const input = { revision: 0, status: 'draft', definition: { v: 1, name: 'Example', cards: [{ name: 'Reposition', section: 'main', quantity: 4 }] } };
 test('editor validation rejects malformed sections, copies, duplicates, and display text', () => {
   assert.equal(parseEditorialPackage(input).definition.cards[0].quantity, 4);
-  for (const patch of [{ section: 'sideboard' }, { quantity: 0 }, { quantity: 5 }, { quantity: 1.5 }, { name: ' Reposition' }]) assert.throws(() => parseEditorialPackage({ ...input, definition: { ...input.definition, cards: [{ ...input.definition.cards[0], ...patch }] } }));
+  for (const section of ['main', 'material', 'sideboard']) assert.equal(parseEditorialPackage({ ...input, definition: { ...input.definition, cards: [{ ...input.definition.cards[0], section }] } }).definition.cards[0].section, section);
+  for (const patch of [{ section: 'maybeboard' }, { quantity: 0 }, { quantity: 5 }, { quantity: 1.5 }, { name: ' Reposition' }]) assert.throws(() => parseEditorialPackage({ ...input, definition: { ...input.definition, cards: [{ ...input.definition.cards[0], ...patch }] } }));
   assert.throws(() => parseEditorialPackage({ ...input, definition: { ...input.definition, cards: [...input.definition.cards, ...input.definition.cards] } }));
   for (const status of ['draft', 'published']) assert.throws(() => parseEditorialPackage({ ...input, status, definition: { ...input.definition, name: 'fuck you' } }));
 });
