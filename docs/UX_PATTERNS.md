@@ -819,7 +819,13 @@ Account responses were mocked; production saves and native mobile keyboards were
 
 Deck Add cards opens on ranked suggestions eligible for the selected destination, excluding
 positive-quantity cards already in any deck section (including Maybeboard). Changing the
-destination immediately updates suggestions. Submitting a text or facet search, or applying
-a filter, searches the full catalog; clearing search and filters restores suggestions.
+destination immediately updates suggestions and search results. Submitting a text or facet
+search, or applying a filter, searches catalog cards eligible for the selected destination,
+including cards already in the deck; clearing search and filters restores suggestions.
 Keep selected cards across these views. Missing recommendation context or unavailable
 evidence must never block catalog search or manual additions.
+
+The homepage highlights broadcast match recaps and Deck Report before tournament discovery.
+Recap previews reuse match identities and link to individual timelines, with loading, empty,
+and retry states. The report preview links directly to the example deck's report and offers
+an entry point for the user's own deck.

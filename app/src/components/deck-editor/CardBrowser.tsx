@@ -44,9 +44,10 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const matches = useMemo(() => {
     const allowed = new Set(filterCatalog(cards, query, filters, owned, identityElements).map(card => card.name));
     const included = new Set(Object.values(deck).flatMap(lines => lines.filter(line => line.quantity > 0).map(line => line.card)));
-    const pool = [...new Set(activeSuggestions ?? names)].filter(name => activeSuggestions === undefined || (
-      !included.has(name) && deckDestinationEligibility(catalog.get(name), destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination).allowed
-    ));
+    const pool = [...new Set(activeSuggestions ?? names)].filter(name =>
+      (activeSuggestions === undefined || !included.has(name)) &&
+      deckDestinationEligibility(catalog.get(name), destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination).allowed
+    );
     return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && activeSuggestions === undefined ? "name" : sort, prices);
   }, [cards, query, filters, owned, identityElements, activeSuggestions, names, catalog, sort, prices, deck, destination]);
   const active = Object.entries(filters).filter(([key, value]) => !["class", "set", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];

@@ -2,12 +2,13 @@ import type { AccountUser } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import HomeDeckInsight from "./HomeDeckInsight";
 import HomeDiscovery from "./HomeDiscovery";
+import HomeMatchRecaps from "./HomeMatchRecaps";
 
 const PATHS = [
   { title: "Explore decks", body: "Find your next tournament list", to: "/decks" },
   { title: "Build a deck", body: "Start with your champion", to: "/deck-builder" },
   { title: "My collection", body: "Track cards and missing copies", to: "/collection" },
-  { title: "Analyze a deck", body: "Test consistency and damage", to: "/deck-analysis" },
+  { title: "Deck report", body: "Explore draws, damage, and card access", to: "/deck-analysis" },
 ] as const;
 const homeLinkClass = "inline-flex min-h-12 items-center rounded-lg px-3 text-sm font-semibold text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
 
@@ -21,7 +22,7 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
         </div>}
         <p className="text-xs font-semibold uppercase tracking-widest text-ctp-subtext0">Grand Archive · Fan of Insight</p>
         <h1 className="mt-3 max-w-3xl text-3xl font-bold leading-tight tracking-tight sm:text-5xl">Your next deck starts <span className="text-ctp-blue">with insight.</span></h1>
-        <p className="mt-4 max-w-2xl text-base text-ctp-subtext1">Explore tournament lists, find your playstyle, and build with the cards you own.</p>
+        <p className="mt-4 max-w-2xl text-base text-ctp-subtext1">Explore tournament decks, catch up on match recaps, and see how your deck performs.</p>
         <nav aria-label="Start here" className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {PATHS.map(path => <Link key={path.to} to={path.to} className="min-w-0 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
             <span className="block font-semibold text-ctp-blue">{path.title} <span aria-hidden="true">→</span></span>
@@ -30,8 +31,9 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
         </nav>
       </div>
     </section>
-    <HomeDiscovery />
+    <HomeMatchRecaps />
     <HomeDeckInsight />
+    <HomeDiscovery />
     <nav aria-label="More from Fan of Insight" className="mx-auto flex max-w-5xl flex-wrap gap-2 border-t border-ctp-surface0 px-4 py-6">
       <Link to="/methodology" className={homeLinkClass}>How we calculate results</Link>
       <Link to="/changelog" className={homeLinkClass}>What’s new</Link>
