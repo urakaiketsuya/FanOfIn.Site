@@ -23,6 +23,8 @@ export default function TonorisDrawComparison({ baseline, target, cardsByName, b
           <div className="flex flex-wrap justify-between gap-2"><dt>Neos bonus drawn</dt><dd>{percent(point.before.bonus)} → {percent(point.after.bonus)} <span className="text-xs">({signed(point.bonusDelta)} pp)</span></dd></div>
           <div className="flex flex-wrap justify-between gap-2"><dt>Memory saved</dt><dd>{span(point.before.saved)} → {span(point.after.saved)}</dd></div>
           <div className="flex flex-wrap justify-between gap-2"><dt>Drones fabricated</dt><dd>{span(point.before.fabricated)} → {span(point.after.fabricated)}</dd></div>
+          <div className="flex flex-wrap justify-between gap-2"><dt>Weapons summoned</dt><dd>{span(point.before.weapons)} → {span(point.after.weapons)}</dd></div>
+          <div className="flex flex-wrap justify-between gap-2"><dt>2 prevention ready</dt><dd>{percent(point.before.preventionReady)} → {percent(point.after.preventionReady)}</dd></div>
           <div className="flex flex-wrap justify-between gap-2"><dt>Titans summoned</dt><dd>{span(point.before.titans)} → {span(point.after.titans)}</dd></div>
         </dl>
       </section>)}</div>

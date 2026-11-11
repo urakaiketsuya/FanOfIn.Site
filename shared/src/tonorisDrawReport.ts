@@ -25,11 +25,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   const count = Math.max(1, Math.floor(samples));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
-  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], fabricated: [] as number[], titans: [] as number[], tokenBuffs: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0 }));
+  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], fabricated: [] as number[], weapons: [] as number[], prevention: [] as number[], titans: [] as number[], tokenBuffs: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0, preventionReady: 0 }));
   for (let sample = 0; sample < count; sample++) {
     const library = libraryBase.slice();
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
-    let seen = 0, level = 0, saved = 0, obelisks = 0, drones = 0, titans = 0, tokenBuffs = 0, fabricated = 0, tokenPaid = 0, domainPaid = 0, upkeepPaid = 0, upkeepLost = 0, bonus = 0;
+    let seen = 0, level = 0, saved = 0, obelisks = 0, drones = 0, titans = 0, tokenBuffs = 0, fabricated = 0, weapons = 0, tokenPaid = 0, domainPaid = 0, upkeepPaid = 0, upkeepLost = 0, bonus = 0;
     let objects: PaymentObject[] = [];
     const addObject = (name: string, token = false) => objects.push({ name, domain: token ? OBELISKS.includes(name) : !!catalog.get(name)?.types.includes('DOMAIN'), token, rested: false });
     let hand: string[] = [], memory: string[] = [];
@@ -52,17 +52,22 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       memory.push(...pay(hand, cost - payment.count));
     };
     const reserveBudget = () => hand.length + availableObjects().length;
-    const fabricate = () => {
-      const source = objects.find(object => object.name === OBELISKS[0] && !object.rested);
-      if (!source) return false;
-      const cost = Math.max(0, 6 - objects.filter(object => object.domain).length);
+    const activation = (name: string, printed: number) => {
+      const source = objects.find(object => object.name === name && !object.rested);
+      if (!source) return null;
+      const cost = Math.max(0, printed - objects.filter(object => object.domain).length);
       // The activation's REST cost and reservable cannot use the same object.
       const budget = reserveBudget() - Number(availableObjects().includes(source));
-      if (cost > budget) return false;
-      source.rested = true;
-      payReserve(cost);
-      addObject('Automaton Drone', true);
-      drones++; fabricated++; tokenBuffs++;
+      return cost <= budget ? { source, cost } : null;
+    };
+    const summonFromObelisk = (name: string, printed: number, token: string) => {
+      const available = activation(name, printed);
+      if (!available) return false;
+      available.source.rested = true;
+      payReserve(available.cost);
+      addObject(token, true);
+      if (token === 'Automaton Drone') { drones++; fabricated++; tokenBuffs++; }
+      else weapons++;
       return true;
     };
     draw(hand, 7);
@@ -96,19 +101,23 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
           const cost = catalog.get(candidate)?.cost_reserve;
           return cost != null && cost >= 0 && cost <= reserveBudget() - 1;
         });
-        if (!name) { if (fabricate()) continue; break; }
+        if (!name) {
+          if (summonFromObelisk(OBELISKS[0], 6, 'Automaton Drone')) continue;
+          if (summonFromObelisk(OBELISKS[1], 5, 'Aurousteel Greatsword')) continue;
+          break;
+        }
         hand.splice(hand.indexOf(name), 1);
         const cost = catalog.get(name)!.cost_reserve!;
         payReserve(cost);
         played.add(name);
         if (name === 'Neos Sight') {
           draw(hand);
-          if (1 + board.length + obelisks + drones + titans >= 8) { const before = seen; draw(memory); bonus += seen - before; }
+          if (1 + board.length + obelisks + drones + titans + weapons >= 8) { const before = seen; draw(memory); bonus += seen - before; }
         } else if (name === 'Automata Genesis') {
           titans += 3;
           for (let i = 0; i < 3; i++) addObject('Titan Mk II', true);
           // Tonoris bonus counts all tokens; counters go only on token allies.
-          tokenBuffs += (obelisks + drones + titans) * (drones + titans);
+          tokenBuffs += (obelisks + drones + titans + weapons) * (drones + titans);
         } else {
           board.push(name);
           addObject(name);
@@ -126,6 +135,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       total.saved.push(saved);
       total.tokenPaid.push(tokenPaid);
       total.fabricated.push(fabricated);
+      total.weapons.push(weapons);
+      // End-of-turn capacity, not damage prevented or a cumulative total.
+      const prevention = activation(OBELISKS[2], 4) ? 2 : 0;
+      total.prevention.push(prevention);
+      if (prevention) total.preventionReady++;
       total.titans.push(titans);
       total.tokenBuffs.push(tokenBuffs);
       total.domainPaid.push(domainPaid);
@@ -138,9 +152,9 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   }
   return { missing, sources, points: totals.map((total, i) => ({
     turn: i + 1, natural: Math.min(libraryBase.length, 7 + i), seen: range(total.seen), extra: range(total.extra), saved: range(total.saved), tokenPaid: range(total.tokenPaid),
-    fabricated: range(total.fabricated), titans: range(total.titans), tokenBuffs: range(total.tokenBuffs),
+    fabricated: range(total.fabricated), weapons: range(total.weapons), prevention: range(total.prevention), titans: range(total.titans), tokenBuffs: range(total.tokenBuffs),
     domainPaid: range(total.domainPaid), upkeepPaid: range(total.upkeepPaid), upkeepLost: range(total.upkeepLost),
-    level3: total.level3 / count, bonus: total.bonus / count,
+    preventionReady: total.preventionReady / count, level3: total.level3 / count, bonus: total.bonus / count,
     plays: sources.map(source => ({ ...source, probability: (total.plays.get(source.name) ?? 0) / count })),
   })) };
 }

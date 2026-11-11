@@ -6527,7 +6527,7 @@ max(0, 6 − current domain count) Reserve and resting Fabrication itself. Its s
 cannot also contribute reservable toward that payment. A paid activation creates
 one Drone with one buff counter; the policy then rechecks affordable Main plays.
 The source remains rested, bounding activations to once per turn. Token creation is
-not card draw. Armaments and Protection activations are not included yet.
+not card draw. Armaments and Protection use the extension below.
 
 
 Paired Tonoris forecasts (2026-11-11): Compare and saved-version reports call the
@@ -6538,3 +6538,33 @@ These are marginal distributions, not paired-sample effect intervals or causal
 swap benefits. Different library sizes remain different. Unsupported lineage or
 missing catalog on either side suppresses numerical comparison. Source cards show
 before/after quantities and paid-play probabilities by turn five.
+
+
+Tonoris remaining Obelisks (2026-11-11): after reviewed Main plays and Fabrication,
+Armaments pays max(0, 5 − current domain count) Reserve and rests its source to
+summon one Aurousteel Greatsword. Its new weapon cannot finance its own creation.
+The policy rechecks Main plays after each summon. Weapons count as tokens for
+Cordelia payments and Automata Genesis's X, and as objects for Neos Sight; they
+are not allies and do not receive Genesis's buff counters. No attack damage is
+inferred. Weapon totals are cumulative summons through the checkpoint.
+
+Protection is measured after this same sequence: its source must exist, remain
+awake, and have max(0, 4 − current domain count) Reserve available after excluding
+itself from the payment pool. `preventionReady` is the fraction of samples with
+one affordable activation (2 prevention), and `prevention` is the checkpoint
+capacity distribution (0 or 2). It is neither cumulative prevention nor damage
+actually prevented. The model does not spend this capacity against an invented
+attack. The report and comparison display “2 prevention ready” as a percentage.
+
+Altar's entry draw remains modeled. Its two-ally sacrifice mills cards rather
+than drawing them. The automatic draw policy does not activate it without a
+reviewed graveyard payoff; sacrificing an Automaton and Human solely to mill
+would introduce an unsupported strategy. A future graveyard policy must track
+both sacrifices, distinguish tokens from graveyard cards, move library cards
+without increasing cards seen, and consume any recursion targets only once.
+
+Verification: 37 focused tests, shared/app typechecks, targeted lint; mobile
+390×844 and desktop 1280×900 standalone report/comparison checks. New rows fit
+without horizontal overflow; card links are at least 156px on each axis and
+keyboard focus is visible. Missing, unsupported and empty states checked.
+Signed-in integration and live deployment remain unverified.

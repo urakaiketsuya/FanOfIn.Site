@@ -19,6 +19,8 @@ export default function TonorisDrawReport({ deck, cardsByName }: { deck: Analyti
           <div className="flex justify-between gap-2"><dt>Memory cost saved</dt><dd>{span(point.saved)}</dd></div>
           <div className="flex justify-between gap-2"><dt>Level 3 reached</dt><dd>{Math.round(point.level3 * 100)}%</dd></div>
           <div className="flex justify-between gap-2"><dt>Drones fabricated</dt><dd>{span(point.fabricated)}</dd></div>
+          <div className="flex justify-between gap-2"><dt>Weapons summoned</dt><dd>{span(point.weapons)}</dd></div>
+          <div className="flex justify-between gap-2"><dt>2 prevention ready</dt><dd>{Math.round(point.preventionReady * 100)}%</dd></div>
           <div className="flex justify-between gap-2"><dt>Titans summoned</dt><dd>{span(point.titans)}</dd></div>
           <div className="flex justify-between gap-2"><dt>Neos bonus drawn</dt><dd>{Math.round(point.bonus * 100)}%</dd></div>
         </dl>

@@ -14,7 +14,7 @@ Existing competition release D is complete and is not reopened.
 ## Work queue
 
 - [x] Tonoris: shared object payments, Fabrication activation, token development.
-- [ ] Tonoris: review other activations and Altar milling against a useful automatic policy.
+- [x] Tonoris: review other activations and Altar milling against a useful automatic policy.
 - [ ] General affordability: representative non-Tonoris fixture, paid progression,
       finite discounts and payment budgets.
 - [ ] Conditional draw: reviewed triggers, activations, recurring draws and destinations.
@@ -44,11 +44,11 @@ contract and representative fixture. Record data blockers separately from comple
 
 ## Current handoff
 
-Baseline: nine reviewed Tonoris Main plays, including paid Automata Genesis.
-Next: consolidate domain/token object payments and implement Fabrication; then wire
-the sequence results into the shared comparison surface used by Compare and versions.
-No outstanding edits at start. No production writes authorized in this run.
-
+Current: reviewed Tonoris draw/payment sequence includes all three Obelisks:
+paid Fabrication and Armaments, plus remaining affordable Protection capacity.
+Altar milling deliberately waits for a reviewed graveyard payoff/policy.
+Next: representative non-Tonoris affordability and conditional-draw coverage.
+No production writes authorized in this run.
 
 ## Milestone 1 — object payments and paired forecasts
 
@@ -71,3 +71,24 @@ continue the independent mechanics and page work above. Comparisons are only
 partially complete: this milestone adds Tonoris, not all newer resource models.
 Current execution queue: 1 of 16 top-level milestones completed (~6%); milestones
 have unequal size, and the broader coverage estimate remains uncertain.
+
+
+## Milestone 2 — remaining Tonoris activations
+
+Implemented paid Armaments summons, physical weapon tokens in payment/object
+counts, and end-of-sequence Protection readiness. Reports and comparisons show
+weapon ranges and the chance of 2 prevention being available. No incoming damage
+or successful attack is invented. Reviewed Altar: entry draw stays; sacrificing
+allies to mill waits for the graveyard/payoff milestone rather than optimizing
+an undefined objective.
+
+Verified 37 focused tests, shared/app typechecks, targeted lint, and standalone
+report/comparison at 390×844 and 1280×900. No horizontal overflow; card links exceed
+48px and keyboard focus is visible. Missing/unsupported/empty rendering checked.
+Temporary harness removed. No new loading or expansion states. Signed-in page
+integration, full build and live deployment remain unverified.
+
+Current execution queue: 2 of 16 top-level milestones complete (~13%). These are
+unequal milestones, so this is checklist progress rather than an effort forecast.
+Next: non-Tonoris affordability and conditional draw; graveyard modeling remains
+a separate queued dependency for Altar. No push performed.

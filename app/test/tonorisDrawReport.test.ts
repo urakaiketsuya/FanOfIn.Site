@@ -200,3 +200,37 @@ test('sequence comparisons match standalone results and preserve unavailable sta
  assert.equal(compareTonorisDrawReports(deck,{...deck,main:lines({'Missing':1})},catalog)!.status,'missing');
  assert.equal(compareTonorisDrawReports({main:[],material:[]},{main:[],material:[]},catalog),null);
 });
+
+test('Armaments pays after Fabrication and cannot borrow the token it creates', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const forecast = (quantity: number) => computeTonorisDrawReport({main:lines({'Engulf':quantity}),material},controlled,1)!.points;
+ assert.equal(forecast(5)[4].weapons.median,0); // Fabrication leaves one; Armaments needs three
+ const paid = forecast(7);
+ assert.equal(paid[3].weapons.median,0); // Armaments not created yet
+ assert.equal(paid[4].fabricated.median,2);
+ assert.equal(paid[4].weapons.median,1); // four + three Reserve, separate REST costs
+ assert.equal(paid[4].tokenBuffs.median,2); // weapons are not token allies
+ assert.equal(paid[4].seen.median,7);
+});
+test('Protection reports affordable remaining capacity rather than damage prevented', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const report = computeTonorisDrawReport({main:lines({'Dungeon Guide':1,'Engulf':6}),material},controlled,1)!;
+ assert.ok(report.points.slice(0,4).every(point=>point.preventionReady===0));
+ assert.equal(report.points[4].preventionReady,1);
+ assert.deepEqual(report.points[4].prevention,{low:2,median:2,high:2});
+ assert.equal(report.points[4].fabricated.median,2);
+ assert.equal(report.points[4].weapons.median,0); // prevention needs one, Armaments needs two
+});
+test('reviewed remaining Obelisk and Altar contracts match the catalog', () => {
+ assert.match(catalog.get('Obelisk of Armaments')!.effect!,/\(5\), \[REST\]/);
+ assert.match(catalog.get('Obelisk of Armaments')!.effect!,/Aurousteel Greatsword token/);
+ assert.ok(catalog.get('Aurousteel Greatsword')!.types.includes('WEAPON'));
+ assert.ok(!catalog.get('Aurousteel Greatsword')!.types.includes('ALLY'));
+ assert.match(catalog.get('Obelisk of Protection')!.effect!,/\(4\), \[REST\]/);
+ assert.match(catalog.get('Obelisk of Protection')!.effect!,/Prevent the next 2 damage/);
+ for (const name of ['Obelisk of Armaments','Obelisk of Protection']) assert.match(catalog.get(name)!.effect!,/for each domain you control/);
+ assert.match(catalog.get('Dormant Sacrificial Altar')!.effect!,/Sacrifice an Automaton ally and a Human ally/);
+ assert.match(catalog.get('Dormant Sacrificial Altar')!.effect!,/top two cards of your deck into your graveyard/);
+});
