@@ -1,7 +1,7 @@
 import type { Card } from './api-types.js';
 import { aggregateLines, type AnalyticsDeck } from './fixtureResources.js';
 
-const ENGINE = ['Academy Guide', 'Dungeon Guide', 'Epicurean Institute', 'Dormant Sacrificial Altar', 'Hub of Innovation', 'The Eternal Kingdom', 'Cordelia, Aurous Kaiser', 'Neos Sight'];
+const ENGINE = ['Academy Guide', 'Dungeon Guide', 'Epicurean Institute', 'Dormant Sacrificial Altar', 'Hub of Innovation', 'The Eternal Kingdom', 'Cordelia, Aurous Kaiser', 'Automata Genesis', 'Neos Sight'];
 const LINEAGE = ['Tonoris, Lone Mercenary', 'Tonoris, Might of Humanity', 'Tonoris, Genesis Aegis'];
 export const tonorisDrawSources = ENGINE;
 export interface DrawRange { low: number; median: number; high: number }
@@ -23,11 +23,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   const count = Math.max(1, Math.floor(samples));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
-  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0 }));
+  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], titans: [] as number[], tokenBuffs: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0 }));
   for (let sample = 0; sample < count; sample++) {
     const library = libraryBase.slice();
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
-    let seen = 0, level = 0, saved = 0, obelisks = 0, drones = 0, restedTokens = 0, tokenPaid = 0, domainPaid = 0, upkeepPaid = 0, upkeepLost = 0, bonus = 0;
+    let seen = 0, level = 0, saved = 0, obelisks = 0, drones = 0, titans = 0, tokenBuffs = 0, restedTokens = 0, tokenPaid = 0, domainPaid = 0, upkeepPaid = 0, upkeepLost = 0, bonus = 0;
     const restedDomains = new Map<string, number>();
     let hand: string[] = [], memory: string[] = [];
     let board: string[] = [];
@@ -39,7 +39,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       return zone.splice(0, amount);
     };
     const banishMemory = (amount: number) => { for (let paid = 0; paid < amount; paid++) memory.splice(Math.floor(random() * memory.length), 1); };
-    const availableTokens = () => board.includes('Cordelia, Aurous Kaiser') ? obelisks + drones - restedTokens : 0;
+    const availableTokens = () => board.includes('Cordelia, Aurous Kaiser') ? obelisks + drones + titans - restedTokens : 0;
     const availableDomains = () => level > 0 && board.includes('The Eternal Kingdom')
       ? board.filter(name => catalog.get(name)?.types.includes('DOMAIN')).filter((name, index, domains) =>
         domains.slice(0, index).filter(other => other === name).length >= (restedDomains.get(name) ?? 0)) : [];
@@ -93,7 +93,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
         played.add(name);
         if (name === 'Neos Sight') {
           draw(hand);
-          if (1 + board.length + obelisks + drones >= 8) { const before = seen; draw(memory); bonus += seen - before; }
+          if (1 + board.length + obelisks + drones + titans >= 8) { const before = seen; draw(memory); bonus += seen - before; }
+        } else if (name === 'Automata Genesis') {
+          titans += 3;
+          // Tonoris bonus counts all tokens; counters go only on token allies.
+          tokenBuffs += (obelisks + drones + titans) * (drones + titans);
         } else {
           board.push(name);
           if (name === 'Dungeon Guide' && level < 3 && memory.length >= 2) {
@@ -109,6 +113,8 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       total.extra.push(seen - Math.min(library.length, 6 + turn));
       total.saved.push(saved);
       total.tokenPaid.push(tokenPaid);
+      total.titans.push(titans);
+      total.tokenBuffs.push(tokenBuffs);
       total.domainPaid.push(domainPaid);
       total.upkeepPaid.push(upkeepPaid);
       total.upkeepLost.push(upkeepLost);
@@ -119,6 +125,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   }
   return { missing, sources, points: totals.map((total, i) => ({
     turn: i + 1, natural: Math.min(libraryBase.length, 7 + i), seen: range(total.seen), extra: range(total.extra), saved: range(total.saved), tokenPaid: range(total.tokenPaid),
+    titans: range(total.titans), tokenBuffs: range(total.tokenBuffs),
     domainPaid: range(total.domainPaid), upkeepPaid: range(total.upkeepPaid), upkeepLost: range(total.upkeepLost),
     level3: total.level3 / count, bonus: total.bonus / count,
     plays: sources.map(source => ({ ...source, probability: (total.plays.get(source.name) ?? 0) / count })),

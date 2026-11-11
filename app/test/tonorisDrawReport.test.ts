@@ -12,7 +12,7 @@ test('complete Tonoris fixture is deterministic and order independent', () => {
  assert.deepEqual(report, run(fixture.main));
  const reordered = computeTonorisDrawReport({main:lines(fixture.main).reverse(),material},catalog,32)!;
  assert.deepEqual(report.points.map(p=>p.seen),reordered.points.map(p=>p.seen));
- assert.equal(report.sources.length,8);
+ assert.equal(report.sources.length,9);
  assert.equal(report.points[0].level3,0);
  assert.ok(report.points[2].level3 > 0);
  assert.ok(report.points[4].seen.median > report.points[4].natural);
@@ -127,4 +127,40 @@ test('Kingdom contract includes domains, unique retention, and Reserve upkeep', 
  assert.match(kingdom.effect!,/Domains you control have/);
  assert.match(kingdom.effect!,/beginning of your recollection phase, you may pay \(2\)/);
  assert.match(kingdom.effect!,/If you don't, sacrifice/);
+});
+
+
+test('Automata Genesis cannot finance its own cost or bypass NEOS access', () => {
+ const report = run({'Automata Genesis':4,'Engulf':56});
+ assert.ok(report.points.every(p=>p.titans.high===0 && p.tokenBuffs.high===0));
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const blocked = computeTonorisDrawReport({main:lines({'Automata Genesis':1,'Engulf':6}),material},controlled,1)!;
+ assert.equal(blocked.points[4].level3,1);
+ assert.equal(blocked.points[4].titans.high,0); // six payment cards cannot pay twelve
+});
+test('paid Genesis creates tokens, applies counters, and enables later token payments', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ controlled.set('Cordelia, Aurous Kaiser',{...catalog.get('Cordelia, Aurous Kaiser')!,cost_reserve:0});
+ controlled.set('Automata Genesis',{...catalog.get('Automata Genesis')!,cost_reserve:3});
+ controlled.set('Neos Sight',{...catalog.get('Neos Sight')!,cost_reserve:3});
+ const report = computeTonorisDrawReport({main:lines({'Cordelia, Aurous Kaiser':1,'Automata Genesis':1,'Neos Sight':1}),material},controlled,1)!;
+ assert.equal(report.points[2].titans.high,0);
+ const p = report.points[3];
+ assert.equal(p.titans.median,3);
+ assert.equal(p.tokenBuffs.median,30); // six tokens; five token allies
+ assert.equal(p.tokenPaid.median,6); // original three pay Genesis; Titans pay Neos
+ assert.equal(p.plays.find(p=>p.name==='Neos Sight')!.probability,1);
+ assert.equal(report.points[4].titans.median,3); // action itself is not a permanent
+});
+test('Genesis catalog contract summons three Titans and buffs only token allies', () => {
+ const card = catalog.get('Automata Genesis')!;
+ assert.equal(card.cost_reserve,12);
+ assert.equal(card.element,'NEOS');
+ assert.ok(card.types.includes('ACTION'));
+ assert.match(card.effect!,/three Titan Mk II tokens/);
+ assert.match(card.effect!,/each token ally you control/);
+ assert.match(card.effect!,/amount of tokens you control/);
+ assert.ok(catalog.get('Titan Mk II')!.types.includes('ALLY'));
 });

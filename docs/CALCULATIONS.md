@@ -6440,7 +6440,7 @@ natural draws, actual champion-memory discounts applied, level-3 reach, and
 per-source probability of at least one paid play. Percentages use all samples.
 
 Reviewed Main plays, in priority order: Academy Guide, Dungeon Guide, Epicurean Institute,
-Dormant Sacrificial Altar, Hub of Innovation, The Eternal Kingdom, Cordelia (Aurous Kaiser), Neos Sight. Each costs its printed
+Dormant Sacrificial Altar, Hub of Innovation, The Eternal Kingdom, Cordelia (Aurous Kaiser), Automata Genesis, Neos Sight. Each costs its printed
 Reserve, excluding itself from payment. Reserve cards move to memory and cannot
 pay another Reserve cost until recollection. Payments retain reviewed sources
 where possible. One contiguous champion upgrade per materialize phase begins on
@@ -6482,7 +6482,7 @@ This fixed trigger order is a reproducible policy, not an optimal sequencing cla
 Recollection timing: https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-recollection-phase.
 
 Other Main cards are payment cards in this policy. No other materialization,
-Automata Genesis, Altar milling, interaction,
+Altar milling, interaction,
 removal, combat, mulligan, or opposing actions are simulated. Board survival is an
 explicit unopposed assumption. Sideboard does not enter any population. Missing
 catalog data blocks the report; unrelated champions receive no Tonoris forecast.
@@ -6504,3 +6504,14 @@ linked card sources, no horizontal overflow, minimum card-link target 156×165px
 on mobile, and a visible 2px keyboard focus outline. Empty and incomplete-catalog
 states render without errors. No new loading or expanded state was introduced;
 signed-in integration and live deployment were not exercised.
+
+
+Tonoris extension (2026-11-11): Automata Genesis requires NEOS access and its full
+printed 12 Reserve payment before summoning three Titan Mk II tokens. As an action,
+it does not remain on the board. Titans count toward Neos Sight's object threshold
+and gain reservable from Cordelia for subsequent costs, sharing the same per-turn
+payment pool. The Tonoris bonus then adds X counters to every token ally, where X
+counts all tokens (including Obelisks). Cumulative Titans summoned and total token
+buff counters are retained in report ranges; no combat damage is inferred. The
+policy prioritizes Genesis after Cordelia and before Neos Sight. Other token
+abilities and opposing actions remain outside this sequence.
