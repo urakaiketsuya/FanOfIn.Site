@@ -192,3 +192,24 @@ Queue remains 3/16 complete (~19%, unequal milestones). Next: expose the support
 paid-damage ranges alongside their cards in reports/comparisons, then extend the
 reviewed damage pool. Graveyard-dependent effects still need the queued zone policy.
 No push performed.
+
+## Paid damage report presentation — 2026-11-11
+
+Wired the reviewed Fireball forecast into DeckReport and the versions mode of
+FixtureComparison (shared by Compare and saved versions). Card-linked results
+show cumulative damage ranges by turns 3 and 5, with medians and paired changes.
+The title explicitly scopes output to Fireball. Empty/unrelated decks omit the
+section; missing catalog and unsupported comparison lineages show concise status.
+There are no calculator inputs, new asynchronous states or disclosures.
+
+Verification: app typecheck, targeted lint, four paid-damage calculation tests.
+Production components checked in a temporary harness at 390×844 and 1280×900:
+no horizontal overflow, 160×151px links, visible 2px keyboard focus, actual card
+art/name, missing-data and unsupported states, and empty-section suppression.
+Harness removed. Full page/signed-in journeys, full build and live deployment
+remain unverified. No push performed.
+
+Next: broaden reviewed direct-damage cards and paired outcomes. Extended analytics
+remains 3/16 complete (~19% by unequal broad milestones); paid damage now includes
+calculation and presentation for Fireball, but broader combat remains partial.
+Graveyard-dependent effects still require the queued zone policy.

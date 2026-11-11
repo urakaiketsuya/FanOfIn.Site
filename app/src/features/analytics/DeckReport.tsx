@@ -1,3 +1,4 @@
+import RaiDamageReport from './RaiDamageReport';
 import TonorisDrawReport from './TonorisDrawReport';
 import EffectAccessReport from './EffectAccessReport';
 import { useMemo } from 'react';
@@ -14,6 +15,7 @@ export default function DeckReport({ deck, cardsByName }: {
 }) {
   const forecast = useMemo(() => computeAggressionForecast(deck.main, cardsByName, deck.material), [deck.main, deck.material, cardsByName]);
   return <div data-component="DeckReport" className="mt-4 space-y-4">
+    <RaiDamageReport deck={deck} cardsByName={cardsByName} />
     <TonorisDrawReport deck={deck} cardsByName={cardsByName} />
     <Panel><DamageStatisticalReport forecast={forecast} cardsByName={cardsByName} /></Panel>
     <CombatAccessReport deck={deck} cardsByName={cardsByName} />

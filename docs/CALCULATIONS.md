@@ -6697,3 +6697,11 @@ Fireball has zero Fireball output, not zero total damage. Missing catalog entrie
 or Fireball reserve cost are unavailable; unsupported lineages are not zero.
 The shared sequence exposes damage through `estimateDrawAndDamageInfluence`;
 `estimateDrawInfluence` preserves the existing draw-only return contract.
+
+The paid Fireball forecast is now presented in `DeckReport` and versions-mode
+`FixtureComparison`, scoped by the heading “Fireball · paid damage.” Both use
+turn-3/5 cumulative ranges and show the contributing card. Standalone reports
+require a Rai material entry and a positive Fireball quantity; comparisons appear
+when either side meets that condition. Missing/unsupported results show status,
+not numerical changes. Removing Fireball from a supported target may correctly
+show zero Fireball output; it makes no claim about other damage sources.
