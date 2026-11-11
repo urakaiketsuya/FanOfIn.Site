@@ -817,7 +817,9 @@ Undo, card-to-saved-deck handoff, keyboard containment, touch targets, and overf
 Additional mobile checks covered empty libraries and preserving an existing new-deck draft.
 Account responses were mocked; production saves and native mobile keyboards were not exercised.
 
-Deck Add cards opens on ranked suggestions. Submitting a text or facet search, or applying
+Deck Add cards opens on ranked suggestions eligible for the selected destination, excluding
+positive-quantity cards already in any deck section (including Maybeboard). Changing the
+destination immediately updates suggestions. Submitting a text or facet search, or applying
 a filter, searches the full catalog; clearing search and filters restores suggestions.
 Keep selected cards across these views. Missing recommendation context or unavailable
 evidence must never block catalog search or manual additions.
