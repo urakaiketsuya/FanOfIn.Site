@@ -6440,7 +6440,7 @@ natural draws, actual champion-memory discounts applied, level-3 reach, and
 per-source probability of at least one paid play. Percentages use all samples.
 
 Reviewed Main plays, in priority order: Academy Guide, Dungeon Guide, Epicurean Institute,
-Dormant Sacrificial Altar, Hub of Innovation, Cordelia (Aurous Kaiser), Neos Sight. Each costs its printed
+Dormant Sacrificial Altar, Hub of Innovation, The Eternal Kingdom, Cordelia (Aurous Kaiser), Neos Sight. Each costs its printed
 Reserve, excluding itself from payment. Reserve cards move to memory and cannot
 pay another Reserve cost until recollection. Payments retain reviewed sources
 where possible. One contiguous champion upgrade per materialize phase begins on
@@ -6462,14 +6462,27 @@ one compatible level without materialization costs. This can happen during turn 
 and in addition to normal materialization; it does not increment Academy cost savings.
 Cordelia requires NEOS, summons two Drones, and grants all tokens reservable.
 The policy retains the existing unique Cordelia rather than playing another copy.
-Payments rest available tokens before reserving hand cards; each token pays once
+Payments rest available domains, then tokens, before reserving hand cards; each token pays once
 per turn and wakes on the next turn. Tokens never pay champion memory costs or
 Dungeon Guide’s banish requirement. Newly summoned tokens can pay subsequent costs,
 not their own source’s cost. Reservable contract:
 https://rules.gatcg.com/glossary/keywords-and-abilities.
 
+The Eternal Kingdom grants domains reservable only after the first Guardian champion
+is reached. The policy retains an existing unique Kingdom. Beginning-of-recollection
+triggers resolve Genesis first, Kingdom upkeep second, then Institute sacrifices.
+Upkeep pays two Reserve from currently available domains/tokens/hand; memory is
+not yet recollected. If unaffordable, Kingdom is sacrificed and immediately stops
+granting reservable. Rested Institutes are preferred for payment before their
+scheduled sacrifice; removed Institutes cannot leave a rested count on new copies.
+Object payments are shared between upkeep and Main plays, refresh at wake-up,
+and cannot fund the source's own play. Kingdom upkeep paid, failed upkeeps, and
+domain payments are retained as cumulative per-turn ranges for regression checks.
+This fixed trigger order is a reproducible policy, not an optimal sequencing claim.
+Recollection timing: https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-recollection-phase.
+
 Other Main cards are payment cards in this policy. No other materialization,
-Eternal Kingdom upkeep/domain payments, Automata Genesis, Altar milling, interaction,
+Automata Genesis, Altar milling, interaction,
 removal, combat, mulligan, or opposing actions are simulated. Board survival is an
 explicit unopposed assumption. Sideboard does not enter any population. Missing
 catalog data blocks the report; unrelated champions receive no Tonoris forecast.
@@ -6484,3 +6497,10 @@ unit-tested; their browser rendering and signed-in page flows were not exercised
 Extension verification: 23 focused tests and shared/app typechecks; targeted lint.
 The existing source grid now receives seven sources. No fresh browser verification
 was performed for this model extension.
+
+Kingdom extension verification: 26 focused draw/Tonoris tests, shared/app typechecks,
+and targeted lint. Standalone browser report checked at 390px and 1280px: eight
+linked card sources, no horizontal overflow, minimum card-link target 156×165px
+on mobile, and a visible 2px keyboard focus outline. Empty and incomplete-catalog
+states render without errors. No new loading or expanded state was introduced;
+signed-in integration and live deployment were not exercised.

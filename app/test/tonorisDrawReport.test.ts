@@ -12,7 +12,7 @@ test('complete Tonoris fixture is deterministic and order independent', () => {
  assert.deepEqual(report, run(fixture.main));
  const reordered = computeTonorisDrawReport({main:lines(fixture.main).reverse(),material},catalog,32)!;
  assert.deepEqual(report.points.map(p=>p.seen),reordered.points.map(p=>p.seen));
- assert.equal(report.sources.length,7);
+ assert.equal(report.sources.length,8);
  assert.equal(report.points[0].level3,0);
  assert.ok(report.points[2].level3 > 0);
  assert.ok(report.points[4].seen.median > report.points[4].natural);
@@ -96,4 +96,35 @@ test('reviewed acceleration and token contracts match catalog text', () => {
  assert.match(catalog.get('Dungeon Guide')!.effect!,/banish two cards at random from your memory/);
  assert.match(catalog.get('Cordelia, Aurous Kaiser')!.effect!,/two Automaton Drone tokens/);
  assert.match(catalog.get('Cordelia, Aurous Kaiser')!.effect!,/Token objects you control have/);
+});
+
+test('Kingdom upkeep cannot use unrecollected memory and sacrifices when unpaid', () => {
+ const controlled = new Map(catalog);
+ // Delay Guardian access: Kingdom cannot grant reservable to a Spirit.
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:99});
+ const report = computeTonorisDrawReport({main:lines({'The Eternal Kingdom':1,'Engulf':4}),material},controlled,1)!;
+ assert.equal(report.points[0].plays[0].probability,1);
+ assert.equal(report.points[1].upkeepPaid.median,0);
+ assert.equal(report.points[1].upkeepLost.median,1);
+ assert.equal(report.points[4].domainPaid.high,0);
+});
+test('Kingdom domains refresh, pay upkeep, and cannot repay another cost that turn', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ for (const name of ['Hub of Innovation','The Eternal Kingdom']) controlled.set(name,{...catalog.get(name)!,cost_reserve:0});
+ controlled.set('Neos Sight',{...catalog.get('Neos Sight')!,cost_reserve:1});
+ const report = computeTonorisDrawReport({main:lines({'Hub of Innovation':1,'The Eternal Kingdom':1,'Neos Sight':1}),material},controlled,1)!;
+ assert.equal(report.points[0].domainPaid.median,0); // Spirit has no Guardian class
+ assert.equal(report.points[1].domainPaid.median,2);
+ assert.equal(report.points[2].domainPaid.median,4);
+ assert.equal(report.points[4].upkeepPaid.median,8);
+ assert.equal(report.points[4].upkeepLost.high,0);
+ assert.equal(report.points[4].plays.find(p=>p.name==='Neos Sight')!.probability,0); // upkeep consumes both domains
+});
+test('Kingdom contract includes domains, unique retention, and Reserve upkeep', () => {
+ const kingdom = catalog.get('The Eternal Kingdom')!;
+ assert.ok(kingdom.types.includes('UNIQUE') && kingdom.types.includes('DOMAIN'));
+ assert.match(kingdom.effect!,/Domains you control have/);
+ assert.match(kingdom.effect!,/beginning of your recollection phase, you may pay \(2\)/);
+ assert.match(kingdom.effect!,/If you don't, sacrifice/);
 });
