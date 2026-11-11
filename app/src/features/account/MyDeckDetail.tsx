@@ -1,3 +1,5 @@
+import { addCardToSnapshot, type CardDeckAddition } from "./cardDeckDraft";
+import PackagePicker from "../../components/deck-editor/PackagePicker";
 import DecklistActions from "../events/DecklistActions";
 import DeckStats from "../../components/DeckStats";
 import CopyDeckLink from "./CopyDeckLink";
@@ -17,7 +19,7 @@ import { automaticDeckSection, editDeck, type DeckEdit, type EditableDeck } from
 import CardBrowser from "../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { useLocation, Navigate, Link, useParams } from "react-router-dom";
+import { useLocation, useNavigate, Navigate, Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
@@ -52,6 +54,7 @@ const DECK_TAB_KEYS: DeckTab[] = DECK_TABS.map(({ key }) => key);
 export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const openedEdit = useRef<string | null>(null);
   const [exportOwner, setExportOwner] = useState<string>();
   useEffect(() => {
@@ -166,11 +169,16 @@ export default function MyDeckDetail() {
   function removeMaybeboardCard(name: string) { applySharedEdit({ type: "remove", section: "maybeboard", name }); }
   function moveMaybeboardCard(line: OmnidexDecklistCardLine, destination: DeckCardDestination, quantity: number, printings?: CardPrintingAllocation[]) { applySharedEdit({ type: "move", section: "maybeboard", name: line.card, destination, quantity, printings }); }
 
-  function startEditing() {
+  function startEditing(addition?: CardDeckAddition) {
     const savedDeckText = buildDecklistText(deck!.decklist);
     const initial = draft.restore({ deckText: savedDeckText, maybeboardText: savedMaybeboardText });
-    setDeckText(initial.deckText); setMaybeboardText(initial.maybeboardText);
-    setEditHistory({ past: [], future: [] });
+    let next = initial;
+    if (addition) {
+      try { next = addCardToSnapshot(initial, addition, catalogByName); }
+      catch (reason) { setError(reason instanceof Error ? reason.message : "Could not add this card."); }
+    }
+    setDeckText(next.deckText); setMaybeboardText(next.maybeboardText);
+    setEditHistory({ past: next !== initial ? [initial] : [], future: [] });
     setSaveAsNewVersion(false);
     setSaveDetailsOpen(false);
     setEditing(true);
@@ -180,7 +188,8 @@ export default function MyDeckDetail() {
   useEffect(() => {
     if ((deck?.publicSlug ? deck.publicSlug === deckId : deck?.id === deckId) && !loadingDeck && location.state?.edit && openedEdit.current !== location.key) {
       openedEdit.current = location.key;
-      startEditing();
+      startEditing(location.state.cardAddition);
+      if (location.state.cardAddition) navigate(location.pathname, { replace: true, state: null });
     }
   });
 
@@ -337,7 +346,7 @@ export default function MyDeckDetail() {
   return <PageLayout width="fluid" data-component="MyDeckDetail">
     <Link to="/decks/edit" onClick={(event) => { if (!allowNavigation()) event.preventDefault(); }} className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4">
-      <UserDeckHeader actions={<> {!editing && <button type="button" onClick={startEditing} className="min-h-12 shrink-0 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<Link to={goldfishPath} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "test" }); }} className="min-h-12 inline-flex items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Playtest</Link><MenuDetails className="relative"><summary className="flex min-h-12 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More <DisclosureChevron className="ml-1" /></summary><div className="absolute right-0 top-full z-30 mt-2 grid max-h-[60dvh] max-w-[calc(100vw-2rem)] overflow-y-auto [&>a]:min-h-control [&>button]:min-h-control min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "tune" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={`/match-log?deck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "record" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-blue hover:bg-ctp-mantle">Record a match</Link><Link to={comparePath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare decks</Link><div className="my-1 border-t border-ctp-surface1" /><button type="button" onClick={() => setRenamingTitle(true)} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Rename</button><button type="button" onClick={() => setTab("manage")} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Details &amp; sharing</button><DecklistActions decklist={deck.decklist} cardsByName={catalogByName} deckTitle={deck.title} deckOwner={exportOwner} /></div></MenuDetails> </>} decklist={deck.decklist} title={deck.title} championName={savedChampionName} format={deck.format} visibility={deck.visibility} />
+      <UserDeckHeader actions={<> {!editing && <button type="button" onClick={() => startEditing()} className="min-h-12 shrink-0 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<Link to={goldfishPath} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "test" }); }} className="min-h-12 inline-flex items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Playtest</Link><MenuDetails className="relative"><summary className="flex min-h-12 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More <DisclosureChevron className="ml-1" /></summary><div className="absolute right-0 top-full z-30 mt-2 grid max-h-[60dvh] max-w-[calc(100vw-2rem)] overflow-y-auto [&>a]:min-h-control [&>button]:min-h-control min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "tune" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={`/match-log?deck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "record" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-blue hover:bg-ctp-mantle">Record a match</Link><Link to={comparePath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare decks</Link><div className="my-1 border-t border-ctp-surface1" /><button type="button" onClick={() => setRenamingTitle(true)} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Rename</button><button type="button" onClick={() => setTab("manage")} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Details &amp; sharing</button><DecklistActions decklist={deck.decklist} cardsByName={catalogByName} deckTitle={deck.title} deckOwner={exportOwner} /></div></MenuDetails> </>} decklist={deck.decklist} title={deck.title} championName={savedChampionName} format={deck.format} visibility={deck.visibility} />
       {renamingTitle ? (
         <form className="mt-2 flex flex-wrap items-center gap-2" onSubmit={(event) => { event.preventDefault(); void saveTitle(); }}>
           <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Deck title" className="min-w-0 flex-1 max-w-sm rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-sm text-ctp-text" />
@@ -375,7 +384,7 @@ export default function MyDeckDetail() {
     {tab === "decklist" && <section id="owned-deck-panel-decklist" role="tabpanel" aria-labelledby="owned-deck-tab-decklist" tabIndex={0}><UserDecklistPanel showActions={false} showStats={false} deckTitle={deck.title} deckOwner={exportOwner} decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false} showAnalysis={false}>
       {editing ? <div className="mt-3">
         <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Use −/+ for one card, or tap several card images and update them together.</p></div>
-        <div className="flex flex-wrap items-center justify-between gap-2"><EditorModeSwitch value={editorMode} onChange={setEditorMode} label="Deck editing mode" /><button type="button" onClick={() => { setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>
+        <div className="flex flex-wrap items-center justify-between gap-2"><PackagePicker deck={{ ...editedDecklist, maybeboard: maybeboardLines }} catalog={catalogByName} onEdit={applySharedEdit} /><EditorModeSwitch value={editorMode} onChange={setEditorMode} label="Deck editing mode" /><button type="button" onClick={() => { setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>
         <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-2"><span className="mr-auto text-xs text-ctp-subtext1">{hasUnsavedChanges ? "Draft saved on this device" : "No unsaved changes"}</span><button type="button" disabled={editHistory.past.length === 0} onClick={undoEdit} className="min-h-12 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Undo</button><button type="button" disabled={editHistory.future.length === 0} onClick={redoEdit} className="min-h-12 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Redo</button></div>
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
         {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + (editedDecklist[key] ?? []).reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser format={deck.format} query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}

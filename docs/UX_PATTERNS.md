@@ -794,3 +794,25 @@ Local browser checks at 390px and 1280px passed for empty creation, section sele
 copy defaults, failed-save recovery, saved state, keyboard focus, 48px selectors,
 overflow, Sideboard share display and new-deck navigation. Account responses were
 isolated fixtures; native mobile keyboards and production writes were not exercised.
+
+## Adding packages and cards to decks
+
+New-deck, saved-deck, and Builder editors expose Add package. The sheet searches published
+editorial packages by name, champion, or card, shows the exact section-aware card list,
+and adds the selection as one undoable edit. Existing copies count toward package quantities;
+repeating an import never stacks playsets. Invalid section placement rejects the entire edit.
+Package additions remain drafts until the editor's normal save action.
+
+Card details expose Add to deck after the card hero. The sheet offers the current new-deck
+draft or any owned saved deck, with deck search, section, and copy count. Add and open editor
+adds the requested copies and opens the chosen draft. Saved-deck draft recovery runs before
+the addition; Undo restores that recovered draft. The navigation intent is cleared after
+consumption so revisiting the history entry does not add the card again. Saving uses the
+existing revision checks and retry handling; browsing never writes directly to a saved deck.
+
+Verification (2026-11-10): 20 focused edit, draft, and import tests passed, along with
+app type checking and lint (existing unrelated warnings). Local browser checks at
+390px and 1280px covered package search, failed load/retry, mixed-section insertion,
+Undo, card-to-saved-deck handoff, keyboard containment, touch targets, and overflow.
+Additional mobile checks covered empty libraries and preserving an existing new-deck draft.
+Account responses were mocked; production saves and native mobile keyboards were not exercised.

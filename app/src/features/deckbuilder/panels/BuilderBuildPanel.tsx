@@ -1,3 +1,4 @@
+import PackagePicker from "../../../components/deck-editor/PackagePicker";
 import BudgetReplacementPanel from "../BudgetReplacementPanel";
 import DeckStats from "../../../components/DeckStats";
 import { useMemo, useRef, useState } from "react";
@@ -54,6 +55,7 @@ export default function BuilderBuildPanel() {
     {!starting && <Tabs tabs={[{key: "deck", label: "Deck"}, {key: "stats", label: "Stats"}]} active={view} onChange={changeView} baseId="workbench" label="Workbench view" />}
     {starting ? <section aria-label="Find your first cards" className="mt-3">
       {!hasCards && <details className="mb-2"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm text-ctp-blue">Import or open a deck<DisclosureChevron /></summary><div className="flex flex-wrap items-start gap-x-3"><DecklistPaste /><BuilderStartActions /></div></details>}
+      <PackagePicker deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} />
       {cardBrowser}
     </section> : <TabPanel baseId="workbench" tab="deck" active={view} keepMounted><section id="workbench-deck" aria-label="Edit deck" className="min-w-0">
       <div className="my-2 flex flex-wrap items-center justify-between gap-2">

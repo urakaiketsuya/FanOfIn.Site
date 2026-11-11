@@ -1,3 +1,4 @@
+import AddCardToDeck from "./AddCardToDeck";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -341,6 +342,8 @@ export default function CardDetail() {
       </Link>
 
       <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
+
+      <AddCardToDeck key={card.name} card={card} />
 
       <CardCollectionSummary key={card.uuid} card={card} />
 

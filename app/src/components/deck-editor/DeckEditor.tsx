@@ -1,3 +1,4 @@
+import PackagePicker from "./PackagePicker";
 import Button from "../ui/Button";
 import DeckLegalityWarning from "./DeckLegalityWarning";
 import type { DeckFormat } from "@gatcg/shared";
@@ -8,7 +9,7 @@ import { SONG_DECK_MAX_DIFFERENT_CARDS } from "../../lib/songDeck";
 import DeckEditorCard from "./DeckEditorCard";
 
 export default function DeckEditor({ deck, catalog, onEdit, viewMode = "grid", renderStats, format, onAdd }: { onAdd?: (section: keyof EditableDeck) => void; format: DeckFormat; deck: EditableDeck; catalog: Map<string, Card>; onEdit: (action: DeckEdit) => void; renderStats?: (name: string) => ReactNode; viewMode?: "grid" | "list" }) {
-  return <div className="mt-3 space-y-4"><DeckLegalityWarning deck={deck} catalog={catalog} format={format} />{editorSections(deck).filter(({ key }) => ((onAdd && (key !== "song" || songDeckAvailable(deck, catalog))) || deck[key]?.length)).map(({ key, title }) => {
+  return <div className="mt-3 space-y-4"><PackagePicker deck={deck} catalog={catalog} onEdit={onEdit} /><DeckLegalityWarning deck={deck} catalog={catalog} format={format} />{editorSections(deck).filter(({ key }) => ((onAdd && (key !== "song" || songDeckAvailable(deck, catalog))) || deck[key]?.length)).map(({ key, title }) => {
     const lines = deck[key] ?? [];
     const total = lines.reduce((sum, line) => sum + line.quantity, 0);
     if (!total && onAdd) return <Button key={key} className="mr-2" onClick={() => onAdd(key)}>Add {title}</Button>;

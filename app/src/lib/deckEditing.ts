@@ -119,3 +119,11 @@ export function swapMainCard(deck: EditableDeck, cut: string, add: string, catal
   counts.set(add, (counts.get(add) ?? 0) + 1);
   return { ...deck, main: [...counts].filter(([, count]) => count > 0).map(([card, count]) => ({ card, quantity: count, ...(deck.main.find(line => line.card === card)?.printings ? { printings: deck.main.find(line => line.card === card)!.printings } : {}) })) };
 }
+
+/** Bring each package line up to its requested quantity without stacking repeated imports. */
+export function packageAdditions(deck: EditableDeck, cards: { name: string; section: "main" | "material" | "sideboard"; quantity: number }[]) {
+  return cards.flatMap(line => {
+    const quantity = line.quantity - (deck[line.section].find(card => card.card === line.name)?.quantity ?? 0);
+    return quantity > 0 ? [{ ...line, quantity }] : [];
+  });
+}
