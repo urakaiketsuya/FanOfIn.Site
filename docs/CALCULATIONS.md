@@ -6644,3 +6644,29 @@ Standalone reports and comparisons consume this same sequence, including finite
 library exhaustion and actual Reserve payments. This adds delayed self-sacrificing
 sources, not arbitrary repeating triggers: opponent-influence, graveyard, damage,
 and special-format Lesser Boon conditions remain outside this policy.
+
+### Tonoris paid token attack readiness (2026-11-11)
+
+The draw/payment sequence now retains buff counters on each physical payment
+object. Fabrication adds one counter to its new Drone only. Automata Genesis
+adds the current token count to every token ally already on the field, including
+its three newly summoned Titans. Tokens summoned later do not inherit those
+counters. Existing aggregate buff totals and all draw/payment decisions are unchanged.
+
+Each checkpoint adds tokenPower (all token allies' printed power plus their own
+buffs) and readyTokenPower (the same sum restricted to awake token allies after
+all modeled plays and payments, before end phase). Reports and comparisons display
+readyTokenPower as “Token power · after payments,” using the existing middle-80%
+sample ranges. This is available attack power, not cumulative damage, successful
+hits, champion attacks, or an optimized attack-before-payment sequence. Weapons and
+Obelisks are excluded. No attacks, opposing removal, targets or prevention are
+invented. The next wake-up clears payment rest states; persistent buffs remain.
+
+Generated Drone/Titan power data is required rather than silently substituted
+with zero. Missing generated-token data produces the existing incomplete-data state.
+
+Rules reviewed: allies may attack on entry while awake; reservable rests the same
+physical object; Vigor wakes Titans at the beginning of the end step, after this
+snapshot, so it does not restore their main-phase attack readiness:
+https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase
+https://rules.gatcg.com/glossary/keywords-and-abilities

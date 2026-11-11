@@ -151,3 +151,24 @@ Queue remains 3/16 fully complete (~19%, unequal milestones), with another compl
 conditional-draw slice. Next: paid damage/combat and broader activation coverage.
 Repeating triggers requiring opponent influence, damage or graveyard state remain
 blocked on their respective policies. No push performed.
+
+## Paid token combat readiness — 2026-11-11
+
+Added individual token buff tracking and awake token attack-power ranges after
+payments in the Tonoris sequence, standalone report and deck comparisons. Paid
+Fabrication/Genesis outputs use the same objects as reservable payments. Weapons
+are excluded, new tokens may attack while awake, and Vigor does not wake tokens
+before the main-phase snapshot. Existing play policy and draw outputs are unchanged.
+This is one completed combat slice; direct damage and other champions remain open.
+
+Verification: 66 focused tests, shared/app typechecks, targeted lint. Production
+report/comparison checked at 390×844 and 1280×900 in a temporary harness; no page
+overflow, card links exceed 48px, visible 2px keyboard focus. Missing generated-token
+data, unsupported comparison and empty decks checked. No new controls, asynchronous
+loading or expanded states. Harness removed. Full build, signed-in page integration
+and live deployment remain unverified.
+
+Queue remains 3/16 fully complete (~19%, unequal milestones); conditional draw,
+comparisons and now paid combat have additional completed slices. Next: paid direct
+damage with explicit target/level/resource gates. Graveyard-dependent outcomes
+remain blocked on the queued zone policy. No push performed.

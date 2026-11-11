@@ -19,19 +19,22 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   const material = new Set(deck.material.filter(line => line.quantity > 0).map(line => line.name));
   if (!material.has('Spirit of Water') || !LINEAGE.every(name => material.has(name))) return null;
   const missing = [...main, ...deck.material].filter(line => !catalog.has(line.name)).map(line => line.name);
+  for (const name of ['Automaton Drone', 'Titan Mk II']) {
+    if (catalog.get(name)?.power == null) missing.push(name);
+  }
   if (missing.length) return { missing, points: [], sources: [] };
   const sources = main.filter(line => ENGINE.includes(line.name));
   const libraryBase = main.slice().sort((a, b) => a.name.localeCompare(b.name)).flatMap(line => Array.from({ length: line.quantity }, () => line.name));
   const count = Math.max(1, Math.floor(samples));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
-  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], fabricated: [] as number[], weapons: [] as number[], prevention: [] as number[], titans: [] as number[], tokenBuffs: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0, preventionReady: 0 }));
+  const totals = Array.from({ length: 5 }, () => ({ seen: [] as number[], extra: [] as number[], saved: [] as number[], tokenPaid: [] as number[], fabricated: [] as number[], weapons: [] as number[], prevention: [] as number[], titans: [] as number[], tokenBuffs: [] as number[], tokenPower: [] as number[], readyTokenPower: [] as number[], domainPaid: [] as number[], upkeepPaid: [] as number[], upkeepLost: [] as number[], plays: new Map<string, number>(), level3: 0, bonus: 0, preventionReady: 0 }));
   for (let sample = 0; sample < count; sample++) {
     const library = libraryBase.slice();
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
     let seen = 0, level = 0, saved = 0, obelisks = 0, drones = 0, titans = 0, tokenBuffs = 0, fabricated = 0, weapons = 0, tokenPaid = 0, domainPaid = 0, upkeepPaid = 0, upkeepLost = 0, bonus = 0;
-    let objects: PaymentObject[] = [];
-    const addObject = (name: string, token = false) => objects.push({ name, domain: token ? OBELISKS.includes(name) : !!catalog.get(name)?.types.includes('DOMAIN'), token, rested: false });
+    let objects: (PaymentObject & { buffs: number })[] = [];
+    const addObject = (name: string, token = false, buffs = 0) => objects.push({ name, buffs, domain: token ? OBELISKS.includes(name) : !!catalog.get(name)?.types.includes('DOMAIN'), token, rested: false });
     let hand: string[] = [], memory: string[] = [];
     let board: string[] = [];
     const played = new Set<string>();
@@ -65,7 +68,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       if (!available) return false;
       available.source.rested = true;
       payReserve(available.cost);
-      addObject(token, true);
+      addObject(token, true, token === 'Automaton Drone' ? 1 : 0);
       if (token === 'Automaton Drone') { drones++; fabricated++; tokenBuffs++; }
       else weapons++;
       return true;
@@ -117,7 +120,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
           titans += 3;
           for (let i = 0; i < 3; i++) addObject('Titan Mk II', true);
           // Tonoris bonus counts all tokens; counters go only on token allies.
-          tokenBuffs += (obelisks + drones + titans + weapons) * (drones + titans);
+          const addedBuffs = obelisks + drones + titans + weapons;
+          for (const object of objects) {
+            if (object.token && catalog.get(object.name)?.types.includes('ALLY')) object.buffs += addedBuffs;
+          }
+          tokenBuffs += addedBuffs * (drones + titans);
         } else {
           board.push(name);
           addObject(name);
@@ -142,6 +149,11 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       if (prevention) total.preventionReady++;
       total.titans.push(titans);
       total.tokenBuffs.push(tokenBuffs);
+      const tokenAllies = objects.filter(object => object.token && catalog.get(object.name)?.types.includes('ALLY'));
+      const tokenPower = (object: typeof objects[number]) => catalog.get(object.name)!.power! + object.buffs;
+      total.tokenPower.push(tokenAllies.reduce((sum, object) => sum + tokenPower(object), 0));
+      // Snapshot after payments, before end phase: Vigor has not woken Titans yet.
+      total.readyTokenPower.push(tokenAllies.filter(object => !object.rested).reduce((sum, object) => sum + tokenPower(object), 0));
       total.domainPaid.push(domainPaid);
       total.upkeepPaid.push(upkeepPaid);
       total.upkeepLost.push(upkeepLost);
@@ -152,7 +164,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
   }
   return { missing, sources, points: totals.map((total, i) => ({
     turn: i + 1, natural: Math.min(libraryBase.length, 7 + i), seen: range(total.seen), extra: range(total.extra), saved: range(total.saved), tokenPaid: range(total.tokenPaid),
-    fabricated: range(total.fabricated), weapons: range(total.weapons), prevention: range(total.prevention), titans: range(total.titans), tokenBuffs: range(total.tokenBuffs),
+    fabricated: range(total.fabricated), weapons: range(total.weapons), prevention: range(total.prevention), titans: range(total.titans), tokenBuffs: range(total.tokenBuffs), tokenPower: range(total.tokenPower), readyTokenPower: range(total.readyTokenPower),
     domainPaid: range(total.domainPaid), upkeepPaid: range(total.upkeepPaid), upkeepLost: range(total.upkeepLost),
     preventionReady: total.preventionReady / count, level3: total.level3 / count, bonus: total.bonus / count,
     plays: sources.map(source => ({ ...source, probability: (total.plays.get(source.name) ?? 0) / count })),

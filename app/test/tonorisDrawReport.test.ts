@@ -234,3 +234,40 @@ test('reviewed remaining Obelisk and Altar contracts match the catalog', () => {
  assert.match(catalog.get('Dormant Sacrificial Altar')!.effect!,/Sacrifice an Automaton ally and a Human ally/);
  assert.match(catalog.get('Dormant Sacrificial Altar')!.effect!,/top two cards of your deck into your graveyard/);
 });
+
+test('token readiness spends the same physical objects as payments and retains individual buffs', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ controlled.set('Cordelia, Aurous Kaiser',{...catalog.get('Cordelia, Aurous Kaiser')!,cost_reserve:0});
+ controlled.set('Automata Genesis',{...catalog.get('Automata Genesis')!,cost_reserve:3});
+ controlled.set('Neos Sight',{...catalog.get('Neos Sight')!,cost_reserve:3});
+ const deck = {main:lines({'Cordelia, Aurous Kaiser':1,'Automata Genesis':1,'Neos Sight':1}),material};
+ const points = computeTonorisDrawReport(deck,controlled,1)!.points;
+ assert.equal(points[2].tokenPower.high,0); // Still no paid NEOS access.
+ assert.equal(points[3].tokenPower.median,41); // Two 1+6 Drones and three 3+6 Titans.
+ assert.equal(points[3].readyTokenPower.median,0); // All five paid costs; Vigor waits for end step.
+ assert.ok(points[4].readyTokenPower.median > 0); // Next wake-up restores readiness.
+ for (const point of points) assert.ok(point.readyTokenPower.high <= point.tokenPower.high);
+ const comparison = compareTonorisDrawReports(deck,deck,controlled,1)!;
+ assert.deepEqual(comparison.points[1].after.readyTokenPower,points[4].readyTokenPower);
+});
+
+test('newly fabricated Drones can attack and weapons never count as token ally power', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const points = computeTonorisDrawReport({main:lines({'Engulf':7}),material},controlled,1)!.points;
+ assert.equal(points[3].readyTokenPower.median,2); // One new Drone with one buff.
+ assert.equal(points[4].readyTokenPower.median,4); // Two Drones, one weapon excluded.
+ assert.equal(points[4].weapons.median,1);
+ assert.equal(points[4].tokenPower.median,4);
+});
+
+test('generated token stats are required and pinned to the catalog', () => {
+ assert.equal(catalog.get('Automaton Drone')!.power,1);
+ assert.equal(catalog.get('Titan Mk II')!.power,3);
+ assert.match(catalog.get('Titan Mk II')!.effect!,/Vigor/);
+ const missing = new Map(catalog); missing.delete('Titan Mk II');
+ const deck = {main:lines(fixture.main),material};
+ assert.ok(computeTonorisDrawReport(deck,missing,1)!.missing.includes('Titan Mk II'));
+ assert.equal(compareTonorisDrawReports(deck,deck,missing,1)!.status,'missing');
+});

@@ -7,7 +7,7 @@ export default function TonorisDrawReport({ deck, cardsByName }: { deck: Analyti
   const report = useMemo(() => computeTonorisDrawReport(deck, cardsByName), [deck, cardsByName]);
   if (!report) return null;
   return <Panel data-component="TonorisDrawReport">
-    <h3 className="text-sm font-semibold">Draw & payment forecast</h3>
+    <h3 className="text-sm font-semibold">Draw, payment & token forecast</h3>
     <p className="mt-1 text-xs text-ctp-subtext1">Unopposed draw sequence · going first · middle 80% of samples</p>
     {report.missing.length > 0 ? <p role="status" className="mt-3 text-sm">Card data incomplete</p> : <>
       <div className="my-4 grid gap-3 sm:grid-cols-2">{report.points.filter(point => point.turn === 3 || point.turn === 5).map(point => <section key={point.turn} className="rounded-xl bg-ctp-mantle p-3">
@@ -21,6 +21,7 @@ export default function TonorisDrawReport({ deck, cardsByName }: { deck: Analyti
           <div className="flex justify-between gap-2"><dt>Drones fabricated</dt><dd>{span(point.fabricated)}</dd></div>
           <div className="flex justify-between gap-2"><dt>Weapons summoned</dt><dd>{span(point.weapons)}</dd></div>
           <div className="flex justify-between gap-2"><dt>2 prevention ready</dt><dd>{Math.round(point.preventionReady * 100)}%</dd></div>
+          <div className="flex flex-wrap justify-between gap-2"><dt>Token power · after payments</dt><dd>{span(point.readyTokenPower)}</dd></div>
           <div className="flex justify-between gap-2"><dt>Titans summoned</dt><dd>{span(point.titans)}</dd></div>
           <div className="flex justify-between gap-2"><dt>Neos bonus drawn</dt><dd>{Math.round(point.bonus * 100)}%</dd></div>
         </dl>
