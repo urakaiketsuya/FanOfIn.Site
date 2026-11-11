@@ -18,3 +18,13 @@ test("adding onto a draft keeps its identity and never stacks copies", () => {
   assert.equal(list.main.find(l => l.card === "Mend Flesh")!.quantity, 4); assert.equal(list.main.find(l => l.card === "Other")!.quantity, 3);
   assert.deepEqual(parseDecklist(mergePackageIntoDraft(merged, lines, "x", "y").deckText).decklist, list);
 });
+
+test("sideboard packages retain their section through repeated merges", () => {
+  const lines = [{ name: "Mend Flesh", section: "main" as const, quantity: 3 }, { name: "Mend Flesh", section: "sideboard" as const, quantity: 1 }];
+  const first = mergePackageIntoDraft(null, lines, "Mixed", "source");
+  const merged = mergePackageIntoDraft(first, lines, "Ignored", "other");
+  const deck = parseDecklist(merged.deckText).decklist;
+  assert.deepEqual(deck.main, [{ card: "Mend Flesh", quantity: 3 }]);
+  assert.deepEqual(deck.sideboard, [{ card: "Mend Flesh", quantity: 1 }]);
+  assert.equal(first.deckText, merged.deckText);
+});

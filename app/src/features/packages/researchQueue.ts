@@ -17,7 +17,7 @@ export interface ResearchFinding {
   name: string;
   cards: string[];
   initialCards: string[];
-  sections?: Map<string, 'main' | 'material'>;
+  sections?: Map<string, SharedPackageCard['section']>;
   summary: string;
   evidence: string[];
   href: string;
@@ -64,7 +64,10 @@ export async function researchFindings(kind: ResearchKind, raw: unknown): Promis
   })));
 }
 export function researchDraft(finding: ResearchFinding, catalog: ReadonlyMap<string, Card>): EditorialPackage {
-  const cards: SharedPackageCard[] = [...new Set(finding.initialCards.length ? finding.initialCards : finding.cards)].map(name => ({ name, quantity: 1, section: finding.sections?.get(name) ?? (catalog.get(name)?.types.some(type => type === 'CHAMPION' || type === 'REGALIA') ? 'material' : 'main') }));
+  const cards: SharedPackageCard[] = [...new Set(finding.initialCards.length ? finding.initialCards : finding.cards)].map(name => {
+    const section = finding.sections?.get(name) ?? (catalog.get(name)?.types.some(type => type === 'CHAMPION' || type === 'REGALIA') ? 'material' : 'main');
+    return { name, quantity: section === 'material' ? 1 : 4, section };
+  });
   return { id: `research-${finding.research.key}`, research: finding.research, definition: { v: 1, name: finding.name.slice(0, 80), cards }, revision: 0, status: 'draft', updatedAt: '' };
 }
 export function researchStatus(saved?: EditorialPackage, current?: ResearchFinding) {
@@ -79,10 +82,11 @@ export function combinedResearchDraft(findings: ResearchFinding[], catalog: Read
   const names = [...new Set(findings.flatMap(f => f.cards))].sort();
   if (!names.length) throw new Error('These findings have no cards to combine.');
   if (names.length > SHARED_PACKAGE_LIMITS.maxCards) throw new Error(`Select fewer findings: a package can hold up to ${SHARED_PACKAGE_LIMITS.maxCards} cards.`);
-  const cards: SharedPackageCard[] = names.map(name => {
+  const cards: SharedPackageCard[] = names.flatMap(name => {
     const sections = new Set(findings.filter(f => f.cards.includes(name)).flatMap(f => f.sections?.has(name) ? [f.sections.get(name)!] : []));
-    if (sections.size > 1) throw new Error(`Conflicting sections for ${name}. Review those findings separately.`);
-    return { name, quantity: 1, section: [...sections][0] ?? (catalog.get(name)?.types.some(type => type === 'CHAMPION' || type === 'REGALIA') ? 'material' : 'main') };
+    if (!sections.size) sections.add(catalog.get(name)?.types.some(type => type === 'CHAMPION' || type === 'REGALIA') ? 'material' : 'main');
+    return [...sections].sort().map(section => ({ name, quantity: section === 'material' ? 1 : 4, section }));
   });
+  if (cards.length > SHARED_PACKAGE_LIMITS.maxCards) throw new Error(`Select fewer findings: a package can hold up to ${SHARED_PACKAGE_LIMITS.maxCards} card lines.`);
   return { id, definition: { v: 1, name: 'Combined package', cards }, revision: 0, status: 'draft', updatedAt: '' };
 }

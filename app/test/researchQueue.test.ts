@@ -27,7 +27,7 @@ test('all published research sources adapt without converting pools into asserte
       const draft = researchDraft(finding, new Map());
       assert.equal(draft.status, 'draft');
       assert.ok(draft.definition.name.length <= 80);
-      assert.ok(draft.definition.cards.every(card => card.quantity === 1 && finding.cards.includes(card.name)));
+      assert.ok(draft.definition.cards.every(card => card.quantity === (card.section === 'material' ? 1 : 4) && finding.cards.includes(card.name)));
     }
   }
 });
@@ -41,8 +41,8 @@ test('combined findings deduplicate full pools and start an independent unapprov
   const b = { ...finding('b', ['Shared', 'B']), sections: new Map([['B', 'material' as const]]) };
   const draft = combinedResearchDraft([a, b], new Map(), 'new-package');
   assert.deepEqual(draft.definition.cards, [
-    { name: 'A', quantity: 1, section: 'main' }, { name: 'B', quantity: 1, section: 'material' },
-    { name: 'Optional', quantity: 1, section: 'main' }, { name: 'Shared', quantity: 1, section: 'main' },
+    { name: 'A', quantity: 4, section: 'main' }, { name: 'B', quantity: 1, section: 'material' },
+    { name: 'Optional', quantity: 4, section: 'main' }, { name: 'Shared', quantity: 4, section: 'main' },
   ]);
   assert.equal(draft.status, 'draft');
   assert.equal(draft.revision, 0);
@@ -50,12 +50,27 @@ test('combined findings deduplicate full pools and start an independent unapprov
   assert.deepEqual(combinedResearchDraft([b, a], new Map(), 'new-package'), draft);
   assert.deepEqual(a.initialCards, ['A']);
 });
-test('combination rejects duplicate selections, oversized pools and conflicting sections without truncation', () => {
+test('combination rejects duplicate selections, oversized pools without truncation', () => {
   const a = finding('a', ['Shared']);
   assert.throws(() => combinedResearchDraft([a, a], new Map(), 'id'), /at least two/);
   assert.throws(() => combinedResearchDraft([a, finding('b', Array.from({ length: 60 }, (_, i) => `Card ${i}`))], new Map(), 'id'), /up to 60/);
-  assert.throws(() => combinedResearchDraft([
-    { ...a, sections: new Map([['Shared', 'main']]) },
+});
+test('combination preserves distinct sections for the same card', () => {
+  const draft = combinedResearchDraft([
+    { ...finding('a', ['Shared']), sections: new Map([['Shared', 'main']]) },
     { ...finding('b', ['Shared']), sections: new Map([['Shared', 'material']]) },
-  ], new Map(), 'id'), /Conflicting sections/);
+    { ...finding('c', ['Shared']), sections: new Map([['Shared', 'sideboard']]) },
+  ], new Map(), 'id');
+  assert.deepEqual(draft.definition.cards, [
+    { name: 'Shared', section: 'main', quantity: 4 },
+    { name: 'Shared', section: 'material', quantity: 1 },
+    { name: 'Shared', section: 'sideboard', quantity: 4 },
+  ]);
+});
+test('section expansion counts toward the line limit', () => {
+  const names = Array.from({ length: 31 }, (_, i) => `Card ${i}`);
+  assert.throws(() => combinedResearchDraft([
+    { ...finding('a', names), sections: new Map(names.map(n => [n, 'main'])) },
+    { ...finding('b', names), sections: new Map(names.map(n => [n, 'sideboard'])) },
+  ], new Map(), 'id'), /up to 60 card lines/);
 });

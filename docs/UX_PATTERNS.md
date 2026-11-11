@@ -767,8 +767,9 @@ remains untested.
 
 Admin → Research supports selecting findings across filters, source reports and pagination.
 Combine selected opens a new editorial draft containing the union of their full card pools,
-with each card included once at one copy. Explicit source sections take precedence over
-catalog defaults; conflicting sections and pools over 60 cards produce a visible error
+with each card included once per explicit section. Main and Sideboard lines start at four
+copies; Material lines start at one. Explicit source sections take precedence over
+catalog defaults; different sections are retained. Pools over 60 card lines produce a visible error
 without truncation. Selections remain available after closing the editor. Clear selection
 is explicit. The draft uses the existing package editor, save validation and publication
 flow. It does not approve, dismiss, replace or inherit evidence from the source findings.
@@ -780,3 +781,16 @@ Browser checks use isolated account/report responses for selection across search
 one-copy deduplication, quantity editing, failed-save recovery, save/reload, keyboard focus,
 draft dismissal protection, 48px controls and overflow at 360px and 1280px.
 Native phone keyboards and production account saves were not exercised.
+
+Package editing, publication, share links and deck-draft import preserve Main, Material
+and Sideboard lines, including the same card in separate sections. Existing quantities
+are preserved when reopening a saved package or changing a section; defaults apply only
+to new lines. Historical research statistics remain scoped to their original sources.
+
+Verification (2026-11-10): regression fixtures cover four-copy defaults, mixed-section
+combining, line limits after section expansion, legacy and Sideboard share-link decoding,
+editorial validation, and repeatable deck imports without moving cards between sections.
+Local browser checks at 390px and 1280px passed for empty creation, section selection,
+copy defaults, failed-save recovery, saved state, keyboard focus, 48px selectors,
+overflow, Sideboard share display and new-deck navigation. Account responses were
+isolated fixtures; native mobile keyboards and production writes were not exercised.

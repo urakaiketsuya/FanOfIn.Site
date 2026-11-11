@@ -1,5 +1,5 @@
 /** A card package people can share by link. The link holds the whole package. Nothing is stored. */
-export interface SharedPackageCard { name: string; section: "main" | "material"; quantity: number }
+export interface SharedPackageCard { name: string; section: "main" | "material" | "sideboard"; quantity: number }
 export interface SharedPackage { v: 1; name: string; champion?: string; cards: SharedPackageCard[] }
 
 export const SHARED_PACKAGE_LIMITS = { maxCards: 60, maxQuantity: 4, maxNameLength: 80, maxEncodedLength: 4000 } as const;
@@ -22,11 +22,11 @@ const fromBase64Url = (text: string): string => {
   return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(binary.split(""), char => char.charCodeAt(0)));
 };
 
-/** Wire format: card names once in `k`, each line as [nameIndex, section (0 main, 1 material), quantity]. */
+/** Wire format: card names once in `k`, each line as [nameIndex, section (0 main, 1 material, 2 sideboard), quantity]. */
 export function encodePackage(pkg: SharedPackage): string {
   const names = [...new Set(pkg.cards.map(card => card.name))].sort();
   const index = new Map(names.map((name, position) => [name, position]));
-  const wire = { v: 1, n: pkg.name, ...(pkg.champion ? { c: pkg.champion } : {}), k: names, l: pkg.cards.map(card => [index.get(card.name), card.section === "main" ? 0 : 1, card.quantity]) };
+  const wire = { v: 1, n: pkg.name, ...(pkg.champion ? { c: pkg.champion } : {}), k: names, l: pkg.cards.map(card => [index.get(card.name), card.section === "main" ? 0 : card.section === "material" ? 1 : card.section === "sideboard" ? 2 : -1, card.quantity]) };
   return toBase64Url(JSON.stringify(wire));
 }
 
@@ -49,10 +49,10 @@ export function decodePackage(text: string): SharedPackage | null {
       if (!Array.isArray(line) || line.length !== 3) return null;
       const [position, sectionBit, quantity] = line as unknown[];
       if (!Number.isInteger(position) || (position as number) < 0 || (position as number) >= k.length) return null;
-      if (sectionBit !== 0 && sectionBit !== 1) return null;
+      if (sectionBit !== 0 && sectionBit !== 1 && sectionBit !== 2) return null;
       if (!Number.isInteger(quantity) || (quantity as number) < 1 || (quantity as number) > maxQuantity) return null;
       const name = k[position as number] as string;
-      const section = sectionBit === 0 ? "main" : "material";
+      const section = sectionBit === 0 ? "main" : sectionBit === 1 ? "material" : "sideboard";
       if (seen.has(`${section}:${name}`)) return null;
       seen.add(`${section}:${name}`);
       cards.push({ name, section, quantity: quantity as number });

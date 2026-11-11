@@ -31,9 +31,9 @@ export default function SharedPackagePage() {
   }
   return <PageLayout>
     <PageHeader title={pkg.name} description={`${pkg.champion ? `${pkg.champion} · ` : ""}${pkg.cards.length} cards · ${total} copies. A card list shared by link. It holds no win-rate data.`} />
-    {(["main", "material"] as const).map(section => {
+    {(["main", "material", "sideboard"] as const).map(section => {
       const lines = pkg.cards.filter(card => card.section === section);
-      return lines.length ? <section key={section} className="mt-5"><h2 className="text-sm font-semibold text-ctp-text">{section === "main" ? "Main" : "Material"} · {lines.length} cards</h2>
+      return lines.length ? <section key={section} className="mt-5"><h2 className="text-sm font-semibold text-ctp-text">{section === "main" ? "Main" : section === "material" ? "Material" : "Sideboard"} · {lines.length} cards</h2>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{lines.map(card =>
           <CardResult key={card.name} card={art.get(card.name)} name={card.name}>
             <span className="text-sm text-ctp-subtext1">{card.quantity} copies</span>

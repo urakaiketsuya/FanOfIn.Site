@@ -2,7 +2,7 @@ import { NEW_DECK_DRAFT_KEY, readNewDeckDraft, type NewDeckDraft } from "./newDe
 import { buildEditableDeckText } from "../../lib/decklistText";
 import { parseDecklist } from "../compare/parseDecklist";
 
-export interface PackageLine { name: string; section: "main" | "material"; quantity: number }
+export interface PackageLine { name: string; section: "main" | "material" | "sideboard"; quantity: number }
 
 /** Adds package cards to a new-deck draft. A card already in the draft keeps its larger
  * quantity: adding a package twice, or onto a deck that has the card, never stacks copies. */

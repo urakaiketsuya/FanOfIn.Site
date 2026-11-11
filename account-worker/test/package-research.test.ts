@@ -44,3 +44,15 @@ test('research references cannot lose provenance or publish a dismissed decision
     await assert.rejects(saveEditorialPackage(env, {} as AuthUser, id, { ...input, research: undefined }), /reference is required/);
   } finally { db.close(); }
 });
+
+test('editorial definitions preserve mixed sections for drafts and publication', () => {
+  for (const status of ['draft', 'published']) {
+    const definition = { v: 1, name: 'Mixed package', cards: [
+      { name: 'Reposition', section: 'main', quantity: 3 },
+      { name: 'Reposition', section: 'sideboard', quantity: 1 },
+      { name: 'Backup Charger', section: 'material', quantity: 1 },
+    ] };
+    assert.deepEqual(parseEditorialPackage({ revision: 0, status, definition }).definition, definition);
+    assert.throws(() => parseEditorialPackage({ revision: 0, status, definition: { ...definition, cards: [{ name: 'A', section: 'invalid', quantity: 1 }] } }));
+  }
+});

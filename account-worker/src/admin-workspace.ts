@@ -29,7 +29,7 @@ export function parseEditorialPackage(value: unknown): EditorialPackageInput {
   if (body.status !== 'draft' && body.status !== 'published') throw badRequest('Invalid publication status');
   if (!Number.isSafeInteger(body.revision) || Number(body.revision) < 0) throw badRequest('Invalid revision');
   const raw = body.definition as SharedPackage | undefined;
-  if (!raw || raw.v !== 1 || !Array.isArray(raw.cards) || raw.cards.some(card => !card || (card.section !== 'main' && card.section !== 'material') || typeof card.name !== 'string' || card.name !== card.name.trim())) throw badRequest('Invalid card list');
+  if (!raw || raw.v !== 1 || !Array.isArray(raw.cards) || raw.cards.some(card => !card || (card.section !== 'main' && card.section !== 'material' && card.section !== 'sideboard') || typeof card.name !== 'string' || card.name !== card.name.trim())) throw badRequest('Invalid card list');
   let definition: SharedPackage | null = null;
   try { definition = decodePackage(encodePackage(body.definition as SharedPackage)); } catch { /* Invalid shape. */ }
   if (!definition) throw badRequest('Add 1–60 card lines with 1–4 copies each');

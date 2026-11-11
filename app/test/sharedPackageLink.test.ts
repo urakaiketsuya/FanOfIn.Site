@@ -27,3 +27,14 @@ test("unknown fields are dropped", () => {
 test("sharedPackageFromLines trims the name and omits an empty champion", () => {
   assert.deepEqual(sharedPackageFromLines("  P  ", undefined, [{ name: "A", section: "main", quantity: 1 }]), { v: 1, name: "P", cards: [{ name: "A", section: "main", quantity: 1 }] });
 });
+
+test("mixed-section packages round trip without conflating the same card", () => {
+  const pkg: SharedPackage = { v: 1, name: "Mixed", cards: [
+    { name: "A", section: "main", quantity: 3 },
+    { name: "A", section: "sideboard", quantity: 1 },
+    { name: "B", section: "material", quantity: 1 },
+  ] };
+  assert.deepEqual(decodePackage(encodePackage(pkg)), pkg);
+  const wire = btoa(JSON.stringify({ v: 1, n: "Invalid", k: ["A"], l: [[0, 3, 1]] })).replace(/=+$/, "");
+  assert.equal(decodePackage(wire), null);
+});
