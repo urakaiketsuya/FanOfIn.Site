@@ -92,3 +92,21 @@ test('advanced Actions unlock only after the paid level 3 champion', () => {
  const blocked = estimateDrawInfluence(cards,[],7,'first',5,1,policy);
  assert.deepEqual(blocked.map(point=>point.seen),[7,8,9,10,11]);
 });
+
+test('enlighten generators spend finite counters and Careful Study pays its level discount', () => {
+ const configured = createRaiDrawPolicy([{name:'Careful Study',quantity:4},{name:'Peer into Mana',quantity:4}],material,catalog)!;
+ assert.equal(configured.main[0].mechanic,'careful-study');
+ assert.equal(configured.main[1].mechanic,'peer-into-mana');
+ assert.match(catalog.get('Careful Study')!.effect!, /Efficiency/);
+ assert.match(catalog.get('Peer into Mana')!.effect!, /2\+\*\*LV enlighten/);
+ const freeLevels = {...policy,lineage:policy.lineage.map(card=>({...card,memory:0}))};
+ const study = [source({draws:0,reserve:8,mechanic:'careful-study',mageAction:false})];
+ const points = estimateDrawInfluence(study,[],7,'first',3,1,freeLevels);
+ assert.equal(points[0].seen,7); // Cannot pay 8 with six other cards.
+ assert.equal(points[1].seen,10); // Level 1: pay 7; five counters + two from Spellcrafter buy two draws.
+ assert.equal(points[1].memory,7);
+ assert.ok(points[2].seenRange.low <= points[2].seenRange.median);
+ const peer = estimateDrawInfluence([source({draws:0,reserve:4,mechanic:'peer-into-mana',mageAction:false})],[],7,'first',1,1,policy);
+ assert.equal(peer[0].seen,7); // Two counters at level zero cannot buy a draw.
+ assert.equal(peer[0].memory,4);
+});

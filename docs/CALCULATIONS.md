@@ -6602,3 +6602,28 @@ This bounded policy does not model all Rai abilities, combat, attacks, graveyard
 plays, optional copies, temporary levels or non-draw Main actions. Other lineages
 retain the legacy fixed-draw subset. Missing data remains surfaced by the report;
 no partly known Rai sequence is run. No new user controls or disclosures added.
+
+### Rai enlighten sources and paired draw forecasts (2026-11-11)
+
+The reviewed Rai policy now plays Careful Study and Peer into Mana when payable.
+Careful Study's Reserve cost is max(0, printed cost − actual paid champion level);
+it adds five enlighten counters. Peer into Mana adds 2 + actual level. Each physical
+copy resolves once. Counters share the existing champion pool, including Spellcrafter
+and Archmage triggers. Every automatic draw consumes three counters, leaving any
+remainder for later actions/turns. Cost reductions cannot fund the card being played,
+and draws cannot retrospectively pay its cost. No temporary level modifiers or
+opponent interactions are assumed. Existing draw-preserving payment/discard priorities
+remain unchanged; this is not an optimized play policy.
+
+The shared estimator retains sampled cards-seen counts and reports the empirical
+10th/50th/90th percentiles (sorted index floor((n−1)×p)) alongside the existing means.
+These are outcome ranges under the policy, not confidence intervals or win rates.
+
+compareRaiDrawReports uses the same 512-sample, five-turn, going-first policy as
+Deck Analysis, with canonical merged Main lines, actual library size, and the
+supported Spirit opening of seven (capped by library size). Compare and saved-version
+FixtureComparison consumers show turn 3/5 ranges, median changes, mean hand/memory
+and associated sources. Range endpoints describe each deck independently; subtracting
+medians is not a paired causal interval. Unsupported lineages or incomplete catalog
+data remain unavailable, never zero forecasts. Natural fixed-card access comparisons
+remain separate and unchanged. No new inputs are required.

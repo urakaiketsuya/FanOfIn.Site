@@ -113,3 +113,23 @@ Harness removed. Full build, signed-in integration and live deployment unverifie
 is partially complete (Tonoris + Rai), not full-catalog support. Next: additional
 reviewed conditional/recurring draws and propagation into comparison reports.
 Altar still depends on the queued graveyard policy. No push performed.
+
+## Conditional draw / comparison continuation — 2026-11-11
+
+Added Careful Study and Peer into Mana to the reviewed Rai policy: paid Efficiency,
+level-dependent counter grants, finite shared enlighten consumption and retained
+remainders. Added shared sampled cards-seen ranges and Rai comparisons in the
+existing version-report surface used by Compare and saved versions. Comparisons
+agree with standalone means and preserve missing/unsupported outcomes.
+
+Verification: 60 focused tests, shared/app typechecks, targeted lint. Production
+comparison component checked through a temporary harness at 390×844 and 1280×900:
+card art/names, no page overflow, links over 48px and visible keyboard focus.
+Missing, unsupported and empty states checked. No new loading/expansion controls.
+Harness removed. Signed-in integration and live deployment remain unverified.
+
+Queue remains 3/16 fully complete (~19%); conditional draw and comparisons have
+additional completed slices but still include broader recurring/activation coverage
+and cross-feature audits. Next: reviewed recurring sources and paid damage/combat.
+Graveyard-dependent draw/Altar outcomes still require the separate zone policy.
+No push performed.

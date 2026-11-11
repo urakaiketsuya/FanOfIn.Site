@@ -23,6 +23,8 @@ export function createRaiDrawPolicy(
     const advanced = card.element === 'ARCANE' || card.element === 'EXALTED';
     const enabled = card.element === 'NORM' || card.element === element || advanced;
     const mechanic = enabled && line.name === 'Academy Guide' ? 'academy-guide' as const
+      : enabled && line.name === 'Careful Study' ? 'careful-study' as const
+      : enabled && line.name === 'Peer into Mana' ? 'peer-into-mana' as const
       : enabled && line.name === 'Indolent Leisure' ? 'indolent-leisure' as const : undefined;
     const effect = enabled ? supportedDrawEffect(card) : null;
     const steps = mechanic === 'indolent-leisure' ? [{ count: 1, destination: 'hand' as const }] : effect?.steps ?? [];

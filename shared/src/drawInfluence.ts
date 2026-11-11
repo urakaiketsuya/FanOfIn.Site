@@ -33,7 +33,7 @@ export interface InfluenceDrawSource {
   level?: number | null;
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
-  mechanic?: 'academy-guide' | 'indolent-leisure';
+  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana';
   mageAction?: boolean;
   minimumLevel?: number;
 }
@@ -46,6 +46,7 @@ export interface DrawProgressionPolicy {
 
 export function estimateDrawInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
+  const seenSamples = Array.from({ length: turns }, () => [] as number[]);
   const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
@@ -97,16 +98,21 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
       if (turn > 1 || order === 'second') draw(1);
       // Each physical copy resolves once; newly drawn engines can be played if payable.
       while (true) {
-        const index = hand.findIndex((source) => (source.minimumLevel ?? 0) <= level && (source.draws > 0 || source.mechanic === 'academy-guide') && source.reserve != null && source.reserve >= 0 && source.reserve <= hand.length - 1);
+        const reserveCost = (source: InfluenceDrawSource) => source.reserve == null ? Infinity : Math.max(0, source.reserve - (progression && source.mechanic === 'careful-study' ? level : 0));
+        const index = hand.findIndex((source) => (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic) && source.reserve != null && source.reserve >= 0 && reserveCost(source) <= hand.length - 1);
         if (index < 0) break;
         const [source] = hand.splice(index, 1);
-        memory.push(...take(hand, source.reserve!));
+        memory.push(...take(hand, reserveCost(source)));
         if (progression && source.mageAction && level >= 2 && !mageTriggered) {
           enlighten++; mageTriggered = true;
           // The inherited activation trigger resolves before the Action's draws.
           spendEnlighten();
         }
         resolveDraws(source);
+        if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
+          enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
+          spendEnlighten();
+        }
         if (progression && source.mechanic === 'academy-guide') guides++;
         if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
         take(hand, source.discard);
@@ -120,11 +126,16 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
       for (const name of extraNames) {
         if (!naturalNames.has(name)) access.set(name, (access.get(name) ?? 0) + 1 / samples);
       }
+      seenSamples[turn - 1].push(seen);
       totals[turn - 1].seen += seen / samples;
       totals[turn - 1].hand += hand.length / samples;
       totals[turn - 1].memory += memory.length / samples;
       totals[turn - 1].influence += (hand.length + memory.length) / samples;
     }
   }
-  return totals;
+  return totals.map((point, index) => {
+    const values = seenSamples[index].sort((a, b) => a - b);
+    const quantile = (p: number) => values[Math.floor((values.length - 1) * p)] ?? 0;
+    return { ...point, seenRange: { low: quantile(0.1), median: quantile(0.5), high: quantile(0.9) } };
+  });
 }
