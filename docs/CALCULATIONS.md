@@ -6439,8 +6439,8 @@ Turn 3/5 results show empirical p10/median/p90 cards seen, extra cards against
 natural draws, actual champion-memory discounts applied, level-3 reach, and
 per-source probability of at least one paid play. Percentages use all samples.
 
-Reviewed Main plays, in priority order: Academy Guide, Epicurean Institute,
-Dormant Sacrificial Altar, Hub of Innovation, Neos Sight. Each costs its printed
+Reviewed Main plays, in priority order: Academy Guide, Dungeon Guide, Epicurean Institute,
+Dormant Sacrificial Altar, Hub of Innovation, Cordelia (Aurous Kaiser), Neos Sight. Each costs its printed
 Reserve, excluding itself from payment. Reserve cards move to memory and cannot
 pay another Reserve cost until recollection. Payments retain reviewed sources
 where possible. One contiguous champion upgrade per materialize phase begins on
@@ -6452,13 +6452,24 @@ No payment is invented when insufficient memory is available.
 Hub/Altar draws enter memory. Institute is sacrificed at the following recollection
 and draws to hand; sacrifice does not create its On Destroy token. Genesis adds
 one distinct Obelisk each recollection, up to three; Obelisk activations are not
-used. Neos requires the paid level-three champion, draws one to hand and draws
+used. Neos requires the level-three champion, draws one to hand and draws
 one to memory only when the simulated board has eight objects. The champion
-stack counts as one object. Played Guides/domains and summoned Obelisks count;
+stack counts as one object. Played Guides/domains/allies and summoned Obelisks/Drones count;
 sacrificed Institutes and drawn/unplayed cards do not.
 
-Other Main cards are payment cards in this policy. No Dungeon Guide acceleration,
-other materialization, token engine, reservable payment, Altar milling, interaction,
+Dungeon Guide banishes two random memory cards on entry, when available, to advance
+one compatible level without materialization costs. This can happen during turn one
+and in addition to normal materialization; it does not increment Academy cost savings.
+Cordelia requires NEOS, summons two Drones, and grants all tokens reservable.
+The policy retains the existing unique Cordelia rather than playing another copy.
+Payments rest available tokens before reserving hand cards; each token pays once
+per turn and wakes on the next turn. Tokens never pay champion memory costs or
+Dungeon Guide’s banish requirement. Newly summoned tokens can pay subsequent costs,
+not their own source’s cost. Reservable contract:
+https://rules.gatcg.com/glossary/keywords-and-abilities.
+
+Other Main cards are payment cards in this policy. No other materialization,
+Eternal Kingdom upkeep/domain payments, Automata Genesis, Altar milling, interaction,
 removal, combat, mulligan, or opposing actions are simulated. Board survival is an
 explicit unopposed assumption. Sideboard does not enter any population. Missing
 catalog data blocks the report; unrelated champions receive no Tonoris forecast.
@@ -6469,3 +6480,7 @@ Verification: 20 focused draw/Tonoris tests, shared/app typechecks and targeted 
 Standalone report browser checks at 390px and 1280px show no horizontal overflow,
 card links larger than 48px, and visible keyboard focus. Missing/empty states are
 unit-tested; their browser rendering and signed-in page flows were not exercised.
+
+Extension verification: 23 focused tests and shared/app typechecks; targeted lint.
+The existing source grid now receives seven sources. No fresh browser verification
+was performed for this model extension.

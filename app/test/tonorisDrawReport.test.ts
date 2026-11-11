@@ -12,9 +12,9 @@ test('complete Tonoris fixture is deterministic and order independent', () => {
  assert.deepEqual(report, run(fixture.main));
  const reordered = computeTonorisDrawReport({main:lines(fixture.main).reverse(),material},catalog,32)!;
  assert.deepEqual(report.points.map(p=>p.seen),reordered.points.map(p=>p.seen));
- assert.equal(report.sources.length,5);
+ assert.equal(report.sources.length,7);
  assert.equal(report.points[0].level3,0);
- assert.equal(report.points[2].level3,0);
+ assert.ok(report.points[2].level3 > 0);
  assert.ok(report.points[4].seen.median > report.points[4].natural);
  for (const p of report.points) { assert.ok(p.seen.low <= p.seen.median && p.seen.median <= p.seen.high); assert.ok(p.seen.high <= 60); }
 });
@@ -65,4 +65,35 @@ test('duplicates merge and Sideboard cannot alter the model', () => {
  const original = computeTonorisDrawReport(deck,catalog,32)!;
  const split = {...deck,main:deck.main.flatMap(line=>Array.from({length:line.quantity},()=>({...line,quantity:1})))};
  assert.deepEqual(original,computeTonorisDrawReport(split,catalog,32));
+});
+
+test('Dungeon Guide accelerates through a real two-card memory banish', () => {
+ const report = run({'Dungeon Guide':60},1);
+ assert.equal(report.points[0].level3,0);
+ assert.equal(report.points[1].level3,0); // only one memory card remains: natural level 2 is unaffordable
+ assert.equal(report.points[3].level3,1); // later Guides advance only when their payment is possible
+ const expensive = new Map(catalog);
+ expensive.set('Dungeon Guide', {...catalog.get('Dungeon Guide')!, cost_reserve:1});
+ const blocked = computeTonorisDrawReport({main:lines({'Dungeon Guide':1}),material},expensive,1)!;
+ assert.equal(blocked.points[4].level3,0);
+ assert.equal(report.points[4].saved.high,0); // Guide's effect is not an Academy discount
+});
+test('Cordelia token payments are consumed and refresh on later turns', () => {
+ // Controlled opening: one of each card is always in the seven-card hand.
+ const controlled = new Map(catalog);
+ for (const name of ['Academy Guide','Dungeon Guide','Cordelia, Aurous Kaiser','Epicurean Institute','Hub of Innovation','Dormant Sacrificial Altar'])
+   controlled.set(name,{...catalog.get(name)!,cost_reserve:0});
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const deck = {main:lines({'Academy Guide':1,'Dungeon Guide':1,'Cordelia, Aurous Kaiser':1,'Epicurean Institute':1,'Hub of Innovation':1,'Dormant Sacrificial Altar':1,'Neos Sight':1}),material};
+ controlled.set('Neos Sight',{...catalog.get('Neos Sight')!,cost_reserve:4});
+ const report = computeTonorisDrawReport(deck,controlled,1)!;
+ assert.equal(report.points[2].tokenPaid.high,0); // no Cordelia before NEOS access
+ assert.equal(report.points[3].tokenPaid.median,0); // 1 Obelisk + 2 drones cannot pay 4
+ assert.equal(report.points[4].tokenPaid.median,4); // second Obelisk makes payment possible
+ assert.equal(report.points[4].plays.find(p=>p.name==='Neos Sight')!.probability,1);
+});
+test('reviewed acceleration and token contracts match catalog text', () => {
+ assert.match(catalog.get('Dungeon Guide')!.effect!,/banish two cards at random from your memory/);
+ assert.match(catalog.get('Cordelia, Aurous Kaiser')!.effect!,/two Automaton Drone tokens/);
+ assert.match(catalog.get('Cordelia, Aurous Kaiser')!.effect!,/Token objects you control have/);
 });
