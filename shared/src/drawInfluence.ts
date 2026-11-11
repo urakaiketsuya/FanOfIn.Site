@@ -33,7 +33,7 @@ export interface InfluenceDrawSource {
   level?: number | null;
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
-  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory';
+  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball';
   mageAction?: boolean;
   minimumLevel?: number;
 }
@@ -44,8 +44,9 @@ export interface DrawProgressionPolicy {
   rai: true;
 }
 
-export function estimateDrawInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy) {
+export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
+  const damageSamples = Array.from({ length: turns }, () => [] as number[]);
   const seenSamples = Array.from({ length: turns }, () => [] as number[]);
   const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
@@ -53,7 +54,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
   for (let sample = 0; sample < samples; sample++) {
     const library = [...deck];
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
-    let seen = 0, level = 0, guides = 0, enlighten = 0;
+    let seen = 0, level = 0, guides = 0, enlighten = 0, damage = 0;
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
     let recollectionDraws: FixedDrawStep[] = [];
@@ -103,7 +104,12 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
       if (turn > 1 || order === 'second') draw(1);
       // Each physical copy resolves once; newly drawn engines can be played if payable.
       while (true) {
-        const reserveCost = (source: InfluenceDrawSource) => source.reserve == null ? Infinity : Math.max(0, source.reserve - (progression && source.mechanic === 'careful-study' ? level : 0));
+        const reserveCost = (source: InfluenceDrawSource) => {
+          if (source.reserve == null) return Infinity;
+          const discount = !progression ? 0 : source.mechanic === 'careful-study' ? level
+            : source.mechanic === 'fireball' && level >= 1 ? 2 : 0;
+          return Math.max(0, source.reserve - discount);
+        };
         const index = hand.findIndex((source) => (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic) && source.reserve != null && source.reserve >= 0 && reserveCost(source) <= hand.length - 1);
         if (index < 0) break;
         const [source] = hand.splice(index, 1);
@@ -114,6 +120,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
           spendEnlighten();
         }
         resolveDraws(source);
+        if (progression && source.mechanic === 'fireball') damage += 1 + level;
         if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
           recollectionDraws.push({ count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
         }
@@ -135,6 +142,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
         if (!naturalNames.has(name)) access.set(name, (access.get(name) ?? 0) + 1 / samples);
       }
       seenSamples[turn - 1].push(seen);
+      damageSamples[turn - 1].push(damage);
       totals[turn - 1].seen += seen / samples;
       totals[turn - 1].hand += hand.length / samples;
       totals[turn - 1].memory += memory.length / samples;
@@ -144,6 +152,13 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
   return totals.map((point, index) => {
     const values = seenSamples[index].sort((a, b) => a - b);
     const quantile = (p: number) => values[Math.floor((values.length - 1) * p)] ?? 0;
-    return { ...point, seenRange: { low: quantile(0.1), median: quantile(0.5), high: quantile(0.9) } };
+    const damageValues = damageSamples[index].sort((a, b) => a - b);
+    const damageQuantile = (p: number) => damageValues[Math.floor((damageValues.length - 1) * p)] ?? 0;
+    return { ...point, paidDamageRange: { low: damageQuantile(0.1), median: damageQuantile(0.5), high: damageQuantile(0.9) }, seenRange: { low: quantile(0.1), median: quantile(0.5), high: quantile(0.9) } };
   });
+}
+
+/** Preserve the draw-only result contract for existing reports. */
+export function estimateDrawInfluence(...args: Parameters<typeof estimateDrawAndDamageInfluence>) {
+  return estimateDrawAndDamageInfluence(...args).map(({ paidDamageRange: _damage, ...point }) => point);
 }

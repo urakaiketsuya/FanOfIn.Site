@@ -172,3 +172,23 @@ Queue remains 3/16 fully complete (~19%, unequal milestones); conditional draw,
 comparisons and now paid combat have additional completed slices. Next: paid direct
 damage with explicit target/level/resource gates. Graveyard-dependent outcomes
 remain blocked on the queued zone policy. No push performed.
+
+## Paid direct-damage calculation foundation — 2026-11-11
+
+Added a separate shared Rai Fireball forecast and paired turn-3/5 ranges. It shares
+physical payments, paid progression and Mage triggers with reviewed draw engines,
+uses actual level for damage/class discounts, and enforces Fire element access.
+Existing draw reports retain their previous results and return shape. This is
+Fireball output before responses, not full-deck or inflicted damage. UI wiring is
+still pending; no presentation changes or production writes in this milestone.
+
+Verification: 70 focused tests, shared/app typechecks and targeted lint. Tests cover
+full Spirit cost, paid Mage discounts/levels, finite copies, unaffordable plays,
+off-element gating, missing/unsupported data, deterministic input normalization and
+standalone/comparison agreement. No UI changed; browser checks not repeated. Full
+build, signed-in integration and live deployment remain outstanding.
+
+Queue remains 3/16 complete (~19%, unequal milestones). Next: expose the supported
+paid-damage ranges alongside their cards in reports/comparisons, then extend the
+reviewed damage pool. Graveyard-dependent effects still need the queued zone policy.
+No push performed.

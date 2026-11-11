@@ -6670,3 +6670,30 @@ physical object; Vigor wakes Titans at the beginning of the end step, after this
 snapshot, so it does not restore their main-phase attack readiness:
 https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase
 https://rules.gatcg.com/glossary/keywords-and-abilities
+
+### Paid Rai Fireball sequence (2026-11-11)
+
+`computeRaiDamageReport` and `compareRaiDamageReports` provide a separate paid
+Fireball forecast. This is supported Fireball output to a target unit before
+responses/prevention, not total deck damage or damage actually inflicted. No
+opponent ally, buff, graveyard or pressure state is invented. Presentation wiring
+is pending; current draw reports retain their previous results and shape.
+
+The forecast uses the reviewed Rai draw engines, actual Main size, opening seven
+(or smaller deck size), going first, 512 seeded samples and five turns. Canonical
+merged/sorted lines make input order irrelevant. Each turn plays the first
+payable supported source in the shared shuffled-hand policy; this is not an
+optimized damage rotation. Fireball shares finite hand payments with draw engines,
+physically leaves hand once, pays printed reserve 4 at Spirit level and receives
+its 2-cost class discount only after paid Rai level 1. It contributes 1 + actual
+paid level cumulative output. Its Mage activation shares the existing once-per-turn
+Archmage trigger. No temporary level increases or Mana Weaver copies are modeled.
+Only Spirit of Fire enables Fireball. Other damage cards remain unplayed.
+
+Checkpoints return cumulative sample 10th/50th/90th percentiles; paired results use
+turns 3 and 5 from the same standalone calculation. Damage source quantities travel
+with results so consumers can label coverage explicitly. A supported deck without
+Fireball has zero Fireball output, not zero total damage. Missing catalog entries
+or Fireball reserve cost are unavailable; unsupported lineages are not zero.
+The shared sequence exposes damage through `estimateDrawAndDamageInfluence`;
+`estimateDrawInfluence` preserves the existing draw-only return contract.

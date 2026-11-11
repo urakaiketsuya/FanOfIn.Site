@@ -156,3 +156,4 @@ export * from "./previewIdentity";
 export type { EditorialPackage, EditorialPackageInput, PackageResearchReview, AdminOverview } from './adminWorkspace.js';
 export * from './tonorisDrawReport.js';
 export * from './raiDrawComparison.js';
+export * from './raiDamageReport.js';
