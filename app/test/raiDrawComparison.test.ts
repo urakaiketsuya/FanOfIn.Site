@@ -30,3 +30,20 @@ test('new conditional sources propagate without treating unsupported decks as ze
  const missing = new Map(catalog); missing.delete('Academy Guide');
  assert.equal(compareRaiDrawReports(deck,target,missing)?.status,'missing');
 });
+
+test('delayed sources propagate to comparison and agree with the standalone sequence', () => {
+ const target = {...deck,main:deck.main.map(line=>line.name==='Fireball'?{...line,name:'Epicurean Institute'}:line.name==='Focused Flames'?{...line,name:'Sovereign Sanctuary'}:line)};
+ const comparison = compareRaiDrawReports(deck,target,catalog)!;
+ assert.equal(comparison.status,'ready');
+ if(comparison.status !== 'ready') return;
+ const standalone = computeDeckAnalysisReport(target.main,target.material,catalog);
+ for (const point of comparison.points) {
+  const checkpoint = standalone.checkpoints.find(p=>p.turn===point.turn && p.order==='first')!;
+  assert.equal(Math.round(point.after.seen),checkpoint.adjustedSeen);
+  assert.equal(point.after.hand,checkpoint.hand);
+  assert.equal(point.after.memory,checkpoint.memory);
+ }
+ for(const name of ['Epicurean Institute','Sovereign Sanctuary']) {
+  assert.deepEqual(comparison.sources.find(s=>s.name===name),{name,before:0,after:4});
+ }
+});

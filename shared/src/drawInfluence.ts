@@ -33,7 +33,7 @@ export interface InfluenceDrawSource {
   level?: number | null;
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
-  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana';
+  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory';
   mageAction?: boolean;
   minimumLevel?: number;
 }
@@ -56,6 +56,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
     let seen = 0, level = 0, guides = 0, enlighten = 0;
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
+    let recollectionDraws: FixedDrawStep[] = [];
     const available = material.flatMap((source) => Array.from({ length: source.quantity }, () => source));
     const draw = (count: number, destination: 'hand' | 'memory' = 'hand') => {
       const zone = destination === 'memory' ? memory : hand;
@@ -94,6 +95,10 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
           take(hand, source.discard);
         }
       }
+      // Paid permanents sacrifice at the next beginning of recollection.
+      // These triggers resolve before memory returns, but after materialization.
+      for (const step of recollectionDraws) draw(step.count, step.destination);
+      recollectionDraws = [];
       hand.push(...memory); memory = [];
       if (turn > 1 || order === 'second') draw(1);
       // Each physical copy resolves once; newly drawn engines can be played if payable.
@@ -109,6 +114,9 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
           spendEnlighten();
         }
         resolveDraws(source);
+        if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
+          recollectionDraws.push({ count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
+        }
         if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
           enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
           spendEnlighten();

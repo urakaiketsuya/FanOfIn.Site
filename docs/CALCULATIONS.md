@@ -6627,3 +6627,20 @@ and associated sources. Range endpoints describe each deck independently; subtra
 medians is not a paired causal interval. Unsupported lineages or incomplete catalog
 data remain unavailable, never zero forecasts. Natural fixed-card access comparisons
 remain separate and unchanged. No new inputs are required.
+
+### Rai delayed recollection draw (2026-11-11)
+
+Epicurean Institute and Sovereign Sanctuary now participate in the reviewed Rai
+policy as paid permanents. They do not draw on entry or trigger Archmage's Mage
+Action ability. Each paid physical copy queues one draw at the next beginning of
+recollection, then sacrifices: Institute draws to hand; Sanctuary draws to memory.
+The pending draws resolve after that turn's champion materialization and before
+memory returns to hand, so they cannot fund the earlier materialization. Copies
+played later that turn wait until the following turn. Sanctuary retains the
+existing EXALTED level-3 access gate. Sacrifice does not generate Institute's
+On Destroy token. Sanctuary prevention and opposing removal are not simulated.
+
+Standalone reports and comparisons consume this same sequence, including finite
+library exhaustion and actual Reserve payments. This adds delayed self-sacrificing
+sources, not arbitrary repeating triggers: opponent-influence, graveyard, damage,
+and special-format Lesser Boon conditions remain outside this policy.

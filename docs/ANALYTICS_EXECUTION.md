@@ -133,3 +133,21 @@ additional completed slices but still include broader recurring/activation cover
 and cross-feature audits. Next: reviewed recurring sources and paid damage/combat.
 Graveyard-dependent draw/Altar outcomes still require the separate zone policy.
 No push performed.
+
+## Delayed draw continuation — 2026-11-11
+
+Added paid Epicurean Institute and Sovereign Sanctuary to the shared Rai policy.
+Their draws wait until the next recollection, sacrifice once, and preserve the
+printed destination and paid level/element gates. Comparisons inherit the same
+outcomes and associated cards. No presentation or controls changed.
+
+Verification: 63 focused tests; shared/app typechecks and targeted lint. New tests
+cover delay, one-shot consumption, costs, destinations, real catalog contracts and
+standalone/comparison agreement. The standalone display rounds mean cards seen;
+comparison retains the unrounded mean. Browser verification was not repeated for
+this calculation-only change; signed-in/live checks remain outstanding.
+
+Queue remains 3/16 fully complete (~19%, unequal milestones), with another completed
+conditional-draw slice. Next: paid damage/combat and broader activation coverage.
+Repeating triggers requiring opponent influence, damage or graveyard state remain
+blocked on their respective policies. No push performed.

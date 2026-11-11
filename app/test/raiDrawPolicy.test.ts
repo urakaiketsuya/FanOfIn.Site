@@ -110,3 +110,26 @@ test('enlighten generators spend finite counters and Careful Study pays its leve
  assert.equal(peer[0].seen,7); // Two counters at level zero cannot buy a draw.
  assert.equal(peer[0].memory,4);
 });
+
+test('paid recollection sources wait a turn, sacrifice once, and cannot fund earlier materialization', () => {
+ for (const mechanic of ['recollection-hand', 'recollection-memory'] as const) {
+  const cards = [source({draws:0,reserve:6,mageAction:false,mechanic})];
+  const points = estimateDrawInfluence(cards,[],7,'first',4,1,policy);
+  assert.deepEqual(points.map(p=>p.seen),[7,9,11,12]);
+  assert.deepEqual(points.map(p=>p.memory),[6,6,0,6]);
+  assert.deepEqual(points.map(p=>p.hand),[0,0,6,0]);
+  const blocked = estimateDrawInfluence(cards.map(c=>({...c,reserve:100})),[],7,'first',4,1,policy);
+  assert.deepEqual(blocked.map(p=>p.seen),[7,8,9,10]);
+ }
+});
+
+test('catalog recollection sources preserve element, timing and non-Action identity', () => {
+ const configured = createRaiDrawPolicy([{name:'Epicurean Institute',quantity:4},{name:'Sovereign Sanctuary',quantity:4}],material,catalog)!;
+ assert.equal(configured.main[0].mechanic,'recollection-hand');
+ assert.equal(configured.main[0].reserve,1);
+ assert.equal(configured.main[1].mechanic,'recollection-memory');
+ assert.equal(configured.main[1].minimumLevel,3);
+ assert.ok(configured.main.every(c=>c.draws===0 && !c.mageAction));
+ assert.match(catalog.get('Epicurean Institute')!.effect!, /beginning of your recollection phase, sacrifice CARDNAME and draw a card/);
+ assert.match(catalog.get('Sovereign Sanctuary')!.effect!, /sacrifice Sovereign Sanctuary and draw a card into your memory/);
+});
