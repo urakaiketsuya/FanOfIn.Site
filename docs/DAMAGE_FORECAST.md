@@ -7,7 +7,8 @@ material, playOrder = "first")`; there are no player-entered board-state options
 
 ## Meaning of the forecast
 
-Checkpoints are 7, 10, 15 and 20 Main cards seen, with a 60-card minimum deck size.
+Checkpoints are 7, 10, 15 and 20 Main cards seen, capped and deduplicated to the
+actual listed Main size. There is no hidden 60-card minimum (corrected 2026-10-30).
 The conservative and optimistic distributions describe **printed damage access**.
 Draw probabilities use exact enumeration for bounded state spaces. Deploying objects, paying costs, resolving effects,
 and retaining the objects are optimistic assumptions, not probabilities inferred

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { computeTonorisDrawReport, type Card } from '@gatcg/shared';
+import { computeTonorisDrawReport, compareTonorisDrawReports, type Card } from '@gatcg/shared';
 const catalog = new Map<string, Card>(JSON.parse(readFileSync(new URL('../../data/card-catalog.json', import.meta.url), 'utf8')).cards.map((card: Card) => [card.name, card]));
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/tonoris-water.json', import.meta.url), 'utf8'));
 const lines = (counts: Record<string, number>) => Object.entries(counts).map(([name, quantity]) => ({ name, quantity }));
@@ -88,8 +88,10 @@ test('Cordelia token payments are consumed and refresh on later turns', () => {
  controlled.set('Neos Sight',{...catalog.get('Neos Sight')!,cost_reserve:4});
  const report = computeTonorisDrawReport(deck,controlled,1)!;
  assert.equal(report.points[2].tokenPaid.high,0); // no Cordelia before NEOS access
- assert.equal(report.points[3].tokenPaid.median,0); // 1 Obelisk + 2 drones cannot pay 4
- assert.equal(report.points[4].tokenPaid.median,4); // second Obelisk makes payment possible
+ assert.equal(report.points[3].tokenPaid.median,2); // Fabrication rests itself and spends the two Drones
+ assert.equal(report.points[3].fabricated.median,1);
+ assert.equal(report.points[3].plays.find(p=>p.name==='Neos Sight')!.probability,0);
+ assert.equal(report.points[4].tokenPaid.median,6); // refreshed tokens pay four more for Neos
  assert.equal(report.points[4].plays.find(p=>p.name==='Neos Sight')!.probability,1);
 });
 test('reviewed acceleration and token contracts match catalog text', () => {
@@ -119,7 +121,8 @@ test('Kingdom domains refresh, pay upkeep, and cannot repay another cost that tu
  assert.equal(report.points[2].domainPaid.median,4);
  assert.equal(report.points[4].upkeepPaid.median,8);
  assert.equal(report.points[4].upkeepLost.high,0);
- assert.equal(report.points[4].plays.find(p=>p.name==='Neos Sight')!.probability,0); // upkeep consumes both domains
+ assert.equal(report.points[2].plays.find(p=>p.name==='Neos Sight')!.probability,0); // upkeep consumes both domains
+ assert.equal(report.points[3].plays.find(p=>p.name==='Neos Sight')!.probability,1); // Genesis adds a third reservable domain
 });
 test('Kingdom contract includes domains, unique retention, and Reserve upkeep', () => {
  const kingdom = catalog.get('The Eternal Kingdom')!;
@@ -163,4 +166,37 @@ test('Genesis catalog contract summons three Titans and buffs only token allies'
  assert.match(card.effect!,/each token ally you control/);
  assert.match(card.effect!,/amount of tokens you control/);
  assert.ok(catalog.get('Titan Mk II')!.types.includes('ALLY'));
+});
+
+test('Fabrication cannot rest itself twice and adds only paid, buffed Drones', () => {
+ const controlled = new Map(catalog);
+ for (const line of material) controlled.set(line.name,{...catalog.get(line.name)!,cost_memory:0});
+ const blocked = computeTonorisDrawReport({main:lines({'Engulf':3}),material},controlled,1)!;
+ assert.equal(blocked.points[3].fabricated.median,0); // one domain: activation costs five
+ assert.equal(blocked.points[4].fabricated.median,0); // two domains: still costs four
+ const paid = computeTonorisDrawReport({main:lines({'Engulf':5}),material},controlled,1)!;
+ assert.equal(paid.points[3].fabricated.median,1);
+ assert.equal(paid.points[4].fabricated.median,2);
+ assert.equal(paid.points[4].tokenBuffs.median,2);
+ assert.equal(paid.points[4].seen.median,5); // no manufactured draws from token creation
+});
+test('Fabrication contract uses domain discount and a rest activation', () => {
+ assert.match(catalog.get('Obelisk of Fabrication')!.effect!,/\(6\), \[REST\]/);
+ assert.match(catalog.get('Obelisk of Fabrication')!.effect!,/for each domain you control/);
+ assert.match(catalog.get('Obelisk of Fabrication')!.effect!,/with a \*\*buff\*\* counter/);
+});
+
+test('sequence comparisons match standalone results and preserve unavailable states', () => {
+ const deck = {main:lines(fixture.main),material};
+ const same = compareTonorisDrawReports(deck,deck,catalog,32)!;
+ assert.equal(same.status,'ready');
+ assert.ok(same.points.every(p=>p.medianSeenDelta===0 && p.level3Delta===0 && p.bonusDelta===0));
+ const target = {...deck,main:deck.main.filter(line=>line.name!=='Dungeon Guide')};
+ const compared = compareTonorisDrawReports(deck,target,catalog,32)!;
+ assert.deepEqual(compared.points[1].after,computeTonorisDrawReport(target,catalog,32)!.points[4]);
+ assert.equal(compared.sources.find(source=>source.name==='Dungeon Guide')!.after,0);
+ assert.equal(compared.sources.find(source=>source.name==='Dungeon Guide')!.afterPlayed,0);
+ assert.equal(compareTonorisDrawReports(deck,{main:[],material:[]},catalog)!.status,'unsupported');
+ assert.equal(compareTonorisDrawReports(deck,{...deck,main:lines({'Missing':1})},catalog)!.status,'missing');
+ assert.equal(compareTonorisDrawReports({main:[],material:[]},{main:[],material:[]},catalog),null);
 });

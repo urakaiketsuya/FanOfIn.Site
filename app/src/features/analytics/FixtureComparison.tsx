@@ -2,6 +2,7 @@ import { useId, useState } from 'react';
 import { reportDeltaChanged, scenarioConditions, SCENARIO_FIELDS, BOOLEAN_SCENARIOS, calculateFixtureMatchup, compareFixtureScenarios, copies, type AnalyticsDeck, type AnalyticsLine, type Card, type ScenarioKey, } from '@gatcg/shared';
 import CombatRangeComparison from './CombatRangeComparison';
 import EffectAccessReport from './EffectAccessReport';
+import TonorisDrawComparison from './TonorisDrawComparison';
 import DrawAccessComparison from './DrawAccessComparison';
 import AssociatedCards from '../../components/AssociatedCards';
 import Button from '../../components/ui/Button';
@@ -89,6 +90,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
 
     </TabPanel>
     <TabPanel baseId={id} tab="versions" active={mode} keepMounted>
+      {mode === 'versions' && <TonorisDrawComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
       <CombatRangeComparison baseline={baseline} target={target} cardsByName={cardsByName} />
       <EffectAccessReport deck={target} baseline={baseline} cardsByName={cardsByName} />
       <DrawAccessComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />

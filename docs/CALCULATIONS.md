@@ -6451,8 +6451,8 @@ No payment is invented when insufficient memory is available.
 
 Hub/Altar draws enter memory. Institute is sacrificed at the following recollection
 and draws to hand; sacrifice does not create its On Destroy token. Genesis adds
-one distinct Obelisk each recollection, up to three; Obelisk activations are not
-used. Neos requires the level-three champion, draws one to hand and draws
+one distinct Obelisk each recollection, up to three, choosing Fabrication, then
+Armaments, then Protection. Fabrication is activated after affordable Main plays. Neos requires the level-three champion, draws one to hand and draws
 one to memory only when the simulated board has eight objects. The champion
 stack counts as one object. Played Guides/domains/allies and summoned Obelisks/Drones count;
 sacrificed Institutes and drawn/unplayed cards do not.
@@ -6515,3 +6515,26 @@ counts all tokens (including Obelisks). Cumulative Titans summoned and total tok
 buff counters are retained in report ranges; no combat damage is inferred. The
 policy prioritizes Genesis after Cordelia and before Neos Sight. Other token
 abilities and opposing actions remain outside this sequence.
+
+
+Tonoris object-payment correction and Fabrication (2026-11-11): each permanent now
+has one rested state shared by all payment grants and activated abilities. Obelisks
+are both domains and tokens; Kingdom alone can make them reservable. An object with
+both Kingdom and Cordelia grants pays once, accounted under domains first. Removing
+a grant does not refresh the object. Wake-up refreshes each surviving object.
+Fabrication activates after no reviewed Main play is affordable, paying
+max(0, 6 − current domain count) Reserve and resting Fabrication itself. Its source
+cannot also contribute reservable toward that payment. A paid activation creates
+one Drone with one buff counter; the policy then rechecks affordable Main plays.
+The source remains rested, bounding activations to once per turn. Token creation is
+not card draw. Armaments and Protection activations are not included yet.
+
+
+Paired Tonoris forecasts (2026-11-11): Compare and saved-version reports call the
+same sequence for each list with the same sample count and policy. Turn 3/5 show
+p10–p90 cards seen, median change, level-three and Neos bonus probabilities with
+percentage-point changes, memory savings, fabricated Drones and summoned Titans.
+These are marginal distributions, not paired-sample effect intervals or causal
+swap benefits. Different library sizes remain different. Unsupported lineage or
+missing catalog on either side suppresses numerical comparison. Source cards show
+before/after quantities and paid-play probabilities by turn five.
