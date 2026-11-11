@@ -15,7 +15,7 @@ Existing competition release D is complete and is not reopened.
 
 - [x] Tonoris: shared object payments, Fabrication activation, token development.
 - [x] Tonoris: review other activations and Altar milling against a useful automatic policy.
-- [ ] General affordability: representative non-Tonoris fixture, paid progression,
+- [x] General affordability: representative non-Tonoris fixture, paid progression,
       finite discounts and payment budgets.
 - [ ] Conditional draw: reviewed triggers, activations, recurring draws and destinations.
 - [ ] Damage/combat: paid plays, readiness, consumed resources and token buffs.
@@ -47,7 +47,7 @@ contract and representative fixture. Record data blockers separately from comple
 Current: reviewed Tonoris draw/payment sequence includes all three Obelisks:
 paid Fabrication and Armaments, plus remaining affordable Protection capacity.
 Altar milling deliberately waits for a reviewed graveyard payoff/policy.
-Next: representative non-Tonoris affordability and conditional-draw coverage.
+Next: broaden conditional-draw coverage beyond the completed Rai fixture, then paid damage/combat.
 No production writes authorized in this run.
 
 ## Milestone 1 — object payments and paired forecasts
@@ -92,3 +92,24 @@ Current execution queue: 2 of 16 top-level milestones complete (~13%). These are
 unequal milestones, so this is checklist progress rather than an effort forecast.
 Next: non-Tonoris affordability and conditional draw; graveyard modeling remains
 a separate queued dependency for Altar. No push performed.
+
+
+## Milestone 3 — non-Tonoris affordability and conditional draw
+
+Added reviewed Rai progression to the shared draw simulation and automatic
+Deck Analysis reports. Paid Academy Guides discount subsequent materializations;
+actual memory cards are banished. Rai enlighten triggers and counters are finite;
+Indolent Leisure checks paid level/class and preserves memory destination.
+Advanced-element fixed draw Actions wait for Mana Weaver. A constructed 60-card
+Rai Fire fixture covers the sequence; it is not a tournament deck recommendation.
+
+Verification: 57 focused tests, shared/app typechecks and targeted lint. Existing
+CardsSeenReport rendering checked in a temporary harness at 390×844 and 1280×900,
+with empty and missing-data states, no horizontal overflow, card links over
+48px, and visible keyboard focus. No production layout or controls changed.
+Harness removed. Full build, signed-in integration and live deployment unverified.
+
+3 of 16 unequal milestones complete (~19% checklist progress). Conditional draw
+is partially complete (Tonoris + Rai), not full-catalog support. Next: additional
+reviewed conditional/recurring draws and propagation into comparison reports.
+Altar still depends on the queued graveyard policy. No push performed.

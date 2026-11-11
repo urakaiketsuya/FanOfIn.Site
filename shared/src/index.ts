@@ -113,6 +113,7 @@ export * from "./merchandise";
 export * from './stores';
 
 export * from './drawInfluence';
+export * from './raiDrawPolicy';
 
 export * from "./eventBrowserData.js";
 export * from "./defenseScenario.js";

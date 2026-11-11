@@ -32,9 +32,19 @@ export interface InfluenceDrawSource {
   memory?: number | null;
   level?: number | null;
   discard: number;
+  /** Reviewed sequence roles; absent for the legacy draw-only policy. */
+  mechanic?: 'academy-guide' | 'indolent-leisure';
+  mageAction?: boolean;
+  minimumLevel?: number;
 }
 
-export function estimateDrawInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512) {
+export interface DrawProgressionPolicy {
+  lineage: { name: string; memory: number }[];
+  /** Reviewed Rai lineage: two starting enlighten, first Mage Action each turn at level 2+. */
+  rai: true;
+}
+
+export function estimateDrawInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
   const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
@@ -42,7 +52,7 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
   for (let sample = 0; sample < samples; sample++) {
     const library = [...deck];
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
-    let seen = 0;
+    let seen = 0, level = 0, guides = 0, enlighten = 0;
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
     const available = material.flatMap((source) => Array.from({ length: source.quantity }, () => source));
@@ -53,6 +63,9 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
     const resolveDraws = (source: InfluenceDrawSource) => {
       for (const step of source.drawSteps ?? [{ count: source.draws, destination: 'hand' }]) draw(step.count, step.destination);
     };
+    const spendEnlighten = () => {
+      while (enlighten >= 3) { enlighten -= 3; draw(1); }
+    };
     // Preserve draw engines when selecting payment/discard cards; stable order breaks ties.
     const take = (zone: InfluenceDrawSource[], count: number) => {
       zone.sort((a, b) => a.draws - b.draws);
@@ -60,8 +73,18 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
     };
     draw(opening);
     for (let turn = 1; turn <= turns; turn++) {
+      let mageTriggered = false;
+      if (progression && turn > 1 && level < progression.lineage.length) {
+        const cost = Math.max(0, progression.lineage[level].memory - guides);
+        if (memory.length >= cost) {
+          // Memory costs banish random physical cards; discounts cannot create memory.
+          for (let paid = 0; paid < cost; paid++) memory.splice(Math.floor(random() * memory.length), 1);
+          level++;
+          if (level === 1) enlighten += 2;
+        }
+      }
       // One materialization before recollection, with actual memory payment.
-      if (turn > 1) {
+      if (!progression && turn > 1) {
         const index = available.findIndex((source) => source.draws > 0 && source.memory != null && source.memory <= memory.length && (source.level ?? 0) < turn);
         if (index >= 0) {
           const [source] = available.splice(index, 1);
@@ -74,11 +97,18 @@ export function estimateDrawInfluence(main: InfluenceDrawSource[], material: Inf
       if (turn > 1 || order === 'second') draw(1);
       // Each physical copy resolves once; newly drawn engines can be played if payable.
       while (true) {
-        const index = hand.findIndex((source) => source.draws > 0 && source.reserve != null && source.reserve >= 0 && source.reserve <= hand.length - 1);
+        const index = hand.findIndex((source) => (source.minimumLevel ?? 0) <= level && (source.draws > 0 || source.mechanic === 'academy-guide') && source.reserve != null && source.reserve >= 0 && source.reserve <= hand.length - 1);
         if (index < 0) break;
         const [source] = hand.splice(index, 1);
         memory.push(...take(hand, source.reserve!));
+        if (progression && source.mageAction && level >= 2 && !mageTriggered) {
+          enlighten++; mageTriggered = true;
+          // The inherited activation trigger resolves before the Action's draws.
+          spendEnlighten();
+        }
         resolveDraws(source);
+        if (progression && source.mechanic === 'academy-guide') guides++;
+        if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
         take(hand, source.discard);
       }
       // Couple the modeled and natural draws to the same shuffled library. Only

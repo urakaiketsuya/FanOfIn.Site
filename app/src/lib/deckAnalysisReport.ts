@@ -1,4 +1,4 @@
-import { estimateDrawInfluence, supportedDrawEffect, type Card } from '@gatcg/shared';
+import { createRaiDrawPolicy, estimateDrawInfluence, supportedDrawEffect, type Card } from '@gatcg/shared';
 import { probabilityAtLeast } from '../features/deckbuilder/synergyReadiness';
 import { drawEngineSources } from '../features/deckbuilder/drawEffects';
 import { inferStartingHandSize, naturalCardsSeenByTurn } from './turnToPlay';
@@ -15,8 +15,9 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
   const lineage = material.filter((line) => catalog.get(line.name)?.types.includes('CHAMPION')).sort((a, b) => (catalog.get(a.name)?.level ?? 0) - (catalog.get(b.name)?.level ?? 0));
   const startingCard = lineage.find((line) => catalog.get(line.name)?.level === 0);
   const openingInferred = !!startingCard && /\bdraw\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+cards?\b/i.test(catalog.get(startingCard.name)?.effect ?? '');
+  const rai = createRaiDrawPolicy(lines, material, catalog);
   // Starting Spirit draws are already included in the opening hand, not bonus draws.
-  const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog).map(source => ({ ...source, modeled: source.section === 'main' && supportedDrawEffect(catalog.get(source.name)) !== null }));
+  const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog).map(source => ({ ...source, modeled: rai ? rai.modeled.has(source.name) : source.section === 'main' && supportedDrawEffect(catalog.get(source.name)) !== null }));
   const drawSource = (line: CalculatorLine, section: 'main' | 'material') => {
     const card = catalog.get(line.name);
     const supported = section === 'main' ? supportedDrawEffect(card) : null;
@@ -24,8 +25,8 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
     return { ...line, draws: steps.reduce((total, step) => total + step.count, 0), drawSteps: steps, reserve: card?.cost_reserve ?? null, memory: card?.cost_memory, level: card?.level, discard: supported?.discard ?? 0 };
   };
   const estimates = {
-    first: estimateDrawInfluence(lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'first'),
-    second: estimateDrawInfluence(lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'second'),
+    first: estimateDrawInfluence(rai?.main ?? lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'first', 5, 512, rai?.progression),
+    second: estimateDrawInfluence(rai?.main ?? lines.map(line => drawSource(line, 'main')), material.filter((line) => catalog.get(line.name)?.level !== 0).map(line => drawSource(line, 'material')), opening, 'second', 5, 512, rai?.progression),
   };
   const checkpoints = ([3, 5] as const).flatMap((turn) => (['first', 'second'] as const).map((order) => {
     const seen = Math.min(size, naturalCardsSeenByTurn(turn, opening, order));

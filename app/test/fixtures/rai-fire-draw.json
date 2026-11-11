@@ -1,0 +1,25 @@
+{
+  "material": {
+    "Spirit of Fire": 1,
+    "Rai, Spellcrafter": 1,
+    "Rai, Archmage": 1,
+    "Rai, Mana Weaver": 1
+  },
+  "main": {
+    "Academy Guide": 4,
+    "Creative Tinder": 4,
+    "Pyretic Prognosis": 4,
+    "Indolent Leisure": 4,
+    "Fireball": 4,
+    "Focused Flames": 4,
+    "Gilded Pyre": 4,
+    "Ignite Fate": 4,
+    "Ignite the Soul": 4,
+    "Innervate Fury": 4,
+    "Intensified Pyre": 4,
+    "Purge in Flames": 4,
+    "Pyroclastic Flow": 4,
+    "Reduce to Ash": 4,
+    "Set Ablaze": 4
+  }
+}

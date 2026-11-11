@@ -3583,9 +3583,9 @@ an unspecified destination defaults to hand. Cards drawn into memory cannot fund
 payments or be played from hand until recollection. Memory returns to hand next turn. Influence is hand + memory at the end of the modeled
 main phase, distinct from cumulative cards seen. Non-engine cards pay costs first; each engine
 copy resolves at most once, including newly drawn engines. Unknown Reserve costs are not free.
-The automatic report admits only Main-deck Actions whose complete text consists of fixed
+Outside the reviewed Rai policy below, the automatic report admits only Main-deck Actions whose complete text consists of fixed
 hand/memory draw clauses, optionally followed by one fixed “then discard” clause.
-Conditional effects, class/level bonuses, other actions, variable quantities, delayed
+Outside that policy, conditional effects, class/level bonuses, other actions, variable quantities, delayed
 triggers and activated abilities are excluded as a whole. Material sources are excluded
 until their activation and lineage rules are supported. The lower-level simulation still
 supports explicit material draw sources for tested callers, but the automatic report does
@@ -6568,3 +6568,37 @@ Verification: 37 focused tests, shared/app typechecks, targeted lint; mobile
 without horizontal overflow; card links are at least 156px on each axis and
 keyboard focus is visible. Missing, unsupported and empty states checked.
 Signed-in integration and live deployment remain unverified.
+
+
+### Reviewed Rai draw and affordability policy (2026-11-11)
+
+`createRaiDrawPolicy` opts the automatic deck-analysis report into paid progression
+only with exactly Spirit of Fire/Water/Wind plus Rai Spellcrafter → Archmage →
+Mana Weaver, and complete Main/Material catalog data. The deterministic 512-trial
+simulation retains actual deck size, seven opening cards, both play orders and
+turn 3/5 checkpoints. The fixture `rai-fire-draw.json` is a constructed 60-card
+mechanics fixture, not an observed tournament list or recommendation.
+
+One champion may materialize per turn beginning on turn 2, before recollection.
+Its actual catalog memory cost is reduced by paid Academy Guides on the field,
+floored at zero. Memory payment banishes random physical memory cards; hand cards
+cannot pay this cost. Guides themselves cost actual Reserve, exclude themselves
+from payment, and remain on the field. The policy assumes no opposing removal.
+The first affordable supported source in hand is played; payment/discard retains
+higher-draw sources first, with stable ties. Non-modeled Main cards only pay costs.
+
+Spellcrafter grants two enlighten counters. From Archmage onward the first Mage
+Action activated each turn grants one; the policy spends sets of three to draw
+one into hand, before resolving that Action. Counters are finite and persist
+between turns. Mana Weaver's copying activation is not used by this draw policy.
+Indolent Leisure draws one into hand, plus one into memory only after the paid
+level-3 Mage. That extra card cannot pay Reserve or be played until recollection.
+Fixed draw-only Actions are admitted only for the starting basic element or NORM;
+ARCANE and EXALTED unlock after Mana Weaver, including Pyretic Prognosis. Other
+basic/advanced elements stay excluded. Discards consume actual hand cards.
+
+All outputs retain the existing cards-seen/influence/paired-access contracts.
+This bounded policy does not model all Rai abilities, combat, attacks, graveyard
+plays, optional copies, temporary levels or non-draw Main actions. Other lineages
+retain the legacy fixed-draw subset. Missing data remains surfaced by the report;
+no partly known Rai sequence is run. No new user controls or disclosures added.
