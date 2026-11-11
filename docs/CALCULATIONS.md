@@ -6427,3 +6427,45 @@ the directory, every prior player and completed event remains, and all manifest 
 match. The 2,015-ID scan is complete; all-status coverage below 65568 is not yet established.
 The next contiguous older batch is 64568–65567. Match analyses remain on their separate
 refresh cadence; missing pairing responses do not exclude public roster identities.
+
+### Tonoris draw and payment sequence (2026-11-10)
+
+The automatic Deck Report includes a bounded, unopposed draw-focused sequence for
+Spirit of Water plus the complete Lone Mercenary → Might of Humanity → Genesis
+Aegis lineage. This is a policy simulation, not expected match play or an optimal
+strategy. It uses 1,024 seeded without-replacement shuffles, actual Main size,
+seven opening cards (capped to library), going first, and five personal turns.
+Turn 3/5 results show empirical p10/median/p90 cards seen, extra cards against
+natural draws, actual champion-memory discounts applied, level-3 reach, and
+per-source probability of at least one paid play. Percentages use all samples.
+
+Reviewed Main plays, in priority order: Academy Guide, Epicurean Institute,
+Dormant Sacrificial Altar, Hub of Innovation, Neos Sight. Each costs its printed
+Reserve, excluding itself from payment. Reserve cards move to memory and cannot
+pay another Reserve cost until recollection. Payments retain reviewed sources
+where possible. One contiguous champion upgrade per materialize phase begins on
+turn two; Academy Guides reduce only that champion's cost, capped at zero.
+Memory payments banish uniformly random cards before recollection, following
+https://rules.gatcg.com/general-rules/general-rules-parts-of-a-card/parts-of-a-card-cost.
+No payment is invented when insufficient memory is available.
+
+Hub/Altar draws enter memory. Institute is sacrificed at the following recollection
+and draws to hand; sacrifice does not create its On Destroy token. Genesis adds
+one distinct Obelisk each recollection, up to three; Obelisk activations are not
+used. Neos requires the paid level-three champion, draws one to hand and draws
+one to memory only when the simulated board has eight objects. The champion
+stack counts as one object. Played Guides/domains and summoned Obelisks count;
+sacrificed Institutes and drawn/unplayed cards do not.
+
+Other Main cards are payment cards in this policy. No Dungeon Guide acceleration,
+other materialization, token engine, reservable payment, Altar milling, interaction,
+removal, combat, mulligan, or opposing actions are simulated. Board survival is an
+explicit unopposed assumption. Sideboard does not enter any population. Missing
+catalog data blocks the report; unrelated champions receive no Tonoris forecast.
+This catalog-reviewed extension is not a TCGEngine replay. Existing access-only
+and draw-only calculators are unchanged; their results have different contracts.
+
+Verification: 20 focused draw/Tonoris tests, shared/app typechecks and targeted lint.
+Standalone report browser checks at 390px and 1280px show no horizontal overflow,
+card links larger than 48px, and visible keyboard focus. Missing/empty states are
+unit-tested; their browser rendering and signed-in page flows were not exercised.
