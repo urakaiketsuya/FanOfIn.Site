@@ -1,0 +1,1565 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-12T23:50:37.905Z",
+  "publication": {
+    "enabled": false,
+    "status": "research-only"
+  },
+  "inputs": {
+    "catalogSha256": "6feda64f2add986b96d8f6c64ab8b848bd0200801b3bf17af734f0a86ec30b3e",
+    "cohortSha256": "e7e921b1f20a65bc71ef92a484bf515d9b6418fa7a72a2b0fc73aac9885d2199",
+    "historySha256": "df9c4bb72c6bf2038d37b2ee2283994d903d9ff5b8b42da77be27ab8fa3cd106",
+    "coverage": {
+      "completedEvents": 23427,
+      "eventsWithMatches": 23169,
+      "savedRoundResponses": 80750,
+      "unavailableRoundResponses": 53,
+      "rawPairings": 569949,
+      "singleSidePairings": 24476,
+      "validMatches": 544499,
+      "invalidPlayerMatches": 658
+    },
+    "linkedMatches": 163317,
+    "trainingMatches": 114817,
+    "cutoff": "2026-03-01"
+  },
+  "method": {
+    "target": "Match point share: win 1, draw 0.5, loss 0. One observation per match.",
+    "split": "First 70% distinct UTC dates train, later dates test. Retrospective holdout already used by earlier analytics research; not an untouched prospective validation.",
+    "baseline": "Prior-day Elo frozen at cutoff; context adds signed champion within format and champion matchup within format. Format is recorded event format, not set/ban era.",
+    "cardAverage": "Training-only per-card match-point rate with 20 neutral prior appearances, averaged by copies; prediction 0.5 + own average - opponent average. Both sides contribute to training counts.",
+    "adjusted": "Sparse ridge regression on residual from player baseline. Jointly fitted context, signed card quantities / 4, and optional signed within-deck pair presence. No intercept ensures side-swap symmetry.",
+    "selection": "Pairs selected by training match and distinct event support, capped by frequency; no outcome-based selection or holdout tuning.",
+    "uncertainty": "400 paired event-cluster bootstrap samples; positive error reduction favors candidate. Does not account for cross-event player dependence.",
+    "limitations": [
+      "Published-deck selection bias",
+      "No sideboard features",
+      "No historical catalog or ban-era reconstruction",
+      "Exact unseen-deck subset does not isolate near-duplicate families",
+      "No causal interpretation of card coefficients",
+      "No prospective validation or larger groups"
+    ]
+  },
+  "options": {
+    "minimumPairMatches": 100,
+    "minimumPairEvents": 20,
+    "maximumPairs": 3000,
+    "penalty": 100,
+    "passes": 2000
+  },
+  "diagnostics": {
+    "selectedPairs": 3000,
+    "cardCount": 1791,
+    "adjustedContext": {
+      "features": 206,
+      "passes": 42,
+      "maximumLastCoefficientChange": 1.694338678199536e-9,
+      "relativeNormalEquationResidual": 2.6643113503260612e-9,
+      "converged": true
+    },
+    "cards": {
+      "features": 1997,
+      "passes": 229,
+      "maximumLastCoefficientChange": 6.536603785028725e-10,
+      "relativeNormalEquationResidual": 9.86142397713256e-9,
+      "converged": true
+    },
+    "cardPairs": {
+      "features": 4997,
+      "passes": 877,
+      "maximumLastCoefficientChange": 2.4357354075913903e-10,
+      "relativeNormalEquationResidual": 9.236836378629115e-9,
+      "converged": true
+    }
+  },
+  "holdout": {
+    "matches": 48500,
+    "events": 748,
+    "models": {
+      "playerBaseline": {
+        "meanSquaredMatchPointError": 0.19859169162334062,
+        "improvementOverContext95": [
+          -0.0011059615886818512,
+          0.000046566281092564766
+        ],
+        "improvementOverCards95": [
+          -0.005370139697814968,
+          -0.0019744018935144428
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 297,
+            "predicted": 0.07834374487465996,
+            "observed": 0.10606060606060606
+          },
+          {
+            "from": 0.1,
+            "matches": 2485,
+            "predicted": 0.15925326226365658,
+            "observed": 0.18571428571428572
+          },
+          {
+            "from": 0.2,
+            "matches": 4983,
+            "predicted": 0.2543320159115287,
+            "observed": 0.2812562713224965
+          },
+          {
+            "from": 0.3,
+            "matches": 7096,
+            "predicted": 0.351941471066947,
+            "observed": 0.3692925591882751
+          },
+          {
+            "from": 0.4,
+            "matches": 8849,
+            "predicted": 0.4512064018536028,
+            "observed": 0.45609673409424795
+          },
+          {
+            "from": 0.5,
+            "matches": 9566,
+            "predicted": 0.544563046367784,
+            "observed": 0.5444281831486515
+          },
+          {
+            "from": 0.6,
+            "matches": 7142,
+            "predicted": 0.6477356717944903,
+            "observed": 0.6230747689722766
+          },
+          {
+            "from": 0.7,
+            "matches": 5186,
+            "predicted": 0.7467542970051372,
+            "observed": 0.7127844195912071
+          },
+          {
+            "from": 0.8,
+            "matches": 2602,
+            "predicted": 0.8398172640327257,
+            "observed": 0.7874711760184473
+          },
+          {
+            "from": 0.9,
+            "matches": 294,
+            "predicted": 0.9208985902244228,
+            "observed": 0.9115646258503401
+          }
+        ]
+      },
+      "cardAverage": {
+        "meanSquaredMatchPointError": 0.22237977819282873,
+        "improvementOverContext95": [
+          -0.026738410790941598,
+          -0.02247814607396467
+        ],
+        "improvementOverCards95": [
+          -0.030822578351143774,
+          -0.024751414109589063
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.1,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.2,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.3,
+            "matches": 271,
+            "predicted": 0.37890110452358716,
+            "observed": 0.16974169741697417
+          },
+          {
+            "from": 0.4,
+            "matches": 23863,
+            "predicted": 0.48177025974549786,
+            "observed": 0.4520387210325609
+          },
+          {
+            "from": 0.5,
+            "matches": 24119,
+            "predicted": 0.5184376166923077,
+            "observed": 0.5474936771839628
+          },
+          {
+            "from": 0.6,
+            "matches": 247,
+            "predicted": 0.6190287782877564,
+            "observed": 0.7469635627530364
+          },
+          {
+            "from": 0.7,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.9,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "adjustedContext": {
+        "meanSquaredMatchPointError": 0.19809320623341814,
+        "improvementOverContext95": [
+          0,
+          0
+        ],
+        "improvementOverCards95": [
+          -0.004472447283404379,
+          -0.0018658759532654825
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 648,
+            "predicted": 0.0627951223616326,
+            "observed": 0.1087962962962963
+          },
+          {
+            "from": 0.1,
+            "matches": 2544,
+            "predicted": 0.15814857698854423,
+            "observed": 0.2034198113207547
+          },
+          {
+            "from": 0.2,
+            "matches": 4999,
+            "predicted": 0.254373388665959,
+            "observed": 0.29265853170634126
+          },
+          {
+            "from": 0.3,
+            "matches": 7079,
+            "predicted": 0.3533179546592946,
+            "observed": 0.3630456279135471
+          },
+          {
+            "from": 0.4,
+            "matches": 8840,
+            "predicted": 0.45138447340159155,
+            "observed": 0.4595022624434389
+          },
+          {
+            "from": 0.5,
+            "matches": 8840,
+            "predicted": 0.547939992595129,
+            "observed": 0.5419117647058823
+          },
+          {
+            "from": 0.6,
+            "matches": 7075,
+            "predicted": 0.6475290700126756,
+            "observed": 0.6246643109540636
+          },
+          {
+            "from": 0.7,
+            "matches": 5086,
+            "predicted": 0.7474312414208476,
+            "observed": 0.7170664569406213
+          },
+          {
+            "from": 0.8,
+            "matches": 2743,
+            "predicted": 0.8420369157992007,
+            "observed": 0.7743346700692673
+          },
+          {
+            "from": 0.9,
+            "matches": 646,
+            "predicted": 0.9359357148788287,
+            "observed": 0.8645510835913313
+          }
+        ]
+      },
+      "cards": {
+        "meanSquaredMatchPointError": 0.19503206348456428,
+        "improvementOverContext95": [
+          0.0018658759532654825,
+          0.004472447283404379
+        ],
+        "improvementOverCards95": [
+          0,
+          0
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1604,
+            "predicted": 0.04569473382612738,
+            "observed": 0.12219451371571072
+          },
+          {
+            "from": 0.1,
+            "matches": 2796,
+            "predicted": 0.1559848682457051,
+            "observed": 0.21852646638054363
+          },
+          {
+            "from": 0.2,
+            "matches": 4884,
+            "predicted": 0.2540552777510702,
+            "observed": 0.2968877968877969
+          },
+          {
+            "from": 0.3,
+            "matches": 6896,
+            "predicted": 0.35177468749072177,
+            "observed": 0.3781177494199536
+          },
+          {
+            "from": 0.4,
+            "matches": 7891,
+            "predicted": 0.4509379531926967,
+            "observed": 0.4519705994170574
+          },
+          {
+            "from": 0.5,
+            "matches": 7996,
+            "predicted": 0.5488377991352442,
+            "observed": 0.5394572286143071
+          },
+          {
+            "from": 0.6,
+            "matches": 6710,
+            "predicted": 0.6477402830972399,
+            "observed": 0.6215350223546945
+          },
+          {
+            "from": 0.7,
+            "matches": 5113,
+            "predicted": 0.7468331481767997,
+            "observed": 0.7125953451985136
+          },
+          {
+            "from": 0.8,
+            "matches": 3017,
+            "predicted": 0.8442521330831049,
+            "observed": 0.763175339741465
+          },
+          {
+            "from": 0.9,
+            "matches": 1593,
+            "predicted": 0.9515867994064368,
+            "observed": 0.854676710608914
+          }
+        ]
+      },
+      "cardPairs": {
+        "meanSquaredMatchPointError": 0.19911848387852965,
+        "improvementOverContext95": [
+          -0.002399701163899391,
+          0.00047202339496258403
+        ],
+        "improvementOverCards95": [
+          -0.0048069271420387505,
+          -0.003411379309292157
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 2128,
+            "predicted": 0.04153652305607308,
+            "observed": 0.15531015037593984
+          },
+          {
+            "from": 0.1,
+            "matches": 2913,
+            "predicted": 0.15535247256457044,
+            "observed": 0.24356333676622038
+          },
+          {
+            "from": 0.2,
+            "matches": 4971,
+            "predicted": 0.25390373513995906,
+            "observed": 0.31613357473345405
+          },
+          {
+            "from": 0.3,
+            "matches": 6577,
+            "predicted": 0.3520264346465521,
+            "observed": 0.387258628554052
+          },
+          {
+            "from": 0.4,
+            "matches": 7498,
+            "predicted": 0.4506991404478619,
+            "observed": 0.4539877300613497
+          },
+          {
+            "from": 0.5,
+            "matches": 7554,
+            "predicted": 0.5494634369561892,
+            "observed": 0.5321683876092137
+          },
+          {
+            "from": 0.6,
+            "matches": 6610,
+            "predicted": 0.6484956081510204,
+            "observed": 0.6124810892586989
+          },
+          {
+            "from": 0.7,
+            "matches": 4943,
+            "predicted": 0.7476706687026121,
+            "observed": 0.6985636253287477
+          },
+          {
+            "from": 0.8,
+            "matches": 3164,
+            "predicted": 0.8457340862465945,
+            "observed": 0.7487357774968394
+          },
+          {
+            "from": 0.9,
+            "matches": 2142,
+            "predicted": 0.9566195043249127,
+            "observed": 0.8260971055088702
+          }
+        ]
+      }
+    }
+  },
+  "bothDecksUnseen": {
+    "matches": 46289,
+    "events": 748,
+    "models": {
+      "playerBaseline": {
+        "meanSquaredMatchPointError": 0.19899690814675322,
+        "improvementOverContext95": [
+          -0.0011056070808013224,
+          0.00007266407748346702
+        ],
+        "improvementOverCards95": [
+          -0.005040971284236867,
+          -0.0016488949055781905
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 288,
+            "predicted": 0.07826109387623131,
+            "observed": 0.1076388888888889
+          },
+          {
+            "from": 0.1,
+            "matches": 2366,
+            "predicted": 0.159260021191241,
+            "observed": 0.1889264581572274
+          },
+          {
+            "from": 0.2,
+            "matches": 4750,
+            "predicted": 0.2542212931059307,
+            "observed": 0.2827368421052632
+          },
+          {
+            "from": 0.3,
+            "matches": 6753,
+            "predicted": 0.3518069865987379,
+            "observed": 0.36687398193395526
+          },
+          {
+            "from": 0.4,
+            "matches": 8480,
+            "predicted": 0.4511962929120812,
+            "observed": 0.4563679245283019
+          },
+          {
+            "from": 0.5,
+            "matches": 9168,
+            "predicted": 0.5444686732875309,
+            "observed": 0.5448843804537522
+          },
+          {
+            "from": 0.6,
+            "matches": 6807,
+            "predicted": 0.6476428940461548,
+            "observed": 0.6212722197737623
+          },
+          {
+            "from": 0.7,
+            "matches": 4940,
+            "predicted": 0.7467211244153097,
+            "observed": 0.7118421052631579
+          },
+          {
+            "from": 0.8,
+            "matches": 2458,
+            "predicted": 0.839827955412084,
+            "observed": 0.7823433685923515
+          },
+          {
+            "from": 0.9,
+            "matches": 279,
+            "predicted": 0.920974248682193,
+            "observed": 0.9068100358422939
+          }
+        ]
+      },
+      "cardAverage": {
+        "meanSquaredMatchPointError": 0.2224379293489745,
+        "improvementOverContext95": [
+          -0.02642681506416327,
+          -0.022137216024191428
+        ],
+        "improvementOverCards95": [
+          -0.03000538167221114,
+          -0.02409325230750389
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.1,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.2,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.3,
+            "matches": 239,
+            "predicted": 0.379003234424208,
+            "observed": 0.1799163179916318
+          },
+          {
+            "from": 0.4,
+            "matches": 22798,
+            "predicted": 0.4817949352980376,
+            "observed": 0.4525396964646022
+          },
+          {
+            "from": 0.5,
+            "matches": 23022,
+            "predicted": 0.5184468528928734,
+            "observed": 0.545434801494223
+          },
+          {
+            "from": 0.6,
+            "matches": 230,
+            "predicted": 0.6184884544899787,
+            "observed": 0.7326086956521739
+          },
+          {
+            "from": 0.7,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.9,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "adjustedContext": {
+        "meanSquaredMatchPointError": 0.1985189353016912,
+        "improvementOverContext95": [
+          0,
+          0
+        ],
+        "improvementOverCards95": [
+          -0.004136203968386817,
+          -0.0015422556221091125
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 620,
+            "predicted": 0.06266012957155496,
+            "observed": 0.11290322580645161
+          },
+          {
+            "from": 0.1,
+            "matches": 2429,
+            "predicted": 0.1580898012289813,
+            "observed": 0.20522848909016056
+          },
+          {
+            "from": 0.2,
+            "matches": 4764,
+            "predicted": 0.2543495188497962,
+            "observed": 0.2947103274559194
+          },
+          {
+            "from": 0.3,
+            "matches": 6754,
+            "predicted": 0.3532802946326728,
+            "observed": 0.36156351791530944
+          },
+          {
+            "from": 0.4,
+            "matches": 8462,
+            "predicted": 0.4514565733697559,
+            "observed": 0.45905223351453556
+          },
+          {
+            "from": 0.5,
+            "matches": 8460,
+            "predicted": 0.5479717754164553,
+            "observed": 0.5421985815602837
+          },
+          {
+            "from": 0.6,
+            "matches": 6752,
+            "predicted": 0.6476645522356826,
+            "observed": 0.623593009478673
+          },
+          {
+            "from": 0.7,
+            "matches": 4827,
+            "predicted": 0.7472957204685345,
+            "observed": 0.7156619018023617
+          },
+          {
+            "from": 0.8,
+            "matches": 2603,
+            "predicted": 0.8422127209153459,
+            "observed": 0.7693046484825201
+          },
+          {
+            "from": 0.9,
+            "matches": 618,
+            "predicted": 0.935884929383445,
+            "observed": 0.86084142394822
+          }
+        ]
+      },
+      "cards": {
+        "meanSquaredMatchPointError": 0.1957821729328986,
+        "improvementOverContext95": [
+          0.0015422556221091125,
+          0.004136203968386817
+        ],
+        "improvementOverCards95": [
+          0,
+          0
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1515,
+            "predicted": 0.045679101178305606,
+            "observed": 0.1254125412541254
+          },
+          {
+            "from": 0.1,
+            "matches": 2676,
+            "predicted": 0.1561891563717669,
+            "observed": 0.22047832585949179
+          },
+          {
+            "from": 0.2,
+            "matches": 4628,
+            "predicted": 0.25404120142878617,
+            "observed": 0.29850907519446845
+          },
+          {
+            "from": 0.3,
+            "matches": 6609,
+            "predicted": 0.35166919180086326,
+            "observed": 0.3775155091541837
+          },
+          {
+            "from": 0.4,
+            "matches": 7549,
+            "predicted": 0.45096497099323474,
+            "observed": 0.45098688568022255
+          },
+          {
+            "from": 0.5,
+            "matches": 7698,
+            "predicted": 0.5487892491887849,
+            "observed": 0.5392309690828787
+          },
+          {
+            "from": 0.6,
+            "matches": 6393,
+            "predicted": 0.6478732261162533,
+            "observed": 0.6221648678241827
+          },
+          {
+            "from": 0.7,
+            "matches": 4847,
+            "predicted": 0.7467539705730858,
+            "observed": 0.7094078811636063
+          },
+          {
+            "from": 0.8,
+            "matches": 2879,
+            "predicted": 0.8442045057704389,
+            "observed": 0.7608544633553317
+          },
+          {
+            "from": 0.9,
+            "matches": 1495,
+            "predicted": 0.9512988799546396,
+            "observed": 0.8474916387959867
+          }
+        ]
+      },
+      "cardPairs": {
+        "meanSquaredMatchPointError": 0.20003817684251918,
+        "improvementOverContext95": [
+          -0.0028816948089931786,
+          0.000004569334908382802
+        ],
+        "improvementOverCards95": [
+          -0.004987694935393302,
+          -0.003565437397966701
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 2024,
+            "predicted": 0.04154484351764193,
+            "observed": 0.15983201581027667
+          },
+          {
+            "from": 0.1,
+            "matches": 2773,
+            "predicted": 0.15536249001321148,
+            "observed": 0.2450414713306888
+          },
+          {
+            "from": 0.2,
+            "matches": 4721,
+            "predicted": 0.2536293265916122,
+            "observed": 0.3174115653463249
+          },
+          {
+            "from": 0.3,
+            "matches": 6313,
+            "predicted": 0.3521153843328968,
+            "observed": 0.38737525740535406
+          },
+          {
+            "from": 0.4,
+            "matches": 7178,
+            "predicted": 0.45069490917821214,
+            "observed": 0.45381721928113683
+          },
+          {
+            "from": 0.5,
+            "matches": 7243,
+            "predicted": 0.5494174828873915,
+            "observed": 0.5314096368907911
+          },
+          {
+            "from": 0.6,
+            "matches": 6300,
+            "predicted": 0.6485075334669695,
+            "observed": 0.6124603174603175
+          },
+          {
+            "from": 0.7,
+            "matches": 4702,
+            "predicted": 0.747610316583958,
+            "observed": 0.6953424074861762
+          },
+          {
+            "from": 0.8,
+            "matches": 3011,
+            "predicted": 0.8456973717368034,
+            "observed": 0.7451012952507473
+          },
+          {
+            "from": 0.9,
+            "matches": 2024,
+            "predicted": 0.9561741750653387,
+            "observed": 0.8204051383399209
+          }
+        ]
+      }
+    }
+  },
+  "temporalHalves": [
+    {
+      "firstDate": "2026-03-01",
+      "lastDate": "2026-05-30",
+      "matches": 24250,
+      "events": 343,
+      "models": {
+        "playerBaseline": {
+          "meanSquaredMatchPointError": 0.1956361442258263,
+          "improvementOverContext95": [
+            -0.0015713341705786497,
+            -0.0005322941951284043
+          ],
+          "improvementOverCards95": [
+            -0.006495591221362506,
+            -0.00344776424844547
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 152,
+              "predicted": 0.07779247262998855,
+              "observed": 0.10197368421052631
+            },
+            {
+              "from": 0.1,
+              "matches": 1207,
+              "predicted": 0.15982658633532296,
+              "observed": 0.17274233637116818
+            },
+            {
+              "from": 0.2,
+              "matches": 2525,
+              "predicted": 0.2548384016887602,
+              "observed": 0.2601980198019802
+            },
+            {
+              "from": 0.3,
+              "matches": 3632,
+              "predicted": 0.35214014142569855,
+              "observed": 0.3722466960352423
+            },
+            {
+              "from": 0.4,
+              "matches": 4420,
+              "predicted": 0.45140244251578204,
+              "observed": 0.4633484162895928
+            },
+            {
+              "from": 0.5,
+              "matches": 4551,
+              "predicted": 0.5467351448193585,
+              "observed": 0.5475719622061086
+            },
+            {
+              "from": 0.6,
+              "matches": 3682,
+              "predicted": 0.6476916628195265,
+              "observed": 0.6349809885931559
+            },
+            {
+              "from": 0.7,
+              "matches": 2628,
+              "predicted": 0.7461763964901246,
+              "observed": 0.7285007610350076
+            },
+            {
+              "from": 0.8,
+              "matches": 1310,
+              "predicted": 0.8398959840275171,
+              "observed": 0.8068702290076336
+            },
+            {
+              "from": 0.9,
+              "matches": 143,
+              "predicted": 0.92150151401025,
+              "observed": 0.9405594405594405
+            }
+          ]
+        },
+        "cardAverage": {
+          "meanSquaredMatchPointError": 0.22227390316155574,
+          "improvementOverContext95": [
+            -0.030795935562009633,
+            -0.0246673206768391
+          ],
+          "improvementOverCards95": [
+            -0.035276763417015466,
+            -0.027683493154542133
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "matches": 186,
+              "predicted": 0.378309320053932,
+              "observed": 0.1586021505376344
+            },
+            {
+              "from": 0.4,
+              "matches": 11855,
+              "predicted": 0.4817289715688419,
+              "observed": 0.45449177562210036
+            },
+            {
+              "from": 0.5,
+              "matches": 12040,
+              "predicted": 0.5182579808583253,
+              "observed": 0.5540697674418604
+            },
+            {
+              "from": 0.6,
+              "matches": 169,
+              "predicted": 0.6198746410177944,
+              "observed": 0.7603550295857988
+            },
+            {
+              "from": 0.7,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "adjustedContext": {
+          "meanSquaredMatchPointError": 0.19459415087899015,
+          "improvementOverContext95": [
+            0,
+            0
+          ],
+          "improvementOverCards95": [
+            -0.005241414313443351,
+            -0.0026941516658980733
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 312,
+              "predicted": 0.06323129678324568,
+              "observed": 0.07692307692307693
+            },
+            {
+              "from": 0.1,
+              "matches": 1264,
+              "predicted": 0.15845542507263233,
+              "observed": 0.18235759493670886
+            },
+            {
+              "from": 0.2,
+              "matches": 2478,
+              "predicted": 0.2551153723228959,
+              "observed": 0.2750201775625504
+            },
+            {
+              "from": 0.3,
+              "matches": 3614,
+              "predicted": 0.35333620951124595,
+              "observed": 0.3678749308245711
+            },
+            {
+              "from": 0.4,
+              "matches": 4371,
+              "predicted": 0.4516976139937548,
+              "observed": 0.4631663234957676
+            },
+            {
+              "from": 0.5,
+              "matches": 4371,
+              "predicted": 0.5484475072258648,
+              "observed": 0.5518188057652711
+            },
+            {
+              "from": 0.6,
+              "matches": 3600,
+              "predicted": 0.6476474272276008,
+              "observed": 0.6344444444444445
+            },
+            {
+              "from": 0.7,
+              "matches": 2584,
+              "predicted": 0.7468933037159317,
+              "observed": 0.7329721362229102
+            },
+            {
+              "from": 0.8,
+              "matches": 1354,
+              "predicted": 0.8421909122008727,
+              "observed": 0.7869276218611522
+            },
+            {
+              "from": 0.9,
+              "matches": 302,
+              "predicted": 0.9376892918045052,
+              "observed": 0.8990066225165563
+            }
+          ]
+        },
+        "cards": {
+          "meanSquaredMatchPointError": 0.19079061453055798,
+          "improvementOverContext95": [
+            0.0026941516658980733,
+            0.005241414313443351
+          ],
+          "improvementOverCards95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 834,
+              "predicted": 0.04456649905589994,
+              "observed": 0.1013189448441247
+            },
+            {
+              "from": 0.1,
+              "matches": 1407,
+              "predicted": 0.1557952482283231,
+              "observed": 0.19509594882729211
+            },
+            {
+              "from": 0.2,
+              "matches": 2459,
+              "predicted": 0.2543310303647571,
+              "observed": 0.28975193167954455
+            },
+            {
+              "from": 0.3,
+              "matches": 3410,
+              "predicted": 0.35231364141650223,
+              "observed": 0.37771260997067446
+            },
+            {
+              "from": 0.4,
+              "matches": 3904,
+              "predicted": 0.45083996969428053,
+              "observed": 0.46221823770491804
+            },
+            {
+              "from": 0.5,
+              "matches": 3903,
+              "predicted": 0.5484709717359195,
+              "observed": 0.5488086087624904
+            },
+            {
+              "from": 0.6,
+              "matches": 3414,
+              "predicted": 0.647307232421155,
+              "observed": 0.6239015817223199
+            },
+            {
+              "from": 0.7,
+              "matches": 2616,
+              "predicted": 0.7464945501497832,
+              "observed": 0.7251529051987767
+            },
+            {
+              "from": 0.8,
+              "matches": 1472,
+              "predicted": 0.8444924117182994,
+              "observed": 0.7771739130434783
+            },
+            {
+              "from": 0.9,
+              "matches": 831,
+              "predicted": 0.9537882676522691,
+              "observed": 0.8904933814681107
+            }
+          ]
+        },
+        "cardPairs": {
+          "meanSquaredMatchPointError": 0.19520619363826475,
+          "improvementOverContext95": [
+            -0.0022339720771121056,
+            0.0013407723874986415
+          ],
+          "improvementOverCards95": [
+            -0.005289357513694235,
+            -0.0035030186331963583
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 1104,
+              "predicted": 0.040332535006836465,
+              "observed": 0.14130434782608695
+            },
+            {
+              "from": 0.1,
+              "matches": 1461,
+              "predicted": 0.15424664995739215,
+              "observed": 0.22587268993839835
+            },
+            {
+              "from": 0.2,
+              "matches": 2478,
+              "predicted": 0.25401320158507207,
+              "observed": 0.3062953995157385
+            },
+            {
+              "from": 0.3,
+              "matches": 3255,
+              "predicted": 0.3511762190948756,
+              "observed": 0.3921658986175115
+            },
+            {
+              "from": 0.4,
+              "matches": 3697,
+              "predicted": 0.4499873632417085,
+              "observed": 0.4586150933189072
+            },
+            {
+              "from": 0.5,
+              "matches": 3737,
+              "predicted": 0.5498579124913343,
+              "observed": 0.5369280171260369
+            },
+            {
+              "from": 0.6,
+              "matches": 3333,
+              "predicted": 0.6490463292998426,
+              "observed": 0.6251125112511251
+            },
+            {
+              "from": 0.7,
+              "matches": 2522,
+              "predicted": 0.7474514439735583,
+              "observed": 0.7119349722442506
+            },
+            {
+              "from": 0.8,
+              "matches": 1545,
+              "predicted": 0.845685191316112,
+              "observed": 0.7563106796116504
+            },
+            {
+              "from": 0.9,
+              "matches": 1118,
+              "predicted": 0.9581209713176636,
+              "observed": 0.8461538461538461
+            }
+          ]
+        }
+      }
+    },
+    {
+      "firstDate": "2026-05-30",
+      "lastDate": "2026-11-09",
+      "matches": 24250,
+      "events": 406,
+      "models": {
+        "playerBaseline": {
+          "meanSquaredMatchPointError": 0.20154723902085037,
+          "improvementOverContext95": [
+            -0.0008552496220011072,
+            0.0008533383835601486
+          ],
+          "improvementOverCards95": [
+            -0.004742171916434004,
+            0.00027377142109797134
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 145,
+              "predicted": 0.07892163026217759,
+              "observed": 0.1103448275862069
+            },
+            {
+              "from": 0.1,
+              "matches": 1278,
+              "predicted": 0.15871178952930506,
+              "observed": 0.19796557120500782
+            },
+            {
+              "from": 0.2,
+              "matches": 2458,
+              "predicted": 0.2538118271045695,
+              "observed": 0.3028885272579333
+            },
+            {
+              "from": 0.3,
+              "matches": 3464,
+              "predicted": 0.3517331654252101,
+              "observed": 0.36619515011547343
+            },
+            {
+              "from": 0.4,
+              "matches": 4429,
+              "predicted": 0.45101075955809206,
+              "observed": 0.4488597877624746
+            },
+            {
+              "from": 0.5,
+              "matches": 5015,
+              "predicted": 0.5425919157490172,
+              "observed": 0.5415752741774676
+            },
+            {
+              "from": 0.6,
+              "matches": 3460,
+              "predicted": 0.6477825044666884,
+              "observed": 0.6104046242774567
+            },
+            {
+              "from": 0.7,
+              "matches": 2558,
+              "predicted": 0.7473480118422947,
+              "observed": 0.6966379984362784
+            },
+            {
+              "from": 0.8,
+              "matches": 1292,
+              "predicted": 0.8397374473197412,
+              "observed": 0.7678018575851393
+            },
+            {
+              "from": 0.9,
+              "matches": 151,
+              "predicted": 0.9203276094206246,
+              "observed": 0.8841059602649006
+            }
+          ]
+        },
+        "cardAverage": {
+          "meanSquaredMatchPointError": 0.22248565322409578,
+          "improvementOverContext95": [
+            -0.023646468865469873,
+            -0.01859103596378283
+          ],
+          "improvementOverCards95": [
+            -0.027018024486725946,
+            -0.01951361294797171
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "matches": 85,
+              "predicted": 0.38019606818659724,
+              "observed": 0.19411764705882353
+            },
+            {
+              "from": 0.4,
+              "matches": 12008,
+              "predicted": 0.48181102184861907,
+              "observed": 0.44961692205196535
+            },
+            {
+              "from": 0.5,
+              "matches": 12079,
+              "predicted": 0.5186166725281562,
+              "observed": 0.5409388194386953
+            },
+            {
+              "from": 0.6,
+              "matches": 78,
+              "predicted": 0.6171960757060075,
+              "observed": 0.717948717948718
+            },
+            {
+              "from": 0.7,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "adjustedContext": {
+          "meanSquaredMatchPointError": 0.20159226158784593,
+          "improvementOverContext95": [
+            0,
+            0
+          ],
+          "improvementOverCards95": [
+            -0.0041540897163546055,
+            -0.00048498025623278573
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 336,
+              "predicted": 0.062390103255849025,
+              "observed": 0.13839285714285715
+            },
+            {
+              "from": 0.1,
+              "matches": 1280,
+              "predicted": 0.15784556450550763,
+              "observed": 0.22421875
+            },
+            {
+              "from": 0.2,
+              "matches": 2521,
+              "predicted": 0.25364406081911683,
+              "observed": 0.30999603332011105
+            },
+            {
+              "from": 0.3,
+              "matches": 3465,
+              "predicted": 0.3532989148223661,
+              "observed": 0.358008658008658
+            },
+            {
+              "from": 0.4,
+              "matches": 4469,
+              "predicted": 0.45107819962035395,
+              "observed": 0.4559185500111882
+            },
+            {
+              "from": 0.5,
+              "matches": 4469,
+              "predicted": 0.5474436071731245,
+              "observed": 0.5322219735958827
+            },
+            {
+              "from": 0.6,
+              "matches": 3475,
+              "predicted": 0.647406455343979,
+              "observed": 0.6145323741007194
+            },
+            {
+              "from": 0.7,
+              "matches": 2502,
+              "predicted": 0.7479868093782827,
+              "observed": 0.7006394884092726
+            },
+            {
+              "from": 0.8,
+              "matches": 1389,
+              "predicted": 0.8418867997964197,
+              "observed": 0.7620590352771778
+            },
+            {
+              "from": 0.9,
+              "matches": 344,
+              "predicted": 0.9343962374615199,
+              "observed": 0.8343023255813954
+            }
+          ]
+        },
+        "cards": {
+          "meanSquaredMatchPointError": 0.19927351243857352,
+          "improvementOverContext95": [
+            0.00048498025623278573,
+            0.0041540897163546055
+          ],
+          "improvementOverCards95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 770,
+              "predicted": 0.04691674395388055,
+              "observed": 0.1448051948051948
+            },
+            {
+              "from": 0.1,
+              "matches": 1389,
+              "predicted": 0.15617694554193043,
+              "observed": 0.24226061915046795
+            },
+            {
+              "from": 0.2,
+              "matches": 2425,
+              "predicted": 0.25377565891517073,
+              "observed": 0.30412371134020616
+            },
+            {
+              "from": 0.3,
+              "matches": 3486,
+              "predicted": 0.3512474835644715,
+              "observed": 0.3785140562248996
+            },
+            {
+              "from": 0.4,
+              "matches": 3987,
+              "predicted": 0.4510338969042112,
+              "observed": 0.4419362929520943
+            },
+            {
+              "from": 0.5,
+              "matches": 4093,
+              "predicted": 0.5491875981432036,
+              "observed": 0.5305399462496946
+            },
+            {
+              "from": 0.6,
+              "matches": 3296,
+              "predicted": 0.6481888374079613,
+              "observed": 0.6190837378640777
+            },
+            {
+              "from": 0.7,
+              "matches": 2497,
+              "predicted": 0.7471878828338571,
+              "observed": 0.6994393271926311
+            },
+            {
+              "from": 0.8,
+              "matches": 1545,
+              "predicted": 0.8440232074190167,
+              "observed": 0.7498381877022654
+            },
+            {
+              "from": 0.9,
+              "matches": 762,
+              "predicted": 0.9491859856107842,
+              "observed": 0.8156167979002624
+            }
+          ]
+        },
+        "cardPairs": {
+          "meanSquaredMatchPointError": 0.20303077411879492,
+          "improvementOverContext95": [
+            -0.003033831831052933,
+            0.0003461015542070081
+          ],
+          "improvementOverCards95": [
+            -0.004777324890493064,
+            -0.002889859998302462
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 1024,
+              "predicted": 0.042834572671655906,
+              "observed": 0.17041015625
+            },
+            {
+              "from": 0.1,
+              "matches": 1452,
+              "predicted": 0.15646514944410675,
+              "observed": 0.26136363636363635
+            },
+            {
+              "from": 0.2,
+              "matches": 2493,
+              "predicted": 0.253794927337715,
+              "observed": 0.3259125551544324
+            },
+            {
+              "from": 0.3,
+              "matches": 3322,
+              "predicted": 0.3528595025636796,
+              "observed": 0.3824503311258278
+            },
+            {
+              "from": 0.4,
+              "matches": 3801,
+              "predicted": 0.4513914425607688,
+              "observed": 0.4494869771112865
+            },
+            {
+              "from": 0.5,
+              "matches": 3817,
+              "predicted": 0.5490772291817992,
+              "observed": 0.5275085145402149
+            },
+            {
+              "from": 0.6,
+              "matches": 3277,
+              "predicted": 0.6479354758382273,
+              "observed": 0.5996338114128776
+            },
+            {
+              "from": 0.7,
+              "matches": 2421,
+              "predicted": 0.7478990391142899,
+              "observed": 0.684634448574969
+            },
+            {
+              "from": 0.8,
+              "matches": 1619,
+              "predicted": 0.8457807463254072,
+              "observed": 0.7415071031500926
+            },
+            {
+              "from": 0.9,
+              "matches": 1024,
+              "predicted": 0.9549802073543092,
+              "observed": 0.80419921875
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
