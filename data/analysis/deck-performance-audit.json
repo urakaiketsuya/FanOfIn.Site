@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T22:58:25.835Z",
+  "generatedAt": "2026-11-12T23:05:57.868Z",
   "publication": {
     "enabled": false,
     "status": "research-only",
     "blockers": [
-      "No opponent/matchup adjustment",
+      "Opponent-strength audit is retrospective; champion matchup adjustment remains unimplemented",
       "Champion/spirit proxy is not a validated archetype classifier",
       "No near-duplicate deck-family holdout",
       "Current catalog applied retrospectively",
@@ -1332,6 +1332,608 @@
               "observed": null
             }
           ]
+        }
+      }
+    }
+  },
+  "opponentValidation": {
+    "coverage": {
+      "completedEvents": 23427,
+      "eventsWithMatches": 23169,
+      "savedRoundResponses": 80750,
+      "unavailableRoundResponses": 53,
+      "rawPairings": 569949,
+      "singleSidePairings": 24476,
+      "validMatches": 544499,
+      "invalidPlayerMatches": 658
+    },
+    "result": {
+      "status": "ready",
+      "linkedMatches": 163317,
+      "unlinkedMatches": 381182,
+      "cohortSha256": "677e214a08916faf72eb3434ce5ff083a46acecb771a25cf0bdea30a19f8ddda",
+      "historySha256": "df9c4bb72c6bf2038d37b2ee2283994d903d9ff5b8b42da77be27ab8fa3cd106",
+      "trainingMatches": 114817,
+      "holdoutMatches": 48500,
+      "holdoutBothPlayersKnown": 41420,
+      "withoutOpponent": {
+        "cutoff": "2026-03-01",
+        "trainingMatches": 114817,
+        "holdout": {
+          "matches": 48500,
+          "events": 748,
+          "models": {
+            "baseline": {
+              "meanSquaredMatchPointError": 0.23267854258357637,
+              "meanAbsoluteError": 0.43545177936523854,
+              "improvementOverOwnBaseline95": [
+                0,
+                0
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": null,
+                  "observed": null,
+                  "matches": 0
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.16804188176797408,
+                  "observed": 0.23711340206185566,
+                  "matches": 97
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.26413685709173346,
+                  "observed": 0.24686192468619247,
+                  "matches": 478
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.3627536419842246,
+                  "observed": 0.33224088488324455,
+                  "matches": 2441
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.45656221770171385,
+                  "observed": 0.38976552130954134,
+                  "matches": 6781
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.5344643314980863,
+                  "observed": 0.4326047358834244,
+                  "matches": 12627
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6518177733089816,
+                  "observed": 0.5310565523030112,
+                  "matches": 9531
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7511449482434628,
+                  "observed": 0.5827197921177999,
+                  "matches": 9236
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8380352015759331,
+                  "observed": 0.640487730990609,
+                  "matches": 6602
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9159629872541832,
+                  "observed": 0.6973125884016973,
+                  "matches": 707
+                }
+              ]
+            },
+            "diao": {
+              "meanSquaredMatchPointError": 0.23233549294012598,
+              "meanAbsoluteError": 0.4347783155631765,
+              "improvementOverOwnBaseline95": [
+                0.00021087219514727705,
+                0.0004908633117343398
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.09091589423907939,
+                  "observed": 0.14285714285714285,
+                  "matches": 7
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.16959114026575187,
+                  "observed": 0.25824175824175827,
+                  "matches": 91
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.263201289558066,
+                  "observed": 0.2580952380952381,
+                  "matches": 525
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.36275491297560364,
+                  "observed": 0.32324649298597197,
+                  "matches": 2495
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.46306719844894767,
+                  "observed": 0.37604921237208233,
+                  "matches": 8697
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.5433423609094913,
+                  "observed": 0.45092575099187604,
+                  "matches": 10586
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6499716751600298,
+                  "observed": 0.5286021505376344,
+                  "matches": 9300
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7505653374159243,
+                  "observed": 0.5829278612227629,
+                  "matches": 9454
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8402054678880567,
+                  "observed": 0.6476946334089191,
+                  "matches": 6615
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9201659231234903,
+                  "observed": 0.6856164383561644,
+                  "matches": 730
+                }
+              ]
+            },
+            "analytics": {
+              "meanSquaredMatchPointError": 0.23074760371967773,
+              "meanAbsoluteError": 0.43334885172860776,
+              "improvementOverOwnBaseline95": [
+                0.0014276548081672005,
+                0.0023759279355001846
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.08426547895488347,
+                  "observed": 0,
+                  "matches": 7
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.16122635856958575,
+                  "observed": 0.2033898305084746,
+                  "matches": 118
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.2619108992191931,
+                  "observed": 0.24501661129568106,
+                  "matches": 602
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.3595329716995696,
+                  "observed": 0.32132459970887917,
+                  "matches": 2748
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.45796107801512204,
+                  "observed": 0.37794650951949227,
+                  "matches": 8824
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.544155816848604,
+                  "observed": 0.45961650203370136,
+                  "matches": 10326
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6505740853296021,
+                  "observed": 0.529873391231558,
+                  "matches": 9557
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7505602462631974,
+                  "observed": 0.5814775725593667,
+                  "matches": 9475
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8404652070310202,
+                  "observed": 0.6516759306046825,
+                  "matches": 5937
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9381245559548491,
+                  "observed": 0.7113686534216336,
+                  "matches": 906
+                }
+              ]
+            },
+            "combined": {
+              "meanSquaredMatchPointError": 0.23028479247467112,
+              "meanAbsoluteError": 0.43242425972877696,
+              "improvementOverOwnBaseline95": [
+                0.0018692899475550786,
+                0.002886241866646784
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.08569476077273941,
+                  "observed": 0.041666666666666664,
+                  "matches": 12
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.1639941894883932,
+                  "observed": 0.21825396825396826,
+                  "matches": 126
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.2609921988932149,
+                  "observed": 0.24726134585289514,
+                  "matches": 639
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.35995856487318517,
+                  "observed": 0.3197775460549183,
+                  "matches": 2877
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.45806308628919007,
+                  "observed": 0.37633492388093615,
+                  "matches": 8802
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.5459765997516747,
+                  "observed": 0.4603849159828058,
+                  "matches": 10236
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6498503743813989,
+                  "observed": 0.5291920162237165,
+                  "matches": 9369
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7497609198488595,
+                  "observed": 0.5819399785637728,
+                  "matches": 9330
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.840379056490192,
+                  "observed": 0.6520342612419701,
+                  "matches": 6071
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9366639993346279,
+                  "observed": 0.7182080924855492,
+                  "matches": 1038
+                }
+              ]
+            }
+          }
+        }
+      },
+      "withOpponent": {
+        "cutoff": "2026-03-01",
+        "trainingMatches": 114817,
+        "holdout": {
+          "matches": 48500,
+          "events": 748,
+          "models": {
+            "baseline": {
+              "meanSquaredMatchPointError": 0.19859169162334062,
+              "meanAbsoluteError": 0.4024883804954289,
+              "improvementOverOwnBaseline95": [
+                0,
+                0
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.07834374487465996,
+                  "observed": 0.10606060606060606,
+                  "matches": 297
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.15925326226365658,
+                  "observed": 0.18571428571428572,
+                  "matches": 2485
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.2543320159115287,
+                  "observed": 0.2812562713224965,
+                  "matches": 4983
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.351941471066947,
+                  "observed": 0.3692925591882751,
+                  "matches": 7096
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.4512064018536028,
+                  "observed": 0.45609673409424795,
+                  "matches": 8849
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.544563046367784,
+                  "observed": 0.5444281831486515,
+                  "matches": 9566
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6477356717944903,
+                  "observed": 0.6230747689722766,
+                  "matches": 7142
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7467542970051372,
+                  "observed": 0.7127844195912071,
+                  "matches": 5186
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8398172640327257,
+                  "observed": 0.7874711760184473,
+                  "matches": 2602
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9208985902244228,
+                  "observed": 0.9115646258503401,
+                  "matches": 294
+                }
+              ]
+            },
+            "diao": {
+              "meanSquaredMatchPointError": 0.19848102471233067,
+              "meanAbsoluteError": 0.40215464187457656,
+              "improvementOverOwnBaseline95": [
+                0.00002957653231475341,
+                0.00020928062560277241
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.07687303734890938,
+                  "observed": 0.10835913312693499,
+                  "matches": 323
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.15882282238537218,
+                  "observed": 0.1868484362469928,
+                  "matches": 2494
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.25425786957545427,
+                  "observed": 0.2862297053517739,
+                  "matches": 4989
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.35225383743591915,
+                  "observed": 0.3664880868461864,
+                  "matches": 7093
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.4534252636339253,
+                  "observed": 0.4549171508500108,
+                  "matches": 9294
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.5473345087059938,
+                  "observed": 0.5472935729247052,
+                  "matches": 9071
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6477745867846074,
+                  "observed": 0.6262839454059378,
+                  "matches": 7107
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7466847599905625,
+                  "observed": 0.7133850630455868,
+                  "matches": 5155
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8399320814533574,
+                  "observed": 0.7853117956423742,
+                  "matches": 2662
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9227151145249656,
+                  "observed": 0.905448717948718,
+                  "matches": 312
+                }
+              ]
+            },
+            "analytics": {
+              "meanSquaredMatchPointError": 0.19841119010655406,
+              "meanAbsoluteError": 0.40108971158680035,
+              "improvementOverOwnBaseline95": [
+                -0.00009697996044523648,
+                0.0005185738776599014
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.06756731690182737,
+                  "observed": 0.1346153846153846,
+                  "matches": 468
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.15866952298551792,
+                  "observed": 0.19206222576785,
+                  "matches": 2507
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.25437172891579696,
+                  "observed": 0.28486529318542,
+                  "matches": 5048
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.3523586496557809,
+                  "observed": 0.3670598266306665,
+                  "matches": 7037
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.452516238459933,
+                  "observed": 0.45723181123006335,
+                  "matches": 9154
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.5474286064973035,
+                  "observed": 0.5478460848104106,
+                  "matches": 8914
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6480043291476312,
+                  "observed": 0.6239704629366657,
+                  "matches": 7042
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7465634404415618,
+                  "observed": 0.7094131097560976,
+                  "matches": 5248
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8410126740685818,
+                  "observed": 0.791036308623298,
+                  "matches": 2644
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9317340901106638,
+                  "observed": 0.8664383561643836,
+                  "matches": 438
+                }
+              ]
+            },
+            "combined": {
+              "meanSquaredMatchPointError": 0.198232721955537,
+              "meanAbsoluteError": 0.4005832127574851,
+              "improvementOverOwnBaseline95": [
+                0.00007788983209696249,
+                0.0007120648093266561
+              ],
+              "calibration": [
+                {
+                  "from": 0,
+                  "predicted": 0.06703330872575224,
+                  "observed": 0.12151394422310757,
+                  "matches": 502
+                },
+                {
+                  "from": 0.1,
+                  "predicted": 0.15826651452382898,
+                  "observed": 0.19484126984126984,
+                  "matches": 2520
+                },
+                {
+                  "from": 0.2,
+                  "predicted": 0.25422087306629365,
+                  "observed": 0.288385437277404,
+                  "matches": 5054
+                },
+                {
+                  "from": 0.3,
+                  "predicted": 0.3528006075143289,
+                  "observed": 0.3645508642674979,
+                  "matches": 7058
+                },
+                {
+                  "from": 0.4,
+                  "predicted": 0.45249951547329664,
+                  "observed": 0.45605910243687287,
+                  "matches": 9069
+                },
+                {
+                  "from": 0.5,
+                  "predicted": 0.547566877036781,
+                  "observed": 0.5479783759432368,
+                  "matches": 8879
+                },
+                {
+                  "from": 0.6,
+                  "predicted": 0.6482494382140535,
+                  "observed": 0.6263829787234042,
+                  "matches": 7050
+                },
+                {
+                  "from": 0.7,
+                  "predicted": 0.7468800429958815,
+                  "observed": 0.7092130518234165,
+                  "matches": 5210
+                },
+                {
+                  "from": 0.8,
+                  "predicted": 0.8414229370407392,
+                  "observed": 0.7878675102344622,
+                  "matches": 2687
+                },
+                {
+                  "from": 0.9,
+                  "predicted": 0.9327263890184989,
+                  "observed": 0.8715498938428875,
+                  "matches": 471
+                }
+              ]
+            }
+          }
         }
       }
     }
@@ -4782,7 +5384,7 @@
     }
   },
   "next": [
-    "Add opponent-aware match records and training-only archetype assignments",
+    "Add champion matchup adjustment and training-only archetype assignments",
     "Extend trajectory coverage beyond reviewed lineages and test simulation-budget sensitivity",
     "Hold out similar build families and validate on a second future period before any UI score"
   ]

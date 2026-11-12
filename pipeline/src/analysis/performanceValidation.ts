@@ -29,8 +29,9 @@ function baseline(train: PerformanceRow[]) {
   };
 }
 /** Ridge residual model; transforms and imputation are fitted exclusively on training rows. */
-function fit(train: PerformanceRow[], features: (r: PerformanceRow) => (number | null)[]) {
-  const base = baseline(train), raw = train.map(features), width = raw[0].length;
+type Predictor = (row: PerformanceRow, training?: boolean) => number;
+function fit(train: PerformanceRow[], features: (r: PerformanceRow) => (number | null)[], base: Predictor = baseline(train)) {
+  const raw = train.map(features), width = raw[0].length;
   const means = Array.from({ length: width }, (_, j) => mean(raw.flatMap(x => x[j] === null ? [] : [x[j]!] )));
   const expand = (r: PerformanceRow) => features(r).flatMap((v, j) => [v ?? means[j], Number(v === null)]);
   const expanded = train.map(expand), size = width * 2;
@@ -49,9 +50,10 @@ function fit(train: PerformanceRow[], features: (r: PerformanceRow) => (number |
   const coefficients = matrix.map(row => row[size]);
   return (row: PerformanceRow) => clip(base(row) + transform(row).reduce((sum, x, j) => sum + x * coefficients[j], 0));
 }
-export function evaluatePerformance(rows: PerformanceRow[]) {
+export function evaluatePerformance(rows: PerformanceRow[], historicalBaseline?: Predictor) {
   const { cutoff, train, test } = chronologicalSplit(rows);
-  const models = { baseline: baseline(train), diao: fit(train, r => r.diao), analytics: fit(train, r => r.analytics), combined: fit(train, r => [...r.diao, ...r.analytics]) };
+  const base = historicalBaseline ?? baseline(train);
+  const models = { baseline: base, diao: fit(train, r => r.diao, base), analytics: fit(train, r => r.analytics, base), combined: fit(train, r => [...r.diao, ...r.analytics], base) };
   const players = new Set(train.map(r => r.player)), identities = new Set(train.map(r => r.identity));
   const evaluate = (sample: PerformanceRow[]) => {
     if (!sample.length) return { decks: 0, events: 0, models: null };

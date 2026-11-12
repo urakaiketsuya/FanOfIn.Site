@@ -33,7 +33,7 @@ Holdout summaries include previously unseen players, previously unseen exact Mai
 
 Publication is always disabled by this audit. Even positive holdout improvement alone is insufficient to introduce a deck-power score. Before publication:
 
-1. Join opponent and round records; address byes, opponent strength, and matchups.
+1. Extend the completed round/opponent-strength audit with champion matchup adjustment and pairing-coverage sensitivity checks.
 2. Fit archetype assignments using training data only; champion/spirit is currently only a proxy.
 3. Extend paid-damage and defense trajectory coverage beyond reviewed lineages and test simulation-budget sensitivity.
 4. Add near-duplicate build-family isolation and sensitivity to player clustering.
@@ -71,3 +71,33 @@ Unsupported lineages and missing report inputs remain null. Supported scenarios 
 The same 58,978 entries and March 1 cutoff reproduce the prior-feature results exactly. Expanded analytics has holdout squared error **0.053167** (0.51% below the historical baseline); expanded combined features has **0.052931** (0.95% below baseline, versus 0.70% previously). The latter is a further 0.25% error reduction relative to the prior combined model. The reported bootstrap intervals compare against the historical baseline, not against the prior feature model.
 
 Coverage is only **22 entries for paid damage** and **784 for defense**. The paid-damage-only evaluation remains null because it does not reach the audit's 30-entry evaluation gate; that gate is not a publication criterion. Defense's supported-cohort holdout has 246 entries. Reviewed exact lineages and Spirit access constrain availability; the paid-damage policy does not cover alternate Rai lineages. These limited, overlapping historical results do not establish general deck strength. Publication remains disabled. Next priority is opponent/round joins, alongside expanded fixture-backed trajectory coverage.
+
+## Opponent-strength validation
+
+The audit now includes `opponentValidation`, a separate match-level experiment. It uses the existing `competitionMatches` parser: one completed two-player result, excluding byes, incomplete/inconsistent results and repeated pairing IDs within a stage/round. Non-numeric/team player IDs are also excluded. Coverage records raw saved responses, single-side pairings (before deduplication), usable matches, and matches joined to both eligible deck entries. Missing rounds are not inferred from standings. Coverage counts do not prove all scheduled rounds were captured.
+
+Both decks must satisfy the original deck-entry eligibility rules, including at least two recorded matches. This creates a selected cohort; results do not represent events without published decklists. The target is one match's point share (win 1, tie 0.5, loss 0), not the original event-record rate. Match errors must not be compared numerically with the earlier deck-event errors. Each match appears once, with its selected side determined by a deterministic hash independent of the outcome. No reversed duplicate is fitted.
+
+Two baselines are compared on identical linked matches and the same 70%-of-dates split:
+
+- `withoutOpponent`: the selected player's prior research Elo against the neutral 1500 rating.
+- `withOpponent`: that player's prior research Elo against their actual opponent's prior research Elo.
+
+Research Elo starts at 1500, uses a fixed K of 20 and the standard 400-point logistic scale. It is recomputed from validated saved results, not from published Elo changes or final standings. All predictions for a date use ratings from strictly earlier dates; updates are accumulated and applied only after that date. Ratings freeze at the holdout boundary, including for matches without linked decks. Consequently neither later rounds, same-date events nor any holdout results can enter a prediction. No parameters were tuned against this holdout. Missing player history receives 1500.
+
+For each baseline, the same residual ridge models add DIAO differences, both decks' analytics, or both. Analytics preserve separate values/missingness for each side. Thus `withoutOpponent` means without the opponent's **rating**, not without any opponent deck information in the augmented models. Transformations and fitting use only training matches; missing mechanics remain missing. Event-cluster intervals compare each augmented model with its own baseline. They do not test the difference between the two rating baselines. Only the overall match holdout is reported; the original deck-level unseen-player subsets are not reused as pair-level claims.
+
+This first pass adjusts for prior player strength. Champion matchup, format, repeated-player dependence, near-duplicate deck isolation, historical legality and a genuinely untouched future validation period remain unresolved. Retrospective feature selection still applies. The model is research-only and enables no public score.
+
+### Opponent-strength results — November 12, 2026
+
+544,499 validated matches from 23,169 events are available for rating history. Of those, **163,317 matches** join to both eligible deck entries; 381,182 do not. The March 1 cutoff leaves 114,817 training matches and **48,500 holdout matches**. Both players have pre-cutoff rating history in 41,420 holdout matches. Raw snapshots include 24,476 single-side pairings; none contribute to model outcomes or ratings.
+
+| Match model | Selected-player rating only | Both players' ratings |
+|---|---:|---:|
+| Baseline squared match-point error | 0.232679 | 0.198592 |
+| Baseline + DIAO | 0.232335 | 0.198481 |
+| Baseline + analytics | 0.230748 | 0.198411 |
+| Baseline + both | 0.230285 | 0.198233 |
+
+Including opponent strength reduces baseline error by **14.65%** on this holdout. After that adjustment, combined deck features reduce error a further **0.18%**. The analytics-only improvement interval includes zero (approximately −0.000097 to 0.000519 squared-error units); combined features have a small positive interval (0.000078 to 0.000712). These intervals are paired event-cluster comparisons to the corresponding rating baseline, not evidence of causal deck strength. Opponent strength explains much more predictive variation here than the current mechanic features. Matchup/format adjustment and independent future validation remain necessary before publication.

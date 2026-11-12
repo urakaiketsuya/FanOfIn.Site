@@ -8,6 +8,7 @@ import { buildEventDeckSignatures } from './decklists.js';
 import { listCachedBundles } from '../omnidex/cache.js';
 import { evaluatePerformance, type PerformanceRow } from './performanceValidation.js';
 
+import { collectHistoricalMatches, evaluateOpponentPerformance } from './opponentValidation.js';
 import { performanceTrajectories, trajectoryFeatures } from './performanceTrajectories.js';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -57,17 +58,20 @@ for (const bundle of bundles) {
 }
 rows.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
 const result = evaluatePerformance(rows);
+const historical = collectHistoricalMatches(bundles);
+const opponentValidation = { coverage: historical.coverage, result: evaluateOpponentPerformance(historical.matches, rows) };
 const report = {
-  schemaVersion: 2, generatedAt: new Date().toISOString(), publication: { enabled: false, status: 'research-only', blockers: ['No opponent/matchup adjustment', 'Champion/spirit proxy is not a validated archetype classifier', 'No near-duplicate deck-family holdout', 'Current catalog applied retrospectively', 'No independent second temporal validation period', 'DIAO bands and published package selection predate this audit but overlap holdout history'] },
+  schemaVersion: 2, generatedAt: new Date().toISOString(), publication: { enabled: false, status: 'research-only', blockers: ['Opponent-strength audit is retrospective; champion matchup adjustment remains unimplemented', 'Champion/spirit proxy is not a validated archetype classifier', 'No near-duplicate deck-family holdout', 'Current catalog applied retrospectively', 'No independent second temporal validation period', 'DIAO bands and published package selection predate this audit but overlap holdout history'] },
   inputs: { catalogGeneratedAt: generatedAt, catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: createHash('sha256').update(JSON.stringify(rows)).digest('hex'), decks: rows.length, uniqueDecks: cache.size, events: new Set(rows.map(r => r.event)).size, firstDate: rows[0]?.date, lastDate: rows.at(-1)?.date, excluded },
   method: { target: 'Per-deck event match-point rate: (wins + 0.5 ties) / matches, equal weight per deck entry; not a match-win probability.', split: 'First 70% of distinct UTC event dates train; later dates hold out. No date crosses the boundary.', baseline: 'Smoothed champion, champion/spirit, and player history (20 prior deck entries); weights 0.25/0.5/0.25. Training residuals use leave-one-entry-out means.', candidate: 'Fixed ridge penalty 0.1*n; train-only standardization and mean imputation plus missingness indicators. Predictions clipped to 0.01–0.99. No tuning on holdout.', uncertainty: '400 deterministic paired event-cluster bootstrap resamples; improvement is baseline squared error minus candidate squared error. Interval omitted below 20 events.', simulations: 'Existing Tonoris and defense policies at 128 deterministic samples; paid Rai damage at its existing 512 samples. Turns 3 and 5; these checkpoints are not validated expected game lengths.' },
   features: names.map((name, i) => ({ name, available: rows.filter(r => r.analytics[i] !== null).length, meaning: i < 5 ? 'Access to reviewed physical sources among 15 cards seen; absence of reviewed sources is zero, not proof the effect is absent.' : i === 5 ? 'Best joint access among fully present published packages; null when no complete package is recognized.' : i < 12 ? 'Supported Tonoris trajectory; null for unsupported decks.' : 'Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive.' })),
   validation: result,
+  opponentValidation,
   priorFeatureValidation: evaluatePerformance(rows.map(r => ({ ...r, analytics: r.analytics.slice(0, 12) }))),
   supportedPaidDamage: rows.filter(r => r.analytics[12] !== null).length >= 30 ? evaluatePerformance(rows.filter(r => r.analytics[12] !== null)) : null,
   supportedDefense: rows.filter(r => r.analytics[18] !== null).length >= 30 ? evaluatePerformance(rows.filter(r => r.analytics[18] !== null)) : null,
   supportedTonoris: rows.filter(r => r.analytics[6] !== null).length >= 30 ? evaluatePerformance(rows.filter(r => r.analytics[6] !== null)) : null,
-  next: ['Add opponent-aware match records and training-only archetype assignments', 'Extend trajectory coverage beyond reviewed lineages and test simulation-budget sensitivity', 'Hold out similar build families and validate on a second future period before any UI score'],
+  next: ['Add champion matchup adjustment and training-only archetype assignments', 'Extend trajectory coverage beyond reviewed lineages and test simulation-budget sensitivity', 'Hold out similar build families and validate on a second future period before any UI score'],
 };
 const output = path.join(root, 'data/analysis/deck-performance-audit.json');
 await mkdir(path.dirname(output), { recursive: true });
