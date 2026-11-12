@@ -99,7 +99,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
             <h2 className="font-semibold text-ctp-text">{shortDeckLabel(selectedDeck.label)}</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">{champion ? `${champion} evidence across ${Math.max(additionsResult.totalDecks, weakestResult.totalDecks)} tournament decks` : "Champion could not be resolved"}</p>
           </div>
-          {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Tune in Guided Deck Builder →</Link>}
+          {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Create editable copy →</Link>}
         </div>
       </Panel>
 
@@ -107,7 +107,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
 
       {!loading && !hasEvidence && <section className="rounded-xl border border-ctp-surface1 p-4">
         <h2 className="font-semibold text-ctp-text">No evidence-backed changes yet</h2>
-        <p className="mt-1 text-sm leading-6 text-ctp-subtext1">This Champion does not currently have enough with-versus-without samples for a reliable card recommendation. The deck remains available in the Guided Deck Builder for composition, synergy-readiness, and legality analysis.</p>
+        <p className="mt-1 text-sm leading-6 text-ctp-subtext1">This Champion does not currently have enough with-versus-without samples for a reliable card recommendation. The deck remains available in the deck editor for composition, synergy-readiness, and legality analysis.</p>
       </section>}
 
       {!loading && hasEvidence && <TuningChangeSet additions={additions} review={review} cardsByName={cardsByName} />}

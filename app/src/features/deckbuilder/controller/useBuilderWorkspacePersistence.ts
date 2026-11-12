@@ -24,7 +24,7 @@ export function useBuilderWorkspacePersistence({ workspaceContext, printings, ch
       printings,
       source: "builder",
       title: workspaceContext?.title ?? (championName ? `${championName} deck` : "Untitled deck"),
-      sourceLabel: workspaceContext?.sourceLabel ?? "Deck Workbench",
+      sourceLabel: workspaceContext?.sourceLabel ?? "Deck editor",
       deckIdentity: workspaceContext?.deckIdentity,
       format,
       championName,

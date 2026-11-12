@@ -11,6 +11,7 @@ import type { SuggestedBuild } from "../useSuggestedBuild";
 import type { LockedSection } from "../model/builderTypes";
 
 interface UseBuilderCopyStateArgs {
+  initialTitle?: string | null;
   printings?: DeckPrintings;
   build: SuggestedBuild;
   buildLines: { name: string; quantity: number }[];
@@ -30,7 +31,7 @@ interface UseBuilderCopyStateArgs {
 
 /** Save/versioning and export state shared by the workbench header and export sheet. */
 export function useBuilderCopyState({
-  build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
+  initialTitle, build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
   printings, archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
 }: UseBuilderCopyStateArgs) {
   const { notify } = useToast();
@@ -39,7 +40,7 @@ export function useBuilderCopyState({
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const titleKey = `workbench-title:${improveDeckId ?? "draft"}`;
-  const [saveTitle, setSaveTitle] = useState(() => { try { return new URLSearchParams(window.location.search).has("locked") ? "" : sessionStorage.getItem(titleKey) ?? ""; } catch { return ""; } });
+  const [saveTitle, setSaveTitle] = useState(() => { try { return new URLSearchParams(window.location.search).has("locked") ? "" : initialTitle ?? sessionStorage.getItem(titleKey) ?? ""; } catch { return ""; } });
   useEffect(() => { try { sessionStorage.setItem(titleKey, saveTitle); } catch { /* Editing remains available without storage. */ } }, [saveTitle, titleKey]);
   const [saveNote, setSaveNote] = useState("");
   const [saveKeptOnly, setSaveKeptOnly] = useState(false);

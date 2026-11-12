@@ -1,5 +1,7 @@
+import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
+import { newDeckWorkspace, restoreReviewedDraft } from "./newDeckWorkspace";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { printingCardLine, type DeckFormat } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import Button from "../../components/ui/Button";
@@ -9,8 +11,9 @@ import DeckEditor from "../../components/deck-editor/DeckEditor";
 import DeckAddCardBrowser from "./DeckAddCardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import DeckStats from "../../components/DeckStats";
-import CardLayoutControls from "../../components/CardLayoutControls";
-import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import DeckTextSheet from "../../components/deck-editor/DeckTextSheet";
+import PackagePicker from "../../components/deck-editor/PackagePicker";
+import DeckReport from "../analytics/DeckReport";
 import { editDeck, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -24,15 +27,27 @@ import { useDeckEditSession } from "./useDeckEditSession";
 import { NEW_DECK_DRAFT_KEY, readNewDeckDraft, newDeckTitleError, type NewDeckDraft } from "./newDeckDraft";
 import { ExistingDeckError, saveNewDeck } from "./saveNewDeck";
 
-const TABS: { key: "deck" | "stats"; label: string }[] = [{ key: "deck", label: "Deck" }, { key: "stats", label: "Stats" }];
+const TABS: { key: "deck" | "stats"; label: string }[] = [{ key: "deck", label: "Deck" }, { key: "stats", label: "Report" }];
 
 export default function NewDeck() {
   useDocumentTitle("New deck", "Build a deck from an empty card list.");
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [initial] = useState<NewDeckDraft>(() => {
-    try { const saved = readNewDeckDraft(localStorage); if (saved) return saved; } catch { /* Storage may be unavailable. */ }
+    try {
+      const saved = readNewDeckDraft(localStorage);
+      if (saved) {
+        try { return restoreReviewedDraft(saved, loadActiveDeckWorkspace(sessionStorage), searchParams.get("workspace")); }
+        catch { return saved; }
+      }
+    } catch { /* Storage may be unavailable. */ }
     return { sourceId: crypto.randomUUID(), title: "Untitled deck", format: "STANDARD", deckText: "", maybeboardText: "" };
   });
+  // Consume the handoff once; a later reload must retain edits made after returning.
+  useEffect(() => {
+    if (!searchParams.has("workspace")) return;
+    setSearchParams(current => { const next = new URLSearchParams(current); next.delete("workspace"); return next; }, { replace: true });
+  }, [searchParams, setSearchParams]);
   const session = useDeckEditSession(initial);
   const [title, setTitle] = useState(initial.title);
   const [format, setFormat] = useState<DeckFormat>(initial.format);
@@ -48,7 +63,7 @@ export default function NewDeck() {
   const [signIn, setSignIn] = useState(false);
   const [existingId, setExistingId] = useState("");
   const [storageError, setStorageError] = useState(false);
-  const prefs = useDecklistDisplayPrefs();
+  const [textOpen, setTextOpen] = useState(false);
   const cards = useCardCatalog();
   const catalog = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
   const names = useMemo(() => [...catalog.keys()].sort(), [catalog]);
@@ -104,18 +119,20 @@ export default function NewDeck() {
     </div>
     {!canSave && <p className="mb-4 text-sm text-ctp-subtext1">Add a Main or Material card to save to My Decks.</p>}
     {error && <div role="alert" className="mb-4 rounded-lg border border-ctp-red/40 p-3 text-sm text-ctp-red">{error}{signIn && <Link to="/account" className="flex min-h-control items-center text-ctp-blue underline">Sign in to save</Link>}{existingId && <Link to={`/decks/${existingId}`} className="flex min-h-control items-center text-ctp-blue underline">Open existing deck</Link>}</div>}
+    <div className="flex justify-end"><Button disabled={!canSave || busy} onClick={() => { saveActiveDeckWorkspace(sessionStorage, newDeckWorkspace(snapshot, deck, catalog)); navigate("/deck-review"); }}>Improve deck</Button></div>
     <Tabs tabs={TABS} active={tab} onChange={setTab} baseId="new-deck" label="Deck views" />
     <TabPanel baseId="new-deck" tab="deck" active={tab} keepMounted>
       <fieldset disabled={busy} className="min-w-0 border-0 p-0">
         <legend className="sr-only">Deck cards</legend>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <CardLayoutControls value={prefs.visualCardSize === "rows" ? "Rows" : prefs.displayMode === "detailed" ? "List" : "Grid"} onChange={layout => { prefs.setDisplayMode(layout === "List" ? "detailed" : "visual"); prefs.setVisualCardSize(layout === "Rows" ? "rows" : "large"); }} />
+          <div className="flex flex-wrap gap-2"><PackagePicker deck={deck} catalog={catalog} onEdit={applyEdit} /><Button onClick={() => setTextOpen(true)}>Edit text</Button></div>
           <div className="flex gap-2"><Button disabled={busy || !session.editHistory.past.length} onClick={session.undo}>Undo</Button><Button disabled={busy || !session.editHistory.future.length} onClick={session.redo}>Redo</Button></div>
         </div>
-        <DeckEditor deck={deck} catalog={catalog} format={format} onEdit={applyEdit} viewMode={prefs.visualCardSize === "rows" || prefs.displayMode === "detailed" ? "list" : "grid"} onAdd={section => { setDestination(section); setQuery(""); setBrowser(true); }} />
+        <DeckEditor deck={deck} catalog={catalog} format={format} onEdit={applyEdit} onReplace={next => session.commit(buildEditableDeckText(next), next.maybeboard.map(printingCardLine).join("\n"))} onAdd={section => { setDestination(section); setQuery(""); setBrowser(true); }} />
       </fieldset>
     </TabPanel>
-    <TabPanel baseId="new-deck" tab="stats" active={tab} keepMounted><DeckStats decklist={decklist} cardsByName={catalog} format={format} championName={champion} /></TabPanel>
+    <TabPanel baseId="new-deck" tab="stats" active={tab} keepMounted>{tab === "stats" && <DeckReport deck={{ main: deck.main.map(({ card: name, quantity }) => ({ name, quantity })), material: deck.material.map(({ card: name, quantity }) => ({ name, quantity })) }} cardsByName={catalog} />}<DeckStats decklist={decklist} cardsByName={catalog} format={format} championName={champion} /></TabPanel>
+    {textOpen && <DeckTextSheet deck={deck} onDismiss={() => setTextOpen(false)} onApply={next => { session.commit(buildEditableDeckText(next), next.maybeboard.map(printingCardLine).join("\n")); setTextOpen(false); }} />}
     {browser && <EditorDialog count={count} onDismiss={() => setBrowser(false)}><DeckAddCardBrowser format={format} query={query} onQuery={setQuery} destination={destination} onDestination={setDestination} names={names} catalog={catalog} deck={deck} onEdit={applyEdit} /></EditorDialog>}
     {rename && <RenameDeck title={title} onDismiss={() => setRename(false)} onApply={value => { setTitle(value); setRename(false); }} />}
   </PageLayout>;

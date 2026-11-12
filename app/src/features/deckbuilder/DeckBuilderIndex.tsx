@@ -12,7 +12,7 @@ import { useDeckBuilder } from "./useDeckBuilder";
 import { DeckBuilderHeader } from "./components/DeckBuilderSetup";
 
 export default function DeckBuilderIndex() {
-  useDocumentTitle("Deck Workbench", "Find cards, edit your deck, and save drafts. Ask for suggestions when you need them.");
+  useDocumentTitle("Deck editor", "Find cards, edit your deck, and save drafts. Ask for suggestions when you need them.");
   const controller = useDeckBuilderController();
   return <DeckBuilderProvider value={controller}><DeckBuilderPage /></DeckBuilderProvider>;
 }
@@ -20,12 +20,12 @@ export default function DeckBuilderIndex() {
 function DeckBuilderPage() {
   const b = useDeckBuilder();
   const c = b.copyPanel;
-  return <PageLayout width="fluid" data-component="DeckBuilderIndex" className="[&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
+  return <PageLayout width="fluid" data-component="DeckBuilderIndex" className="[&_.deck-panorama-art:empty]:hidden [&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
     <DeckBuilderHeader />
     <div className="mt-3 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle"><DeckToolNav activeTool="builder" /></div>
     {b.isPending && <p role="status" className="text-xs text-ctp-subtext1">Updating deck…</p>}
     <BuilderBuildPanel />
-    {b.tab !== "build" && <EditorDialog title={b.tab === "copy" ? "Save & export" : b.tab === "log" ? "Change history" : "Suggestion settings"} doneLabel="Back to workbench" onDismiss={()=>b.setTab("build")}>
+    {b.tab !== "build" && <EditorDialog title={b.tab === "copy" ? "Save & export" : b.tab === "log" ? "Change history" : "Suggestion settings"} doneLabel="Back to deck" onDismiss={()=>b.setTab("build")}>
       {b.tab === "log" && <BuilderChangeLog entries={b.changeLog} />}
       {b.tab === "tools" && <ToolsPanel archetypeId={b.archetypeId} archetypeOptions={b.archetypeOptions} onArchetypeChange={b.changeArchetype} deckFormat={b.deckFormat} populationSource={b.effectivePopulationSource} onChangePopulationSource={b.changePopulationSource} collectionMode={b.collectionMode} onCollectionModeChange={b.setCollectionMode} />}
       {b.tab === "copy" && <BuilderCopyPanel hideFullDeckOption validation={b.validation} validationComplete={b.validationComplete} reviewComplete={b.reviewComplete} improveDeckId={b.improveDeckId || c.savedDeckId} championName={b.championName}

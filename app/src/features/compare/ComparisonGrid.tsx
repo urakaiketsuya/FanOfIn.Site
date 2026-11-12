@@ -88,7 +88,7 @@ export default function ComparisonGrid({
                     {builderUrl && (
                       <Link
                         to={builderUrl}
-                        title="Opens this deck in the Guided Deck Builder, locked in as a starting point"
+                        title="Opens this deck in the deck editor, locked in as a starting point"
                         className="rounded border border-ctp-surface1 px-2 py-1 text-xs font-normal text-ctp-subtext1 hover:text-ctp-text"
                       >
                         Deck Builder

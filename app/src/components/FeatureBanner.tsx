@@ -14,7 +14,7 @@ const FEATURE_TIPS: FeatureTip[] = [
   { message: "Connect with the Fan of Insight community.", to: DISCORD_INVITE_URL, cta: "Join our Discord", external: true },
   { message: "Meet your champion. Explore their cards and builds.", to: "/champions", cta: "Explore champions" },
   { message: "Bring your decklist. Keep building from there.", to: "/decks/edit", cta: "Import a deck" },
-  { message: "Start your next deck with guided tools.", to: "/deck-builder", cta: "Build a deck" },
+  { message: "Create your next deck.", to: "/decks/new", cta: "Build a deck" },
   { message: "Explore card results from recorded tournaments.", to: "/cards/stats", cta: "See card stats" },
   { message: "Spot the differences between decklists.", to: "/compare", cta: "Compare decks" },
   { message: "Find new cards for your deck.", to: "/card-discovery", cta: "Discover cards" },

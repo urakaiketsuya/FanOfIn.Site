@@ -45,7 +45,7 @@ export function parseBuilderUrlSeed(searchParams: URLSearchParams): BuilderSeed 
  * outdated storage is handled by the underlying persistence readers. */
 export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | null {
   const workspace = loadActiveDeckWorkspace(storage);
-  if (workspace?.source === "review" && workspace.championName) {
+  if (workspace && (workspace.source === "review" || workspace.source === "analysis")) {
     const locked = selectionsToMaps([
       ...(workspace.song ?? []).map((line) => ({ ...line, section: "song" as const })),
       ...workspace.main.map((line) => ({ ...line, section: "main" as const })),

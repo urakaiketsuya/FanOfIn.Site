@@ -77,19 +77,6 @@ export function useBuilderPresentationModel({
     [build.sideboard],
   );
 
-  useBuilderWorkspacePersistence({
-    workspaceContext,
-    song: mapsToSelections(lockedCards, lockedSections).filter(line => line.section === "song"),
-    printings,
-    championName,
-    spiritName: spiritFilter,
-    format: deckFormat,
-    main: mainOnlyLines,
-    material: materialOnlyLines,
-    sideboard: sideboardLines,
-    maybeboard,
-  });
-
   const newReleaseCards = useMemo(() => {
     const includedNames = new Set(buildLines.map((line) => line.name));
     const deckCards = buildLines
@@ -115,9 +102,24 @@ export function useBuilderPresentationModel({
   const reviewComplete = buildComplete && reviewItemCount === 0;
   const validationComplete = validation.status === "Legal";
   const copyPanel = useBuilderCopyState({
+    initialTitle: workspaceContext?.title,
     printings,
     build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
     archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
+  });
+
+  const currentContext = useMemo(() => ({ ...workspaceContext, sourceLabel: workspaceContext?.sourceLabel ?? null, title: copyPanel.saveTitle.trim() || workspaceContext?.title || null }), [workspaceContext, copyPanel.saveTitle]);
+  useBuilderWorkspacePersistence({
+    workspaceContext: currentContext,
+    song: mapsToSelections(lockedCards, lockedSections).filter(line => line.section === "song"),
+    printings,
+    championName,
+    spiritName: spiritFilter,
+    format: deckFormat,
+    main: mainOnlyLines,
+    material: materialOnlyLines,
+    sideboard: sideboardLines,
+    maybeboard,
   });
 
   return {

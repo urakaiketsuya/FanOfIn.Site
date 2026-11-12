@@ -200,7 +200,7 @@ function ProductDeckCard({
     </>,
   }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <>
         <p className="mb-4 text-xs text-ctp-subtext1">{productLabel} · {deck.productCode}{releaseLabel && ` · ${deck.releaseDate! > new Date().toISOString().slice(0, 10) ? "Releases" : "Released"} ${releaseLabel}`}</p>
-        <div className="mb-4 flex flex-wrap gap-2">          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
+        <div className="mb-4 flex flex-wrap gap-2">          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Create editable copy →</Link>}
           {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
 </div>
         <div className="grid gap-5">
@@ -219,7 +219,7 @@ function ProductDeckCard({
 
 export default function OfficialProductsIndex() {
   const { notify } = useToast();
-  useDocumentTitle("Official Product Decks", "Browse and copy official Grand Archive starter deck and Re:Collection decklists, then tune them in the Guided Deck Builder.");
+  useDocumentTitle("Official Product Decks", "Browse and copy official Grand Archive starter deck and Re:Collection decklists, then tune them in the deck editor.");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const [section, setSection] = useState<"starter" | "recollection" | "pantheon">("starter");
@@ -251,7 +251,7 @@ export default function OfficialProductsIndex() {
 
   return (
     <PageLayout data-component="OfficialProductsIndex" width="wide">
-      <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
+      <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the deck editor to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
 
       <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Official deck format">
         {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" aria-pressed={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`min-h-12 rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}

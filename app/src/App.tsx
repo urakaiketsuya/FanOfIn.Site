@@ -22,7 +22,7 @@ const NAV_ENTRIES: NavEntry[] = [
   { kind: "link", to: "/champions", label: "Top Champions" },
   { kind: "group", label: "Decks", paths: ["/decks", "/pantheon/decks", "/official-decks"], links: [{ to: "/decks", label: "Browse Decks" }, { to: "/pantheon/decks", label: "Pantheon Decks" }, { to: "/official-decks", label: "Official Product Decks" }] },
   { kind: "group", label: "Competition", paths: ["/metagame", "/events", "/seasons", "/players", "/teams", "/timelines", "/regions", "/stores"], links: [{ to: "/metagame", label: "Metagame" }, { to: "/stores", label: "Store Locator" }, { to: "/events", label: "Browse Events" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }, { to: "/regions", label: "Regional Analysis" }] },
-  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/deck-analysis", "/deck-review", "/combo-lab", "/goldfish", "/life-tracker", "/match-log", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/deck-analysis", label: "Deck Report" }, { to: "/deck-review", label: "Improve Deck" }, { to: "/combo-lab", label: "Combo Lab" }, { to: "/goldfish", label: "Goldfish Test" }, { to: "/life-tracker", label: "Life Tracker" }, { to: "/match-log", label: "Match Log" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Trading Binder" }] },
+  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/deck-analysis", "/deck-review", "/combo-lab", "/goldfish", "/life-tracker", "/match-log", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/decks/new", label: "Create Deck" }, { to: "/deck-analysis", label: "Deck Report" }, { to: "/deck-review", label: "Improve Deck" }, { to: "/combo-lab", label: "Combo Lab" }, { to: "/goldfish", label: "Goldfish Test" }, { to: "/life-tracker", label: "Life Tracker" }, { to: "/match-log", label: "Match Log" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Trading Binder" }] },
   { kind: "group", label: "Account", paths: ["/account", "/decks/edit", "/collection", "/card-locations", "/settings"], links: [{ to: "/account", label: "Edit profile" }, { to: "/decks/edit", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/card-locations", label: "Where are my cards?" }, { to: "/settings", label: "Settings" }] },
 ];
 
@@ -61,7 +61,7 @@ export default function App() {
   return <div data-component="App" className="relative isolate min-h-screen bg-ctp-base text-ctp-text">
     <AuroraBackground />
     <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ctp-base focus:p-4 focus:text-ctp-blue">Skip to content</a>
-    {location.pathname !== "/deck-builder" && <FeatureBanner />}
+    {!["/deck-builder", "/decks/draft", "/decks/new"].includes(location.pathname) && <FeatureBanner />}
     <header className="sticky top-0 z-40 flex max-h-dvh flex-col border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
       <div className="relative">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">

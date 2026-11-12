@@ -1,3 +1,4 @@
+import { songDeckAvailable } from "../../lib/deckEditing";
 import MenuDetails from "../ui/MenuDetails";
 import AddDeckCard from "./AddDeckCard";
 import type { CardPrintingAllocation } from "@gatcg/shared";
@@ -36,8 +37,8 @@ function DestinationOptions({ cards }: { cards: (Card | undefined)[] }) {
   });
 }
 
-export function MaybeboardCardTile({ format, line, card, onPrintings, onChangeQuantity, onMove, onRemove }: { format: DeckFormat; line: OmnidexDecklistCardLine; card: Card | undefined; onPrintings: (value: CardPrintingAllocation[]) => void; onChangeQuantity: (quantity: number, printings?: CardPrintingAllocation[]) => void; onMove: (destination: DeckCardDestination, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: () => void }) {
-  return <DeckEditorCard format={format} line={line} card={card} section="maybeboard" onPrintings={onPrintings} onChangeQuantity={onChangeQuantity} onMove={(destination, quantity, printings) => { onMove(destination, quantity, printings); }} onRemove={onRemove} />;
+export function MaybeboardCardTile({ songAvailable = false, format, line, card, onPrintings, onChangeQuantity, onMove, onRemove }: { songAvailable?: boolean; format: DeckFormat; line: OmnidexDecklistCardLine; card: Card | undefined; onPrintings: (value: CardPrintingAllocation[]) => void; onChangeQuantity: (quantity: number, printings?: CardPrintingAllocation[]) => void; onMove: (destination: DeckCardDestination, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: () => void }) {
+  return <DeckEditorCard songAvailable={songAvailable} format={format} line={line} card={card} section="maybeboard" onPrintings={onPrintings} onChangeQuantity={onChangeQuantity} onMove={(destination, quantity, printings) => { onMove(destination, quantity, printings); }} onRemove={onRemove} />;
 }
 
 type SelectedCard = { section: DeckSectionKey; name: string };
@@ -45,7 +46,8 @@ type SelectedCard = { section: DeckSectionKey; name: string };
 export function EditableDecklistGrid({ format, decklist, cardsByName, onPrintings, onChangeQuantity, onAdjustSelected, onSetSelected, onMoveSelected, onRemoveSelected, onMove, onRemove, onAdd }: { onAdd?: (section: DeckSectionKey) => void; format: DeckFormat; decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onPrintings: (section: DeckSectionKey, name: string, printings: CardPrintingAllocation[]) => void; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onAdjustSelected: (cards: SelectedCard[], delta: number) => void; onSetSelected: (cards: SelectedCard[], quantity: number) => void; onMoveSelected: (cards: SelectedCard[], destination: DeckCardDestination) => void; onRemoveSelected: (cards: SelectedCard[]) => void; onMove: (from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const [bulkMode, setBulkMode] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
-  const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] ?? [] })).filter((section) => (onAdd && section.key !== "song") || section.lines.length > 0);
+  const songAvailable = songDeckAvailable({ ...decklist, maybeboard: [] }, cardsByName);
+  const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] ?? [] })).filter((section) => (onAdd && (section.key !== "song" || songAvailable)) || section.lines.length > 0);
   const keyFor = (section: DeckSectionKey, name: string) => `${section}\u0000${name}`;
   const selectedCards = sections.flatMap((section) => section.lines.filter((line) => selected.has(keyFor(section.key, line.card))).map((line) => ({ section: section.key, name: line.card })));
   useEffect(() => {
@@ -54,7 +56,7 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onPrinting
   }, [decklist]);
   if (sections.length === 0) return <p className="text-sm text-ctp-subtext1">No cards yet. Search above to begin building.</p>;
   return <div className="space-y-5"><DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format} />
-    <details onToggle={(event) => setBulkMode(event.currentTarget.open)}><summary className="min-h-12 cursor-pointer content-center text-sm text-ctp-subtext1">Bulk edits</summary><div className="sticky top-2 z-20 flex flex-wrap items-center gap-2 rounded-xl border border-ctp-blue/40 bg-ctp-base/95 p-2.5 shadow-lg backdrop-blur">
+    <details className="group" onToggle={(event) => setBulkMode(event.currentTarget.open)}><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm text-ctp-subtext1">Bulk edits<DisclosureChevron className="group-open:rotate-180" /></summary><div className="sticky top-2 z-20 flex flex-wrap items-center gap-2 rounded-xl border border-ctp-blue/40 bg-ctp-base/95 p-2.5 shadow-lg backdrop-blur">
       <span className="mr-auto text-xs text-ctp-subtext1">{selectedCards.length ? `${selectedCards.length} card${selectedCards.length === 1 ? "" : "s"} selected` : "Select cards for bulk actions"}</span>
       {selectedCards.length > 0 && <button type="button" onClick={() => setSelected(new Set())} className="min-h-12 rounded-lg px-2.5 text-xs text-ctp-subtext1">Clear</button>}
       <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, -1)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-text disabled:opacity-40">−1 each</button>
@@ -73,7 +75,7 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onPrinting
     </div></details>
     {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
     <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><DisclosureChevron className="text-ctp-subtext0 group-open:rotate-180" /></span></summary>
-    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">{onAdd && <AddDeckCard section={section.title} onAdd={() => onAdd(section.key)} />}{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <DeckEditorCard format={format} key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={bulkMode ? () => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; }) : undefined} onPrintings={printings => onPrintings(section.key, line.card, printings)} onChangeQuantity={(quantity, printings) => onChangeQuantity(section.key, line.card, quantity, printings)} onMove={(destination, quantity, printings) => { onMove(section.key, destination, line.card, quantity, printings); }} onRemove={() => onRemove(section.key, line.card)} />; })}{onAdd && section.lines.length > 0 && <AddDeckCard section={section.title} onAdd={() => onAdd(section.key)} />}</div>
+    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">{onAdd && <AddDeckCard section={section.title} onAdd={() => onAdd(section.key)} />}{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <DeckEditorCard songAvailable={songAvailable} format={format} key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={bulkMode ? () => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; }) : undefined} onPrintings={printings => onPrintings(section.key, line.card, printings)} onChangeQuantity={(quantity, printings) => onChangeQuantity(section.key, line.card, quantity, printings)} onMove={(destination, quantity, printings) => { onMove(section.key, destination, line.card, quantity, printings); }} onRemove={() => onRemove(section.key, line.card)} />; })}{onAdd && section.lines.length > 0 && <AddDeckCard section={section.title} onAdd={() => onAdd(section.key)} />}</div>
   </details>)}</div>;
 }
 

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { Card } from "@gatcg/shared";
-import { editDeck, type EditableDeck } from "../src/lib/deckEditing.ts";
+import { editDeckSelection, editDeck, type EditableDeck } from "../src/lib/deckEditing.ts";
 import { mapsToSelections, selectionsToMaps } from "../src/features/deckbuilder/model/builderTypes.ts";
 import { buildChosenDeck } from "../src/features/deckbuilder/engine/buildChosenDeck.ts";
 import { createBuilderShareParams, parseBuilderShareParams, saveBuilderSession, loadBuilderSession } from "../src/features/deckbuilder/persistence/builderPersistence.ts";
@@ -65,4 +65,24 @@ test("bulk additions reject the entire action when any destination is invalid", 
   const before = initial();
   assert.equal(editDeck(before, {type:"add-many", additions:[{name:"Ally",section:"main",quantity:1},{name:"Ally",section:"material",quantity:1}]}, catalog),before);
   assert.equal(editDeck(before, {type:"add-many", additions:[{name:"Ally",section:"main",quantity:0}]}, catalog),before);
+});
+
+
+test("bulk moves preserve sections and copies as one immutable edit", () => {
+  const deck = initial();
+  const result = editDeckSelection(deck, [{ section: "main", name: "Ally" }, { section: "sideboard", name: "Ally" }], { type: "move", destination: "maybeboard" }, catalog)!;
+  assert.deepEqual(result.main, []);
+  assert.deepEqual(result.sideboard, []);
+  assert.deepEqual(result.maybeboard, [{ card: "Ally", quantity: 5 }]);
+  assert.deepEqual(deck, initial());
+});
+
+test("bulk edits roll back earlier changes when a printing or destination blocks any card", () => {
+  const deck = initial();
+  deck.sideboard[0] = { card: "Ally", quantity: 3, printings: [{ editionUuid: "allocated", quantity: 3 }] };
+  const before = structuredClone(deck);
+  const selected = [{ section: "main" as const, name: "Ally" }, { section: "sideboard" as const, name: "Ally" }];
+  assert.equal(editDeckSelection(deck, selected, { type: "set", quantity: 2 }, catalog), null);
+  assert.equal(editDeckSelection(deck, selected, { type: "move", destination: "material" }, catalog), null);
+  assert.deepEqual(deck, before);
 });

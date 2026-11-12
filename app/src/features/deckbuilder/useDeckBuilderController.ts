@@ -29,11 +29,12 @@ export function useDeckBuilderController() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const legacyTab = searchParams.get("tab");
+  const legacyStats = searchParams.get("workbenchView") === "stats";
   useEffect(() => {
     if (legacyTab === "review") navigate("/deck-review", { replace: true });
     if (legacyTab === "test") navigate("/deck-analysis?tab=matchups", { replace: true });
-    if (legacyTab === "stats" || legacyTab === "buddies") navigate("/deck-analysis", { replace: true });
-  }, [legacyTab, navigate]);
+    if (legacyStats || legacyTab === "stats" || legacyTab === "buddies") navigate("/deck-analysis", { replace: true });
+  }, [legacyTab, legacyStats, navigate]);
   const improveDeckId = searchParams.get("improveDeck");
   const isImproving = Boolean(improveDeckId);
   const intentParam = searchParams.get("intent");
@@ -88,7 +89,7 @@ export function useDeckBuilderController() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
-  const [recommendationsEnabled, setRecommendationsEnabled] = useState(true);
+  const [recommendationsEnabled, setRecommendationsEnabled] = useState(false);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 

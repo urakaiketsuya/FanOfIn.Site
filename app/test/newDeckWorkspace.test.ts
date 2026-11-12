@@ -1,0 +1,34 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { newDeckWorkspace, restoreReviewedDraft } from "../src/features/account/newDeckWorkspace";
+import type { NewDeckDraft } from "../src/features/account/newDeckDraft";
+import { loadBuilderSessionSeed } from "../src/features/deckbuilder/persistence/builderSeed";
+import { ACTIVE_DECK_WORKSPACE_KEY } from "../src/features/deckbuilder/persistence/deckWorkspace";
+const draft: NewDeckDraft = { sourceId: "draft-one", title: "My deck", format: "PANTHEON", deckText: "Main\n2 Test card", maybeboardText: "1 Later" };
+const deck = { main: [{ card: "Test card", quantity: 2, printings: [{ editionUuid: "printing-one", quantity: 1 }] }], material: [], sideboard: [{ card: "Test card", quantity: 1 }], song: [{ card: "Song", quantity: 1 }], maybeboard: [{ card: "Later", quantity: 1 }] };
+const workspace = { ...newDeckWorkspace(draft, deck, new Map()), version: 1 as const, updatedAt: "2026-11-12" };
+test("review handoff returns only to its matching draft and retains printings and all sections", () => {
+  const changed = { ...workspace, main: [{ name: "Test card", quantity: 3 }] };
+  assert.equal(restoreReviewedDraft(draft, changed, null), draft);
+  assert.equal(restoreReviewedDraft(draft, changed, "another-draft"), draft);
+  assert.equal(restoreReviewedDraft(draft, { ...changed, deckIdentity: "saved:other" }, draft.sourceId), draft);
+  const restored = restoreReviewedDraft(draft, changed, draft.sourceId);
+  assert.equal(restored.title, draft.title);
+  assert.equal(restored.sourceId, draft.sourceId);
+  assert.equal(restored.format, "PANTHEON");
+  assert.match(restored.deckText, /Test card/);
+  assert.match(restored.deckText, /printing-one/);
+  assert.match(restored.deckText, /Sideboard/);
+  assert.match(restored.deckText, /Song/);
+  assert.match(restored.maybeboardText, /Later/);
+});
+test("report-to-editor restores a partial deck without a champion over an older builder session", () => {
+  const data = { ...workspace, source: "analysis" };
+  const storage = { getItem: (key: string) => key === ACTIVE_DECK_WORKSPACE_KEY ? JSON.stringify(data) : null } as Storage;
+  const seed = loadBuilderSessionSeed(storage)!;
+  assert.equal(seed.championName, null);
+  assert.equal(seed.lockedCards.get("Test card"), 2);
+  assert.equal(seed.format, "PANTHEON");
+  assert.equal(seed.workspaceContext?.title, draft.title);
+  assert.deepEqual(seed.printings, workspace.printings);
+});

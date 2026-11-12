@@ -127,3 +127,27 @@ export function packageAdditions(deck: EditableDeck, cards: { name: string; sect
     return quantity > 0 ? [{ ...line, quantity }] : [];
   });
 }
+
+
+export type SelectedDeckEdit =
+  | { type: "adjust"; delta: number }
+  | { type: "set"; quantity: number }
+  | { type: "move"; destination: DeckEditSection }
+  | { type: "remove" };
+
+/** Bulk edits are a single undo step; reject the whole selection if any edit is blocked. */
+export function editDeckSelection(deck: EditableDeck, selected: { section: DeckEditSection; name: string }[], action: SelectedDeckEdit, catalog: ReadonlyMap<string, Card>): EditableDeck | null {
+  let next = deck;
+  for (const { section, name } of selected) {
+    const line = (next[section] ?? []).find(line => line.card === name);
+    if (!line) return null;
+    const edit: DeckEdit = action.type === "remove" ? { type: "remove", section, name }
+      : action.type === "move" ? { type: "move", section, name, destination: action.destination, quantity: line.quantity }
+      : { type: "quantity", section, name, quantity: action.type === "set" ? action.quantity : Math.max(1, line.quantity + action.delta) };
+    if (edit.type === "quantity" && edit.quantity === line.quantity || edit.type === "move" && edit.destination === section) continue;
+    const updated = editDeck(next, edit, catalog);
+    if (updated === next) return null;
+    next = updated;
+  }
+  return next;
+}

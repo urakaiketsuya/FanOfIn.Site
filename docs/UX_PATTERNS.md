@@ -891,3 +891,25 @@ transitions, then changed turn-3/5 forecasts, with acceptance owned by the calle
 The compact damage preview uses champion/no-allies and single-ally scenarios;
 complete comparisons retain other board states. Missing and unsupported forecasts
 are not zero impact. Calculators and full comparison reports remain separate.
+
+
+## One deck editing experience
+
+My Decks supplies the standard editing presentation: champion header, collapsible Main,
+Material, Sideboard and Song sections, card quantity controls, bulk selection, and card action
+sheets. New and imported drafts use the same `EditableDecklistGrid` through `DeckEditor`.
+The controller owns saving, history and draft recovery; shared card controls never save remotely.
+
+Create Deck starts at `/decks/new`; imported/tool drafts use `/decks/draft`. `/deck-builder`
+is a compatibility redirect preserving query parameters, hash and navigation state. Keep its
+existing import/session codecs while old links remain in circulation. My Decks is the library;
+do not promote a separate Guided Deck Builder alongside it.
+
+Deck is for editing; Report is for automatic results; Improve is opt-in. The imported editor
+has no second Stats tab duplicating Report. Explicit text-sheet Apply and bulk operations create
+one undo step. Invalid bulk destinations or printing reductions reject the entire operation.
+Existing saved-deck versioning and failed-save recovery remain owned by My Decks.
+
+New deck drafts retain their stable local source ID when visiting Improve. Return only adopts
+the workspace when both its identity and the requested ID match that draft; unrelated active
+workspaces must never overwrite it. Printings, Song and Maybeboard survive that transition.

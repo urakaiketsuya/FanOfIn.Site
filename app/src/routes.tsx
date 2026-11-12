@@ -1,3 +1,4 @@
+import LegacyDeckEditorRedirect from "./features/deckbuilder/LegacyDeckEditorRedirect";
 const AdminDashboard = lazy(() => import("./features/packages/AdminDashboard"));
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
@@ -247,7 +248,8 @@ export default function AppRoutes() {
         <Route path="/decks/event/:eventId/:player" element={<EventDeckRedirect />} />
         <Route path="/pantheon/decks" element={<PantheonDecksIndex />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
-        <Route path="/deck-builder" element={<DeckBuilderIndex />} />
+        <Route path="/deck-builder" element={<LegacyDeckEditorRedirect />} />
+        <Route path="/decks/draft" element={<DeckBuilderIndex />} />
         <Route path="/deck-analysis" element={<DeckAnalysisIndex />} />
         <Route path="/deck-review" element={<DeckReviewIndex />} />
         <Route path="/combo-lab" element={<ComboLabIndex />} />

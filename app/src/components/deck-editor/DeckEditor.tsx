@@ -1,26 +1,44 @@
-import PackagePicker from "./PackagePicker";
-import Button from "../ui/Button";
-import DeckLegalityWarning from "./DeckLegalityWarning";
-import type { DeckFormat } from "@gatcg/shared";
-import type { ReactNode } from "react";
-import type { Card } from "@gatcg/shared";
-import { editorSections, songDeckAvailable, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
-import { SONG_DECK_MAX_DIFFERENT_CARDS } from "../../lib/songDeck";
-import DeckEditorCard from "./DeckEditorCard";
+import { useState } from "react";
+import type { Card, DeckFormat } from "@gatcg/shared";
+import { songDeckAvailable, editDeckSelection, type SelectedDeckEdit, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
+import { EditableDecklistGrid, type DeckSectionKey, MaybeboardCardTile } from "./EditableDecklistGrid";
+import AddDeckCard from "./AddDeckCard";
+import DisclosureChevron from "../DisclosureChevron";
 
-export default function DeckEditor({ deck, catalog, onEdit, viewMode = "grid", renderStats, format, onAdd }: { onAdd?: (section: keyof EditableDeck) => void; format: DeckFormat; deck: EditableDeck; catalog: Map<string, Card>; onEdit: (action: DeckEdit) => void; renderStats?: (name: string) => ReactNode; viewMode?: "grid" | "list" }) {
-  return <div className="mt-3 space-y-4"><PackagePicker deck={deck} catalog={catalog} onEdit={onEdit} /><DeckLegalityWarning deck={deck} catalog={catalog} format={format} />{editorSections(deck).filter(({ key }) => ((onAdd && (key !== "song" || songDeckAvailable(deck, catalog))) || deck[key]?.length)).map(({ key, title }) => {
-    const lines = deck[key] ?? [];
-    const total = lines.reduce((sum, line) => sum + line.quantity, 0);
-    if (!total && onAdd) return <Button key={key} className="mr-2" onClick={() => onAdd(key)}>Add {title}</Button>;
-    return <section key={key} aria-label={`${title} cards`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
-    <h2 className="mb-3 flex flex-wrap items-baseline justify-between gap-2 text-xl font-semibold text-ctp-text">{title} <span className="rounded-full border border-ctp-surface1 bg-ctp-base px-3 py-1 text-sm font-medium tabular-nums text-ctp-subtext1">{total} {total === 1 ? "copy" : "copies"}</span>{onAdd && <Button size="sm" onClick={() => onAdd(key)}>Add to {title}</Button>}</h2>
-    {key === "song" && <p className="mb-3 text-sm text-ctp-subtext1">{songDeckAvailable(deck, catalog) ? `Up to ${SONG_DECK_MAX_DIFFERENT_CARDS} different Song cards, unlocked by level 1 Casella.` : "The Song Deck needs level 1 Casella in the Material Deck."}</p>}
-    <div className={viewMode === "list" ? "grid gap-3 lg:grid-cols-2" : "grid gap-3 sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]"}>{lines.map((line) => <DeckEditorCard format={format} songAvailable={songDeckAvailable(deck, catalog)} key={line.card} line={line} stats={renderStats?.(line.card)} card={catalog.get(line.card)} section={key} list={viewMode === "list"}
-      onPrintings={printings => onEdit({ type: "printings", section: key, name: line.card, printings })}
-      onChangeQuantity={(quantity, printings) => onEdit({ type: "quantity", section: key, name: line.card, quantity, printings })}
-      onMove={(destination, quantity, printings) => onEdit({ type: "move", section: key, name: line.card, destination, quantity, printings })}
-      onRemove={() => onEdit({ type: "remove", section: key, name: line.card })} />)}</div>
-  </section>;
-  })}</div>;
+/** The My Decks card editor, shared by saved decks and anonymous drafts. Persistence stays with its caller. */
+export default function DeckEditor({ deck, catalog, onEdit, onReplace, format, onAdd }: {
+  onAdd: (section: keyof EditableDeck) => void;
+  format: DeckFormat; deck: EditableDeck; catalog: Map<string, Card>;
+  onEdit: (action: DeckEdit) => void; onReplace: (deck: EditableDeck) => void;
+}) {
+  const [error, setError] = useState<string | null>(null);
+  function bulk(selected: { section: DeckSectionKey; name: string }[], action: SelectedDeckEdit) {
+    const next = editDeckSelection(deck, selected, action, catalog);
+    if (!next) { setError("Selection unchanged. Check destinations and assigned printings before trying again."); return; }
+    setError(null);
+    if (next !== deck) onReplace(next);
+  }
+  return <div className="mt-3 space-y-4">
+    {error && <p role="alert" className="text-sm text-ctp-red">{error}</p>}
+    <EditableDecklistGrid format={format} decklist={deck} cardsByName={catalog} onAdd={onAdd}
+      onPrintings={(section, name, printings) => onEdit({ type: "printings", section, name, printings })}
+      onChangeQuantity={(section, name, quantity, printings) => onEdit({ type: "quantity", section, name, quantity, printings })}
+      onMove={(section, destination, name, quantity, printings) => onEdit({ type: "move", section, destination, name, quantity, printings })}
+      onRemove={(section, name) => onEdit({ type: "remove", section, name })}
+      onAdjustSelected={(cards, delta) => bulk(cards, { type: "adjust", delta })}
+      onSetSelected={(cards, quantity) => bulk(cards, { type: "set", quantity })}
+      onMoveSelected={(cards, destination) => bulk(cards, { type: "move", destination })}
+      onRemoveSelected={cards => bulk(cards, { type: "remove" })} />
+    <details className="group rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow"><span>Maybeboard ({deck.maybeboard.reduce((sum, line) => sum + line.quantity, 0)})</span><DisclosureChevron className="group-open:rotate-180" /></summary>
+      <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+        <AddDeckCard section="Maybeboard" onAdd={() => onAdd("maybeboard")} />
+        {deck.maybeboard.map(line => <MaybeboardCardTile songAvailable={songDeckAvailable(deck, catalog)} key={line.card} format={format} line={line} card={catalog.get(line.card)}
+          onPrintings={printings => onEdit({ type: "printings", section: "maybeboard", name: line.card, printings })}
+          onChangeQuantity={(quantity, printings) => onEdit({ type: "quantity", section: "maybeboard", name: line.card, quantity, printings })}
+          onMove={(destination, quantity, printings) => onEdit({ type: "move", section: "maybeboard", name: line.card, destination, quantity, printings })}
+          onRemove={() => onEdit({ type: "remove", section: "maybeboard", name: line.card })} />)}
+      </div>
+    </details>
+  </div>;
 }
