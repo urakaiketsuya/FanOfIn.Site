@@ -114,7 +114,9 @@ export function CardRow({
         </span>
       ) : (
         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-          {card.reason === "identity-staple"
+          {card.reason === "observed-core"
+            ? "core pick"
+            : card.reason === "identity-staple"
             ? "core synergy"
             : communityMode && !card.locked
               ? "popular pick"

@@ -163,3 +163,5 @@ export * from './recursionPolicy.js';
 export * from './recursionReport.js';
 
 export * from './championAccess.js';
+
+export * from "./recommendationDependencies.js";

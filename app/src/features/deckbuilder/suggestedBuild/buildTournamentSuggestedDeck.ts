@@ -95,8 +95,8 @@ export interface SuggestedCard {
   optimizedFrom: number | null;
   /** "matching population" = no quantity override, just the modal count. "narrowed population" = overridden using a significance-tested comparison scoped to this build's own ranking population (Champion/Spirit/lock-conditioned, or a selected archetype's own decks) – a real quantity effect within *this* context, not confounded by which archetypes happen to run the card at which count. "global" = the same test, but only the flat meta-wide fallback cleared it. */
   quantityEvidence: { source: "matching population" | "narrowed population" | "global"; sampleSize: number };
-  /** "spirit" = the viewer's own Spirit pick. "staple" = a structural Champion print. "identity-staple" = a card explicitly tied to the selected Champion by its rules text and supported by observed prevalence, or a deterministic Champion+Spirit identity card. "ranked" = a normal lift-ranked suggestion. */
-  reason: "spirit" | "staple" | "identity-staple" | "ranked";
+  /** "spirit" = the viewer's own Spirit pick. "staple" = a structural Champion print. "identity-staple" = a card explicitly tied to the selected Champion by its rules text and supported by observed prevalence, or a deterministic Champion+Spirit identity card. "observed-core" = at least 90% inclusion in ten matching lists, without a lift claim. "ranked" = a normal lift-ranked suggestion. */
+  reason: "spirit" | "staple" | "identity-staple" | "observed-core" | "ranked";
   /** Active construction packages this card helps stabilize. These are deterministic readiness
    * checks (Imbue/enabler or producer/consumer), kept separate from the observed win-rate lift. */
   readinessReasons?: string[];
@@ -324,7 +324,7 @@ export function buildTournamentSuggestedDeck(
     const ranked = computeCardImpactEntries(sectionRows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).filter(
       (e) =>
         e.adjustedLift > 0 &&
-        !cardsByName.get(e.cardName)?.subtypes.includes("SPIRIT") &&
+        !(cardsByName.get(e.cardName)?.types.includes("CHAMPION") && cardsByName.get(e.cardName)?.subtypes.includes("SPIRIT")) &&
         cardsByName.get(e.cardName)?.legality?.STANDARD?.limit !== 0 &&
         !lockedNames.has(e.cardName) &&
         !rejectedCards.has(e.cardName) &&
@@ -466,22 +466,24 @@ export function buildTournamentSuggestedDeck(
       placed.add(spiritFilter);
     }
 
-    // Dominant cards whose printed rules explicitly name this Champion are structural identity
-    // support, not ordinary flex picks. Guo Jia's Spirit-matched Fatestone is forced into this set
+    // Observed core cards (90% across at least ten matching lists) remain eligible
+    // without a with/without performance split. Named Champion support uses its
+    // existing 80% threshold. Neither path invents lift. Guo Jia's Spirit-matched Fatestone is forced into this set
     // because multiple Fatestones are element-legal while only the Spirit-matched one is intended.
     const identityFatestone = guoJiaFatestoneForIdentity(championCard, spiritCard);
     const namedBonusCandidates = Array.from(cardsByName.values()).flatMap((card) => {
-      if (!hasChampionBonus(card, championCard) || card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) return [];
+      if (card.types.some(type => ["CHAMPION", "TOKEN"].includes(type))) return [];
+      const championBonus = hasChampionBonus(card, championCard);
       const mainCount = spiritRows.filter((row) => row.main.has(card.name)).length;
       const materialCount = spiritRows.filter((row) => row.material.has(card.name)).length;
       const presence = spiritRows.filter((row) => row.main.has(card.name) || row.material.has(card.name)).length;
       const forced = card.name === identityFatestone;
-      if (!forced && (spiritRows.length < MIN_IDENTITY_STAPLE_POPULATION || presence / spiritRows.length < IDENTITY_STAPLE_PREVALENCE)) return [];
-      return [{ card, presence, section: materialCount >= mainCount ? "material" as const : "main" as const, forced }];
+      if (!forced && (spiritRows.length < MIN_IDENTITY_STAPLE_POPULATION || presence / spiritRows.length < (championBonus ? IDENTITY_STAPLE_PREVALENCE : 0.9))) return [];
+      return [{ card, presence, championBonus, section: materialCount >= mainCount ? "material" as const : "main" as const, forced }];
     }).sort((a, b) => Number(b.forced) - Number(a.forced) || b.presence - a.presence || a.card.name.localeCompare(b.card.name));
     const deferredIdentityStaples: SuggestedCard[] = [];
     for (const candidate of namedBonusCandidates) {
-      const { card, presence, section } = candidate;
+      const { card, presence, section, championBonus } = candidate;
       if (
         placed.has(card.name) ||
         rejectedCards.has(card.name) ||
@@ -490,7 +492,7 @@ export function buildTournamentSuggestedDeck(
         (collectionMode === "owned-only" && (collectionOwnedByName?.get(card.name) ?? 0) <= 0)
       ) continue;
       const quantity = section === "material" ? 1 : modalQuantity(spiritRows, "main", card.name, card);
-      const suggestion = toSuggested(card.name, quantity, false, undefined, "identity-staple", section, null, {
+      const suggestion = toSuggested(card.name, quantity, false, undefined, championBonus ? "identity-staple" : "observed-core", section, null, {
         source: "matching population",
         sampleSize: presence,
       });

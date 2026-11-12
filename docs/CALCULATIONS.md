@@ -7073,3 +7073,51 @@ level, alternate champion progressions, temporary element grants and lineage
 release remain unsupported. Their fixtures require distinct library-selection,
 opening-zone, token, class or banishment-state policies; they are not aliases for
 the seven-card opening and are never silently treated as one.
+
+## Fixture-backed recommendation coverage (November 2026)
+
+Tournament suggestions retain observed core cards at ≥90% Main/Material inclusion
+across ≥10 matching Spirit-scoped lists, even when ubiquitous cards have no usable
+with/without split. Existing named Champion staples retain their 80% threshold.
+The core path uses observed modal quantities and a `core pick` label, never an
+invented lift. Explicit rejections, ownership mode, legality, element eligibility,
+section targets and locked selections still apply. Sideboard-only sightings cannot
+establish a core card. Ordinary Spirit-subtype allies are no longer removed by the
+opening-Spirit exclusion. This is construction evidence, not an optimal deck claim.
+
+`shared/src/recommendationDependencies.ts` shares the previously reviewed Tonoris
+engine protections with reports and budget substitutions. Ten reviewed consumer
+contracts connect token/object/domain support, Altar's Human/Automaton pair,
+Imperial Apprentice's Spell/Floating Memory resources, Forecaster's enlighten
+sources, Lost Wisdom's Spell targets/unique-ally discount and Primeval Ritual's
+ally cost/Wind target. Main and Material quantities count; Sideboard, zero copies,
+and unknown catalog records do not establish support. These are deck construction
+relationships, not assertions that the cards are drawn, in play, in the graveyard,
+class-enabled, paid or resolved. Optional bonus resources do not block base effects.
+
+Standalone cuts protect connected partners. Swaps retain the established Tonoris
+engine quantities; other reviewed support pools may substitute cards without reducing
+their supporting copy count. Newly introduced Lost Wisdom requires a Spell target;
+Primeval Ritual requires ally/Wind support. Equal support counts do not imply equal
+output. Report generation, final draft acceptance and budget proposals share the
+checks. Report acceptance rechecks dependencies before its single storage write.
+Manual edits remain unrestricted. Existing unknown-card, legality, copy limits,
+printing allocation and price-freshness checks are retained.
+
+The suggested-swap sheet now reuses `FixtureComparison` in results-only mode for
+paid draw, damage, defense/recovery and recursion alongside access and package changes.
+It evaluates the actual one-copy before/after lists with the same report defaults
+and support boundaries as Compare. Unsupported or missing calculations retain their
+existing unavailable behavior. The sheet does not infer a win-rate benefit or add
+inputs. Opening a comparison is deferred with `useTransition`; simulations only mount
+when the preview is open.
+
+`scripts/import-tcgengine-recommendations.mjs` imports 18 existing scenarios verbatim
+from TCGEngine, preserving revision, source paths and file/excerpt hashes in
+`app/test/fixtures/tcgengine-recommendations.json`. No new engine fixtures or deck
+lists were authored; regression tests reuse the existing Tonoris list. Fixtures
+establish resource mechanics, not tournament frequencies or exchange equivalence.
+The Altar scenario has no explicit result assertion; its reviewed catalog contract
+supplies the two ally-type requirements. TypeScript construction adapters do not
+replay the PHP engine. Opponent-dependent outcomes, arbitrary package exchanges,
+optimal play and Altar's useful-mill payoff policy remain outside this batch.

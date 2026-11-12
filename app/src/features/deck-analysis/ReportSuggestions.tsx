@@ -1,12 +1,12 @@
 import { useState, useTransition } from 'react';
-import { computeCombatAccessForecast, packageReport, reportAccess, reportCounts, type Card, type ClusterMatchupImpact } from '@gatcg/shared';
+import { packageReport, reportAccess, reportCounts, type Card, type ClusterMatchupImpact } from '@gatcg/shared';
 import type { DeckWorkspace } from '../deckbuilder/persistence/deckWorkspace';
 import CardResult from '../../components/CardResult';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import DialogSheet from '../../components/ui/DialogSheet';
 import { previewReportSwap } from './reportDraft';
-import { computeAggressionForecast } from '../../lib/aggressionForecast';
+import FixtureComparison from '../analytics/FixtureComparison';
 import { pct, referenceLink, suggestReportSwaps, type ComparableDeck, type ReportSwap, type SuggestionGoal } from './reportModel';
 import { Link } from 'react-router-dom';
 
@@ -39,9 +39,9 @@ export default function ReportSuggestions({ deck, cards, references, matchups, r
       {!ready && <p role="status" className="mt-2 text-sm">Waiting for tournament evidence.</p>}
       {pending && <p role="status">Recalculating suggestions…</p>}
       {results?.length === 0 && <p role="status" className="mt-3">No supported swaps for these constraints.</p>}
-      {results?.map(swap => <article className="mt-4 rounded-xl border border-ctp-surface1 p-3" key={`${swap.cut}:${swap.add}`}><div className="grid max-w-md grid-cols-2 gap-3"><CardResult name={swap.cut} card={cards.get(swap.cut)} newTab><p className="mt-2 font-semibold">Cut 1</p></CardResult><CardResult name={swap.add} card={cards.get(swap.add)} newTab><p className="mt-2 font-semibold">Add 1</p></CardResult></div><p className="mt-3 text-sm">{swap.reason}</p><Link className="flex min-h-12 items-center text-sm text-ctp-blue underline" to={referenceLink(swap.referenceId)}>Reference list</Link><Button onClick={() => { setPreview(swap); setError(null); }}>Compare swap</Button></article>)}
+      {results?.map(swap => <article className="mt-4 rounded-xl border border-ctp-surface1 p-3" key={`${swap.cut}:${swap.add}`}><div className="grid max-w-md grid-cols-2 gap-3"><CardResult name={swap.cut} card={cards.get(swap.cut)} newTab><p className="mt-2 font-semibold">Cut 1</p></CardResult><CardResult name={swap.add} card={cards.get(swap.add)} newTab><p className="mt-2 font-semibold">Add 1</p></CardResult></div><p className="mt-3 text-sm">{swap.reason}</p><Link className="flex min-h-12 items-center text-sm text-ctp-blue underline" to={referenceLink(swap.referenceId)}>Reference list</Link><Button onClick={() => { startTransition(() => setPreview(swap)); setError(null); }}>Compare swap</Button></article>)}
     </>}
-    {preview && next && <DialogSheet title="Preview suggested swap" onDismiss={() => setPreview(null)} footer={<Button variant="primary" onClick={() => { const failure = onApply(preview); if (failure) setError(failure); else setPreview(null); }}>Apply to local draft</Button>}>
+    {preview && next && <DialogSheet title="Preview suggested swap" onDismiss={() => setPreview(null)} footer={<div>{error && <p role="alert" className="mb-2 text-ctp-red">{error}</p>}<Button variant="primary" onClick={() => { const failure = onApply(preview); if (failure) setError(failure); else setPreview(null); }}>Apply to local draft</Button></div>}>
       <div className="grid grid-cols-2 gap-3"><CardResult name={preview.cut} card={cards.get(preview.cut)} newTab><p>Cut 1 · {counts.get(preview.cut)} → {afterCounts.get(preview.cut) ?? 0}</p></CardResult><CardResult name={preview.add} card={cards.get(preview.add)} newTab><p>Add 1 · {counts.get(preview.add) ?? 0} → {afterCounts.get(preview.add)}</p></CardResult></div>
       <h3 className="mt-4 font-semibold">Access at 10 cards seen</h3>
       <dl className="mt-3 space-y-3 text-sm">{[preview.cut, preview.add].map(name => <div key={name}><dt>{name}</dt><dd>{pct(reportAccess(size, counts.get(name) ?? 0, 10))} → {pct(reportAccess(size, afterCounts.get(name) ?? 0, 10))}</dd></div>)}{packageChanges.map(row => <div key={row.id}><dt>{row.label}</dt><dd>{pct(row.before)} → {pct(row.after)} · {row.metBefore ? 'supported' : 'incomplete'} → {row.metAfter ? 'supported' : 'incomplete'}</dd></div>)}</dl>
@@ -54,14 +54,8 @@ export default function ReportSuggestions({ deck, cards, references, matchups, r
         return <p key={row.opponentClusterId} className="mt-2 text-sm">{row.opponentClusterName}: {pct(reportAccess(size, beforeCopies, 10))} → {pct(reportAccess(size, afterCopies, 10))} · observed Main pool</p>;
       })}
       {!matchups.some(row => row.answers.some(group => group.answers.some(answer => answer.cardName === preview.cut || answer.cardName === preview.add))) && <p className="mt-2 text-sm">No measured access changes.</p>}
-      <SwapPotential before={deck} after={next} cards={cards} />
+      <FixtureComparison baseline={deck} target={next} cardsByName={cards} baselineLabel="Current deck" targetLabel="Proposed swap" initialMode="versions" reportOnly />
       <p className="mt-3 text-xs">Local draft · original preserved</p>
-      {error && <p role="alert" className="mt-3 text-ctp-red">{error}</p>}
     </DialogSheet>}
   </Panel>;
-}
-function SwapPotential({ before, after, cards }: { before: DeckWorkspace; after: DeckWorkspace; cards: Map<string, Card> }) {
-  const a = computeAggressionForecast(before.main, cards, before.material), b = computeAggressionForecast(after.main, cards, after.material);
-  const ca = computeCombatAccessForecast(before.main, before.material, cards, 10), cb = computeCombatAccessForecast(after.main, after.material, cards, 10);
-  return <div className="mt-4"><h3 className="font-semibold">Supported potential at 10 seen</h3><dl className="mt-2 space-y-2 text-sm"><div><dt>Conservative median printed damage</dt><dd>{a.points[1]?.medianMin ?? '—'} → {b.points[1]?.medianMin ?? '—'}</dd></div><div><dt>Conditional median printed damage</dt><dd>{a.points[1]?.medianMax ?? '—'} → {b.points[1]?.medianMax ?? '—'}</dd></div><div><dt>Sampled mean ally power with supported boosts</dt><dd>{ca.unavailable || cb.unavailable ? 'Card data incomplete' : `${ca.boostedPower.toFixed(1)} → ${cb.boostedPower.toFixed(1)}`}</dd></div></dl><p className="mt-2 text-xs">Before costs/resolution · first-player damage · ≥60-card ally model</p>{[...new Set([...ca.unmodeled, ...cb.unmodeled, ...a.audit.filter(row => row.status !== 'modeled').map(row => row.name), ...b.audit.filter(row => row.status !== 'modeled').map(row => row.name)])].length > 0 && <p className="mt-2 text-xs">Partial model coverage</p>}</div>;
 }

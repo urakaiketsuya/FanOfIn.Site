@@ -1,4 +1,4 @@
-import { availableDeckElements, budgetPricesFresh, cardLegalityStatus, isDeckElementCompatible, type Card } from '@gatcg/shared';
+import { preservesRecommendationDependencies, availableDeckElements, budgetPricesFresh, cardLegalityStatus, isDeckElementCompatible, type Card } from '@gatcg/shared';
 import { intentCards, mentionsCardName, extractConsumedTokens, extractConsumedSubtypes } from '../../lib/cardIntent';
 import { effectRelatedCards, effectConcepts, statDiff } from '../../lib/cardSimilarity';
 import { editDeck, type EditableDeck } from '../../lib/deckEditing';
@@ -54,7 +54,10 @@ export function budgetReplacements(context: BudgetSwapContext, sourceName: strin
     if (originalLinks.some(link => !candidateLinks.some(other => other.key === link.key))) return [];
     // New named dependencies are never assumed to be interchangeable or already supported.
     if (to.references?.length || cards.some(other => other.name !== to.name && !other.types.includes('TOKEN') && mentionsCardName(to.effect ?? '', other.name))) return [];
-    if (editDeck(deck, { type: 'replace-main', name: from.name, replacement: to.name, quantity }, catalog) === deck) return [];
+    const edited = editDeck(deck, { type: 'replace-main', name: from.name, replacement: to.name, quantity }, catalog);
+    if (edited === deck) return [];
+    const lines = (value: EditableDeck) => (['main', 'material', 'sideboard'] as const).flatMap(section => value[section].map(line => ({ cardName: line.card, quantity: line.quantity, section })));
+    if (!preservesRecommendationDependencies(lines(deck), lines(edited), catalog)) return [];
     return [{ from, to, quantity, savings, unitBefore, unitAfter, rank, match: rank === 0 ? 'Same effect pattern' : rank === 1 ? 'Same core effect' : 'Shared role', preserved: [...new Set(originalLinks.map(link => link.via))], differences: statDiff(from, to), tournamentDecks: context.tournamentDecks?.get(to.name) ?? 0 }];
   }).sort((a, b) => a.rank - b.rank || b.tournamentDecks - a.tournamentDecks || b.savings - a.savings || a.to.name.localeCompare(b.to.name));
 }

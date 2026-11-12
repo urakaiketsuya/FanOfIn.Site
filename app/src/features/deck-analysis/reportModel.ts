@@ -1,8 +1,10 @@
-import { cardLegalityStatus, availableDeckElements, isAvailableDeckRecommendation, packageReport, reportCounts, weightedJaccard, type Card, type ClusterMatchupImpact, type ReportDeck } from '@gatcg/shared';
+import { preservesRecommendationDependencies, cardLegalityStatus, availableDeckElements, isAvailableDeckRecommendation, packageReport, reportCounts, weightedJaccard, type Card, type ClusterMatchupImpact, type ReportDeck } from '@gatcg/shared';
 import type { DeckBuilderRow } from '../deckbuilder/useDeckBuilderPopulation';
 import type { DeckWorkspace } from '../deckbuilder/persistence/deckWorkspace';
 import { swapMainCard } from '../../lib/deckEditing';
 import { deckDestinationEligibility } from '../../lib/deckSectionEligibility';
+
+const dependencyLines = (deck: DeckWorkspace) => (['main', 'material', 'sideboard'] as const).flatMap(section => (deck[section] ?? []).map(line => ({ cardName: line.name, quantity: line.quantity, section })));
 
 export function comparableReportDecks(deck: ReportDeck, rows: readonly DeckBuilderRow[], membership: Record<string, string>, clusterId: string | undefined, catalog: ReadonlyMap<string, Card>) {
   if (!clusterId) return [];
@@ -51,6 +53,7 @@ export function suggestReportSwaps(deck: DeckWorkspace, references: readonly Com
       const edited = swapMainCard({ main: deck.main.map(line => ({ card: line.name, quantity: line.quantity })), material: [], sideboard: [], maybeboard: [] }, cut.name, add.name, catalog);
       if (!edited) continue;
       const next = { ...deck, main: edited.main.map(line => ({ name: line.card, quantity: line.quantity })) };
+      if (!preservesRecommendationDependencies(dependencyLines(deck), dependencyLines(next), catalog)) continue;
       const after = packageReport(next);
       if (preservedPackage && (after.find(row => row.definition.id === preservedPackage)?.checkpoints[1].both ?? 0) < (beforeAccess.get(preservedPackage) ?? 0) - 1e-9) continue;
       const best = after.map(row => ({ row, delta: row.checkpoints[1].both - (beforeAccess.get(row.definition.id) ?? 0) })).sort((a, b) => b.delta - a.delta)[0];

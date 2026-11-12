@@ -27,7 +27,8 @@ Existing competition release D is complete and is not reopened.
       finite reuse and paid replay; upstream fixtures imported and exclusions documented.
 - [x] Champion/element access: shared reviewed lineage/activation gates, named
       seven-card Spirits and Tonoris Fire/Wind; specialist progressions excluded.
-- [ ] Recommendations: audit omitted core cards, dependencies and covered swap outcomes.
+- [x] Recommendations: observed core inclusion, shared reviewed dependencies and
+      results-only supported swap comparisons; upstream fixtures imported.
 - [ ] Comparisons: newer sequence outcomes in Compare and saved versions; audit
       Builder/Review/My Decks propagation and context retention.
 - [ ] Deck/archetype: consistent cohort model checkpoints and core access.
@@ -50,7 +51,7 @@ contract and representative fixture. Record data blockers separately from comple
 
 Current: reviewed damage, conditional draw, defense/recovery and graveyard reuse
 batches are implemented in standalone reports and comparisons.
-Next: recommendation core-card/dependency audit and covered swap outcomes. Full-catalog draw depends on the
+Next: cross-feature comparison propagation and context-retention audit. Full-catalog draw depends on the
 explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
@@ -387,3 +388,29 @@ Next: recommendation core-card/dependency audit and supported swap outcomes.
 Extended analytics: 8/16 broad milestones (~50%, unequal scope). Full catalog
 champion simulation remains outside this estimate; Altar still needs its reviewed
 payoff policy.
+
+
+## Milestone 9 — recommendation coverage and supported swaps
+
+Imported 18 existing TCGEngine scenarios with verbatim provenance; reused the Tonoris
+list. Observed core cards at 90% inclusion across ten matching lists no longer need a
+positive with/without lift. Named Champion staples retain their existing threshold.
+Core labels carry no fabricated performance estimate. Shared dependency guards cover
+ten consumers, protect original Tonoris engine quantities and allow other reviewed
+resource substitutions without lowering support copies. Reports and budget proposals
+use the guards; report acceptance revalidates before saving. The swap sheet reuses the
+results-only comparison report, including paid draw/damage, defense and recursion.
+
+Initiative estimate: 9/16 queued milestones (~56%), unequal scope. Next: audit comparison
+propagation/context across Builder, Review and My Decks. Full-catalog mechanics and
+Altar payoff policy remain deferred; this milestone does not establish optimal swaps.
+
+Verification: 76 focused tests pass, including full imported-list omissions, ordinary
+flex swaps, dependency-loss rejection, same-resource substitutions, sideboard isolation,
+unknown catalog handling and save-time revalidation. Shared/app typechecks, targeted
+lint and the production build pass. Local 390px and 1280px checks cover evidence waiting,
+empty/recovered suggestions, card-first comparison, 48px buttons, keyboard dismissal
+and focus restoration, no horizontal overflow, visible failed-save feedback and retry.
+Browser tests used the real catalog/Tonoris list with an isolated reference/save harness;
+production accounts, PHP engine replay, native phone keyboards and live deployment
+were not exercised. Unrelated concurrent edits were left untouched. No push performed.

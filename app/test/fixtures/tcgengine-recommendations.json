@@ -1,0 +1,132 @@
+{
+  "sourceRevision": "b629bcc038cbb40b8c6bf242c2796b02e6db14ef",
+  "description": "Verbatim upstream mechanics. Construction adapters do not replay PHP or establish optimal swaps.",
+  "scenarios": [
+    {
+      "id": "automata-genesis-summons-three-titan-mk-ii-tokens-and-the-tonoris-bonus-buffs-each-by-the-token-count",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "0cb47e358a2c03b79d2bb367d851053042967b962e38119e009c763525caf991",
+      "excerpt": "gaScenario('automata-genesis-summons-three-titan-mk-ii-tokens-and-the-tonoris-bonus-buffs-each-by-the-token-count')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->champion(cardName: 'Tonoris, Lone Mercenary', lineage: ['Tonoris, Creation\\'s Will'])\n    ->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')->seed('myHand', 'Dungeon Guide')\n    ->seed('myHand', 'Automata Genesis')\n    ->play('Automata Genesis')->pay(12)\n    ->expectZoneCount('myField', 4, 1, 'The champion and three Titan Mk II tokens')\n    ->expectProperty('p1Field-1', 'Counters', '{\"buff\":3}', 'Three tokens: three buff counters on each')\n    ->expectProperty('p1Field-3', 'Counters', '{\"buff\":3}', 'Including the third token')\n    ->tested('Automata Genesis')\n    ->covers(['summon', 'token', 'tonoris-bonus', 'counter'], '**Summon** three Titan Mk II tokens.', '[Tonoris Bonus] Put **X** **buff** counters on each token ally you control, where **X** is the amount of tokens you control.')\n    ->register();"
+    },
+    {
+      "id": "cordelia-aurous-kaiser-enter-summons-two-automaton-drones",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "86342a184c66afc2926a5831ae7c121d87d8f1fa2b8007fd5842cea2806433bc",
+      "excerpt": "gaScenario('cordelia-aurous-kaiser-enter-summons-two-automaton-drones')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Cordelia, Aurous Kaiser', classBonus: true)\n    ->seed('myHand', 'Cordelia, Aurous Kaiser')\n    ->play('Cordelia, Aurous Kaiser')->pay(5)\n    ->expectZoneCount('myField', 4, 1, 'The champion, Cordelia and two Automaton Drone tokens')\n    ->tested('Cordelia, Aurous Kaiser')\n    ->covers(['on-enter', 'summon', 'token'], '**On Enter:** **Summon** two Automaton Drone tokens.')\n    ->register();"
+    },
+    {
+      "id": "cordelia-aurous-kaiser-class-bonus-tokens-are-reservable",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "2e8e7edd6935e7b43f2ba9154fb49ded3250030a8dbe4b57c375ba774619e912",
+      "excerpt": "gaScenario('cordelia-aurous-kaiser-class-bonus-tokens-are-reservable')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Cordelia, Aurous Kaiser', classBonus: true)\n    ->seed('myField', 'Cordelia, Aurous Kaiser')\n    ->seed('myField', 'Automaton Drone')\n    ->seed('myHand', 'Dungeon Guide')\n    ->play('Dungeon Guide')->answer(1, 'myField-2')->answer(1, 'myField-3')->answer(1, 'myField-4')\n    ->expectZoneCount('myMemory', 0, 1, 'Nothing was paid from hand: the three tokens were rested instead')\n    ->expectZoneCount('myHand', 7, 1, 'Only the played card left the hand')\n    ->tested('Cordelia, Aurous Kaiser')\n    ->covers(['class-bonus', 'reservable', 'token'], '[Class Bonus] Token objects you control have **reservable**.')\n    ->register();"
+    },
+    {
+      "id": "blade-of-creation-class-bonus-costs-one-less-per-token-and-cleaves",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "f40dd6acf94a80d1891fa72f146b689be65dbe04b51fb1a40cff651a8cfd25df",
+      "excerpt": "gaScenario('blade-of-creation-class-bonus-costs-one-less-per-token-and-cleaves')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Blade of Creation', classBonus: true)\n    ->seed('myField', 'Automaton Drone')->seed('myField', 'Automaton Drone')->seed('myField', 'Automaton Drone')\n    ->seed('myField', 'Dungeon Guide', player: 2)->seed('myField', 'Dungeon Guide', player: 2)\n    ->seed('myHand', 'Blade of Creation')\n    ->reachTurnThree()\n    ->play('Blade of Creation')->pay(4)\n    ->expectZoneCount('theirField', 1, 1, 'Cleave: both opposing Dungeon Guides took 4 and died')\n    ->expectDamage('p2Field-0', 4, 'And the opposing champion was attacked too')\n    ->tested('Blade of Creation')\n    ->covers(['class-bonus', 'cost-reduction', 'tokens', 'cleave'], '[Class Bonus] This card costs 1 less to activate for each token object you control.', '**Cleave**')\n    ->register();"
+    },
+    {
+      "id": "atmos-armor-type-ares-enter-summons-two-atmos-shield-tokens-and-class-bonus-gains-power-per-shield",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "dd1e5f242538f1a82300deb360064d1611dea99762b45da73c3b59ed535d0b58",
+      "excerpt": "gaScenario('atmos-armor-type-ares-enter-summons-two-atmos-shield-tokens-and-class-bonus-gains-power-per-shield')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Atmos Armor Type-Ares', classBonus: true)\n    ->seed('myHand', 'Atmos Armor Type-Ares')\n    ->play('Atmos Armor Type-Ares')->pay(3)\n    ->expectZoneCount('myField', 4, 1, 'The ally and two Atmos Shield tokens beside the champion')\n    ->expectPower('p1Field-1', 3, '1 power + 1 for each of the two Atmos Shield allies')\n    ->tested('Atmos Armor Type-Ares')\n    ->covers(['on-enter', 'summon', 'token', 'class-bonus', 'stat-change'], '**On Enter:** **Summon** two Atmos Shield tokens.', '[Class Bonus] CARDNAME gets +1 [POWER] for each ally named Atmos Shield you control.')\n    ->register();"
+    },
+    {
+      "id": "production-crawldroid-enter-summons-two-powercell-tokens",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "39d1b7540468c257257ff0214ebebfeae318cd2c384017948fff6d2f300323b4",
+      "excerpt": "gaScenario('production-crawldroid-enter-summons-two-powercell-tokens')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Production Crawldroid')\n    ->seed('myHand', 'Production Crawldroid')\n    ->play('Production Crawldroid')->pay(3)\n    ->expectZoneCount('myField', 4, 1, 'The champion, the ally and two Powercell tokens')\n    ->tested('Production Crawldroid')\n    ->covers(['on-enter', 'summon', 'token'], '**On Enter:** **Summon** two Powercell tokens.')\n    ->register();"
+    },
+    {
+      "id": "reactivate-drone-summons-a-rested-automaton-drone-with-a-buff-counter",
+      "path": "DevTools/ga-fixtures/neos.php",
+      "fileSha256": "7b849e0ce1a972c5fda67f90286b02c856ae03eed197d129e4752c6f37b28c50",
+      "excerptSha256": "cf31d4616b5d1b5ce5d8107ff2272752f959fc157eb6e578a916aa31f8beeac8",
+      "excerpt": "gaScenario('reactivate-drone-summons-a-rested-automaton-drone-with-a-buff-counter')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Reactivate Drone', classBonus: true)\n    ->seed('myHand', 'Reactivate Drone')\n    ->play('Reactivate Drone')->pay(2)\n    ->expectProperty('p1Field-1', 'Counters', '{\"buff\":1}', 'A buff counter')\n    ->expectProperty('p1Field-1', 'Status', '1', 'Rested')\n    ->tested('Reactivate Drone')\n    ->covers(['summon', 'token', 'counter', 'rested'], '**Summon** an Automaton Drone token rested with a **buff** counter on it.')\n    ->register();"
+    },
+    {
+      "id": "tonoris-genesis-aegis-recollection-obelisk",
+      "path": "DevTools/ga-fixtures/cards-t.php",
+      "fileSha256": "ae1c989c4d0c50fb5d191547a11eb901a4c4d12cd73398c74d49f07e50d3a402",
+      "excerptSha256": "3a76da381f1bea01f1ea1c42f6e8b2afcd2ec50f305df8c01ee9f14f613e8fe8",
+      "excerpt": "gaScenario('tonoris-genesis-aegis-recollection-obelisk')\n    ->deckTemplate('lorraine-windslice', 'Dungeon Guide')\n    ->champion(cardName: 'Tonoris, Genesis Aegis')\n    ->endTurn()\n    ->endTurn(2)->pass(1)->target('myTempZone-0')\n    ->tested('Tonoris, Genesis Aegis')\n    ->expectZoneCount('myField', 2, 1, 'choosing an Obelisk summons it onto the field')\n    ->expectProperty('p1Field-1', 'CardID', 'wk0pw0y6is', 'At beginning of recollection phase, choosing Obelisk of Armaments summons it')\n    ->register();"
+    },
+    {
+      "id": "archon-broadsword-class-bonus-token-power",
+      "path": "DevTools/ga-fixtures/cards-a.php",
+      "fileSha256": "635f24f71eed53e4b1021caf99ef2f389284e95e33fa0f4299822b48f344c16e",
+      "excerptSha256": "06dcb9bb8a9c1b6a9b3efc46ac50320d16d2cd897d699e6041bab91851ffd911",
+      "excerpt": "gaScenario('archon-broadsword-class-bonus-token-power')\n    ->standardDeck('Archon Broadsword')\n    ->seed('myField', 'Tonoris, Lone Mercenary', player: 2)\n    ->seed('myField', 'Automaton Drone', player: 2)\n    ->seed('myField', 'Automaton Drone', player: 2)\n    ->seed('myField', 'Archon Broadsword', player: 2, properties: ['Counters' => ['durability' => 1]])\n    ->endTurn()\n    ->action(2, 10002, 'myField-0!FSM!')->answer(2, 'myField-4')->answer(2, 'theirField-0')->pay(2, 2)->pass(2)\n    ->pass(1)\n    ->tested('Archon Broadsword')\n    ->expectDqEmpty()\n    ->expectDamage('p1Field-0', 4, '2 base + 1 [Class Bonus] POWER per token (2 tokens)')\n    ->register();"
+    },
+    {
+      "id": "neos-sight-eight-objects-memory-draw",
+      "path": "DevTools/ga-fixtures/cards-n.php",
+      "fileSha256": "931aad28f7290b7d8124ec09f8ae3751d7bdce17fec361cc03c904620ec81042",
+      "excerptSha256": "d75dd1dba91b86f5f06fe241c8e983f5cef344b9c6b383d7567c70dc3b1ef403",
+      "excerpt": "gaScenario('neos-sight-eight-objects-memory-draw')\n    ->standardDeck('Neos Sight')\n    ->readyFor('Neos Sight')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myField', 'Dungeon Guide')\n    ->seed('myHand', 'Neos Sight')\n    ->castSpell('Neos Sight', window: 'me')\n    ->expectDqEmpty()\n    ->expectZoneCount('myMemory', 1, 1, 'controlling 8+ objects also draws a card into memory')\n    ->register();"
+    },
+    {
+      "id": "dormant-sacrificial-altar-sacrifice-automaton-and-human-mills-two",
+      "path": "DevTools/ga-fixtures/cards-d.php",
+      "fileSha256": "18cd322668aa01cc17292cf1cda9c75fd36c2b6b2cc60075f3d81898634b6083",
+      "excerptSha256": "e3e53dbe332f90ed348d12b81749b7d7bb62993d70786907fddd8ddefa07c3b8",
+      "excerpt": "gaScenario('dormant-sacrificial-altar-sacrifice-automaton-and-human-mills-two')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Fire\n# Main\n10 Dungeon Guide\n10 Fluffy Shopkeep\n\nDECK\n    )\n    ->seed('myField', 'Dormant Sacrificial Altar')\n    ->seed('myField', 'Shieldroid')\n    ->seed('myField', 'Coy Bouclier')\n    ->deckTop(['Dungeon Guide', 'Fluffy Shopkeep', 'Charge the Soul'])\n    ->action(1, 10001, 'myField-1!CustomInput!Activate:0')->target('myField-2')->target('myField-2')\n    ->tested('Dormant Sacrificial Altar')\n    ->register();"
+    },
+    {
+      "id": "the-eternal-kingdom-class-bonus-domains-you-control-have-reservable",
+      "path": "DevTools/ga-fixtures/norm-domains2.php",
+      "fileSha256": "45e8811eaa03b0810d6d64ef431aa1b3917a2872b53c92fc6aad8423bf879359",
+      "excerptSha256": "459f3eb2aa3c09d0fd47c95d9b8a2d468385599cd39a072a78bc884bb179f4f8",
+      "excerpt": "gaScenario('the-eternal-kingdom-class-bonus-domains-you-control-have-reservable')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('The Eternal Kingdom', classBonus: true)\n    ->seed('myField', 'The Eternal Kingdom')\n    ->seed('myField', 'Hub of Innovation')\n    ->seed('myHand', 'Cell Production')\n    ->play('Cell Production')->pay(2)->answer(1, 'myField-2')\n    ->expectProperty('p1Field-2', 'Status', '1', 'The domain was rested to pay for 1 of the reserve cost')\n    ->tested('The Eternal Kingdom')\n    ->covers(['class-bonus', 'reservable', 'static'], '[Class Bonus] Domains you control have **reservable**.')\n    ->register();"
+    },
+    {
+      "id": "edge-of-tomorrow-scavenge-eight-for-a-domain-card",
+      "path": "DevTools/ga-fixtures/norm-actions6.php",
+      "fileSha256": "c3cb566fcb60a0a6cee9d9b8a36fe610a16131e8431139bde2e8a62225697117",
+      "excerptSha256": "1cb6158f1206f49d14083dc5eebe90b64d301b98b0802ada057623dd6279ed17",
+      "excerpt": "gaScenario('edge-of-tomorrow-scavenge-eight-for-a-domain-card')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Edge of Tomorrow')\n    ->deckTop(['Dungeon Guide', 'Wool Brook'])\n    ->seed('myHand', 'Edge of Tomorrow')\n    ->castSpell('Edge of Tomorrow', pay: 2, window: '')\n    ->expectCardExists('myHand', 'Wool Brook', 'The domain within the top eight was put into the hand')\n    ->tested('Edge of Tomorrow')\n    ->covers(['scavenge'], '**Scavenge 8** for a domain card.')\n    ->register();"
+    },
+    {
+      "id": "lost-wisdom-class-bonus-with-a-unique-ally-costs-two-less-and-returns-a-spell-to-memory",
+      "path": "DevTools/ga-fixtures/norm-actions4.php",
+      "fileSha256": "b318d910f89a1f670cdd86fb88567291e03578201b58b0c9a19681786f5712f7",
+      "excerptSha256": "6fee8da8d78de795f32aa457670cf50e6c6ba1d463b8bcbd40592056ed38cc26",
+      "excerpt": "gaScenario('lost-wisdom-class-bonus-with-a-unique-ally-costs-two-less-and-returns-a-spell-to-memory')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Lost Wisdom', classBonus: true)\n    ->seed('myField', 'Camil, Basked Abundance')\n    ->seed('myGraveyard', 'Purification')\n    ->seed('myHand', 'Lost Wisdom')\n    ->castSpell('Lost Wisdom', pay: 2, window: '')->answer(1, 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Purification', 'The Spell card returned from the graveyard to memory')\n    ->tested('Lost Wisdom')\n    ->covers(['class-bonus', 'cost-reduction', 'zone-movement'], '[Class Bonus] This card costs 2 less to activate if you control one or more unique allies.', 'Return a Spell card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "imperial-apprentice-spell-activation-banishes-a-floating-memory-card-to-draw",
+      "path": "DevTools/ga-fixtures/water-allies.php",
+      "fileSha256": "c310f02ca93b681ff949d96c067e902457c3fdf11f6ca41220ce2c13eab536ef",
+      "excerptSha256": "5ca72e475c4cb846ac1db4e3777901256c50cbf1c8a10d17e6f0f66a3c7ce55c",
+      "excerpt": "gaScenario('imperial-apprentice-spell-activation-banishes-a-floating-memory-card-to-draw')\n    ->standardDeck('Imperial Apprentice')\n    ->readyFor('Imperial Apprentice')\n    ->seed('myField', 'Imperial Apprentice')\n    ->seed('myGraveyard', 'Croaking Webfoot')\n    ->seed('myHand', 'Bolt of Diamonds')\n    ->castSpell('Bolt of Diamonds', pay: 2, target: 'theirField-0')->answer(1, 'myGraveyard-0')->pass(1)->pass(2)\n    ->expectZoneCount('myBanish', 1, 1, 'The floating memory card was banished')\n    ->expectDamage('p2Field-0', 1, 'The Bolt of Diamonds resolved')\n    ->tested('Imperial Apprentice')\n    ->covers(['triggered-ability', 'spell-activation', 'floating-memory', 'banish', 'draw'], 'Whenever you activate a Spell card, you may banish a card with **floating memory** from your graveyard. If you do, draw a card.')\n    ->register();"
+    },
+    {
+      "id": "winbless-forecaster-adds-one-to-enlighten-counters-put-on-your-champion",
+      "path": "DevTools/ga-fixtures/wind-allies5.php",
+      "fileSha256": "11f16ca8027d2eef9d491625d7c6877e7ad05c5d8beebad9149eccfdab4b1972",
+      "excerptSha256": "d3174666ef2092be2c0e3fd51b26cc32a51ab3189de0562be9eb5694f783ff40",
+      "excerpt": "gaScenario('winbless-forecaster-adds-one-to-enlighten-counters-put-on-your-champion')\n    ->deckTemplate('quiet', 'Winbless Forecaster')\n    ->readyFor('Winbless Forecaster', classBonus: true)\n    ->seed('myField', 'Winbless Forecaster')\n    ->seed('myField', 'Windrider Mage')\n    ->reachTurnThree()\n    ->answer(1, 'YES')\n    ->expectProperty('p1Field-0', 'Counters', '{\"_overrides\":{\"classes\":\"MAGE\"},\"enlighten\":2}', 'Windrider Mage puts one enlighten counter on the champion; the Forecaster makes it two')\n    ->tested('Winbless Forecaster')\n    ->covers(['replacement-effect', 'counter'], 'If one or more **enlighten** counters would be put on your champion, that many plus one **enlighten** counters are put on your champion instead.')\n    ->register();"
+    },
+    {
+      "id": "primeval-ritual-sacrifices-an-ally-and-returns-a-wind-card-to-memory",
+      "path": "DevTools/ga-fixtures/wind-actions2.php",
+      "fileSha256": "39c0c4d3b8d3e609a2081f3625e803a0f268b3f05a568783ea1cc3617b8d82d8",
+      "excerptSha256": "4d20c1293caa2cb5b7271505f8c20e796a4802ee4f0e1288e702dea36367d769",
+      "excerpt": "gaScenario('primeval-ritual-sacrifices-an-ally-and-returns-a-wind-card-to-memory')\n    ->standardDeck('Primeval Ritual')\n    ->readyFor('Primeval Ritual')\n    ->seed('myField', 'Giant Tortoise')\n    ->seed('myGraveyard', 'Aenean Reclaim')\n    ->seed('myHand', 'Primeval Ritual')\n    ->play('Primeval Ritual')->answer(1, 'myField-1')->pay(3)->pass(1)->answer(1, 'myGraveyard-0')\n    ->expectCardExists('myGraveyard', 'Giant Tortoise', 'The sacrificed ally is in the graveyard')\n    ->expectCardExists('myMemory', 'Aenean Reclaim', 'The wind card returned from the graveyard to memory')\n    ->expectZoneCount('myField', 1, 1, 'The ally was sacrificed: only the champion remains')\n    ->expectZoneCount('myMemory', 4, 1, 'Three paid cards plus the returned card')\n    ->tested('Primeval Ritual')\n    ->covers(['additional-cost', 'sacrifice', 'zone-movement'], 'As an additional cost to activate this card, sacrifice an ally.', 'Return target wind element card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "primeval-ritual-cannot-be-activated-without-an-ally-to-sacrifice",
+      "path": "DevTools/ga-fixtures/wind-actions2.php",
+      "fileSha256": "39c0c4d3b8d3e609a2081f3625e803a0f268b3f05a568783ea1cc3617b8d82d8",
+      "excerptSha256": "8ba793eef7b34010699735d05e1137801ef2501c8288352abc15d6c52a737163",
+      "excerpt": "gaScenario('primeval-ritual-cannot-be-activated-without-an-ally-to-sacrifice')\n    ->standardDeck('Primeval Ritual')\n    ->readyFor('Primeval Ritual')\n    ->seed('myGraveyard', 'Aenean Reclaim')\n    ->seed('myHand', 'Primeval Ritual')\n    ->action(1, 10002, 'myHand-7!FSM!')\n    ->expectDqEmpty()\n    ->expectZoneCount('myHand', 8, 1, 'Nothing happened: the additional cost cannot be paid')\n    ->expectZoneCount('myGraveyard', 1, 1, 'The graveyard card stayed put')\n    ->tested('Primeval Ritual')\n    ->covers(['additional-cost', 'restriction'], 'As an additional cost to activate this card, sacrifice an ally.')\n    ->register();"
+    }
+  ]
+}

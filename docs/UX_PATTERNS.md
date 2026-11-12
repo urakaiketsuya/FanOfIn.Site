@@ -845,3 +845,12 @@ or present the two scenarios as a confidence interval. Homepage headline, report
 once-per-mount entrances, with feature motion triggered on first visibility. Content stays
 visible without observation support. Reduced motion disables entrances and transitions;
 keyboard focus stops moving artwork, and hover/focus glow never changes layout.
+
+Suggested-change previews reuse the results-only comparison report alongside changed
+cards and package access. Core picks describe observed inclusion without a fabricated
+win-rate gain. Dependency checks run again before accepting a swap. Keep save failures
+in the sheet's persistent footer beside Apply so they remain visible with long reports.
+Verification (2026-11-12): isolated real-catalog preview at 390px and 1280px covered
+waiting/empty states, comparison, keyboard focus restoration, 48px controls, overflow,
+failed local save and retry. Production account saves and native mobile keyboards were
+not exercised.
