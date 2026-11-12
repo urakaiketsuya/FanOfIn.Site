@@ -4,7 +4,7 @@ import Button from "../../components/ui/Button";
 const HOLD_MS = 600;
 const DOUBLE_TAP_MS = 300;
 
-export default function LifeIncrementButton({ player, onAdjust }: { player: number; onAdjust: (amount: number) => void }) {
+export default function LifeAdjustmentButton({ player, direction, disabled, onAdjust }: { player: number; direction: 1 | -1; disabled?: boolean; onAdjust: (amount: number) => void }) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTap = useRef<number | null>(null);
   const suppressClick = useRef(false);
@@ -25,12 +25,13 @@ export default function LifeIncrementButton({ player, onAdjust }: { player: numb
   useEffect(() => () => { if (timer.current !== null) clearTimeout(timer.current); }, []);
 
   return <Button
-    className={`min-h-20! text-3xl! select-none touch-manipulation border-transparent! text-ctp-crust! hover:opacity-90 active:opacity-80 ${player === 1 ? "bg-ctp-blue" : "bg-ctp-peach"}`}
+    className={`min-h-20! text-3xl! select-none touch-manipulation border-2! ${direction === 1 ? `border-transparent! text-ctp-crust! hover:opacity-90 active:opacity-80 ${player === 1 ? "bg-ctp-blue" : "bg-ctp-peach"}` : `bg-ctp-base/40 disabled:opacity-70 ${player === 1 ? "border-ctp-blue! text-ctp-blue!" : "border-ctp-peach! text-ctp-peach!"}`}`}
     variant="secondary"
-    aria-label={`Add life to Player ${player}`}
-    aria-describedby={`life-plus-help-${player}`}
+    disabled={disabled}
+    aria-label={`${direction === 1 ? "Add life to" : "Subtract life from"} Player ${player}`}
+    aria-describedby={`life-adjust-help-${player}`}
     onPointerDown={event => {
-      if (!event.isPrimary || event.button !== 0) return;
+      if (disabled || !event.isPrimary || event.button !== 0) return;
       clearHold();
       suppressClick.current = false;
       activePointer.current = event.pointerId;
@@ -38,7 +39,7 @@ export default function LifeIncrementButton({ player, onAdjust }: { player: numb
         timer.current = null;
         lastTap.current = null;
         suppressClick.current = true;
-        onAdjust(10);
+        onAdjust(10 * direction);
       }, HOLD_MS);
     }}
     onPointerUp={event => {
@@ -51,24 +52,24 @@ export default function LifeIncrementButton({ player, onAdjust }: { player: numb
     onBlur={cancel}
     onContextMenu={event => event.preventDefault()}
     onClick={event => {
-      // Keyboard and assistive activation remain immediate single increments.
+      // Keyboard and assistive activation remain immediate single adjustments.
       if (event.detail === 0) {
         lastTap.current = null;
-        onAdjust(1);
+        onAdjust(direction);
         return;
       }
       if (suppressClick.current) return;
       const now = performance.now();
       if (lastTap.current !== null && now - lastTap.current <= DOUBLE_TAP_MS) {
         lastTap.current = null;
-        // The first tap already added one: the pair must total five.
-        onAdjust(4);
+        // The first tap already adjusted one: the pair must total five.
+        onAdjust(4 * direction);
       } else {
         lastTap.current = now;
-        onAdjust(1);
+        onAdjust(direction);
       }
     }}
   >
-    +
+    {direction === 1 ? "+" : "−"}
   </Button>;
 }
