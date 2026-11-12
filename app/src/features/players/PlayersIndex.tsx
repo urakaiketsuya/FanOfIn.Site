@@ -1,5 +1,5 @@
+import PlayerSearchResult, { PersonAvatar } from "./PlayerSearchResult";
 import { playerDirectoryRows } from "./playerDirectory";
-import { cardImagePath } from "../../lib/previewCards";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
 import { useCompetition } from "../competition/data";
@@ -7,12 +7,9 @@ import { recordPercent, recordSize, type CompetitionPlayer } from "@gatcg/shared
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
-import type { Card } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexPlayers, useOmnidexJudges } from "../tournaments/data";
 import { useEloData, usePlayerDecksData } from "./data";
 import { useChampionCardImages, useNamelessChampionCard } from "./useChampionCardImages";
-import CardImage from "../../components/CardImage";
-import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
@@ -29,21 +26,6 @@ type TabMode = "players" | "judges";
 const TABS: readonly TabMode[] = ["players", "judges"];
 const TAB_LABELS: Record<TabMode, string> = { players: "Players", judges: "Judges" };
 
-function PersonAvatar({ championName, card }: { championName: string; card: Card | undefined }) {
-  return (
-    <CardHoverPreview image={cardImagePath(card)} alt={championName}>
-      <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
-        {card && cardImagePath(card) && (
-          <CardImage
-            image={cardImagePath(card)}
-            alt={championName}
-            className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
-          />
-        )}
-      </div>
-    </CardHoverPreview>
-  );
-}
 
 export default function PlayersIndex() {
   useDocumentTitle(
@@ -154,14 +136,11 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
           const topChampion = topChampionById.get(player.id);
           const card = topChampion ? championImages.get(topChampion) : namelessCard;
           const recentRow = recentById.get(player.id);
-          return <li key={player.id}><Link to={`/players/${player.id}`} className="grid min-h-control min-w-0 gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue sm:grid-cols-[minmax(0,1fr)_minmax(18rem,1fr)]">
-            <div className="flex min-w-0 items-center gap-3"><span className="text-sm tabular-nums text-ctp-subtext0">{rank ? `#${rank}` : "—"}</span><PersonAvatar championName={topChampion ?? 'Nameless Champion'} card={card} /><div className="min-w-0"><span className="block break-words font-semibold">{player.username}</span><span className="text-xs text-ctp-subtext1">{topChampion ?? 'No public decks'}</span>{regions?.get(player.id)?.region && <span className="block text-xs text-ctp-subtext1">{REGION_LABELS[regions.get(player.id)!.region!]} · inferred</span>}</div></div>
-            <div className="grid grid-cols-[0.85fr_1.3fr_1fr] gap-2">
+          return <li key={player.id}><PlayerSearchResult playerId={player.id} name={player.username} rank={rank ?? undefined} championName={topChampion} card={card} region={regions?.get(player.id)?.region ? REGION_LABELS[regions.get(player.id)!.region!] : undefined}>
               <div><strong className="text-lg tabular-nums">{rating ? Math.round(rating.rating) : "—"}</strong><span className="block text-xs text-ctp-subtext1">{rating ? "Rating" : eloData ? "Not yet rated" : eloStatus.phase === "error" ? "Unavailable" : "Loading"}</span>{rating && isProvisionalRating(rating.matches) && <span className="block text-xs text-ctp-yellow">Provisional</span>}</div>
               <div><strong className="break-words text-sm tabular-nums">{rating ? `${rating.wins}–${rating.losses}–${rating.ties}` : "—"}</strong><span className="block text-xs text-ctp-subtext1">All-time W–L–T</span></div>
               <div><strong className="text-lg tabular-nums">{recentRow && recordSize(recentRow.record) ? `${recordPercent(recentRow.record)!.toFixed(0)}%` : '—'}</strong><span className="block text-xs text-ctp-subtext1">Recent wins</span><span className="block text-xs text-ctp-subtext1">{recentRow ? `${recordSize(recentRow.record)} matches` : recent ? 'No recent record' : 'Unavailable'}</span></div>
-            </div>
-          </Link></li>;
+          </PlayerSearchResult></li>;
         })}
       </ol>
 
