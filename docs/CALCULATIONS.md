@@ -7148,3 +7148,27 @@ level; interactive calculators retain their intentional shared numeric condition
 It preserves both latest global seasons and their original sample counts and shares.
 The homepage uses the same sample gates and weighted-result-share calculation as the
 champion results; it does not introduce a win-rate or popularity-growth estimate.
+
+## Best Players (`shared/src/bestPlayers.ts`)
+
+Rank players for each card separately by format and by authoritative event season ID,
+plus an all-time ranking. Sum the existing `weightedScore` (event tier × placement
+percentile complement) across completed public decklists containing the card in main
+or material. Count each player/event and each card once, regardless of quantity or
+section overlap; sideboard-only inclusion does not count. Exclude team formats,
+missing placements, nonnumeric player IDs, and future events. This measures accumulated
+tournament performance with a card in the submitted deck, not in-game card plays or
+causal skill. Volume contributes to the score.
+
+Eligibility requires at least 3 events and 10 recorded matches per player/card/scope.
+These are product guardrails for repeated evidence, not empirically calibrated skill
+thresholds. Rank by unrounded score; scores within 1e-9 share competition rank, so all
+players tied at tenth qualify. Player ID stabilizes ordering within ties. Publish only
+ranks 1–10, including ties. Empty scopes have no qualifying rankings.
+
+The Best Player achievement is one badge per player with any qualifying ranking in
+this snapshot, with the best rank's card, format, and season in its context. Its date
+is the publication date, not a claimed first-earned date. Rebuilds may remove the badge
+when a player's current rankings change; past-season rankings remain eligible. This
+is not a permanent historical unlock ledger. UI and achievements consume the same
+computed rankings. The existing published-data manifest distributes the new artifact.

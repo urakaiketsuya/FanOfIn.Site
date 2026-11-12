@@ -39,6 +39,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-reference-archetypes", file: "analysis/reference-archetypes.json" },
   { key: "analysis-curated-strategies", file: "analysis/curated-strategies.json" },
   { key: "analysis-archetype-taxonomy", file: "analysis/archetype-taxonomy.json" },
+  { key: "analysis-best-players", file: "analysis/best-players.json" },
   { key: "analysis-achievements", file: "analysis/achievements.json" },
   { key: "analysis-hipster", file: "analysis/hipster.json" },
   { key: "analysis-similarity", file: "analysis/similarity.json" },

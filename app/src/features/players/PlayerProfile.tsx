@@ -1,3 +1,4 @@
+import BestPlayers from "../best-players/BestPlayers";
 import PlayerComparison from "./PlayerComparison";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
@@ -255,6 +256,7 @@ export default function PlayerProfile() {
       )}
 
       <TabPanel baseId="player-profile" tab="overview" active={tab}>
+      {tab === "overview" && <BestPlayers playerId={playerId} />}
       {player && <PlayerCompetitionReport playerId={playerId} />}
       {recentEvents.length > 0 && (
         <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <Button variant="ghost" size="sm" onClick={() => setManualTab("events")}>View all {allEvents.length}</Button> : undefined}>

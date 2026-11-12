@@ -1,3 +1,4 @@
+import BestPlayers from "../best-players/BestPlayers";
 import AddCardToDeck from "./AddCardToDeck";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
@@ -354,6 +355,8 @@ export default function CardDetail() {
       </div>
 
       {tabFailure && <div role="alert" className="mt-4 rounded-xl border border-ctp-red/40 bg-ctp-red/10 p-4 text-sm text-ctp-text"><p className="font-semibold">This card analysis could not be loaded.</p><p className="mt-1 text-ctp-subtext0">{tabFailure.error}</p><button type="button" onClick={tabFailure.retry} className="mt-3 min-h-control rounded-lg bg-ctp-red px-4 font-semibold text-ctp-base">Try again</button></div>}
+
+      {showOverview && <BestPlayers cardName={card.name} />}
 
       {showOverview && !tabFailure && (
         <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />

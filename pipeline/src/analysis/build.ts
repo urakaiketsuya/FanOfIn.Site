@@ -1,3 +1,4 @@
+import { computeBestPlayers, withBestPlayerAchievements } from '@gatcg/shared';
 import { writeRegionalStrength } from "./regionalStrength.js";
 import { writeCompetitionReports } from "./competitionReports.js";
 import { buildDeckPriceIndex } from "./deckPriceIndex.js";
@@ -258,7 +259,6 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   await writeFile(path.join(DATA_DIR, "homepage.json"), JSON.stringify(await buildHomepage(deckSightings, archetypeTaxonomy, path.dirname(DATA_DIR))), "utf-8");
 
   const achievements = computeAchievements(completed, ctx, ratings, upsets, deckScores, deckSightings);
-  await writeFile(path.join(DATA_DIR, "achievements.json"), JSON.stringify(achievements), "utf-8");
 
   const { cardNames: deckCardIndexNames, entries: deckCardIndex } = await computeDeckCardIndex(completed, ctx);
   await writeFile(
@@ -266,6 +266,10 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     JSON.stringify({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }),
     "utf-8",
   );
+
+  const bestPlayers = computeBestPlayers({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }, deckSightings, new Date().toISOString());
+  await writeFile(path.join(DATA_DIR, "best-players.json"), JSON.stringify(bestPlayers), "utf-8");
+  await writeFile(path.join(DATA_DIR, "achievements.json"), JSON.stringify(withBestPlayerAchievements(achievements, bestPlayers)), "utf-8");
 
   await writeCompetitionReports(DATA_DIR, completed, ctx, deckPopularityIndex, { generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }, archetypeTaxonomy);
 
