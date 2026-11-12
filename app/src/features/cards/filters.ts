@@ -1,5 +1,5 @@
 import { previewCardSet, PREVIEW_SET } from "../../lib/previewCards";
-import { includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
+import { matchesSearchTerms, searchTextTerms, includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
 import { searchSetPrefix, type Card } from "@gatcg/shared";
 import type { CardTagLookup } from "./cardTags";
@@ -77,10 +77,10 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
   const parsed = parseFilterQuery(filters.name);
   if (parsed.error) return [];
   filters = { ...filters, ...Object.fromEntries(Object.entries(parsed.facets).map(([key, values]) => [key, new Set([...(filters[key as keyof CardFilterState] as Set<string> ?? []), ...values])])) };
-  const name = parsed.text.trim().toLowerCase();
+  const terms = searchTextTerms(parsed.text);
 
   return cards.filter((card) => {
-    if (name && !cardSearchText(card).includes(name)) return false;
+    if (!matchesSearchTerms(cardSearchText(card), terms)) return false;
 
     if (filters.classes.size && !matchesFilterValues(card.classes, filters.classes)) return false;
     if (filters.types.size && !matchesFilterValues(card.types, filters.types)) return false;

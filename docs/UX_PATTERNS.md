@@ -133,7 +133,8 @@ Keep promotional messages outside sticky navigation and stable for the mounted v
 
 ## Homepage discovery
 
-Keep the four task shortcuts directly below the introduction. Returning players get a
+Lead with Explore decks and a secondary Build a deck action; keep Collection and Deck Report
+in a compact shortcut row. Returning players get a
 Continue your decks link before the introduction. Homepage discovery reads the bounded
 `analysis/homepage.json` projection, regenerated with analysis: the latest sighting for
 three distinct champions (event date descending, placement ascending to break ties), plus
@@ -141,7 +142,9 @@ three established families from different champions ordered by player count. Fea
 identity cards are a preview of each family's pool, not an exact tested combo. Link to
 the champion's Builds tab for full families and shared relationships. Show result dates,
 visible loading/error/retry and empty states; retain navigation when data is unavailable.
-Keep one interactive analysis example, with detailed assumptions in calculation docs.
+Pair one featured recap and a smaller follow-up with a compact, card-led draw forecast on
+desktop; stack on phones. Use a published game summary for the featured recap. Keep the
+full report and build comparisons on their detail pages, with analysis assumptions in docs.
 
 ## Deck editing reachability
 
@@ -829,3 +832,7 @@ The homepage highlights broadcast match recaps and Deck Report before tournament
 Recap previews reuse match identities and link to individual timelines, with loading, empty,
 and retry states. The report preview links directly to the example deck's report and offers
 an entry point for the user's own deck.
+
+Card text search requires every space-separated term across name and rules text, including
+reverse faces. Quotes keep phrases together: `LV damage` matches both anywhere, while
+`"draw a card" LV` requires the phrase and LV. Existing facet include/exclude rules still apply.

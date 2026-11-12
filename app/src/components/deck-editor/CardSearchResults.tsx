@@ -1,3 +1,4 @@
+import { matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
 import CardLegalityBadge from "./CardLegalityBadge";
 import type { DeckFormat } from "@gatcg/shared";
 import DisclosureChevron from "../DisclosureChevron";
@@ -18,11 +19,14 @@ export default function CardSearchResults({ format = "UNKNOWN", query, names, ca
   filtered?: boolean; evidence?: ReadonlyMap<string, string>; owned?: ReadonlyMap<string, number>;
 }) {
   const [limit, setLimit] = useState(24);
-  const matches = useMemo(() => filtered ? names : names.filter(name => {
-    const needle = query.trim().toLocaleLowerCase();
-    const card = catalog.get(name);
-    return card ? cardSearchText(card).includes(needle) : name.toLocaleLowerCase().includes(needle);
-  }).sort((a,b) => a.localeCompare(b)), [names, query, catalog, filtered]);
+  const matches = useMemo(() => {
+    if (filtered) return names;
+    const terms = searchTextTerms(query);
+    return names.filter(name => {
+      const card = catalog.get(name);
+      return matchesSearchTerms(card ? cardSearchText(card) : name, terms);
+    }).sort((a,b) => a.localeCompare(b));
+  }, [names, query, catalog, filtered]);
   return <section aria-label="Card catalog" className="mt-3">
     <p role="status" className="mb-2 text-xs text-ctp-subtext0">{matches.length} matching {matches.length === 1 ? "card" : "cards"}</p>
     {!matches.length && <p className="py-4 text-sm text-ctp-subtext1">No cards match. Try another search or clear a filter.</p>}

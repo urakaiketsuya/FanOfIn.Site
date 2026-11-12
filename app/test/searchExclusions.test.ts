@@ -51,3 +51,20 @@ test('literal minus in community tag names is distinct from negation', () => {
  assert.equal(matchesFilterValues(['bird'],positive.facets.tags!),false);
  assert.deepEqual(parseFilterQuery(formatFilterQuery('',positive.facets)),positive);
 });
+
+test('card text requires every term, with quoted phrases and facets preserved', () => {
+ const damage = {...make('Level strike', ['MELODY']), effect: 'Deal damage equal to your champion’s LV.'};
+ const levelOnly = {...make('Level support', []), effect: 'Your champion gets +1 LV.'};
+ const damageOnly = {...make('Strike', []), effect: 'Deal 2 damage.'};
+ const pool = [damage, levelOnly, damageOnly];
+ for (const name of ['LV Damage', 'damage lv', '  LV   DAMAGE  ', '"LV" "Damage"', '"Deal damage" LV', 'LV Damage subtype:melody']) {
+   assert.deepEqual(filterCards(pool, {...emptyFilterState(), name}).map(c => c.name), [damage.name], name);
+ }
+ assert.equal(filterCards(pool, {...emptyFilterState(), name: '"LV Damage"'}).length, 0);
+ assert.equal(filterCards(pool, {...emptyFilterState(), name: 'LV Damage -subtype:melody'}).length, 0);
+ assert.deepEqual(filterCatalog(pool, 'LV Damage', emptyCatalogFilters()).map(c => c.name), [damage.name]);
+ assert.equal(filterCards(pool, {...emptyFilterState(), name: '   '}).length, 3);
+ assert.deepEqual(filterCards(pool, {...emptyFilterState(), name: 'strike LV'}).map(c => c.name), [damage.name]);
+ const reverse = {...levelOnly, editions: [{...levelOnly.editions[0], other_orientations: [{name: 'Reverse', effect: 'Deal damage.'}]}]} as Card;
+ assert.deepEqual(filterCards([reverse], {...emptyFilterState(), name: 'LV damage'}), [reverse]);
+});

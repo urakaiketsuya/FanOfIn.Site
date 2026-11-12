@@ -1,3 +1,4 @@
+import { matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -109,8 +110,8 @@ export default function CardStatsIndex() {
   const rows = useMemo(() => {
     if (!cardStatsData) return [];
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
-    const query = search.trim().toLowerCase();
-    const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || (searchableTextByName.get(c.name) ?? c.name.toLowerCase()).includes(query)));
+    const terms = searchTextTerms(search);
+    const filtered = source.filter((c) => c.deckCount >= minDecks && matchesSearchTerms(searchableTextByName.get(c.name) ?? c.name, terms));
     // "Hype gap" – community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
     // tournament players optimizing for winning), not a performance judgment. Community usage

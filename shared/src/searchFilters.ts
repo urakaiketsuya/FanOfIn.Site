@@ -26,7 +26,16 @@ export function matchesFilterValues(actual: Iterable<string> | undefined, select
 export const SEARCH_FACETS = { class: 'classes', type: 'types', subtype: 'subtypes', element: 'elements', set: 'sets', edition: 'printingSets', rarity: 'rarities', tag: 'tags' } as const;
 export type SearchFacet = typeof SEARCH_FACETS[keyof typeof SEARCH_FACETS];
 export type SearchFacets = Partial<Record<SearchFacet, Set<string>>>;
-/** Plain text keeps its historical phrase matching; only explicit field:value terms are parsed. */
+/** Space-separated terms must all match; quotes keep a multi-word phrase together. */
+export function searchTextTerms(query: string): string[] {
+  return (query.toLowerCase().match(/"[^"]*"|[^\s"]+/g) ?? [])
+    .map(term => term.replace(/^"|"$/g, '').trim()).filter(Boolean);
+}
+export function matchesSearchTerms(text: string, terms: readonly string[]): boolean {
+  const normalized = text.toLowerCase();
+  return terms.every(term => normalized.includes(term));
+}
+/** Extract explicit field:value filters, preserving plain text and quoted phrases. */
 export function parseFilterQuery(query: string): { text: string; facets: SearchFacets; error?: string } {
   const facets: SearchFacets = {}, plain: string[] = [];
   const tokens = query.match(/-?[a-z]+:(?:"[^"]*"|[^\s]*)|"[^"]*"|\S+/gi) ?? [];
