@@ -142,7 +142,7 @@ three established families from different champions ordered by player count. Fea
 identity cards are a preview of each family's pool, not an exact tested combo. Link to
 the champion's Builds tab for full families and shared relationships. Show result dates,
 visible loading/error/retry and empty states; retain navigation when data is unavailable.
-Pair one featured recap and a smaller follow-up with a compact, card-led draw forecast on
+Pair one featured recap and a smaller follow-up with a compact, card-led access finding on
 desktop; stack on phones. Use a published game summary for the featured recap. Keep the
 full report and build comparisons on their detail pages, with analysis assumptions in docs.
 
@@ -836,3 +836,11 @@ an entry point for the user's own deck.
 Card text search requires every space-separated term across name and rules text, including
 reverse faces. Quotes keep phrases together: `LV damage` matches both anywhere, while
 `"draw a card" LV` requires the phrase and LV. Existing facet include/exclude rules still apply.
+
+Homepage Deck Report previews a real card’s natural-draw access from the existing report,
+with copy count, deck size, turn and play order visible. Card access is not a claim of
+successful play or damage. Keep the exact result immediately readable; animate only the
+supporting bar. Homepage headline, report artwork and matchup portraits have brief,
+once-per-mount entrances, with feature motion triggered on first visibility. Content stays
+visible without observation support. Reduced motion disables entrances and transitions;
+keyboard focus stops moving artwork, and hover/focus glow never changes layout.

@@ -1,3 +1,4 @@
+import "./HomeMotion.css";
 import type { AccountUser } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import HomeDeckInsight from "./HomeDeckInsight";
@@ -8,7 +9,7 @@ const homeLinkClass = "inline-flex min-h-12 items-center rounded-lg px-3 text-sm
 
 export default function AboutIntro({ user }: { user: AccountUser | null }) {
   return <div data-component="About">
-    <section className="border-b border-ctp-surface0 px-4 py-8 sm:px-8 sm:py-12">
+    <section className="home-hero border-b border-ctp-surface0 px-4 py-8 sm:px-8 sm:py-12">
       <div className="mx-auto max-w-5xl">
         {user && <div className="mb-6 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-ctp-mantle p-4">
           <p className="min-w-0 break-words font-semibold">Welcome back, {user.displayName}</p>

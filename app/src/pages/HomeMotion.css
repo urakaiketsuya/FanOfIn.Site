@@ -1,0 +1,50 @@
+/* All content is visible before observation and without motion support. */
+.home-hero {
+  background: radial-gradient(ellipse at 80% 10%, color-mix(in srgb, var(--color-ctp-blue) 10%, transparent), transparent 65%);
+}
+.home-interactive {
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+@media (hover: hover) {
+  .home-interactive:hover {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-ctp-blue) 16%, transparent);
+  }
+}
+.home-interactive:focus-visible {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-ctp-blue) 22%, transparent);
+}
+.home-interactive:active {
+  background-color: var(--color-ctp-surface0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero h1 { animation: home-arrive 220ms ease-out both; }
+  .home-report[data-revealed] .home-report-art { animation: home-arrive 220ms ease-out both; }
+  .home-report[data-revealed] .home-access-fill {
+    transform-origin: left;
+    animation: home-fill 220ms ease-out both;
+  }
+  .home-recap[data-revealed] .match-clash-portraits {
+    --home-slide: -14px;
+    animation: home-match-arrive 220ms ease-out both;
+  }
+  .home-recap[data-revealed] [data-side="right"] .match-clash-portraits { --home-slide: 14px; }
+  /* Stop moving artwork as soon as its action has keyboard focus. */
+  .home-report:focus-within .home-report-art,
+  .home-recap:focus-within .match-clash-portraits,
+  .home-interactive:focus-visible .match-clash-portraits { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-interactive { transition: none; }
+}
+@keyframes home-arrive {
+  from { opacity: 0.5; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes home-match-arrive {
+  from { opacity: 0.5; transform: translateX(var(--home-slide)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes home-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
