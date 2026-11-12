@@ -1,3 +1,4 @@
+import { runAri } from "./arisapothecary/run.js";
 import { writeStoreDirectory } from "./omnidex/stores.js";
 import { buildPrices, writePrices } from "./pricing/build.js";
 import { updatePriceHistory, writePriceHistory } from "./pricing/history.js";
@@ -101,6 +102,10 @@ async function main() {
   if (process.env.GATCG_SILVIE_TAGS_ONLY === "1") {
     await publishCardTags();
     await writeManifest();
+    return;
+  }
+  if (process.env.GATCG_ARI_MODE) {
+    await runAri(process.env.GATCG_ARI_MODE);
     return;
   }
   if (process.env.GATCG_SYD_MODE) {

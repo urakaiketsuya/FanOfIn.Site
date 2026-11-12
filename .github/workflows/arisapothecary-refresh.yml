@@ -1,0 +1,66 @@
+name: Monthly Ari’s Apothecary refresh
+
+on:
+  schedule:
+    - cron: "0 6 3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arisapothecary-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Restore Ari’s Apothecary fetch cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: pipeline/.cache/arisapothecary
+          key: pipeline-cache-ari-${{ github.run_id }}
+          restore-keys: |
+            pipeline-cache-ari-
+
+      - name: Harvest discover listing
+        run: npm run pipeline:ari:harvest
+
+      - name: Publish to data/
+        run: npm run pipeline:ari:build
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/arisapothecary
+          if git diff --cached --quiet; then
+            echo "No data changes this run"
+            exit 0
+          fi
+          git commit -m "chore: monthly Ari’s Apothecary refresh $(date -u +%Y-%m-%d)"
+
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt/5) — fetching and rebasing onto latest main"
+            git fetch origin main
+            git rebase origin/main || exit 1
+          done
+          echo "::error::failed to push updated data after 5 attempts"
+          exit 1

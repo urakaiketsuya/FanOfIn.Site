@@ -1,3 +1,5 @@
+import { listAriDecks } from "../arisapothecary/run.js";
+import { shouldKeepAriDeck } from "../arisapothecary/transform.js";
 import { writeCollectedDecks } from "./collected.js";
 import { loadCommunityStaples } from "../analysis/loadCommunityStaples.js";
 import { computeCommunityCardStaples } from "../analysis/communityCardStaples.js";
@@ -7,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type { CommunityDeckSearchIndex, CommunityDeckSource, CommunitySourceCounts, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary, SleevedDeck, TcgArchitectDeck } from "@gatcg/shared";
 import { slugify } from "@gatcg/shared";
-import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
+import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import { listCachedDecks } from "../shoutatyourdecks/cache.js";
 import { shouldKeepDeck } from "../shoutatyourdecks/filter.js";
 import { withClassifiedFormat } from "../shoutatyourdecks/format.js";
@@ -25,7 +27,7 @@ import { shouldKeepTcgArchitectDeck } from "../tcgarchitect/filter.js";
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/community");
 
 /**
- * Blends all three community deck-builder sources (ShoutAtYourDecks + Sleeved + TcgArchitect) into
+ * Blends community deck-builder sources (ShoutAtYourDecks, Sleeved, TCGArchitect and Ari’s Apothecary) into
  * one population for every site-facing community stat (Community usage badges, Card Stats "Hype
  * gap", Guided Deck Builder's Community population — see app/src/features/community/data.ts's
  * blended hooks), while each source's own raw cache/index/analytics stays fully separate
@@ -117,7 +119,8 @@ export function buildCommunityDeckSearchIndex(
   return { generatedAt: new Date().toISOString(), cardNames, decks };
 }
 
-export async function runCommunityBlend(): Promise<void> {
+/** An explicit catalog supports source-only rebuilds without refreshing unrelated card data. */
+export async function runCommunityBlend(catalogOverride?: CardSignature[]): Promise<void> {
   await writeCollectedDecks();
   const [saydRecords, cachedSleevedRecords, publishedSleevedRecords, cachedTcgaRecords, publishedTcgaRecords] = await Promise.all([
     listCachedDecks(),
@@ -148,9 +151,10 @@ export async function runCommunityBlend(): Promise<void> {
     if (record.deck && shouldKeepTcgArchitectDeck(record.deck)) tcgaDecks.push(record.deck);
   }
 
-  console.log(`community: blending ${saydDecks.length} ShoutAtYourDecks decks + ${sleevedDecks.length} Sleeved decks + ${tcgaDecks.length} TcgArchitect decks`);
+  const ariDecks = (await listAriDecks()).filter(shouldKeepAriDeck);
+  console.log(`community: blending ${saydDecks.length} ShoutAtYourDecks decks + ${sleevedDecks.length} Sleeved decks + ${tcgaDecks.length} TcgArchitect decks + ${ariDecks.length} Ari decks`);
 
-  const catalog = await loadCardCatalog();
+  const catalog = catalogOverride ?? await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);
   await mkdir(path.join(DATA_DIR, "../analysis"), { recursive: true });
   await writeJsonAtomic(path.join(DATA_DIR, "../analysis/community-card-staples.json"), computeCommunityCardStaples(await loadCommunityStaples(), cardIndex), 0);
@@ -159,9 +163,9 @@ export async function runCommunityBlend(): Promise<void> {
   await mkdir(DATA_DIR, { recursive: true });
 
   const byFormatCounts = {
-    STANDARD: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
-    PANTHEON: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
-    UNKNOWN: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
+    STANDARD: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0, arisapothecary: 0 },
+    PANTHEON: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0, arisapothecary: 0 },
+    UNKNOWN: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0, arisapothecary: 0 },
   } satisfies CommunitySourceCounts["byFormat"];
 
   for (const format of ["STANDARD", "PANTHEON"] as const) {
@@ -169,16 +173,19 @@ export async function runCommunityBlend(): Promise<void> {
       ...saydDecks.filter((d) => d.format === format),
       ...sleevedDecks.filter((d) => d.format === format),
       ...tcgaDecks.filter((d) => d.format === format),
+      ...ariDecks.filter((d) => d.format === format),
     ];
     const summaries: ShoutAtYourDecksDeckSummary[] = [
       ...saydSummaries.filter((d) => d.format === format),
       ...sleevedDecks.filter((d) => d.format === format),
       ...tcgaDecks.filter((d) => d.format === format),
+      ...ariDecks.filter((d) => d.format === format),
     ];
     byFormatCounts[format] = {
       shoutatyourdecks: saydDecks.filter((d) => d.format === format).length,
       sleeved: sleevedDecks.filter((d) => d.format === format).length,
       tcgarchitect: tcgaDecks.filter((d) => d.format === format).length,
+      arisapothecary: ariDecks.filter((d) => d.format === format).length,
     };
 
     const normalizedDecks = decksWithLists.map(withNormalizedChampion);
@@ -195,6 +202,7 @@ export async function runCommunityBlend(): Promise<void> {
       { source: "shoutatyourdecks", decks: saydDecks.filter((d) => d.format === format) },
       { source: "sleeved", decks: sleevedDecks.filter((d) => d.format === format) },
       { source: "tcgarchitect", decks: tcgaDecks.filter((d) => d.format === format) },
+      { source: "arisapothecary", decks: ariDecks.filter((d) => d.format === format) },
     ]);
 
     const dir = format === "STANDARD" ? DATA_DIR : path.join(DATA_DIR, "pantheon");

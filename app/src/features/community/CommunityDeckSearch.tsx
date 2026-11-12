@@ -19,6 +19,7 @@ const SOURCE_LABELS: Record<CommunityDeckSource, string> = {
   shoutatyourdecks: "ShoutAtYourDecks",
   sleeved: "Sleeved",
   tcgarchitect: "TCGArchitect",
+  arisapothecary: "Ari’s Apothecary",
 };
 
 function detailPath(deck: CommunityDeckSearchEntry): string {
@@ -67,7 +68,7 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
 
 function CommunityDeckRow({ deck, format, cardNames, cardsByName }: { deck: CommunityDeckSearchEntry; format: DeckFormat; cardNames: string[]; cardsByName: Map<string, Card> }) {
   const [expanded, setExpanded] = useState(false);
-  const [detail, setDetail] = useState<{ materialDeck: DeckLine[]; mainDeck: DeckLine[]; sideDeck: DeckLine[] } | null>(null);
+  const [detail, setDetail] = useState<{ materialDeck: DeckLine[]; pantheonDeck?: DeckLine[]; mainDeck: DeckLine[]; sideDeck: DeckLine[] } | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "loaded" | "error">("idle");
   useEffect(() => {
     if (!expanded || status !== "idle") return;
@@ -80,7 +81,7 @@ function CommunityDeckRow({ deck, format, cardNames, cardsByName }: { deck: Comm
   const lines = (values: DeckLine[]) => values.map(line => ({ card: line.name, quantity: line.quantity }));
   const indexedNames = deck.cardIndexes.map(index => cardNames[index]).filter(Boolean);
   const materialNames = indexedNames.filter(name => cardsByName.get(name)?.types.some(type => type === "CHAMPION" || type === "REGALIA"));
-  const decklist = detail ? { material: lines(detail.materialDeck), main: lines(detail.mainDeck), sideboard: lines(detail.sideDeck) } : null;
+  const decklist = detail ? { material: lines([...detail.materialDeck, ...(detail.pantheonDeck ?? [])]), main: lines(detail.mainDeck), sideboard: lines(detail.sideDeck) } : null;
   return <DeckPreviewCard cardsByName={cardsByName} model={{
     id: `${deck.source}:${deck.id}`, title: deck.title || "Untitled deck",
     decklist,
@@ -89,7 +90,7 @@ function CommunityDeckRow({ deck, format, cardNames, cardsByName }: { deck: Comm
     metadata: deck.author || undefined, mainCount: detail ? undefined : deck.mainCount,
     preview: { label: `${materialNames.length ? "Featured material cards" : "Featured cards"} · quantities available in the full list`, lines: (materialNames.length ? materialNames : indexedNames).slice(0, 3).map(name => ({ name })) },
     actions: <>{decklist && <DeckPreviewListActions decklist={decklist} title={deck.title} format={format} />}<a href={deck.url} target="_blank" rel="noreferrer" className={`${deckPreviewActionClass} text-ctp-blue`}>Open source ↗</a></>,
-  }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <div className="mt-2 border-t border-ctp-surface1 pt-3">{status === "loaded" && detail ? <div className="grid gap-3 text-xs text-ctp-subtext1 "><DeckSection title="Material" cardsByName={cardsByName} lines={detail.materialDeck} /><DeckSection title="Main deck" cardsByName={cardsByName} lines={detail.mainDeck} />{detail.sideDeck.length > 0 && <DeckSection title="Sideboard" cardsByName={cardsByName} lines={detail.sideDeck} />}</div> : status === "error" ? <InlineState tone="danger">The local decklist file is unavailable.<button type="button" onClick={() => setStatus("idle")} className={`${deckPreviewActionClass} text-ctp-blue`}>Retry</button></InlineState> : <InlineState>Loading decklist…</InlineState>}</div> }} />;
+  }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <div className="mt-2 border-t border-ctp-surface1 pt-3">{status === "loaded" && detail ? <div className="grid gap-3 text-xs text-ctp-subtext1 "><DeckSection title="Material" cardsByName={cardsByName} lines={detail.materialDeck} />{Boolean(detail.pantheonDeck?.length) && <DeckSection title="Boons" cardsByName={cardsByName} lines={detail.pantheonDeck!} />}<DeckSection title="Main deck" cardsByName={cardsByName} lines={detail.mainDeck} />{detail.sideDeck.length > 0 && <DeckSection title="Sideboard" cardsByName={cardsByName} lines={detail.sideDeck} />}</div> : status === "error" ? <InlineState tone="danger">The local decklist file is unavailable.<button type="button" onClick={() => setStatus("idle")} className={`${deckPreviewActionClass} text-ctp-blue`}>Retry</button></InlineState> : <InlineState>Loading decklist…</InlineState>}</div> }} />;
 }
 
 function DeckSection({ title, lines, cardsByName }: { title: string; lines: DeckLine[]; cardsByName: Map<string, Card> }) {

@@ -1,0 +1,436 @@
+{
+  "id": "ccb6c529-16d5-48b3-873b-31063a534411",
+  "name": "Astra Diana PRD",
+  "is_public": true,
+  "format": "Constructed",
+  "creator_username": "atto",
+  "updated_at": "2026-11-12T04:23:05.711098+00:00",
+  "cards": {
+    "main": [
+      {
+        "name": "Aetheric Calibration",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Backstep",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Charge the Soul",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Dungeon Guide",
+        "count": 4,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "MAGE",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Prudent Nock",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Reposition",
+        "count": 2,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Engulf",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL",
+          "REACTION"
+        ]
+      },
+      {
+        "name": "Fracturize",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Krustallan Archer",
+        "count": 2,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "RANGER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Memory Invocation",
+        "count": 2,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Refreshing Charge",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Tactical Retreat",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SKILL",
+          "REACTION"
+        ]
+      },
+      {
+        "name": "Undercurrent Vantage",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Weaving Manastream",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Cometary Vantage",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Cosmic Focus",
+        "count": 4,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Guided Starlight",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Vanishing Eclipse",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERCHARGE",
+          "SPELL"
+        ]
+      }
+    ],
+    "boons": [],
+    "tokens": [],
+    "material": [
+      {
+        "name": "Spirit of Water",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "SPIRIT"
+        ]
+      },
+      {
+        "name": "Diana, Aether Dilettante",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Diana, Judgment's Arrow",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Diana, Moonpiercer",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Backup Charger",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Flash Grenade",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "RANGER",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Lost Providence",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPECTER",
+          "ARTIFACT"
+        ]
+      },
+      {
+        "name": "Quickstep Treads",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "RANGER",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Seeker's Aetherwing",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "WEAPON"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERWING"
+        ]
+      },
+      {
+        "name": "Aquamirage Whisper",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "WEAPON"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERWING"
+        ]
+      },
+      {
+        "name": "Teardrop Diadem",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Pleiades, Celestial Genesis",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "WEAPON"
+        ],
+        "subtypes": [
+          "RANGER",
+          "AETHERWING"
+        ]
+      }
+    ],
+    "sideboard": [
+      {
+        "name": "Nullifying Lantern",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Smoke Bombs",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "ASSASSIN",
+          "BAUBLE"
+        ]
+      },
+      {
+        "name": "Topsy Decree",
+        "count": 3,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Frozen Dismissal",
+        "count": 2,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL",
+          "REACTION"
+        ]
+      },
+      {
+        "name": "Krustallan Archer",
+        "count": 2,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "RANGER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Poised Occlusion",
+        "count": 2,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "RANGER",
+          "SPELL",
+          "REACTION"
+        ]
+      }
+    ]
+  }
+}

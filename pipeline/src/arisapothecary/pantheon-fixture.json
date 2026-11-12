@@ -1,0 +1,928 @@
+{
+  "id": "e5b237c3-d97e-43ed-9dc5-34528bdccb65",
+  "name": "Allen Genbu Pantheon",
+  "is_public": true,
+  "format": "Pantheon",
+  "creator_username": "atto",
+  "updated_at": "2026-11-12T00:54:13.762054+00:00",
+  "cards": {
+    "main": [
+      {
+        "name": "Creative Shock",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Creative Tinder",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Lost in Thought",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Tidestone Bovine",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ANIMAL",
+          "BULL"
+        ]
+      },
+      {
+        "name": "Package Courier",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "WARRIOR",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Hasty Messenger",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "WARRIOR",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Song of Frost",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Memory Invocation",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Dire Requiem",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Sly Songstress",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HUMAN",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Steady Verse",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Empowering Harmony",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "HARMONY"
+        ]
+      },
+      {
+        "name": "Carpsong Coda",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "HARMONY"
+        ]
+      },
+      {
+        "name": "Embersong",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Lively Chorale",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Erupting Rhapsody",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SKILL",
+          "HARMONY"
+        ]
+      },
+      {
+        "name": "Volcanic Crescendo",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SKILL",
+          "HARMONY"
+        ]
+      },
+      {
+        "name": "Current Groover",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "RESONATOR",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Blissful Calling",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL",
+          "MELODY"
+        ]
+      },
+      {
+        "name": "Throne-Keeper Bullfrog",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "GUARDIAN",
+          "ANIMAL",
+          "HUMAN",
+          "FROG"
+        ]
+      },
+      {
+        "name": "Languid Toadtroll",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "BEAST",
+          "FROG"
+        ]
+      },
+      {
+        "name": "Briny Polliwog",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "GUARDIAN",
+          "TAMER",
+          "ANIMAL",
+          "FROG"
+        ]
+      },
+      {
+        "name": "Baby Red Slime",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ANIMAL",
+          "SLIME"
+        ]
+      },
+      {
+        "name": "Shatter the Brittle",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FATEBOUND",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Red Slime",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "BEAST",
+          "SLIME"
+        ]
+      },
+      {
+        "name": "Relic of Dancing Embers",
+        "count": 1,
+        "types": [
+          "PHANTASIA"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ARTIFACT"
+        ]
+      },
+      {
+        "name": "Tidal Fractal",
+        "count": 1,
+        "types": [
+          "PHANTASIA"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "MAGE",
+          "FRACTAL"
+        ]
+      },
+      {
+        "name": "Fractal of Rain",
+        "count": 1,
+        "types": [
+          "PHANTASIA"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "FRACTAL"
+        ]
+      },
+      {
+        "name": "Energetic Beastbonder",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Fireball",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Pelagic Fatestone",
+        "count": 1,
+        "types": [
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FATESTONE"
+        ]
+      },
+      {
+        "name": "Shout at Your Pets",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Dewdrop Hares",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ANIMAL",
+          "RABBIT"
+        ]
+      },
+      {
+        "name": "Herd of the Hearth",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HORSE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Rippleback Terrapin",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ANIMAL",
+          "TURTLE"
+        ]
+      },
+      {
+        "name": "Spark Link",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Singed Emotions",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Fracturize",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Reduce to Ash",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Cremation Ritual",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Turbo Charge",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Five of Diamonds",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "SUITED",
+          "ANIMAL",
+          "WEASEL"
+        ]
+      },
+      {
+        "name": "Return to the Archive",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Unmake Duality",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "GUARDIAN",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Engulf",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL",
+          "REACTION"
+        ]
+      },
+      {
+        "name": "Smack with Flute",
+        "count": 1,
+        "types": [
+          "ATTACK"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FLUTE"
+        ]
+      },
+      {
+        "name": "Musical Curator",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "RESONATOR",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Seaside Ringleader",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Primordial Ritual",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "Liminal Guide",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPECTER"
+        ]
+      },
+      {
+        "name": "Expel the Departed",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FATEBOUND",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Crystallized Destiny",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "TAMER",
+          "SPELL",
+          "REACTION"
+        ]
+      },
+      {
+        "name": "Increasing Danger",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Innervate Fury",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Coiled Fatestone",
+        "count": 1,
+        "types": [
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FATESTONE"
+        ]
+      },
+      {
+        "name": "Found Power",
+        "count": 1,
+        "types": [
+          "ACTION"
+        ],
+        "subtypes": [
+          "MAGE",
+          "SKILL"
+        ]
+      },
+      {
+        "name": "FlameTech Shield",
+        "count": 1,
+        "types": [
+          "ITEM"
+        ],
+        "subtypes": [
+          "WARRIOR",
+          "VELTECH",
+          "SHIELD"
+        ]
+      },
+      {
+        "name": "Scorching Imperilment",
+        "count": 1,
+        "types": [
+          "PHANTASIA"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Tenderheart Guard",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "GUARDIAN",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Shizun of the Ash",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "MAGE",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Three of Hearts",
+        "count": 1,
+        "types": [
+          "ALLY"
+        ],
+        "subtypes": [
+          "WARRIOR",
+          "SUITED",
+          "HUMAN"
+        ]
+      }
+    ],
+    "boons": [
+      {
+        "name": "Greater Boon of Proxia",
+        "count": 1,
+        "types": [
+          "GREATER BOON"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SPELL"
+        ]
+      },
+      {
+        "name": "Lesser Boon of Agni",
+        "count": 1,
+        "types": [
+          "LESSER BOON"
+        ],
+        "subtypes": [
+          "SPIRIT",
+          "SPELL"
+        ]
+      }
+    ],
+    "tokens": [],
+    "material": [
+      {
+        "name": "Spirit of Water",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "SPIRIT"
+        ]
+      },
+      {
+        "name": "Guo Jia, Blessed Scion",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Allen, Beast Beckoner",
+        "count": 1,
+        "types": [
+          "CHAMPION"
+        ],
+        "subtypes": [
+          "TAMER",
+          "HUMAN"
+        ]
+      },
+      {
+        "name": "Fabled Sapphire Fatestone",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "FATESTONE"
+        ]
+      },
+      {
+        "name": "Tabula of Salvage",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Backup Charger",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "The Looking Glass",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "DISTORTION",
+          "ARTIFACT"
+        ]
+      },
+      {
+        "name": "Melodious Flute",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "INSTRUMENT"
+        ]
+      },
+      {
+        "name": "ResonanTech Module",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "RESONATOR",
+          "VELTECH",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Spellward Scepter",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "SCEPTER"
+        ]
+      },
+      {
+        "name": "Proto Key Crest",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "CLERIC",
+          "ARTIFACT"
+        ]
+      },
+      {
+        "name": "Portentous Tanggu",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ARTIFACT"
+        ]
+      }
+    ],
+    "sideboard": [
+      {
+        "name": "Discordia, Harp of Malice",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "INSTRUMENT"
+        ]
+      },
+      {
+        "name": "Beastbond Boots",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ACCESSORY"
+        ]
+      },
+      {
+        "name": "Clockwork Musicbox",
+        "count": 1,
+        "types": [
+          "REGALIA",
+          "ITEM"
+        ],
+        "subtypes": [
+          "TAMER",
+          "ARTIFACT"
+        ]
+      }
+    ]
+  }
+}

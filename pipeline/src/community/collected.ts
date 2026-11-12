@@ -1,3 +1,5 @@
+import { listAriDecks } from "../arisapothecary/run.js";
+import { shouldKeepAriDeck } from "../arisapothecary/transform.js";
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -54,6 +56,10 @@ export async function writeCollectedDecks(): Promise<void> {
       records.push(deck);
       if (deck.mainDeck && deck.materialDeck) provenance.push({ source, id: deck.id, build: digest(`${deck.format ?? 'UNKNOWN'}\n${deckBuildSignature(deck.mainDeck, [...deck.materialDeck, ...(deck.pantheonDeck ?? [])])}`) });
     }
+  }
+  for (const deck of (await listAriDecks()).filter(shouldKeepAriDeck)) {
+    records.push(deck);
+    provenance.push({ source: 'arisapothecary', id: deck.id, build: digest(`${deck.format ?? 'UNKNOWN'}\n${deckBuildSignature(deck.mainDeck, [...deck.materialDeck, ...(deck.pantheonDeck ?? [])])}`) });
   }
   const catalog = JSON.parse(await readFile(path.join(root, "../data/card-catalog.json"), "utf8")) as { cards: Card[] };
   const output = buildCollectedDecks(records, catalog.cards);
