@@ -1,0 +1,73 @@
+{
+  "Veiling Breeze": {
+    "effect": "Reveal any amount of wind element cards from your memory. Until end of turn, if damage would be dealt to your champion, prevent an amount of that damage equal to the amount of cards revealed this way.",
+    "reserve": 1,
+    "element": "WIND",
+    "subtypes": [
+      "ASSASSIN",
+      "SPELL",
+      "REACTION"
+    ]
+  },
+  "Crystallized Destiny": {
+    "effect": "As long as you control two or more Fatestone and/or Fatebound objects, this card costs 2 less to activate.\n\nThe next time damage would be dealt to your champion this turn, prevent that damage. When 7 or more damage is prevented this way, cards your opponents activate this turn cost (2) more to activate.",
+    "reserve": 3,
+    "element": "NORM",
+    "subtypes": [
+      "CLERIC",
+      "TAMER",
+      "SPELL",
+      "REACTION"
+    ]
+  },
+  "Flourishing Restoration": {
+    "effect": "[Diao Chan Bonus] You may ignore this card's elemental requirements as you activate it. If you do, it costs 2 more to activate.\n\n**Recover 3**. Then for each of up to two allies you don't control, **recover 3** again.",
+    "reserve": 2,
+    "element": "TERA",
+    "subtypes": [
+      "CLERIC",
+      "SPELL",
+      "REACTION"
+    ]
+  },
+  "Aenean Ward": {
+    "effect": "Prevent the next 2 damage that would be dealt to target unit this turn.\n\n[Class Bonus] [Level 3+] Draw a card. *(Apply this effect only if your champion’s class matches this card’s class and only if your champion is level 3 or higher.)*",
+    "reserve": 1,
+    "element": "NORM",
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "AENEAN",
+      "SPELL",
+      "REACTION"
+    ]
+  },
+  "Spellshield: Arcane": {
+    "effect": "[Class Bonus] This card costs 1 less to activate.\n\nThe next time damage would be dealt to your champion this turn, prevent that damage. Put an amount of **enlighten** counters on your champion equal to the amount of damage prevented this way.",
+    "reserve": 3,
+    "element": "ARCANE",
+    "subtypes": [
+      "MAGE",
+      "SPELL",
+      "REACTION"
+    ]
+  },
+  "Restoring Embers": {
+    "effect": "**Kindle 4** *(You may banish up to four fire element cards from your graveyard as you activate this card. Each one pays for (1) of this card’s cost.)*\n\n**Recover 4**. Then if your **influence** is four or less, draw a card into your memory.\n",
+    "reserve": 4,
+    "element": "FIRE",
+    "subtypes": [
+      "CLERIC",
+      "SPELL"
+    ]
+  },
+  "Innervate Knowledge": {
+    "effect": "As an additional cost to activate this card, **delevel** your champion and **recover 5**. *(To **delevel** your champion, return the top card of its lineage to its owner's material deck.)*\n\nDraw two cards.",
+    "reserve": 4,
+    "element": "WATER",
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ]
+  }
+}

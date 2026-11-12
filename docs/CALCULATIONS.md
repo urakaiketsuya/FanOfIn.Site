@@ -6881,3 +6881,80 @@ The remaining families are explicitly assigned to dependencies outside this batc
 
 Rules reference: [Class Bonus and Brew](https://rules.gatcg.com/glossary/keywords-and-abilities).
 Card-specific text is the committed catalog snapshot; fixtures pin all new contracts.
+
+## Automatic defense readiness — reviewed checkpoint batch (2026-11-12)
+
+`defenseReport` reuses the paid Rai draw trajectory and Tonoris object-payment
+trajectory. A third, bounded Diao Chan trajectory requires Enchantress → Dreaming
+Wish → Idyll Corsage and a basic Fire/Water/Wind Spirit. It pays printed lineage
+memory costs, uses natural draws, fixed draw-only Actions, Academy Guide and
+Epicurean Institute. It does not borrow Rai enlighten or Mage triggers. No
+phantasias are played in this Diao baseline; its two entry glimmer counters remain
+available. Other champion lineages are unavailable, not zero-valued comparisons.
+
+At each turn checkpoint, clone hand, memory, graveyard and remaining reserve
+objects, then evaluate **one independent response window**. The UI shows turns
+3/5, readiness percentage and the 10th/50th/90th percentile of 512 seeded samples
+(seed 1739, opening seven, going first). This is current capacity, not cumulative
+prevention over previous turns or a prediction of an opponent's behavior. Main
+copy counts and actual library size apply; Sideboard is excluded. Reports and
+comparisons call the same calculation and use identical fixed scenarios:
+
+- One seven-damage event, no opposing allies.
+- Three three-damage events, no opposing allies.
+- Nine existing champion damage, two opposing allies, no new incoming event.
+
+These are labeled scenarios, not inferred damage. No user configuration is needed.
+Recovery never exceeds the existing damage. Each checkpoint response is discarded
+before the next trajectory turn: it neither claims repeated use of a consumed card
+in one game nor carries hypothetical pressure/payment into later draws. The main
+trajectory spends on its reviewed engines first; Ward is retained as a reaction in
+this report instead of being cast for draw. This is not an optimal defense policy.
+
+Reviewed source contracts (catalog snapshots in `defense-contracts.json`):
+
+| Card | Paid response |
+| --- | --- |
+| Veiling Breeze | Reserve 1, Wind access; reveal actual Wind cards in memory after its payment. Each paid copy grants a turn-long per-event reduction. The source itself is excluded; Wind deck composition never substitutes for memory. |
+| Crystallized Destiny | Reserve 3; one whole next event per paid copy, scheduled on separate events. No Fatestone/Fatebound objects exist in these supported trajectories, so no discount is claimed. The opponent activation tax is not valued. |
+| Aenean Ward | Reserve 1; a finite two-damage shield on the champion. No class/level restriction on prevention itself. |
+| Spellshield: Arcane | Paid level 3 Arcane access for Rai; Reserve 3 less the Mage discount of 1; prevents one event. Generated enlighten does not fund further responses in this bounded window. |
+| Flourishing Restoration | Tera access at Diao level 3, or Diao's elemental waiver at level 1+ for two additional Reserve (total 4). Recovers 3/6/9 for 0/1/2 opposing allies, capped by existing damage. |
+| Restoring Embers | Fire access, Reserve 4; Kindle consumes up to four actual Fire graveyard cards once, after prior trajectory payments. Recover 4, capped by existing damage. |
+| Innervate Knowledge | Water access, Reserve 4 plus a paid level to delevel and five existing damage for the additional recovery cost. Consumes both level and damage; subsequent advanced-element checks use the reduced level. |
+| Obelisk of Protection | Tonoris's already-generated, unrested source; activation cost and remaining reserve objects come from the existing object-payment model. Its own REST cannot also pay reserve, and reactions and Obelisk share one remaining budget. |
+
+Diao may activate one Reaction Spell from memory using its inherited REST ability,
+paying the entire effective reserve cost with its two existing glimmer counters.
+The same physical card cannot be both the activated source and its payment.
+Memory permissions, the Diao elemental waiver and paid Tera access are separate
+checks. Ordinary hand payments may place a future Reaction into memory, but the
+champion's REST ability remains single-use within the window.
+
+Window ordering is deterministic: first payable hand response in existing hand
+order, then a payable Diao memory response, then the eligible Obelisk. Reserve
+selection retains defense cards ahead of ordinary cards; remaining ties are stable.
+Reserve-object selection retains the Protection source last; if reactions rest
+all available objects, its activation is unavailable even at zero reserve cost.
+Full-event prevention resolves on distinct events; finite shields and Breeze use
+remaining damage without double-counting. Physical Kindle fuel cannot be reused.
+No draw/counter gain during a response is reinvested in more responses, including
+Ward, Knowledge, Embers, Spellshield or inherited activation draws. Thus this
+bounded window may omit additional affordable responses; it does not claim an
+optimal prevention maximum or successful survival in a full game.
+
+Explicit follow-on scope: phantasia development/glimmer replenishment; Destiny's
+Fatestone/Fatebound discounts; other Tera champions; response-generated draw chains;
+Butler's Augury/self-damage selection; damage-timed triggers, opponents' responses,
+combat deaths, regeneration and prevention replacement ordering beyond these
+reviewed scenarios. Existing interactive per-copy calculators remain separate.
+
+Verification: 134 targeted regression tests, including catalog contracts,
+Breeze repeated events, next-event shields, shared payments/Kindle, recovery caps,
+Diao waiver/memory permissions, delevel gates, canonical order, sideboard exclusion,
+missing/unsupported data and standalone/comparison agreement. Production components
+were checked locally at 390×844 and 1280×900: no horizontal overflow, card names and
+art, links over 48px, visible keyboard focus, empty omission and missing/unsupported
+states. Shared/app typechecks, targeted lint and the production build passed.
+No new asynchronous loading or disclosure states were introduced. Signed-in
+full-page flows and live deployment are not verified by this local harness.

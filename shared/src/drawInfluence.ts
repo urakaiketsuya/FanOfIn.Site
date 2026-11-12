@@ -54,10 +54,10 @@ export interface DrawProgressionPolicy {
   lineage: { name: string; memory: number; life?: number }[];
   spiritLife?: number;
   /** Reviewed Rai lineage: two starting enlighten, first Mage Action each turn at level 2+. */
-  rai: true;
+  rai: boolean;
 }
 
-export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy, scenario: PaidDamageScenario = CHAMPION_DAMAGE_SCENARIO) {
+export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy, scenario: PaidDamageScenario = CHAMPION_DAMAGE_SCENARIO, checkpoint?: (state: { turn: number; hand: InfluenceDrawSource[]; memory: InfluenceDrawSource[]; graveyard: InfluenceDrawSource[]; level: number }) => void) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => ({ ...source })));
   const damageSamples = Array.from({ length: turns }, () => [] as number[]);
   const allyDamageSamples = Array.from({ length: turns }, () => [] as number[]);
@@ -130,7 +130,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             floatingMemoryPaid += floating;
             for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
             level++;
-            if (level === 1) { addEnlighten(2); spendEnlighten(); }
+            if (level === 1 && progression.rai) { addEnlighten(2); spendEnlighten(); }
           }
         }
         // One materialization before recollection, with actual memory payment.
@@ -225,7 +225,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
           if (effect === 'innervate-fury') {
             level--; damageCounters -= 5; recovered += 5;
           }
-          if (progression && source.mageAction && level >= 2 && !mageTriggered) {
+          if (progression?.rai && source.mageAction && level >= 2 && !mageTriggered) {
             addEnlighten(1); mageTriggered = true;
             // The inherited activation trigger resolves before the Action's draws.
             spendEnlighten();
@@ -279,6 +279,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         }
         allyCounters.clear(); // Ally damage clears at end of turn; champion damage persists.
       }
+      checkpoint?.({ turn, hand: [...hand], memory: [...memory], graveyard: [...graveyard], level });
       // Couple the modeled and natural draws to the same shuffled library. Only
       // newly accessed names contribute: an engine cannot help find its first copy.
       const naturalCount = Math.min(library.length, opening + turn - (order === 'first' ? 1 : 0));

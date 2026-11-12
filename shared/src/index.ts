@@ -157,3 +157,5 @@ export type { EditorialPackage, EditorialPackageInput, PackageResearchReview, Ad
 export * from './tonorisDrawReport.js';
 export * from './raiDrawComparison.js';
 export * from './raiDamageReport.js';
+export * from './defenseWindow.js';
+export * from './defenseReport.js';

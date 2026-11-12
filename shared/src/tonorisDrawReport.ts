@@ -14,7 +14,7 @@ const range = (values: number[]): DrawRange => {
 };
 
 /** Isolated, draw-focused sequence. No opposing removal or unreviewed Main plays. */
-export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>, samples = 1024) {
+export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>, samples = 1024, checkpoint?: (state: { turn: number; hand: string[]; memory: string[]; level: number; objectReserve: number; protectionCost?: number; protectionUsesObject: boolean }) => void) {
   const main = aggregateLines(deck.main);
   const material = new Set(deck.material.filter(line => line.quantity > 0).map(line => line.name));
   if (!material.has('Spirit of Water') || !LINEAGE.every(name => material.has(name))) return null;
@@ -136,6 +136,8 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
           if (name === 'Hub of Innovation' || name === 'Dormant Sacrificial Altar') draw(memory);
         }
       }
+      const protection = activation(OBELISKS[2], 4);
+      checkpoint?.({ turn, hand: [...hand], memory: [...memory], level, objectReserve: availableObjects().length, protectionCost: protection?.cost, protectionUsesObject: !!protection && availableObjects().includes(protection.source) });
       const total = totals[turn - 1];
       total.seen.push(seen);
       total.extra.push(seen - Math.min(library.length, 6 + turn));

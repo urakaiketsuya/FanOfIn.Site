@@ -21,8 +21,8 @@ Existing competition release D is complete and is not reopened.
       activations, recurring draws and destinations; exclusions in CALCULATIONS.md.
 - [x] Damage/combat: reviewed Tonoris token readiness and complete Rai Fire fixture
       damage batch (paid plays, target scenarios and consumed resources).
-- [ ] Defense/recovery: automatic supported availability and payment sequences;
-      avoid inventing opponent pressure or damage taken.
+- [x] Defense/recovery: reviewed Rai/Tonoris/Diao checkpoint response windows,
+      shared payments and labeled pressure/recovery scenarios; exclusions documented.
 - [ ] Graveyard/recursion: explicit zone movement and finite reuse.
 - [ ] Champion/element access: broaden reviewed progression and activation gates.
 - [ ] Recommendations: audit omitted core cards, dependencies and covered swap outcomes.
@@ -46,9 +46,9 @@ contract and representative fixture. Record data blockers separately from comple
 
 ## Current handoff
 
-Current: reviewed Tonoris token readiness, Rai Fire damage and the bounded
-conditional-draw batch are implemented in standalone reports and comparisons.
-Next: automatic defense/recovery sequences. Full-catalog draw depends on the
+Current: reviewed damage, conditional draw and defense/recovery checkpoint batches
+are implemented in standalone reports and comparisons.
+Next: graveyard/recursion with explicit zone movement and finite reuse. Full-catalog draw depends on the
 explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
@@ -328,3 +328,21 @@ recovery sources without inventing opponent pressure. Extended analytics is
 for this explicitly bounded reviewed-state batch. Additional draw families are
 tracked under opponent/library/graveyard/combat/champion dependencies, not silently
 credited as successful draws. No implementation blocker; release needs push authorization.
+
+## Defense/recovery checkpoint batch — 2026-11-12
+
+Completed seven reviewed Main reactions/recovery sources plus shared-budget Obelisk
+of Protection. Turn-3/5 readiness, middle-80% ranges and associated cards appear in
+DeckReport and FixtureComparison, without calculator inputs. Rai and Tonoris reuse
+their existing draw/payment sequences; the new bounded Diao fixture supports the
+Restoration waiver, paid Tera access and one glimmer-funded memory Reaction.
+
+134 targeted tests, shared/app typechecks, targeted lint, the production build
+and local mobile/desktop component verification passed. The
+checkpoint response is independent at each turn, not a cumulative defended game.
+Response-generated draw chains, wider champion coverage and other explicit
+exclusions are recorded in CALCULATIONS.md. No push or live verification performed.
+
+Next: graveyard/recursion. Extended analytics is 6/16 broad milestones complete
+(about 38%; milestones vary in size). Altar still needs a reviewed payoff policy;
+full rules-engine opponent behavior remains outside scope.

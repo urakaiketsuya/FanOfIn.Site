@@ -1,3 +1,4 @@
+import { DefenseComparison } from './DefenseReport';
 import { RaiDamageComparison } from './RaiDamageReport';
 import { useId, useState } from 'react';
 import { reportDeltaChanged, scenarioConditions, SCENARIO_FIELDS, BOOLEAN_SCENARIOS, calculateFixtureMatchup, compareFixtureScenarios, copies, type AnalyticsDeck, type AnalyticsLine, type Card, type ScenarioKey, } from '@gatcg/shared';
@@ -93,6 +94,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
     </TabPanel>
     <TabPanel baseId={id} tab="versions" active={mode} keepMounted>
       {mode === 'versions' && <TonorisDrawComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
+      {mode === 'versions' && <DefenseComparison baseline={baseline} target={target} cardsByName={cardsByName} />}
       {mode === 'versions' && <RaiDamageComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
       {mode === 'versions' && <RaiDrawComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
       <CombatRangeComparison baseline={baseline} target={target} cardsByName={cardsByName} />

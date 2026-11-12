@@ -1,0 +1,26 @@
+{
+  "description": "Constructed 60-card Diao Chan defense regression fixture; not a deck recommendation.",
+  "main": {
+    "Academy Guide": 4,
+    "Epicurean Institute": 4,
+    "Sovereign Sanctuary": 4,
+    "Windrider Mage": 4,
+    "Channel the Wind": 4,
+    "Windrider Invoker": 4,
+    "Winbless Forecaster": 4,
+    "Aenean Flux Generator": 4,
+    "Aenean Ward": 4,
+    "Tempestuous Conviction": 4,
+    "Mnemonic Charm": 4,
+    "ChannelTech Charm S": 4,
+    "Veiling Breeze": 4,
+    "Crystallized Destiny": 4,
+    "Flourishing Restoration": 4
+  },
+  "material": {
+    "Spirit of Wind": 1,
+    "Diao Chan, Enchantress": 1,
+    "Diao Chan, Dreaming Wish": 1,
+    "Diao Chan, Idyll Corsage": 1
+  }
+}
