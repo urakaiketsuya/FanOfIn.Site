@@ -18,7 +18,6 @@ export default function DiaoArchetypeFamilies({ taxonomy, catalog }: { taxonomy:
       <ArchetypePreview names={core} cardImages={catalog} />
       <h3 className="mt-3 text-lg font-semibold">{family.name}</h3>
       <p className="mt-1 text-sm text-ctp-subtext1">{family.confidence === 'emerging' ? 'Emerging · ' : ''}{family.playerCount} players · {family.eventCount} events · {(family.avgWinRate * 100).toFixed(0)}% win rate</p>
-      <p className="mt-2 text-sm text-ctp-subtext1">{identity ? `${identity.description} The cards shown are the family’s identifying core, not a complete decklist.` : 'Common cards across this family; these are not an exact decklist or a required core.'}</p>
       <details className="group/cards mt-3 border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
         {identity && <>
@@ -40,7 +39,6 @@ export default function DiaoArchetypeFamilies({ taxonomy, catalog }: { taxonomy:
             {differences.length > 0 && <ArchetypePreview names={differences} cardImages={catalog} />}
             <Link to={`/archetypes/${build.id}`} className="inline-flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2">{build.name}</Link>
             <p className="text-ctp-subtext1">{build.playerCount} players · {build.deckCount} deck appearances</p>
-            <p className="mt-1 text-ctp-subtext1">{differences.length ? 'At least one more copy on average here than in a sibling variant.' : 'No distinct card package established; open the build to compare its decklists.'}</p>
           </div>;
         })}
       </details>

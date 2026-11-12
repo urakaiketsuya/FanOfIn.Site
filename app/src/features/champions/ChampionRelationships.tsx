@@ -1,25 +1,17 @@
 import { Link } from 'react-router-dom';
-import type { ArchetypeTaxonomyData, Card, RelationshipEvidence } from '@gatcg/shared';
+import type { ArchetypeTaxonomyData, Card } from '@gatcg/shared';
 import Section from '../../components/ui/Section';
-import DisclosureChevron from '../../components/DisclosureChevron';
 import Button from '../../components/ui/Button';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import { championNameToSlug } from '../../lib/championSlug';
-
-function Evidence({ evidence: e }: { evidence: RelationshipEvidence }) {
-  return <p className="text-sm text-ctp-subtext1">{e.supported ? 'Supported' : e.matchingDeckCount === 0 ? 'No matches' : 'Observed only'} · {e.matchingDeckCount}/{e.deckCount} decklists · {e.playerCount} matching players · {e.eventCount} events
-    {e.exceptionDeckIds.length > 0 && <span className="block">{e.exceptionDeckIds.length} decklists without a confirmed match</span>}
-  </p>;
-}
 
 export default function ChampionRelationships({ championName, taxonomy, catalog, error, onRetry }: {
   championName: string; taxonomy: ArchetypeTaxonomyData | undefined; catalog: Map<string, Card>;
   error?: string | null; onRetry: () => void;
 }) {
   const relationships = taxonomy?.reviewedRelationships?.filter(r => r.families.some(f => f.championName === championName)) ?? [];
-  const families = new Map(taxonomy?.strategyArchetypes.map(f => [f.id, f]));
   const builds = new Map(taxonomy?.clusters.map(b => [b.id, b]));
-  return <Section id="relationships" className="scroll-mt-48" title="Shared archetypes and packages" description="Historical decklist matches · all elements">
+  return <Section id="relationships" className="scroll-mt-48" title="Shared archetypes and packages">
     {!taxonomy ? <div role={error ? 'alert' : 'status'} className="text-sm text-ctp-subtext1">
       <p>{error || 'Loading shared archetypes and packages…'}</p>
       {error && <Button onClick={onRetry} className="mt-2">Retry shared archetypes</Button>}
@@ -31,31 +23,14 @@ export default function ChampionRelationships({ championName, taxonomy, catalog,
           <h3 className="text-lg font-semibold">{relationship.name}</h3>
           <p className="mb-3 text-sm text-ctp-subtext1">{relationship.kind === 'package' ? 'Supporting package' : 'Archetype relationship'}</p>
           {relationship.variants.map((variant, index) => <div key={variant.id} className="mb-4">
-            <p className="mb-2 text-sm font-medium">{relationship.variants.length > 1 ? `Tested variant ${index + 1} · all ${variant.cards.length} cards` : `Required core · all ${variant.cards.length} cards`}</p>
+            <p className="mb-2 text-sm font-medium">{relationship.variants.length > 1 ? `Tested variant ${index + 1}` : 'Required core'}</p>
             <ArchetypePreview names={variant.cards} cardImages={catalog} />
           </div>)}
-          {relationship.variants.length > 1 && <p className="mb-3 text-sm text-ctp-subtext1">A match contains either complete variant. Variants can overlap.</p>}
-          <div className="space-y-2">
-            {local.filter(f => f.evidence.supported || f.builds.some(b => b.evidence.supported)).map(family => <div key={family.familyId}>
-              <h4 className="font-medium">{families.get(family.familyId)?.name ?? championName}</h4>
-              <p className="text-sm text-ctp-subtext1">{family.evidence.supported ? 'Supported family' : 'Supported build in this family'} · {family.evidence.matchingDeckCount.toLocaleString()}/{family.evidence.deckCount.toLocaleString()} decklists</p>
-            </div>)}
-            {!local.some(f => f.evidence.supported || f.builds.some(b => b.evidence.supported)) && <p className="text-sm text-ctp-subtext1">Observed only · no supported family or build</p>}
+          <div className="flex flex-wrap gap-x-4">
+            {[...new Set(local.flatMap(family => family.builds.filter(build => build.evidence.supported).map(build => build.buildId)))].map(id => <Link key={id} className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${id}`}>{builds.get(id)?.name ?? 'View build'}</Link>)}
           </div>
-          <details className="group mt-3 border-t border-ctp-surface1 pt-2">
-            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-blue [&::-webkit-details-marker]:hidden">Build evidence · {local.reduce((sum, f) => sum + f.builds.length, 0)} builds<DisclosureChevron className="group-open:rotate-180" /></summary>
-          {local.map(family => <div key={family.familyId} className="mt-3 border-t border-ctp-surface1 pt-3">
-            <h4 className="font-medium">{families.get(family.familyId)?.name ?? championName}</h4>
-            <Evidence evidence={family.evidence} />
-            {family.variants.map((variant, index) => relationship.variants.length > 1 && <p key={variant.variantId} className="text-sm text-ctp-subtext1">Variant {index + 1}: {variant.evidence.matchingDeckCount}/{variant.evidence.deckCount} decklists · {variant.evidence.supported ? 'Supported' : variant.evidence.matchingDeckCount === 0 ? 'No matches' : 'Observed only'}</p>)}
-            <ul className="mt-2 space-y-2">{family.builds.map(build => <li key={build.buildId}>
-              <Link className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.buildId}`}>{builds.get(build.buildId)?.name ?? 'View build'}</Link>
-              <Evidence evidence={build.evidence} />
-            </li>)}</ul>
-          </div>)}
-          </details>
           {connected.length > 0 && <div className="mt-4 border-t border-ctp-surface1 pt-3">
-            <h4 className="text-sm font-medium">Supported families or builds in other champions</h4>
+            <h4 className="text-sm font-medium">Also played with</h4>
             <div className="flex flex-wrap gap-x-3">{connected.map(name => <Link key={name} className="inline-flex min-h-control min-w-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/champions/${championNameToSlug(name)}#relationships`}>{name}</Link>)}</div>
           </div>}
         </article>;
