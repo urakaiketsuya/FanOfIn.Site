@@ -32,6 +32,7 @@ export function createRaiDrawPolicy(
     const steps = mechanic === 'indolent-leisure' ? [{ count: 1, destination: 'hand' as const }] : effect?.steps ?? [];
     if (effect || mechanic) modeled.add(line.name);
     return { ...line, draws: steps.reduce((sum, step) => sum + step.count, 0), drawSteps: steps,
+      resolvesTo: card.types.includes('ACTION') ? 'graveyard' as const : 'field' as const,
       reserve: card.cost_reserve, minimumLevel: advanced ? 3 : 0, discard: effect?.discard ?? 0, mechanic,
       mageAction: card.types.includes('ACTION') && card.classes.includes('MAGE') };
   });

@@ -34,6 +34,9 @@ export interface InfluenceDrawSource {
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
   mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball' | 'gilded-pyre';
+  /** Explicit reviewed zone/payment metadata; omitted by existing draw-only policies. */
+  resolvesTo?: 'graveyard' | 'field';
+  floatingMemory?: 'always' | 'mage';
   mageAction?: boolean;
   minimumLevel?: number;
 }
@@ -48,7 +51,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
   const damageSamples = Array.from({ length: turns }, () => [] as number[]);
   const seenSamples = Array.from({ length: turns }, () => [] as number[]);
-  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, extraAccess: new Map<string, number>() }));
+  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, paidLevel: 0, floatingMemoryPaid: 0, graveyard: 0, banished: 0, field: 0, library: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   for (let sample = 0; sample < samples; sample++) {
@@ -57,7 +60,11 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     let seen = 0, level = 0, guides = 0, enlighten = 0, damage = 0;
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
-    let recollectionDraws: FixedDrawStep[] = [];
+    const graveyard: InfluenceDrawSource[] = [];
+    const banished: InfluenceDrawSource[] = [];
+    const field: InfluenceDrawSource[] = [];
+    let floatingMemoryPaid = 0;
+    let recollectionDraws: (FixedDrawStep & { source: InfluenceDrawSource })[] = [];
     const available = material.flatMap((source) => Array.from({ length: source.quantity }, () => source));
     const draw = (count: number, destination: 'hand' | 'memory' = 'hand') => {
       const zone = destination === 'memory' ? memory : hand;
@@ -79,9 +86,18 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
       let mageTriggered = false;
       if (progression && turn > 1 && level < progression.lineage.length) {
         const cost = Math.max(0, progression.lineage[level].memory - guides);
-        if (memory.length >= cost) {
-          // Memory costs banish random physical cards; discounts cannot create memory.
-          for (let paid = 0; paid < cost; paid++) memory.splice(Math.floor(random() * memory.length), 1);
+        // Check the current champion's class before leveling, not the incoming champion.
+        const eligible = (source: InfluenceDrawSource) => source.floatingMemory === 'always'
+          || (source.floatingMemory === 'mage' && level >= 1);
+        const floating = Math.min(cost, graveyard.filter(eligible).length);
+        if (memory.length + floating >= cost) {
+          // Declare Floating Memory first, then randomly banish the remaining payment.
+          // No partial payment when the full cost cannot be afforded.
+          for (let paid = 0; paid < floating; paid++) {
+            banished.push(...graveyard.splice(graveyard.findIndex(eligible), 1));
+          }
+          floatingMemoryPaid += floating;
+          for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
           level++;
           if (level === 1) enlighten += 2;
         }
@@ -91,14 +107,18 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         const index = available.findIndex((source) => source.draws > 0 && source.memory != null && source.memory <= memory.length && (source.level ?? 0) < turn);
         if (index >= 0) {
           const [source] = available.splice(index, 1);
-          take(memory, source.memory!);
+          banished.push(...take(memory, source.memory!));
           resolveDraws(source);
-          take(hand, source.discard);
+          graveyard.push(...take(hand, source.discard));
         }
       }
       // Paid permanents sacrifice at the next beginning of recollection.
       // These triggers resolve before memory returns, but after materialization.
-      for (const step of recollectionDraws) draw(step.count, step.destination);
+      for (const step of recollectionDraws) {
+        const index = field.indexOf(step.source);
+        if (index >= 0) graveyard.push(...field.splice(index, 1));
+        draw(step.count, step.destination);
+      }
       recollectionDraws = [];
       hand.push(...memory); memory = [];
       if (turn > 1 || order === 'second') draw(1);
@@ -123,7 +143,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         if (progression && source.mechanic === 'fireball') damage += 1 + level;
         if (progression && source.mechanic === 'gilded-pyre') damage += 2;
         if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
-          recollectionDraws.push({ count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
+          recollectionDraws.push({ source, count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
         }
         if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
           enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
@@ -131,7 +151,8 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         }
         if (progression && source.mechanic === 'academy-guide') guides++;
         if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
-        take(hand, source.discard);
+        (source.resolvesTo === 'graveyard' ? graveyard : field).push(source);
+        graveyard.push(...take(hand, source.discard));
       }
       // Couple the modeled and natural draws to the same shuffled library. Only
       // newly accessed names contribute: an engine cannot help find its first copy.
@@ -144,6 +165,12 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
       }
       seenSamples[turn - 1].push(seen);
       damageSamples[turn - 1].push(damage);
+      totals[turn - 1].paidLevel += level / samples;
+      totals[turn - 1].floatingMemoryPaid += floatingMemoryPaid / samples;
+      totals[turn - 1].graveyard += graveyard.length / samples;
+      totals[turn - 1].banished += banished.length / samples;
+      totals[turn - 1].field += field.length / samples;
+      totals[turn - 1].library += (library.length - seen) / samples;
       totals[turn - 1].seen += seen / samples;
       totals[turn - 1].hand += hand.length / samples;
       totals[turn - 1].memory += memory.length / samples;
@@ -161,5 +188,5 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
 
 /** Preserve the draw-only result contract for existing reports. */
 export function estimateDrawInfluence(...args: Parameters<typeof estimateDrawAndDamageInfluence>) {
-  return estimateDrawAndDamageInfluence(...args).map(({ paidDamageRange: _damage, ...point }) => point);
+  return estimateDrawAndDamageInfluence(...args).map(({ paidDamageRange: _damage, paidLevel: _level, floatingMemoryPaid: _floating, graveyard: _graveyard, banished: _banished, field: _field, library: _library, ...point }) => point);
 }

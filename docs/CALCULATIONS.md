@@ -6710,3 +6710,37 @@ at least one supported damage card; comparisons appear when either side qualifie
 Missing/unsupported results show status, not numerical changes. Removing one
 supported card leaves the other eligible in the shared sequence. The card pool
 is centralized in `RAI_DAMAGE_CARDS`; no user inputs or extra disclosures are added.
+
+### Rai physical zones and Floating Memory foundation (2026-11-11)
+
+The shared draw/damage sequence now tracks Main cards in library, hand, memory,
+field, graveyard and banishment. Reviewed Rai source metadata sends resolved
+Actions to the graveyard and other played sources to the field. Discards move
+physical hand cards to the graveyard; delayed Institute/Sanctuary sacrifices move
+their field copy at the beginning of the next recollection, after materialization.
+Random memory payments move their actual copies to banishment. These diagnostic
+zone means, paid level and cumulative Floating Memory payments are exposed only
+by `estimateDrawAndDamageInfluence`; the draw-only wrapper strips them to preserve
+its result contract. No new report row or user controls are added.
+
+The sequence accepts explicitly reviewed `floatingMemory: 'always' | 'mage'`
+source metadata. It spends eligible graveyard copies first, up to the discounted
+memory cost, then randomly banishes remaining payment cards from memory. Eligibility
+uses the champion before materialization: a Spirit cannot borrow the incoming
+Rai's Mage class. If the entire cost cannot be paid, no cards are consumed. A
+zero-cost materialization consumes none. Graveyard copies never pay reserve costs,
+and banished copies cannot pay again. Unplayed cards, cards in memory and cards
+on the field are not graveyard resources. No recursion, milling or opposing
+zone effects are modeled yet.
+
+Production policy intentionally does not assign Floating Memory eligibility yet:
+this foundation preserves current draw/damage results while establishing physical
+zone and payment tests. Next coverage is Ignite the Soul's paid damage plus its
+class-qualified Floating Memory, followed by other reviewed consumers. This is
+not a claim that the existing Fireball/Gilded Pyre pool models all graveyard cards.
+
+Rules checked against the official comprehensive rules (Floating Memory payment
+is declared before random memory banishment) and the official beginner guide
+(class bonus requires the current champion's matching class):
+https://content.gatcg.com/uploads/comprehensive_rules_cb31411767.pdf
+https://www.gatcg.com/article/getting-started

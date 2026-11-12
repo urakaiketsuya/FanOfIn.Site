@@ -236,3 +236,24 @@ adding graveyard-dependent damage cards. Extended analytics remains 3/16 broad
 milestones complete (~19%, unequal sizes); paid damage has additional coverage,
 but the broad damage milestone remains partial. Opponent-dependent bonuses and
 area damage also need explicit target scenarios.
+
+## Physical graveyard and Floating Memory foundation — 2026-11-11
+
+Added physical Main-deck zone tracking to the shared Rai sequence: resolved Actions,
+discards, delayed permanent sacrifices and memory banishments remain distinct.
+Reviewed Floating Memory metadata can pay memory costs once per eligible graveyard
+copy. Payments use the current champion's class, are atomic when unaffordable, and
+cannot use future sacrifices or substitute for reserve payments. The existing
+production card pool has no new eligibility assignments yet, preserving current
+report results while preparing Ignite the Soul coverage. No UI changes.
+
+Verification: 78 focused tests including finite single-copy payments, zero/failed
+costs, class timing, zone conservation, discard/sacrifice timing and the real Rai
+fixture; shared/app typechecks and targeted lint. Browser checks not repeated
+because no presentation changed. Full build and live deployment remain unverified.
+No push performed.
+
+Next: wire Ignite the Soul into the paid damage policy and verify reports with
+three supported cards. Extended analytics remains 3/16 broad milestones complete
+(~19%, unequal scope); graveyard foundations are now partial. Recursion, milling,
+additional Floating Memory cards and opponent-dependent damage remain outstanding.
