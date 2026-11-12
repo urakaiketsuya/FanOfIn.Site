@@ -8,7 +8,7 @@ import { useCardCatalog } from '../cards/useCardCatalog';
 import { combinedResearchDraft, researchDraft, researchFindings, researchSources, researchStatus, type ResearchFinding, type ResearchKind } from './researchQueue';
 
 const field = 'min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 focus-visible:outline-2 focus-visible:outline-ctp-blue';
-export default function AdminResearchQueue({ packages, onReview, ready }: { packages: EditorialPackage[]; onReview: (pkg: EditorialPackage, finding?: ResearchFinding) => void; ready: boolean }) {
+export default function AdminResearchQueue({ packages, onReview, onDismiss, ready }: { packages: EditorialPackage[]; onDismiss: (pkg: EditorialPackage) => Promise<void>; onReview: (pkg: EditorialPackage, finding?: ResearchFinding) => void; ready: boolean }) {
   const [findings, setFindings] = useState<ResearchFinding[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,9 +17,11 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
   const [kind, setKind] = useState<ResearchKind | ''>('');
   const [status, setStatus] = useState('Needs review');
   const [limit, setLimit] = useState(12);
-  const [selected, setSelected] = useState<Map<string, ResearchFinding>>(new Map());
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [combineError, setCombineError] = useState('');
-  const selectedCards = new Set([...selected.values()].flatMap(f => f.cards)).size;
+  const [dismissing, setDismissing] = useState(false);
+  const [dismissNotice, setDismissNotice] = useState('');
+  const [dismissError, setDismissError] = useState('');
   const [pending, startTransition] = useTransition();
   const cards = useCardCatalog();
   const catalog = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
@@ -51,6 +53,27 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
     return (!kind || (row.finding?.research.kind ?? row.saved?.research?.kind) === kind) && (!status || (status === 'Needs review' ? state === 'Needs review' || state === 'Updated evidence' : state === status)) &&
       (!query.trim() || [row.finding?.name, row.saved?.definition.name, ...(row.finding?.cards ?? row.saved?.definition.cards.map(c => c.name) ?? [])].some(text => text?.toLowerCase().includes(query.trim().toLowerCase())));
   });
+  const selectedRows = rows.filter(row => selected.has((row.finding?.research ?? row.saved!.research!).key));
+  const selectedFindings = selectedRows.flatMap(row => row.finding ? [row.finding] : []);
+  const selectedCards = new Set(selectedRows.flatMap(row => row.finding?.cards ?? row.saved!.definition.cards.map(card => card.name))).size;
+  const shown = filtered.slice(0, limit);
+  async function dismissSelected() {
+    setDismissing(true); setDismissError(''); setDismissNotice('');
+    let completed = 0;
+    const failures: string[] = [];
+    for (const { finding, saved } of selectedRows) {
+      const pkg = saved ?? researchDraft(finding!, catalog);
+      const research = finding?.research ?? pkg.research!;
+      try {
+        await onDismiss({ ...pkg, status: 'draft', research: { ...research, dismissed: true } });
+        completed++;
+        setSelected(current => { const next = new Set(current); next.delete(research.key); return next; });
+      } catch (reason) { failures.push(reason instanceof Error ? reason.message : 'Could not save.'); }
+    }
+    setDismissNotice(`${completed} ${completed === 1 ? 'finding' : 'findings'} dismissed.`);
+    if (failures.length) setDismissError(`${failures.length} could not be dismissed and remain selected. ${failures[0]}`);
+    setDismissing(false);
+  }
   return <section className="space-y-4" aria-label="Research review queue">
     <div className="grid gap-3 sm:grid-cols-3">
       <label className="text-sm">Find a package or card<input type="search" className={field} value={query} onChange={e => { setQuery(e.target.value); setLimit(12); }} /></label>
@@ -61,29 +84,32 @@ export default function AdminResearchQueue({ packages, onReview, ready }: { pack
     {!!errors.length && <div><p role="alert">{errors.join('. ')}</p><Button onClick={() => setAttempt(a => a + 1)}>Retry research</Button></div>}
     {!ready && <p role="status">Load saved reviews before editing research.</p>}
     {!loading && <p role="status">{filtered.length ? `${filtered.length} ${filtered.length === 1 ? 'finding' : 'findings'}` : 'No findings match these filters.'}</p>}
+    {!!shown.length && <Button disabled={!ready || dismissing} onClick={() => setSelected(current => new Set([...current, ...shown.map(row => (row.finding?.research ?? row.saved!.research!).key)]))}>Select shown ({shown.length})</Button>}
+    {dismissNotice && <p role="status">{dismissNotice}</p>}
+    {dismissError && <p role="alert" className="text-sm text-ctp-red">{dismissError}</p>}
     {!!selected.size && <Panel>
       <p role="status">{selected.size} findings selected · {selectedCards} unique cards</p>
-      <div className="mt-2 flex flex-wrap gap-2"><Button variant="primary" disabled={!ready || selected.size < 2} onClick={() => {
-        try { const draft = combinedResearchDraft([...selected.values()], catalog, crypto.randomUUID()); setCombineError(''); onReview(draft); }
+      <div className="mt-2 flex flex-wrap gap-2"><Button variant="primary" disabled={!ready || dismissing || selectedFindings.length !== selected.size || selected.size < 2} onClick={() => {
+        try { const draft = combinedResearchDraft(selectedFindings, catalog, crypto.randomUUID()); setCombineError(''); onReview(draft); }
         catch (reason) { setCombineError(reason instanceof Error ? reason.message : 'Could not combine findings.'); }
-      }}>Combine selected</Button><Button onClick={() => { setSelected(new Map()); setCombineError(''); }}>Clear selection</Button></div>
+      }}>Combine selected</Button><Button disabled={!ready || dismissing} onClick={() => void dismissSelected()}>{dismissing ? 'Dismissing…' : `Dismiss selected (${selected.size})`}</Button><Button disabled={dismissing} onClick={() => { setSelected(new Set()); setCombineError(''); }}>Clear selection</Button></div>
       {combineError && <p role="alert" className="mt-2 text-sm text-ctp-red">{combineError}</p>}
     </Panel>}
-    {filtered.slice(0, limit).map(({ finding, saved }) => {
+    {shown.map(({ finding, saved }) => {
       const research = finding?.research ?? saved!.research!;
       return <Panel key={research.key}>
         <h2 className="break-words text-lg font-semibold">{saved?.definition.name ?? finding!.name}</h2>
         <p className="text-sm">{researchSources[research.kind].label} · {researchStatus(saved, finding)}</p>
         <p className="mt-3 text-sm text-ctp-subtext1">{finding ? 'Research card pool' : 'Saved exact card list'}</p>
         <PackageCardGrid names={finding?.cards ?? [...new Set(saved!.definition.cards.map(c => c.name))]} cardsByName={catalog} />
-        {finding && <label className="mt-2 flex min-h-12 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" className="h-6 w-6 shrink-0" checked={selected.has(research.key)} onChange={event => {
+        <label className="mt-2 flex min-h-12 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" className="h-6 w-6 shrink-0" disabled={!ready || dismissing} checked={selected.has(research.key)} onChange={event => {
           const checked = event.target.checked;
-          setSelected(current => { const next = new Map(current); if (checked) next.set(research.key, finding); else next.delete(research.key); return next; });
+          setSelected(current => { const next = new Set(current); if (checked) next.add(research.key); else next.delete(research.key); return next; });
           setCombineError('');
-        }} aria-label={`Select finding: ${finding.name}`} />Select to combine</label>}
+        }} aria-label={`Select finding: ${saved?.definition.name ?? finding!.name}`} />Select finding</label>
         {finding && <p className="mt-3 break-words text-sm">{finding.summary}</p>}
         {!finding && !loading && !errors.length && <p className="mt-3 text-sm">No longer in the current research report.</p>}
-        <div className="mt-3 flex flex-wrap gap-2"><Button disabled={!ready} variant="primary" onClick={() => onReview(saved ?? researchDraft(finding!, catalog), finding)}>Review finding</Button>
+        <div className="mt-3 flex flex-wrap gap-2"><Button disabled={!ready || dismissing} variant="primary" onClick={() => onReview(saved ?? researchDraft(finding!, catalog), finding)}>Review finding</Button>
           <Link target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center px-3 text-ctp-blue" to={finding?.href ?? `/cards/packages?review=1${researchSources[research.kind].hash}`}>Source research</Link></div>
       </Panel>;
     })}

@@ -52,7 +52,10 @@ export default function AdminDashboard() {
         {!loading && !error && !packages.some(pkg => !pkg.research?.dismissed) && <p>No packages yet.</p>}
         {packages.filter(pkg => !pkg.research?.dismissed).map(pkg => <Panel key={pkg.id}><h2 className="break-words text-lg font-semibold">{pkg.definition.name}</h2><p className="text-sm capitalize">{pkg.status} · Exact card list</p><EditorialPackageCards definition={pkg.definition} /><Button onClick={() => { setFinding(undefined); setEditing(pkg); }}>Edit {pkg.definition.name}</Button></Panel>)}
       </TabPanel>
-      <TabPanel baseId="admin" tab="research" active={tab} keepMounted className="py-4">{researchVisited && <AdminResearchQueue ready={!loading && !error} packages={packages} onReview={(pkg, source) => { setFinding(source); setEditing(pkg); }} />}</TabPanel>
+      <TabPanel baseId="admin" tab="research" active={tab} keepMounted className="py-4">{researchVisited && <AdminResearchQueue ready={!loading && !error} packages={packages} onDismiss={async pkg => {
+        const result = await accountApi.saveAdminPackage(pkg.id, { definition: pkg.definition, status: pkg.status, revision: pkg.revision, research: pkg.research });
+        setPackages(current => [result.package, ...current.filter(item => item.id !== result.package.id)]);
+      }} onReview={(pkg, source) => { setFinding(source); setEditing(pkg); }} />}</TabPanel>
       <TabPanel baseId="admin" tab="overview" active={tab} className="py-4">
         {overview && <><h2 className="mb-3 text-lg font-semibold">Saved decks</h2><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(overview.decks).map(([label, total]) => <Panel key={label}><p className="text-sm capitalize">{label}</p><p className="text-3xl font-semibold">{total.toLocaleString()}</p></Panel>)}</div><p className="mt-3 text-sm text-ctp-subtext1">Current deck lists, excluding site seed decks. Versions are not counted separately.</p><Button className="mt-3" disabled={loading} onClick={() => void refresh()}>Refresh totals</Button></>}
       </TabPanel>
