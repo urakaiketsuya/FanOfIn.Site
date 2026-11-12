@@ -11,7 +11,7 @@ export default function ReviewedChampionFamilies(props: Props) {
   const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && !reviewedNames.includes(family.name));
   const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && reviewedNames.includes(family.name));
   const groups = [...identities, ...(hasOther || !hasReviewed ? [undefined] : [])];
-  return <>{groups.map(identity => <IdentityFamilies key={identity?.name ?? 'other'} {...props} identity={identity} taxonomy={{ ...props.taxonomy, strategyArchetypes: props.taxonomy.strategyArchetypes.filter(family => identity ? family.name === identity.name : !reviewedNames.includes(family.name)) }} />)}</>;
+  return <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] items-start gap-4">{groups.map(identity => <IdentityFamilies key={identity?.name ?? 'other'} {...props} identity={identity} taxonomy={{ ...props.taxonomy, strategyArchetypes: props.taxonomy.strategyArchetypes.filter(family => identity ? family.name === identity.name : !reviewedNames.includes(family.name)) }} />)}</div>;
 }
 
 function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props & { identity?: typeof ZANDER_IDENTITIES[number] }) {
@@ -53,7 +53,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
         <Link className="flex min-h-control items-center rounded text-sm text-ctp-blue focus-visible:outline-2" to={`/archetypes/${build.id}`}>{build.name}</Link>
         <p className="text-sm text-ctp-subtext1">{build.playerCount} players · {build.eventCount} events</p>
       </section>)}
-      {remainingBuilds.length > 0 && <div className="mt-3 border-t border-ctp-surface1 text-sm">
+      {remainingBuilds.length > 0 && <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] items-start gap-3 border-t border-ctp-surface1 text-sm">
         {remainingBuilds.map(build => {
           const fire = evidence?.firePackageByBuild?.[build.id];
           return <div key={build.id} className="border-t border-ctp-surface1 py-3">
@@ -68,13 +68,13 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
       </div>}
     </article>;
   };
-  return <div className="mt-3 space-y-4">
+  return <div className="min-w-0 space-y-4">
     {reviewed.length > 0 && <div className="identity-surface min-w-0 rounded-3xl p-4 sm:p-5">
       {!hasAlternateCore && <div className="max-w-lg"><ArchetypePreview names={core} cardImages={catalog} /></div>}
       <h3 className="mt-3 text-lg font-semibold">{identityName}</h3>
       <p className="my-3 text-sm text-ctp-subtext1">Core cards · {reviewedBuildCount} {reviewedBuildCount === 1 ? 'build' : 'builds'}</p>
-      <div className="grid items-start gap-3 sm:grid-cols-2">{reviewed.map(family => renderFamily(family, true))}</div>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] items-start gap-3">{reviewed.map(family => renderFamily(family, true))}</div>
     </div>}
-    {other.length > 0 && <><h3 className="text-lg font-semibold">Other {championName} families</h3><div className="grid items-start gap-3 sm:grid-cols-2">{other.map(family => renderFamily(family, false))}</div></>}
+    {other.length > 0 && <><h3 className="text-lg font-semibold">Other {championName} families</h3><div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] items-start gap-3">{other.map(family => renderFamily(family, false))}</div></>}
   </div>;
 }
