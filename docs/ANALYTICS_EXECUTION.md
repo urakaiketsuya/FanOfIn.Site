@@ -448,3 +448,31 @@ No new TCGEngine fixtures or mechanic contracts were needed. No push performed.
 Extended analytics: 10/16 broad milestones (~63%, unequal scope). Next: deck/archetype
 cohort checkpoints and core access. Altar's useful milling policy remains deferred;
 full catalog simulation is outside this estimate.
+
+## Presentation consolidation — November 12, 2026
+
+Implemented the reviewed report layout across the shared deck report and My Decks:
+turn-5 headline with visible turn-3 values, percentages for readiness, interval
+marks for quantities, and full card tiles beside results. Tonoris now separates
+draw, resources, token combat, and defense. Rai draw/damage, defense/recovery, and
+graveyard reuse share the same presentation vocabulary. No shared model changed.
+
+Review, Builder budget replacements, report suggestions, and staged account
+changes use a compact shared swap-impact surface. Both checkpoints determine
+whether a metric changed; an early-only difference is retained. Standard damage
+scenarios appear in swap sheets; complete comparisons keep all existing scenarios.
+Apply remains an explicit controller action.
+
+Turn 5 is a model horizon, not a validated expected game length. Checkpoint
+validation against game-length/progression evidence remains open. Extended
+Analytics remains 10/16 broad milestones (~63%, unequal scope); this presentation
+refinement does not complete another queued modeling milestone. Next queued work:
+deck/archetype cohort checkpoints and core-card access.
+
+Verification: 91 focused tests (including paired draw/damage/progression parity,
+early checkpoint retention, and unavailable coverage), app typecheck, production
+Vite build, and targeted lint passed. Browser checks at 390/1280px covered reports,
+compact swap sheets, empty/missing states, keyboard dismissal/focus return, 48px
+sheet actions, local Apply, enlarged text, and overflow. Graveyard reuse was also
+checked with the existing Lost Wisdom card. Full signed-in production journeys,
+live deployment, and empirical checkpoint validation were not performed. No push.

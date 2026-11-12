@@ -1,5 +1,5 @@
 import { useState, useTransition } from 'react';
-import FixtureComparison from '../analytics/FixtureComparison';
+import SwapImpactReport from '../analytics/SwapImpactReport';
 import { applyDeckQuantityChanges } from '../../lib/deckChangePreview';
 import CardResult from '../../components/CardResult';
 import Button from '../../components/ui/Button';
@@ -53,7 +53,7 @@ export default function BudgetReplacementPanel() {
               <p className="text-xs text-ctp-subtext1">{c.total.missingCards.length ? `Priced cards ~${formatUsd(c.total.total - row.savings)} · ${c.total.missingCards.length} unpriced` : `Deck ~${formatUsd(c.total.total - row.savings)}`}</p>
             </div>
             <Button className="mb-2 w-full" aria-expanded={expanded === `${row.from.name}:${row.to.name}`} aria-busy={comparing} onClick={() => startTransition(() => setExpanded(expanded === `${row.from.name}:${row.to.name}` ? null : `${row.from.name}:${row.to.name}`))}>Compare results</Button>
-            {expanded === `${row.from.name}:${row.to.name}` && <FixtureComparison baseline={named(c.deck)} target={named(applyDeckQuantityChanges(c.deck, [{ cardName: row.from.name, section: 'main', delta: -row.quantity }, { cardName: row.to.name, section: 'main', delta: row.quantity }]))} cardsByName={c.catalog} baselineLabel="Current deck" targetLabel="Cheaper alternative" initialMode="versions" reportOnly />}
+            {expanded === `${row.from.name}:${row.to.name}` && <SwapImpactReport baseline={named(c.deck)} target={named(applyDeckQuantityChanges(c.deck, [{ cardName: row.from.name, section: 'main', delta: -row.quantity }, { cardName: row.to.name, section: 'main', delta: row.quantity }]))} cardsByName={c.catalog} />}
             <Button variant="primary" disabled={c.pending} className="w-full" aria-label={`Replace ${row.quantity} ${row.quantity === 1 ? 'copy' : 'copies'} with ${row.to.name}`} onClick={() => c.accept(row)}>Replace {row.quantity} {row.quantity === 1 ? 'copy' : 'copies'}</Button>
           </article>;
         })}

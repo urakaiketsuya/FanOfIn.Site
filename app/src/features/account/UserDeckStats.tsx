@@ -235,6 +235,11 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
     || aggressionForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
   const probabilityTab: ReactNode = (
     <>
+      <RaiDrawReport deck={namedSections} cardsByName={cardsByName} />
+      <TonorisDrawReport deck={namedSections} cardsByName={cardsByName} />
+      <RaiDamageReport deck={namedSections} cardsByName={previewCardsByName} />
+      <DefenseReport deck={namedSections} cardsByName={previewCardsByName} />
+      <RecursionReport deck={namedSections} cardsByName={previewCardsByName} />
       <div className="grid items-start gap-4 lg:grid-cols-2">
       <DeckAccessSummary onExplore={exploreCard} mainLines={namedSections.main} cardsByName={cardsByName} />
       <Panel>
@@ -252,11 +257,6 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
         )}
       </Panel>
       </div>
-      <RecursionReport deck={namedSections} cardsByName={previewCardsByName} />
-      <DefenseReport deck={namedSections} cardsByName={previewCardsByName} />
-      <RaiDamageReport deck={namedSections} cardsByName={previewCardsByName} />
-      <RaiDrawReport deck={namedSections} cardsByName={cardsByName} />
-      <TonorisDrawReport deck={namedSections} cardsByName={cardsByName} />
       <EffectAccessReport deck={namedSections} cardsByName={cardsByName} />
       <CardScenarios deck={namedSections} cardsByName={cardsByName} />
       {previousDecklist && <FixtureComparison baseline={{ main: previousDecklist.main.map(line => ({ name: line.card, quantity: line.quantity })), material: previousDecklist.material.map(line => ({ name: line.card, quantity: line.quantity })) }} target={namedSections} cardsByName={previewCardsByName} baselineLabel="Previous version" targetLabel="Current version" initialMode="versions" reportOnly />}

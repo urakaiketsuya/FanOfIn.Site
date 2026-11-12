@@ -1,4 +1,4 @@
-import FixtureComparison from "../analytics/FixtureComparison";
+import SwapImpactReport from "../analytics/SwapImpactReport";
 import { useMemo } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -100,6 +100,6 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
         {changes.length > 4 && <p className="mt-3 text-xs text-ctp-subtext0">+{changes.length - 4} more staged card change{changes.length - 4 === 1 ? "" : "s"} included in the projection.</p>}
       </div>
     </div>
-    <FixtureComparison baseline={{ main: named(decklist, "main"), material: named(decklist, "material") }} target={{ main: named(next, "main"), material: named(next, "material") }} cardsByName={cardsByName} baselineLabel="Current deck" targetLabel="Proposed changes" initialMode="versions" reportOnly />
+    <SwapImpactReport baseline={{ main: named(decklist, "main"), material: named(decklist, "material") }} target={{ main: named(next, "main"), material: named(next, "material") }} cardsByName={cardsByName} />
   </Panel>;
 }

@@ -873,3 +873,21 @@ budget controller was stubbed; real budget gates and workspace/calculation contr
 were covered by 125 focused tests. Shared/app typechecks, targeted lint (pre-existing
 budget-hook warnings), and production build passed. No production account writes,
 PHP fixture replay, native keyboard or live deployment checks were performed.
+
+## Deck forecast results
+
+Use `ForecastResult` for automatic paid-model reports: a strong section heading,
+one primary percentage or quantity range, visible turn-3 context, and full
+`CardArtTile` cards with quantities and names alongside. Keep natural units; never
+combine draw, damage, and readiness into a score. Ranges show the middle 80% and
+a median dot; probability bars use 0–100%. Comparable marks share a scale.
+
+Turn 5 is the existing simulation horizon, not an empirically established game
+length or optimal checkpoint. Turn 3 remains visible. Validating checkpoints
+against actual game lengths and champion progression is separate analytics work.
+
+Swap sheets use `SwapImpactReport`: changed Main/Material cards and exact quantity
+transitions, then changed turn-3/5 forecasts, with acceptance owned by the caller.
+The compact damage preview uses champion/no-allies and single-ally scenarios;
+complete comparisons retain other board states. Missing and unsupported forecasts
+are not zero impact. Calculators and full comparison reports remain separate.

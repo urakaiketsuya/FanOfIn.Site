@@ -1,32 +1,30 @@
+import { rangeText, percent } from './reportFormatting';
 import { useMemo } from 'react';
-import { computeTonorisDrawReport, type AnalyticsDeck, type Card, type DrawRange } from '@gatcg/shared';
+import { computeTonorisDrawReport, type AnalyticsDeck, type Card } from '@gatcg/shared';
 import Panel from '../../components/ui/Panel';
-import AssociatedCards from '../../components/AssociatedCards';
-const span = (value: DrawRange) => `${value.low}–${value.high}`;
+import ForecastResult, { ForecastRange, ForecastChance } from './ForecastResult';
 export default function TonorisDrawReport({ deck, cardsByName }: { deck: AnalyticsDeck; cardsByName: Map<string, Card> }) {
   const report = useMemo(() => computeTonorisDrawReport(deck, cardsByName), [deck, cardsByName]);
   if (!report) return null;
+  if (report.missing.length) return <Panel data-component="TonorisDrawReport"><h3 className="text-lg font-semibold">Draw & resources</h3><p role="status">Card data incomplete</p></Panel>;
+  const early = report.points[2], late = report.points[4];
+  const cards = (names: string[]) => [...deck.main, ...deck.material].filter(line => line.quantity > 0 && names.includes(line.name));
+  const detail = (label: string, before: string, after: string) => <div className="flex flex-wrap justify-between gap-2"><dt>{label}</dt><dd className="tabular-nums">{before} → {after}</dd></div>;
   return <Panel data-component="TonorisDrawReport">
-    <h3 className="text-sm font-semibold">Draw, payment & token forecast</h3>
-    <p className="mt-1 text-xs text-ctp-subtext1">Unopposed draw sequence · going first · middle 80% of samples</p>
-    {report.missing.length > 0 ? <p role="status" className="mt-3 text-sm">Card data incomplete</p> : <>
-      <div className="my-4 grid gap-3 sm:grid-cols-2">{report.points.filter(point => point.turn === 3 || point.turn === 5).map(point => <section key={point.turn} className="rounded-xl bg-ctp-mantle p-3">
-        <h4 className="font-semibold">Turn {point.turn}</h4>
-        <p className="mt-2 text-2xl font-semibold tabular-nums">{span(point.seen)} <span className="text-sm font-normal">cards seen</span></p>
-        <p className="text-xs text-ctp-subtext1">{point.seen.median} median · {point.natural} natural draws</p>
-        <dl className="mt-3 space-y-2 text-sm">
-          <div className="flex justify-between gap-2"><dt>Extra cards</dt><dd>{span(point.extra)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>Memory cost saved</dt><dd>{span(point.saved)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>Level 3 reached</dt><dd>{Math.round(point.level3 * 100)}%</dd></div>
-          <div className="flex justify-between gap-2"><dt>Drones fabricated</dt><dd>{span(point.fabricated)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>Weapons summoned</dt><dd>{span(point.weapons)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>2 prevention ready</dt><dd>{Math.round(point.preventionReady * 100)}%</dd></div>
-          <div className="flex flex-wrap justify-between gap-2"><dt>Token power · after payments</dt><dd>{span(point.readyTokenPower)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>Titans summoned</dt><dd>{span(point.titans)}</dd></div>
-          <div className="flex justify-between gap-2"><dt>Neos bonus drawn</dt><dd>{Math.round(point.bonus * 100)}%</dd></div>
-        </dl>
-      </section>)}</div>
-      <AssociatedCards cardsByName={cardsByName} label="Draw and payment sources" lines={report.sources.map(source => ({ ...source, detail: `${Math.round((report.points[4].plays.find(play => play.name === source.name)?.probability ?? 0) * 100)}% played by turn 5` }))} />
-    </>}
+    <ForecastResult title="Draw" context="Unopposed · going first" cards={cards(['Epicurean Institute', 'Dormant Sacrificial Altar', 'Hub of Innovation', 'Neos Sight'])} cardsByName={cardsByName}>
+      <p className="text-sm">Cards seen</p><ForecastRange early={early.seen} late={late.seen} unit="cards" />
+      <dl className="mt-4 space-y-2 text-xs">{detail('Extra cards · T3 → T5', rangeText(early.extra), rangeText(late.extra))}{detail('Neos bonus drawn', percent(early.bonus), percent(late.bonus))}</dl>
+    </ForecastResult>
+    <ForecastResult title="Resources" context="Paid progression · going first" cards={cards(['Academy Guide', 'Dungeon Guide', 'The Eternal Kingdom'])} cardsByName={cardsByName}>
+      <ForecastChance early={early.level3} late={late.level3} label="Level 3 reached" />
+      <dl className="mt-4 space-y-2 text-xs">{detail('Memory saved · T3 → T5', rangeText(early.saved), rangeText(late.saved))}</dl>
+    </ForecastResult>
+    <ForecastResult title="Token combat" context="After payments · going first" cards={cards(['Cordelia, Aurous Kaiser', 'Automata Genesis', 'Tonoris, Genesis Aegis'])} cardsByName={cardsByName}>
+      <p className="text-sm">Ready token power</p><ForecastRange early={early.readyTokenPower} late={late.readyTokenPower} unit="power" cumulative={false} />
+      <dl className="mt-4 space-y-2 text-xs">{detail('Drones fabricated · T3 → T5', rangeText(early.fabricated), rangeText(late.fabricated))}{detail('Weapons summoned', rangeText(early.weapons), rangeText(late.weapons))}{detail('Titans summoned', rangeText(early.titans), rangeText(late.titans))}</dl>
+    </ForecastResult>
+    <ForecastResult title="Defense" context="Obelisk readiness · going first" cards={[...cards(['Tonoris, Genesis Aegis']), { name: 'Obelisk of Protection', quantity: 1, detail: 'Generated' }]} cardsByName={cardsByName}>
+      <ForecastChance early={early.preventionReady} late={late.preventionReady} label="2 prevention ready" cumulative={false} />
+    </ForecastResult>
   </Panel>;
 }

@@ -1,5 +1,7 @@
+import { rangeText } from './reportFormatting';
 import { useMemo } from 'react';
 import { computeRecursionReport, compareRecursionReports, hasRecursionSources, type AnalyticsDeck, type Card } from '@gatcg/shared';
+import ForecastResult, { ForecastChance, ReportCards } from './ForecastResult';
 import AssociatedCards from '../../components/AssociatedCards';
 import Panel from '../../components/ui/Panel';
 
@@ -10,19 +12,13 @@ type Props = { deck: AnalyticsDeck; cardsByName: Map<string, Card> };
 export default function RecursionReport({ deck, cardsByName }: Props) {
   const report = useMemo(() => hasRecursionSources(deck) ? computeRecursionReport(deck, cardsByName) : null, [deck, cardsByName]);
   if (!report) return null;
-  return <Panel data-component="RecursionReport"><h3 className="text-sm font-semibold">Graveyard reuse</h3>
-    <p className="mt-1 text-xs text-ctp-subtext1">Going first · cumulative · middle 80%</p>
-    {report.status !== 'ready' ? <p role="status" className="mt-3 text-sm">{issue(report.status)}</p> : <>
-      <div className="my-4 grid gap-3 sm:grid-cols-2">{metrics.map(metric => <section key={metric.key} className="min-w-0 rounded-xl bg-ctp-mantle p-3"><h4 className="text-sm font-semibold">{metric.label}</h4>
-        <div className="mt-3 grid grid-cols-2 gap-3">{report.points.filter(point => [3, 5].includes(point.turn)).map(point => <div key={point.turn}><p className="text-xs font-semibold">By turn {point.turn}</p>
-          <p className="mt-1 text-xl font-semibold tabular-nums">{percent(point[metric.key].ready)}</p><p className="text-xs text-ctp-subtext1">1+ {metric.key === 'returned' ? 'returned' : 'replayed'}</p>
-          <div className="my-2 h-1.5 overflow-hidden rounded bg-ctp-surface1" aria-hidden="true"><div className="h-full bg-ctp-teal" style={{ width: percent(point[metric.key].ready) }} /></div>
-          <p className="text-sm tabular-nums">{point[metric.key].low}–{point[metric.key].high} <span className="text-xs text-ctp-subtext1">cards</span></p>
-          <p className="text-xs text-ctp-subtext1">{point[metric.key].median} median</p>
-        </div>)}</div>
-      </section>)}</div>
-      <AssociatedCards lines={report.sources} cardsByName={cardsByName} label="Graveyard recovery cards" />
-      {report.points[4].targets.length > 0 && <div className="mt-4"><h4 className="mb-2 text-xs font-semibold">Returned cards</h4><AssociatedCards lines={report.points[4].targets.map(name => ({ name, quantity: deck.main.filter(line => line.name === name).reduce((n, line) => n + line.quantity, 0) }))} cardsByName={cardsByName} label="Returned cards" /></div>}
+  return <Panel data-component="RecursionReport"><h3 className="mb-1 text-lg font-semibold">Graveyard reuse</h3><p className="mb-5 text-xs text-ctp-subtext1">Going first · cumulative</p>
+    {report.status !== 'ready' ? <p role="status">{issue(report.status)}</p> : <>
+      {metrics.map(metric => <ForecastResult key={metric.key} title={metric.label} cards={report.sources} cardsByName={cardsByName}>
+        <ForecastChance early={report.points[2][metric.key].ready} late={report.points[4][metric.key].ready} label={`1+ ${metric.key === 'returned' ? 'returned' : 'replayed'}`} />
+        <p className="mt-4 text-sm tabular-nums">{rangeText(report.points[4][metric.key])} cards</p><p className="text-xs text-ctp-subtext1">By turn 5 · middle 80% · {report.points[4][metric.key].median} median</p>
+      </ForecastResult>)}
+      {report.points[4].targets.length > 0 && <section className="mt-5 border-t border-ctp-surface1 pt-5"><h4 className="mb-3 font-semibold">Returned cards</h4><ReportCards lines={report.points[4].targets.map(name => ({ name, quantity: deck.main.filter(line => line.name === name).reduce((n, line) => n + line.quantity, 0) }))} cardsByName={cardsByName} /></section>}
     </>}
   </Panel>;
 }

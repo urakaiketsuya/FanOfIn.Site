@@ -1,12 +1,12 @@
 import { useState, useTransition } from 'react';
-import { packageReport, reportAccess, reportCounts, type Card, type ClusterMatchupImpact } from '@gatcg/shared';
+import { packageReport, reportCounts, type Card, type ClusterMatchupImpact } from '@gatcg/shared';
 import type { DeckWorkspace } from '../deckbuilder/persistence/deckWorkspace';
 import CardResult from '../../components/CardResult';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import DialogSheet from '../../components/ui/DialogSheet';
 import { previewReportSwap } from './reportDraft';
-import FixtureComparison from '../analytics/FixtureComparison';
+import SwapImpactReport from '../analytics/SwapImpactReport';
 import { pct, referenceLink, suggestReportSwaps, type ComparableDeck, type ReportSwap, type SuggestionGoal } from './reportModel';
 import { Link } from 'react-router-dom';
 
@@ -20,8 +20,7 @@ export default function ReportSuggestions({ deck, cards, references, matchups, r
   const packages = packageReport(deck);
   const matchup = matchups.find(row => row.opponentClusterId === opponent);
   const next = preview ? previewReportSwap(deck, preview, cards) : null;
-  const counts = reportCounts(deck.main), size = [...counts.values()].reduce((a, b) => a + b, 0);
-  const afterCounts = next ? reportCounts(next.main) : counts;
+  const counts = reportCounts(deck.main);
   const afterPackages = next ? packageReport(next) : [];
   const packageChanges = [...new Set([...packages, ...afterPackages].map(row => row.definition.id))].map(id => {
     const before = packages.find(row => row.definition.id === id), after = afterPackages.find(row => row.definition.id === id);
@@ -42,20 +41,8 @@ export default function ReportSuggestions({ deck, cards, references, matchups, r
       {results?.map(swap => <article className="mt-4 rounded-xl border border-ctp-surface1 p-3" key={`${swap.cut}:${swap.add}`}><div className="grid max-w-md grid-cols-2 gap-3"><CardResult name={swap.cut} card={cards.get(swap.cut)} newTab><p className="mt-2 font-semibold">Cut 1</p></CardResult><CardResult name={swap.add} card={cards.get(swap.add)} newTab><p className="mt-2 font-semibold">Add 1</p></CardResult></div><p className="mt-3 text-sm">{swap.reason}</p><Link className="flex min-h-12 items-center text-sm text-ctp-blue underline" to={referenceLink(swap.referenceId)}>Reference list</Link><Button onClick={() => { startTransition(() => setPreview(swap)); setError(null); }}>Compare swap</Button></article>)}
     </>}
     {preview && next && <DialogSheet title="Preview suggested swap" onDismiss={() => setPreview(null)} footer={<div>{error && <p role="alert" className="mb-2 text-ctp-red">{error}</p>}<Button variant="primary" onClick={() => { const failure = onApply(preview); if (failure) setError(failure); else setPreview(null); }}>Apply to local draft</Button></div>}>
-      <div className="grid grid-cols-2 gap-3"><CardResult name={preview.cut} card={cards.get(preview.cut)} newTab><p>Cut 1 · {counts.get(preview.cut)} → {afterCounts.get(preview.cut) ?? 0}</p></CardResult><CardResult name={preview.add} card={cards.get(preview.add)} newTab><p>Add 1 · {counts.get(preview.add) ?? 0} → {afterCounts.get(preview.add)}</p></CardResult></div>
-      <h3 className="mt-4 font-semibold">Access at 10 cards seen</h3>
-      <dl className="mt-3 space-y-3 text-sm">{[preview.cut, preview.add].map(name => <div key={name}><dt>{name}</dt><dd>{pct(reportAccess(size, counts.get(name) ?? 0, 10))} → {pct(reportAccess(size, afterCounts.get(name) ?? 0, 10))}</dd></div>)}{packageChanges.map(row => <div key={row.id}><dt>{row.label}</dt><dd>{pct(row.before)} → {pct(row.after)} · {row.metBefore ? 'supported' : 'incomplete'} → {row.metAfter ? 'supported' : 'incomplete'}</dd></div>)}</dl>
-      <p className="mt-3 text-sm">Tradeoff · −1 {preview.cut}</p>
-      {matchup && <p className="mt-3 text-sm">{matchup.opponentClusterName} · observed association</p>}
-      <h3 className="mt-4 font-semibold">Matchup candidate access at 10 seen</h3>
-      {matchups.filter(row => row.answers.some(group => group.answers.some(answer => answer.cardName === preview.cut || answer.cardName === preview.add))).slice(0, 3).map(row => {
-        const names = [...new Set(row.answers.flatMap(group => group.answers.map(answer => answer.cardName)))];
-        const beforeCopies = names.reduce((sum, name) => sum + (counts.get(name) ?? 0), 0), afterCopies = names.reduce((sum, name) => sum + (afterCounts.get(name) ?? 0), 0);
-        return <p key={row.opponentClusterId} className="mt-2 text-sm">{row.opponentClusterName}: {pct(reportAccess(size, beforeCopies, 10))} → {pct(reportAccess(size, afterCopies, 10))} · observed Main pool</p>;
-      })}
-      {!matchups.some(row => row.answers.some(group => group.answers.some(answer => answer.cardName === preview.cut || answer.cardName === preview.add))) && <p className="mt-2 text-sm">No measured access changes.</p>}
-      <FixtureComparison baseline={deck} target={next} cardsByName={cards} baselineLabel="Current deck" targetLabel="Proposed swap" initialMode="versions" reportOnly />
-      <p className="mt-3 text-xs">Local draft · original preserved</p>
+      <SwapImpactReport baseline={deck} target={next} cardsByName={cards} />
+      {packageChanges.filter(row => row.before !== row.after || row.metBefore !== row.metAfter).map(row => <p key={row.id} className="mt-3 text-sm">{row.label} · access at 10 seen: {pct(row.before)} → {pct(row.after)}</p>)}
     </DialogSheet>}
   </Panel>;
 }

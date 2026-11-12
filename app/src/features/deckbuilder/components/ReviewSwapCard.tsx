@@ -1,7 +1,6 @@
-import AssociatedCards from "../../../components/AssociatedCards";
 import { useMemo, useState, useTransition } from "react";
 import DialogSheet from "../../../components/ui/DialogSheet";
-import FixtureComparison from "../../analytics/FixtureComparison";
+import SwapImpactReport from "../../analytics/SwapImpactReport";
 import { reviewSwapPreview } from "../model/reviewSwapPreview";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
@@ -43,9 +42,8 @@ export default function ReviewSwapCard({ decklist, removal, addition, cardsByNam
       <Button variant="primary" onClick={onApply} aria-label={`Apply swap: remove ${removal.cardName}, set ${addition.cardName} to ${addition.quantity} copies`}>Apply this swap</Button>
       <Button onClick={onDismiss}>Keep current cards</Button>
     </div>
-    {open && <DialogSheet title="Proposed swap" onDismiss={() => setOpen(false)} footer={<Button variant="primary" onClick={() => { onApply(); setOpen(false); }}>Apply this swap</Button>}>
-      <AssociatedCards lines={[{ name: removal.cardName, quantity: removal.quantity, detail: "Remove" }, { name: addition.cardName, quantity: addition.quantity, detail: "Set quantity" }]} cardsByName={cardsByName} label="Proposed cards" />
-      <FixtureComparison baseline={named(decklist)} target={named(preview)} cardsByName={cardsByName} baselineLabel="Current deck" targetLabel="Proposed swap" initialMode="versions" reportOnly />
+    {open && <DialogSheet title="Swap impact" onDismiss={() => setOpen(false)} footer={<Button variant="primary" onClick={() => { onApply(); setOpen(false); }}>Apply this swap</Button>}>
+      <SwapImpactReport baseline={named(decklist)} target={named(preview)} cardsByName={cardsByName} />
     </DialogSheet>}
   </li>;
 }
