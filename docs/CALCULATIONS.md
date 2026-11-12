@@ -6673,43 +6673,87 @@ https://rules.gatcg.com/glossary/keywords-and-abilities
 
 ### Paid Rai damage sequence (2026-11-11)
 
-`computeRaiDamageReport` and `compareRaiDamageReports` forecast paid Fireball and
-Gilded Pyre output to an unbuffed target unit, before responses/prevention. This is
-not total deck damage or damage actually inflicted. No opponent ally, buff,
-graveyard or pressure state is invented. Existing draw reports retain their
-previous results and return shape.
+`computeRaiDamageReport` and `compareRaiDamageReports` cover all ten damage Actions
+in the reviewed `rai-fire-draw.json` fixture. Reduce to Ash is destruction, not
+damage, and is excluded. This is paid spell output before responses/prevention,
+not total deck damage, a lethal clock or a prediction of the opponent's board.
+Existing draw-only reports retain their previous results and return shape.
 
-The forecast uses the reviewed Rai draw engines, actual Main size, opening seven
+The sequence uses reviewed Rai draw engines, actual Main size, opening seven
 (or smaller deck size), going first, 512 seeded samples and five turns. Canonical
-merged/sorted lines make input order irrelevant. Each turn plays the first
-payable supported source in the shared shuffled-hand policy, not an optimized
-damage rotation. Both damage cards share finite hand payments with draw engines
-and physically leave hand once. Fireball pays printed reserve 4 at Spirit level,
-receives its 2-cost class discount only after paid Rai level 1, and contributes
-1 + actual paid level cumulative output. Gilded Pyre pays printed reserve 2 at
-all levels and contributes 2 damage; its buff-target replacement of 4 is excluded
-from this unbuffed-target scenario. Damage cards' Mage activations share the
-existing once-per-turn Archmage trigger. Temporary level increases and Mana Weaver
-copies are not modeled. Only Spirit of Fire enables these damage cards. Other
-damage cards remain unplayed. Separate card forecasts must not be added together.
+merged/sorted lines make input order and duplicate splitting irrelevant. Each turn
+plays the first payable supported source in the shuffled-hand policy; it is not
+an optimized rotation. All spells share physical hand, memory, graveyard and
+banishment resources with draw engines. Draw engines are preserved when choosing
+reserve/discard payments. Only Spirit of Fire enables the reviewed damage plays.
+Sideboard cards do not enter the sequence.
 
-Checkpoints return cumulative sample 10th/50th/90th percentiles; paired results use
-turns 3 and 5 from the same standalone calculation. Damage source quantities travel
-with results so consumers can label coverage explicitly. A supported deck without
-these cards has zero supported output, not zero total damage. Missing catalog
-entries or missing/negative damage-card reserve costs are unavailable; unsupported
-lineages are not zero. The shared sequence exposes damage through
-`estimateDrawAndDamageInfluence`; `estimateDrawInfluence` preserves the existing
-draw-only return contract.
+| Card | Reviewed paid behavior |
+| --- | --- |
+| Fireball | Reserve 4, reduced by 2 with current Mage class; 1 + actual level to the selected unit. |
+| Focused Flames | Reserve 2, reduced by 1 with current Mage class; 4 to one opposing ally. |
+| Gilded Pyre | Reserve 2; 2 to the selected unit, replaced by 4 in the buffed-target scenario. |
+| Ignite Fate | Reserve 3; 2 to each champion, with own damage recorded separately; unconditional Floating Memory. |
+| Ignite the Soul | Reserve 1; 1 to the selected unit; Mage-qualified Floating Memory. |
+| Innervate Fury | Reserve 3 plus delevel and remove five actual damage counters; 7 total split among opposing allies. |
+| Intensified Pyre | Reserve 3 with Kindle up to 3; 2 to opposing champion, replaced by 6 with opposing graveyard at least 8. |
+| Purge in Flames | Reserve 8 minus actual level; 2 to opposing champion and each ally, replaced by 3 with Mage class; own champion excluded. |
+| Pyroclastic Flow | Reserve 4; 2 to both champions and each ally; own damage recorded separately. |
+| Set Ablaze | Reserve 2; 4 to one opposing ally, plus 3 to its champion only at current Mage level 3+. |
 
-`DeckReport` and versions-mode `FixtureComparison` show turn-3/5 cumulative ranges
-with the heading “Paid damage · shown cards” and “Unbuffed target” qualifier.
-Both supported cards present in the deck remain visible (including off-element
-copies whose output is zero). Standalone reports require a Rai material entry and
-at least one supported damage card; comparisons appear when either side qualifies.
-Missing/unsupported results show status, not numerical changes. Removing one
-supported card leaves the other eligible in the shared sequence. The card pool
-is centralized in `RAI_DAMAGE_CARDS`; no user inputs or extra disclosures are added.
+Kindle banishes physical fire cards already in the graveyard, at most three and
+never more than the remaining reserve cost. It prefers non-Floating cards, then
+other eligible fire cards in graveyard order. The source cannot Kindle itself.
+Kindle and Floating Memory consume the same finite graveyard: a banished copy
+cannot pay twice. Failed complete payments consume nothing. Floating Memory is
+also available on discarded eligible cards, including off-element cards whose
+printed Floating Memory itself has no element activation restriction.
+
+Fury requires both a removable paid level and five existing damage counters.
+Its costs are paid before the Mage-Action trigger check, so deleveling from
+Archmage loses that inherited trigger immediately. Returned champions can be
+materialized again on a later turn, paying their actual cost and retriggering
+Spellcrafter's entry counters when appropriate. Recovery consumes counters once;
+starting injury is not counted as self-inflicted damage. No opponent attacks are
+invented. Own champion lethal stops later plays and turns in that sample.
+
+Area damage also marks each physical Academy Guide. Lethal Guides leave the field
+and lose their materialization discount; surviving ally damage clears at end of
+turn. Champion damage persists. There is no simulated opponent life, death,
+replacement, prevention or retaliation. Opposing allies are explicitly target
+opportunities **per cast**, not persistent invented units. Single-target damage
+is never multiplied by ally count; Fury's split seven stays seven total.
+
+Six independent automatic scenarios use the same seed and payment policy:
+
+- Champion, no opposing allies; unbuffed, opposing graveyard below eight, no starting injury.
+- One opposing ally available per cast; flexible unit targets go to that ally.
+- Two opposing allies available per cast; area damage reaches both, flexible targets still choose one.
+- Buffed opposing champion; Gilded Pyre's replacement applies, no opposing allies.
+- Opposing graveyard at least eight throughout; Intensified Pyre's replacement applies, no opposing allies.
+- Start with five damage on the player's champion and one opposing ally per cast; no further external damage is added.
+
+Each returns cumulative champion, total opposing-ally, self-inflicted and recovered
+10th/50th/90th percentiles. These are separate distributions and must not be summed
+or combined into one interval. Comparisons use the exact standalone turn-3/5
+results, matched by scenario; a delta is the difference between medians, not a
+sampled distribution of differences. No scenario inputs or methodology panels
+are added. UI shows relevant scenarios, concise labels, a shared damage scale,
+actual card art/names and comparison copy changes. The original `points.damage`
+contract aliases the champion-only baseline; `scenarios` carries the full report.
+
+Missing catalog data, damage reserve costs, champion life or modeled ally life
+produce unavailable results. Unsupported lineages never become zero. A supported
+deck without eligible damage cards has zero supported output, not zero total deck
+damage. `RAI_DAMAGE_CARDS` centralizes coverage. Mana Weaver copies, temporary levels,
+other card activations, attacks, opponent simulation and full catalog coverage
+remain outside this reviewed fixture batch.
+
+Rules verified against catalog text and official references:
+https://index.gatcg.com/card/innervate-fury
+https://rules.gatcg.com/glossary/keywords-and-abilities
+https://rules.gatcg.com/glossary/game-terms
+https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion
 
 ### Rai physical zones and Floating Memory foundation (2026-11-11)
 
@@ -6728,16 +6772,15 @@ source metadata. It spends eligible graveyard copies first, up to the discounted
 memory cost, then randomly banishes remaining payment cards from memory. Eligibility
 uses the champion before materialization: a Spirit cannot borrow the incoming
 Rai's Mage class. If the entire cost cannot be paid, no cards are consumed. A
-zero-cost materialization consumes none. Graveyard copies never pay reserve costs,
-and banished copies cannot pay again. Unplayed cards, cards in memory and cards
+zero-cost materialization consumes none. Floating Memory never pays reserve costs
+(the damage policy separately supports Kindle), and banished copies cannot pay again. Unplayed cards, cards in memory and cards
 on the field are not graveyard resources. No recursion, milling or opposing
 zone effects are modeled yet.
 
-Production policy intentionally does not assign Floating Memory eligibility yet:
-this foundation preserves current draw/damage results while establishing physical
-zone and payment tests. Next coverage is Ignite the Soul's paid damage plus its
-class-qualified Floating Memory, followed by other reviewed consumers. This is
-not a claim that the existing Fireball/Gilded Pyre pool models all graveyard cards.
+The paid damage policy now assigns Ignite Fate's unconditional and Ignite the
+Soul's Mage-qualified Floating Memory. The draw-only policy remains unchanged.
+Kindle shares this graveyard in the damage sequence described above. Recursion,
+milling and other card-specific graveyard effects remain outside this contract.
 
 Rules checked against the official comprehensive rules (Floating Memory payment
 is declared before random memory banishment) and the official beginner guide

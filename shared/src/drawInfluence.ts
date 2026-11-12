@@ -1,3 +1,5 @@
+import { CHAMPION_DAMAGE_SCENARIO, needsAlly, paidDamageDiscount, paidDamageOutput, type PaidDamageEffect, type PaidDamageScenario } from './paidDamagePolicy.js';
+
 export interface FixedDrawStep { count: number; destination: 'hand' | 'memory' }
 
 /** Printed fixed draw clauses in order; does not establish activation permission. */
@@ -22,7 +24,7 @@ export function supportedDrawEffect(card: { types: string[]; effect?: string | n
   return { steps: fixedDrawSteps(match[1]), discard: match[2] ? words[match[2].toLowerCase()] ?? Number(match[2]) : 0 };
 }
 
-/** A bounded draw-only policy, not a full game simulation. */
+/** A bounded draw/damage policy, not a full game simulation. */
 export interface InfluenceDrawSource {
   name: string;
   quantity: number;
@@ -37,27 +39,38 @@ export interface InfluenceDrawSource {
   /** Explicit reviewed zone/payment metadata; omitted by existing draw-only policies. */
   resolvesTo?: 'graveyard' | 'field';
   floatingMemory?: 'always' | 'mage';
+  damage?: PaidDamageEffect;
+  fireElement?: boolean;
+  allyLife?: number;
   mageAction?: boolean;
   minimumLevel?: number;
 }
 
 export interface DrawProgressionPolicy {
-  lineage: { name: string; memory: number }[];
+  lineage: { name: string; memory: number; life?: number }[];
+  spiritLife?: number;
   /** Reviewed Rai lineage: two starting enlighten, first Mage Action each turn at level 2+. */
   rai: true;
 }
 
-export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy) {
-  const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => source));
+export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy, scenario: PaidDamageScenario = CHAMPION_DAMAGE_SCENARIO) {
+  const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => ({ ...source })));
   const damageSamples = Array.from({ length: turns }, () => [] as number[]);
+  const allyDamageSamples = Array.from({ length: turns }, () => [] as number[]);
+  const selfDamageSamples = Array.from({ length: turns }, () => [] as number[]);
+  const recoverySamples = Array.from({ length: turns }, () => [] as number[]);
   const seenSamples = Array.from({ length: turns }, () => [] as number[]);
-  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, paidLevel: 0, floatingMemoryPaid: 0, graveyard: 0, banished: 0, field: 0, library: 0, extraAccess: new Map<string, number>() }));
+  const totals = Array.from({ length: turns }, () => ({ seen: 0, hand: 0, memory: 0, influence: 0, paidLevel: 0, floatingMemoryPaid: 0, kindlePaid: 0, graveyard: 0, banished: 0, field: 0, library: 0, extraAccess: new Map<string, number>() }));
   let seed = 1739;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   for (let sample = 0; sample < samples; sample++) {
     const library = [...deck];
     for (let i = library.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [library[i], library[j]] = [library[j], library[i]]; }
     let seen = 0, level = 0, guides = 0, enlighten = 0, damage = 0;
+    let allyDamage = 0, selfDamage = 0, recovered = 0, damageCounters = scenario.startingDamage ?? 0, kindlePaid = 0;
+    const allyCounters = new Map<InfluenceDrawSource, number>();
+    const championAlive = () => damageCounters < (level === 0 ? progression?.spiritLife ?? Infinity : progression?.lineage[level - 1]?.life ?? Infinity);
+    const damageEffect = (source: InfluenceDrawSource) => source.damage ?? (source.mechanic === 'fireball' || source.mechanic === 'gilded-pyre' ? source.mechanic : undefined);
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
     const graveyard: InfluenceDrawSource[] = [];
@@ -84,75 +97,116 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     draw(opening);
     for (let turn = 1; turn <= turns; turn++) {
       let mageTriggered = false;
-      if (progression && turn > 1 && level < progression.lineage.length) {
-        const cost = Math.max(0, progression.lineage[level].memory - guides);
-        // Check the current champion's class before leveling, not the incoming champion.
-        const eligible = (source: InfluenceDrawSource) => source.floatingMemory === 'always'
-          || (source.floatingMemory === 'mage' && level >= 1);
-        const floating = Math.min(cost, graveyard.filter(eligible).length);
-        if (memory.length + floating >= cost) {
-          // Declare Floating Memory first, then randomly banish the remaining payment.
-          // No partial payment when the full cost cannot be afforded.
-          for (let paid = 0; paid < floating; paid++) {
-            banished.push(...graveyard.splice(graveyard.findIndex(eligible), 1));
+      if (championAlive()) {
+        if (progression && turn > 1 && level < progression.lineage.length) {
+          const cost = Math.max(0, progression.lineage[level].memory - guides);
+          // Check the current champion's class before leveling, not the incoming champion.
+          const eligible = (source: InfluenceDrawSource) => source.floatingMemory === 'always'
+            || (source.floatingMemory === 'mage' && level >= 1);
+          const floating = Math.min(cost, graveyard.filter(eligible).length);
+          if (memory.length + floating >= cost) {
+            // Declare Floating Memory first, then randomly banish the remaining payment.
+            // No partial payment when the full cost cannot be afforded.
+            for (let paid = 0; paid < floating; paid++) {
+              banished.push(...graveyard.splice(graveyard.findIndex(eligible), 1));
+            }
+            floatingMemoryPaid += floating;
+            for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
+            level++;
+            if (level === 1) { enlighten += 2; spendEnlighten(); }
           }
-          floatingMemoryPaid += floating;
-          for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
-          level++;
-          if (level === 1) enlighten += 2;
         }
-      }
-      // One materialization before recollection, with actual memory payment.
-      if (!progression && turn > 1) {
-        const index = available.findIndex((source) => source.draws > 0 && source.memory != null && source.memory <= memory.length && (source.level ?? 0) < turn);
-        if (index >= 0) {
-          const [source] = available.splice(index, 1);
-          banished.push(...take(memory, source.memory!));
+        // One materialization before recollection, with actual memory payment.
+        if (!progression && turn > 1) {
+          const index = available.findIndex((source) => source.draws > 0 && source.memory != null && source.memory <= memory.length && (source.level ?? 0) < turn);
+          if (index >= 0) {
+            const [source] = available.splice(index, 1);
+            banished.push(...take(memory, source.memory!));
+            resolveDraws(source);
+            graveyard.push(...take(hand, source.discard));
+          }
+        }
+        // Paid permanents sacrifice at the next beginning of recollection.
+        // These triggers resolve before memory returns, but after materialization.
+        for (const step of recollectionDraws) {
+          const index = field.indexOf(step.source);
+          if (index >= 0) {
+            graveyard.push(...field.splice(index, 1));
+            draw(step.count, step.destination);
+          }
+        }
+        recollectionDraws = [];
+        hand.push(...memory); memory = [];
+        if (turn > 1 || order === 'second') draw(1);
+        // Each physical copy resolves once; newly drawn engines can be played if payable.
+        while (championAlive()) {
+          const reserveCost = (source: InfluenceDrawSource) => {
+            if (source.reserve == null) return Infinity;
+            const discount = !progression ? 0 : source.mechanic === 'careful-study' ? level
+              : paidDamageDiscount(damageEffect(source), level);
+            return Math.max(0, source.reserve - discount);
+          };
+          const kindle = (source: InfluenceDrawSource) => damageEffect(source) === 'intensified-pyre'
+            ? Math.min(3, reserveCost(source), graveyard.filter(card => card.fireElement).length) : 0;
+          const index = hand.findIndex((source) => {
+            const effect = damageEffect(source);
+            return (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic || !!effect)
+              && (!needsAlly(effect) || scenario.allies > 0)
+              && (effect !== 'innervate-fury' || (level > 0 && damageCounters >= 5))
+              && source.reserve != null && source.reserve >= 0 && reserveCost(source) - kindle(source) <= hand.length - 1;
+          });
+          if (index < 0) break;
+          const [source] = hand.splice(index, 1);
+          const effect = damageEffect(source);
+          const kindlePayment = kindle(source);
+          const reservePayment = reserveCost(source) - kindlePayment;
+          // Spend non-Floating fire cards first; both mechanisms consume the same graveyard.
+          for (let paid = 0; paid < kindlePayment; paid++) {
+            const nonFloating = graveyard.findIndex(card => card.fireElement && !card.floatingMemory);
+            banished.push(...graveyard.splice(nonFloating >= 0 ? nonFloating : graveyard.findIndex(card => card.fireElement), 1));
+          }
+          kindlePaid += kindlePayment;
+          memory.push(...take(hand, reservePayment));
+          if (effect === 'innervate-fury') {
+            level--; damageCounters -= 5; recovered += 5;
+          }
+          if (progression && source.mageAction && level >= 2 && !mageTriggered) {
+            enlighten++; mageTriggered = true;
+            // The inherited activation trigger resolves before the Action's draws.
+            spendEnlighten();
+          }
           resolveDraws(source);
+          if (progression && effect) {
+            const output = paidDamageOutput(effect, level, scenario);
+            damage += output.champion; allyDamage += output.allies;
+            selfDamage += output.self; damageCounters += output.self;
+            if (output.ownAllies > 0) {
+              for (let i = field.length - 1; i >= 0; i--) {
+                const ally = field[i];
+                if (ally.allyLife == null) continue;
+                const counters = (allyCounters.get(ally) ?? 0) + output.ownAllies;
+                allyCounters.set(ally, counters);
+                if (counters >= ally.allyLife) {
+                  graveyard.push(...field.splice(i, 1));
+                  allyCounters.delete(ally);
+                  if (ally.mechanic === 'academy-guide') guides--;
+                }
+              }
+            }
+          }
+          if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
+            recollectionDraws.push({ source, count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
+          }
+          if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
+            enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
+            spendEnlighten();
+          }
+          if (progression && source.mechanic === 'academy-guide') guides++;
+          if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
+          (source.resolvesTo === 'graveyard' ? graveyard : field).push(source);
           graveyard.push(...take(hand, source.discard));
         }
-      }
-      // Paid permanents sacrifice at the next beginning of recollection.
-      // These triggers resolve before memory returns, but after materialization.
-      for (const step of recollectionDraws) {
-        const index = field.indexOf(step.source);
-        if (index >= 0) graveyard.push(...field.splice(index, 1));
-        draw(step.count, step.destination);
-      }
-      recollectionDraws = [];
-      hand.push(...memory); memory = [];
-      if (turn > 1 || order === 'second') draw(1);
-      // Each physical copy resolves once; newly drawn engines can be played if payable.
-      while (true) {
-        const reserveCost = (source: InfluenceDrawSource) => {
-          if (source.reserve == null) return Infinity;
-          const discount = !progression ? 0 : source.mechanic === 'careful-study' ? level
-            : source.mechanic === 'fireball' && level >= 1 ? 2 : 0;
-          return Math.max(0, source.reserve - discount);
-        };
-        const index = hand.findIndex((source) => (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic) && source.reserve != null && source.reserve >= 0 && reserveCost(source) <= hand.length - 1);
-        if (index < 0) break;
-        const [source] = hand.splice(index, 1);
-        memory.push(...take(hand, reserveCost(source)));
-        if (progression && source.mageAction && level >= 2 && !mageTriggered) {
-          enlighten++; mageTriggered = true;
-          // The inherited activation trigger resolves before the Action's draws.
-          spendEnlighten();
-        }
-        resolveDraws(source);
-        if (progression && source.mechanic === 'fireball') damage += 1 + level;
-        if (progression && source.mechanic === 'gilded-pyre') damage += 2;
-        if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
-          recollectionDraws.push({ source, count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
-        }
-        if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
-          enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
-          spendEnlighten();
-        }
-        if (progression && source.mechanic === 'academy-guide') guides++;
-        if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
-        (source.resolvesTo === 'graveyard' ? graveyard : field).push(source);
-        graveyard.push(...take(hand, source.discard));
+        allyCounters.clear(); // Ally damage clears at end of turn; champion damage persists.
       }
       // Couple the modeled and natural draws to the same shuffled library. Only
       // newly accessed names contribute: an engine cannot help find its first copy.
@@ -165,6 +219,10 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
       }
       seenSamples[turn - 1].push(seen);
       damageSamples[turn - 1].push(damage);
+      allyDamageSamples[turn - 1].push(allyDamage);
+      selfDamageSamples[turn - 1].push(selfDamage);
+      recoverySamples[turn - 1].push(recovered);
+      totals[turn - 1].kindlePaid += kindlePaid / samples;
       totals[turn - 1].paidLevel += level / samples;
       totals[turn - 1].floatingMemoryPaid += floatingMemoryPaid / samples;
       totals[turn - 1].graveyard += graveyard.length / samples;
@@ -182,11 +240,16 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     const quantile = (p: number) => values[Math.floor((values.length - 1) * p)] ?? 0;
     const damageValues = damageSamples[index].sort((a, b) => a - b);
     const damageQuantile = (p: number) => damageValues[Math.floor((damageValues.length - 1) * p)] ?? 0;
-    return { ...point, paidDamageRange: { low: damageQuantile(0.1), median: damageQuantile(0.5), high: damageQuantile(0.9) }, seenRange: { low: quantile(0.1), median: quantile(0.5), high: quantile(0.9) } };
+    const sampledRange = (samples: number[]) => {
+      const sorted = samples.sort((a, b) => a - b);
+      const at = (p: number) => sorted[Math.floor((sorted.length - 1) * p)] ?? 0;
+      return { low: at(0.1), median: at(0.5), high: at(0.9) };
+    };
+    return { ...point, paidAllyDamageRange: sampledRange(allyDamageSamples[index]), paidSelfDamageRange: sampledRange(selfDamageSamples[index]), paidRecoveryRange: sampledRange(recoverySamples[index]), paidDamageRange: { low: damageQuantile(0.1), median: damageQuantile(0.5), high: damageQuantile(0.9) }, seenRange: { low: quantile(0.1), median: quantile(0.5), high: quantile(0.9) } };
   });
 }
 
 /** Preserve the draw-only result contract for existing reports. */
 export function estimateDrawInfluence(...args: Parameters<typeof estimateDrawAndDamageInfluence>) {
-  return estimateDrawAndDamageInfluence(...args).map(({ paidDamageRange: _damage, paidLevel: _level, floatingMemoryPaid: _floating, graveyard: _graveyard, banished: _banished, field: _field, library: _library, ...point }) => point);
+  return estimateDrawAndDamageInfluence(...args).map(({ paidDamageRange: _damage, paidAllyDamageRange: _allies, paidSelfDamageRange: _self, paidRecoveryRange: _recovery, kindlePaid: _kindle, paidLevel: _level, floatingMemoryPaid: _floating, graveyard: _graveyard, banished: _banished, field: _field, library: _library, ...point }) => point);
 }

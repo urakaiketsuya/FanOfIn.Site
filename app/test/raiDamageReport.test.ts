@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { computeRaiDamageReport, compareRaiDamageReports, createRaiDrawPolicy, estimateDrawAndDamageInfluence, type Card, type InfluenceDrawSource } from '@gatcg/shared';
+import { computeRaiDamageReport, compareRaiDamageReports, RAI_DAMAGE_CARDS, createRaiDrawPolicy, estimateDrawAndDamageInfluence, type Card, type InfluenceDrawSource } from '@gatcg/shared';
 
 const catalog = new Map<string, Card>(JSON.parse(readFileSync(new URL('../../data/card-catalog.json', import.meta.url), 'utf8')).cards.map((card: Card) => [card.name, card]));
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/rai-fire-draw.json', import.meta.url), 'utf8'));
@@ -33,9 +33,9 @@ test('real fixture paired ranges agree, are deterministic and do not alter the d
   assert.equal(report.status, 'ready');
   if (report.status !== 'ready') return;
   assert.deepEqual(report, computeRaiDamageReport({ ...deck, main: [...deck.main].reverse() }, catalog));
-  assert.deepEqual(report.damageSources, [{ name: 'Fireball', quantity: 4 }, { name: 'Gilded Pyre', quantity: 4 }]);
+  assert.deepEqual(report.damageSources, [...RAI_DAMAGE_CARDS].sort((a, b) => a.localeCompare(b)).map(name => ({ name, quantity: 4 })));
   assert.ok(report.points[4].damage.high > 0);
-  const target = { ...deck, main: deck.main.filter(line => line.name !== 'Fireball' && line.name !== 'Gilded Pyre') };
+  const target = { ...deck, main: deck.main.filter(line => !RAI_DAMAGE_CARDS.some(name => name === line.name)) };
   const comparison = compareRaiDamageReports(deck, target, catalog);
   assert.equal(comparison.status, 'ready');
   if (comparison.status !== 'ready') return;

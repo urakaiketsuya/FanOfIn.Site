@@ -18,7 +18,8 @@ Existing competition release D is complete and is not reopened.
 - [x] General affordability: representative non-Tonoris fixture, paid progression,
       finite discounts and payment budgets.
 - [ ] Conditional draw: reviewed triggers, activations, recurring draws and destinations.
-- [ ] Damage/combat: paid plays, readiness, consumed resources and token buffs.
+- [x] Damage/combat: reviewed Tonoris token readiness and complete Rai Fire fixture
+      damage batch (paid plays, target scenarios and consumed resources).
 - [ ] Defense/recovery: automatic supported availability and payment sequences;
       avoid inventing opponent pressure or damage taken.
 - [ ] Graveyard/recursion: explicit zone movement and finite reuse.
@@ -44,11 +45,11 @@ contract and representative fixture. Record data blockers separately from comple
 
 ## Current handoff
 
-Current: reviewed Tonoris draw/payment sequence includes all three Obelisks:
-paid Fabrication and Armaments, plus remaining affordable Protection capacity.
-Altar milling deliberately waits for a reviewed graveyard payoff/policy.
-Next: broaden conditional-draw coverage beyond the completed Rai fixture, then paid damage/combat.
-No production writes authorized in this run.
+Current: Tonoris token readiness and the ten-card Rai Fire damage fixture are
+implemented in standalone reports and comparisons. Conditional draw and broader
+resource models remain partial. Next: finish recurring conditional-draw coverage,
+then automatic defense/recovery sequences. Altar milling waits for a reviewed
+graveyard payoff/policy. No production writes or push authorized in this run.
 
 ## Milestone 1 — object payments and paired forecasts
 
@@ -257,3 +258,27 @@ Next: wire Ignite the Soul into the paid damage policy and verify reports with
 three supported cards. Extended analytics remains 3/16 broad milestones complete
 (~19%, unequal scope); graveyard foundations are now partial. Recursion, milling,
 additional Floating Memory cards and opponent-dependent damage remain outstanding.
+
+## Complete reviewed damage batch — 2026-11-11
+
+Implemented all ten damage Actions in the Rai Fire fixture in one shared sequence.
+Added finite Kindle/Floating Memory competition, Fury's recover/delevel costs,
+paid class/level discounts, split/area/conditional damage, self-inflicted damage
+and physical Guide casualties. Six explicit automatic target scenarios feed
+standalone and paired turn-3/5 reports. Reduce to Ash remains removal, never damage.
+The batch does not include full opponent simulation, other champions' spell pools,
+Mana Weaver copies or arbitrary card-text parsing.
+
+Verification: 92 focused calculation tests, shared/app typechecks, targeted lint
+and full app production build pass (including static deck, artist, card and timeline
+pages). Production report/comparison components checked with the reviewed fixture
+at 360px, 390px and 1280px: no horizontal overflow, card links at least 141px wide
+and 149px high in checked mobile layouts, visible 2px keyboard focus, loaded art,
+missing/unsupported states and empty suppression. No new loading or expansion
+controls. Releveling Spellcrafter's enlighten draw has a regression test; the final
+preview reflects it. Temporary harness removed. Full signed-in journeys and live
+deployment remain unverified. No push performed.
+
+Next: recurring conditional draw, followed by paid prevention/recovery coverage.
+Extended analytics is 4/16 broad milestones complete (~25%, unequal scope); this
+reviewed damage batch is complete, not a claim of full catalog/combat coverage.
