@@ -38,7 +38,7 @@ export function computeRaiDamageReport(deck: AnalyticsDeck, catalog: ReadonlyMap
   const main = [...counts].map(([name, quantity]) => ({ name, quantity })).sort((a, b) => a.name.localeCompare(b.name));
   const policy = createRaiDrawPolicy(main, deck.material, catalog);
   if (!policy) return { status: 'unsupported' as const };
-  const fireEnabled = deck.material.some(line => line.quantity > 0 && line.name === 'Spirit of Fire');
+  const fireEnabled = policy.access.element === 'FIRE';
   const sources: InfluenceDrawSource[] = policy.main.map(source => {
     const card = catalog.get(source.name)!;
     const damage = fireEnabled ? DAMAGE_EFFECTS[source.name as keyof typeof DAMAGE_EFFECTS] : undefined;
@@ -47,7 +47,7 @@ export function computeRaiDamageReport(deck: AnalyticsDeck, catalog: ReadonlyMap
       floatingMemory: source.name === 'Ignite Fate' ? 'always' : source.name === 'Ignite the Soul' ? 'mage' : source.floatingMemory };
   });
   const damageSources = sources.filter(source => source.damage);
-  const spirit = deck.material.find(line => line.quantity > 0 && line.name.startsWith('Spirit of '))!;
+  const spirit = policy.access.spirit;
   const progression = { ...policy.progression, spiritLife: catalog.get(spirit.name)!.life ?? undefined,
     lineage: policy.progression.lineage.map(card => ({ ...card, life: catalog.get(card.name)!.life ?? undefined })) };
   const validNumber = (value: number | null | undefined) => value != null && Number.isFinite(value) && value >= 0;

@@ -1,3 +1,4 @@
+import { reviewedChampionAccess, hasReviewedElementAccess } from './championAccess.js';
 import { reservableObjects, restReserveObjects, type PaymentObject } from './analyticsObjectPayments.js';
 import type { Card } from './api-types.js';
 import { aggregateLines, type AnalyticsDeck } from './fixtureResources.js';
@@ -16,13 +17,16 @@ const range = (values: number[]): DrawRange => {
 /** Isolated, draw-focused sequence. No opposing removal or unreviewed Main plays. */
 export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>, samples = 1024, checkpoint?: (state: { turn: number; hand: string[]; memory: string[]; level: number; objectReserve: number; protectionCost?: number; protectionUsesObject: boolean }) => void) {
   const main = aggregateLines(deck.main);
-  const material = new Set(deck.material.filter(line => line.quantity > 0).map(line => line.name));
-  if (!material.has('Spirit of Water') || !LINEAGE.every(name => material.has(name))) return null;
+  // Preserve missing-data reporting before checking the reviewed lineage.
+  const materialNames = new Set(deck.material.filter(line => line.quantity > 0).map(line => line.name));
+  if (!LINEAGE.every(name => materialNames.has(name))) return null;
   const missing = [...main, ...deck.material].filter(line => !catalog.has(line.name)).map(line => line.name);
   for (const name of ['Automaton Drone', 'Titan Mk II']) {
     if (catalog.get(name)?.power == null) missing.push(name);
   }
   if (missing.length) return { missing, points: [], sources: [] };
+  const access = reviewedChampionAccess(deck.material, catalog, 'tonoris');
+  if (!access) return null;
   const sources = main.filter(line => ENGINE.includes(line.name));
   const libraryBase = main.slice().sort((a, b) => a.name.localeCompare(b.name)).flatMap(line => Array.from({ length: line.quantity }, () => line.name));
   const count = Math.max(1, Math.floor(samples));
@@ -99,7 +103,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
       if (turn > 1) draw(hand);
       while (true) {
         const name = ENGINE.find(candidate => {
-          if (!hand.includes(candidate) || (catalog.get(candidate)?.element === 'NEOS' && level < 3)) return false;
+          if (!hand.includes(candidate) || !hasReviewedElementAccess(catalog.get(candidate)!.element, access.element, access.advanced, level)) return false;
           if ((candidate === 'Cordelia, Aurous Kaiser' || candidate === 'The Eternal Kingdom') && board.includes(candidate)) return false; // retain the existing unique object
           const cost = catalog.get(candidate)?.cost_reserve;
           return cost != null && cost >= 0 && cost <= reserveBudget() - 1;

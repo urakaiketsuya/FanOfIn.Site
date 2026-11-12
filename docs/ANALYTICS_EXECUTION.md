@@ -25,7 +25,8 @@ Existing competition release D is complete and is not reopened.
       shared payments and labeled pressure/recovery scenarios; exclusions documented.
 - [x] Graveyard/recursion: reviewed Rai recovery batch, explicit zone movement,
       finite reuse and paid replay; upstream fixtures imported and exclusions documented.
-- [ ] Champion/element access: broaden reviewed progression and activation gates.
+- [x] Champion/element access: shared reviewed lineage/activation gates, named
+      seven-card Spirits and Tonoris Fire/Wind; specialist progressions excluded.
 - [ ] Recommendations: audit omitted core cards, dependencies and covered swap outcomes.
 - [ ] Comparisons: newer sequence outcomes in Compare and saved versions; audit
       Builder/Review/My Decks propagation and context retention.
@@ -49,7 +50,7 @@ contract and representative fixture. Record data blockers separately from comple
 
 Current: reviewed damage, conditional draw, defense/recovery and graveyard reuse
 batches are implemented in standalone reports and comparisons.
-Next: broaden champion/element access using existing TCGEngine fixtures first. Full-catalog draw depends on the
+Next: recommendation core-card/dependency audit and covered swap outcomes. Full-catalog draw depends on the
 explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
@@ -364,3 +365,25 @@ component checks. Signed-in flows, upstream PHP replays and live deployment not
 verified. No push performed. Next is champion/element coverage; Altar payoff and
 combat-death/ephemeral recursion remain separate reviewed-policy dependencies.
 Extended analytics: 7/16 broad milestones (~44%, unequal scope).
+
+
+## Champion/element access batch — 2026-11-12
+
+Imported existing TCGEngine source excerpts (16 individual scenarios plus the
+three-case Wind Spirit loop); no new deck fixtures. Shared validation now accepts
+12 reviewed seven-card Spirits across the three existing champion engines (36
+combinations, previously seven). Rai draw/damage/recursion, Diao defense, Tonoris
+engine/defense and their comparisons use consistent Spirit/paid-element gates.
+Tonoris gains Fire/Wind support without activating Water-only Altar. Duplicate,
+extra and incomplete champion lineages remain unavailable. Different openings and
+unmodeled champion engines stay explicitly outside this bounded milestone.
+
+Verification: 154 existing regression tests and 21 new provenance/access/parity
+checks; shared/app typechecks, targeted lint and the full production build passed. No presentation or controls changed, so browser viewport
+checks were not repeated. PHP fixture replays, signed-in and live checks remain
+outstanding. No push performed.
+
+Next: recommendation core-card/dependency audit and supported swap outcomes.
+Extended analytics: 8/16 broad milestones (~50%, unequal scope). Full catalog
+champion simulation remains outside this estimate; Altar still needs its reviewed
+payoff policy.

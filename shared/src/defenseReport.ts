@@ -1,3 +1,4 @@
+import { reviewedChampionAccess, reviewedElementMinimumLevel } from './championAccess.js';
 import type { Card } from './api-types.js';
 import { aggregateLines, type AnalyticsDeck } from './fixtureResources.js';
 import { createRaiDrawPolicy } from './raiDrawPolicy.js';
@@ -5,7 +6,6 @@ import { estimateDrawAndDamageInfluence, supportedDrawEffect, type InfluenceDraw
 import { computeTonorisDrawReport } from './tonorisDrawReport.js';
 import { DEFENSE_CARDS, DEFENSE_SCENARIOS, evaluateDefenseWindow, type DefenseState } from './defenseWindow.js';
 
-const DIAO = ['Diao Chan, Enchantress', 'Diao Chan, Dreaming Wish', 'Diao Chan, Idyll Corsage'];
 const range = (values: number[]) => {
   const sorted = values.slice().sort((a, b) => a - b);
   const at = (p: number) => sorted[Math.floor((sorted.length - 1) * p)] ?? 0;
@@ -30,27 +30,24 @@ export function computeDefenseReport(deck: AnalyticsDeck, catalog: ReadonlyMap<s
   };
   const policy = createRaiDrawPolicy(main, deck.material, catalog);
   if (policy) {
-    const spirit = deck.material.find(line => line.quantity > 0 && line.name.startsWith('Spirit of '))!;
+    const spirit = policy.access.spirit;
     // Keep Ward available for a response rather than spending it solely for its draw.
     const cards = policy.main.map(source => DEFENSE_CARDS.some(name => name === source.name)
       ? { ...source, draws: 0, drawSteps: [], conditionalDraw: undefined, mechanic: undefined } : source);
     estimateDrawAndDamageInfluence(cards, [], Math.min(7, main.reduce((sum, line) => sum + line.quantity, 0)), 'first', 5, count, policy.progression, undefined,
       state => collect(state.turn, { ...state, hand: state.hand.map(c => c.name), memory: state.memory.map(c => c.name), graveyard: state.graveyard.map(c => c.name), element: catalog.get(spirit.name)!.element, advanced: 'ARCANE', mage: true, diao: false }));
   } else {
-    const champions = deck.material.filter(line => line.quantity > 0 && catalog.get(line.name)?.types.includes('CHAMPION'));
-    const spirit = champions.find(line => ['Spirit of Fire', 'Spirit of Water', 'Spirit of Wind'].includes(line.name));
-    const diao = spirit && champions.length === 4 && DIAO.every(name => champions.some(line => line.name === name));
+    const diao = reviewedChampionAccess(deck.material, catalog, 'diao');
     if (diao) {
-      const element = catalog.get(spirit.name)!.element;
-      const lineage = DIAO.map(name => ({ name, memory: catalog.get(name)!.cost_memory! }));
-      if (lineage.some(card => card.memory == null || card.memory < 0)) return { status: 'missing' as const };
+      const { element, lineage } = diao;
       // Reviewed baseline: natural draws, fixed draw Actions, Guide and Institute.
       // No phantasias are played, so inherited glimmer remains the two entry counters.
       const cards: InfluenceDrawSource[] = main.map(line => {
         const card = catalog.get(line.name)!;
-        const enabled = card.element === 'NORM' || card.element === element;
+        const minimumLevel = reviewedElementMinimumLevel(card.element, element, diao.advanced);
+        const enabled = Number.isFinite(minimumLevel);
         const effect = enabled ? supportedDrawEffect(card) : null;
-        return { ...line, reserve: card.cost_reserve, draws: effect?.steps.reduce((n, step) => n + step.count, 0) ?? 0,
+        return { ...line, minimumLevel, reserve: card.cost_reserve, draws: effect?.steps.reduce((n, step) => n + step.count, 0) ?? 0,
           drawSteps: effect?.steps ?? [], discard: effect?.discard ?? 0,
           resolvesTo: card.types.includes('ACTION') ? 'graveyard' : 'field',
           mechanic: enabled && line.name === 'Academy Guide' ? 'academy-guide' : enabled && line.name === 'Epicurean Institute' ? 'recollection-hand' : undefined };
@@ -58,8 +55,9 @@ export function computeDefenseReport(deck: AnalyticsDeck, catalog: ReadonlyMap<s
       estimateDrawAndDamageInfluence(cards, [], Math.min(7, main.reduce((n, l) => n + l.quantity, 0)), 'first', 5, count, { rai: false, lineage }, undefined,
         state => collect(state.turn, { ...state, hand: state.hand.map(c => c.name), memory: state.memory.map(c => c.name), graveyard: state.graveyard.map(c => c.name), element, advanced: 'TERA', mage: false, diao: true }));
     } else {
-      if (champions.length !== 4) return { status: 'unsupported' as const };
-      const tonoris = computeTonorisDrawReport({ ...deck, main }, catalog, count, state => collect(state.turn, { ...state, graveyard: [], element: 'WATER', advanced: 'NEOS', mage: false, diao: false }));
+      const access = reviewedChampionAccess(deck.material, catalog, 'tonoris');
+      if (!access) return { status: 'unsupported' as const };
+      const tonoris = computeTonorisDrawReport({ ...deck, main }, catalog, count, state => collect(state.turn, { ...state, graveyard: [], element: access.element, advanced: access.advanced, mage: false, diao: false }));
       if (!tonoris) return { status: 'unsupported' as const };
       if (tonoris.missing.length) return { status: 'missing' as const };
     }

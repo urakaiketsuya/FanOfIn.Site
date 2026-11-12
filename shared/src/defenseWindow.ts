@@ -1,3 +1,4 @@
+import { hasReviewedElementAccess } from './championAccess.js';
 import type { Card } from './api-types.js';
 
 export const DEFENSE_CARDS = ['Veiling Breeze', 'Crystallized Destiny', 'Flourishing Restoration', 'Aenean Ward', 'Spellshield: Arcane', 'Restoring Embers', 'Innervate Knowledge'] as const;
@@ -44,7 +45,7 @@ export function evaluateDefenseWindow(state: DefenseState, scenario: DefenseScen
         if ((name === 'Crystallized Destiny' || name === 'Spellshield: Arcane') && full >= scenario.hits.length) continue;
         if (name === 'Innervate Knowledge' && (level < 1 || damage < 5)) continue;
         const element = card.element;
-        const enabled = element === 'NORM' || element === state.element || (level >= 3 && element === state.advanced);
+        const enabled = hasReviewedElementAccess(element, state.element, state.advanced, level);
         const waiver = !enabled && name === 'Flourishing Restoration' && state.diao && level >= 1;
         if (!enabled && !waiver) continue;
         if (card.cost_reserve == null || card.cost_reserve < 0) continue;

@@ -161,3 +161,5 @@ export * from './defenseWindow.js';
 export * from './defenseReport.js';
 export * from './recursionPolicy.js';
 export * from './recursionReport.js';
+
+export * from './championAccess.js';

@@ -1,0 +1,413 @@
+{
+  "sourceRevision": "b629bcc038cbb40b8c6bf242c2796b02e6db14ef",
+  "description": "Verbatim upstream fixtures plus catalog snapshots. Wind source is a loop registering three scenarios. Analytics adapters are not PHP engine replays.",
+  "scenarios": [
+    {
+      "id": "spirit-of-fire-on-enter-draw",
+      "path": "DevTools/ga-fixtures/cards-s.php",
+      "fileSha256": "e0e6afb78cdba3cb8e70ba488d69f65ffdc995fe78de5034f06fead8938b1b67",
+      "excerptSha256": "26346030578ecc7594badb254def3f83f49ce6a304609020b6d20059baefbe21",
+      "excerpt": "gaScenario('spirit-of-fire-on-enter-draw')\n    ->deckTemplate('lorraine-windslice', 'Dungeon Guide')\n    ->endTurn()\n    ->tested('Spirit of Fire')\n    ->expectProperty('myField-0', 'CardID', 'LMyKyVC2O9', 'Spirit of Fire is the starting champion')\n    ->expectZoneCount('myHand', 7, 1, 'On Enter drew seven cards during pregame setup')\n    ->register();"
+    },
+    {
+      "id": "spirit-of-water-on-enter-draw",
+      "path": "DevTools/ga-fixtures/cards-s.php",
+      "fileSha256": "e0e6afb78cdba3cb8e70ba488d69f65ffdc995fe78de5034f06fead8938b1b67",
+      "excerptSha256": "1df658c9e9372303011e5de4c28cd01cf6185baaa1d97140dc91ff566ebeb9a2",
+      "excerpt": "gaScenario('spirit-of-water-on-enter-draw')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Water\n1 Lorraine, Wandering Warrior\n1 Clarent, Sword of Peace\n1 Backup Charger\n1 Purifying Thurible\n# Main\n4 Dungeon Guide\n4 Fairy Whispers\n4 Fluffy Shopkeep\n4 Windslice\nDECK\n    )\n    ->endTurn()\n    ->tested('Spirit of Water')\n    ->expectProperty('myField-0', 'CardID', 'tafqldAGRF', 'Spirit of Water is the starting champion')\n    ->expectZoneCount('myHand', 7, 1, 'On Enter drew seven cards during pregame setup')\n    ->register();"
+    },
+    {
+      "id": "spirit-of-wind-enter-draw-seven",
+      "path": "DevTools/ga-fixtures/cards-s.php",
+      "fileSha256": "e0e6afb78cdba3cb8e70ba488d69f65ffdc995fe78de5034f06fead8938b1b67",
+      "excerptSha256": "96cd3169056d09da51703f90965f021d391317e7827668a6e25881d8c9ab4569",
+      "excerpt": "gaScenario('spirit-of-wind-enter-draw-seven')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Wind\n1 Lorraine, Wandering Warrior\n1 Clarent, Sword of Peace\n1 Backup Charger\n1 Purifying Thurible\n# Main\n4 Dungeon Guide\n4 Fairy Whispers\n4 Fluffy Shopkeep\n4 Windslice\nDECK\n    )\n    ->target('myField-0')\n    ->tested('Spirit of Wind')\n    ->expectZoneCount('myHand', 7, 1, 'Spirit of Wind\\'s On Enter draws seven cards, giving the opening hand')\n    ->register();"
+    },
+    {
+      "id": "aithne-spirit-of-fire-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/fire-allies-d.php",
+      "fileSha256": "7bcf538b0aefce29ca0a4bb62aa7e8fe8d7bc3a5183b808ec1ae69ca831e4fd5",
+      "excerptSha256": "89e9103c7818b89a7879b17bc76231a588816d454a0652d1e6b207cfff54ba6a",
+      "excerpt": "gaScenario('aithne-spirit-of-fire-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Aithne, Spirit of Fire')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Aithne, Spirit of Fire')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "hanabi-spirit-of-fire-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/fire-allies-d.php",
+      "fileSha256": "7bcf538b0aefce29ca0a4bb62aa7e8fe8d7bc3a5183b808ec1ae69ca831e4fd5",
+      "excerptSha256": "518767c22e7f76c06638cc0507a0fa00b9e568d00568c8d042adf69b10feaec7",
+      "excerpt": "gaScenario('hanabi-spirit-of-fire-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Hanabi, Spirit of Fire')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Hanabi, Spirit of Fire')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "vyra-spirit-of-fire-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/fire-allies-d.php",
+      "fileSha256": "7bcf538b0aefce29ca0a4bb62aa7e8fe8d7bc3a5183b808ec1ae69ca831e4fd5",
+      "excerptSha256": "e979286bd744a5c8d024e21ff81830211890d083ffe7dcd16cb5a6bb4c343cac",
+      "excerpt": "gaScenario('vyra-spirit-of-fire-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Vyra, Spirit of Fire')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Vyra, Spirit of Fire')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "miao-spirit-of-water-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/water-allies.php",
+      "fileSha256": "c310f02ca93b681ff949d96c067e902457c3fdf11f6ca41220ce2c13eab536ef",
+      "excerptSha256": "b0034475535abb38327d6b477fe1fa597719d707084e70d325c4ac770b358b1d",
+      "excerpt": "gaScenario('miao-spirit-of-water-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Miao, Spirit of Water')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Miao, Spirit of Water')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "minthe-spirit-of-water-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/water-allies.php",
+      "fileSha256": "c310f02ca93b681ff949d96c067e902457c3fdf11f6ca41220ce2c13eab536ef",
+      "excerptSha256": "edd3d79d973f626f75eeef963a4eac9bcab70509b3b0e871796e30e61c935bee",
+      "excerpt": "gaScenario('minthe-spirit-of-water-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Minthe, Spirit of Water')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Minthe, Spirit of Water')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "sabrina-spirit-of-water-enter-draws-seven-cards",
+      "path": "DevTools/ga-fixtures/water-allies.php",
+      "fileSha256": "c310f02ca93b681ff949d96c067e902457c3fdf11f6ca41220ce2c13eab536ef",
+      "excerptSha256": "a44a42dfcd96ba0507d30fc6986c7aa53ac0fa4f1aa30d55ceee0ea238a75453",
+      "excerpt": "gaScenario('sabrina-spirit-of-water-enter-draws-seven-cards')\n    ->standardDeck('Dungeon Guide')\n    ->seed('myField', 'Sabrina, Spirit of Water')\n    ->observe()\n    ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n    ->tested('Sabrina, Spirit of Water')\n    ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n    ->register();"
+    },
+    {
+      "id": "exalted-card-is-not-playable-without-an-advanced-element",
+      "path": "DevTools/ga-fixtures/cards-p.php",
+      "fileSha256": "4ca9e056bde2924b0a4caf074ce5437ba935950685533be1aab6a856f5eb3e98",
+      "excerptSha256": "a622dfa72de88e5fef786f0e368264a56bb943ae846d0fece1c29347886eb506",
+      "excerpt": "gaScenario('exalted-card-is-not-playable-without-an-advanced-element')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Fire\n# Main\n10 Dungeon Guide\n10 Fluffy Shopkeep\n\nDECK\n    )\n    ->seed('myHand', 'Royal Oathguard')\n    ->play('Royal Oathguard')\n    ->tested('Pride of Demiourgos')\n    ->expectZoneCount('myHand', 8, 1, 'Royal Oathguard (Exalted) is refused: the champion has no advanced element')\n    ->expectZoneCount('myField', 1, 1, 'Nothing entered the field')\n    ->expectDqEmpty()\n    ->register();"
+    },
+    {
+      "id": "rai-archmage-inherited-first-mage-action-enlighten",
+      "path": "DevTools/ga-fixtures/cards-r.php",
+      "fileSha256": "5497c98bbe5c259369d55c14721f30d6d918643719c55c22aad70156565ee976",
+      "excerptSha256": "f8392e49e74516d57206cd684d4526511918313960ee408738ca99e0b4ff2414",
+      "excerpt": "gaScenario('rai-archmage-inherited-first-mage-action-enlighten')\n    ->deckTemplate('rai-windslice', 'Dungeon Guide')\n    ->champion(cardName: 'Rai, Archmage')\n    ->seed('myHand', 'Idle Thoughts')\n    ->play('Idle Thoughts')->pay(1)->answer(1, 'Top=n8wyfG9hbY,px60u5n1do,n8wyfG9hbY,n8wyfG9hbY;Bottom=')\n    ->tested('Rai, Archmage')\n    ->expectDqEmpty()\n    ->expectProperty('p1Field-0', 'Counters', '{\"enlighten\":1}')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"vz4kc558yx-ACTION_ACTIVATED\"]')\n    ->expectProperty('p1Graveyard-0', 'CardID', 'rWhFC8XBaH')\n    ->expectProperty('p1GlobalEffects-0', 'CardID', 'RAI_ARCHMAGE_TRIGGERED')\n    ->expectZoneCount('myHand', 6, 1)\n    ->expectZoneCount('myGraveyard', 1, 1)\n    ->expectZoneCount('myMemory', 1, 1)\n    ->expectZoneCount('myDeck', 5, 1, 'Glimpse 4 only looks and reorders -- answering the rearrange with exactly the offered cards leaves the 5-card deck intact')\n    ->register();"
+    },
+    {
+      "id": "rai-spellcrafter-on-enter-enlighten",
+      "path": "DevTools/ga-fixtures/cards-r.php",
+      "fileSha256": "5497c98bbe5c259369d55c14721f30d6d918643719c55c22aad70156565ee976",
+      "excerptSha256": "6e2f4e2380a670a6d7b2c43a11511d1cb72b9e1e85cc9febc8f6759d876efcee",
+      "excerpt": "gaScenario('rai-spellcrafter-on-enter-enlighten')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Fire\n1 Rai, Spellcrafter\n1 Clarent, Sword of Peace\n1 Backup Charger\n1 Purifying Thurible\n# Main\n4 Dungeon Guide\n4 Fairy Whispers\n4 Fluffy Shopkeep\n4 Windslice\nDECK\n    )\n    ->seed('myMemory', 'Fairy Whispers')\n    ->endTurn()\n    ->endTurn(2)->target('myMaterial-0')\n    ->tested('Rai, Spellcrafter')\n    ->expectDqEmpty()\n    ->expectProperty('p1Field-0', 'CardID', 'gPKTJKqvOI')\n    ->expectProperty('p1Field-0', 'Counters', '{\"enlighten\":2}', 'On Enter: two enlighten counters were put on Rai')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"ENTERED_THIS_TURN\"]')\n    ->expectProperty('p1Banish-0', 'CardID', 'n8wyfG9hbY')\n    ->expectProperty('p1Banish-0', 'Counters', '[]')\n    ->expectProperty('p1Banish-0', 'TurnEffects', '[]')\n    ->expectProperty('p1Material-0', 'CardID', 'm31WVJ9F04')\n    ->expectProperty('p1Material-1', 'CardID', '9gv4vm4kj3')\n    ->expectProperty('p1Material-2', 'CardID', 'LeyUk5auEP')\n    ->expectProperty('p1GlobalEffects-0', 'CardID', 'LEVELED_UP_THIS_TURN')\n    ->expectZoneCount('myHand', 8, 1)\n    ->expectZoneCount('myMemory', 0, 1)\n    ->expectZoneCount('theirHand', 8, 1)\n    ->register();"
+    },
+    {
+      "id": "rai-storm-seer-level-per-arcane-mage-spell-banished",
+      "path": "DevTools/ga-fixtures/cards-r.php",
+      "fileSha256": "5497c98bbe5c259369d55c14721f30d6d918643719c55c22aad70156565ee976",
+      "excerptSha256": "7758da4c5c05cc2d70dec2767b6b7bce090318c50fe60491c9f49e4872094b3d",
+      "excerpt": "gaScenario('rai-storm-seer-level-per-arcane-mage-spell-banished')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Fire\n1 Rai, Storm Seer\n1 Clarent, Sword of Peace\n1 Backup Charger\n1 Purifying Thurible\n# Main\n4 Dungeon Guide\n4 Fairy Whispers\n4 Fluffy Shopkeep\n4 Windslice\nDECK\n    )\n    ->champion(cardName: 'Rai, Storm Seer')\n    ->seed('myBanish', 'Shock Therapy')\n    ->seed('myHand', 'Scry the Skies')\n    ->play('Scry the Skies')->pay(1)->answer(1, 'Top=em6eEh9q8y,n8wyfG9hbY,em6eEh9q8y,px60u5n1do;Bottom=')\n    ->tested('Rai, Storm Seer')\n    ->expectDqEmpty()\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"vz4kc558yx-ACTION_ACTIVATED\"]')\n    ->expectProperty('p1Graveyard-0', 'CardID', 'F9POfB5Nah')\n    ->expectZoneCount('myHand', 6, 1)\n    ->expectZoneCount('myGraveyard', 1, 1)\n    ->expectZoneCount('myMemory', 2, 1)\n    ->expectZoneCount('myDeck', 4, 1, 'Scry the Skies\\' Glimpse 4 only looks and reorders, then draws one card into memory -- answering the rearrange with exactly the offered cards leaves 5 - 1 = 4 cards in the deck')\n    ->register();"
+    },
+    {
+      "id": "tonoris-genesis-aegis-recollection-obelisk",
+      "path": "DevTools/ga-fixtures/cards-t.php",
+      "fileSha256": "ae1c989c4d0c50fb5d191547a11eb901a4c4d12cd73398c74d49f07e50d3a402",
+      "excerptSha256": "3a76da381f1bea01f1ea1c42f6e8b2afcd2ec50f305df8c01ee9f14f613e8fe8",
+      "excerpt": "gaScenario('tonoris-genesis-aegis-recollection-obelisk')\n    ->deckTemplate('lorraine-windslice', 'Dungeon Guide')\n    ->champion(cardName: 'Tonoris, Genesis Aegis')\n    ->endTurn()\n    ->endTurn(2)->pass(1)->target('myTempZone-0')\n    ->tested('Tonoris, Genesis Aegis')\n    ->expectZoneCount('myField', 2, 1, 'choosing an Obelisk summons it onto the field')\n    ->expectProperty('p1Field-1', 'CardID', 'wk0pw0y6is', 'At beginning of recollection phase, choosing Obelisk of Armaments summons it')\n    ->register();"
+    },
+    {
+      "id": "diao-chan-enchantress-enter-glimmer",
+      "path": "DevTools/ga-fixtures/cards-d.php",
+      "fileSha256": "18cd322668aa01cc17292cf1cda9c75fd36c2b6b2cc60075f3d81898634b6083",
+      "excerptSha256": "49619205ad46a9ee9555f5eabb4eb1feaf7caaa957bb09acb4693781dd32ba75",
+      "excerpt": "gaScenario('diao-chan-enchantress-enter-glimmer')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Water\n1 Diao Chan, Enchantress\n# Main\n10 Dungeon Guide\n10 Fluffy Shopkeep\nDECK\n    )\n    ->seed('myMemory', 'Fairy Whispers')\n    ->endTurn()\n    ->endTurn(2)->target('myMaterial-0')\n    ->tested('Diao Chan, Enchantress')\n    ->expectProperty('p1Field-0', 'CardID', '00xbh8oc00', 'The level-up into Diao Chan, Enchantress completed', step: 3)\n    ->expectProperty('p1Field-0', 'Counters', '{\"glimmer\":2}', \"Diao Chan, Enchantress's On Enter (enterAbilities[\\\"00xbh8oc00:0\\\"]) put exactly two glimmer counters on herself when she levelled up into the champion slot\", step: 3)\n    ->register();"
+    },
+    {
+      "id": "flourishing-restoration-diao-chan-bonus-waives-the-element-for-two-more",
+      "path": "DevTools/ga-fixtures/phase-e-tera.php",
+      "fileSha256": "20983e495f0ab37711974c64c49e7f745b90d8d780eb75a48e12638e9f5015af",
+      "excerptSha256": "247e89fdd977bbd39e0a42d66f2d8fdf36eb1f714413e62612f5e24de15cf0bc",
+      "excerpt": "gaScenario('flourishing-restoration-diao-chan-bonus-waives-the-element-for-two-more')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->champion(cardName: 'Diao Chan, Enchantress', damage: 10)\n    ->seed('myField', 'Dungeon Guide', player: 2)\n    ->seed('myHand', 'Flourishing Restoration')\n    ->play('Flourishing Restoration')->pay(4)\n    ->expectDamage('p1Field-0', 4, 'Recover 3 and 3 more for the one opposing ally: 10 down to 4')\n    ->expectDqEmpty()\n    ->tested('Flourishing Restoration')\n    ->covers(['diao-chan-bonus', 'element-waiver', 'cost-increase'], GA_RESTORATION_WAIVER_TEXT)\n    ->register();"
+    },
+    {
+      "id": "named-wind-spirits-parameterized",
+      "path": "DevTools/ga-fixtures/wind-champions.php",
+      "fileSha256": "f547b6c34d6e3e98d853119fe71c40716728f43d9060300487a9735d40c75003",
+      "excerptSha256": "8360355e0d6546ad4d7d4f6f3fb2f8d39e922b96c431060b2528967a4b42de97",
+      "excerpt": "foreach (['Brissa, Spirit of Wind', 'Gwendolyn, Spirit of Wind', 'Kaze, Spirit of Wind'] as $gaSpirit) {\n    $gaSlug = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($gaSpirit)), '-');\n    gaScenario(\"$gaSlug-enter-draws-seven-cards\")\n        ->standardDeck('Dungeon Guide')\n        ->seed('myField', $gaSpirit)\n        ->observe()\n        ->expectZoneCount('myHand', 14, 1, 'On Enter: drew seven cards on top of the opening seven')\n        ->tested($gaSpirit)\n        ->covers(['on-enter', 'draw', 'champion'], '**On Enter:** Draw seven cards.')\n        ->register();\n}"
+    }
+  ],
+  "cards": [
+    {
+      "name": "Aithne, Spirit of Fire",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "FIRE",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Brissa, Spirit of Wind",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WIND",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Diao Chan, Dreaming Wish",
+      "effect": "**Diao Chan Lineage**\n\n**Inherited Effect** — At the beginning of your end phase, if the amount of **glimmer** counters on CARDNAME is less than the amount of phantasias you control, put an amount of **glimmer** counters on CARDNAME equal to the difference.",
+      "element": "NORM",
+      "level": 2,
+      "cost_memory": 2,
+      "life": 22,
+      "classes": [
+        "CLERIC"
+      ]
+    },
+    {
+      "name": "Diao Chan, Enchantress",
+      "effect": "**On Enter**: Put two **glimmer** counters on CARDNAME.\n\n**Inherited Effect** — [REST]: Activate a Reaction Spell card from your memory. Pay its reserve cost only by removing that many **glimmer** counters from CARDNAME. Activate this ability only during an opponent's turn.",
+      "element": "NORM",
+      "level": 1,
+      "cost_memory": 1,
+      "life": 19,
+      "classes": [
+        "CLERIC"
+      ]
+    },
+    {
+      "name": "Diao Chan, Idyll Corsage",
+      "effect": "**Diao Chan Lineage**\n\n**On Enter**: Choose any amount of non-champion objects and put a **wither** counter on each of them.\n\nWhenever a non-token object an opponent controls is destroyed, you may banish it. If you do, that opponent **summons** a Flowerbud token.",
+      "element": "TERA",
+      "level": 3,
+      "cost_memory": 3,
+      "life": 25,
+      "classes": [
+        "CLERIC"
+      ]
+    },
+    {
+      "name": "Fragmented Spirit of Fire",
+      "effect": "**On Enter:** **Glimpse 6**. Draw six cards. Then **summon** a Spirit Shard token.",
+      "element": "FIRE",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Fragmented Spirit of Water",
+      "effect": "**On Enter:** **Glimpse 6**. Draw six cards. Then **summon** a Spirit Shard token.",
+      "element": "WATER",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Fragmented Spirit of Wind",
+      "effect": "**On Enter:** **Glimpse 6**. Draw six cards. Then **summon** a Spirit Shard token.",
+      "element": "WIND",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Gwendolyn, Spirit of Wind",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WIND",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Hanabi, Spirit of Fire",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "FIRE",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Kaze, Spirit of Wind",
+      "effect": "**On Enter**: Draw seven cards.",
+      "element": "WIND",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Miao, Spirit of Water",
+      "effect": "**On Enter:** Draw seven  cards.",
+      "element": "WATER",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Minthe, Spirit of Water",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WATER",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Rai, Archmage",
+      "effect": "**Rai Lineage** *(Rai, Archmage must be leveled from a previous level \"Rai\" champion.)*\n\n**Inherited Effect:** Whenever you activate your first Mage action card each turn, put an **enlighten** counter on your champion. *(Your champion has this ability as long as this card is part of its lineage.)*",
+      "element": "NORM",
+      "level": 2,
+      "cost_memory": 2,
+      "life": 22,
+      "classes": [
+        "MAGE"
+      ]
+    },
+    {
+      "name": "Rai, Mana Weaver",
+      "effect": "**Rai Lineage** *(Rai, Mana Weaver must be leveled from a previous level \"Rai\" champion.)*\n\n[REST]**, Remove four enlighten counters from CARDNAME:** Copy target Mage Spell card activation. You may choose new targets for the copy.",
+      "element": "ARCANE",
+      "level": 3,
+      "cost_memory": 3,
+      "life": 25,
+      "classes": [
+        "MAGE"
+      ]
+    },
+    {
+      "name": "Rai, Spellcrafter",
+      "effect": "**On Enter:** Put two **enlighten** counters on CARDNAME. *(You may remove three **enlighten** counters from your champion to draw a card.)*",
+      "element": "NORM",
+      "level": 1,
+      "cost_memory": 1,
+      "life": 19,
+      "classes": [
+        "MAGE"
+      ]
+    },
+    {
+      "name": "Rai, Storm Seer",
+      "effect": "**Rai Lineage** *(Rai, Storm Seer must be leveled from a previous level \"Rai\" champion.)*\n\nCARDNAME gets +1 level for each arcane element Mage Spell card in your banishment.",
+      "element": "ARCANE",
+      "level": 3,
+      "cost_memory": 3,
+      "life": 25,
+      "classes": [
+        "MAGE"
+      ]
+    },
+    {
+      "name": "Sabrina, Spirit of Water",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WATER",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Spirit of Fire",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "FIRE",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Spirit of Water",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WATER",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Spirit of Wind",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "WIND",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    },
+    {
+      "name": "Tonoris, Creation's Will",
+      "effect": "**Tonoris Lineage**\n\nIf you would **summon** one or more tokens, you may **summon** that many Aurousteel Greatsword tokens instead.\n\nToken weapons you control have \"**Sacrifice this object:** Target weapon gets +**X** [POWER] until end of turn where **X** is this object's power.\"",
+      "element": "NEOS",
+      "level": 3,
+      "cost_memory": 3,
+      "life": 30,
+      "classes": [
+        "GUARDIAN"
+      ]
+    },
+    {
+      "name": "Tonoris, Genesis Aegis",
+      "effect": "**Tonoris Lineage**\n\nAt the beginning of your recollection phase, choose one that hasn’t been chosen— \n• **Summon** an Obelisk of Armaments token.\n• **Summon** an Obelisk of Fabrication token.\n• **Summon** an Obelisk of Protection token.",
+      "element": "NEOS",
+      "level": 3,
+      "cost_memory": 3,
+      "life": 30,
+      "classes": [
+        "GUARDIAN"
+      ]
+    },
+    {
+      "name": "Tonoris, Lone Mercenary",
+      "effect": "**On Enter:** CARDNAME gains **taunt** until the beginning of your next turn. *(While awake, this unit must be targeted before other units you control during your opponents' attack declarations if able.)*",
+      "element": "NORM",
+      "level": 1,
+      "cost_memory": 1,
+      "life": 20,
+      "classes": [
+        "GUARDIAN"
+      ]
+    },
+    {
+      "name": "Tonoris, Might of Humanity",
+      "effect": "**Tonoris Lineage** *(Tonoris, Might of Humanity must be leveled from a previous level \"Tonoris\" champion.)*\n\n**On Enter:** Tonoris' next attack this turn gets +3 [POWER].",
+      "element": "NORM",
+      "level": 2,
+      "cost_memory": 2,
+      "life": 25,
+      "classes": [
+        "GUARDIAN"
+      ]
+    },
+    {
+      "name": "Vyra, Spirit of Fire",
+      "effect": "**On Enter:** Draw seven cards.",
+      "element": "FIRE",
+      "level": 0,
+      "cost_memory": 0,
+      "life": 15,
+      "classes": [
+        "SPIRIT"
+      ]
+    }
+  ]
+}

@@ -7032,3 +7032,44 @@ production build. Local production components checked at 390×844 and 1280×900:
 no horizontal overflow, visible names/art, keyboard focus, card links over 48px,
 empty omission and missing/unsupported statuses. No loading/expanded states added.
 Full signed-in journeys, upstream PHP replays and live deployment remain unverified.
+
+### Reviewed champion and element access (2026-11-12)
+
+`shared/src/championAccess.ts` is the shared access contract for the paid Rai draw,
+damage and recursion reports, Diao defense checkpoints, and Tonoris engine/defense
+reports. Comparisons consume those same reports. It accepts the existing complete
+three-level Rai (Mana Weaver), Diao Chan (Idyll Corsage), or Tonoris (Genesis Aegis)
+lineage with exactly one copy of each champion and one reviewed opening Spirit.
+Extra, duplicate, mixed or incomplete champion lines are unsupported; non-champion
+Material is allowed. Sideboard and zero-copy lines grant no access.
+
+The reviewed openings are Spirit of Fire/Water/Wind plus Aithne, Hanabi, Vyra,
+Miao, Minthe, Sabrina, Brissa, Gwendolyn and Kaze. All draw seven into hand. This
+expands the accepted combinations from seven to 36 (12 Spirits × three existing
+lineages), not the number of simulated champion engines. Each engine retains its
+previously documented scope. Named Fire Spirits now correctly enable paid Fire
+spells and use their actual Spirit life in the damage trajectory.
+
+NORM and the retained Spirit's basic element are available at level zero.
+ARCANE/TERA/NEOS and EXALTED wait for the corresponding paid level-three champion;
+deleveling removes that access. Off-element cards remain physical payment/discard
+cards but cannot be activated. Tonoris now supports Fire and Wind openings and
+checks every engine card's element, so Water-only Altar cannot resolve under those
+Spirits. Diao's conservative fixed-Action draw baseline uses the same paid advanced
+element gate. Existing class and champion bonuses remain scoped to the exact
+reviewed lineages; accepting a Spirit does not grant another champion's abilities.
+
+Provenance: `scripts/import-tcgengine-champion-access.mjs` imports 16 named scenario
+excerpts and one parameterized Wind-Spirit block (three cases) from TCGEngine,
+pinning its revision and source/excerpt hashes in
+`app/test/fixtures/tcgengine-champion-access.json`. Tests adapt the upstream seven-card
+opening assertions and advanced-element rejection, and reuse the existing Rai,
+Diao and Tonoris deck fixtures for deterministic report/comparison parity. Other
+imported champion scenarios document the retained ability boundaries; this is not
+a replay of the PHP engine.
+
+Serene/Fortuitous/Fragmented Spirits, Chess/Slime exceptions, Storm Seer's variable
+level, alternate champion progressions, temporary element grants and lineage
+release remain unsupported. Their fixtures require distinct library-selection,
+opening-zone, token, class or banishment-state policies; they are not aliases for
+the seven-card opening and are never silently treated as one.
