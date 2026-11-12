@@ -47,3 +47,18 @@ test('delayed sources propagate to comparison and agree with the standalone sequ
   assert.deepEqual(comparison.sources.find(s=>s.name===name),{name,before:0,after:4});
  }
 });
+
+test('recurring Market draws agree across standalone and paired reports', () => {
+ const name = 'Gloamspire, Black Market';
+ const target = {...deck,main:deck.main.map(line=>line.name==='Fireball'?{...line,name}:line)};
+ const comparison = compareRaiDrawReports(deck,target,catalog)!;
+ assert.equal(comparison.status,'ready');
+ if(comparison.status !== 'ready') return;
+ assert.deepEqual(comparison.sources.find(source=>source.name===name),{name,before:0,after:4});
+ const standalone = computeDeckAnalysisReport(target.main,target.material,catalog);
+ for(const point of comparison.points) {
+  const checkpoint = standalone.checkpoints.find(p=>p.turn===point.turn && p.order==='first')!;
+  assert.equal(Math.round(point.after.seen),checkpoint.adjustedSeen);
+  assert.equal(point.after.memory,checkpoint.memory);
+ }
+});

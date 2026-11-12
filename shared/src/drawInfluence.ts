@@ -35,7 +35,7 @@ export interface InfluenceDrawSource {
   level?: number | null;
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
-  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball' | 'gilded-pyre';
+  mechanic?: 'gloamspire' | 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball' | 'gilded-pyre';
   /** Explicit reviewed zone/payment metadata; omitted by existing draw-only policies. */
   resolvesTo?: 'graveyard' | 'field';
   floatingMemory?: 'always' | 'mage';
@@ -97,6 +97,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     draw(opening);
     for (let turn = 1; turn <= turns; turn++) {
       let mageTriggered = false;
+      const restedMarkets = new Set<InfluenceDrawSource>();
       if (championAlive()) {
         if (progression && turn > 1 && level < progression.lineage.length) {
           const cost = Math.max(0, progression.lineage[level].memory - guides);
@@ -126,6 +127,12 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             graveyard.push(...take(hand, source.discard));
           }
         }
+        // Evaluate Market upkeep at the beginning of recollection, before other draws.
+        if (hand.length + memory.length >= 8) {
+          for (let i = field.length - 1; i >= 0; i--) {
+            if (field[i].mechanic === 'gloamspire') graveyard.push(...field.splice(i, 1));
+          }
+        }
         // Paid permanents sacrifice at the next beginning of recollection.
         // These triggers resolve before memory returns, but after materialization.
         for (const step of recollectionDraws) {
@@ -151,11 +158,21 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
           const index = hand.findIndex((source) => {
             const effect = damageEffect(source);
             return (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic || !!effect)
+              && (source.mechanic !== 'gloamspire' || !field.some(card => card.mechanic === 'gloamspire'))
               && (!needsAlly(effect) || scenario.allies > 0)
               && (effect !== 'innervate-fury' || (level > 0 && damageCounters >= 5))
               && source.reserve != null && source.reserve >= 0 && reserveCost(source) - kindle(source) <= hand.length - 1;
           });
-          if (index < 0) break;
+          if (index < 0) {
+            // Use recurring memory draws after paid plays, once per physical object.
+            const market = field.find(card => card.mechanic === 'gloamspire' && !restedMarkets.has(card));
+            if (market && hand.length + memory.length < 7 && seen < library.length) {
+              restedMarkets.add(market);
+              draw(1, 'memory');
+              continue;
+            }
+            break;
+          }
           const [source] = hand.splice(index, 1);
           const effect = damageEffect(source);
           const kindlePayment = kindle(source);

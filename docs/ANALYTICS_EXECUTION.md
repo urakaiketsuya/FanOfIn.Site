@@ -282,3 +282,20 @@ deployment remain unverified. No push performed.
 Next: recurring conditional draw, followed by paid prevention/recovery coverage.
 Extended analytics is 4/16 broad milestones complete (~25%, unequal scope); this
 reviewed damage batch is complete, not a claim of full catalog/combat coverage.
+
+## Recurring conditional draw — Gloamspire
+
+Added Gloamspire's paid unique domain, once-per-turn rest activation, less-than-seven
+influence gate, memory destination and eight-or-greater upkeep sacrifice to the
+shared Rai policy. Duplicate copies cannot stack field activations. Reports,
+comparisons and paid damage inherit the sequence; opponent draws are not modeled.
+
+Verification: 96 focused tests pass, including actual catalog contracts, payment,
+thresholds, recurring timing, uniqueness, sacrifice/replacement, element gating
+and standalone/comparison agreement. Shared/app typechecks and targeted lint pass.
+No layout or controls changed; browser checks were not repeated. Live and signed-in
+verification remain outstanding. No push performed.
+
+Next: additional reviewed recurring/activation draw sources, then automatic
+defense/recovery. Extended analytics remains 4/16 broad milestones complete
+(~25%, unequal scope); conditional draw gains coverage but is not catalog-complete.

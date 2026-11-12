@@ -10,6 +10,46 @@ const main = lines(fixture.main), material = lines(fixture.material);
 const source = (overrides: Partial<InfluenceDrawSource> = {}): InfluenceDrawSource => ({name:'Draw',quantity:30,draws:1,reserve:2,discard:0,mageAction:true,...overrides});
 const policy = { rai: true as const, lineage: [{name:'One',memory:1},{name:'Two',memory:2},{name:'Three',memory:3}] };
 
+test('Gloamspire pays for one unique copy and draws to memory only below seven influence', () => {
+ const cards = [source({name:'Market',quantity:30,draws:0,reserve:3,mageAction:false,mechanic:'gloamspire'})];
+ const points = estimateDrawInfluence(cards,[],7,'first',3,1,policy);
+ assert.equal(points[0].seen,8);
+ assert.equal(points[0].hand,3);
+ assert.equal(points[0].memory,4);
+ assert.equal(points[1].seen,9);
+ assert.equal(points[1].memory,0);
+ assert.equal(points[2].seen,10);
+ const blocked = estimateDrawInfluence(cards.map(card=>({...card,reserve:100})),[],7,'first',3,1,policy);
+ assert.deepEqual(blocked.map(point=>point.seen),[7,8,9]);
+});
+
+test('Gloamspire wakes each turn and sacrifices at eight influence', () => {
+ const freeLevels = {...policy,lineage:policy.lineage.map(card=>({...card,memory:0}))};
+ const cards = [source({name:'Market',quantity:30,draws:0,reserve:3,mageAction:false,mechanic:'gloamspire'})];
+ const points = estimateDrawInfluence(cards,[],4,'first',5,1,freeLevels);
+ assert.deepEqual(points.slice(0,3).map(point=>point.seen),[5,7,8]);
+ assert.equal(points[0].memory,4);
+ assert.equal(points[1].memory,1);
+ assert.equal(points[2].memory,0);
+ assert.equal(points[3].memory,0);
+ assert.equal(points[3].influence,8);
+ assert.equal(points[4].memory,3);
+});
+
+test('Gloamspire catalog coverage respects Fire access and the unique domain contract', () => {
+ const main = [{name:'Gloamspire, Black Market',quantity:4}];
+ const configured = createRaiDrawPolicy(main,material,catalog)!;
+ assert.equal(configured.main[0].mechanic,'gloamspire');
+ assert.equal(configured.main[0].reserve,3);
+ assert.equal(configured.main[0].resolvesTo,'field');
+ assert.ok(configured.modeled.has(main[0].name));
+ assert.ok(catalog.get(main[0].name)!.effect!.includes('less than seven'));
+ assert.ok(catalog.get(main[0].name)!.effect!.includes('eight or greater, sacrifice'));
+ assert.ok(catalog.get(main[0].name)!.types.includes('UNIQUE'));
+ const water = material.map(line=>line.name==='Spirit of Fire'?{...line,name:'Spirit of Water'}:line);
+ assert.equal(createRaiDrawPolicy(main,water,catalog)!.main[0].mechanic,undefined);
+});
+
 test('Rai fixture uses real costs, class bonus and paid draw sources deterministically', () => {
  const configured = createRaiDrawPolicy(main, material, catalog)!;
  assert.ok(configured);

@@ -6787,3 +6787,23 @@ is declared before random memory banishment) and the official beginner guide
 (class bonus requires the current champion's matching class):
 https://content.gatcg.com/uploads/comprehensive_rules_cb31411767.pdf
 https://www.gatcg.com/article/getting-started
+
+### Rai recurring draw — Gloamspire
+
+The reviewed Rai policy includes Gloamspire, Black Market (Fire, reserve 3).
+Pay its actual activation cost; keep one unique copy on the field and preserve
+additional copies as payment cards instead of replacing the existing domain.
+After supported Main plays, rest the domain once during that turn if hand plus
+memory is below seven and the library is nonempty. Draw one physical card into
+memory. That memory is not spendable as reserve during the same turn.
+The domain wakes for the next turn. At the beginning of recollection, after paid
+materialization and before delayed draw triggers, sacrifice it if influence is
+eight or greater. A later copy can then be paid and activated independently.
+The automatic policy resolves this upkeep before Institute/Sanctuary sacrifices.
+It models only the owner's draw; opponent influence and benefit remain outside
+the forecast. No opponent removal, domain attacks or replacement optimization
+is assumed. Existing standalone cards-seen, Rai comparisons and paid damage
+sequences consume the same shared policy. No new user input is required.
+
+Contract: committed card catalog and
+https://index.gatcg.com/card/gloamspire-black-market.
