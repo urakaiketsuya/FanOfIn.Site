@@ -476,3 +476,29 @@ compact swap sheets, empty/missing states, keyboard dismissal/focus return, 48px
 sheet actions, local Apply, enlarged text, and overflow. Graveyard reuse was also
 checked with the existing Lost Wisdom card. Full signed-in production journeys,
 live deployment, and empirical checkpoint validation were not performed. No push.
+
+## Automatic comparison integration — November 12, 2026
+
+The main Comparison Report now exposes automatic paid-model results for every selected
+deck, independently of baseline or calculator settings. Draw, Tonoris affordability and
+token power, all relevant paid damage scenarios, defense/recovery response windows and
+returned/replayed cards use existing shared models and existing fixture contracts.
+Comparable quantity marks share scales across decks and both checkpoints; probabilities
+use 0–100%. Turn 3 remains visible beside the turn-5 headline. Sources appear as named
+card art per deck. Supported absence stays zero; incomplete or unsupported results do not.
+The named-card draw explorer moves to Calculators, preserving its state across views.
+Optional card inspection and generic effect/combat access remain available in the report.
+
+This closes a presentation integration gap within milestone 10, not a new modeling
+milestone: Extended Analytics remains 10/16 (~63%, unequal scope). Next: empirical
+checkpoint validation, then deck/archetype cohort checkpoints and core access. No new
+TCGEngine fixtures or simulation assumptions were introduced. Live deployment requires
+a separate push request; signed-in account mutations are outside this read-only change.
+
+Verification: 111 focused tests passed, covering shared-model parity at both checkpoints,
+identical decks, mixed lineages, supported zero, missing data, existing TCGEngine-derived
+mechanic contracts and comparison propagation. App typecheck, targeted lint and production
+Vite build passed. Browser checks covered 390px/1280px three-deck reports, 360px/1280px
+empty/loading/missing/unavailable states, keyboard retry with a 48px target, card inspection,
+calculator/report state preservation, 200% mobile text and horizontal overflow. No browser
+errors were observed. Temporary state-test screens were removed. No push performed.

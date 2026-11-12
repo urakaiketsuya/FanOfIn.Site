@@ -426,16 +426,21 @@ The selected-decks summary on the comparison page scrolls normally with the page
 
 ### Baseline-free comparison report
 
-Comparison Report treats every selected deck equally. Show absolute Main-library draw access
-for named cards at 7/10/15/20 cards seen; a missing card is zero, but an unavailable list or
-empty library is unknown. The single-outcome view sorts all decks by probability; the two-outcome
-view uses the same 0–100% axes and stable numbered deck labels. Coincident points list all deck
-numbers. Keep every deck available in the labeled selection rows, including on mobile.
+Comparison Report treats every selected deck equally. Automatic paid-model results lead:
+absolute turn-5 ranges or readiness percentages with turn 3 visible, labeled deck rows,
+shared scales within each metric, and each deck's contributing card art. Readiness and
+capacity share one panel. Keep supported zero and unchanged outcomes; missing lists,
+missing card data, empty libraries and unsupported models remain distinct from zero.
+Draw, Tonoris resource savings/token power, paid spell scenarios, independent defense
+windows, and graveyard return/replay retain their existing shared model policies.
+No setup or baseline selection is required. Preserve generic effect/combat access below.
 
-Select at most two decks to inspect Shared core, Different quantities and Distinctive cards.
-Keep Main and Material separate, show both deck names and actual copy counts, and exclude
-sideboards. No before/after labels or baseline controls appear in the report. Existing Summary
-and Calculators retain their baseline behavior. Report selections survive switching views.
+The named-card draw explorer lives in Calculators: Main-library access at 7/10/15/20
+cards seen, including the two-outcome view. Its selections survive tab switches.
+The report retains optional two-deck card inspection: Shared core, Different quantities,
+and Distinctive cards, with Main and Material separate and actual copy counts visible.
+Sideboards do not feed the automatic forecasts. Summary and Calculators retain their
+baseline behavior; report forecasts do not inherit calculator settings.
 
 ## Deck display arrangement
 
