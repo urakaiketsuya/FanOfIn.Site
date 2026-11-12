@@ -17,7 +17,8 @@ Existing competition release D is complete and is not reopened.
 - [x] Tonoris: review other activations and Altar milling against a useful automatic policy.
 - [x] General affordability: representative non-Tonoris fixture, paid progression,
       finite discounts and payment budgets.
-- [ ] Conditional draw: reviewed triggers, activations, recurring draws and destinations.
+- [x] Conditional draw: bounded Rai/Tonoris reviewed-state batch, triggers, paid
+      activations, recurring draws and destinations; exclusions in CALCULATIONS.md.
 - [x] Damage/combat: reviewed Tonoris token readiness and complete Rai Fire fixture
       damage batch (paid plays, target scenarios and consumed resources).
 - [ ] Defense/recovery: automatic supported availability and payment sequences;
@@ -45,10 +46,10 @@ contract and representative fixture. Record data blockers separately from comple
 
 ## Current handoff
 
-Current: Tonoris token readiness and the ten-card Rai Fire damage fixture are
-implemented in standalone reports and comparisons. Conditional draw and broader
-resource models remain partial. Next: finish recurring conditional-draw coverage,
-then automatic defense/recovery sequences. Altar milling waits for a reviewed
+Current: reviewed Tonoris token readiness, Rai Fire damage and the bounded
+conditional-draw batch are implemented in standalone reports and comparisons.
+Next: automatic defense/recovery sequences. Full-catalog draw depends on the
+explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
 ## Milestone 1 — object payments and paired forecasts
@@ -299,3 +300,31 @@ verification remain outstanding. No push performed.
 Next: additional reviewed recurring/activation draw sources, then automatic
 defense/recovery. Extended analytics remains 4/16 broad milestones complete
 (~25%, unequal scope); conditional draw gains coverage but is not catalog-complete.
+
+## Conditional-draw batch completed — 2026-11-11
+
+Added 22 reviewed Main-card contracts across Rai Fire, Water and Wind: paid
+sacrifices, a separately paid one-use refinement activation, end-phase enlighten,
+return/replay triggers, enlighten replacement and consumption, finite graveyard
+payments, Deluge, discard-before-draw, influence and paid-level gates, and entry
+memory draws. Source cards now include counter engines without literal draw text.
+Standalone, paired comparisons and paid damage consume the same shared policy.
+Existing Tonoris coverage is preserved. The contract table and explicit deferred
+families are in CALCULATIONS.md; this is not full-catalog or full-rules coverage.
+
+Verification: 113 focused tests pass, including three constructed 60-card fixtures,
+real catalog contract snapshots, zone conservation, unavailable states, costs,
+class/element/level gates, phase timing, finite activations and changed-copy
+standalone/comparison agreement. Shared/app typechecks, targeted lint, diff checks
+and full production build pass. Existing report components checked at 390px and
+1280px: no horizontal overflow, loaded art, visible card names, mobile links at
+least 173×159px, and visible 2px keyboard focus. Missing, unsupported and empty
+states checked; no new loading/expanded controls. Temporary harness removed.
+Full signed-in journeys and live deployment remain unverified. No push performed.
+
+Next: automatic defense/recovery, beginning with supported paid prevention and
+recovery sources without inventing opponent pressure. Extended analytics is
+5/16 broad milestones complete (~31%, unequal sizes); conditional draw is complete
+for this explicitly bounded reviewed-state batch. Additional draw families are
+tracked under opponent/library/graveyard/combat/champion dependencies, not silently
+credited as successful draws. No implementation blocker; release needs push authorization.

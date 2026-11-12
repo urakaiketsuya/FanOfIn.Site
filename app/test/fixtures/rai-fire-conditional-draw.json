@@ -1,0 +1,26 @@
+{
+  "description": "Constructed 60-card conditional-draw regression fixture; not a deck recommendation.",
+  "main": {
+    "Academy Guide": 4,
+    "Creative Tinder": 4,
+    "Careful Study": 4,
+    "Peer into Mana": 4,
+    "Indolent Leisure": 4,
+    "Epicurean Institute": 4,
+    "Sovereign Sanctuary": 4,
+    "Gloamspire, Black Market": 4,
+    "Nether Dodobird": 4,
+    "Shizun of the Ash": 4,
+    "Spark Link": 4,
+    "Increasing Danger": 4,
+    "Wool Brook": 4,
+    "Retold Fortune": 4,
+    "Mnemonic Charm": 4
+  },
+  "material": {
+    "Spirit of Fire": 1,
+    "Rai, Spellcrafter": 1,
+    "Rai, Archmage": 1,
+    "Rai, Mana Weaver": 1
+  }
+}

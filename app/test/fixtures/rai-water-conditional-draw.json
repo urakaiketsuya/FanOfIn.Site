@@ -1,0 +1,26 @@
+{
+  "description": "Constructed 60-card conditional-draw regression fixture; not a deck recommendation.",
+  "main": {
+    "Academy Guide": 4,
+    "ChannelTech Charm S": 4,
+    "Careful Study": 4,
+    "Peer into Mana": 4,
+    "Indolent Leisure": 4,
+    "Epicurean Institute": 4,
+    "Sovereign Sanctuary": 4,
+    "Rising Tides": 4,
+    "Aqua Vitae": 4,
+    "Misty Whispertail": 4,
+    "Mistbound Watcher": 4,
+    "Sudden Snow": 4,
+    "Relic of Sunken Past": 4,
+    "Imperial Apprentice": 4,
+    "Retold Fortune": 4
+  },
+  "material": {
+    "Rai, Spellcrafter": 1,
+    "Rai, Archmage": 1,
+    "Rai, Mana Weaver": 1,
+    "Spirit of Water": 1
+  }
+}

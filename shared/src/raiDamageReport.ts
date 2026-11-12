@@ -44,7 +44,7 @@ export function computeRaiDamageReport(deck: AnalyticsDeck, catalog: ReadonlyMap
     const damage = fireEnabled ? DAMAGE_EFFECTS[source.name as keyof typeof DAMAGE_EFFECTS] : undefined;
     return { ...source, damage, fireElement: card.element === 'FIRE',
       allyLife: card.types.includes('ALLY') ? card.life ?? undefined : undefined,
-      floatingMemory: source.name === 'Ignite Fate' ? 'always' : source.name === 'Ignite the Soul' ? 'mage' : undefined };
+      floatingMemory: source.name === 'Ignite Fate' ? 'always' : source.name === 'Ignite the Soul' ? 'mage' : source.floatingMemory };
   });
   const damageSources = sources.filter(source => source.damage);
   const spirit = deck.material.find(line => line.quantity > 0 && line.name.startsWith('Spirit of '))!;

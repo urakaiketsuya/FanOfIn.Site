@@ -1,0 +1,369 @@
+{
+  "Aenean Flux Generator": {
+    "effect": "**On Enter: **Draw a card into your memory.\n\n[Class Bonus] Whenever you activate an **empowered** Aenean Spell card, you may rest CARDNAME. When you do, as a Spell, deal 2 damage to target champion.\n\n",
+    "cost_reserve": 3,
+    "element": "WIND",
+    "types": [
+      "ITEM"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "VELTECH",
+      "DEVICE"
+    ],
+    "life": null
+  },
+  "Aenean Ward": {
+    "effect": "Prevent the next 2 damage that would be dealt to target unit this turn.\n\n[Class Bonus] [Level 3+] Draw a card. *(Apply this effect only if your champion’s class matches this card’s class and only if your champion is level 3 or higher.)*",
+    "cost_reserve": 1,
+    "element": "NORM",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "CLERIC",
+      "MAGE"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "AENEAN",
+      "SPELL",
+      "REACTION"
+    ],
+    "life": null
+  },
+  "Aqua Vitae": {
+    "effect": "**Brew** — One Springleaf\n\n[Class Bonus] At the beginning of your recollection phase, put an **age** counter on CARDNAME.\n\n**Sacrifice CARDNAME:** Draw a card. Then if there %%were% three or more **age** counters on CARDNAME, draw an additional card.",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "ITEM"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "POTION"
+    ],
+    "life": null
+  },
+  "Channel the Wind": {
+    "effect": "Put an **enlighten** counter on your champion. *(You may remove three **enlighten** counters from your champion to draw a card.)*\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*",
+    "cost_reserve": 2,
+    "element": "WIND",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "life": null
+  },
+  "ChannelTech Charm S": {
+    "effect": "**On Enter:** Draw a card into your memory.\n\n[Class Bonus] **Sacrifice CARDNAME:** **Empower 2**. *(The next Spell card you activate this turn activates and resolves as if your champion got +2 level. Activate this ability only if your champion's class matches this card's class.)*",
+    "cost_reserve": 2,
+    "element": "NORM",
+    "types": [
+      "ITEM"
+    ],
+    "classes": [
+      "CLERIC",
+      "MAGE"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "VELTECH",
+      "DEVICE"
+    ],
+    "life": null
+  },
+  "Imperial Apprentice": {
+    "effect": "Whenever you activate a Spell card, you may banish a card with **floating memory** from your graveyard. If you do, draw a card.\n\n[Class Bonus] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* ",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "HUMAN"
+    ],
+    "life": 2
+  },
+  "Increasing Danger": {
+    "effect": "Draw a card. Each player draws a card into their memory.",
+    "cost_reserve": 2,
+    "element": "FIRE",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "life": null
+  },
+  "Mistbound Watcher": {
+    "effect": "[Class Bonus] At the beginning of your end phase, put an **enlighten** counter on your champion. *(You may remove three **enlighten** counters from your champion to draw a card. Apply this effect only if your champion's class matches this card's class.)*",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPIRIT"
+    ],
+    "life": 3
+  },
+  "Misty Whispertail": {
+    "effect": "**Sacrifice CARDNAME:** If CARDNAME was not **ephemeral**, draw a card into your memory. Otherwise, **recover 3**.",
+    "cost_reserve": 3,
+    "element": "WATER",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPECTER",
+      "ANIMAL",
+      "MOUSE"
+    ],
+    "life": 3
+  },
+  "Mnemonic Charm": {
+    "effect": "**On Enter:** Draw a card into your memory.\n\n[Class Bonus] **Sacrifice CARDNAME:** **Empower 2**. *(The next Spell card you activate this turn activates and resolves as if your champion got +2 level. Activate this ability only if your champion's class matches this card's class.)*",
+    "cost_reserve": 2,
+    "element": "NORM",
+    "types": [
+      "ITEM"
+    ],
+    "classes": [
+      "CLERIC",
+      "MAGE"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "SCRIPTURE"
+    ],
+    "life": null
+  },
+  "Nether Dodobird": {
+    "effect": "**Sacrifice CARDNAME:** If CARDNAME was not **ephemeral**, draw a card into your memory. Otherwise, deal 2 damage to each champion you don't control. ",
+    "cost_reserve": 3,
+    "element": "FIRE",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "CLERIC"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "SPECTER",
+      "ANIMAL",
+      "BIRD"
+    ],
+    "life": 3
+  },
+  "Relic of Sunken Past": {
+    "effect": "At the beginning of your recollection phase, if there are three or more water element cards in your graveyard, you may sacrifice CARDNAME. If you do, draw a card.\n\n[Class Bonus] **Floating Memory**",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "PHANTASIA"
+    ],
+    "classes": [
+      "TAMER"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ARTIFACT"
+    ],
+    "life": null
+  },
+  "Retold Fortune": {
+    "effect": "Discard up to one Spell card. If you do, draw a card.\n\n[Class Bonus] [Level 2+] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* ",
+    "cost_reserve": 2,
+    "element": "NORM",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SKILL"
+    ],
+    "life": null
+  },
+  "Rising Tides": {
+    "effect": "[Class Bonus] [Level 3+] Draw a card into your memory. *(Apply this effect only if your champion is level 3 or higher.)*\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)* ",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "life": null
+  },
+  "Shizun of the Ash": {
+    "effect": "**On Enter:** You may discard a card. If you do, draw a card. \n\n[Kongming Bonus] [REST]**, Banish a fire element card from your graveyard:** As a Spell, deal 4 damage to target ally. Activate this ability only if your Shifting Currents face North or South. ",
+    "cost_reserve": 2,
+    "element": "FIRE",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "HUMAN"
+    ],
+    "life": 2
+  },
+  "Spark Link": {
+    "effect": "Each player draws a card into their memory.\n\n[Level 1+] **Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*",
+    "cost_reserve": 2,
+    "element": "FIRE",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "life": null
+  },
+  "Sudden Snow": {
+    "effect": "You may banish a card with **floating memory** from your graveyard. If you do, draw a card.\n\nUntil end of turn, allies enter the field rested.",
+    "cost_reserve": 2,
+    "element": "WATER",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SPELL"
+    ],
+    "life": null
+  },
+  "Tempestuous Conviction": {
+    "effect": "*(Exalted — This element is enabled for you as long as you have another advanced element enabled.)*\n\n[Class Bonus] This card costs 2 less to activate.\n\nTarget unit gains **spellshroud** until end of turn. Then if your **influence** is five or less, draw a card into your memory.",
+    "cost_reserve": 4,
+    "element": "EXALTED",
+    "types": [
+      "ACTION"
+    ],
+    "classes": [
+      "GUARDIAN"
+    ],
+    "subtypes": [
+      "GUARDIAN",
+      "SPELL",
+      "REACTION"
+    ],
+    "life": null
+  },
+  "Winbless Forecaster": {
+    "effect": "If one or more **enlighten** counters would be put on your champion, that many plus one **enlighten** counters are put on your champion instead.",
+    "cost_reserve": 4,
+    "element": "WIND",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "HUMAN"
+    ],
+    "life": 3
+  },
+  "Windrider Invoker": {
+    "effect": "**On Enter:** You may remove two **enlighten** counters from your champion. If you do, draw a card and CARDNAME gets +3 [POWER] until end of turn.",
+    "cost_reserve": 3,
+    "element": "WIND",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "HUMAN"
+    ],
+    "life": 2
+  },
+  "Windrider Mage": {
+    "effect": "**Stealth** *(This unit can't be targeted by attacks unless permitted by **true sight**.)*\n\n[Class Bonus] At the beginning of your recollection phase, you may return CARDNAME to your hand. If you do, put an **enlighten** counter on your champion.",
+    "cost_reserve": 2,
+    "element": "WIND",
+    "types": [
+      "ALLY"
+    ],
+    "classes": [
+      "MAGE"
+    ],
+    "subtypes": [
+      "MAGE",
+      "HUMAN"
+    ],
+    "life": 1
+  },
+  "Wool Brook": {
+    "effect": "CARDNAME enters the field with a **refinement** counter on it.\n\n**On Enter:** Draw a card into your memory.\n\n(6)**, Remove a refinement counter from CARDNAME: **Draw a card into your memory.",
+    "cost_reserve": 4,
+    "element": "NORM",
+    "types": [
+      "DOMAIN"
+    ],
+    "classes": [
+      "WARRIOR"
+    ],
+    "subtypes": [
+      "WARRIOR",
+      "RIVER"
+    ],
+    "life": null
+  }
+}

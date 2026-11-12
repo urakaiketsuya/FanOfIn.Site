@@ -6807,3 +6807,77 @@ sequences consume the same shared policy. No new user input is required.
 
 Contract: committed card catalog and
 https://index.gatcg.com/card/gloamspire-black-market.
+
+### Reviewed conditional-draw batch — 2026-11-11
+
+`conditionalDrawPolicy.ts` adds 22 named Rai-compatible Main-deck contracts to
+`createRaiDrawPolicy`. These are **draw-sequence contracts**, not claims that every
+ability on each card is simulated. Costs, types, class, element, Spell identity,
+life and complete rules text are pinned in `conditional-draw-contracts.json`;
+changes to catalog text require a new review. Fire, Water and Wind each have a
+constructed 60-card regression fixture. Existing Tonoris draw contracts remain
+unchanged. The existing deterministic samples, paid lineage, natural draws,
+physical zones, first/second order and turn-3/5 comparisons remain shared.
+
+| Cards | Reviewed automatic policy |
+| --- | --- |
+| Aenean Ward; Rising Tides | Wait for paid level 3, pay printed Reserve, draw one to hand / memory respectively. Ward can target the owner's champion without assuming incoming damage. No prevention total is attributed to the draw report. |
+| Aqua Vitae | Pay printed Reserve (not Brew), then sacrifice for one hand draw. Rai is not a Cleric: no age counters or age bonus. |
+| Misty Whispertail; Nether Dodobird | Pay printed Reserve, then sacrifice for one memory draw. Normally activated copies are not ephemeral; ephemeral/reanimation alternatives are excluded. |
+| Wool Brook | Pay Reserve 4 and draw one to memory on entry. One physical refinement counter permits one further memory draw for a separate Reserve payment of 6. The same counter never refreshes each turn. |
+| Mistbound Watcher | At each owner's end phase, each surviving copy grants one enlighten only with a Mage champion. These draws cannot fund earlier main-phase plays. |
+| Windrider Mage | At beginning of recollection, with Mage class, return each physical copy to hand and grant one enlighten. Returning is not a new card seen. Replaying costs Reserve again. |
+| Winbless Forecaster | Each field copy increases each positive enlighten grant by one, including Spellcrafter entry, Archmage, reviewed Actions and recurring triggers. Replacement is per grant, not per counter. |
+| Channel the Wind | Pay Reserve and grant one enlighten. Shared counters are spent in sets of three; remainders persist. |
+| Windrider Invoker | On entry, consume two available enlighten for one hand draw. No counters are invented and none are reused for normal enlighten draws. Its temporary attack bonus is not a damage result. |
+| Imperial Apprentice | Each field copy triggers on actual Spell activation (not every Action), consuming one eligible physical Floating Memory card from the existing graveyard for one hand draw before the Spell resolves. |
+| Sudden Snow | Cast when existing graveyard fuel is available; after activation triggers, banish an eligible Floating Memory card if still present and draw one. The resolving Action cannot fuel itself. No attacks are modeled. |
+| Relic of Sunken Past | At beginning of recollection, sacrifice and draw one only with at least three Water cards actually in the graveyard. Its Tamer-only Floating Memory is disabled for Rai. |
+| Retold Fortune; Shizun of the Ash | After paying Reserve, discard one remaining hand Spell / any hand card respectively, then draw one. The source and cards already reserved cannot be discarded to satisfy the effect. No remaining eligible card means no draw. |
+| Tempestuous Conviction | Advanced element unlocks at paid level 3; pay the full Reserve 4 (Rai is not a Guardian). Target own champion, then draw one to memory only at influence ≤5, counting both hand and memory after removing the source. |
+| Spark Link; Increasing Danger | Model the owner's printed memory draw / hand then memory draws. Opponent benefits are outside the unopposed policy. |
+| Mnemonic Charm; ChannelTech Charm S; Aenean Flux Generator | Pay printed Reserve and draw one to memory on entry. Optional Empower activations are not used; no empowered Spell triggers are invented. |
+
+Reviewed Floating Memory from these sources uses current class/level in every zone:
+Rising Tides is unconditional; Channel the Wind and Imperial Apprentice require
+Mage (paid level ≥1); Spark Link requires level ≥1; Retold Fortune requires Mage
+and level ≥2. These same physical cards compete between champion materialization
+payments and draw triggers; banished cards cannot pay again. Element restrictions
+on casting do not disable an otherwise active graveyard ability. Paid damage
+forecasts preserve the shared metadata when adding their own damage assignments.
+
+Automatic ordering: champion materialization; existing Market upkeep and delayed
+sacrifices; reviewed return/Deluge recollection triggers; memory return; natural
+draw; existing first-payable Main-card policy; then Market, Wool Brook, and free
+sacrifice activations, returning to Main plays when a hand draw makes one payable;
+then end-phase enlighten. Archmage's trigger resolves before Apprentice triggers.
+Optional enlighten conversion spends complete groups of three immediately.
+Payments retain the existing draw-preserving stable priority, not an optimal-play
+search. A sacrifice/activation that only draws is not spent with an empty library.
+No opponent-turn draw opportunities or opponent pressure are assumed.
+
+The standalone report's associated cards now includes reviewed counter engines and
+progression enablers even when they do not literally print “draw a card.” Their
+printed per-copy draw count remains zero; it is never used as a fabricated fixed
+draw amount. Comparisons and standalone reports use the same policy and actual
+Main size. Missing/unsupported data retains existing unavailable states.
+
+#### Conditional-draw audit boundary
+
+This completes the bounded reviewed-state batch, not the entire card catalog.
+The remaining families are explicitly assigned to dependencies outside this batch:
+
+| Family / representative cards | Dependency before automatic draw credit |
+| --- | --- |
+| Opponent choices/influence/attacks: Gentle Respite, Ovation Guide, Devious Welcome, Pendant of Accrual, Surveillance Stone | Opponent policy and reaction windows; do not substitute assumed success. |
+| Boons: Lesser Boon of Time's Passage, Shou, Isis | Boon acquisition/zone and play permissions. A Reserve-looking value does not establish an ordinary Main-card activation. |
+| Top/bottom/reordering: Scry the Skies, Scientific Discoveries, Sanctum of Esoteric Truth, Unearth Revelations, Stabilizing Capacitance, SignalTech One | Reviewed library-selection/recycling policy; keep unique access separate from repeated draws. |
+| Recursion/milling: Angelic Channeling, Liminal Guide, Dormant Sacrificial Altar | Finite return/banishment/mill policy and payoff selection. |
+| Material activations: Veilara's Promise, Endura Reimagined, Worn Diary, Zhou Yu | Competing materialization windows, Book/Scripture objects and activation ownership. |
+| Damage/recovery conditions: Butler's Augury, Innervate Knowledge, Restoring Embers, Spellshield: Arcane | Paid recovery/prevention and compatible self-damage policy. |
+| Combat/death/Foster: Library Witch, Angel Attendant, Forgelight Shieldmaiden, Mistsworn Magister | Reviewed deaths, attack state and Foster timing rather than presumed kills or survival. |
+| Temporary level/Empower: Arcane Sight, Empowering Enlightenment, Scorching Knowledge, Aenean Spark Alight | Effective level separate from paid/base level; consumed next-Spell modifiers. |
+| Other champion/board engines: Shifting Currents, Suited/Cardistry, Powercells, Herbs, Chessmen, Elysian objects | Their own reviewed state and fixture, not universal class bonuses. |
+
+Rules reference: [Class Bonus and Brew](https://rules.gatcg.com/glossary/keywords-and-abilities).
+Card-specific text is the committed catalog snapshot; fixtures pin all new contracts.

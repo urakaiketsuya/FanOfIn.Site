@@ -1,3 +1,4 @@
+import { CONDITIONAL_DRAW_CONTRACTS } from './conditionalDrawPolicy.js';
 import type { Card } from './api-types.js';
 import { supportedDrawEffect, type DrawProgressionPolicy, type InfluenceDrawSource } from './drawInfluence.js';
 
@@ -29,12 +30,17 @@ export function createRaiDrawPolicy(
       : enabled && line.name === 'Careful Study' ? 'careful-study' as const
       : enabled && line.name === 'Peer into Mana' ? 'peer-into-mana' as const
       : enabled && line.name === 'Indolent Leisure' ? 'indolent-leisure' as const : undefined;
+    const contract = enabled ? CONDITIONAL_DRAW_CONTRACTS[line.name] : undefined;
     const effect = enabled ? supportedDrawEffect(card) : null;
-    const steps = mechanic === 'indolent-leisure' ? [{ count: 1, destination: 'hand' as const }] : effect?.steps ?? [];
-    if (effect || mechanic) modeled.add(line.name);
+    const steps = mechanic === 'indolent-leisure' ? [{ count: 1, destination: 'hand' as const }] : contract?.drawSteps ?? effect?.steps ?? [];
+    if (effect || mechanic || contract) modeled.add(line.name);
     return { ...line, draws: steps.reduce((sum, step) => sum + step.count, 0), drawSteps: steps,
       resolvesTo: card.types.includes('ACTION') ? 'graveyard' as const : 'field' as const,
-      reserve: card.cost_reserve, minimumLevel: advanced ? 3 : 0, discard: effect?.discard ?? 0, mechanic,
+      reserve: card.cost_reserve, minimumLevel: Math.max(advanced ? 3 : 0, contract?.minimumLevel ?? 0),
+      conditionalDraw: contract?.conditionalDraw,
+      floatingMemory: CONDITIONAL_DRAW_CONTRACTS[line.name]?.floatingMemory,
+      spell: card.subtypes.includes('SPELL'), waterElement: card.element === 'WATER',
+      allyLife: card.types.includes('ALLY') ? card.life ?? undefined : undefined, discard: effect?.discard ?? 0, mechanic,
       mageAction: card.types.includes('ACTION') && card.classes.includes('MAGE') };
   });
   return { main: sources, progression: { lineage, rai: true }, modeled };

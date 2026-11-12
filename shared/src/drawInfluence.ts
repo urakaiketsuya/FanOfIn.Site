@@ -1,3 +1,4 @@
+import type { ConditionalDraw } from './conditionalDrawPolicy.js';
 import { CHAMPION_DAMAGE_SCENARIO, needsAlly, paidDamageDiscount, paidDamageOutput, type PaidDamageEffect, type PaidDamageScenario } from './paidDamagePolicy.js';
 
 export interface FixedDrawStep { count: number; destination: 'hand' | 'memory' }
@@ -38,7 +39,10 @@ export interface InfluenceDrawSource {
   mechanic?: 'gloamspire' | 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball' | 'gilded-pyre';
   /** Explicit reviewed zone/payment metadata; omitted by existing draw-only policies. */
   resolvesTo?: 'graveyard' | 'field';
-  floatingMemory?: 'always' | 'mage';
+  floatingMemory?: 'always' | 'mage' | 'level-1' | 'mage-level-2';
+  conditionalDraw?: ConditionalDraw;
+  spell?: boolean;
+  waterElement?: boolean;
   damage?: PaidDamageEffect;
   fireElement?: boolean;
   allyLife?: number;
@@ -76,6 +80,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     const graveyard: InfluenceDrawSource[] = [];
     const banished: InfluenceDrawSource[] = [];
     const field: InfluenceDrawSource[] = [];
+    const spentRefinement = new Set<InfluenceDrawSource>();
     let floatingMemoryPaid = 0;
     let recollectionDraws: (FixedDrawStep & { source: InfluenceDrawSource })[] = [];
     const available = material.flatMap((source) => Array.from({ length: source.quantity }, () => source));
@@ -85,6 +90,18 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     };
     const resolveDraws = (source: InfluenceDrawSource) => {
       for (const step of source.drawSteps ?? [{ count: source.draws, destination: 'hand' }]) draw(step.count, step.destination);
+    };
+    const addEnlighten = (count: number) => {
+      enlighten += count + field.filter(card => card.conditionalDraw === 'forecaster').length;
+    };
+    const floatingEligible = (source: InfluenceDrawSource) => source.floatingMemory === 'always'
+      || ((source.floatingMemory === 'mage' || source.floatingMemory === 'level-1') && level >= 1)
+      || (source.floatingMemory === 'mage-level-2' && level >= 2);
+    const consumeFloating = () => {
+      const index = graveyard.findIndex(floatingEligible);
+      if (index < 0) return false;
+      banished.push(...graveyard.splice(index, 1));
+      return true;
     };
     const spendEnlighten = () => {
       while (enlighten >= 3) { enlighten -= 3; draw(1); }
@@ -102,8 +119,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         if (progression && turn > 1 && level < progression.lineage.length) {
           const cost = Math.max(0, progression.lineage[level].memory - guides);
           // Check the current champion's class before leveling, not the incoming champion.
-          const eligible = (source: InfluenceDrawSource) => source.floatingMemory === 'always'
-            || (source.floatingMemory === 'mage' && level >= 1);
+          const eligible = floatingEligible;
           const floating = Math.min(cost, graveyard.filter(eligible).length);
           if (memory.length + floating >= cost) {
             // Declare Floating Memory first, then randomly banish the remaining payment.
@@ -114,7 +130,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             floatingMemoryPaid += floating;
             for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
             level++;
-            if (level === 1) { enlighten += 2; spendEnlighten(); }
+            if (level === 1) { addEnlighten(2); spendEnlighten(); }
           }
         }
         // One materialization before recollection, with actual memory payment.
@@ -143,6 +159,16 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
           }
         }
         recollectionDraws = [];
+        // Snapshot beginning-of-recollection triggers; returned copies can be paid again.
+        for (const source of field.slice()) {
+          if (source.conditionalDraw === 'return-enlighten' && level >= 1) {
+            field.splice(field.indexOf(source), 1); hand.push(source);
+            addEnlighten(1); spendEnlighten();
+          } else if (source.conditionalDraw === 'deluge-draw'
+            && graveyard.filter(card => card.waterElement).length >= 3) {
+            graveyard.push(...field.splice(field.indexOf(source), 1)); draw(1);
+          }
+        }
         hand.push(...memory); memory = [];
         if (turn > 1 || order === 'second') draw(1);
         // Each physical copy resolves once; newly drawn engines can be played if payable.
@@ -157,8 +183,9 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             ? Math.min(3, reserveCost(source), graveyard.filter(card => card.fireElement).length) : 0;
           const index = hand.findIndex((source) => {
             const effect = damageEffect(source);
-            return (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic || !!effect)
+            return (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic || !!source.conditionalDraw || !!effect)
               && (source.mechanic !== 'gloamspire' || !field.some(card => card.mechanic === 'gloamspire'))
+              && (source.conditionalDraw !== 'floating-draw' || graveyard.some(floatingEligible))
               && (!needsAlly(effect) || scenario.allies > 0)
               && (effect !== 'innervate-fury' || (level > 0 && damageCounters >= 5))
               && source.reserve != null && source.reserve >= 0 && reserveCost(source) - kindle(source) <= hand.length - 1;
@@ -169,6 +196,17 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             if (market && hand.length + memory.length < 7 && seen < library.length) {
               restedMarkets.add(market);
               draw(1, 'memory');
+              continue;
+            }
+            const brook = field.find(card => card.conditionalDraw === 'wool-brook' && !spentRefinement.has(card));
+            if (brook && hand.length >= 6 && seen < library.length) {
+              memory.push(...take(hand, 6)); spentRefinement.add(brook); draw(1, 'memory');
+              continue;
+            }
+            const sacrifice = field.find(card => card.conditionalDraw === 'sacrifice-hand' || card.conditionalDraw === 'sacrifice-memory');
+            if (sacrifice && seen < library.length) {
+              graveyard.push(...field.splice(field.indexOf(sacrifice), 1));
+              draw(1, sacrifice.conditionalDraw === 'sacrifice-hand' ? 'hand' : 'memory');
               continue;
             }
             break;
@@ -188,11 +226,23 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             level--; damageCounters -= 5; recovered += 5;
           }
           if (progression && source.mageAction && level >= 2 && !mageTriggered) {
-            enlighten++; mageTriggered = true;
+            addEnlighten(1); mageTriggered = true;
             // The inherited activation trigger resolves before the Action's draws.
             spendEnlighten();
           }
+          // Spell activation triggers consume existing graveyard cards before resolution.
+          if (source.spell) for (const permanent of field) {
+            if (permanent.conditionalDraw === 'apprentice' && consumeFloating()) draw(1);
+          }
           resolveDraws(source);
+          if (source.conditionalDraw === 'enlighten') { addEnlighten(1); spendEnlighten(); }
+          if (source.conditionalDraw === 'floating-draw' && consumeFloating()) draw(1);
+          if (source.conditionalDraw === 'invoker' && enlighten >= 2) { enlighten -= 2; draw(1); }
+          if (source.conditionalDraw === 'influence-memory' && hand.length + memory.length <= 5) draw(1, 'memory');
+          if (source.conditionalDraw === 'discard-draw' || source.conditionalDraw === 'discard-spell') {
+            const index = source.conditionalDraw === 'discard-spell' ? hand.findIndex(card => card.spell) : (hand.length ? 0 : -1);
+            if (index >= 0) { graveyard.push(...hand.splice(index, 1)); draw(1); }
+          }
           if (progression && effect) {
             const output = paidDamageOutput(effect, level, scenario);
             damage += output.champion; allyDamage += output.allies;
@@ -215,13 +265,17 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             recollectionDraws.push({ source, count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
           }
           if (progression && (source.mechanic === 'careful-study' || source.mechanic === 'peer-into-mana')) {
-            enlighten += source.mechanic === 'careful-study' ? 5 : 2 + level;
+            addEnlighten(source.mechanic === 'careful-study' ? 5 : 2 + level);
             spendEnlighten();
           }
           if (progression && source.mechanic === 'academy-guide') guides++;
           if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
           (source.resolvesTo === 'graveyard' ? graveyard : field).push(source);
           graveyard.push(...take(hand, source.discard));
+        }
+        // End-phase draws cannot fund additional slow-speed Main plays this turn.
+        for (const source of field) {
+          if (source.conditionalDraw === 'end-enlighten' && level >= 1) { addEnlighten(1); spendEnlighten(); }
         }
         allyCounters.clear(); // Ally damage clears at end of turn; champion damage persists.
       }

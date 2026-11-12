@@ -18,6 +18,13 @@ export function computeDeckAnalysisReport(main: CalculatorLine[], material: Calc
   const rai = createRaiDrawPolicy(lines, material, catalog);
   // Starting Spirit draws are already included in the opening hand, not bonus draws.
   const sources = drawEngineSources(lines, material.filter((line) => catalog.get(line.name)?.level !== 0), catalog).map(source => ({ ...source, modeled: rai ? rai.modeled.has(source.name) : source.section === 'main' && supportedDrawEffect(catalog.get(source.name)) !== null }));
+  // Counter engines may never print “draw”; still illustrate every reviewed source.
+  if (rai) for (const line of [...lines, ...material]) {
+    if (rai.modeled.has(line.name) && !sources.some(source => source.name === line.name)) {
+      sources.push({ ...line, section: lines.some(main => main.name === line.name) ? 'main' : 'material',
+        perCopy: 0, reserveCost: catalog.get(line.name)?.cost_reserve ?? null, conditional: true, modeled: true });
+    }
+  }
   const drawSource = (line: CalculatorLine, section: 'main' | 'material') => {
     const card = catalog.get(line.name);
     const supported = section === 'main' ? supportedDrawEffect(card) : null;
