@@ -134,8 +134,8 @@ Keep promotional messages outside sticky navigation and stable for the mounted v
 ## Homepage discovery
 
 Lead with Explore decks and a secondary Build a deck action; keep Collection and Deck Report
-in a compact shortcut row. Returning players get a
-Continue your decks link before the introduction. Homepage discovery reads the bounded
+in a compact shortcut row. Returning players get their latest saved deck and a
+Continue editing action before the introduction. Homepage discovery reads the bounded
 `analysis/homepage.json` projection, regenerated with analysis: the latest sighting for
 three distinct champions (event date descending, placement ascending to break ties), plus
 three established families from different champions ordered by player count. Featured
@@ -918,3 +918,15 @@ Existing saved-deck versioning and failed-save recovery remain owned by My Decks
 New deck drafts retain their stable local source ID when visiting Improve. Return only adopts
 the workspace when both its identity and the requested ID match that draft; unrelated active
 workspaces must never overwrite it. Printings, Song and Maybeboard survive that transition.
+
+Homepage return visits show the most recently updated saved deck with named champion art
+and a direct Continue editing action using the existing deck draft-resume flow. Account
+changes remount this private preview; loading, no decks and retry states remain explicit.
+The hero spotlights the newest published tournament deck, with placement, event and date.
+Moving up this season shows up to two positive champion trends from the existing season
+model, preserving its sample gates and weighted-result-share metric. Compare both named
+seasons on a 0–100% scale; never label this metric as win rate or deck popularity.
+Verification (2026-11-12): homepage hero and trend cards checked at 390px and 1280px,
+including keyboard focus, 48px actions and page overflow. Local account fixtures covered
+latest-deck ordering, long titles, loading, empty, failed-load/retry, account switching and
+editor route/state handoff. Live account access and native touch devices were not tested.

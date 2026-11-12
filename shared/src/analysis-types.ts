@@ -1002,6 +1002,8 @@ export interface AchievementsData {
 /** Small landing-page projection; membership and card pools remain in the full taxonomy. */
 export interface HomepageData {
   generatedAt: string;
+  /** Bounded projection of the existing season-trend model; optional for older publications. */
+  risingChampions?: { championName: string; trend: "rising" | "new"; deltaPct: number; previous: ChampionSeasonPerformance; current: ChampionSeasonPerformance }[];
   decks: { id: string; championName: string; eventName: string; eventDate: string; placement: number | null; to: string; archetype: string; material: { card: string; quantity: number }[] }[];
   families: { id: string; name: string; championName: string; identityCards: string[] }[];
 }

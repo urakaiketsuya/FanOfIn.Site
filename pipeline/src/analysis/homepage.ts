@@ -1,6 +1,7 @@
 import type { ArchetypeTaxonomyData, DeckSighting, HomepageData, OmnidexDecklistEntry } from '@gatcg/shared';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { computeChampionTrends } from './championTrends.js';
 
 /** Keep landing-page discovery independent of the full tournament and membership datasets. */
 export async function buildHomepage(sightings: DeckSighting[], taxonomy: ArchetypeTaxonomyData, dataDir: string): Promise<HomepageData> {
@@ -25,5 +26,9 @@ export async function buildHomepage(sightings: DeckSighting[], taxonomy: Archety
     champions.add(f.championName);
     return true;
   }).map(f => ({ id: f.id, name: f.name, championName: f.championName, identityCards: f.identityCards!.slice(0, 3) }));
-  return { generatedAt: taxonomy.generatedAt, decks, families };
+  const risingChampions: NonNullable<HomepageData['risingChampions']> = computeChampionTrends(sightings).champions
+    .filter(c => (c.trend === 'rising' || c.trend === 'new') && c.trendDeltaPct !== null && c.trendDeltaPct > 0)
+    .sort((a, b) => b.trendDeltaPct! - a.trendDeltaPct! || a.championName.localeCompare(b.championName))
+    .slice(0, 2).map(c => ({ championName: c.championName, trend: c.trend as 'rising' | 'new', deltaPct: c.trendDeltaPct!, previous: c.seasons.at(-2)!, current: c.seasons.at(-1)! }));
+  return { generatedAt: taxonomy.generatedAt, decks, families, risingChampions };
 }

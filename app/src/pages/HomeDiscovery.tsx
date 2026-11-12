@@ -1,3 +1,4 @@
+import { HomeTournamentTrends } from "./HomeTournamentHighlights";
 import type { HomepageData } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardArtTile from "../components/CardArtTile";
@@ -16,6 +17,7 @@ export default function HomeDiscovery() {
   const cards = useCardsByNames([...families.flatMap(family => family.identityCards), ...recent.flatMap(deck => deck.material.map(line => line.card))]);
   return <div className="border-t border-ctp-surface0 px-4 py-8 sm:px-8 sm:py-10">
     <div className="mx-auto max-w-5xl space-y-10">
+    {data && <HomeTournamentTrends data={data} />}
     <section aria-labelledby="home-decks-heading">
       <div className="flex flex-wrap items-center justify-between gap-x-4">
         <h2 id="home-decks-heading" className="text-2xl font-bold">Fresh from the tables</h2>

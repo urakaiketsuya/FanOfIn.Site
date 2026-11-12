@@ -7140,3 +7140,11 @@ consistent; the additional surface exposes the sampled middle-80% range and medi
 Unsupported and missing inputs remain unavailable. Calculator state cannot enter
 report mode. Static card-effect comparisons use each deck's own default champion
 level; interactive calculators retain their intentional shared numeric conditions.
+
+### Homepage season highlights
+
+`analysis/homepage.json` projects at most two `rising` or `new` champions from
+`computeChampionTrends`, ordered by positive `trendDeltaPct` descending, then name.
+It preserves both latest global seasons and their original sample counts and shares.
+The homepage uses the same sample gates and weighted-result-share calculation as the
+champion results; it does not introduce a win-rate or popularity-growth estimate.

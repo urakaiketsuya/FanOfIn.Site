@@ -29,3 +29,23 @@ test('empty publication remains an explicit empty homepage', async () => {
   assert.deepEqual(result.decks, []);
   assert.deepEqual(result.families, []);
 });
+
+test('homepage rising highlights preserve the published season comparison and sample gates', async () => {
+  const { computeChampionTrends } = await import('./championTrends.js');
+  const sightings: DeckSightingsData = await read('deck-sightings');
+  const taxonomy: ArchetypeTaxonomyData = await read('archetype-taxonomy');
+  const result = await buildHomepage(sightings.sightings, taxonomy, new URL('../../../data', import.meta.url).pathname);
+  const source = computeChampionTrends(sightings.sightings);
+  const expected = source.champions.filter(c => (c.trend === 'rising' || c.trend === 'new') && c.trendDeltaPct! > 0)
+    .sort((a, b) => b.trendDeltaPct! - a.trendDeltaPct! || a.championName.localeCompare(b.championName)).slice(0, 2);
+  assert.ok(result.risingChampions?.length);
+  assert.deepEqual(result.risingChampions?.map(c => c.championName), expected.map(c => c.championName));
+  for (const highlight of result.risingChampions!) {
+    const champion = expected.find(c => c.championName === highlight.championName)!;
+    assert.deepEqual(highlight.previous, champion.seasons.at(-2));
+    assert.deepEqual(highlight.current, champion.seasons.at(-1));
+    assert.equal(highlight.deltaPct, champion.trendDeltaPct);
+  }
+  const empty = await buildHomepage([], { ...taxonomy, strategyArchetypes: [] }, '/unused');
+  assert.deepEqual(empty.risingChampions, []);
+});
