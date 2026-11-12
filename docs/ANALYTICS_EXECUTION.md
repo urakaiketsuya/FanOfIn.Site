@@ -23,7 +23,8 @@ Existing competition release D is complete and is not reopened.
       damage batch (paid plays, target scenarios and consumed resources).
 - [x] Defense/recovery: reviewed Rai/Tonoris/Diao checkpoint response windows,
       shared payments and labeled pressure/recovery scenarios; exclusions documented.
-- [ ] Graveyard/recursion: explicit zone movement and finite reuse.
+- [x] Graveyard/recursion: reviewed Rai recovery batch, explicit zone movement,
+      finite reuse and paid replay; upstream fixtures imported and exclusions documented.
 - [ ] Champion/element access: broaden reviewed progression and activation gates.
 - [ ] Recommendations: audit omitted core cards, dependencies and covered swap outcomes.
 - [ ] Comparisons: newer sequence outcomes in Compare and saved versions; audit
@@ -46,9 +47,9 @@ contract and representative fixture. Record data blockers separately from comple
 
 ## Current handoff
 
-Current: reviewed damage, conditional draw and defense/recovery checkpoint batches
-are implemented in standalone reports and comparisons.
-Next: graveyard/recursion with explicit zone movement and finite reuse. Full-catalog draw depends on the
+Current: reviewed damage, conditional draw, defense/recovery and graveyard reuse
+batches are implemented in standalone reports and comparisons.
+Next: broaden champion/element access using existing TCGEngine fixtures first. Full-catalog draw depends on the
 explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
@@ -346,3 +347,20 @@ exclusions are recorded in CALCULATIONS.md. No push or live verification perform
 Next: graveyard/recursion. Extended analytics is 6/16 broad milestones complete
 (about 38%; milestones vary in size). Altar still needs a reviewed payoff policy;
 full rules-engine opponent behavior remains outside scope.
+
+
+## Graveyard reuse batch — 2026-11-12
+
+Eight reviewed recovery cards now use real graveyard targets, paid reserve, actual
+sacrifices, memory timing and paid replay in the shared Rai trajectory. Standalone
+and comparison reports show cumulative turn-3/5 percentages, ranges and cards.
+Imported 13 existing TCGEngine scenarios with pinned provenance rather than creating
+replacement engine fixtures. Test adapters use their seeded targets and assertions;
+Surgery recovery remains catalog-derived because its upstream case covers buff mode.
+Sequence tests reuse the existing Rai Wind fixture. No new deck fixture added.
+
+154 targeted tests pass; shared/app typechecks, lint, build and mobile/desktop
+component checks. Signed-in flows, upstream PHP replays and live deployment not
+verified. No push performed. Next is champion/element coverage; Altar payoff and
+combat-death/ephemeral recursion remain separate reviewed-policy dependencies.
+Extended analytics: 7/16 broad milestones (~44%, unequal scope).

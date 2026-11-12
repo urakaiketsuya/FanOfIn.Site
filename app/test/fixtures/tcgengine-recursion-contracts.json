@@ -1,0 +1,227 @@
+{
+  "sourceRevision": "b629bcc038cbb40b8c6bf242c2796b02e6db14ef",
+  "description": "Verbatim upstream fixtures; adapters test supported analytics clauses, not an engine replay. Surgery upstream case covers its buff mode only; recursion mode is catalog-derived.",
+  "scenarios": [
+    {
+      "id": "aenean-cyclic-winds-level-three-class-bonus-costs-two-less-and-returns-a-spell-to-memory",
+      "path": "DevTools/ga-fixtures/wind-actions5.php",
+      "fileSha256": "93031ae1d29e5b6960fac75eedb99025a1cfc1ede9f1fbab18e72569a7926db7",
+      "excerptSha256": "80a4abe338aa25fe12f76fa41e0ee42cbafb2bdd293876472099975fd19c78fd",
+      "excerpt": "gaScenario('aenean-cyclic-winds-level-three-class-bonus-costs-two-less-and-returns-a-spell-to-memory')\n    ->standardDeck('Aenean Cyclic Winds')\n    ->readyFor('Aenean Cyclic Winds', classBonus: true, level: 3)\n    ->seed('myGraveyard', 'Nascent Blast')\n    ->seed('myHand', 'Aenean Cyclic Winds')\n    ->castSpell('Aenean Cyclic Winds', pay: 3, window: 'me', target: 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Nascent Blast', 'The Spell card moved from the graveyard to memory')\n    ->expectZoneCount('myGraveyard', 1, 1, 'Only the Cyclic Winds itself is left in the graveyard')\n    ->expectZoneCount('myMemory', 4, 1, 'Class Bonus at Level 3+: cost 5 - 2 = 3, plus the returned Spell')\n    ->tested('Aenean Cyclic Winds')\n    ->covers(['class-bonus', 'level-gate', 'cost-reduction', 'zone-movement', 'targeting'], '[Class Bonus] [Level 3+] This card costs 2 less to activate.', 'Return target Spell card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "aenean-cyclic-winds-without-the-class-bonus-pays-the-full-five",
+      "path": "DevTools/ga-fixtures/wind-actions5.php",
+      "fileSha256": "93031ae1d29e5b6960fac75eedb99025a1cfc1ede9f1fbab18e72569a7926db7",
+      "excerptSha256": "67b73510a09fbfb57f1db3130ef0d111259a14aa425594a2e957cbaefc736f7a",
+      "excerpt": "gaScenario('aenean-cyclic-winds-without-the-class-bonus-pays-the-full-five')\n    ->standardDeck('Aenean Cyclic Winds')\n    ->readyFor('Aenean Cyclic Winds', level: 3)\n    ->seed('myGraveyard', 'Nascent Blast')\n    ->seed('myHand', 'Aenean Cyclic Winds')\n    ->castSpell('Aenean Cyclic Winds', pay: 5, window: 'me', target: 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Nascent Blast', 'The Spell card still returns without the class bonus')\n    ->expectZoneCount('myMemory', 6, 1, 'Full cost 5, plus the returned Spell')\n    ->tested('Aenean Cyclic Winds')\n    ->covers(['class-bonus', 'cost-reduction'], '[Class Bonus] [Level 3+] This card costs 2 less to activate.')\n    ->register();"
+    },
+    {
+      "id": "aenean-cyclic-winds-level-five-returns-two-wind-cards-from-memory-and-empowers",
+      "path": "DevTools/ga-fixtures/wind-actions5.php",
+      "fileSha256": "93031ae1d29e5b6960fac75eedb99025a1cfc1ede9f1fbab18e72569a7926db7",
+      "excerptSha256": "7fdf46b2ff8c4bfe86c3f103d166e5e918eebd657c128b2a71e643c249cb835e",
+      "excerpt": "gaScenario('aenean-cyclic-winds-level-five-returns-two-wind-cards-from-memory-and-empowers')\n    ->standardDeck('Aenean Cyclic Winds')\n    ->readyFor('Aenean Cyclic Winds', classBonus: true, level: 5)\n    ->seed('myGraveyard', 'Nascent Blast')\n    ->seed('myMemory', 'Fairy Whispers')\n    ->seed('myMemory', 'Galvanizing Gale')\n    ->seed('myHand', 'Aenean Cyclic Winds')\n    ->castSpell('Aenean Cyclic Winds', pay: 3, window: 'me', target: 'myGraveyard-0')->answer(1, 'myMemory-0&myMemory-1')\n    ->expectCardExists('myHand', 'Fairy Whispers', 'Level 5+: the first Wind card went to hand')\n    ->expectCardExists('myHand', 'Galvanizing Gale', 'Level 5+: the second Wind card went to hand')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"vz4kc558yx-ACTION_ACTIVATED\",\"3GjTPUfsp3\",\"EMPOWERED\",\"EMPOWER_PLUS_2\"]', 'Empower 2 marks the champion (EMPOWERED, EMPOWER_PLUS_2)')\n    ->tested('Aenean Cyclic Winds')\n    ->covers(['class-bonus', 'level-gate', 'reveal-look', 'zone-movement'], '[Class Bonus] [Level 5+] Reveal up to two wind element cards from your memory and return them to your hand. Then **empower 2**.')\n    ->register();"
+    },
+    {
+      "id": "aenean-cyclic-winds-below-level-five-returns-only-the-spell",
+      "path": "DevTools/ga-fixtures/wind-actions5.php",
+      "fileSha256": "93031ae1d29e5b6960fac75eedb99025a1cfc1ede9f1fbab18e72569a7926db7",
+      "excerptSha256": "bde7b809a2f1435dfd0038fd450bf1b1e9d5b4542b6238b9cdf019f9f8fdb527",
+      "excerpt": "gaScenario('aenean-cyclic-winds-below-level-five-returns-only-the-spell')\n    ->standardDeck('Aenean Cyclic Winds')\n    ->readyFor('Aenean Cyclic Winds', classBonus: true, level: 4)\n    ->seed('myGraveyard', 'Nascent Blast')\n    ->seed('myMemory', 'Fairy Whispers')\n    ->seed('myHand', 'Aenean Cyclic Winds')\n    ->castSpell('Aenean Cyclic Winds', pay: 3, window: 'me', target: 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Fairy Whispers', 'Level 4: the Wind card stays in memory')\n    ->expectProperty('p1Field-0', 'TurnEffects', '[\"vz4kc558yx-ACTION_ACTIVATED\"]', 'No empower below level 5: only the activation marker')\n    ->tested('Aenean Cyclic Winds')\n    ->covers(['level-gate', 'class-bonus'], '[Class Bonus] [Level 5+] Reveal up to two wind element cards from your memory')\n    ->register();"
+    },
+    {
+      "id": "cyclical-breeze-cannot-return-itself-while-resolving",
+      "path": "DevTools/ga-fixtures/cards-c.php",
+      "fileSha256": "cbaebe4cebed2d31bb512becb65e500dfbfa1b5bfb3a414e9fee5809cf75612d",
+      "excerptSha256": "b1cf2f0cd31894b83122e48a367557ce55bc35cccc8f93d70a3c650ddf8584e9",
+      "excerpt": "gaScenario('cyclical-breeze-cannot-return-itself-while-resolving')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Wind\n# Main\n10 Dungeon Guide\n10 Fluffy Shopkeep\n\nDECK\n    )\n    ->seed('myHand', 'Cyclical Breeze')\n    ->castSpell('Cyclical Breeze', pay: 4)\n    ->expectZoneCount('myGraveyard', 1, 1, 'Cyclical Breeze finished resolving and is in the graveyard; it was not offered (or returned) as its own target')\n    ->expectZoneCount('myHand', 3, 1, 'Nothing came back to the hand (8 cards - Breeze - 4 paid)')\n    ->expectDqEmpty()\n    ->covers(['resolving-action-not-in-graveyard'], 'Return target wind element Spell card from your graveyard to your hand.', 'An Action card that is resolving is not yet in the graveyard, so graveyard effects cannot pick or count it.')\n    ->register();"
+    },
+    {
+      "id": "primeval-ritual-sacrifices-an-ally-and-returns-a-wind-card-to-memory",
+      "path": "DevTools/ga-fixtures/wind-actions2.php",
+      "fileSha256": "39c0c4d3b8d3e609a2081f3625e803a0f268b3f05a568783ea1cc3617b8d82d8",
+      "excerptSha256": "4d20c1293caa2cb5b7271505f8c20e796a4802ee4f0e1288e702dea36367d769",
+      "excerpt": "gaScenario('primeval-ritual-sacrifices-an-ally-and-returns-a-wind-card-to-memory')\n    ->standardDeck('Primeval Ritual')\n    ->readyFor('Primeval Ritual')\n    ->seed('myField', 'Giant Tortoise')\n    ->seed('myGraveyard', 'Aenean Reclaim')\n    ->seed('myHand', 'Primeval Ritual')\n    ->play('Primeval Ritual')->answer(1, 'myField-1')->pay(3)->pass(1)->answer(1, 'myGraveyard-0')\n    ->expectCardExists('myGraveyard', 'Giant Tortoise', 'The sacrificed ally is in the graveyard')\n    ->expectCardExists('myMemory', 'Aenean Reclaim', 'The wind card returned from the graveyard to memory')\n    ->expectZoneCount('myField', 1, 1, 'The ally was sacrificed: only the champion remains')\n    ->expectZoneCount('myMemory', 4, 1, 'Three paid cards plus the returned card')\n    ->tested('Primeval Ritual')\n    ->covers(['additional-cost', 'sacrifice', 'zone-movement'], 'As an additional cost to activate this card, sacrifice an ally.', 'Return target wind element card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "primeval-ritual-cannot-be-activated-without-an-ally-to-sacrifice",
+      "path": "DevTools/ga-fixtures/wind-actions2.php",
+      "fileSha256": "39c0c4d3b8d3e609a2081f3625e803a0f268b3f05a568783ea1cc3617b8d82d8",
+      "excerptSha256": "8ba793eef7b34010699735d05e1137801ef2501c8288352abc15d6c52a737163",
+      "excerpt": "gaScenario('primeval-ritual-cannot-be-activated-without-an-ally-to-sacrifice')\n    ->standardDeck('Primeval Ritual')\n    ->readyFor('Primeval Ritual')\n    ->seed('myGraveyard', 'Aenean Reclaim')\n    ->seed('myHand', 'Primeval Ritual')\n    ->action(1, 10002, 'myHand-7!FSM!')\n    ->expectDqEmpty()\n    ->expectZoneCount('myHand', 8, 1, 'Nothing happened: the additional cost cannot be paid')\n    ->expectZoneCount('myGraveyard', 1, 1, 'The graveyard card stayed put')\n    ->tested('Primeval Ritual')\n    ->covers(['additional-cost', 'restriction'], 'As an additional cost to activate this card, sacrifice an ally.')\n    ->register();"
+    },
+    {
+      "id": "breezy-looper-level-one-on-enter-returns-a-melody-from-the-graveyard-to-memory",
+      "path": "DevTools/ga-fixtures/wind-allies3.php",
+      "fileSha256": "0f41dc01e0853069b4b9a8a83c64cb4244fcfb176164ecc2634800ca2c3250f3",
+      "excerptSha256": "580bb9a394be4768a2ce0ce59ca59142d680c2c44233482d491d0f5425783824",
+      "excerpt": "gaScenario('breezy-looper-level-one-on-enter-returns-a-melody-from-the-graveyard-to-memory')\n    ->deckTemplate('quiet', 'Breezy Looper')\n    ->readyFor('Breezy Looper', level: 1)\n    ->seed('myGraveyard', 'Belted Tune')\n    ->seed('myHand', 'Breezy Looper')\n    ->play('Breezy Looper')->pay(4)->answer(1, 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Belted Tune', 'The Melody went from the graveyard to memory')\n    ->expectZoneCount('myGraveyard', 0, 1, 'Nothing left in the graveyard')\n    ->tested('Breezy Looper')\n    ->covers(['on-enter', 'level-gate', 'zone-movement', 'targeting'], '[Level 1+] **On Enter:** Return target Harmony or Melody card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "breezy-looper-level-zero-on-enter-returns-nothing",
+      "path": "DevTools/ga-fixtures/wind-allies3.php",
+      "fileSha256": "0f41dc01e0853069b4b9a8a83c64cb4244fcfb176164ecc2634800ca2c3250f3",
+      "excerptSha256": "c74c29d5665f582ce5d83ff75cf1e9e12f09ec269630b9c3928c8be826953a4e",
+      "excerpt": "gaScenario('breezy-looper-level-zero-on-enter-returns-nothing')\n    ->deckTemplate('quiet', 'Breezy Looper')\n    ->readyFor('Breezy Looper', level: 0)\n    ->seed('myGraveyard', 'Belted Tune')\n    ->seed('myHand', 'Breezy Looper')\n    ->play('Breezy Looper')->pay(4)\n    ->expectZoneCount('myGraveyard', 1, 1, 'Level 0: the Melody stays in the graveyard')\n    ->tested('Breezy Looper')\n    ->covers(['on-enter', 'level-gate', 'condition'], '[Level 1+] **On Enter:**')\n    ->register();"
+    },
+    {
+      "id": "lost-wisdom-class-bonus-with-a-unique-ally-costs-two-less-and-returns-a-spell-to-memory",
+      "path": "DevTools/ga-fixtures/norm-actions4.php",
+      "fileSha256": "b318d910f89a1f670cdd86fb88567291e03578201b58b0c9a19681786f5712f7",
+      "excerptSha256": "6fee8da8d78de795f32aa457670cf50e6c6ba1d463b8bcbd40592056ed38cc26",
+      "excerpt": "gaScenario('lost-wisdom-class-bonus-with-a-unique-ally-costs-two-less-and-returns-a-spell-to-memory')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Lost Wisdom', classBonus: true)\n    ->seed('myField', 'Camil, Basked Abundance')\n    ->seed('myGraveyard', 'Purification')\n    ->seed('myHand', 'Lost Wisdom')\n    ->castSpell('Lost Wisdom', pay: 2, window: '')->answer(1, 'myGraveyard-0')\n    ->expectCardExists('myMemory', 'Purification', 'The Spell card returned from the graveyard to memory')\n    ->tested('Lost Wisdom')\n    ->covers(['class-bonus', 'cost-reduction', 'zone-movement'], '[Class Bonus] This card costs 2 less to activate if you control one or more unique allies.', 'Return a Spell card from your graveyard to your memory.')\n    ->register();"
+    },
+    {
+      "id": "scavenge-the-distillery-returns-a-potion-item-from-the-graveyard-to-hand",
+      "path": "DevTools/ga-fixtures/norm-actions6.php",
+      "fileSha256": "c3cb566fcb60a0a6cee9d9b8a36fe610a16131e8431139bde2e8a62225697117",
+      "excerptSha256": "61c611b3aa16d400acb93564f6b7b3935d4d6f6e498f607ffef2540799b61634",
+      "excerpt": "gaScenario('scavenge-the-distillery-returns-a-potion-item-from-the-graveyard-to-hand')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Scavenge the Distillery')\n    ->seed('myGraveyard', 'Distilled Water')\n    ->seed('myHand', 'Scavenge the Distillery')\n    ->castSpell('Scavenge the Distillery', pay: 3, window: '', target: 'myGraveyard-0')\n    ->expectCardExists('myHand', 'Distilled Water', 'The Potion item returned to hand')\n    ->tested('Scavenge the Distillery')\n    ->covers(['zone-movement', 'targeting'], 'Return up to one target Potion item card from your graveyard to your hand.')\n    ->register();"
+    },
+    {
+      "id": "reconstructive-surgery-puts-a-buff-counter-on-an-automaton-ally",
+      "path": "DevTools/ga-fixtures/norm-actions6.php",
+      "fileSha256": "c3cb566fcb60a0a6cee9d9b8a36fe610a16131e8431139bde2e8a62225697117",
+      "excerptSha256": "f6c6bc6f59b251e51efbf88c941b531ffecb81d20c0a37376dd747b9946505ba",
+      "excerpt": "gaScenario('reconstructive-surgery-puts-a-buff-counter-on-an-automaton-ally')\n    ->deckTemplate('quiet', 'Dungeon Guide')\n    ->readyFor('Reconstructive Surgery')\n    ->seed('myField', 'Delivery Droid')\n    ->seed('myHand', 'Reconstructive Surgery')\n    ->castSpell('Reconstructive Surgery', pay: 2, window: '', target: 'myField-1')\n    ->expectProperty('p1Field-1', 'Counters', '{\"buff\":1}', 'The Delivery Droid got a buff counter')\n    ->tested('Reconstructive Surgery')\n    ->covers(['modal', 'counter', 'targeting'], 'Put a **buff** counter on target Automaton ally.')\n    ->register();"
+    },
+    {
+      "id": "advantageous-perch-distant-returns-a-ranger-action-and-banishes-itself",
+      "path": "DevTools/ga-fixtures/cards-a.php",
+      "fileSha256": "635f24f71eed53e4b1021caf99ef2f389284e95e33fa0f4299822b48f344c16e",
+      "excerptSha256": "174d27c62378f03495a30cfe9aca79adc45c913053608b28e54f614c3ba37abe",
+      "excerpt": "gaScenario('advantageous-perch-distant-returns-a-ranger-action-and-banishes-itself')\n    ->deck(<<<'DECK'\n# Material\n1 Spirit of Wind\n# Main\n10 Dungeon Guide\n10 Fluffy Shopkeep\n\nDECK\n    )\n    ->champion(lineage: ['Mordred, Fated Luminary'], classes: 'RANGER')\n    ->seed('myGraveyard', 'Charge the Soul')\n    ->seed('myHand', 'Advantageous Perch')\n    ->castSpell('Advantageous Perch', pay: 2, target: 'myGraveyard-0')\n    ->covers(['banish-self', 'return-from-graveyard'], 'Your champion becomes distant.', 'Return up to one target Ranger action card from your graveyard to your hand.', 'Banish CARDNAME.')\n    ->register();"
+    }
+  ],
+  "cards": {
+    "Aenean Cyclic Winds": {
+      "effect": "[Class Bonus] [Level 3+] This card costs 2 less to activate.\n\nReturn target Spell card from your graveyard to your memory.\n\n[Class Bonus] [Level 5+] Reveal up to two wind element cards from your memory and return them to your hand. Then **empower 2**.",
+      "cost_reserve": 5,
+      "element": "WIND",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "MAGE",
+        "AENEAN",
+        "SPELL"
+      ]
+    },
+    "Cyclical Breeze": {
+      "effect": "[Class Bonus] This card costs 2 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*\n\nReturn target wind element Spell card from your graveyard to your hand.",
+      "cost_reserve": 4,
+      "element": "WIND",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "MAGE",
+        "SPELL"
+      ]
+    },
+    "Primeval Ritual": {
+      "effect": "As an additional cost to activate this card, sacrifice an ally. \n\nReturn target wind element card from your graveyard to your memory.",
+      "cost_reserve": 3,
+      "element": "WIND",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "MAGE"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ]
+    },
+    "Breezy Looper": {
+      "effect": "[Level 1+] **On Enter:** Return target Harmony or Melody card from your graveyard to your memory.",
+      "cost_reserve": 4,
+      "element": "WIND",
+      "types": [
+        "ALLY"
+      ],
+      "classes": [
+        "CLERIC",
+        "WARRIOR"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "WARRIOR",
+        "RESONATOR",
+        "HUMAN"
+      ]
+    },
+    "Lost Wisdom": {
+      "effect": "[Class Bonus] This card costs 2 less to activate if you control one or more unique allies.\n\nReturn a Spell card from your graveyard to your memory.",
+      "cost_reserve": 4,
+      "element": "NORM",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC",
+        "MAGE"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "MAGE",
+        "SKILL"
+      ]
+    },
+    "Scavenge the Distillery": {
+      "effect": "[Class Bonus] This card costs 1 less to activate.\n\nReturn up to one target Potion item card from your graveyard to your hand.",
+      "cost_reserve": 3,
+      "element": "NORM",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL"
+      ]
+    },
+    "Advantageous Perch": {
+      "effect": "*(Exalted — This element is enabled for you as long as you have another advanced element enabled.)*\n\nYour champion becomes **distant**. Then return up to one target Ranger action card from your graveyard to your hand. Banish CARDNAME.",
+      "cost_reserve": 2,
+      "element": "EXALTED",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "RANGER"
+      ],
+      "subtypes": [
+        "RANGER",
+        "SKILL"
+      ]
+    },
+    "Reconstructive Surgery": {
+      "effect": "Choose one —\n• Put a **buff** counter on target Automaton ally.\n• [Level 2+] Return an Automaton ally card from your graveyard to your memory. *(Choose this option only if your champion is level 2 or higher.)*",
+      "cost_reserve": 2,
+      "element": "NORM",
+      "types": [
+        "ACTION"
+      ],
+      "classes": [
+        "CLERIC"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL"
+      ]
+    }
+  }
+}

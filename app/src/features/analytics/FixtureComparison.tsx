@@ -1,3 +1,4 @@
+import { RecursionComparison } from './RecursionReport';
 import { DefenseComparison } from './DefenseReport';
 import { RaiDamageComparison } from './RaiDamageReport';
 import { useId, useState } from 'react';
@@ -94,6 +95,7 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
     </TabPanel>
     <TabPanel baseId={id} tab="versions" active={mode} keepMounted>
       {mode === 'versions' && <TonorisDrawComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
+      {mode === 'versions' && <RecursionComparison baseline={baseline} target={target} cardsByName={cardsByName} />}
       {mode === 'versions' && <DefenseComparison baseline={baseline} target={target} cardsByName={cardsByName} />}
       {mode === 'versions' && <RaiDamageComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}
       {mode === 'versions' && <RaiDrawComparison baseline={baseline} target={target} cardsByName={cardsByName} baselineLabel={baselineLabel} targetLabel={targetLabel} />}

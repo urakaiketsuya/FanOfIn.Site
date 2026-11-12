@@ -6958,3 +6958,77 @@ art, links over 48px, visible keyboard focus, empty omission and missing/unsuppo
 states. Shared/app typechecks, targeted lint and the production build passed.
 No new asynchronous loading or disclosure states were introduced. Signed-in
 full-page flows and live deployment are not verified by this local harness.
+
+## Paid graveyard reuse — 2026-11-12
+
+`recursionPolicy.ts` and `recursionReport.ts` extend the existing paid Rai draw
+trajectory, rather than evaluating independent checkpoint windows. Exact supported
+Fire/Water/Wind Rai lineages, Main only, opening seven, going first, five turns,
+512 samples and seed 1739 apply. Canonical aggregated Main ordering makes standalone
+and paired reports agree. Missing catalog/cost data and unsupported lineages are
+unavailable, not zero. Graveyards start empty: only reviewed resolved Actions,
+discards and sacrifices populate them. No hypothetical combat deaths are injected.
+
+The report shows cumulative successful returns and subsequent paid activations of
+returned cards, each as P(count >= 1) and empirical p10/p50/p90 at turns 3 and 5.
+Returns to hand and memory are separately retained in the shared result. A return
+is not a new library draw or a new distinct-card access. Returning the same physical
+copy again later is a second return event only after it actually reenters the
+graveyard. Replaying counts once per return, when that physical copy is activated
+again; paying reserve with it is not replay. These are sequence estimates, not an
+optimal recursion policy or a full game prediction.
+
+| Reviewed card | Recovery policy in the supported trajectory |
+| --- | --- |
+| Cyclical Breeze | Wind Spell to hand; printed Reserve 4, Mage discount 2 after paid level 1. Resolving source is not in the graveyard and cannot return itself. |
+| Aenean Cyclic Winds | Spell to memory; Reserve 5, Mage discount 2 at paid level 3. No temporary level gains are modeled, so the level-5 reveal/empower clause is unreachable. |
+| Lost Wisdom | Spell to memory; Reserve 4, discount 2 only with Mage class and an actual unique ally on the field. |
+| Breezy Looper | Harmony/Melody to memory; Reserve 4, paid level 1+. The ally remains on the field. Policy holds it below the recovery gate rather than playing solely for combat. |
+| Primeval Ritual | Wind card to memory; Reserve 3 and sacrifice one actual ally. Removes its Guide discount and pending field-dependent effects. |
+| Reconstructive Surgery | Automaton ally to memory; Reserve 2, paid level 2+. Only the recovery mode is selected. |
+| Scavenge the Distillery | Potion item to hand; Reserve 3. Rai has no Cleric discount. |
+| Advantageous Perch | Ranger Action to hand; Reserve 2 with paid advanced/Exalted access at level 3. Source is banished after resolving. Distant has no numerical value in this report. |
+
+First payable source in existing hand order is selected; stable reserve/discard
+selection retains recovery sources with the same one-point priority as one-card
+draw sources. Target selection is the first matching physical graveyard card before
+payments/triggers, and Primeval sacrifices the first actual ally. This conservative
+policy does not seek new targets created by its own sacrifice. Targets banished by
+an intervening reviewed trigger cannot be returned. Reserve payment excludes the
+source itself. Memory returns wait for recollection and may be spent on progression
+before they become hand cards. Every replay pays again; finite reserve, sacrifice,
+Floating Memory and Kindle budgets share the same physical zones. No fresh copies
+are created. The existing draw/damage/defense consumers inherit these reviewed
+recovery plays through the shared Rai policy; their output contracts are unchanged.
+
+### Reused TCGEngine evidence
+
+`app/test/fixtures/tcgengine-recursion-contracts.json` imports 13 scenario excerpts
+verbatim from TCGEngine revision `b629bcc038cbb40b8c6bf242c2796b02e6db14ef`, with
+source paths, file and excerpt SHA-256 hashes. Refresh using
+`node scripts/import-tcgengine-recursion.mjs /path/to/TCGEngine`, then review changed
+assertions and catalog text together. The importer does not derive expectations
+from this analytics implementation. The source checkout is not required in CI.
+
+Adapters reuse the engine's seeded target names and destination assertions, plus
+class/level discounts, Primeval's additional cost and Cyclical Breeze's resolving
+source restriction. Perch's upstream excerpt supplies a scenario and coverage
+clauses but no explicit destination assertion. Surgery's upstream case covers only
+its buff mode; its recovery mode is explicitly catalog-derived. The level-5 Aenean
+fixture is retained as boundary evidence, not claimed as supported. These are
+adapted contract tests, not PHP engine replays; the engine suite was not rerun.
+No new deck fixture was created: sequence/comparison tests adapt the existing Rai
+Wind conditional-draw fixture. Additional analytics-only tests check physical zone
+conservation, finite repeats, affordability, memory timing, Floating Memory sharing,
+canonical ordering, sideboard exclusion and missing/unsupported states.
+
+Excluded follow-ons: Altar milling/payoff choices; self-mill and library selection;
+banishment-to-hand recovery; automatic combat-death and ephemeral replacements;
+other champion/class/element lineages; transient level 5; optimal target selection.
+These exclusions must not be inferred from a supported card's presence alone.
+
+Verification: 154 targeted tests passed; shared/app typechecks, targeted lint and
+production build. Local production components checked at 390×844 and 1280×900:
+no horizontal overflow, visible names/art, keyboard focus, card links over 48px,
+empty omission and missing/unsupported statuses. No loading/expanded states added.
+Full signed-in journeys, upstream PHP replays and live deployment remain unverified.

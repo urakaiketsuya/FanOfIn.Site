@@ -1,3 +1,4 @@
+import RecursionReport from './RecursionReport';
 import DefenseReport from './DefenseReport';
 import RaiDamageReport from './RaiDamageReport';
 import TonorisDrawReport from './TonorisDrawReport';
@@ -16,6 +17,7 @@ export default function DeckReport({ deck, cardsByName }: {
 }) {
   const forecast = useMemo(() => computeAggressionForecast(deck.main, cardsByName, deck.material), [deck.main, deck.material, cardsByName]);
   return <div data-component="DeckReport" className="mt-4 space-y-4">
+    <RecursionReport deck={deck} cardsByName={cardsByName} />
     <DefenseReport deck={deck} cardsByName={cardsByName} />
     <RaiDamageReport deck={deck} cardsByName={cardsByName} />
     <TonorisDrawReport deck={deck} cardsByName={cardsByName} />
