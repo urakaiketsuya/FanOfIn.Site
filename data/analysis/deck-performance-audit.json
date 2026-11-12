@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-11-12T22:51:39.496Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-12T22:58:25.835Z",
   "publication": {
     "enabled": false,
     "status": "research-only",
@@ -16,7 +16,7 @@
   "inputs": {
     "catalogGeneratedAt": "2026-11-12T15:03:46.647Z",
     "catalogSha256": "6feda64f2add986b96d8f6c64ab8b848bd0200801b3bf17af734f0a86ec30b3e",
-    "cohortSha256": "ce6db2684d7596fa9ee5f9751153cabfdd869f53fc08e11ea6a49457ef813443",
+    "cohortSha256": "031b8e70af73c517b9e64a89ac267490286811dd0fb70379ebd641dd092fdc6b",
     "decks": 58978,
     "uniqueDecks": 50102,
     "events": 1952,
@@ -32,9 +32,9 @@
     "target": "Per-deck event match-point rate: (wins + 0.5 ties) / matches, equal weight per deck entry; not a match-win probability.",
     "split": "First 70% of distinct UTC event dates train; later dates hold out. No date crosses the boundary.",
     "baseline": "Smoothed champion, champion/spirit, and player history (20 prior deck entries); weights 0.25/0.5/0.25. Training residuals use leave-one-entry-out means.",
-    "candidate": "Fixed ridge penalty 0.1*n; train-only standardization and mean imputation plus missingness indicators. Predictions clipped to 0.01\u20130.99. No tuning on holdout.",
+    "candidate": "Fixed ridge penalty 0.1*n; train-only standardization and mean imputation plus missingness indicators. Predictions clipped to 0.01–0.99. No tuning on holdout.",
     "uncertainty": "400 deterministic paired event-cluster bootstrap resamples; improvement is baseline squared error minus candidate squared error. Interval omitted below 20 events.",
-    "simulations": "Existing Tonoris report policy, 128 deterministic samples, turns 3 and 5; these checkpoints are not validated expected game lengths."
+    "simulations": "Existing Tonoris and defense policies at 128 deterministic samples; paid Rai damage at its existing 512 samples. Turns 3 and 5; these checkpoints are not validated expected game lengths."
   },
   "features": [
     {
@@ -96,6 +96,96 @@
       "name": "tonorisLevel3T5",
       "available": 593,
       "meaning": "Supported Tonoris trajectory; null for unsupported decks."
+    },
+    {
+      "name": "paidDamage_champion_T3",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "paidDamage_champion_T5",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "paidDamage_ally_T3",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "paidDamage_ally_T5",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "paidDamage_wide_T3",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "paidDamage_wide_T5",
+      "available": 22,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_single_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_single_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_single_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_single_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_repeated_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_repeated_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_repeated_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_repeated_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_recovery_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_recovery_T3",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defense_recovery_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
+    },
+    {
+      "name": "defenseReady_recovery_T5",
+      "available": 784,
+      "meaning": "Reviewed scenario trajectory; unsupported or missing is null. Supported zero is zero; scenarios are alternatives, not additive."
     }
   ],
   "validation": {
@@ -179,7 +269,1155 @@
           "meanSquaredDeckRateError": 0.05326951554439451,
           "meanAbsoluteError": 0.18377534498968368,
           "improvement95": [
-            6.985658520712572e-05,
+            0.00006985658520712572,
+            0.0002723474172308463
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 629,
+              "predicted": 0.3755844335229798,
+              "observed": 0.34955568632039224
+            },
+            {
+              "from": 0.4,
+              "decks": 11884,
+              "predicted": 0.4655824625736208,
+              "observed": 0.4442638252487601
+            },
+            {
+              "from": 0.5,
+              "decks": 5769,
+              "predicted": 0.5195785016918758,
+              "observed": 0.5459423235034268
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6040912557112087,
+              "observed": 0.7083333333333334
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.05316687230540085,
+          "meanAbsoluteError": 0.18383474664796998,
+          "improvement95": [
+            0.00009946239617943949,
+            0.0004423185059643279
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 4,
+              "predicted": 0.15772524236227306,
+              "observed": 0.09375
+            },
+            {
+              "from": 0.2,
+              "decks": 121,
+              "predicted": 0.2722952182163377,
+              "observed": 0.3140036730945822
+            },
+            {
+              "from": 0.3,
+              "decks": 993,
+              "predicted": 0.36596846783860665,
+              "observed": 0.3586866767002719
+            },
+            {
+              "from": 0.4,
+              "decks": 11865,
+              "predicted": 0.46539954217309065,
+              "observed": 0.4524884343310362
+            },
+            {
+              "from": 0.5,
+              "decks": 5297,
+              "predicted": 0.5201921014817574,
+              "observed": 0.5446663210303017
+            },
+            {
+              "from": 0.6,
+              "decks": 2,
+              "predicted": 0.6151511697279435,
+              "observed": 0.5833333333333333
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.0529311825002853,
+          "meanAbsoluteError": 0.18325212697823562,
+          "improvement95": [
+            0.0003302095740702791,
+            0.0007167378414179309
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 4,
+              "predicted": 0.15430498656985617,
+              "observed": 0.09375
+            },
+            {
+              "from": 0.2,
+              "decks": 97,
+              "predicted": 0.27054026219624117,
+              "observed": 0.3079569628538701
+            },
+            {
+              "from": 0.3,
+              "decks": 1031,
+              "predicted": 0.368781871542181,
+              "observed": 0.35316248306063985
+            },
+            {
+              "from": 0.4,
+              "decks": 10926,
+              "predicted": 0.4642145614484917,
+              "observed": 0.45007053855900475
+            },
+            {
+              "from": 0.5,
+              "decks": 6215,
+              "predicted": 0.5246870986309576,
+              "observed": 0.5360925246202817
+            },
+            {
+              "from": 0.6,
+              "decks": 9,
+              "predicted": 0.6078580855953011,
+              "observed": 0.6601851851851852
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenPlayers": {
+      "decks": 2550,
+      "events": 611,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.0734090219147577,
+          "meanAbsoluteError": 0.22222635240563202,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 101,
+              "predicted": 0.3728953407381273,
+              "observed": 0.26417766776677665
+            },
+            {
+              "from": 0.4,
+              "decks": 2075,
+              "predicted": 0.4655726975851749,
+              "observed": 0.33807138443885487
+            },
+            {
+              "from": 0.5,
+              "decks": 374,
+              "predicted": 0.5060701719304346,
+              "observed": 0.38459755114166894
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.07385930017951384,
+          "meanAbsoluteError": 0.22262737622345674,
+          "improvement95": [
+            -0.0007344338395308976,
+            -0.0001870664453539114
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 99,
+              "predicted": 0.3757160135689349,
+              "observed": 0.26589506172839505
+            },
+            {
+              "from": 0.4,
+              "decks": 1852,
+              "predicted": 0.46351011121079155,
+              "observed": 0.3268451243680726
+            },
+            {
+              "from": 0.5,
+              "decks": 599,
+              "predicted": 0.511869560271988,
+              "observed": 0.40130011659644393
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.07214039563416037,
+          "meanAbsoluteError": 0.22029977220811398,
+          "improvement95": [
+            0.0007981919753490656,
+            0.0018655694121133162
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 13,
+              "predicted": 0.27393517185524874,
+              "observed": 0.19084249084249086
+            },
+            {
+              "from": 0.3,
+              "decks": 196,
+              "predicted": 0.3665433827076977,
+              "observed": 0.2573463313896988
+            },
+            {
+              "from": 0.4,
+              "decks": 1938,
+              "predicted": 0.46414672154013425,
+              "observed": 0.3438571447472381
+            },
+            {
+              "from": 0.5,
+              "decks": 403,
+              "predicted": 0.5131911042505513,
+              "observed": 0.37891705069124443
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.0725316035407284,
+          "meanAbsoluteError": 0.2207899100534917,
+          "improvement95": [
+            0.00028336008157075755,
+            0.00147036790462729
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 10,
+              "predicted": 0.26537784042729157,
+              "observed": 0.15
+            },
+            {
+              "from": 0.3,
+              "decks": 195,
+              "predicted": 0.3684666767645708,
+              "observed": 0.24997863247863258
+            },
+            {
+              "from": 0.4,
+              "decks": 1722,
+              "predicted": 0.46070172759547406,
+              "observed": 0.33643909565076835
+            },
+            {
+              "from": 0.5,
+              "decks": 623,
+              "predicted": 0.5164097701041309,
+              "observed": 0.3891261560804098
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenExactDecks": {
+      "decks": 17802,
+      "events": 748,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.05321561203966497,
+          "meanAbsoluteError": 0.18379469391349404,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 570,
+              "predicted": 0.37139468571067114,
+              "observed": 0.358982683982684
+            },
+            {
+              "from": 0.4,
+              "decks": 13067,
+              "predicted": 0.46696556886750196,
+              "observed": 0.4488805938880519
+            },
+            {
+              "from": 0.5,
+              "decks": 4165,
+              "predicted": 0.5142419721129673,
+              "observed": 0.5627515591651262
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.053065751376401134,
+          "meanAbsoluteError": 0.18333979424614683,
+          "improvement95": [
+            0.000051805192469005566,
+            0.0002487735817334633
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 618,
+              "predicted": 0.3753705858170424,
+              "observed": 0.35044063496733396
+            },
+            {
+              "from": 0.4,
+              "decks": 11576,
+              "predicted": 0.4655114981353374,
+              "observed": 0.44424606698492014
+            },
+            {
+              "from": 0.5,
+              "decks": 5607,
+              "predicted": 0.5195571618873923,
+              "observed": 0.5446994786815551
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6040912557112087,
+              "observed": 0.7083333333333334
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.05296261346916555,
+          "meanAbsoluteError": 0.18339903014096226,
+          "improvement95": [
+            0.00008411014579254696,
+            0.0004408434808375305
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 4,
+              "predicted": 0.15772524236227306,
+              "observed": 0.09375
+            },
+            {
+              "from": 0.2,
+              "decks": 121,
+              "predicted": 0.2722952182163377,
+              "observed": 0.3140036730945822
+            },
+            {
+              "from": 0.3,
+              "decks": 981,
+              "predicted": 0.36595465632228336,
+              "observed": 0.36115447159025144
+            },
+            {
+              "from": 0.4,
+              "decks": 11555,
+              "predicted": 0.4653257110369148,
+              "observed": 0.4523800395479294
+            },
+            {
+              "from": 0.5,
+              "decks": 5138,
+              "predicted": 0.5201215260338761,
+              "observed": 0.5435493232277008
+            },
+            {
+              "from": 0.6,
+              "decks": 2,
+              "predicted": 0.6151511697279435,
+              "observed": 0.5833333333333333
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.052744146140997414,
+          "meanAbsoluteError": 0.18283729496614265,
+          "improvement95": [
+            0.00029118433905520155,
+            0.0006834378519667736
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 4,
+              "predicted": 0.15430498656985617,
+              "observed": 0.09375
+            },
+            {
+              "from": 0.2,
+              "decks": 97,
+              "predicted": 0.27054026219624117,
+              "observed": 0.3079569628538701
+            },
+            {
+              "from": 0.3,
+              "decks": 1013,
+              "predicted": 0.36874288267588207,
+              "observed": 0.35585288491260825
+            },
+            {
+              "from": 0.4,
+              "decks": 10648,
+              "predicted": 0.4641689708947182,
+              "observed": 0.4498043946203208
+            },
+            {
+              "from": 0.5,
+              "decks": 6030,
+              "predicted": 0.5247737207447254,
+              "observed": 0.5352656333439932
+            },
+            {
+              "from": 0.6,
+              "decks": 9,
+              "predicted": 0.6078580855953011,
+              "observed": 0.6601851851851852
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenPlayersAndDecks": {
+      "decks": 2507,
+      "events": 608,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.07270990319808467,
+          "meanAbsoluteError": 0.22090584014215603,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 99,
+              "predicted": 0.37237110509609556,
+              "observed": 0.26614758698092034
+            },
+            {
+              "from": 0.4,
+              "decks": 2040,
+              "predicted": 0.46555448458220355,
+              "observed": 0.34079856622136084
+            },
+            {
+              "from": 0.5,
+              "decks": 368,
+              "predicted": 0.5060542406525126,
+              "observed": 0.3856371851276744
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.07325296762797047,
+          "meanAbsoluteError": 0.2214134984970461,
+          "improvement95": [
+            -0.0008218948271752344,
+            -0.000250170511294095
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 99,
+              "predicted": 0.3757160135689349,
+              "observed": 0.26589506172839505
+            },
+            {
+              "from": 0.4,
+              "decks": 1816,
+              "predicted": 0.46370364022509275,
+              "observed": 0.3301201116247924
+            },
+            {
+              "from": 0.5,
+              "decks": 592,
+              "predicted": 0.5118989191558108,
+              "observed": 0.401470331939082
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.07159636788491147,
+          "meanAbsoluteError": 0.2191547836012108,
+          "improvement95": [
+            0.000551158801617961,
+            0.001677028229307645
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 13,
+              "predicted": 0.27393517185524874,
+              "observed": 0.19084249084249086
+            },
+            {
+              "from": 0.3,
+              "decks": 190,
+              "predicted": 0.36673815682601896,
+              "observed": 0.2637186716791981
+            },
+            {
+              "from": 0.4,
+              "decks": 1906,
+              "predicted": 0.46412327201967524,
+              "observed": 0.346249264900892
+            },
+            {
+              "from": 0.5,
+              "decks": 398,
+              "predicted": 0.5132032071095458,
+              "observed": 0.3792803302225415
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.07204752083847357,
+          "meanAbsoluteError": 0.21971860034074045,
+          "improvement95": [
+            -0.000011495044673382673,
+            0.0013484707615564644
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 10,
+              "predicted": 0.26537784042729157,
+              "observed": 0.15
+            },
+            {
+              "from": 0.3,
+              "decks": 189,
+              "predicted": 0.3688628257778145,
+              "observed": 0.25615079365079374
+            },
+            {
+              "from": 0.4,
+              "decks": 1694,
+              "predicted": 0.46081381780731623,
+              "observed": 0.3390126377951055
+            },
+            {
+              "from": 0.5,
+              "decks": 614,
+              "predicted": 0.5165427455364436,
+              "observed": 0.38972681091980776
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    }
+  },
+  "priorFeatureValidation": {
+    "cutoff": "2026-03-01",
+    "trainingDecks": 40695,
+    "holdout": {
+      "decks": 18283,
+      "events": 748,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.05343886773367235,
+          "meanAbsoluteError": 0.18425131640474263,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 577,
+              "predicted": 0.3716462892498164,
+              "observed": 0.3578916173370247
+            },
+            {
+              "from": 0.4,
+              "decks": 13388,
+              "predicted": 0.46705264238355326,
+              "observed": 0.44879881181792997
+            },
+            {
+              "from": 0.5,
+              "decks": 4318,
+              "predicted": 0.5143269054079694,
+              "observed": 0.563855828567502
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.05326951554439451,
+          "meanAbsoluteError": 0.18377534498968368,
+          "improvement95": [
+            0.00006985658520712572,
             0.0002723474172308463
           ],
           "calibration": [
@@ -249,7 +1487,7 @@
           "meanSquaredDeckRateError": 0.0532956736666386,
           "meanAbsoluteError": 0.18408983634312548,
           "improvement95": [
-            -3.929641817190543e-06,
+            -0.000003929641817190543,
             0.0002895349455451141
           ],
           "calibration": [
@@ -751,7 +1989,7 @@
           "meanSquaredDeckRateError": 0.053065751376401134,
           "meanAbsoluteError": 0.18333979424614683,
           "improvement95": [
-            5.1805192469005566e-05,
+            0.000051805192469005566,
             0.0002487735817334633
           ],
           "calibration": [
@@ -821,7 +2059,7 @@
           "meanSquaredDeckRateError": 0.05307410136889777,
           "meanAbsoluteError": 0.18363377285926352,
           "improvement95": [
-            -6.679128199688392e-06,
+            -0.000006679128199688392,
             0.0002903305592362691
           ],
           "calibration": [
@@ -1246,6 +2484,1155 @@
       }
     }
   },
+  "supportedPaidDamage": null,
+  "supportedDefense": {
+    "cutoff": "2026-02-21",
+    "trainingDecks": 538,
+    "holdout": {
+      "decks": 246,
+      "events": 168,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.05529695837530395,
+          "meanAbsoluteError": 0.19141649917162176,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 138,
+              "predicted": 0.3557037660725951,
+              "observed": 0.3441266965723488
+            },
+            {
+              "from": 0.4,
+              "decks": 108,
+              "predicted": 0.44710873765657405,
+              "observed": 0.46336713697824805
+            },
+            {
+              "from": 0.5,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.05405580951585047,
+          "meanAbsoluteError": 0.19056174354402872,
+          "improvement95": [
+            -0.001637898776573754,
+            0.004144889899995
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 16,
+              "predicted": 0.2662181957961999,
+              "observed": 0.1847222222222222
+            },
+            {
+              "from": 0.3,
+              "decks": 82,
+              "predicted": 0.359496229556234,
+              "observed": 0.3481683120402632
+            },
+            {
+              "from": 0.4,
+              "decks": 134,
+              "predicted": 0.442927866047369,
+              "observed": 0.43844468135512904
+            },
+            {
+              "from": 0.5,
+              "decks": 14,
+              "predicted": 0.5169141904422558,
+              "observed": 0.5197278911564626
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.05581148918421552,
+          "meanAbsoluteError": 0.1935734513644391,
+          "improvement95": [
+            -0.0037705668266377695,
+            0.003126445337383876
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 5,
+              "predicted": 0.16099949369211541,
+              "observed": 0.155
+            },
+            {
+              "from": 0.2,
+              "decks": 34,
+              "predicted": 0.2672785810107115,
+              "observed": 0.3033613445378151
+            },
+            {
+              "from": 0.3,
+              "decks": 95,
+              "predicted": 0.34548062989192724,
+              "observed": 0.3523725981620718
+            },
+            {
+              "from": 0.4,
+              "decks": 81,
+              "predicted": 0.44500615778673625,
+              "observed": 0.4758303938859495
+            },
+            {
+              "from": 0.5,
+              "decks": 29,
+              "predicted": 0.5279821847765724,
+              "observed": 0.47446633825944173
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6456920517667084,
+              "observed": 0.5
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.05113625510592616,
+          "meanAbsoluteError": 0.18448373882876526,
+          "improvement95": [
+            0.00036605819113549236,
+            0.008698900275052645
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 8,
+              "predicted": 0.16603577964454616,
+              "observed": 0.11770833333333333
+            },
+            {
+              "from": 0.2,
+              "decks": 23,
+              "predicted": 0.260679066590589,
+              "observed": 0.1916494133885438
+            },
+            {
+              "from": 0.3,
+              "decks": 65,
+              "predicted": 0.34762513571981324,
+              "observed": 0.3742460317460316
+            },
+            {
+              "from": 0.4,
+              "decks": 98,
+              "predicted": 0.4440380514068306,
+              "observed": 0.4342201166180758
+            },
+            {
+              "from": 0.5,
+              "decks": 49,
+              "predicted": 0.5332248240061739,
+              "observed": 0.48287981859410434
+            },
+            {
+              "from": 0.6,
+              "decks": 3,
+              "predicted": 0.6244416886086754,
+              "observed": 0.5476190476190476
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenPlayers": {
+      "decks": 154,
+      "events": 122,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.06016402090784142,
+          "meanAbsoluteError": 0.19852274639779655,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 95,
+              "predicted": 0.3554673702546002,
+              "observed": 0.3482142857142857
+            },
+            {
+              "from": 0.4,
+              "decks": 59,
+              "predicted": 0.44497841138681593,
+              "observed": 0.4416969330104924
+            },
+            {
+              "from": 0.5,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.05774146449109394,
+          "meanAbsoluteError": 0.1962145107749051,
+          "improvement95": [
+            -0.0012995051839193993,
+            0.006011412317473979
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 10,
+              "predicted": 0.2609610029270819,
+              "observed": 0.1638888888888889
+            },
+            {
+              "from": 0.3,
+              "decks": 57,
+              "predicted": 0.3556940895972031,
+              "observed": 0.3397974101921471
+            },
+            {
+              "from": 0.4,
+              "decks": 81,
+              "predicted": 0.44390028353223215,
+              "observed": 0.43281648050166566
+            },
+            {
+              "from": 0.5,
+              "decks": 6,
+              "predicted": 0.510603678501012,
+              "observed": 0.5125000000000001
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.06015281157797322,
+          "meanAbsoluteError": 0.19749339839708038,
+          "improvement95": [
+            -0.004494031887125441,
+            0.004394442936803002
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 5,
+              "predicted": 0.16099949369211541,
+              "observed": 0.155
+            },
+            {
+              "from": 0.2,
+              "decks": 19,
+              "predicted": 0.2748511641806451,
+              "observed": 0.26182121971595657
+            },
+            {
+              "from": 0.3,
+              "decks": 62,
+              "predicted": 0.342337556608144,
+              "observed": 0.37075652841781875
+            },
+            {
+              "from": 0.4,
+              "decks": 52,
+              "predicted": 0.4407294642758043,
+              "observed": 0.4683455433455433
+            },
+            {
+              "from": 0.5,
+              "decks": 15,
+              "predicted": 0.5288269636307269,
+              "observed": 0.3922222222222222
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.05474080534838307,
+          "meanAbsoluteError": 0.1894431170335392,
+          "improvement95": [
+            -0.00026554657490269,
+            0.011065697098642227
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 6,
+              "predicted": 0.15692200023082079,
+              "observed": 0.09027777777777778
+            },
+            {
+              "from": 0.2,
+              "decks": 18,
+              "predicted": 0.2592140652511296,
+              "observed": 0.19858906525573192
+            },
+            {
+              "from": 0.3,
+              "decks": 39,
+              "predicted": 0.346518916441684,
+              "observed": 0.3763583638583639
+            },
+            {
+              "from": 0.4,
+              "decks": 63,
+              "predicted": 0.4439906376267226,
+              "observed": 0.43318531116150166
+            },
+            {
+              "from": 0.5,
+              "decks": 27,
+              "predicted": 0.5302094113477683,
+              "observed": 0.46502057613168724
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6028766470159465,
+              "observed": 0.5
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenExactDecks": {
+      "decks": 241,
+      "events": 166,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.054016101980257226,
+          "meanAbsoluteError": 0.18831432551381413,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 133,
+              "predicted": 0.35625874714758193,
+              "observed": 0.3570637904284521
+            },
+            {
+              "from": 0.4,
+              "decks": 108,
+              "predicted": 0.44710873765657405,
+              "observed": 0.46336713697824805
+            },
+            {
+              "from": 0.5,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.053619832416022174,
+          "meanAbsoluteError": 0.18889331102158655,
+          "improvement95": [
+            -0.0019720734228823216,
+            0.0033327954052030256
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 13,
+              "predicted": 0.27274199125058024,
+              "observed": 0.22735042735042732
+            },
+            {
+              "from": 0.3,
+              "decks": 80,
+              "predicted": 0.36047043893080166,
+              "observed": 0.3568725198412698
+            },
+            {
+              "from": 0.4,
+              "decks": 134,
+              "predicted": 0.442927866047369,
+              "observed": 0.43844468135512904
+            },
+            {
+              "from": 0.5,
+              "decks": 14,
+              "predicted": 0.5169141904422558,
+              "observed": 0.5197278911564626
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.0552508555726466,
+          "meanAbsoluteError": 0.19163588302496584,
+          "improvement95": [
+            -0.004231819898330224,
+            0.002155108688718437
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 5,
+              "predicted": 0.16099949369211541,
+              "observed": 0.155
+            },
+            {
+              "from": 0.2,
+              "decks": 31,
+              "predicted": 0.2671092704894645,
+              "observed": 0.33271889400921656
+            },
+            {
+              "from": 0.3,
+              "decks": 93,
+              "predicted": 0.3461604621751467,
+              "observed": 0.3599505034988906
+            },
+            {
+              "from": 0.4,
+              "decks": 81,
+              "predicted": 0.44500615778673625,
+              "observed": 0.4758303938859495
+            },
+            {
+              "from": 0.5,
+              "decks": 29,
+              "predicted": 0.5279821847765724,
+              "observed": 0.47446633825944173
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6456920517667084,
+              "observed": 0.5
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.0511079213932477,
+          "meanAbsoluteError": 0.1836073624536576,
+          "improvement95": [
+            -0.0007836628903022327,
+            0.007388273217716469
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 7,
+              "predicted": 0.1616764448145876,
+              "observed": 0.13452380952380952
+            },
+            {
+              "from": 0.2,
+              "decks": 19,
+              "predicted": 0.2662391712891074,
+              "observed": 0.23199665831244776
+            },
+            {
+              "from": 0.3,
+              "decks": 65,
+              "predicted": 0.34762513571981324,
+              "observed": 0.3742460317460316
+            },
+            {
+              "from": 0.4,
+              "decks": 98,
+              "predicted": 0.4440380514068306,
+              "observed": 0.4342201166180758
+            },
+            {
+              "from": 0.5,
+              "decks": 49,
+              "predicted": 0.5332248240061739,
+              "observed": 0.48287981859410434
+            },
+            {
+              "from": 0.6,
+              "decks": 3,
+              "predicted": 0.6244416886086754,
+              "observed": 0.5476190476190476
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    "unseenPlayersAndDecks": {
+      "decks": 150,
+      "events": 120,
+      "models": {
+        "baseline": {
+          "meanSquaredDeckRateError": 0.05852803325674657,
+          "meanAbsoluteError": 0.19455083364037937,
+          "improvement95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "decks": 91,
+              "predicted": 0.3558189260987171,
+              "observed": 0.36352040816326525
+            },
+            {
+              "from": 0.4,
+              "decks": 59,
+              "predicted": 0.44497841138681593,
+              "observed": 0.4416969330104924
+            },
+            {
+              "from": 0.5,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "diao": {
+          "meanSquaredDeckRateError": 0.057146412729677604,
+          "meanAbsoluteError": 0.19397948514483523,
+          "improvement95": [
+            -0.0024857001621150752,
+            0.005343453097289368
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "decks": 8,
+              "predicted": 0.26631923135097274,
+              "observed": 0.2048611111111111
+            },
+            {
+              "from": 0.3,
+              "decks": 55,
+              "predicted": 0.3569728617798821,
+              "observed": 0.3521536796536797
+            },
+            {
+              "from": 0.4,
+              "decks": 81,
+              "predicted": 0.44390028353223215,
+              "observed": 0.43281648050166566
+            },
+            {
+              "from": 0.5,
+              "decks": 6,
+              "predicted": 0.510603678501012,
+              "observed": 0.5125000000000001
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "analytics": {
+          "meanSquaredDeckRateError": 0.05946699361687685,
+          "meanAbsoluteError": 0.19496687268068977,
+          "improvement95": [
+            -0.005708058276559761,
+            0.003208593748834401
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 1,
+              "predicted": 0.01,
+              "observed": 0.16666666666666666
+            },
+            {
+              "from": 0.1,
+              "decks": 5,
+              "predicted": 0.16099949369211541,
+              "observed": 0.155
+            },
+            {
+              "from": 0.2,
+              "decks": 17,
+              "predicted": 0.27535038387234084,
+              "observed": 0.29262371615312793
+            },
+            {
+              "from": 0.3,
+              "decks": 60,
+              "predicted": 0.3432865275376748,
+              "observed": 0.3831150793650794
+            },
+            {
+              "from": 0.4,
+              "decks": 52,
+              "predicted": 0.4407294642758043,
+              "observed": 0.4683455433455433
+            },
+            {
+              "from": 0.5,
+              "decks": 15,
+              "predicted": 0.5288269636307269,
+              "observed": 0.3922222222222222
+            },
+            {
+              "from": 0.6,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "combined": {
+          "meanSquaredDeckRateError": 0.05470804444997989,
+          "meanAbsoluteError": 0.18824777164049689,
+          "improvement95": [
+            -0.0030175293309091223,
+            0.010216084488205265
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "decks": 6,
+              "predicted": 0.15692200023082079,
+              "observed": 0.09027777777777778
+            },
+            {
+              "from": 0.2,
+              "decks": 14,
+              "predicted": 0.2663413498164162,
+              "observed": 0.255328798185941
+            },
+            {
+              "from": 0.3,
+              "decks": 39,
+              "predicted": 0.346518916441684,
+              "observed": 0.3763583638583639
+            },
+            {
+              "from": 0.4,
+              "decks": 63,
+              "predicted": 0.4439906376267226,
+              "observed": 0.43318531116150166
+            },
+            {
+              "from": 0.5,
+              "decks": 27,
+              "predicted": 0.5302094113477683,
+              "observed": 0.46502057613168724
+            },
+            {
+              "from": 0.6,
+              "decks": 1,
+              "predicted": 0.6028766470159465,
+              "observed": 0.5
+            },
+            {
+              "from": 0.7,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "decks": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    }
+  },
   "supportedTonoris": {
     "cutoff": "2026-02-20",
     "trainingDecks": 424,
@@ -1394,11 +3781,11 @@
           ]
         },
         "analytics": {
-          "meanSquaredDeckRateError": 0.060712405609874835,
-          "meanAbsoluteError": 0.19965262976011086,
+          "meanSquaredDeckRateError": 0.06062511395339741,
+          "meanAbsoluteError": 0.19965205203992012,
           "improvement95": [
-            -0.00775734683831524,
-            0.0008779991662607285
+            -0.007567211725498153,
+            0.0010328180594186942
           ],
           "calibration": [
             {
@@ -1415,32 +3802,32 @@
             },
             {
               "from": 0.2,
-              "decks": 14,
-              "predicted": 0.2789584174485752,
-              "observed": 0.354421768707483
+              "decks": 16,
+              "predicted": 0.2819094704446583,
+              "observed": 0.35595238095238096
             },
             {
               "from": 0.3,
-              "decks": 60,
-              "predicted": 0.3531428340470687,
-              "observed": 0.46143518518518517
+              "decks": 55,
+              "predicted": 0.35314661146869464,
+              "observed": 0.45974747474747474
             },
             {
               "from": 0.4,
-              "decks": 66,
-              "predicted": 0.4541803550100309,
-              "observed": 0.4586610149110148
+              "decks": 70,
+              "predicted": 0.45293023454733083,
+              "observed": 0.4634041950113377
             },
             {
               "from": 0.5,
-              "decks": 28,
-              "predicted": 0.5271055048424144,
-              "observed": 0.4937925170068027
+              "decks": 27,
+              "predicted": 0.5281523054290894,
+              "observed": 0.4935626102292769
             },
             {
               "from": 0.6,
               "decks": 1,
-              "predicted": 0.6290675379144541,
+              "predicted": 0.6293756290016544,
               "observed": 0.5
             },
             {
@@ -1464,11 +3851,11 @@
           ]
         },
         "combined": {
-          "meanSquaredDeckRateError": 0.05149717983299642,
-          "meanAbsoluteError": 0.1831463547733383,
+          "meanSquaredDeckRateError": 0.05124256523601253,
+          "meanAbsoluteError": 0.18291566047776298,
           "improvement95": [
-            0.0009150924839071,
-            0.01081274033895019
+            0.0008541020759004175,
+            0.011285951119661016
           ],
           "calibration": [
             {
@@ -1480,37 +3867,37 @@
             {
               "from": 0.1,
               "decks": 1,
-              "predicted": 0.1868622781735531,
+              "predicted": 0.18297912760918617,
               "observed": 0.16666666666666666
             },
             {
               "from": 0.2,
               "decks": 8,
-              "predicted": 0.27719965922535544,
+              "predicted": 0.27578578145321864,
               "observed": 0.15625
             },
             {
               "from": 0.3,
-              "decks": 42,
-              "predicted": 0.36001612923634235,
-              "observed": 0.4304421768707483
+              "decks": 40,
+              "predicted": 0.357882825146192,
+              "observed": 0.43321428571428583
             },
             {
               "from": 0.4,
-              "decks": 80,
-              "predicted": 0.4510627714657269,
-              "observed": 0.46888144841269846
+              "decks": 81,
+              "predicted": 0.45048739036535146,
+              "observed": 0.46309278855575153
             },
             {
               "from": 0.5,
-              "decks": 35,
-              "predicted": 0.5392155738484536,
-              "observed": 0.5342403628117914
+              "decks": 36,
+              "predicted": 0.5408530901676586,
+              "observed": 0.5402336860670194
             },
             {
               "from": 0.6,
               "decks": 3,
-              "predicted": 0.6225312471886001,
+              "predicted": 0.6243015918843996,
               "observed": 0.513888888888889
             },
             {
@@ -1680,11 +4067,11 @@
           ]
         },
         "analytics": {
-          "meanSquaredDeckRateError": 0.07175189875523263,
-          "meanAbsoluteError": 0.21484209283367336,
+          "meanSquaredDeckRateError": 0.07146988227487396,
+          "meanAbsoluteError": 0.2145862205467424,
           "improvement95": [
-            -0.011830376064312247,
-            5.93983918518641e-05
+            -0.011552815774918715,
+            0.0002276629669707993
           ],
           "calibration": [
             {
@@ -1701,26 +4088,26 @@
             },
             {
               "from": 0.2,
-              "decks": 7,
-              "predicted": 0.2822039292209125,
-              "observed": 0.3523809523809524
+              "decks": 9,
+              "predicted": 0.2865430539254175,
+              "observed": 0.35555555555555557
             },
             {
               "from": 0.3,
-              "decks": 38,
-              "predicted": 0.3526266732267452,
-              "observed": 0.49730576441102753
+              "decks": 34,
+              "predicted": 0.35374987669858815,
+              "observed": 0.4999299719887955
             },
             {
               "from": 0.4,
-              "decks": 39,
-              "predicted": 0.4534887549887543,
-              "observed": 0.42264957264957265
+              "decks": 41,
+              "predicted": 0.45144069205126536,
+              "observed": 0.4304878048780487
             },
             {
               "from": 0.5,
               "decks": 14,
-              "predicted": 0.5287186037339293,
+              "predicted": 0.5286847431253452,
               "observed": 0.43809523809523815
             },
             {
@@ -1750,11 +4137,11 @@
           ]
         },
         "combined": {
-          "meanSquaredDeckRateError": 0.05835235659139511,
-          "meanAbsoluteError": 0.1939564641072145,
+          "meanSquaredDeckRateError": 0.057889580396230274,
+          "meanAbsoluteError": 0.19385051108917167,
           "improvement95": [
-            0.0008813291017761164,
-            0.01505552891184618
+            0.0009802089344623263,
+            0.015600298092645928
           ],
           "calibration": [
             {
@@ -1772,31 +4159,31 @@
             {
               "from": 0.2,
               "decks": 7,
-              "predicted": 0.2810916303753338,
+              "predicted": 0.2796377493703153,
               "observed": 0.17857142857142858
             },
             {
               "from": 0.3,
-              "decks": 25,
-              "predicted": 0.3572379017671347,
-              "observed": 0.409
+              "decks": 23,
+              "predicted": 0.3529221030739372,
+              "observed": 0.41195652173913044
             },
             {
               "from": 0.4,
-              "decks": 49,
-              "predicted": 0.452218544279935,
-              "observed": 0.47517816650469713
+              "decks": 50,
+              "predicted": 0.4507572064932517,
+              "observed": 0.4656746031746032
             },
             {
               "from": 0.5,
-              "decks": 15,
-              "predicted": 0.5403155849451758,
-              "observed": 0.5453703703703705
+              "decks": 16,
+              "predicted": 0.5411175377697913,
+              "observed": 0.5581597222222223
             },
             {
               "from": 0.6,
               "decks": 2,
-              "predicted": 0.6175485800614107,
+              "predicted": 0.6174025401707632,
               "observed": 0.5208333333333334
             },
             {
@@ -1966,11 +4353,11 @@
           ]
         },
         "analytics": {
-          "meanSquaredDeckRateError": 0.06020349551904295,
-          "meanAbsoluteError": 0.1981962836939523,
+          "meanSquaredDeckRateError": 0.06012298869554434,
+          "meanAbsoluteError": 0.1982079052792808,
           "improvement95": [
-            -0.008073868873012847,
-            -0.00018940188475016412
+            -0.008014737626339155,
+            -0.00003739681106933294
           ],
           "calibration": [
             {
@@ -1987,32 +4374,32 @@
             },
             {
               "from": 0.2,
-              "decks": 14,
-              "predicted": 0.2789584174485752,
-              "observed": 0.354421768707483
+              "decks": 16,
+              "predicted": 0.2819094704446583,
+              "observed": 0.35595238095238096
             },
             {
               "from": 0.3,
-              "decks": 58,
-              "predicted": 0.3542423274181971,
-              "observed": 0.47734674329501914
+              "decks": 53,
+              "predicted": 0.3543884342956905,
+              "observed": 0.4770964360587002
             },
             {
               "from": 0.4,
-              "decks": 66,
-              "predicted": 0.4541803550100309,
-              "observed": 0.4586610149110148
+              "decks": 70,
+              "predicted": 0.45293023454733083,
+              "observed": 0.4634041950113377
             },
             {
               "from": 0.5,
-              "decks": 28,
-              "predicted": 0.5271055048424144,
-              "observed": 0.4937925170068027
+              "decks": 27,
+              "predicted": 0.5281523054290894,
+              "observed": 0.4935626102292769
             },
             {
               "from": 0.6,
               "decks": 1,
-              "predicted": 0.6290675379144541,
+              "predicted": 0.6293756290016544,
               "observed": 0.5
             },
             {
@@ -2036,11 +4423,11 @@
           ]
         },
         "combined": {
-          "meanSquaredDeckRateError": 0.0511860514607078,
-          "meanAbsoluteError": 0.18200624134402255,
+          "meanSquaredDeckRateError": 0.05094024126437502,
+          "meanAbsoluteError": 0.18179414576190162,
           "improvement95": [
-            -0.0002007428175050377,
-            0.009532805506674786
+            0.00006095016277335339,
+            0.01004904684661373
           ],
           "calibration": [
             {
@@ -2052,37 +4439,37 @@
             {
               "from": 0.1,
               "decks": 1,
-              "predicted": 0.1868622781735531,
+              "predicted": 0.18297912760918617,
               "observed": 0.16666666666666666
             },
             {
               "from": 0.2,
               "decks": 6,
-              "predicted": 0.27681760359340624,
+              "predicted": 0.27552699552022947,
               "observed": 0.20833333333333334
             },
             {
               "from": 0.3,
-              "decks": 42,
-              "predicted": 0.36001612923634235,
-              "observed": 0.4304421768707483
+              "decks": 40,
+              "predicted": 0.357882825146192,
+              "observed": 0.43321428571428583
             },
             {
               "from": 0.4,
-              "decks": 80,
-              "predicted": 0.4510627714657269,
-              "observed": 0.46888144841269846
+              "decks": 81,
+              "predicted": 0.45048739036535146,
+              "observed": 0.46309278855575153
             },
             {
               "from": 0.5,
-              "decks": 35,
-              "predicted": 0.5392155738484536,
-              "observed": 0.5342403628117914
+              "decks": 36,
+              "predicted": 0.5408530901676586,
+              "observed": 0.5402336860670194
             },
             {
               "from": 0.6,
               "decks": 3,
-              "predicted": 0.6225312471886001,
+              "predicted": 0.6243015918843996,
               "observed": 0.513888888888889
             },
             {
@@ -2252,11 +4639,11 @@
           ]
         },
         "analytics": {
-          "meanSquaredDeckRateError": 0.07109659668358462,
-          "meanAbsoluteError": 0.21262510463678438,
+          "meanSquaredDeckRateError": 0.07082232621843114,
+          "meanAbsoluteError": 0.21238513542160573,
           "improvement95": [
-            -0.0126072173037849,
-            -0.0008427709387275624
+            -0.012297869954874953,
+            -0.000731506311444482
           ],
           "calibration": [
             {
@@ -2273,26 +4660,26 @@
             },
             {
               "from": 0.2,
-              "decks": 7,
-              "predicted": 0.2822039292209125,
-              "observed": 0.3523809523809524
+              "decks": 9,
+              "predicted": 0.2865430539254175,
+              "observed": 0.35555555555555557
             },
             {
               "from": 0.3,
-              "decks": 36,
-              "predicted": 0.354369403612434,
-              "observed": 0.5249338624338624
+              "decks": 32,
+              "predicted": 0.35584434983266827,
+              "observed": 0.5311755952380952
             },
             {
               "from": 0.4,
-              "decks": 39,
-              "predicted": 0.4534887549887543,
-              "observed": 0.42264957264957265
+              "decks": 41,
+              "predicted": 0.45144069205126536,
+              "observed": 0.4304878048780487
             },
             {
               "from": 0.5,
               "decks": 14,
-              "predicted": 0.5287186037339293,
+              "predicted": 0.5286847431253452,
               "observed": 0.43809523809523815
             },
             {
@@ -2322,11 +4709,11 @@
           ]
         },
         "combined": {
-          "meanSquaredDeckRateError": 0.05795393904290136,
-          "meanAbsoluteError": 0.19219835239858973,
+          "meanSquaredDeckRateError": 0.05750214213640704,
+          "meanAbsoluteError": 0.1921273521691089,
           "improvement95": [
-            -0.00044822210917150763,
-            0.013557585976377413
+            0.000028820187581605873,
+            0.014310441736198456
           ],
           "calibration": [
             {
@@ -2344,31 +4731,31 @@
             {
               "from": 0.2,
               "decks": 5,
-              "predicted": 0.28218995207698605,
+              "predicted": 0.28086799341756696,
               "observed": 0.25
             },
             {
               "from": 0.3,
-              "decks": 25,
-              "predicted": 0.3572379017671347,
-              "observed": 0.409
+              "decks": 23,
+              "predicted": 0.3529221030739372,
+              "observed": 0.41195652173913044
             },
             {
               "from": 0.4,
-              "decks": 49,
-              "predicted": 0.452218544279935,
-              "observed": 0.47517816650469713
+              "decks": 50,
+              "predicted": 0.4507572064932517,
+              "observed": 0.4656746031746032
             },
             {
               "from": 0.5,
-              "decks": 15,
-              "predicted": 0.5403155849451758,
-              "observed": 0.5453703703703705
+              "decks": 16,
+              "predicted": 0.5411175377697913,
+              "observed": 0.5581597222222223
             },
             {
               "from": 0.6,
               "decks": 2,
-              "predicted": 0.6175485800614107,
+              "predicted": 0.6174025401707632,
               "observed": 0.5208333333333334
             },
             {
@@ -2396,7 +4783,7 @@
   },
   "next": [
     "Add opponent-aware match records and training-only archetype assignments",
-    "Extend supported paid damage and defense trajectory features",
+    "Extend trajectory coverage beyond reviewed lineages and test simulation-budget sensitivity",
     "Hold out similar build families and validate on a second future period before any UI score"
   ]
 }
