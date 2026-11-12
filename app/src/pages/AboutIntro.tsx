@@ -1,7 +1,7 @@
 import "./HomeMotion.css";
 import type { AccountUser } from "@gatcg/shared";
 import { Link } from "react-router-dom";
-import HomeDeckInsight from "./HomeDeckInsight";
+import HomeDamageForecast from "./HomeDamageForecast";
 import HomeDiscovery from "./HomeDiscovery";
 import HomeMatchRecaps from "./HomeMatchRecaps";
 
@@ -30,7 +30,7 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
     </section>
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-8 sm:px-8 sm:py-10 lg:grid-cols-2">
       <HomeMatchRecaps />
-      <HomeDeckInsight />
+      <HomeDamageForecast />
     </div>
     <HomeDiscovery />
     <nav aria-label="More from Fan of Insight" className="mx-auto flex max-w-5xl flex-wrap gap-2 border-t border-ctp-surface0 px-4 py-6">

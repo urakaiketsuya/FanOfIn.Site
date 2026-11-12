@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CardImage from "../components/CardImage";
+import CardArtTile from "../components/CardArtTile";
+import { useCardsByNames } from "../features/events/useCardsByNames";
+import { useHomeReveal } from "./useHomeReveal";
 import { ForecastChart } from "../components/ui/ForecastVisual";
 
 // Snapshot from computeAggressionForecast for the real Water Diao Chan list at /decks/8qjzzs.
@@ -14,42 +16,39 @@ const POINTS = [
   { seen: 20, expectedMin: 0, expectedMax: 34.1, medianMin: 0, medianMax: 34, low: 0, high: 49 },
 ] as const;
 
+const FEATURED = ["Burst Asunder", "Refracting Missile", "Shimmering Refraction"];
+
 export default function HomeDamageForecast() {
   const [selectedIndex, setSelectedIndex] = useState(1);
-  const [playOrder, setPlayOrder] = useState<"first" | "second">("first");
+  const cards = useCardsByNames(FEATURED);
+  const reveal = useHomeReveal<HTMLDivElement>();
   const selected = POINTS[selectedIndex];
-  const turnForSeen = (cardsSeen: number) => Math.max(1, cardsSeen - (playOrder === "first" ? 6 : 7));
-  const checkpointLabel = (cardsSeen: number) => cardsSeen === 7 ? "Opening" : `T${turnForSeen(cardsSeen)}`;
-
-  return (
-    <section className="border-t border-ctp-surface0 px-6 py-10 sm:px-8 sm:py-12" aria-labelledby="home-damage-heading">
-      <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-blue">Printed direct damage access</p>
-        <h3 id="home-damage-heading" className="mt-3 text-xl font-bold text-ctp-text sm:text-2xl">How much printed damage might you find?</h3>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ctp-subtext1 sm:text-base">This Water Diao Chan list pairs Burst Asunder, Refracting Missile, and Shimmering Refraction with its Fractals and other phantasias. The forecast calculates their chances of appearing together. The ceiling assumes those objects can be deployed.</p>
-
-        <div className="mt-6 grid gap-6 rounded-2xl bg-ctp-mantle p-5 sm:grid-cols-[120px_minmax(0,1fr)] sm:p-7 sm:gap-8">
-          <Link to="/decks/8qjzzs?tab=performance" className="hidden h-fit w-fit rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue sm:block" aria-label="Open the Water Diao Chan deck analysis">
-            <CardImage image="/cards/images/0ueslsle3w.jpg" alt="Diao Chan card" className="h-44 w-30 rounded-lg border border-ctp-surface1 object-cover object-top shadow-lg" />
-          </Link>
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Expected printed damage available</p><p className="mt-1 text-xs text-ctp-subtext1">{checkpointLabel(selected.seen)} {selected.seen === 7 ? "" : `playing ${playOrder}`} · {selected.seen} cards seen</p></div>
-              <p className="text-3xl font-bold tabular-nums text-ctp-blue">{selected.expectedMin}–{selected.expectedMax}</p>
-            </div>
-            <p className="mt-3 text-xs text-ctp-subtext1">Median {selected.medianMin}–{selected.medianMax} · conservative p10 {selected.low} · optimistic p90 {selected.high}</p>
-            <div className="mt-4 inline-flex rounded-full border border-ctp-surface1 bg-ctp-base p-0.5" aria-label="Play order">
-              {(["first", "second"] as const).map((order) => <button key={order} type="button" aria-pressed={playOrder === order} onClick={() => setPlayOrder(order)} className={`min-h-12 rounded-full px-3 text-xs font-medium ${playOrder === order ? "bg-ctp-mauve text-ctp-crust" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Play {order}</button>)}
-            </div>
-            <div className="mt-5 grid grid-cols-4 gap-2" role="group" aria-label="Damage forecast cards seen">
-              {POINTS.map((point, index) => <button key={point.seen} type="button" aria-pressed={index === selectedIndex} onClick={() => setSelectedIndex(index)} className={`min-h-12 rounded-lg border px-1.5 py-2 text-xs font-semibold sm:text-sm ${index === selectedIndex ? "border-ctp-blue bg-forest-surface text-ctp-blue" : "border-ctp-surface1 bg-ctp-base text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}><span className="block">{checkpointLabel(point.seen)}</span><span className="block text-[10px] font-normal">{point.seen} seen</span></button>)}
-            </div>
-            <div className="mt-5"><ForecastChart values={POINTS.map((point) => (point.expectedMin + point.expectedMax) / 2)} low={POINTS.map((point) => point.low)} high={POINTS.map((point) => point.high)} selectedIndex={selectedIndex} height={90} /></div>
-            <details className="mt-4 border-t border-ctp-surface0 pt-3 text-xs text-ctp-subtext1"><summary className="min-h-12 cursor-pointer py-2 font-semibold text-ctp-blue">Where the damage comes from</summary><p className="pb-2 leading-relaxed"><span className="font-medium text-ctp-text">4× each: Burst Asunder, Refracting Missile, and Shimmering Refraction.</span> Damage uses the support cards in each possible draw. Each Fractal can be sacrificed once; drawing a payoff without support never receives an average combo bonus.</p><p className="pb-2 leading-relaxed">The conservative floor remains zero; combat damage, costs, legal targets, and effect resolution are not modeled.</p></details>
-            <Link to="/decks/8qjzzs?tab=performance" className="mt-5 inline-flex min-h-12 items-center rounded-lg border border-ctp-blue/60 px-5 py-2 text-sm font-semibold text-ctp-blue hover:bg-forest-surface/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Explore the full damage forecast <span aria-hidden="true" className="ml-2">→</span></Link>
-          </div>
-        </div>
+  return <section className="min-w-0" aria-labelledby="home-damage-heading">
+    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-blue">Damage forecast</p>
+    <h2 id="home-damage-heading" className="mt-3 text-xl font-bold sm:text-2xl">See your damage potential grow.</h2>
+    <div ref={reveal} className="home-report mt-5 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-5">
+      <p className="font-semibold">Water Diao Chan</p>
+      <p className="mt-1 text-xs text-ctp-subtext1">60-card Main Deck · Printed direct damage</p>
+      <div className="home-report-art mt-4 grid grid-cols-3 gap-3">{FEATURED.map(name => {
+        const card = cards.get(name);
+        const content = <><CardArtTile card={card} name={name} /><span className="mt-2 block break-words text-xs">{name}</span></>;
+        return card ? <Link key={name} to={`/cards/${card.slug}`} className="home-interactive rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={name}>{content}</div>;
+      })}</div>
+      <div className="mt-5" aria-live="polite" aria-atomic="true">
+        <p className="text-4xl font-bold tracking-tight tabular-nums text-ctp-blue">{selected.expectedMin}–{selected.expectedMax}</p>
+        <p className="mt-1 text-sm font-semibold">Expected damage access · {selected.seen} cards seen</p>
+        <p className="mt-1 text-xs text-ctp-subtext1">Conservative to optimistic · Support deployed at the upper end</p>
       </div>
-    </section>
-  );
+      <div className="mt-4 grid grid-cols-4 gap-2" role="group" aria-label="Cards seen">
+        {POINTS.map((point, index) => <button key={point.seen} type="button" aria-pressed={index === selectedIndex} onClick={() => setSelectedIndex(index)} className={`min-h-12 min-w-12 rounded-lg border px-1 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue ${index === selectedIndex ? "border-ctp-blue bg-forest-surface text-ctp-blue" : "border-ctp-surface1 bg-ctp-base text-ctp-subtext1 hover:border-ctp-blue"}`}>{point.seen}<span className="block text-[10px] font-normal">cards seen</span></button>)}
+      </div>
+      <div className="mt-4" aria-label="Optimistic expected damage rises from 5.2 at 7 cards seen to 34.1 at 20 cards seen">
+        <ForecastChart values={POINTS.map(point => point.expectedMax)} selectedIndex={selectedIndex} height={100} />
+        <div className="flex justify-between text-xs text-ctp-subtext1"><span>7 cards seen</span><span>20 cards seen</span></div>
+        <p className="mt-2 text-xs text-ctp-subtext0">Optimistic expected damage access</p>
+      </div>
+      <Link to="/decks/8qjzzs?tab=performance" className="mt-3 inline-flex min-h-12 items-center rounded text-sm font-semibold text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Explore Diao Chan’s forecast →</Link>
+    </div>
+    <Link to="/deck-analysis" className="mt-4 inline-flex min-h-12 items-center rounded-lg bg-ctp-blue px-5 text-sm font-semibold text-ctp-base hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Analyze your deck →</Link>
+  </section>;
 }

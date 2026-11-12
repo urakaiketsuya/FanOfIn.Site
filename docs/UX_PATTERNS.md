@@ -828,19 +828,20 @@ including cards already in the deck; clearing search and filters restores sugges
 Keep selected cards across these views. Missing recommendation context or unavailable
 evidence must never block catalog search or manual additions.
 
-The homepage highlights broadcast match recaps and Deck Report before tournament discovery.
+The homepage highlights broadcast match recaps and a damage forecast before tournament discovery.
 Recap previews reuse match identities and link to individual timelines, with loading, empty,
-and retry states. The report preview links directly to the example deck's report and offers
+and retry states. The forecast preview links directly to the example deck's performance view and offers
 an entry point for the user's own deck.
 
 Card text search requires every space-separated term across name and rules text, including
 reverse faces. Quotes keep phrases together: `LV damage` matches both anywhere, while
 `"draw a card" LV` requires the phrase and LV. Existing facet include/exclude rules still apply.
 
-Homepage Deck Report previews a real card’s natural-draw access from the existing report,
-with copy count, deck size, turn and play order visible. Card access is not a claim of
-successful play or damage. Keep the exact result immediately readable; animate only the
-supporting bar. Homepage headline, report artwork and matchup portraits have brief,
+Homepage Damage Forecast previews Water Diao Chan’s printed direct-damage access at
+7, 10, 15 and 20 cards seen. Show named card art before the checkpoint controls,
+conservative and optimistic expected values, and a labeled optimistic trend. Keep
+methodology in the damage forecast documentation; do not graph an invented midpoint
+or present the two scenarios as a confidence interval. Homepage headline, report artwork and matchup portraits have brief,
 once-per-mount entrances, with feature motion triggered on first visibility. Content stays
 visible without observation support. Reduced motion disables entrances and transitions;
 keyboard focus stops moving artwork, and hover/focus glow never changes layout.
