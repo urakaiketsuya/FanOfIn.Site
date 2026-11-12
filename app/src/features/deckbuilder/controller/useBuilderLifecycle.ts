@@ -1,8 +1,9 @@
+import type { DeckWorkspaceContext } from "../persistence/deckWorkspace";
 import { extractDeckPrintings } from "@gatcg/shared";
 import { useToast } from "../../../components/ui/toast/ToastContext";
 import { deckCardIssues, type DeckFormat } from "@gatcg/shared";
 import { selectionsToMaps } from "../model/builderTypes";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { Card } from "@gatcg/shared";
 import { accountApi } from "../../../lib/accountApi";
 import { parseDecklist } from "../../compare/parseDecklist";
@@ -15,6 +16,7 @@ type AddDestination = "automatic" | "sideboard" | "maybeboard";
 
 interface BuilderLifecycleOptions {
   workflow: Workflow;
+  setWorkspaceContext: (context: DeckWorkspaceContext | undefined) => void;
   deckFormat: DeckFormat;
   builderIntent: BuilderIntent | null;
   improveDeckId: string | null;
@@ -34,7 +36,7 @@ interface BuilderLifecycleOptions {
 export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   const { notify } = useToast();
   const {
-    workflow, improveDeckId, catalogByName,
+    workflow, improveDeckId, catalogByName, setWorkspaceContext,
     setDismissedReviewCards, setSpiritElement, setCardInput,
     setAddDestination, setTab, startTransition, resetChangeTracking,
   } = options;
@@ -42,17 +44,23 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     setPrintings, setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
     setRejectedCards, setPillarBias, setArchetypeId, setPopulationSource, setChangeLog,
   } = workflow;
+  const hydrationGeneration = useRef(0);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
   const [pasteError, setPasteError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!improveDeckId) return;
+    let active = true;
+    const generation = hydrationGeneration.current;
     void accountApi.deck(improveDeckId).then(({ deck }) => {
+      if (!active || generation !== hydrationGeneration.current) return;
+      setWorkspaceContext({ title: deck.title, sourceLabel: "My Decks", deckIdentity: `saved:${improveDeckId}` });
       setPrintings(extractDeckPrintings({ ...deck.decklist, maybeboard: deck.maybeboard }));
       setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
     }).catch(() => undefined);
-  }, [improveDeckId, setMaybeboard, setPrintings]);
+    return () => { active = false; };
+  }, [improveDeckId, setMaybeboard, setPrintings, setWorkspaceContext]);
 
   function loadPastedDecklist() {
     const { decklist, skippedLines } = parseDecklist(pasteText);
@@ -81,6 +89,8 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
     const selections = selectionsToMaps((["main", "material", "sideboard", "song"] as const).flatMap((section) => (decklist[section] ?? []).map((line) => ({ name: line.card, quantity: line.quantity, section }))));
+    hydrationGeneration.current++;
+    setWorkspaceContext(undefined);
     setPrintings(extractDeckPrintings(decklist));
     setLockedCards(selections.cards);
     setLockedSections(selections.sections);
@@ -96,6 +106,8 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   }
 
   function resetBuilder() {
+    hydrationGeneration.current++;
+    setWorkspaceContext(undefined);
     clearBuilderSession(sessionStorage);
     resetChangeTracking();
     startTransition(() => {

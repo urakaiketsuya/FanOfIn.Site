@@ -1,3 +1,4 @@
+import { reviewWorkspace } from './reviewWorkspace';
 import { reviewSelections } from './reviewSelections';
 import { toSuggested } from '../deckbuilder/suggestedBuild/cardScoringAndQuantities';
 import { useEffect, useMemo, useState, useTransition } from "react";
@@ -113,10 +114,8 @@ export default function DeckReviewIndex() {
   useEffect(() => {
     if (!championName || lockedCards.size === 0) return;
     const lines = Array.from(lockedCards, ([name, quantity]) => ({ name, quantity, section: lockedSections.get(name) ?? "main" }));
-    saveActiveDeckWorkspace(sessionStorage, {
-      source: "review",
-      title: loadActiveDeckWorkspace(sessionStorage)?.title ?? null,
-      sourceLabel: loadActiveDeckWorkspace(sessionStorage)?.sourceLabel ?? "Improve Deck",
+    const previous = loadActiveDeckWorkspace(sessionStorage);
+    saveActiveDeckWorkspace(sessionStorage, reviewWorkspace(previous, {
       format: deckFormat,
       championName,
       spiritName: spiritFilter,
@@ -124,8 +123,7 @@ export default function DeckReviewIndex() {
       song: lines.filter((line) => line.section === "song").map(({ name, quantity }) => ({ name, quantity })),
       material: lines.filter((line) => line.section === "material").map(({ name, quantity }) => ({ name, quantity })),
       sideboard: [...lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })), ...Array.from(splitSideboard, ([name, quantity]) => ({ name, quantity }))],
-      maybeboard: [],
-    });
+    }));
   }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat, splitSideboard]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
@@ -368,6 +366,7 @@ export default function DeckReviewIndex() {
   }
 
   function startOver() {
+    saveActiveDeckWorkspace(sessionStorage, reviewWorkspace(null, { format: deckFormat, championName: null, spiritName: null, main: [], material: [], sideboard: [], song: [] }));
     setSplitSideboard(new Map());
     startTransition(() => {
       setChampionName(null);
@@ -468,6 +467,7 @@ export default function DeckReviewIndex() {
 
           {tab === "review" && (
             <BuilderReviewPanel
+              decklist={keptDecklist}
               build={build}
               effectivePopulationSource={populationSource}
               simulatorMatchedCards={0}

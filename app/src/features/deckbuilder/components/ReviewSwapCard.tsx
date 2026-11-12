@@ -1,18 +1,27 @@
+import AssociatedCards from "../../../components/AssociatedCards";
+import { useMemo, useState, useTransition } from "react";
+import DialogSheet from "../../../components/ui/DialogSheet";
+import FixtureComparison from "../../analytics/FixtureComparison";
+import { reviewSwapPreview } from "../model/reviewSwapPreview";
 import { Link } from "react-router-dom";
-import type { Card } from "@gatcg/shared";
+import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import CardArtTile from "../../../components/CardArtTile";
-import DisclosureChevron from "../../../components/DisclosureChevron";
 import Button from "../../../components/ui/Button";
 import type { SuggestedCard } from "../useSuggestedBuild";
 
 /** A proposal only: the feature controller owns acceptance and deck mutations. */
-export default function ReviewSwapCard({ removal, addition, cardsByName, onApply, onDismiss }: {
+export default function ReviewSwapCard({ decklist, removal, addition, cardsByName, onApply, onDismiss }: {
+  decklist: OmnidexDecklist;
   removal: SuggestedCard;
   addition: SuggestedCard;
   cardsByName: Map<string, Card>;
   onApply: () => void;
   onDismiss: () => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const preview = useMemo(() => reviewSwapPreview(decklist, removal, addition), [decklist, removal, addition]);
+  const named = (list: OmnidexDecklist) => ({ main: list.main.map(line => ({ name: line.card, quantity: line.quantity })), material: list.material.map(line => ({ name: line.card, quantity: line.quantity })) });
   return <li className="identity-surface min-w-0 rounded-xl border border-ctp-surface1 p-4 shadow-sm">
     <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Proposed change</p>
     <div className="grid gap-4 sm:grid-cols-2">
@@ -29,20 +38,14 @@ export default function ReviewSwapCard({ removal, addition, cardsByName, onApply
         </div>;
       })}
     </div>
-    <p className="mt-4 text-sm text-ctp-subtext1">{removal.contextualReplacement ? `Suggested from ${removal.contextualReplacement.peerDecks} similar decks.` : "Pairs a card flagged for review with a ranked addition."} This is a suggestion, not a predicted improvement.</p>
-    {addition.readinessReasons?.map((reason) => <p key={reason} className="mt-1 text-xs text-ctp-teal">{reason}</p>)}
-    {removal.quantity !== addition.quantity && <p className="mt-2 text-sm text-ctp-subtext1">This swap uses different copy counts. Review your deck size after applying it.</p>}
-    <details className="group mt-2 text-xs text-ctp-subtext0">
-      <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">Evidence for this suggestion<DisclosureChevron className="group-open:rotate-180" /></summary>
-      <dl className="grid gap-2 py-2 sm:grid-cols-2">
-        {[removal, addition].map((item) => <div key={item.cardName}><dt className="font-medium text-ctp-text">{item.cardName}</dt><dd>{item.adjustedLift === null ? "Limited performance evidence" : `${item.adjustedLift >= 0 ? "+" : ""}${(item.adjustedLift * 100).toFixed(1)}% observed lift`}</dd></div>)}
-      </dl>
-      <p className="pb-3">Observed results describe the source decks. They do not measure what this swap will do to your deck.</p>
-    </details>
     <div className="mt-2 flex flex-wrap gap-2 border-t border-ctp-surface1 pt-3">
+      <Button onClick={() => startTransition(() => setOpen(true))} aria-busy={pending}>Compare results</Button>
       <Button variant="primary" onClick={onApply} aria-label={`Apply swap: remove ${removal.cardName}, set ${addition.cardName} to ${addition.quantity} copies`}>Apply this swap</Button>
       <Button onClick={onDismiss}>Keep current cards</Button>
     </div>
-    <p className="mt-2 text-xs text-ctp-subtext0">Updates your working list. Save a version when you are ready.</p>
+    {open && <DialogSheet title="Proposed swap" onDismiss={() => setOpen(false)} footer={<Button variant="primary" onClick={() => { onApply(); setOpen(false); }}>Apply this swap</Button>}>
+      <AssociatedCards lines={[{ name: removal.cardName, quantity: removal.quantity, detail: "Remove" }, { name: addition.cardName, quantity: addition.quantity, detail: "Set quantity" }]} cardsByName={cardsByName} label="Proposed cards" />
+      <FixtureComparison baseline={named(decklist)} target={named(preview)} cardsByName={cardsByName} baselineLabel="Current deck" targetLabel="Proposed swap" initialMode="versions" reportOnly />
+    </DialogSheet>}
   </li>;
 }

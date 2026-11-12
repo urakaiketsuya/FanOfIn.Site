@@ -1,3 +1,7 @@
+import RaiDrawReport from '../analytics/RaiDrawReport';
+import RecursionReport from '../analytics/RecursionReport';
+import DefenseReport from '../analytics/DefenseReport';
+import RaiDamageReport from '../analytics/RaiDamageReport';
 import TonorisDrawReport from '../analytics/TonorisDrawReport';
 import EffectAccessReport from '../analytics/EffectAccessReport';
 import AssociatedCards from "../../components/AssociatedCards";
@@ -69,7 +73,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
     sideboard: decklist.sideboard.map((line) => ({ name: line.card, quantity: line.quantity })),
   }), [decklist]);
   const identityLines = useMemo(() => [...namedSections.main, ...namedSections.material], [namedSections]);
-  const cardNames = useMemo(() => [...identityLines, ...namedSections.sideboard, ...namedSections.song].map((line) => line.name), [identityLines, namedSections.sideboard, namedSections.song]);
+  const cardNames = useMemo(() => [...new Set([...identityLines, ...namedSections.sideboard, ...namedSections.song].map(line => line.name).concat(previousDecklist ? [...previousDecklist.main, ...previousDecklist.material].map(line => line.card) : []))], [identityLines, namedSections.sideboard, namedSections.song, previousDecklist]);
   const cardsByName = useCardsByNames(cardNames);
   const catalog = useCardCatalog();
   const identity = useMemo(() => computeDeckIdentity(identityLines, cardsByName), [identityLines, cardsByName]);
@@ -248,6 +252,10 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
         )}
       </Panel>
       </div>
+      <RecursionReport deck={namedSections} cardsByName={previewCardsByName} />
+      <DefenseReport deck={namedSections} cardsByName={previewCardsByName} />
+      <RaiDamageReport deck={namedSections} cardsByName={previewCardsByName} />
+      <RaiDrawReport deck={namedSections} cardsByName={cardsByName} />
       <TonorisDrawReport deck={namedSections} cardsByName={cardsByName} />
       <EffectAccessReport deck={namedSections} cardsByName={cardsByName} />
       <CardScenarios deck={namedSections} cardsByName={cardsByName} />

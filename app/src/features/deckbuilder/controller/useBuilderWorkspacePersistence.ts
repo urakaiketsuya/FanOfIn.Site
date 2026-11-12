@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import type { DeckFormat } from "@gatcg/shared";
-import { saveActiveDeckWorkspace } from "../persistence/deckWorkspace";
+import { saveActiveDeckWorkspace, type DeckWorkspaceContext } from "../persistence/deckWorkspace";
 
 interface DeckLine {
   name: string;
   quantity: number;
 }
 
-export function useBuilderWorkspacePersistence({ printings, championName, spiritName, format, main, material, sideboard, song, maybeboard }: {
+export function useBuilderWorkspacePersistence({ workspaceContext, printings, championName, spiritName, format, main, material, sideboard, song, maybeboard }: {
+  workspaceContext?: DeckWorkspaceContext;
   printings?: import("@gatcg/shared").DeckPrintings;
   championName: string | null;
   spiritName: string | null;
@@ -22,8 +23,9 @@ export function useBuilderWorkspacePersistence({ printings, championName, spirit
     saveActiveDeckWorkspace(sessionStorage, {
       printings,
       source: "builder",
-      title: championName ? `${championName} deck` : "Untitled deck",
-      sourceLabel: "Deck Workbench",
+      title: workspaceContext?.title ?? (championName ? `${championName} deck` : "Untitled deck"),
+      sourceLabel: workspaceContext?.sourceLabel ?? "Deck Workbench",
+      deckIdentity: workspaceContext?.deckIdentity,
       format,
       championName,
       spiritName,
@@ -33,5 +35,5 @@ export function useBuilderWorkspacePersistence({ printings, championName, spirit
       sideboard,
       maybeboard: Array.from(maybeboard, ([name, quantity]) => ({ name, quantity })),
     });
-  }, [printings, championName, format, main, material, maybeboard, sideboard, song, spiritName]);
+  }, [workspaceContext, printings, championName, format, main, material, maybeboard, sideboard, song, spiritName]);
 }

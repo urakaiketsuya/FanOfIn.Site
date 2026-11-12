@@ -854,3 +854,22 @@ Verification (2026-11-12): isolated real-catalog preview at 390px and 1280px cov
 waiting/empty states, comparison, keyboard focus restoration, 48px controls, overflow,
 failed local save and retry. Production account saves and native mobile keyboards were
 not exercised.
+
+
+Comparison propagation (2026-11-12): Review swaps open a card-first sheet with the
+shared automatic comparison and an explicit Apply action. Cheaper Builder alternatives
+expand the same report inline beneath their cards. My Decks staged changes and saved
+versions use it too. Preview exact quantities and keep Main/Material separate from
+Sideboard/Song. Report/calculator switching must reset scenario inputs; named source
+identity and secondary deck data survive Review → Builder → analysis handoffs.
+Starting over or importing an unrelated list clears the old source context.
+
+Verification: 390px/1280px isolated production-component checks passed for Review
+preview/apply, exact accepted quantities, dismissal/focus restoration, 48px sheet
+buttons, calculator/report switching, missing-data recovery, empty comparisons,
+staged changes, Rai standalone/paired reports, and budget comparison expansion and
+explicit acceptance. No page overflow or browser exceptions in checked flows. The
+budget controller was stubbed; real budget gates and workspace/calculation contracts
+were covered by 125 focused tests. Shared/app typechecks, targeted lint (pre-existing
+budget-hook warnings), and production build passed. No production account writes,
+PHP fixture replay, native keyboard or live deployment checks were performed.

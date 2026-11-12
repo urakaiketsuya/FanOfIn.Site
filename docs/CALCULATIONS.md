@@ -7121,3 +7121,22 @@ The Altar scenario has no explicit result assertion; its reviewed catalog contra
 supplies the two ally-type requirements. TypeScript construction adapters do not
 replay the PHP engine. Opponent-dependent outcomes, arbitrary package exchanges,
 optimal play and Altar's useful-mill payoff policy remain outside this batch.
+
+
+### Cross-feature comparison contract (2026-11-12)
+
+Automatic comparison consumers (Compare, saved versions, staged account changes,
+Review and Builder budget replacements) use FixtureComparison in report-only mode.
+The baseline is the current accepted/saved list, never unaccepted ranked fill cards.
+Each side retains its exact Main size and Material lineage. Sideboard and Song changes
+remain construction changes; they do not enter these sequence forecasts. Review sets
+the suggested addition quantity after removing the selected cut; budget replacements
+move only the requested number of copies. Previewing does not mutate persistence.
+
+Rai standalone and comparison reports share computeRaiDrawReport: canonical positive
+Main counts, reviewed progression, 512 samples, first player, opening up to seven,
+five turns, with turns three and five shown. Existing standalone draw means remain
+consistent; the additional surface exposes the sampled middle-80% range and median.
+Unsupported and missing inputs remain unavailable. Calculator state cannot enter
+report mode. Static card-effect comparisons use each deck's own default champion
+level; interactive calculators retain their intentional shared numeric conditions.

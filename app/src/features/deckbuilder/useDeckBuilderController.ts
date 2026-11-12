@@ -1,3 +1,4 @@
+import type { DeckWorkspaceContext } from "./persistence/deckWorkspace";
 import { cardNameKey, officialCardNames } from "../../lib/previewCards";
 import { mapsToSelections as selectedLines, selectionsToMaps as selectedMaps } from "./model/builderTypes";
 import { automaticDeckSection } from "../../lib/deckEditing";
@@ -48,6 +49,7 @@ export function useDeckBuilderController() {
   const sessionSeed = urlSeed ? null : loadBuilderSessionSeed(sessionStorage);
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.has("format") || urlSeed ? (searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD") : sessionSeed?.format ?? "STANDARD");
 
+  const [workspaceContext, setWorkspaceContext] = useState<DeckWorkspaceContext | undefined>(() => sessionSeed?.workspaceContext);
   const initialSpirit = urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null;
   const initialCards = new Map(urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? []);
   const initialSections = new Map(urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? []);
@@ -175,7 +177,7 @@ export function useDeckBuilderController() {
     pasteOpen, setPasteOpen, pasteText, setPasteText, pasteError, setPasteError,
     loadPastedDecklist, resetBuilder,
   } = useBuilderLifecycle({
-    deckFormat, workflow, builderIntent, improveDeckId,
+    deckFormat, workflow, builderIntent, improveDeckId, setWorkspaceContext,
     initialChampionName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
     catalogByName, spiritCanonicalNames, setDismissedReviewCards, setSpiritElement,
     setCardInput, setAddDestination, setTab, startTransition, resetChangeTracking,
@@ -202,6 +204,7 @@ export function useDeckBuilderController() {
   }, []);
 
   const presentation = useBuilderPresentationModel({
+    workspaceContext,
     printings: workflow.state.printings,
     build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
     archetypeId, lockedCards, lockedSections, maybeboard, improveDeckId, reviewItemCount, cardInput,

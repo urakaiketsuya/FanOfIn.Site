@@ -29,7 +29,7 @@ Existing competition release D is complete and is not reopened.
       seven-card Spirits and Tonoris Fire/Wind; specialist progressions excluded.
 - [x] Recommendations: observed core inclusion, shared reviewed dependencies and
       results-only supported swap comparisons; upstream fixtures imported.
-- [ ] Comparisons: newer sequence outcomes in Compare and saved versions; audit
+- [x] Comparisons: newer sequence outcomes in Compare and saved versions; audit
       Builder/Review/My Decks propagation and context retention.
 - [ ] Deck/archetype: consistent cohort model checkpoints and core access.
 - [ ] Card/build reports: audit implemented coverage against release C, then fill
@@ -51,7 +51,7 @@ contract and representative fixture. Record data blockers separately from comple
 
 Current: reviewed damage, conditional draw, defense/recovery and graveyard reuse
 batches are implemented in standalone reports and comparisons.
-Next: cross-feature comparison propagation and context-retention audit. Full-catalog draw depends on the
+Next: consistent deck/archetype cohort checkpoints and core access. Full-catalog draw depends on the
 explicitly deferred opponent, library, combat and champion-state families. Altar milling waits for a reviewed
 graveyard payoff/policy. No production writes or push authorized in this run.
 
@@ -414,3 +414,37 @@ and focus restoration, no horizontal overflow, visible failed-save feedback and 
 Browser tests used the real catalog/Tonoris list with an isolated reference/save harness;
 production accounts, PHP engine replay, native phone keyboards and live deployment
 were not exercised. Unrelated concurrent edits were left untouched. No push performed.
+
+
+## Milestone 10 — comparison propagation and context retention
+
+Compare, Review swaps, cheaper Builder replacements and staged My Decks changes now
+use the same results-only comparison surface. Review previews use the accepted list,
+remove the entire selected cut and set the addition's exact quantity; budget previews
+replace only the requested copies. Sideboard and Song remain separate from Main /
+Material model inputs. Incomplete staged lists use their actual size for access.
+Missing comparison lists have visible status rather than silently disappearing.
+
+Builder Stats now exposes the automatic reports. My Decks gains the missing paid
+damage, defense/recovery and recursion reports. A shared Rai standalone calculation
+also feeds its paired comparison, exposing the same turn-3/5 ranges in all report
+consumers. Existing sequence outputs and unsupported/missing states are preserved.
+Crossing between report and calculator modes resets the scenario instance; automatic
+reports never inherit adjusted calculator state or the other deck's champion level.
+
+Review retains saved identity, title, format, printings, Song and Maybeboard during
+handoff. Builder restores the Review context and retains it through matching refreshes;
+unrelated recipes cannot borrow it. Paste/reset clear source context, and stale account
+hydration cannot overwrite a newer imported draft. No automatic recommendation acceptance.
+
+Verification: 125 focused tests across calculation parity, four existing deck fixtures,
+preview quantities, split sections, workspace handoffs, refresh identity, printings and
+Song round trips. Shared/app typechecks and targeted lint pass (existing budget-hook
+warnings). Production build and local 390px/1280px checks recorded in UX_PATTERNS.md.
+Browser fixtures isolate controllers; signed-in account journeys, upstream PHP replay,
+native phone keyboards and live deployment remain release-verification work.
+No new TCGEngine fixtures or mechanic contracts were needed. No push performed.
+
+Extended analytics: 10/16 broad milestones (~63%, unequal scope). Next: deck/archetype
+cohort checkpoints and core access. Altar's useful milling policy remains deferred;
+full catalog simulation is outside this estimate.

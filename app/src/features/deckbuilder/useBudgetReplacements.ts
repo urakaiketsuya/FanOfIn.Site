@@ -34,7 +34,7 @@ export function useBudgetReplacements() {
     startTransition(() => b.editor.edit({ type: 'replace-main', name: checked.from.name, replacement: checked.to.name, quantity: checked.quantity }));
     setMessage(`Replaced ${checked.quantity} ${checked.quantity === 1 ? "copy" : "copies"} · saved ~$${checked.savings.toFixed(2)}`);
   }
-  return { unresolvedCards, includeRoleMatches, toggleRoles: () => startTransition(() => setIncludeRoleMatches(value => !value)), packageError: store.error, deck, format: b.deckFormat, pricing, prices, protectedNames, source, quantity, results, total, message, pending, accept,
+  return { catalog: b.catalogByName, unresolvedCards, includeRoleMatches, toggleRoles: () => startTransition(() => setIncludeRoleMatches(value => !value)), packageError: store.error, deck, format: b.deckFormat, pricing, prices, protectedNames, source, quantity, results, total, message, pending, accept,
     fresh: budgetPricesFresh(pricing.updatedAt ?? null, now),
     chooseSource: (name: string) => startTransition(() => { setSource(name); setQuantity(1); setMessage(''); }),
     chooseQuantity: (value: number) => startTransition(() => { setQuantity(value); setMessage(''); }),

@@ -1,3 +1,4 @@
+import type { DeckWorkspaceContext } from "../persistence/deckWorkspace";
 import { withDeckPrintings, type DeckPrintings } from "@gatcg/shared";
 import { useMemo } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
@@ -10,6 +11,7 @@ import { useBuilderCopyState } from "./useBuilderCopyState";
 import { useBuilderWorkspacePersistence } from "./useBuilderWorkspacePersistence";
 
 interface UseBuilderPresentationModelArgs {
+  workspaceContext?: DeckWorkspaceContext;
   printings?: DeckPrintings;
   build: SuggestedBuild;
   catalogByName: Map<string, Card>;
@@ -35,7 +37,7 @@ interface UseBuilderPresentationModelArgs {
  * current result into the totals, validation, exports, and persisted workspace consumed by UI.
  */
 export function useBuilderPresentationModel({
-  printings, build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
+  workspaceContext, printings, build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
   archetypeId, lockedCards, lockedSections, maybeboard, improveDeckId, reviewItemCount, cardInput,
   cardNameSet, addDestination,
 }: UseBuilderPresentationModelArgs) {
@@ -76,6 +78,7 @@ export function useBuilderPresentationModel({
   );
 
   useBuilderWorkspacePersistence({
+    workspaceContext,
     song: mapsToSelections(lockedCards, lockedSections).filter(line => line.section === "song"),
     printings,
     championName,

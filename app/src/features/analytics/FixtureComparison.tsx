@@ -23,9 +23,13 @@ function comparisonLines(before: AnalyticsLine[] = [], after: AnalyticsLine[] = 
     return { name, quantity: Math.max(a, b), detail: `${a} → ${b} copies` };
   });
 }
-export default function FixtureComparison({ baseline, target, cardsByName, baselineLabel, targetLabel, initialMode = 'opponents', reportOnly = false }: {
+type Props = {
   baseline: AnalyticsDeck; target: AnalyticsDeck; cardsByName: Map<string, Card>; baselineLabel: string; targetLabel: string; initialMode?: Mode; reportOnly?: boolean;
-}) {
+};
+export default function FixtureComparison(props: Props) {
+  return <ComparisonContent key={props.reportOnly ? "report" : "calculator"} {...props} />;
+}
+function ComparisonContent({ baseline, target, cardsByName, baselineLabel, targetLabel, initialMode = 'opponents', reportOnly = false }: Props) {
   const id = useId();
   const own = useCardScenario(baseline, cardsByName);
   const other = useCardScenario(target, cardsByName);
@@ -35,8 +39,8 @@ export default function FixtureComparison({ baseline, target, cardsByName, basel
   const [sequenceText, setSequenceText] = useState('3, 3');
   const sequenceValid = /^\s*\d+(\s*,\s*\d+)*\s*$/.test(sequenceText) && sequenceText.split(',').length <= 30 && sequenceText.split(',').every(value => Number(value) <= 100);
   const sequence = sequenceValid ? sequenceText.split(',').map(Number) : [];
-  // Versions use identical numeric conditions, with each deck's selected active champion class.
-  const targetState = { ...own.state, classes: other.state.classes, championName: other.state.championName };
+  // Reports use each deck's own defaults. Calculators intentionally share numeric conditions.
+  const targetState = reportOnly ? other.state : { ...own.state, classes: other.state.classes, championName: other.state.championName };
   const deltas = compareFixtureScenarios(baseline, target, cardsByName, own.state, targetState);
   const visibleDeltas = [...deltas].sort((a, b) => Number(reportDeltaChanged(b)) - Number(reportDeltaChanged(a)));
   const changedCount = deltas.filter(reportDeltaChanged).length;

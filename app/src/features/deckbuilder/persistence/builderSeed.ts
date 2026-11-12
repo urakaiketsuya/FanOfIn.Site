@@ -2,7 +2,7 @@ import type { DeckFormat } from "@gatcg/shared";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "../model/builderTypes";
 import { loadBuilderSession, parseBuilderShareParams } from "./builderPersistence";
-import { loadActiveDeckWorkspace } from "./deckWorkspace";
+import { loadActiveDeckWorkspace, type DeckWorkspaceContext } from "./deckWorkspace";
 
 export interface BuilderSeed {
   printings?: import("@gatcg/shared").DeckPrintings;
@@ -14,6 +14,7 @@ export interface BuilderSeed {
 }
 
 export interface BuilderSessionSeed extends BuilderSeed {
+  workspaceContext?: DeckWorkspaceContext;
   format: DeckFormat;
   rejectedCards: Set<string>;
   pillarBias: RatingPillar | null;
@@ -52,6 +53,7 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
       ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
     ]);
     return {
+      workspaceContext: { title: workspace.title, sourceLabel: workspace.sourceLabel, deckIdentity: workspace.deckIdentity },
       printings: workspace.printings,
       format: workspace.format,
       championName: workspace.championName,
@@ -73,7 +75,11 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
   if (!session) return null;
   const locked = selectionsToMaps(session.selection.lockedCards);
   const maybeboard = selectionsToMaps(session.selection.maybeboard);
+  const key = (lines: { name: string; quantity: number; section: string }[]) => JSON.stringify(lines.filter(line => line.quantity > 0).map(line => [line.section, line.name, line.quantity]).sort());
+  const workspaceLines = workspace ? (['main', 'material', 'sideboard', 'song'] as const).flatMap(section => (workspace[section] ?? []).map(line => ({ ...line, section }))) : [];
+  const sameWorkspace = workspace?.source === 'builder' && workspace.format === session.selection.format && key(workspaceLines) === key(session.selection.lockedCards);
   return {
+    workspaceContext: sameWorkspace ? { title: workspace.title, sourceLabel: workspace.sourceLabel, deckIdentity: workspace.deckIdentity } : undefined,
     printings: session.selection.printings,
     format: session.selection.format,
     championName: session.selection.championName,

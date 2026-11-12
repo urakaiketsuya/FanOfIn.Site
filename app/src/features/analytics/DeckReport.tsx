@@ -1,3 +1,4 @@
+import RaiDrawReport from './RaiDrawReport';
 import RecursionReport from './RecursionReport';
 import DefenseReport from './DefenseReport';
 import RaiDamageReport from './RaiDamageReport';
@@ -20,7 +21,8 @@ export default function DeckReport({ deck, cardsByName }: {
     <RecursionReport deck={deck} cardsByName={cardsByName} />
     <DefenseReport deck={deck} cardsByName={cardsByName} />
     <RaiDamageReport deck={deck} cardsByName={cardsByName} />
-    <TonorisDrawReport deck={deck} cardsByName={cardsByName} />
+    <RaiDrawReport deck={deck} cardsByName={cardsByName} />
+      <TonorisDrawReport deck={deck} cardsByName={cardsByName} />
     <Panel><DamageStatisticalReport forecast={forecast} cardsByName={cardsByName} /></Panel>
     <CombatAccessReport deck={deck} cardsByName={cardsByName} />
     <EffectAccessReport deck={deck} cardsByName={cardsByName} />

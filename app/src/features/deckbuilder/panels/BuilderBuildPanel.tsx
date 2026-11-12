@@ -1,7 +1,8 @@
+import DeckReport from "../../analytics/DeckReport";
 import PackagePicker from "../../../components/deck-editor/PackagePicker";
 import BudgetReplacementPanel from "../BudgetReplacementPanel";
 import DeckStats from "../../../components/DeckStats";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
 import CardBrowser from "../../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../../components/deck-editor/EditorDialog";
 import DeckEditor from "../../../components/deck-editor/DeckEditor";
@@ -14,6 +15,8 @@ import Tabs, { TabPanel } from "../../../components/ui/Tabs";
 
 export default function BuilderBuildPanel() {
   const b = useDeckBuilder();
+  const [pending, startTransition] = useTransition();
+  const reportDeck = useMemo(() => ({ main: b.editor.deck.main.map(line => ({ name: line.card, quantity: line.quantity })), material: b.editor.deck.material.map(line => ({ name: line.card, quantity: line.quantity })) }), [b.editor.deck]);
   const view = b.searchParams.get("workbenchView") === "stats" ? "stats" : "deck";
   const [statsVisited, setStatsVisited] = useState(view === "stats");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
@@ -52,7 +55,7 @@ export default function BuilderBuildPanel() {
       <h2 className="sr-only sm:not-sr-only sm:text-base sm:font-semibold">Your deck · {total} {total === 1 ? "card" : "cards"}</h2>
       {starting ? <button type="button" disabled={!hasCards} onClick={()=>setStarting(false)} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-40">View deck ({total})</button> : <button type="button" onClick={()=>{b.setRecommendationsEnabled(true); b.setCardInput("");setBrowserDestination("automatic");setBrowserOpen(true);}} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Add cards</button>}
     </div>}
-    {!starting && <Tabs tabs={[{key: "deck", label: "Deck"}, {key: "stats", label: "Stats"}]} active={view} onChange={changeView} baseId="workbench" label="Workbench view" />}
+    {!starting && <Tabs tabs={[{key: "deck", label: "Deck"}, {key: "stats", label: "Stats"}]} active={view} onChange={next => startTransition(() => changeView(next))} baseId="workbench" label="Workbench view" />}
     {starting ? <section aria-label="Find your first cards" className="mt-3">
       {!hasCards && <details className="mb-2"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm text-ctp-blue">Import or open a deck<DisclosureChevron /></summary><div className="flex flex-wrap items-start gap-x-3"><DecklistPaste /><BuilderStartActions /></div></details>}
       <PackagePicker deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} />
@@ -66,7 +69,8 @@ export default function BuilderBuildPanel() {
       {!hasCards && <p className="py-8 text-sm text-ctp-subtext1">Your deck is empty. Use Add cards to get started.</p>}
       <DeckEditor onAdd={section => { setBrowserDestination(section); b.setRecommendationsEnabled(true); b.setCardInput(""); setBrowserOpen(true); }} format={b.deckFormat} deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
     </section></TabPanel>}
-    {!starting && <TabPanel baseId="workbench" tab="stats" active={view} keepMounted>{(statsVisited || view === "stats") && <DeckStats decklist={b.editor.deck} cardsByName={b.catalogByName} format={b.deckFormat} championName={b.championName} showBuildComparison={false} />}</TabPanel>}
+    {pending && <p role="status">Recalculating…</p>}
+    {!starting && <TabPanel baseId="workbench" tab="stats" active={view} keepMounted>{(statsVisited || view === "stats") && <><DeckReport deck={reportDeck} cardsByName={b.catalogByName} /><DeckStats decklist={b.editor.deck} cardsByName={b.catalogByName} format={b.deckFormat} championName={b.championName} showBuildComparison={false} /></>}</TabPanel>}
     {suggestionsOpen && <EditorDialog title="Suggestions" doneLabel="Back to workbench" onDismiss={() => setSuggestionsOpen(false)}><div className="flex flex-col gap-3">
       <Button onClick={() => { setBudgetOpen(true); }}>Cheaper replacements</Button>
       <Button onClick={() => { b.setRecommendationsEnabled(true); setBrowserDestination("automatic"); setBrowserOpen(true); }}>Suggested cards</Button>

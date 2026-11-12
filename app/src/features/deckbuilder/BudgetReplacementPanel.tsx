@@ -1,3 +1,6 @@
+import { useState, useTransition } from 'react';
+import FixtureComparison from '../analytics/FixtureComparison';
+import { applyDeckQuantityChanges } from '../../lib/deckChangePreview';
 import CardResult from '../../components/CardResult';
 import Button from '../../components/ui/Button';
 import { formatUsd } from '../../lib/format';
@@ -5,6 +8,9 @@ import { useBudgetReplacements } from './useBudgetReplacements';
 
 export default function BudgetReplacementPanel() {
   const c = useBudgetReplacements();
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [comparing, startTransition] = useTransition();
+  const named = (deck: Pick<typeof c.deck, 'main' | 'material'>) => ({ main: deck.main.map(line => ({ name: line.card, quantity: line.quantity })), material: deck.material.map(line => ({ name: line.card, quantity: line.quantity })) });
   const sourceLine = c.deck.main.find(line => line.card === c.source);
   const blocked = c.protectedNames.has(c.source) ? 'Protected by an active package.' : sourceLine?.printings?.length ? 'Clear this card’s printing selections to find replacements.' : null;
   return <section aria-label="Budget replacements" className="space-y-3">
@@ -46,6 +52,8 @@ export default function BudgetReplacementPanel() {
               <p className="text-lg font-semibold">Save ~{formatUsd(row.savings)}</p>
               <p className="text-xs text-ctp-subtext1">{c.total.missingCards.length ? `Priced cards ~${formatUsd(c.total.total - row.savings)} · ${c.total.missingCards.length} unpriced` : `Deck ~${formatUsd(c.total.total - row.savings)}`}</p>
             </div>
+            <Button className="mb-2 w-full" aria-expanded={expanded === `${row.from.name}:${row.to.name}`} aria-busy={comparing} onClick={() => startTransition(() => setExpanded(expanded === `${row.from.name}:${row.to.name}` ? null : `${row.from.name}:${row.to.name}`))}>Compare results</Button>
+            {expanded === `${row.from.name}:${row.to.name}` && <FixtureComparison baseline={named(c.deck)} target={named(applyDeckQuantityChanges(c.deck, [{ cardName: row.from.name, section: 'main', delta: -row.quantity }, { cardName: row.to.name, section: 'main', delta: row.quantity }]))} cardsByName={c.catalog} baselineLabel="Current deck" targetLabel="Cheaper alternative" initialMode="versions" reportOnly />}
             <Button variant="primary" disabled={c.pending} className="w-full" aria-label={`Replace ${row.quantity} ${row.quantity === 1 ? 'copy' : 'copies'} with ${row.to.name}`} onClick={() => c.accept(row)}>Replace {row.quantity} {row.quantity === 1 ? 'copy' : 'copies'}</Button>
           </article>;
         })}

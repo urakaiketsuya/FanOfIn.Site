@@ -1,6 +1,6 @@
 import ReviewSwapCard from "../components/ReviewSwapCard";
 import Button from "../../../components/ui/Button";
-import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
+import type { Card, CardImpactEntry, CardInclusionEntry, OmnidexDecklist } from "@gatcg/shared";
 import Tabs from "../../../components/ui/Tabs";
 import ReviewCardProposal from "../components/ReviewCardProposal";
 import BuilderReviewOverview from "../components/BuilderReviewOverview";
@@ -16,7 +16,7 @@ import type { BuilderViewMode } from "../useBuilderViewMode";
 import { useBuilderReviewTabs } from "../useBuilderReviewTabs";
 
 export default function BuilderReviewPanel({
-  build, effectivePopulationSource, simulatorMatchedCards, simulatorEvidenceByName, lockedCards,
+  decklist, build, effectivePopulationSource, simulatorMatchedCards, simulatorEvidenceByName, lockedCards,
   mainTotal, totalPrice, sideboardPrice, dismissedReviewCards, onRestoreDismissed, showProtectedCuts,
   onToggleShowProtectedCuts, reviewItemCount, reviewGroups, cardsByName, priceByName, visibleFields,
   communityInclusionByName, onApplySwap, onDismissReview, onAddSuggestion, onRemoveCard,
@@ -24,6 +24,7 @@ export default function BuilderReviewPanel({
   onContinueToValidation, reviewComplete, buildCounters, hurtYouCards, hurtYouCardImages,
   viewMode, onViewModeChange,
 }: {
+  decklist: OmnidexDecklist;
   build: SuggestedBuild;
   effectivePopulationSource: PopulationSource;
   simulatorMatchedCards: number;
@@ -100,7 +101,7 @@ export default function BuilderReviewPanel({
               <ul className="mt-2 space-y-2">
                 {reviewGroups.pairs.map(({ removal, addition }) => (
                   <ReviewSwapCard key={`${removal.cardName}:${addition.cardName}`}
-                    removal={removal} addition={addition} cardsByName={cardsByName}
+                    decklist={decklist} removal={removal} addition={addition} cardsByName={cardsByName}
                     onApply={() => onApplySwap(removal, addition)}
                     onDismiss={() => onDismissReview(removal.cardName, addition.cardName)} />
                 ))}

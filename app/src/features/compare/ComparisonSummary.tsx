@@ -144,7 +144,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
     {mode !== "overview" && <div className="space-y-8">
       {baselineDeck && forecastDecks.filter(entry => entry.deck.key !== baselineDeck.key).map(entry => {
         const source = forecastDecks.find(candidate => candidate.deck.key === baselineDeck.key);
-        return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode={mode === "calculators" ? "opponents" : "versions"} reportOnly={mode !== "calculators"} /> : null;
+        return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode={mode === "calculators" ? "opponents" : "versions"} reportOnly={mode !== "calculators"} /> : <Panel key={entry.deck.key}><p role="status">{shortDeckLabel(baselineDeck.label)} → {shortDeckLabel(entry.deck.label)} · Decklist unavailable</p></Panel>;
       })}
       {mode === "forecasts" && onExplore && <Button onClick={onExplore}>Explore in calculators</Button>}
       {mode === "calculators" && <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">

@@ -28,6 +28,8 @@ export interface DeckWorkspace {
   maybeboard: WorkspaceCardLine[];
 }
 
+export type DeckWorkspaceContext = Pick<DeckWorkspace, "title" | "sourceLabel" | "deckIdentity">;
+
 interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;

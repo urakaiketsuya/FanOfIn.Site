@@ -1,3 +1,4 @@
+import FixtureComparison from "../analytics/FixtureComparison";
 import { useMemo } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -65,8 +66,8 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
   const afterTotals = totals(next);
   const changedMainBefore = changes.reduce((sum, change) => sum + (change.section === "main" ? decklist.main.find((line) => line.card === change.cardName)?.quantity ?? 0 : 0), 0);
   const changedMainAfter = changes.reduce((sum, change) => sum + (change.section === "main" ? next.main.find((line) => line.card === change.cardName)?.quantity ?? 0 : 0), 0);
-  const exposureBefore = chanceAtLeastOne(Math.max(60, beforeTotals.main), changedMainBefore, 10);
-  const exposureAfter = chanceAtLeastOne(Math.max(60, afterTotals.main), changedMainAfter, 10);
+  const exposureBefore = chanceAtLeastOne(beforeTotals.main, changedMainBefore, 10);
+  const exposureAfter = chanceAtLeastOne(afterTotals.main, changedMainAfter, 10);
   const metrics = [
     { label: "Memory peak", before: curvePeak(decklist, cardsByName), after: curvePeak(next, cardsByName) },
     { label: "Changed-card exposure", before: `${Math.round(exposureBefore * 100)}%`, after: `${Math.round(exposureAfter * 100)}%` },
@@ -99,5 +100,6 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
         {changes.length > 4 && <p className="mt-3 text-xs text-ctp-subtext0">+{changes.length - 4} more staged card change{changes.length - 4 === 1 ? "" : "s"} included in the projection.</p>}
       </div>
     </div>
+    <FixtureComparison baseline={{ main: named(decklist, "main"), material: named(decklist, "material") }} target={{ main: named(next, "main"), material: named(next, "material") }} cardsByName={cardsByName} baselineLabel="Current deck" targetLabel="Proposed changes" initialMode="versions" reportOnly />
   </Panel>;
 }
