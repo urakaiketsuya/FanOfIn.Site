@@ -18,8 +18,8 @@ export default function SavedDeckCard({ deck, onRename, onDelete, onFolders, fol
     </>,
     actions: <>
       {onFolders && <Button disabled={!foldersReady} onClick={onFolders}>Folders{folderNames.length ? ` · ${folderNames.length}` : ""}</Button>}
-      <Link className={deckPreviewActionClass} to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`}>Analyze deck</Link>
-      <Link className={deckPreviewActionClass} to={`/deck-review?deck=${encodeURIComponent(deck.id)}`}>Review suggestions</Link>
+      <Link className={deckPreviewActionClass} to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`}>View deck report</Link>
+      <Link className={deckPreviewActionClass} to={`/deck-review?deck=${encodeURIComponent(deck.id)}`}>Improve deck</Link>
       <Link className={deckPreviewActionClass} to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`}>Tune in builder</Link>
       <Link className={deckPreviewActionClass} to={comparePath}>Compare deck</Link>
       <Button onClick={onRename}>Rename</Button><Button variant="danger" onClick={onDelete}>Delete deck</Button>

@@ -1,3 +1,4 @@
+import DeckToolNav from "../deckbuilder/components/DeckToolNav";
 import DeckStats from "../../components/DeckStats";
 import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -47,7 +48,7 @@ type AnalysisTab = "summary" | "explore" | "matchups";
 
 
 export default function DeckAnalysisIndex() {
-  useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
+  useDocumentTitle("Deck Report", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
   const [calculatorView, setCalculatorView] = useState<"tools" | "scenario">("tools");
   const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
   const [draftError, setDraftError] = useState<string | null>(null);
@@ -182,15 +183,15 @@ export default function DeckAnalysisIndex() {
     persistAnalysisProfile({ ...analysisProfile, reviewedAt: new Date().toISOString() });
   }
 
-  if (requestedDeck.pending) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
-  if (requestedDeck.error) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
+  if (requestedDeck.pending) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
+  if (requestedDeck.error) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
 
-  if (!workspace || mainTotal === 0) return <PageLayout width="fluid"><PageHeader title="Deck Analysis" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
+  if (!workspace || mainTotal === 0) return <PageLayout width="fluid"><PageHeader title="Deck Report" description="Explore how your deck behaves. Your saved original stays unchanged." /><DeckToolNav activeTool="analysis" /><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></PageLayout>;
 
   return <PageLayout width="fluid">
-    <PageHeader title="Deck Analysis" />
+    <PageHeader title="Deck Report" description="Understand your deck’s consistency, timing, and matchups." />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Deck Report" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
     <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
       {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
       <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={openCalculator} onApply={applyReportSwap} />

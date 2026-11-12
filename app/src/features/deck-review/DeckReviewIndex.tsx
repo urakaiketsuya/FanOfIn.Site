@@ -86,7 +86,7 @@ function loadSessionSeed() {
  */
 export default function DeckReviewIndex() {
   useDocumentTitle(
-    "Deck Review",
+    "Improve Deck",
     "Start from a Champion and Spirit, or your own decklist, then accept or reject one ranked suggestion at a time – nothing is ever added automatically.",
   );
 
@@ -116,7 +116,7 @@ export default function DeckReviewIndex() {
     saveActiveDeckWorkspace(sessionStorage, {
       source: "review",
       title: loadActiveDeckWorkspace(sessionStorage)?.title ?? null,
-      sourceLabel: loadActiveDeckWorkspace(sessionStorage)?.sourceLabel ?? "Deck Review",
+      sourceLabel: loadActiveDeckWorkspace(sessionStorage)?.sourceLabel ?? "Improve Deck",
       format: deckFormat,
       championName,
       spiritName: spiritFilter,
@@ -382,8 +382,8 @@ export default function DeckReviewIndex() {
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "review", loadWorkspace);
 
-  if (requestedDeck.pending) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Deck Review" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
-  if (requestedDeck.error) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Deck Review" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
+  if (requestedDeck.pending) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Improve Deck" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
+  if (requestedDeck.error) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Improve Deck" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
 
   const nearestDeckCompareLink = (_deck: NearestDeck) => "/compare";
   const activeWorkspace = loadActiveDeckWorkspace(sessionStorage);
@@ -391,10 +391,11 @@ export default function DeckReviewIndex() {
   return (
     <PageLayout data-component="DeckReviewIndex">
       <PageHeader
-        title="Deck Review"
+        title="Improve Deck"
+        description="Choose card changes to improve your deck."
       />
 
-      {championName && <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />}
+      <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />
 
       <DeckReviewSetup championName={championName} spiritFilter={spiritFilter} spiritElement={spiritElement} champions={championsPresent} spiritElements={spiritElements} spirits={spiritsForElement} catalogByName={catalogByName} spiritCatalogByName={liveCatalogByName} populationSource={populationSource} pending={isPending} onChampionChange={(value) => { setChampionName(value); setSpiritFilter(null); setSpiritElement(null); }} onSpiritChange={(value) => startTransition(() => setSpiritFilter(value))} onElementChange={(value) => { setSpiritElement(value); if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null); }} onPopulationSourceChange={setPopulationSource} onStartOver={startOver} onLoadWorkspace={loadWorkspace} spiritLabel={spiritOptionLabel} />
 
@@ -454,13 +455,13 @@ export default function DeckReviewIndex() {
           <div className="mt-4">
             <Tabs
               tabs={[
-                { key: "review", label: reviewItemCount > 0 ? `Review (${reviewItemCount})` : "Review" },
+                { key: "review", label: reviewItemCount > 0 ? `Suggestions (${reviewItemCount})` : "Suggestions" },
                 { key: "matchups", label: "Matchups" },
                 { key: "save", label: "Finish" },
               ]}
               active={tab}
               onChange={setTab}
-              label="Deck Review sections"
+              label="Improve Deck sections"
               baseId="deck-review"
             />
           </div>

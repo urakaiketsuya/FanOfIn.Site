@@ -1,3 +1,4 @@
+import DeckToolNav from "./components/DeckToolNav";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
@@ -21,6 +22,7 @@ function DeckBuilderPage() {
   const c = b.copyPanel;
   return <PageLayout width="fluid" data-component="DeckBuilderIndex" className="[&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
     <DeckBuilderHeader />
+    <div className="mt-3 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle"><DeckToolNav activeTool="builder" /></div>
     {b.isPending && <p role="status" className="text-xs text-ctp-subtext1">Updating deck…</p>}
     <BuilderBuildPanel />
     {b.tab !== "build" && <EditorDialog title={b.tab === "copy" ? "Save & export" : b.tab === "log" ? "Change history" : "Suggestion settings"} doneLabel="Back to workbench" onDismiss={()=>b.setTab("build")}>

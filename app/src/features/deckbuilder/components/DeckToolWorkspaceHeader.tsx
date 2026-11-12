@@ -1,14 +1,6 @@
-import { Link } from "react-router-dom";
+import DeckToolNav, { type DeckTool } from "./DeckToolNav";
 import type { DeckFormat } from "@gatcg/shared";
 import type { ReactNode } from "react";
-
-type DeckTool = "builder" | "analysis" | "review";
-
-const TOOLS: { key: DeckTool; label: string; verb: string; to: string }[] = [
-  { key: "builder", label: "Build", verb: "Edit deck", to: "/deck-builder" },
-  { key: "analysis", label: "Analyze", verb: "Analyze deck", to: "/deck-analysis" },
-  { key: "review", label: "Review", verb: "Review suggestions", to: "/deck-review" },
-];
 
 export default function DeckToolWorkspaceHeader({ activeTool, title, championName, spiritName, format, mainTotal, materialTotal, sideboardTotal, sourceLabel, actions, embedded = false, showToolNav = true }: {
   activeTool: DeckTool;
@@ -38,11 +30,6 @@ export default function DeckToolWorkspaceHeader({ activeTool, title, championNam
         {actions}
       </div>
     </div>
-    {showToolNav && <nav aria-label="Deck tools" className="grid grid-cols-3">
-      {TOOLS.map((tool) => {
-        const active = tool.key === activeTool;
-        return <Link key={tool.key} to={tool.to} aria-current={active ? "page" : undefined} className={`border-b-2 px-3 py-3 text-center text-xs font-semibold transition-colors ${active ? "border-ctp-blue bg-ctp-blue/5 text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}><span className="hidden sm:inline">{tool.verb}</span><span className="sm:hidden">{tool.label}</span></Link>;
-      })}
-    </nav>}
+    {showToolNav && <DeckToolNav activeTool={activeTool} />}
   </section>;
 }

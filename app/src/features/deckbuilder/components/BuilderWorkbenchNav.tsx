@@ -58,8 +58,8 @@ export default function BuilderWorkbenchNav({
             return <button key={tool.view} id={`deck-builder-tab-${tool.view}`} type="button" aria-pressed={active} onClick={() => onViewChange(tool.view)} className={`rounded-md border px-2.5 py-1.5 text-xs ${active ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}>{tool.label}{suffix}</button>;
           })}
           <button type="button" onClick={onOpenDisplay} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">Card display</button>
-          <Link to="/deck-analysis" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Analyze deck</Link>
-          <Link to="/deck-review" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Review suggestions</Link>
+          <Link to="/deck-analysis" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">View deck report</Link>
+          <Link to="/deck-review" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Improve deck</Link>
         </div>
       </details>
     </section>
