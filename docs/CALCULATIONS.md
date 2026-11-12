@@ -6671,37 +6671,42 @@ snapshot, so it does not restore their main-phase attack readiness:
 https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase
 https://rules.gatcg.com/glossary/keywords-and-abilities
 
-### Paid Rai Fireball sequence (2026-11-11)
+### Paid Rai damage sequence (2026-11-11)
 
-`computeRaiDamageReport` and `compareRaiDamageReports` provide a separate paid
-Fireball forecast. This is supported Fireball output to a target unit before
-responses/prevention, not total deck damage or damage actually inflicted. No
-opponent ally, buff, graveyard or pressure state is invented. Presentation wiring
-is pending; current draw reports retain their previous results and shape.
+`computeRaiDamageReport` and `compareRaiDamageReports` forecast paid Fireball and
+Gilded Pyre output to an unbuffed target unit, before responses/prevention. This is
+not total deck damage or damage actually inflicted. No opponent ally, buff,
+graveyard or pressure state is invented. Existing draw reports retain their
+previous results and return shape.
 
 The forecast uses the reviewed Rai draw engines, actual Main size, opening seven
 (or smaller deck size), going first, 512 seeded samples and five turns. Canonical
 merged/sorted lines make input order irrelevant. Each turn plays the first
-payable supported source in the shared shuffled-hand policy; this is not an
-optimized damage rotation. Fireball shares finite hand payments with draw engines,
-physically leaves hand once, pays printed reserve 4 at Spirit level and receives
-its 2-cost class discount only after paid Rai level 1. It contributes 1 + actual
-paid level cumulative output. Its Mage activation shares the existing once-per-turn
-Archmage trigger. No temporary level increases or Mana Weaver copies are modeled.
-Only Spirit of Fire enables Fireball. Other damage cards remain unplayed.
+payable supported source in the shared shuffled-hand policy, not an optimized
+damage rotation. Both damage cards share finite hand payments with draw engines
+and physically leave hand once. Fireball pays printed reserve 4 at Spirit level,
+receives its 2-cost class discount only after paid Rai level 1, and contributes
+1 + actual paid level cumulative output. Gilded Pyre pays printed reserve 2 at
+all levels and contributes 2 damage; its buff-target replacement of 4 is excluded
+from this unbuffed-target scenario. Damage cards' Mage activations share the
+existing once-per-turn Archmage trigger. Temporary level increases and Mana Weaver
+copies are not modeled. Only Spirit of Fire enables these damage cards. Other
+damage cards remain unplayed. Separate card forecasts must not be added together.
 
 Checkpoints return cumulative sample 10th/50th/90th percentiles; paired results use
 turns 3 and 5 from the same standalone calculation. Damage source quantities travel
 with results so consumers can label coverage explicitly. A supported deck without
-Fireball has zero Fireball output, not zero total damage. Missing catalog entries
-or Fireball reserve cost are unavailable; unsupported lineages are not zero.
-The shared sequence exposes damage through `estimateDrawAndDamageInfluence`;
-`estimateDrawInfluence` preserves the existing draw-only return contract.
+these cards has zero supported output, not zero total damage. Missing catalog
+entries or missing/negative damage-card reserve costs are unavailable; unsupported
+lineages are not zero. The shared sequence exposes damage through
+`estimateDrawAndDamageInfluence`; `estimateDrawInfluence` preserves the existing
+draw-only return contract.
 
-The paid Fireball forecast is now presented in `DeckReport` and versions-mode
-`FixtureComparison`, scoped by the heading “Fireball · paid damage.” Both use
-turn-3/5 cumulative ranges and show the contributing card. Standalone reports
-require a Rai material entry and a positive Fireball quantity; comparisons appear
-when either side meets that condition. Missing/unsupported results show status,
-not numerical changes. Removing Fireball from a supported target may correctly
-show zero Fireball output; it makes no claim about other damage sources.
+`DeckReport` and versions-mode `FixtureComparison` show turn-3/5 cumulative ranges
+with the heading “Paid damage · shown cards” and “Unbuffed target” qualifier.
+Both supported cards present in the deck remain visible (including off-element
+copies whose output is zero). Standalone reports require a Rai material entry and
+at least one supported damage card; comparisons appear when either side qualifies.
+Missing/unsupported results show status, not numerical changes. Removing one
+supported card leaves the other eligible in the shared sequence. The card pool
+is centralized in `RAI_DAMAGE_CARDS`; no user inputs or extra disclosures are added.

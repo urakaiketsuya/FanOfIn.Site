@@ -3,7 +3,9 @@ import type { AnalyticsDeck } from './fixtureResources.js';
 import { createRaiDrawPolicy } from './raiDrawPolicy.js';
 import { estimateDrawAndDamageInfluence } from './drawInfluence.js';
 
-/** Paid Fireball output to a target unit, before responses/prevention. Not total deck damage. */
+export const RAI_DAMAGE_CARDS = ['Fireball', 'Gilded Pyre'] as const;
+
+/** Paid supported output to an unbuffed target unit, before responses/prevention. */
 export function computeRaiDamageReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>) {
   if ([...deck.main, ...deck.material].some(line => line.quantity > 0 && !catalog.has(line.name))) return { status: 'missing' as const };
   const counts = new Map<string, number>();
@@ -12,13 +14,15 @@ export function computeRaiDamageReport(deck: AnalyticsDeck, catalog: ReadonlyMap
   const policy = createRaiDrawPolicy(main, deck.material, catalog);
   if (!policy) return { status: 'unsupported' as const };
   const fireEnabled = deck.material.some(line => line.quantity > 0 && line.name === 'Spirit of Fire');
-  const sources = policy.main.map(source => fireEnabled && source.name === 'Fireball'
-    ? { ...source, mechanic: 'fireball' as const } : source);
-  if (sources.some(source => source.mechanic === 'fireball' && source.reserve == null)) return { status: 'missing' as const };
+  const sources = policy.main.map(source => !fireEnabled ? source
+    : source.name === 'Fireball' ? { ...source, mechanic: 'fireball' as const }
+    : source.name === 'Gilded Pyre' ? { ...source, mechanic: 'gilded-pyre' as const } : source);
+  const damageSources = sources.filter(source => source.mechanic === 'fireball' || source.mechanic === 'gilded-pyre');
+  if (damageSources.some(source => source.reserve == null || source.reserve < 0)) return { status: 'missing' as const };
   const points = estimateDrawAndDamageInfluence(sources, [], Math.min(7, main.reduce((sum, line) => sum + line.quantity, 0)), 'first', 5, 512, policy.progression);
   return {
     status: 'ready' as const,
-    damageSources: sources.filter(source => source.mechanic === 'fireball').map(({ name, quantity }) => ({ name, quantity })),
+    damageSources: damageSources.map(({ name, quantity }) => ({ name, quantity })),
     points: points.map((point, index) => ({ turn: index + 1, damage: point.paidDamageRange })),
   };
 }

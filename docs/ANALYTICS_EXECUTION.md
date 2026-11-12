@@ -213,3 +213,26 @@ Next: broaden reviewed direct-damage cards and paired outcomes. Extended analyti
 remains 3/16 complete (~19% by unequal broad milestones); paid damage now includes
 calculation and presentation for Fireball, but broader combat remains partial.
 Graveyard-dependent effects still require the queued zone policy.
+
+
+## Gilded Pyre paid coverage — 2026-11-11
+
+Extended the shared Rai damage sequence to Gilded Pyre alongside Fireball. Both
+spend the same physical hand/payment pool and share paid progression/Mage triggers.
+The report uses an unbuffed target: Gilded Pyre contributes 2, without inventing
+its conditional 4-damage target state. Existing draw-only policy is unchanged.
+Deck and comparison reports show both actual cards, cumulative turn-3/5 ranges,
+and paired medians; removing Fireball leaves Gilded Pyre eligible.
+
+Verification: 72 focused calculation tests, shared/app typechecks, targeted lint
+and diff checks. Production components verified in a temporary harness at 390×844
+and 1280×900, with no horizontal overflow, 154×148px card links, visible 2px keyboard
+focus, missing-data/unsupported statuses and empty suppression. Harness removed.
+No new loading/expanded controls. Full-page signed-in journeys, full build and live
+deployment remain unverified. No push performed.
+
+Next: extend paid effects with a finite graveyard/Floating Memory policy before
+adding graveyard-dependent damage cards. Extended analytics remains 3/16 broad
+milestones complete (~19%, unequal sizes); paid damage has additional coverage,
+but the broad damage milestone remains partial. Opponent-dependent bonuses and
+area damage also need explicit target scenarios.

@@ -33,7 +33,7 @@ export interface InfluenceDrawSource {
   level?: number | null;
   discard: number;
   /** Reviewed sequence roles; absent for the legacy draw-only policy. */
-  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball';
+  mechanic?: 'academy-guide' | 'indolent-leisure' | 'careful-study' | 'peer-into-mana' | 'recollection-hand' | 'recollection-memory' | 'fireball' | 'gilded-pyre';
   mageAction?: boolean;
   minimumLevel?: number;
 }
@@ -121,6 +121,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         }
         resolveDraws(source);
         if (progression && source.mechanic === 'fireball') damage += 1 + level;
+        if (progression && source.mechanic === 'gilded-pyre') damage += 2;
         if (progression && (source.mechanic === 'recollection-hand' || source.mechanic === 'recollection-memory')) {
           recollectionDraws.push({ count: 1, destination: source.mechanic === 'recollection-memory' ? 'memory' : 'hand' });
         }

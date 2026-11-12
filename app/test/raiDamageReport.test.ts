@@ -33,9 +33,9 @@ test('real fixture paired ranges agree, are deterministic and do not alter the d
   assert.equal(report.status, 'ready');
   if (report.status !== 'ready') return;
   assert.deepEqual(report, computeRaiDamageReport({ ...deck, main: [...deck.main].reverse() }, catalog));
-  assert.deepEqual(report.damageSources, [{ name: 'Fireball', quantity: 4 }]);
+  assert.deepEqual(report.damageSources, [{ name: 'Fireball', quantity: 4 }, { name: 'Gilded Pyre', quantity: 4 }]);
   assert.ok(report.points[4].damage.high > 0);
-  const target = { ...deck, main: deck.main.filter(line => line.name !== 'Fireball') };
+  const target = { ...deck, main: deck.main.filter(line => line.name !== 'Fireball' && line.name !== 'Gilded Pyre') };
   const comparison = compareRaiDamageReports(deck, target, catalog);
   assert.equal(comparison.status, 'ready');
   if (comparison.status !== 'ready') return;
@@ -56,4 +56,39 @@ test('off-element Fireball cannot activate; incomplete and unsupported decks are
   assert.match(catalog.get('Fireball')!.effect!, /Class Bonus.*costs 2 less/);
   assert.match(catalog.get('Fireball')!.effect!, /Deal 1\+\*\*LV\*\* damage to target unit/);
   assert.ok(!catalog.get('Spirit of Fire')!.classes.includes('MAGE'));
+});
+
+
+test('Gilded Pyre pays full reserve at every level and uses the unbuffed target baseline', () => {
+  const pyre: InfluenceDrawSource = { ...fireball, name: 'Gilded Pyre', reserve: 2, mechanic: 'gilded-pyre' };
+  const points = estimateDrawAndDamageInfluence([pyre], [], 7, 'first', 3, 1, progression);
+  assert.equal(points[0].paidDamageRange.median, 4); // Two casts, four physical payment cards.
+  assert.deepEqual(points.map(point => point.memory), [4, 2, 2]);
+  assert.deepEqual(points.map(point => point.paidDamageRange.median), [4, 6, 8]);
+  const expensive = estimateDrawAndDamageInfluence([{ ...pyre, reserve: 100 }], [], 7, 'first', 5, 1, progression);
+  assert.ok(expensive.every(point => point.paidDamageRange.high === 0));
+  const finite = estimateDrawAndDamageInfluence([{ ...pyre, quantity: 7 }], [], 7, 'first', 5, 1, progression);
+  assert.ok(finite.every(point => point.paidDamageRange.high <= 14));
+  assert.equal(catalog.get('Gilded Pyre')!.cost_reserve, 2);
+  assert.equal(catalog.get('Gilded Pyre')!.element, 'FIRE');
+  assert.match(catalog.get('Gilded Pyre')!.effect!, /Deal 2 damage to target unit/);
+  assert.match(catalog.get('Gilded Pyre')!.effect!, /buff.*deal 4 damage/);
+});
+
+test('mixed damage sources share payment cards rather than adding independent forecasts', () => {
+  const pyre: InfluenceDrawSource = { ...fireball, name: 'Gilded Pyre', reserve: 2, mechanic: 'gilded-pyre' };
+  const mixed = estimateDrawAndDamageInfluence([{ ...fireball, quantity: 4 }, { ...pyre, quantity: 3 }], [], 7, 'first', 1, 64, progression);
+  // Fireball + Pyre requires 2 sources + 6 payments; seven cards cannot pay both.
+  assert.ok(mixed[0].paidDamageRange.high <= 4);
+  const onlyPyre = { ...deck, main: [{ name: 'Gilded Pyre', quantity: 30 }] };
+  const report = computeRaiDamageReport(onlyPyre, catalog);
+  assert.equal(report.status, 'ready');
+  if (report.status === 'ready') {
+    assert.deepEqual(report.damageSources, [{ name: 'Gilded Pyre', quantity: 30 }]);
+    assert.equal(report.points[0].damage.median, 4);
+  }
+  const missingCost = new Map(catalog);
+  missingCost.set('Gilded Pyre', { ...catalog.get('Gilded Pyre')!, cost_reserve: null });
+  assert.equal(computeRaiDamageReport(onlyPyre, missingCost).status, 'missing');
+  assert.equal(createRaiDrawPolicy(deck.main, deck.material, catalog)!.main.find(source => source.name === 'Gilded Pyre')!.mechanic, undefined);
 });
