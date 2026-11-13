@@ -1,0 +1,5578 @@
+{
+  "groupExperiment": {
+    "recurring": [
+      {
+        "cards": [
+          "Backup Charger",
+          "Dungeon Guide",
+          "Turbo Charge"
+        ],
+        "matches": 45881,
+        "events": 1063,
+        "players": 2557
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Safeguard Amulet",
+          "Tariff Ring"
+        ],
+        "matches": 44885,
+        "events": 1063,
+        "players": 2903
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Tariff Ring"
+        ],
+        "matches": 41256,
+        "events": 996,
+        "players": 2760
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 40699,
+        "events": 1068,
+        "players": 2326
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 38036,
+        "events": 1067,
+        "players": 2240
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 37936,
+        "events": 1050,
+        "players": 2175
+      },
+      {
+        "cards": [
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 37693,
+        "events": 1066,
+        "players": 2198
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Safeguard Amulet"
+        ],
+        "matches": 37041,
+        "events": 945,
+        "players": 2476
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 36851,
+        "events": 1060,
+        "players": 2134
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 36828,
+        "events": 1096,
+        "players": 2165
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Dungeon Guide",
+          "Resolute Stand"
+        ],
+        "matches": 36369,
+        "events": 1026,
+        "players": 2064
+      },
+      {
+        "cards": [
+          "Fracturize",
+          "Frostsworn Paladin",
+          "Spirit of Water"
+        ],
+        "matches": 35952,
+        "events": 1087,
+        "players": 2044
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 35859,
+        "events": 1100,
+        "players": 2190
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dungeon Guide",
+          "Grand Crusader's Ring"
+        ],
+        "matches": 35540,
+        "events": 972,
+        "players": 2227
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 35389,
+        "events": 1038,
+        "players": 2051
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 35151,
+        "events": 1054,
+        "players": 2128
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 34724,
+        "events": 1048,
+        "players": 2118
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 34515,
+        "events": 1049,
+        "players": 2035
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Creative Shock",
+          "Dungeon Guide"
+        ],
+        "matches": 34355,
+        "events": 981,
+        "players": 1987
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 34223,
+        "events": 1052,
+        "players": 2066
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 34181,
+        "events": 1036,
+        "players": 2013
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 34149,
+        "events": 1047,
+        "players": 2062
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Dungeon Guide",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 33862,
+        "events": 1040,
+        "players": 2078
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 33855,
+        "events": 968,
+        "players": 2081
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Spirit of Wind"
+        ],
+        "matches": 33787,
+        "events": 1039,
+        "players": 2097
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Dungeon Guide"
+        ],
+        "matches": 33703,
+        "events": 1046,
+        "players": 2057
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fracturize",
+          "Frostsworn Paladin"
+        ],
+        "matches": 33667,
+        "events": 1004,
+        "players": 1921
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 33601,
+        "events": 1040,
+        "players": 1969
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 33569,
+        "events": 1046,
+        "players": 2024
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind"
+        ],
+        "matches": 33497,
+        "events": 1027,
+        "players": 2090
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dungeon Guide",
+          "Tariff Ring"
+        ],
+        "matches": 33440,
+        "events": 1014,
+        "players": 2193
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Safeguard Amulet",
+          "Tariff Ring"
+        ],
+        "matches": 33376,
+        "events": 983,
+        "players": 2344
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Windmill Engineer"
+        ],
+        "matches": 33253,
+        "events": 1045,
+        "players": 1969
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Grand Crusader's Ring",
+          "Tariff Ring"
+        ],
+        "matches": 33051,
+        "events": 969,
+        "players": 2309
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 33011,
+        "events": 1084,
+        "players": 2094
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 32828,
+        "events": 1026,
+        "players": 1973
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 32621,
+        "events": 1012,
+        "players": 1988
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 32540,
+        "events": 1084,
+        "players": 2005
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 32394,
+        "events": 1064,
+        "players": 1863
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dungeon Guide",
+          "Incapacitate"
+        ],
+        "matches": 32278,
+        "events": 1023,
+        "players": 1739
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Dungeon Guide",
+          "Spirit of Fire"
+        ],
+        "matches": 32230,
+        "events": 1038,
+        "players": 2123
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 32126,
+        "events": 1025,
+        "players": 1841
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Spirit of Wind"
+        ],
+        "matches": 32038,
+        "events": 1069,
+        "players": 1996
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 31882,
+        "events": 1027,
+        "players": 1907
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 31838,
+        "events": 1040,
+        "players": 2009
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 31813,
+        "events": 1001,
+        "players": 1994
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 31807,
+        "events": 1015,
+        "players": 1905
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 31794,
+        "events": 1032,
+        "players": 2034
+      },
+      {
+        "cards": [
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 31727,
+        "events": 1035,
+        "players": 2019
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Stifling Trap"
+        ],
+        "matches": 31682,
+        "events": 959,
+        "players": 1960
+      },
+      {
+        "cards": [
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 31548,
+        "events": 1034,
+        "players": 1993
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Spirit of Fire"
+        ],
+        "matches": 31473,
+        "events": 1027,
+        "players": 2165
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fracturize",
+          "Spirit of Water"
+        ],
+        "matches": 31443,
+        "events": 990,
+        "players": 1875
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 31397,
+        "events": 1021,
+        "players": 1770
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Windmill Engineer"
+        ],
+        "matches": 31389,
+        "events": 1025,
+        "players": 1790
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 31388,
+        "events": 1022,
+        "players": 1970
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 31334,
+        "events": 1018,
+        "players": 1800
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 31321,
+        "events": 1074,
+        "players": 1984
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 31269,
+        "events": 971,
+        "players": 1962
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze"
+        ],
+        "matches": 31250,
+        "events": 1066,
+        "players": 1950
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 31246,
+        "events": 1033,
+        "players": 1953
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dungeon Guide",
+          "Resolute Stand"
+        ],
+        "matches": 31204,
+        "events": 933,
+        "players": 1877
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Stifling Trap"
+        ],
+        "matches": 30989,
+        "events": 944,
+        "players": 1916
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 30973,
+        "events": 1024,
+        "players": 1759
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 30971,
+        "events": 995,
+        "players": 1960
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim"
+        ],
+        "matches": 30925,
+        "events": 1063,
+        "players": 1911
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 30866,
+        "events": 1008,
+        "players": 1844
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 30852,
+        "events": 1015,
+        "players": 1878
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim"
+        ],
+        "matches": 30809,
+        "events": 1008,
+        "players": 1838
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 30755,
+        "events": 1020,
+        "players": 1925
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 30730,
+        "events": 1027,
+        "players": 1868
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 30625,
+        "events": 987,
+        "players": 1902
+      },
+      {
+        "cards": [
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 30546,
+        "events": 1029,
+        "players": 1926
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Windmill Engineer"
+        ],
+        "matches": 30455,
+        "events": 982,
+        "players": 1916
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Smoke Bombs",
+          "Tariff Ring"
+        ],
+        "matches": 30411,
+        "events": 1008,
+        "players": 2097
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Windmill Engineer"
+        ],
+        "matches": 30368,
+        "events": 967,
+        "players": 1901
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 30247,
+        "events": 1008,
+        "players": 1814
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 30216,
+        "events": 978,
+        "players": 1869
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Spirit of Wind"
+        ],
+        "matches": 30067,
+        "events": 1000,
+        "players": 1846
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 30013,
+        "events": 958,
+        "players": 1875
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 29929,
+        "events": 1022,
+        "players": 1839
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Windmill Engineer"
+        ],
+        "matches": 29913,
+        "events": 1015,
+        "players": 1818
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim"
+        ],
+        "matches": 29804,
+        "events": 982,
+        "players": 1877
+      },
+      {
+        "cards": [
+          "Cremation Ritual",
+          "Dungeon Guide",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 29802,
+        "events": 1016,
+        "players": 1856
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring"
+        ],
+        "matches": 29779,
+        "events": 998,
+        "players": 1887
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Frostsworn Paladin",
+          "Spirit of Water"
+        ],
+        "matches": 29740,
+        "events": 978,
+        "players": 1801
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Grand Crusader's Ring",
+          "Safeguard Amulet"
+        ],
+        "matches": 29642,
+        "events": 932,
+        "players": 2047
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 29607,
+        "events": 1013,
+        "players": 1790
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 29601,
+        "events": 1014,
+        "players": 1859
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Stifling Trap"
+        ],
+        "matches": 29425,
+        "events": 983,
+        "players": 1801
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Spirit of Wind"
+        ],
+        "matches": 29294,
+        "events": 1050,
+        "players": 1725
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Stifling Trap"
+        ],
+        "matches": 29165,
+        "events": 981,
+        "players": 1778
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 29119,
+        "events": 1060,
+        "players": 1870
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 29067,
+        "events": 932,
+        "players": 1829
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Spirit of Wind"
+        ],
+        "matches": 29036,
+        "events": 929,
+        "players": 1841
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Stifling Trap"
+        ],
+        "matches": 28887,
+        "events": 1003,
+        "players": 1681
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Spirit of Fire",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 28834,
+        "events": 991,
+        "players": 1983
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Stifling Trap"
+        ],
+        "matches": 28560,
+        "events": 905,
+        "players": 1797
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers"
+        ],
+        "matches": 28538,
+        "events": 1040,
+        "players": 1662
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 28532,
+        "events": 1031,
+        "players": 1895
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 35340,
+        "events": 1049,
+        "players": 2077
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 34244,
+        "events": 1027,
+        "players": 2000
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 32672,
+        "events": 1036,
+        "players": 2006
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 32583,
+        "events": 1040,
+        "players": 2001
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 32472,
+        "events": 1030,
+        "players": 1923
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 32065,
+        "events": 1032,
+        "players": 1916
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 32044,
+        "events": 1037,
+        "players": 1965
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 31677,
+        "events": 1035,
+        "players": 1923
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 31589,
+        "events": 1025,
+        "players": 1870
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 30384,
+        "events": 1008,
+        "players": 1846
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 30376,
+        "events": 1006,
+        "players": 1735
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 30366,
+        "events": 950,
+        "players": 1902
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 30299,
+        "events": 1027,
+        "players": 1940
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 30265,
+        "events": 1010,
+        "players": 1746
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 29969,
+        "events": 1011,
+        "players": 1710
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 29966,
+        "events": 1010,
+        "players": 1726
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 29872,
+        "events": 1022,
+        "players": 1898
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 29797,
+        "events": 1051,
+        "players": 1861
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Dungeon Guide",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 29760,
+        "events": 1016,
+        "players": 1852
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 29758,
+        "events": 1008,
+        "players": 1828
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 29702,
+        "events": 1051,
+        "players": 1885
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 29612,
+        "events": 936,
+        "players": 1846
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 29563,
+        "events": 1014,
+        "players": 1854
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 29505,
+        "events": 978,
+        "players": 1853
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fracturize",
+          "Frostsworn Paladin",
+          "Spirit of Water"
+        ],
+        "matches": 29500,
+        "events": 972,
+        "players": 1775
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 29395,
+        "events": 1006,
+        "players": 1780
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 29310,
+        "events": 1021,
+        "players": 1854
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 29259,
+        "events": 1004,
+        "players": 1775
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 29228,
+        "events": 1007,
+        "players": 1861
+      },
+      {
+        "cards": [
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 29221,
+        "events": 1020,
+        "players": 1875
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 29212,
+        "events": 965,
+        "players": 1857
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 29100,
+        "events": 967,
+        "players": 1822
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 28990,
+        "events": 956,
+        "players": 1833
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 28835,
+        "events": 999,
+        "players": 1778
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 28786,
+        "events": 1012,
+        "players": 1791
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind"
+        ],
+        "matches": 28740,
+        "events": 987,
+        "players": 1833
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 28733,
+        "events": 950,
+        "players": 1816
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 28644,
+        "events": 1005,
+        "players": 1745
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 28564,
+        "events": 990,
+        "players": 1733
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 28479,
+        "events": 953,
+        "players": 1788
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 28475,
+        "events": 973,
+        "players": 1756
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 28435,
+        "events": 969,
+        "players": 1817
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 28410,
+        "events": 1004,
+        "players": 1786
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 28357,
+        "events": 996,
+        "players": 1715
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 28355,
+        "events": 1007,
+        "players": 1749
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 28337,
+        "events": 1004,
+        "players": 1793
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 28272,
+        "events": 1004,
+        "players": 1809
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 28266,
+        "events": 1005,
+        "players": 1744
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 28188,
+        "events": 1008,
+        "players": 1731
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 28182,
+        "events": 1012,
+        "players": 1751
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 28133,
+        "events": 941,
+        "players": 1771
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 28049,
+        "events": 976,
+        "players": 1725
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 27875,
+        "events": 992,
+        "players": 1692
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 27767,
+        "events": 924,
+        "players": 1770
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 27756,
+        "events": 1026,
+        "players": 1629
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Stifling Trap"
+        ],
+        "matches": 27574,
+        "events": 921,
+        "players": 1745
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 27543,
+        "events": 995,
+        "players": 1689
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 27542,
+        "events": 985,
+        "players": 1605
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Creative Shock",
+          "Dungeon Guide",
+          "Resolute Stand"
+        ],
+        "matches": 27262,
+        "events": 896,
+        "players": 1596
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 27193,
+        "events": 918,
+        "players": 1730
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Dungeon Guide",
+          "Spirit of Fire"
+        ],
+        "matches": 27184,
+        "events": 980,
+        "players": 1793
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 27158,
+        "events": 926,
+        "players": 1749
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 27155,
+        "events": 1036,
+        "players": 1765
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 27129,
+        "events": 984,
+        "players": 1567
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 27086,
+        "events": 956,
+        "players": 1725
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 27043,
+        "events": 984,
+        "players": 1580
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 26948,
+        "events": 979,
+        "players": 1689
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 26931,
+        "events": 974,
+        "players": 1712
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Windmill Engineer"
+        ],
+        "matches": 26899,
+        "events": 990,
+        "players": 1570
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26894,
+        "events": 986,
+        "players": 1559
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 26887,
+        "events": 925,
+        "players": 1716
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 26876,
+        "events": 943,
+        "players": 1723
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Windmill Engineer"
+        ],
+        "matches": 26835,
+        "events": 996,
+        "players": 1594
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 26742,
+        "events": 976,
+        "players": 1670
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze"
+        ],
+        "matches": 26724,
+        "events": 968,
+        "players": 1637
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 26713,
+        "events": 988,
+        "players": 1606
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 26699,
+        "events": 986,
+        "players": 1720
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 26652,
+        "events": 969,
+        "players": 1650
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 26584,
+        "events": 1025,
+        "players": 1622
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 26481,
+        "events": 977,
+        "players": 1674
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 26473,
+        "events": 962,
+        "players": 1739
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Spirit of Fire",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 26452,
+        "events": 963,
+        "players": 1812
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 26446,
+        "events": 963,
+        "players": 1709
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 26442,
+        "events": 969,
+        "players": 1646
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26415,
+        "events": 993,
+        "players": 1567
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 26405,
+        "events": 899,
+        "players": 1679
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26390,
+        "events": 942,
+        "players": 1667
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26374,
+        "events": 919,
+        "players": 1689
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 26348,
+        "events": 967,
+        "players": 1768
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 26329,
+        "events": 979,
+        "players": 1662
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap"
+        ],
+        "matches": 26288,
+        "events": 940,
+        "players": 1645
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind"
+        ],
+        "matches": 26247,
+        "events": 969,
+        "players": 1665
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 26222,
+        "events": 990,
+        "players": 1705
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 26193,
+        "events": 987,
+        "players": 1684
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 26182,
+        "events": 974,
+        "players": 1633
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26128,
+        "events": 924,
+        "players": 1671
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Dungeon Guide",
+          "Spirit of Fire",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 26100,
+        "events": 959,
+        "players": 1739
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 26063,
+        "events": 964,
+        "players": 1722
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 26040,
+        "events": 997,
+        "players": 1686
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 26026,
+        "events": 971,
+        "players": 1621
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 30525,
+        "events": 1014,
+        "players": 1824
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 30254,
+        "events": 1023,
+        "players": 1871
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 29043,
+        "events": 998,
+        "players": 1681
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 28064,
+        "events": 1000,
+        "players": 1790
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 28005,
+        "events": 1010,
+        "players": 1802
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 27831,
+        "events": 990,
+        "players": 1732
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 27425,
+        "events": 941,
+        "players": 1743
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 27316,
+        "events": 995,
+        "players": 1729
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 27234,
+        "events": 995,
+        "players": 1700
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 27216,
+        "events": 986,
+        "players": 1680
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 27109,
+        "events": 992,
+        "players": 1735
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 27107,
+        "events": 1000,
+        "players": 1706
+      },
+      {
+        "cards": [
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 27038,
+        "events": 994,
+        "players": 1743
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26916,
+        "events": 931,
+        "players": 1714
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 26853,
+        "events": 991,
+        "players": 1653
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26792,
+        "events": 994,
+        "players": 1669
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 26676,
+        "events": 913,
+        "players": 1697
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26495,
+        "events": 988,
+        "players": 1634
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 26440,
+        "events": 971,
+        "players": 1539
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26220,
+        "events": 972,
+        "players": 1534
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26219,
+        "events": 988,
+        "players": 1635
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26216,
+        "events": 978,
+        "players": 1606
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 26206,
+        "events": 976,
+        "players": 1543
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 26123,
+        "events": 975,
+        "players": 1524
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 25976,
+        "events": 909,
+        "players": 1674
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 25802,
+        "events": 981,
+        "players": 1559
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 25653,
+        "events": 963,
+        "players": 1590
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 25582,
+        "events": 915,
+        "players": 1655
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 25528,
+        "events": 982,
+        "players": 1524
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 25524,
+        "events": 931,
+        "players": 1625
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 25481,
+        "events": 979,
+        "players": 1540
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 25422,
+        "events": 927,
+        "players": 1605
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 25299,
+        "events": 967,
+        "players": 1603
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 25292,
+        "events": 960,
+        "players": 1573
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 25250,
+        "events": 975,
+        "players": 1640
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 25238,
+        "events": 915,
+        "players": 1622
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 25228,
+        "events": 962,
+        "players": 1588
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 25145,
+        "events": 910,
+        "players": 1632
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 25014,
+        "events": 983,
+        "players": 1635
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 24971,
+        "events": 922,
+        "players": 1619
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 24971,
+        "events": 907,
+        "players": 1609
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 24923,
+        "events": 920,
+        "players": 1605
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 24922,
+        "events": 965,
+        "players": 1581
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 24903,
+        "events": 948,
+        "players": 1581
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 24902,
+        "events": 968,
+        "players": 1519
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24855,
+        "events": 974,
+        "players": 1621
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24723,
+        "events": 977,
+        "players": 1601
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 24719,
+        "events": 953,
+        "players": 1535
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24645,
+        "events": 962,
+        "players": 1557
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 24634,
+        "events": 912,
+        "players": 1564
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24613,
+        "events": 957,
+        "players": 1545
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 24604,
+        "events": 908,
+        "players": 1589
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 24604,
+        "events": 1000,
+        "players": 1605
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 24593,
+        "events": 946,
+        "players": 1533
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 24534,
+        "events": 958,
+        "players": 1550
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24533,
+        "events": 909,
+        "players": 1618
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 24525,
+        "events": 935,
+        "players": 1666
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 24495,
+        "events": 943,
+        "players": 1648
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24492,
+        "events": 966,
+        "players": 1571
+      },
+      {
+        "cards": [
+          "Creative Shock",
+          "Cremation Ritual",
+          "Dungeon Guide",
+          "Spirit of Fire",
+          "Stalwart Shieldmate"
+        ],
+        "matches": 24435,
+        "events": 942,
+        "players": 1625
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 24382,
+        "events": 927,
+        "players": 1595
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 24247,
+        "events": 885,
+        "players": 1559
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze"
+        ],
+        "matches": 24180,
+        "events": 919,
+        "players": 1588
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24164,
+        "events": 969,
+        "players": 1565
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24124,
+        "events": 960,
+        "players": 1576
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 24082,
+        "events": 935,
+        "players": 1619
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 24063,
+        "events": 887,
+        "players": 1564
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 24020,
+        "events": 953,
+        "players": 1559
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 23993,
+        "events": 895,
+        "players": 1592
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 23976,
+        "events": 955,
+        "players": 1540
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 23941,
+        "events": 925,
+        "players": 1603
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 23926,
+        "events": 946,
+        "players": 1514
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23853,
+        "events": 897,
+        "players": 1565
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23845,
+        "events": 958,
+        "players": 1542
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 23771,
+        "events": 951,
+        "players": 1511
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23758,
+        "events": 881,
+        "players": 1562
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 23722,
+        "events": 931,
+        "players": 1496
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23701,
+        "events": 896,
+        "players": 1570
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 23628,
+        "events": 877,
+        "players": 1530
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23624,
+        "events": 959,
+        "players": 1490
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind"
+        ],
+        "matches": 23538,
+        "events": 873,
+        "players": 1519
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 23537,
+        "events": 880,
+        "players": 1539
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 23474,
+        "events": 873,
+        "players": 1521
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 23439,
+        "events": 954,
+        "players": 1490
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23353,
+        "events": 961,
+        "players": 1457
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 23234,
+        "events": 952,
+        "players": 1502
+      },
+      {
+        "cards": [
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 23224,
+        "events": 875,
+        "players": 1513
+      },
+      {
+        "cards": [
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 23198,
+        "events": 894,
+        "players": 1522
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23180,
+        "events": 878,
+        "players": 1513
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Windmill Engineer"
+        ],
+        "matches": 23154,
+        "events": 870,
+        "players": 1462
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Reclaim",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 23142,
+        "events": 936,
+        "players": 1462
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Reclaim",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23111,
+        "events": 954,
+        "players": 1426
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 23094,
+        "events": 860,
+        "players": 1450
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze",
+          "Windmill Engineer"
+        ],
+        "matches": 23082,
+        "events": 954,
+        "players": 1457
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Fairy Whispers",
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Stifling Trap"
+        ],
+        "matches": 23064,
+        "events": 864,
+        "players": 1495
+      },
+      {
+        "cards": [
+          "Grand Crusader's Ring",
+          "Reclaim",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 23043,
+        "events": 875,
+        "players": 1519
+      },
+      {
+        "cards": [
+          "Aesan Protector",
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 23029,
+        "events": 854,
+        "players": 1432
+      },
+      {
+        "cards": [
+          "Dungeon Guide",
+          "Fairy Whispers",
+          "Spirit of Wind",
+          "Stifling Trap",
+          "Veiling Breeze"
+        ],
+        "matches": 22982,
+        "events": 952,
+        "players": 1458
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Grand Crusader's Ring",
+          "Spirit of Wind",
+          "Stifling Trap"
+        ],
+        "matches": 22968,
+        "events": 858,
+        "players": 1490
+      },
+      {
+        "cards": [
+          "Backup Charger",
+          "Dream Fairy",
+          "Fairy Whispers",
+          "Stifling Trap",
+          "Windmill Engineer"
+        ],
+        "matches": 22942,
+        "events": 936,
+        "players": 1471
+      }
+    ],
+    "packages": [
+      {
+        "cards": [
+          "Ashwound Shot",
+          "Seeker's Aetherwing",
+          "Trivariate Dream"
+        ],
+        "matches": 1605,
+        "events": 176,
+        "players": 176
+      },
+      {
+        "cards": [
+          "Blastshot Pump",
+          "Seeker's Rifle",
+          "Shadow's Twin"
+        ],
+        "matches": 1132,
+        "events": 114,
+        "players": 137
+      },
+      {
+        "cards": [
+          "Art of War",
+          "Mnemonic Charm",
+          "Zhou Yu, Enlightened Sage"
+        ],
+        "matches": 554,
+        "events": 78,
+        "players": 72
+      },
+      {
+        "cards": [
+          "Magebane Lash",
+          "Ravishing Finale",
+          "Sablemere, Warden's Grip"
+        ],
+        "matches": 479,
+        "events": 70,
+        "players": 84
+      },
+      {
+        "cards": [
+          "Alice, Golden Queen",
+          "Alice, Whim's Monarch",
+          "Queen's Gambit"
+        ],
+        "matches": 201,
+        "events": 36,
+        "players": 35
+      },
+      {
+        "cards": [
+          "Advent of the Shenju",
+          "Broken Promises",
+          "Companion Fatestone"
+        ],
+        "matches": 124,
+        "events": 23,
+        "players": 27
+      }
+    ],
+    "options": {
+      "minimumMatches": 100,
+      "minimumEvents": 20,
+      "minimumPlayers": 20,
+      "maximumSingles": 150,
+      "beamWidth": 200,
+      "maximumPerSize": 100
+    },
+    "levels": [
+      {
+        "size": 2,
+        "candidates": 7404,
+        "eligible": 241,
+        "retained": 200
+      },
+      {
+        "size": 3,
+        "candidates": 19647,
+        "eligible": 283,
+        "retained": 200
+      },
+      {
+        "size": 4,
+        "candidates": 18615,
+        "eligible": 299,
+        "retained": 200
+      },
+      {
+        "size": 5,
+        "candidates": 16986,
+        "eligible": 290,
+        "retained": 200
+      }
+    ],
+    "nominatedPackages": 24,
+    "trainingDecks": 34547,
+    "packageSourceSha256": "1a286213ffbf9bd61f825d09fd904f4ab21b766a0a45dc690698068ea9cc9e4d",
+    "packageSource": "Current package-candidates.json explicit anchor + member sets, not merged families or display core cards. Nominations postdate cutoff: exploratory only, not leakage-free historical discovery.",
+    "selection": "Training composition only: 150 supported singles, frequency beam 200 at sizes 2–5, up to 100 per size at 3–5. Minimum 100 matches, 20 events, 20 players. Not exhaustive. Eligible level counts include evaluated candidates only.",
+    "comparisons": "Cards + triples; cards + all selected 3–5-card groups; cards + nominated package full/partial presence. Each jointly fitted with context and cards, penalty 100. No pairs in these models."
+  },
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-13T03:39:43.469Z",
+  "publication": {
+    "enabled": false,
+    "status": "research-only"
+  },
+  "inputs": {
+    "catalogSha256": "6feda64f2add986b96d8f6c64ab8b848bd0200801b3bf17af734f0a86ec30b3e",
+    "cohortSha256": "b2596175155680403a455ac3c24effebcbc704f4d544e9460098f957dfce6280",
+    "historySha256": "df9c4bb72c6bf2038d37b2ee2283994d903d9ff5b8b42da77be27ab8fa3cd106",
+    "coverage": {
+      "completedEvents": 23427,
+      "eventsWithMatches": 23169,
+      "savedRoundResponses": 80750,
+      "unavailableRoundResponses": 53,
+      "rawPairings": 569949,
+      "singleSidePairings": 24476,
+      "validMatches": 544499,
+      "invalidPlayerMatches": 658
+    },
+    "linkedMatches": 163317,
+    "trainingMatches": 114817,
+    "cutoff": "2026-03-01"
+  },
+  "method": {
+    "target": "Match point share: win 1, draw 0.5, loss 0. One observation per match.",
+    "split": "First 70% distinct UTC dates train, later dates test. Retrospective holdout already used by earlier analytics research; not an untouched prospective validation.",
+    "baseline": "Prior-day Elo frozen at cutoff; context adds signed champion within format and champion matchup within format. Format is recorded event format, not set/ban era.",
+    "cardAverage": "Training-only per-card match-point rate with 20 neutral prior appearances, averaged by copies; prediction 0.5 + own average - opponent average. Both sides contribute to training counts.",
+    "adjusted": "Sparse ridge residual regression with context and card quantities, plus separately fitted group presence or package completion states. No intercept ensures side-swap symmetry.",
+    "selection": "See groupExperiment for training-only recurring group discovery and separately labeled post-cutoff package nominations. No holdout-outcome tuning.",
+    "uncertainty": "400 paired event-cluster bootstrap samples; positive error reduction favors candidate. Does not account for cross-event player dependence.",
+    "limitations": [
+      "Published-deck selection bias",
+      "No sideboard features",
+      "No historical catalog or ban-era reconstruction",
+      "Exact unseen-deck subset does not isolate near-duplicate families",
+      "No causal interpretation of card coefficients",
+      "No prospective validation; existing package nominations postdate training cutoff"
+    ]
+  },
+  "options": {
+    "minimumPairMatches": 100,
+    "minimumPairEvents": 20,
+    "maximumPairs": 0,
+    "penalty": 100,
+    "passes": 2000
+  },
+  "diagnostics": {
+    "extensions": {
+      "cardTriples": {
+        "features": 2097,
+        "passes": 405,
+        "maximumLastCoefficientChange": 9.005939815388757e-10,
+        "relativeNormalEquationResidual": 8.008012264594577e-9,
+        "converged": true
+      },
+      "cardGroups": {
+        "features": 2297,
+        "passes": 531,
+        "maximumLastCoefficientChange": 2.898981147883234e-9,
+        "relativeNormalEquationResidual": 8.998579143502942e-9,
+        "converged": true
+      },
+      "nominatedPackages": {
+        "features": 2009,
+        "passes": 231,
+        "maximumLastCoefficientChange": 1.3435694219293767e-9,
+        "relativeNormalEquationResidual": 8.960402239009725e-9,
+        "converged": true
+      }
+    },
+    "selectedPairs": 0,
+    "cardCount": 1791,
+    "adjustedContext": {
+      "features": 206,
+      "passes": 42,
+      "maximumLastCoefficientChange": 1.694338678199536e-9,
+      "relativeNormalEquationResidual": 2.6643113503260612e-9,
+      "converged": true
+    },
+    "cards": {
+      "features": 1997,
+      "passes": 229,
+      "maximumLastCoefficientChange": 6.536603785028725e-10,
+      "relativeNormalEquationResidual": 9.86142397713256e-9,
+      "converged": true
+    },
+    "cardPairs": {
+      "features": 1997,
+      "passes": 229,
+      "maximumLastCoefficientChange": 6.536603785028725e-10,
+      "relativeNormalEquationResidual": 9.86142397713256e-9,
+      "converged": true
+    }
+  },
+  "holdout": {
+    "matches": 48500,
+    "events": 748,
+    "models": {
+      "cardTriples": {
+        "meanSquaredMatchPointError": 0.19542042299650536,
+        "improvementOverContext95": [
+          0.0015026978827239461,
+          0.004083340219807864
+        ],
+        "improvementOverCards95": [
+          -0.000576106427605166,
+          -0.0002279146524068619
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1605,
+            "predicted": 0.04516193346784574,
+            "observed": 0.12429906542056075
+          },
+          {
+            "from": 0.1,
+            "matches": 2803,
+            "predicted": 0.1559956721892502,
+            "observed": 0.22190510167677488
+          },
+          {
+            "from": 0.2,
+            "matches": 4903,
+            "predicted": 0.2541781284882515,
+            "observed": 0.2950234550275342
+          },
+          {
+            "from": 0.3,
+            "matches": 6864,
+            "predicted": 0.35204702052427855,
+            "observed": 0.37864219114219116
+          },
+          {
+            "from": 0.4,
+            "matches": 7913,
+            "predicted": 0.4507436911433701,
+            "observed": 0.451472260836598
+          },
+          {
+            "from": 0.5,
+            "matches": 7955,
+            "predicted": 0.5493276706507714,
+            "observed": 0.539220615964802
+          },
+          {
+            "from": 0.6,
+            "matches": 6782,
+            "predicted": 0.6478201905959203,
+            "observed": 0.6257741079327632
+          },
+          {
+            "from": 0.7,
+            "matches": 5064,
+            "predicted": 0.7473014215629638,
+            "observed": 0.7103080568720379
+          },
+          {
+            "from": 0.8,
+            "matches": 3014,
+            "predicted": 0.8439565815814949,
+            "observed": 0.7597876575978766
+          },
+          {
+            "from": 0.9,
+            "matches": 1597,
+            "predicted": 0.9525760051802754,
+            "observed": 0.8531621790857858
+          }
+        ]
+      },
+      "cardGroups": {
+        "meanSquaredMatchPointError": 0.19559582186932536,
+        "improvementOverContext95": [
+          0.0012647021557103636,
+          0.003938636777785517
+        ],
+        "improvementOverCards95": [
+          -0.0007614780143801291,
+          -0.00037097198998091967
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1621,
+            "predicted": 0.04548776360596737,
+            "observed": 0.12739049969154842
+          },
+          {
+            "from": 0.1,
+            "matches": 2800,
+            "predicted": 0.15604009868169016,
+            "observed": 0.22357142857142856
+          },
+          {
+            "from": 0.2,
+            "matches": 4904,
+            "predicted": 0.254106259454708,
+            "observed": 0.2946574225122349
+          },
+          {
+            "from": 0.3,
+            "matches": 6833,
+            "predicted": 0.3517797847765096,
+            "observed": 0.3765549539001902
+          },
+          {
+            "from": 0.4,
+            "matches": 7945,
+            "predicted": 0.4507401235299977,
+            "observed": 0.4539332913782253
+          },
+          {
+            "from": 0.5,
+            "matches": 7939,
+            "predicted": 0.5493849918206437,
+            "observed": 0.5382919763194357
+          },
+          {
+            "from": 0.6,
+            "matches": 6746,
+            "predicted": 0.6476416839494009,
+            "observed": 0.6262970649273644
+          },
+          {
+            "from": 0.7,
+            "matches": 5081,
+            "predicted": 0.7469886970167349,
+            "observed": 0.7081283211966148
+          },
+          {
+            "from": 0.8,
+            "matches": 3037,
+            "predicted": 0.8441508232110319,
+            "observed": 0.7609483042476127
+          },
+          {
+            "from": 0.9,
+            "matches": 1594,
+            "predicted": 0.9529028028181996,
+            "observed": 0.8519447929736512
+          }
+        ]
+      },
+      "nominatedPackages": {
+        "meanSquaredMatchPointError": 0.19501392227195335,
+        "improvementOverContext95": [
+          0.0018961817144888503,
+          0.0044902746462145565
+        ],
+        "improvementOverCards95": [
+          -0.000013052167032389823,
+          0.000040220804482131185
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1610,
+            "predicted": 0.0458126844975041,
+            "observed": 0.12204968944099379
+          },
+          {
+            "from": 0.1,
+            "matches": 2792,
+            "predicted": 0.1561087143180562,
+            "observed": 0.21955587392550144
+          },
+          {
+            "from": 0.2,
+            "matches": 4878,
+            "predicted": 0.25404601588615006,
+            "observed": 0.2965354653546535
+          },
+          {
+            "from": 0.3,
+            "matches": 6905,
+            "predicted": 0.35179988796447254,
+            "observed": 0.3771904417089066
+          },
+          {
+            "from": 0.4,
+            "matches": 7875,
+            "predicted": 0.4509256341391733,
+            "observed": 0.45155555555555554
+          },
+          {
+            "from": 0.5,
+            "matches": 7992,
+            "predicted": 0.5487068812855125,
+            "observed": 0.5393518518518519
+          },
+          {
+            "from": 0.6,
+            "matches": 6732,
+            "predicted": 0.6477317193470331,
+            "observed": 0.6234402852049911
+          },
+          {
+            "from": 0.7,
+            "matches": 5098,
+            "predicted": 0.7468214019142998,
+            "observed": 0.7110631620243233
+          },
+          {
+            "from": 0.8,
+            "matches": 3028,
+            "predicted": 0.8443435926979621,
+            "observed": 0.7640356671070013
+          },
+          {
+            "from": 0.9,
+            "matches": 1590,
+            "predicted": 0.9517693940882416,
+            "observed": 0.8553459119496856
+          }
+        ]
+      },
+      "playerBaseline": {
+        "meanSquaredMatchPointError": 0.19859169162334062,
+        "improvementOverContext95": [
+          -0.0011059615886818512,
+          0.000046566281092564766
+        ],
+        "improvementOverCards95": [
+          -0.005370139697814968,
+          -0.0019744018935144428
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 297,
+            "predicted": 0.07834374487465996,
+            "observed": 0.10606060606060606
+          },
+          {
+            "from": 0.1,
+            "matches": 2485,
+            "predicted": 0.15925326226365658,
+            "observed": 0.18571428571428572
+          },
+          {
+            "from": 0.2,
+            "matches": 4983,
+            "predicted": 0.2543320159115287,
+            "observed": 0.2812562713224965
+          },
+          {
+            "from": 0.3,
+            "matches": 7096,
+            "predicted": 0.351941471066947,
+            "observed": 0.3692925591882751
+          },
+          {
+            "from": 0.4,
+            "matches": 8849,
+            "predicted": 0.4512064018536028,
+            "observed": 0.45609673409424795
+          },
+          {
+            "from": 0.5,
+            "matches": 9566,
+            "predicted": 0.544563046367784,
+            "observed": 0.5444281831486515
+          },
+          {
+            "from": 0.6,
+            "matches": 7142,
+            "predicted": 0.6477356717944903,
+            "observed": 0.6230747689722766
+          },
+          {
+            "from": 0.7,
+            "matches": 5186,
+            "predicted": 0.7467542970051372,
+            "observed": 0.7127844195912071
+          },
+          {
+            "from": 0.8,
+            "matches": 2602,
+            "predicted": 0.8398172640327257,
+            "observed": 0.7874711760184473
+          },
+          {
+            "from": 0.9,
+            "matches": 294,
+            "predicted": 0.9208985902244228,
+            "observed": 0.9115646258503401
+          }
+        ]
+      },
+      "cardAverage": {
+        "meanSquaredMatchPointError": 0.22237977819282873,
+        "improvementOverContext95": [
+          -0.026738410790941598,
+          -0.02247814607396467
+        ],
+        "improvementOverCards95": [
+          -0.030822578351143774,
+          -0.024751414109589063
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.1,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.2,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.3,
+            "matches": 271,
+            "predicted": 0.37890110452358716,
+            "observed": 0.16974169741697417
+          },
+          {
+            "from": 0.4,
+            "matches": 23863,
+            "predicted": 0.48177025974549786,
+            "observed": 0.4520387210325609
+          },
+          {
+            "from": 0.5,
+            "matches": 24119,
+            "predicted": 0.5184376166923077,
+            "observed": 0.5474936771839628
+          },
+          {
+            "from": 0.6,
+            "matches": 247,
+            "predicted": 0.6190287782877564,
+            "observed": 0.7469635627530364
+          },
+          {
+            "from": 0.7,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.9,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "adjustedContext": {
+        "meanSquaredMatchPointError": 0.19809320623341814,
+        "improvementOverContext95": [
+          0,
+          0
+        ],
+        "improvementOverCards95": [
+          -0.004472447283404379,
+          -0.0018658759532654825
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 648,
+            "predicted": 0.0627951223616326,
+            "observed": 0.1087962962962963
+          },
+          {
+            "from": 0.1,
+            "matches": 2544,
+            "predicted": 0.15814857698854423,
+            "observed": 0.2034198113207547
+          },
+          {
+            "from": 0.2,
+            "matches": 4999,
+            "predicted": 0.254373388665959,
+            "observed": 0.29265853170634126
+          },
+          {
+            "from": 0.3,
+            "matches": 7079,
+            "predicted": 0.3533179546592946,
+            "observed": 0.3630456279135471
+          },
+          {
+            "from": 0.4,
+            "matches": 8840,
+            "predicted": 0.45138447340159155,
+            "observed": 0.4595022624434389
+          },
+          {
+            "from": 0.5,
+            "matches": 8840,
+            "predicted": 0.547939992595129,
+            "observed": 0.5419117647058823
+          },
+          {
+            "from": 0.6,
+            "matches": 7075,
+            "predicted": 0.6475290700126756,
+            "observed": 0.6246643109540636
+          },
+          {
+            "from": 0.7,
+            "matches": 5086,
+            "predicted": 0.7474312414208476,
+            "observed": 0.7170664569406213
+          },
+          {
+            "from": 0.8,
+            "matches": 2743,
+            "predicted": 0.8420369157992007,
+            "observed": 0.7743346700692673
+          },
+          {
+            "from": 0.9,
+            "matches": 646,
+            "predicted": 0.9359357148788287,
+            "observed": 0.8645510835913313
+          }
+        ]
+      },
+      "cards": {
+        "meanSquaredMatchPointError": 0.19503206348456428,
+        "improvementOverContext95": [
+          0.0018658759532654825,
+          0.004472447283404379
+        ],
+        "improvementOverCards95": [
+          0,
+          0
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1604,
+            "predicted": 0.04569473382612738,
+            "observed": 0.12219451371571072
+          },
+          {
+            "from": 0.1,
+            "matches": 2796,
+            "predicted": 0.1559848682457051,
+            "observed": 0.21852646638054363
+          },
+          {
+            "from": 0.2,
+            "matches": 4884,
+            "predicted": 0.2540552777510702,
+            "observed": 0.2968877968877969
+          },
+          {
+            "from": 0.3,
+            "matches": 6896,
+            "predicted": 0.35177468749072177,
+            "observed": 0.3781177494199536
+          },
+          {
+            "from": 0.4,
+            "matches": 7891,
+            "predicted": 0.4509379531926967,
+            "observed": 0.4519705994170574
+          },
+          {
+            "from": 0.5,
+            "matches": 7996,
+            "predicted": 0.5488377991352442,
+            "observed": 0.5394572286143071
+          },
+          {
+            "from": 0.6,
+            "matches": 6710,
+            "predicted": 0.6477402830972399,
+            "observed": 0.6215350223546945
+          },
+          {
+            "from": 0.7,
+            "matches": 5113,
+            "predicted": 0.7468331481767997,
+            "observed": 0.7125953451985136
+          },
+          {
+            "from": 0.8,
+            "matches": 3017,
+            "predicted": 0.8442521330831049,
+            "observed": 0.763175339741465
+          },
+          {
+            "from": 0.9,
+            "matches": 1593,
+            "predicted": 0.9515867994064368,
+            "observed": 0.854676710608914
+          }
+        ]
+      }
+    }
+  },
+  "bothDecksUnseen": {
+    "matches": 46289,
+    "events": 748,
+    "models": {
+      "cardTriples": {
+        "meanSquaredMatchPointError": 0.19616548849263396,
+        "improvementOverContext95": [
+          0.0011996050284813476,
+          0.003811535893777652
+        ],
+        "improvementOverCards95": [
+          -0.0005787109867808059,
+          -0.00020800483857136387
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1517,
+            "predicted": 0.04514080613428634,
+            "observed": 0.12689518787079762
+          },
+          {
+            "from": 0.1,
+            "matches": 2664,
+            "predicted": 0.15603242248232102,
+            "observed": 0.2242867867867868
+          },
+          {
+            "from": 0.2,
+            "matches": 4665,
+            "predicted": 0.25395848337080634,
+            "observed": 0.2969989281886388
+          },
+          {
+            "from": 0.3,
+            "matches": 6581,
+            "predicted": 0.35202173907421863,
+            "observed": 0.3778301170034949
+          },
+          {
+            "from": 0.4,
+            "matches": 7561,
+            "predicted": 0.4507643325281775,
+            "observed": 0.4500066128818939
+          },
+          {
+            "from": 0.5,
+            "matches": 7670,
+            "predicted": 0.5493479086120243,
+            "observed": 0.5394393741851369
+          },
+          {
+            "from": 0.6,
+            "matches": 6459,
+            "predicted": 0.6479450215745892,
+            "observed": 0.6261805233008205
+          },
+          {
+            "from": 0.7,
+            "matches": 4810,
+            "predicted": 0.7473466115248506,
+            "observed": 0.7070686070686071
+          },
+          {
+            "from": 0.8,
+            "matches": 2864,
+            "predicted": 0.8440410518289323,
+            "observed": 0.75768156424581
+          },
+          {
+            "from": 0.9,
+            "matches": 1498,
+            "predicted": 0.9522350966261509,
+            "observed": 0.8464619492656876
+          }
+        ]
+      },
+      "cardGroups": {
+        "meanSquaredMatchPointError": 0.1963484416009078,
+        "improvementOverContext95": [
+          0.0009500726906354429,
+          0.0036690564673035977
+        ],
+        "improvementOverCards95": [
+          -0.0007620168851103689,
+          -0.00036550132927547896
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1532,
+            "predicted": 0.045453620801759326,
+            "observed": 0.1295691906005222
+          },
+          {
+            "from": 0.1,
+            "matches": 2668,
+            "predicted": 0.15616327533359053,
+            "observed": 0.22582458770614694
+          },
+          {
+            "from": 0.2,
+            "matches": 4658,
+            "predicted": 0.2539189591222778,
+            "observed": 0.29583512237011594
+          },
+          {
+            "from": 0.3,
+            "matches": 6552,
+            "predicted": 0.3517326792410932,
+            "observed": 0.3762210012210012
+          },
+          {
+            "from": 0.4,
+            "matches": 7592,
+            "predicted": 0.45073244453408723,
+            "observed": 0.45277924130663855
+          },
+          {
+            "from": 0.5,
+            "matches": 7656,
+            "predicted": 0.5494233709185394,
+            "observed": 0.5386624869383491
+          },
+          {
+            "from": 0.6,
+            "matches": 6420,
+            "predicted": 0.6477532111129253,
+            "observed": 0.6266355140186916
+          },
+          {
+            "from": 0.7,
+            "matches": 4825,
+            "predicted": 0.7469953355607114,
+            "observed": 0.7048704663212435
+          },
+          {
+            "from": 0.8,
+            "matches": 2889,
+            "predicted": 0.8441304883963278,
+            "observed": 0.75822083766009
+          },
+          {
+            "from": 0.9,
+            "matches": 1497,
+            "predicted": 0.9525030208168542,
+            "observed": 0.8453573814295258
+          }
+        ]
+      },
+      "nominatedPackages": {
+        "meanSquaredMatchPointError": 0.1957623229659414,
+        "improvementOverContext95": [
+          0.0015734809127244378,
+          0.004153792543634072
+        ],
+        "improvementOverCards95": [
+          -0.000012963329695450607,
+          0.0000429569505677996
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1521,
+            "predicted": 0.045819344112034185,
+            "observed": 0.1252465483234714
+          },
+          {
+            "from": 0.1,
+            "matches": 2673,
+            "predicted": 0.15634659428933723,
+            "observed": 0.22147399925177702
+          },
+          {
+            "from": 0.2,
+            "matches": 4621,
+            "predicted": 0.25404952234982964,
+            "observed": 0.2982038519800909
+          },
+          {
+            "from": 0.3,
+            "matches": 6616,
+            "predicted": 0.3516889804033268,
+            "observed": 0.376360338573156
+          },
+          {
+            "from": 0.4,
+            "matches": 7536,
+            "predicted": 0.45094295701902326,
+            "observed": 0.4507696390658174
+          },
+          {
+            "from": 0.5,
+            "matches": 7692,
+            "predicted": 0.5486640986421434,
+            "observed": 0.5390015600624025
+          },
+          {
+            "from": 0.6,
+            "matches": 6414,
+            "predicted": 0.6478448696922099,
+            "observed": 0.6241035235422513
+          },
+          {
+            "from": 0.7,
+            "matches": 4835,
+            "predicted": 0.7467392828373975,
+            "observed": 0.7079627714581179
+          },
+          {
+            "from": 0.8,
+            "matches": 2889,
+            "predicted": 0.8442931820360852,
+            "observed": 0.7616822429906542
+          },
+          {
+            "from": 0.9,
+            "matches": 1492,
+            "predicted": 0.9515248894747473,
+            "observed": 0.8481903485254692
+          }
+        ]
+      },
+      "playerBaseline": {
+        "meanSquaredMatchPointError": 0.19899690814675322,
+        "improvementOverContext95": [
+          -0.0011056070808013224,
+          0.00007266407748346702
+        ],
+        "improvementOverCards95": [
+          -0.005040971284236867,
+          -0.0016488949055781905
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 288,
+            "predicted": 0.07826109387623131,
+            "observed": 0.1076388888888889
+          },
+          {
+            "from": 0.1,
+            "matches": 2366,
+            "predicted": 0.159260021191241,
+            "observed": 0.1889264581572274
+          },
+          {
+            "from": 0.2,
+            "matches": 4750,
+            "predicted": 0.2542212931059307,
+            "observed": 0.2827368421052632
+          },
+          {
+            "from": 0.3,
+            "matches": 6753,
+            "predicted": 0.3518069865987379,
+            "observed": 0.36687398193395526
+          },
+          {
+            "from": 0.4,
+            "matches": 8480,
+            "predicted": 0.4511962929120812,
+            "observed": 0.4563679245283019
+          },
+          {
+            "from": 0.5,
+            "matches": 9168,
+            "predicted": 0.5444686732875309,
+            "observed": 0.5448843804537522
+          },
+          {
+            "from": 0.6,
+            "matches": 6807,
+            "predicted": 0.6476428940461548,
+            "observed": 0.6212722197737623
+          },
+          {
+            "from": 0.7,
+            "matches": 4940,
+            "predicted": 0.7467211244153097,
+            "observed": 0.7118421052631579
+          },
+          {
+            "from": 0.8,
+            "matches": 2458,
+            "predicted": 0.839827955412084,
+            "observed": 0.7823433685923515
+          },
+          {
+            "from": 0.9,
+            "matches": 279,
+            "predicted": 0.920974248682193,
+            "observed": 0.9068100358422939
+          }
+        ]
+      },
+      "cardAverage": {
+        "meanSquaredMatchPointError": 0.2224379293489745,
+        "improvementOverContext95": [
+          -0.02642681506416327,
+          -0.022137216024191428
+        ],
+        "improvementOverCards95": [
+          -0.03000538167221114,
+          -0.02409325230750389
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.1,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.2,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.3,
+            "matches": 239,
+            "predicted": 0.379003234424208,
+            "observed": 0.1799163179916318
+          },
+          {
+            "from": 0.4,
+            "matches": 22798,
+            "predicted": 0.4817949352980376,
+            "observed": 0.4525396964646022
+          },
+          {
+            "from": 0.5,
+            "matches": 23022,
+            "predicted": 0.5184468528928734,
+            "observed": 0.545434801494223
+          },
+          {
+            "from": 0.6,
+            "matches": 230,
+            "predicted": 0.6184884544899787,
+            "observed": 0.7326086956521739
+          },
+          {
+            "from": 0.7,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.9,
+            "matches": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "adjustedContext": {
+        "meanSquaredMatchPointError": 0.1985189353016912,
+        "improvementOverContext95": [
+          0,
+          0
+        ],
+        "improvementOverCards95": [
+          -0.004136203968386817,
+          -0.0015422556221091125
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 620,
+            "predicted": 0.06266012957155496,
+            "observed": 0.11290322580645161
+          },
+          {
+            "from": 0.1,
+            "matches": 2429,
+            "predicted": 0.1580898012289813,
+            "observed": 0.20522848909016056
+          },
+          {
+            "from": 0.2,
+            "matches": 4764,
+            "predicted": 0.2543495188497962,
+            "observed": 0.2947103274559194
+          },
+          {
+            "from": 0.3,
+            "matches": 6754,
+            "predicted": 0.3532802946326728,
+            "observed": 0.36156351791530944
+          },
+          {
+            "from": 0.4,
+            "matches": 8462,
+            "predicted": 0.4514565733697559,
+            "observed": 0.45905223351453556
+          },
+          {
+            "from": 0.5,
+            "matches": 8460,
+            "predicted": 0.5479717754164553,
+            "observed": 0.5421985815602837
+          },
+          {
+            "from": 0.6,
+            "matches": 6752,
+            "predicted": 0.6476645522356826,
+            "observed": 0.623593009478673
+          },
+          {
+            "from": 0.7,
+            "matches": 4827,
+            "predicted": 0.7472957204685345,
+            "observed": 0.7156619018023617
+          },
+          {
+            "from": 0.8,
+            "matches": 2603,
+            "predicted": 0.8422127209153459,
+            "observed": 0.7693046484825201
+          },
+          {
+            "from": 0.9,
+            "matches": 618,
+            "predicted": 0.935884929383445,
+            "observed": 0.86084142394822
+          }
+        ]
+      },
+      "cards": {
+        "meanSquaredMatchPointError": 0.1957821729328986,
+        "improvementOverContext95": [
+          0.0015422556221091125,
+          0.004136203968386817
+        ],
+        "improvementOverCards95": [
+          0,
+          0
+        ],
+        "calibration": [
+          {
+            "from": 0,
+            "matches": 1515,
+            "predicted": 0.045679101178305606,
+            "observed": 0.1254125412541254
+          },
+          {
+            "from": 0.1,
+            "matches": 2676,
+            "predicted": 0.1561891563717669,
+            "observed": 0.22047832585949179
+          },
+          {
+            "from": 0.2,
+            "matches": 4628,
+            "predicted": 0.25404120142878617,
+            "observed": 0.29850907519446845
+          },
+          {
+            "from": 0.3,
+            "matches": 6609,
+            "predicted": 0.35166919180086326,
+            "observed": 0.3775155091541837
+          },
+          {
+            "from": 0.4,
+            "matches": 7549,
+            "predicted": 0.45096497099323474,
+            "observed": 0.45098688568022255
+          },
+          {
+            "from": 0.5,
+            "matches": 7698,
+            "predicted": 0.5487892491887849,
+            "observed": 0.5392309690828787
+          },
+          {
+            "from": 0.6,
+            "matches": 6393,
+            "predicted": 0.6478732261162533,
+            "observed": 0.6221648678241827
+          },
+          {
+            "from": 0.7,
+            "matches": 4847,
+            "predicted": 0.7467539705730858,
+            "observed": 0.7094078811636063
+          },
+          {
+            "from": 0.8,
+            "matches": 2879,
+            "predicted": 0.8442045057704389,
+            "observed": 0.7608544633553317
+          },
+          {
+            "from": 0.9,
+            "matches": 1495,
+            "predicted": 0.9512988799546396,
+            "observed": 0.8474916387959867
+          }
+        ]
+      }
+    }
+  },
+  "temporalHalves": [
+    {
+      "firstDate": "2026-03-01",
+      "lastDate": "2026-05-30",
+      "matches": 24250,
+      "events": 343,
+      "models": {
+        "cardTriples": {
+          "meanSquaredMatchPointError": 0.1912896537877098,
+          "improvementOverContext95": [
+            0.002135147006462332,
+            0.004772018479843154
+          ],
+          "improvementOverCards95": [
+            -0.0007117238910050002,
+            -0.0002794199086289781
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 838,
+              "predicted": 0.044268585111782735,
+              "observed": 0.09844868735083533
+            },
+            {
+              "from": 0.1,
+              "matches": 1424,
+              "predicted": 0.15613737810343079,
+              "observed": 0.20646067415730338
+            },
+            {
+              "from": 0.2,
+              "matches": 2455,
+              "predicted": 0.2545807301586671,
+              "observed": 0.2883910386965377
+            },
+            {
+              "from": 0.3,
+              "matches": 3404,
+              "predicted": 0.3522259728250983,
+              "observed": 0.37690951821386603
+            },
+            {
+              "from": 0.4,
+              "matches": 3901,
+              "predicted": 0.4507657986819526,
+              "observed": 0.4624455267880031
+            },
+            {
+              "from": 0.5,
+              "matches": 3896,
+              "predicted": 0.5490853999478345,
+              "observed": 0.5467145790554415
+            },
+            {
+              "from": 0.6,
+              "matches": 3407,
+              "predicted": 0.6473501933174702,
+              "observed": 0.630173172879366
+            },
+            {
+              "from": 0.7,
+              "matches": 2592,
+              "predicted": 0.7465257927656134,
+              "observed": 0.7189429012345679
+            },
+            {
+              "from": 0.8,
+              "matches": 1481,
+              "predicted": 0.8434691295547447,
+              "observed": 0.7798784604996624
+            },
+            {
+              "from": 0.9,
+              "matches": 852,
+              "predicted": 0.9540541895203655,
+              "observed": 0.8802816901408451
+            }
+          ]
+        },
+        "cardGroups": {
+          "meanSquaredMatchPointError": 0.19140791622240674,
+          "improvementOverContext95": [
+            0.0019770666156141894,
+            0.004701313322207482
+          ],
+          "improvementOverCards95": [
+            -0.0008744923312404043,
+            -0.0003397429655813213
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 840,
+              "predicted": 0.044492484949393014,
+              "observed": 0.10535714285714286
+            },
+            {
+              "from": 0.1,
+              "matches": 1428,
+              "predicted": 0.15612940939024061,
+              "observed": 0.20763305322128853
+            },
+            {
+              "from": 0.2,
+              "matches": 2444,
+              "predicted": 0.25453356324040244,
+              "observed": 0.2855973813420622
+            },
+            {
+              "from": 0.3,
+              "matches": 3391,
+              "predicted": 0.3517496895415768,
+              "observed": 0.3761427307578885
+            },
+            {
+              "from": 0.4,
+              "matches": 3929,
+              "predicted": 0.4506784693261621,
+              "observed": 0.4646220412318656
+            },
+            {
+              "from": 0.5,
+              "matches": 3878,
+              "predicted": 0.5490109147510821,
+              "observed": 0.543965961835998
+            },
+            {
+              "from": 0.6,
+              "matches": 3392,
+              "predicted": 0.6468039315777652,
+              "observed": 0.6313384433962265
+            },
+            {
+              "from": 0.7,
+              "matches": 2610,
+              "predicted": 0.7460315067181733,
+              "observed": 0.7193486590038314
+            },
+            {
+              "from": 0.8,
+              "matches": 1496,
+              "predicted": 0.8439624131060088,
+              "observed": 0.7767379679144385
+            },
+            {
+              "from": 0.9,
+              "matches": 842,
+              "predicted": 0.9548032686883942,
+              "observed": 0.8818289786223278
+            }
+          ]
+        },
+        "nominatedPackages": {
+          "meanSquaredMatchPointError": 0.19077865664440305,
+          "improvementOverContext95": [
+            0.0027093275686616873,
+            0.0052641392692708835
+          ],
+          "improvementOverCards95": [
+            -0.000022350095352332148,
+            0.00005400710033963323
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 838,
+              "predicted": 0.044738168126078795,
+              "observed": 0.10202863961813842
+            },
+            {
+              "from": 0.1,
+              "matches": 1399,
+              "predicted": 0.15592313823638973,
+              "observed": 0.19728377412437456
+            },
+            {
+              "from": 0.2,
+              "matches": 2461,
+              "predicted": 0.2541854285069558,
+              "observed": 0.28850060950832995
+            },
+            {
+              "from": 0.3,
+              "matches": 3416,
+              "predicted": 0.35234137257851167,
+              "observed": 0.37763466042154564
+            },
+            {
+              "from": 0.4,
+              "matches": 3905,
+              "predicted": 0.4510106411201783,
+              "observed": 0.4623559539052497
+            },
+            {
+              "from": 0.5,
+              "matches": 3889,
+              "predicted": 0.5484115755067426,
+              "observed": 0.5478272049370018
+            },
+            {
+              "from": 0.6,
+              "matches": 3424,
+              "predicted": 0.647238348252376,
+              "observed": 0.626606308411215
+            },
+            {
+              "from": 0.7,
+              "matches": 2613,
+              "predicted": 0.7464649313125914,
+              "observed": 0.7215843857634903
+            },
+            {
+              "from": 0.8,
+              "matches": 1476,
+              "predicted": 0.8446363114821166,
+              "observed": 0.7791327913279132
+            },
+            {
+              "from": 0.9,
+              "matches": 829,
+              "predicted": 0.9538614689569671,
+              "observed": 0.890832328106152
+            }
+          ]
+        },
+        "playerBaseline": {
+          "meanSquaredMatchPointError": 0.1956361442258263,
+          "improvementOverContext95": [
+            -0.0015713341705786497,
+            -0.0005322941951284043
+          ],
+          "improvementOverCards95": [
+            -0.006495591221362506,
+            -0.00344776424844547
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 152,
+              "predicted": 0.07779247262998855,
+              "observed": 0.10197368421052631
+            },
+            {
+              "from": 0.1,
+              "matches": 1207,
+              "predicted": 0.15982658633532296,
+              "observed": 0.17274233637116818
+            },
+            {
+              "from": 0.2,
+              "matches": 2525,
+              "predicted": 0.2548384016887602,
+              "observed": 0.2601980198019802
+            },
+            {
+              "from": 0.3,
+              "matches": 3632,
+              "predicted": 0.35214014142569855,
+              "observed": 0.3722466960352423
+            },
+            {
+              "from": 0.4,
+              "matches": 4420,
+              "predicted": 0.45140244251578204,
+              "observed": 0.4633484162895928
+            },
+            {
+              "from": 0.5,
+              "matches": 4551,
+              "predicted": 0.5467351448193585,
+              "observed": 0.5475719622061086
+            },
+            {
+              "from": 0.6,
+              "matches": 3682,
+              "predicted": 0.6476916628195265,
+              "observed": 0.6349809885931559
+            },
+            {
+              "from": 0.7,
+              "matches": 2628,
+              "predicted": 0.7461763964901246,
+              "observed": 0.7285007610350076
+            },
+            {
+              "from": 0.8,
+              "matches": 1310,
+              "predicted": 0.8398959840275171,
+              "observed": 0.8068702290076336
+            },
+            {
+              "from": 0.9,
+              "matches": 143,
+              "predicted": 0.92150151401025,
+              "observed": 0.9405594405594405
+            }
+          ]
+        },
+        "cardAverage": {
+          "meanSquaredMatchPointError": 0.22227390316155574,
+          "improvementOverContext95": [
+            -0.030795935562009633,
+            -0.0246673206768391
+          ],
+          "improvementOverCards95": [
+            -0.035276763417015466,
+            -0.027683493154542133
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "matches": 186,
+              "predicted": 0.378309320053932,
+              "observed": 0.1586021505376344
+            },
+            {
+              "from": 0.4,
+              "matches": 11855,
+              "predicted": 0.4817289715688419,
+              "observed": 0.45449177562210036
+            },
+            {
+              "from": 0.5,
+              "matches": 12040,
+              "predicted": 0.5182579808583253,
+              "observed": 0.5540697674418604
+            },
+            {
+              "from": 0.6,
+              "matches": 169,
+              "predicted": 0.6198746410177944,
+              "observed": 0.7603550295857988
+            },
+            {
+              "from": 0.7,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "adjustedContext": {
+          "meanSquaredMatchPointError": 0.19459415087899015,
+          "improvementOverContext95": [
+            0,
+            0
+          ],
+          "improvementOverCards95": [
+            -0.005241414313443351,
+            -0.0026941516658980733
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 312,
+              "predicted": 0.06323129678324568,
+              "observed": 0.07692307692307693
+            },
+            {
+              "from": 0.1,
+              "matches": 1264,
+              "predicted": 0.15845542507263233,
+              "observed": 0.18235759493670886
+            },
+            {
+              "from": 0.2,
+              "matches": 2478,
+              "predicted": 0.2551153723228959,
+              "observed": 0.2750201775625504
+            },
+            {
+              "from": 0.3,
+              "matches": 3614,
+              "predicted": 0.35333620951124595,
+              "observed": 0.3678749308245711
+            },
+            {
+              "from": 0.4,
+              "matches": 4371,
+              "predicted": 0.4516976139937548,
+              "observed": 0.4631663234957676
+            },
+            {
+              "from": 0.5,
+              "matches": 4371,
+              "predicted": 0.5484475072258648,
+              "observed": 0.5518188057652711
+            },
+            {
+              "from": 0.6,
+              "matches": 3600,
+              "predicted": 0.6476474272276008,
+              "observed": 0.6344444444444445
+            },
+            {
+              "from": 0.7,
+              "matches": 2584,
+              "predicted": 0.7468933037159317,
+              "observed": 0.7329721362229102
+            },
+            {
+              "from": 0.8,
+              "matches": 1354,
+              "predicted": 0.8421909122008727,
+              "observed": 0.7869276218611522
+            },
+            {
+              "from": 0.9,
+              "matches": 302,
+              "predicted": 0.9376892918045052,
+              "observed": 0.8990066225165563
+            }
+          ]
+        },
+        "cards": {
+          "meanSquaredMatchPointError": 0.19079061453055798,
+          "improvementOverContext95": [
+            0.0026941516658980733,
+            0.005241414313443351
+          ],
+          "improvementOverCards95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 834,
+              "predicted": 0.04456649905589994,
+              "observed": 0.1013189448441247
+            },
+            {
+              "from": 0.1,
+              "matches": 1407,
+              "predicted": 0.1557952482283231,
+              "observed": 0.19509594882729211
+            },
+            {
+              "from": 0.2,
+              "matches": 2459,
+              "predicted": 0.2543310303647571,
+              "observed": 0.28975193167954455
+            },
+            {
+              "from": 0.3,
+              "matches": 3410,
+              "predicted": 0.35231364141650223,
+              "observed": 0.37771260997067446
+            },
+            {
+              "from": 0.4,
+              "matches": 3904,
+              "predicted": 0.45083996969428053,
+              "observed": 0.46221823770491804
+            },
+            {
+              "from": 0.5,
+              "matches": 3903,
+              "predicted": 0.5484709717359195,
+              "observed": 0.5488086087624904
+            },
+            {
+              "from": 0.6,
+              "matches": 3414,
+              "predicted": 0.647307232421155,
+              "observed": 0.6239015817223199
+            },
+            {
+              "from": 0.7,
+              "matches": 2616,
+              "predicted": 0.7464945501497832,
+              "observed": 0.7251529051987767
+            },
+            {
+              "from": 0.8,
+              "matches": 1472,
+              "predicted": 0.8444924117182994,
+              "observed": 0.7771739130434783
+            },
+            {
+              "from": 0.9,
+              "matches": 831,
+              "predicted": 0.9537882676522691,
+              "observed": 0.8904933814681107
+            }
+          ]
+        }
+      }
+    },
+    {
+      "firstDate": "2026-05-30",
+      "lastDate": "2026-11-09",
+      "matches": 24250,
+      "events": 406,
+      "models": {
+        "cardTriples": {
+          "meanSquaredMatchPointError": 0.1995511922053041,
+          "improvementOverContext95": [
+            0.00028764345166026276,
+            0.0038396174962233892
+          ],
+          "improvementOverCards95": [
+            -0.0005343109483236422,
+            -0.000029306382270665406
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 767,
+              "predicted": 0.046137977695200456,
+              "observed": 0.15254237288135594
+            },
+            {
+              "from": 0.1,
+              "matches": 1379,
+              "predicted": 0.155849342079176,
+              "observed": 0.2378535170413343
+            },
+            {
+              "from": 0.2,
+              "matches": 2448,
+              "predicted": 0.25377437558757054,
+              "observed": 0.3016748366013072
+            },
+            {
+              "from": 0.3,
+              "matches": 3460,
+              "predicted": 0.35187096456127676,
+              "observed": 0.38034682080924853
+            },
+            {
+              "from": 0.4,
+              "matches": 4012,
+              "predicted": 0.45072219525403767,
+              "observed": 0.44080259222333
+            },
+            {
+              "from": 0.5,
+              "matches": 4059,
+              "predicted": 0.54956021232573,
+              "observed": 0.5320275930032028
+            },
+            {
+              "from": 0.6,
+              "matches": 3375,
+              "predicted": 0.6482946441448648,
+              "observed": 0.6213333333333333
+            },
+            {
+              "from": 0.7,
+              "matches": 2472,
+              "predicted": 0.7481147022436835,
+              "observed": 0.7012540453074434
+            },
+            {
+              "from": 0.8,
+              "matches": 1533,
+              "predicted": 0.844427499031995,
+              "observed": 0.7403783431180692
+            },
+            {
+              "from": 0.9,
+              "matches": 745,
+              "predicted": 0.9508855178544247,
+              "observed": 0.8221476510067114
+            }
+          ]
+        },
+        "cardGroups": {
+          "meanSquaredMatchPointError": 0.19978372751624685,
+          "improvementOverContext95": [
+            -0.000027756034142968353,
+            0.003642433944006108
+          ],
+          "improvementOverCards95": [
+            -0.0007568370794997667,
+            -0.00025766072484411203
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 781,
+              "predicted": 0.04655822976668753,
+              "observed": 0.15108834827144688
+            },
+            {
+              "from": 0.1,
+              "matches": 1372,
+              "predicted": 0.1559471426380979,
+              "observed": 0.2401603498542274
+            },
+            {
+              "from": 0.2,
+              "matches": 2460,
+              "predicted": 0.25368173488062884,
+              "observed": 0.30365853658536585
+            },
+            {
+              "from": 0.3,
+              "matches": 3442,
+              "predicted": 0.3518094340913409,
+              "observed": 0.37696106914584543
+            },
+            {
+              "from": 0.4,
+              "matches": 4016,
+              "predicted": 0.45080044209744397,
+              "observed": 0.4434760956175299
+            },
+            {
+              "from": 0.5,
+              "matches": 4061,
+              "predicted": 0.5497422119328729,
+              "observed": 0.5328736764343758
+            },
+            {
+              "from": 0.6,
+              "matches": 3354,
+              "predicted": 0.6484889278505933,
+              "observed": 0.6211985688729875
+            },
+            {
+              "from": 0.7,
+              "matches": 2471,
+              "predicted": 0.7479997316906489,
+              "observed": 0.6962768110076892
+            },
+            {
+              "from": 0.8,
+              "matches": 1541,
+              "predicted": 0.8443337313986451,
+              "observed": 0.745619727449708
+            },
+            {
+              "from": 0.9,
+              "matches": 752,
+              "predicted": 0.9507748875752419,
+              "observed": 0.8184840425531915
+            }
+          ]
+        },
+        "nominatedPackages": {
+          "meanSquaredMatchPointError": 0.1992491878995017,
+          "improvementOverContext95": [
+            0.0005019900112908302,
+            0.004178456192823057
+          ],
+          "improvementOverCards95": [
+            -0.000017440468735306306,
+            0.00005747289598801793
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 772,
+              "predicted": 0.0469790636675229,
+              "observed": 0.14378238341968913
+            },
+            {
+              "from": 0.1,
+              "matches": 1393,
+              "predicted": 0.15629508972239986,
+              "observed": 0.24192390524048815
+            },
+            {
+              "from": 0.2,
+              "matches": 2417,
+              "predicted": 0.25390406534423715,
+              "observed": 0.30471659081506
+            },
+            {
+              "from": 0.3,
+              "matches": 3489,
+              "predicted": 0.35126973277915835,
+              "observed": 0.3767555173402121
+            },
+            {
+              "from": 0.4,
+              "matches": 3970,
+              "predicted": 0.4508420189601264,
+              "observed": 0.4409319899244333
+            },
+            {
+              "from": 0.5,
+              "matches": 4103,
+              "predicted": 0.548986784813084,
+              "observed": 0.5313185474043383
+            },
+            {
+              "from": 0.6,
+              "matches": 3308,
+              "predicted": 0.6482423912418736,
+              "observed": 0.6201632406287787
+            },
+            {
+              "from": 0.7,
+              "matches": 2485,
+              "predicted": 0.7471962339795989,
+              "observed": 0.7
+            },
+            {
+              "from": 0.8,
+              "matches": 1552,
+              "predicted": 0.8440652080810732,
+              "observed": 0.7496778350515464
+            },
+            {
+              "from": 0.9,
+              "matches": 761,
+              "predicted": 0.9494903795466171,
+              "observed": 0.816688567674113
+            }
+          ]
+        },
+        "playerBaseline": {
+          "meanSquaredMatchPointError": 0.20154723902085037,
+          "improvementOverContext95": [
+            -0.0008552496220011072,
+            0.0008533383835601486
+          ],
+          "improvementOverCards95": [
+            -0.004742171916434004,
+            0.00027377142109797134
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 145,
+              "predicted": 0.07892163026217759,
+              "observed": 0.1103448275862069
+            },
+            {
+              "from": 0.1,
+              "matches": 1278,
+              "predicted": 0.15871178952930506,
+              "observed": 0.19796557120500782
+            },
+            {
+              "from": 0.2,
+              "matches": 2458,
+              "predicted": 0.2538118271045695,
+              "observed": 0.3028885272579333
+            },
+            {
+              "from": 0.3,
+              "matches": 3464,
+              "predicted": 0.3517331654252101,
+              "observed": 0.36619515011547343
+            },
+            {
+              "from": 0.4,
+              "matches": 4429,
+              "predicted": 0.45101075955809206,
+              "observed": 0.4488597877624746
+            },
+            {
+              "from": 0.5,
+              "matches": 5015,
+              "predicted": 0.5425919157490172,
+              "observed": 0.5415752741774676
+            },
+            {
+              "from": 0.6,
+              "matches": 3460,
+              "predicted": 0.6477825044666884,
+              "observed": 0.6104046242774567
+            },
+            {
+              "from": 0.7,
+              "matches": 2558,
+              "predicted": 0.7473480118422947,
+              "observed": 0.6966379984362784
+            },
+            {
+              "from": 0.8,
+              "matches": 1292,
+              "predicted": 0.8397374473197412,
+              "observed": 0.7678018575851393
+            },
+            {
+              "from": 0.9,
+              "matches": 151,
+              "predicted": 0.9203276094206246,
+              "observed": 0.8841059602649006
+            }
+          ]
+        },
+        "cardAverage": {
+          "meanSquaredMatchPointError": 0.22248565322409578,
+          "improvementOverContext95": [
+            -0.023646468865469873,
+            -0.01859103596378283
+          ],
+          "improvementOverCards95": [
+            -0.027018024486725946,
+            -0.01951361294797171
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.1,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.2,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.3,
+              "matches": 85,
+              "predicted": 0.38019606818659724,
+              "observed": 0.19411764705882353
+            },
+            {
+              "from": 0.4,
+              "matches": 12008,
+              "predicted": 0.48181102184861907,
+              "observed": 0.44961692205196535
+            },
+            {
+              "from": 0.5,
+              "matches": 12079,
+              "predicted": 0.5186166725281562,
+              "observed": 0.5409388194386953
+            },
+            {
+              "from": 0.6,
+              "matches": 78,
+              "predicted": 0.6171960757060075,
+              "observed": 0.717948717948718
+            },
+            {
+              "from": 0.7,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.8,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "from": 0.9,
+              "matches": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "adjustedContext": {
+          "meanSquaredMatchPointError": 0.20159226158784593,
+          "improvementOverContext95": [
+            0,
+            0
+          ],
+          "improvementOverCards95": [
+            -0.0041540897163546055,
+            -0.00048498025623278573
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 336,
+              "predicted": 0.062390103255849025,
+              "observed": 0.13839285714285715
+            },
+            {
+              "from": 0.1,
+              "matches": 1280,
+              "predicted": 0.15784556450550763,
+              "observed": 0.22421875
+            },
+            {
+              "from": 0.2,
+              "matches": 2521,
+              "predicted": 0.25364406081911683,
+              "observed": 0.30999603332011105
+            },
+            {
+              "from": 0.3,
+              "matches": 3465,
+              "predicted": 0.3532989148223661,
+              "observed": 0.358008658008658
+            },
+            {
+              "from": 0.4,
+              "matches": 4469,
+              "predicted": 0.45107819962035395,
+              "observed": 0.4559185500111882
+            },
+            {
+              "from": 0.5,
+              "matches": 4469,
+              "predicted": 0.5474436071731245,
+              "observed": 0.5322219735958827
+            },
+            {
+              "from": 0.6,
+              "matches": 3475,
+              "predicted": 0.647406455343979,
+              "observed": 0.6145323741007194
+            },
+            {
+              "from": 0.7,
+              "matches": 2502,
+              "predicted": 0.7479868093782827,
+              "observed": 0.7006394884092726
+            },
+            {
+              "from": 0.8,
+              "matches": 1389,
+              "predicted": 0.8418867997964197,
+              "observed": 0.7620590352771778
+            },
+            {
+              "from": 0.9,
+              "matches": 344,
+              "predicted": 0.9343962374615199,
+              "observed": 0.8343023255813954
+            }
+          ]
+        },
+        "cards": {
+          "meanSquaredMatchPointError": 0.19927351243857352,
+          "improvementOverContext95": [
+            0.00048498025623278573,
+            0.0041540897163546055
+          ],
+          "improvementOverCards95": [
+            0,
+            0
+          ],
+          "calibration": [
+            {
+              "from": 0,
+              "matches": 770,
+              "predicted": 0.04691674395388055,
+              "observed": 0.1448051948051948
+            },
+            {
+              "from": 0.1,
+              "matches": 1389,
+              "predicted": 0.15617694554193043,
+              "observed": 0.24226061915046795
+            },
+            {
+              "from": 0.2,
+              "matches": 2425,
+              "predicted": 0.25377565891517073,
+              "observed": 0.30412371134020616
+            },
+            {
+              "from": 0.3,
+              "matches": 3486,
+              "predicted": 0.3512474835644715,
+              "observed": 0.3785140562248996
+            },
+            {
+              "from": 0.4,
+              "matches": 3987,
+              "predicted": 0.4510338969042112,
+              "observed": 0.4419362929520943
+            },
+            {
+              "from": 0.5,
+              "matches": 4093,
+              "predicted": 0.5491875981432036,
+              "observed": 0.5305399462496946
+            },
+            {
+              "from": 0.6,
+              "matches": 3296,
+              "predicted": 0.6481888374079613,
+              "observed": 0.6190837378640777
+            },
+            {
+              "from": 0.7,
+              "matches": 2497,
+              "predicted": 0.7471878828338571,
+              "observed": 0.6994393271926311
+            },
+            {
+              "from": 0.8,
+              "matches": 1545,
+              "predicted": 0.8440232074190167,
+              "observed": 0.7498381877022654
+            },
+            {
+              "from": 0.9,
+              "matches": 762,
+              "predicted": 0.9491859856107842,
+              "observed": 0.8156167979002624
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -14,6 +14,8 @@ export interface CompositionMatch {
     format: string;
     score: number;
     prior: number;
+    playerA?: string;
+    playerB?: string;
     a: CompositionDeck;
     b: CompositionDeck;
 }
@@ -32,7 +34,8 @@ function context(r: CompositionMatch): Map<string, number> {
         add(`matchup:${r.format}:${pairKey(r.a.champion, r.b.champion)}`, r.a.champion < r.b.champion ? 1 : -1);
     return x;
 }
-export function fitComposition(train: CompositionMatch[], options = { minimumPairMatches: 100, minimumPairEvents: 20, maximumPairs: 3000, penalty: 100, passes: 2000 }) {
+export interface CompositionExtension { name: string; features: (deck: CompositionDeck) => Map<string, number> }
+export function fitComposition(train: CompositionMatch[], options = { minimumPairMatches: 100, minimumPairEvents: 20, maximumPairs: 3000, penalty: 100, passes: 2000 }, extensions: CompositionExtension[] = []) {
     const stats = new Map<string, {
         sum: number;
         n: number;
@@ -56,7 +59,7 @@ export function fitComposition(train: CompositionMatch[], options = { minimumPai
                 s.n++;
                 stats.set(name, s);
             }
-        for (const key of new Set([...getPairs(r.a), ...getPairs(r.b)])) {
+        for (const key of options.maximumPairs ? new Set([...getPairs(r.a), ...getPairs(r.b)]) : []) {
             const s = support.get(key) ?? { n: 0, events: new Set<string>() };
             s.n++;
             s.events.add(r.event);
@@ -74,10 +77,12 @@ export function fitComposition(train: CompositionMatch[], options = { minimumPai
             if (mode >= 1)
                 for (const [name, quantity] of d.cards)
                     add(`card:${name}`, quantity / 4);
-            if (mode >= 2)
+            if (mode === 2)
                 for (const key of getPairs(d))
                     if (selected.has(key))
                         add(`pair:${key}`, 1);
+            if (mode >= 3)
+                for (const [key, value] of extensions[mode - 3].features(d)) add(`extension:${key}`, value);
         }
         return x;
     };
@@ -148,8 +153,9 @@ export function fitComposition(train: CompositionMatch[], options = { minimumPai
         }
         return n ? sum / n : .5;
     };
-    const adjustedContext = fit(0), cards = fit(1), cardPairs = fit(2);
-    return { models: { playerBaseline: (r: CompositionMatch) => r.prior, cardAverage: (r: CompositionMatch) => clip(.5 + average(r.a) - average(r.b)), adjustedContext: adjustedContext.predict, cards: cards.predict, cardPairs: cardPairs.predict }, diagnostics: { selectedPairs: selected.size, cardCount: stats.size, adjustedContext: adjustedContext.diagnostics, cards: cards.diagnostics, cardPairs: cardPairs.diagnostics }, options };
+    const adjustedContext = fit(0), cards = fit(1), cardPairs = options.maximumPairs ? fit(2) : cards;
+    const extra = extensions.map((e, i) => ({ name: e.name, fit: fit(i + 3) }));
+    return { models: { ...Object.fromEntries(extra.map(e => [e.name, e.fit.predict])), playerBaseline: (r: CompositionMatch) => r.prior, cardAverage: (r: CompositionMatch) => clip(.5 + average(r.a) - average(r.b)), adjustedContext: adjustedContext.predict, cards: cards.predict, cardPairs: cardPairs.predict } as Record<string, (r: CompositionMatch) => number>, diagnostics: { extensions: Object.fromEntries(extra.map(e => [e.name, e.fit.diagnostics])), selectedPairs: selected.size, cardCount: stats.size, adjustedContext: adjustedContext.diagnostics, cards: cards.diagnostics, cardPairs: cardPairs.diagnostics }, options };
 }
 export function scoreComposition(rows: CompositionMatch[], models: Record<string, (r: CompositionMatch) => number>) {
     const predictions = Object.fromEntries(Object.entries(models).map(([name, p]) => [name, rows.map(p)]));

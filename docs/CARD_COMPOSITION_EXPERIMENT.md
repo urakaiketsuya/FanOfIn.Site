@@ -67,3 +67,44 @@ Calibration still blocks public percentages: in the card model's highest predict
 **Decision:** retain the adjusted individual-card model as a research candidate. Do not use averaged card win rates or this pair model as a public strength score. Next, use training-only temporal validation for calibration and model selection, freeze the candidate, and evaluate future untouched tournaments. Near-duplicate family isolation, historical release/ban eras, and player dependence remain unresolved. Larger groups were not tested and are not justified by the pair result alone.
 
 Verification: 16 targeted validation tests, pipeline TypeScript check, full real-data run, and convergence diagnostics passed. No UI changes or deployment were made.
+
+## Extension: recurring groups and nominated packages
+
+Run `node --import tsx pipeline/src/analysis/cardCompositionAudit.ts --groups` to write `data/analysis/card-group-audit.json`. This preserves the original pair artifact. The cohort, chronological boundary, player priors, context, card quantities, penalty and solver remain the same. Group models add jointly fitted features to context and cards; they do not add the unsuccessful pair specification.
+
+Fixed before inspecting group holdout metrics:
+
+- Discover recurring groups from **training compositions only**, without consulting outcomes. Require 100 distinct matches, 20 events, and 20 players for each retained set. Count a match once if both decks contain the set; count actual distinct player IDs, not deck identities.
+- Start with the 150 most frequent eligible singleton cards. Extend a frequency-ranked beam of 200 sets through sizes two to five. Retain up to 100 groups per size at sizes three, four and five, with deterministic card-name ties. This bounded search is not exhaustive and favors staples. The sum of per-deck match support is only a pruning upper bound; final support deduplicates matches across both sides.
+- Compare **cards + triples** and **cards + groups of three to five** against cards alone. Group presence is signed between opponents. Quantities remain in the individual-card features; this extension does not test separate quantity thresholds for groups.
+- Separately test existing `package-candidates.json` nominations: each explicit anchor plus its member cards, limited to three to five distinct cards. Do not merge families, alternatives, or display `coreCards` into an invented mandatory package. Current curated strategy rules contain no explicit three-card required sets. Candidate groups are nominations, not mechanically verified combos or complete archetype rules.
+- Package candidates must pass the same training-support gates. Fit full presence and distinct partial-completion states with two or more members; no state activates for zero/one member. These are associations, not executable game sequences or evidence that drawing a package is likely.
+- **Existing nominations postdate the cutoff and were derived from a broader dataset.** Their feature identities are therefore not a clean historical discovery test, even though support and coefficients use training only. Their results are exploratory and reported separately. The source hash is saved. Recurring group discovery has no dependency on that nomination source.
+
+All models use the same evaluation rows and event-cluster uncertainty against individual cards. Report exact-unseen lists and temporal halves as overlapping diagnostics. Multiple exploratory comparisons, repeated use of this retrospective holdout, archetype confounding, current catalog resolution, and cross-event player dependence preclude a public win-rate claim. A group coefficient does not establish that replacing cards with that group improves a deck. No mechanics fixtures or UI are added.
+
+### Group results — November 12, 2026
+
+The cohort and baseline scores exactly reproduce the earlier experiment: 114,817 training matches, 48,500 holdout matches across 748 events. Selected 300 recurring groups (100 each of sizes three, four and five). Six of 24 distinct three-to-five-card package nominations passed training support. All fits converged below the 1e-8 residual threshold: triples 405 iterations, groups 531, nominated packages 231.
+
+| Model (all include context + cards) | Holdout squared match-point error | Change in error vs cards | 95% interval for improvement vs cards |
+| --- | ---: | ---: | --- |
+| Individual cards | 0.195032 | — | — |
+| + 100 triples | 0.195420 | **0.20% worse** | [-0.000576, -0.000228] |
+| + 300 groups of 3–5 | 0.195596 | **0.29% worse** | [-0.000761, -0.000371] |
+| + six nominated packages / completion states | 0.195014 | 0.009% better | [-0.000013, 0.000040] |
+
+Both recurring-group models worsen prediction in each chronological half and in the both-exact-decks-unseen subset; each corresponding improvement interval is negative. Nominated packages show no clear improvement in any of those checks, with intervals crossing zero. Their post-cutoff nomination source remains an additional limitation independent of statistical uncertainty.
+
+Supported package nominations (card presence, not verified executable combos):
+
+- Ashwound Shot / Seeker's Aetherwing / Trivariate Dream
+- Blastshot Pump / Seeker's Rifle / Shadow's Twin
+- Art of War / Mnemonic Charm / Zhou Yu, Enlightened Sage
+- Magebane Lash / Ravishing Finale / Sablemere, Warden's Grip
+- Alice, Golden Queen / Alice, Whim's Monarch / Queen's Gambit
+- Advent of the Shenju / Broken Promises / Companion Fatestone
+
+**Decision:** do not promote these groups to a deck-strength score or claim a benefit from completing a nominated package. Retain individual cards as the research candidate and prioritize training-only calibration followed by frozen future evaluation. This bounded frequency search does not rule out rarer packages, champion-specific discovery, different regularization chosen within training, or quantity-sensitive interactions. Further searching on this already-inspected holdout would remain exploratory.
+
+Verification: 19 targeted tests, pipeline TypeScript, exact baseline-score reproduction, full tournament run and convergence checks passed. Group tests cover three-to-five-card discovery, distinct match/event/player support, outcome-independent discovery, exact nomination sets, partial states, synthetic triple signal and side-swap symmetry. No public score, UI change, push or deployment.
