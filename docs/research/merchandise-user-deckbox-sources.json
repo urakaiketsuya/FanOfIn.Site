@@ -83,5 +83,23 @@
     "Integrate confirmed sources with accurate seller and group-image attribution. Preserve imported Xia Hou Dan spelling or handle correction explicitly.",
     "Resolve regular Lu Bu versus existing CUR double-box entry, then add or map with explicit provenance.",
     "Verify inline image loading at mobile and desktop sizes after integration."
+  ],
+  "thumbnailCandidates": [
+    {
+      "catalogId": "sheet-12-b18",
+      "catalogName": "Jin, Fate Defiant",
+      "category": "Deckboxes",
+      "sourceUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPpJlKjm-PA5IbMb8fqFgAm-iSbaH0acGdNkFIJVlBr_Y922GJkeZZHo5f&s=10",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPpJlKjm-PA5IbMb8fqFgAm-iSbaH0acGdNkFIJVlBr_Y922GJkeZZHo5f&s=10",
+      "sourceName": "User-supplied Google cached thumbnail; original publisher unverified",
+      "reviewedAt": "2026-11-14",
+      "dimensions": {
+        "width": 554,
+        "height": 554
+      },
+      "evidence": "Visually reviewed image labeled Jin Deck Box. Shows turquoise single deckbox closed and open with a long illustrated flap. Image text associates it with Ascent Christchurch and Santa Clara Champion and VIP packages.",
+      "status": "visually-reviewed-original-source-pending",
+      "blocker": "Google thumbnail does not expose the original publication URL or full-resolution asset. Record as reference, not an attributed official source or live photo mapping."
+    }
   ]
 }
