@@ -1,0 +1,150 @@
+{
+  "reviewedAt": "2026-11-14",
+  "method": "Character or artwork name + deck box grand archive; followed strongest seller and official results, inspected product images and packaging. Starter decks and differently named merchandise releases excluded.",
+  "integratedPhotoManifest": "app/src/features/merchandise/reviewedPhotos.json",
+  "newMappings": 20,
+  "deckboxEntries": 46,
+  "entriesWithPhotos": 23,
+  "remaining": [
+    {
+      "catalogId": "sheet-12-b14",
+      "name": "Tonoris, Might of Humanity",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b17",
+      "name": "Kongming, Wayward Maven",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b19",
+      "name": "Guo Jia, Chosen Disciple",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b22",
+      "name": "Diana, Judgment\u2019s Arrow",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b23",
+      "name": "Alice, Whim\u2019s Monarch",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b24",
+      "name": "Nia, Mistveiled Scout",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b25",
+      "name": "Arisanna, Herbalist Prodigy",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b26",
+      "name": "Lorraine, Wandering Warrior",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-b27",
+      "name": "Diana, Aether Dilettante",
+      "category": "Deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-f13",
+      "name": "Silvie",
+      "category": "Double deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-f18",
+      "name": "Lu Bu, Wrath Incarnate (CUR)",
+      "category": "Double deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-f19",
+      "name": "Alice, Phantom Monarch(CUR)",
+      "category": "Double deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-f20",
+      "name": "Kongming, Fei Eidolon (CUR)",
+      "category": "Double deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i17",
+      "name": "Haniel",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i18",
+      "name": "Raziel",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i19",
+      "name": "Avatar of Byakko",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i20",
+      "name": "Avatar of Genbu",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i21",
+      "name": "Avatar of Suzaku",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i26",
+      "name": "Yuan Xiao",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-i28",
+      "name": "Liu Bei",
+      "category": "Compact deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-l13",
+      "name": "Kingdom's Divide",
+      "category": "Lightweight deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-l14",
+      "name": "Arcane Blast (HVN)",
+      "category": "Lightweight deckboxes"
+    },
+    {
+      "catalogId": "sheet-12-l15",
+      "name": "Lost in Thought (Promo)",
+      "category": "Lightweight deckboxes"
+    }
+  ],
+  "followups": [
+    {
+      "sourceUrl": "https://komodocollectibles.ca/products/dtr-diana-ascent-deckbox",
+      "reason": "Packaging says DTR Diana. Resolve Judgment\u2019s Arrow versus Aether Dilettante before matching."
+    },
+    {
+      "sourceUrl": "https://www.ebay.com/itm/287330939304",
+      "reason": "New Silvie Art Series listing differs from unspecified source row; confirm intended release."
+    },
+    {
+      "sourceUrl": "https://www.ruten.com.tw/item/22610201927923/",
+      "reason": "Individual compact variants include Liu Bei and Yuan Shao; resolve source spelling Yuan Xiao and select corresponding product image."
+    },
+    {
+      "sourceUrl": "https://www.carousell.com.hk/p/ga-grand-archive-raziel-haniel-ariel-mini-deckbox-1462797629/",
+      "reason": "Group listing located; inspect individual photos and resolve prior Raziel/Haniel conflicting seller labels."
+    }
+  ],
+  "verification": {
+    "appTypecheck": "passed",
+    "focusedLint": "passed",
+    "browser": "390px and 1280px: loaded Jin/Da Qiao and compact photos, no page overflow, source links 48px high, keyboard navigation and empty/loading states checked. Error fallback not yet forced. All double-box images present at the time loaded; final Diana/Nico/Tristan assets visually loaded at their source URLs. Forced failure and native touch-device checks not performed.",
+    "scope": "Local implementation only; no deployment.",
+    "mappingTests": "9 passed, including exact row/name/type/detail guards and group/reference attribution."
+  }
+}

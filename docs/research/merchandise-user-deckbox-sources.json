@@ -1,6 +1,6 @@
 {
   "reviewedAt": "2026-11-14",
-  "scope": "User-supplied deckbox sources, visually reviewed in browser. Research only; inline photo mappings unchanged.",
+  "scope": "User-supplied deckbox sources, visually reviewed in browser. Confirmed matches and the labeled Jin cached reference are now integrated through app/src/features/merchandise/reviewedPhotos.json; the regular Lu Bu candidate remains unresolved.",
   "matches": [
     {
       "catalogId": "sheet-12-i22",
@@ -80,9 +80,9 @@
     "blocker": "Existing row is Lu Bu, Wrath Incarnate (CUR), Double deckboxes. Source image does not identify CUR; establish whether this is that product before adding a duplicate or mapping it. Facebook CDN URL is signed and may expire; obtain stable original post provenance."
   },
   "nextSteps": [
-    "Integrate confirmed sources with accurate seller and group-image attribution. Preserve imported Xia Hou Dan spelling or handle correction explicitly.",
-    "Resolve regular Lu Bu versus existing CUR double-box entry, then add or map with explicit provenance.",
-    "Verify inline image loading at mobile and desktop sizes after integration."
+    "Resolve regular Lu Bu versus existing CUR double-box entry.",
+    "Replace Jin cached reference with original publication when found.",
+    "Continue remaining deckbox searches in merchandise-deckbox-search.json."
   ],
   "thumbnailCandidates": [
     {
