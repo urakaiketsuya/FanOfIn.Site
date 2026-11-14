@@ -11,7 +11,8 @@ import { discoverGroups, groupExtension } from './cardGroupValidation.js';
 import { accessProfile, accessExtension, ACCESS_TURNS, ACCESS_SAMPLES } from './cardAccessValidation.js';
 import { runCalibrationAudit } from './cardCalibrationAudit.js';
 import { runSeasonalAudit } from './cardSeasonalAudit.js';
-const seasonalMode = process.argv.includes('--seasonal');
+const playerAdjustedMode = process.argv.includes('--player-adjusted');
+const seasonalMode = process.argv.includes('--seasonal') || playerAdjustedMode;
 const calibrationMode = process.argv.includes('--calibrate');
 const accessMode = process.argv.includes('--draw-access');
 const groupMode = process.argv.includes('--groups');
@@ -62,7 +63,7 @@ const rows: CompositionMatch[] = linked.map(m => ({ ...m, ...(groupMode ? { play
 const train = rows.filter(r => r.date < cutoff), test = rows.filter(r => r.date >= cutoff);
 console.log(`Fitting ${train.length} matches; holding out ${test.length}; cutoff ${cutoff}`);
 if (seasonalMode) {
-    await runSeasonalAudit({ root, train, test, history: history.matches, cutoff, bundles, inputs: { catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: hashRows(rows), historySha256: hashRows(history.matches) } });
+    await runSeasonalAudit({ playerAdjusted: playerAdjustedMode, root, train, test, history: history.matches, cutoff, bundles, inputs: { catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: hashRows(rows), historySha256: hashRows(history.matches) } });
     process.exit(0);
 }
 if (calibrationMode) {
