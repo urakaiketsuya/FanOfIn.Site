@@ -64,11 +64,11 @@ public win-rate forecast is authorized by this planning decision alone.
 - https://www.gatcg.com/article/ban-and-restricted-october-16th-2026 — explicitly reports no
   changes; this announcement should not create an artificial new ban regime.
 
-## Next milestone
+## Implementation status — 2026-11-14
 
-Build the reviewed historical ban ledger and season/regime mapping, then implement a separately
-versioned season-aware model and evaluate it with matched chronological baselines. This extends
-the prior performance-validation scope; its completion estimate is not inherited from the
-approximately 90%-complete calibration initiative. The new seasonal milestone is approximately
-10% complete: the decision, existing season source, and baseline preservation are established;
-the ban ledger, model, and backtest remain.
+Implemented as a separate offline model and report; see [CARD_SEASONAL_EXPERIMENT.md](CARD_SEASONAL_EXPERIMENT.md).
+Official event season IDs and reviewed ban regimes now drive sequential champion/matchup
+adjustments with historical fallback. Earlier reports remain byte-identical. The matched
+backtest is complete; its seasonal increment is inconclusive, and the seasonal direction is
+retained as requested. Historical ban coverage before December 2025 and untouched future
+validation remain follow-up work, not claims of this implementation.

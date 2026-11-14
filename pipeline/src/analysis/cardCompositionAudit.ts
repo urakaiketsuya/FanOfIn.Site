@@ -10,10 +10,12 @@ import { fitComposition, scoreComposition, type CompositionDeck, type Compositio
 import { discoverGroups, groupExtension } from './cardGroupValidation.js';
 import { accessProfile, accessExtension, ACCESS_TURNS, ACCESS_SAMPLES } from './cardAccessValidation.js';
 import { runCalibrationAudit } from './cardCalibrationAudit.js';
+import { runSeasonalAudit } from './cardSeasonalAudit.js';
+const seasonalMode = process.argv.includes('--seasonal');
 const calibrationMode = process.argv.includes('--calibrate');
 const accessMode = process.argv.includes('--draw-access');
 const groupMode = process.argv.includes('--groups');
-if ([accessMode, groupMode, calibrationMode].filter(Boolean).length > 1) throw new Error('Choose one experiment mode');
+if ([accessMode, groupMode, calibrationMode, seasonalMode].filter(Boolean).length > 1) throw new Error('Choose one experiment mode');
 // Stream the exact JSON array encoding: expanded section data can exceed V8's string limit.
 const hashRows = (rows: unknown[]) => {
     const hash = createHash('sha256').update('[');
@@ -48,7 +50,7 @@ for (const bundle of bundles) {
     }
 }
 const history = collectHistoricalMatches(bundles);
-const previous = accessMode || calibrationMode ? JSON.parse(await readFile(`${root}data/analysis/card-composition-audit.json`, 'utf8')) : null;
+const previous = accessMode || calibrationMode || seasonalMode ? JSON.parse(await readFile(`${root}data/analysis/card-composition-audit.json`, 'utf8')) : null;
 const historicalEnd: string | undefined = previous?.temporalHalves.at(-1)?.lastDate;
 const linked = history.matches.filter(m => (!historicalEnd || m.date <= historicalEnd) && decks.has(`${m.event}:${m.a}`) && decks.has(`${m.event}:${m.b}`));
 const dates = [...new Set(linked.map(m => m.date))].sort();
@@ -59,6 +61,10 @@ const priors = historicalPredictions(history.matches, cutoff);
 const rows: CompositionMatch[] = linked.map(m => ({ ...m, ...(groupMode ? { playerA: String(m.a), playerB: String(m.b) } : {}), a: decks.get(`${m.event}:${m.a}`)!, b: decks.get(`${m.event}:${m.b}`)!, format: formats.get(m.event) ?? 'unknown', prior: priors.get(m.id)!.withOpponent }));
 const train = rows.filter(r => r.date < cutoff), test = rows.filter(r => r.date >= cutoff);
 console.log(`Fitting ${train.length} matches; holding out ${test.length}; cutoff ${cutoff}`);
+if (seasonalMode) {
+    await runSeasonalAudit({ root, train, test, history: history.matches, cutoff, bundles, inputs: { catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: hashRows(rows), historySha256: hashRows(history.matches) } });
+    process.exit(0);
+}
 if (calibrationMode) {
     await runCalibrationAudit({ root, train, test, history: history.matches, cutoff, inputs: {
         catalogSha256: createHash('sha256').update(catalogText).digest('hex'),

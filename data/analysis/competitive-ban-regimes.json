@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-11-14",
+  "scope": "Effective legality regimes, not complete historical card legality. Coverage before 2025-12-22 is unknown; future dates require review. No-change/watchlist announcements do not split regimes.",
+  "noChangeSources": [
+    "https://www.gatcg.com/article/ban-and-restricted-january-26th-2026",
+    "https://www.gatcg.com/article/ban-and-restricted-february-23rd-2026",
+    "https://www.gatcg.com/article/ban-and-restricted-may-11th-2026",
+    "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026",
+    "https://www.gatcg.com/article/ban-and-restricted-october-16th-2026",
+    "https://www.gatcg.com/article/ban-and-restricted-november-2nd-2026"
+  ],
+  "regimes": [
+    {
+      "id": "standard-2025-12-22",
+      "format": "standard",
+      "effective": "2025-12-22",
+      "through": "2026-04-02",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-december-22nd-2025",
+      "changes": [
+        "Reviewed Standard baseline; earlier changes not reconstructed."
+      ]
+    },
+    {
+      "id": "standard-2026-04-03",
+      "format": "standard",
+      "effective": "2026-04-03",
+      "through": "2026-04-19",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-april-3rd-2026",
+      "changes": [
+        "Ban Unmake Duality."
+      ]
+    },
+    {
+      "id": "standard-2026-04-20",
+      "format": "standard",
+      "effective": "2026-04-20",
+      "through": "2026-06-28",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-april-20th-2026",
+      "changes": [
+        "Ban Baby Green Slime, Grim Pastiche, Carpsong Coda.",
+        "Unban Baby Gray Slime."
+      ]
+    },
+    {
+      "id": "standard-2026-06-29",
+      "format": "standard",
+      "effective": "2026-06-29",
+      "through": "2026-08-20",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-june-29th-2026",
+      "changes": [
+        "Ban Ranger Strides."
+      ]
+    },
+    {
+      "id": "standard-2026-08-21",
+      "format": "standard",
+      "effective": "2026-08-21",
+      "through": "2026-11-14",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-august-21st-2026",
+      "changes": [
+        "PRD seasonal bans: Baleful Oblation, Fabled Azurite Fatestone, Spirit Blade: Ascension."
+      ]
+    },
+    {
+      "id": "pantheon-2026-04-03",
+      "format": "pantheon",
+      "effective": "2026-04-03",
+      "through": "2026-11-14",
+      "source": "https://www.gatcg.com/article/ban-and-restricted-april-3rd-2026",
+      "changes": [
+        "Pantheon watchlist introduced; no bans through latest review."
+      ]
+    }
+  ]
+}
