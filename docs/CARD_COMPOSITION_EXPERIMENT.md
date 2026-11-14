@@ -108,3 +108,51 @@ Supported package nominations (card presence, not verified executable combos):
 **Decision:** do not promote these groups to a deck-strength score or claim a benefit from completing a nominated package. Retain individual cards as the research candidate and prioritize training-only calibration followed by frozen future evaluation. This bounded frequency search does not rule out rarer packages, champion-specific discovery, different regularization chosen within training, or quantity-sensitive interactions. Further searching on this already-inspected holdout would remain exploratory.
 
 Verification: 19 targeted tests, pipeline TypeScript, exact baseline-score reproduction, full tournament run and convergence checks passed. Group tests cover three-to-five-card discovery, distinct match/event/player support, outcome-independent discovery, exact nomination sets, partial states, synthetic triple signal and side-swap symmetry. No public score, UI change, push or deployment.
+
+## Extension: draw-adjusted card access
+
+Run `node --import tsx pipeline/src/analysis/cardCompositionAudit.ts --draw-access` to write `data/analysis/card-access-audit.json`. This is a separate research artifact; existing pair/group outputs are preserved. The cutoff and last test date are frozen from the original composition report, rather than shifting with newer cached events. The current cached matches inside that window form the cohort, so refreshed data may change membership; all candidate comparisons use the same rows within this run.
+
+Fixed before inspecting results: ridge penalty 100, numerical tolerance 1e-8, maximum 2,000 solver iterations, checkpoints turns **1, 3, 5**, seven-card opening, first-player order, 128 deterministic simulations per supported deck. Checkpoints are scenarios, not estimated game lengths. Compare:
+
+1. Context + individual card quantities (the prior research candidate).
+2. The same model plus exact natural Main Deck access at each checkpoint, Material presence, and draw-policy coverage indicators.
+3. The second model plus per-card incremental access from supported extra draws, jointly fitted rather than multiplying card win rates by access probabilities.
+
+Natural access uses the existing `fixtureAccess(N, copies, min(N, 6 + turn))` hypergeometric calculation. Material cards have separate presence features and never enter the Main library denominator; presence does not mean an item/champion can already be played. Main and Material quantities remain in the existing baseline.
+
+Draw adjustments reuse the existing Rai conditional-draw policy and Tonoris engine sequence. Conditional triggers, level/element gates, shared payment budgets and destinations follow those policies. Unsupported cards and other engines are not presumed to have no draw value. Both access models include the same Rai/Tonoris/unsupported indicators so policy availability alone cannot explain the incremental comparison. Report supported matches (at least one supported deck) separately as well as the entire cohort, exact-unseen lists and temporal halves.
+
+For each simulation, compare the naturally drawn prefix and modeled drawn prefix of the same shuffled library. Count a name once only when modeled draws find it and natural draws do not. The bonus is that count divided by 128, capped at the remaining exact natural unseen probability. This avoids using a hypergeometric formula at a mean draw count and avoids a lone draw source helping find its own first copy. Rai already exposes these counts; the Tonoris checkpoint callback now exposes both name sets without changing simulation decisions or report values. Shared calculation reference: the paired access estimator in `docs/CALCULATIONS.md`.
+
+Fit vocabulary and coefficients use training only. Computing a holdout deck's access profile uses its submitted list and the current catalog, never its results. Report event-bootstrap improvement against both individual cards and the natural-access model. These are association tests: seeing a card is not playing it, and current draw-focused policies do not simulate an opponent, all engines, mulligans, every opening spirit, or optimal play. Current catalog/mechanics applied retrospectively, Monte Carlo error, feature scaling with ridge, repeated use of the historical holdout, and recurring players remain limitations. This does not validate a universal card-value multiplier or a public win-rate estimate. No new mechanics fixtures are created.
+
+### Transcript evidence available for a separate validation layer
+
+Inventory inspected November 14, 2026: `data/broadcast-timelines.json` contains 223 matches, 532 games and 1,238 narrative beats (1,228 timestamped); all 223 have an event ID. There are 125 beats containing a draw-word mention, **not 125 verified draw actions**. Twelve match deck descriptions mention Rai or Tonoris; those names alone do not establish a supported lineage or an exact decklist match. `order` is a narrative sequence index, never a game turn. Card mentions can describe speculation, an opponent's action or cards never drawn, so they are not binary access labels.
+
+The longer transcripts provide evidence omitted by summaries. In `docs/broadcast-review/osaka-day1/cleaned-transcript.txt`, 5:55:19–5:55:36 (video `g3NNFcNpw3k`, Cashkidz versus ClourX), the commentary describes Cashkidz at level three using Neos Sight with eight objects and an additional draw into memory. This is a **transcript-reported conditional resolution**, not a verified complete turn log. It can anchor a targeted video review of the Tonoris condition and destination. The timeline summary for this match does not mention that draw. No true turn number or cumulative cards-seen count can be assigned from this passage alone.
+
+Recommended next observation fields: match/game/player, source video and timestamp range, explicit own-turn number when available, first-player status, canonical source card, draw count/destination, observed prerequisite, and evidence status (commentary-reported or video-verified). Preserve unknown values; an unmentioned draw is not zero. Attach only stage-appropriate verified decklists, including game-specific sideboard changes where known. Establish coverage intervals before scoring predicted access frequencies or game-length distributions; selective highlights alone cannot supply an unbiased denominator.
+
+Keep these broadcast observations separate from tournament win-rate training. Use them to challenge simulated activation timing, condition frequency and library access, then test revised assumptions on held-out events. They must not become additional independent match outcomes or post-outcome input features. The Worker schema separately supports simulator per-card drawn/drawn-to-memory totals and turn stats, but that is a different population and does not by itself establish available real-match draw telemetry.
+
+### Access results — November 14, 2026
+
+The frozen window reproduced the original 114,817 training matches and 48,500 held-out matches across 748 events. All baseline squared errors exactly match the original experiment. Both access models converged (natural: 6,594 features, 671 iterations; adjusted: 7,449 features, 662 iterations; relative residuals below 1e-8).
+
+| Model (all include context + quantities) | Holdout squared match-point error | Change vs individual cards |
+| --- | ---: | ---: |
+| Individual cards | **0.1950320635** | — |
+| + natural access and coverage controls | 0.1955211283 | 0.251% worse |
+| + supported extra-draw access | 0.1955212498 | 0.251% worse |
+
+Natural access worsens error versus cards by 0.000489065, with the 95% event-bootstrap improvement interval entirely negative: [-0.000814515, -0.000170661]. Extra-draw access versus natural access has improvement -0.000000121, interval [-0.000000973, 0.000000784]: no clear benefit. Both access models are worse than cards on exact-unseen lists; the early chronological half is inconclusive versus cards and the later half is worse. Extra draw versus natural remains inconclusive in both halves and exact-unseen lists.
+
+**Coverage is narrow.** Of 49,993 distinct lists across train and test, only 22 qualify for the reviewed Rai policy and 529 for Tonoris; 49,442 have unsupported draw policies. There are 2,191 supported training matches and just **801 supported test matches across 129 events** (at least one supported deck), or 1.65% of the full holdout. This is not a comprehensive test of draw engines throughout the metagame.
+
+On those 801 matches, errors are 0.191639055 for cards, 0.191198087 for natural access and 0.191190563 for adjusted access. The extra-draw improvement over natural is 0.000007525, interval [-0.000033564, 0.000041115]. Both access models versus cards are also inconclusive. Do not describe the small favorable point estimate as an established improvement.
+
+**Decision:** retain individual cards as the prediction candidate. This fixed access specification adds no demonstrated benefit, but limited policy coverage and observational assumptions prevent ruling out draw-aware prediction more broadly. Validate real draw sequences with transcript/video annotations before expanding policies; keep this separate from calibration and prospective tournament validation. No public probability or card-value multiplier is enabled.
+
+Verification: 68 distinct targeted tests across the composition/group/access modules and existing draw, Tonoris and imported champion-access tests passed, as did pipeline and shared TypeScript checks. The first full fit converged but report serialization failed because a single expanded cohort string exceeded V8's limit. The final run streams the same JSON-array encoding into SHA-256; it reproduced the same fit diagnostics without statistical changes. All original baseline errors and the historical-match hash were checked against the prior artifact. No UI changes or deployment.

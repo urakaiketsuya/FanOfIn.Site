@@ -15,7 +15,7 @@ const range = (values: number[]): DrawRange => {
 };
 
 /** Isolated, draw-focused sequence. No opposing removal or unreviewed Main plays. */
-export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>, samples = 1024, checkpoint?: (state: { turn: number; hand: string[]; memory: string[]; level: number; objectReserve: number; protectionCost?: number; protectionUsesObject: boolean }) => void) {
+export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyMap<string, Card>, samples = 1024, checkpoint?: (state: { turn: number; seenNames: string[]; naturalSeenNames: string[]; hand: string[]; memory: string[]; level: number; objectReserve: number; protectionCost?: number; protectionUsesObject: boolean }) => void) {
   const main = aggregateLines(deck.main);
   // Preserve missing-data reporting before checking the reviewed lineage.
   const materialNames = new Set(deck.material.filter(line => line.quantity > 0).map(line => line.name));
@@ -141,7 +141,7 @@ export function computeTonorisDrawReport(deck: AnalyticsDeck, catalog: ReadonlyM
         }
       }
       const protection = activation(OBELISKS[2], 4);
-      checkpoint?.({ turn, hand: [...hand], memory: [...memory], level, objectReserve: availableObjects().length, protectionCost: protection?.cost, protectionUsesObject: !!protection && availableObjects().includes(protection.source) });
+      checkpoint?.({ turn, seenNames: [...new Set(library.slice(0, seen))], naturalSeenNames: [...new Set(library.slice(0, Math.min(library.length, 6 + turn)))], hand: [...hand], memory: [...memory], level, objectReserve: availableObjects().length, protectionCost: protection?.cost, protectionUsesObject: !!protection && availableObjects().includes(protection.source) });
       const total = totals[turn - 1];
       total.seen.push(seen);
       total.extra.push(seen - Math.min(library.length, 6 + turn));

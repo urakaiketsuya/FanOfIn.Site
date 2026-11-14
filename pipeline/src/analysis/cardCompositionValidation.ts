@@ -2,6 +2,8 @@
 export interface CompositionDeck {
     identity: string;
     champion: string;
+    main?: [string, number][];
+    material?: [string, number][];
     cards: [
         string,
         number
@@ -177,5 +179,5 @@ export function scoreComposition(rows: CompositionMatch[], models: Record<string
         } return sum / n; }).sort((a, b) => a - b);
         return [samples[10], samples[389]];
     };
-    return { matches: rows.length, events: new Set(rows.map(r => r.event)).size, models: Object.fromEntries(Object.entries(predictions).map(([name, p]) => [name, { meanSquaredMatchPointError: rows.length ? p.reduce((s, v, i) => s + (v - rows[i].score) ** 2, 0) / rows.length : null, improvementOverContext95: interval(p, predictions.adjustedContext), improvementOverCards95: interval(p, predictions.cards), calibration: Array.from({ length: 10 }, (_, i) => { const indices = p.flatMap((v, j) => Math.floor(v * 10) === i ? [j] : []); return { from: i / 10, matches: indices.length, predicted: indices.length ? indices.reduce((s, j) => s + p[j], 0) / indices.length : null, observed: indices.length ? indices.reduce((s, j) => s + rows[j].score, 0) / indices.length : null }; }) }])) };
+    return { matches: rows.length, events: new Set(rows.map(r => r.event)).size, models: Object.fromEntries(Object.entries(predictions).map(([name, p]) => [name, { meanSquaredMatchPointError: rows.length ? p.reduce((s, v, i) => s + (v - rows[i].score) ** 2, 0) / rows.length : null, improvementOverContext95: interval(p, predictions.adjustedContext), improvementOverCards95: interval(p, predictions.cards), ...(predictions.naturalAccess ? { improvementOverNaturalAccess95: interval(p, predictions.naturalAccess) } : {}), calibration: Array.from({ length: 10 }, (_, i) => { const indices = p.flatMap((v, j) => Math.floor(v * 10) === i ? [j] : []); return { from: i / 10, matches: indices.length, predicted: indices.length ? indices.reduce((s, j) => s + p[j], 0) / indices.length : null, observed: indices.length ? indices.reduce((s, j) => s + rows[j].score, 0) / indices.length : null }; }) }])) };
 }
