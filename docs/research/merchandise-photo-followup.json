@@ -1,0 +1,55 @@
+{
+  "reviewedAt": "2026-11-14",
+  "scope": "Missing playmat photo research; candidates are not approved catalog mappings.",
+  "candidates": [
+    {
+      "catalogId": "sheet-4-m11",
+      "name": "Polishing Flourish (Path of Silver)",
+      "sourceUrl": "https://fastcuretcg.com/item/Alice%2C-Phantom-Monarch-Playmat/5402502114443264",
+      "imageUrl": "https://img.boutirapp.com/i/MfKdSS8-2hUlqjsfwANkyLZpr08GlcPEEHXrEFDs3LS",
+      "sourceName": "Fast Cure TCG",
+      "observedTitle": "Polishing Flourish Playmat",
+      "verification": "Browser title, product heading, description and image alt text agree on Polishing Flourish. Visually inspected a packaged physical playmat with blonde character and gold border. Image URL read from rendered product image.",
+      "status": "pending-variant",
+      "blocker": "Listing does not identify Path of Silver. Confirm exact event variant before mapping. URL slug and cached search result incorrectly identify Alice, Phantom Monarch; do not map this URL to sheet-9-g10."
+    },
+    {
+      "catalogId": "sheet-4-m11",
+      "name": "Polishing Flourish (Path of Silver)",
+      "sourceUrl": "https://www.hobbystoptcg.com/products/grand-archive-path-of-silver-playmat",
+      "imageUrl": "https://www.hobbystoptcg.com/cdn/shop/files/GrandArchivePathofSilvePlaymat.png?v=1768791840&width=1445",
+      "sourceName": "Hobby Stop TCG",
+      "observedTitle": "Grand Archive - Path of Silver Playmat",
+      "status": "pending-artwork",
+      "blocker": "Product page identifies Path of Silver but not Polishing Flourish. Image link was exposed by page; image fetch returned cache miss. Do not assume all Path of Silver mats share artwork."
+    },
+    {
+      "catalogId": "sheet-2-d23",
+      "name": "Icebound Slam (ISC)",
+      "sourceUrl": "https://fayble.kktix.cc/events/iceboundslamcup",
+      "imageUrl": "https://assets.kktix.io/organization_resource_files/17693/75546/%E6%B4%BB%E5%8B%95%E6%89%8B%E5%86%8A_2.jpg",
+      "sourceName": "Fayble International",
+      "status": "pending-prize-tier",
+      "blocker": "Organizer lists championship, finalist and Day 2 playmats separately. Linked prize graphic requires visual review and exact artwork/tier matching; source row only says Icebound Slam (ISC). Do not substitute a composite event graphic as an individual item photo."
+    }
+  ],
+  "excluded": [
+    {
+      "catalogId": "sheet-2-d17",
+      "sourceUrl": "https://www.gatcg.com/article/revelfest-update-announcement",
+      "reason": "July 2025 article identifies Fire Resonance Bauble, not Bauble of Abundance. Shared Revelfest branding is insufficient."
+    }
+  ],
+  "coverage": {
+    "totalEntries": 546,
+    "entriesWithPhotoReferences": 351,
+    "entriesWithoutPhotoReferences": 195,
+    "playmatsWithoutPhotoReferences": 14,
+    "newApprovedMappings": 0
+  },
+  "nextStep": "Compare the Polishing Flourish seller photograph with official Path of Silver redemption artwork. Review the organizer prize graphic to disambiguate Icebound Slam tiers.",
+  "verificationLimits": [
+    "No app UI changes made. Existing mobile/desktop and remote-image-rendering acceptance remains outstanding.",
+    "Official Worlds Path of Silver link returned HTTP 404 during this pass."
+  ]
+}
