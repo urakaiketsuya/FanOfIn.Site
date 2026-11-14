@@ -1,3 +1,4 @@
+import { publishDeckForecast } from './publishDeckForecast.js';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fitComposition, scoreComposition, type CompositionMatch } from './cardCompositionValidation.js';
@@ -8,7 +9,8 @@ import { seasonalPredictions } from './cardSeasonalValidation.js';
 import type { BanRegime } from '../../../shared/src/competitivePeriods.js';
 import type { OmnidexEventBundle } from '../omnidex/cache.js';
 
-export async function runSeasonalAudit({ root, train, test, history, cutoff, bundles, inputs, playerAdjusted = false }: {
+export async function runSeasonalAudit({ root, train, test, history, cutoff, bundles, inputs, playerAdjusted = false, publishForecast }: {
+    publishForecast?: string;
     playerAdjusted?: boolean;
     root: string; train: CompositionMatch[]; test: CompositionMatch[]; history: HistoricalMatch[];
     cutoff: string; bundles: OmnidexEventBundle[]; inputs: Record<string, string>;
@@ -22,7 +24,7 @@ export async function runSeasonalAudit({ root, train, test, history, cutoff, bun
     const ledger = JSON.parse(ledgerText) as { regimes: BanRegime[] };
     const contexts = new Map(bundles.map(b => [String(b.id), { season: b.event.season, completed: b.event.dateCompleted }]));
     const contextRows = [...contexts].sort(([a], [b]) => a.localeCompare(b));
-    const sourceInputs = { ...inputs, cutoff, ledgerSha256: createHash('sha256').update(ledgerText).digest('hex'), eventContextSha256: createHash('sha256').update(JSON.stringify(contextRows)).digest('hex') };
+    const sourceInputs: Record<string, string> = { ...inputs, cutoff, ledgerSha256: createHash('sha256').update(ledgerText).digest('hex'), eventContextSha256: createHash('sha256').update(JSON.stringify(contextRows)).digest('hex') };
     if (preservedSeasonal) {
         const previous = JSON.parse(preservedSeasonal) as { inputs: Record<string, string> };
         for (const [key, value] of Object.entries(sourceInputs)) if (previous.inputs[key] !== value) throw new Error(`Seasonal comparison input changed: ${key}`);
@@ -53,6 +55,21 @@ export async function runSeasonalAudit({ root, train, test, history, cutoff, bun
     const final = fitComposition(train, options);
     if (!final.diagnostics.cards.converged) throw new Error('Final fit failed convergence');
     const input = prepare(test, final.models.cards);
+    if (publishForecast) {
+        let residuals = {};
+        const replay = seasonalPredictions(input.filter(r=>r.date<publishForecast), ledger.regimes, seasonalChoice.priorMass, { asOf: publishForecast, capture: stats => { residuals = stats; } });
+        const old = JSON.parse(await readFile(seasonalPath, 'utf8'));
+        const retainedRows = test.filter(r=>replay.has(r.id));
+        if (old.inputs.cohortSha256 === inputs.cohortSha256) {
+            const error = retainedRows.reduce((sum,r)=>sum+(calibrate(replay.get(r.id)!.seasonal,seasonalChoice.seasonal.scale)-r.score)**2,0)/retainedRows.length;
+            if (Math.abs(error-old.holdout.models.seasonal.meanSquaredMatchPointError)>1e-12) throw new Error('Seasonal replay changed');
+            sourceInputs.seasonalReplayError = String(error);
+        }
+        await verify();
+        await publishDeckForecast({ root, asOf:publishForecast, bundles, regimes:ledger.regimes, coefficients:final.cardCoefficients,
+            residuals, scale:seasonalChoice.seasonal.scale, priorMass:seasonalChoice.priorMass, inputs:sourceInputs, rows:test, predict:final.models.cards });
+        return;
+    }
     const global = seasonalPredictions(input, ledger.regimes, globalChoice.priorMass);
     const seasonal = seasonalPredictions(input, ledger.regimes, seasonalChoice.priorMass);
     const baseline = JSON.parse(await readFile(`${root}data/analysis/card-calibration-audit.json`, 'utf8')) as { scale: number };

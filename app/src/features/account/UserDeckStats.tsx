@@ -1,3 +1,4 @@
+import DeckExpectedResults from '../analytics/DeckExpectedResults';
 import RaiDrawReport from '../analytics/RaiDrawReport';
 import RecursionReport from '../analytics/RecursionReport';
 import DefenseReport from '../analytics/DefenseReport';
@@ -235,6 +236,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
     || aggressionForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
   const probabilityTab: ReactNode = (
     <>
+      <DeckExpectedResults decklist={decklist} championName={championName} format={format} legal={validation.status === "Legal"} />
       <RaiDrawReport deck={namedSections} cardsByName={cardsByName} />
       <TonorisDrawReport deck={namedSections} cardsByName={cardsByName} />
       <RaiDamageReport deck={namedSections} cardsByName={previewCardsByName} />

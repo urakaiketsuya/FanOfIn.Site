@@ -11,8 +11,11 @@ import { discoverGroups, groupExtension } from './cardGroupValidation.js';
 import { accessProfile, accessExtension, ACCESS_TURNS, ACCESS_SAMPLES } from './cardAccessValidation.js';
 import { runCalibrationAudit } from './cardCalibrationAudit.js';
 import { runSeasonalAudit } from './cardSeasonalAudit.js';
+const publishForecast = process.argv.includes('--publish-forecast');
+const asOf = process.argv.find(a=>a.startsWith('--as-of='))?.slice(8) ?? new Date().toISOString().slice(0,10);
 const playerAdjustedMode = process.argv.includes('--player-adjusted');
-const seasonalMode = process.argv.includes('--seasonal') || playerAdjustedMode;
+if (publishForecast && playerAdjustedMode) throw new Error('Choose publication or player-adjusted audit');
+const seasonalMode = process.argv.includes('--seasonal') || playerAdjustedMode || publishForecast;
 const calibrationMode = process.argv.includes('--calibrate');
 const accessMode = process.argv.includes('--draw-access');
 const groupMode = process.argv.includes('--groups');
@@ -52,7 +55,7 @@ for (const bundle of bundles) {
 }
 const history = collectHistoricalMatches(bundles);
 const previous = accessMode || calibrationMode || seasonalMode ? JSON.parse(await readFile(`${root}data/analysis/card-composition-audit.json`, 'utf8')) : null;
-const historicalEnd: string | undefined = previous?.temporalHalves.at(-1)?.lastDate;
+const historicalEnd: string | undefined = publishForecast ? asOf : previous?.temporalHalves.at(-1)?.lastDate;
 const linked = history.matches.filter(m => (!historicalEnd || m.date <= historicalEnd) && decks.has(`${m.event}:${m.a}`) && decks.has(`${m.event}:${m.b}`));
 const dates = [...new Set(linked.map(m => m.date))].sort();
 if (dates.length < 3)
@@ -63,7 +66,7 @@ const rows: CompositionMatch[] = linked.map(m => ({ ...m, ...(groupMode ? { play
 const train = rows.filter(r => r.date < cutoff), test = rows.filter(r => r.date >= cutoff);
 console.log(`Fitting ${train.length} matches; holding out ${test.length}; cutoff ${cutoff}`);
 if (seasonalMode) {
-    await runSeasonalAudit({ playerAdjusted: playerAdjustedMode, root, train, test, history: history.matches, cutoff, bundles, inputs: { catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: hashRows(rows), historySha256: hashRows(history.matches) } });
+    await runSeasonalAudit({ publishForecast: publishForecast ? asOf : undefined, playerAdjusted: playerAdjustedMode, root, train, test, history: history.matches, cutoff, bundles, inputs: { catalogSha256: createHash('sha256').update(catalogText).digest('hex'), cohortSha256: hashRows(rows), historySha256: hashRows(history.matches) } });
     process.exit(0);
 }
 if (calibrationMode) {

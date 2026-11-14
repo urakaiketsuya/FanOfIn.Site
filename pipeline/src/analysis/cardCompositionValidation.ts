@@ -144,7 +144,7 @@ export function fitComposition(train: CompositionMatch[], options = { minimumPai
         }
         // Prediction needs only coefficients, not the sparse training matrix.
         const coefficients = new Map([...columns].map(([key, column]) => [key, column.coefficient]));
-        return { predict: (r: CompositionMatch) => clip(r.prior + [...features(r, mode)].reduce((s, [k, v]) => s + v * (coefficients.get(k) ?? 0), 0)), diagnostics: { features: columns.size, passes, maximumLastCoefficientChange: delta, relativeNormalEquationResidual: relativeResidual, converged: relativeResidual <= 1e-8 } };
+        return { coefficients: Object.fromEntries(coefficients), predict: (r: CompositionMatch) => clip(r.prior + [...features(r, mode)].reduce((s, [k, v]) => s + v * (coefficients.get(k) ?? 0), 0)), diagnostics: { features: columns.size, passes, maximumLastCoefficientChange: delta, relativeNormalEquationResidual: relativeResidual, converged: relativeResidual <= 1e-8 } };
     };
     const average = (d: CompositionDeck) => {
         let sum = 0, n = 0;
@@ -157,7 +157,7 @@ export function fitComposition(train: CompositionMatch[], options = { minimumPai
     };
     const adjustedContext = fit(0), cards = fit(1), cardPairs = options.maximumPairs ? fit(2) : cards;
     const extra = extensions.map((e, i) => ({ name: e.name, fit: fit(i + 3) }));
-    return { models: { ...Object.fromEntries(extra.map(e => [e.name, e.fit.predict])), playerBaseline: (r: CompositionMatch) => r.prior, cardAverage: (r: CompositionMatch) => clip(.5 + average(r.a) - average(r.b)), adjustedContext: adjustedContext.predict, cards: cards.predict, cardPairs: cardPairs.predict } as Record<string, (r: CompositionMatch) => number>, diagnostics: { extensions: Object.fromEntries(extra.map(e => [e.name, e.fit.diagnostics])), selectedPairs: selected.size, cardCount: stats.size, adjustedContext: adjustedContext.diagnostics, cards: cards.diagnostics, cardPairs: cardPairs.diagnostics }, options };
+    return { cardCoefficients: cards.coefficients, models: { ...Object.fromEntries(extra.map(e => [e.name, e.fit.predict])), playerBaseline: (r: CompositionMatch) => r.prior, cardAverage: (r: CompositionMatch) => clip(.5 + average(r.a) - average(r.b)), adjustedContext: adjustedContext.predict, cards: cards.predict, cardPairs: cardPairs.predict } as Record<string, (r: CompositionMatch) => number>, diagnostics: { extensions: Object.fromEntries(extra.map(e => [e.name, e.fit.diagnostics])), selectedPairs: selected.size, cardCount: stats.size, adjustedContext: adjustedContext.diagnostics, cards: cards.diagnostics, cardPairs: cardPairs.diagnostics }, options };
 }
 export function scoreComposition(rows: CompositionMatch[], models: Record<string, (r: CompositionMatch) => number>) {
     const predictions = Object.fromEntries(Object.entries(models).map(([name, p]) => [name, rows.map(p)]));
