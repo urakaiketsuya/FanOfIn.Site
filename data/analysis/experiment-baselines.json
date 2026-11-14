@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "preservedOn": "2026-11-14",
+  "policy": "Retain these committed historical results regardless of seasonal-model performance. Seasonal runs must use a separate artifact path; this manifest identifies recoverable original bytes in Git.",
+  "artifacts": [
+    {
+      "path": "data/analysis/deck-performance-audit.json",
+      "revision": "8e1b6e10caaad000cbd181e2c445fe8ae4d0335a",
+      "sha256": "c982d212ecc860a68f3d0886e356632e75c20515b4e2ba4c861ba2defd8d9006",
+      "bytes": 149729
+    },
+    {
+      "path": "data/analysis/card-composition-audit.json",
+      "revision": "8e1b6e10caaad000cbd181e2c445fe8ae4d0335a",
+      "sha256": "5f6c6f10c35e7d77c67a1597a42a91c9187d5d970cc04a89dda7d2350bc311a3",
+      "bytes": 44517
+    },
+    {
+      "path": "data/analysis/card-group-audit.json",
+      "revision": "8e1b6e10caaad000cbd181e2c445fe8ae4d0335a",
+      "sha256": "d3c55ef073390b9a34f0a6eef32ebee5b1017c6c544941d8002546df80c53b75",
+      "bytes": 133950
+    },
+    {
+      "path": "data/analysis/card-access-audit.json",
+      "revision": "8e1b6e10caaad000cbd181e2c445fe8ae4d0335a",
+      "sha256": "97d608c093e819acf49e9940252ad6860d1e260bcfc0e1a1d8d2396c6568b73f",
+      "bytes": 70622
+    },
+    {
+      "path": "data/analysis/card-calibration-audit.json",
+      "revision": "8e1b6e10caaad000cbd181e2c445fe8ae4d0335a",
+      "sha256": "3a41062a006419de5ed5420ffe6c64730536d68e840cc38dd101a32b42e7c338",
+      "bytes": 199409
+    }
+  ]
+}
