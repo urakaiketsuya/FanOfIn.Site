@@ -1,0 +1,76 @@
+{
+  "reviewedAt": "2026-11-14",
+  "scope": "User-supplied deckbox sources, visually reviewed in browser. Research only; inline photo mappings unchanged.",
+  "matches": [
+    {
+      "catalogId": "sheet-12-i22",
+      "catalogName": "Lu Bu",
+      "category": "Compact deckboxes",
+      "sourceUrl": "https://www.ebay.com/itm/198343225844",
+      "imageUrl": "https://i.ebayimg.com/images/g/IgsAAeSwCy1p~7Ba/s-l500.webp",
+      "sourceName": "sgi_shop on eBay",
+      "evidence": "Listing names Lu Bu; physical compact box visually reviewed. Compact identification supplied by user.",
+      "status": "confirmed-photo-source"
+    },
+    {
+      "catalogId": "sheet-12-i24",
+      "catalogName": "Da Qiao",
+      "category": "Compact deckboxes",
+      "sourceUrl": "https://thetcgalchemists.com/products/grand-archive-deck-box-da-qiao",
+      "imageUrl": "https://thetcgalchemists.com/cdn/shop/files/CF9380B6-A740-4D67-9D70-B380B15E2EE3.jpg?v=1785066009&width=3840",
+      "sourceName": "The TCG Alchemists",
+      "evidence": "Physical packaging visibly reads Da Qiao and Mini Deck Box.",
+      "status": "confirmed-photo-source"
+    },
+    {
+      "catalogId": "sheet-12-i13",
+      "catalogName": "Xia Hou Dan",
+      "officialName": "Xia Hou Dun",
+      "category": "Compact deckboxes",
+      "sourceUrl": "https://x.com/grandarchivetcg/status/1864029015629082741",
+      "imageUrl": "https://pbs.twimg.com/media/Gd5cgmtWQAABHm8?format=webp&name=large",
+      "sourceName": "Grand Archive TCG",
+      "evidence": "Official December 3, 2024 announcement explicitly identifies all three compact designs debuting at Ascent Santa Clara.",
+      "imageScope": "Group promotional image showing all three designs; not an individual product photo.",
+      "status": "confirmed-group-photo-source"
+    },
+    {
+      "catalogId": "sheet-12-i14",
+      "catalogName": "Cao Cao",
+      "officialName": "Cao Cao",
+      "category": "Compact deckboxes",
+      "sourceUrl": "https://x.com/grandarchivetcg/status/1864029015629082741",
+      "imageUrl": "https://pbs.twimg.com/media/Gd5cgmtWQAABHm8?format=webp&name=large",
+      "sourceName": "Grand Archive TCG",
+      "evidence": "Official December 3, 2024 announcement explicitly identifies all three compact designs debuting at Ascent Santa Clara.",
+      "imageScope": "Group promotional image showing all three designs; not an individual product photo.",
+      "status": "confirmed-group-photo-source"
+    },
+    {
+      "catalogId": "sheet-12-i15",
+      "catalogName": "Xiao Qiao",
+      "officialName": "Xiao Qiao",
+      "category": "Compact deckboxes",
+      "sourceUrl": "https://x.com/grandarchivetcg/status/1864029015629082741",
+      "imageUrl": "https://pbs.twimg.com/media/Gd5cgmtWQAABHm8?format=webp&name=large",
+      "sourceName": "Grand Archive TCG",
+      "evidence": "Official December 3, 2024 announcement explicitly identifies all three compact designs debuting at Ascent Santa Clara.",
+      "imageScope": "Group promotional image showing all three designs; not an individual product photo.",
+      "status": "confirmed-group-photo-source"
+    }
+  ],
+  "unlistedCandidate": {
+    "name": "Lu Bu regular deck box",
+    "reportedBy": "user",
+    "sourceUrl": "https://scontent.fric1-1.fna.fbcdn.net/v/t39.30808-6/480874694_656625576883761_8338771901356761713_n.jpg?stp=dst-jpg_tt6&cstp=mx1440x1440&ctp=s1080x2048&_nc_cat=108&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=833d8c&_nc_ohc=zBJGhSGxgyIQ7kNvwHakUju&_nc_oc=AdoMia2JRjLNudSXGg3BER1Awp-R7i3f2msqO4V6p2TQlarWGl_x4Cc7K6moGKjdrS4-3854dsxNhbixyjLIaA94&_nc_zt=23&_nc_ht=scontent.fric1-1.fna&_nc_gid=OtVeVLnpQdkhcCtUxSEtBw&_nc_ss=7b289&oh=00_AQQPZ2yC0SMKWQzlocj1-_j5DFiARfww5x3O8H88kOKy_A&oe=6AFEB07C",
+    "evidence": "Image visibly says Lu Bu Deck Box, debuting at Ascent Worlds. Red box has two white compartments and a long illustrated flap. Distinct from compact seller photo.",
+    "status": "reviewed-unmapped",
+    "possibleExistingRow": "sheet-12-f18",
+    "blocker": "Existing row is Lu Bu, Wrath Incarnate (CUR), Double deckboxes. Source image does not identify CUR; establish whether this is that product before adding a duplicate or mapping it. Facebook CDN URL is signed and may expire; obtain stable original post provenance."
+  },
+  "nextSteps": [
+    "Integrate confirmed sources with accurate seller and group-image attribution. Preserve imported Xia Hou Dan spelling or handle correction explicitly.",
+    "Resolve regular Lu Bu versus existing CUR double-box entry, then add or map with explicit provenance.",
+    "Verify inline image loading at mobile and desktop sizes after integration."
+  ]
+}
