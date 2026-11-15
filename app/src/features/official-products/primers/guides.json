@@ -25,7 +25,8 @@
       "Ciel, Mirage's Grave",
       "Lamentation's Toll"
     ],
-    "winText": "Keep adding omen counters at level 3 to deal 2 unpreventable damage per trigger. Meanwhile, your larger allies and Lamentation’s Toll threaten combat damage. A high-power omen improves the attack; different reserve costs strengthen Sablier Guard."
+    "winText": "Keep adding omen counters at level 3 to deal 2 unpreventable damage per trigger. Meanwhile, your larger allies and Lamentation’s Toll threaten combat damage. A high-power omen improves the attack; different reserve costs strengthen Sablier Guard.",
+    "slug": "ciel-mirages-grave"
   },
   {
     "deckId": "gbTwGoxXcMX1J2MES1nJ",
@@ -53,7 +54,8 @@
       "Pleiades, Celestial Genesis",
       "Meteoric Volley"
     ],
-    "winText": "Build a loaded Aetherwing attack with Ranged bonuses. Meteoric Volley copies the Aethercharges already in the attacking intent; Pleiades gives Astra Aethercharges an On Hit token payoff. Prepare the load before attacking and consider the opponent’s defenses before committing."
+    "winText": "Build a loaded Aetherwing attack with Ranged bonuses. Meteoric Volley copies the Aethercharges already in the attacking intent; Pleiades gives Astra Aethercharges an On Hit token payoff. Prepare the load before attacking and consider the opponent’s defenses before committing.",
+    "slug": "diana-moonpiercer"
   },
   {
     "deckId": "2lVqk6MGrk8xHy58lUd4",
@@ -81,7 +83,8 @@
       "Kongming, Fel Eidolon",
       "Leeching Bolt"
     ],
-    "winText": "Planar Abyss can deal 10 damage to opposing champions at your next recollection phase if Shifting Currents faces South then. Its field destruction buys space for later Leeching Bolts and ally attacks. Arrange the direction before the delayed effect resolves."
+    "winText": "Planar Abyss can deal 10 damage to opposing champions at your next recollection phase if Shifting Currents faces South then. Its field destruction buys space for later Leeching Bolts and ally attacks. Arrange the direction before the delayed effect resolves.",
+    "slug": "kongming-starter-deck"
   },
   {
     "deckId": "5Ng50uYTatKv4zRcWMZI",
@@ -110,7 +113,8 @@
       "Enrage",
       "Mend Flesh"
     ],
-    "winText": "Shuang Ji grows with damage on Jin, and Enrage can make the next attack much larger. Aim that pressure at the opposing champion when you have a safe opening. Keep Mend Flesh available when you need to survive the end phase instead of taking an all-in attack."
+    "winText": "Shuang Ji grows with damage on Jin, and Enrage can make the next attack much larger. Aim that pressure at the opposing champion when you have a safe opening. Keep Mend Flesh available when you need to survive the end phase instead of taking an all-in attack.",
+    "slug": "jin-starter-deck"
   },
   {
     "deckId": "bxIbsmbzq7PtY2bIpx7H",
@@ -138,7 +142,8 @@
       "Cosmic Astroscope",
       "Arisanna, Astral Zenith"
     ],
-    "winText": "Use repeated Glimpse effects to find Starcalling spells, with Arisanna replacing one Starcalling cost each turn. Cosmic Bolt gains damage for other copies in your graveyard and banishment. Potions and sweepers help keep you alive while you assemble those hits."
+    "winText": "Use repeated Glimpse effects to find Starcalling spells, with Arisanna replacing one Starcalling cost each turn. Cosmic Bolt gains damage for other copies in your graveyard and banishment. Potions and sweepers help keep you alive while you assemble those hits.",
+    "slug": "arisanna-starter-deck"
   },
   {
     "deckId": "7EHyaySNhzODdmzukoCQ",
@@ -167,7 +172,8 @@
       "Creeping Torment",
       "Anathema's End"
     ],
-    "winText": "Champion hits from Duskstalker generate Creeping Torment. Its draw punishment adds pressure between attacks. A later Anathema’s End champion hit banishes that champion’s Curses and deals 2 unpreventable damage for each; count the Curses before loading the finisher."
+    "winText": "Champion hits from Duskstalker generate Creeping Torment. Its draw punishment adds pressure between attacks. A later Anathema’s End champion hit banishes that champion’s Curses and deals 2 unpreventable damage for each; count the Curses before loading the finisher.",
+    "slug": "diana-starter-deck"
   },
   {
     "deckId": "yqVK5i6eQxDJhZJdTph1",
@@ -196,7 +202,8 @@
       "Into the Fray",
       "Archon Broadsword"
     ],
-    "winText": "Once several allies can attack, Winds of Retribution boosts the whole group and Into the Fray gives one ally a larger bonus. Tokens also strengthen Archon Broadsword. Compare an immediate push with keeping awake defenders to protect your board."
+    "winText": "Once several allies can attack, Winds of Retribution boosts the whole group and Into the Fray gives one ally a larger bonus. Tokens also strengthen Archon Broadsword. Compare an immediate push with keeping awake defenders to protect your board.",
+    "slug": "tonoris-starter-deck"
   },
   {
     "deckId": "lorraine-starter-deck-preview",
@@ -225,7 +232,8 @@
       "Spirit Blade: Ghost Strike",
       "Spirit's Blessing"
     ],
-    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack."
+    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack.",
+    "slug": "lorraine-starter-deck"
   },
   {
     "deckId": "rai-starter-deck-preview",
@@ -253,7 +261,8 @@
       "Arcane Blast",
       "Fireball"
     ],
-    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources."
+    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources.",
+    "slug": "rai-starter-deck"
   },
   {
     "deckId": "silvie-starter-deck-preview",
@@ -282,7 +291,8 @@
       "Vertus, Gaia's Roar",
       "Empowering Harmony"
     ],
-    "winText": "Lakeside Serpent grows with water cards in the graveyard. Vertus can boost your allies on entry using fallen Animals and Beasts. Meet each ally’s Pride requirement before counting on its attack; Vertus itself needs level 10 to obey."
+    "winText": "Lakeside Serpent grows with water cards in the graveyard. Vertus can boost your allies on entry using fallen Animals and Beasts. Meet each ally’s Pride requirement before counting on its attack; Vertus itself needs level 10 to obey.",
+    "slug": "silvie-starter-deck"
   },
   {
     "deckId": "56KHHOrH55T73zhgspun",
@@ -311,7 +321,8 @@
       "Arcane Blast",
       "Fireball"
     ],
-    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources."
+    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources.",
+    "slug": "rai-starter-deck-prelude"
   },
   {
     "deckId": "GPHjg6vPntxcJdHNvtil",
@@ -341,7 +352,8 @@
       "Spirit Blade: Ghost Strike",
       "Spirit's Blessing"
     ],
-    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack."
+    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack.",
+    "slug": "lorraine-starter-deck-prelude"
   },
   {
     "deckId": "syd-3e871d8b-4da1-439b-b93f-ad2336eff574",
@@ -370,7 +382,8 @@
       "Conductive Strike",
       "Surged Coordinator"
     ],
-    "winText": "Build static counters across multiple objects to grow Conductive Strike. Arcane combat hits can then spend eligible static counters for extra damage. Surged Coordinator and linked equipment help establish a field that supports more than one threat."
+    "winText": "Build static counters across multiple objects to grow Conductive Strike. Arcane combat hits can then spend eligible static counters for extra damage. Surged Coordinator and linked equipment help establish a field that supports more than one threat.",
+    "slug": "lorraine-arclight-saber-starter-deck"
   },
   {
     "deckId": "syd-0e5ff086-ca0b-4c7c-bbda-04ce6893919d",
@@ -399,6 +412,239 @@
       "Hemoflux Drain",
       "Elysian Aspirant"
     ],
-    "winText": "Empowered damage Spells can trigger Dante’s recovery. Hemoflux Drain deals LV damage and then recovers based on the damage dealt, helping you attack the opposing champion while stabilizing. Watch your damage total: taking lethal self-damage ends the plan before recovery can happen."
+    "winText": "Empowered damage Spells can trigger Dante’s recovery. Hemoflux Drain deals LV damage and then recovers based on the damage dealt, helping you attack the opposing champion while stabilizing. Watch your damage total: taking lethal self-damage ends the plan before recovery can happen.",
+    "slug": "dante-hemomancer-starter-deck"
+  },
+  {
+    "deckId": "jFAAmMe4o8MCW8aklce2",
+    "summary": "Build a field of phantasias to fund reactions and scale your damage. Wither counters pressure opposing objects; Flowerbuds become harmful blooms that wear down the opposing champion.",
+    "opening": "Play Fractal of Insight or Protective Fractal, then keep useful Reaction Spells in memory. Diao Chan can rest on an opponent’s turn to activate one from memory, paying its reserve cost entirely with glimmer counters.",
+    "leveling": "Level 2 replenishes glimmer at your end phase up to your phantasia count. Establish that count before spending heavily. Level 3 adds wither counters immediately and turns destroyed opposing non-token objects into Flowerbuds if you banish them.",
+    "sequence": "Each phantasia raises the refill ceiling for glimmer and increases Shimmering Refraction’s damage. On the opponent’s turn, use Diao Chan’s inherited ability to fire Refraction from memory; its bonus draws a replacement into memory. Keep Protective Fractal awake when its prevention matters more than reserving it.",
+    "cards": [
+      "Diao Chan, Idyll Corsage"
+    ],
+    "mistakes": [
+      "Wither is a payment-or-sacrifice check at the affected player’s main phase, not immediate destruction. Season’s End explicitly destroys marked objects.",
+      "Flowerbuds and blooms belong to the opponent who summons them. They do not increase the number of phantasias you control.",
+      "Glimmer pays only the reserve cost of the Reaction Spell activated by Diao Chan’s ability. It is not a general resource for other cards."
+    ],
+    "synergyTitle": "Fractals refill your reaction budget",
+    "synergyCards": [
+      "Diao Chan, Dreaming Wish",
+      "Protective Fractal",
+      "Shimmering Refraction"
+    ],
+    "winTitle": "Bloom damage plus a large Refraction",
+    "winCards": [
+      "Bloom: Summer's Glow",
+      "Shimmering Refraction",
+      "Staff of Blossoming Will"
+    ],
+    "winText": "Give the opponent Flowerbuds through your level-3 trigger or Staff of Blossoming Will. Summer’s Glow can replace them with Lycoria, which deals unpreventable damage to its controller each recollection. Finish with a phantasia-scaled Refraction; Kaleidoscope Barrette can empower your next Spell. Wither effects and Season’s End clear opposing objects while you build this pressure.",
+    "slug": "diao-chan-recollection-idyll-corsage"
+  },
+  {
+    "deckId": "jG74V21Ab6p3w1yTtpFV",
+    "summary": "Turn Fatestone items into Fatebound allies while collecting quest counters. Your central payoff is transforming Fabled Azurite Fatestone into Seiryuu, Azure Dragon, then combining attacks with generated Arcane Blasts.",
+    "opening": "Guo Jia’s level-1 entry puts the lowest-memory-cost Fatestone regalia from your material deck onto the field if you do not already control one. In this list that is Fabled Azurite Fatestone. Play smaller Fatestones and use Journey’s Beginning to advance your quest.",
+    "leveling": "Level 2 offers two quest counters or a card; choose based on whether you need progress or resources now. Level 3 offers three more counters or recovery and costs 3 less to materialize while you control a Shenju ally. Transforming Seiryuu first can enable that discount.",
+    "sequence": "While the Azurite Fatestone is in play, each card you banish from your memory adds a quest counter. Its optional end-phase exchange and paying memory costs can advance the quest. At ten counters, rest the Fatestone, remove ten counters, then wake and transform it into Seiryuu. Keep smaller Fatebound allies available to defend Guo Jia.",
+    "cards": [
+      "Guo Jia, Heaven's Favored"
+    ],
+    "mistakes": [
+      "Transforming keeps the same object, including its counters and rested state, unless the effect explicitly wakes it. It does not trigger On Enter again.",
+      "Quest counters are on your champion. Fatestone of Heaven instead needs three luxem cards revealed from memory to transform.",
+      "Seiryuu is the reverse of your Fatestone, not another card you draw. Its Arcane Blast permission does not enable other arcane cards."
+    ],
+    "synergyTitle": "Quest counters unlock your dragon",
+    "synergyCards": [
+      "Fabled Azurite Fatestone",
+      "Journey's Beginning",
+      "Guo Jia, Blessed Scion"
+    ],
+    "winTitle": "Dragon attacks and Arcane Blast",
+    "winCards": [
+      "Fabled Azurite Fatestone",
+      "Arcane Blast",
+      "Lavaplume Fatestone"
+    ],
+    "winText": "Seiryuu’s On Attack can generate and banish an Arcane Blast, granting permission to activate it from banishment while ignoring its element requirement. Arcane Blast deals 11 champion damage and has Efficiency. On another attack, Seiryuu can instead empower your next Spell based on arcane cards in banishment. Lavaplume Fatestone adds unpreventable damage scaled by your other Fatestone and Fatebound objects.",
+    "slug": "guo-jia-recollection-heavens-favored"
+  },
+  {
+    "deckId": "F3W6n38rYYLtCyn7wYCu",
+    "summary": "Grow a mixed-element Slime army, raise Silvie’s effective level to satisfy Pride, and turn small Slimes into durable threats. Your champion line lets you play Slimes across elements.",
+    "opening": "Use Baby Gray Slime to defend and reveal Slimes for a card. Build with inexpensive Slimes before spending on a large ally. Spirit of Slime permits basic-element Slime cards across fire, water, and wind; it does not unlock every basic-element card.",
+    "leveling": "Level 2 can draw for both Animal and Beast allies, so check their type lines. Level 3 unlocks advanced-element Slimes and discounts your next Slime by 2 while adding two buff counters. Plan that Slime before leveling. Beastbond Ears and Slime’s Blessing help satisfy Pride 4 or 5.",
+    "sequence": "Slime King requires three Slime allies of different elements in your graveyard as an additional cost. Once Silvie enables its Element Bonus, Verdant Scepter can banish the King on entry: the King’s On Leave returns the linked Slimes, and the Scepter gains refinement counters based on the King’s power. Use Key Slime Pudding first to add buffs to the returning Slimes.",
+    "cards": [
+      "Silvie, Slime Sovereign"
+    ],
+    "mistakes": [
+      "Pride checks current effective level. A disobedient ally cannot attack or activate abilities, though it can still retaliate.",
+      "Red Slime’s death damage hits all allies, including your own. Count its current power before sacrificing or trading it.",
+      "Slime Eruption and Slime King compete for Slimes in your graveyard. Leave three different elements there if you plan to play the King."
+    ],
+    "synergyTitle": "Turn Slime King into a second army",
+    "synergyCards": [
+      "Slime King",
+      "Verdant Scepter",
+      "Key Slime Pudding"
+    ],
+    "winTitle": "An oversized board and graveyard damage",
+    "winCards": [
+      "Slime King",
+      "Storm Slime",
+      "Slime Eruption"
+    ],
+    "winText": "Attack with Slimes that obey you, keeping enough defenders to protect Silvie. Slime Eruption turns eligible graveyard Slimes into small damage packets and grows your banished Slime count for Storm Slime’s entry damage. Slime King can refill your field when it leaves, making it costly for an opponent to remove your main threat.",
+    "slug": "silvie-recollection-slime-sovereign"
+  },
+  {
+    "deckId": "bYiwaT0gjLb8ja7V6Lt0",
+    "summary": "Bank preparation counters, disrupt dangerous plays, then land a champion hit that opens the way for Ominous Shadows. Preparation fuels both offensive attacks and Tristan’s defensive redirection.",
+    "opening": "Build preparation with Surveil the Winds, Betraying Blade, and Gearstride Gloves. Keep Arrow Trap or Stifling Trap available for threatening allies. Tristan’s level-1 choice is a preparation counter or Agility 3; take the cards back when you need a flexible hand.",
+    "leveling": "Level 2 draws at two preparation counters and draws again at four. Try to reach those thresholds before leveling. Level 3 summons two Ominous Shadows, adds a counter, and lets you spend two counters to redirect an attack targeting Tristan to a phantasia ally.",
+    "sequence": "Prepare Shadowstrike to increase its power and make it unblockable. After Tristan deals combat damage to a unit, your Ominous Shadows may attack that unit this turn. Grim Foreboding supplies another Shadow and boosts your phantasia allies. Shadows prevent 3 damage per instance, so they can also absorb redirected attacks.",
+    "cards": [
+      "Tristan, Shadowdancer"
+    ],
+    "mistakes": [
+      "Ominous Shadows cannot freely attack any champion. Tristan must first deal combat damage to that unit during the same turn.",
+      "Spending every preparation counter on offense leaves none for Tristan’s redirection or Stifling Trap.",
+      "Unblockable ignores Taunt and Intercept; it does not stop damage prevention or every other way to change an attack’s target."
+    ],
+    "synergyTitle": "Land a hit before sending the Shadows",
+    "synergyCards": [
+      "Tristan, Shadowdancer",
+      "Shadowstrike",
+      "Grim Foreboding"
+    ],
+    "winTitle": "Prepared attacks with Shadow follow-up",
+    "winCards": [
+      "Shadowstrike",
+      "Slice and Dice",
+      "Haunting Demise"
+    ],
+    "winText": "Spend a built-up preparation pool on a large Shadowstrike, then follow with Shadows against the damaged champion. Prepared Slice and Dice grants another attack only when it hits; its copy is stronger but unprepared. Haunting Demise can enter a hit champion’s lineage and add unpreventable damage on that champion’s recollection phases.",
+    "slug": "tristan-recollection-shadowdancer"
+  },
+  {
+    "deckId": "syd-3c00397c-bb7c-41e9-9ec3-f1563590f98b",
+    "summary": "Build Human allies around reusable Sword regalia. Pressure one opponent at a time while keeping awake defenders for the other players; later, recycle swords and take additional champion attacks.",
+    "opening": "Use the early barrier protection to develop allies. Level 1 finds a zero-memory weapon; Weaponsmith can maintain its durability. Prioritize Intercept or Taunt allies before resting your entire field to attack across a multiplayer table.",
+    "leveling": "Level 2 is an attack-turn boost with an On Kill reward, so level when you can exploit it. Level 3 returns a Sword regalia costing at most 1 memory from banishment with three extra durability counters. Have an eligible sword there before leveling when possible.",
+    "sequence": "Sabela returns a low-cost Sword regalia from banishment with a bond counter and +2 power while she remains. Beacon Knight grows whenever one or more regalia enter under your control. Ascension returns a Sword you own to the material deck, then puts a Sword from there or banishment onto the field, enabling another entry payoff.",
+    "cards": [
+      "Lorraine, Spirit Ruler"
+    ],
+    "mistakes": [
+      "Hurricane Sweep hits the attackable objects of one chosen opponent, not the entire table. Multiple defenders can retaliate.",
+      "Sabela leaving sacrifices regalia carrying bond counters. Do not count on her borrowed Sword surviving her removal.",
+      "Quietus Blade gets its large bonus only with an empty material deck. Returning regalia there switches that bonus off."
+    ],
+    "synergyTitle": "Reuse swords and amplify the whole field",
+    "synergyCards": [
+      "Sabela, Gossamer Penance",
+      "Beacon Knight",
+      "Spirit Blade: Ascension"
+    ],
+    "winTitle": "Repeated sword attacks and a wide army",
+    "winCards": [
+      "Spirit's Blessing",
+      "Spirit Blade: Infusion",
+      "Banner Knight"
+    ],
+    "winText": "After dealing combat damage with Lorraine, Infusion becomes cheaper and boosts a Sword by 3 power with an On Champion Hit draw. Spirit’s Blessing returns a regalia to the material deck to wake Lorraine and draw, enabling another attack if you can pay for it. Banner Knight strengthens allies and weapons for a wider finishing turn. Defeating one champion is progress; keep defenses for the survivors.",
+    "slug": "lorraine-pantheon-starter"
+  },
+  {
+    "deckId": "syd-9ee66f85-796a-424f-b628-717b8c094ab5",
+    "summary": "Use Herbs and Potions to survive the table while building a Starcalling engine. Turn glimpses into discounted spells, then use copied activations and damage to multiple opponents to close the game.",
+    "opening": "Gather with Arisanna’s early levels and Ingredient Pouch. Match your Herbs to actual Brew recipes; save an awake Potion for an Infusion when useful. Defensive allies and recovery buy time to establish the engine.",
+    "leveling": "Level 2 gathers twice and can trade two identically named Herbs for a card at your end phase. Keep ingredients needed for important Potions. Level 3 enables astra and gives one zero-cost Starcall per turn, so have a glimpse effect ready to use that permission.",
+    "sequence": "Astromech Attendant gathers three times on entry with Class Bonus and draws into memory whenever you brew a Potion. Brewing also adds refinement counters to Essence Crucible, increasing damage from your Spell sources. Cosmic Astroscope supplies a repeatable glimpse to find Starcalling cards; Astral Zenith can make one Starcall each turn cost 0.",
+    "cards": [
+      "Arisanna, Astral Zenith"
+    ],
+    "mistakes": [
+      "An Infusion must successfully rest its Potion. Brewing a Potion and sacrificing it are separate actions; keep it around until you are ready.",
+      "Cometfall and Condensed Supernova damage all non-astra units, including your own eligible allies. Check the board before resolving them.",
+      "Twinstar Tonic copies Starcalled activations, not every Spell you cast. One free Starcall per turn still needs a glimpse and legal elemental access."
+    ],
+    "synergyTitle": "Brew to feed your spell engine",
+    "synergyCards": [
+      "Astromech Attendant",
+      "Essence Crucible",
+      "Cosmic Astroscope"
+    ],
+    "winTitle": "Copied stars and explosive Potions",
+    "winCards": [
+      "Twinstar Tonic",
+      "Cosmic Bolt",
+      "Potion Infusion: Volatility"
+    ],
+    "winText": "Sacrifice Twinstar Tonic to gain a lasting option to copy each Starcalled activation. Cosmic Bolt scales with copies in graveyard and banishment; Polaris can generate more for your deck even in singleton Pantheon. Volatility gives an awake Potion an On Sacrifice burst of 4+D6 damage to each opposing champion for the turn. Use the Potion’s sacrifice ability after the Infusion resolves.",
+    "slug": "arisanna-pantheon-starter"
+  },
+  {
+    "deckId": "syd-7d578c15-c55a-4933-ac91-bbbb07ea6faa",
+    "summary": "Control the table with spells while steering Shifting Currents for damage, cards, and recovery. Preserve useful cards for later and choose the right direction before a major spell resolves.",
+    "opening": "Develop defensive allies and Tome of Sorcery while using efficient removal on the most dangerous threats. Level 1 grants Shifting Currents, starting North. Its end-phase direction change lets you prepare your next turn without spending a Spell.",
+    "leveling": "Level 2 gives Empower 3 for your next Spell that turn. Level 3 enables tera and can change Currents to an adjacent direction whenever you activate a Spell. Level when you can afford follow-up spells; the direction choices are part of the payoff.",
+    "sequence": "With Currents East or West, activate Flourishing Qi and use Fel Eidolon’s trigger to move to adjacent North while Qi is still on the stack. Qi gains four charge counters, adding 4 to its LV damage. From North, a later Spell can move West and trigger Gem of Searing Flame for 2 champion damage. Plan each change against the direction diagram.",
+    "cards": [
+      "Kongming, Fel Eidolon"
+    ],
+    "mistakes": [
+      "Planar Abyss is delayed until your next recollection and destroys your non-champion objects too. Opponents get turns to react.",
+      "Preserved cards return to hand instead of a materialization; collecting one delays a champion or regalia you could have materialized.",
+      "Fel Eidolon allows adjacent moves only. Solar Providence and the mastery’s end-phase change have their own permissions."
+    ],
+    "synergyTitle": "Use a Spell to move Currents before it resolves",
+    "synergyCards": [
+      "Kongming, Fel Eidolon",
+      "Flourishing Qi",
+      "Gem of Searing Flame"
+    ],
+    "winTitle": "Build a large burst or threaten the table",
+    "winCards": [
+      "Verdure of Preservation",
+      "Flourishing Qi",
+      "Planar Abyss"
+    ],
+    "winText": "With at least five preserved cards, Verdure can sacrifice for Empower equal to twice their count. Use that boost on a level-scaling Spell such as Flourishing Qi. Planar Abyss instead sets up a board wipe at your next recollection; if Currents face South then, it also deals 10 to every opposing champion. Plan your end-phase direction and survive the intervening turns.",
+    "slug": "kongming-pantheon-starter"
+  },
+  {
+    "deckId": "syd-5c99c6cc-9baa-4275-85a1-8c13c0bc75f7",
+    "summary": "Build preparation and place luxem cards in memory, then reveal them for bonuses while shrinking opponents’ hands. Combine stealthy allies, recovery payoffs, and well-timed champion attacks to finish weakened players.",
+    "opening": "Use Accepted Contract and Zander’s early levels to build preparation. Deploy defensive allies and use efficient attacks to remove threats rather than exposing yourself to the whole table. Save useful Assassin actions or attacks in the graveyard for your level-2 recovery.",
+    "leveling": "Level 2 adds two preparation counters, then can spend one to return an Assassin action or attack from the graveyard. Level 3 enables luxem and reveals memory at recollection, pushing one card per revealed luxem card from each opponent’s hand into memory. Set up that memory before your next recollection.",
+    "sequence": "Put Luxem Sight into memory before Zander’s recollection reveal. Its Element Bonus recovers 3, triggering Photic Blade to gain a refinement counter and Lightveil Agent to gain a buff counter. Other luxem reveal effects add preparation, damage, or allies. Resolve each trigger before returning the remaining memory to your hand.",
+    "cards": [
+      "Zander, Blinding Steel"
+    ],
+    "mistakes": [
+      "Moving an opponent’s hand into memory is not discarding it. They normally get the memory back at their own recollection.",
+      "Critical damage can be stopped by any opponent paying its discard requirement, not only the attacked player.",
+      "Your luxem reveal bonuses need their Element Bonus enabled. Merely reserving a card face down does not trigger them."
+    ],
+    "synergyTitle": "Reveal memory to turn recovery into power",
+    "synergyCards": [
+      "Zander, Blinding Steel",
+      "Luxem Sight",
+      "Photic Blade"
+    ],
+    "winTitle": "Exploit empty hands and recovery-fueled attacks",
+    "winCards": [
+      "Strike of Singularity",
+      "Elyan, Lustre Loyalty",
+      "Bathe in Light"
+    ],
+    "winText": "After Zander moves cards out of opposing hands, Strike of Singularity doubles its attack damage against a unit whose controller has no cards in hand. Check that condition when damage is dealt. Bathe in Light recovers 4 now and again next recollection; each such recovery gives Elyan +4 power and unblockable for that turn. Prepared Slice and Dice offers another attack if its first attack hits.",
+    "slug": "zander-pantheon-starter"
   }
 ]

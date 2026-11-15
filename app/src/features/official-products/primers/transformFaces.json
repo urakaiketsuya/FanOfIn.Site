@@ -1,0 +1,72 @@
+{
+  "Companion Fatestone": {
+    "source": "https://api.gatcg.com/cards/companion-fatestone",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Fatebound Caracal",
+        "effect": "**Intercept** *(Whenever your champion is attacked while this ally is awake, you may redirect that attack to this ally.)*\n\n**Retort 2** *(As long as this ally is retaliating, it gets +2 [POWER].)*"
+      }
+    ]
+  },
+  "Craggy Fatestone": {
+    "source": "https://api.gatcg.com/cards/craggy-fatestone",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Obstinate Cragback",
+        "effect": "**Spellshroud** *(Units with **spellshroud** can’t be targeted by Spells.)*\n\nYour opponents can't materialize cards with memory cost 0."
+      }
+    ]
+  },
+  "Fatestone of Revelations": {
+    "source": "https://api.gatcg.com/cards/fatestone-of-revelations",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Young Wyrmling",
+        "effect": ""
+      }
+    ]
+  },
+  "Fatestone of Unrelenting": {
+    "source": "https://api.gatcg.com/cards/fatestone-of-unrelenting",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Cheetah of Bound Fury",
+        "effect": "**On Hit**: You may banish Cheetah of Bound Fury, then return it to the field under its owner's control. *(It enters the field as Fatestone of Unrelenting.)*"
+      }
+    ]
+  },
+  "Lavaplume Fatestone": {
+    "source": "https://api.gatcg.com/cards/lavaplume-fatestone",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Firebird Trailblazer",
+        "effect": "**On Attack**: You may discard a card. If you do, draw a card."
+      }
+    ]
+  },
+  "Fatestone of Heaven": {
+    "source": "https://api.gatcg.com/cards/fatestone-of-heaven",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Heavenly Drake",
+        "effect": "**Spellshroud** *(Units with **spellshroud** can’t be targeted by Spells.)*\n\n**Vigor** *(At the beginning of your end phase, wake up Heavenly Drake.)*\n\n**On Death**: **Recover 3**."
+      }
+    ]
+  },
+  "Fabled Azurite Fatestone": {
+    "source": "https://api.gatcg.com/cards/fabled-azurite-fatestone",
+    "reviewedAt": "2026-11-15",
+    "faces": [
+      {
+        "name": "Seiryuu, Azure Dragon",
+        "effect": "**Spellshroud**, **Taunt**\n\n[Guo Jia Bonus] **On Attack:** Choose one— \n • Generate an Arcane Blast card and banish it. As long as it's banished, you may activate it, ignoring its elemental requirements.\n • **Empower X**+2, where **X** is the amount of arcane element cards in your banishment."
+      }
+    ]
+  }
+}

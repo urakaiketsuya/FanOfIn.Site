@@ -1,9 +1,9 @@
-import { starterPrimers } from "./primers/data";
+import { starterPrimers, primerPath } from "./primers/data";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import DeckCardPreview from "../../components/DeckCardPreview";
+import OfficialProductDecklist from "./OfficialProductDecklist";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -14,24 +14,10 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
-import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductDeck } from "./data";
+import { OFFICIAL_PRODUCT_SECTION_LABELS, officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductDeck } from "./data";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
 import Button from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/ContentState";
-import Section from "../../components/ui/Section";
-
-const SECTION_LABELS: Record<keyof OfficialProductDeck["cards"], string> = {
-  material: "Material",
-  main: "Main",
-  sideboard: "Sideboard",
-  mastery: "Mastery",
-  token: "Tokens",
-  pantheon: "Pantheon",
-  generated: "Generated",
-  status: "Statuses",
-};
-
-const SECTION_ORDER = ["material", "main", "sideboard", "mastery", "token", "pantheon", "generated", "status"] as const;
 
 function asDecklist(deck: OfficialProductDeck): OmnidexDecklist {
   const lines = (section: "main" | "material" | "sideboard") => deck.cards[section].map((card) => ({ card: card.name, quantity: card.quantity }));
@@ -81,7 +67,7 @@ function ProductDeckCard({
   async function copyDecklist() {
     const extras = (["mastery", "token", "pantheon"] as const)
       .filter((section) => deck.cards[section].length > 0)
-      .map((section) => `# ${SECTION_LABELS[section]}\n${deck.cards[section].map((line) => `${line.quantity} ${line.name}`).join("\n")}`)
+      .map((section) => `# ${OFFICIAL_PRODUCT_SECTION_LABELS[section]}\n${deck.cards[section].map((line) => `${line.quantity} ${line.name}`).join("\n")}`)
       .join("\n\n");
     try {
       await navigator.clipboard.writeText([buildDecklistText(decklist), extras].filter(Boolean).join("\n\n"));
@@ -173,7 +159,7 @@ function ProductDeckCard({
     source: { kind: "official", label: "Official product" },
     metadata: productLabel,
     actions: <>
-          {starterPrimers.has(deck.id) && <Link to={`/official-decks/${encodeURIComponent(deck.id)}/primer`} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 text-sm font-semibold text-ctp-base focus-visible:outline-2">Learn this deck →</Link>}
+          {starterPrimers.has(deck.id) && <Link to={primerPath(deck.id)!} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 text-sm font-semibold text-ctp-base focus-visible:outline-2">Learn this deck →</Link>}
           {(ownershipState === "saved" || ownershipState === "needs-cards") && <Link to={`/card-locations?deck=${encodeURIComponent(`official-product:${deck.id}`)}`} className="inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue">Locate cards</Link>}
           <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green disabled:opacity-50">
             {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Saved, cards needed" : "I own this deck"}
@@ -205,16 +191,7 @@ function ProductDeckCard({
         <div className="mb-4 flex flex-wrap gap-2">          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Create editable copy →</Link>}
           {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
 </div>
-        <div className="grid gap-5">
-          {SECTION_ORDER.map((section) => {
-            const lines = deck.cards[section];
-            if (lines.length === 0) return null;
-            const count = lines.reduce((sum, line) => sum + line.quantity, 0);
-            return <Section key={section} heading="dense" title={`${SECTION_LABELS[section]} (${count})`}>
-              <DeckCardPreview groupByElement={section === "main"} lines={lines} cardsByName={cardsByName} />
-            </Section>;
-          })}
-        </div>
+        <OfficialProductDecklist deck={deck} cardsByName={cardsByName} />
       <div className="mt-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Official deck: ${deck.name}`} /></div>
     </> }} />;
 }

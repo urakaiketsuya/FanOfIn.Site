@@ -40,3 +40,9 @@ export const PRODUCT_LABELS: Record<string, string> = {
   RDOPD: "Radiant Dawn of Pantheon",
   PRDSD: ".asphodel/paradise Starter Decks",
 };
+
+export const OFFICIAL_PRODUCT_SECTION_LABELS: Record<keyof OfficialProductDeck['cards'], string> = {
+  material: 'Material', main: 'Main', sideboard: 'Sideboard', mastery: 'Mastery',
+  token: 'Tokens', pantheon: 'Pantheon', generated: 'Generated', status: 'Statuses',
+};
+export const OFFICIAL_PRODUCT_SECTION_ORDER = ['material', 'main', 'sideboard', 'mastery', 'token', 'pantheon', 'generated', 'status'] as const;
