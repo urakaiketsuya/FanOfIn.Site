@@ -1,3 +1,4 @@
+import { computeObservedMatchups } from "./observedMatchups.js";
 import { computeBestPlayers, withBestPlayerAchievements } from '@gatcg/shared';
 import { writeRegionalStrength } from "./regionalStrength.js";
 import { writeCompetitionReports } from "./competitionReports.js";
@@ -262,6 +263,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   );
   attachPackageApprovalEvidence(packageCandidates, deckCardIndex, deckCardIndexNames, new Map(deckSightings.flatMap((s) => s.championName ? [[s.deckId, s.championName] as const] : [])), catalog);
   await writeFile(path.join(DATA_DIR, "package-candidates.json"), JSON.stringify(packageCandidates), "utf-8");
+
+  await writeFile(path.join(DATA_DIR, "observed-matchups.json"), JSON.stringify(computeObservedMatchups(completed, archetypeTaxonomy)), "utf-8");
 
   const matchupCardImpact = computeMatchupCardImpact(completed, ctx, archetypeTaxonomy.clusters);
   await writeFile(path.join(DATA_DIR, "matchup-card-impact.json"), JSON.stringify(matchupCardImpact), "utf-8");

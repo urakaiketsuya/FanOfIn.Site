@@ -7347,3 +7347,28 @@ Full pool, required setup and exact observed variants remain distinct. These are
 registration observations, not tested gameplay variants. No joint-access forecast
 or win-rate uplift is inferred from these counts. Existing package access models
 remain separate. No new TCGEngine mechanics fixtures or artifact rebuild is needed.
+
+## Observed matchup cohorts (`observed-matchups.json`)
+
+Deck Report's observed-results block uses event-level counts, filtered by inclusive event date,
+event ID, and format. Dates are UTC event start dates, not round dates. The default is all dates,
+events, and formats represented in the artifact. Filters apply only to this observed-results block.
+Classification remains the published all-time taxonomy; filtering does not recluster decks.
+
+The pipeline accepts completed individual events (excluding future event dates and team events),
+then uses `competitionMatches` to exclude unfinished, malformed, bye, and duplicate pairings.
+Both player deck IDs must belong to exactly one published build. Unclassified or ambiguous
+opponents are excluded, so these counts need not equal the build's event standings or older
+card-impact totals. Missing rounds are not imputed. Events without qualifying matches are omitted.
+
+Each event stores canonical build-pair wins, losses, and ties, plus distinct participating deck
+counts per build. Score rate is `(wins + 0.5 * ties) / results`, unshrunk. Empty cohorts have a null
+rate, never zero percent. The summary counts deck outcomes; a mirror contributes two outcomes
+(one win and one loss, or two ties). Opponent cards count each physical match once, including
+mirrors; a mirror's score rate is 50%. A player's list appearing at multiple events counts as a
+distinct event deck at each event. Samples and rates always use the same filtered rows.
+
+Rebuild only this artifact from committed event snapshots with
+`node --import tsx pipeline/scripts/rebuild-observed-matchups.ts`; it updates just its manifest
+entry. The regular analysis run regenerates it from the completed bundles alongside the taxonomy.
+Card-impact associations retain their original all-time cohort and are not recomputed by these filters.

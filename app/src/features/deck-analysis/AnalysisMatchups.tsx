@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Card } from '@gatcg/shared';
+import type { Card, observedMatchupCohort } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import CardResult from '../../components/CardResult';
 import DisclosureChevron from '../../components/DisclosureChevron';
@@ -19,7 +19,9 @@ function ChampionArt({ name, cards }: { name: string; cards: Map<string, Card> }
 }
 
 /** Historical archetype results, never an inferred prediction for the user's exact list. */
-export default function AnalysisMatchups({ result, loading, cards, error, onRetry, matchupsLoading = false, matchupsError, onRetryMatchups, preview = false }: {
+export default function AnalysisMatchups({ result, loading, cards, error, onRetry, matchupsLoading = false, matchupsError, onRetryMatchups, preview = false, observed, observedLabel }: {
+  observedLabel?: string;
+  observed?: ReturnType<typeof observedMatchupCohort>;
   preview?: boolean;
   result: DeckTestResult | null;
   loading: boolean;
@@ -42,9 +44,17 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
   return <div className="mt-4 space-y-6" data-component="AnalysisMatchups">
     <Panel>
       <h2 className="text-lg font-semibold">Observed results · similar decks</h2>
+      {observedLabel && <p className="mt-2 break-words text-sm text-ctp-subtext1">{observedLabel}</p>}
       <Link to={`/archetypes/${cluster.id}`} className="inline-flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{cluster.name}</Link>
       <p className="text-xs text-ctp-subtext1">{percent(classification.similarity)} deck similarity{classification.status === 'borderline' ? ' · Loose match' : ''}</p>
-      {performance ? <>
+      {observed ? <>
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <div><p className="text-4xl font-semibold tabular-nums">{observed.winRate === null ? '—' : percent(observed.winRate)}</p><p className="mt-1 text-sm">Observed score rate</p></div>
+          <div><p className="text-4xl font-semibold tabular-nums">{observed.results.toLocaleString()}</p><p className="mt-1 text-sm">Deck results</p></div>
+        </div>
+        <p className="mt-3 text-sm text-ctp-subtext1">{observed.decks.toLocaleString()} {observed.decks === 1 ? 'deck' : 'decks'} · {observed.events.toLocaleString()} {observed.events === 1 ? 'event' : 'events'} · Ties count ½</p>
+        <p className="mt-1 text-xs text-ctp-subtext1">Completed matches · classified opponents</p>
+      </> : performance ? <>
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div><p className="text-4xl font-semibold tabular-nums">{percent(performance.winRate)}</p><p className="mt-1 text-sm">Historical win rate</p></div>
           <div><p className="text-4xl font-semibold tabular-nums">{performance.interval95.matches.toLocaleString()}</p><p className="mt-1 text-sm">Recorded matches</p></div>
@@ -53,9 +63,9 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
       </> : <p className="mt-3 text-sm text-ctp-subtext1">Historical win rate unavailable.</p>}
     </Panel>
     <section aria-labelledby={headingId}>
-      <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · win rate 0–100%</p>
+      <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · {observed ? 'score rate' : 'win rate'} 0–100%</p>
       {matchupsError && <div className="mt-3"><p role="alert" className="text-sm">{matchups.length ? 'Showing saved matchups. Updated results could not be loaded.' : 'Opponent matchups could not be loaded.'}</p>{onRetryMatchups && <Button className="mt-2" onClick={onRetryMatchups}>Retry matchups</Button>}</div>}
-      {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : 'No recorded opponent matchups for this archetype yet.'}</p>}
+      {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : observed ? 'No recorded matchups in this selection.' : 'No recorded opponent matchups for this archetype yet.'}</p>}
       <div id={`${headingId}-rows`} className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((matchup) => <Panel as="article" key={matchup.opponentClusterId} className="min-w-0">
           <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-4">
@@ -66,7 +76,7 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
             </div>
             <div className="text-right">
               <p className="text-4xl font-semibold tabular-nums">{percent(matchup.baselineWinRate)}</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Observed win rate</p><p className="mt-3 text-xl font-semibold tabular-nums">{matchup.games.toLocaleString()}</p><p className="text-xs text-ctp-subtext1">Recorded games</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">{observed ? 'Observed score rate' : 'Observed win rate'}</p><p className="mt-3 text-xl font-semibold tabular-nums">{matchup.games.toLocaleString()}</p><p className="text-xs text-ctp-subtext1">{observed ? 'Recorded matches' : 'Recorded games'}</p>
             </div>
           </div>
           <div className="relative mt-4 h-3 overflow-hidden rounded-full bg-ctp-surface1" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: `${Math.max(0, Math.min(100, matchup.baselineWinRate * 100))}%` }} /><span className="absolute inset-y-0 left-1/2 border-l border-ctp-text/60" /></div>

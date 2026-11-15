@@ -31,3 +31,14 @@ test('empty opponent data remains distinct from the aggregate record', () => {
   assert.match(html, /No recorded opponent matchups/);
   assert.doesNotMatch(html, /<article/);
 });
+
+test('filtered results replace all-time totals, show cohort scope, and distinguish empty rates', () => {
+  const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(AnalysisMatchups, {
+    result: { ...result, matchups: [] }, loading: false, cards: new Map(),
+    observed: { winRate: null, results: 0, decks: 0, events: 0, matchups: [] }, observedLabel: '2026-10-01 – 2026-10-31 · All events',
+  })));
+  assert.match(html, /2026-10-01 – 2026-10-31/);
+  assert.match(html, /No recorded matchups in this selection/);
+  assert.doesNotMatch(html, /101|Limited data|Historical win rate/);
+  assert.match(html, /—/);
+});

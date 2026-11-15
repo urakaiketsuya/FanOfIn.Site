@@ -42,7 +42,7 @@ export default function DeckDecisionReport({ deck, cards, population, result, me
     <Panel><div className="grid grid-cols-3 gap-3 text-center">
       <div><p className="text-2xl font-semibold tabular-nums">{packages.length - incomplete.length}/{packages.length}</p><p className="mt-1 text-xs">Packages supported</p></div>
       <div><p className="text-2xl font-semibold tabular-nums">{loading || population.loading ? '…' : references.length}</p><p className="mt-1 text-xs">Comparable lists</p></div>
-      <div><p className="text-2xl font-semibold tabular-nums">{loading ? '…' : cluster ? matchups.length : '—'}</p><p className="mt-1 text-xs">Matched-build opponents</p></div>
+      <div><p className="text-2xl font-semibold tabular-nums">{loading ? '…' : cluster ? matchups.length : '—'}</p><p className="mt-1 text-xs">All-time build opponents</p></div>
     </div>{!!unresolved.length && <p role="status" className="mt-3 text-sm text-ctp-yellow">{unresolved.length} unknown cards · suggestions unavailable</p>}{deck.main.reduce((sum, line) => sum + line.quantity, 0) < 60 && <p role="status" className="mt-3 text-sm text-ctp-yellow">Incomplete Main list · current-size odds</p>}</Panel>
     <PackageDecisionReport deck={deck} cards={cards} onExplore={onExplore} />
     {deck.format === 'PANTHEON' ? <Panel><p>Tournament guidance · Standard only</p></Panel> : <>

@@ -1,3 +1,4 @@
+import { emptyMatchupScope, type ObservedMatchupScope } from "@gatcg/shared";
 import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import DeckToolNav from "../deckbuilder/components/DeckToolNav";
 import DeckStats from "../../components/DeckStats";
@@ -21,7 +22,7 @@ import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import ResourceCurveReliability from "../deckbuilder/ResourceCurveReliability";
 import DrawPatternReview from "./DrawPatternReview";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
-import AnalysisMatchups from "./AnalysisMatchups";
+import ObservedMatchupReport from "./ObservedMatchupReport";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
@@ -54,6 +55,7 @@ export default function DeckAnalysisIndex() {
   const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
   const [draftError, setDraftError] = useState<string | null>(null);
   const setupRef = useRef<HTMLDetailsElement>(null);
+  const [matchupScope, setMatchupScope] = useState<ObservedMatchupScope>(emptyMatchupScope);
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
   const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
@@ -108,7 +110,6 @@ export default function DeckAnalysisIndex() {
     matchupCardImpactData: data.matchupCardImpact, deckClusterIndex: data.cardImpact?.deckClusterIndex, winConditions: [], nearestDecks: [],
   }) : null, [deckCardCounts, data.archetypeTaxonomy, data.matchupCardImpact, data.cardImpact, workspace?.championName]);
   const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
-  const matchupsStatus = usePublishedDataStatus("analysis-matchup-card-impact", "/data/analysis/matchup-card-impact.json");
   const collectionDecklist = useMemo<OmnidexDecklist>(() => ({
     main: (workspace?.main ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
     material: (workspace?.material ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
@@ -122,6 +123,7 @@ export default function DeckAnalysisIndex() {
   function loadWorkspace(next: Omit<DeckWorkspace, "version" | "updatedAt">) {
     saveActiveDeckWorkspace(sessionStorage, next);
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
+    setMatchupScope(emptyMatchupScope);
     setCalculatorCard(undefined);
     setScenario({ turn: 3, order: "first" });
     setCalculatorView("tools");
@@ -195,7 +197,7 @@ export default function DeckAnalysisIndex() {
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, ...(CALCULATORS_ENABLED ? [{ key: "explore" as const, label: "Calculators" }] : []), { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
     <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
       {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
-      <AnalysisMatchups preview result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} matchupsLoading={matchupsStatus.phase === "loading"} matchupsError={matchupsStatus.error} onRetryMatchups={matchupsStatus.retry} />
+      <ObservedMatchupReport key={workspace.updatedAt} scope={matchupScope} onScope={setMatchupScope} preview result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} />
       <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} onApply={applyReportSwap} />
       <DeckReport deck={workspace} cardsByName={catalogByName} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
     {CALCULATORS_ENABLED && <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
@@ -219,7 +221,7 @@ export default function DeckAnalysisIndex() {
       }} />
       </TabPanel>
     </TabPanel>}
-    <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><AnalysisMatchups result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} matchupsLoading={matchupsStatus.phase === "loading"} matchupsError={matchupsStatus.error} onRetryMatchups={matchupsStatus.retry} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><ObservedMatchupReport key={workspace.updatedAt} scope={matchupScope} onScope={setMatchupScope} result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} /></TabPanel>
   </PageLayout>;
 }
 
