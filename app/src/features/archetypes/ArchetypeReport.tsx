@@ -1,6 +1,7 @@
+import ObservedBuildVariants from "./ObservedBuildVariants";
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { archetypeReport, shortHash, type ArchetypeCluster, type DeckDetailData, type ReportDistribution } from '@gatcg/shared';
+import { observedBuildVariants, archetypeReport, shortHash, type ArchetypeCluster, type DeckDetailData, type ReportDistribution } from '@gatcg/shared';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import { useCardCatalog } from '../cards/useCardCatalog';
 import CardArtTile from '../../components/CardArtTile';
@@ -55,10 +56,15 @@ function RecordedReport({ cluster }: { cluster: ArchetypeCluster }) {
   const catalog = useCardCatalog();
   const cards = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
   const [report, setReport] = useState<Report | null>(null);
+  const [observed, setObserved] = useState<ReturnType<typeof observedBuildVariants> | null>(null);
   const [pending, startTransition] = useTransition();
   const ready = champions.every(name => partitions.has(name));
   useEffect(() => {
-    if (ready) startTransition(() => setReport(archetypeReport(cluster.deckIds, champions.map(name => partitions.get(name)!.cards), cards)));
+    if (ready) startTransition(() => {
+      const sources = champions.map(name => partitions.get(name)!.cards);
+      setReport(archetypeReport(cluster.deckIds, sources, cards));
+      setObserved(observedBuildVariants(cluster.deckIds, sources));
+    });
   }, [ready, cluster, champions, partitions, cards]);
   const [allCards, setAllCards] = useState(false);
   const [allAccess, setAllAccess] = useState(false);
@@ -74,6 +80,7 @@ function RecordedReport({ cluster }: { cluster: ArchetypeCluster }) {
     {!ready || !report ? <p role="status">Waiting for build lists · {partitions.size}/{champions.length} champion sources available</p> : !report.listed ? <p role="status">No Main decklists available for this build.</p> : <>
       <p role="status" className="text-sm text-ctp-subtext0">{report.listed}/{report.requested} recorded lists available · {pending ? 'Recalculating…' : 'All recorded events'}</p>
       {report.missingNames.length > 0 && <p role="status" className="text-sm text-ctp-yellow">Card data incomplete · composition covers {report.complete}/{report.listed} lists. Unresolved: {report.missingNames.join(', ')}</p>}
+      {observed && <ObservedBuildVariants report={observed} cards={cards} />}
       <Panel><h3 className="text-lg font-semibold">Typical deck composition</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">{[{ label: 'Main deck size', value: report.mainSize }, { label: 'Material size', value: report.materialSize }].map(({ label, value }) => <div key={label}><h4 className="mb-2 text-sm font-medium">{label}</h4><Interval value={value} scale={Math.max(1, value.high)} /></div>)}</div>
         {report.complete === 0 ? <p className="mt-4" role="status">Composition unavailable until card data resolves.</p> : <div className="mt-6 grid gap-6 sm:grid-cols-2">{['Type · ', 'Element · ', 'Reserve · ', 'Printed Floating Memory'].map(group => {

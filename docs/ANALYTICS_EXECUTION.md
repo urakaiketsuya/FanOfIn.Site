@@ -655,3 +655,26 @@ separate network-error/retry state; no new recovery UI added in this slice.
 Next: observed build variants and alternatives, then reference-deck-supported
 swaps. Extended Analytics remains ~69% (11/16 unequal milestones complete;
 card/build milestone 12 partially complete). Not pushed.
+
+## Milestone 12 continuation — observed build variants and alternatives
+
+Added exact observed Main+Material lists to the build Report using published
+membership and existing champion partitions. Counts and percentages use available
+sightings, excluding unavailable Main lists and duplicate deckIds. Alternatives
+show section-aware card quantity deltas from the most frequent actual list;
+full lists and recorded-deck links remain available. Four variants initially,
+four more per action; no automatic edits or unsupported swap recommendations.
+Shared calculation covers dictionary partitions, repeated lines, duplicate
+sightings, sideboard exclusion, deterministic ties, quantity changes, section
+moves, unavailable lists and invalid quantities.
+
+Real-data/browser verification uses Merlin build 765ivh: 88/88 available sightings,
+79 exact lists; most common 5/88 (5.7%). Mobile 360px and desktop 1280px have no
+horizontal overflow; keyboard full-list expansion, 48px actions, and incremental
+alternatives verified. Five focused tests, app/shared typechecks and lint passed
+(existing unrelated lint warnings). Source loading/error/retry and empty states
+were browser-verified through the existing build-report controller.
+
+Next: reference-deck-supported swaps, plus remaining card/build surface audit.
+Extended Analytics remains ~69%: 11/16 unequal milestones finished; milestone 12
+now includes adoption and observed build variants, but is not complete. No push.

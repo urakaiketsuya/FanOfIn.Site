@@ -7265,3 +7265,26 @@ unavailable changes sort last. Category filters use their own period populations
 never the overall denominator. All-time deck counts are labeled separately.
 Offline refresh: `node --import tsx scripts/build-card-stats.ts`, sharing the full
 analysis publisher and current local price join; only cards.json is replaced.
+
+### Observed build variants and alternatives
+
+The build Report groups published member sightings by exact, section-aware Main
+and Material quantities. Sideboard does not affect identity. Each partition's
+card dictionary is decoded independently; duplicate positive integer lines sum.
+Nonpositive, noninteger or nonfinite quantities and unresolved dictionary names
+are ignored. A sighting requires a nonempty usable Main list. Deduplicate by
+event/player deckId (first available sighting); missing lists are not absences.
+
+Variant share is sightings of that exact list / available member sightings.
+Rank by count descending, then canonical section signature for deterministic ties.
+The first actual observed list is the reference, never a centroid. Alternatives
+show signed per-card, per-section quantity differences from that reference;
+moving a card between sections produces a removal and addition. No substitution,
+legality, performance benefit or causal claim is inferred from these differences.
+A recorded-deck link uses the lexically first sighting of the variant. Sideboards
+on that source page can differ across sightings of the same Main+Material list.
+
+The report shows four variants initially, four more per action, a six-card
+labeled preview for the reference, and complete sectioned lists on expansion.
+This is distinct from the older More → Variants similarity search outside
+published build membership. No additional mechanics fixtures or artifacts needed.

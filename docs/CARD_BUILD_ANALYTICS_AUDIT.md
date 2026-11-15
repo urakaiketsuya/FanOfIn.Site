@@ -50,3 +50,13 @@ use matching populations; legacy or empty-period data is unavailable. cards.json
 has been regenerated through the shared publisher using local cached inputs.
 The earlier raw-count Hot finding is resolved for Card Stats; other comparison
 surfaces still require their own audit before reusing this report.
+
+### Observed build variants follow-through
+
+Archetype Report now groups exact Main+Material member lists and presents observed
+alternatives as card quantity differences against the most common actual list.
+Frequency is available-sighting share, not player share or win rate. Full lists
+and recorded-deck links make each alternative inspectable. This resolves the
+observed-variant presentation for build reports; card-detail competing choices,
+package-specific exact variants and reference-deck-supported swaps remain separate
+work. The older outside-membership similarity search is unchanged.
