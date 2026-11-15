@@ -24,8 +24,7 @@ import { useHipsterData } from "../players/data";
 import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import Tabs from "../../components/ui/Tabs";
-import Chip from "../../components/ui/Chip";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
@@ -59,10 +58,11 @@ type CardSurface = "overview" | "decks" | "more";
 const SURFACES: { key: CardSurface; label: string }[] = [
   { key: "overview", label: "Overview" },
   { key: "decks", label: "Decks" },
-  { key: "more", label: "More" },
+  { key: "more", label: "Related" },
 ];
-const OVERVIEW_TABS: CardTab[] = ["info", "usedWith"];
-const MORE_TABS: { key: Extract<CardTab, "synergy" | "similar" | "intent" | "compare">; label: string }[] = [
+const OVERVIEW_TABS: CardTab[] = ["info"];
+const MORE_TABS: { key: Extract<CardTab, "usedWith" | "synergy" | "similar" | "intent" | "compare">; label: string }[] = [
+  { key: "usedWith", label: "Played with" },
   { key: "synergy", label: "Synergy" },
   { key: "similar", label: "Similar effects" },
   { key: "intent", label: "Intent cards" },
@@ -89,15 +89,14 @@ export default function CardDetail() {
   const [editionsExpanded, setEditionsExpanded] = useState(false);
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "info");
   const surface: CardSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";
-  const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "synergy" | "similar" | "intent" | "compare" : "synergy";
+  const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "usedWith" | "synergy" | "similar" | "intent" | "compare" : "usedWith";
   const showOverview = surface === "overview";
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
-  // Keep the large published datasets behind the grouped surface that needs them. Overview loads
-  // usage and common pairings; Decks and each secondary analysis still load only when selected.
+  // Load each analysis dataset only when its surface is selected.
   const needsDecksTab = tab === "decks";
-  const needsUsedWithTab = showOverview;
+  const needsUsedWithTab = tab === "usedWith";
   const needsSynergyTab = surface === "more" && moreTab === "synergy";
   const needsIntentTab = surface === "more" && moreTab === "intent";
   const needsPopularityIndex = needsDecksTab || needsSynergyTab;
@@ -233,8 +232,9 @@ export default function CardDetail() {
 
   const tabFailure = (tab === "decks"
     ? [deckIndexStatus, popularityStatus, taxonomyStatus, hipsterStatus, communityDeckStatus, eventIndexStatus, playersStatus]
-    : tab === "info" || tab === "usedWith"
-      ? [deckIndexStatus, cardStatsStatus, quantityStatsStatus, communityInclusionStatus]
+    : tab === "info"
+      ? [cardStatsStatus, quantityStatsStatus, communityInclusionStatus]
+      : tab === "usedWith" ? [deckIndexStatus]
       : tab === "synergy"
         ? [deckIndexStatus, popularityStatus]
         : tab === "similar"
@@ -337,7 +337,7 @@ export default function CardDetail() {
 
   return (
     <PageLayout data-component="CardDetail" width="standard">
-      <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
+      <Link to="/cards" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline focus-visible:outline-2">
         &larr; Back to Cards
       </Link>
 
@@ -345,51 +345,52 @@ export default function CardDetail() {
 
       <AddCardToDeck key={card.name} card={card} />
 
-      <CardCollectionSummary key={card.uuid} card={card} />
-
-      <CardCommunityTags key={card.uuid} cardUuid={card.uuid} editionUuid={edition?.uuid} />
-
       <div className="sticky top-0 z-20 -mx-2 mt-5 rounded-xl border border-ctp-surface1/70 bg-ctp-base/95 px-2 pt-1 shadow-md shadow-black/20 backdrop-blur">
-        <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" variant="pill" />
+        <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" baseId="card-data" variant="pill" />
       </div>
 
       {tabFailure && <div role="alert" className="mt-4 rounded-xl border border-ctp-red/40 bg-ctp-red/10 p-4 text-sm text-ctp-text"><p className="font-semibold">This card analysis could not be loaded.</p><p className="mt-1 text-ctp-subtext0">{tabFailure.error}</p><button type="button" onClick={tabFailure.retry} className="mt-3 min-h-control rounded-lg bg-ctp-red px-4 font-semibold text-ctp-base">Try again</button></div>}
 
-      {showOverview && <BestPlayers cardName={card.name} />}
+      <TabPanel baseId="card-data" tab="overview" active={surface} keepMounted>
 
-      {showOverview && !tabFailure && (
-        <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
-      )}
-      {showOverview && !tabFailure && <CardBuildCopies key={card.name} name={card.name} />}
+        {showOverview && !tabFailure && (
+          <CardInfoPanel loading={!cardStatsData || !cardQuantityStatsData} card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
+        )}
 
-      {showOverview && !tabFailure && (
-        <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
-      )}
+        <CardCollectionSummary key={`collection:${card.uuid}`} card={card} />
+        <CardCommunityTags key={`tags:${card.uuid}`} cardUuid={card.uuid} editionUuid={edition?.uuid} />
+      </TabPanel>
 
-      {tab === "decks" && !tabFailure && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
+      <TabPanel baseId="card-data" tab="more" active={surface}>
+          <div className="mt-4"><Tabs tabs={MORE_TABS} active={moreTab} onChange={setTab} baseId="card-related" label="Related cards" wrap /></div>
+        <TabPanel baseId="card-related" tab={moreTab} active={moreTab}>
+          {tab === "usedWith" && !tabFailure && (
+            <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
+          )}
 
-      {surface === "more" && (
-        <div className="mt-5 flex flex-wrap gap-2" aria-label="More card data">
-          {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
-        </div>
-      )}
+          {surface === "more" && moreTab === "synergy" && !tabFailure && (
+            <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} loading={synergy.loading} />
+          )}
 
-      {surface === "more" && moreTab === "synergy" && !tabFailure && (
-        <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} loading={synergy.loading} />
-      )}
+          {surface === "more" && moreTab === "similar" && (
+            <CardSimilarEffectsPanel key={card.uuid} card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
+          )}
 
-      {surface === "more" && moreTab === "similar" && (
-        <CardSimilarEffectsPanel key={card.uuid} card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
-      )}
-
-      {surface === "more" && moreTab === "intent" && !tabFailure && (
-        <CardIntentPanel cardName={card.name} packages={cardPackages} feeds={visibleIntentFeeds} poweredBy={visibleIntentPoweredBy} experimentalCount={experimentalIntentCount} showExperimental={showExperimentalIntent} onShowExperimentalChange={setShowExperimentalIntent} evidenceFor={intentPackageEvidence} />
-      )}
+          {surface === "more" && moreTab === "intent" && !tabFailure && (
+            <CardIntentPanel cardName={card.name} packages={cardPackages} feeds={visibleIntentFeeds} poweredBy={visibleIntentPoweredBy} experimentalCount={experimentalIntentCount} showExperimental={showExperimentalIntent} onShowExperimentalChange={setShowExperimentalIntent} evidenceFor={intentPackageEvidence} />
+          )}
 
 
-      {surface === "more" && moreTab === "compare" && (
-        <CardComparePanel options={compareCardNames} input={compareInput} selected={compareWith} onInputChange={setCompareInput} onAdd={addCompareCard} onRemove={removeCompareCard} />
-      )}
+          {surface === "more" && moreTab === "compare" && (
+            <CardComparePanel options={compareCardNames} input={compareInput} selected={compareWith} onInputChange={setCompareInput} onAdd={addCompareCard} onRemove={removeCompareCard} />
+          )}
+        </TabPanel>
+      </TabPanel>
+      <TabPanel baseId="card-data" tab="decks" active={surface}>
+          <CardBuildCopies key={card.name} name={card.name} />
+        {tab === "decks" && !tabFailure && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
+          <BestPlayers cardName={card.name} />
+      </TabPanel>
     </PageLayout>
   );
 }
