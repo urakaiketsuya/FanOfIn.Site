@@ -171,3 +171,4 @@ export { forecastDeck, deckModelValue, matchupValue, forecastClip, seasonalCorre
 export type { DeckForecastModel, ForecastDeck, ResidualStats } from './deckForecast';
 
 export * from './cohortDrawForecast.js';
+export * from './cardBuildCopies.js';

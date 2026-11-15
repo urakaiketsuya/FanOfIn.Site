@@ -7226,3 +7226,20 @@ states. Beat order and video seconds cannot substitute for turn count. Thus thes
 data do not validate turn 5 as an expected game endpoint. Empirical calibration
 requires complete turn-indexed games with starting player and observed draw/state
 coverage; that data collection is follow-up work, not an assumption in this report.
+
+### Card-detail copy distributions by build
+
+`cardBuildCopies` joins the card index to each published archetype cluster's
+`deckIds`, including cross-champion membership. Each event/player sighting counts
+once, even across repeated partitions or membership IDs. As in `archetypeReport`,
+a list without a positive named Main card is unavailable. Missing lists are excluded
+from inclusion denominators; explicit absence in an available list counts as zero.
+Copies aggregate positive quantities of the exact catalog name in Main + Material;
+Sideboard is excluded. Each partition uses its own dictionary via `decodeCardLines`.
+
+For each build, inclusion is playing lists / available lists (null when unavailable).
+The copy histogram divides bucket counts by playing lists only, retaining rare and
+single-quantity choices. The UI separately shows available/requested coverage and
+links to the build. Builds with observations playing the card sort by playing-list
+count, then name and ID; six show initially with an explicit expansion. This uses
+the current published membership and does not infer period adoption or causal swaps.

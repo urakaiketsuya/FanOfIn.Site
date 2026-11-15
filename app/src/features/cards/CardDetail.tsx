@@ -30,6 +30,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 import CardInfoPanel from "./CardInfoPanel";
+import CardBuildCopies from "./CardBuildCopies";
 import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
@@ -359,6 +360,7 @@ export default function CardDetail() {
       {showOverview && !tabFailure && (
         <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
       )}
+      {showOverview && !tabFailure && <CardBuildCopies key={card.name} name={card.name} />}
 
       {showOverview && !tabFailure && (
         <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />

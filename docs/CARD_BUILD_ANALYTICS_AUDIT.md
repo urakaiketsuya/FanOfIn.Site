@@ -6,7 +6,7 @@
 
 | Surface | Existing foundation | Remaining work |
 | --- | --- | --- |
-| Card detail (`CardDetail`, `CardInfoPanel`) | Tournament inclusion; separate community inclusion; visible copy distribution among playing lists, including rare observations | Build-scoped distributions, compatible adoption periods and observed alternative choices. Single-quantity cards need the updated pipeline artifact. |
+| Card detail (`CardDetail`, `CardInfoPanel`) | Tournament inclusion; separate community inclusion; visible copy distribution among playing lists, including rare observations | Build-scoped distributions now implemented from recorded membership; compatible adoption periods and observed alternative choices remain. Single-quantity cards need the updated pipeline artifact. |
 | Card Stats (`CardStatsIndex`) | Usage and win-rate rows, population count | Replace raw-count “Hot” ranking with comparable-period inclusion changes; add champion/build concentration with explicit denominators. |
 | Staples (`staples/CardStaples`) | Section-aware populations; format/champion/build filters; all/30/90-day cohorts; source controls | Stable/recent comparison needs nonoverlapping, equal-length periods. Do not compare 30 days to the overlapping 90-day population as a trend. |
 | Packages (`PackagesIndex`) | Full published pools and requirements; separate research surface | Exact observed variants, complete-package frequency and joint access must be audited against actual lists; full pools are not tested variants. |
@@ -22,14 +22,11 @@ This document records inspected source behavior, not browser acceptance for thos
 
 ## Next implementation slice
 
-Build-scoped copy distributions on Card detail, reusing recorded deck identities
-and the same archetype membership as the existing report. Show inclusion across
-available lists separately from quantities among playing lists. Deduplicate
-`eventId:player`; exclude missing lists and count availability. Keep Main/Material
-identity separate from Sideboard. Use actual cards and percentage bars; no new
-calculator inputs or methodology disclosure.
+Build-scoped copy distributions are now implemented on Card detail, using recorded
+sightings and published archetype membership. Inclusion, playing-list quantities
+and list availability have separate denominators; Sideboard is excluded.
 
-Then implement equal-period adoption with denominator data before reusing it in
+Implement equal-period adoption with denominator data before reusing it in
 Card Stats, Staples, Sets and build history. Observed alternatives must be described
 as observed choices, not functional substitutes or causal win-rate improvements.
 Supported swaps reuse the existing paired fixture models; unsupported results stay

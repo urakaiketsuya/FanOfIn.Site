@@ -32,11 +32,11 @@ export default function CardInfoPanel({ card, cardStat, metaShare, communityShar
 }
 
 /** Inclusion and copies have different denominators: these buckets only contain lists playing the card. */
-export function CardCopyDistribution({ buckets }: { buckets: CardQuantityBucket[] }) {
+export function CardCopyDistribution({ buckets }: { buckets: Pick<CardQuantityBucket, 'quantity' | 'deckCount'>[] }) {
   const total = buckets.reduce((sum, bucket) => sum + bucket.deckCount, 0);
   return <Section className="mt-4" heading="dense" title="Copies played">
     {total > 0 ? <>
-      <p className="mt-1 text-xs text-ctp-subtext0">{total.toLocaleString()} recorded lists playing this card · Main + Material</p>
+      <p className="mt-1 text-xs text-ctp-subtext0">{total.toLocaleString()} recorded {total === 1 ? 'list' : 'lists'} playing this card · Main + Material</p>
       <div className="mt-3 space-y-3">{[...buckets].sort((a, b) => a.quantity - b.quantity).map(bucket => {
         const share = bucket.deckCount / total * 100;
         return <div key={bucket.quantity}>

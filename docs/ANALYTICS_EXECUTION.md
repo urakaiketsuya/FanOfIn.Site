@@ -575,3 +575,30 @@ interactive controls or asynchronous states were added. Full route loading/retry
 remote card art, production build and live deployment were not verified this slice.
 Temporary harness removed. Unrelated concurrent editor changes remain untouched.
 App TypeScript also completed successfully.
+
+## Milestone 12 continuation — build-scoped card copies
+
+Added shared `cardBuildCopies` and automatic Card detail reports using published
+build membership and the already-shared card index. Each build shows inclusion,
+available/requested lists, and copies among playing lists. Cross-champion membership,
+rare/singleton choices and unavailable-versus-absent outcomes are preserved. Six
+builds display initially, with keyboard-accessible expansion and build links.
+Loading, refresh errors and retry use the existing published-data lifecycle;
+recalculation uses a transition. This report needs no new pipeline artifact or
+mechanic fixtures. The earlier global singleton artifact rebuild remains separate.
+
+Milestone 12 remains open. Next: equal-period adoption with population denominators,
+then observed alternatives/variants and reference-deck supported swaps. Extended
+Analytics remains 11/16 completed (~69%, unequal milestones); this is another
+completed slice of milestone 12, not completion of Release C. No push performed.
+
+Verification: four focused copy-report regressions, app/shared TypeScript and
+app targeted lint passed. Browser verification mounted the production controller
+with controlled dataset responses at 360px and 1280px: loading, ready, unavailable,
+failed fetch and successful keyboard retry; expand/collapse, build link targets
+at least 48px, visible focus, and no overflow at 200% text size. Screenshots reviewed.
+The full Card detail route, remote artwork, production build and live deployment
+were not verified in this slice. Temporary browser harness removed.
+Published-data smoke check: Neos Sight evaluated across 338 builds in ~241ms,
+with six playing builds; leading build d5kuf has 30/33 inclusion and all 30
+playing lists use three copies. Timing is one local run, not a performance guarantee.
