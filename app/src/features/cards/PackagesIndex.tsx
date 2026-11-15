@@ -1,7 +1,7 @@
 import EditorialPackages from "../packages/EditorialPackages";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState, useTransition } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { PUBLISHED_PACKAGE_CATALOG } from "@gatcg/shared";
+import { observedPackageVariants, PUBLISHED_PACKAGE_CATALOG } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
@@ -9,6 +9,10 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PackageCardGrid from "./PackageCardGrid";
 import { useCardCatalog } from "./useCardCatalog";
 
+import { useDeckCardIndexData } from '../archetypes/data';
+import { usePublishedDataStatus } from '../../lib/sync/usePublishedData';
+import Button from '../../components/ui/Button';
+import ObservedPackageVariants from './ObservedPackageVariants';
 const PackageResearch = lazy(() => import("./PackageResearch"));
 
 /** Keep legacy research links working while published package links open the public catalog. */
@@ -29,6 +33,11 @@ export default function PackagesIndex() {
 function PublishedPackages({ packageId, visible }: { packageId: string; visible: boolean }) {
   useDocumentTitle(visible ? "Card Packages" : "Package Research");
   const cards = useCardCatalog();
+  const index = useDeckCardIndexData(visible);
+  const status = usePublishedDataStatus('analysis-deck-card-index', '/data/analysis/deck-card-index.json', visible);
+  const [reports, setReports] = useState<ReturnType<typeof observedPackageVariants>>();
+  const [pending, startTransition] = useTransition();
+  useEffect(() => { if (index) startTransition(() => setReports(observedPackageVariants(PUBLISHED_PACKAGE_CATALOG.packages, [index]))); }, [index]);
   const cardsByName = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
   const [query, setQuery] = useState("");
   useEffect(() => {
@@ -46,6 +55,8 @@ function PublishedPackages({ packageId, visible }: { packageId: string; visible:
     </label>
     <p role="status" className="my-4 text-sm text-ctp-subtext0">{packages.length} published {packages.length === 1 ? "package" : "packages"}</p>
     {!packages.length && <p>No packages match your search.</p>}
+    {status.error && <div role="alert"><p>Observed lists could not be refreshed.</p><Button onClick={status.retry}>Retry observed lists</Button></div>}
+    {(!reports || pending) && !status.error && <p role="status">{pending ? 'Recalculating…' : 'Loading observed package lists…'}</p>}
     <EditorialPackages query={normalized} />
     <div className="mt-4 space-y-4">
       {packages.map(pkg => {
@@ -58,6 +69,7 @@ function PublishedPackages({ packageId, visible }: { packageId: string; visible:
           <PackageCardGrid names={pkg.memberCards} cardsByName={cardsByName} captions={captions} />
           <p className="mt-4 text-sm">{pkg.explanation}</p>
           <p className="mt-2 text-sm text-ctp-subtext1"><span className="font-semibold">Required setup: </span>{pkg.activation}</p>
+          {reports?.find(row => row.id === pkg.id) && <ObservedPackageVariants report={reports.find(row => row.id === pkg.id)!} cards={cardsByName} />}
           {banned.length > 0 && <p className="mt-2 text-sm text-ctp-peach">Banned in Standard: {banned.join(", ")}</p>}
         </Panel>;
       })}

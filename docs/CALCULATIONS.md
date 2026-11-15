@@ -7311,3 +7311,39 @@ analytics artifacts are generated. No swap is inferred from mere co-occurrence.
 Acceptance uses `persistReportSwap` to revalidate and atomically store the local
 Analysis draft and original; no account/public deck is updated. Storage failure
 keeps the comparison open and preserves the selection for retry.
+
+### Card-detail observed competing choices
+
+`observedCardChoices` compares recorded sightings within each published build.
+A match replaces all copies of one name with equal copies of another name in the
+same section; every other Main and Material quantity must be identical. The
+alternative list must omit the focal name from both sections. Sideboards are
+excluded. This strict match does not establish equivalent function, an intentional
+player swap, or a causal performance improvement.
+
+Counts deduplicate deckId, including duplicate memberships and partitions. Each
+partition decodes its own name dictionary; positive integer lines aggregate by
+name within section. A missing Main list is unavailable, not a negative sighting.
+Within a build/alternative/section/copy-count row, each side counts distinct matched
+sightings, not pairs. The displayed percentages divide by those two matched-list
+counts combined, not all build lists. Rows can overlap; they are not a partition.
+The two recorded-list links always identify an actual matched pair. Sorting is
+alternative count, focal count, build ID, alternative name, then copy count.
+
+### Package-specific observed quantity variants
+
+`observedPackageVariants` uses the same normalized sightings. Its eligible
+population is available Main lists, restricted to the package's material Champion
+prefix when specified. Complete means all published section-specific requirements
+are present: minimums count distinct names, not copies. Partial means at least one
+pool card appears but requirements are unmet. No pool cards means neither complete
+nor partial. Sideboards cannot satisfy requirements.
+
+Complete lists are projected onto the full published pool, preserving section and
+exact quantity. Identical projections group together even when unrelated cards
+or Sideboards differ. Each variant's share is its unique sightings divided by all
+complete sightings; complete-package inclusion uses eligible sightings instead.
+Full pool, required setup and exact observed variants remain distinct. These are
+registration observations, not tested gameplay variants. No joint-access forecast
+or win-rate uplift is inferred from these counts. Existing package access models
+remain separate. No new TCGEngine mechanics fixtures or artifact rebuild is needed.

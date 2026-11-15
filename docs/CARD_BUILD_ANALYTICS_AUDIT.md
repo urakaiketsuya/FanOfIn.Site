@@ -70,3 +70,15 @@ draft. Champion-only browsing does not offer forecasts. This closes the
 reference-context prerequisite for Discovery swaps; automatic competing-slot
 ranking and card-detail alternatives remain separate work. New-release connections
 remain structural suggestions, not observed substitutions or claimed win-rate gains.
+
+### Competing choices and package variants follow-through
+
+Card detail's Decks tab now shows strict observed one-card alternatives: same
+published build, equal copies/section, otherwise identical Main+Material. Each
+result links a real matched pair and shows matched-list shares/counts. This closes
+the observed-choice slice; functional swap rankings remain a different question.
+
+Published packages now show complete/eligible registration frequency, partial
+counts and exact section-aware pool projections among complete lists. The full
+pool stays separately labeled. Package joint-access aggregation across recorded
+cohorts remains unaudited; these observations do not claim tested execution.

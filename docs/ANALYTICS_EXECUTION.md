@@ -701,3 +701,26 @@ Next: card-detail competing choices and package-specific observed variants, foll
 by the remaining card/build surface audit. Extended Analytics remains approximately
 69% (11/16 unequal milestones complete; milestone 12 continues). No release push
 is included in this change.
+
+## Milestone 12 continuation — competing card choices and observed package variants
+
+Card-detail Decks reports now show exact one-card differences within published
+builds, equal quantities and sections, with matched-list percentages and a linked
+source pair. Package pages show complete/eligible counts, partial counts, and exact
+Main/Material quantity variants among complete sightings. Full pools remain separate.
+Shared calculations deduplicate sightings, independently decode dictionaries and
+exclude missing Main lists and Sideboards. No new game-mechanic fixtures or artifact
+regeneration. Nine focused regression tests cover matching, membership, quantity,
+lineage, distinct-name requirements, missing lists, duplicates and pool projection.
+
+Next: audit remaining card/build surfaces (including observed distributions in
+Archetype Compare and package cohort access), then collection analytics. Extended
+Analytics remains approximately 69%: 11/16 unequal milestones complete, with
+milestone 12 progressing; the remaining audit may change scope. No push included.
+
+Verification: shared typecheck and app lint passed (existing unrelated warnings).
+Browser checks passed at 360px and 1280px: actual Dungeon Guide matched choices,
+Fluffy Shopkeep variants, no page overflow, keyboard expansion, 48px action, and
+loading/error/retry/empty states on both surfaces. App typecheck was attempted;
+it reports TS2322 at DeckAnalysisIndex.tsx:206 in concurrent calculator-navigation
+work, outside this slice. Those files were left untouched and unstaged.

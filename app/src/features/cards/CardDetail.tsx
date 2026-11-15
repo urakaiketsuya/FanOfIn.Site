@@ -29,6 +29,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 import CardInfoPanel from "./CardInfoPanel";
+import ObservedCardChoices from "./ObservedCardChoices";
 import CardBuildCopies from "./CardBuildCopies";
 import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
@@ -388,6 +389,7 @@ export default function CardDetail() {
       </TabPanel>
       <TabPanel baseId="card-data" tab="decks" active={surface}>
           <CardBuildCopies key={card.name} name={card.name} />
+          <ObservedCardChoices key={`choices-${card.name}`} name={card.name} />
         {tab === "decks" && !tabFailure && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
           <BestPlayers cardName={card.name} />
       </TabPanel>

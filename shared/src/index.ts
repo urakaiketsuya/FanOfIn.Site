@@ -175,3 +175,4 @@ export * from './cardBuildCopies.js';
 export * from './cardAdoption.js';
 
 export { observedBuildVariants } from "./observedBuildVariants.js";
+export * from './observedCardChoices.js';
