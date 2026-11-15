@@ -169,3 +169,5 @@ export * from "./recommendationDependencies.js";
 export * from './bestPlayers';
 export { forecastDeck, deckModelValue, matchupValue, forecastClip, seasonalCorrection } from './deckForecast';
 export type { DeckForecastModel, ForecastDeck, ResidualStats } from './deckForecast';
+
+export * from './cohortDrawForecast.js';

@@ -7196,3 +7196,30 @@ event. Champion appearance shares use events with a known champion as the denomi
 Multiple distinct named champions in a summary remain unresolved rather than selecting
 one arbitrarily. Summary-only events do not add full decks, card copies, card-usage
 observations, or complete-field statistics. A submitted deck is not necessarily public.
+
+## Draw-adjusted archetype cohorts (2026-11-15)
+
+One observation remains one published tournament sighting. Duplicate partition
+entries are deduplicated by deckId; equal constructions reuse their calculation
+without removing their sighting weight. Sideboards never enter the model.
+Supported Rai and Tonoris lists reuse their existing going-first, unopposed paid
+draw policies (512 and 1024 samples respectively). Other lineages and incomplete
+catalogs are excluded from the modeled denominator, never converted to zero.
+For each name, exact natural hypergeometric access at min(Main size, 6 + turn)
+is increased by the paired probability of finding that name only through extra
+draws, capped at one. This preserves source dependency: a source cannot help find
+its own first copy. A name absent from a supported list contributes zero.
+
+All five turn checkpoints are retained and validated against the existing reports.
+The UI presents turns 3 and 5 side by side; these are early/later model checkpoints,
+not measured expected game lengths. Card intervals are quartiles across supported
+lists' access probabilities. Cards-seen intervals are quartiles of each supported
+list's simulation median, not pooled simulation percentiles or confidence bounds.
+The separate 7/10/15/20 cards-seen report remains unconditional random access.
+
+Checkpoint evidence audit: committed broadcast timelines contain narrative beats,
+not a complete sequence of player turns, draw counts, hidden hands or progression
+states. Beat order and video seconds cannot substitute for turn count. Thus these
+data do not validate turn 5 as an expected game endpoint. Empirical calibration
+requires complete turn-indexed games with starting player and observed draw/state
+coverage; that data collection is follow-up work, not an assumption in this report.

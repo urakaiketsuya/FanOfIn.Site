@@ -1,3 +1,4 @@
+import { cohortDeckDrawForecast, COHORT_TURN_CHECKPOINTS } from './cohortDrawForecast.js';
 import type { Card } from './api-types.js';
 import { decodeCardLines, type DeckCardIndexData } from './analysis-types.js';
 import { drawAccessReport, REPORT_DRAW_CHECKPOINTS } from './analyticsReport.js';
@@ -47,12 +48,27 @@ export function archetypeReport(deckIds: readonly string[], partitions: readonly
   if (complete.length && !keys.includes('Printed Floating Memory')) keys.push('Printed Floating Memory');
   const composition = keys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).map(label => ({ label, ...reportDistribution(metrics.map(m => m.get(label) ?? 0)) }));
   const access = lists.map(deck => new Map(drawAccessReport([...deck.main].map(([name, quantity]) => ({ name, quantity }))).rows.map(row => [row.name, row.points])));
+  // Cache equal constructions while preserving one observation per sighting.
+  const forecastCache = new Map<string, ReturnType<typeof cohortDeckDrawForecast>>();
+  const forecasts = lists.map(deck => {
+    const main = [...deck.main].sort().map(([name, quantity]) => ({ name, quantity }));
+    const material = [...deck.material].sort().map(([name, quantity]) => ({ name, quantity }));
+    const key = JSON.stringify([main, material]);
+    if (!forecastCache.has(key)) forecastCache.set(key, cohortDeckDrawForecast({ main, material }, catalog));
+    return forecastCache.get(key)!;
+  }).filter(forecast => forecast !== null);
+  const forecast = {
+    supported: forecasts.length, total: lists.length,
+    checkpoints: COHORT_TURN_CHECKPOINTS.map((turn, i) => ({ turn,
+      seen: reportDistribution(forecasts.map(points => points[i].seen.median)),
+    })),
+  };
   const cards = (['main', 'material'] as const).flatMap(section => [...new Set(lists.flatMap(deck => [...deck[section].keys()]))].map(name => {
     const played = lists.map(deck => deck[section].get(name) ?? 0).filter(n => n > 0);
-    return { name, section, inclusion: played.length / lists.length, lists: played.length, copies: reportDistribution(played),
+    return { name, section, forecast: section === 'main' && forecasts.length ? COHORT_TURN_CHECKPOINTS.map((turn, i) => ({ turn, ...reportDistribution(forecasts.map(points => points[i].cards.get(name)?.modeled ?? 0)) })) : [], inclusion: played.length / lists.length, lists: played.length, copies: reportDistribution(played),
       access: section === 'main' ? REPORT_DRAW_CHECKPOINTS.map((seen, i) => ({ seen, ...reportDistribution(access.map(rows => rows.get(name)?.[i].probability ?? 0)) })) : [],
     };
   })).sort((a, b) => b.inclusion - a.inclusion || a.name.localeCompare(b.name));
-  return { requested: membership.size, listed: lists.length, complete: complete.length, missingNames,
+  return { forecast, requested: membership.size, listed: lists.length, complete: complete.length, missingNames,
     mainSize: reportDistribution(lists.map(deck => sum(deck.main))), materialSize: reportDistribution(lists.map(deck => sum(deck.material))), composition, cards };
 }

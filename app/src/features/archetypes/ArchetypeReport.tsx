@@ -39,7 +39,7 @@ export default function ArchetypeReport({ cluster }: { cluster: ArchetypeCluster
   return context ? <section className="mt-6 space-y-3" aria-label="Archetype comparison">
     <ComparisonReport context={context} />
     <Button onClick={() => navigate(location.pathname + location.search, { replace: true, state: null })}>View all recorded lists</Button>
-  </section> : <RecordedReport cluster={cluster} />;
+  </section> : <RecordedReport key={cluster.id} cluster={cluster} />;
 }
 
 function ComparisonReport({ context }: { context: NonNullable<ReturnType<typeof readBuildComparisonState>> }) {
@@ -86,10 +86,21 @@ function RecordedReport({ cluster }: { cluster: ArchetypeCluster }) {
         {(['main', 'material'] as const).map(section => <section key={section} className="mt-5"><h4 className="font-semibold">{section === 'main' ? 'Main' : 'Material'}</h4><div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">{report.cards.filter(card => card.section === section).slice(0, allCards ? undefined : 12).map(card => <article key={card.name} className="min-w-0">{cardPreview(card.name)}<p className="mt-2 text-xs font-semibold">{card.inclusion >= .9 ? 'Core' : 'Flexible'} · {percent(card.inclusion)} inclusion</p><p className="mt-1 text-xs text-ctp-subtext0">{card.lists}/{report.listed} lists · {number(card.copies.median)} typical copies</p><p className="mt-1 text-xs text-ctp-subtext0">{number(card.copies.low)}–{number(card.copies.high)} middle 50% · {number(card.copies.mean)} average</p></article>)}</div></section>)}
         {(['main', 'material'] as const).some(section => report.cards.filter(card => card.section === section).length > 12) && <Button className="mt-4" aria-expanded={allCards} onClick={() => setAllCards(value => !value)}>{allCards ? 'Show most common cards' : 'Show all cards'}</Button>}
       </Panel>
+      <CohortDrawResults report={report} cards={accessCards.slice(0, allAccess ? undefined : 8)} cardPreview={cardPreview} />
       <Panel><h3 className="text-lg font-semibold">Draw consistency across builds</h3><p className="mt-1 text-xs text-ctp-subtext0">{coreMain.length ? 'Core Main cards' : 'Most common Main cards'} · find at least one · all {report.listed} available lists, including lists without the card</p>
         <div className="mt-4 grid gap-6 sm:grid-cols-2">{accessCards.slice(0, allAccess ? undefined : 8).map(card => <article key={card.name} className="min-w-0"><div className="max-w-32">{cardPreview(card.name)}</div><div className="mt-3 space-y-3">{card.access.map(point => <div key={point.seen}><p className="mb-1 text-xs font-semibold">{point.seen} cards seen</p><Interval value={point} scale={1} probability /></div>)}</div></article>)}</div>
         {accessCards.length > 8 && <Button className="mt-4" aria-expanded={allAccess} onClick={() => setAllAccess(value => !value)}>{allAccess ? 'Show first eight cards' : 'Show all core-card odds'}</Button>}
       </Panel>
     </>}
   </section>;
+}
+
+export function CohortDrawResults({ report, cards, cardPreview }: { report: Report; cards: Report["cards"]; cardPreview: (name: string) => import("react").ReactNode }) {
+  return <Panel><h3 className="text-lg font-semibold">Draw-adjusted core access</h3>
+        <p className="mt-1 text-xs text-ctp-subtext0">{report.forecast.supported}/{report.forecast.total} lists modeled · going first · unopposed</p>
+        {!report.forecast.supported ? <p role="status" className="mt-3 text-sm">Forecast unavailable for these lists.</p> : <>
+          <div className="mt-4 grid grid-cols-2 gap-4">{report.forecast.checkpoints.filter(point => point.turn === 3 || point.turn === 5).map(point => <div key={point.turn}><h4 className="text-sm font-semibold">Turn {point.turn} · cards seen</h4><Interval value={point.seen} scale={Math.max(1, ...report.forecast.checkpoints.map(p => p.seen.high))} /></div>)}</div>
+          <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">{cards.map(card => <article key={card.name} className="min-w-0">{cardPreview(card.name)}<div className="mt-3 space-y-3">{card.forecast.filter(point => point.turn === 3 || point.turn === 5).map(point => <div key={point.turn}><h4 className="text-xs font-semibold">Turn {point.turn} · find 1+</h4><Interval value={point} scale={1} probability /></div>)}</div></article>)}</div>
+        </>}
+      </Panel>;
 }

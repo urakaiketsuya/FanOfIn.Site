@@ -966,3 +966,9 @@ Chart selection opens one shared DialogSheet with named CardResult artwork and e
 it does not append card grids to the report. Closing restores focus to the selected chart control.
 Missing catalog entries retain names and valid quantity-based odds. Empty sections and unavailable
 historical comparisons remain explicit states, never zero-valued results.
+
+Archetype draw forecasts show named cards with turn-3 and turn-5 access percentages,
+using one 0–100% scale. Keep the supported-list count visible and retain unavailable
+states. Draw-adjusted cohorts and fixed-cards-seen random access are separate results.
+In two-column mobile card grids, place numerical results below the art; the compact
+horizontal CardResult layout leaves insufficient space for checkpoint percentages.

@@ -31,7 +31,7 @@ Existing competition release D is complete and is not reopened.
       results-only supported swap comparisons; upstream fixtures imported.
 - [x] Comparisons: newer sequence outcomes in Compare and saved versions; audit
       Builder/Review/My Decks propagation and context retention.
-- [ ] Deck/archetype: consistent cohort model checkpoints and core access.
+- [x] Deck/archetype: consistent cohort model checkpoints and core access.
 - [ ] Card/build reports: audit implemented coverage against release C, then fill
       copy distributions, adoption, variants, alternatives and supported swap gaps.
 - [ ] Collection: audit release E foundations, then finish blockers, purchase previews,
@@ -516,3 +516,36 @@ This is partial progress on milestone 11, not completion: supported draw-adjuste
 cohort models and empirical turn-checkpoint validation remain open. Existing archetype
 access uses per-sighting random-draw probabilities, not the paid Rai/Tonoris models.
 Extended Analytics remains 10/16 completed (~63%, unequal scope). No push.
+
+
+## Cohort checkpoint milestone — November 15, 2026
+
+Milestone 11 implementation is complete. Archetype reports now show automatic,
+card-specific paid-draw access at turns 3 and 5, supported-list counts, and cards-seen
+cohort distributions. Shared calculations retain all five turn checkpoints. Rai and
+Tonoris reuse existing policies and fixture data; no replacement engine fixtures were
+created. Identical constructions are calculated once per report while preserving
+sighting weights. Unsupported/incomplete lists are excluded from the modeled
+population; absent cards within supported lists remain zero. Random-draw access
+remains separate. Changing archetypes resets report state. Mobile inspection also
+fixed compressed percentages in the earlier automatic deck-consistency card grid.
+
+Checkpoint validation covers model parity at every turn, exact natural access plus
+paired card-specific gains, duplicate partitions/constructions, absent cards, missing
+catalogs, unsupported lineages, tiny libraries, and source self-dependency. The evidence
+audit found 223 broadcast matches / 532 games / 1,238 narrative beats, with no structured
+turn counts or draw states. This establishes a calibration limitation, not empirical
+support for turn 5. Empirical expected-game-length validation remains blocked until
+complete turn-indexed observations exist; turns 3/5 remain explicit modeled horizons.
+
+Extended Analytics: 11/16 broad milestones (~69%, unequal scope). Next: card/build
+report coverage audit, copy distributions/adoption/variants/alternatives/swaps.
+Empirical calibration is a data-dependent follow-up. No push authorized.
+
+Verification: 42 focused tests, app/shared typechecks, targeted lint, production Vite
+build, and diff whitespace checks passed. Local browser component harnesses passed
+at 360/390/1280px: ready/empty/missing/unsupported states, keyboard sheet open/close
+and focus restoration, 48px tabs, retained calculator selection, and 200% text overflow.
+Mobile and desktop screenshots were inspected. External art requests were isolated;
+card-name fallbacks were verified. Live deployment, remote art delivery, and full
+published-data loading/retry journeys were not verified. Temporary harnesses removed.

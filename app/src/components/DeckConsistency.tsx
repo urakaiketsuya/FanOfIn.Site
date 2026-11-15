@@ -21,7 +21,7 @@ export default function DeckConsistency({ size, groups, cardsByName, onExplore }
   const checkpoints = [...new Set([7, 10, 15, 20].map(value => Math.min(size, value)))];
   return <section className="mt-4 space-y-4" aria-label="Card consistency">
     <h3 className="font-semibold">Main card access</h3>
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">{report.rows.map(row => <CardResult key={row.name} compactOnMobile card={cardsByName.get(row.name)} name={row.name}>
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">{report.rows.map(row => <CardResult key={row.name} card={cardsByName.get(row.name)} name={row.name}>
       <p className="text-xs text-ctp-subtext1">{row.quantity} copies · find 1+</p>
       <dl className="mt-2 grid grid-cols-2 gap-2 text-xs">{row.points.filter((point, index, points) => index === 0 || Math.min(point.seen, size) !== Math.min(points[index - 1].seen, size)).map(point => <div key={point.seen}><dt>{Math.min(point.seen, size)} seen</dt><dd className="font-semibold tabular-nums">{percent(point.probability)}</dd></div>)}</dl>
     </CardResult>)}</div>
