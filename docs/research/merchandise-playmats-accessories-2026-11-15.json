@@ -1,0 +1,305 @@
+{
+  "reviewedAt": "2026-11-15",
+  "scope": "Remaining 13 playmats and 26 accessories; text searches by product name/type, plus source-page inspection for promising leads. Not proof that unlocated images do not exist.",
+  "added": [
+    {
+      "catalogId": "sheet-2-g5",
+      "name": "Enfeebling Orb (PR Slimes)",
+      "category": "Playmats",
+      "detail": "Promotional",
+      "sourceUrl": "https://www.ebay.co.uk/itm/206647214415",
+      "imageUrl": "https://i.ebayimg.com/images/g/1skAAeSw3PBq2rsP/s-l1600.webp",
+      "sourceName": "japan-product-shop on eBay",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Photo shows packaged microfiber playmat explicitly labeled Enfeebling Orb PR, with Silvie and multicolored slimes."
+    },
+    {
+      "catalogId": "sheet-12-b220",
+      "name": "Mechanical Dice (ft Morrigan)",
+      "category": "Accessories",
+      "detail": "",
+      "sourceUrl": "https://komodocollectibles.ca/products/grand-archive-worlds-mechanical-dice",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0632/6357/2046/files/20250701_222816.webp?v=1751431094",
+      "sourceName": "Komodo Collectibles",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Named Worlds Mechanical Dice listing shows two dice windows, product packaging and Morrigan artwork. Character compared visually with official Morrigan, Lost Spirit promotional editions at https://index.gatcg.com/card/morrigan-lost-spirit."
+    },
+    {
+      "catalogId": "sheet-12-b226",
+      "name": "Keychain (Naia)",
+      "category": "Accessories",
+      "detail": "Ascents",
+      "sourceUrl": "https://store.shopping.yahoo.co.jp/machichara/2212996241093.html",
+      "imageUrl": "https://item-shopping.c.yimg.jp/i/n/machichara_2212996241093_i_20250501134353",
+      "sourceName": "Machichara on Yahoo Shopping",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Listing explicitly names Naia, Diviner of Fortunes acrylic keychain by Weebs of the Shore; photo shows front/back with metal clip and blue charm."
+    },
+    {
+      "catalogId": "sheet-12-b230",
+      "name": "Keychain (Dungeon Guide)",
+      "category": "Accessories",
+      "detail": "Ascents",
+      "sourceUrl": "https://store.shopping.yahoo.co.jp/machichara/2212996241116.html",
+      "imageUrl": "https://item-shopping.c.yimg.jp/i/n/machichara_2212996241116_i_20250501134349",
+      "sourceName": "Machichara on Yahoo Shopping",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Listing explicitly names Dungeon Guide acrylic keychain by Weebs of the Shore; photo shows front/back, Dungeon Guide text and gray charm."
+    },
+    {
+      "catalogId": "sheet-12-b242",
+      "name": "Arisanna water bottle",
+      "category": "Accessories",
+      "detail": "Worlds 2024",
+      "sourceUrl": "https://www.ebay.com/itm/137671398481",
+      "imageUrl": "https://i.ebayimg.com/thumbs/images/g/YkUAAeSw5D5p8gLe/s-l500.jpg",
+      "sourceName": "phustle77 on eBay",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Named listing and photo show orange bottle bearing Arisanna name, character and Grand Archive logo. Source is a screenshot with phone chrome; seek cleaner replacement. Listing does not independently establish the catalog event/year."
+    }
+  ],
+  "coverage": {
+    "before": 410,
+    "added": 5,
+    "after": 415,
+    "total": 546,
+    "remaining": 131
+  },
+  "followups": [
+    {
+      "items": "Worlds 2026 enamel pins",
+      "reason": "Luky Yuki V1/V2 retail pins surfaced, but do not establish the catalog Worlds 2026 sets; excluded.",
+      "sourceUrl": "https://www.merlinsmarketplace.com/products/luky-yuki-hard-enamel-pins-v2"
+    },
+    {
+      "items": "Divine Comedy, Inferno playmat",
+      "reason": "Mercari search index mentions a rubber playmat; live search timed out before a specific listing and image could be verified.",
+      "sourceUrl": "https://jp.mercari.com/search?keyword=Grand%20Archive%20Divine%20Comedy"
+    },
+    {
+      "items": "Other keychains, coasters, Merlin tote and silver counters",
+      "reason": "Official event inventory supports existence but searches did not establish individually matching photos."
+    },
+    {
+      "items": "Remaining playmats, dice colors, wall scroll, table mat, sticker sheet, Silvie beanies and Vanitas deodorant",
+      "reason": "No verified exact-product image found during this pass; card images, generic accessories and unrelated search results were excluded."
+    }
+  ],
+  "verification": "All five source photos visually inspected and loaded in the local catalog. Checked desktop 1280px and mobile 390px, no horizontal overflow, 48px tabs, and empty Arisanna water bottle bounty result. Eleven merchandise tests passed. App TypeScript build passed. Native touch and forced network-error states not repeated for this data-only update.",
+  "remainingInScope": [
+    {
+      "catalogId": "sheet-2-d6",
+      "name": "Enthralling Visage (GSC)",
+      "category": "Playmats",
+      "detail": "Promotional"
+    },
+    {
+      "catalogId": "sheet-2-d17",
+      "name": "Bauble of Abundance (Revelfest)",
+      "category": "Playmats",
+      "detail": "Promotional"
+    },
+    {
+      "catalogId": "sheet-2-d23",
+      "name": "Icebound Slam (ISC)",
+      "category": "Playmats",
+      "detail": "Promotional"
+    },
+    {
+      "catalogId": "sheet-2-d30",
+      "name": "Horizon's Reprise Sanguo",
+      "category": "Playmats",
+      "detail": "Promotional"
+    },
+    {
+      "catalogId": "sheet-9-g9",
+      "name": "Alice, Whim's Monarch",
+      "category": "Playmats",
+      "detail": "DTR-PTM"
+    },
+    {
+      "catalogId": "sheet-9-g10",
+      "name": "Alice, Phantom Monarch",
+      "category": "Playmats",
+      "detail": "DTR-PTM"
+    },
+    {
+      "catalogId": "sheet-9-j5",
+      "name": "Abnegation",
+      "category": "Playmats",
+      "detail": "DTR-PTM"
+    },
+    {
+      "catalogId": "sheet-9-j10",
+      "name": "Embrace Noir",
+      "category": "Playmats",
+      "detail": "DTR-PTM"
+    },
+    {
+      "catalogId": "sheet-10-a14",
+      "name": "Avatar of Genbu",
+      "category": "Playmats",
+      "detail": "RDO"
+    },
+    {
+      "catalogId": "sheet-11-a4",
+      "name": "Dante, Aenean Scribe",
+      "category": "Playmats",
+      "detail": "PRD-"
+    },
+    {
+      "catalogId": "sheet-11-a5",
+      "name": "Lorraine, Honed Operative",
+      "category": "Playmats",
+      "detail": "PRD-"
+    },
+    {
+      "catalogId": "sheet-11-d4",
+      "name": "Divine Comedy, Inferno",
+      "category": "Playmats",
+      "detail": "PRD-"
+    },
+    {
+      "catalogId": "sheet-12-b218",
+      "name": "Orange D30",
+      "category": "Accessories",
+      "detail": ""
+    },
+    {
+      "catalogId": "sheet-12-b219",
+      "name": "Blue D30",
+      "category": "Accessories",
+      "detail": ""
+    },
+    {
+      "catalogId": "sheet-12-b221",
+      "name": "Enamel Pin (Alice, Ciel, Tristan)",
+      "category": "Accessories",
+      "detail": "Worlds 2026"
+    },
+    {
+      "catalogId": "sheet-12-b222",
+      "name": "Enamel Pin (Lorraine, Tonoris, Guo Jia)",
+      "category": "Accessories",
+      "detail": "Worlds 2026"
+    },
+    {
+      "catalogId": "sheet-12-b223",
+      "name": "Enamel Pin (Casella)",
+      "category": "Accessories",
+      "detail": "Worlds 2026"
+    },
+    {
+      "catalogId": "sheet-12-b224",
+      "name": "Horizon's Reprrise Key Visual Wall Scroll (all champions)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b225",
+      "name": "Keychain (Avatar of Gaia)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b227",
+      "name": "Keychain(Blue Slime)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b228",
+      "name": "Keychain (Baby grey slime)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b229",
+      "name": "Keychain (Heavenly Guide)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b231",
+      "name": "Keychain (Academy Guide)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b232",
+      "name": "Keychain (The Majestic Spirit)",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b233",
+      "name": "Kongming, Wayward Maven coaster",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b234",
+      "name": "Arisanna, Master Alchemist coaster",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b235",
+      "name": "Lorraine, Spirit Ruler coaster",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b236",
+      "name": "Merlin Tote Bag",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b237",
+      "name": "silver metal counters",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b238",
+      "name": "MRC Table mat",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b239",
+      "name": "sticker sheet",
+      "category": "Accessories",
+      "detail": "Ascents"
+    },
+    {
+      "catalogId": "sheet-12-b240",
+      "name": "Silvie beanie (anx)",
+      "category": "Accessories",
+      "detail": "Merch day 2024"
+    },
+    {
+      "catalogId": "sheet-12-b241",
+      "name": "Silvie beanie (wow)",
+      "category": "Accessories",
+      "detail": "merch day 2024"
+    },
+    {
+      "catalogId": "sheet-12-b243",
+      "name": "Vanitas deodorant",
+      "category": "Accessories",
+      "detail": "Worlds 2026"
+    }
+  ]
+}

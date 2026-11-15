@@ -30,7 +30,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 
 ## Inline photos
 
-410 entries now have inline photo presentations (including the reviewed supplemental sources):
+415 entries now have inline photo presentations (including the reviewed supplemental sources):
 
 - 253 Imgur posts use lazy-loaded sandboxed host embeds. Album IDs are not image
   IDs and must never be turned into guessed image filenames.
@@ -51,7 +51,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 Source attribution links remain visible beneath photos. Images use object-contain
 and reserved height, with lazy loading and an unavailable-photo fallback. A failed
 photo never removes the product name or source link. Unknown gallery hosts remain
-external links rather than untrusted iframe sources. There are 136 entries without
+external links rather than untrusted iframe sources. There are 131 entries without
 photo references; no substitute artwork is invented for them.
 
 Seller listings do not establish authenticity, release dates, stock or prices.
@@ -63,13 +63,13 @@ by champion name alone.
 Two official regional playmat images (Capacitance X Psycho finalist and Rolling
 Chorus champion) are mapped from https://www.gatcg.com/article/asphodel-paradise-regionals
 with Grand Archive attribution. The announcement explicitly identifies each artwork
-and prize tier. Fourteen playmat entries still lack photos.
+and prize tier. Twelve playmat entries still lack photos.
 
 ## Verification and remaining work
 
 The merchandise photo and bounty tests cover source mappings, unsupported hosts,
 source identity changes, and missing-image classification. The Bounties tab shows
-all 136 entries without a supported image or embed and links to Discord for photo
+all 131 entries without a supported image or embed and links to Discord for photo
 submissions. Temporary remote-image failures do not change bounty membership.
 
 The catalog and Bounties flows were checked at mobile and desktop widths, including
@@ -102,8 +102,17 @@ categories; it does not claim an exhaustive review of every remaining item.
 ### Follow-up source review
 
 Added four more verified seller photos: Lu Bu Nationals 2025 backpack, Polishing
-Flourish playmat, Kongming chibi figure (boxed), and Mordred sleeves. Coverage is
-now 410/546 (75.1%), leaving 136 bounties. The previously indexed Fast Cure Alice
+Flourish playmat, Kongming chibi figure (boxed), and Mordred sleeves. Coverage after that pass was
+410/546 (75.1%), leaving 136 bounties. The previously indexed Fast Cure Alice
 playmat URL now serves Polishing Flourish; it must not be mapped to Alice.
 Evidence is in `docs/research/merchandise-followup-2026-11-15.json`. The Mordred
 source is a small 265×370 image; a sharper replacement remains desirable.
+
+### Playmats and accessories review
+
+Added five photos: Enfeebling Orb (PR Slimes) playmat, Morrigan mechanical dice,
+Naia and Dungeon Guide keychains, and Arisanna water bottle. Coverage is now
+415/546 (76.0%), leaving 131 bounties, including 12 playmats and 22 accessories.
+Sources, identity evidence and unresolved leads are recorded in
+`docs/research/merchandise-playmats-accessories-2026-11-15.json`. The Arisanna
+bottle source includes phone screenshot borders; a cleaner photo remains desirable.

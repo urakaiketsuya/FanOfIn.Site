@@ -706,5 +706,65 @@
     "kind": "seller",
     "group": false,
     "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-2-g5",
+    "name": "Enfeebling Orb (PR Slimes)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "sourceUrl": "https://www.ebay.co.uk/itm/206647214415",
+    "imageUrl": "https://i.ebayimg.com/images/g/1skAAeSw3PBq2rsP/s-l1600.webp",
+    "sourceName": "japan-product-shop on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b220",
+    "name": "Mechanical Dice (ft Morrigan)",
+    "category": "Accessories",
+    "detail": "",
+    "sourceUrl": "https://komodocollectibles.ca/products/grand-archive-worlds-mechanical-dice",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0632/6357/2046/files/20250701_222816.webp?v=1751431094",
+    "sourceName": "Komodo Collectibles",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b226",
+    "name": "Keychain (Naia)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "sourceUrl": "https://store.shopping.yahoo.co.jp/machichara/2212996241093.html",
+    "imageUrl": "https://item-shopping.c.yimg.jp/i/n/machichara_2212996241093_i_20250501134353",
+    "sourceName": "Machichara on Yahoo Shopping",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b230",
+    "name": "Keychain (Dungeon Guide)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "sourceUrl": "https://store.shopping.yahoo.co.jp/machichara/2212996241116.html",
+    "imageUrl": "https://item-shopping.c.yimg.jp/i/n/machichara_2212996241116_i_20250501134349",
+    "sourceName": "Machichara on Yahoo Shopping",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b242",
+    "name": "Arisanna water bottle",
+    "category": "Accessories",
+    "detail": "Worlds 2024",
+    "sourceUrl": "https://www.ebay.com/itm/137671398481",
+    "imageUrl": "https://i.ebayimg.com/thumbs/images/g/YkUAAeSw5D5p8gLe/s-l500.jpg",
+    "sourceName": "phustle77 on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
   }
 ]
