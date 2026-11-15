@@ -129,3 +129,18 @@ test("champion-card cohorts partition a champion's decks by their highest-level 
   assert.equal(findStapleCohort(data, "all", null, null, "Jin, Three")!.championCard ?? null, null);
   assert.equal(all("Jin, Three").sections.material.rows.find(row => data.cards[row[0]].name === "Spirit of Fire")?.[1], 1);
 });
+
+
+test("future-dated completed events cannot erase recent staples or enter all-time evidence", () => {
+  const valid = bundle(1, "2026-11-14", [deck(1)]);
+  const future = bundle(2, "2027-11-13", [deck(2)]);
+  const futureWithoutDecks = bundle(3, "2028-11-13", []);
+  const generatedAt = "2026-11-15T12:00:00.000Z";
+  const expected = computeCardStaples([valid], catalog, generatedAt);
+  assert.deepEqual(computeCardStaples([valid, future, futureWithoutDecks], catalog, generatedAt), expected);
+  assert.equal(expected.throughDate, "2026-11-14");
+  for (const period of ["all", "90", "30"] as const) {
+    assert.equal(findStapleCohort(expected, period, "standard", null, null)?.decks, 1);
+  }
+  assert.equal(computeCardStaples([future], catalog, generatedAt).throughDate, null);
+});

@@ -5015,6 +5015,10 @@ build's best known finish; Best results uses its mean weighted performance score
 ## Filter-relative Card Staples usage
 
 Card Staples selects its source, period, format, champion, and section first.
+Tournament observations exclude events dated after the analysis timestamp, even
+when the source marks them complete. The latest eligible completed event anchors
+the 30/90-day windows; future events cannot advance that anchor or enter all-time
+counts. Latest-snapshot deduplication happens before this eligibility check.
 Without card filters, usage is `decks containing the card / reported sections`,
 including explicitly empty sections and excluding unreported sections.
 

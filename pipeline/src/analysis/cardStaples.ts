@@ -9,19 +9,19 @@ type Bucket = { populations: Record<StapleSection, Map<number, number>>; cohort:
 const DAY = 86_400_000;
 
 export function computeCardStaples(bundles: OmnidexEventBundle[], catalog: Map<string, CardSignature>, generatedAt = new Date().toISOString()): CardStaplesData {
-  const { observations, reference } = collectStapleObservations(bundles);
+  const { observations, reference } = collectStapleObservations(bundles, Number.isFinite(Date.parse(generatedAt)) ? Date.parse(generatedAt) : Date.now());
   return aggregateStaples(observations, catalog, generatedAt, reference === null ? null : new Date(reference).toISOString().slice(0, 10));
 }
 
 /** One observation per completed event/player, latest event snapshot wins. Shared with package mining. */
-export function collectStapleObservations(bundles: OmnidexEventBundle[]): { observations: StapleObservation[]; reference: number | null } {
+export function collectStapleObservations(bundles: OmnidexEventBundle[], asOf = Date.now()): { observations: StapleObservation[]; reference: number | null } {
   // Latest snapshot wins before aggregation, including when an event loses public deck access.
   const events = new Map<number, OmnidexEventBundle>();
   for (const bundle of bundles) {
     const old = events.get(bundle.id);
     if (!old || bundle.fetchedAt > old.fetchedAt) events.set(bundle.id, bundle);
   }
-  const completed = [...events.values()].filter(b => b.event.status === "complete" && Number.isFinite(Date.parse(b.event.date)))
+  const completed = [...events.values()].filter(b => b.event.status === "complete" && Number.isFinite(Date.parse(b.event.date)) && Date.parse(b.event.date) <= asOf)
     .sort((a, b) => a.id - b.id);
   const reference = completed.length ? Math.max(...completed.map(b => Date.parse(b.event.date))) : null;
   const observations: StapleObservation[] = [];
