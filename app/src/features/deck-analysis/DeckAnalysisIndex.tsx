@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import DeckToolNav from "../deckbuilder/components/DeckToolNav";
 import DeckStats from "../../components/DeckStats";
 import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
@@ -191,12 +192,12 @@ export default function DeckAnalysisIndex() {
   return <PageLayout width="fluid">
     <PageHeader title="Deck Report" description="Understand your deck’s consistency, timing, and matchups." />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, { key: "explore", label: "Calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Overview" }, ...(CALCULATORS_ENABLED ? [{ key: "explore" as const, label: "Calculators" }] : []), { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" wrap /></div>
     <TabPanel baseId="deck-analysis" tab="summary" active={tab} keepMounted>
       {workspace.reportOriginal && <Panel className="mt-4"><p id="report-draft-status" tabIndex={-1} role="status">Local draft · suggested changes applied</p><Button className="mt-3" onClick={restoreReportOriginal}>Restore original</Button>{draftError && <p role="alert">{draftError}</p>}</Panel>}
-      <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={openCalculator} onApply={applyReportSwap} />
-      <DeckReport deck={workspace} cardsByName={catalogByName} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={openCalculator} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
-    <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
+      <DeckDecisionReport deck={workspace} cards={catalogByName} population={data.population} result={decisionResult} membership={data.cardImpact?.deckClusterIndex} loading={deckTestLoading} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} onApply={applyReportSwap} />
+      <DeckReport deck={workspace} cardsByName={catalogByName} /><DeckStats decklist={collectionDecklist} cardsByName={catalogByName} format={workspace.format} championName={workspace.championName} onExplore={CALCULATORS_ENABLED ? openCalculator : undefined} /><DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} /></TabPanel>
+    {CALCULATORS_ENABLED && <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
     <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
@@ -216,7 +217,7 @@ export default function DeckAnalysisIndex() {
         "Sideboard comparison": <>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</>,
       }} />
       </TabPanel>
-    </TabPanel>
+    </TabPanel>}
     <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><AnalysisMatchups result={deckTestResult} loading={deckTestLoading} cards={catalogByName} error={taxonomyStatus.error} onRetry={taxonomyStatus.retry} matchupsLoading={matchupsStatus.phase === "loading"} matchupsError={matchupsStatus.error} onRetryMatchups={matchupsStatus.retry} /></TabPanel>
   </PageLayout>;
 }

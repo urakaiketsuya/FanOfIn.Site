@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "./lib/archivedCalculators";
 import LegacyDeckEditorRedirect from "./features/deckbuilder/LegacyDeckEditorRedirect";
 const AdminDashboard = lazy(() => import("./features/packages/AdminDashboard"));
 import { lazy, Suspense, useEffect } from "react";
@@ -5,6 +6,12 @@ import { Navigate, Route, Routes, useLocation, useParams, useSearchParams } from
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import { beginLoading, endLoading } from "./lib/useGlobalLoading";
+
+function ArchivedCalculatorRedirect() {
+  const [params] = useSearchParams();
+  const deck = params.get("deck");
+  return <Navigate to={deck ? `/deck-analysis?deck=${encodeURIComponent(deck)}` : "/deck-analysis"} replace />;
+}
 
 // /top-decks and /popular-decks were merged into /decks (Browse Decks, "By Sighting"/"By Build"
 // tabs) – these redirect old links/bookmarks to the equivalent tab, preserving a ?champion= param.
@@ -254,7 +261,7 @@ export default function AppRoutes() {
         <Route path="/decks/draft" element={<DeckBuilderIndex />} />
         <Route path="/deck-analysis" element={<DeckAnalysisIndex />} />
         <Route path="/deck-review" element={<DeckReviewIndex />} />
-        <Route path="/combo-lab" element={<ComboLabIndex />} />
+        <Route path="/combo-lab" element={CALCULATORS_ENABLED ? <ComboLabIndex /> : <ArchivedCalculatorRedirect />} />
         <Route path="/combos/:publicSlug" element={<PublicComboDetail />} />
         <Route path="/goldfish" element={<GoldfishIndex />} />
         <Route path="/match-log" element={<MatchLogIndex />} />

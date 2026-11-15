@@ -16,3 +16,9 @@ test('browse filters retain current links while query-specific siblings win', ()
   assert.equal(linkIsActive('/decks/new', '', '/decks'), false);
   assert.equal(NAV_ENTRIES.some(entry => entryIsActive(entry, '/cards-unrelated')), false);
 });
+
+test('archived calculators have no navigation entry while recorded-result tools remain', () => {
+  const links = NAV_ENTRIES.flatMap(entry => entry.kind === 'group' ? entry.links : [entry]);
+  assert.equal(links.some(link => link.to === '/combo-lab'), false);
+  assert.equal(links.some(link => link.to === '/match-log'), true);
+});

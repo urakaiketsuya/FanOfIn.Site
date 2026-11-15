@@ -49,7 +49,7 @@ export function MatchupCoverageReport({ deck, matchups, cards, loading, error, o
     </>}
   </Panel>;
 }
-export function ResourceExecutionReport({ deck, cards, onExplore }: { deck: DeckWorkspace; cards: Map<string, Card>; onExplore: (name: string) => void }) {
+export function ResourceExecutionReport({ deck, cards, onExplore }: { deck: DeckWorkspace; cards: Map<string, Card>; onExplore?: (name: string) => void }) {
   const packages = packageReport(deck);
   const consumers = deck.main.filter(row => ['Strategem of Myriad Ice', 'Calculated Foresight'].includes(row.name));
   const shared = new Map<string, string[]>();
@@ -59,6 +59,6 @@ export function ResourceExecutionReport({ deck, cards, onExplore }: { deck: Deck
   return <Panel><h2 className="text-lg font-semibold">Shared resources</h2>
     {consumers.length > 0 && <><ReportCards names={consumers.map(row => row.name)} cards={cards} /><p className="mt-2 text-sm">Shared Floating Memory · 1 use per banished card</p></>}
     {overlaps.map(([name, labels]) => <div key={name}><ReportCards names={[name]} cards={cards} /><p className="mt-2 text-sm">{labels.length} packages share this card</p></div>)}
-    <Button className="mt-3" onClick={() => onExplore(consumers[0]?.name ?? deck.main[0]?.name)}>Resource calculator</Button>
+    {onExplore && <Button className="mt-3" onClick={() => onExplore(consumers[0]?.name ?? deck.main[0]?.name)}>Resource calculator</Button>}
   </Panel>;
 }

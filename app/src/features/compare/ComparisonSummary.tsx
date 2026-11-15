@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import DamageStatisticalReport from "../analytics/DamageStatisticalReport";
 import CombatAccessReport from "../analytics/CombatAccessReport";
 import Button from "../../components/ui/Button";
@@ -146,8 +147,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
         const source = forecastDecks.find(candidate => candidate.deck.key === baselineDeck.key);
         return source?.list && entry.list ? <FixtureComparison key={`${baselineDeck.key}:${entry.deck.key}`} baseline={{ main: source.mainLines, material: source.materialLines }} target={{ main: entry.mainLines, material: entry.materialLines }} cardsByName={cardsByName} baselineLabel={shortDeckLabel(baselineDeck.label)} targetLabel={shortDeckLabel(entry.deck.label)} initialMode={mode === "calculators" ? "opponents" : "versions"} reportOnly={mode !== "calculators"} /> : <Panel key={entry.deck.key}><p role="status">{shortDeckLabel(baselineDeck.label)} → {shortDeckLabel(entry.deck.label)} · Decklist unavailable</p></Panel>;
       })}
-      {mode === "forecasts" && onExplore && <Button onClick={onExplore}>Explore in calculators</Button>}
-      {mode === "calculators" && <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
+      {CALCULATORS_ENABLED && mode === "forecasts" && onExplore && <Button onClick={onExplore}>Explore in calculators</Button>}
+      {CALCULATORS_ENABLED && mode === "calculators" && <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, mainLines, materialLines }) => <section key={deck.key} className="min-w-0">
             <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
@@ -173,7 +174,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       </Section>
     </div>}
 
-    {mode === "calculators" && baselineDeck && (
+    {CALCULATORS_ENABLED && mode === "calculators" && baselineDeck && (
       <Section heading="dense" title="All-allies combat ceiling" description="A theoretical deck-composition ceiling if every listed ally is in play and attacks while the defender uses its best Intercept allies first.">
         <div className="mt-3 space-y-4">
           {decks.map((deck, index) => {

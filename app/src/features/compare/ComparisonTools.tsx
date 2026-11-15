@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import { useEffect, useState } from 'react';
 import type { OmnidexDecklist } from '@gatcg/shared';
 import BlendDeck from './BlendDeck';
@@ -18,7 +19,7 @@ export default function ComparisonTools({ active, decks, decklists, baselineKey,
   return <>
     <div hidden={active !== 'blend'}>{(active === 'blend' || visited.has('blend')) && <BlendDeck decks={decks} decklists={decklists} onRetry={onRetryDecklists} />}</div>
     <div hidden={active !== 'forecasts'}>{(active === 'forecasts' || visited.has('forecasts')) && <EqualDeckReport decks={decks} decklists={decklists} onRetry={onRetryDecklists} />}</div>
-    <div hidden={active !== 'calculators'}>{(active === 'calculators' || visited.has('calculators')) && <><DrawAccessExplorer decks={decks} decklists={decklists} onRetry={onRetryDecklists} /><ComparisonSummary decks={decks} decklists={decklists} baselineKey={baselineKey} mode="calculators" onViewAllDifferences={onViewAllDifferences} /></>}</div>
+    {CALCULATORS_ENABLED && <div hidden={active !== 'calculators'}>{(active === 'calculators' || visited.has('calculators')) && <><DrawAccessExplorer decks={decks} decklists={decklists} onRetry={onRetryDecklists} /><ComparisonSummary decks={decks} decklists={decklists} baselineKey={baselineKey} mode="calculators" onViewAllDifferences={onViewAllDifferences} /></>}</div>}
     <div hidden={active !== 'matchup'}>{(active === 'matchup' || visited.has('matchup')) && <MatchupPlanning decks={decks} decklists={decklists} baselineKey={baselineKey} />}</div>
   </>;
 }

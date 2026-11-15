@@ -14,7 +14,7 @@ import { comparableReportDecks, type ComparableDeck, type ReportSwap } from './r
 
 export default function DeckDecisionReport({ deck, cards, population, result, membership, loading, onExplore, onApply }: {
   deck: DeckWorkspace; cards: Map<string, Card>; population: DeckBuilderPopulation; result: DeckTestResult | null;
-  membership: Record<string, string> | undefined; loading: boolean; onExplore: (name: string) => void; onApply: (swap: ReportSwap) => string | null;
+  membership: Record<string, string> | undefined; loading: boolean; onExplore?: (name: string) => void; onApply: (swap: ReportSwap) => string | null;
 }) {
   const [referenceState, setReferenceState] = useState<{ deck: DeckWorkspace; rows: ComparableDeck[] } | null>(null), [pending, startTransition] = useTransition();
   const references = referenceState?.deck === deck ? referenceState.rows : [];

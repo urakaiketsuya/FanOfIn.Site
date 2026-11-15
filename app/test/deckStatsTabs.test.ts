@@ -24,3 +24,13 @@ test('results render immediately while unopened specialist calculators stay lazy
   assert.match(html, /role="tabpanel"[^>]*hidden/);
   assert.doesNotMatch(html, /<summary|<details/);
 });
+
+test('an archived selection falls back to the available report', () => {
+  const html = renderToStaticMarkup(createElement(DeckStatsTabs, {
+    selected: 'consistency',
+    tabs: [{ key: 'forecasts', label: 'Deck Report', content: createElement('p', null, 'Report results') }],
+  }));
+  assert.match(html, /aria-selected="true"[^>]*>Deck Report/);
+  assert.match(html, /Report results/);
+  assert.doesNotMatch(html, /Calculators/);
+});

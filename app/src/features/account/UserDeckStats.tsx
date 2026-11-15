@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import DeckExpectedResults from '../analytics/DeckExpectedResults';
 import RaiDrawReport from '../analytics/RaiDrawReport';
 import RecursionReport from '../analytics/RecursionReport';
@@ -243,7 +244,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       <DefenseReport deck={namedSections} cardsByName={previewCardsByName} />
       <RecursionReport deck={namedSections} cardsByName={previewCardsByName} />
       <div className="grid items-start gap-4 lg:grid-cols-2">
-      <DeckAccessSummary onExplore={exploreCard} mainLines={namedSections.main} cardsByName={cardsByName} />
+      <DeckAccessSummary onExplore={CALCULATORS_ENABLED ? exploreCard : undefined} mainLines={namedSections.main} cardsByName={cardsByName} />
       <Panel>
         {hasDamageForecast ? (
           <DamageStatisticalReport forecast={aggressionForecast} cardsByName={cardsByName} />
@@ -355,7 +356,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       {versionChange && <span>{versionChange.changedCards} cards changed since last version</span>}
     </div>
     {coverage.unresolved.length > 0 && <p role="status" className="text-sm text-ctp-yellow">Incomplete card data: {coverage.unresolved.join(" · ")}</p>}
-    <div id={statsId}><DeckStatsTabs tabs={tabs} selected={statsTab} onChange={setStatsTab} /></div>
+    <div id={statsId}><DeckStatsTabs tabs={tabs.filter(tab => CALCULATORS_ENABLED || tab.key !== "consistency")} selected={statsTab} onChange={setStatsTab} /></div>
     {(findings.length > 0 || validation.reasons.length > 0) && <section aria-label="Needs attention" className="space-y-2">
       <h2 className="text-sm font-semibold">Needs attention</h2>
       {findings.map(finding => <Panel key={finding.title} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-medium">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}

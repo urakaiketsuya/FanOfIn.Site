@@ -8,7 +8,7 @@ import { pct } from './reportModel';
 export function ReportCards({ names, cards }: { names: readonly string[]; cards: Map<string, Card> }) {
   return <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{[...new Set(names)].map(name => <CardResult key={name} name={name} card={cards.get(name)} newTab />)}</div>;
 }
-export default function PackageDecisionReport({ deck, cards, onExplore }: { deck: ReportDeck; cards: Map<string, Card>; onExplore: (name: string) => void }) {
+export default function PackageDecisionReport({ deck, cards, onExplore }: { deck: ReportDeck; cards: Map<string, Card>; onExplore?: (name: string) => void }) {
   const [expanded, setExpanded] = useState(false);
   const rows = packageReport(deck);
   return <Panel data-component="PackageDecisionReport">
@@ -28,7 +28,7 @@ export default function PackageDecisionReport({ deck, cards, onExplore }: { deck
         <h4 className="font-semibold">{[7, 10, 15, 20][index]} seen{point.seen < [7, 10, 15, 20][index] ? ` (${point.seen} available)` : ''}</h4>
         <dl className="mt-2 space-y-2 text-xs">{([['Both', point.both], ['Source only', point.anchorOnly], ['Support only', point.supportOnly], ['Neither', point.neither]] as const).map(([label, value]) => <div key={label} className="flex flex-wrap justify-between gap-1"><dt>{label}</dt><dd className="font-semibold tabular-nums">{pct(value)}</dd></div>)}</dl>
       </div>)}</div>
-      <Button className="mt-3" onClick={() => onExplore(row.anchor[0].cards[0])}>Open calculator</Button>
+      {onExplore && <Button className="mt-3" onClick={() => onExplore(row.anchor[0].cards[0])}>Open calculator</Button>}
     </section>)}
     {rows.length > 2 && <Button className="mt-3 flex items-center gap-2" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show fewer packages' : `Show all ${rows.length} packages`}<DisclosureChevron className={expanded ? "rotate-180" : ""} /></Button>}
   </Panel>;

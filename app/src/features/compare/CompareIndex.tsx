@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "../../lib/archivedCalculators";
 import { loadBrowseHandoff, readBrowseHandoff, saveBrowseHandoff } from "./browseHandoff";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -46,7 +47,7 @@ const VIEW_MODE_LABELS: Record<ViewMode, string> = {
   calculators: "Calculators",
   matchup: "Matchup",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["forecasts", "blend", "summary", "table", "calculators", "matchup"];
+const VIEW_MODE_KEYS: ViewMode[] = ["forecasts", "blend", "summary", "table", ...(CALCULATORS_ENABLED ? ["calculators" as const] : []), "matchup"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   myDecks: "My Decks",

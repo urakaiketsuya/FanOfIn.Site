@@ -1,3 +1,4 @@
+import { CALCULATORS_ENABLED } from "./archivedCalculators";
 import { DISCORD_INVITE_URL } from "./communityLinks";
 
 export interface NavLinkItem { to: string; label: string }
@@ -65,7 +66,7 @@ export const NAV_ENTRIES: NavEntry[] = [
     kind: "group", label: "Tools",
     paths: ["/combo-lab", "/combos", "/goldfish", "/life-tracker", "/match-log"],
     links: [
-      { to: "/combo-lab", label: "Combo Lab" },
+      ...(CALCULATORS_ENABLED ? [{ to: "/combo-lab", label: "Combo Lab" }] : []),
       { to: "/goldfish", label: "Goldfish Test" },
       { to: "/life-tracker", label: "Life Tracker" },
       { to: "/match-log", label: "Match Log" },
