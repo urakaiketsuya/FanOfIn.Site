@@ -40,8 +40,8 @@ export default function SettingsIndex() {
       <Section className="mt-6" title="Decklist stats" heading="compact">
         <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
-            label="Win rate"
-            description="Show recorded event win rates on tournament decklists and average tournament win rate in build Stats."
+            label="Card win rate"
+            description="Show adjusted tournament win rates for cards in decklists. Tournament decklists also show their recorded event result."
             checked={prefs.winRate}
             onChange={prefs.setWinRate}
           />

@@ -1,6 +1,5 @@
 import { useId, useMemo, useState, type ReactNode } from "react";
 import { basicDeckStats, type BasicStatRow, type Card, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
-import { useDecklistDisplayPrefs } from "../lib/decklistDisplayPrefs";
 import DeckQuantityEvidence from "../features/decks/DeckQuantityEvidence";
 import DeckConsistency from "./DeckConsistency";
 import DialogSheet from "./ui/DialogSheet";
@@ -27,8 +26,7 @@ function StatChart({ title, rows, onInspect, curve = false, control }: { control
   </section>;
 }
 
-export default function DeckStats({ decklist, cardsByName, format, championName, onExplore, showBuildComparison = true, avgWinRate }: { avgWinRate?: number; showBuildComparison?: boolean; format?: DeckFormat; championName?: string | null; onExplore?: (name: string) => void; decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
-  const { winRate } = useDecklistDisplayPrefs();
+export default function DeckStats({ decklist, cardsByName, format, championName, onExplore, showBuildComparison = true }: { showBuildComparison?: boolean; format?: DeckFormat; championName?: string | null; onExplore?: (name: string) => void; decklist: Pick<OmnidexDecklist, "main" | "material"> & Partial<Pick<OmnidexDecklist, "sideboard">>; cardsByName: Map<string, Card> }) {
   const id = useId();
   const [section, setSection] = useState<Section>("main");
   const [breakdown, setBreakdown] = useState<Breakdown>("types");
@@ -44,7 +42,6 @@ export default function DeckStats({ decklist, cardsByName, format, championName,
   const tabs = sections.map(item => ({ ...item, label: `${item.label} ${(decklist[item.key] ?? []).reduce((sum, line) => sum + line.quantity, 0)}` }));
   return <Panel className="mt-4 min-w-0" aria-labelledby={`${id}-heading`} data-component="DeckStats">
     <h2 id={`${id}-heading`} className="mb-1 text-base font-semibold">Deck stats</h2>
-    {winRate && avgWinRate !== undefined && <dl className="my-3"><dt className="text-sm text-ctp-subtext1">Average tournament win rate</dt><dd className="text-2xl font-semibold tabular-nums">{(avgWinRate * 100).toFixed(0)}%</dd></dl>}
     <Tabs tabs={views} active={activeView} onChange={setView} baseId={`${id}-view`} label="Deck stats task" variant="pill" wrap />
     <TabPanel baseId={`${id}-view`} tab="composition" active={activeView} keepMounted>
     <Tabs tabs={tabs} active={section} onChange={setSection} baseId={`${id}-section`} label="Deck stats section" wrap />

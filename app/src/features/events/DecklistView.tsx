@@ -1,3 +1,5 @@
+import { useCardStatsData } from "../archetypes/data";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import CardLayoutControls from "../../components/CardLayoutControls";
 import DeckOverview from "./DeckOverview";
 import DialogSheet from "../../components/ui/DialogSheet";
@@ -74,6 +76,12 @@ export default function DecklistView({
   collectionPanel?: ReactNode;
 }) {
   const displayPrefs = useDecklistDisplayPrefs();
+  const showCardWinRates = displayPrefs.winRate && format !== "PANTHEON";
+  const cardStats = useCardStatsData(showCardWinRates);
+  const cardStatsStatus = usePublishedDataStatus("analysis-cards", "/data/analysis/cards.json", showCardWinRates);
+  const winRateByName = useMemo(() => showCardWinRates && cardStats
+    ? new Map(cardStats.cards.map(card => [card.name, card.adjustedWinRate]))
+    : undefined, [showCardWinRates, cardStats]);
   const priceSorting = displayPrefs.sorting === "priceAsc" || displayPrefs.sorting === "priceDesc";
   const showPrices = displayPrefs.showPrices || priceSorting;
   const priceState = useDeckPriceByNameState(showPrices);
@@ -164,6 +172,7 @@ export default function DecklistView({
             {displayMode === "visual" && displayPrefs.visualCardSize !== "rows" && <h3 className="text-sm font-medium">Appearance</h3>}
             {displayMode === "visual" && <>               {displayPrefs.visualCardSize !== "rows" && <label className="flex items-center justify-between text-xs text-ctp-subtext1">Grid size<select aria-label="Grid size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact" | "rows")} className="min-h-control rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>} </>}
             <h3 className="text-sm font-medium">Show</h3>
+            <label className="flex min-h-control items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={displayPrefs.winRate} onChange={event => displayPrefs.setWinRate(event.target.checked)} />Card win rate</label>
             <div className="flex flex-wrap items-center gap-1">
               <button type="button" disabled={priceSorting} aria-pressed={showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-control rounded-md px-3 text-xs ${showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{priceSorting ? "Price · sorting" : "Price"}</button>
 
@@ -194,6 +203,10 @@ export default function DecklistView({
       {ownershipByName && showMissingOnly && missingCopies > 0 && <p className="mb-3 text-xs text-ctp-subtext1">Showing only cards your collection does not fully cover. Section totals reflect this filtered view.</p>}
       {showPrices && priceState.loading && <p role="status" className="mb-3 text-sm text-ctp-subtext1">Loading prices…</p>}
       {showPrices && priceState.error && <div role="status" className="mb-3 text-sm text-ctp-red">{priceState.error} <Button onClick={priceState.retry}>Retry prices</Button></div>}
+      {showCardWinRates && !cardStats && (cardStatsStatus.phase === "error"
+        ? <p role="alert" className="mb-3 text-sm text-ctp-red">Card win rates unavailable. <Button onClick={cardStatsStatus.retry}>Retry card win rates</Button></p>
+        : <p role="status" className="mb-3 text-sm text-ctp-subtext1">Loading card win rates…</p>)}
+      {displayPrefs.winRate && format === "PANTHEON" && <p role="status" className="mb-3 text-sm text-ctp-subtext1">Card win rates unavailable for Pantheon.</p>}
       {displayPrefs.grouping === "set" && <p className="mb-3 text-xs text-ctp-subtext1">Unspecified printings use the earliest set.</p>}
       {displayMode === "visual" && (() => {
         const sections = arrangedSections;
@@ -208,15 +221,15 @@ export default function DecklistView({
         return displayPrefs.visualCommunity ? (
           <VisualCommunityGate format={format}>
             {(communityInclusionByName) => (
-              <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} ownershipByName={ownershipByName} />
+              <VisualDeckSections winRateByName={winRateByName} sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} ownershipByName={ownershipByName} />
             )}
           </VisualCommunityGate>
         ) : (
-          <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} ownershipByName={ownershipByName} />
+          <VisualDeckSections winRateByName={winRateByName} sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} ownershipByName={ownershipByName} />
         );
       })()}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
-        {arrangedSections.map(section => <DetailedDeckSection key={section.title} {...section} cardsByName={displayCardsByName} priceByName={showPrices ? priceByName : new Map()} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />)}
+        {arrangedSections.map(section => <DetailedDeckSection winRateByName={winRateByName} key={section.title} {...section} cardsByName={displayCardsByName} priceByName={showPrices ? priceByName : new Map()} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />)}
       </div>}
 
       {showDeckStats && displayPrefs.winRate && deckId && (
