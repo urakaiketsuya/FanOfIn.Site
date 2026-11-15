@@ -1,0 +1,404 @@
+[
+  {
+    "deckId": "1c9SMsvMsihhi1c1XvfH",
+    "summary": "Build a collection of omens while Guardian allies protect Ciel. Turn that collection into stronger allies, larger attacks, and repeatable damage at level 3.",
+    "opening": "Play a defensive ally such as Stalwart Shieldmate or Whimsy’s Warden. At your end phase, use Ciel’s inherited ability to turn a suitable graveyard card into an omen; use your hand only when that trade is worthwhile.",
+    "leveling": "Level 2 exchanges cards for each omen you have. Before leveling, check which cards you can afford to discard from hand or memory. Level 3 turns new omen counters into 2 unpreventable damage, so establish omens and protection before committing to it.",
+    "sequence": "Choose different reserve costs for your omens to grow Sablier Guard. At level 3, Ombreux Chevalier exchanges an omen for a card from your hand: the new omen counter also triggers Ciel’s damage.",
+    "cards": [
+      "Ciel, Mirage's Grave",
+      "Sablier Guard",
+      "Ombreux Chevalier"
+    ],
+    "mistakes": [
+      "A Floating Memory card used as an omen is no longer in your graveyard to pay a memory cost.",
+      "Sinistre Stab puts its Curse under your own champion if you have fewer than five omens. Count before attacking."
+    ],
+    "synergyTitle": "Turn omen exchanges into damage",
+    "synergyCards": [
+      "Ciel, Mirage's Grave",
+      "Ombreux Chevalier",
+      "Sablier Guard"
+    ],
+    "winTitle": "Pressure from omens and allies",
+    "winCards": [
+      "Ciel, Mirage's Grave",
+      "Lamentation's Toll"
+    ],
+    "winText": "Keep adding omen counters at level 3 to deal 2 unpreventable damage per trigger. Meanwhile, your larger allies and Lamentation’s Toll threaten combat damage. A high-power omen improves the attack; different reserve costs strengthen Sablier Guard."
+  },
+  {
+    "deckId": "gbTwGoxXcMX1J2MES1nJ",
+    "summary": "Load Aethercharges into an Aetherwing, become distant, and turn well-prepared ranged attacks into pressure. Glimpse effects help find your next load.",
+    "opening": "Find a way to become distant before Diana, Aether Dilettante enters if you want her extra Aetherwing materialization. Keep enough resources to pay that weapon’s cost. Stalwart Shieldmate can protect your setup.",
+    "leveling": "Level 2 loads up to two Aethercharges from hand or memory and draws replacement cards into memory. Its inherited Ranged combines with level 1’s Ranged. Level 3 rewards becoming distant with disruption or Glimpse 2.",
+    "sequence": "Load Aetheric Calibration after resolving it, then use Backstep to become distant before attacking with your loaded weapon. Once Astra is enabled, glimpse can find Aethercalling cards to load during the glimpse.",
+    "cards": [
+      "Diana, Moonpiercer",
+      "Seeker's Aetherwing",
+      "Aetheric Calibration"
+    ],
+    "mistakes": [
+      "An Aetherwing must be loaded to attack and cannot be combined with an attack card.",
+      "Becoming distant is not blanket protection: check the actual defensive effect and the opponent’s option to pay."
+    ],
+    "synergyTitle": "Load, become distant, attack",
+    "synergyCards": [
+      "Aetheric Calibration",
+      "Backstep",
+      "Seeker's Aetherwing"
+    ],
+    "winTitle": "Make a loaded shot count",
+    "winCards": [
+      "Pleiades, Celestial Genesis",
+      "Meteoric Volley"
+    ],
+    "winText": "Build a loaded Aetherwing attack with Ranged bonuses. Meteoric Volley copies the Aethercharges already in the attacking intent; Pleiades gives Astra Aethercharges an On Hit token payoff. Prepare the load before attacking and consider the opponent’s defenses before committing."
+  },
+  {
+    "deckId": "2lVqk6MGrk8xHy58lUd4",
+    "summary": "Protect Kongming while using Shifting Currents to improve your spells. Build toward Tera spells that control the field and keep resources coming back through Preserve.",
+    "opening": "Start with a protective ally and note that Shifting Currents begins North. Harmonious Mantra benefits from North; leave Formidable Youxia awake when you need Intercept.",
+    "leveling": "Level 2 gives Empower 3 for your next Spell that turn. Level 3 lets Spell activations move Shifting Currents to an adjacent direction. Plan the direction you need before choosing a spell.",
+    "sequence": "Use Heighten Spellcraft before Cone of Frost to reach additional level thresholds. For Planar Abyss, prepare the delayed effect and arrange South for your next recollection phase to add its champion damage.",
+    "cards": [
+      "Kongming, Fel Eidolon",
+      "Cone of Frost",
+      "Planar Abyss"
+    ],
+    "mistakes": [
+      "Not every direction change is allowed: follow the mastery’s adjacency diagram; Fan of Seven Debts explicitly allows a different direction of your choice.",
+      "Planar Abyss destroys your non-champion objects too. It resolves at your next recollection phase, not immediately."
+    ],
+    "synergyTitle": "Empower a threshold spell",
+    "synergyCards": [
+      "Heighten Spellcraft",
+      "Cone of Frost"
+    ],
+    "winTitle": "Set up the South-facing payoff",
+    "winCards": [
+      "Planar Abyss",
+      "Kongming, Fel Eidolon",
+      "Leeching Bolt"
+    ],
+    "winText": "Planar Abyss can deal 10 damage to opposing champions at your next recollection phase if Shifting Currents faces South then. Its field destruction buys space for later Leeching Bolts and ally attacks. Arrange the direction before the delayed effect resolves."
+  },
+  {
+    "deckId": "5Ng50uYTatKv4zRcWMZI",
+    "summary": "Attack with Polearms and support those attacks with Human and Horse allies. Later, damage on Jin strengthens Exia cards, but you must survive your own end phase.",
+    "opening": "Build an ally alongside a Polearm weapon. Jin’s inherited effect boosts a Horse or Human when he attacks with a Polearm; attack with Jin before the ally that will receive the bonus.",
+    "leveling": "Plan a strong attacking turn for level 2: its next-attack effect wakes Jin on attack. Level 3 grants Immortality outside your end phase, giving you room for a final push or a recovery play.",
+    "sequence": "Use the level-2 wake-up effect to make another legal attack if resources and durability allow. At level 3, count damage for Shuang Ji of Sacrifice and use Mend Flesh when needed before your end phase.",
+    "cards": [
+      "Jin, Undying Resolve",
+      "Shuang Ji of Sacrifice",
+      "Mend Flesh"
+    ],
+    "mistakes": [
+      "Immortality does not prevent damage, and Jin loses it during your end phase. If his damage reaches his life then, he can die.",
+      "Bloodbond Bladesworn passes damage on to Jin; count that damage before exposing it to combat."
+    ],
+    "synergyTitle": "Lead with a Polearm attack",
+    "synergyCards": [
+      "Jin, Zealous Maverick",
+      "Executioner's Spear",
+      "Trusty Steed"
+    ],
+    "winTitle": "Convert damage into attack power",
+    "winCards": [
+      "Shuang Ji of Sacrifice",
+      "Enrage",
+      "Mend Flesh"
+    ],
+    "winText": "Shuang Ji grows with damage on Jin, and Enrage can make the next attack much larger. Aim that pressure at the opposing champion when you have a safe opening. Keep Mend Flesh available when you need to survive the end phase instead of taking an all-in attack."
+  },
+  {
+    "deckId": "bxIbsmbzq7PtY2bIpx7H",
+    "summary": "Gather Herbs, brew Potions, and use Glimpse to find Starcalling spells. Survive with defensive cards until Astra spells and Potions can swing the field.",
+    "opening": "Use Arisanna’s level-1 Herbs and Ingredient Pouch to establish ingredients. Check each Herb’s subtypes before brewing. Caretaker Drone and Water Barrier help buy time.",
+    "leveling": "Level 2 gathers twice more and can exchange two same-named Herbs for a card at your end phase. Level 3 lets you replace one Starcalling cost per turn with 0, making Glimpse especially valuable.",
+    "sequence": "Put Potion Infusion: Frostbite on an awake Essence of Blizzards, then sacrifice that Potion. The infusion’s On Sacrifice effect rests its target before the Potion’s damage resolves; use the same target to benefit from both effects.",
+    "cards": [
+      "Arisanna, Astral Zenith",
+      "Essence of Blizzards",
+      "Potion Infusion: Frostbite"
+    ],
+    "mistakes": [
+      "Brewing plays the Potion; its sacrifice ability is a separate action. You do not get the Potion’s effect just by brewing it.",
+      "Infusions need to rest their Potion to grant the effect. A rested Potion cannot pay another rest cost."
+    ],
+    "synergyTitle": "Infuse, sacrifice, then deal damage",
+    "synergyCards": [
+      "Potion Infusion: Frostbite",
+      "Essence of Blizzards"
+    ],
+    "winTitle": "Repeat Astra damage",
+    "winCards": [
+      "Cosmic Bolt",
+      "Cosmic Astroscope",
+      "Arisanna, Astral Zenith"
+    ],
+    "winText": "Use repeated Glimpse effects to find Starcalling spells, with Arisanna replacing one Starcalling cost each turn. Cosmic Bolt gains damage for other copies in your graveyard and banishment. Potions and sweepers help keep you alive while you assemble those hits."
+  },
+  {
+    "deckId": "7EHyaySNhzODdmzukoCQ",
+    "summary": "Prepare a Gun and Bullet, become distant for Ranged bonuses, and land champion hits. At level 3, those hits add Curses that pressure the opponent beyond combat.",
+    "opening": "Keep ways to load and become distant together. Imperial Rifleman offers early pressure; Supply Drone helps supply Bullets. Diana’s level-1 Lineage Release becomes available after that card is inside her lineage.",
+    "leveling": "Level 2 materializes a Bullet, with its costs still payable, and provides inherited Ranged 2. Level 3 becomes distant on entry and generates Creeping Torment when Diana hits a champion.",
+    "sequence": "Load a Bullet into a Gun, become distant with Reposition, and use Take Aim before the attack. With Shadow’s Twin, qualifying On Hit abilities from attacks using that weapon trigger an extra time.",
+    "cards": [
+      "Diana, Duskstalker",
+      "Shadow's Twin",
+      "Creeping Torment"
+    ],
+    "mistakes": [
+      "A Gun needs a load and cannot be used with an attack card. Loading does not itself perform the attack.",
+      "Creeping Torment triggers on the second card drawn each turn, not every draw. A card drawn into memory is still drawn."
+    ],
+    "synergyTitle": "Build a ranged shot",
+    "synergyCards": [
+      "Take Aim",
+      "Reposition",
+      "Shadow's Twin"
+    ],
+    "winTitle": "Stack Curses, then cash them in",
+    "winCards": [
+      "Diana, Duskstalker",
+      "Creeping Torment",
+      "Anathema's End"
+    ],
+    "winText": "Champion hits from Duskstalker generate Creeping Torment. Its draw punishment adds pressure between attacks. A later Anathema’s End champion hit banishes that champion’s Curses and deals 2 unpreventable damage for each; count the Curses before loading the finisher."
+  },
+  {
+    "deckId": "yqVK5i6eQxDJhZJdTph1",
+    "summary": "Protect growing allies, build Automaton tokens, and turn a wide field into large attacks. Tonoris’s Obelisks provide a longer-term engine once he reaches level 3.",
+    "opening": "Play Foster allies such as Novice Mechanist and protect them from damage through the opponent’s turn. Awake Taunt and Intercept units help keep those allies safe.",
+    "leveling": "Use level 2’s +3 bonus on a turn when Tonoris can attack. Level 3 creates one previously unchosen Obelisk during each of your recollection phases; it does not give all three immediately.",
+    "sequence": "Let Novice Mechanist foster to summon a Drone. Build more allies, then use Winds of Retribution before attacking with them. Into the Fray rewards the number of other allies you control.",
+    "cards": [
+      "Tonoris, Genesis Aegis",
+      "Novice Mechanist",
+      "Winds of Retribution"
+    ],
+    "mistakes": [
+      "Taunt only directs attacks while its unit is awake. Rousing Slam can help your attacker wake up for defense at your end phase.",
+      "Smash with Obelisk and Assemble the Ancients consume domains. Decide whether the immediate attack is worth losing their ongoing effects."
+    ],
+    "synergyTitle": "Protect a growing army",
+    "synergyCards": [
+      "Novice Mechanist",
+      "Stalwart Shieldmate",
+      "Winds of Retribution"
+    ],
+    "winTitle": "Turn a wide field into damage",
+    "winCards": [
+      "Winds of Retribution",
+      "Into the Fray",
+      "Archon Broadsword"
+    ],
+    "winText": "Once several allies can attack, Winds of Retribution boosts the whole group and Into the Fray gives one ally a larger bonus. Tokens also strengthen Archon Broadsword. Compare an immediate push with keeping awake defenders to protect your board."
+  },
+  {
+    "deckId": "lorraine-starter-deck-preview",
+    "summary": "Combine Sword attacks with a supporting army. Use leveling turns for strong attacks, then turn banished regalia weapons into more power for Lorraine, Crux Knight.",
+    "opening": "Lorraine, Wandering Warrior brings out a zero-memory-cost weapon. Add inexpensive allies and keep enough cards available for an attack and your next materialization.",
+    "leveling": "Level 2 adds +2 power to Lorraine’s attacks for that turn and rewards kills with draws. Reach level 3 when Crux cards and banished regalia weapons can contribute; a temporary level increase alone does not unlock Crux.",
+    "sequence": "Attack with Lorraine, then play Inspiring Call at its reduced cost before attacking with your allies. At level 3, Spirit Blade: Ghost Strike can banish a regalia weapon from your material deck, also increasing Crux Knight’s ongoing attack bonus.",
+    "cards": [
+      "Lorraine, Crux Knight",
+      "Inspiring Call",
+      "Spirit Blade: Ghost Strike"
+    ],
+    "mistakes": [
+      "Attacking rests your champion. A second attack needs a wake-up effect such as Spirit’s Blessing and another legal attack opportunity.",
+      "Spirit’s Blessing returns a regalia as an additional cost. Plan which equipment you can give up."
+    ],
+    "synergyTitle": "Champion first, allies second",
+    "synergyCards": [
+      "Lorraine, Blademaster",
+      "Inspiring Call",
+      "Banner Knight"
+    ],
+    "winTitle": "Build a decisive Sword turn",
+    "winCards": [
+      "Lorraine, Crux Knight",
+      "Spirit Blade: Ghost Strike",
+      "Spirit's Blessing"
+    ],
+    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack."
+  },
+  {
+    "deckId": "rai-starter-deck-preview",
+    "summary": "Use defensive allies and removal to buy time, build effective level, and finish with powerful spells such as Arcane Blast.",
+    "opening": "Library Witch or Barrier Servant can protect Rai. Use early spells to remove threatening allies, while leaving enough resources to develop your champion.",
+    "leveling": "Level 2 provides an enlighten counter for your first Mage action each turn. Level 3 unlocks Arcane cards and gains extra level from arcane Mage Spells in your banishment.",
+    "sequence": "Use Power Overwhelming to turn enlighten counters into temporary levels before playing Arcane Blast. Efficiency lowers the spell’s cost; Arcane Blast still deals its printed 11 damage, rather than LV damage.",
+    "cards": [
+      "Rai, Storm Seer",
+      "Power Overwhelming",
+      "Arcane Blast"
+    ],
+    "mistakes": [
+      "Mana Limiter stops you spending enlighten counters to pay costs, such as the draw ability. Power Overwhelming removes counters as an effect, so it still works.",
+      "Arcane Disposition makes you discard your hand at the next end phase. Plan to use what you draw."
+    ],
+    "synergyTitle": "Turn counters into a cheaper finisher",
+    "synergyCards": [
+      "Peer into Mana",
+      "Power Overwhelming",
+      "Arcane Blast"
+    ],
+    "winTitle": "Finish with direct Spell damage",
+    "winCards": [
+      "Arcane Blast",
+      "Fireball"
+    ],
+    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources."
+  },
+  {
+    "deckId": "silvie-starter-deck-preview",
+    "summary": "Build a board of Animals and Beasts, then raise Silvie’s effective level so high-Pride allies obey. Win through supported ally attacks.",
+    "opening": "Pair level 1’s entry bonus with an Animal or Beast you can play that turn. Start with manageable Pride requirements rather than committing only to the biggest Beast.",
+    "leveling": "Level 2 can draw for both an Animal and a Beast already under your control. Level 3 gives those allies extra life and Intercept. Equipment and temporary level bonuses help meet Pride beyond level 3.",
+    "sequence": "Establish an Animal or Beast to enable Beastbond Ears, then use Flute of Taming and Empowering Harmony to reach the Pride requirement of the ally you want to attack with. Count your current level again when temporary bonuses expire.",
+    "cards": [
+      "Silvie, Loved by All",
+      "Beastbond Ears",
+      "Lakeside Serpent"
+    ],
+    "mistakes": [
+      "A high-Pride ally can be played before it obeys. It cannot attack or use activated abilities below the required level, but it may still retaliate; do not confuse Pride with entering rested.",
+      "Invoke Dominance stops non-ally card activations for the rest of the turn. Play other setup cards first."
+    ],
+    "synergyTitle": "Raise level to unlock your Beasts",
+    "synergyCards": [
+      "Beastbond Ears",
+      "Flute of Taming",
+      "Lakeside Serpent"
+    ],
+    "winTitle": "Overwhelm with supported Beasts",
+    "winCards": [
+      "Lakeside Serpent",
+      "Vertus, Gaia's Roar",
+      "Empowering Harmony"
+    ],
+    "winText": "Lakeside Serpent grows with water cards in the graveyard. Vertus can boost your allies on entry using fallen Animals and Beasts. Meet each ally’s Pride requirement before counting on its attack; Vertus itself needs level 10 to obey."
+  },
+  {
+    "deckId": "56KHHOrH55T73zhgspun",
+    "summary": "Use defensive allies and removal to buy time, build effective level, and finish with powerful spells such as Arcane Blast.",
+    "opening": "Use Library Witch or Barrier Servant to protect Rai. This Prelude list includes Dungeon Guide, which can level Rai by banishing two random memory cards; retain enough memory if you plan to use it.",
+    "leveling": "Level 2 provides an enlighten counter for your first Mage action each turn. Level 3 unlocks Arcane cards and gains extra level from arcane Mage Spells in your banishment.",
+    "sequence": "Use Power Overwhelming to turn enlighten counters into temporary levels before playing Arcane Blast. Efficiency lowers the spell’s cost; Arcane Blast still deals its printed 11 damage, rather than LV damage.",
+    "cards": [
+      "Rai, Storm Seer",
+      "Power Overwhelming",
+      "Arcane Blast"
+    ],
+    "mistakes": [
+      "Mana Limiter stops you spending enlighten counters to pay costs, such as the draw ability. Power Overwhelming removes counters as an effect, so it still works.",
+      "Arcane Disposition makes you discard your hand at the next end phase. Plan to use what you draw.",
+      "This is the Prelude product list. Use its own card quantities and material options rather than the later Dawn of Ashes list."
+    ],
+    "synergyTitle": "Turn counters into a cheaper finisher",
+    "synergyCards": [
+      "Peer into Mana",
+      "Power Overwhelming",
+      "Arcane Blast"
+    ],
+    "winTitle": "Finish with direct Spell damage",
+    "winCards": [
+      "Arcane Blast",
+      "Fireball"
+    ],
+    "winText": "Arcane Blast deals 11 to a champion and gets cheaper as effective level rises. Use it with Fireball or a later damage spell once the opponent is within reach. Remove threatening allies first when you need another turn to assemble enough resources."
+  },
+  {
+    "deckId": "GPHjg6vPntxcJdHNvtil",
+    "summary": "Combine Sword attacks with a supporting army. Use leveling turns for strong attacks, then turn banished regalia weapons into more power for Lorraine, Crux Knight.",
+    "opening": "Use Lorraine’s zero-cost weapon materialization to start attacking. This Prelude list also has Dungeon Guide: its entry effect can level your champion by banishing two random memory cards, so plan the memory you leave available.",
+    "leveling": "Level 2 adds +2 power to Lorraine’s attacks for that turn and rewards kills with draws. Reach level 3 when Crux cards and banished regalia weapons can contribute; a temporary level increase alone does not unlock Crux.",
+    "sequence": "Attack with Lorraine, then play Inspiring Call at its reduced cost before attacking with your allies. At level 3, Spirit Blade: Ghost Strike can banish a regalia weapon from your material deck, also increasing Crux Knight’s ongoing attack bonus.",
+    "cards": [
+      "Lorraine, Crux Knight",
+      "Inspiring Call",
+      "Spirit Blade: Ghost Strike"
+    ],
+    "mistakes": [
+      "Attacking rests your champion. A second attack needs a wake-up effect such as Spirit’s Blessing and another legal attack opportunity.",
+      "Spirit’s Blessing returns a regalia as an additional cost. Plan which equipment you can give up.",
+      "This is the Prelude product list. Use its own card quantities and material options rather than the later Dawn of Ashes list."
+    ],
+    "synergyTitle": "Champion first, allies second",
+    "synergyCards": [
+      "Lorraine, Blademaster",
+      "Inspiring Call",
+      "Banner Knight"
+    ],
+    "winTitle": "Build a decisive Sword turn",
+    "winCards": [
+      "Lorraine, Crux Knight",
+      "Spirit Blade: Ghost Strike",
+      "Spirit's Blessing"
+    ],
+    "winText": "Crux Knight gains power from banished regalia weapons. Ghost Strike can add one to banishment and boost attacks for the turn. Spirit’s Blessing can wake Lorraine for another attack if you can return a regalia and pay for the next attack."
+  },
+  {
+    "deckId": "syd-3e871d8b-4da1-439b-b93f-ad2336eff574",
+    "summary": "Build an enhanced Sword and attack alongside fire allies, then spread static counters across your Arcane field for extra damage.",
+    "opening": "Use Lorraine’s first level to bring out a zero-cost weapon. Play Tindered Soldier before discarding fire cards with Creative Tinder or Emberslash so the Soldier can gain its buff counter.",
+    "leveling": "Level 2 exchanges up to three random memory cards and rewards advanced-element replacements with Sword durability and temporary power. Level 3 unlocks Arcane and gains static counters, with extra counters for arcane cards in banishment.",
+    "sequence": "Link FlameTech BladeCore to a Sword, then discard a fire card with Emberslash’s On Attack ability to restore durability. Once Arcane is enabled, use your static-bearing units and links to support Conductive Strike.",
+    "cards": [
+      "Lorraine, Arclight Saber",
+      "FlameTech BladeCore",
+      "Emberslash"
+    ],
+    "mistakes": [
+      "Static damage follows combat damage; it does not turn a prevented hit into a hit. Track each source’s counters.",
+      "A Link needs its specified kind of target. Losing the linked Sword also puts its attachments at risk."
+    ],
+    "synergyTitle": "Discard fire to maintain a Sword",
+    "synergyCards": [
+      "FlameTech BladeCore",
+      "Emberslash",
+      "Tindered Soldier"
+    ],
+    "winTitle": "Combine Sword pressure with static",
+    "winCards": [
+      "Lorraine, Arclight Saber",
+      "Conductive Strike",
+      "Surged Coordinator"
+    ],
+    "winText": "Build static counters across multiple objects to grow Conductive Strike. Arcane combat hits can then spend eligible static counters for extra damage. Surged Coordinator and linked equipment help establish a field that supports more than one threat."
+  },
+  {
+    "deckId": "syd-0e5ff086-ca0b-4c7c-bbda-04ce6893919d",
+    "summary": "Use Empower and Elysian Aura to reach stronger Spell effects. Balance Dante’s self-damage against recovery while defensive allies protect the engine.",
+    "opening": "Level 1 summons an Elysian Test Subject. Protect your setup with Shieldroid or Stalwart Shieldmate, and use Mage support to empower the Spell that matters most.",
+    "leveling": "Level 2 searches the top ten cards for an Aenean Spell. At level 3, Dante can pay reserve, rest, and take damage to Empower; empowered Spell action sources can then trigger recovery on their first damage.",
+    "sequence": "At level 3, Heighten Spellcraft gives the next Spell +3 effective levels. Aenean Frostlance can then reach its level-6 clause against a rested unit. An Elysian Aura also contributes +2 effective levels specifically to Aenean Spells.",
+    "cards": [
+      "Dante, Hemomancer",
+      "Heighten Spellcraft",
+      "Aenean Frostlance"
+    ],
+    "mistakes": [
+      "Empower applies to the next Spell that turn, so an intervening Spell can consume the boost. It does not level up your champion card.",
+      "Dante’s self-damage is unpreventable. Count your damage and life before paying it; later recovery cannot rescue a defeated champion."
+    ],
+    "synergyTitle": "Reach a higher Spell threshold",
+    "synergyCards": [
+      "Heighten Spellcraft",
+      "Aenean Frostlance",
+      "Elysian Aspirant"
+    ],
+    "winTitle": "Damage and recover in the same push",
+    "winCards": [
+      "Dante, Hemomancer",
+      "Hemoflux Drain",
+      "Elysian Aspirant"
+    ],
+    "winText": "Empowered damage Spells can trigger Dante’s recovery. Hemoflux Drain deals LV damage and then recovers based on the damage dealt, helping you attack the opposing champion while stabilizing. Watch your damage total: taking lethal self-damage ends the plan before recovery can happen."
+  }
+]

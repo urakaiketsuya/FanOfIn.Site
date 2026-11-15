@@ -137,6 +137,7 @@ const SimulatorIndex = lazy(() => import("./features/simulator/SimulatorIndex"))
 const TimelinesIndex = lazy(() => import("./features/timelines/TimelinesIndex"));
 const TimelineDetail = lazy(() => import("./features/timelines/TimelineDetail"));
 const CombosIndex = lazy(() => import("./features/timelines/CombosIndex"));
+const StarterPrimerPage = lazy(() => import("./features/official-products/StarterPrimerPage"));
 const OfficialProductsIndex = lazy(() => import("./features/official-products/OfficialProductsIndex"));
 const MerchandiseIndex = lazy(() => import("./features/merchandise/MerchandiseIndex"));
 const ProductsIndex = lazy(() => import("./features/products/ProductsIndex"));
@@ -267,6 +268,7 @@ export default function AppRoutes() {
         <Route path="/community-decks/search" element={<CommunityDeckSearchIndex />} />
         <Route path="/pantheon" element={<CommunityDecksIndex format="PANTHEON" />} />
         <Route path="/official-decks" element={<OfficialProductsIndex />} />
+        <Route path="/official-decks/:deckId/primer" element={<StarterPrimerPage />} />
         <Route path="/products" element={<ProductsIndex />} />
         <Route path="/merchandise" element={<MerchandiseIndex />} />
         <Route path="/media-kit" element={<MediaKitIndex />} />

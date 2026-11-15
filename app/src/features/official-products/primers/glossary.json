@@ -1,0 +1,3066 @@
+{
+  "entries": [
+    {
+      "term": "Floating Memory",
+      "pattern": "floating memory",
+      "meaning": "When paying a memory cost, you may banish this card from your graveyard to pay 1 of that cost. Check any Class Bonus or level condition attached to it."
+    },
+    {
+      "term": "Class Bonus",
+      "pattern": "class bonus",
+      "meaning": "Apply the marked effect only when your champion shares a class with the card. It is not an extra cost."
+    },
+    {
+      "term": "Champion Bonus",
+      "pattern": "(?:Ciel|Diana|Dante|Lorraine|Jin|Kongming) Bonus",
+      "meaning": "The marked effect requires the named champion. For example, a Lorraine Bonus is active for Lorraine, not every Warrior."
+    },
+    {
+      "term": "Element Bonus",
+      "pattern": "element bonus",
+      "meaning": "The marked effect requires your champion to share an element with this card."
+    },
+    {
+      "term": "Level, Memory and Damage conditions",
+      "pattern": "\\[(?:Level|Memory|Damage) [0-9]",
+      "meaning": "A bracketed threshold applies only when its condition is met: Level checks champion level, Memory counts cards in memory, and Damage counts damage on your champion. A plus sign means at least that amount."
+    },
+    {
+      "term": "LV and X",
+      "pattern": "\\bLV\\b|\\bX\\b",
+      "meaning": "LV means your champion’s current level, including applicable modifiers. X is a variable defined by that card’s effect or chosen cost; read the accompanying sentence."
+    },
+    {
+      "term": "Lineage",
+      "pattern": "lineage",
+      "meaning": "Your lineage is the whole champion stack, including its top card, earlier levels, and other cards added there. A named Lineage restriction requires the matching champion. Inner lineage excludes the top champion card."
+    },
+    {
+      "term": "Inherited Effect",
+      "pattern": "inherited effect",
+      "meaning": "This ability applies to your champion while its card is in that champion’s lineage. Read Curse effects too: inheritance can be harmful."
+    },
+    {
+      "term": "Lineage Release",
+      "pattern": "lineage release",
+      "meaning": "Activate the ability by banishing its card from your champion’s inner lineage. Check its additional restrictions; the top champion card is not in the inner lineage."
+    },
+    {
+      "term": "On Enter / On Leave",
+      "pattern": "on enter|on leave",
+      "meaning": "These abilities trigger when the object enters or leaves the field. Read the event literally: moving a card between hand and memory does not make it enter the field."
+    },
+    {
+      "term": "On Attack",
+      "pattern": "on attack",
+      "meaning": "This triggers when the unit attacks, before damage. It does not require a successful hit."
+    },
+    {
+      "term": "On Hit / On Champion Hit",
+      "pattern": "on (?:champion )?hit",
+      "meaning": "A hit requires combat damage. On Champion Hit requires that damage to reach a champion. Fully prevented damage does not cause a hit."
+    },
+    {
+      "term": "On Death / On Kill",
+      "pattern": "on death|on kill",
+      "meaning": "A unit dies when it goes from the field to the graveyard. On Death triggers for that unit. On Kill requires a kill from combat damage, not a later damage effect. Banishing a unit is not a death."
+    },
+    {
+      "term": "On Banish / On Sacrifice",
+      "pattern": "on banish|on sacrifice",
+      "meaning": "These trigger when the specified event happens. If sacrificing a Potion pays its ability’s cost, its On Sacrifice trigger resolves before that Potion ability."
+    },
+    {
+      "term": "Taunt",
+      "pattern": "taunt",
+      "meaning": "While awake, this unit must be chosen before other objects you control for opponents’ attacks when possible. Resting it switches off that protection."
+    },
+    {
+      "term": "Intercept",
+      "pattern": "intercept",
+      "meaning": "When your champion is attacked, an awake ally with Intercept may redirect the attack to itself. Keep that ally awake if you need this protection."
+    },
+    {
+      "term": "Stealth / True Sight",
+      "pattern": "stealth|true sight",
+      "meaning": "Stealth prevents a unit from being targeted by attacks. True Sight allows attacks to target units with Stealth. Neither is general immunity to card effects."
+    },
+    {
+      "term": "Spellshroud",
+      "pattern": "spellshroud",
+      "meaning": "Spells cannot target this object. An effect that does not target can still affect it."
+    },
+    {
+      "term": "Unblockable",
+      "pattern": "unblockable",
+      "meaning": "This attack ignores Taunt and cannot be intercepted. Other restrictions and defensive effects can still matter."
+    },
+    {
+      "term": "Cleave",
+      "pattern": "cleave",
+      "meaning": "Attack the chosen player’s attackable objects together. The attack cannot be intercepted; multiple defenders may retaliate."
+    },
+    {
+      "term": "Glimpse",
+      "pattern": "glimpse|glimpsing",
+      "meaning": "Look at the specified number of cards from the top of your deck. Return any to the top in any order and the rest to the bottom in any order. This is not a draw."
+    },
+    {
+      "term": "Efficiency",
+      "pattern": "efficiency",
+      "meaning": "Reduce this card’s activation cost by your champion’s level. A higher effective level can make it cheaper; it does not automatically increase the card’s damage."
+    },
+    {
+      "term": "Empower",
+      "pattern": "empower",
+      "meaning": "The next Spell you activate this turn activates and resolves with the stated extra effective levels. This does not replace your champion card or unlock an advanced element."
+    },
+    {
+      "term": "Recover",
+      "pattern": "recover",
+      "meaning": "Remove the stated number of damage counters from your champion. Recovery removes damage; it does not raise the life stat."
+    },
+    {
+      "term": "Durability",
+      "pattern": "durability|weapon",
+      "meaning": "Weapons use durability counters. Wielding a weapon removes one during combat’s damage step. At zero durability, a regalia weapon goes to banishment; a non-regalia weapon goes to the graveyard."
+    },
+    {
+      "term": "Buff counters",
+      "pattern": "\\bbuff\\b",
+      "meaning": "Each buff counter gives its object +1 power and +1 life. Keep counters visible so attack and survival calculations stay clear."
+    },
+    {
+      "term": "Enlighten counters",
+      "pattern": "enlighten",
+      "meaning": "You may spend three enlighten counters on your champion to draw a card. Some cards spend them differently or prevent spending them."
+    },
+    {
+      "term": "Distant / Ranged",
+      "pattern": "distant|ranged",
+      "meaning": "Distant lasts until the end of that unit’s controller’s turn. Ranged N gives its attacks +N power while it is distant. Distant alone does not stop attacks or damage."
+    },
+    {
+      "term": "Load / Intent",
+      "pattern": "load|intent",
+      "meaning": "Loaded cards are placed under a weapon. When the weapon attacks, its loads move into the attacker’s intent for that combat. Follow the loading card’s restrictions."
+    },
+    {
+      "term": "Gun / Aetherwing",
+      "pattern": "Gun|Aetherwing",
+      "meaning": "These weapon types must be loaded before attacking and cannot be combined with an attack card. Bullets and Aethercharges follow their own loading instructions."
+    },
+    {
+      "term": "Renewable",
+      "pattern": "renewable",
+      "meaning": "If this card would be banished from the field or an intent, return it to its owner’s material deck instead. You still need a way to materialize or load it again."
+    },
+    {
+      "term": "Starcalling",
+      "pattern": "starcalling",
+      "meaning": "While looking at this card during a glimpse, you may activate it for its Starcalling cost. Put the other cards from that glimpse on the bottom in any order. Element and other activation requirements still apply."
+    },
+    {
+      "term": "Aethercalling",
+      "pattern": "aethercalling",
+      "meaning": "While looking at this card during a glimpse, you may load it into an Aetherwing you control. Check Element Bonus when the ability has that condition."
+    },
+    {
+      "term": "Hindered",
+      "pattern": "hindered|enters the field rested",
+      "meaning": "This object enters rested. It cannot pay a rest cost until awake."
+    },
+    {
+      "term": "Vigor",
+      "pattern": "vigor",
+      "meaning": "The unit wakes up at the beginning of your end phase. This can leave an attacker ready to protect you on the opponent’s turn."
+    },
+    {
+      "term": "Foster / On Foster",
+      "pattern": "foster",
+      "meaning": "At your recollection phase, a Foster ally becomes fostered if it has taken no damage since your previous turn ended. It becomes fostered only once; resolve its On Foster ability then."
+    },
+    {
+      "term": "Suppress",
+      "pattern": "suppress",
+      "meaning": "Banish the specified ally, then return it under its owner’s control at the beginning of the next end phase. It returns as a new object."
+    },
+    {
+      "term": "Preserve",
+      "pattern": "preserve|preserved",
+      "meaning": "The card goes to its owner’s material deck preserved at the time specified. During materialization, you may take a preserved card back to hand instead of materializing."
+    },
+    {
+      "term": "Pride",
+      "pattern": "pride",
+      "meaning": "The ally obeys only while your champion meets the stated level. Below that level you cannot attack with it or activate its abilities, but it may still retaliate. Its static and triggered abilities still apply; follow any additional requirements."
+    },
+    {
+      "term": "Harmonize / Melody",
+      "pattern": "harmonize",
+      "meaning": "Harmonize labels a bonus for having activated a Melody that turn. Check the card’s own wording and play a Melody before the Harmony that needs it."
+    },
+    {
+      "term": "Gather / Herbs",
+      "pattern": "gather|Herbs|Adjuvant|Catalyst",
+      "meaning": "Gather summons a random Herb from the six named Herb tokens. Herbs have subtypes such as Adjuvant or Catalyst; use those exact subtypes when checking a Potion’s recipe."
+    },
+    {
+      "term": "Brew",
+      "pattern": "brew",
+      "meaning": "You may sacrifice the listed ingredients instead of paying the Potion’s reserve cost. Brewing puts the Potion into play; activating its sacrifice ability is a separate step."
+    },
+    {
+      "term": "Balance",
+      "pattern": "balance",
+      "meaning": "This label checks the relationship between hand and memory. Scale of Souls requires equal card counts at its recollection trigger to recover."
+    },
+    {
+      "term": "Negate",
+      "pattern": "negate|negated",
+      "meaning": "Stop the specified card activation from resolving. Follow the negating effect for where its card goes; some effects let its controller pay to avoid negation."
+    },
+    {
+      "term": "Fast Activation",
+      "pattern": "fast activation",
+      "meaning": "You may activate this card at fast speed when you have an opportunity to act, including during the opponent’s turn. You must still meet its other requirements."
+    },
+    {
+      "term": "Generate",
+      "pattern": "generate",
+      "meaning": "Add the named card from outside the game to the specified zone. Keep the required physical generated cards with your deck."
+    },
+    {
+      "term": "Summon / Tokens",
+      "pattern": "summon|token",
+      "meaning": "Put the specified token onto the field. Use its own card text and stats. Tokens are separate objects, even when represented with counters or a token board."
+    },
+    {
+      "term": "Omen",
+      "pattern": "omen",
+      "meaning": "An omen is a card in banishment with an omen counter on it. Only those marked cards count for Ciel’s omen requirements; ordinary banished cards do not."
+    },
+    {
+      "term": "Mastery / Shifting Currents",
+      "pattern": "mastery|Shifting Currents",
+      "meaning": "A mastery is a player ability provided by a card. Keep its reference visible. Shifting Currents starts North and has four directions; use its diagram for adjacent moves."
+    },
+    {
+      "term": "Immortality",
+      "pattern": "immortality",
+      "meaning": "A unit with this ability cannot die. It can still take damage. Jin only has it outside his end phase, so check damage against life before that protection ends."
+    },
+    {
+      "term": "Link / Link Shield",
+      "pattern": "\\blink\\b|link shield",
+      "meaning": "A Link attaches to the specified kind of object and is sacrificed if its link breaks. Link Shield can destroy the attachment instead of the linked object and clears that object’s temporary damage."
+    },
+    {
+      "term": "Static counters",
+      "pattern": "static",
+      "meaning": "When an arcane unit deals combat damage, eligible static counters can be spent for extra damage to the object it damaged. Use the counter’s rules and its location; this is extra non-combat damage."
+    },
+    {
+      "term": "Elysian Aura",
+      "pattern": "elysian aura",
+      "meaning": "Your Aenean Spells activate and resolve with +2 effective champion levels while you control an object with this ability. Multiple Elysian Auras do not add further +2 bonuses."
+    },
+    {
+      "term": "Scavenge",
+      "pattern": "scavenge",
+      "meaning": "Reveal cards from the top of your deck until you find the specified kind of card or reach the stated limit. Put the found card in hand and the rest on the bottom in random order."
+    },
+    {
+      "term": "Blood counters",
+      "pattern": "blood",
+      "meaning": "These counters have the effect stated on the card. Crimson Vein uses them to raise your champion’s life and gains another when you recover."
+    },
+    {
+      "term": "Reservable",
+      "pattern": "reservable",
+      "meaning": "While paying a reserve cost, you may rest this object to pay 1 of it. Resting it may stop you using another ability that also needs it awake."
+    },
+    {
+      "term": "Banish / Graveyard",
+      "pattern": "banish|graveyard",
+      "meaning": "Banishment and graveyard are different zones. Banishing moves a card to banishment; discarding normally puts it in the graveyard. Effects that name one zone cannot use cards in the other."
+    },
+    {
+      "term": "Sacrifice",
+      "pattern": "sacrifice",
+      "meaning": "Destroy the object you control as instructed. A sacrificed ally dies if it goes to the graveyard; sacrificing a Potion also enables any On Sacrifice trigger it has."
+    },
+    {
+      "term": "Unpreventable damage",
+      "pattern": "unpreventable",
+      "meaning": "Damage prevention cannot reduce this damage. It still counts as damage and can defeat a champion."
+    },
+    {
+      "term": "Rest / Awake",
+      "pattern": "\\[REST\\]|\\brest\\b|awake|rested|wake up",
+      "meaning": "An upright object is awake; turn it sideways to rest it. It must be awake to pay a rest cost. Waking it up makes it upright again. Allies normally enter awake unless an effect says otherwise."
+    },
+    {
+      "term": "Materialize / Regalia",
+      "pattern": "materialize|materialization|regalia",
+      "meaning": "Materializing plays a card from your material deck. During your materialize phase, you normally get one materialization. An effect can grant another, but you still pay its costs unless it says otherwise. Regalia are equipment and other material-deck cards."
+    },
+    {
+      "term": "Spell",
+      "pattern": "\\bSpell\\b",
+      "meaning": "Spell is a card subtype, not a name for every action. Empower affects Spells; Spellshroud protects against targeting by Spell sources. Check the card’s type line."
+    },
+    {
+      "term": "Curse",
+      "pattern": "Curse",
+      "meaning": "A Curse is a subtype. These decks can put Curse cards into a champion’s lineage, where their inherited effects apply. Read whose lineage receives the card; some effects can curse your own champion."
+    },
+    {
+      "term": "Exalted",
+      "pattern": "Exalted",
+      "meaning": "Exalted is enabled while you have another advanced element enabled. Pure Cytosynth still needs that elemental access; an effective-level boost alone does not provide it."
+    },
+    {
+      "term": "Domain",
+      "pattern": "domain|Obelisk",
+      "meaning": "A Domain is a field object rather than an ally. Tonoris’s Obelisks are Domains, so effects that count or sacrifice Domains can use them. Read each Obelisk’s text for its ongoing effect."
+    }
+  ],
+  "decks": {
+    "1c9SMsvMsihhi1c1XvfH": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Idle Thoughts",
+          "Martial Guard",
+          "Stalwart Shieldmate",
+          "Tempered Steel"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Coy Bouclier",
+          "Heavy Swing",
+          "Martial Guard",
+          "Vigil Rempart",
+          "Torch Marshal",
+          "Bulwark Sword"
+        ]
+      },
+      {
+        "termIndex": 2,
+        "cards": [
+          "Grande Aiguille",
+          "Manxome Armoire",
+          "Grande Sonnerie",
+          "Servile Possessions"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Coy Bouclier",
+          "Lamentation's Toll",
+          "Martial Guard"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Lamentation's Toll",
+          "Leporine Masque"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Reverse Affliction",
+          "Sinistre Stab",
+          "Umbra Sight",
+          "Ciel, Omenbringer",
+          "Ciel, Mirage's Grave"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Sinistre Stab",
+          "Ciel, Loyal Valet"
+        ]
+      },
+      {
+        "termIndex": 8,
+        "cards": [
+          "Ciel, Omenbringer"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Conflagrant Sentinel",
+          "Ombreux Chevalier",
+          "Spirit of Fire",
+          "Ciel, Loyal Valet",
+          "Ciel, Omenbringer"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Servile Possessions"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Sinistre Stab"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Coy Bouclier",
+          "Stalwart Shieldmate"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Whimsy's Warden"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Tempered Steel",
+          "Bulwark Sword"
+        ]
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Conflagrant Sentinel"
+        ]
+      },
+      {
+        "termIndex": 43,
+        "cards": [
+          "Overpowering Defense"
+        ]
+      },
+      {
+        "termIndex": 47,
+        "cards": [
+          "Lamentation's Toll",
+          "Sablier Guard",
+          "Whimsy's Warden",
+          "Flamme Sorcel",
+          "Devotion's Price",
+          "Nocturne's Oblivion",
+          "Ombreux Chevalier",
+          "Reverse Affliction",
+          "Sinistre Stab",
+          "Ciel, Loyal Valet",
+          "Ciel, Omenbringer",
+          "Ciel, Mirage's Grave",
+          "Grande Aiguille",
+          "Leporine Masque",
+          "Manxome Armoire",
+          "Grande Sonnerie",
+          "Servile Possessions"
+        ]
+      },
+      {
+        "termIndex": 48,
+        "cards": [
+          "Ciel, Loyal Valet"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Idle Thoughts",
+          "Lamentation's Toll",
+          "Martial Guard",
+          "Sablier Guard",
+          "Stalwart Shieldmate",
+          "Tempered Steel",
+          "Nocturne's Oblivion",
+          "Ombreux Chevalier",
+          "Reverse Affliction",
+          "Ciel, Loyal Valet",
+          "Ciel, Mirage's Grave",
+          "Bauble of Abundance",
+          "Grande Aiguille",
+          "Leporine Masque",
+          "Life Essence Amulet",
+          "Manxome Armoire",
+          "Tariff Ring"
+        ]
+      },
+      {
+        "termIndex": 58,
+        "cards": [
+          "Umbra Sight",
+          "Ciel, Mirage's Grave"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Coy Bouclier",
+          "Stalwart Shieldmate",
+          "Whimsy's Warden"
+        ]
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Ciel, Mirage's Grave"
+        ]
+      },
+      {
+        "termIndex": 62,
+        "cards": [
+          "Reverse Affliction",
+          "Umbra Sight"
+        ]
+      }
+    ],
+    "gbTwGoxXcMX1J2MES1nJ": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Charge the Soul",
+          "Idle Thoughts",
+          "Reposition",
+          "Stalwart Shieldmate",
+          "Corsair Captain",
+          "Undercurrent Vantage"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Charge the Soul",
+          "Reposition",
+          "Corsair Captain",
+          "Drown in Aether",
+          "Undercurrent Vantage",
+          "Constellation's Blessing",
+          "Poised Occlusion",
+          "Sidereal Spellshot",
+          "Ranger Boots",
+          "Seeker's Aetherwing",
+          "Aquamirage Whisper",
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 3,
+        "cards": [
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Sidereal Spellshot"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Sidereal Spellshot",
+          "Aquamirage Whisper"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Diana, Judgment's Arrow",
+          "Diana, Moonpiercer"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Diana, Aether Dilettante",
+          "Diana, Judgment's Arrow"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Spirit of Water",
+          "Diana, Aether Dilettante",
+          "Diana, Judgment's Arrow",
+          "Ranger Boots",
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Aquamirage Whisper",
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Stalwart Shieldmate"
+        ]
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Seeker's Aetherwing"
+        ]
+      },
+      {
+        "termIndex": 17,
+        "cards": [
+          "Seeker's Aetherwing",
+          "Aquamirage Whisper"
+        ]
+      },
+      {
+        "termIndex": 18,
+        "cards": [
+          "Guided Starlight"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Aetheric Calibration",
+          "Undercurrent Vantage",
+          "Astra Sight",
+          "Constellation's Blessing",
+          "Sidereal Spellshot",
+          "Diana, Moonpiercer",
+          "Foresight Lens",
+          "Aquamirage Whisper",
+          "Pleiades, Celestial Genesis",
+          "Astral Shard"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Aetheric Calibration",
+          "Charge the Soul",
+          "Prudent Nock",
+          "Dissuading Aether",
+          "Drown in Aether",
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Sidereal Spellshot",
+          "Diana, Judgment's Arrow",
+          "Refluxal Ribbon",
+          "Seeker's Aetherwing"
+        ]
+      },
+      {
+        "termIndex": 27,
+        "cards": [
+          "Backstep",
+          "Reposition",
+          "Corsair Captain",
+          "Undercurrent Vantage",
+          "Poised Occlusion",
+          "Diana, Aether Dilettante",
+          "Diana, Judgment's Arrow",
+          "Diana, Moonpiercer",
+          "Foresight Lens",
+          "Ranger Boots"
+        ]
+      },
+      {
+        "termIndex": 28,
+        "cards": [
+          "Aetheric Calibration",
+          "Charge the Soul",
+          "Prudent Nock",
+          "Dissuading Aether",
+          "Drown in Aether",
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Meteoric Volley",
+          "Sidereal Spellshot",
+          "Diana, Judgment's Arrow",
+          "Refluxal Ribbon",
+          "Seeker's Aetherwing",
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 29,
+        "cards": [
+          "Aetheric Calibration",
+          "Charge the Soul",
+          "Prudent Nock",
+          "Dissuading Aether",
+          "Drown in Aether",
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Sidereal Spellshot",
+          "Diana, Aether Dilettante",
+          "Diana, Judgment's Arrow",
+          "Refluxal Ribbon",
+          "Seeker's Aetherwing"
+        ]
+      },
+      {
+        "termIndex": 31,
+        "cards": [
+          "Astra Sight"
+        ]
+      },
+      {
+        "termIndex": 32,
+        "cards": [
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Sidereal Spellshot"
+        ]
+      },
+      {
+        "termIndex": 33,
+        "cards": [
+          "Ranger Boots"
+        ]
+      },
+      {
+        "termIndex": 43,
+        "cards": [
+          "Poised Occlusion",
+          "Diana, Moonpiercer"
+        ]
+      },
+      {
+        "termIndex": 44,
+        "cards": [
+          "Drown in Aether"
+        ]
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Starbirth",
+          "Pleiades, Celestial Genesis"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Charge the Soul",
+          "Idle Thoughts",
+          "Reposition",
+          "Stalwart Shieldmate",
+          "Corsair Captain",
+          "Undercurrent Vantage",
+          "Bauble of Abundance",
+          "Foresight Lens",
+          "Ranger Boots",
+          "Refluxal Ribbon",
+          "Tariff Ring",
+          "Aquamirage Whisper"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Astral Shard"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Stalwart Shieldmate",
+          "Drown in Aether",
+          "Ranger Boots"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Diana, Aether Dilettante"
+        ]
+      }
+    ],
+    "2lVqk6MGrk8xHy58lUd4": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Heighten Spellcraft",
+          "Idle Thoughts",
+          "Rising Tides",
+          "Water Barrier"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Heighten Spellcraft",
+          "Cone of Frost",
+          "Rising Tides",
+          "Water Barrier",
+          "Devoted Bloomweaver",
+          "Leeching Bolt",
+          "Planar Abyss",
+          "Ruinous Pillars of Qidao"
+        ]
+      },
+      {
+        "termIndex": 2,
+        "cards": [
+          "Fan of Seven Debts",
+          "Shifting Currents"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Wisdom's Reprise",
+          "Cone of Frost",
+          "Rising Tides"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Harmonious Mantra",
+          "Coriolis Ward",
+          "Tsunami of Nanyue",
+          "Leeching Bolt",
+          "Planar Abyss",
+          "Kongming, Fel Eidolon"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Kongming, Ascetic Vice",
+          "Kongming, Fel Eidolon"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Kongming, Ascetic Vice"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Devoted Bloomweaver",
+          "Ruinous Pillars of Qidao",
+          "Spirit of Water",
+          "Kongming, Wayward Maven",
+          "Kongming, Ascetic Vice",
+          "Kongming, Fel Eidolon",
+          "Fan of Seven Debts",
+          "Coronal of Rejuvenation",
+          "Entrancing Filigree"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Ardent Cloudstriker",
+          "Spirited Neophyte"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Hydroguard Retainer"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Formidable Youxia"
+        ]
+      },
+      {
+        "termIndex": 17,
+        "cards": [
+          "Entrancing Filigree"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Wisdom's Reprise"
+        ]
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Tsunami of Nanyue",
+          "Planar Abyss"
+        ]
+      },
+      {
+        "termIndex": 22,
+        "cards": [
+          "Heighten Spellcraft",
+          "Spirited Neophyte",
+          "Devoted Bloomweaver",
+          "Leeching Bolt",
+          "Ruinous Pillars of Qidao",
+          "Kongming, Ascetic Vice",
+          "Shard of Empowerment"
+        ]
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Harmonious Mantra",
+          "Leeching Bolt",
+          "Kongming, Fel Eidolon",
+          "Sweet Ambrosia"
+        ]
+      },
+      {
+        "termIndex": 37,
+        "cards": [
+          "Devoted Bloomweaver",
+          "Leeching Bolt",
+          "Tera Sight",
+          "Coronal of Rejuvenation"
+        ]
+      },
+      {
+        "termIndex": 48,
+        "cards": [
+          "Ardent Cloudstriker",
+          "Formidable Youxia",
+          "Harmonious Mantra",
+          "Spirited Neophyte",
+          "Coriolis Ward",
+          "Hydroguard Retainer",
+          "Taiji of Crystal Strategems",
+          "Tsunami of Nanyue",
+          "Planar Abyss",
+          "Ruinous Pillars of Qidao",
+          "Kongming, Wayward Maven",
+          "Kongming, Ascetic Vice",
+          "Kongming, Fel Eidolon",
+          "Fan of Seven Debts"
+        ]
+      },
+      {
+        "termIndex": 55,
+        "cards": [
+          "Taiji of Crystal Strategems"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Heighten Spellcraft",
+          "Idle Thoughts",
+          "Rising Tides",
+          "Water Barrier",
+          "Kongming, Fel Eidolon",
+          "Bauble of Abundance",
+          "Fan of Seven Debts",
+          "Life Essence Amulet",
+          "Shard of Empowerment",
+          "Tariff Ring",
+          "Sweet Ambrosia",
+          "Coronal of Rejuvenation",
+          "Entrancing Filigree"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Ruinous Pillars of Qidao"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Formidable Youxia",
+          "Hydroguard Retainer",
+          "Taiji of Crystal Strategems",
+          "Tsunami of Nanyue",
+          "Coronal of Rejuvenation",
+          "Entrancing Filigree"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Devoted Bloomweaver",
+          "Leeching Bolt",
+          "Tera Sight",
+          "Coronal of Rejuvenation"
+        ]
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Heighten Spellcraft",
+          "Spirited Neophyte",
+          "Taiji of Crystal Strategems",
+          "Kongming, Fel Eidolon",
+          "Shard of Empowerment",
+          "Coronal of Rejuvenation",
+          "Entrancing Filigree"
+        ]
+      }
+    ],
+    "5Ng50uYTatKv4zRcWMZI": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Idle Thoughts",
+          "Savage Swing",
+          "Veteran Soldier",
+          "Favorable Winds",
+          "Reclaim",
+          "Swift Recruit"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Banner Knight",
+          "Regenerate",
+          "Safeguard Paladin",
+          "Savage Swing",
+          "Eminent Commander",
+          "Materialize Polearm",
+          "Wind Cutter",
+          "Bloodbond Bladesworn",
+          "Relentless Outburst",
+          "Steel Halberd",
+          "Berserker Plate",
+          "Shuang Ji of Sacrifice"
+        ]
+      },
+      {
+        "termIndex": 2,
+        "cards": [
+          "Pierce the Heavens",
+          "Executioner's Spear"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Banner Knight",
+          "Regenerate",
+          "Enrage",
+          "Exia Sight",
+          "Hemorrhaging Rend",
+          "Mend Flesh",
+          "Relentless Outburst"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Jin, Fate Defiant",
+          "Jin, Zealous Maverick",
+          "Jin, Undying Resolve"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Jin, Fate Defiant"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Trusty Steed",
+          "Spirit of Wind",
+          "Jin, Zealous Maverick",
+          "Shuang Ji of Sacrifice"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Jin, Zealous Maverick"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Wind Cutter"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Executioner's Spear"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Pierce the Heavens"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Pierce the Heavens",
+          "Swift Recruit",
+          "Hemorrhaging Rend"
+        ]
+      },
+      {
+        "termIndex": 18,
+        "cards": [
+          "Pierce the Heavens"
+        ]
+      },
+      {
+        "termIndex": 19,
+        "cards": [
+          "Hemorrhaging Rend"
+        ]
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Regenerate",
+          "Mend Flesh"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Banner Knight",
+          "Jin, Fate Defiant",
+          "Executioner's Spear",
+          "Slate Whetstone"
+        ]
+      },
+      {
+        "termIndex": 49,
+        "cards": [
+          "Jin, Undying Resolve"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Idle Thoughts",
+          "Savage Swing",
+          "Veteran Soldier",
+          "Favorable Winds",
+          "Reclaim",
+          "Swift Recruit",
+          "Bauble of Abundance",
+          "Life Essence Amulet",
+          "Safeguard Amulet",
+          "Slate Whetstone"
+        ]
+      },
+      {
+        "termIndex": 58,
+        "cards": [
+          "Enrage",
+          "Berserker Plate",
+          "Shuang Ji of Sacrifice"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Swift Recruit",
+          "Jin, Zealous Maverick"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Materialize Polearm"
+        ]
+      }
+    ],
+    "bxIbsmbzq7PtY2bIpx7H": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Barter Herbs",
+          "Foraging Servant",
+          "Water Barrier"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Academy Attendant",
+          "Barter Herbs",
+          "Caretaker Drone",
+          "Foraging Servant",
+          "Flash Freeze",
+          "Krustallan Distiller",
+          "Potion Infusion: Clarity",
+          "Stream of Consciousness",
+          "Water Barrier",
+          "Cometfall",
+          "Potion Infusion: Starlight",
+          "Spellshield: Astra",
+          "Cleric Robes",
+          "Necklace of Foresight",
+          "Prototype Staff",
+          "Scale of Souls",
+          "Cosmic Astroscope"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Academy Attendant",
+          "Stream of Consciousness",
+          "Prototype Staff"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Scry the Skies",
+          "Essence of Blizzards",
+          "Flash Freeze",
+          "Perfect Repulsion",
+          "Condensed Supernova",
+          "Spellshield: Astra"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Arisanna, Master Alchemist",
+          "Arisanna, Astral Zenith"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Arisanna, Master Alchemist"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Foraging Servant",
+          "Krustallan Distiller",
+          "Spirit of Water",
+          "Arisanna, Herbalist Prodigy",
+          "Arisanna, Master Alchemist",
+          "Cleric Robes"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Caretaker Drone"
+        ]
+      },
+      {
+        "termIndex": 13,
+        "cards": [
+          "Potion Infusion: Clarity",
+          "Potion Infusion: Frostbite",
+          "Potion Infusion: Starlight"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Caretaker Drone"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Caretaker Drone",
+          "Scry the Skies",
+          "Serum of Wisdom",
+          "Stream of Consciousness",
+          "Astra Sight",
+          "Cometfall",
+          "Condensed Supernova",
+          "Cosmic Bolt",
+          "Spellshield: Astra",
+          "Necklace of Foresight",
+          "Cosmic Astroscope"
+        ]
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Potion of Healing",
+          "Scale of Souls",
+          "Fraysia",
+          "Silvershine"
+        ]
+      },
+      {
+        "termIndex": 31,
+        "cards": [
+          "Astra Sight",
+          "Cometfall",
+          "Cosmic Bolt",
+          "Potion Infusion: Starlight",
+          "Arisanna, Astral Zenith"
+        ]
+      },
+      {
+        "termIndex": 40,
+        "cards": [
+          "Barter Herbs",
+          "Foraging Servant",
+          "Potion of Healing",
+          "Serum of Wisdom",
+          "Essence of Blizzards",
+          "Condensed Supernova",
+          "Arisanna, Herbalist Prodigy",
+          "Arisanna, Master Alchemist",
+          "Ingredient Pouch"
+        ]
+      },
+      {
+        "termIndex": 41,
+        "cards": [
+          "Potion of Healing",
+          "Serum of Wisdom",
+          "Essence of Blizzards",
+          "Krustallan Distiller",
+          "Condensed Supernova"
+        ]
+      },
+      {
+        "termIndex": 42,
+        "cards": [
+          "Scale of Souls"
+        ]
+      },
+      {
+        "termIndex": 43,
+        "cards": [
+          "Flash Freeze"
+        ]
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Barter Herbs",
+          "Foraging Servant",
+          "Arisanna, Herbalist Prodigy",
+          "Ingredient Pouch"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Foraging Servant",
+          "Flash Freeze",
+          "Water Barrier",
+          "Cosmic Bolt",
+          "Life Essence Amulet",
+          "Necklace of Foresight",
+          "Synth Disrupter"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Barter Herbs",
+          "Potion of Healing",
+          "Serum of Wisdom",
+          "Essence of Blizzards",
+          "Potion Infusion: Clarity",
+          "Potion Infusion: Frostbite",
+          "Condensed Supernova",
+          "Potion Infusion: Starlight",
+          "Arisanna, Master Alchemist",
+          "Blightroot",
+          "Fraysia",
+          "Manaroot",
+          "Razorvine",
+          "Silvershine",
+          "Springleaf"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Caretaker Drone",
+          "Essence of Blizzards",
+          "Hypothermia",
+          "Potion Infusion: Clarity",
+          "Potion Infusion: Frostbite",
+          "Potion Infusion: Starlight",
+          "Cleric Robes",
+          "Ingredient Pouch",
+          "Prototype Staff",
+          "Scale of Souls",
+          "Synth Disrupter",
+          "Cosmic Astroscope"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Necklace of Foresight"
+        ]
+      }
+    ],
+    "7EHyaySNhzODdmzukoCQ": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Idle Thoughts",
+          "Reposition",
+          "Automaton Bomber"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Imperial Rifleman",
+          "Materialize Munitions",
+          "Reposition",
+          "Supply Drone",
+          "Take Aim",
+          "Take Cover",
+          "Trained Sharpshooter",
+          "Airship Engineer",
+          "Automaton Bomber",
+          "Incendiary Shot",
+          "Rocket Jump",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Blastshot Pump",
+          "Flash Grenade",
+          "Prototype Pistol",
+          "Quickdraw Piercer",
+          "Tasershot",
+          "Penetrator Round",
+          "Shadow's Twin"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Anathema's End",
+          "Creeping Torment",
+          "Umbra Sight",
+          "Umbral Tithe",
+          "Violet Haze",
+          "Diana, Keen Huntress",
+          "Diana, Deadly Duelist",
+          "Diana, Duskstalker"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Creeping Torment",
+          "Violet Haze",
+          "Diana, Deadly Duelist"
+        ]
+      },
+      {
+        "termIndex": 8,
+        "cards": [
+          "Diana, Keen Huntress"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Imperial Rifleman",
+          "Airship Engineer",
+          "Creeping Torment",
+          "Spirit of Fire",
+          "Diana, Deadly Duelist",
+          "Diana, Duskstalker",
+          "Flash Grenade",
+          "Prototype Pistol"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Incendiary Shot",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Diana, Duskstalker",
+          "Tasershot",
+          "Shadow's Twin"
+        ]
+      },
+      {
+        "termIndex": 13,
+        "cards": [
+          "Quickdraw Piercer"
+        ]
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Take Cover"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Force Load",
+          "Incendiary Shot",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Plated Bullet",
+          "Tasershot",
+          "Penetrator Round",
+          "Shadow's Twin"
+        ]
+      },
+      {
+        "termIndex": 27,
+        "cards": [
+          "Backstep",
+          "Evasive Maneuvers",
+          "Imperial Rifleman",
+          "Reposition",
+          "Take Aim",
+          "Take Cover",
+          "Trained Sharpshooter",
+          "Airship Engineer",
+          "Automaton Bomber",
+          "Rocket Jump",
+          "Violet Haze",
+          "Diana, Deadly Duelist",
+          "Diana, Duskstalker",
+          "Flash Grenade"
+        ]
+      },
+      {
+        "termIndex": 28,
+        "cards": [
+          "Force Load",
+          "Incendiary Shot",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Blastshot Pump",
+          "Plated Bullet",
+          "Prototype Pistol",
+          "Quickdraw Piercer",
+          "Tasershot",
+          "Penetrator Round",
+          "Shadow's Twin"
+        ]
+      },
+      {
+        "termIndex": 29,
+        "cards": [
+          "Force Load",
+          "Incendiary Shot",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Diana, Keen Huntress",
+          "Blastshot Pump",
+          "Plated Bullet",
+          "Prototype Pistol",
+          "Quickdraw Piercer",
+          "Tasershot",
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 30,
+        "cards": [
+          "Plated Bullet",
+          "Tasershot",
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 45,
+        "cards": [
+          "Diana, Duskstalker"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Idle Thoughts",
+          "Reposition",
+          "Automaton Bomber",
+          "Anathema's End",
+          "Diana, Keen Huntress",
+          "Flash Grenade",
+          "Plated Bullet",
+          "Quickdraw Piercer"
+        ]
+      },
+      {
+        "termIndex": 58,
+        "cards": [
+          "Anathema's End",
+          "Creeping Torment",
+          "Umbra Sight",
+          "Tasershot",
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Incendiary Shot",
+          "Anathema's End",
+          "Mindbreak Bullet",
+          "Plated Bullet",
+          "Tasershot",
+          "Penetrator Round"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Materialize Munitions",
+          "Supply Drone",
+          "Diana, Keen Huntress",
+          "Diana, Deadly Duelist"
+        ]
+      },
+      {
+        "termIndex": 62,
+        "cards": [
+          "Anathema's End",
+          "Umbra Sight",
+          "Umbral Tithe"
+        ]
+      }
+    ],
+    "yqVK5i6eQxDJhZJdTph1": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Into the Fray",
+          "Martial Guard",
+          "Stalwart Shieldmate",
+          "Take Point",
+          "Young Peacekeeper"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Fortified Mana Shield",
+          "Heavy Swing",
+          "Imperial Sentry",
+          "Into the Fray",
+          "Martial Guard",
+          "Take Point",
+          "Cyclonic Strike",
+          "Recruitment Officer",
+          "Rousing Slam",
+          "Winds of Retribution",
+          "Young Peacekeeper",
+          "Summon Sentinels",
+          "Bulwark Sword",
+          "Charged Manaplate",
+          "Worn Gearblade",
+          "Deployment Beacon",
+          "Archon Broadsword"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Imperial Sentry",
+          "Martial Guard",
+          "Rousing Slam",
+          "Winds of Retribution"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Smash with Obelisk"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Tonoris, Might of Humanity",
+          "Tonoris, Genesis Aegis"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Spirit of Wind",
+          "Tonoris, Lone Mercenary",
+          "Tonoris, Might of Humanity",
+          "Deployment Beacon"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Rousing Slam"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Fortified Mana Shield",
+          "Stalwart Shieldmate",
+          "Take Point",
+          "Rousing Slam",
+          "Tonoris, Lone Mercenary",
+          "Powercharged Shield"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Imperial Sentry"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Bulwark Sword",
+          "Worn Gearblade",
+          "Archon Broadsword"
+        ]
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Assemble the Ancients",
+          "Summon Sentinels",
+          "Sentinel Fabricator",
+          "Obelisk of Fabrication"
+        ]
+      },
+      {
+        "termIndex": 28,
+        "cards": [
+          "Cyclonic Strike"
+        ]
+      },
+      {
+        "termIndex": 34,
+        "cards": [
+          "Rousing Slam",
+          "Assemble the Ancients",
+          "Powercharged Shield"
+        ]
+      },
+      {
+        "termIndex": 35,
+        "cards": [
+          "Imperial Recruit",
+          "Novice Mechanist",
+          "Recruitment Officer",
+          "Young Peacekeeper",
+          "Crest of the Alliance"
+        ]
+      },
+      {
+        "termIndex": 36,
+        "cards": [
+          "Cyclonic Strike"
+        ]
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Novice Mechanist",
+          "Assemble the Ancients",
+          "Summon Sentinels",
+          "Tonoris, Genesis Aegis",
+          "Deployment Beacon",
+          "Archon Broadsword",
+          "Sentinel Fabricator",
+          "Obelisk of Armaments",
+          "Obelisk of Fabrication"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Into the Fray",
+          "Martial Guard",
+          "Stalwart Shieldmate",
+          "Cyclonic Strike",
+          "Charged Manaplate",
+          "Crest of the Alliance",
+          "Powercharged Shield"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Assemble the Ancients",
+          "Smash with Obelisk"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Imperial Sentry",
+          "Stalwart Shieldmate",
+          "Take Point",
+          "Recruitment Officer",
+          "Rousing Slam",
+          "Assemble the Ancients",
+          "Tonoris, Lone Mercenary",
+          "Powercharged Shield",
+          "Worn Gearblade",
+          "Sentinel Fabricator",
+          "Obelisk of Armaments",
+          "Obelisk of Fabrication",
+          "Obelisk of Protection"
+        ]
+      },
+      {
+        "termIndex": 64,
+        "cards": [
+          "Assemble the Ancients",
+          "Smash with Obelisk",
+          "Summon Sentinels",
+          "Tonoris, Genesis Aegis",
+          "Obelisk of Armaments",
+          "Obelisk of Fabrication",
+          "Obelisk of Protection"
+        ]
+      }
+    ],
+    "lorraine-starter-deck-preview": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Honorable Vanguard",
+          "Savage Slash",
+          "Veteran Soldier",
+          "Favorable Winds",
+          "Reclaim",
+          "Swift Recruit"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Banner Knight",
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Opening Cut",
+          "Savage Slash",
+          "Sudden Steel",
+          "Weaponsmith",
+          "Hurricane Sweep",
+          "Phalanx Captain",
+          "Wind Cutter",
+          "Clarent, Sword of Peace",
+          "Ornamental Greatsword",
+          "Sword of Seeking",
+          "Warrior's Longsword",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Banner Knight"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Sudden Steel",
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Lorraine, Blademaster",
+          "Lorraine, Crux Knight"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Spirit of Wind",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Blademaster",
+          "Ornamental Greatsword",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Spirit Blade: Ghost Strike"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Wind Cutter",
+          "Spirit Blade: Infusion"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Lorraine, Blademaster"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Hurricane Sweep",
+          "Swift Recruit"
+        ]
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Sword of Seeking"
+        ]
+      },
+      {
+        "termIndex": 19,
+        "cards": [
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Sudden Steel",
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Banner Knight",
+          "Deflecting Edge",
+          "Weaponsmith",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Infusion",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Crux Knight",
+          "Clarent, Sword of Peace",
+          "Sword of Seeking"
+        ]
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Training Session"
+        ]
+      },
+      {
+        "termIndex": 33,
+        "cards": [
+          "Crusader of Aesa"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Honorable Vanguard",
+          "Savage Slash",
+          "Veteran Soldier",
+          "Favorable Winds",
+          "Reclaim",
+          "Swift Recruit",
+          "Crux Sight",
+          "Spirit Blade: Ascension",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Ghost Strike",
+          "Lorraine, Crux Knight",
+          "Bauble of Abundance",
+          "Fire Resonance Bauble",
+          "Life Essence Amulet",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Swift Recruit",
+          "Spirit's Blessing"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Spirit Blade: Ascension",
+          "Spirit's Blessing",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Crux Knight"
+        ]
+      }
+    ],
+    "rai-starter-deck-preview": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Idle Thoughts",
+          "Flame-Rune Swordsman",
+          "Ignite the Soul"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Magus Disciple",
+          "Creative Shock",
+          "Disintegrate",
+          "Fireball",
+          "Flame-Rune Swordsman",
+          "Focused Flames",
+          "Ignite the Soul",
+          "Purge in Flames",
+          "Anger the Skies",
+          "Arcane Disposition",
+          "Spellshield: Arcane",
+          "Tome of Knowledge"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Careful Study",
+          "Peer into Mana",
+          "Scry the Skies",
+          "Disintegrate",
+          "Fireball",
+          "Purge in Flames",
+          "Arcane Blast"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Rai, Archmage",
+          "Rai, Storm Seer"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Rai, Archmage"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Spirit of Fire",
+          "Rai, Spellcrafter"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Impassioned Tutor"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Library Witch",
+          "Magus Disciple"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Barrier Servant",
+          "Library Witch"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Scry the Skies"
+        ]
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Careful Study",
+          "Disintegrate",
+          "Purge in Flames",
+          "Arcane Blast"
+        ]
+      },
+      {
+        "termIndex": 26,
+        "cards": [
+          "Barrier Servant",
+          "Careful Study",
+          "Peer into Mana",
+          "Power Overwhelming",
+          "Spellshield: Arcane",
+          "Rai, Spellcrafter",
+          "Rai, Archmage",
+          "Endura, Scepter of Ignition",
+          "Mana Limiter"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Idle Thoughts",
+          "Flame-Rune Swordsman",
+          "Ignite the Soul",
+          "Rai, Storm Seer",
+          "Crystal of Empowerment",
+          "Life Essence Amulet",
+          "Mana Limiter",
+          "Surveillance Stone",
+          "Tome of Knowledge",
+          "Water Resonance Bauble"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Cremation Ritual"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Barrier Servant",
+          "Library Witch",
+          "Endura, Scepter of Ignition"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Disintegrate"
+        ]
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Rai, Storm Seer"
+        ]
+      }
+    ],
+    "silvie-starter-deck-preview": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Smack with Flute",
+          "Deep Sea Beastbonder",
+          "Dewdrop Hares",
+          "Give Bath"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Empowering Harmony",
+          "Smack with Flute",
+          "Song of Nurturing",
+          "Blue Slime",
+          "Deep Sea Beastbonder",
+          "Dewdrop Hares",
+          "Give Bath",
+          "Lakeside Serpent",
+          "Mist Resonance",
+          "Piper's Lullaby",
+          "Gaia's Songbird",
+          "Meadowbloom Dryad",
+          "Vertus, Gaia's Roar",
+          "Melodious Flute",
+          "Seed of Nature"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Scry the Skies",
+          "Revitalizing Cleanse"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Silvie, With the Pack",
+          "Silvie, Loved by All"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Trusty Steed",
+          "Gaia's Songbird",
+          "Vertus, Gaia's Roar",
+          "Spirit of Water",
+          "Silvie, Wilds Whisperer",
+          "Silvie, With the Pack",
+          "Seed of Nature"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Smack with Flute"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Silvie, Loved by All"
+        ]
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Beastbond Paws"
+        ]
+      },
+      {
+        "termIndex": 17,
+        "cards": [
+          "Beastbond Boots"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Scry the Skies"
+        ]
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Revitalizing Cleanse"
+        ]
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Blue Slime",
+          "Meadowbloom Dryad",
+          "Silvie, Wilds Whisperer"
+        ]
+      },
+      {
+        "termIndex": 33,
+        "cards": [
+          "Rebellious Bull",
+          "Seed of Nature"
+        ]
+      },
+      {
+        "termIndex": 37,
+        "cards": [
+          "Invoke Dominance",
+          "Meadowbloom Dryad",
+          "Tera Sight"
+        ]
+      },
+      {
+        "termIndex": 38,
+        "cards": [
+          "Gray Wolf",
+          "Rebellious Bull",
+          "Blue Slime",
+          "Lakeside Serpent",
+          "Vertus, Gaia's Roar"
+        ]
+      },
+      {
+        "termIndex": 39,
+        "cards": [
+          "Empowering Harmony",
+          "Mist Resonance"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Smack with Flute",
+          "Deep Sea Beastbonder",
+          "Dewdrop Hares",
+          "Give Bath",
+          "Lakeside Serpent",
+          "Vertus, Gaia's Roar",
+          "Beastbond Boots",
+          "Beastbond Paws",
+          "Life Essence Amulet",
+          "Melodious Flute",
+          "Wind Resonance Bauble",
+          "Seed of Nature"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Blissful Calling",
+          "Rebellious Bull",
+          "Freezing Hail",
+          "Piper's Lullaby",
+          "Gaia's Songbird",
+          "Flute of Taming",
+          "Seed of Nature"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Invoke Dominance",
+          "Meadowbloom Dryad",
+          "Tera Sight"
+        ]
+      }
+    ],
+    "56KHHOrH55T73zhgspun": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Ignite the Soul"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Magus Disciple",
+          "Creative Shock",
+          "Fireball",
+          "Focused Flames",
+          "Ignite the Soul",
+          "Purge in Flames",
+          "Anger the Skies",
+          "Arcane Disposition",
+          "Spellshield: Arcane",
+          "Tome of Knowledge"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Careful Study",
+          "Peer into Mana",
+          "Scry the Skies",
+          "Fireball",
+          "Purge in Flames",
+          "Arcane Blast"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Rai, Archmage",
+          "Rai, Storm Seer"
+        ]
+      },
+      {
+        "termIndex": 7,
+        "cards": [
+          "Rai, Archmage"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Dungeon Guide",
+          "Spirit of Fire",
+          "Rai, Spellcrafter"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Impassioned Tutor"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Library Witch",
+          "Magus Disciple"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Barrier Servant",
+          "Library Witch"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Scry the Skies"
+        ]
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Careful Study",
+          "Purge in Flames",
+          "Arcane Blast"
+        ]
+      },
+      {
+        "termIndex": 26,
+        "cards": [
+          "Barrier Servant",
+          "Careful Study",
+          "Peer into Mana",
+          "Power Overwhelming",
+          "Spellshield: Arcane",
+          "Rai, Spellcrafter",
+          "Rai, Archmage",
+          "Endura, Scepter of Ignition",
+          "Mana Limiter"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Dungeon Guide",
+          "Ignite the Soul",
+          "Rai, Storm Seer",
+          "Crystal of Empowerment",
+          "Life Essence Amulet",
+          "Mana Limiter",
+          "Surveillance Stone",
+          "Tome of Knowledge",
+          "Wind Resonance Bauble"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Barrier Servant",
+          "Library Witch",
+          "Endura, Scepter of Ignition"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Dungeon Guide"
+        ]
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Rai, Storm Seer"
+        ]
+      }
+    ],
+    "GPHjg6vPntxcJdHNvtil": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Honorable Vanguard",
+          "Savage Slash",
+          "Favorable Winds"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Banner Knight",
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Savage Slash",
+          "Sudden Steel",
+          "Weaponsmith",
+          "Hurricane Sweep",
+          "Wind Cutter",
+          "Clarent, Sword of Peace",
+          "Ornamental Greatsword",
+          "Seer's Sword",
+          "Sword of Seeking",
+          "Warrior's Longsword",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Banner Knight"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Scry the Skies",
+          "Sudden Steel",
+          "Disorienting Winds",
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Lorraine, Blademaster",
+          "Lorraine, Crux Knight"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Dungeon Guide",
+          "Dream Fairy",
+          "Spirit of Wind",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Blademaster",
+          "Ornamental Greatsword",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Spirit Blade: Ghost Strike",
+          "Seer's Sword"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Wind Cutter",
+          "Spirit Blade: Infusion"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Lorraine, Blademaster"
+        ]
+      },
+      {
+        "termIndex": 15,
+        "cards": [
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 16,
+        "cards": [
+          "Dream Fairy",
+          "Sword of Seeking"
+        ]
+      },
+      {
+        "termIndex": 19,
+        "cards": [
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 20,
+        "cards": [
+          "Scry the Skies",
+          "Seer's Sword"
+        ]
+      },
+      {
+        "termIndex": 21,
+        "cards": [
+          "Sudden Steel",
+          "Disorienting Winds",
+          "Hurricane Sweep"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Banner Knight",
+          "Weaponsmith",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Infusion",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Crux Knight",
+          "Clarent, Sword of Peace",
+          "Sword of Seeking"
+        ]
+      },
+      {
+        "termIndex": 33,
+        "cards": [
+          "Crusader of Aesa"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Dungeon Guide",
+          "Honorable Vanguard",
+          "Savage Slash",
+          "Favorable Winds",
+          "Crux Sight",
+          "Spirit Blade: Ascension",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Ghost Strike",
+          "Lorraine, Crux Knight",
+          "Fire Resonance Bauble",
+          "Life Essence Amulet",
+          "Prismatic Edge"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Crusader of Aesa",
+          "Esteemed Knight",
+          "Spirit's Blessing"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Dungeon Guide",
+          "Spirit Blade: Ascension",
+          "Spirit's Blessing",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Crux Knight"
+        ]
+      }
+    ],
+    "syd-3e871d8b-4da1-439b-b93f-ad2336eff574": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Honorable Vanguard",
+          "Forging Heat",
+          "Return Stroke"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Banner Knight",
+          "Emberslash",
+          "Stoked Slice",
+          "Arrest Lightning",
+          "Conductive Strike",
+          "Return Stroke",
+          "Rumble Coordinator",
+          "Surged Coordinator",
+          "Clarent, Sword of Peace"
+        ]
+      },
+      {
+        "termIndex": 2,
+        "cards": [
+          "FlameTech BladeCore",
+          "Fulminator, Rising Storm"
+        ]
+      },
+      {
+        "termIndex": 3,
+        "cards": [
+          "Arrest Lightning",
+          "Fulgurite Coordinator"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Banner Knight"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Arrest Lightning",
+          "Conductive Strike",
+          "Return Stroke",
+          "Surged Coordinator",
+          "Lorraine, Arclight Saber",
+          "Fulminator, Rising Storm"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Lorraine, Honed Operative",
+          "Lorraine, Arclight Saber"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Package Courier",
+          "Surged Coordinator",
+          "Spirit of Fire",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Honed Operative",
+          "Lorraine, Arclight Saber",
+          "Jovian Hilt X Ultra"
+        ]
+      },
+      {
+        "termIndex": 10,
+        "cards": [
+          "Blistering Insurgent",
+          "Emberslash",
+          "Stoked Slice",
+          "Brooch X Ultra"
+        ]
+      },
+      {
+        "termIndex": 11,
+        "cards": [
+          "Conductive Strike"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Rumble Coordinator"
+        ]
+      },
+      {
+        "termIndex": 24,
+        "cards": [
+          "Banner Knight",
+          "Deflecting Edge",
+          "Emberslash",
+          "FlameTech BladeCore",
+          "Forging Heat",
+          "Lorraine, Wandering Warrior",
+          "Lorraine, Honed Operative",
+          "Clarent, Sword of Peace",
+          "Fulminator, Rising Storm",
+          "Jovian Hilt X Ultra"
+        ]
+      },
+      {
+        "termIndex": 25,
+        "cards": [
+          "Tindered Soldier"
+        ]
+      },
+      {
+        "termIndex": 34,
+        "cards": [
+          "Rumble Coordinator"
+        ]
+      },
+      {
+        "termIndex": 50,
+        "cards": [
+          "FlameTech BladeCore",
+          "Brooch X Ultra",
+          "Jovian Hilt X Ultra"
+        ]
+      },
+      {
+        "termIndex": 51,
+        "cards": [
+          "Arrest Lightning",
+          "Conductive Strike",
+          "Fulgurite Coordinator",
+          "Rumble Coordinator",
+          "Surged Coordinator",
+          "Lorraine, Arclight Saber",
+          "Fulminator, Rising Storm",
+          "Jovian Hilt X Ultra"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Honorable Vanguard",
+          "Forging Heat",
+          "Stoked Slice",
+          "Arrest Lightning",
+          "Brooch X Ultra",
+          "Fulgurite Coordinator",
+          "Return Stroke",
+          "Lorraine, Honed Operative",
+          "Lorraine, Arclight Saber",
+          "Bauble of Abundance",
+          "Life Essence Amulet",
+          "Safeguard Amulet",
+          "Tariff Ring"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "FlameTech BladeCore",
+          "Jovian Hilt X Ultra"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Emberslash"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Lorraine, Wandering Warrior"
+        ]
+      }
+    ],
+    "syd-0e5ff086-ca0b-4c7c-bbda-04ce6893919d": [
+      {
+        "termIndex": 0,
+        "cards": [
+          "Heighten Spellcraft",
+          "Shieldroid",
+          "Stalwart Shieldmate",
+          "Cryogenic Ritual",
+          "Keen Tidebinder",
+          "Memory Invocation"
+        ]
+      },
+      {
+        "termIndex": 1,
+        "cards": [
+          "Aenean Ward",
+          "Heighten Spellcraft",
+          "Magus Initiate",
+          "Aenean Frostlance",
+          "Aenean Frozen Shunt",
+          "Keen Tidebinder",
+          "Blood Surge",
+          "Hemoflux Drain",
+          "Spellshield: Exia",
+          "Unruled Bereavement",
+          "Crimson Vein"
+        ]
+      },
+      {
+        "termIndex": 2,
+        "cards": [
+          "Eminence in Fury",
+          "Pure Cytosynth",
+          "Gencode Womb",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 4,
+        "cards": [
+          "Aenean Ward",
+          "Aenean Frostlance",
+          "Aenean Frozen Shunt",
+          "Blood Surge",
+          "Exia Sight",
+          "Hemoflux Drain",
+          "Unruled Bereavement",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 5,
+        "cards": [
+          "Pure Cytosynth",
+          "Hemoflux Drain",
+          "Spellshield: Exia",
+          "Dante, Hemomancer",
+          "Crimson Vein"
+        ]
+      },
+      {
+        "termIndex": 6,
+        "cards": [
+          "Dante, Aenean Initiate",
+          "Dante, Hemomancer"
+        ]
+      },
+      {
+        "termIndex": 9,
+        "cards": [
+          "Magus Initiate",
+          "Pure Cytosynth",
+          "Spirit of Water",
+          "Dante, Prodigal Swain",
+          "Dante, Aenean Initiate"
+        ]
+      },
+      {
+        "termIndex": 12,
+        "cards": [
+          "Magus Initiate",
+          "Elysian Aspirant"
+        ]
+      },
+      {
+        "termIndex": 14,
+        "cards": [
+          "Shieldroid",
+          "Stalwart Shieldmate"
+        ]
+      },
+      {
+        "termIndex": 22,
+        "cards": [
+          "Heighten Spellcraft",
+          "Magus Initiate",
+          "Nascent Blast",
+          "Keen Tidebinder",
+          "Pure Cytosynth",
+          "Unruled Bereavement",
+          "Dante, Hemomancer",
+          "Shard of Empowerment"
+        ]
+      },
+      {
+        "termIndex": 23,
+        "cards": [
+          "Hemoflux Drain",
+          "Spellshield: Exia",
+          "Dante, Hemomancer",
+          "Crimson Vein"
+        ]
+      },
+      {
+        "termIndex": 43,
+        "cards": [
+          "Frostbind",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 46,
+        "cards": [
+          "Cryogenic Ritual",
+          "Dante, Prodigal Swain",
+          "Gencode Womb"
+        ]
+      },
+      {
+        "termIndex": 52,
+        "cards": [
+          "Pure Cytosynth",
+          "Elysian Aspirant",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 53,
+        "cards": [
+          "Dante, Aenean Initiate"
+        ]
+      },
+      {
+        "termIndex": 54,
+        "cards": [
+          "Crimson Vein"
+        ]
+      },
+      {
+        "termIndex": 56,
+        "cards": [
+          "Eminence in Fury",
+          "Heighten Spellcraft",
+          "Shieldroid",
+          "Stalwart Shieldmate",
+          "Aenean Frozen Shunt",
+          "Cryogenic Ritual",
+          "Frostbind",
+          "Memory Invocation",
+          "Pure Cytosynth",
+          "Bauble of Abundance",
+          "Gencode Womb",
+          "Life Essence Amulet",
+          "Safeguard Amulet",
+          "Shard of Empowerment",
+          "Tariff Ring"
+        ]
+      },
+      {
+        "termIndex": 57,
+        "cards": [
+          "Cryogenic Ritual",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 58,
+        "cards": [
+          "Eminence in Fury",
+          "Elysian Aspirant",
+          "Dante, Hemomancer"
+        ]
+      },
+      {
+        "termIndex": 59,
+        "cards": [
+          "Shieldroid",
+          "Stalwart Shieldmate",
+          "Aenean Frostlance",
+          "Dante, Aenean Initiate",
+          "Dante, Hemomancer"
+        ]
+      },
+      {
+        "termIndex": 60,
+        "cards": [
+          "Eminence in Fury",
+          "Aenean Frozen Shunt",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 61,
+        "cards": [
+          "Heighten Spellcraft",
+          "Elysian Aspirant",
+          "Dante, Aenean Initiate",
+          "Dante, Hemomancer",
+          "Shard of Empowerment",
+          "Venous Core"
+        ]
+      },
+      {
+        "termIndex": 63,
+        "cards": [
+          "Pure Cytosynth"
+        ]
+      }
+    ]
+  }
+}

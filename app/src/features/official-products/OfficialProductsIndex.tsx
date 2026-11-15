@@ -1,3 +1,4 @@
+import { starterPrimers } from "./primers/data";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -172,6 +173,7 @@ function ProductDeckCard({
     source: { kind: "official", label: "Official product" },
     metadata: productLabel,
     actions: <>
+          {starterPrimers.has(deck.id) && <Link to={`/official-decks/${encodeURIComponent(deck.id)}/primer`} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 text-sm font-semibold text-ctp-base focus-visible:outline-2">Learn this deck →</Link>}
           {(ownershipState === "saved" || ownershipState === "needs-cards") && <Link to={`/card-locations?deck=${encodeURIComponent(`official-product:${deck.id}`)}`} className="inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue">Locate cards</Link>}
           <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green disabled:opacity-50">
             {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Saved, cards needed" : "I own this deck"}
