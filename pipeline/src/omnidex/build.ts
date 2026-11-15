@@ -1,3 +1,4 @@
+import { metadataChampion } from './decklistMetadata.js';
 import { buildPlayerDirectory } from './playerDirectory.js';
 import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -48,9 +49,13 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[], catalo
 
     const publicDecklists = "error" in bundle.decklists ? [] : bundle.decklists;
     const signatures = buildEventDeckSignatures(publicDecklists, cardIndex);
-    const championNames = publicDecklists.length
-      ? [...new Set(Array.from(signatures.values(), (signature) => signature.championName).filter((name): name is string => Boolean(name)))].sort()
-      : [];
+    const identities = new Map<number, { championName: string | null }>(signatures);
+    for (const metadata of Array.isArray(bundle.decklistMetadata) ? bundle.decklistMetadata : []) {
+      if (players.some(player => player.id === metadata.player) && !identities.get(metadata.player)?.championName) {
+        identities.set(metadata.player, { championName: metadataChampion(metadata) });
+      }
+    }
+    const championNames = [...new Set([...identities.values()].map(value => value.championName).filter((name): name is string => Boolean(name)))].sort();
     events.push({
       id: event.id,
       name: event.name,
@@ -75,7 +80,7 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[], catalo
       participantNames: [...new Set(players.map((player) => player.username).filter(Boolean))].sort(),
       championNames,
       publicDecklistCount: publicDecklists.length,
-      topPlayerIdentity: eventIdentity(players, signatures),
+      topPlayerIdentity: eventIdentity(players, identities),
       fieldComposition: eventField(bundle, signatures, catalogNames),
     });
 

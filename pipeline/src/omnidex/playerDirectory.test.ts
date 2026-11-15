@@ -25,3 +25,16 @@ test('latest observed identity wins regardless of event order and event membersh
   assert.deepEqual(buildPlayerDirectory([latest, older, latest]), expected);
   assert.deepEqual(buildPlayerDirectory([older, latest]), expected);
 });
+
+test('metadata uses player IDs, deduplicates events, and does not guess ambiguous champions', () => {
+  const event = bundle(1, 'complete', [{id: 1, username: 'A'}, {id: 2, username: 'B'}]);
+  event.decklistMetadata = [
+    { player: 2, decks: [], elements: [], champions: { named: [{name: 'Kongming', icon: null}], cards: [] } },
+    { player: 1, decks: [], elements: [], champions: { named: [{name: 'Diana', icon: null}, {name: 'Tristan', icon: null}], cards: [] } },
+  ];
+  const result = buildPlayerDirectory([event, event]);
+  assert.equal(result[0]?.championEvents, undefined);
+  assert.deepEqual(result[1]?.championEvents, [{eventId: 1, championName: 'Kongming'}]);
+  event.event.status = 'started';
+  assert.ok(buildPlayerDirectory([event]).every(player => !player.championEvents));
+});

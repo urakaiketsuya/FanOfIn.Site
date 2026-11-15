@@ -14,15 +14,17 @@ import { findDeckChampionName } from "../../lib/ttsExport";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 
-export default function PlayerEventDecklistRow({ event, playerId, result, resultsLoaded }: {
+export default function PlayerEventDecklistRow({ event, playerId, result, resultsLoaded, championName: publicChampion }: {
   event: OmnidexEventSummary;
   playerId: number;
   result?: DeckPopularityEntry;
   resultsLoaded: boolean;
+  championName?: string;
 }) {
   const playerName = usePlayerNameById();
   const panelId = useId();
-  const championCards = useChampionCardImages(result?.championName ? [result.championName] : []);
+  const knownChampion = result?.championName ?? publicChampion;
+  const championCards = useChampionCardImages(knownChampion ? [knownChampion] : []);
   const [expanded, setExpanded] = useState(false);
   const { loading, decklist, error, retry } = usePlayerDecklist(event.id, playerId, expanded);
   const deckId = `${event.id}:${playerId}`;
@@ -33,7 +35,7 @@ export default function PlayerEventDecklistRow({ event, playerId, result, result
   // dataset useTopDecksForChampion reads is keyed by the base Champion name instead, same
   // conversion used by Compare's ComparisonSuggestions.
   const printName = decklist ? findDeckChampionName(decklist.material, cardsByName) : null;
-  const championName = result?.championName ?? (printName ? printName.split(",")[0].trim() : null);
+  const championName = knownChampion ?? (printName ? printName.split(",")[0].trim() : null);
   const topDecks = useTopDecksForChampion(expanded ? championName : null, deckId);
 
   return (

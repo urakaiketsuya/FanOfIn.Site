@@ -17,3 +17,20 @@ test('finds Omni identities by name, ID, or full displayed handle', () => {
   for (const query of ['', 'ina', '31533', '#31533', ' Inari#31533 ']) assert.equal(matchesPlayerSearch(inari, query), true, query);
   for (const query of ['Inari#123', 'Other#31533', '3153']) assert.equal(matchesPlayerSearch(inari, query), false, query);
 });
+
+test('public champion appearances have event counts rather than full-deck counts', async () => {
+  const { championEventCounts } = await import('../src/features/players/playerDirectory');
+  assert.deepEqual(championEventCounts([{championName:'Kongming'}, {championName:'Diana'}, {championName:'Kongming'}]), [
+    {name:'Kongming',eventCount:2}, {name:'Diana',eventCount:1},
+  ]);
+});
+
+test('full public decks override metadata once per event without borrowing another player identity', async () => {
+  const { playerChampionHistory } = await import('../src/features/players/playerDirectory');
+  const player = { ...players[0]!, championEvents: [{eventId: 1, championName: 'Kongming'}, {eventId: 2, championName: 'Diana'}] };
+  const result = playerChampionHistory(player, [
+    {player:31533,eventId:1,championName:'Tristan'},
+    {player:999,eventId:2,championName:'Silvie'},
+  ]);
+  assert.deepEqual([...result], [[1,'Tristan'],[2,'Diana']]);
+});

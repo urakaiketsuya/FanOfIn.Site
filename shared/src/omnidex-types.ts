@@ -172,3 +172,14 @@ export interface OmnidexDecklistEntry {
   visible?: boolean;
   [key: string]: unknown;
 }
+
+/** Public spirit/champion summary, available even when full deck cards are private. */
+export interface OmnidexDecklistMetadata {
+  player: number;
+  decks: string[];
+  elements: { name: string; icon: string | null }[];
+  champions: {
+    named: { name: string; icon: string | null }[];
+    cards: { name: string; icon: string | null; champion: string | null }[];
+  };
+}

@@ -1,5 +1,5 @@
 import PlayerSearchResult, { PersonAvatar } from "./PlayerSearchResult";
-import { matchesPlayerSearch, playerDirectoryRows } from "./playerDirectory";
+import { championEventCounts, matchesPlayerSearch, playerDirectoryRows } from "./playerDirectory";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
 import { useCompetition } from "../competition/data";
@@ -91,7 +91,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
 
   const visible = rows.slice(0, visibleCount);
   const championImages = useChampionCardImages(
-    Array.from(new Set(visible.map((r) => topChampionById.get(r.player.id)).filter((n): n is string => n !== undefined))),
+    Array.from(new Set(visible.map((r) => (topChampionById.get(r.player.id) ?? championEventCounts(r.player.championEvents ?? [])[0]?.name)).filter((n): n is string => n !== undefined))),
   );
   const namelessCard = useNamelessChampionCard();
 
@@ -133,7 +133,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
       {recent && <p className="mt-4 text-xs text-ctp-subtext1">Recent record · Standard · {recent.from} – {recent.to} · Individual events · All tiers · Ranked + unranked</p>}
       <ol aria-label="Player directory" className="mt-4 space-y-3">
         {visible.map(({ player, rating, rank }) => {
-          const topChampion = topChampionById.get(player.id);
+          const topChampion = topChampionById.get(player.id) ?? championEventCounts(player.championEvents ?? [])[0]?.name;
           const card = topChampion ? championImages.get(topChampion) : namelessCard;
           const recentRow = recentById.get(player.id);
           return <li key={player.id}><PlayerSearchResult playerId={player.id} name={player.username} rank={rank ?? undefined} championName={topChampion} card={card} region={regions?.get(player.id)?.region ? REGION_LABELS[regions.get(player.id)!.region!] : undefined}>

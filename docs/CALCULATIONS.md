@@ -7181,3 +7181,14 @@ exceed losses; unfavorable means losses exceed wins; equal counts are even. Draw
 match denominator for the displayed win percentage (wins / matches), matching Battle Chart.
 These are observed result labels, not confidence or predictive-strength claims. Mirrors and
 zero-match rows are excluded. Opponents sort by match count descending, then name.
+
+### Public champion summaries for private decklists
+
+Omni's `/omnidex/events/{id}/decklists/metadata` endpoint publishes champion/spirit
+names independently of full deck visibility. Completed-event player directories retain
+unambiguous named champion summaries by player ID and event ID. Profiles combine these
+with full-deck champion identities, giving full-deck identities precedence for the same
+event. Champion appearance shares use events with a known champion as the denominator.
+Multiple distinct named champions in a summary remain unresolved rather than selecting
+one arbitrarily. Summary-only events do not add full decks, card copies, card-usage
+observations, or complete-field statistics. A submitted deck is not necessarily public.

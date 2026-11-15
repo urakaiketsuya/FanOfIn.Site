@@ -23,3 +23,18 @@ test('restored caches retain published small-event backfills and prefer fresh sn
     await assert.rejects(listCachedBundles(dirs), SyntaxError);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('restored caches retain published champion metadata independently of roster timestamps', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'omni-metadata-'));
+  const dirs = { cache: path.join(root, 'cache'), published: path.join(root, 'published') };
+  try {
+    await Promise.all(Object.values(dirs).map(dir => mkdir(dir)));
+    const cached = {id: 1, fetchedAt:'2026-03-01', pairingsByRound:[]};
+    const metadata = [{player:31533,champions:{named:[{name:'Kongming'}]}}];
+    await writeFile(path.join(dirs.cache,'1.json'), JSON.stringify(cached));
+    await writeFile(path.join(dirs.published,'1.json'), JSON.stringify({...cached,fetchedAt:'2026-02-01',decklistMetadata:metadata}));
+    assert.deepEqual((await readCachedBundle(1,dirs))?.decklistMetadata,metadata);
+    await writeFile(path.join(dirs.cache,'1.json'), JSON.stringify({...cached,decklistMetadata:[]}));
+    assert.deepEqual((await readCachedBundle(1,dirs))?.decklistMetadata,[]);
+  } finally { await rm(root, {recursive:true,force:true}); }
+});

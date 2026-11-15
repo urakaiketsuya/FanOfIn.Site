@@ -27,6 +27,13 @@ export function isDeepFetchWorthy(event: OmnidexEvent): boolean {
   return event.status === "complete";
 }
 
+/** Optional metadata must not block ingestion of public results/full decklists. */
+async function fetchPublicDeckMetadata(id: number) {
+  try { return await omnidexApi.getDecklistMetadata(id); }
+  catch (error) { return { error: String(error) }; }
+  finally { await sleep(config.crawlRequestDelayMs); }
+}
+
 async function deepFetch(id: number, event: OmnidexEvent, saved?: OmnidexEventBundle | null): Promise<OmnidexEventBundle> {
   const players = await omnidexApi.getPlayers(id);
   await sleep(config.crawlRequestDelayMs);
@@ -51,6 +58,7 @@ async function deepFetch(id: number, event: OmnidexEvent, saved?: OmnidexEventBu
   await sleep(config.crawlRequestDelayMs);
   const decklists = event.decklists ? await omnidexApi.getDecklists(id) : { error: "Decklists not public for this event." };
   await sleep(config.crawlRequestDelayMs);
+  const decklistMetadata = await fetchPublicDeckMetadata(id);
   const statistics = await omnidexApi.getStatistics(id);
   await sleep(config.crawlRequestDelayMs);
 
@@ -64,6 +72,7 @@ async function deepFetch(id: number, event: OmnidexEvent, saved?: OmnidexEventBu
     teams,
     decklists,
     statistics,
+    decklistMetadata,
     fetchedAt: new Date().toISOString(),
   };
 }
@@ -127,8 +136,13 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
     }
   }
   for (const id of [...ids].sort((a, b) => a - b)) {
-    const cached = await readCachedBundle(id);
+    let cached = await readCachedBundle(id);
     if (cached && TERMINAL_STATUSES.has(cached.event.status)) {
+      // Upgrade completed snapshots encountered by this crawl without fabricating deck cards.
+      if (cached.event.status === 'complete' && !Array.isArray(cached.decklistMetadata)) {
+        cached = { ...cached, decklistMetadata: await fetchPublicDeckMetadata(id) };
+        await writeCachedBundle(cached);
+      }
       if (cached.event.status === 'complete' && !config.fastMode && missingStagePairings(cached.event, cached.pairingsByRound)) {
         try {
         const pairingsByRound = await fetchStagePairings(cached.event, cached.pairingsByRound, async (event, round, stage) => {

@@ -6,6 +6,7 @@ import path from "node:path";
 import type {
   OmnidexApiError,
   OmnidexDecklistEntry,
+  OmnidexDecklistMetadata,
   OmnidexEvent,
   OmnidexIndexData,
   OmnidexJudge,
@@ -33,6 +34,7 @@ export interface OmnidexEventBundle {
   teams: OmnidexTeamsResponse | OmnidexApiError;
   decklists: OmnidexDecklistEntry[] | OmnidexApiError;
   statistics: unknown | OmnidexApiError;
+  decklistMetadata?: OmnidexDecklistMetadata[] | OmnidexApiError;
   fetchedAt: string;
 }
 
@@ -107,7 +109,7 @@ export async function readCachedBundle(id: number, directories = snapshotDirecto
   if (!cached) return published;
   if (!published) return cached;
   const [latest, previous] = published.fetchedAt > cached.fetchedAt ? [published, cached] : [cached, published];
-  return { ...latest, pairingsByRound: retainPublishedPairings(latest.pairingsByRound, previous.pairingsByRound) };
+  return { ...latest, decklistMetadata: Array.isArray(latest.decklistMetadata) ? latest.decklistMetadata : previous.decklistMetadata ?? latest.decklistMetadata, pairingsByRound: retainPublishedPairings(latest.pairingsByRound, previous.pairingsByRound) };
 }
 
 export async function writeCachedBundle(bundle: OmnidexEventBundle): Promise<void> {

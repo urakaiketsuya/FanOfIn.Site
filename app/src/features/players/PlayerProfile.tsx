@@ -1,3 +1,4 @@
+import { championEventCounts, playerChampionHistory } from "./playerDirectory";
 import BestPlayers from "../best-players/BestPlayers";
 import PlayerComparison from "./PlayerComparison";
 import { usePlayerRegions } from "./usePlayerRegions";
@@ -11,7 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
-import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
+import { useEloData, useEloHistoryData, useHipsterData, useRivalsData } from "./data";
 import HistoryChart from "../../components/HistoryChart";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
@@ -50,11 +51,9 @@ export default function PlayerProfile() {
   const rivalsStatus = usePublishedDataStatus("analysis-rivals", "/data/analysis/rivals.json");
   const eloStatus = usePublishedDataStatus("analysis-elo", "/data/analysis/elo.json");
   const eventsStatus = usePublishedDataStatus("omnidex-index", "/data/omnidex/index.json");
-  const decksStatus = usePublishedDataStatus("analysis-player-decks", "/data/analysis/player-decks.json");
   const eloData = useEloData();
   const eloHistoryData = useEloHistoryData();
   const hipsterData = useHipsterData();
-  const playerDecksData = usePlayerDecksData();
   const rivalsData = useRivalsData();
   const index = useOmnidexIndex();
   const playerRegions = usePlayerRegions(playersData, index);
@@ -76,7 +75,6 @@ export default function PlayerProfile() {
   const rating = eloData?.ratings.find((r) => r.playerId === playerId);
   const ratingHistory = eloHistoryData?.history[String(playerId)];
   const hipster = hipsterData?.playerScores.find((p) => p.playerId === playerId);
-  const deckProfile = playerDecksData?.players.find((p) => p.playerId === playerId);
   const rivalsProfile = rivalsData?.players.find((p) => p.playerId === playerId);
   const upsets = useMemo(
     () => eloData?.upsets.filter((u) => u.winnerId === playerId || u.loserId === playerId) ?? [],
@@ -98,19 +96,9 @@ export default function PlayerProfile() {
     [player, index],
   );
 
-  // A player's champion for a given event only exists if that event had a public decklist –
-  // sourced from the lean deck-popularity index (already keyed by player+event, same fields
-  // deck-sightings would give us here) rather than lazily fetching every event's full decklist
-  // bundle just to build a filter list, or pulling in deck-sightings' full ~43MB dataset for
-  // three fields.
-  const championByEventId = useMemo(() => {
-    const map = new Map<number, string>();
-    if (!popularityIndexData) return map;
-    for (const entry of popularityIndexData.entries) {
-      if (entry.player === playerId && entry.championName) map.set(entry.eventId, entry.championName);
-    }
-    return map;
-  }, [popularityIndexData, playerId]);
+  // Full public decks take precedence; metadata fills identities without inventing deck cards.
+  const championByEventId = useMemo(() => playerChampionHistory(player, popularityIndexData?.entries ?? []), [popularityIndexData, player]);
+  const topChampions = useMemo(() => championEventCounts([...championByEventId.values()].map(championName => ({ championName }))), [championByEventId]);
 
   const [deckFilter, setDeckFilter] = useDeckSearch();
   const cardMatches = useTournamentCardMatches(deckFilter.cards);
@@ -187,7 +175,7 @@ export default function PlayerProfile() {
   }, [player, judge, events.length, judgedEvents.length]);
   const [tab, setManualTab] = useTabParam<PlayerTab>("tab", availableTabs.map(t => t.key), availableTabs[0]?.key ?? "overview");
 
-  const championImages = useChampionCardImages(deckProfile?.topChampions.map((c) => c.name) ?? []);
+  const championImages = useChampionCardImages(topChampions.map((c) => c.name));
 
   if (playersData && judgesData && !player && !judge) {
     return (
@@ -228,7 +216,7 @@ export default function PlayerProfile() {
                 })()}
                 {playRegion && <div className="text-sm text-ctp-subtext1">{playRegion.region ? <Link className="inline-flex min-h-control items-center hover:text-ctp-blue focus-visible:outline-2" to={`/regions?group=region&region=${playRegion.region}`}>{REGION_LABELS[playRegion.region]} · inferred play region</Link> : 'Play region unassigned'}</div>}
               </div>
-              {deckProfile?.topChampions[0] && <Link to={`/champions/${championNameToSlug(deckProfile.topChampions[0].name)}`} className="w-20 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={championImages.get(deckProfile.topChampions[0].name)} name={deckProfile.topChampions[0].name} artworkOnly /><span className="mt-1 block text-center text-xs">{deckProfile.topChampions[0].name}</span></Link>}
+              {topChampions[0] && <Link to={`/champions/${championNameToSlug(topChampions[0].name)}`} className="w-20 shrink-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={championImages.get(topChampions[0].name)} name={topChampions[0].name} artworkOnly /><span className="mt-1 block text-center text-xs">{topChampions[0].name}</span></Link>}
 
             </div>
 
@@ -261,7 +249,7 @@ export default function PlayerProfile() {
       {recentEvents.length > 0 && (
         <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <Button variant="ghost" size="sm" onClick={() => setManualTab("events")}>View all {allEvents.length}</Button> : undefined}>
           <PublishedSourceStatus label="Event results" status={resultStatus} hasData={!!popularityIndexData} />
-          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} />)}</div>
+          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} championName={championByEventId.get(event.id)} />)}</div>
         </Section>
       )}
 
@@ -282,12 +270,12 @@ export default function PlayerProfile() {
       </TabPanel>
       <TabPanel baseId="player-profile" tab="cards" active={tab} keepMounted>
       <Section className="mt-6" heading="compact" title="Most played champions">
-        <PublishedSourceStatus label="Player decks" status={decksStatus} hasData={!!playerDecksData} />
-        {deckProfile && <p className="mb-4 text-xs text-ctp-subtext1">All-time · {deckProfile.totalDecks} public decks · Deck inclusion</p>}
-        {playerDecksData && !deckProfile && <p className="text-sm text-ctp-subtext1">No public decks recorded.</p>}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">{deckProfile?.topChampions.map(c => {
-          const value = deckProfile.totalDecks ? c.deckCount / deckProfile.totalDecks * 100 : 0;
-          return <article key={c.name} className="min-w-0 space-y-2"><Link to={`/champions/${championNameToSlug(c.name)}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile name={c.name} card={championImages.get(c.name)} artworkOnly /><span className="mt-2 block text-sm font-semibold">{c.name}</span></Link><div className="flex flex-wrap justify-between gap-1 text-sm"><strong>{value.toFixed(0)}%</strong><span className="text-xs text-ctp-subtext1">{c.deckCount}/{deckProfile.totalDecks} decks</span></div><Bar value={value} label={`${c.name} deck inclusion`} blue /></article>;
+        <PublishedSourceStatus label="Champion records" status={resultStatus} hasData={!!popularityIndexData || !!player?.championEvents?.length} />
+        {topChampions.length > 0 && <p className="mb-4 text-xs text-ctp-subtext1">All-time · {championByEventId.size} {championByEventId.size === 1 ? "event" : "events"} with known champions</p>}
+        {popularityIndexData && !topChampions.length && <p className="text-sm text-ctp-subtext1">No champions recorded.</p>}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">{topChampions.slice(0, 5).map(c => {
+          const value = championByEventId.size ? c.eventCount / championByEventId.size * 100 : 0;
+          return <article key={c.name} className="min-w-0 space-y-2"><Link to={`/champions/${championNameToSlug(c.name)}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile name={c.name} card={championImages.get(c.name)} artworkOnly /><span className="mt-2 block text-sm font-semibold">{c.name}</span></Link><div className="flex flex-wrap justify-between gap-1 text-sm"><strong>{value.toFixed(0)}%</strong><span className="text-xs text-ctp-subtext1">{c.eventCount}/{championByEventId.size} events</span></div><Bar value={value} label={`${c.name} event share`} blue /></article>;
         })}</div>
       </Section>
       <PlayerCardPatterns playerId={playerId} active={tab === "cards"} />
@@ -336,7 +324,7 @@ export default function PlayerProfile() {
           <div className="mt-2 space-y-2">
             {index && events.length === 0 && <p className="py-4 text-sm text-ctp-subtext1">No events match these filters.</p>}
             {visibleEvents.map((event) => (
-              <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} />
+              <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} result={resultsByEvent.get(event.id)} resultsLoaded={!!popularityIndexData} championName={championByEventId.get(event.id)} />
             ))}
           </div>
 

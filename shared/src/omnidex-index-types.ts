@@ -90,12 +90,16 @@ export interface OmnidexVenueGeocodeData {
   venues: OmnidexVenueGeocode[];
 }
 
+export interface PlayerChampionEvent { eventId: number; championName: string; }
+
 export interface OmnidexPlayerSummary {
   id: number;
   username: string;
   country: string;
   emblem: string;
   eventIds: number[];
+  /** Public champion summaries; these do not imply a browsable full deck. */
+  championEvents?: PlayerChampionEvent[];
 }
 
 export interface OmnidexPlayersData {

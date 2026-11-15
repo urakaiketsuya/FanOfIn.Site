@@ -1,5 +1,6 @@
 import type {
   OmnidexDecklistEntry,
+  OmnidexDecklistMetadata,
   OmnidexEvent,
   OmnidexJudge,
   OmnidexPairingsResponse,
@@ -27,6 +28,8 @@ export const omnidexApi = {
   getTeams: (id: number) => fetchJsonMaybe<OmnidexTeamsResponse>(`${BASE_URL}/omnidex/events/${id}/teams`),
 
   getDecklists: (id: number) => fetchJsonMaybe<OmnidexDecklistEntry[]>(`${BASE_URL}/omnidex/events/${id}/decklists`),
+
+  getDecklistMetadata: (id: number) => fetchJsonMaybe<OmnidexDecklistMetadata[]>(`${BASE_URL}/omnidex/events/${id}/decklists/metadata`),
 
   getStatistics: (id: number) => fetchJsonMaybe<unknown>(`${BASE_URL}/omnidex/events/${id}/statistics`),
 };
