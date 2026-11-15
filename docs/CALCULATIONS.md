@@ -7172,3 +7172,12 @@ is the publication date, not a claimed first-earned date. Rebuilds may remove th
 when a player's current rankings change; past-season rankings remain eligible. This
 is not a permanent historical unlock ledger. UI and achievements consume the same
 computed rankings. The existing published-data manifest distributes the new artifact.
+
+### Champion detail matchup outlook
+
+Champion pages reuse the published archetype battle chart and its sample floor, across all
+recorded events. Each row is oriented to the selected Champion. Favorable means recorded wins
+exceed losses; unfavorable means losses exceed wins; equal counts are even. Draws remain in the
+match denominator for the displayed win percentage (wins / matches), matching Battle Chart.
+These are observed result labels, not confidence or predictive-strength claims. Mirrors and
+zero-match rows are excluded. Opponents sort by match count descending, then name.

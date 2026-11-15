@@ -80,6 +80,8 @@ export default function ProductsIndex() {
         title="Products"
         description="Every Grand Archive TCG set release, official art, and a link into that set's cards or a live pack simulation."
       />
+      <Link to="/merchandise" className="mb-4 inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">Browse merchandise →</Link>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sorted.map((product) => (
           <ProductCard key={product.prefix} product={product} hasPack={boosterPrefixes.has(product.prefix)} />

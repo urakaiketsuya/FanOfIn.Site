@@ -1,0 +1,52 @@
+{
+  "reviewedAt": "2026-11-14",
+  "scope": "First pass for missing deckbox images. Seller evidence only; no prices, availability or official release assertions imported.",
+  "accepted": [
+    {
+      "catalogId": "sheet-12-f15",
+      "url": "https://www.ebay.com/itm/358012232766",
+      "basis": "Merlin Memory Thief deckbox title and two-compartment item specifics match the double-deckbox row. Photo is labeled as seller evidence."
+    },
+    {
+      "catalogId": "sheet-12-i16",
+      "url": "https://www.ebay.com/itm/318574151589",
+      "basis": "Ariel mini compact deckbox title and gallery description match the Ariel compact-deckbox row. Photo is labeled as seller evidence."
+    },
+    {
+      "catalogId": "sheet-12-b13",
+      "url": "https://www.ebay.com/itm/820306653820",
+      "basis": "Nia, Mistveiled Scout Ascent Deck Box title and deckbox specifics match. Fourth gallery photo read directly from the listing. Seller CruzCtrlGG. Duplicate B24 remains unmapped pending identity review."
+    }
+  ],
+  "pending": [
+    {
+      "catalogId": "sheet-12-i18",
+      "url": "https://www.ebay.com/itm/318607409293",
+      "reason": "Title says Raziel, but Character field says Haniel. Do not import without resolving identity."
+    },
+    {
+      "catalogId": "sheet-12-b25",
+      "url": "https://www.ebay.com/itm/840024136537",
+      "reason": "Arisanna character and deckbox type match broadly, but exact named artwork needs comparison. Seller year and type fields are inconsistent."
+    },
+    {
+      "catalogId": "sheet-12-f21",
+      "url": "https://www.ebay.com/itm/336694261534",
+      "reason": "Alice Trifle's Royalty double-deckbox candidate. Confirm the sheet's CUR artwork variant before importing."
+    },
+    {
+      "catalogId": "sheet-12-f17",
+      "url": "https://www.ebay.com/itm/397521598549",
+      "reason": "Tristan Shadowreaver deckbox candidate. Confirm the sheet's CUR artwork variant and physical format before importing."
+    },
+    {
+      "catalogId": null,
+      "url": "https://www.ebay.com/itm/840024148956",
+      "reason": "Arisanna regional sleeve title must not be merged with the retail Astral Zenith sleeves by character name."
+    }
+  ],
+  "unresolvedSearches": [
+    "No usable exact item listing found for Silvie plush or Arisanna chibi figure in this pass."
+  ],
+  "remaining": "195 catalog entries lack photo references after Nia, 16 Dragon Shield sleeve matches and two official regional playmats. Fourteen are playmats. Ray Chen profile redirects to ImgBB login."
+}

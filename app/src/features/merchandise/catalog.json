@@ -1,0 +1,4916 @@
+[
+  {
+    "id": "sheet-2-a4",
+    "name": "Kickstarter GA Playmat with Zones",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/T4MbCDv",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-2-a5",
+    "name": "Inspiring Call (DoA)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/SCymgAP",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-2-a6",
+    "name": "Savage Slash",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/Pwunztv",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-2-a7",
+    "name": "Peer into Mana",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/Jf8EQXe",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-2-a9",
+    "name": "Launch Kit Playmat with Zones",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/P7MQ1yS",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-2-a11",
+    "name": "Banner Knight (Ambassador)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/kZPjtJf",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-2-a12",
+    "name": "Frostsworn Paladin (Creator's Guild)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/frostsworn-paladin-creator-s-guild-CjFSHpX",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-2-a14",
+    "name": "2024 Ascent Worlds",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/hcFZjen",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-2-a15",
+    "name": "2025 Ascent Worlds",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/vlW5wJ9",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-2-a17",
+    "name": "Beseech the Winds (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/1Ku3BdZ",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A17"
+  },
+  {
+    "id": "sheet-2-a18",
+    "name": "Conniving Plans (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/Q3vsV5hy",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A18"
+  },
+  {
+    "id": "sheet-2-a19",
+    "name": "Creative Shock (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/aR9g5Cx",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A19"
+  },
+  {
+    "id": "sheet-2-a20",
+    "name": "Fracturize (SP3)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/j1bYHR4",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A20"
+  },
+  {
+    "id": "sheet-2-a21",
+    "name": "Frostbind (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/wiEQy2r",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A21"
+  },
+  {
+    "id": "sheet-2-a22",
+    "name": "Heavenly Guide (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/bM2WsK8B",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A22"
+  },
+  {
+    "id": "sheet-2-a23",
+    "name": "Incapacitate (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/FakZjvN",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A23"
+  },
+  {
+    "id": "sheet-2-a24",
+    "name": "Lost in Thoughts (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/v0anmSZ",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A24"
+  },
+  {
+    "id": "sheet-2-a25",
+    "name": "Peer into Mana (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/peer-into-mana-promo-8NGWR4D",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A25"
+  },
+  {
+    "id": "sheet-2-a26",
+    "name": "Scavenging Raccoon (Merch Day)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/pYxMZsr",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A26"
+  },
+  {
+    "id": "sheet-2-a27",
+    "name": "Scry the Skies (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/wLrh1Mh",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A27"
+  },
+  {
+    "id": "sheet-2-a28",
+    "name": "Smoke Bombs (Promo)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/8DMBpFrv",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A28"
+  },
+  {
+    "id": "sheet-2-a29",
+    "name": "Expel the Departed (SP4)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/m5XgGLNF",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A29"
+  },
+  {
+    "id": "sheet-2-a30",
+    "name": "Lily, Marine Castellan (SP4)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/d4RDQkqx",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A30"
+  },
+  {
+    "id": "sheet-2-a31",
+    "name": "Cosmic Bolt (SP4)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/BHLYMmZX",
+    "sourceSheet": "Promotional",
+    "sourceCell": "A31"
+  },
+  {
+    "id": "sheet-2-d4",
+    "name": "Idle Thoughts (GSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/a8MzQRO",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-2-d5",
+    "name": "Spark Alight (GSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/wHjfjcw",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-2-d6",
+    "name": "Enthralling Visage (GSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-2-d8",
+    "name": "Festive Lorraine",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/3nZQci8",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-2-d9",
+    "name": "Kongming, Yuletide Cheer",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/RkTIXRK",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D9"
+  },
+  {
+    "id": "sheet-2-d10",
+    "name": "Lunar Blessings",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/BKq93SKw",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-2-d11",
+    "name": "Seaside Splash",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/W40Xk9T3",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-2-d13",
+    "name": "Fire Resonance Bauble (Revelfest)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/gYHiexS",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D13"
+  },
+  {
+    "id": "sheet-2-d14",
+    "name": "Wind Resonance Bauble (Revelfest)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/XxbQKHF8",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D14"
+  },
+  {
+    "id": "sheet-2-d15",
+    "name": "Water Resonance Bauble (Revelfest)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/water-resonance-Ge8nXvn",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D15"
+  },
+  {
+    "id": "sheet-2-d16",
+    "name": "Tabula of Salvage (Revelfest)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/SwTgMP6L",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D16"
+  },
+  {
+    "id": "sheet-2-d17",
+    "name": "Bauble of Abundance (Revelfest)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D17"
+  },
+  {
+    "id": "sheet-2-d19",
+    "name": "Reclaim (Ascent VIP)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/zH5CVbms",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D19"
+  },
+  {
+    "id": "sheet-2-d20",
+    "name": "Glacial Evocation (Ascent VIP)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/7tLPwS8K",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D20"
+  },
+  {
+    "id": "sheet-2-d22",
+    "name": "Scepter of Fascination (QSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/jP9D4wk6",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D22"
+  },
+  {
+    "id": "sheet-2-d23",
+    "name": "Icebound Slam (ISC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D23"
+  },
+  {
+    "id": "sheet-2-d24",
+    "name": "Three of Hearts (QSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/G4GKDS2Z",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D24"
+  },
+  {
+    "id": "sheet-2-d26",
+    "name": "Creator Summit 2026",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/hRxMqTHN",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D26"
+  },
+  {
+    "id": "sheet-2-d28",
+    "name": "Horizon's Reprise Cambria",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/sd2GLGJP",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D28"
+  },
+  {
+    "id": "sheet-2-d29",
+    "name": "Horizon's Reprise Azoth",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/1fRHbn4Y",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D29"
+  },
+  {
+    "id": "sheet-2-d30",
+    "name": "Horizon's Reprise Sanguo",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D30"
+  },
+  {
+    "id": "sheet-2-d31",
+    "name": "Horizon's Reprise Underland",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/Zp184jyk",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D31"
+  },
+  {
+    "id": "sheet-2-d32",
+    "name": "Horizon's Reprise All Champions",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/KxJXg4LK",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D32"
+  },
+  {
+    "id": "sheet-2-g4",
+    "name": "Dungeon Guide (Dinah PR)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/h1stHX98",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G4"
+  },
+  {
+    "id": "sheet-2-g5",
+    "name": "Enfeebling Orb (PR Slimes)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-2-g6",
+    "name": "Break Apart (TCGPlayer)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/LdrbpmSk",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-2-g8",
+    "name": "Nameless Champion",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/bMJRzy1H",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-2-g9",
+    "name": "Reckoning's Wake Dreamweave Sample",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/xR6WTPi",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G9"
+  },
+  {
+    "id": "sheet-2-g10",
+    "name": "Pantheon Colosseum",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/gZRcgP7j",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-2-d3",
+    "name": "Favourable Winds (GSC)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://imgur.com/a/qSAL000",
+    "sourceSheet": "Promotional",
+    "sourceCell": "D3"
+  },
+  {
+    "id": "sheet-2-g3",
+    "name": "Gentle Respite (Ascent)",
+    "category": "Playmats",
+    "detail": "Promotional",
+    "photoUrl": "https://ibb.co/Y70VXqnb",
+    "sourceSheet": "Promotional",
+    "sourceCell": "G3"
+  },
+  {
+    "id": "sheet-3-a4",
+    "name": "Careful Study (Omnidex)",
+    "category": "Artist playmats",
+    "detail": "Judge 2024 (Omnidex) · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/p9b2BQu",
+    "sourceSheet": "Artist",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-3-a5",
+    "name": "Kingdom Informant",
+    "category": "Artist playmats",
+    "detail": "Promotional 2022 · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/zejxLnM",
+    "sourceSheet": "Artist",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-3-a7",
+    "name": "Arthur, Young Heir",
+    "category": "Artist playmats",
+    "detail": "Dawn of Ashes · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/dwPlFGK",
+    "sourceSheet": "Artist",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-3-a8",
+    "name": "Library Witch",
+    "category": "Artist playmats",
+    "detail": "Dawn of Ashes · Hanh Chu",
+    "photoUrl": "https://ibb.co/cSkkHxr2",
+    "sourceSheet": "Artist",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-3-a9",
+    "name": "Nia, Mistveiled Scout",
+    "category": "Artist playmats",
+    "detail": "Dawn of Ashes · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/gqsKBkt",
+    "sourceSheet": "Artist",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-3-a11",
+    "name": "Bedivere, Woodland Overseer",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · Kumai",
+    "photoUrl": "https://imgur.com/a/ehb5Au3",
+    "sourceSheet": "Artist",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-3-a12",
+    "name": "Blanche, Sheltering Saint",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · 代々 (Dai Dai)",
+    "photoUrl": "https://imgur.com/a/luwCGRi",
+    "sourceSheet": "Artist",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-3-a13",
+    "name": "Morgan, Soul Guide",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · 坊橋夜泊 (Fang)",
+    "photoUrl": "https://imgur.com/a/V3MIbkQ",
+    "sourceSheet": "Artist",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-3-a14",
+    "name": "Peaceful Reunion",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · Dragonart Tris",
+    "photoUrl": "https://imgur.com/a/AJuvcSG",
+    "sourceSheet": "Artist",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-3-a15",
+    "name": "The Majestic Spirit",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · Dragonart Antilous",
+    "photoUrl": "https://imgur.com/a/g76NPiC",
+    "sourceSheet": "Artist",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-3-a16",
+    "name": "Uther, Illustrious King",
+    "category": "Artist playmats",
+    "detail": "Fractured Crown · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/bJghKs9",
+    "sourceSheet": "Artist",
+    "sourceCell": "A16"
+  },
+  {
+    "id": "sheet-3-a18",
+    "name": "Dahlia, Idyllic Dreamer",
+    "category": "Artist playmats",
+    "detail": "Alchemical Revolution · Pinakes",
+    "photoUrl": "https://imgur.com/a/ljApgea",
+    "sourceSheet": "Artist",
+    "sourceCell": "A18"
+  },
+  {
+    "id": "sheet-3-a19",
+    "name": "Fanatical Devotee",
+    "category": "Artist playmats",
+    "detail": "Alchemical Revolution · 十尾 (Juubi)",
+    "photoUrl": "https://imgur.com/a/ie3pmLj",
+    "sourceSheet": "Artist",
+    "sourceCell": "A19"
+  },
+  {
+    "id": "sheet-3-a20",
+    "name": "Geni, Gifted Mechanist",
+    "category": "Artist playmats",
+    "detail": "Alchemical Revolution · DragonArt TaroTarou",
+    "photoUrl": "https://imgur.com/a/9xZrkqZ",
+    "sourceSheet": "Artist",
+    "sourceCell": "A20"
+  },
+  {
+    "id": "sheet-3-a21",
+    "name": "Rococo, Explosive Maven",
+    "category": "Artist playmats",
+    "detail": "Alchemical Revolution · Gyool",
+    "photoUrl": "https://imgur.com/a/egSt2je",
+    "sourceSheet": "Artist",
+    "sourceCell": "A21"
+  },
+  {
+    "id": "sheet-3-a23",
+    "name": "Expunge",
+    "category": "Artist playmats",
+    "detail": "Mercurial Heart · Faicha",
+    "photoUrl": "https://imgur.com/a/F5TQ4qK",
+    "sourceSheet": "Artist",
+    "sourceCell": "A23"
+  },
+  {
+    "id": "sheet-3-a24",
+    "name": "Prima Materia",
+    "category": "Artist playmats",
+    "detail": "Mercurial Heart · 代々 (Dai Dai)",
+    "photoUrl": "https://imgur.com/a/mKtOZtl",
+    "sourceSheet": "Artist",
+    "sourceCell": "A24"
+  },
+  {
+    "id": "sheet-3-a26",
+    "name": "Bathe in Light",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · Gyool",
+    "photoUrl": "https://imgur.com/a/wRPgiKt",
+    "sourceSheet": "Artist",
+    "sourceCell": "A26"
+  },
+  {
+    "id": "sheet-3-a27",
+    "name": "Burst Asunder",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · 坊橋夜泊 (Fang)",
+    "photoUrl": "https://imgur.com/a/b17VilR",
+    "sourceSheet": "Artist",
+    "sourceCell": "A27"
+  },
+  {
+    "id": "sheet-3-a28",
+    "name": "Cao Cao, Aspirant of Chaos",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · 坊橋夜泊 (Fang)",
+    "photoUrl": "https://imgur.com/a/S2iZvsS",
+    "sourceSheet": "Artist",
+    "sourceCell": "A28"
+  },
+  {
+    "id": "sheet-3-a29",
+    "name": "Shifting Currents",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · 十尾 (Juubi)",
+    "photoUrl": "https://imgur.com/a/RWfJeAI",
+    "sourceSheet": "Artist",
+    "sourceCell": "A29"
+  },
+  {
+    "id": "sheet-3-a30",
+    "name": "Sudden Snow (AMB)",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · Pinakes",
+    "photoUrl": "https://imgur.com/a/Fat49BG",
+    "sourceSheet": "Artist",
+    "sourceCell": "A30"
+  },
+  {
+    "id": "sheet-3-a31",
+    "name": "Xia Hou Dun, Gloryseeker",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · 十尾 (Juubi)",
+    "photoUrl": "https://imgur.com/a/zGljZFw",
+    "sourceSheet": "Artist",
+    "sourceCell": "A31"
+  },
+  {
+    "id": "sheet-3-a32",
+    "name": "Xiao Qiao, Cinderkeeper",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · 代々 (Dai Dai)",
+    "photoUrl": "https://imgur.com/a/AnW3Yy2",
+    "sourceSheet": "Artist",
+    "sourceCell": "A32"
+  },
+  {
+    "id": "sheet-3-a33",
+    "name": "Yudi, Gossamer Jade",
+    "category": "Artist playmats",
+    "detail": "Mortal Ambition · Pinakes",
+    "photoUrl": "https://imgur.com/a/VVevfv5",
+    "sourceSheet": "Artist",
+    "sourceCell": "A33"
+  },
+  {
+    "id": "sheet-3-f4",
+    "name": "Conduit of Seasons",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Dragonart Tris",
+    "photoUrl": "https://imgur.com/a/5w1lKMx",
+    "sourceSheet": "Artist",
+    "sourceCell": "F4"
+  },
+  {
+    "id": "sheet-3-f5",
+    "name": "General at Arms",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Hanh Chu",
+    "photoUrl": "https://imgur.com/a/0EnLdC9",
+    "sourceSheet": "Artist",
+    "sourceCell": "F5"
+  },
+  {
+    "id": "sheet-3-f6",
+    "name": "Harness Lightning",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Gyool",
+    "photoUrl": "https://imgur.com/a/hr1MYPT",
+    "sourceSheet": "Artist",
+    "sourceCell": "F6"
+  },
+  {
+    "id": "sheet-3-f7",
+    "name": "Jianyu, Fate's Premonition",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Dragonart TaroTarou",
+    "photoUrl": "https://imgur.com/a/KFnYZgk",
+    "sourceSheet": "Artist",
+    "sourceCell": "F7"
+  },
+  {
+    "id": "sheet-3-f8",
+    "name": "Planar Abyss",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Dragonart ZhaoZhao",
+    "photoUrl": "https://imgur.com/a/hyBvkJP",
+    "sourceSheet": "Artist",
+    "sourceCell": "F8"
+  },
+  {
+    "id": "sheet-3-f9",
+    "name": "Searing Rebuke",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Primea Studios",
+    "photoUrl": "https://imgur.com/a/6Vs8a7h",
+    "sourceSheet": "Artist",
+    "sourceCell": "F9"
+  },
+  {
+    "id": "sheet-3-f10",
+    "name": "Sun Jian, Wolvesbane",
+    "category": "Artist playmats",
+    "detail": "Abyssal Heaven · Dragonart ZTO",
+    "photoUrl": "https://imgur.com/a/bvOio3P",
+    "sourceSheet": "Artist",
+    "sourceCell": "F10"
+  },
+  {
+    "id": "sheet-3-f12",
+    "name": "Conflagrant Sentinel",
+    "category": "Artist playmats",
+    "detail": "Distorted Reflections · 坊橋夜泊 (Fang)",
+    "photoUrl": "https://imgur.com/a/PgDQFL1",
+    "sourceSheet": "Artist",
+    "sourceCell": "F12"
+  },
+  {
+    "id": "sheet-3-f13",
+    "name": "Noire, Ace of Spades",
+    "category": "Artist playmats",
+    "detail": "Distorted Reflections · Dragonart Tarotarou",
+    "photoUrl": "https://imgur.com/a/noire-Z7WVgG7",
+    "sourceSheet": "Artist",
+    "sourceCell": "F13"
+  },
+  {
+    "id": "sheet-3-f14",
+    "name": "Rouge, Ace of Hearts",
+    "category": "Artist playmats",
+    "detail": "Distorted Reflections · Dragonart",
+    "photoUrl": "https://imgur.com/a/rouge-qYHwWQj",
+    "sourceSheet": "Artist",
+    "sourceCell": "F14"
+  },
+  {
+    "id": "sheet-3-f16",
+    "name": "Crux Sight (PTM)",
+    "category": "Artist playmats",
+    "detail": "Phantom Monarchs · 十尾 (Juubi)",
+    "photoUrl": "https://imgur.com/a/crux-sight-5wlOsh3",
+    "sourceSheet": "Artist",
+    "sourceCell": "F16"
+  },
+  {
+    "id": "sheet-3-f18",
+    "name": "Avatar of Suzaku",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · 十尾 (Juubi)",
+    "photoUrl": "https://ibb.co/Z6V0G1Qr",
+    "sourceSheet": "Artist",
+    "sourceCell": "F18"
+  },
+  {
+    "id": "sheet-3-f19",
+    "name": "Bolt of Diamonds",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Dragonart",
+    "photoUrl": "https://ibb.co/QvJ26qfV",
+    "sourceSheet": "Artist",
+    "sourceCell": "F19"
+  },
+  {
+    "id": "sheet-3-f20",
+    "name": "Edelstein, Queen of Diamonds",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Dragonart",
+    "photoUrl": "https://ibb.co/vCcFZ9X6",
+    "sourceSheet": "Artist",
+    "sourceCell": "F20"
+  },
+  {
+    "id": "sheet-3-f21",
+    "name": "Haniel, Archangel of Spectra",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Faicha",
+    "photoUrl": "https://ibb.co/k2s203Mc",
+    "sourceSheet": "Artist",
+    "sourceCell": "F21"
+  },
+  {
+    "id": "sheet-3-f22",
+    "name": "Manifest Threat",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Primea Studios",
+    "photoUrl": "https://ibb.co/tpT70rVp",
+    "sourceSheet": "Artist",
+    "sourceCell": "F22"
+  },
+  {
+    "id": "sheet-3-f23",
+    "name": "Sabela, Gossamer Penance",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Yui",
+    "photoUrl": "https://ibb.co/FQkKQc8",
+    "sourceSheet": "Artist",
+    "sourceCell": "F23"
+  },
+  {
+    "id": "sheet-3-f24",
+    "name": "Trine Recursion",
+    "category": "Artist playmats",
+    "detail": "Radiant Origins · Dragonart TaroTarou",
+    "photoUrl": "https://ibb.co/357SxvXs",
+    "sourceSheet": "Artist",
+    "sourceCell": "F24"
+  },
+  {
+    "id": "sheet-3-f26",
+    "name": "ZENA, Echo Weaver",
+    "category": "Artist playmats",
+    "detail": ".Asphodel Paradise · 十尾 (Juubi)",
+    "photoUrl": "https://ibb.co/twL1DdfF",
+    "sourceSheet": "Artist",
+    "sourceCell": "F26"
+  },
+  {
+    "id": "sheet-3-f28",
+    "name": "Reckoning's Wake PR",
+    "category": "Artist playmats",
+    "detail": "Distorted Reflections Alter · 坊橋夜泊 (Fang)",
+    "photoUrl": "https://ibb.co/HpXq8rpY",
+    "sourceSheet": "Artist",
+    "sourceCell": "F28"
+  },
+  {
+    "id": "sheet-4-a5",
+    "name": "Channel the Winds",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/Zfwuc5R",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-4-a6",
+    "name": "Frostbind",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/eWLr5qr",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-4-a7",
+    "name": "Shadecursed Hunter",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/cdkQ6Uu",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-4-a8",
+    "name": "Winbless Forecaster",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/zyOt7sJ",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-4-a9",
+    "name": "Materialize Polearm",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/h6Y9KMx",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-4-a10",
+    "name": "Harbinger of Lightning",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/harbinger-of-lightning-WR4bDxQ",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-4-a11",
+    "name": "Lily, Marine Castellan",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://imgur.com/a/lily-H7S29Ze",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-4-a12",
+    "name": "Castling",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://ibb.co/nsT4HtXV",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-4-a13",
+    "name": "Seraphic Legion's Descent",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://ibb.co/5XQfRWtd",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-4-a14",
+    "name": "Banner Knight (PRD)",
+    "category": "Playmats",
+    "detail": "Store Champions",
+    "photoUrl": "https://ibb.co/ycRKsNxn",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-4-d5",
+    "name": "Stillwater Patrol (SP1)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/yFGoIbs",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-4-d6",
+    "name": "Esteemed Knight (SP1)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/MiWDvvq",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-4-d7",
+    "name": "Gildas, Chronicler of Aesa (SP1)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/lNofT9y",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D7"
+  },
+  {
+    "id": "sheet-4-d8",
+    "name": "Imperious Highlander (FTC)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/v4d3Cg5",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-4-d9",
+    "name": "Gawain, Chivalrous Thief",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/G8ZcbaA",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D9"
+  },
+  {
+    "id": "sheet-4-d10",
+    "name": "Resolute Stand",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/8Ce96Zw",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-4-d11",
+    "name": "Lone Gunslinger",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/YMNYrXn",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-4-d12",
+    "name": "Awakened Frostguard",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/QwBqGE7",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D12"
+  },
+  {
+    "id": "sheet-4-d13",
+    "name": "Cyclonic Strike",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/V4PspY7",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D13"
+  },
+  {
+    "id": "sheet-4-d14",
+    "name": "Vicious Slice",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/S7mDXRl",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D14"
+  },
+  {
+    "id": "sheet-4-d15",
+    "name": "Hide in Bush",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/SiWtp6m",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D15"
+  },
+  {
+    "id": "sheet-4-d16",
+    "name": "Debilitating Grasp",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/w5u64Rs",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D16"
+  },
+  {
+    "id": "sheet-4-d17",
+    "name": "Harmonious Mantra",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/E4XSUaR",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D17"
+  },
+  {
+    "id": "sheet-4-d18",
+    "name": "Water Barrier (AMB)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/xfexpSW",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D18"
+  },
+  {
+    "id": "sheet-4-d19",
+    "name": "Seiryuu's Command",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/seiryuu-s-command-IGc66ey",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D19"
+  },
+  {
+    "id": "sheet-4-d20",
+    "name": "Shriveling Vines",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/shriveling-vines-MMTJqpk",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D20"
+  },
+  {
+    "id": "sheet-4-d21",
+    "name": "Reckoning’s Fate",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/reckoning-s-fate-Qwhcudz",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D21"
+  },
+  {
+    "id": "sheet-4-d22",
+    "name": "Lucenia’s Reign",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://imgur.com/a/lucenia-s-reign-b57UIbb",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D22"
+  },
+  {
+    "id": "sheet-4-d23",
+    "name": "Cleansing Reunion (PTM)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://ibb.co/xS401CMp",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D23"
+  },
+  {
+    "id": "sheet-4-d24",
+    "name": "Remnant of Will",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://ibb.co/84KRBtLP",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D24"
+  },
+  {
+    "id": "sheet-4-d25",
+    "name": "Cleansing Reunion (RDO)",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://ibb.co/C5NPLPtc",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D25"
+  },
+  {
+    "id": "sheet-4-d26",
+    "name": "Shared Fervor",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "https://ibb.co/xSYvmZTC",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D26"
+  },
+  {
+    "id": "sheet-4-d27",
+    "name": "Capacitance X Psycho",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D27"
+  },
+  {
+    "id": "sheet-4-d28",
+    "name": "Rolling Chorus",
+    "category": "Playmats",
+    "detail": "Regionals",
+    "photoUrl": "",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "D28"
+  },
+  {
+    "id": "sheet-4-g5",
+    "name": "Blitz Mage",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://imgur.com/a/vkq5BMf",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-4-g6",
+    "name": "Academy Guide (ALC)",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://imgur.com/a/wcxo72g",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-4-g7",
+    "name": "Heavenly Guide",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://imgur.com/a/entdrUJ",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G7"
+  },
+  {
+    "id": "sheet-4-g8",
+    "name": "Liminal Guide",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://imgur.com/a/sDljeG8",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-4-g9",
+    "name": "Flagrant Guide",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://ibb.co/v68wp2zV",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G9"
+  },
+  {
+    "id": "sheet-4-g10",
+    "name": "Lucanarity Guide",
+    "category": "Playmats",
+    "detail": "Judge",
+    "photoUrl": "https://ibb.co/4R1Bxd7c",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-4-j5",
+    "name": "Tide Diviner (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://imgur.com/a/GBEK915",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J5"
+  },
+  {
+    "id": "sheet-4-j6",
+    "name": "Exorcise Curses (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://imgur.com/a/pvlg0v3",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J6"
+  },
+  {
+    "id": "sheet-4-j7",
+    "name": "Academy Guide (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://imgur.com/a/academy-guide-path-of-steel-y37Leja",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J7"
+  },
+  {
+    "id": "sheet-4-j8",
+    "name": "Mnemonic Charm (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://imgur.com/a/mnemonic-charm-path-of-steel-FOITABk",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J8"
+  },
+  {
+    "id": "sheet-4-j9",
+    "name": "Ghost of Pendragon (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://imgur.com/a/ghosts-of-pendragon-ascent-TV7wtgE",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J9"
+  },
+  {
+    "id": "sheet-4-j10",
+    "name": "Shadowstrike (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://ibb.co/n2kNNjb",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J10"
+  },
+  {
+    "id": "sheet-4-j11",
+    "name": "Astral Seal (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://ibb.co/m5TzJwBW",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J11"
+  },
+  {
+    "id": "sheet-4-j12",
+    "name": "Regal Inquisition (Path of Steel)",
+    "category": "Playmats",
+    "detail": "Ascent Day 2",
+    "photoUrl": "https://ibb.co/zhLrnQKh",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "J12"
+  },
+  {
+    "id": "sheet-4-m5",
+    "name": "Inspiring Call (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://imgur.com/a/ifKXmgC",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M5"
+  },
+  {
+    "id": "sheet-4-m6",
+    "name": "Into the Fray (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://imgur.com/a/Vg05Af8",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M6"
+  },
+  {
+    "id": "sheet-4-m7",
+    "name": "Reprogram (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://imgur.com/a/EfG2LXr",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M7"
+  },
+  {
+    "id": "sheet-4-m8",
+    "name": "Nascent Blast (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://imgur.com/a/nascent-blast-path-of-silver-ny08bmN",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M8"
+  },
+  {
+    "id": "sheet-4-m9",
+    "name": "Seal the Past (Path of SIlver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://imgur.com/a/seal-past-path-of-silver-VXbfd8e",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M9"
+  },
+  {
+    "id": "sheet-4-m10",
+    "name": "Disenchant (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "https://ibb.co/LBndwcR",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M10"
+  },
+  {
+    "id": "sheet-4-m11",
+    "name": "Polishing Flourish (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "photoUrl": "",
+    "sourceSheet": "Organized Play",
+    "sourceCell": "M11"
+  },
+  {
+    "id": "sheet-5-a4",
+    "name": "Lorraine, Wandering Warrior",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/CG15xMg",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-5-a5",
+    "name": "Lorraine, Blademaster",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/dIrQhru",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-5-a6",
+    "name": "Lorraine, Crux Knight",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/pHSwRzT",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-5-a7",
+    "name": "Lorraine, Spirit Ruler",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/1BYudYZ",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-5-a8",
+    "name": "Rai, Spellcrafter",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/qrccDFb",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-5-a9",
+    "name": "Rai, Archmage",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/Q0SJ163",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-5-a10",
+    "name": "Rai, Storm Seer,",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/JIzeDq4",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-5-a11",
+    "name": "Rai, Mana Weaver",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/nXlYZW8",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-5-a12",
+    "name": "Silvie, Wilds Whisperer",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/tcbks6g",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-5-a13",
+    "name": "Silvie, With the Pack",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/a7Ej8ab",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-5-a14",
+    "name": "Silvie, Earth's Tune",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/cl9t3rh",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-5-a15",
+    "name": "Silvie, Loved by All",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/rj9Cikl",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-5-a16",
+    "name": "Zander, Prepared Scout",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/u0Vs4fb",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A16"
+  },
+  {
+    "id": "sheet-5-a17",
+    "name": "Zander, Always Watching",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/FB96Xme",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A17"
+  },
+  {
+    "id": "sheet-5-a18",
+    "name": "Zander, Corhazi's Chosen",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/zander-corhazi-s-chosen-Vcc9hMH",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A18"
+  },
+  {
+    "id": "sheet-5-a19",
+    "name": "Zander, Blinding Steel",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/7zmE9iy",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A19"
+  },
+  {
+    "id": "sheet-5-a21",
+    "name": "Allen, Beast Beckoner",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/ApnsJQt",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A21"
+  },
+  {
+    "id": "sheet-5-a22",
+    "name": "Mordred, Flawless Blade",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/Efw3Qq7",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A22"
+  },
+  {
+    "id": "sheet-5-a23",
+    "name": "Merlin, Memory Thief",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/YeL59KU",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A23"
+  },
+  {
+    "id": "sheet-5-a24",
+    "name": "Tristan, Grim Stalker",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/duTpVN5",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "A24"
+  },
+  {
+    "id": "sheet-5-d4",
+    "name": "Avalon, Cursed Isle",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/avalon-cursed-isle-PfB3kD7",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-5-d5",
+    "name": "Camelot, Impenetrable",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/JAlxC4T",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-5-d6",
+    "name": "Varuck, Smoldering Spire",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/PyONy5R",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-5-d8",
+    "name": "Creative Shock",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/bLDbKSF",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-5-d9",
+    "name": "Excalibur, Cleansing Light",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/v1Tds0L",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D9"
+  },
+  {
+    "id": "sheet-5-d10",
+    "name": "Meadowbloom Dryad",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/bYZFvsC",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-5-d11",
+    "name": "Prodigious Burstmage",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/wg0RDyi",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-5-d12",
+    "name": "Arcane Blast (SP1)",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/kE5jcWj",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D12"
+  },
+  {
+    "id": "sheet-5-d13",
+    "name": "Tide Diviner",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/GJrYC6A",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D13"
+  },
+  {
+    "id": "sheet-5-d15",
+    "name": "Conduit of the Mad Mage",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/cP5qFDL",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D15"
+  },
+  {
+    "id": "sheet-5-d16",
+    "name": "Lunete, Frostbinder Priest",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/uLGSk0y",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D16"
+  },
+  {
+    "id": "sheet-5-d17",
+    "name": "Snow Fairy",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/HNXvp2Z",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D17"
+  },
+  {
+    "id": "sheet-5-d18",
+    "name": "Nimue, Cursed Touch (SP1)",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/zgi04uh",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D18"
+  },
+  {
+    "id": "sheet-5-d19",
+    "name": "Trisket, Guidance Angel",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/4Lpi36C",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D19"
+  },
+  {
+    "id": "sheet-5-d21",
+    "name": "DoA Champions Table Mat",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/biDB5AT",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "D21"
+  },
+  {
+    "id": "sheet-5-g4",
+    "name": "Spirit of Fire",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/lHqVoR9",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G4"
+  },
+  {
+    "id": "sheet-5-g5",
+    "name": "Spirit of Water",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/TZVni6W",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-5-g6",
+    "name": "Spirit of Wind",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/C3uZoT5",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-5-g7",
+    "name": "Aeson Protector",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/1AHu5Ze",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G7"
+  },
+  {
+    "id": "sheet-5-g8",
+    "name": "Anger the Skies",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/eBRgSvF",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-5-g9",
+    "name": "Barrier Servant",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/w2PhFzI",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G9"
+  },
+  {
+    "id": "sheet-5-g10",
+    "name": "Frozen Nova",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/wPVAjPO",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-5-g11",
+    "name": "Impassioned Tutor",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/uvYeFTi",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G11"
+  },
+  {
+    "id": "sheet-5-g12",
+    "name": "Spirit Blade: Dispersion",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/B4RHRPP",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G12"
+  },
+  {
+    "id": "sheet-5-g13",
+    "name": "Refurbish",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/qf5Bsp9",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "G13"
+  },
+  {
+    "id": "sheet-5-j4",
+    "name": "Green Slime",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/yab6OcD",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "J4"
+  },
+  {
+    "id": "sheet-5-j5",
+    "name": "Kraal Stonescale Tyrant",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/SfsHIrd",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "J5"
+  },
+  {
+    "id": "sheet-5-j6",
+    "name": "Avatar of Gaia",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/klG0hGS",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "J6"
+  },
+  {
+    "id": "sheet-5-j8",
+    "name": "Dawn of Ashes",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/Yjv8q0X",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "J8"
+  },
+  {
+    "id": "sheet-5-j9",
+    "name": "Prismatic Sanctuary",
+    "category": "Playmats",
+    "detail": "DOA-FTC",
+    "photoUrl": "https://imgur.com/a/1rczwZN",
+    "sourceSheet": "DOA-FTC",
+    "sourceCell": "J9"
+  },
+  {
+    "id": "sheet-7-a4",
+    "name": "Arisanna, Herbalist Prodigy",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/AyXq6yU",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-7-a5",
+    "name": "Arisanna, Master Alchemist",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/GfF2qg0",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-7-a6",
+    "name": "Arisanna, Astral Zenith",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/xiKK5Wu",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-7-a7",
+    "name": "Arisanna, Lucent Arbiter",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/SV4wZKF",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-7-a8",
+    "name": "Diana, Keen Huntress",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/XnjLliR",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-7-a9",
+    "name": "Diana, Deadly Duelist",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/iKhbRhL",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-7-a10",
+    "name": "Diana, Cursebreaker",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/bPd5mjx",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-7-a11",
+    "name": "Diana, Duskstalker",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/NYIKRQ6",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-7-a12",
+    "name": "Tonoris, Lone Mercenary",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/ewr5rNu",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-7-a13",
+    "name": "Tonoris, Might of Humanity",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/YckkBMH",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-7-a14",
+    "name": "Tonoris, Creation's Will",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/tonoris-creation-s-will-IsEl2C4",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-7-a15",
+    "name": "Tonoris, Genesis Aegis",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/m47fX3q",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-7-a17",
+    "name": "Nico, Whiplash Allure",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/4yGP0mD",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A17"
+  },
+  {
+    "id": "sheet-7-a18",
+    "name": "Polkhawk, Bombastic Shot",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/uXtAeMS",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A18"
+  },
+  {
+    "id": "sheet-7-a19",
+    "name": "Vanitas, Obliviate Schemer",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/k6hsNcr",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A19"
+  },
+  {
+    "id": "sheet-7-a20",
+    "name": "Vanitas, Convergent Ruin",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/CTgnL3l",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "A20"
+  },
+  {
+    "id": "sheet-7-d4",
+    "name": "Exalted Dorumegian Throne",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/DWw9h5i",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-7-d5",
+    "name": "Oasis Trading Post",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/9L2BVOz",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-7-d6",
+    "name": "Sanctum of Esoteric Truth",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/SEXaeDj",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-7-d7",
+    "name": "Shatterfall Keep",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/shatterfall-keep-YdzvIA7",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D7"
+  },
+  {
+    "id": "sheet-7-d8",
+    "name": "The Eternal Kingdom",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/tGi8Alk",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-7-d10",
+    "name": "Spirit of Fire (ALC)",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/kTYQE4F",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-7-d11",
+    "name": "Spirit of Water (ALC)",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/Jk2noeT",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-7-d12",
+    "name": "Spirit of Wind (ALC)",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/PxxZsxh",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D12"
+  },
+  {
+    "id": "sheet-7-d13",
+    "name": "Astral Seal",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/T9vPzSk",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D13"
+  },
+  {
+    "id": "sheet-7-d14",
+    "name": "Into the Fray (ALC)",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/4f557nK",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D14"
+  },
+  {
+    "id": "sheet-7-d15",
+    "name": "Life Essence Amulet (ALC)",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/NBplNg8",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D15"
+  },
+  {
+    "id": "sheet-7-d16",
+    "name": "Tasershot",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/XjQZKCh",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D16"
+  },
+  {
+    "id": "sheet-7-d17",
+    "name": "Reconstructive Surgery",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/qGjeJEh",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D17"
+  },
+  {
+    "id": "sheet-7-d20",
+    "name": "ALC/MRC Champions Table Mat",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/BdopSEr",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "D20"
+  },
+  {
+    "id": "sheet-7-g4",
+    "name": "Tristan, Underhanded",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/71EMTtb",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G4"
+  },
+  {
+    "id": "sheet-7-g5",
+    "name": "Tristan, Hired Blade",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/O6wYSMs",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-7-g6",
+    "name": "Tristan, Shadowdancer",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/QHUeSOZ",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-7-g7",
+    "name": "Tristan, Shadowreaver",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/CXfmKzE",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G7"
+  },
+  {
+    "id": "sheet-7-g8",
+    "name": "Silvie, Slime Sovereign",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/I6Jl2yj",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-7-g10",
+    "name": "Baby Blue Slime",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/IK2sc8R",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-7-g11",
+    "name": "Slime King",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/grYdNSv",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G11"
+  },
+  {
+    "id": "sheet-7-g12",
+    "name": "Diablerie",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/NI6zkHj",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G12"
+  },
+  {
+    "id": "sheet-7-g13",
+    "name": "Final Stroke",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/o03xvap",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G13"
+  },
+  {
+    "id": "sheet-7-g14",
+    "name": "Mechanical Hare",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/yvoB5qG",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G14"
+  },
+  {
+    "id": "sheet-7-g15",
+    "name": "Retold Fortune",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/LZqjJTV",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G15"
+  },
+  {
+    "id": "sheet-7-g16",
+    "name": "Shadow Resonance",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/XdP98S6",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G16"
+  },
+  {
+    "id": "sheet-7-g17",
+    "name": "Curse Amplification",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/4wNBtA2",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G17"
+  },
+  {
+    "id": "sheet-7-g19",
+    "name": "Decompose",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/SDP4Jdz",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G19"
+  },
+  {
+    "id": "sheet-7-g20",
+    "name": "Accursed Strength",
+    "category": "Playmats",
+    "detail": "ALC-MRC",
+    "photoUrl": "https://imgur.com/a/X6cTvwt",
+    "sourceSheet": "ALC-MRC",
+    "sourceCell": "G20"
+  },
+  {
+    "id": "sheet-8-a4",
+    "name": "Jin, Fate Defiant",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/tL7KA8x",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-8-a5",
+    "name": "Jin, Zealous Maverick",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/jin-zealous-maverick-NqcsHwu",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-8-a6",
+    "name": "Jin, Undying Resolve",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/hbigq8X",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-8-a7",
+    "name": "Kongming, Wayward Maven",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/HPj96jD",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-8-a8",
+    "name": "Kongming, Ascetic Vice",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/ov3LMqA",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-8-a9",
+    "name": "Kongming, Erudite Strategist",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/diJrK3g",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-8-a10",
+    "name": "Kongming, Fel Eidolon",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/kongming-fel-eidolon-XUX4eDo",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-8-a11",
+    "name": "Kongming, Fel Eidolon (CUR)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/aaUtRsF",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-8-a12",
+    "name": "Diao Chan, Enchantress",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/diao-chan-enchantress-Yxymq4w",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-8-a13",
+    "name": "Diao Chan, Dreaming WIsh",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/diao-chan-dreaming-wish-aKem3Ir",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-8-a14",
+    "name": "Diao Chan, Idyll Corsage",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/k9ZbrPH",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-8-a15",
+    "name": "Guo Jia, Chosen Disciple",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/guo-jia-chosen-disciple-Es6F7tb",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-8-a16",
+    "name": "Guo Jia, Blessed Scion",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/guo-jia-blessed-scion-jcsLfyL",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A16"
+  },
+  {
+    "id": "sheet-8-a17",
+    "name": "Guo Jia, Heaven's Favored",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/guo-jia-heaven-s-favored-xUyASIh",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "A17"
+  },
+  {
+    "id": "sheet-8-d4",
+    "name": "Indolent Leisure",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/indolent-leisure-AoA2Yvr",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-8-d5",
+    "name": "Fractal of Polar Depths",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/fractal-of-polar-depths-fCNljqU",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-8-d6",
+    "name": "Soothing Disillusion",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/soothing-disillusion-JW7LfzO",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-8-d7",
+    "name": "Ignite Fate",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/ignite-fate-gNHYyf8",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D7"
+  },
+  {
+    "id": "sheet-8-d8",
+    "name": "Fang of Dragon's Breath",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/fang-of-dragon-s-breath-vEcaFbc",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-8-d10",
+    "name": "Oath of the Sakura",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/oath-of-sakura-oeEduZC",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-8-d11",
+    "name": "Bagua of Cardinal Fate",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/bagua-of-cardinal-fate-If7rxhE",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-8-d12",
+    "name": "Dungeon Guide (AMB)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/dungeon-guide-amb-NZ0qFCS",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "D12"
+  },
+  {
+    "id": "sheet-8-g4",
+    "name": "Lu Bu, Wrath Incarnate",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/lu-bu-wrath-incarnate-eLtbtwU",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G4"
+  },
+  {
+    "id": "sheet-8-g5",
+    "name": "Lu Bu, Wrath Incarnate (CUR)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://ibb.co/b57d9DQZ",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-8-g6",
+    "name": "Lu Bu, Indomitable (Tera)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/EX9noH4",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-8-g8",
+    "name": "Baidi, Oathsworn Palace",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/baidi-oathsworn-palace-J9L5ivd",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-8-g10",
+    "name": "Arcane Blast (HVN)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/YkqvyVo",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-8-g11",
+    "name": "Auspicious Feast",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/S6wD0OA",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G11"
+  },
+  {
+    "id": "sheet-8-g12",
+    "name": "Da Qiao, Cinderbinder",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/14xIflL",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G12"
+  },
+  {
+    "id": "sheet-8-g13",
+    "name": "Dian Wei, Valorant Fury",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/j7jskDS",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G13"
+  },
+  {
+    "id": "sheet-8-g14",
+    "name": "Eventide Lure",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/jPcwkQv",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G14"
+  },
+  {
+    "id": "sheet-8-g15",
+    "name": "Frostnip Pirouette",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/E5WAmzY",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G15"
+  },
+  {
+    "id": "sheet-8-g16",
+    "name": "Gentle Respite (HVN)",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/Gx7CAW0",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G16"
+  },
+  {
+    "id": "sheet-8-g17",
+    "name": "Rotund Squirrel",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/rotund-squirrel-UextNXB",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G17"
+  },
+  {
+    "id": "sheet-8-g18",
+    "name": "Yuan Shao, Crown General",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/hlLfKW7",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G18"
+  },
+  {
+    "id": "sheet-8-g19",
+    "name": "Zhang Jiao, Way of Peace",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/o0fatfa",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G19"
+  },
+  {
+    "id": "sheet-8-g20",
+    "name": "Zhou Yu, Enlightened Sage",
+    "category": "Playmats",
+    "detail": "AMB-HVN",
+    "photoUrl": "https://imgur.com/a/OpSeGKm",
+    "sourceSheet": "AMB-HVN",
+    "sourceCell": "G20"
+  },
+  {
+    "id": "sheet-9-a4",
+    "name": "Alice, Golden Queen",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/Xg4K4YM",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-9-a5",
+    "name": "Alice, Golden Queen (CUR)",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/HDnTdKHT",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-9-a6",
+    "name": "Ciel, Loyal Valet",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/EvAGf0j",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-9-a7",
+    "name": "Ciel, Omenbringer",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/2nHJZ5v",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-9-a8",
+    "name": "Ciel, Mirage's Grave",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/vPL2MuI",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-9-a9",
+    "name": "Diana, Aether Dilettante",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/EsSieY3",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-9-a10",
+    "name": "Diana, Judgment's Arrow",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/k6FEOLW",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-9-a11",
+    "name": "Diana, Moonpiercer",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/cVscr8h",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-9-d4",
+    "name": "Ashen Riffle",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/uVvV9fD",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-9-d5",
+    "name": "Chamber of Reflection",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/0tyfyvj",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-9-d6",
+    "name": "Cheshire Cat, Impish Grin",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/cheshire-cat-impish-grin-j3LlHn4",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-9-d7",
+    "name": "Chronowarp",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/Am1YK7t",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D7"
+  },
+  {
+    "id": "sheet-9-d8",
+    "name": "Devious Welcome",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/devious-welcome-beBxxkR",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D8"
+  },
+  {
+    "id": "sheet-9-d9",
+    "name": "Devouring Malice",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/CpmctQt5",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D9"
+  },
+  {
+    "id": "sheet-9-d10",
+    "name": "Excalibur, Reflected Edge",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/excalibur-reflected-edge-8m8sLxi",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D10"
+  },
+  {
+    "id": "sheet-9-d11",
+    "name": "Fluffy Shopkeeper",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/fluffy-shopkeeper-U2buXAB",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D11"
+  },
+  {
+    "id": "sheet-9-d12",
+    "name": "Grim Pastiche",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/0G0clfZ",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D12"
+  },
+  {
+    "id": "sheet-9-d13",
+    "name": "Ignis Deus",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/qMQYJ1K8",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D13"
+  },
+  {
+    "id": "sheet-9-d14",
+    "name": "Malevolent Vow",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/malevolent-soGCW4P",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D14"
+  },
+  {
+    "id": "sheet-9-d15",
+    "name": "Mary Ann, Maladroit Maid",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/iWITI3A",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D15"
+  },
+  {
+    "id": "sheet-9-d16",
+    "name": "Profane Bindings",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/profane-NgFGIGr",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D16"
+  },
+  {
+    "id": "sheet-9-d17",
+    "name": "Rictus Tiding",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/rictus-tiding-PIWGPqO",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D17"
+  },
+  {
+    "id": "sheet-9-d18",
+    "name": "Sidereel Spellshot",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/EplhiIO",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D18"
+  },
+  {
+    "id": "sheet-9-d19",
+    "name": "Snow White, Weiss Queen",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/RTBDthc0",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D19"
+  },
+  {
+    "id": "sheet-9-d20",
+    "name": "The Looking Glass",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/looking-glass-7zG0JEA",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "D20"
+  },
+  {
+    "id": "sheet-9-g4",
+    "name": "Merlin, Memorite Vassal",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/q3nSJcNX",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G4"
+  },
+  {
+    "id": "sheet-9-g5",
+    "name": "Merlin, Amethyst's Glow",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/ycBWqfCG",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G5"
+  },
+  {
+    "id": "sheet-9-g6",
+    "name": "Merlin, Brilliant Vestige",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/ks0SYCwF",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G6"
+  },
+  {
+    "id": "sheet-9-g8",
+    "name": "Alice, Phantom Monarch (CUR)",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/PzFXnXcg",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G8"
+  },
+  {
+    "id": "sheet-9-g9",
+    "name": "Alice, Whim's Monarch",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G9"
+  },
+  {
+    "id": "sheet-9-g10",
+    "name": "Alice, Phantom Monarch",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G10"
+  },
+  {
+    "id": "sheet-9-g20",
+    "name": "Reckoning's Wake Dreamweave Sample",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://imgur.com/a/xR6WTPi",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "G20"
+  },
+  {
+    "id": "sheet-9-j4",
+    "name": "Topsy Decree",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/FbJ8yrft",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J4"
+  },
+  {
+    "id": "sheet-9-j5",
+    "name": "Abnegation",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J5"
+  },
+  {
+    "id": "sheet-9-j6",
+    "name": "Lost Promises",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/tjT6JP3",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J6"
+  },
+  {
+    "id": "sheet-9-j7",
+    "name": "Flickering Afterglow",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/xtNh4vLJ",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J7"
+  },
+  {
+    "id": "sheet-9-j8",
+    "name": "Labyrinth, Jeweled Opus",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/SDLCXNss",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J8"
+  },
+  {
+    "id": "sheet-9-j9",
+    "name": "Spirit Blade: Terminus",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/fzMXSWZR",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J9"
+  },
+  {
+    "id": "sheet-9-j10",
+    "name": "Embrace Noir",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J10"
+  },
+  {
+    "id": "sheet-9-j11",
+    "name": "Infinite Scintillation",
+    "category": "Playmats",
+    "detail": "DTR-PTM",
+    "photoUrl": "https://ibb.co/Jj5kVDLF",
+    "sourceSheet": "DTR-PTM",
+    "sourceCell": "J11"
+  },
+  {
+    "id": "sheet-10-a4",
+    "name": "Alice, Trifle's Royalty (CUR)",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/tMvy5Kp8",
+    "sourceSheet": "RDO",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-10-a5",
+    "name": "Mordred, Aurelian Regent",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/3Qt22PY",
+    "sourceSheet": "RDO",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-10-a6",
+    "name": "Auspicious Manifestation",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/RksznDsF",
+    "sourceSheet": "RDO",
+    "sourceCell": "A6"
+  },
+  {
+    "id": "sheet-10-a7",
+    "name": "Celestial Navigation",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/1CMbDLk",
+    "sourceSheet": "RDO",
+    "sourceCell": "A7"
+  },
+  {
+    "id": "sheet-10-a8",
+    "name": "Iridescent Resurgence",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/35RTZCh1",
+    "sourceSheet": "RDO",
+    "sourceCell": "A8"
+  },
+  {
+    "id": "sheet-10-a9",
+    "name": "Nuriel, Seraphic Paladin",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/60zYsqjD",
+    "sourceSheet": "RDO",
+    "sourceCell": "A9"
+  },
+  {
+    "id": "sheet-10-a10",
+    "name": "Nox, Final Release",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/F4syFc1Q",
+    "sourceSheet": "RDO",
+    "sourceCell": "A10"
+  },
+  {
+    "id": "sheet-10-a11",
+    "name": "Angelic Channeling",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/wFQvr9SY",
+    "sourceSheet": "RDO",
+    "sourceCell": "A11"
+  },
+  {
+    "id": "sheet-10-a12",
+    "name": "Nipping Kicker",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/YqjCC0k",
+    "sourceSheet": "RDO",
+    "sourceCell": "A12"
+  },
+  {
+    "id": "sheet-10-a13",
+    "name": "Devised Conspiracy",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/twZBLxwN",
+    "sourceSheet": "RDO",
+    "sourceCell": "A13"
+  },
+  {
+    "id": "sheet-10-a14",
+    "name": "Avatar of Genbu",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "",
+    "sourceSheet": "RDO",
+    "sourceCell": "A14"
+  },
+  {
+    "id": "sheet-10-a15",
+    "name": "Full Bloom",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/0NKyKmg",
+    "sourceSheet": "RDO",
+    "sourceCell": "A15"
+  },
+  {
+    "id": "sheet-10-a16",
+    "name": "Aella, Zephyr’s Hand",
+    "category": "Playmats",
+    "detail": "RDO",
+    "photoUrl": "https://ibb.co/YTJT6Y9N",
+    "sourceSheet": "RDO",
+    "sourceCell": "A16"
+  },
+  {
+    "id": "sheet-11-a4",
+    "name": "Dante, Aenean Scribe",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "",
+    "sourceSheet": "PRD-",
+    "sourceCell": "A4"
+  },
+  {
+    "id": "sheet-11-a5",
+    "name": "Lorraine, Honed Operative",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "",
+    "sourceSheet": "PRD-",
+    "sourceCell": "A5"
+  },
+  {
+    "id": "sheet-11-d4",
+    "name": "Divine Comedy, Inferno",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "",
+    "sourceSheet": "PRD-",
+    "sourceCell": "D4"
+  },
+  {
+    "id": "sheet-11-d5",
+    "name": "Unruled Bereavement",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "https://ibb.co/DfqWJmh3",
+    "sourceSheet": "PRD-",
+    "sourceCell": "D5"
+  },
+  {
+    "id": "sheet-11-d6",
+    "name": "Aenean Flurry of Fire",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "https://ibb.co/zT3B06P2",
+    "sourceSheet": "PRD-",
+    "sourceCell": "D6"
+  },
+  {
+    "id": "sheet-11-d7",
+    "name": "Conductive Strike",
+    "category": "Playmats",
+    "detail": "PRD-",
+    "photoUrl": "https://ibb.co/8LHgnd4X",
+    "sourceSheet": "PRD-",
+    "sourceCell": "D7"
+  },
+  {
+    "id": "sheet-12-b13",
+    "name": "Nia, Mistveiled Scout",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B13"
+  },
+  {
+    "id": "sheet-12-b14",
+    "name": "Tonoris, Might of Humanity",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B14"
+  },
+  {
+    "id": "sheet-12-b15",
+    "name": "Diana, Keen Huntress",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B15"
+  },
+  {
+    "id": "sheet-12-b16",
+    "name": "Nico, Whiplash Allure",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B16"
+  },
+  {
+    "id": "sheet-12-b17",
+    "name": "Kongming, Wayward Maven",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B17"
+  },
+  {
+    "id": "sheet-12-b18",
+    "name": "Jin, Fate Defiant",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B18"
+  },
+  {
+    "id": "sheet-12-b19",
+    "name": "Guo Jia, Chosen Disciple",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B19"
+  },
+  {
+    "id": "sheet-12-b20",
+    "name": "Diao Chan, Enchantress",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B20"
+  },
+  {
+    "id": "sheet-12-b21",
+    "name": "Ciel, Loyal Valet",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B21"
+  },
+  {
+    "id": "sheet-12-b22",
+    "name": "Diana, Judgment’s Arrow",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B22"
+  },
+  {
+    "id": "sheet-12-b23",
+    "name": "Alice, Whim’s Monarch",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B23"
+  },
+  {
+    "id": "sheet-12-b24",
+    "name": "Nia, Mistveiled Scout",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B24"
+  },
+  {
+    "id": "sheet-12-b25",
+    "name": "Arisanna, Herbalist Prodigy",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B25"
+  },
+  {
+    "id": "sheet-12-b26",
+    "name": "Lorraine, Wandering Warrior",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B26"
+  },
+  {
+    "id": "sheet-12-b27",
+    "name": "Diana, Aether Dilettante",
+    "category": "Deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B27"
+  },
+  {
+    "id": "sheet-12-f13",
+    "name": "Silvie",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F13"
+  },
+  {
+    "id": "sheet-12-f14",
+    "name": "Lorraine",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F14"
+  },
+  {
+    "id": "sheet-12-f15",
+    "name": "Merlin, Memory Thief",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F15"
+  },
+  {
+    "id": "sheet-12-f16",
+    "name": "Parcenet,  Royal Maid (CSR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F16"
+  },
+  {
+    "id": "sheet-12-f17",
+    "name": "Tristan, Shadowreaver (CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F17"
+  },
+  {
+    "id": "sheet-12-f18",
+    "name": "Lu Bu, Wrath Incarnate (CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F18"
+  },
+  {
+    "id": "sheet-12-f19",
+    "name": "Alice, Phantom Monarch(CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F19"
+  },
+  {
+    "id": "sheet-12-f20",
+    "name": "Kongming, Fei Eidolon (CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F20"
+  },
+  {
+    "id": "sheet-12-f21",
+    "name": "Alice, Trifle's Royalty (CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "F21"
+  },
+  {
+    "id": "sheet-12-i13",
+    "name": "Xia Hou Dan",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I13"
+  },
+  {
+    "id": "sheet-12-i14",
+    "name": "Cao Cao",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I14"
+  },
+  {
+    "id": "sheet-12-i15",
+    "name": "Xiao Qiao",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I15"
+  },
+  {
+    "id": "sheet-12-i16",
+    "name": "Ariel",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I16"
+  },
+  {
+    "id": "sheet-12-i17",
+    "name": "Haniel",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I17"
+  },
+  {
+    "id": "sheet-12-i18",
+    "name": "Raziel",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I18"
+  },
+  {
+    "id": "sheet-12-i19",
+    "name": "Avatar of Byakko",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I19"
+  },
+  {
+    "id": "sheet-12-i20",
+    "name": "Avatar of Genbu",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I20"
+  },
+  {
+    "id": "sheet-12-i21",
+    "name": "Avatar of Suzaku",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I21"
+  },
+  {
+    "id": "sheet-12-i22",
+    "name": "Lu Bu",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I22"
+  },
+  {
+    "id": "sheet-12-i23",
+    "name": "Spirelle",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I23"
+  },
+  {
+    "id": "sheet-12-i24",
+    "name": "Da Qiao",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I24"
+  },
+  {
+    "id": "sheet-12-i25",
+    "name": "Zhang Fei",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I25"
+  },
+  {
+    "id": "sheet-12-i26",
+    "name": "Yuan Xiao",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I26"
+  },
+  {
+    "id": "sheet-12-i27",
+    "name": "Snow White",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I27"
+  },
+  {
+    "id": "sheet-12-i28",
+    "name": "Liu Bei",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "I28"
+  },
+  {
+    "id": "sheet-12-l13",
+    "name": "Kingdom's Divide",
+    "category": "Lightweight deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L13"
+  },
+  {
+    "id": "sheet-12-l14",
+    "name": "Arcane Blast (HVN)",
+    "category": "Lightweight deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L14"
+  },
+  {
+    "id": "sheet-12-l15",
+    "name": "Lost in Thought (Promo)",
+    "category": "Lightweight deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L15"
+  },
+  {
+    "id": "sheet-12-l19",
+    "name": "Art of War",
+    "category": "Plastic deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L19"
+  },
+  {
+    "id": "sheet-12-l20",
+    "name": "Jian Yu",
+    "category": "Plastic deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L20"
+  },
+  {
+    "id": "sheet-12-l21",
+    "name": "Harbringer of Lightning",
+    "category": "Plastic deckboxes",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "L21"
+  },
+  {
+    "id": "sheet-12-b38",
+    "name": "BCW Lorraine, Blademaster",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B38"
+  },
+  {
+    "id": "sheet-12-b39",
+    "name": "BCW Nia, Mistveiled Scout",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B39"
+  },
+  {
+    "id": "sheet-12-b40",
+    "name": "BCW Arthur, Young Heir",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B40"
+  },
+  {
+    "id": "sheet-12-b41",
+    "name": "BCW Lunete, Frostbinder Priest",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B41"
+  },
+  {
+    "id": "sheet-12-b42",
+    "name": "Rai, Stormseer (Foil Matte)",
+    "category": "Sleeves",
+    "detail": "Patreon reward",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B42"
+  },
+  {
+    "id": "sheet-12-b43",
+    "name": "Lorraine, Spirit Ruler (Foil Matte)",
+    "category": "Sleeves",
+    "detail": "Patreon reward",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B43"
+  },
+  {
+    "id": "sheet-12-b44",
+    "name": "Arisanna, Astral Zenith",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B44"
+  },
+  {
+    "id": "sheet-12-b45",
+    "name": "Diana, Duskstalker",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B45"
+  },
+  {
+    "id": "sheet-12-b46",
+    "name": "Tonoris, Genesis Aegis",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B46"
+  },
+  {
+    "id": "sheet-12-b47",
+    "name": "Frostbind (Promo)",
+    "category": "Sleeves",
+    "detail": "Worlds 2024",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B47"
+  },
+  {
+    "id": "sheet-12-b48",
+    "name": "Champions (The Grand Archive +)",
+    "category": "Sleeves",
+    "detail": "Worlds 2024 Participants",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B48"
+  },
+  {
+    "id": "sheet-12-b49",
+    "name": "Champions (Oblivate +)",
+    "category": "Sleeves",
+    "detail": "Worlds 2024 Participants",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B49"
+  },
+  {
+    "id": "sheet-12-b50",
+    "name": "Silvie, Slime Soverign",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B50"
+  },
+  {
+    "id": "sheet-12-b51",
+    "name": "Tristan, Shadowdancer",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B51"
+  },
+  {
+    "id": "sheet-12-b52",
+    "name": "Merlin, Kingslayer",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B52"
+  },
+  {
+    "id": "sheet-12-b53",
+    "name": "Jin, Fate Defiant",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B53"
+  },
+  {
+    "id": "sheet-12-b54",
+    "name": "Kongming, Wayward Maven",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B54"
+  },
+  {
+    "id": "sheet-12-b55",
+    "name": "Guo Jia, Heaven's Favored",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B55"
+  },
+  {
+    "id": "sheet-12-b56",
+    "name": "Diao Chan, Idyll Corsage",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B56"
+  },
+  {
+    "id": "sheet-12-b57",
+    "name": "Ciel, Mirage's Grave",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B57"
+  },
+  {
+    "id": "sheet-12-b58",
+    "name": "Diana, Moonpiercer",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B58"
+  },
+  {
+    "id": "sheet-12-b59",
+    "name": "Alice, Golden Queen",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B59"
+  },
+  {
+    "id": "sheet-12-b60",
+    "name": "Merlin, Veritor",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B60"
+  },
+  {
+    "id": "sheet-12-b61",
+    "name": "Alice, Orleane",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B61"
+  },
+  {
+    "id": "sheet-12-b62",
+    "name": "Chronowarp",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B62"
+  },
+  {
+    "id": "sheet-12-b63",
+    "name": "Raziel, Archangel of Libra",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B63"
+  },
+  {
+    "id": "sheet-12-b64",
+    "name": "Azrael, Archangel of Materia,",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B64"
+  },
+  {
+    "id": "sheet-12-b65",
+    "name": "Ariel, Archarngel of Natura",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B65"
+  },
+  {
+    "id": "sheet-12-b66",
+    "name": "Haniel, Archangel of Spectra",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B66"
+  },
+  {
+    "id": "sheet-12-b67",
+    "name": "Lorraine, Archlight Saber",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B67"
+  },
+  {
+    "id": "sheet-12-b68",
+    "name": "Dante, Hemomancer",
+    "category": "Sleeves",
+    "detail": "Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B68"
+  },
+  {
+    "id": "sheet-12-b69",
+    "name": "Incapacitate Promo)",
+    "category": "Sleeves",
+    "detail": "Worlds 2025",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B69"
+  },
+  {
+    "id": "sheet-12-b70",
+    "name": "Mystic Purifier (fuzichoo)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B70"
+  },
+  {
+    "id": "sheet-12-b71",
+    "name": "Horizon's Reprise (Cambria)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B71"
+  },
+  {
+    "id": "sheet-12-b72",
+    "name": "Horizon's Reprise (Azoth)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B72"
+  },
+  {
+    "id": "sheet-12-b73",
+    "name": "Horizon's Reprise (Sanguo)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B73"
+  },
+  {
+    "id": "sheet-12-b74",
+    "name": "Horizon's Reprise (Underland)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B74"
+  },
+  {
+    "id": "sheet-12-b75",
+    "name": "Horizon's Reprise (All Champions)",
+    "category": "Sleeves",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B75"
+  },
+  {
+    "id": "sheet-12-b76",
+    "name": "Champions (The Grand Archive +)",
+    "category": "Sleeves",
+    "detail": "Worlds 2025",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B76"
+  },
+  {
+    "id": "sheet-12-b77",
+    "name": "Champions (Oblivate +)",
+    "category": "Sleeves",
+    "detail": "Worlds 2025",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B77"
+  },
+  {
+    "id": "sheet-12-b78",
+    "name": "Mordred, Aurelian Regent",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B78"
+  },
+  {
+    "id": "sheet-12-b79",
+    "name": "Tristan, Ascendant Shadow",
+    "category": "Sleeves",
+    "detail": "Worlds 2026 Participants",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B79"
+  },
+  {
+    "id": "sheet-12-b85",
+    "name": "Horizon's Reprise (22 types/Each champ)",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B85"
+  },
+  {
+    "id": "sheet-12-b86",
+    "name": "Arisanna, Master Alchemist",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B86"
+  },
+  {
+    "id": "sheet-12-b87",
+    "name": "Lorraine, Spirit Ruler",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B87"
+  },
+  {
+    "id": "sheet-12-b88",
+    "name": "Diana, Deadly Duelist",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B88"
+  },
+  {
+    "id": "sheet-12-b89",
+    "name": "Merlin, Memory Thief",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B89"
+  },
+  {
+    "id": "sheet-12-b90",
+    "name": "Jin, Fate Defiant",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B90"
+  },
+  {
+    "id": "sheet-12-b91",
+    "name": "Silvie, Slime Soverign",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B91"
+  },
+  {
+    "id": "sheet-12-b92",
+    "name": "Kongming, Wayward Maven",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B92"
+  },
+  {
+    "id": "sheet-12-b93",
+    "name": "Tristan, Shadowreaver",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B93"
+  },
+  {
+    "id": "sheet-12-b94",
+    "name": "Silvie, Earth's Tune",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B94"
+  },
+  {
+    "id": "sheet-12-b95",
+    "name": "Lorraine, Wandering Warrior",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B95"
+  },
+  {
+    "id": "sheet-12-b96",
+    "name": "Rai, Spellcrafter",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B96"
+  },
+  {
+    "id": "sheet-12-b97",
+    "name": "Diana, Keen Huntress",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B97"
+  },
+  {
+    "id": "sheet-12-b98",
+    "name": "Tonoris, Might of Humanity",
+    "category": "Standees",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B98"
+  },
+  {
+    "id": "sheet-12-b109",
+    "name": "Alice",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B109"
+  },
+  {
+    "id": "sheet-12-b110",
+    "name": "Arisanna",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B110"
+  },
+  {
+    "id": "sheet-12-b111",
+    "name": "Kongming",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B111"
+  },
+  {
+    "id": "sheet-12-b112",
+    "name": "Underland hoodie jacket",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B112"
+  },
+  {
+    "id": "sheet-12-b113",
+    "name": "M.Rage Merlin Windbreaker",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B113"
+  },
+  {
+    "id": "sheet-12-b114",
+    "name": "Tirstan (Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B114"
+  },
+  {
+    "id": "sheet-12-b115",
+    "name": "Nico(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B115"
+  },
+  {
+    "id": "sheet-12-b116",
+    "name": "Silvie(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B116"
+  },
+  {
+    "id": "sheet-12-b117",
+    "name": "Merlin(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B117"
+  },
+  {
+    "id": "sheet-12-b118",
+    "name": "Diana(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B118"
+  },
+  {
+    "id": "sheet-12-b119",
+    "name": "Alice(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B119"
+  },
+  {
+    "id": "sheet-12-b120",
+    "name": "Ciel(Artist)",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B120"
+  },
+  {
+    "id": "sheet-12-b121",
+    "name": "Diao Chan",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B121"
+  },
+  {
+    "id": "sheet-12-b122",
+    "name": "Guo Jia",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B122"
+  },
+  {
+    "id": "sheet-12-b123",
+    "name": "Kongming",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B123"
+  },
+  {
+    "id": "sheet-12-b124",
+    "name": "Merlin",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B124"
+  },
+  {
+    "id": "sheet-12-b125",
+    "name": "Arisanna",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B125"
+  },
+  {
+    "id": "sheet-12-b126",
+    "name": "Triskit",
+    "category": "Clothing",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B126"
+  },
+  {
+    "id": "sheet-12-b133",
+    "name": "Yuletide Cheer Kongming",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B133"
+  },
+  {
+    "id": "sheet-12-b134",
+    "name": "Lunar Blessings Rai",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B134"
+  },
+  {
+    "id": "sheet-12-b135",
+    "name": "Lunar Blessings Arisanna",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B135"
+  },
+  {
+    "id": "sheet-12-b136",
+    "name": "Lunar Blessings Lorraine",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B136"
+  },
+  {
+    "id": "sheet-12-b137",
+    "name": "Lunar Blessings Tristan",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B137"
+  },
+  {
+    "id": "sheet-12-b138",
+    "name": "Seaside Splash Merlin",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B138"
+  },
+  {
+    "id": "sheet-12-b139",
+    "name": "Seaside Splash Nico",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B139"
+  },
+  {
+    "id": "sheet-12-b140",
+    "name": "Seaside Splash Tonoris",
+    "category": "Merchandise sets",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B140"
+  },
+  {
+    "id": "sheet-12-b150",
+    "name": "Lorraine (Pantheon)",
+    "category": "Event entry items",
+    "detail": "RDO",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B150"
+  },
+  {
+    "id": "sheet-12-b151",
+    "name": "Zander (Pantheon)",
+    "category": "Event entry items",
+    "detail": "RDO",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B151"
+  },
+  {
+    "id": "sheet-12-b152",
+    "name": "Arisanna (Pantheon)",
+    "category": "Event entry items",
+    "detail": "RDO",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B152"
+  },
+  {
+    "id": "sheet-12-b153",
+    "name": "Kongming (Pantheon)",
+    "category": "Event entry items",
+    "detail": "RDO",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B153"
+  },
+  {
+    "id": "sheet-12-b154",
+    "name": "Binder (Merlin)",
+    "category": "Event entry items",
+    "detail": "PTM",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B154"
+  },
+  {
+    "id": "sheet-12-b155",
+    "name": "Merlin water bottle",
+    "category": "Event entry items",
+    "detail": "Nationals 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B155"
+  },
+  {
+    "id": "sheet-12-b156",
+    "name": "Binder (Zhang Fei, Liu Bei, Guan Yu)",
+    "category": "Event entry items",
+    "detail": "AMB",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B156"
+  },
+  {
+    "id": "sheet-12-b157",
+    "name": "Binder (Kongming, Guo Jia)",
+    "category": "Event entry items",
+    "detail": "HVN",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B157"
+  },
+  {
+    "id": "sheet-12-b158",
+    "name": "Bronze counter and status indicatiors",
+    "category": "Event entry items",
+    "detail": "DTR",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B158"
+  },
+  {
+    "id": "sheet-12-b159",
+    "name": "Lu Bu backpack",
+    "category": "Event entry items",
+    "detail": "Nationals 2025",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B159"
+  },
+  {
+    "id": "sheet-12-b168",
+    "name": "Merlin, Amethyst's Glow",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B168"
+  },
+  {
+    "id": "sheet-12-b169",
+    "name": "Alice, Whim's Monarch",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B169"
+  },
+  {
+    "id": "sheet-12-b170",
+    "name": "Merlin, Brilliant Vestige",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B170"
+  },
+  {
+    "id": "sheet-12-b171",
+    "name": "Alice, Golden Queen",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B171"
+  },
+  {
+    "id": "sheet-12-b172",
+    "name": "Ciel, Mirage's Grave",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B172"
+  },
+  {
+    "id": "sheet-12-b173",
+    "name": "Diana, Moonpiercer",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B173"
+  },
+  {
+    "id": "sheet-12-b174",
+    "name": "Excalibur, Reflected Edge",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B174"
+  },
+  {
+    "id": "sheet-12-b175",
+    "name": "Kongming, Fel Eidolon (CUR)",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B175"
+  },
+  {
+    "id": "sheet-12-b176",
+    "name": "Guo Jia, Heavenly Favored",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B176"
+  },
+  {
+    "id": "sheet-12-b177",
+    "name": "Diao Chan, Dreaming Wish",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B177"
+  },
+  {
+    "id": "sheet-12-b178",
+    "name": "Jin, Undying Resolve",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B178"
+  },
+  {
+    "id": "sheet-12-b179",
+    "name": "Kongming, Fel Eidolon",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B179"
+  },
+  {
+    "id": "sheet-12-b180",
+    "name": "Jin, Zealous Maverick",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B180"
+  },
+  {
+    "id": "sheet-12-b181",
+    "name": "Kongming, Wayward Maven",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B181"
+  },
+  {
+    "id": "sheet-12-b182",
+    "name": "Jin, Fate Defiant",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B182"
+  },
+  {
+    "id": "sheet-12-b183",
+    "name": "Merlin, Memory Thief",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B183"
+  },
+  {
+    "id": "sheet-12-b184",
+    "name": "Tristan, Shadowreaver",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B184"
+  },
+  {
+    "id": "sheet-12-b185",
+    "name": "Merlin, Kingslayer",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B185"
+  },
+  {
+    "id": "sheet-12-b186",
+    "name": "Vainglory Retribution",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B186"
+  },
+  {
+    "id": "sheet-12-b187",
+    "name": "Alice, Distorted Queen",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B187"
+  },
+  {
+    "id": "sheet-12-b188",
+    "name": "Savage Slash (PR) (Medium-jumbo)",
+    "category": "Jumbo cards",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B188"
+  },
+  {
+    "id": "sheet-12-b194",
+    "name": "Mystic Purifizer (Fuzichoco) acrylic Art block",
+    "category": "Art blocks",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B194"
+  },
+  {
+    "id": "sheet-12-b195",
+    "name": "Horizon's Reprise Acrylic Art Block (Cambria)",
+    "category": "Art blocks",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B195"
+  },
+  {
+    "id": "sheet-12-b196",
+    "name": "Horizon's Reprise Acrylic Art Block (Azoth)",
+    "category": "Art blocks",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B196"
+  },
+  {
+    "id": "sheet-12-b197",
+    "name": "Horizon's Reprise  Acrylic Art Block (Sanguo)",
+    "category": "Art blocks",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B197"
+  },
+  {
+    "id": "sheet-12-b198",
+    "name": "Horizon's Reprise Acrylic Art Block (Underland)",
+    "category": "Art blocks",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B198"
+  },
+  {
+    "id": "sheet-12-b199",
+    "name": "Alice, Golden Queen  acrylic art piece",
+    "category": "Art blocks",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B199"
+  },
+  {
+    "id": "sheet-12-b200",
+    "name": "The Looking Glass acrylic art piece",
+    "category": "Art blocks",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B200"
+  },
+  {
+    "id": "sheet-12-b201",
+    "name": "Chesire Cat acrylic art piece",
+    "category": "Art blocks",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B201"
+  },
+  {
+    "id": "sheet-12-b202",
+    "name": "Fractured Memories acrylic art piece",
+    "category": "Art blocks",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B202"
+  },
+  {
+    "id": "sheet-12-b208",
+    "name": "Arisanna chibi figure",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B208"
+  },
+  {
+    "id": "sheet-12-b209",
+    "name": "Kongming chibi figure",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B209"
+  },
+  {
+    "id": "sheet-12-b210",
+    "name": "Merlin, Amethyst's Glow figure",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B210"
+  },
+  {
+    "id": "sheet-12-b211",
+    "name": "Tristan plushie",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B211"
+  },
+  {
+    "id": "sheet-12-b212",
+    "name": "Guo Jia plushie",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B212"
+  },
+  {
+    "id": "sheet-12-b213",
+    "name": "Silvie plushie",
+    "category": "Figures and plushies",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B213"
+  },
+  {
+    "id": "sheet-12-b218",
+    "name": "Orange D30",
+    "category": "Accessories",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B218"
+  },
+  {
+    "id": "sheet-12-b219",
+    "name": "Blue D30",
+    "category": "Accessories",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B219"
+  },
+  {
+    "id": "sheet-12-b220",
+    "name": "Mechanical Dice (ft Morrigan)",
+    "category": "Accessories",
+    "detail": "",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B220"
+  },
+  {
+    "id": "sheet-12-b221",
+    "name": "Enamel Pin (Alice, Ciel, Tristan)",
+    "category": "Accessories",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B221"
+  },
+  {
+    "id": "sheet-12-b222",
+    "name": "Enamel Pin (Lorraine, Tonoris, Guo Jia)",
+    "category": "Accessories",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B222"
+  },
+  {
+    "id": "sheet-12-b223",
+    "name": "Enamel Pin (Casella)",
+    "category": "Accessories",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B223"
+  },
+  {
+    "id": "sheet-12-b224",
+    "name": "Horizon's Reprrise Key Visual Wall Scroll (all champions)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B224"
+  },
+  {
+    "id": "sheet-12-b225",
+    "name": "Keychain (Avatar of Gaia)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B225"
+  },
+  {
+    "id": "sheet-12-b226",
+    "name": "Keychain (Naia)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B226"
+  },
+  {
+    "id": "sheet-12-b227",
+    "name": "Keychain(Blue Slime)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B227"
+  },
+  {
+    "id": "sheet-12-b228",
+    "name": "Keychain (Baby grey slime)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B228"
+  },
+  {
+    "id": "sheet-12-b229",
+    "name": "Keychain (Heavenly Guide)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B229"
+  },
+  {
+    "id": "sheet-12-b230",
+    "name": "Keychain (Dungeon Guide)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B230"
+  },
+  {
+    "id": "sheet-12-b231",
+    "name": "Keychain (Academy Guide)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B231"
+  },
+  {
+    "id": "sheet-12-b232",
+    "name": "Keychain (The Majestic Spirit)",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B232"
+  },
+  {
+    "id": "sheet-12-b233",
+    "name": "Kongming, Wayward Maven coaster",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B233"
+  },
+  {
+    "id": "sheet-12-b234",
+    "name": "Arisanna, Master Alchemist coaster",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B234"
+  },
+  {
+    "id": "sheet-12-b235",
+    "name": "Lorraine, Spirit Ruler coaster",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B235"
+  },
+  {
+    "id": "sheet-12-b236",
+    "name": "Merlin Tote Bag",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B236"
+  },
+  {
+    "id": "sheet-12-b237",
+    "name": "silver metal counters",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B237"
+  },
+  {
+    "id": "sheet-12-b238",
+    "name": "MRC Table mat",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B238"
+  },
+  {
+    "id": "sheet-12-b239",
+    "name": "sticker sheet",
+    "category": "Accessories",
+    "detail": "Ascents",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B239"
+  },
+  {
+    "id": "sheet-12-b240",
+    "name": "Silvie beanie (anx)",
+    "category": "Accessories",
+    "detail": "Merch day 2024",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B240"
+  },
+  {
+    "id": "sheet-12-b241",
+    "name": "Silvie beanie (wow)",
+    "category": "Accessories",
+    "detail": "merch day 2024",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B241"
+  },
+  {
+    "id": "sheet-12-b242",
+    "name": "Arisanna water bottle",
+    "category": "Accessories",
+    "detail": "Worlds 2024",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B242"
+  },
+  {
+    "id": "sheet-12-b243",
+    "name": "Vanitas deodorant",
+    "category": "Accessories",
+    "detail": "Worlds 2026",
+    "photoUrl": "",
+    "sourceSheet": "GA Merch",
+    "sourceCell": "B243"
+  }
+]

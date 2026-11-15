@@ -253,6 +253,8 @@ export default function OfficialProductsIndex() {
     <PageLayout data-component="OfficialProductsIndex" width="wide">
       <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the deck editor to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
 
+      <Link to="/merchandise" className="mb-4 inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">Browse merchandise →</Link>
+
       <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Official deck format">
         {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" aria-pressed={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`min-h-12 rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}
       </div>

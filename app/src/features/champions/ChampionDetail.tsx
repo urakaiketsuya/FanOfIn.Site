@@ -1,3 +1,4 @@
+import ChampionMatchups from "./ChampionMatchups";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Button from "../../components/ui/Button";
@@ -27,11 +28,12 @@ import { ChampionBonusSection, ChampionSeasonSection, SimilarDecksSection } from
 
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
-type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions" | "similar";
-type ChampionSurface = "overview" | "decks" | "more";
+type ChampionTab = "matchups" | "season" | "cards" | "builds" | "decks" | "bonus" | "regions" | "similar";
+type ChampionSurface = "overview" | "matchups" | "decks" | "more";
 
 const SURFACES: { key: ChampionSurface; label: string }[] = [
   { key: "overview", label: "Overview" },
+  { key: "matchups", label: "Matchups" },
   { key: "decks", label: "Decks" },
   { key: "more", label: "More" },
 ];
@@ -43,7 +45,7 @@ const MORE_TABS: { key: Extract<ChampionTab, "bonus" | "regions" | "similar">; l
 ];
 
 const MAX_SIMILAR_DECKS_SHOWN = 10;
-const TAB_KEYS: ChampionTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((tab) => tab.key)];
+const TAB_KEYS: ChampionTab[] = [...OVERVIEW_TABS, "matchups", "decks", ...MORE_TABS.map((tab) => tab.key)];
 
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
@@ -51,9 +53,8 @@ export default function ChampionDetail() {
   useDocumentTitle(`${championName} – Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
-  const surface: ChampionSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";
+  const surface: ChampionSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "matchups" ? "matchups" : tab === "decks" ? "decks" : "more";
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "bonus" | "regions" | "similar" : "bonus";
-  const showOverview = surface === "overview";
 
   // Gate every large per-tab dataset behind the tab that actually needs it – this page used to
   // eagerly fetch every dataset below (similarity.json alone is 28MB, the single biggest dataset
@@ -61,7 +62,8 @@ export default function ChampionDetail() {
   // class of bug just fixed on CardDetail.tsx/ArchetypeDetail.tsx. archetypeData/trendsData stay
   // eager – the header and default "By Season" tab need them immediately.
   const archetypeData = useArchetypeData();
-  const taxonomyData = useArchetypeTaxonomyData(showOverview);
+  const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
+  const taxonomyData = useArchetypeTaxonomyData(tab === "builds");
   const trendsData = useChampionTrendsData();
   const archetypeStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
   const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
@@ -74,7 +76,7 @@ export default function ChampionDetail() {
   const regionIndexStatus = useOmnidexIndexStatus();
   const compositionStatus = usePublishedDataStatus("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json");
   const compositionData = useCompositionWinRateData(tab === "similar");
-  const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
+  const cardStatsByChampionData = useCardStatsByChampionData(tab === "cards");
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
   // separate list, not merged into `archetypes` – fall back to it so this page works for either.
@@ -100,10 +102,9 @@ export default function ChampionDetail() {
       setSpiritFilter({ kind: "all" });
       setShowAllBuilds(false);
       setTypeFilter("all");
-      setTab("season");
       prevChampionNameRef.current = championName;
     }
-  }, [championName, setTab]);
+  }, [championName]);
 
   // Switching Spirit/Element resets the type filter – the previously-selected type may not exist
   // (or may mean something very different) in the newly-selected breakdown's card pool.
@@ -271,17 +272,21 @@ export default function ChampionDetail() {
             </dl>
           </details>
 
-          <Tabs baseId="champion-statistics" tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
+          <Tabs baseId="champion-statistics" tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "matchups" ? "matchups" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" wrap />
 
           <TabPanel baseId="champion-statistics" tab="overview" active={surface}>
-          {showOverview && <>
+          <Tabs baseId="champion-overview" label="Overview sections" wrap active={tab} onChange={setTab} tabs={[{ key: "season", label: "Season" }, { key: "cards", label: "Cards" }, { key: "builds", label: "Builds" }]} />
+          <TabPanel baseId="champion-overview" tab="season" active={tab}>
+          {tab === "season" && <>
             <PublishedSourceStatus label="Season statistics" status={trendStatus} hasData={!!trendsData} />
             {trendsData && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
           </>}
 
-          {showOverview && <ChampionStaples key={championName} championName={championName} />}
+          </TabPanel>
+          <TabPanel baseId="champion-overview" tab="cards" active={tab}>
+          {tab === "cards" && <ChampionStaples key={championName} championName={championName} />}
 
-          {showOverview && champion.topCards.main.length > 0 && (
+          {tab === "cards" && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards by Spirit">
               <p className="mt-2 text-sm text-ctp-subtext1">Explore the cards players bring with {championName}, split by the Spirit they play.</p>
               <p className="mt-2 text-sm text-ctp-subtext0">
@@ -357,7 +362,11 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {showOverview && builds.length > 0 && (
+          </TabPanel>
+          <TabPanel baseId="champion-overview" tab="builds" active={tab}>
+          <PublishedSourceStatus label="Champion builds" status={taxonomyStatus} hasData={!!taxonomyData} />
+          {tab === "builds" && taxonomyData && builds.length === 0 && <InlineState className="mt-4">No published builds for this champion.</InlineState>}
+          {tab === "builds" && builds.length > 0 && (
             <Section
               className="mt-6"
               heading="compact"
@@ -376,6 +385,11 @@ export default function ChampionDetail() {
             </Section>
           )}
 
+          </TabPanel>
+
+          </TabPanel>
+          <TabPanel baseId="champion-statistics" tab="matchups" active={surface}>
+            <ChampionMatchups key={championName} championName={championName} rows={archetypeData?.battleChart ?? []} />
           </TabPanel>
 
           <TabPanel baseId="champion-statistics" tab="decks" active={surface}>

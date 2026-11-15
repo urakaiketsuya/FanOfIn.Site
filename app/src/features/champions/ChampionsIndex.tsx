@@ -25,10 +25,10 @@ function ChampionDirectoryCard({ summary, card, trend, showTrend = false, showSt
 }) {
   return <article className="min-w-0" data-component="ChampionGalleryCard">
     <Link to={`/champions/${championNameToSlug(summary.signature)}`}
-      className="card-art-action group flex h-full flex-col overflow-hidden rounded-2xl border border-ctp-surface1 bg-ctp-mantle hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
-      <CardArtTile card={card} name={card?.name ?? summary.signature} artworkOnly />
-      <div className="p-4">
-        <h2 className="break-words text-xl font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{summary.signature}</h2>
+      className="card-art-action group grid h-full grid-cols-[6rem_minmax(0,1fr)] items-center overflow-hidden rounded-2xl border border-ctp-surface1 bg-ctp-mantle hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+      <div className="p-2"><CardArtTile card={card} name={card?.name ?? summary.signature} /></div>
+      <div className="min-w-0 p-3">
+        <h2 className="break-words text-lg font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{summary.signature}</h2>
         {showTrend && <p className="mt-2 flex items-center gap-2 text-sm text-ctp-subtext1">
           <span aria-hidden="true" className={`text-xl ${trend?.trend === "rising" ? "text-ctp-green" : trend?.trend === "falling" ? "text-ctp-peach" : "text-ctp-subtext1"}`}>{trend ? TREND_ICONS[trend.trend] : "—"}</span>
           {trend ? TREND_LABELS[trend.trend] : "Season trend unavailable"}
@@ -44,6 +44,7 @@ function ChampionDirectoryCard({ summary, card, trend, showTrend = false, showSt
 
 export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
+  const [query, setQuery] = useState("");
   const [showStats, setShowStats] = useState(true);
   const [view, setView] = useState<"champions" | "spirits" | "race">("champions");
   const data = useArchetypeData();
@@ -69,6 +70,10 @@ export default function ChampionsIndex() {
   const currentSeason = seasonIndex?.seasons.filter(season => Date.parse(season.dateStart) <= now && Date.parse(season.dateEnd) >= now)
     .sort((a, b) => b.dateStart.localeCompare(a.dateStart))[0];
 
+  const matchesSearch = (entry: ArchetypeSummary) => [entry.signature, ...entry.classes, ...entry.elements].join(" ").toLowerCase().includes(query.trim().toLowerCase());
+  const visibleChampions = archetypes?.filter(matchesSearch);
+  const visibleSpirits = data?.namedSpirits?.filter(matchesSearch);
+
   return (
     <PageLayout width="fluid" data-component="ChampionsIndex">
       <PageHeader title="Choose a champion" description="Explore their cards and builds." />
@@ -87,18 +92,23 @@ export default function ChampionsIndex() {
         <Tabs baseId="champion-directory" label="Champion views" variant="pill" wrap active={view} onChange={setView} tabs={[{ key: "champions", label: "Champions" }, { key: "spirits", label: "Named spirits" }, { key: "race", label: "Meta race" }]} />
         {view !== "race" && <Button aria-pressed={showStats} onClick={() => setShowStats(value => !value)}>{showStats ? "Hide tournament stats" : "Show tournament stats"}</Button>}
       </div>
+      {view !== "race" && <label className="mt-3 block max-w-lg text-sm text-ctp-subtext1">Find a champion or spirit
+        <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Name, class, or element" className="mt-1 min-h-control w-full rounded-xl border border-ctp-surface1 bg-ctp-mantle px-3 text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" />
+      </label>}
       {showStats && view !== "race" && <p className="mt-3 text-sm text-ctp-subtext1">Statistics cover the published tournament sample.</p>}
       <TabPanel baseId="champion-directory" tab="champions" active={view} keepMounted>
         {archetypes?.length === 0 && <p role="status" className="mt-6 text-ctp-subtext1">No champions have been published yet.</p>}
+        {!!archetypes?.length && visibleChampions?.length === 0 && <p role="status" className="mt-4">No champions match your search.</p>}
         {trendsData && <p className="mt-3 text-sm text-ctp-subtext1">{trendsData.seasonOrder.length > 1 ? `Tournament trends · ${trendsData.seasonOrder.at(-1)} compared with ${trendsData.seasonOrder.at(-2)}` : "Season trends need two seasons of results to compare."}</p>}
-        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,18rem),1fr))] gap-4">
-          {archetypes?.map(champion => <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} trend={trendByName.get(champion.signature)} showTrend={!!trendsData} showStats={showStats} />)}
+        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] gap-4">
+          {visibleChampions?.map(champion => <ChampionDirectoryCard key={champion.signature} summary={champion} card={championImages.get(champion.signature)} trend={trendByName.get(champion.signature)} showTrend={!!trendsData} showStats={showStats} />)}
         </div>
       </TabPanel>
       <TabPanel baseId="champion-directory" tab="spirits" active={view}>
+        {!!data?.namedSpirits?.length && visibleSpirits?.length === 0 && <p role="status" className="mt-4">No spirits match your search.</p>}
         {data && !data.namedSpirits?.length && <p role="status" className="mt-6 text-ctp-subtext1">No named spirits have been published yet.</p>}
-        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,18rem),1fr))] gap-4">
-          {data?.namedSpirits?.map(spirit => <ChampionDirectoryCard key={spirit.signature} summary={spirit} card={namedSpiritImages.get(spirit.signature)} showStats={showStats} />)}
+        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] gap-4">
+          {visibleSpirits?.map(spirit => <ChampionDirectoryCard key={spirit.signature} summary={spirit} card={namedSpiritImages.get(spirit.signature)} showStats={showStats} />)}
         </div>
       </TabPanel>
       <TabPanel baseId="champion-directory" tab="race" active={view} keepMounted>
