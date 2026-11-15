@@ -53,7 +53,7 @@ const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../
  * as "Stonescale Band (002B)") — confirmed on ~11% of all priced editions. Mirrors the per-edition
  * lookup `app/src/features/cards/CardDetail.tsx` already does client-side.
  */
-async function loadPriceByName(cardIndex: Map<string, CardSignature>): Promise<Map<string, number>> {
+export async function loadPriceByName(cardIndex: Map<string, CardSignature>): Promise<Map<string, number>> {
   const priceByName = new Map<string, number>();
   try {
     const data = JSON.parse(await readFile(PRICES_PATH, "utf-8")) as PriceData;
@@ -87,12 +87,6 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   const ctx = createAnalysisContext(cardIndex);
   const priceByName = await loadPriceByName(cardIndex);
   const budgetPrices = await readFile(PRICES_PATH, 'utf8').then(text => JSON.parse(text) as PriceData).catch(() => null);
-
-  const cardReferenceEnd = cardStatsReferenceEnd(completed);
-  function cardStatsFor(bundles: typeof completed) {
-    const report = computeCardStatsReport(bundles, cardIndex, cardReferenceEnd);
-    return { ...report, cards: report.cards.map(stat => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null })) };
-  }
 
   await mkdir(DATA_DIR, { recursive: true });
   await writeJsonAtomic(path.join(DATA_DIR, 'budget-decks.json'), computeBudgetDecks(completed, ctx, budgetPrices, new Date().toISOString()), 0);
@@ -133,28 +127,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     "utf-8",
   );
 
-  const cardStats = cardStatsFor(completed);
-  const adoptionPeriodsByCategory: Record<string, CardAdoptionPeriods> = {};
-  const cardStatsByCategory: Record<string, CardStat[]> = {};
-  for (const category of EVENT_CATEGORY_ORDER) {
-    const subset = completed.filter((b) => b.event.category === category);
-    if (subset.length === 0) continue;
-    const report = cardStatsFor(subset);
-    cardStatsByCategory[category] = report.cards;
-    if (report.adoptionPeriods) adoptionPeriodsByCategory[category] = report.adoptionPeriods;
-  }
-  await writeFile(
-    path.join(DATA_DIR, "cards.json"),
-    JSON.stringify({
-      generatedAt: new Date().toISOString(),
-      cards: cardStats.cards,
-      adoptionPeriods: cardStats.adoptionPeriods,
-      adoptionPeriodsByCategory,
-      byCategory: cardStatsByCategory,
-      decksConsidered: cardStats.decksConsidered,
-    }),
-    "utf-8",
-  );
+  const cardStats = await writeCardStats(completed, cardIndex, priceByName);
 
   const keywordStats = computeKeywordStats(completed, cardIndex);
   await writeFile(
@@ -306,4 +279,34 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   console.log(
     `analysis: ${ratings.size} rated players, ${rivals.length} players with rival data, ${upsets.length} upsets, ${cardStats.cards.length} cards, ${keywordStats.length} keywords, ${cardQuantityStats.length} cards with quantity stats, ${compositionWinRates.length} composition win-rate buckets, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
+}
+
+/** Regenerate only cards.json using the same publisher as the full analysis run. */
+export async function writeCardStats(completed: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>, priceByName: Map<string, number>) {
+  const cardReferenceEnd = cardStatsReferenceEnd(completed);
+  function cardStatsFor(bundles: typeof completed) {
+    const report = computeCardStatsReport(bundles, cardIndex, cardReferenceEnd);
+    return { ...report, cards: report.cards.map(stat => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null })) };
+  }
+
+  const cardStats = cardStatsFor(completed);
+  const adoptionPeriodsByCategory: Record<string, CardAdoptionPeriods> = {};
+  const cardStatsByCategory: Record<string, CardStat[]> = {};
+  for (const category of EVENT_CATEGORY_ORDER) {
+    const subset = completed.filter((b) => b.event.category === category);
+    if (subset.length === 0) continue;
+    const report = cardStatsFor(subset);
+    cardStatsByCategory[category] = report.cards;
+    if (report.adoptionPeriods) adoptionPeriodsByCategory[category] = report.adoptionPeriods;
+  }
+  await writeJsonAtomic(path.join(DATA_DIR, "cards.json"), {
+    generatedAt: new Date().toISOString(),
+    cards: cardStats.cards,
+    adoptionPeriods: cardStats.adoptionPeriods,
+    adoptionPeriodsByCategory,
+    byCategory: cardStatsByCategory,
+    decksConsidered: cardStats.decksConsidered,
+  }, 0);
+
+  return cardStats;
 }

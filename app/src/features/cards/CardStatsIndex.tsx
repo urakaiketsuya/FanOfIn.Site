@@ -1,4 +1,4 @@
-import { matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
+import { cardAdoption, matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
 import { useCommunityBlendedCardInclusion, useCommunitySourceCounts } from "../community/data";
-import CardImage from "../../components/CardImage";
+import CardArtTile from "../../components/CardArtTile";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
@@ -26,7 +26,7 @@ const SORT_LABELS: Record<SortMode, string> = {
   usage: "Usage",
   adjusted: "Win rate (adjusted)",
   raw: "Win rate (raw)",
-  hot: "Hot",
+  hot: "Adoption change",
   hype: "Hype gap",
 };
 
@@ -107,6 +107,8 @@ export default function CardStatsIndex() {
     return EVENT_CATEGORY_ORDER.filter((c) => c in cardStatsData.byCategory);
   }, [cardStatsData]);
 
+  const adoptionPeriods = category ? cardStatsData?.adoptionPeriodsByCategory?.[category] : cardStatsData?.adoptionPeriods;
+
   const rows = useMemo(() => {
     if (!cardStatsData) return [];
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
@@ -122,7 +124,7 @@ export default function CardStatsIndex() {
       const communityEntry = communityByName.get(c.name);
       const communityPercent = communityEntry?.percentOfDecks ?? null;
       const tournamentPercent = totalTournamentDecks > 0 ? c.deckCount / totalTournamentDecks : 0;
-      return { ...c, communityPercent, hypeGap: communityPercent !== null ? communityPercent - tournamentPercent : null };
+      return { ...c, adoption: cardAdoption(c, adoptionPeriods), communityPercent, hypeGap: communityPercent !== null ? communityPercent - tournamentPercent : null };
     });
     return withHype.sort((a, b) => {
       switch (sortMode) {
@@ -131,14 +133,16 @@ export default function CardStatsIndex() {
         case "raw":
           return b.avgWinRate - a.avgWinRate;
         case "hot":
-          return b.recentDeckCount - b.priorDeckCount - (a.recentDeckCount - a.priorDeckCount);
+          if (!a.adoption) return b.adoption ? 1 : a.name.localeCompare(b.name);
+          if (!b.adoption) return -1;
+          return b.adoption.change - a.adoption.change || b.recentDeckCount - a.recentDeckCount || a.name.localeCompare(b.name);
         case "hype":
           return (b.hypeGap ?? -1) - (a.hypeGap ?? -1);
         default:
           return b.deckCount - a.deckCount;
       }
     });
-  }, [cardStatsData, sortMode, minDecks, category, search, searchableTextByName, communityByName, totalTournamentDecks]);
+  }, [cardStatsData, adoptionPeriods, sortMode, minDecks, category, search, searchableTextByName, communityByName, totalTournamentDecks]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -220,23 +224,37 @@ export default function CardStatsIndex() {
         </div>
       )}
 
-      <div className="mt-4 grid grid-cols-2 gap-2">
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <input
           type="text"
           aria-label="Search by card name or effect text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search cards…"
-          className="col-span-2 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+          className="sm:col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
         />
-        <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} aria-label="Sort cards" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+        <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} aria-label="Sort cards" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
           {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
         </select>
-        <select value={category ?? ""} onChange={(e) => setCategory(e.target.value || null)} aria-label="Tournament type" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+        <select value={category ?? ""} onChange={(e) => setCategory(e.target.value || null)} aria-label="Tournament type" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
           <option value="">All tournaments</option>
           {categoriesPresent.map((value) => <option key={value} value={value}>{EVENT_CATEGORY_LABELS[value] ?? value}</option>)}
         </select>
       </div>
+
+      {sortMode === "hot" && cardStatsData && (
+        <section aria-label="Adoption periods" className="mt-4 rounded-xl border border-ctp-surface1 p-3">
+          <h2 className="font-semibold">Deck inclusion · 30-day change</h2>
+          {adoptionPeriods ? <div className="mt-2 grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
+            {(["prior", "recent"] as const).map(key => {
+              const period = adoptionPeriods[key];
+              const date = (value: string) => new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+              return <div key={key}><span className="font-medium">{key === "prior" ? "Previous" : "Recent"} · {period.decks.toLocaleString()} decks</span><div className="mt-1 text-ctp-subtext0">{date(period.start)} – {date(new Date(Date.parse(period.end) - 86400000).toISOString())}</div></div>;
+            })}
+          </div> : <p className="mt-2 text-sm text-ctp-subtext0">Adoption data unavailable.</p>}
+          {adoptionPeriods && (!adoptionPeriods.prior.decks || !adoptionPeriods.recent.decks) && <p className="mt-2 text-sm text-ctp-subtext0">Adoption change unavailable for this tournament type.</p>}
+        </section>
+      )}
 
       {sortMode === "hype" && (
         <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">What is the hype gap?</summary><p className="mt-1">Community usage from {communitySourceLabel} minus tournament usage. These populations have different goals; the gap is not a performance rating.</p></details>
@@ -245,7 +263,7 @@ export default function CardStatsIndex() {
       <details className="mt-2 text-xs text-ctp-subtext0">
         <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Minimum sample · {minDecks === 0 ? "Any" : `${minDecks}+ decks`}</summary>
         <div className="mt-2 flex flex-wrap gap-2">
-          {MIN_DECKS_OPTIONS.map((count) => <button key={count} type="button" onClick={() => setMinDecks(count)} aria-pressed={minDecks === count} className={`rounded-lg border px-3 py-1.5 text-xs ${minDecks === count ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{count === 0 ? "Any" : `${count}+ decks`}</button>)}
+          {MIN_DECKS_OPTIONS.map((count) => <button key={count} type="button" onClick={() => setMinDecks(count)} aria-pressed={minDecks === count} className={`min-h-control rounded-lg border px-3 py-1.5 text-xs ${minDecks === count ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{count === 0 ? "Any" : `${count}+ decks`}</button>)}
         </div>
       </details>
 
@@ -261,25 +279,29 @@ export default function CardStatsIndex() {
           const packages = getCardPackageMembership(entry.name);
           return (
             <article key={entry.name} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm shadow-black/20">
-              <div className="flex items-start gap-3">
+              <div className="flex flex-wrap items-start gap-3">
                 <CardHoverPreview image={cardImagePath(card)} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={entry.name}>
-                  {card && cardImagePath(card) ? (
-                    <Link to={`/cards/${entry.slug ?? card.slug}`} className="block shrink-0" aria-label={`View ${entry.name}`}>
-                      <CardImage image={cardImagePath(card)} alt={entry.name} className="h-32 w-24 rounded-md object-cover object-top" />
-                    </Link>
-                  ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
+                  <div className="w-24 shrink-0">
+                    {entry.slug || card?.slug ? <Link to={`/cards/${entry.slug ?? card?.slug}`} aria-label={`View ${entry.name}`}><CardArtTile card={card} name={entry.name} /></Link> : <CardArtTile card={card} name={entry.name} />}
+                  </div>
                 </CardHoverPreview>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 basis-36 break-words">
                   {entry.slug ? <Link to={`/cards/${entry.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.name}</Link> : <span className="font-medium text-ctp-text">{entry.name}</span>}
-                  <div className="mt-2 text-sm font-semibold text-ctp-text">{entry.deckCount.toLocaleString()} decks</div>
+                  {sortMode === "hot" && <div className="mt-2" aria-label="Deck inclusion change">
+                    {entry.adoption ? <>
+                      <div className="text-lg font-semibold tabular-nums">{(entry.adoption.prior * 100).toFixed(1)}% → {(entry.adoption.recent * 100).toFixed(1)}%</div>
+                      <div aria-label={`${(entry.adoption.change * 100).toFixed(1)} percentage points`} className="text-sm font-medium tabular-nums text-ctp-subtext1">{entry.adoption.change > 0 ? "+" : ""}{(entry.adoption.change * 100).toFixed(1)} pp</div>
+                    </> : <span className="text-sm text-ctp-subtext0">Change unavailable</span>}
+                  </div>}
+                  <div className="mt-2 text-sm font-semibold text-ctp-text">{entry.deckCount.toLocaleString()} decks{sortMode === "hot" ? " · all time" : ""}</div>
                   <div className="mt-1 text-xs text-ctp-subtext1">{(entry.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</div>
                 </div>
               </div>
-              <div className="mt-3 flex items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
-                <button type="button" onClick={() => toggleSelected(entry.name)} aria-pressed={isSelected} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-medium ${isSelected ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
+                <button type="button" onClick={() => toggleSelected(entry.name)} aria-pressed={isSelected} className={`min-h-control rounded-lg border px-3 py-2 text-xs font-medium ${isSelected ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>
                   {isSelected ? "Remove from filter" : "Filter with card"}
                 </button>
-                {entry.slug && <Link to={`/cards/${entry.slug}`} className="text-xs text-ctp-blue hover:underline">View card →</Link>}
+                {entry.slug && <Link to={`/cards/${entry.slug}`} className="inline-flex min-h-control items-center text-xs text-ctp-blue hover:underline">View card →</Link>}
               </div>
               <details className="mt-2 text-xs text-ctp-subtext0">
                 <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More statistics</summary>

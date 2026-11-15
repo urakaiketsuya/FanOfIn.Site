@@ -41,3 +41,12 @@ coverage for low-count choices, single-quantity cards, missing distributions,
 Main + Material aggregation, duplicate sightings and Sideboard exclusion.
 The historical pipeline artifact was not regenerated; new single-quantity coverage
 requires an analysis rebuild. Existing multi-quantity artifacts work immediately.
+
+### Adoption report follow-through
+
+Card Stats now ranks Adoption change by normalized equal-period inclusion and
+shows previous/recent percentages with signed percentage points. Category filters
+use matching populations; legacy or empty-period data is unavailable. cards.json
+has been regenerated through the shared publisher using local cached inputs.
+The earlier raw-count Hot finding is resolved for Card Stats; other comparison
+surfaces still require their own audit before reusing this report.

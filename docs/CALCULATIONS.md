@@ -7257,3 +7257,11 @@ single-quantity choices. The UI separately shows available/requested coverage an
 links to the build. Builds with observations playing the card sort by playing-list
 count, then name and ID; six show initially with an explicit expansion. This uses
 the current published membership and does not infer period adoption or causal swaps.
+
+Card Stats presents equal-period adoption as previous → recent deck-inclusion
+percentages (one decimal), with signed percentage-point change. Adoption sorting
+uses unrounded change descending, recent sightings descending, then card name;
+unavailable changes sort last. Category filters use their own period populations,
+never the overall denominator. All-time deck counts are labeled separately.
+Offline refresh: `node --import tsx scripts/build-card-stats.ts`, sharing the full
+analysis publisher and current local price join; only cards.json is replaced.

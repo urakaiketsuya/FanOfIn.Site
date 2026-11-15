@@ -629,3 +629,29 @@ Neos Sight: 1.35% recent versus 0.74% prior (+0.61 percentage points).
 The first smoke exposed a listless completed event dated in 2027; anchoring now
 requires an available list, with regression coverage. Cached catalog was read
 locally after the freshness-aware loader attempted an unavailable network refresh.
+
+## Milestone 12 continuation — adoption report and artifact
+
+Card Stats replaces Hot with Adoption change: prior → recent inclusion percentages
+beside shared card art, signed percentage-point change, and all-time deck counts.
+Ranking uses normalized change with category-specific populations; absent metadata
+or empty periods stay unavailable. Period dates and available-list counts appear
+once above results. Existing usage and win-rate sorts remain available.
+
+Regenerated data/analysis/cards.json from the local cached catalog and completed
+Omnidex bundles: 2,361 cards, 62,117 available lists; prior 1,488 and recent 2,525.
+All category counts fit their populations. The repeatable offline command is
+`node --import tsx scripts/build-card-stats.ts`; it reuses the full analysis
+publisher and price join, writes atomically, and leaves other artifacts alone.
+
+Verification: seven calculation/quantity/public-API regressions; app and pipeline
+typechecks; lint (existing unrelated warnings). Chromium at 360px/1280px verified
+results, search empty state, category denominators, missing populations, legacy
+metadata, loading, keyboard navigation, primary 48px controls and expanded stats.
+Text-zoom wrapping corrected within the report. Existing global navigation and the supplemental keyword sort still
+overflow with a 200% root font at 360px. The existing data hook does not expose a
+separate network-error/retry state; no new recovery UI added in this slice.
+
+Next: observed build variants and alternatives, then reference-deck-supported
+swaps. Extended Analytics remains ~69% (11/16 unequal milestones complete;
+card/build milestone 12 partially complete). Not pushed.
