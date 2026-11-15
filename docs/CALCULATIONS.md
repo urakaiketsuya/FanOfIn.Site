@@ -7372,3 +7372,13 @@ Rebuild only this artifact from committed event snapshots with
 `node --import tsx pipeline/scripts/rebuild-observed-matchups.ts`; it updates just its manifest
 entry. The regular analysis run regenerates it from the completed bundles alongside the taxonomy.
 Card-impact associations retain their original all-time cohort and are not recomputed by these filters.
+
+### Observed period comparison
+
+For an inclusive selected date range, the previous period ends one UTC day before
+its start and contains the same number of calendar days. Both cohorts retain the
+same format and build classification; event-specific and open-ended ranges cannot
+be compared. The change is selected score rate minus previous score rate in
+percentage points, not relative percent. Each cohort displays its own deck-result,
+deck, and event counts. Empty cohorts have no rate or change. These are descriptive
+cohort comparisons, without adjustment for opponent mix or claims of significance.

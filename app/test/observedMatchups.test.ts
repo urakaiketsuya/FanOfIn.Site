@@ -42,3 +42,23 @@ test('filtered results replace all-time totals, show cohort scope, and distingui
   assert.doesNotMatch(html, /101|Limited data|Historical win rate/);
   assert.match(html, /—/);
 });
+
+test('previous periods use inclusive UTC days, preserve format, and reject incomplete or event scopes', async () => {
+  const { previousMatchupScope, emptyMatchupScope } = await import('@gatcg/shared');
+  const scope = { ...emptyMatchupScope, from: '2024-03-01', to: '2024-03-31', format: 'Standard' };
+  assert.deepEqual(previousMatchupScope(scope), { ...scope, from: '2024-01-30', to: '2024-02-29' });
+  assert.equal(previousMatchupScope({ ...scope, event: '1' }), null);
+  assert.equal(previousMatchupScope({ ...scope, to: '' }), null);
+  assert.equal(previousMatchupScope({ ...scope, to: '2024-02-30' }), null);
+  assert.equal(previousMatchupScope({ ...scope, to: '2024-02-01' }), null);
+  assert.deepEqual(previousMatchupScope({ ...scope, to: scope.from }), { ...scope, from: '2024-02-29', to: '2024-02-29' });
+});
+
+test('period comparison keeps empty samples distinct from zero performance', async () => {
+  const { default: Comparison } = await import('../src/features/deck-analysis/MatchupPeriodComparison');
+  const { emptyMatchupScope } = await import('@gatcg/shared');
+  const current = { winRate: 0, results: 5, decks: 1, events: 1, matchups: [] };
+  const html = renderToStaticMarkup(createElement(Comparison, { current, previous: { ...current, winRate: null, results: 0 }, scope: emptyMatchupScope, previousScope: emptyMatchupScope }));
+  assert.match(html, /0%/); assert.match(html, /—/);
+  assert.match(html, /No comparison/); assert.doesNotMatch(html, /percentage points/);
+});

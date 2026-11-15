@@ -33,3 +33,18 @@ export function observedMatchupCohort(data: ObservedMatchupData, cluster: string
   return { winRate: rate(record), results: recordSize(record), decks: events.reduce((n, e) => n + e.decks[cluster], 0), events: events.length,
     matchups: [...opponents].map(([id, row]) => ({ id, matches: row.matches, winRate: rate(row.record)! })).sort((a, b) => b.matches - a.matches || a.id.localeCompare(b.id)) };
 }
+
+/** Adjacent, non-overlapping UTC periods with equal inclusive day counts. */
+export function previousMatchupScope(scope: ObservedMatchupScope): ObservedMatchupScope | null {
+  const parse = (value: string) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return NaN;
+    const time = Date.parse(value + 'T00:00:00Z');
+    return Number.isFinite(time) && new Date(time).toISOString().slice(0, 10) === value ? time : NaN;
+  };
+  const from = parse(scope.from), to = parse(scope.to);
+  if (scope.event || !Number.isFinite(from) || !Number.isFinite(to) || to < from) return null;
+  const day = 86_400_000;
+  const start = new Date(from - (to - from + day)).toISOString().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
+  return { ...scope, from: start, to: new Date(from - day).toISOString().slice(0, 10) };
+}

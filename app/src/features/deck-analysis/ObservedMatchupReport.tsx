@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState, useTransition } from 'react';
-import { observedMatchupCohort, observedMatchupEvents, emptyMatchupScope, type Card, type ObservedMatchupData, type ObservedMatchupScope } from '@gatcg/shared';
+import { observedMatchupCohort, observedMatchupEvents, previousMatchupScope, emptyMatchupScope, type Card, type ObservedMatchupData, type ObservedMatchupScope } from '@gatcg/shared';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import type { DeckTestResult } from '../../lib/deckTestResult';
 import AnalysisMatchups from './AnalysisMatchups';
+import MatchupPeriodComparison from './MatchupPeriodComparison';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 
@@ -15,8 +16,11 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
   const [draft, setDraft] = useState(scope);
   useEffect(() => setDraft(scope), [scope]);
   const [pending, startTransition] = useTransition();
+  const [compare, setCompare] = useState(false);
+  const priorScope = useMemo(() => previousMatchupScope(scope), [scope]);
   const cluster = result?.classification.cluster;
   const cohort = useMemo(() => data && cluster ? observedMatchupCohort(data, cluster.id, scope) : undefined, [data, cluster, scope]);
+  const previous = useMemo(() => compare && data && cluster && priorScope ? observedMatchupCohort(data, cluster.id, priorScope) : undefined, [compare, data, cluster, priorScope]);
   const events = useMemo(() => data && cluster ? observedMatchupEvents(data, cluster.id, scope) : [], [data, cluster, scope]);
   const scopedResult = useMemo(() => {
     if (!result || !cohort) return result;
@@ -44,10 +48,13 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
         <label className="col-span-2 min-w-0 text-sm sm:col-span-1">Event<select className={inputClass} value={draft.event} onChange={e => update({ event: e.target.value })}><option value="">All events</option>{events.map(e => <option key={e.id} value={e.id}>{e.date} · {e.name}</option>)}</select></label>
       </div>
       {Object.values(draft).some(Boolean) && <Button className="mt-3" onClick={() => update(emptyMatchupScope)}>Reset filters</Button>}
+      {priorScope && <Button className="mt-3 ml-2" aria-pressed={compare} onClick={() => setCompare(value => !value)}>{compare ? 'Hide comparison' : 'Compare previous period'}</Button>}
+      {!priorScope && !invalid && <p className="mt-3 text-xs text-ctp-subtext0">Compare periods: choose both dates and All events.</p>}
       {invalid && <p role="alert" className="mt-3 text-sm">Choose an end date on or after the start.</p>}
       {pending && <p role="status" className="mt-3 text-sm">Updating results…</p>}
       {status.error && <div className="mt-3"><p role="alert" className="text-sm">Showing saved results. Update failed.</p><Button onClick={status.retry}>Retry results</Button></div>}
     </Panel>
+    {!invalid && cohort && previous && priorScope && <MatchupPeriodComparison current={cohort} previous={previous} scope={scope} previousScope={priorScope} />}
     {!invalid && <AnalysisMatchups key={`${cluster.id}:${JSON.stringify(scope)}`} result={scopedResult} loading={false} cards={cards} preview={preview} observed={cohort} observedLabel={[scope.from || scope.to ? `${scope.from || 'Start'} – ${scope.to || 'Latest'}` : 'All dates', scope.event ? events.find(e => String(e.id) === scope.event)?.name ?? 'Selected event' : 'All events', scope.format || 'All formats'].join(' · ')} />}
   </div>;
 }
