@@ -930,3 +930,25 @@ Verification (2026-11-12): homepage hero and trend cards checked at 390px and 12
 including keyboard focus, 48px actions and page overflow. Local account fixtures covered
 latest-deck ordering, long titles, loading, empty, failed-load/retry, account switching and
 editor route/state handoff. Live account access and native touch devices were not tested.
+
+## Navigation and merchandise photo bounties
+
+Group deck browsing, creation, saved decks, comparison, reports and improvement under Decks.
+Collection contains inventory, card locations, trading, products and merchandise. Account holds
+profile and settings; Champions names the full directory. Each route belongs to one primary
+section. Query-specific links such as Judges take precedence without removing active feedback
+for unrelated browse filters. Join Discord uses the shared invite and decorative brand icon,
+opens a new tab, and retains a readable label on mobile and desktop.
+
+Merchandise has Catalog and Bounties peer tabs. Bounties lists entries with neither a resolved
+catalog image nor an embedded gallery, using the same source resolution as MerchandisePhoto.
+A source-listing link alone does not count as a photo. Transient remote image failures do not
+change the catalog's bounty membership. Preserve search/category across tabs, reset pagination
+when filters change, and retain the selected tab when clearing filters. The bounty prompt asks
+contributors to share images, item identity and source links through Discord.
+
+Verification (2026-11-14): navigation checked at 360/390px and 1280px; bounty results, empty
+search/recovery, category filtering and keyboard tab switching checked at 390px and 1280px.
+Checked 48px controls, overflow, Escape/focus restoration and Discord destination/new-tab
+attributes. Thirteen focused tests, app typecheck and targeted lint passed. Native touch,
+production authentication, Discord membership and remote image availability were not tested.

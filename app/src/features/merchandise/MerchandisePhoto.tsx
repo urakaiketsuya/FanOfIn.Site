@@ -1,10 +1,6 @@
-import { reviewedPhotoFor } from "./reviewedPhotos";
 import { useState } from "react";
-import { galleryImageUrl, imgurEmbedUrl } from "./photoPresentation";
-import { sellerPhotoFor } from "./sellerPhotos";
-import { manufacturerPhotoFor } from "./manufacturerPhotos";
+import { merchandisePhotoSources, type PhotoItem } from "./photoSources";
 
-interface PhotoItem { id: string; name: string; category: string; detail: string; photoUrl: string }
 
 function PhotoImage({ src, name }: { src: string; name: string }) {
   const [failed, setFailed] = useState(false);
@@ -14,11 +10,7 @@ function PhotoImage({ src, name }: { src: string; name: string }) {
 }
 
 export default function MerchandisePhoto({ item }: { item: PhotoItem }) {
-  const reviewed = reviewedPhotoFor(item);
-  const seller = sellerPhotoFor(item);
-  const manufacturer = manufacturerPhotoFor(item);
-  const embedUrl = imgurEmbedUrl(item.photoUrl);
-  const imageUrl = reviewed?.imageUrl ?? manufacturer?.imageUrl ?? seller?.imageUrl ?? galleryImageUrl(item.photoUrl);
+  const { reviewed, seller, manufacturer, embedUrl, imageUrl } = merchandisePhotoSources(item);
   if (!imageUrl && !embedUrl) return null;
   return <figure className="mb-3 overflow-hidden rounded-lg border border-ctp-surface0 bg-ctp-crust">
     {imageUrl ? <PhotoImage key={imageUrl} src={imageUrl} name={`${item.name} · ${item.category}${reviewed?.group ? " · group photo of three compact deckboxes" : ""}${seller ? " · seller photo" : ""}`} /> : <iframe

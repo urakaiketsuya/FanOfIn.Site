@@ -1,3 +1,5 @@
+import DiscordIcon from "./components/DiscordIcon";
+import { NAV_ENTRIES, entryIsActive, linkIsActive } from "./lib/navigation";
 import MenuDetails from "./components/ui/MenuDetails";
 import AuroraBackground from "./components/AuroraBackground";
 import ConnectivityNotice from "./components/ui/toast/ConnectivityNotice";
@@ -11,31 +13,8 @@ import LoadingBar from "./components/LoadingBar";
 import FeatureBanner from "./components/FeatureBanner";
 import { initAnalytics, trackPageview } from "./lib/analytics";
 
-interface NavLinkItem { to: string; label: string }
-interface NavGroup { kind: "group"; label: string; paths: string[]; links: NavLinkItem[] }
-/** A single-destination top-level pillar (no dropdown) – for a section important enough to earn its own nav slot without a menu of sub-pages underneath it. */
-interface NavFlatLink { kind: "link"; to: string; label: string }
-type NavEntry = NavGroup | NavFlatLink;
-
-const NAV_ENTRIES: NavEntry[] = [
-  { kind: "group", label: "Cards", paths: ["/cards", "/artists"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/spoilers", label: "Spoilers" }, { to: "/cards/banlist", label: "Banlist" }, { to: "/artists", label: "Artists" }, { to: "/cards/staples", label: "Card Staples" }, { to: "/cards/stats", label: "Top Cards" }, { to: "/cards/packages", label: "Card Packages" }] },
-  { kind: "link", to: "/champions", label: "Top Champions" },
-  { kind: "group", label: "Decks", paths: ["/decks", "/pantheon/decks", "/official-decks"], links: [{ to: "/decks", label: "Browse Decks" }, { to: "/pantheon/decks", label: "Pantheon Decks" }, { to: "/official-decks", label: "Official Product Decks" }] },
-  { kind: "group", label: "Competition", paths: ["/metagame", "/events", "/seasons", "/players", "/teams", "/timelines", "/regions", "/stores"], links: [{ to: "/metagame", label: "Metagame" }, { to: "/stores", label: "Store Locator" }, { to: "/events", label: "Browse Events" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }, { to: "/regions", label: "Regional Analysis" }] },
-  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/deck-analysis", "/deck-review", "/combo-lab", "/goldfish", "/life-tracker", "/match-log", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/decks/new", label: "Create Deck" }, { to: "/deck-analysis", label: "Deck Report" }, { to: "/deck-review", label: "Improve Deck" }, { to: "/combo-lab", label: "Combo Lab" }, { to: "/goldfish", label: "Goldfish Test" }, { to: "/life-tracker", label: "Life Tracker" }, { to: "/match-log", label: "Match Log" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Trading Binder" }] },
-  { kind: "group", label: "Account", paths: ["/account", "/decks/edit", "/collection", "/card-locations", "/settings"], links: [{ to: "/account", label: "Edit profile" }, { to: "/decks/edit", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/card-locations", label: "Where are my cards?" }, { to: "/settings", label: "Settings" }] },
-];
-
 function linkClass(active: boolean) {
-  return `flex min-h-control items-center rounded px-3 py-2 text-sm font-medium ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-base hover:text-ctp-text"}`;
-}
-
-function linkIsActive(pathname: string, search: string, to: string) {
-  const target = new URL(to, window.location.origin);
-  if (pathname !== target.pathname) return false;
-  const current = new URLSearchParams(search);
-  if (!target.search) return !current.has("tab");
-  return Array.from(new URLSearchParams(target.search)).every(([key, value]) => current.get(key) === value);
+  return `flex min-h-control items-center rounded px-3 py-2 text-sm font-medium ${active ? "bg-forest-surface text-ctp-blue ring-1 ring-inset ring-ctp-blue/40" : "text-ctp-subtext1 hover:bg-ctp-base hover:text-ctp-text"}`;
 }
 
 export default function App() {
@@ -64,47 +43,47 @@ export default function App() {
     {!["/deck-builder", "/decks/draft", "/decks/new"].includes(location.pathname) && <FeatureBanner />}
     <header className="sticky top-0 z-40 flex max-h-dvh flex-col border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
       <div className="relative">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-          <Link to="/" className="flex min-h-control min-w-0 items-center font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>
-          <nav className="hidden min-w-0 flex-wrap items-center gap-1 md:flex" aria-label="Primary navigation">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3">
+          <Link to="/" className="flex min-h-control shrink-0 items-center font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>
+          <nav className="hidden min-w-0 flex-wrap items-center gap-1 xl:flex" aria-label="Primary navigation">
             {NAV_ENTRIES.map((entry) => {
               if (entry.kind === "link") {
                 return (
                   <Link
                     key={entry.to}
-                    to={entry.to}
-                    aria-current={isActive(entry.to) ? "page" : undefined}
-                    className={`flex min-h-control items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive(entry.to) ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}
+                    to={entry.to} target={entry.external ? "_blank" : undefined} rel={entry.external ? "noopener noreferrer" : undefined} aria-label={entry.external ? `${entry.label} (opens in a new tab)` : undefined}
+                    aria-current={entryIsActive(entry, location.pathname) ? (isActive(entry.to) ? "page" : "location") : undefined}
+                    className={`flex min-h-control items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors ${entryIsActive(entry, location.pathname) ? "bg-forest-surface text-ctp-blue ring-1 ring-inset ring-ctp-blue/40" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}
                   >
-                    {entry.label}
+                    {entry.icon === "discord" && <DiscordIcon />}{entry.label}
                   </Link>
                 );
               }
               const group = entry;
-              const active = group.paths.some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
+              const active = entryIsActive(group, location.pathname);
               return <MenuDetails key={group.label} className="relative group/nav">
-                <summary className={`flex min-h-control min-w-control cursor-pointer list-none items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<DisclosureChevron className="ml-1 group-open/nav:rotate-180" /></summary>
+                <summary className={`flex min-h-control min-w-control cursor-pointer list-none items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden ${active ? "bg-forest-surface text-ctp-blue ring-1 ring-inset ring-ctp-blue/40" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<DisclosureChevron className="ml-1 group-open/nav:rotate-180" /></summary>
                 <div className="absolute right-0 top-full z-50 min-w-52 pt-2">
-                  <div className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-1.5 shadow-xl shadow-black/20">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))}>{link.label}</Link>)}</div>
+                  <div className="max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain rounded-xl border border-ctp-surface1 bg-ctp-mantle p-1.5 shadow-xl shadow-black/20">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))}>{link.label}</Link>)}</div>
                 </div>
               </MenuDetails>;
 
             })}
           </nav>
           <div className="flex items-center gap-2">
-            <button ref={menuButtonRef} type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-nav" className="flex min-h-control min-w-control items-center justify-center rounded-md border border-ctp-surface1 p-2 text-ctp-subtext1 hover:text-ctp-text md:hidden">
+            <button ref={menuButtonRef} type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-nav" className="flex min-h-control min-w-control items-center justify-center rounded-md border border-ctp-surface1 p-2 text-ctp-subtext1 hover:text-ctp-text xl:hidden">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{menuOpen ? <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" /> : <path d="M3 5h14M3 10h14M3 15h14" strokeLinecap="round" />}</svg>
             </button>
           </div>
         </div>
         <LoadingBar />
       </div>
-      {menuOpen && <nav id="mobile-nav" onKeyDown={(event) => { if (event.key === "Escape") { setMenuOpen(false); menuButtonRef.current?.focus(); } }} className="min-h-0 overflow-y-auto overscroll-contain border-t border-ctp-surface0 bg-ctp-mantle px-4 py-3 md:hidden" aria-label="Mobile navigation">
+      {menuOpen && <nav id="mobile-nav" onKeyDown={(event) => { if (event.key === "Escape") { setMenuOpen(false); menuButtonRef.current?.focus(); } }} className="min-h-0 overflow-y-auto overscroll-contain border-t border-ctp-surface0 bg-ctp-mantle px-4 py-3 xl:hidden" aria-label="Mobile navigation">
         <div className="space-y-1">{NAV_ENTRIES.map((entry) => {
           if (entry.kind === "link") {
             return (
               <section key={entry.to} className="border-b border-ctp-surface0 pb-1 last:border-0">
-                <Link to={entry.to} aria-current={isActive(entry.to) ? "page" : undefined} className="flex min-h-control items-center rounded px-3 py-2 text-sm font-semibold text-ctp-text hover:bg-ctp-base" onClick={() => { setMenuOpen(false); setMobileGroup(null); menuButtonRef.current?.focus(); }}>{entry.label}</Link>
+                <Link to={entry.to} target={entry.external ? "_blank" : undefined} rel={entry.external ? "noopener noreferrer" : undefined} aria-label={entry.external ? `${entry.label} (opens in a new tab)` : undefined} aria-current={entryIsActive(entry, location.pathname) ? (isActive(entry.to) ? "page" : "location") : undefined} className={linkClass(entryIsActive(entry, location.pathname))} onClick={() => { setMenuOpen(false); setMobileGroup(null); menuButtonRef.current?.focus(); }}>{entry.icon === "discord" && <DiscordIcon />}{entry.label}</Link>
               </section>
             );
           }
@@ -112,7 +91,7 @@ export default function App() {
           const open = mobileGroup === group.label;
           const groupId = `mobile-links-${group.label.toLowerCase()}`;
           return <section key={group.label} className="border-b border-ctp-surface0 pb-1 last:border-0">
-            <h2><button type="button" aria-expanded={open} aria-controls={groupId} onClick={() => setMobileGroup(open ? null : group.label)} className="flex min-h-control w-full items-center justify-between rounded px-3 py-2 text-left text-sm font-semibold text-ctp-text"><span>{group.label}</span><DisclosureChevron className={open ? "rotate-180" : ""} /></button></h2>
+            <h2><button type="button" aria-expanded={open} aria-controls={groupId} onClick={() => setMobileGroup(open ? null : group.label)} className={`${linkClass(entryIsActive(group, location.pathname))} w-full justify-between text-left font-semibold`}><span>{group.label}</span><DisclosureChevron className={open ? "rotate-180" : ""} /></button></h2>
             {open && <div id={groupId} className="grid gap-1 pb-2">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => { setMenuOpen(false); setMobileGroup(null); menuButtonRef.current?.focus(); }}>{link.label}</Link>)}</div>}
           </section>;
         })}</div>
