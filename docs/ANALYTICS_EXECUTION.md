@@ -678,3 +678,26 @@ were browser-verified through the existing build-report controller.
 Next: reference-deck-supported swaps, plus remaining card/build surface audit.
 Extended Analytics remains ~69%: 11/16 unequal milestones finished; milestone 12
 now includes adoption and observed build variants, but is not complete. No push.
+
+## Milestone 12 continuation — reference-deck-supported Discovery swaps
+
+Discovery can now use a pasted/library/active list, match new releases against its
+actual Main+Material context and inspect a user-selected one-copy Main swap.
+Existing paired fixture models provide results; guarded cuts preserve dependencies,
+limits, elemental availability and printing allocations. Acceptance creates only a
+local Analysis draft with the original retained and a retryable storage failure.
+The shared picker gained an optional confirmation label; its existing default is
+unchanged. Concurrent swap-report presentation work was left untouched.
+
+Validation: 12 focused tests across reference swaps, decision reports and paired
+swap forecasts; real local browser flow at 360/1280, no overflow, keyboard acceptance,
+48px action, exact saved draft/original. Pasted import, no-cut selection,
+incomplete reference and storage-error recovery were exercised. App typecheck and
+lint passed (existing unrelated warnings). Catalog loading/error/retry were checked;
+spoiler-only data no longer enables premature reference imports. Existing Rai/Tonoris
+fixtures reused, no new mechanic fixtures or artifact rebuild needed.
+
+Next: card-detail competing choices and package-specific observed variants, followed
+by the remaining card/build surface audit. Extended Analytics remains approximately
+69% (11/16 unequal milestones complete; milestone 12 continues). No release push
+is included in this change.

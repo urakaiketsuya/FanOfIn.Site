@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import type { Card } from '@gatcg/shared';
+import { referenceSwap } from '../src/features/card-discovery/referenceSwap';
+import { computeSwapImpact } from '../src/features/analytics/swapImpact';
+import type { DeckWorkspace } from '../src/features/deckbuilder/persistence/deckWorkspace';
+const cards = new Map<string, Card>(JSON.parse(readFileSync(new URL('../../data/card-catalog.json', import.meta.url), 'utf8')).cards.map((c: Card) => [c.name, c]));
+const fixture = JSON.parse(readFileSync(new URL('./fixtures/rai-fire-draw.json', import.meta.url), 'utf8'));
+const lines = (value: Record<string, number>) => Object.entries(value).map(([name, quantity]) => ({ name, quantity }));
+const deck: DeckWorkspace = { version: 1, updatedAt: '', source: 'analysis', title: 'Rai fixture', sourceLabel: 'TCGEngine', format: 'STANDARD', championName: 'Rai', spiritName: 'Spirit of Fire', main: lines(fixture.main), material: lines(fixture.material), sideboard: [], maybeboard: [] };
+test('reference swap conserves exact size, retains sections and does not mutate the fixture', () => {
+  const original = JSON.stringify(deck);
+  const next = referenceSwap(deck, 'Fireball', 'Peer into Mana', cards)!;
+  assert.ok(next);
+  assert.equal(JSON.stringify(deck), original);
+  assert.equal(next.main.reduce((n, l) => n + l.quantity, 0), deck.main.reduce((n, l) => n + l.quantity, 0));
+  assert.deepEqual(next.material, deck.material);
+  assert.deepEqual(next.sideboard, deck.sideboard);
+  const forecast = computeSwapImpact(deck, next, cards);
+  assert.ok(forecast.supported);
+  assert.ok(forecast.rows.some(row => row.turn === 3));
+  assert.ok(forecast.rows.some(row => row.turn === 5));
+});
+test('rejects missing cards, wrong section/identity, unavailable cuts, copy limits and allocated printings', () => {
+  for (const [cut, add] of [['Fireball', 'Fireball'], ['unknown', 'Peer into Mana'], ['Fireball', 'unknown'], ['Fireball', 'Spirit of Fire'], ['Fireball', 'Frostbind']]) assert.equal(referenceSwap(deck, cut, add, cards), null);
+  assert.equal(referenceSwap({ ...deck, sideboard: [{ name: 'Peer into Mana', quantity: 4 }] }, 'Fireball', 'Peer into Mana', cards), null);
+  assert.equal(referenceSwap({ ...deck, main: [...deck.main, { name: 'unknown', quantity: 1 }] }, 'Fireball', 'Peer into Mana', cards), null);
+  assert.equal(referenceSwap({ ...deck, format: 'PANTHEON' }, 'Fireball', 'Peer into Mana', cards), null);
+  assert.equal(referenceSwap({ ...deck, printings: { main: { Fireball: [{ editionUuid: 'x', quantity: 1 }] } } }, 'Fireball', 'Peer into Mana', cards), null);
+});

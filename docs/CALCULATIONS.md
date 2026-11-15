@@ -7288,3 +7288,26 @@ The report shows four variants initially, four more per action, a six-card
 labeled preview for the reference, and complete sectioned lists on expansion.
 This is distinct from the older More → Variants similarity search outside
 published build membership. No additional mechanics fixtures or artifacts needed.
+
+### Discovery reference-deck swap previews
+
+Discovery may use an explicitly selected pasted/library/active workspace as its
+reference. New-release matching then uses the actual positive Main+Material cards,
+material element access and format, rather than Champion+Spirit placeholders.
+The existing release selector includes eligible Alter editions. Structural matches
+are not claimed to be functional substitutes or tournament-supported improvements.
+
+Compare swap lets the user select a one-copy Main cut. The pure `referenceSwap`
+guard requires Standard, known positive integer quantities, an available cut, a
+legal Main addition, available elements, the registered Main+Material+Sideboard
+copy limit, and preserved recommendation dependencies. Printing-allocated cuts
+are excluded rather than silently reassigned. Material/Song substitutions are not
+part of this flow. Unsupported pairs have no invented performance score.
+
+The complete before/after lists go to the existing paired `computeSwapImpact`
+models (turns 3 and 5, going first); these retain their existing TCGEngine fixture
+lineage and missing/unsupported states. No additional mechanics fixtures or
+analytics artifacts are generated. No swap is inferred from mere co-occurrence.
+Acceptance uses `persistReportSwap` to revalidate and atomically store the local
+Analysis draft and original; no account/public deck is updated. Storage failure
+keeps the comparison open and preserves the selection for retry.

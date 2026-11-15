@@ -60,3 +60,13 @@ and recorded-deck links make each alternative inspectable. This resolves the
 observed-variant presentation for build reports; card-detail competing choices,
 package-specific exact variants and reference-deck-supported swaps remain separate
 work. The older outside-membership similarity search is unchanged.
+
+### Reference-deck discovery follow-through
+
+Discovery now accepts an actual pasted, library or active reference list. It uses
+that list for new-release matching and lets the user choose a guarded one-copy
+Main swap, inspect existing paired forecasts, and explicitly open a local Analysis
+draft. Champion-only browsing does not offer forecasts. This closes the
+reference-context prerequisite for Discovery swaps; automatic competing-slot
+ranking and card-detail alternatives remain separate work. New-release connections
+remain structural suggestions, not observed substitutions or claimed win-rate gains.

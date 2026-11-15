@@ -29,7 +29,7 @@ function withLibraryTimeout<T>(request: Promise<T>): Promise<T> {
   });
 }
 
-export default function DeckWorkspacePicker({ catalogByName, source, onLoad, compact = false }: { catalogByName: Map<string, Card>; source: WorkspaceSource; onLoad: (workspace: PendingWorkspace) => void; compact?: boolean }) {
+export default function DeckWorkspacePicker({ catalogByName, source, onLoad, compact = false, confirmLabel }: { catalogByName: Map<string, Card>; source: WorkspaceSource; onLoad: (workspace: PendingWorkspace) => void; compact?: boolean; confirmLabel?: string }) {
   const baseId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
@@ -103,7 +103,7 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
 
   if (!open) return <Button ref={trigger} onClick={() => setOpen(true)}>Change deck</Button>;
 
-  const actions = pending ? <div className="flex flex-wrap justify-end gap-2"><Button onClick={() => setPending(null)}>Back</Button><Button variant="primary" onClick={confirm} disabled={!pending.championName}>Open in {source === "analysis" ? "Analysis" : source === "review" ? "Review" : "Combo Lab"}</Button></div> : undefined;
+  const actions = pending ? <div className="flex flex-wrap justify-end gap-2"><Button onClick={() => setPending(null)}>Back</Button><Button variant="primary" onClick={confirm} disabled={!pending.championName}>{confirmLabel ?? `Open in ${source === "analysis" ? "Analysis" : source === "review" ? "Review" : "Combo Lab"}`}</Button></div> : undefined;
   const body = <section data-component="DeckWorkspacePicker" className="min-w-0">
     <h2 ref={reviewHeading} tabIndex={-1} className="text-xl font-semibold outline-none">{pending ? "Check imported deck" : "Choose a deck"}</h2>
     <p className="mt-1 text-sm text-ctp-subtext1">{pending ? "Confirm its identity, format, and sections before continuing." : "Paste a list or select a deck from your library."}</p>
