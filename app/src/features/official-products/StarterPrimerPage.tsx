@@ -13,8 +13,8 @@ import { primerTerms, starterPrimers } from './primers/data';
 
 const linkClass = 'inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue underline decoration-ctp-blue/40 underline-offset-4 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 
-function CardGroup({ names, cards }: { names: string[]; cards: Map<string, Card> }) {
-  return <div className={`grid gap-3 ${names.length === 1 ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"}`}>{names.map(name => {
+function CardGroup({ names, cards, compact = false }: { names: string[]; cards: Map<string, Card>; compact?: boolean }) {
+  return <div className={`grid gap-3 ${compact ? "grid-cols-2 sm:grid-cols-3" : names.length === 1 ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"}`}>{names.map(name => {
     const card = cards.get(name);
     const content = <><CardArtTile card={card} name={name} /><span className="block py-2 text-sm font-medium">{name}</span></>;
     return card ? <Link key={name} to={`/cards/${card.slug}`} className="min-w-0 rounded-md text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={name} className="min-w-0">{content}</div>;
@@ -56,10 +56,16 @@ export default function StarterPrimerPage() {
       <label className="mt-4 block text-sm font-medium" htmlFor="primer-term-search">Find a term or card</label>
       <input id="primer-term-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Try Floating Memory or a card name" className="mt-2 min-h-12 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" />
       <p role="status" className="my-3 text-sm text-ctp-subtext0">{visible.length} terms</p>
-      <dl className="grid gap-5 md:grid-cols-2">{visible.map(term => <div key={term.term} className="min-w-0 rounded-lg bg-ctp-base p-4"><dt className="font-semibold text-ctp-text">{term.term}</dt><dd className="mt-2 leading-relaxed text-ctp-subtext1">{term.meaning}<span className="mt-2 flex flex-wrap gap-1">{term.cards.filter(name => !query.trim() || term.term.toLowerCase().includes(query.trim().toLowerCase()) || term.meaning.toLowerCase().includes(query.trim().toLowerCase()) || name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 3).map(name => {
-        const card = cards.get(name);
-        return card ? <Link key={name} className={`${linkClass} px-1`} to={`/cards/${card.slug}`}>{name}</Link> : <span key={name} className="py-2 text-sm">{name}</span>;
-      })}</span></dd></div>)}</dl>
+      <dl className="grid items-start gap-5 md:grid-cols-2">{visible.map(term => {
+        const examples = term.cards.filter(name => !query.trim() || term.term.toLowerCase().includes(query.trim().toLowerCase()) || term.meaning.toLowerCase().includes(query.trim().toLowerCase()) || name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 3);
+        return <div key={term.term} className="min-w-0 rounded-lg bg-ctp-base p-4">
+          <dt className="font-semibold text-ctp-text">{term.term}</dt>
+          <dd className="mt-2 space-y-4">
+            <p className="leading-relaxed text-ctp-subtext1">{term.meaning}</p>
+            <div className="max-w-lg"><CardGroup names={examples} cards={cards} compact /></div>
+          </dd>
+        </div>;
+      })}</dl>
       {!visible.length && <div className="py-4"><p className="mb-3">No matching terms in this deck.</p><Button onClick={() => setQuery('')}>Clear search</Button></div>}
     </Panel>
     <footer className="mt-5 flex flex-wrap gap-2">
