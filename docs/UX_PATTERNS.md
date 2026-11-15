@@ -952,3 +952,17 @@ search/recovery, category filtering and keyboard tab switching checked at 390px 
 Checked 48px controls, overflow, Escape/focus restoration and Discord destination/new-tab
 attributes. Thirteen focused tests, app typecheck and targeted lint passed. Native touch,
 production authentication, Discord membership and remote image availability were not tested.
+
+## Deck stats tasks
+
+Deck Stats defaults to Composition: section totals, a dominant cost curve, printed Floating
+Memory, and one selectable breakdown. Main, Material, and Sideboard scope only Composition.
+Consistency always names its Main-deck scope and selected card, with one primary access result
+and hypothetical copy-count comparisons. Preserve the chosen card and checkpoint between task
+switches. Compare loads historical build differences only when opened and links to the full
+comparison. Keep all probability and composition formulas in shared.
+
+Chart selection opens one shared DialogSheet with named CardResult artwork and exact membership;
+it does not append card grids to the report. Closing restores focus to the selected chart control.
+Missing catalog entries retain names and valid quantity-based odds. Empty sections and unavailable
+historical comparisons remain explicit states, never zero-valued results.

@@ -502,3 +502,17 @@ Vite build passed. Browser checks covered 390px/1280px three-deck reports, 360px
 empty/loading/missing/unavailable states, keyboard retry with a 48px target, card inspection,
 calculator/report state preservation, 200% mobile text and horizontal overflow. No browser
 errors were observed. Temporary state-test screens were removed. No push performed.
+
+## Deck consistency continuation — November 15, 2026
+
+Continued the existing Composition / Consistency / Compare task split. Consistency
+now leads with an automatic named-card summary at the shared 7/10/15/20 cards-seen
+checkpoints, capped and deduplicated for small libraries. The existing selected-card
+copy-count explorer remains below the results. Catalog gaps retain card names.
+Seven focused rendering/cohort tests and app typecheck passed. Browser verification
+was attempted but did not complete; responsive and interaction acceptance remains open.
+
+This is partial progress on milestone 11, not completion: supported draw-adjusted
+cohort models and empirical turn-checkpoint validation remain open. Existing archetype
+access uses per-sighting random-draw probabilities, not the paid Rai/Tonoris models.
+Extended Analytics remains 10/16 completed (~63%, unequal scope). No push.
