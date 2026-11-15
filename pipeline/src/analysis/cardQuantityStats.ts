@@ -9,14 +9,10 @@ interface QuantityAccum {
   winRateN: number;
 }
 
-/**
- * For each card, win rate broken out by how many copies a deck ran it at — answers "does running
- * 4x actually win more than 2x" directly, instead of only ever seeing a card's single overall
- * average (computeCardStats). Same per-deck accumulation shape as computeCardStats, just keyed by
- * (card, quantity) instead of just card.
- */
+/** Observed copy distributions among lists playing a card, with descriptive win rates. */
 export function computeCardQuantityStats(bundles: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>): CardQuantityStat[] {
   const accum = new Map<string, Map<number, QuantityAccum>>();
+  const seen = new Set<string>();
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
@@ -31,6 +27,9 @@ export function computeCardQuantityStats(bundles: OmnidexEventBundle[], cardInde
     }
 
     for (const entry of bundle.decklists) {
+      const deckId = `${bundle.id}:${entry.player}`;
+      if (seen.has(deckId)) continue;
+      seen.add(deckId);
       const winRate = winByPlayer.get(entry.player);
       const copiesByName = new Map<string, number>();
       for (const line of [...entry.decklist.main, ...entry.decklist.material]) {
@@ -62,9 +61,7 @@ export function computeCardQuantityStats(bundles: OmnidexEventBundle[], cardInde
     const quantities = Array.from(byQuantity.entries())
       .map(([quantity, a]) => ({ quantity, deckCount: a.deckCount, ...shrinkWinRate(a.winRateSum, a.winRateN, prior) }))
       .sort((a, b) => a.quantity - b.quantity);
-    // A card only ever run at one quantity has nothing to compare — same "don't show a
-    // comparison with only one side" reasoning used everywhere else in this codebase.
-    if (quantities.length < 2) continue;
+    // A single observed quantity is still a complete copy distribution.
     result.push({ name, slug: cardIndex.get(name)?.slug ?? null, quantities });
   }
 

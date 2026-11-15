@@ -549,3 +549,29 @@ and focus restoration, 48px tabs, retained calculator selection, and 200% text o
 Mobile and desktop screenshots were inspected. External art requests were isolated;
 card-name fallbacks were verified. Live deployment, remote art delivery, and full
 published-data loading/retry journeys were not verified. Temporary harnesses removed.
+
+## Milestone 12 continuation — card copy report foundation
+
+Audited the first seven release C surfaces in `CARD_BUILD_ANALYTICS_AUDIT.md`.
+Card detail now shows observed copy percentages without suppressing low-count
+choices or hiding them behind a win-rate disclosure. Tournament and community
+inclusion remain separate. Removed the unsupported raw-count “Trending up” label
+from Card detail. The producer retains single-quantity distributions and deduplicates
+event/player sightings; existing recommendation consumers keep their win-rate fields.
+The current artifact has not been rebuilt, so historically omitted single-quantity
+cards remain unavailable until the next analysis run.
+
+Milestone 12 remains open: build-scoped distributions, comparable adoption windows,
+observed variants/alternatives and deck-context supported swaps remain. Additional
+release C surfaces still need audit. Next: build-scoped card-detail copy distributions.
+Extended Analytics remains 11/16 complete (~69%, unequal checklist milestones).
+No push authorized or performed.
+
+Verification for this continuation: three focused regressions passed, pipeline
+TypeScript and targeted app lint passed. Actual CardInfoPanel rendered at 360px
+and 1280px in a temporary browser harness: normal, single-quantity and unavailable
+states passed, including 200% text sizing and no horizontal overflow. No new
+interactive controls or asynchronous states were added. Full route loading/retry,
+remote card art, production build and live deployment were not verified this slice.
+Temporary harness removed. Unrelated concurrent editor changes remain untouched.
+App TypeScript also completed successfully.

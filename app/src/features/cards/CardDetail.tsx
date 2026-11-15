@@ -121,9 +121,7 @@ export default function CardDetail() {
   const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
   const cardQuantityStatsData = useCardQuantityStatsData(showOverview);
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
-  // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
-  // real signal – same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
-  const quantityBuckets = cardQuantityStat?.quantities.filter((q) => q.deckCount >= 5) ?? [];
+  const quantityBuckets = cardQuantityStat?.quantities ?? [];
 
   const cardCatalog = useCardCatalog();
   // Same slug-first, name-fallback resolution DecklistView.tsx's own Tokens section already uses –

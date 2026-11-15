@@ -106,11 +106,14 @@ its own doc comment in `shared/src/winRateShrinkage.ts`), keyed differently per 
   produces the same windows) for downstream "trending" comparisons. `marketPrice` is left `null`
   here and filled in by `build.ts`, which joins against `data/prices.json` afterward — this module
   has no pricing data of its own.
-- **`computeCardQuantityStats`** (`cardQuantityStats.ts`) — per **(card name, copy count)**: does
-  running a card at 4x actually win more than at 2x? A card only ever run at a single quantity
-  across the whole dataset is dropped (`quantities.length < 2`) — same "nothing to compare against"
-  reasoning used for `CardQuantityStat` everywhere else a with/without split needs both sides
-  populated.
+- **`computeCardQuantityStats`** (`cardQuantityStats.ts`) — observed copies in Main + Material,
+  grouped by card and quantity. Count each event/player sighting once, excluding Sideboard.
+  Retain single-quantity distributions and low-count buckets. The card detail report divides
+  each bucket's count by all recorded lists playing that card, not all tournament lists.
+  Tournament inclusion and community inclusion are separate metrics. Descriptive win-rate
+  fields remain available to existing consumers; these are not causal effects of copy counts.
+  Legacy artifacts omit single-quantity cards until the next analysis rebuild; the report
+  shows unavailable rather than inventing a distribution from average copies.
 - **`computeCompositionWinRates`** (`deckCompositionStats.ts`) — per **(main-deck card type, 10-point
   composition-percentage bucket)**: does running more Allies (as a *share* of the main deck, by
   copies) correlate with winning more? Scoped to the **main deck only** — material is a mostly-fixed

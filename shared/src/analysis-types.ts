@@ -428,7 +428,7 @@ export interface CardQuantityBucket {
   adjustedWinRate: number;
 }
 
-/** A card's win rate broken out by how many copies a deck ran it at — only published for cards run at 2+ distinct quantities across public decklists (nothing to compare otherwise). */
+/** Observed quantities among public lists playing a card, including single-quantity distributions. */
 export interface CardQuantityStat {
   name: string;
   slug: string | null;
