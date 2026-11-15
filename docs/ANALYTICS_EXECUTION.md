@@ -602,3 +602,30 @@ were not verified in this slice. Temporary browser harness removed.
 Published-data smoke check: Neos Sight evaluated across 338 builds in ~241ms,
 with six playing builds; leading build d5kuf has 30/33 inclusion and all 30
 playing lists use three copies. Timing is one local run, not a performance guarantee.
+
+## Milestone 12 continuation — adoption data foundation
+
+Added equal, adjacent 30-day UTC windows, anchored to the latest dated completed
+event with an available Main list. Category reports share that anchor. Publication
+now includes each period's population and boundaries; duplicate event/player
+sightings, empty lists and nonpositive card entries cannot inflate counts. Main +
+Material only. All-time population is computed in the same pass as card counts.
+The shared cardAdoption helper returns inclusion and percentage-point change;
+missing populations, old artifacts and incompatible periods remain unavailable.
+
+Seven focused calculation/quantity/public-API regressions and app/shared typechecks
+passed, along with pipeline typecheck. No UI changed; browser
+verification is not applicable to this data-only slice. No artifact regeneration,
+publication or live deployment performed. Card Stats still uses its old Hot sort.
+
+Next: regenerate cards.json and connect normalized adoption to Card Stats, then
+reuse the report for compatible card/build surfaces. Extended Analytics remains
+11/16 completed (~69%, unequal milestones); milestone 12 remains open. No push.
+
+Cached-data smoke: 24,107 completed event bundles, 62,117 available unique lists,
+2,361 cards. Recent [2026-10-17, 2026-11-16): 2,525 lists; prior
+[2026-09-17, 2026-10-17): 1,488 lists. All card counts fit their populations.
+Neos Sight: 1.35% recent versus 0.74% prior (+0.61 percentage points).
+The first smoke exposed a listless completed event dated in 2027; anchoring now
+requires an available list, with regression coverage. Cached catalog was read
+locally after the freshness-aware loader attempted an unavailable network refresh.

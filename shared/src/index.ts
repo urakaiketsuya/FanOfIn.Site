@@ -172,3 +172,4 @@ export type { DeckForecastModel, ForecastDeck, ResidualStats } from './deckForec
 
 export * from './cohortDrawForecast.js';
 export * from './cardBuildCopies.js';
+export * from './cardAdoption.js';

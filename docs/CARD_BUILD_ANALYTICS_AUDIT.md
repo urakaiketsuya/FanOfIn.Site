@@ -26,8 +26,10 @@ Build-scoped copy distributions are now implemented on Card detail, using record
 sightings and published archetype membership. Inclusion, playing-list quantities
 and list availability have separate denominators; Sideboard is excluded.
 
-Implement equal-period adoption with denominator data before reusing it in
-Card Stats, Staples, Sets and build history. Observed alternatives must be described
+Equal-period adoption calculation and publication are implemented, including
+category-scoped populations on a shared calendar. Next: regenerate the artifact
+and replace Card Stats raw-count Hot ranking with inclusion change before reusing
+it in Staples, Sets and build history. UI integration remains open. Observed alternatives must be described
 as observed choices, not functional substitutes or causal win-rate improvements.
 Supported swaps reuse the existing paired fixture models; unsupported results stay
 unavailable. No additional game-mechanic fixtures are needed for copy distributions.

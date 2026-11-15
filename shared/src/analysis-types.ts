@@ -70,9 +70,18 @@ export interface CardStat {
   marketPrice: number | null;
 }
 
+/** UTC calendar-day windows, start inclusive and end exclusive. */
+export interface CardAdoptionPeriods {
+  recent: { start: string; end: string; decks: number };
+  prior: { start: string; end: string; decks: number };
+}
+
 export interface CardStatsData {
   generatedAt: string;
   cards: CardStat[];
+  /** Absent in historical artifacts; never infer population from card appearance counts. */
+  adoptionPeriods?: CardAdoptionPeriods;
+  adoptionPeriodsByCategory?: Record<string, CardAdoptionPeriods>;
   /** Same shape, scoped to one Omnidex event category (worlds/nationals/ascent/regionals/store-championships/regular) — only present for categories with at least one qualifying event. */
   byCategory: Record<string, CardStat[]>;
   /** Total real decks this file's `cards` stats were computed over — lets a consumer derive "% of

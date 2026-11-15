@@ -14,12 +14,12 @@ import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { EVENT_CATEGORY_ORDER, priceKey, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
+import { EVENT_CATEGORY_ORDER, priceKey, type CardAdoptionPeriods, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
 import { computeRivals } from "./rivals.js";
-import { computeCardStats } from "./cardStats.js";
+import { computeCardStatsReport, cardStatsReferenceEnd } from "./cardStats.js";
 import { collectStapleObservations, computeCardStaples } from "./cardStaples.js";
 import { computeChampionPackages } from "./championPackages.js";
 import { computeKeywordStats } from "./keywordStats.js";
@@ -88,8 +88,10 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   const priceByName = await loadPriceByName(cardIndex);
   const budgetPrices = await readFile(PRICES_PATH, 'utf8').then(text => JSON.parse(text) as PriceData).catch(() => null);
 
-  function cardStatsFor(bundles: typeof completed): CardStat[] {
-    return computeCardStats(bundles, cardIndex).map((stat) => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null }));
+  const cardReferenceEnd = cardStatsReferenceEnd(completed);
+  function cardStatsFor(bundles: typeof completed) {
+    const report = computeCardStatsReport(bundles, cardIndex, cardReferenceEnd);
+    return { ...report, cards: report.cards.map(stat => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null })) };
   }
 
   await mkdir(DATA_DIR, { recursive: true });
@@ -132,23 +134,24 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   );
 
   const cardStats = cardStatsFor(completed);
+  const adoptionPeriodsByCategory: Record<string, CardAdoptionPeriods> = {};
   const cardStatsByCategory: Record<string, CardStat[]> = {};
   for (const category of EVENT_CATEGORY_ORDER) {
     const subset = completed.filter((b) => b.event.category === category);
     if (subset.length === 0) continue;
-    cardStatsByCategory[category] = cardStatsFor(subset);
+    const report = cardStatsFor(subset);
+    cardStatsByCategory[category] = report.cards;
+    if (report.adoptionPeriods) adoptionPeriodsByCategory[category] = report.adoptionPeriods;
   }
-  // Same population computeCardStats iterates over — published so a consumer can derive "% of
-  // tournament decks" without fetching the much larger deck-popularity-index.json/deck-sightings.json
-  // just for their .length (a real ~10MB-fetch-for-one-integer waste this replaced).
-  const cardStatsDecksConsidered = completed.reduce((sum, b) => sum + ("error" in b.decklists ? 0 : b.decklists.length), 0);
   await writeFile(
     path.join(DATA_DIR, "cards.json"),
     JSON.stringify({
       generatedAt: new Date().toISOString(),
-      cards: cardStats,
+      cards: cardStats.cards,
+      adoptionPeriods: cardStats.adoptionPeriods,
+      adoptionPeriodsByCategory,
       byCategory: cardStatsByCategory,
-      decksConsidered: cardStatsDecksConsidered,
+      decksConsidered: cardStats.decksConsidered,
     }),
     "utf-8",
   );
@@ -301,6 +304,6 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   });
 
   console.log(
-    `analysis: ${ratings.size} rated players, ${rivals.length} players with rival data, ${upsets.length} upsets, ${cardStats.length} cards, ${keywordStats.length} keywords, ${cardQuantityStats.length} cards with quantity stats, ${compositionWinRates.length} composition win-rate buckets, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${rivals.length} players with rival data, ${upsets.length} upsets, ${cardStats.cards.length} cards, ${keywordStats.length} keywords, ${cardQuantityStats.length} cards with quantity stats, ${compositionWinRates.length} composition win-rate buckets, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }

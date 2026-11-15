@@ -101,11 +101,25 @@ key, shrink each bucket's average win rate toward 50% via `shrinkWinRate` (the s
 its own doc comment in `shared/src/winRateShrinkage.ts`), keyed differently per module:
 
 - **`computeCardStats`** (`cardStats.ts`) — per **card name**: deck count, total copies, event
-  count, win rate, plus `recentDeckCount`/`priorDeckCount` (30-day windows, most-recent-event-date
-  anchored, not wall-clock — so a `GATCG_ANALYSIS_ONLY` re-run against the same cached data always
-  produces the same windows) for downstream "trending" comparisons. `marketPrice` is left `null`
-  here and filled in by `build.ts`, which joins against `data/prices.json` afterward — this module
-  has no pricing data of its own.
+  count, win rate, plus `recentDeckCount`/`priorDeckCount`. `computeCardStatsReport`
+  publishes the matching available-list populations and exact boundaries in
+  `adoptionPeriods` (and `adoptionPeriodsByCategory` in cards.json). The recent window
+  contains 30 UTC calendar days ending with the latest valid completed-event date with an available list;
+  the prior window is the immediately preceding 30 days. Starts are inclusive,
+  ends exclusive. All category reports share the overall anchor; no wall-clock drift.
+  Each event/player sighting counts once. Require a positive named Main entry;
+  count positive Main + Material quantities only, never Sideboard. Empty/unavailable
+  lists are excluded from both numerator and denominator. Invalid-date lists retain
+  all-time statistics but cannot enter either dated population. An event without available lists
+  cannot anchor the calendar window.
+  `cardAdoption` divides each card count by its period population, then subtracts
+  prior inclusion from recent inclusion. Multiply the difference by 100 for percentage
+  points, not relative percentage growth. No data/zero population, incompatible periods,
+  or invalid counts return null; zero appearances in a populated period is a real zero.
+  Historical artifacts without population fields cannot support this calculation.
+  No sample floor or significance claim is implied. These are pooled tournament
+  inclusion changes, not evidence of improved results or within-champion adoption.
+  `marketPrice` is left null here and filled by build.ts from data/prices.json.
 - **`computeCardQuantityStats`** (`cardQuantityStats.ts`) — observed copies in Main + Material,
   grouped by card and quantity. Count each event/player sighting once, excluding Sideboard.
   Retain single-quantity distributions and low-count buckets. The card detail report divides
