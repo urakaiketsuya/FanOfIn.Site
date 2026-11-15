@@ -1,7 +1,9 @@
+import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
 import CardResult from '../../components/CardResult';
+import DisclosureChevron from '../../components/DisclosureChevron';
 import Panel from '../../components/ui/Panel';
 import Button from '../../components/ui/Button';
 import { InlineState } from '../../components/ui/ContentState';
@@ -17,7 +19,8 @@ function ChampionArt({ name, cards }: { name: string; cards: Map<string, Card> }
 }
 
 /** Historical archetype results, never an inferred prediction for the user's exact list. */
-export default function AnalysisMatchups({ result, loading, cards, error, onRetry, matchupsLoading = false, matchupsError, onRetryMatchups }: {
+export default function AnalysisMatchups({ result, loading, cards, error, onRetry, matchupsLoading = false, matchupsError, onRetryMatchups, preview = false }: {
+  preview?: boolean;
   result: DeckTestResult | null;
   loading: boolean;
   cards: Map<string, Card>;
@@ -27,47 +30,54 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
   matchupsError?: string | null;
   onRetryMatchups?: () => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const headingId = useId();
   if (!result && error) return <Panel className="mt-4"><p role="alert">Historical results could not be loaded.</p>{onRetry && <Button className="mt-3" onClick={onRetry}>Try again</Button>}</Panel>;
   if (loading || !result) return <div role="status"><InlineState className="mt-4">Loading historical matchups…</InlineState></div>;
   const { classification, performance, matchups, winConditions } = result;
   const cluster = classification.cluster;
-  if (!cluster) return <Panel className="mt-4"><h2 className="text-lg font-semibold">No matching archetype yet</h2><p className="mt-2 text-sm text-ctp-subtext1">There aren’t enough similar published decks to show historical matchups for this list.</p></Panel>;
+  const ordered = [...matchups].sort((a, b) => b.games - a.games || a.opponentClusterName.localeCompare(b.opponentClusterName));
+  const visible = expanded ? ordered : ordered.slice(0, preview ? 3 : 6);
+  if (!cluster) return <Panel className="mt-4"><h2 className="text-lg font-semibold">No matching archetype yet</h2><p className="mt-2 text-sm text-ctp-subtext1">No observed results for a similar build.</p></Panel>;
   return <div className="mt-4 space-y-6" data-component="AnalysisMatchups">
     <Panel>
-      <h2 className="text-lg font-semibold">Similar decks against the field</h2>
+      <h2 className="text-lg font-semibold">Observed results · similar decks</h2>
       <Link to={`/archetypes/${cluster.id}`} className="inline-flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{cluster.name}</Link>
       <p className="text-xs text-ctp-subtext1">{percent(classification.similarity)} deck similarity{classification.status === 'borderline' ? ' · Loose match' : ''}</p>
       {performance ? <>
-        <p className="mt-4 text-5xl font-semibold tabular-nums">{percent(performance.winRate)}</p>
-        <p className="mt-1 text-sm">Historical win rate</p>
-        <p className="mt-4 text-xs text-ctp-subtext1">{performance.interval95.matches.toLocaleString()} recorded matches · {performance.deckCount.toLocaleString()} decks · {performance.eventCount.toLocaleString()} events{performance.confidence === 'emerging' ? ' · Limited data' : ''}</p>
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <div><p className="text-4xl font-semibold tabular-nums">{percent(performance.winRate)}</p><p className="mt-1 text-sm">Historical win rate</p></div>
+          <div><p className="text-4xl font-semibold tabular-nums">{performance.interval95.matches.toLocaleString()}</p><p className="mt-1 text-sm">Recorded matches</p></div>
+        </div>
+        <p className="mt-3 text-sm text-ctp-subtext1">{performance.deckCount.toLocaleString()} decks · {performance.eventCount.toLocaleString()} events{performance.confidence === 'emerging' ? ' · Limited data' : ''}</p>
       </> : <p className="mt-3 text-sm text-ctp-subtext1">Historical win rate unavailable.</p>}
     </Panel>
-    <section aria-labelledby="analysis-matchups-heading">
-      <h2 id="analysis-matchups-heading" className="text-lg font-semibold">Against each opponent</h2>
+    <section aria-labelledby={headingId}>
+      <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · win rate 0–100%</p>
       {matchupsError && <div className="mt-3"><p role="alert" className="text-sm">{matchups.length ? 'Showing saved matchups. Updated results could not be loaded.' : 'Opponent matchups could not be loaded.'}</p>{onRetryMatchups && <Button className="mt-2" onClick={onRetryMatchups}>Retry matchups</Button>}</div>}
       {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : 'No recorded opponent matchups for this archetype yet.'}</p>}
-      <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {matchups.map((matchup) => <Panel as="article" key={matchup.opponentClusterId} className="min-w-0">
-          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-4 sm:block">
+      <div id={`${headingId}-rows`} className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {visible.map((matchup) => <Panel as="article" key={matchup.opponentClusterId} className="min-w-0">
+          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-4">
             <div className="min-w-0">
               <ChampionArt name={matchup.opponentChampionName} cards={cards} />
               <p className="mt-2 text-xs text-ctp-subtext1">Against</p>
               <h3 className="break-words text-lg font-semibold">{matchup.opponentChampionName}</h3>
             </div>
-            <div className="text-right sm:mt-5 sm:text-left">
+            <div className="text-right">
               <p className="text-4xl font-semibold tabular-nums">{percent(matchup.baselineWinRate)}</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Similar decks’ win rate</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Observed win rate</p><p className="mt-3 text-xl font-semibold tabular-nums">{matchup.games.toLocaleString()}</p><p className="text-xs text-ctp-subtext1">Recorded games</p>
             </div>
           </div>
-          <div className="mt-4 border-t border-ctp-surface1 pt-3">
+          <div className="relative mt-4 h-3 overflow-hidden rounded-full bg-ctp-surface1" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: `${Math.max(0, Math.min(100, matchup.baselineWinRate * 100))}%` }} /><span className="absolute inset-y-0 left-1/2 border-l border-ctp-text/60" /></div>
+          <div className="mt-3">
             <Link to={`/archetypes/${matchup.opponentClusterId}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{matchup.opponentClusterName}</Link>
-            <p className="mt-2 text-xs text-ctp-subtext1">{matchup.games.toLocaleString()} recorded games</p>
           </div>
         </Panel>)}
       </div>
+      {ordered.length > (preview ? 3 : 6) && <Button className="mt-3 flex items-center gap-2" aria-controls={`${headingId}-rows`} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Fewer matchups' : `All ${ordered.length} matchups`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
     </section>
-    {winConditions.length > 0 && <section aria-labelledby="analysis-interactions-heading">
+    {!preview && winConditions.length > 0 && <section aria-labelledby="analysis-interactions-heading">
       <h2 id="analysis-interactions-heading" className="text-lg font-semibold">Your deck’s card interactions</h2>
       <div className="mt-3 space-y-4">{winConditions.map((interaction) => <Panel key={[interaction.anchorCard, ...interaction.memberCards].join('|')}>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{[...new Set([interaction.anchorCard, ...interaction.memberCards])].map((name) => <CardResult key={name} card={cards.get(name)} name={name} newTab />)}</div>
