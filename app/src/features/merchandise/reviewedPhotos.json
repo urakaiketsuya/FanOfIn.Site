@@ -262,5 +262,101 @@
     "kind": "seller",
     "group": false,
     "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-b19",
+    "name": "Guo Jia, Chosen Disciple",
+    "category": "Deckboxes",
+    "detail": "",
+    "sourceUrl": "https://churapereviews.com/2024/12/09/grand-archive-stanta-clara-holiday-stream/?amp=1",
+    "imageUrl": "https://i0.wp.com/churapereviews.com/wp-content/uploads/2024/12/guajiadeckbox.png?ssl=1",
+    "sourceName": "Churape’s Dungeon and Stuff",
+    "kind": "reference",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-b27",
+    "name": "Diana, Aether Dilettante",
+    "category": "Deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.mercari.com/us/item/m59791742084/",
+    "imageUrl": "https://u-mercari-images.mercdn.net/photos/m59791742084_1.jpg?width=1280&quality=75&_=1781070180",
+    "sourceName": "Ana145 on Mercari",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-f19",
+    "name": "Alice, Phantom Monarch(CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.ruten.com.tw/item/22605088419500/",
+    "imageUrl": "https://gcs.rimg.com.tw/g2/b/1e/ac/22605088419500_359.jpg",
+    "sourceName": "East Gate Alchemy on Ruten",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-f20",
+    "name": "Kongming, Fei Eidolon (CUR)",
+    "category": "Double deckboxes",
+    "detail": "",
+    "sourceUrl": "https://offerup.com/item/detail/8d729d72-336c-3120-b8fb-94c4e718c611",
+    "imageUrl": "https://images.offerup.com/VlDO2BX1jEHiRsjtMrppzr6oH20%3D/1170x1170/9ad9/9ad9d3012c8f48fd93936d20b3126dd7.jpg",
+    "sourceName": "TradingCardsMiku on OfferUp",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-b25",
+    "name": "Arisanna, Herbalist Prodigy",
+    "category": "Deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.ebay.com/itm/318759299427",
+    "imageUrl": "https://i.ebayimg.com/thumbs/images/g/-PoAAeSwYtNqhxJ4/s-l500.jpg",
+    "sourceName": "couchchange on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-b26",
+    "name": "Lorraine, Wandering Warrior",
+    "category": "Deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.ebay.com/itm/860142197053",
+    "imageUrl": "https://i.ebayimg.com/images/g/OIwAAeSwFtpq99Yu/s-l500.webp",
+    "sourceName": "eBay seller",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-i18",
+    "name": "Raziel",
+    "category": "Compact deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.ebay.com/itm/318574151727",
+    "imageUrl": "https://i.ebayimg.com/images/g/7LoAAeSwGs1qVG8n/s-l500.jpg",
+    "sourceName": "couchchange on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
+  },
+  {
+    "catalogId": "sheet-12-l15",
+    "name": "Lost in Thought (Promo)",
+    "category": "Lightweight deckboxes",
+    "detail": "",
+    "sourceUrl": "https://www.ebay.com/itm/187503264204",
+    "imageUrl": "https://i.ebayimg.com/images/g/H4IAAeSw6MNoYqX6/s-l400.jpg",
+    "sourceName": "17309394 on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-14"
   }
 ]

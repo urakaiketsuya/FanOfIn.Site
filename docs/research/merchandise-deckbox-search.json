@@ -2,121 +2,103 @@
   "reviewedAt": "2026-11-14",
   "method": "Character or artwork name + deck box grand archive; followed strongest seller and official results, inspected product images and packaging. Starter decks and differently named merchandise releases excluded.",
   "integratedPhotoManifest": "app/src/features/merchandise/reviewedPhotos.json",
-  "newMappings": 22,
+  "newMappings": 30,
   "deckboxEntries": 46,
-  "entriesWithPhotos": 25,
+  "entriesWithPhotos": 33,
   "remaining": [
     {
       "catalogId": "sheet-12-b14",
       "name": "Tonoris, Might of Humanity",
-      "category": "Deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-b19",
-      "name": "Guo Jia, Chosen Disciple",
-      "category": "Deckboxes"
+      "category": "Deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Character/deck box and Ascent searches returned starter decks and playmats; no verified merchandise-box image."
     },
     {
       "catalogId": "sheet-12-b22",
       "name": "Diana, Judgment’s Arrow",
-      "category": "Deckboxes"
+      "category": "Deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Searches return the Aether Dilettante DTR box, now mapped separately; Judgment’s Arrow image remains unverified."
     },
     {
       "catalogId": "sheet-12-b24",
       "name": "Nia, Mistveiled Scout",
-      "category": "Deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-b25",
-      "name": "Arisanna, Herbalist Prodigy",
-      "category": "Deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-b26",
-      "name": "Lorraine, Wandering Warrior",
-      "category": "Deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-b27",
-      "name": "Diana, Aether Dilettante",
-      "category": "Deckboxes"
+      "category": "Deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Exact duplicate of B13 in name, category and detail. Preserve separate row until release identity is established rather than assume a distinct photo."
     },
     {
       "catalogId": "sheet-12-f13",
       "name": "Silvie",
-      "category": "Double deckboxes"
+      "category": "Double deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "New Silvie Art Series candidate inspected; front and top images do not establish the unspecified sheet release or compartment count."
     },
     {
       "catalogId": "sheet-12-f18",
       "name": "Lu Bu, Wrath Incarnate (CUR)",
-      "category": "Double deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-f19",
-      "name": "Alice, Phantom Monarch(CUR)",
-      "category": "Double deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-f20",
-      "name": "Kongming, Fei Eidolon (CUR)",
-      "category": "Double deckboxes"
+      "category": "Double deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "User-supplied red double-box promotional image remains a candidate; CUR artwork match and stable source provenance still needed."
     },
     {
       "catalogId": "sheet-12-i17",
       "name": "Haniel",
-      "category": "Compact deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-i18",
-      "name": "Raziel",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Carousell group listing found but browser security check blocks inspecting individual Haniel image. Raziel resolved separately via labeled packaging."
     },
     {
       "catalogId": "sheet-12-i19",
       "name": "Avatar of Byakko",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Name + deck box/compact searches did not produce a verifiable Byakko box image."
     },
     {
       "catalogId": "sheet-12-i20",
       "name": "Avatar of Genbu",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Name + deck box/compact searches did not produce a verifiable Genbu box image."
     },
     {
       "catalogId": "sheet-12-i21",
       "name": "Avatar of Suzaku",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Name + deck box/compact searches did not produce a verifiable Suzaku box image."
     },
     {
       "catalogId": "sheet-12-i26",
       "name": "Yuan Xiao",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Official catalogs name Yuan Shao; source row says Yuan Xiao. Ruten variant selector blocked by security check and first photo is Lu Bu, not Yuan Shao."
     },
     {
       "catalogId": "sheet-12-i28",
       "name": "Liu Bei",
-      "category": "Compact deckboxes"
+      "category": "Compact deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Ruten names Liu Bei among seven variants, but individual image selection blocked by browser security check. First image is Lu Bu."
     },
     {
       "catalogId": "sheet-12-l13",
       "name": "Kingdom's Divide",
-      "category": "Lightweight deckboxes"
+      "category": "Lightweight deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Exact artwork + deck box/lightweight searches found no verifiable product photo."
     },
     {
       "catalogId": "sheet-12-l14",
       "name": "Arcane Blast (HVN)",
-      "category": "Lightweight deckboxes"
-    },
-    {
-      "catalogId": "sheet-12-l15",
-      "name": "Lost in Thought (Promo)",
-      "category": "Lightweight deckboxes"
+      "category": "Lightweight deckboxes",
+      "reviewStatus": "unresolved",
+      "blocker": "Exact artwork + deck box/plastic searches found cards and playmats, no verifiable HVN lightweight-box photo."
     }
   ],
   "followups": [
-    {
-      "sourceUrl": "https://komodocollectibles.ca/products/dtr-diana-ascent-deckbox",
-      "reason": "Packaging says DTR Diana. Resolve Judgment’s Arrow versus Aether Dilettante before matching."
-    },
     {
       "sourceUrl": "https://www.ebay.com/itm/287330939304",
       "reason": "New Silvie Art Series listing differs from unspecified source row; confirm intended release."
@@ -147,5 +129,54 @@
       "Alice Mercari description explicitly names Whim’s Monarch. Both packaged product and open-box promotional photo show single Ascent box; seller double-box sentence is contradicted by actual photographs."
     ],
     "verification": "Both remote images loaded and were visually inspected. Data-only additions; existing responsive layout unchanged. Prior mobile/desktop verification not repeated."
+  },
+  "fullRemainderReview": {
+    "reviewedAt": "2026-11-14",
+    "entriesSearched": 21,
+    "added": [
+      {
+        "catalogId": "sheet-12-b19",
+        "sourceUrl": "https://churapereviews.com/2024/12/09/grand-archive-stanta-clara-holiday-stream/?amp=1",
+        "evidence": "Utrecht promotional slide names Guo Jia and shows a turquoise single Ascent box with Chosen Disciple artwork."
+      },
+      {
+        "catalogId": "sheet-12-b27",
+        "sourceUrl": "https://www.mercari.com/us/item/m59791742084/",
+        "evidence": "Listing explicitly names Aether Dilettante. Packaging says DTR Diana and shows matching teal Ascent box and hat artwork."
+      },
+      {
+        "catalogId": "sheet-12-f19",
+        "sourceUrl": "https://www.ruten.com.tw/item/22605088419500/",
+        "evidence": "Packaging reads Alice, Phantom Monarch. Embossed portrait and roses match CUR edition F9L8odk8kt inspected in the card catalog."
+      },
+      {
+        "catalogId": "sheet-12-f20",
+        "sourceUrl": "https://offerup.com/item/detail/8d729d72-336c-3120-b8fb-94c4e718c611",
+        "evidence": "Promotional image shows two compartments. Interior art exactly matches Fel Eidolon CUR l4zh11099v. Source row spelling Fei retained."
+      },
+      {
+        "catalogId": "sheet-12-b25",
+        "sourceUrl": "https://www.ebay.com/itm/318759299427",
+        "evidence": "Packaging says Arisanna Ascent Deck Box. Label artwork matches Herbalist Prodigy CSR 3jf01o25b4 (glasses, book and flowers). Seller calls it compact but actual packaging identifies the Ascent single box."
+      },
+      {
+        "catalogId": "sheet-12-b26",
+        "sourceUrl": "https://www.ebay.com/itm/860142197053",
+        "evidence": "Packaging says Lorraine Ascent Deck Box. Label shows the PRD Wandering Warrior artwork lP5xsEHLGu: green hair, arms behind head, blue sky and rooftops. Seller compact wording differs from Ascent packaging."
+      },
+      {
+        "catalogId": "sheet-12-i18",
+        "sourceUrl": "https://www.ebay.com/itm/318574151727",
+        "evidence": "Listing and physical package both identify Raziel. Packaged compact box visibly inspected, resolving previous conflicting seller labels."
+      },
+      {
+        "catalogId": "sheet-12-l15",
+        "sourceUrl": "https://www.ebay.com/itm/187503264204",
+        "evidence": "Title explicitly identifies Lost in Thought plastic deckbox. Photo shows packaged lightweight box with snowy umbrella promo artwork; generic listing specifics incorrectly say playmat."
+      }
+    ],
+    "remainingCount": 13,
+    "verification": "All eight added remote images loaded and were visually inspected. CUR/CSR and Lorraine PRD artwork compared with catalog editions. Data-only changes; responsive UI checks not repeated.",
+    "scope": "Searched every remaining entry; unresolved rows include specific evidence gaps or access blockers. No deployment."
   }
 }
