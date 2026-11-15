@@ -80,3 +80,28 @@ field-as-of date identifies the snapshot being assessed.
 No live deployment is included until the changes are pushed. Next release action:
 push, verify the deployment artifact/manifest, then inspect a valid Standard deck,
 an unsupported format, and an edited deck on the live site.
+
+## Decision-focused presentation — 2026-11-15
+
+Expected Results retains the overall expected match score and adds Common, Lowest,
+and Highest matchup views. Common orders by field share; the other views order by
+unrounded match score, then field share and champion name for stable ties. Sorting
+never changes the forecast or its weights. Six matchups appear initially in the
+selected order; expansion and selected order survive mounted input updates.
+
+Each matchup keeps champion artwork, a visible name, score, and separately labeled
+field share. Score bars use a fixed 0–100% scale. Neutral colors avoid implying
+that a popular opponent or a higher score constitutes a deck recommendation.
+The responsive grid follows available container width, including narrow panels.
+Explanations remain concise; match-score definitions and model limits stay here.
+
+Verification: two ordering/immutability tests, app typecheck, and targeted lint.
+Browser checks used the real component, published model, catalog, and Rai fixture
+with controlled data-hook states in a temporary harness (removed afterward).
+Checked 360×800, 390×844, and 1280×900: no horizontal overflow, readable artwork,
+48px-minimum controls/links, arrow/End tab behavior, visible 2px focus,
+six/all-21 expansion, and all three sort orders. Loading, error/retry, incomplete,
+unsupported champion, empty field, expired snapshot, and card-name fallback states
+were verified. Retry retains the selected order. No signed-in integration,
+production network/cache lifecycle, screen-reader speech, or deployment verification
+was performed. No push or deployment.
