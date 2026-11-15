@@ -30,7 +30,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 
 ## Inline photos
 
-381 entries now have inline photo presentations (including the reviewed supplemental sources):
+406 entries now have inline photo presentations (including the reviewed supplemental sources):
 
 - 253 Imgur posts use lazy-loaded sandboxed host embeds. Album IDs are not image
   IDs and must never be turned into guessed image filenames.
@@ -51,7 +51,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 Source attribution links remain visible beneath photos. Images use object-contain
 and reserved height, with lazy loading and an unavailable-photo fallback. A failed
 photo never removes the product name or source link. Unknown gallery hosts remain
-external links rather than untrusted iframe sources. There are 165 entries without
+external links rather than untrusted iframe sources. There are 140 entries without
 photo references; no substitute artwork is invented for them.
 
 Seller listings do not establish authenticity, release dates, stock or prices.
@@ -69,7 +69,7 @@ and prize tier. Fourteen playmat entries still lack photos.
 
 The merchandise photo and bounty tests cover source mappings, unsupported hosts,
 source identity changes, and missing-image classification. The Bounties tab shows
-all 165 entries without a supported image or embed and links to Discord for photo
+all 140 entries without a supported image or embed and links to Discord for photo
 submissions. Temporary remote-image failures do not change bounty membership.
 
 The catalog and Bounties flows were checked at mobile and desktop widths, including
@@ -88,3 +88,13 @@ User-suggested playmat gallery: https://ray-chen23.imgbb.com/
 The profile redirects to https://imgbb.com/login in the browser (November 14,
 2026); no new playmat matches have been imported from this profile. Review individual images against exact artwork, event and finish before
 adding them; check overlap with the existing 77 ImgBB sources first.
+
+## November 15 photo continuation
+
+Added 25 exact-row photos: eight complete merchandise sets, ten sleeve designs,
+four acrylic standees, the M.RAGE Merlin windbreaker, Merlin Amethyst’s Glow figure,
+and 2026 Nationals Merlin water bottle. Every added image was visually inspected.
+Sources and unresolved leads are recorded in
+`docs/research/merchandise-remainder-2026-11-15.json`. Coverage is now 406/546
+entries (74.4%), with 140 photo bounties remaining. This pass searched across
+categories; it does not claim an exhaustive review of every remaining item.

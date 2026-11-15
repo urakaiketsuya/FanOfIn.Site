@@ -4,13 +4,13 @@ import catalog from "../src/features/merchandise/catalog.json";
 import photos from "../src/features/merchandise/reviewedPhotos.json";
 import { reviewedPhotoFor } from "../src/features/merchandise/reviewedPhotos";
 
-test("reviewed deckbox photos cannot leak into another variant or refreshed source row", () => {
+test("reviewed merchandise photos cannot leak into another variant or refreshed source row", () => {
   assert.equal(new Set(photos.map(photo => photo.catalogId)).size, photos.length);
   for (const photo of photos) {
     const item = catalog.find(row => row.id === photo.catalogId);
     assert.ok(item, photo.catalogId);
     assert.equal(reviewedPhotoFor(item), photo);
-    for (const change of [{ name: "Another artwork" }, { category: "Sleeves" }, { detail: "Another release" }, { id: "another-row" }]) {
+    for (const change of [{ name: "Another artwork" }, { category: "Another product category" }, { detail: "Another release" }, { id: "another-row" }]) {
       assert.equal(reviewedPhotoFor({ ...item, ...change }), undefined);
     }
     assert.equal(new URL(photo.imageUrl).protocol, "https:");
