@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import catalog from "../src/features/merchandise/catalog.json";
+import { merchandiseCatalog as catalog } from "@gatcg/shared";
 import { imgurEmbedUrl } from "../src/features/merchandise/photoPresentation";
 
 test("embeds source albums without treating album IDs as image filenames", () => {

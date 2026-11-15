@@ -35,6 +35,13 @@ try {
   await db.prepare("DROP TRIGGER fail_update").run();
   assert.equal((await saveMerchandise(env, user, next)).revision, 2);
   await assert.rejects(saveMerchandise(env, user, command), /changed elsewhere/);
+  const legacyQuantities = Object.fromEntries(merchandiseItems.map((item, i) => [item.id, i + 1]));
+  const expanded = { ...command, expectedRevision: 2, requestId: crypto.randomUUID(), quantities: { ...legacyQuantities, "sheet-12-b226": 3 } };
+  const expandedResult = await saveMerchandise(env, user, expanded);
+  assert.deepEqual(expandedResult.quantities, expanded.quantities);
+  assert.deepEqual(await saveMerchandise(env, user, expanded), expandedResult);
+  await assert.rejects(saveMerchandise(env, user, { ...expanded, requestId: crypto.randomUUID() }), /changed elsewhere/);
+  assert.deepEqual((await listMerchandise(env, user)).quantities, expanded.quantities);
   console.log("Local D1 merchandise migration, rollback, concurrent retries and revision conflicts passed.");
 } finally {
   await runtime?.dispose();

@@ -4,17 +4,17 @@ import { DISCORD_INVITE_URL } from "../../lib/communityLinks";
 import { needsMerchandisePhoto } from "./photoSources";
 import { useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { merchandiseBundles } from "@gatcg/shared";
+import { merchandiseBundles, MERCHANDISE_CATALOG_SOURCE } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Button from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import catalog from "./catalog.json";
+import { merchandiseCatalog as catalog } from "@gatcg/shared";
 import MerchandisePhoto from "./MerchandisePhoto";
 import { galleryImageUrl, imgurEmbedUrl } from "./photoPresentation";
 
-const SOURCE = "https://docs.google.com/spreadsheets/d/1hvE-dqVjK_-jEwCkNWmlYQd6-fjGoLmsXetnZzgpP5M/edit";
+const SOURCE = MERCHANDISE_CATALOG_SOURCE;
 const categories = [...new Set(catalog.map(item => item.category))].sort();
 const PAGE_SIZE = 24;
 const bounties = catalog.filter(needsMerchandisePhoto);
@@ -48,6 +48,7 @@ export default function MerchandiseIndex() {
   return <PageLayout width="wide" data-component="MerchandiseIndex">
     <PageHeader title="Merchandise" description="Playmats, sleeves, deckboxes, and collectibles from the Grand Archive community catalog." />
     <nav aria-label="Product pages" className="mb-5 flex flex-wrap gap-2">
+      <Link className={linkStyle} to="/collection?tab=merchandise">Track collection</Link>
       <Link className={linkStyle} to="/products">Set releases</Link>
       <Link className={linkStyle} to="/official-decks">Official product decks</Link>
       <a className={linkStyle} href={SOURCE} target="_blank" rel="noreferrer">Source spreadsheet ↗</a>
@@ -78,7 +79,7 @@ export default function MerchandiseIndex() {
         <p className="mb-2 text-xs font-medium text-ctp-mauve">{item.category}</p>
         <h3 className="break-words text-lg font-semibold">{item.name}</h3>
         {item.detail && <p className="mt-2 break-words text-sm text-ctp-subtext1">{item.detail}</p>}
-        <div className="mt-auto flex flex-wrap gap-1 pt-3">{item.photoUrl && !imgurEmbedUrl(item.photoUrl) && !galleryImageUrl(item.photoUrl) && <a className={linkStyle} href={item.photoUrl} target="_blank" rel="noreferrer" aria-label={`View photos of ${item.name}`}>View photos ↗</a>}<a className={linkStyle} href={`${SOURCE}?range=${encodeURIComponent(`'${item.sourceSheet}'!${item.sourceCell}`)}`} target="_blank" rel="noreferrer" aria-label={`View source for ${item.name}`}>Source ↗</a></div>
+        <div className="mt-auto flex flex-wrap gap-1 pt-3"><Link className={linkStyle} to={`/collection?tab=merchandise&merchandise=${encodeURIComponent(item.id)}`} aria-label={`Track ${item.name} in your collection`}>Track collection</Link>{item.photoUrl && !imgurEmbedUrl(item.photoUrl) && !galleryImageUrl(item.photoUrl) && <a className={linkStyle} href={item.photoUrl} target="_blank" rel="noreferrer" aria-label={`View photos of ${item.name}`}>View photos ↗</a>}<a className={linkStyle} href={`${SOURCE}?range=${encodeURIComponent(`'${item.sourceSheet}'!${item.sourceCell}`)}`} target="_blank" rel="noreferrer" aria-label={`View source for ${item.name}`}>Source ↗</a></div>
       </article>; })}</div>}
       {pages > 1 && <nav aria-label="Merchandise pagination" className="mt-5 flex flex-wrap items-center justify-center gap-3"><Button disabled={page === 1} onClick={() => move(page - 1)}>Previous</Button><span className="text-sm">{page} / {pages}</span><Button disabled={page === pages} onClick={() => move(page + 1)}>Next</Button></nav>}
     </section>

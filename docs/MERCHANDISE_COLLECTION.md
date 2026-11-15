@@ -1,8 +1,54 @@
-# Official merchandise collection
+# Merchandise collection
 
-The Collection page includes a Merchandise tab with quantities, saved progress, and filters for merchandise release, champion, product type, search and ownership. Merchandise stays separate from trading cards, card-set completion, valuation, deck readiness and trade reservations.
+The Collection page's Merchandise tab uses the same community catalog and photo resolver as
+`/merchandise`. Each catalog entry links to its exact collection controls; collection cards
+link back to browsing. Photos retain source attribution, unavailable-photo fallback and
+exact variant guards. Updates to reviewed photos appear in both views automatically.
 
-The catalog contains 168 entries: eighteen Dragon Shield sleeve products, ninety-four Ascent catalog designs and 56 article-confirmed components from eight bundles: Seaside Splash (Merlin, Nico, Tonoris), Lunar Blessings (Lorraine, Rai, Tristan, Arisanna), and Kongming Yuletide Cheer. Official bundle overview images are explicitly labeled as overviews, with readable names if an image fails. The source article is linked on each bundle. Tube accessories stay with their playmats. Promo cards and bundle packaging do not create extra progress entries; the explicitly listed storage boxes do.
+## Shared catalog and preserved ownership
+
+`shared/src/merchandiseCommunityCatalog.json` contains the 546 source entries. The frozen
+crosswalk in `shared/src/merchandiseCatalogLinks.json` links 73 entries to existing IDs and
+eight merchandise-set rows to the original 56 component IDs. `merchandiseCollectionItems`
+provides 633 unique tracking entries: 465 newly trackable source rows and all 168 original
+ownership IDs. The 39 original entries not confidently matched stay visible with their
+original captions and official source links; ambiguous variants are never merged by character
+name. These are catalog tracking entries, not a deduplicated count of physical products.
+
+The old 168-entry registry and `merchandiseItems` export remain intact for compatibility.
+No quantities are renamed, summed, inferred from photographs, or copied between variants.
+There is no database migration or automatic save. Existing quantities, explicit-zero drafts,
+pending commands, revision checks and idempotent retries retain their previous meaning.
+The shared parser accepts both original IDs and newly trackable source IDs. It rejects
+catalog aliases that already resolve to an original ID, avoiding a second ownership counter
+for the same confirmed match. Once published, crosswalk targets must not be changed without
+an explicit migration; adding a link later can affect an already-saved source ID.
+
+Sets show one labeled full-set overview with separate component inputs. A set row has no
+separate writable quantity and never marks all components owned. Sleeve quantities for
+linked manufacturer products remain 100-sleeve packs; silver counters remain boxed sets.
+Merchandise stays separate from card quantities, valuation, deck readiness and trade reservations.
+Source-category names, including jumbo cards, do not turn those entries into playable cards.
+
+The shared snapshot's source IDs now also serve as persisted keys for unmatched rows.
+The XLSX importer refuses removed IDs or changed names/categories/details, so a spreadsheet
+row reorder cannot silently move ownership. Photo URL refreshes can retain identity. Changes
+to source labels or duplicate resolution require explicit review and stable-ID migration.
+
+Collection search, category, release/catalog, champion and ownership filters preserve drafts.
+The champion filter retains the original registry's explicit champion metadata; text search
+also searches names on community entries without that metadata. Results show 24 groups at a
+time with Show more. A catalog deep link focuses the selected item or set, bypassing other
+filters, and Show all merchandise returns to the full collection. Saved progress counts
+entries, with one entry per original bundle component.
+
+Deploy the account worker with the expanded shared ID registry before deploying the app.
+No new D1 migration is required. An older worker rejects newly introduced IDs; it does not
+silently discard them. A rejected save retains the client draft.
+
+The sections below document the evidence behind the original 168 ownership entries:
+eighteen Dragon Shield sleeve products, ninety-four Ascent catalog designs, and 56 components
+from eight article-confirmed sets. Those IDs and quantity units are unchanged.
 
 ## Identity and evidence
 
@@ -65,3 +111,18 @@ Verification commands:
 - Shared, app, and account-worker typechecks; app lint.
 
 SQLite and local D1 tests cover failed creation/update rollback, retry behavior, conflicting creation, concurrent identical requests, stale updates, account isolation, validation, deletion cascade, and progress without double counting. Browser acceptance uses mocked account responses to exercise loading, unavailable data, empty filters, expanded quantities, drafts across tabs/reload, failed save retry, revision-conflict recovery, and mobile/desktop keyboard, touch targets and overflow. Live signed-in production writes require deployment.
+
+## Catalog integration verification (2026-11-15)
+
+- Focused tests cover every original ID/quantity, every catalog row's tracking destination,
+  crosswalk identity guards, shared photo resolution, component-only set ownership, mixed
+  old/new saves, rollback, duplicate retries, account isolation and revision conflicts.
+- Local D1 integration verifies atomic failure recovery, concurrent retries, stale writes
+  and all 168 original quantities alongside a newly trackable item.
+- Production components were checked using an isolated account fixture at 390px and 1280px:
+  saved quantities, catalog-to-collection links, draft recovery across navigation, lost save
+  response/retry, conflict/reload, failed reload/retry, empty search/recovery, set component
+  inputs, category filtering, keyboard focus, 48px controls and horizontal overflow.
+- Shared/app/account-worker typechecks and targeted lint pass. Native phone keyboards,
+  production account writes and deployment were not exercised. Remote photo availability
+  remains external; no new photo-source mappings were changed by this integration.

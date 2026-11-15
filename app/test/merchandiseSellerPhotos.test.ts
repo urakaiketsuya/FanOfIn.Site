@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import catalog from "../src/features/merchandise/catalog.json";
+import { merchandiseCatalog as catalog } from "@gatcg/shared";
 import { sellerPhotoFor, sellerPhotos } from "../src/features/merchandise/sellerPhotos";
 
 test("seller photos resolve only to their reviewed source name and product type", () => {

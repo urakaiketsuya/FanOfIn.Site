@@ -4,7 +4,9 @@ export { merchandiseBundles } from "./merchandiseCatalog";
 export const merchandiseItems = merchandiseBundles.flatMap(bundle => bundle.items.map(item => ({
   ...item, bundleId: bundle.id, releaseId: bundle.releaseId, releaseName: bundle.releaseName, champion: bundle.champion,
 })));
-const itemIds = new Set<string>(merchandiseItems.map(item => item.id));
+export * from "./merchandiseCollectionCatalog";
+import { merchandiseCollectionItems } from "./merchandiseCollectionCatalog";
+const itemIds = new Set<string>(merchandiseCollectionItems.map(item => item.id));
 export interface MerchandiseCollection { userId: string; revision: number; quantities: Record<string, number> }
 export interface MerchandiseSaveInput { expectedUserId: string; expectedRevision: number; requestId: string; quantities: Record<string, number> }
 

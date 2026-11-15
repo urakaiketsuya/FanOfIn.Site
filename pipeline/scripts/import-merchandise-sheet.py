@@ -34,5 +34,13 @@ for i in [2,3,4,5,7,8,9,10,11]:
 cells,links=read(12)
 for col,start,end,category,meta in [('B',13,27,'Deckboxes',False),('F',13,21,'Double deckboxes',False),('I',13,28,'Compact deckboxes',False),('L',13,15,'Lightweight deckboxes',False),('L',19,21,'Plastic deckboxes',False),('B',38,79,'Sleeves',True),('B',85,98,'Standees',False),('B',109,126,'Clothing',False),('B',133,140,'Merchandise sets',False),('B',150,159,'Event entry items',True),('B',168,188,'Jumbo cards',False),('B',194,202,'Art blocks',True),('B',208,213,'Figures and plushies',False),('B',218,243,'Accessories',True)]:
  for row in range(start,end+1):add(12,f'{col}{row}',category,cells.get(f'C{row}','') if meta else '')
-Path('app/src/features/merchandise/catalog.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+destination = Path('shared/src/merchandiseCommunityCatalog.json')
+# These IDs now store ownership. Never silently recycle a source row or drop a saved item.
+previous = json.loads(destination.read_text())
+incoming = {item['id']: item for item in out}
+for item in previous:
+ candidate = incoming.get(item['id'])
+ if not candidate or any(candidate[key] != item[key] for key in ['name', 'category', 'detail']):
+  raise SystemExit(f"Ownership identity changed at {item['id']}; review a stable-ID migration before refreshing.")
+destination.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
 print(len(out),collections.Counter(x['category'] for x in out))

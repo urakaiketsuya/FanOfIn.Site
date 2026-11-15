@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import catalog from "../src/features/merchandise/catalog.json";
+import { merchandiseCatalog as catalog } from "@gatcg/shared";
 import photos from "../src/features/merchandise/manufacturerPhotos.json";
 import { manufacturerPhotoFor } from "../src/features/merchandise/manufacturerPhotos";
 

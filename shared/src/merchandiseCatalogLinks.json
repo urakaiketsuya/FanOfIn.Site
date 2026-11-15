@@ -1,0 +1,646 @@
+{
+  "items": [
+    {
+      "catalogId": "sheet-11-d4",
+      "name": "Divine Comedy, Inferno",
+      "category": "Playmats",
+      "detail": "PRD-",
+      "ownershipId": "merch-ascent-playmat-divine-comedy-inferno",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-11-a5",
+      "name": "Lorraine, Honed Operative",
+      "category": "Playmats",
+      "detail": "PRD-",
+      "ownershipId": "merch-ascent-playmat-lorraine-honed-operative",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a6",
+      "name": "Ciel, Loyal Valet",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-ciel-loyal-valet",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-d20",
+      "name": "The Looking Glass",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-the-looking-glass",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a8",
+      "name": "Ciel, Mirage's Grave",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-ciel-mirage-s-grave",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a11",
+      "name": "Diana, Moonpiercer",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-diana-moonpiercer",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-d14",
+      "name": "Malevolent Vow",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-malevolent-vow",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a10",
+      "name": "Diana, Judgment's Arrow",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-diana-judgment-s-arrow",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a4",
+      "name": "Alice, Golden Queen",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-alice-golden-queen",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a9",
+      "name": "Diana, Aether Dilettante",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-diana-aether-dilettante",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-d16",
+      "name": "Profane Bindings",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-profane-bindings",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-d4",
+      "name": "Ashen Riffle",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-ashen-riffle",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-a7",
+      "name": "Ciel, Omenbringer",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-ciel-omenbringer",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-d7",
+      "name": "Chronowarp",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-chronowarp",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a5",
+      "name": "Mordred, Aurelian Regent",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-mordred-aurelian-regent",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a9",
+      "name": "Nuriel, Seraphic Paladin",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-nuriel-seraphic-paladin",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a6",
+      "name": "Auspicious Manifestation",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-auspicious-manifestation",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-8-g4",
+      "name": "Lu Bu, Wrath Incarnate",
+      "category": "Playmats",
+      "detail": "AMB-HVN",
+      "ownershipId": "merch-ascent-playmat-lu-bu-wrath-incarnate",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a11",
+      "name": "Angelic Channeling",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-angelic-channeling",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a7",
+      "name": "Celestial Navigation",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-celestial-navigation",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a8",
+      "name": "Iridescent Resurgence",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-iridescent-resurgence",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a10",
+      "name": "Nox, Final Release",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-nox-final-release",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-10-a4",
+      "name": "Alice, Trifle's Royalty (CUR)",
+      "category": "Playmats",
+      "detail": "RDO",
+      "ownershipId": "merch-ascent-playmat-alice-trifle-s-royalty-cur",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-8-a13",
+      "name": "Diao Chan, Dreaming WIsh",
+      "category": "Playmats",
+      "detail": "AMB-HVN",
+      "ownershipId": "merch-ascent-playmat-diao-chan-dreaming-wish",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-g5",
+      "name": "Merlin, Amethyst's Glow",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-merlin-amethyst-s-glow",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-5-a18",
+      "name": "Zander, Corhazi's Chosen",
+      "category": "Playmats",
+      "detail": "DOA-FTC",
+      "ownershipId": "merch-ascent-playmat-zander-corhazi-s-chosen",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-7-a7",
+      "name": "Arisanna, Lucent Arbiter",
+      "category": "Playmats",
+      "detail": "ALC-MRC",
+      "ownershipId": "merch-ascent-playmat-arisanna-lucent-arbiter",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-j9",
+      "name": "Spirit Blade: Terminus",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-spirit-blade-terminus",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-g8",
+      "name": "Alice, Phantom Monarch (CUR)",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-alice-phantom-monarch-cur",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-g4",
+      "name": "Merlin, Memorite Vassal",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-merlin-memorite-vassal",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-2-a7",
+      "name": "Peer into Mana",
+      "category": "Playmats",
+      "detail": "Promotional",
+      "ownershipId": "merch-ascent-playmat-peer-into-mana",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-g6",
+      "name": "Merlin, Brilliant Vestige",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-merlin-brilliant-vestige",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-j10",
+      "name": "Embrace Noir",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-embrace-noir",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-g9",
+      "name": "Alice, Whim's Monarch",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-alice-whim-s-monarch",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-5-a4",
+      "name": "Lorraine, Wandering Warrior",
+      "category": "Playmats",
+      "detail": "DOA-FTC",
+      "ownershipId": "merch-ascent-playmat-lorraine-wandering-warrior",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-7-a5",
+      "name": "Arisanna, Master Alchemist",
+      "category": "Playmats",
+      "detail": "ALC-MRC",
+      "ownershipId": "merch-ascent-playmat-arisanna-master-alchemist",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-j7",
+      "name": "Flickering Afterglow",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-flickering-afterglow",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-9-j8",
+      "name": "Labyrinth, Jeweled Opus",
+      "category": "Playmats",
+      "detail": "DTR-PTM",
+      "ownershipId": "merch-ascent-playmat-labyrinth-jeweled-opus",
+      "reason": "Exact design caption and product type; punctuation normalized."
+    },
+    {
+      "catalogId": "sheet-12-b67",
+      "name": "Lorraine, Archlight Saber",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16186",
+      "reason": "Manufacturer product number AT-16186 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b68",
+      "name": "Dante, Hemomancer",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16185",
+      "reason": "Manufacturer product number AT-16185 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b63",
+      "name": "Raziel, Archangel of Libra",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16182",
+      "reason": "Manufacturer product number AT-16182 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b64",
+      "name": "Azrael, Archangel of Materia,",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16181",
+      "reason": "Manufacturer product number AT-16181 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b66",
+      "name": "Haniel, Archangel of Spectra",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16180",
+      "reason": "Manufacturer product number AT-16180 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b65",
+      "name": "Ariel, Archarngel of Natura",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16179",
+      "reason": "Manufacturer product number AT-16179 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b53",
+      "name": "Jin, Fate Defiant",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16126",
+      "reason": "Manufacturer product number AT-16126 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b54",
+      "name": "Kongming, Wayward Maven",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16127",
+      "reason": "Manufacturer product number AT-16127 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b55",
+      "name": "Guo Jia, Heaven's Favored",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "ownershipId": "merch-dragon-shield-at-16128",
+      "reason": "Manufacturer product number AT-16128 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b62",
+      "name": "Chronowarp",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16170",
+      "reason": "Manufacturer product number AT-16170 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b60",
+      "name": "Merlin, Veritor",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "ownershipId": "merch-dragon-shield-at-16168",
+      "reason": "Manufacturer product number AT-16168 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b56",
+      "name": "Diao Chan, Idyll Corsage",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "ownershipId": "merch-dragon-shield-at-16139",
+      "reason": "Manufacturer product number AT-16139 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b58",
+      "name": "Diana, Moonpiercer",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16131",
+      "reason": "Manufacturer product number AT-16131 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b57",
+      "name": "Ciel, Mirage's Grave",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16130",
+      "reason": "Manufacturer product number AT-16130 in the reviewed product image."
+    },
+    {
+      "catalogId": "sheet-12-b199",
+      "name": "Alice, Golden Queen  acrylic art piece",
+      "category": "Art blocks",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-acrylic-art-alice-golden-queen",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b200",
+      "name": "The Looking Glass acrylic art piece",
+      "category": "Art blocks",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-acrylic-art-the-looking-glass",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b201",
+      "name": "Chesire Cat acrylic art piece",
+      "category": "Art blocks",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-acrylic-art-cheshire-cat",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b202",
+      "name": "Fractured Memories acrylic art piece",
+      "category": "Art blocks",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-acrylic-art-fractured-memories",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b236",
+      "name": "Merlin Tote Bag",
+      "category": "Accessories",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-tote-bag-merlin",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b237",
+      "name": "silver metal counters",
+      "category": "Accessories",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-metal-counters-silver",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b208",
+      "name": "Arisanna chibi figure",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-figurine-arisanna-chibi",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b209",
+      "name": "Kongming chibi figure",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-figurine-kongming",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b210",
+      "name": "Merlin, Amethyst's Glow figure",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-figurine-merlin-amethyst-s-glow",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b211",
+      "name": "Tristan plushie",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-plush-tristan",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b212",
+      "name": "Guo Jia plushie",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-plush-guo-jia",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b213",
+      "name": "Silvie plushie",
+      "category": "Figures and plushies",
+      "detail": "",
+      "ownershipId": "merch-ascent-plush-silvie",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b224",
+      "name": "Horizon's Reprrise Key Visual Wall Scroll (all champions)",
+      "category": "Accessories",
+      "detail": "Ascents",
+      "ownershipId": "merch-ascent-wall-scroll-horizon-s-reprise-key-visual-wall-scroll",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-i19",
+      "name": "Avatar of Byakko",
+      "category": "Compact deckboxes",
+      "detail": "",
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-byakko",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-i20",
+      "name": "Avatar of Genbu",
+      "category": "Compact deckboxes",
+      "detail": "",
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-genbu",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-i21",
+      "name": "Avatar of Suzaku",
+      "category": "Compact deckboxes",
+      "detail": "",
+      "ownershipId": "merch-ascent-compact-deck-box-avatar-of-suzaku",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-2-g5",
+      "name": "Enfeebling Orb (PR Slimes)",
+      "category": "Playmats",
+      "detail": "Promotional",
+      "ownershipId": "merch-ascent-playmat-enfeebling-orb-pr",
+      "reason": "Explicit product/design label match to the existing reviewed Ascent entry; spelling retained in the community catalog."
+    },
+    {
+      "catalogId": "sheet-12-b50",
+      "name": "Silvie, Slime Soverign",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "ownershipId": "merch-dragon-shield-at-16114",
+      "reason": "Same manufacturer product page as the existing ownership entry; regional storefront prefix ignored."
+    },
+    {
+      "catalogId": "sheet-12-b52",
+      "name": "Merlin, Kingslayer",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16113",
+      "reason": "Same manufacturer product page as the existing ownership entry; regional storefront prefix ignored."
+    },
+    {
+      "catalogId": "sheet-12-b51",
+      "name": "Tristan, Shadowdancer",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "ownershipId": "merch-dragon-shield-at-16115",
+      "reason": "Same manufacturer product page as the existing ownership entry; regional storefront prefix ignored."
+    },
+    {
+      "catalogId": "sheet-12-b61",
+      "name": "Alice, Orleane",
+      "category": "Sleeves",
+      "detail": "Retail",
+      "ownershipId": "merch-dragon-shield-at-16169",
+      "reason": "Same manufacturer product page as the existing ownership entry; regional storefront prefix ignored."
+    }
+  ],
+  "bundles": [
+    {
+      "catalogId": "sheet-12-b133",
+      "name": "Yuletide Cheer Kongming",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "yuletide-cheer-2024-kongming"
+    },
+    {
+      "catalogId": "sheet-12-b134",
+      "name": "Lunar Blessings Rai",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "lunar-blessings-2026-rai"
+    },
+    {
+      "catalogId": "sheet-12-b135",
+      "name": "Lunar Blessings Arisanna",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "lunar-blessings-2026-arisanna"
+    },
+    {
+      "catalogId": "sheet-12-b136",
+      "name": "Lunar Blessings Lorraine",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "lunar-blessings-2026-lorraine"
+    },
+    {
+      "catalogId": "sheet-12-b137",
+      "name": "Lunar Blessings Tristan",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "lunar-blessings-2026-tristan"
+    },
+    {
+      "catalogId": "sheet-12-b138",
+      "name": "Seaside Splash Merlin",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "seaside-splash-2026-merlin"
+    },
+    {
+      "catalogId": "sheet-12-b139",
+      "name": "Seaside Splash Nico",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "seaside-splash-2026-nico"
+    },
+    {
+      "catalogId": "sheet-12-b140",
+      "name": "Seaside Splash Tonoris",
+      "category": "Merchandise sets",
+      "detail": "",
+      "bundleId": "seaside-splash-2026-tonoris"
+    }
+  ]
+}

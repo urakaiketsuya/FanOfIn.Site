@@ -106,3 +106,23 @@ test("manufacturer products have unique SKUs, source images and explicit pack qu
   assert.deepEqual(parseMerchandiseQuantities(quantities), quantities);
   assert.deepEqual(merchandiseProgress(ids, quantities), { owned: 1, total: 18 });
 });
+
+test("expanded catalog saves preserve every legacy quantity across retries, failures and conflicts", async () => {
+  const f = fixture();
+  try {
+    const quantities = Object.fromEntries(merchandiseItems.map((item, index) => [item.id, index + 1]));
+    const original = await saveMerchandise(f.env, f.user, { ...input, quantities });
+    const command = { ...input, expectedRevision: original.revision, requestId: "expanded-catalog-0001", quantities: { ...quantities, "sheet-12-b226": 3 } };
+    f.db.exec("CREATE TRIGGER fail_catalog_update BEFORE UPDATE ON merchandise_collections BEGIN SELECT RAISE(ABORT,'injected failure'); END");
+    await assert.rejects(saveMerchandise(f.env, f.user, command), /injected failure/);
+    assert.deepEqual(await listMerchandise(f.env, f.user), original);
+    f.db.exec("DROP TRIGGER fail_catalog_update");
+    const saved = await saveMerchandise(f.env, f.user, command);
+    assert.deepEqual(saved.quantities, command.quantities);
+    assert.deepEqual(await saveMerchandise(f.env, f.user, command), saved);
+    await assert.rejects(saveMerchandise(f.env, f.user, { ...command, requestId: "competing-save-0001" }), /changed elsewhere/);
+    assert.deepEqual(await listMerchandise(f.env, f.user), saved);
+    const removed = await saveMerchandise(f.env, f.user, { ...command, expectedRevision: saved.revision, requestId: "remove-new-item-0001", quantities: { ...command.quantities, "sheet-12-b226": 0 } });
+    assert.deepEqual(removed.quantities, quantities);
+  } finally { f.db.close(); }
+});

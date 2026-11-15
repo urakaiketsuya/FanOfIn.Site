@@ -14,8 +14,13 @@ All visible catalog tabs are imported except Need list (personal wants) and
 MerchWIP (a working duplicate of GA Merch). Hidden sheets are excluded. The GA
 Merch tab has no exported photos or photo links. Featured bundle artwork comes
 separately from the existing verified shared catalog and depicts full sets.
-Sheet IDs identify source observations only; they must not be used for ownership.
-Existing collection records and stable merchandise IDs remain unchanged.
+The source snapshot now lives in `shared/src/merchandiseCommunityCatalog.json` and is
+shared by browsing and collection tracking. Existing ownership IDs remain unchanged.
+`merchandiseCatalogLinks.json` explicitly connects 73 catalog rows to original ownership
+IDs and eight sets to their 56 existing component IDs. Other source IDs are now frozen
+ownership keys. The importer rejects removals and name/category/detail changes rather
+than reassigning quantities when spreadsheet rows move. Review an explicit stable-ID
+migration before accepting any such refresh. See `MERCHANDISE_COLLECTION.md`.
 
 To refresh, export the workbook as XLSX, then from the repository root run:
 
