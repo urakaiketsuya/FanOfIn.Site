@@ -2,6 +2,11 @@ import assert from 'node:assert/strict';
 import { adminOverview, listEditorialPackages, saveEditorialPackage } from '../../src/admin-workspace';
 import type { Env, AuthUser } from '../../src/auth';
 export async function adminWorkspaceChecks(env: Env, user: AuthUser) {
+  assert.equal((await adminOverview(env)).users.total, 1);
+  await env.ACCOUNT_DB.prepare("INSERT INTO users(id,google_subject,email,display_name,created_at,updated_at) VALUES('signup-only','signup-only','signup@test','Signup','now','now')").run();
+  assert.equal((await adminOverview(env)).users.total, 2, 'Accounts without decks count as signed-up users');
+  await env.ACCOUNT_DB.prepare("DELETE FROM users WHERE id='signup-only'").run();
+  assert.equal((await adminOverview(env)).users.total, 1);
   const input = { revision: 0, status: 'draft', definition: { v: 1, name: 'Editor fixture', cards: [{ name: 'Reposition', section: 'main', quantity: 4 }] } };
   const results = await Promise.all([saveEditorialPackage(env, user, 'test-package', input), saveEditorialPackage(env, user, 'test-package', input)]);
   assert.deepEqual(results[0], results[1]);
@@ -18,7 +23,7 @@ export async function adminWorkspaceChecks(env: Env, user: AuthUser) {
   assert.equal((await listEditorialPackages(env, true)).length, 0);
   for (const visibility of ['private', 'unlisted', 'public'] as const) {
     await env.ACCOUNT_DB.prepare('UPDATE user_decks SET visibility=?').bind(visibility).run();
-    assert.deepEqual(await adminOverview(env), { decks: { private: 0, unlisted: 0, public: 0, [visibility]: 1, total: 1 } });
+    assert.deepEqual(await adminOverview(env), { users: { total: 1 }, decks: { private: 0, unlisted: 0, public: 0, [visibility]: 1, total: 1 } });
   }
   await env.ACCOUNT_DB.prepare('UPDATE user_decks SET is_seed=1').run();
   assert.equal((await adminOverview(env)).decks.total, 0);

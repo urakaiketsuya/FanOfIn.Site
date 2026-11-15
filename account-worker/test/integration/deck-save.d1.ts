@@ -1,4 +1,5 @@
 import { profileAddressChecks } from "./profile-address-checks";
+import { adminOverview } from "../../src/admin-workspace";
 import { adminWorkspaceChecks } from "./admin-workspace-checks";
 import { restoreChecks } from "../../../scripts/account-restore-check.mjs";
 import assert from "node:assert/strict";
@@ -23,6 +24,7 @@ try {
   assert.ok(recovery.length > 0);
   assert.ok(recovery.every(result => result.success && result.results.every(row => row.orphan_count === 0)));
   const env = { ACCOUNT_DB: db } as unknown as Env;
+  assert.equal((await adminOverview(env)).users.total, 0);
   await db.prepare("INSERT INTO users(id,google_subject,email,display_name,created_at,updated_at) VALUES('a','a','a@test','A','now','now')").run();
   const user = { id: "a" } as AuthUser;
   const input = parseSaveInput({ title: "Local D1 test", format: "STANDARD", decklist: { main: [{ card: "First", quantity: 4 }], material: [], sideboard: [] }, source: { provider: "manual", externalDeckId: "one", label: "Manual" } });

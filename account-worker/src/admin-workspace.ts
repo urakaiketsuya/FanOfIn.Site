@@ -1,4 +1,4 @@
-import { decodePackage, encodePackage, type EditorialPackage, type EditorialPackageInput, type SharedPackage, type PackageResearchReview } from '@gatcg/shared';
+import { decodePackage, encodePackage, type AdminOverview, type EditorialPackage, type EditorialPackageInput, type SharedPackage, type PackageResearchReview } from '@gatcg/shared';
 import type { AuthUser, Env } from './auth';
 import { ApiError, badRequest } from './errors';
 import { normalizeDisplayText } from './content-policy';
@@ -9,11 +9,12 @@ export async function isAdmin(env: Env, user: AuthUser): Promise<boolean> {
 export async function requireAdmin(env: Env, user: AuthUser): Promise<void> {
   if (!await isAdmin(env, user)) throw new ApiError('Administrator access is required', 403, 'admin_required');
 }
-export async function adminOverview(env: Env) {
+export async function adminOverview(env: Env): Promise<AdminOverview> {
   const rows = await env.ACCOUNT_DB.prepare(`SELECT visibility, COUNT(*) AS total FROM user_decks WHERE is_seed = 0 GROUP BY visibility`).all<{ visibility: 'private' | 'unlisted' | 'public'; total: number }>();
   const decks = { private: 0, unlisted: 0, public: 0, total: 0 };
   for (const row of rows.results) { decks[row.visibility] = Number(row.total); decks.total += Number(row.total); }
-  return { decks };
+  const users = await env.ACCOUNT_DB.prepare('SELECT COUNT(*) AS total FROM users').first<{ total: number }>();
+  return { users: { total: Number(users!.total) }, decks };
 }
 interface PackageRow { research_json: string | null; id: string; definition_json: string; status: 'draft' | 'published'; revision: number; updated_at: string }
 function present(row: PackageRow): EditorialPackage {

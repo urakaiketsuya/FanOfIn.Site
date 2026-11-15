@@ -14,6 +14,7 @@ export interface EditorialPackage {
   updatedAt: string;
 }
 export interface AdminOverview {
+  users: { total: number };
   decks: { private: number; unlisted: number; public: number; total: number };
 }
 export interface EditorialPackageInput {

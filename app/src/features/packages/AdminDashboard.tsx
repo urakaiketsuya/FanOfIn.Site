@@ -57,7 +57,9 @@ export default function AdminDashboard() {
         setPackages(current => [result.package, ...current.filter(item => item.id !== result.package.id)]);
       }} onReview={(pkg, source) => { setFinding(source); setEditing(pkg); }} />}</TabPanel>
       <TabPanel baseId="admin" tab="overview" active={tab} className="py-4">
-        {overview && <><h2 className="mb-3 text-lg font-semibold">Saved decks</h2><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(overview.decks).map(([label, total]) => <Panel key={label}><p className="text-sm capitalize">{label}</p><p className="text-3xl font-semibold">{total.toLocaleString()}</p></Panel>)}</div><p className="mt-3 text-sm text-ctp-subtext1">Current deck lists, excluding site seed decks. Versions are not counted separately.</p><Button className="mt-3" disabled={loading} onClick={() => void refresh()}>Refresh totals</Button></>}
+        {overview && <>
+          <Panel className="mb-6"><h2 className="text-sm">Signed-up users</h2><p className="text-3xl font-semibold">{overview.users?.total.toLocaleString() ?? 'Unavailable'}</p></Panel>
+          <h2 className="mb-3 text-lg font-semibold">Saved decks</h2><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(overview.decks).map(([label, total]) => <Panel key={label}><p className="text-sm capitalize">{label}</p><p className="text-3xl font-semibold">{total.toLocaleString()}</p></Panel>)}</div><p className="mt-3 text-sm text-ctp-subtext1">Current deck lists, excluding site seed decks. Versions are not counted separately.</p><Button className="mt-3" disabled={loading} onClick={() => void refresh()}>Refresh totals</Button></>}
       </TabPanel>
     </>}
     {editing && <AdminPackageEditor key={editing.id} initial={editing} finding={finding} onDismiss={() => { setEditing(undefined); setFinding(undefined); }} onSaved={pkg => setPackages(current => [pkg, ...current.filter(item => item.id !== pkg.id)])} />}
