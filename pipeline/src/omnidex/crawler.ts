@@ -90,7 +90,7 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
   if (mode.kind === "range") {
     ({ startId, endId } = mode);
   } else if (mode.kind === "backfill-year") {
-    const maxId = await findMaxEventId();
+    const maxId = await findMaxEventId(priorMeta?.maxKnownId ?? 0);
     startId = await findYearStartId(mode.year, maxId);
     // Bounding endId to the *next* year's start (not always maxId) matters once backfills are
     // split one-process-per-year: without this, backfilling e.g. 2023 alone would scan every id
@@ -102,7 +102,7 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
     endId = isCurrentYear ? maxId : await findYearStartId(mode.year + 1, maxId);
     console.log(`omnidex: backfilling ${mode.year} — scanning ids ${startId}..${endId}`);
   } else {
-    endId = await findMaxEventId();
+    endId = await findMaxEventId(priorMeta?.maxKnownId ?? 0);
     startId = priorMeta?.maxKnownId
       ? Math.max(1, priorMeta.maxKnownId - config.incrementalLookbackIds)
       : await findYearStartId(config.backfillYear, endId);

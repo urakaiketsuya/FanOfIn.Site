@@ -10,3 +10,11 @@ export function playerDirectoryRows(players: OmnidexPlayerSummary[], ratings: Pl
     })
     .map((row, index) => ({ ...row, rank: row.rating ? index + 1 : null }));
 }
+
+/** Accept Omni's displayed username#ID as well as names and numeric IDs. */
+export function matchesPlayerSearch(player: Pick<OmnidexPlayerSummary, 'id' | 'username'>, query: string): boolean {
+  const needle = query.trim().toLowerCase();
+  return !needle || player.username.toLowerCase().includes(needle)
+    || String(player.id) === needle || `#${player.id}` === needle
+    || `${player.username}#${player.id}`.toLowerCase() === needle;
+}

@@ -1,26 +1,41 @@
+import type { OmnidexEvent } from "@gatcg/shared";
 import { sleep } from "../lib/http.js";
 import { config } from "../config.js";
 import { omnidexApi } from "./api.js";
 
 /**
- * Omnidex has no bulk-listing endpoint, so the crawler has to know its own search space.
- * IDs are assigned sequentially with no gaps near the frontier (verified against live
- * data — dense from at least id 60725-60729 as of writing), so exponential probe + binary
- * search reliably finds the current max ID in ~30-40 requests regardless of how large it's grown.
+ * Deleted/private IDs are holes, not an upper bound. Probe a window before treating
+ * an ID as beyond the frontier; the old single-ID binary search froze at 67582
+ * because 67583 was missing while completed event 68510 already existed.
+ * This tolerates gaps of up to 127 IDs; no finite probe can prove there are no
+ * arbitrarily distant events without an upstream listing endpoint.
  */
-export async function findMaxEventId(): Promise<number> {
-  let lo = 1;
-  let hi = 1;
-  while ((await omnidexApi.getEvent(hi)) !== null) {
+export async function findMaxEventId(
+  knownMax = 0,
+  getEvent: (id: number) => Promise<OmnidexEvent | null> = omnidexApi.getEvent,
+  delayMs = config.crawlRequestDelayMs,
+): Promise<number> {
+  const probes = new Map<number, boolean>();
+  async function existsInWindow(id: number): Promise<boolean> {
+    for (let offset = 0; offset < 128; offset++) {
+      const candidate = id + offset;
+      if (!probes.has(candidate)) {
+        probes.set(candidate, (await getEvent(candidate)) !== null);
+        await sleep(delayMs);
+      }
+      if (probes.get(candidate)) return true;
+    }
+    return false;
+  }
+  let lo = knownMax;
+  let hi = Math.max(1, knownMax + 1);
+  while (await existsInWindow(hi)) {
     lo = hi;
     hi *= 2;
-    await sleep(config.crawlRequestDelayMs);
   }
   while (hi - lo > 1) {
     const mid = Math.floor((lo + hi) / 2);
-    const exists = (await omnidexApi.getEvent(mid)) !== null;
-    await sleep(config.crawlRequestDelayMs);
-    if (exists) lo = mid;
+    if (await existsInWindow(mid)) lo = mid;
     else hi = mid;
   }
   return lo;

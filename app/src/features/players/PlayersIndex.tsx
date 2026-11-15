@@ -1,5 +1,5 @@
 import PlayerSearchResult, { PersonAvatar } from "./PlayerSearchResult";
-import { playerDirectoryRows } from "./playerDirectory";
+import { matchesPlayerSearch, playerDirectoryRows } from "./playerDirectory";
 import { usePlayerRegions } from "./usePlayerRegions";
 import { REGION_LABELS } from "../../lib/regions";
 import { useCompetition } from "../competition/data";
@@ -82,7 +82,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
 
   const rows = useMemo(() => {
     const needle = search.trim().toLowerCase();
-    return ranked.filter((r) => (!needle || (r.player.username.toLowerCase().includes(needle) || String(r.player.id) === needle)) && (!region || (region === "unassigned" ? r.player.country === "US" && regions?.get(r.player.id)?.region === null : regions?.get(r.player.id)?.region === region)));
+    return ranked.filter((r) => matchesPlayerSearch(r.player, needle) && (!region || (region === "unassigned" ? r.player.country === "US" && regions?.get(r.player.id)?.region === null : regions?.get(r.player.id)?.region === region)));
   }, [ranked, search, region, regions]);
 
   useEffect(() => {

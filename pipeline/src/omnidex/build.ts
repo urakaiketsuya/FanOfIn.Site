@@ -13,7 +13,7 @@ import {
   type OmnidexTeamSighting,
 } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "./cache.js";
-import { loadCardCatalog } from "../cards/catalog.js";
+import { loadCardCatalog, type CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "../analysis/decklists.js";
 
 import { eventField } from "./eventField.js";
@@ -27,14 +27,15 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
  * never needs to hit the API — only a crawl does. Takes the bundle array as a parameter rather
  * than reading the cache itself so a full pipeline run can load it once and share it with
  * `buildAnalysis`/`publishVods` instead of re-reading ~20k event files per stage.
+ * A supplied catalog keeps targeted repairs and regression fixtures offline.
  */
-export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promise<{
+export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[], catalog?: readonly CardSignature[]): Promise<{
   index: OmnidexIndexData;
   players: OmnidexPlayerSummary[];
   judges: OmnidexJudgeSummary[];
   teams: OmnidexTeamSighting[];
 }> {
-  const cardIndex = new Map((await loadCardCatalog()).map((card) => [card.name, card]));
+  const cardIndex = new Map((catalog ?? await loadCardCatalog()).map((card) => [card.name, card]));
   const catalogNames = new Set([...cardIndex.keys()].map(name => name.trim().toLowerCase()));
   const events: OmnidexEventSummary[] = [];
   const seasonsById = new Map<number, OmnidexSeasonSummary>();
