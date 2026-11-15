@@ -41,7 +41,7 @@ export default function SettingsIndex() {
         <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
             label="Win rate"
-            description="This specific decklist's own match record from the event it was played at, where available. Only shows on tournament decklists – there's no meaningful win rate for a decklist that's never been played in a tracked event."
+            description="Show recorded event win rates on tournament decklists and average tournament win rate in build Stats."
             checked={prefs.winRate}
             onChange={prefs.setWinRate}
           />
