@@ -658,5 +658,53 @@
     "kind": "seller",
     "group": false,
     "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b159",
+    "name": "Lu Bu backpack",
+    "category": "Event entry items",
+    "detail": "Nationals 2025",
+    "sourceUrl": "https://fastcuretcg.com/item/Grand-Archive-TCG-Nationals-Backpack/6446499727540224",
+    "imageUrl": "https://img.boutirapp.com/i/Q7XtsCwizl7pMwvdG0DWipSBLNh0Ft1Zpl7C-YG8RZH",
+    "sourceName": "Fast Cure TCG",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-4-m11",
+    "name": "Polishing Flourish (Path of Silver)",
+    "category": "Playmats",
+    "detail": "Path of Silver",
+    "sourceUrl": "https://fastcuretcg.com/item/Polishing-Flourish-Playmat/5402502114443264",
+    "imageUrl": "https://img.boutirapp.com/i/MfKdSS8-2hUlqjsfwANkyLZpr08GlcPEEHXrEFDs3LS",
+    "sourceName": "Fast Cure TCG",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b209",
+    "name": "Kongming chibi figure",
+    "category": "Figures and plushies",
+    "detail": "",
+    "sourceUrl": "https://www.ebay.com/itm/205625034367",
+    "imageUrl": "https://i.ebayimg.com/images/g/uUEAAeSwTvxofA43/s-l500.webp",
+    "sourceName": "Kardomi Collectibles on eBay",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
+  },
+  {
+    "catalogId": "sheet-12-b78",
+    "name": "Mordred, Aurelian Regent",
+    "category": "Sleeves",
+    "detail": "ReCo and Retail",
+    "sourceUrl": "https://hasuya.jp/products/list?category_id=3354",
+    "imageUrl": "https://hasuya.jp/html/upload/save_image/moedred1.jpg",
+    "sourceName": "Hasuya",
+    "kind": "seller",
+    "group": false,
+    "checkedAt": "2026-11-15"
   }
 ]

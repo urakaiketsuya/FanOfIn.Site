@@ -1,0 +1,75 @@
+{
+  "reviewedAt": "2026-11-15",
+  "added": [
+    {
+      "catalogId": "sheet-12-b159",
+      "name": "Lu Bu backpack",
+      "category": "Event entry items",
+      "detail": "Nationals 2025",
+      "sourceUrl": "https://fastcuretcg.com/item/Grand-Archive-TCG-Nationals-Backpack/6446499727540224",
+      "imageUrl": "https://img.boutirapp.com/i/Q7XtsCwizl7pMwvdG0DWipSBLNh0Ft1Zpl7C-YG8RZH",
+      "sourceName": "Fast Cure TCG",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Browser photo shows Lu Bu artwork and NATIONALS 2025 text on black backpack; front, back and side views."
+    },
+    {
+      "catalogId": "sheet-4-m11",
+      "name": "Polishing Flourish (Path of Silver)",
+      "category": "Playmats",
+      "detail": "Path of Silver",
+      "sourceUrl": "https://fastcuretcg.com/item/Polishing-Flourish-Playmat/5402502114443264",
+      "imageUrl": "https://img.boutirapp.com/i/MfKdSS8-2hUlqjsfwANkyLZpr08GlcPEEHXrEFDs3LS",
+      "sourceName": "Fast Cure TCG",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Named listing and physical playmat photo verified in browser. This product ID now serves Polishing Flourish, not the previously indexed Alice listing."
+    },
+    {
+      "catalogId": "sheet-12-b209",
+      "name": "Kongming chibi figure",
+      "category": "Figures and plushies",
+      "detail": "",
+      "sourceUrl": "https://www.ebay.com/itm/205625034367",
+      "imageUrl": "https://i.ebayimg.com/images/g/uUEAAeSwTvxofA43/s-l500.webp",
+      "sourceName": "Kardomi Collectibles on eBay",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Packaging photo shows chibi Kongming figure in window box labeled Kongming / Q Version Collection."
+    },
+    {
+      "catalogId": "sheet-12-b78",
+      "name": "Mordred, Aurelian Regent",
+      "category": "Sleeves",
+      "detail": "ReCo and Retail",
+      "sourceUrl": "https://hasuya.jp/products/list?category_id=3354",
+      "imageUrl": "https://hasuya.jp/html/upload/save_image/moedred1.jpg",
+      "sourceName": "Hasuya",
+      "kind": "seller",
+      "group": false,
+      "checkedAt": "2026-11-15",
+      "evidence": "Retailer identifies Mordred Matte Art Sleeves OA-25002; sleeve package and matching Aurelian Regent artwork visually inspected. Source is only 265x370 pixels."
+    }
+  ],
+  "coverage": {
+    "before": 406,
+    "added": 4,
+    "after": 410,
+    "total": 546,
+    "remaining": 136
+  },
+  "followups": [
+    {
+      "catalogId": "sheet-9-g10",
+      "blocker": "Previously indexed Fast Cure product ID 5402502114443264 now displays Polishing Flourish. Do not use it for Alice, Phantom Monarch."
+    },
+    {
+      "category": "Figures and accessories",
+      "blocker": "Silvie plush and Avatar of Gaia keychain searches returned event inventory lists but no individually verified product photos."
+    }
+  ],
+  "verification": "All four images visually inspected at source and loaded successfully in local catalog. Checked 390px mobile and 1280px desktop with no horizontal overflow, 48px tabs, and empty backpack bounty result. Eleven merchandise tests and app TypeScript build passed. Native touch and forced network-error states not repeated for this data-only change."
+}

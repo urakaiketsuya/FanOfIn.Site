@@ -30,7 +30,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 
 ## Inline photos
 
-406 entries now have inline photo presentations (including the reviewed supplemental sources):
+410 entries now have inline photo presentations (including the reviewed supplemental sources):
 
 - 253 Imgur posts use lazy-loaded sandboxed host embeds. Album IDs are not image
   IDs and must never be turned into guessed image filenames.
@@ -51,7 +51,7 @@ are URL parameters. Pages contain at most 24 entries; invalid pages are clamped.
 Source attribution links remain visible beneath photos. Images use object-contain
 and reserved height, with lazy loading and an unavailable-photo fallback. A failed
 photo never removes the product name or source link. Unknown gallery hosts remain
-external links rather than untrusted iframe sources. There are 140 entries without
+external links rather than untrusted iframe sources. There are 136 entries without
 photo references; no substitute artwork is invented for them.
 
 Seller listings do not establish authenticity, release dates, stock or prices.
@@ -69,7 +69,7 @@ and prize tier. Fourteen playmat entries still lack photos.
 
 The merchandise photo and bounty tests cover source mappings, unsupported hosts,
 source identity changes, and missing-image classification. The Bounties tab shows
-all 140 entries without a supported image or embed and links to Discord for photo
+all 136 entries without a supported image or embed and links to Discord for photo
 submissions. Temporary remote-image failures do not change bounty membership.
 
 The catalog and Bounties flows were checked at mobile and desktop widths, including
@@ -95,6 +95,15 @@ Added 25 exact-row photos: eight complete merchandise sets, ten sleeve designs,
 four acrylic standees, the M.RAGE Merlin windbreaker, Merlin Amethyst’s Glow figure,
 and 2026 Nationals Merlin water bottle. Every added image was visually inspected.
 Sources and unresolved leads are recorded in
-`docs/research/merchandise-remainder-2026-11-15.json`. Coverage is now 406/546
+`docs/research/merchandise-remainder-2026-11-15.json`. Coverage after that pass was 406/546
 entries (74.4%), with 140 photo bounties remaining. This pass searched across
 categories; it does not claim an exhaustive review of every remaining item.
+
+### Follow-up source review
+
+Added four more verified seller photos: Lu Bu Nationals 2025 backpack, Polishing
+Flourish playmat, Kongming chibi figure (boxed), and Mordred sleeves. Coverage is
+now 410/546 (75.1%), leaving 136 bounties. The previously indexed Fast Cure Alice
+playmat URL now serves Polishing Flourish; it must not be mapped to Alice.
+Evidence is in `docs/research/merchandise-followup-2026-11-15.json`. The Mordred
+source is a small 265×370 image; a sharper replacement remains desirable.
