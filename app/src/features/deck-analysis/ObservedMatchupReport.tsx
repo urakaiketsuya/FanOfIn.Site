@@ -54,7 +54,7 @@ export default function ObservedMatchupReport({ result, loading, cards, preview,
       {pending && <p role="status" className="mt-3 text-sm">Updating results…</p>}
       {status.error && <div className="mt-3"><p role="alert" className="text-sm">Showing saved results. Update failed.</p><Button onClick={status.retry}>Retry results</Button></div>}
     </Panel>
-    {!invalid && cohort && previous && priorScope && <MatchupPeriodComparison current={cohort} previous={previous} scope={scope} previousScope={priorScope} />}
+    {!invalid && cohort && previous && priorScope && <MatchupPeriodComparison cards={cards} builds={data.builds} current={cohort} previous={previous} scope={scope} previousScope={priorScope} />}
     {!invalid && <AnalysisMatchups key={`${cluster.id}:${JSON.stringify(scope)}`} result={scopedResult} loading={false} cards={cards} preview={preview} observed={cohort} observedLabel={[scope.from || scope.to ? `${scope.from || 'Start'} – ${scope.to || 'Latest'}` : 'All dates', scope.event ? events.find(e => String(e.id) === scope.event)?.name ?? 'Selected event' : 'All events', scope.format || 'All formats'].join(' · ')} />}
   </div>;
 }

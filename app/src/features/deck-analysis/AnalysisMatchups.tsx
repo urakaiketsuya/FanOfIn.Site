@@ -11,7 +11,7 @@ import type { DeckTestResult } from '../../lib/deckTestResult';
 
 const percent = (value: number) => `${(value * 100).toFixed(0)}%`;
 
-function ChampionArt({ name, cards }: { name: string; cards: Map<string, Card> }) {
+export function ChampionArt({ name, cards }: { name: string; cards: Map<string, Card> }) {
   const card = cards.get(name)
     ?? [...cards.values()].find((candidate) => candidate.types.includes('CHAMPION') && candidate.name.startsWith(`${name}, `));
   const art = <CardArtTile card={card} name={card?.name ?? name} artworkOnly />;

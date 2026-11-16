@@ -7382,3 +7382,9 @@ be compared. The change is selected score rate minus previous score rate in
 percentage points, not relative percent. Each cohort displays its own deck-result,
 deck, and event counts. Empty cohorts have no rate or change. These are descriptive
 cohort comparisons, without adjustment for opponent mix or claims of significance.
+
+Per-opponent period comparisons use the union of builds recorded in either
+cohort, ordered by the combined physical-match count, then build ID. Each side
+retains its own rate and physical-match sample (mirrors count once here).
+An opponent absent from one period has zero recorded matches, a null rate, and
+no rate delta. The initial preview shows three opponents; expansion includes all.

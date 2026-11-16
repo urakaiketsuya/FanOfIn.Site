@@ -62,3 +62,32 @@ test('period comparison keeps empty samples distinct from zero performance', asy
   assert.match(html, /0%/); assert.match(html, /—/);
   assert.match(html, /No comparison/); assert.doesNotMatch(html, /percentage points/);
 });
+
+test('opponent comparisons retain both cohorts, rank combined samples, and distinguish absent from zero rates', async () => {
+  const { compareObservedMatchups } = await import('@gatcg/shared');
+  const base = { winRate: .5, results: 10, decks: 2, events: 1 };
+  const rows = compareObservedMatchups({ ...base, matchups: [{ id: 'both', matches: 2, winRate: 0 }, { id: 'new', matches: 3, winRate: 1 }] },
+    { ...base, matchups: [{ id: 'both', matches: 8, winRate: .5 }, { id: 'old', matches: 4, winRate: 0 }] });
+  assert.deepEqual(rows.map(row => row.id), ['both', 'old', 'new']);
+  assert.equal(rows[0].delta, -50);
+  assert.equal(rows[0].current?.matches, 2);
+  assert.equal(rows[0].previous?.matches, 8);
+  assert.equal(rows[1].current, null); assert.equal(rows[1].delta, null);
+  assert.equal(rows[2].previous, null); assert.equal(rows[2].delta, null);
+});
+
+test('opponent preview shows names, both samples and missing-period labels', async () => {
+  const { default: Comparison } = await import('../src/features/deck-analysis/MatchupPeriodComparison');
+  const { emptyMatchupScope } = await import('@gatcg/shared');
+  const base = { winRate: .5, results: 10, decks: 2, events: 1, matchups: [] };
+  const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(Comparison, {
+    current: { ...base, matchups: [{ id: 'new', matches: 5, winRate: 0 }] },
+    previous: { ...base, matchups: [{ id: 'old', matches: 4, winRate: 1 }] },
+    scope: emptyMatchupScope, previousScope: emptyMatchupScope,
+    builds: { new: { name: 'New build', champion: 'Unknown' }, old: { name: 'Old build', champion: 'Unknown' } },
+  })));
+  assert.match(html, /New build/); assert.match(html, /Old build/);
+  assert.match(html, /Selected period only/); assert.match(html, /Previous period only/);
+  assert.match(html, /0%/); assert.match(html, /—/);
+  assert.match(html, /href="\/archetypes\/new"/);
+});

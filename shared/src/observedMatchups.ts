@@ -48,3 +48,15 @@ export function previousMatchupScope(scope: ObservedMatchupScope): ObservedMatch
   if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
   return { ...scope, from: start, to: new Date(from - day).toISOString().slice(0, 10) };
 }
+
+/** Union of opponents; absent observations are not a zero score rate. */
+export function compareObservedMatchups(current: ReturnType<typeof observedMatchupCohort>, previous: ReturnType<typeof observedMatchupCohort>) {
+  const selected = new Map(current.matchups.map(row => [row.id, row]));
+  const prior = new Map(previous.matchups.map(row => [row.id, row]));
+  return [...new Set([...selected.keys(), ...prior.keys()])].map(id => {
+    const currentRow = selected.get(id), previousRow = prior.get(id);
+    return { id, current: currentRow ?? null, previous: previousRow ?? null,
+      delta: currentRow && previousRow ? (currentRow.winRate - previousRow.winRate) * 100 : null,
+      matches: (currentRow?.matches ?? 0) + (previousRow?.matches ?? 0) };
+  }).sort((a, b) => b.matches - a.matches || a.id.localeCompare(b.id));
+}
