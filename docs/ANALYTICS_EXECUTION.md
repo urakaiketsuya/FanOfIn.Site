@@ -724,3 +724,27 @@ Fluffy Shopkeep variants, no page overflow, keyboard expansion, 48px action, and
 loading/error/retry/empty states on both surfaces. App typecheck was attempted;
 it reports TS2322 at DeckAnalysisIndex.tsx:206 in concurrent calculator-navigation
 work, outside this slice. Those files were left untouched and unstaged.
+
+## Milestone 12 continuation — observed build comparisons, 2026-11-16
+
+Archetype Compare build mode replaces average quantities and merge-threshold prose
+with card-illustrated observed Main/Material distributions. All available lists
+supply bucket denominators, including zero copies; missing sections stay unavailable.
+Shared aligned buckets retain unusual recorded quantities and equal-mean differences.
+The largest distribution differences sort first; unchanged cards remain accessible
+through six-card expansion. Source failures have keyboard retry and selections persist.
+Route comparisons retain their existing presentation. No artifacts or mechanic
+fixtures are needed. See BUILD_COPY_DISTRIBUTIONS.md for calculation definitions.
+
+Six focused regressions passed, app/shared typechecks and targeted lint passed.
+Real published populations (2,648 Diao Chan and 1,939 Silvie lists) were checked at
+360/1280px with card art, keyboard expansion and 48px controls. Loading, failed
+index fetch, keyboard retry and empty states passed. At 200% root text, the report
+fits; the existing global navigation button extends the page by 2px at 360px.
+Live deployment and signed-in flows were not exercised; no push performed.
+
+Next: comparable-period adoption on Card detail and Staples, then package cohort
+access. Extended Analytics remains ~69%: 11/16 unequal top-level milestones
+complete; this closes another slice of milestone 12, not all card/build reporting.
+Four-build browser checks also passed with an unavailable build, missing Material,
+and report bounds at 200% text. Unavailable cohorts were not rendered as zero.

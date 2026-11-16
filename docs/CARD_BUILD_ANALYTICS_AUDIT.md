@@ -82,3 +82,13 @@ Published packages now show complete/eligible registration frequency, partial
 counts and exact section-aware pool projections among complete lists. The full
 pool stays separately labeled. Package joint-access aggregation across recorded
 cohorts remains unaudited; these observations do not claim tested execution.
+
+### Archetype Compare follow-through — 2026-11-16
+
+Build comparisons now show aligned observed copy distributions with zero-copy
+buckets, section-specific available/requested counts, inclusion and actual card
+art/name fallbacks. Missing sections remain unavailable. Equal means with different
+quantity choices remain distinguishable. The centroid merge explanation and average
+copy tables are removed from build mode; route comparisons are unchanged.
+See BUILD_COPY_DISTRIBUTIONS.md for denominators and deterministic ranking.
+Next: comparable-period Card detail/Staples adoption and recorded-cohort package access.

@@ -178,3 +178,4 @@ export { observedBuildVariants } from "./observedBuildVariants.js";
 export * from './observedCardChoices.js';
 
 export * from "./observedMatchups";
+export { buildCopyDistributions } from './buildCopyDistributions.js';
