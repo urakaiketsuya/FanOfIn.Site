@@ -12,12 +12,13 @@ import { primaryAlternateFace } from "../../lib/cardFaces";
 
 interface CardGridProps {
   cards: Card[];
+  winRates?: ReadonlyMap<string, number>;
   prices?: ReadonlyMap<string, number>;
   /** Which edition's art to show per card – defaults to the first. Set detail pages pass the edition from that set. */
   pickEdition?: (card: Card) => CardEdition | undefined;
 }
 
-export default function CardGrid({ cards, pickEdition, prices }: CardGridProps) {
+export default function CardGrid({ cards, pickEdition, prices, winRates }: CardGridProps) {
   const prefs = useDecklistDisplayPrefs();
   const [expanded, setExpanded] = useState(false);
   const layout = prefs.displayMode === "detailed" ? "List" : prefs.visualCardSize === "rows" ? "Rows" : "Grid";
@@ -32,7 +33,7 @@ export default function CardGrid({ cards, pickEdition, prices }: CardGridProps) 
   </div>;
   const minimum = layout === "Grid" ? ({ large: "9rem", medium: "6.5rem", compact: "4.75rem", rows: "9rem" }[prefs.visualCardSize]) : "20rem";
   const content = cards.length === 0 ? <InlineState className="mt-8">No cards match these filters.</InlineState> : <div className="mt-4 grid items-start gap-3" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(min(100%, ${minimum}), 1fr))` }}>
-    {cards.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} layout={layout} />)}
+    {cards.map(card => <CardGridItem key={card.uuid} card={card} edition={pickEdition ? pickEdition(card) : card.editions[0]} prices={prices} winRates={winRates} layout={layout} />)}
   </div>;
   return <div data-component="CardGrid" className="mt-6 min-w-0">
     {controls(true)}{content}
@@ -40,7 +41,7 @@ export default function CardGrid({ cards, pickEdition, prices }: CardGridProps) 
   </div>;
 }
 
-function CardGridItem({ card, edition, prices, layout }: { layout: "Grid" | "Rows" | "List"; card: Card; edition: CardEdition | undefined; prices?: ReadonlyMap<string, number> }) {
+function CardGridItem({ card, edition, prices, winRates, layout }: { layout: "Grid" | "Rows" | "List"; card: Card; edition: CardEdition | undefined; prices?: ReadonlyMap<string, number>; winRates?: ReadonlyMap<string, number> }) {
   const compact = layout !== "Grid";
   const [showBack, setShowBack] = useState(false);
   const reverseFace = primaryAlternateFace(card, edition);
@@ -67,6 +68,7 @@ function CardGridItem({ card, edition, prices, layout }: { layout: "Grid" | "Row
         )}
       </div>
       <Link to={`/cards/${card.slug}`} className="mt-1 flex min-h-12 min-w-0 flex-1 items-center break-words rounded px-1 text-sm font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{faceName}</Link>
+      {winRates?.has(card.name) && <p className="px-1 text-sm text-ctp-subtext1">{(winRates.get(card.name)! * 100).toFixed(1)}% adjusted win rate</p>}
       {prices && <p className="px-1 text-sm text-ctp-subtext1">{prices.has(card.name) ? `From ${formatUsd(prices.get(card.name)!)}` : "Price unavailable"}</p>}
     </article>
   );

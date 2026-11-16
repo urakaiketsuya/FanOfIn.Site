@@ -1,3 +1,6 @@
+import { useCardWinRates } from "./useCardWinRates";
+import WinRateSortStatus from "../../components/WinRateSortStatus";
+import { compareCardWinRates } from "../../lib/cardWinRateSort";
 import { PREVIEW_SET, previewCardSet } from "../../lib/previewCards";
 import { useUrlFilters, CARD_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
 import FilterQuery from "../../components/filters/FilterQuery";
@@ -52,11 +55,14 @@ export default function CardsBrowse() {
   const [filters, setFilters] = useUrlFilters(emptyFilterState, "", CARD_FILTER_PARAMS);
 
   const [sort, setSort] = useState("name");
-  const priceState = useDeckPriceByNameState(sort !== "name");
+  const priceSort = sort === "price" || sort === "price-desc";
+  const priceState = useDeckPriceByNameState(priceSort);
+  const winRateState = useCardWinRates(sort === "win-rate");
+  const winRates = winRateState.rates;
   const prices = priceState.priceByName;
   const filtered = useMemo(
-    () => filterCards(cards, filters, cardTags.lookup).sort((a, b) => sort === "name" ? a.name.localeCompare(b.name) : compareCardPrices(a.name, b.name, prices, sort === "price-desc")),
-    [cards, filters, cardTags.lookup, sort, prices],
+    () => filterCards(cards, filters, cardTags.lookup).sort((a, b) => sort === "win-rate" ? compareCardWinRates(a.name, b.name, winRates) : sort === "name" ? a.name.localeCompare(b.name) : compareCardPrices(a.name, b.name, prices, sort === "price-desc")),
+    [cards, filters, cardTags.lookup, sort, prices, winRates],
   );
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -208,9 +214,10 @@ export default function CardsBrowse() {
             </datalist>
           </div>
 
-          <label className="mt-3 flex flex-wrap items-center gap-2 text-sm">Sort cards<span className="relative max-w-full"><select value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle appearance-none pl-3 pr-10!"><option value="name">Name A to Z</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
-          {sort !== "name" && <PriceSortStatus state={priceState} />}
-          {sort !== "name" && <p className="mt-2 text-xs text-ctp-subtext1">Card estimates across printings, in USD. Unpriced cards appear last. Printing filters change artwork, not the price estimate.</p>}
+          <label className="mt-3 flex flex-wrap items-center gap-2 text-sm">Sort cards<span className="relative max-w-full"><select value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle appearance-none pl-3 pr-10!"><option value="name">Name A to Z</option><option value="win-rate">Win rate high to low</option><option value="price">Price low to high</option><option value="price-desc">Price high to low</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
+          {sort === "win-rate" && <WinRateSortStatus state={winRateState} />}
+          {priceSort && <PriceSortStatus state={priceState} />}
+          {priceSort && <p className="mt-2 text-xs text-ctp-subtext1">Card estimates across printings, in USD. Unpriced cards appear last. Printing filters change artwork, not the price estimate.</p>}
 
           {options.data && (
             <FilterPanel activeCount={activeFilterCount} onClear={() => setFilters(emptyFilterState())}>
@@ -290,7 +297,7 @@ export default function CardsBrowse() {
             <div className="mt-6 rounded-xl border border-ctp-surface1 p-5"><h2 className="text-lg font-semibold">No matching cards</h2><p className="mt-2 text-sm text-ctp-subtext1">Try a different name or clear your filters to browse the catalog.</p><Button className="mt-3" onClick={() => setFilters(emptyFilterState())}>Browse all cards</Button></div>
           )}
 
-          {visible.length > 0 && (!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} prices={sort !== "name" ? prices : undefined} />}
+          {visible.length > 0 && (!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} prices={priceSort ? prices : undefined} winRates={sort === "win-rate" ? winRates : undefined} />}
 
           <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
