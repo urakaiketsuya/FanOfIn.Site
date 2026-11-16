@@ -18,8 +18,9 @@ test('matchup cards identify historical archetype rates without claiming exact-l
  const html = render();
  assert.match(html,/42%/);
  assert.match(html,/54%/);
- assert.match(html,/Similar decks’ win rate/);
- assert.match(html,/86 recorded games/);
+ assert.match(html,/Observed results · similar decks/);
+ assert.match(html,/Historical win rate/);
+ assert.match(html.replace(/<[^>]*>/g, " "),/86\s+Recorded games/);
  assert.match(html,/data-component="CardArtTile"/);
  assert.doesNotMatch(html,/\/cutouts\//);
  assert.doesNotMatch(html,/<details|<summary|<select|Estimated win rate|win-rate change|Nearest similar/);
