@@ -355,7 +355,7 @@ export default function CardDetail() {
       <TabPanel baseId="card-data" tab="overview" active={surface} keepMounted>
 
         {showOverview && !tabFailure && (
-          <CardInfoPanel loading={!cardStatsData || !cardQuantityStatsData} card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
+          <CardInfoPanel loading={!cardStatsData || !cardQuantityStatsData} card={card} cardStat={cardStat} adoptionPeriods={cardStatsData?.adoptionPeriods} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
         )}
 
         <CardCollectionSummary key={`collection:${card.uuid}`} card={card} />

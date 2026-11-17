@@ -748,3 +748,25 @@ access. Extended Analytics remains ~69%: 11/16 unequal top-level milestones
 complete; this closes another slice of milestone 12, not all card/build reporting.
 Four-build browser checks also passed with an unavailable build, missing Material,
 and report bounds at 200% text. Unavailable cohorts were not rendered as zero.
+
+### 2026-11-17 — Card detail comparable-period adoption
+
+Card Overview now presents published previous/recent tournament inclusion with
+fixed 0–100% bars, signed percentage-point change, exact inclusive display dates,
+and card/available-list counts. Reuses shared cardAdoption validation; missing
+card statistics or population metadata remain unavailable, never assumed zero.
+Loading and source retry remain owned by the existing Card detail controller.
+No new calculations, artifacts, or mechanic fixtures.
+
+Three existing adoption regressions, app typecheck, targeted lint, and diff checks
+passed. Browser checks confirmed loading then real Dungeon Guide values
+(54.8% → 46.6%, −8.2 pp), and 360px/1280px layouts without horizontal overflow.
+The new report is noninteractive. Error retry and unavailable rendering were not
+browser-exercised; underlying invalid/missing population calculations are tested.
+No live deployment or push.
+
+Next: Staples comparable-period populations and publication. Its section,
+format, champion, build, and element-matching populations must remain distinct
+from pooled Card Stats data; overlapping 30/90-day snapshots cannot substitute
+for adjacent windows. Extended Analytics remains approximately 69% (11/16 unequal
+top-level milestones complete); milestone 12 card/build reporting is ongoing.

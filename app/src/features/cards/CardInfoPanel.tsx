@@ -1,14 +1,16 @@
 import { cardLegalityStatus } from "@gatcg/shared";
-import type { Card, CardQuantityBucket, CardStat } from "@gatcg/shared";
+import type { Card, CardAdoptionPeriods, CardQuantityBucket, CardStat } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardArtTile from "../../components/CardArtTile";
 import Section from "../../components/ui/Section";
+
+import CardAdoptionReport from "./CardAdoptionReport";
 
 function Metric({ label, value }: { label: string; value: string | number }) {
   return <div className="min-w-0 break-words rounded-xl bg-ctp-base/60 p-3"><p className="text-xs text-ctp-subtext0">{label}</p><p className="mt-1 text-xl font-semibold text-ctp-text">{value}</p></div>;
 }
 
-export default function CardInfoPanel({ card, cardStat, metaShare, communityShare, quantityBuckets, resolveReference, loading = false }: { loading?: boolean; card: Card; cardStat?: CardStat; metaShare: number | null; communityShare?: number; quantityBuckets: CardQuantityBucket[]; resolveReference: (reference: { slug: string; name: string }) => Card | undefined }) {
+export default function CardInfoPanel({ card, cardStat, adoptionPeriods, metaShare, communityShare, quantityBuckets, resolveReference, loading = false }: { loading?: boolean; card: Card; cardStat?: CardStat; adoptionPeriods?: CardAdoptionPeriods; metaShare: number | null; communityShare?: number; quantityBuckets: CardQuantityBucket[]; resolveReference: (reference: { slug: string; name: string }) => Card | undefined }) {
   const references = card.references ?? [];
   const referencedBy = card.referenced_by ?? [];
   return <>
@@ -22,6 +24,7 @@ export default function CardInfoPanel({ card, cardStat, metaShare, communityShar
       <p className="mt-2 text-xs text-ctp-subtext0">{cardStat.eventCount.toLocaleString()} events</p>
       </> : <p className="mt-2 text-sm text-ctp-subtext0">No recorded tournament stats.</p>}
     </Section>
+    {!loading && <CardAdoptionReport card={cardStat} periods={adoptionPeriods} />}
     {communityShare !== undefined && <Section className="mt-4" heading="dense" title="Community usage"><Metric label="Community inclusion" value={`${(communityShare * 100).toFixed(1)}%`} /></Section>}
     {!loading && <CardCopyDistribution buckets={quantityBuckets} />}
     <Section className="mt-4" heading="dense" title="Legality"><div className="mt-1 flex flex-wrap gap-2 text-sm">{(["STANDARD", "PANTHEON"] as const).map((format) => { const limit = card.legality?.[format]?.limit; const status = cardLegalityStatus(card, format); const effectiveLimit = limit ?? (format === "PANTHEON" ? 1 : 4); return <span key={format} className="text-ctp-subtext1">{format}: {status === "banned" ? <span className="text-ctp-red">Banned</span> : status === "unverified" ? <span className="text-ctp-yellow">Legality unverified</span> : <>Legal · Max {effectiveLimit}</>}</span>; })}</div></Section>
