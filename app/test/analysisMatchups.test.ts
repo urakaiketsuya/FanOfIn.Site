@@ -14,13 +14,13 @@ const result = {
 } as unknown as DeckTestResult;
 const render = (props: Partial<Parameters<typeof AnalysisMatchups>[0]> = {}) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(AnalysisMatchups, { result, loading: false, cards: new Map(), ...props })));
 
-test('matchup cards identify historical archetype rates without claiming exact-list predictions', () => {
+test('matchup rows identify historical archetype rates without claiming exact-list predictions', () => {
  const html = render();
  assert.match(html,/42%/);
  assert.match(html,/54%/);
  assert.match(html,/Observed results · similar decks/);
  assert.match(html,/Historical win rate/);
- assert.match(html.replace(/<[^>]*>/g, " "),/86\s+Recorded games/);
+ assert.match(html.replace(/<[^>]*>/g, " "),/86\s+games/);
  assert.match(html,/data-component="CardArtTile"/);
  assert.doesNotMatch(html,/\/cutouts\//);
  assert.doesNotMatch(html,/<details|<summary|<select|Estimated win rate|win-rate change|Nearest similar/);
