@@ -9,8 +9,8 @@ turn statistics, combat events, player names, or accounts.
 
 Obtain a dedicated bearer key and the deployed Worker base URL from the operator.
 Send from your backend, never from a browser or a public repository. Requests are
-HTTPS JSON, at most 1 MiB. Source identity is assigned by the credential; do not
-send an application/source ID in the payload.
+HTTPS JSON, at most 1 MiB. Source identity is assigned by the credential. Optionally include `source.id`
+to assert the expected source; a mismatch is rejected.
 
 ```sh
 curl --fail-with-body "$MATCH_API_BASE/v1/grand-archive/matches" \
@@ -24,6 +24,56 @@ curl --fail-with-body "$MATCH_API_BASE/v1/grand-archive/matches" \
 canonical card IDs and the complete actual lists. The endpoint validates structure,
 not card-catalog membership, deck legality, or whether a reported result is truthful.
 
+### Backend JavaScript example
+
+This Node.js example reads the same `match.json` used by curl. Set `MATCH_API_BASE`
+to the operator-provided URL and `MATCH_API_KEY` to your source's secret using your
+backend's secret manager. Keep the file and its IDs unchanged between retries.
+
+```js
+import { readFile } from 'node:fs/promises';
+import { setTimeout as delay } from 'node:timers/promises';
+
+const base = process.env.MATCH_API_BASE;
+const key = process.env.MATCH_API_KEY;
+if (!base || !key) throw new Error('Missing match API configuration');
+const payload = await readFile('match.json', 'utf8');
+const url = `${base.replace(/\/$/, '')}/v1/grand-archive/matches`;
+
+for (let attempt = 0; attempt < 5; attempt++) {
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+      },
+      body: payload,
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch {
+    // A timeout may occur after the server commits: retry the original IDs.
+  }
+
+  if (response?.status === 200 || response?.status === 201) {
+    console.log(await response.json());
+    break;
+  }
+  if (response && response.status < 500) {
+    // Validation/auth/conflict errors need intervention, not automatic retries.
+    throw new Error(`Submission rejected (${response.status}): ${await response.text()}`);
+  }
+  if (attempt === 4) {
+    throw new Error('Delivery unconfirmed; retain payload and IDs for later retry');
+  }
+  await delay(1000 * 2 ** attempt + Math.random() * 500);
+}
+```
+
+For production, persist undelivered submissions in a durable queue and mark them
+delivered only after `200` or `201`. Do not log the authorization header.
+
 ## Version 1 contract
 
 Unknown properties are rejected at every level. Numbers are JSON integers, not
@@ -34,6 +84,7 @@ The sole nullable fields are `winnerSeat` on results and games.
 | --- | --- | --- |
 | `schemaVersion` | Yes | `1` |
 | `submissionId` | Yes | Stable retry ID, unique within your source |
+| `source.id` | No | Credential-assigned source ID; use `gao` for GAO or `clarent` for Clarent |
 | `source.matchId` | Yes | Stable external match ID; also unique within your source |
 | `source.version` | No | Producer version |
 | `startedAt`, `completedAt` | No | ISO 8601 timestamps with UTC `Z` or offset; completion cannot precede start |
@@ -88,7 +139,7 @@ abandoned series or match-level forfeits without corresponding game outcomes.
 
 ## Responses and retries
 
-Success body: `{ "success": true, "requestId": "…", "submissionId": "…", "outcome": "created" }`.
+Success body: `{ "success": true, "requestId": "…", "sourceId": "gao", "submissionId": "…", "outcome": "created" }`.
 
 | HTTP | Meaning | Sender action |
 | --- | --- | --- |
@@ -103,6 +154,9 @@ Success body: `{ "success": true, "requestId": "…", "submissionId": "…", "ou
 
 Errors have `{ "success": false, "requestId": "…", "error": { "code": "…", "message": "…", "details": […] } }`;
 details are present for validation failures. Network failures can also be retried.
+Validation details contain up to 20 `{ "path": "players.0.deck.sections.main", "message": "…" }`
+entries. Paths use zero-based array indexes; use the returned messages to correct
+the request. Save `requestId` when reporting a failure to the operator.
 JSON object key order and player/game/card-line ordering do not change retry
 identity. Changes to other values do. Different sources have independent IDs.
 There is no update/delete API in this contract.
@@ -115,7 +169,10 @@ value is a JSON object mapping stable source IDs to independently generated bear
 keys. Example shape (do not use this placeholder as a credential):
 
 ```json
-{"partner-tool":"REPLACE_WITH_A_RANDOM_KEY_OF_AT_LEAST_32_CHARACTERS"}
+{
+  "gao": "REPLACE_WITH_A_UNIQUE_RANDOM_GAO_KEY",
+  "clarent": "REPLACE_WITH_A_UNIQUE_RANDOM_CLARENT_KEY"
+}
 ```
 
 Source IDs match `[a-z0-9][a-z0-9_-]{0,63}`. Keys must be unique and at least 32
@@ -149,3 +206,21 @@ endpoint does not create a separate raw-payload copy. Existing 30-day raw teleme
 cleanup does not delete these snapshots. This endpoint adds collection only: it
 does not publish decklists, raw matches, or mix them into legacy public simulator
 aggregates. No account ownership is inferred from a submitted deck URL.
+
+## Distinguishing GAO and Clarent
+
+Configure separate source credentials under `gao` and `clarent`. A GAO sender may
+include `"source": { "id": "gao", "matchId": "gao-match-123" }`; a Clarent sender
+uses `clarent`. Existing senders can omit `source.id` and receive the same automatic
+attribution. Other operator-configured source IDs remain supported.
+
+Successful responses include `sourceId`, and every match is stored with that value
+in `submitted_matches.source_id`. Both deck snapshots and games inherit the source
+through their parent match. Sending `clarent` with a GAO key returns `422` before
+anything is saved. Adding or omitting a matching `source.id` on retry does not
+create a new submission or a conflict.
+
+For internal analysis, filter `submitted_matches.source_id` by `gao` or `clarent`
+and join decks/games through `match_id`. This identifies the submitting system;
+if a tool relays another system's data, its credential still identifies the relay.
+A public source selector or read endpoint is not part of this collection API.

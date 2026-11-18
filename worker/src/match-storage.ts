@@ -3,7 +3,10 @@ import { sha256Hex, type Env, type IngestResult } from "./storage";
 
 export async function ingestMatch(env: Env, sourceId: string, input: MatchSubmissionV1): Promise<IngestResult> {
   const m = canonicalMatch(input);
-  const checksum = await sha256Hex(JSON.stringify(m));
+  // Source identity is already scoped by the credential; the optional assertion
+  // must not change retry identity for existing clients that omit it.
+  const { id: _sourceAssertion, ...source } = m.source;
+  const checksum = await sha256Hex(JSON.stringify({ ...m, source }));
   const lookup = () => env.MATCH_DB.prepare(`SELECT submission_id, checksum_sha256 FROM submitted_matches
     WHERE source_id = ? AND (submission_id = ? OR source_match_id = ?)`).bind(sourceId, m.submissionId, m.source.matchId)
     .all<{ submission_id: string; checksum_sha256: string }>();

@@ -52,9 +52,10 @@ Production deployment is intentionally manual until an explicit decision is made
 
 - `GET /health`
 - `POST /v1/grand-archive/games` — bearer-authenticated ingestion
+- `POST /v1/grand-archive/matches` — [completed matches and decklists](MATCH_SUBMISSIONS.md), with dedicated source keys
 - `GET /v1/grand-archive/analytics/summary` — public aggregate data
 
-`submissionId` (`matchId:gameNumber`) is the idempotency key. An identical retry returns `200`; a
+For the games route, `submissionId` (`matchId:gameNumber`) is the idempotency key. An identical retry returns `200`; a
 new submission returns `201`; changed content under an existing ID returns `409`.
 
 ## Recovery and retention

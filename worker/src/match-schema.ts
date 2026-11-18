@@ -23,7 +23,7 @@ export const deckSnapshotSchema = z.object({
 export const matchSubmissionV1Schema = z.object({
   schemaVersion: z.literal(1),
   submissionId: id,
-  source: z.object({ matchId: id, version: id.optional() }).strict(),
+  source: z.object({ id: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,63}$/).optional(), matchId: id, version: id.optional() }).strict(),
   startedAt: z.iso.datetime({ offset: true }).optional(),
   completedAt: z.iso.datetime({ offset: true }).optional(),
   format: z.enum(["standard", "pantheon"]),
