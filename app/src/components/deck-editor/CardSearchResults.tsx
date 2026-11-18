@@ -1,4 +1,3 @@
-import { matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
 import CardLegalityBadge from "./CardLegalityBadge";
 import type { DeckFormat } from "@gatcg/shared";
 import DisclosureChevron from "../DisclosureChevron";
@@ -6,7 +5,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import CardResult from "../CardResult";
 import QuantityControl from "./QuantityControl";
-import { cardSearchText } from "../../features/cards/filters";
+import { filterCardNames } from "../../features/cards/filters";
 
 export default function CardSearchResults({ format = "UNKNOWN", query, names, catalog, chosen, onAdd, quantityFor, onSetQuantity, filtered = false, evidence, owned, selected, onToggleSelection, renderStats }: {
   format?: DeckFormat;
@@ -21,11 +20,7 @@ export default function CardSearchResults({ format = "UNKNOWN", query, names, ca
   const [limit, setLimit] = useState(24);
   const matches = useMemo(() => {
     if (filtered) return names;
-    const terms = searchTextTerms(query);
-    return names.filter(name => {
-      const card = catalog.get(name);
-      return matchesSearchTerms(card ? cardSearchText(card) : name, terms);
-    }).sort((a,b) => a.localeCompare(b));
+    return filterCardNames(names, catalog, query).sort((a,b) => a.localeCompare(b));
   }, [names, query, catalog, filtered]);
   return <section aria-label="Card catalog" className="mt-3">
     <p role="status" className="mb-2 text-xs text-ctp-subtext0">{matches.length} matching {matches.length === 1 ? "card" : "cards"}</p>

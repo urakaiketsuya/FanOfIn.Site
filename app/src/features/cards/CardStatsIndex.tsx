@@ -1,4 +1,6 @@
-import { cardAdoption, matchesSearchTerms, searchTextTerms } from "@gatcg/shared";
+import FilterQuery from "../../components/filters/FilterQuery";
+import { filterCardNames } from "./filters";
+import { cardAdoption, formatFilterQuery } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -37,7 +39,7 @@ export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
   const cardStatsData = useCardStatsData();
   const cardCatalog = useCardCatalog();
-  const searchableTextByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, `${card.name} ${card.effect ?? ""}`.replace(/\*\*/g, "").toLowerCase()])), [cardCatalog]);
+  const catalogByName = useMemo(() => new Map(cardCatalog.map(card => [card.name, card])), [cardCatalog]);
   const keywordStatsData = useKeywordStatsData();
   const compositionData = useCompositionWinRateData();
   const communityCardInclusion = useCommunityBlendedCardInclusion();
@@ -112,8 +114,8 @@ export default function CardStatsIndex() {
   const rows = useMemo(() => {
     if (!cardStatsData) return [];
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
-    const terms = searchTextTerms(search);
-    const filtered = source.filter((c) => c.deckCount >= minDecks && matchesSearchTerms(searchableTextByName.get(c.name) ?? c.name, terms));
+    const matchingNames = new Set(filterCardNames(source.map(card => card.name), catalogByName, search));
+    const filtered = source.filter((c) => c.deckCount >= minDecks && matchingNames.has(c.name));
     // "Hype gap" – community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
     // tournament players optimizing for winning), not a performance judgment. Community usage
@@ -142,7 +144,7 @@ export default function CardStatsIndex() {
           return b.deckCount - a.deckCount;
       }
     });
-  }, [cardStatsData, adoptionPeriods, sortMode, minDecks, category, search, searchableTextByName, communityByName, totalTournamentDecks]);
+  }, [cardStatsData, adoptionPeriods, sortMode, minDecks, category, search, catalogByName, communityByName, totalTournamentDecks]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -225,14 +227,7 @@ export default function CardStatsIndex() {
       )}
 
       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <input
-          type="text"
-          aria-label="Search by card name or effect text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search cards…"
-          className="sm:col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-        />
+        <div className="sm:col-span-2"><FilterQuery text={search} facets={{}} allowed={["classes", "types", "subtypes", "elements", "sets", "printingSets", "rarities"]} onChange={(text, facets) => setSearch(formatFilterQuery(text, facets))} /></div>
         <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} aria-label="Sort cards" className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
           {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
         </select>

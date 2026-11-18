@@ -1,10 +1,11 @@
+import { filterCardNames } from "../../features/cards/filters";
 import { useCardWinRates } from "../../features/cards/useCardWinRates";
 import WinRateSortStatus from "../WinRateSortStatus";
 import FilterGroup from "../filters/FilterGroup";
 import { catalogSetOptions } from "../../lib/previewCards";
 import FilterQuery from "../filters/FilterQuery";
 import SearchSelectFilter from "../filters/SearchSelectFilter";
-import { matchesSearchTerms, searchTextTerms, toggleFilterValue, type SearchFacet } from "@gatcg/shared";
+import { toggleFilterValue, type SearchFacet } from "@gatcg/shared";
 import { formatUsd } from "../../lib/format";
 import PriceSortStatus from "../PriceSortStatus";
 import { useDeckPriceByNameState } from "../../features/pricing/useDeckPriceByName";
@@ -47,14 +48,14 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const cards = useMemo(() => [...catalog.values()], [catalog]);
   const options = (key: "classes" | "elements" | "types" | "subtypes") => [...new Set(cards.flatMap(card => card[key]))].sort();
   const matches = useMemo(() => {
-    const terms = searchTextTerms(query);
     const allowed = new Set(filterCatalog(cards, query, filters, owned, identityElements).map(card => card.name));
     const included = new Set(Object.values(deck).flatMap(lines => lines.filter(line => line.quantity > 0).map(line => line.card)));
     const pool = [...new Set(activeSuggestions ?? names)].filter(name =>
       (activeSuggestions === undefined || !included.has(name)) &&
       deckDestinationEligibility(catalog.get(name), destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination).allowed
     );
-    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && matchesSearchTerms(name, terms))), catalog, sort === "recommended" && activeSuggestions === undefined ? "name" : sort, prices, winRates);
+    const missing = new Set(filterCardNames(pool.filter(name => !catalog.has(name)), new Map(), query));
+    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && missing.has(name))), catalog, sort === "recommended" && activeSuggestions === undefined ? "name" : sort, prices, winRates);
   }, [cards, query, filters, owned, identityElements, activeSuggestions, names, catalog, sort, prices, winRates, deck, destination]);
   const active = Object.entries(filters).filter(([key, value]) => !["class", "set", "element", "type", "subtype", "rarity"].includes(key) && Boolean(value)) as [keyof CatalogFilters, string | boolean][];
   const labels: Record<keyof CatalogFilters, string> = { class: "Class", set: "Set", rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };

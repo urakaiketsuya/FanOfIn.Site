@@ -77,6 +77,41 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
   return filterParsedCards(cards, filters, parseFilterQuery(filters.name), tagLookup);
 }
 
+/** Match a named pool without losing entries whose catalog record is unavailable.
+ * Unknown metadata stays unknown under NOT; a known name branch can still satisfy OR.
+ */
+export function filterCardNames(names: readonly string[], catalog: ReadonlyMap<string, Card>, query: string): string[] {
+  const parsed = parseFilterQuery(query);
+  if (parsed.error) return [];
+  const known = new Set(filterParsedCards([...catalog.values()], emptyFilterState(), parsed).map(card => card.name));
+  const leaves = new Map<string, ParsedFilterQuery>();
+  type Result = boolean | undefined;
+  const and = (a: Result, b: Result): Result => a === false || b === false ? false : a === undefined || b === undefined ? undefined : true;
+  const evaluate = (name: string, node: ParsedFilterQuery): Result => {
+    if (node.expression) {
+      const visit = (expression: NonNullable<ParsedFilterQuery['expression']>): Result => {
+        if (expression.kind === 'leaf') {
+          if (!leaves.has(expression.query)) leaves.set(expression.query, parseFilterQuery(expression.query));
+          return evaluate(name, leaves.get(expression.query)!);
+        }
+        if (expression.kind === 'not') {
+          const result = visit(expression.child);
+          return result === undefined ? undefined : !result;
+        }
+        const left = visit(expression.left), right = visit(expression.right);
+        return expression.kind === 'and' ? and(left, right)
+          : left === true || right === true ? true : left === undefined || right === undefined ? undefined : false;
+      };
+      return visit(node.expression);
+    }
+    const nameClauses = node.clauses.filter(clause => clause.field === 'name' || clause.field === 'any');
+    const namesMatch = matchesSearchClauses({ name: [name], effect: [] }, nameClauses);
+    const unknown = Object.keys(node.facets).length > 0 || !!node.numeric?.length || nameClauses.length !== node.clauses.length;
+    return and(namesMatch, unknown ? undefined : true);
+  };
+  return names.filter(name => catalog.has(name) ? known.has(name) : evaluate(name, parsed) === true);
+}
+
 function filterParsedCards(cards: Card[], filters: CardFilterState, parsed: ParsedFilterQuery, tagLookup?: CardTagLookup): Card[] {
   if (parsed.error) return [];
   if (parsed.expression) {
