@@ -1,3 +1,4 @@
+import { adminSiteHealth } from '../../src/admin-site-health';
 import { recordOperation } from '../../src/operation-metrics';
 import { adminCollectionMetricsChecks } from './admin-collection-metrics-checks';
 import { profileAddressChecks } from "./profile-address-checks";
@@ -46,6 +47,9 @@ try {
   assert.deepEqual(after.maybeboard, command.maybeboard);
   assert.deepEqual((await listDecks(env, user))[0].decklist, after.decklist);
   await assert.rejects(createDeckVersion(env, user, id, { ...command, requestId: crypto.randomUUID() }), /changed elsewhere/);
+  const health = await adminSiteHealth(env);
+  assert.equal(health.active30Days, 1);
+  assert.equal(health.features.find(feature => feature.key === 'decks')?.users, 1);
   await adminWorkspaceChecks(env, user);
   await adminCollectionMetricsChecks(env);
   await profileAddressChecks(env);

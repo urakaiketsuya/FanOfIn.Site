@@ -12,34 +12,35 @@ const DATASETS = [
   ['shoutatyourdecks-index', 'Community deck index'],
 ] as const;
 
-// Current retained records describe meaningful saved activity, not browsing sessions.
-const ACTIVITY = `
-  SELECT d.owner_user_id AS user_id, 'decks' AS feature, v.created_at AS at
-    FROM deck_versions v JOIN user_decks d ON d.id=v.deck_id WHERE d.is_seed=0
-  UNION ALL SELECT owner_user_id, 'decks', updated_at FROM user_decks WHERE is_seed=0
-  UNION ALL SELECT user_id, 'collection', created_at FROM collection_transactions
-  UNION ALL SELECT user_id, 'collection', undone_at FROM collection_transactions WHERE undone_at IS NOT NULL
-  UNION ALL SELECT owner_user_id, 'combos', updated_at FROM user_combos
-  UNION ALL SELECT user_id, 'matches', updated_at FROM match_log_records
-  UNION ALL SELECT user_id, 'analysis', updated_at FROM analysis_profiles
-  UNION ALL SELECT user_id, 'bookmarks', created_at FROM deck_bookmarks
-  UNION ALL SELECT user_id, 'bookmarks', created_at FROM tournament_deck_favorites
-`;
+// Correlated existence checks avoid D1's compound-SELECT limit and deduplicate
+// each account across records and features without exposing account identities.
+function activityConditions(cutoff: '?1' | '?2') {
+  const recent = (field: string) => `${field} >= ${cutoff} AND ${field} <= ?3`;
+  return {
+    decks: `EXISTS (SELECT 1 FROM user_decks d WHERE d.owner_user_id=u.id AND d.is_seed=0
+      AND ((${recent('d.updated_at')}) OR EXISTS (SELECT 1 FROM deck_versions v WHERE v.deck_id=d.id AND ${recent('v.created_at')})))`,
+    collection: `EXISTS (SELECT 1 FROM collection_transactions t WHERE t.user_id=u.id AND ((${recent('t.created_at')}) OR (${recent('t.undone_at')})))`,
+    combos: `EXISTS (SELECT 1 FROM user_combos c WHERE c.owner_user_id=u.id AND ${recent('c.updated_at')})`,
+    matches: `EXISTS (SELECT 1 FROM match_log_records m WHERE m.user_id=u.id AND ${recent('m.updated_at')})`,
+    analysis: `EXISTS (SELECT 1 FROM analysis_profiles a WHERE a.user_id=u.id AND ${recent('a.updated_at')})`,
+    bookmarks: `(EXISTS (SELECT 1 FROM deck_bookmarks d WHERE d.user_id=u.id AND ${recent('d.created_at')})
+      OR EXISTS (SELECT 1 FROM tournament_deck_favorites t WHERE t.user_id=u.id AND ${recent('t.created_at')}))`,
+  };
+}
 
 export async function adminSiteHealth(env: Env, now = new Date()): Promise<AdminSiteHealth> {
   const asOf = now.toISOString();
   const cutoff = (days: number) => new Date(now.getTime() - days * 86_400_000).toISOString();
   const since = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 29)).toISOString().slice(0, 10);
+  const seven = activityConditions('?1');
+  const thirty = activityConditions('?2');
   const [activity, signups, creators, operations, manifest] = await Promise.all([
-    env.ACCOUNT_DB.prepare(`WITH activity AS (${ACTIVITY})
-      SELECT feature, COUNT(DISTINCT user_id) AS users,
-        COUNT(DISTINCT CASE WHEN at >= ? THEN user_id END) AS active7Days
-      FROM activity WHERE at >= ? AND at <= ? GROUP BY feature
-      UNION ALL SELECT '__all', COUNT(DISTINCT user_id),
-        COUNT(DISTINCT CASE WHEN at >= ? THEN user_id END)
-      FROM activity WHERE at >= ? AND at <= ?`)
-      .bind(cutoff(7), cutoff(30), asOf, cutoff(7), cutoff(30), asOf)
-      .all<{ feature: string; users: number; active7Days: number }>(),
+    env.ACCOUNT_DB.prepare(`SELECT
+      COUNT(CASE WHEN ${Object.values(seven).join(' OR ')} THEN 1 END) AS active7Days,
+      COUNT(CASE WHEN ${Object.values(thirty).join(' OR ')} THEN 1 END) AS active30Days,
+      ${FEATURES.map(([key]) => `COUNT(CASE WHEN ${thirty[key]} THEN 1 END) AS ${key}`).join(', ')}
+      FROM users u`).bind(cutoff(7), cutoff(30), asOf)
+      .first<Record<string, number>>(),
     env.ACCOUNT_DB.prepare(`SELECT COUNT(*) AS days30,
       COUNT(CASE WHEN created_at >= ? THEN 1 END) AS days7
       FROM users WHERE created_at >= ? AND created_at <= ?`)
@@ -50,12 +51,11 @@ export async function adminSiteHealth(env: Env, now = new Date()): Promise<Admin
     readOperations(env, since, asOf),
     assetJson<Record<string, unknown>>(env, '/data/manifest.json').catch(() => null),
   ]);
-  const all = activity.results.find(row => row.feature === '__all')!;
   return {
-    asOf, active7Days: Number(all.active7Days), active30Days: Number(all.users),
+    asOf, active7Days: Number(activity!.active7Days), active30Days: Number(activity!.active30Days),
     newUsers7Days: Number(signups!.days7), newUsers30Days: Number(signups!.days30),
     deckCreators30Days: Number(creators!.total),
-    features: FEATURES.map(([key, label]) => ({ key, label, users: Number(activity.results.find(row => row.feature === key)?.users ?? 0) }))
+    features: FEATURES.map(([key, label]) => ({ key, label, users: Number(activity![key]) }))
       .sort((a, b) => b.users - a.users || a.label.localeCompare(b.label)),
     operations,
     freshness: DATASETS.map(([key, label]) => {
