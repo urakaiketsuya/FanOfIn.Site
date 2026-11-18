@@ -11,6 +11,21 @@ function request(body: unknown, key = "a".repeat(32)) {
   return new Request("https://worker.test/v1/grand-archive/matches", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
 }
 describe("match and deck ingestion", () => {
+  it("attributes GAO and Clarent using credentials and rejects source spoofing", async () => {
+    const config = { MATCH_DB: db, INGESTION_API_KEY: "legacy", MATCH_INGESTION_KEYS: JSON.stringify({ gao: "a".repeat(32), clarent: "b".repeat(32) }) };
+    for (const [sourceId, key] of [["gao", "a"], ["clarent", "b"]]) {
+      const m = { ...payload("source-attribution"), source: { id: sourceId, matchId: "source-attribution" } };
+      const response = await handler.fetch(request(m, key.repeat(32)), config);
+      expect(response.status).toBe(201);
+      expect(await response.json()).toMatchObject({ sourceId, outcome: "created" });
+      expect((await handler.fetch(request(payload("source-attribution"), key.repeat(32)), config)).status).toBe(200);
+    }
+    const rows = await db.prepare("SELECT source_id FROM submitted_matches WHERE submission_id = 'source-attribution' ORDER BY source_id").all();
+    expect(rows.results).toEqual([{ source_id: "clarent" }, { source_id: "gao" }]);
+    const spoof = { ...payload("spoof"), source: { id: "clarent", matchId: "spoof" } };
+    expect((await handler.fetch(request(spoof), config)).status).toBe(422);
+    expect(await db.prepare("SELECT id FROM submitted_matches WHERE submission_id='spoof'").first()).toBeNull();
+  });
   it("stores snapshots and results; normalizes order on retry; isolates sources", async () => {
     const m = payload("stored");
     expect((await worker.fetch(request(m))).status).toBe(201);

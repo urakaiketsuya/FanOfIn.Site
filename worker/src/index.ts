@@ -98,9 +98,12 @@ async function handleSubmission(request: Request, env: Env, requestId: string): 
     const parsed = matchSubmissionV1Schema.safeParse(unknownPayload);
     if (!parsed.success) return errorResponse(requestId, 422, "validation_failed", "Payload does not satisfy match schema version 1",
       parsed.error.issues.slice(0, 20).map(issue => ({ path: issue.path.join("."), message: issue.message })));
+    if (parsed.data.source.id !== undefined && parsed.data.source.id !== sourceId)
+      return errorResponse(requestId, 422, "validation_failed", "Source does not match ingestion credential",
+        [{ path: "source.id", message: "Must match the source assigned to your bearer key" }]);
     const result = await ingestMatch(env, sourceId!, parsed.data);
     if (result.outcome === "conflict") return errorResponse(requestId, 409, "submission_conflict", "Submission or source match ID already exists with different content");
-    return jsonResponse({ success: true, requestId, submissionId: parsed.data.submissionId, outcome: result.outcome }, result.outcome === "created" ? 201 : 200);
+    return jsonResponse({ success: true, requestId, sourceId, submissionId: parsed.data.submissionId, outcome: result.outcome }, result.outcome === "created" ? 201 : 200);
   }
   const parsed = gameSubmissionV1Schema.safeParse(unknownPayload);
   if (!parsed.success) {
