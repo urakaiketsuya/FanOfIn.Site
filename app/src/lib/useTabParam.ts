@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useBrowseParams } from "./useBrowseParams";
 
 /**
  * Drop-in replacement for `useState` on a page's tab – backs the value with a `?tab=` query
@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router-dom";
  * rather than erroring, so a stale/bad link still renders something.
  */
 export function useTabParam<T extends string>(paramName: string, validTabs: readonly T[], defaultTab: T, navigationState?: unknown): [T, (tab: T) => void] {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useBrowseParams();
   const raw = searchParams.get(paramName);
   const tab = raw && (validTabs as readonly string[]).includes(raw) ? (raw as T) : defaultTab;
 

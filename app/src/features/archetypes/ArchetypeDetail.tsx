@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { archetypeMetadata, discoverySocial } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -64,7 +65,7 @@ export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
 
   const location = useLocation();
-  const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
+  const [roleFilter, setRoleFilter] = useBrowseState<CardImpactRole | "all">('archetypes/ArchetypeDetail.roleFilter', "all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "report", location.state);
   const surface: DetailSurface = tab === "report" ? "report" : OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : tab === "evolution" ? "evolution" : "more";
@@ -96,7 +97,6 @@ export default function ArchetypeDetail() {
       setTab("report");
       setOpponentClusterId("all");
       setVariantMinSimilarity(0.45);
-      setVariantChampionFilter("all");
       setExpandedVariantDeckId(null);
       prevIdRef.current = id;
     }
@@ -156,7 +156,7 @@ export default function ArchetypeDetail() {
   const variants = useArchetypeVariants(cluster, allDecodedDecks.decks);
   const [expandedVariantDeckId, setExpandedVariantDeckId] = useState<string | null>(null);
   const [variantMinSimilarity, setVariantMinSimilarity] = useState(0.45);
-  const [variantChampionFilter, setVariantChampionFilter] = useState<string>("all");
+  const [variantChampionFilter, setVariantChampionFilter] = useBrowseState<string>('archetypes/ArchetypeDetail.variantChampionFilter', "all");
   const variantChampions = useMemo(
     () => Array.from(new Set(variants.map((v) => v.championName).filter((n): n is string => n !== null))).sort(),
     [variants],

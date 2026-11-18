@@ -162,10 +162,6 @@ export default function EventDetail() {
 
   return (
     <PageLayout width="fluid" data-component="EventDetail">
-      <Link to="/tournaments" className="inline-flex min-h-control items-center rounded-md text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">
-        &larr; Back to Tournaments
-      </Link>
-
       <EventIdentityHeader event={event} players={players} decklists={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists} teams={isApiErrorBody(bundle.teams) ? undefined : bundle.teams} storeLink={!!omnidexIndex?.events.some(e => e.hostId === event.host.id && e.setting === "physical")} />
 
 

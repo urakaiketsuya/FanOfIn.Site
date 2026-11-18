@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { deckMatchesSearch, searchableDeckCards } from "@gatcg/shared";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
@@ -40,7 +41,7 @@ export default function DecklistsSection({
     () => resolveEventDeckSelection(eventId, rankedDecklists, searchParams.get("player")),
     [eventId, rankedDecklists, searchParams],
   );
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('events/DecklistsSection.search', "");
   const [visibleDeckCount, setVisibleDeckCount] = useState(24);
   const [deckFilter] = useDeckSearch();
   function setDeckFilter(next: typeof deckFilter) {

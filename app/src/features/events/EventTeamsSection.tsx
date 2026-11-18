@@ -1,11 +1,12 @@
-import { useMemo, useState } from "react";
+import { useBrowseState } from "../../lib/useBrowseState";
+import { useMemo } from "react";
 import type { OmnidexPlayer, OmnidexTeamsResponse } from "@gatcg/shared";
 import PlayerLink from "../players/PlayerLink";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
 export default function EventTeamsSection({ teams, players }: { teams: OmnidexTeamsResponse; players: OmnidexPlayer[] }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('events/EventTeamsSection.search', "");
 
   const playerName = useMemo(() => {
     const usernameById = new Map(players.map((player) => [player.id, player.username]));

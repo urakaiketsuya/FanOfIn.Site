@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { starterPrimers, primerPath } from "./primers/data";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useMemo, useState } from "react";
@@ -201,9 +202,9 @@ export default function OfficialProductsIndex() {
   useDocumentTitle("Official Product Decks", "Browse and copy official Grand Archive starter deck and Re:Collection decklists, then tune them in the deck editor.");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
-  const [section, setSection] = useState<"starter" | "recollection" | "pantheon">("starter");
-  const [product, setProduct] = useState("all");
-  const [query, setQuery] = useState("");
+  const [section, setSection] = useBrowseState<"starter" | "recollection" | "pantheon">('official-products/OfficialProductsIndex.section', "starter");
+  const [product, setProduct] = useBrowseState('official-products/OfficialProductsIndex.product', "all");
+  const [query, setQuery] = useBrowseState('official-products/OfficialProductsIndex.query', "");
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const products = useMemo(() => Array.from(new Set(officialProductDecks.filter((deck) => section === "pantheon" ? deck.productCode === "RDOPD" : section === "recollection" ? deck.productCode.startsWith("ReC-") : !deck.productCode.startsWith("ReC-") && deck.productCode !== "RDOPD").map((deck) => deck.productCode))), [section]);
   const visible = useMemo(() => {

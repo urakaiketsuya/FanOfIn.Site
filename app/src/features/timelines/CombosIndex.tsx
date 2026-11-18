@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useBrowseState } from "../../lib/useBrowseState";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMatch, Card } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -48,7 +49,7 @@ function ComboCard({ entry, cardsByName }: { entry: ComboEntry; cardsByName: Map
 export default function CombosIndex() {
   useDocumentTitle("Notable Combos", "Combo lines called out by broadcast casters, reconstructed from VOD commentary.");
   const data = useBroadcastTimelines();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('timelines/CombosIndex.search', "");
 
   const combos = useMemo<ComboEntry[]>(() => {
     if (!data) return [];

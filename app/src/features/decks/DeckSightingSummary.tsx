@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
@@ -10,7 +11,7 @@ export default function DeckSightingSummary({ sightings, playerName, eventNameBy
   sightings: Sighting[]; playerName: (id: number) => string; eventNameById: Map<number, string>; avgWinRate: number;
 }) {
   const [list, setList] = useState<"players" | "events" | null>(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('decks/DeckSightingSummary.query', "");
   const players = [...new Set(sightings.map(s => s.player))].map(id => ({
     id, name: playerName(id), count: sightings.filter(s => s.player === id).length,
   })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));

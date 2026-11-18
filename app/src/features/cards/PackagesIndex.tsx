@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import EditorialPackages from "../packages/EditorialPackages";
 import { lazy, Suspense, useEffect, useMemo, useState, useTransition } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -39,12 +40,12 @@ function PublishedPackages({ packageId, visible }: { packageId: string; visible:
   const [pending, startTransition] = useTransition();
   useEffect(() => { if (index) startTransition(() => setReports(observedPackageVariants(PUBLISHED_PACKAGE_CATALOG.packages, [index]))); }, [index]);
   const cardsByName = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('cards/PackagesIndex.query', "");
   useEffect(() => {
     if (!packageId) return;
     setQuery("");
     requestAnimationFrame(() => document.getElementById(packageId)?.scrollIntoView({ block: "start" }));
-  }, [packageId]);
+  }, [packageId, setQuery]);
   const normalized = query.trim().toLowerCase();
   const packages = PUBLISHED_PACKAGE_CATALOG.packages.filter(pkg =>
     !normalized || [pkg.label, ...pkg.memberCards].some(value => value.toLowerCase().includes(normalized)));

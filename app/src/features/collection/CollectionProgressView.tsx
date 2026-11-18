@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useCollectionProgressGoals } from './useCollectionProgressGoals';
 import { useMemo, useState, useTransition } from 'react';
 import { collectionGoalRequiresPrinting, resolveCollectionProgressGroup, buildCollectionProgressGroups, collectionGroupProgress, collectionProgressKey, defaultProgressTarget, type Card, type CollectionEntry, type CollectionProgressGoal, type CollectionProgressGroup, type CollectionProgressKind, type CollectionUpdateLine } from '@gatcg/shared';
@@ -19,12 +20,12 @@ export default function CollectionProgressView({ userId, cards, entries, savedEn
   userId: string; cards: Card[]; entries: CollectionEntry[]; savedEntries: CollectionEntry[]; available: boolean; error?: string; onRetry: () => void; busy: boolean;
   onUpdate: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
 }) {
-  const [kind, setKind] = useState<CollectionProgressKind>('set');
-  const [query, setQuery] = useState('');
+  const [kind, setKind] = useBrowseState<CollectionProgressKind>('collection/CollectionProgressView.kind', 'set');
+  const [query, setQuery] = useBrowseState('collection/CollectionProgressView.query', '');
   const [selected, setSelected] = useState<CollectionProgressGoal | null>(null);
   const { pins, deviceGoals, pinsReady, pinError, pinBusy, retry, togglePin, importGoals } = useCollectionProgressGoals(userId);
   const [limit, setLimit] = useState(12);
-  const [filter, setFilter] = useState('missing');
+  const [filter, setFilter] = useBrowseState('collection/CollectionProgressView.filter', 'missing');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [scopeOpen, setScopeOpen] = useState(false);
   const [card, setCard] = useState<Card | null>(null);

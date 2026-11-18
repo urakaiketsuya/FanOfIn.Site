@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import type { EditorialPackage } from '@gatcg/shared';
@@ -13,8 +14,8 @@ export default function AdminResearchQueue({ packages, onReview, onDismiss, read
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [query, setQuery] = useState('');
-  const [kind, setKind] = useState<ResearchKind | ''>('');
+  const [query, setQuery] = useBrowseState('packages/AdminResearchQueue.query', '');
+  const [kind, setKind] = useBrowseState<ResearchKind | ''>('packages/AdminResearchQueue.kind', '');
   const [status, setStatus] = useState('Needs review');
   const [limit, setLimit] = useState(12);
   const [selected, setSelected] = useState<Set<string>>(new Set());

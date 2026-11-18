@@ -1,5 +1,6 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { ArchetypeSummary, Card, ChampionTrend } from "@gatcg/shared";
 import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
@@ -46,9 +47,9 @@ function ChampionDirectoryCard({ summary, card, trend, showTrend = false, showSt
 export default function ChampionsIndex() {
   const seo = discoveryIndexMetadata("champions");
   useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
-  const [query, setQuery] = useState("");
-  const [showStats, setShowStats] = useState(true);
-  const [view, setView] = useState<"champions" | "spirits" | "race">("champions");
+  const [query, setQuery] = useBrowseState('champions/ChampionsIndex.query', "");
+  const [showStats, setShowStats] = useBrowseState('champions/ChampionsIndex.showStats', true);
+  const [view, setView] = useBrowseState<"champions" | "spirits" | "race">('champions/ChampionsIndex.view', "champions");
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
   const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");

@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { BrowseComparisonChoice } from "./BrowseComparison";
 import { sightingComparison } from "./browseComparisonModel";
 import BrowseDeckFilters from "./BrowseDeckFilters";
@@ -80,18 +81,18 @@ export default function DeckSightingsView({
     return matches;
   }, [cardIndexData, contentFilters, cardsByName]);
 
-  const [category, setCategory] = useState<string | null>(null);
-  const [seasonId, setSeasonId] = useState<number | null>(null);
-  const [selectedClasses, setSelectedClasses] = useState<Set<string>>(new Set());
-  const [keyword, setKeyword] = useState<string | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number | null>(null);
-  const [outcome, setOutcome] = useState<Outcome>("all");
+  const [category, setCategory] = useBrowseState<string | null>('decks/DeckSightingsView.category', null);
+  const [seasonId, setSeasonId] = useBrowseState<number | null>('decks/DeckSightingsView.seasonId', null);
+  const [selectedClasses, setSelectedClasses] = useBrowseState<Set<string>>('decks/DeckSightingsView.selectedClasses', new Set());
+  const [keyword, setKeyword] = useBrowseState<string | null>('decks/DeckSightingsView.keyword', null);
+  const [maxPrice, setMaxPrice] = useBrowseState<number | null>('decks/DeckSightingsView.maxPrice', null);
+  const [outcome, setOutcome] = useBrowseState<Outcome>('decks/DeckSightingsView.outcome', "all");
   const [isPending, startTransition] = useTransition();
-  const [sortMode, setSortMode] = useState<SightingSortMode>("date");
-  const [secondarySortMode, setSecondarySortMode] = useState<SightingSortMode | null>(null);
-  const [sortPriority, setSortPriority] = useState<SortPriority>("equal");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const [sortMode, setSortMode] = useBrowseState<SightingSortMode>('decks/DeckSightingsView.sortMode', "date");
+  const [secondarySortMode, setSecondarySortMode] = useBrowseState<SightingSortMode | null>('decks/DeckSightingsView.secondarySortMode', null);
+  const [sortPriority, setSortPriority] = useBrowseState<SortPriority>('decks/DeckSightingsView.sortPriority', "equal");
+  const [dateFrom, setDateFrom] = useBrowseState('decks/DeckSightingsView.dateFrom', "");
+  const [dateTo, setDateTo] = useBrowseState('decks/DeckSightingsView.dateTo', "");
   const [visibleCount, setVisibleCount] = useState(SIGHTINGS_PAGE_SIZE);
 
   const classesByChampion = useMemo(() => {
@@ -192,7 +193,7 @@ export default function DeckSightingsView({
     if (deckContentFilterCount(contentFilters) > 0) return;
     if (sortMode === "relevance") setSortMode("date");
     if (secondarySortMode === "relevance") setSecondarySortMode(null);
-  }, [sortMode, secondarySortMode, contentFilters]);
+  }, [sortMode, secondarySortMode, contentFilters, setSortMode, setSecondarySortMode]);
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);

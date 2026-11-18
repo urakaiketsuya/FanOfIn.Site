@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import GroupedCardResults from "../../components/GroupedCardResults";
 import FilterQuery from "../../components/filters/FilterQuery";
 import { filterCardNames } from "./filters";
@@ -58,14 +59,14 @@ export default function CardStatsIndex() {
   // cards.json (already fetched on this page) publishes this directly – avoids fetching the
   // ~10MB deck-popularity-index.json/deck-sightings.json just for their own .length.
   const totalTournamentDecks = cardStatsData?.decksConsidered ?? 0;
-  const [sortMode, setSortMode] = useState<SortMode>("usage");
-  const [minDecks, setMinDecks] = useState(5);
-  const [category, setCategory] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
+  const [sortMode, setSortMode] = useBrowseState<SortMode>('cards/CardStatsIndex.sortMode', "usage");
+  const [minDecks, setMinDecks] = useBrowseState('cards/CardStatsIndex.minDecks', 5);
+  const [category, setCategory] = useBrowseState<string | null>('cards/CardStatsIndex.category', null);
+  const [search, setSearch] = useBrowseState('cards/CardStatsIndex.search', "");
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [comboCollapsed, setComboCollapsed] = useState(false);
-  const [keywordSortMode, setKeywordSortMode] = useState<"usage" | "adjusted" | "raw">("usage");
-  const [compositionType, setCompositionType] = useState<string | null>(null);
+  const [keywordSortMode, setKeywordSortMode] = useBrowseState<"usage" | "adjusted" | "raw">('cards/CardStatsIndex.keywordSortMode', "usage");
+  const [compositionType, setCompositionType] = useBrowseState<string | null>('cards/CardStatsIndex.compositionType', null);
 
   const keywordRows = useMemo(() => {
     if (!keywordStatsData) return [];

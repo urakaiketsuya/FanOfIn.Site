@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPool } from "../cards/filters";
 import { useCallback, useEffect, useState } from "react";
@@ -58,7 +59,7 @@ export default function TradingBinder({ publicSlug }: { publicSlug?: string } = 
   const [settings, setSettings] = useState(EMPTY_SETTINGS), [items, setItems] = useState<BinderItem[]>([]), [collection, setCollection] = useState<CollectionEntry[]>([]);
   const [matches, setMatches] = useState<PublicBinder[]>([]), [trades, setTrades] = useState<Trade[]>([]), [tab, setTab] = useState<"binder" | "matches" | "offers">("binder");
   const [editor, setEditor] = useState<BinderItem | "new" | null>(null);
-  const [filter, setNameFilter] = useState(""), [setFilter, setSetFilter] = useState("");
+  const [filter, setNameFilter] = useBrowseState('looking-for/TradingBinder.filter', ""), [setFilter, setSetFilter] = useBrowseState('looking-for/TradingBinder.setFilter', "");
   const [matchLoading, setMatchLoading] = useState(false), [matchError, setMatchError] = useState("");
   const [partner, setPartner] = useState<PublicBinder | null>(null), [selected, setSelected] = useState<Record<string, number>>({}), [message, setMessage] = useState("");
   const loadMatches = async () => { setMatchLoading(true); setMatchError(""); try { setMatches((await accountApi.binderMatches()).binders); } catch (error) { setMatchError(error instanceof Error ? error.message : "Could not load matches."); } finally { setMatchLoading(false); } };

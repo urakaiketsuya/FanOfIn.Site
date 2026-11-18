@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -27,9 +28,9 @@ export default function TeamsIndex() {
   const teamsStatus = usePublishedDataStatus("omnidex-teams", "/data/omnidex/teams.json");
   const playerName = usePlayerNameById();
   const { data: reports, status: reportStatus } = useCompetition<CompetitionTeam>("teams");
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | null>(null);
-  const [seasonId, setSeasonId] = useState<number | null>(null);
+  const [search, setSearch] = useBrowseState('teams/TeamsIndex.search', "");
+  const [category, setCategory] = useBrowseState<string | null>('teams/TeamsIndex.category', null);
+  const [seasonId, setSeasonId] = useBrowseState<number | null>('teams/TeamsIndex.seasonId', null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const reportByTeam = useMemo(() => {

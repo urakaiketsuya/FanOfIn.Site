@@ -338,10 +338,6 @@ export default function CardDetail() {
 
   return (
     <PageLayout data-component="CardDetail" width="standard">
-      <Link to="/cards" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline focus-visible:outline-2">
-        &larr; Back to Cards
-      </Link>
-
       <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
 
       <AddCardToDeck key={card.name} card={card} />

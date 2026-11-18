@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPool } from "../cards/filters";
 import { saveCuration, exportCuration } from "../../lib/curationStorage";
@@ -38,7 +39,7 @@ export default function ReferenceStrategies({ published = false }: {
         }
     });
     const [store, setStore] = useState(initial.store), [error, setError] = useState(initial.error), [edit, setEdit] = useState<CuratedStrategy | null>(null), [baseline, setBaseline] = useState('');
-    const [query, setQuery] = useState(''), [filter, setFilter] = useState('all'), [limit, setLimit] = useState(24), [pending, startTransition] = useTransition();
+    const [query, setQuery] = useBrowseState('archetypes/ReferenceStrategies.query', ''), [filter, setFilter] = useBrowseState('archetypes/ReferenceStrategies.filter', 'all'), [limit, setLimit] = useState(24), [pending, startTransition] = useTransition();
     const [cardQuery, setCardQuery] = useState('');
     const [cardTarget, setCardTarget] = useState<'anyCards' | 'allCards' | 'excludeCards' | 'preview'>('anyCards');
     const [fieldVersion, setFieldVersion] = useState(0);

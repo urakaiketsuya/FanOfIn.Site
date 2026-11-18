@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { AccountUser, BookmarkedCombo, ComboGoal, ComboVisibility, DeckFormat, PublicCombo, SavedCombo } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
@@ -27,12 +28,12 @@ function Card({ combo, mine, bookmarked, onLoad, onDelete, onEdit, onDuplicate, 
 }
 
 export default function ComboLibrary({ localCombos, format = "UNKNOWN", championName = null, onMigrated, onLoad }: { localCombos: LocalCombo[]; format?: DeckFormat; championName?: string | null; onMigrated: () => void; onLoad: (combo: { name: string; requirements: ComboRecipeRequirement[]; damage: number }) => void }) {
-  const [view, setView] = useState<View>("new");
+  const [view, setView] = useBrowseState<View>('combo-lab/ComboLibrary.view', "new");
   const [user, setUser] = useState<AccountUser | null | undefined>();
   const [mine, setMine] = useState<SavedCombo[]>([]);
   const [saved, setSaved] = useState<BookmarkedCombo[]>([]);
   const [browse, setBrowse] = useState<PublicCombo[]>([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('combo-lab/ComboLibrary.query', "");
   const [state, setState] = useState<"idle" | "loading" | "error">("loading");
   const [notice, setNotice] = useState<string | null>(null);
 

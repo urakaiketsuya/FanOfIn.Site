@@ -1,3 +1,4 @@
+import { useBrowseState } from "../lib/useBrowseState";
 import { useState, type ReactNode } from 'react';
 import type { Card } from '@gatcg/shared';
 import { CARD_GROUPS, groupCardResults, type CardGrouping } from '../lib/cardResultGroups';
@@ -13,7 +14,7 @@ export default function GroupedCardResults<T>({ items, cardFor, children, pageSi
   toolbar?: ReactNode;
   grouping?: CardGrouping; onGrouping?: (value: CardGrouping) => void;
 }) {
-  const [localGrouping, setGrouping] = useState<CardGrouping>('none');
+  const [localGrouping, setGrouping] = useBrowseState<CardGrouping>('cardResults.grouping', 'none');
   const grouping = controlledGrouping ?? localGrouping;
   const [pagination, setPagination] = useState<{ resultKey?: string; limits: Record<string, number> }>({ resultKey, limits: {} });
   // Reset paging without remounting grouping controls or feature-owned drafts.

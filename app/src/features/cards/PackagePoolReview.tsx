@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useMemo, useState, useTransition } from "react";
 import { groupPackagePools, measurePackageRuleOverlap, type PackageCandidatesData, type PackagePoolGroup, type PackagePoolRelationship } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
@@ -17,7 +18,7 @@ const relationLabel = { contained: "Possible subgroup", strong: "Strong overlap"
 export default function PackagePoolReview({ entries, query, minedData }: { entries: PackageRelationshipEntry[]; query: string; minedData?: PackageCandidatesData }) {
   const { groups, relationships } = useMemo(() => groupPackagePools(entries), [entries]);
   const [openId, setOpenId] = useState<string | null>(null);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useBrowseState('cards/PackagePoolReview.filter', "all");
   const [page, setPage] = useState(1);
   const suggested = new Set(relationships.filter((relation) => relation.kind !== "loose").flatMap((relation) => [relation.leftId, relation.rightId]));
   const visible = groups.filter((group) => (!query || [...group.cards, ...group.entries.map((entry) => entry.label)].some((text) => text.toLowerCase().includes(query))) &&

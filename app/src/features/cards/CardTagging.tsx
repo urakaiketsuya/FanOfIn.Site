@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPrintings } from "./filters";
 import { useEffect, useMemo, useState, useTransition } from "react";
@@ -29,9 +30,9 @@ export default function CardTagging() {
   useDocumentTitle("Contribute card tags");
   const [params] = useSearchParams();
   const [draft, setDraft] = useState(() => initialDraft(params));
-  const [search, setSearch] = useState("");
-  const [set, setSet] = useState("");
-  const [untagged, setUntagged] = useState(false);
+  const [search, setSearch] = useBrowseState('cards/CardTagging.search', "");
+  const [set, setSet] = useBrowseState('cards/CardTagging.set', "");
+  const [untagged, setUntagged] = useBrowseState('cards/CardTagging.untagged', false);
   const [limit, setLimit] = useState(24);
   const [pending, startTransition] = useTransition();
   const [reviewOpen, setReviewOpen] = useState(false);

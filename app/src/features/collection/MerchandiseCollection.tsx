@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { merchandiseCollectionItems, merchandiseProgress, parseMerchandiseQuantities, type MerchandiseCollection as Snapshot, type MerchandiseSaveInput } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
@@ -31,11 +32,11 @@ export default function MerchandiseCollection({ userId }: { userId: string }) {
   const [storageError, setStorageError] = useState(false);
   const [conflict, setConflict] = useState(false);
   const [notice, setNotice] = useState("");
-  const [search, setSearch] = useState("");
-  const [release, setRelease] = useState("");
-  const [champion, setChampion] = useState("");
-  const [category, setCategory] = useState("");
-  const [ownership, setOwnership] = useState("");
+  const [search, setSearch] = useBrowseState('collection/MerchandiseCollection.search', "");
+  const [release, setRelease] = useBrowseState('collection/MerchandiseCollection.release', "");
+  const [champion, setChampion] = useBrowseState('collection/MerchandiseCollection.champion', "");
+  const [category, setCategory] = useBrowseState('collection/MerchandiseCollection.category', "");
+  const [ownership, setOwnership] = useBrowseState('collection/MerchandiseCollection.ownership', "");
   const dirty = Object.keys(draft.edits).length > 0;
 
   useEffect(() => {

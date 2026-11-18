@@ -1,3 +1,4 @@
+import { useBrowseParams } from "../../lib/useBrowseParams";
 import "./CardSpoilers.css";
 import type { CSSProperties } from "react";
 import GroupedCardResults from "../../components/GroupedCardResults";
@@ -15,7 +16,7 @@ import DialogSheet from "../../components/ui/DialogSheet";
 import { Select } from "../../components/ui/FormControl";
 import { groupSpoilers, groupSpoilerResults, sortSpoilers, searchSpoilers, spoilerSetKey } from "../../lib/spoilerCatalog";
 import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import spoilers from "../../../../data/reference/card-spoilers-2026-11-01.json";
 import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
@@ -41,7 +42,7 @@ export default function CardSpoilers() {
   const gridSize = prefs.visualCardSize === "rows" ? "medium" : prefs.visualCardSize;
   const catalog = useCardCatalog();
   const byName = useMemo(() => new Map(catalog.map(card => [card.name, card])), [catalog]);
-  const [params, setParams] = useSearchParams();
+  const [params, setParams] = useBrowseParams();
   const query = params.get("q") ?? "";
   const parsed = useMemo(() => parseFilterQuery(query), [query]);
   const [filtersOpen, setFiltersOpen] = useState(false);

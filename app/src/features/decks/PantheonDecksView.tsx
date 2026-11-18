@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { deckMatchesSearch } from "@gatcg/shared";
@@ -32,10 +33,10 @@ export default function PantheonDecksView() {
   const status = usePublishedDataStatus("shoutatyourdecks-pantheon-decks", "/data/shoutatyourdecks/analytics/pantheon/decks.json");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('decks/PantheonDecksView.query', "");
   const [deckFilter, setDeckFilter] = useDeckSearch();
   const champion = deckFilter.champion;
-  const [sort, setSort] = useState<"champion" | "main">("champion");
+  const [sort, setSort] = useBrowseState<"champion" | "main">('decks/PantheonDecksView.sort', "champion");
   const [visibleCount, setVisibleCount] = useState(30);
   const decks = useMemo(() => index?.decks ?? [], [index]);
   const filtered = useMemo(() => decks.filter((deck) => deckMatchesSearch(deck.champion, deck.searchCardNames, deckFilter) && (!query || `${deck.champion ?? ""} ${(deck.cardNames ?? []).join(" ")} ${(deck.boonNames ?? []).join(" ")}`.toLowerCase().includes(query.toLowerCase()))).sort((a, b) => sort === "main" ? (b.mainCount ?? 0) - (a.mainCount ?? 0) || formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion)) : formatPantheonChampion(a.champion).localeCompare(formatPantheonChampion(b.champion))), [decks, deckFilter, query, sort]);

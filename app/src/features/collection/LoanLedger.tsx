@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useState } from "react";
 import type { Card, CollectionCardTracking } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
@@ -7,7 +8,7 @@ export default function LoanLedger({ records, cards, onEdit, onAdd }: {
   records: CollectionCardTracking[]; cards: Card[];
   onEdit: (uuid: string) => void; onAdd: (borrower?: string) => void;
 }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('collection/LoanLedger.query', "");
   const [history, setHistory] = useState(false);
   const groups = new Map<string, { borrower: string; rows: { record: CollectionCardTracking; loan: CollectionCardTracking["loans"][number] }[] }>();
   for (const record of records) for (const loan of record.loans) {

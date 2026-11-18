@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import PlayerSearchResult, { PersonAvatar } from "./PlayerSearchResult";
 import { championEventCounts, matchesPlayerSearch, playerDirectoryRows } from "./playerDirectory";
 import { usePlayerRegions } from "./usePlayerRegions";
@@ -70,12 +71,12 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
   const regions = usePlayerRegions(playersData, events);
   const regionEventsStatus = usePublishedDataStatus("omnidex-index", "/data/omnidex/index.json");
   const regionStoresStatus = usePublishedDataStatus("store-directory", "/data/omnidex/stores.json");
-  const [region, setRegion] = useState("");
+  const [region, setRegion] = useBrowseState('players/PlayersIndex.region', "");
   const [recalculating, startTransition] = useTransition();
   const eloData = useEloData();
   const playersStatus = usePublishedDataStatus("omnidex-players", "/data/omnidex/players.json");
   const eloStatus = usePublishedDataStatus("analysis-elo", "/data/analysis/elo.json");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('players/PlayersIndex.playerSearch', "");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const ranked = useMemo(() => playerDirectoryRows(playersData?.players ?? [], eloData?.ratings ?? []), [playersData, eloData]);
@@ -152,7 +153,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
 function JudgesView({ topChampionById }: { topChampionById: Map<number, string> }) {
   const judgesData = useOmnidexJudges();
   const judgesStatus = usePublishedDataStatus("omnidex-judges", "/data/omnidex/judges.json");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('players/PlayersIndex.judgeSearch', "");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const judges = useMemo(() => {

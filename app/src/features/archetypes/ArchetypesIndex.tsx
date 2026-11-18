@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
 import { lazy, Suspense, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -57,11 +58,11 @@ export default function ArchetypesIndex() {
   const seo = discoveryIndexMetadata("archetypes");
   useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
   const data = useArchetypeTaxonomyData();
-  const [championFilter, setChampionFilter] = useState<string | null>(null);
-  const [seasonId, setSeasonId] = useState<number | null>(null);
-  const [sortMode, setSortMode] = useState<SortMode>("players");
-  const [view, setView] = useState<ViewMode>("archetypes");
-  const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>("established");
+  const [championFilter, setChampionFilter] = useBrowseState<string | null>('archetypes/ArchetypesIndex.championFilter', null);
+  const [seasonId, setSeasonId] = useBrowseState<number | null>('archetypes/ArchetypesIndex.seasonId', null);
+  const [sortMode, setSortMode] = useBrowseState<SortMode>('archetypes/ArchetypesIndex.sortMode', "players");
+  const [view, setView] = useBrowseState<ViewMode>('archetypes/ArchetypesIndex.view', "archetypes");
+  const [confidenceFilter, setConfidenceFilter] = useBrowseState<ConfidenceFilter>('archetypes/ArchetypesIndex.confidenceFilter', "established");
   const [buildVisibleCount, setBuildVisibleCount] = useState(BUILD_PAGE_SIZE);
   const [selectedCompareIds, setSelectedCompareIds] = useState<Set<string>>(new Set());
 

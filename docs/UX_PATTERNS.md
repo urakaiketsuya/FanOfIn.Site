@@ -1048,3 +1048,16 @@ View expansion, Large/Medium sizing, expanded grouping persistence, tab arrow ke
 sheet focus containment and Escape restoration, 48px controls, and overflow. Initial
 route loading was observed. Native mobile keyboards, forced catalog/filter-service
 failures, and production deployment were not exercised.
+
+## Returning to search results
+
+Keep shareable search filters in the URL. For browse-only controls that are not URL-backed,
+use `useBrowseState` with a stable feature/field key; it restores tab-local searches, filters,
+and sorting after visiting a detail page or refreshing. Keep editor drafts, mutations, and
+transient dialogs in their feature controllers. Clearing a search must update its saved value.
+
+The app breadcrumb trail retains the actual source URL, including query and hash, when opening
+details. Browser Back/Forward and reload retain that trail; direct links use a route parent.
+Primary navigation starts a fresh trail, and repeated ancestors are trimmed. Breadcrumb links
+wrap on mobile and keep 48px touch targets. Check filtered results → detail → browser Back and
+filtered results → detail → breadcrumb, including a changed detail tab and reload.

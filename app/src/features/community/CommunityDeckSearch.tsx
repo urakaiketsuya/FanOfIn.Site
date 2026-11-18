@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { deckMatchesSearch } from "@gatcg/shared";
 import DeckSearchFilters from "../../components/deck-search/DeckSearchFilters";
 import { useDeckSearch } from "../../components/deck-search/useDeckSearch";
@@ -35,10 +36,10 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
   const sourceStatus = useCommunityDeckSearchStatus(format);
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('community/CommunityDeckSearch.query', "");
   const [deckFilter, setDeckFilter] = useDeckSearch();
   const champion = deckFilter.champion;
-  const [source, setSource] = useState<CommunityDeckSource | "">("");
+  const [source, setSource] = useBrowseState<CommunityDeckSource | "">('community/CommunityDeckSearch.source', "");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = deferredQuery.trim().toLocaleLowerCase();

@@ -1,3 +1,4 @@
+import RouteBreadcrumbs from "./components/RouteBreadcrumbs";
 import DiscordIcon from "./components/DiscordIcon";
 import { NAV_ENTRIES, entryIsActive, linkIsActive } from "./lib/navigation";
 import MenuDetails from "./components/ui/MenuDetails";
@@ -99,7 +100,7 @@ export default function App() {
       <ConnectivityNotice />
       <ToastViewport />
     </header>
-    <main id="main-content" tabIndex={-1}><AppRoutes /></main>
+    <main id="main-content" tabIndex={-1}><RouteBreadcrumbs /><AppRoutes /></main>
     <RandomFlavorFooter />
   </div>;
 }

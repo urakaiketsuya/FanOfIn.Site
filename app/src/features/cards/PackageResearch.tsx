@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { accountApi } from "../../lib/accountApi";
 import { packageBannedCards } from "./packageArchive";
 import ConstructionPackages from "./ConstructionPackages";
@@ -47,7 +48,7 @@ export default function PackageResearch({ active }: { active: boolean }) {
   const loading = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json");
   const { store, save } = useSavedPackages();
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('cards/PackageResearch.query', "");
   const [view, setView] = useState<"suggested" | "approved" | "win-rates" | "archived" | "synergistic" | "experimental" | "construction">(() => location.hash === "#construction" ? "construction" : location.hash === "#experimental" ? "experimental" : location.hash === "#synergistic" ? "synergistic" : location.hash === "#archived" ? "archived" : location.hash === "#win-rates" ? "win-rates" : "suggested");
   useEffect(() => {
     if (!active) return;
@@ -77,7 +78,7 @@ export default function PackageResearch({ active }: { active: boolean }) {
     handledHash.current = location.hash;
     setView(archived.has(target.id) ? "archived" : approved(target) ? "approved" : "suggested"); setQuery(target.name); setOpenId(target.id);
     requestAnimationFrame(() => document.getElementById(`saved-${encodeURIComponent(target.id)}`)?.scrollIntoView({ block: "start" }));
-  }, [location.hash, packages, cards.length, archived, active]);
+  }, [location.hash, packages, cards.length, archived, active, setQuery]);
   const eligible = packages.flatMap((pkg) => pkg.rules.filter((rule) => rule.status !== "registered" && rule.status !== "manual" && packageAutoEligibility(rule).eligible).map((rule) => ({ pkg, rule })));
   const persist = (next: PackageStore) => { try { save(next); setError(""); } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not save packages."); } };
   // Enabled policy is re-evaluated when a fresh published audit arrives, and when locally revoked.

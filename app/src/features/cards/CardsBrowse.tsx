@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useCardWinRates } from "./useCardWinRates";
 import WinRateSortStatus from "../../components/WinRateSortStatus";
 import { compareCardWinRates } from "../../lib/cardWinRateSort";
@@ -52,7 +53,7 @@ export default function CardsBrowse() {
 
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = useState(false);
-  const [sort, setSort] = useState("name");
+  const [sort, setSort] = useBrowseState('cards/CardsBrowse.sort', "name");
   const priceSort = sort === "price" || sort === "price-desc";
   const priceState = useDeckPriceByNameState(priceSort);
   const winRateState = useCardWinRates(sort === "win-rate");

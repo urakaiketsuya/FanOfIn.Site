@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useBrowseState } from "../../lib/useBrowseState";
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { Card } from '@gatcg/shared';
 import CardArtTile from '../../components/CardArtTile';
@@ -45,7 +45,7 @@ export default function StarterPrimerPage() {
   const deck = officialProductDecks.find(item => item.id === primer?.deckId);
   const terms = primerTerms(primer?.deckId ?? '');
   const cards = useCardsByNames([...new Set([...Object.values(deck?.cards ?? {}).flat().map(line => line.name), ...(primer?.cards ?? []), ...(primer?.synergyCards ?? []), ...(primer?.winCards ?? []), ...terms.flatMap(term => term.cards)])]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useBrowseState('official-products/StarterPrimerPage.query', '');
   useDocumentTitle(deck && primer ? `${deck.name} · Deck primer` : 'Deck primer');
   if (!deck || !primer) return <PageLayout><PageHeader title="Primer not found" description="Choose an official deck to learn its game plan." /><Link className={linkClass} to="/official-decks">Browse official decks</Link></PageLayout>;
   if (deckId !== primer.slug) return <Navigate to={`${primerPath(deck.id)}${location.search}${location.hash}`} replace />;

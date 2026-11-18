@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPool } from "../cards/filters";
 import { saveCuration, exportCuration } from "../../lib/curationStorage";
@@ -25,8 +26,8 @@ export default function MyArchetypes() {
   const [store, setStore] = useState(initial.store);
   const [error, setError] = useState(initial.error);
   const [pending, startTransition] = useTransition();
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("review");
+  const [query, setQuery] = useBrowseState('archetypes/MyArchetypes.query', "");
+  const [filter, setFilter] = useBrowseState('archetypes/MyArchetypes.filter', "review");
   const [params, setParams] = useSearchParams();
   const [edit, setEdit] = useState<LocalArchetype | null>(null);
   const [buildQuery, setBuildQuery] = useState("");

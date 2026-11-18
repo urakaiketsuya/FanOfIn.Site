@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
@@ -62,7 +63,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
     { label: "Community deck eras", status: eraStatus, data: deckEra },
   ];
 
-  const [championFilter, setChampionFilter] = useState<string>("");
+  const [championFilter, setChampionFilter] = useBrowseState<string>('community/CommunityDecksIndex.championFilter', "");
   const [showAllTopCards, setShowAllTopCards] = useState(false);
   const [showAllClusters, setShowAllClusters] = useState(false);
 

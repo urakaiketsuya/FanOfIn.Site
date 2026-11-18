@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { BrowseComparisonChoice } from "./BrowseComparison";
 import { buildComparison } from "./browseComparisonModel";
 import BrowseDeckFilters from "./BrowseDeckFilters";
@@ -52,13 +53,13 @@ export default function TournamentBuildsView({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [minPlayers, setMinPlayers] = useState<number>(searchParams.get("minPlayers") === "any" ? 1 : 2);
-  const [maxPrice, setMaxPrice] = useState<number | null>(null);
-  const [elementFilter, setElementFilter] = useState<string[]>([]);
-  const [sortMode, setSortMode] = useState<BuildSortMode>("mostPlayed");
-  const [secondarySortMode, setSecondarySortMode] = useState<BuildSortMode | null>(null);
-  const [sortPriority, setSortPriority] = useState<SortPriority>("equal");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const [maxPrice, setMaxPrice] = useBrowseState<number | null>('decks/TournamentBuildsView.maxPrice', null);
+  const [elementFilter, setElementFilter] = useBrowseState<string[]>('decks/TournamentBuildsView.elementFilter', []);
+  const [sortMode, setSortMode] = useBrowseState<BuildSortMode>('decks/TournamentBuildsView.sortMode', "mostPlayed");
+  const [secondarySortMode, setSecondarySortMode] = useBrowseState<BuildSortMode | null>('decks/TournamentBuildsView.secondarySortMode', null);
+  const [sortPriority, setSortPriority] = useBrowseState<SortPriority>('decks/TournamentBuildsView.sortPriority', "equal");
+  const [dateFrom, setDateFrom] = useBrowseState('decks/TournamentBuildsView.dateFrom', "");
+  const [dateTo, setDateTo] = useBrowseState('decks/TournamentBuildsView.dateTo', "");
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
   // Filtering and sorting the cached builds can still be expensive. Transitions let
   // controls update first while the results show their recalculating state.
@@ -139,7 +140,7 @@ export default function TournamentBuildsView({
     if (deckContentFilterCount(contentFilters) > 0) return;
     if (sortMode === "relevance") setSortMode("mostPlayed");
     if (secondarySortMode === "relevance") setSecondarySortMode(null);
-  }, [sortMode, secondarySortMode, contentFilters]);
+  }, [sortMode, secondarySortMode, contentFilters, setSortMode, setSecondarySortMode]);
 
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);

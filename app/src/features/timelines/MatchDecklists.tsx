@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { BroadcastTimelineMatch, BroadcastTimelinePlayer, OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
@@ -59,7 +60,7 @@ function PlayerDecklistSlot({
 
   const [explicitId, setExplicitId] = useState<number | undefined>(undefined);
   const [searchVisible, setSearchVisible] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useBrowseState('timelines/MatchDecklists.search', "");
 
 
   const selectedId = explicitId ?? autoMatch?.id;

@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import { useMemo, useRef, useState } from "react";
 import { useSiteChangelogData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -18,7 +19,7 @@ export default function ChangelogIndex() {
   const data = useSiteChangelogData();
   const status = usePublishedDataStatus("changelog", "/data/changelog.json");
   const searchRef = useRef<HTMLInputElement>(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('changelog/ChangelogIndex.query', "");
   const [visibleCount, setVisibleCount] = useState(20);
 
   const matching = useMemo(() => {

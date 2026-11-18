@@ -105,7 +105,6 @@ export default function Artists() {
     return <Navigate replace to={`${artistPagePath(identity)}${location.search}${location.hash}`} />;
   }
   return <PageLayout width="full">
-    <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap gap-2"><Link to="/cards" className={linkClass}>Cards</Link>{slug && <Link to="/artists" className={linkClass}>All artists</Link>}</nav>
     <div className="flex min-w-0 flex-wrap items-center gap-4">{slug && identity && <ArtistPortrait key={identity.id} artist={identity} large />}<div className="min-w-0 [&_h1]:break-words"><PageHeader title={slug ? identity ? <ArtistName artist={identity} /> : (loading ? 'Artist' : 'Artist not found') : 'Grand Archive artists'} /></div></div>
     {loading && <p role="status" className="mt-4 text-ctp-subtext1">Loading artist artwork…</p>}
     {failed && !retrying && <div role="alert" className="mt-4 flex flex-wrap items-center gap-3"><p>Card artwork could not be refreshed.</p><Button onClick={() => void retry()}>Retry</Button></div>}

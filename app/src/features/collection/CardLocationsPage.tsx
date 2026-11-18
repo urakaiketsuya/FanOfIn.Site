@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPool } from "../cards/filters";
 import { CollectionCopyStatus, CollectionStatusHelp } from "./CollectionStatus";
@@ -34,9 +35,9 @@ export default function CardLocationsPage() {
   const [ownershipError, setOwnershipError] = useState("");
   const tracking = useCardLocations(Boolean(user));
   const [tab, setTab] = useState(params.get("view") === "loans" ? "loans" : "decks");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useBrowseState('collection/CardLocationsPage.query', "");
   const [limit, setLimit] = useState(24);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useBrowseState('collection/CardLocationsPage.filter', "all");
   const [picker, setPicker] = useState<string | null>(null);
   const [loanBorrower, setLoanBorrower] = useState<string | undefined>();
   const [assignmentDeck, setAssignmentDeck] = useState<SavedDeck | null>(null);

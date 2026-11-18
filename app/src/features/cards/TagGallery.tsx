@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import CardQueryInput from "../../components/CardQueryInput";
 import { searchCardPrintings } from "./filters";
 import { useMemo, useState, useTransition } from "react";
@@ -17,8 +18,8 @@ export default function TagGallery() {
   useDocumentTitle(tag ? `${tag} cards` : "Community tag galleries");
   const { data, lookup, status, local } = useCardTags();
   const cards = useCardCatalog();
-  const [search, setSearch] = useState("");
-  const [set, setSet] = useState("");
+  const [search, setSearch] = useBrowseState('cards/TagGallery.search', "");
+  const [set, setSet] = useBrowseState('cards/TagGallery.set', "");
   const [limit, setLimit] = useState(36);
   const [pending, startTransition] = useTransition();
   const matches = useMemo(() => {

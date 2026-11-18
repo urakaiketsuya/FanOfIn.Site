@@ -1,3 +1,4 @@
+import { useBrowseState } from "../../lib/useBrowseState";
 import GroupedCardResults from "../../components/GroupedCardResults";
 import { useUrlFilters, CARD_FILTER_PARAMS } from "../../components/filters/useUrlFilters";
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
@@ -21,7 +22,7 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
   cards: Card[]; entries: CollectionEntry[]; savedEntries?: CollectionEntry[]; busy?: boolean; preview?: boolean;
   onUpdate?: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
 }) {
-  const [view, setView] = useState<"all" | "owned">("all");
+  const [view, setView] = useBrowseState<"all" | "owned">('collection/CollectionBrowser.view', "all");
   const [editing, setEditing] = useState<string | null>(null);
   const [cardFilters, setCardFilters] = useUrlFilters(emptyFilterState, quickBuy ? "buy-" : "collection-", CARD_FILTER_PARAMS);
   const focusedCardName = cards.find(card => card.uuid === focusCardUuid)?.name;
@@ -32,8 +33,8 @@ export default function CollectionBrowser({ cards, entries, savedEntries = entri
     lastFocused.current = focusCardUuid;
     setView("all"); setCardFilters({ ...emptyFilterState(), name: focusedCardName });
     setEditing(focusCardUuid);
-  }, [focusCardUuid, focusedCardName, setCardFilters]);
-  const [sort, setSort] = useState("name");
+  }, [focusCardUuid, focusedCardName, setCardFilters, setView]);
+  const [sort, setSort] = useBrowseState('collection/CollectionBrowser.sort', "name");
   const quantities = useMemo(() => {
     const result = new Map<string, number>();
     for (const entry of entries) result.set(entry.cardUuid, (result.get(entry.cardUuid) ?? 0) + Math.max(0, entry.ownedQuantity));
