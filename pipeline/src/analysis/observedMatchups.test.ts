@@ -21,7 +21,7 @@ test('publishes only completed unambiguous individual pairings, deduplicated by 
   assert.deepEqual(data.events[1].decks, { a: 2, b: 1 });
   const all = observedMatchupCohort(data, 'a', emptyMatchupScope);
   assert.equal(all.results, 5); assert.equal(all.decks, 3); assert.equal(all.events, 2); assert.equal(all.winRate, .5);
-  assert.deepEqual(all.matchups, [{ id: 'b', matches: 3, winRate: .5 }, { id: 'a', matches: 1, winRate: .5 }]);
+  assert.deepEqual(all.matchups, [{ id: 'b', matches: 3, winRate: .5, eventRange: { low: 0, high: .75, events: 2 } }, { id: 'a', matches: 1, winRate: .5, eventRange: { low: .5, high: .5, events: 1 } }]);
 });
 test('inclusive date, event, and format filters use the same cohort for rates and sample sizes', () => {
   const data = computeObservedMatchups(events, taxonomy, '2026-04-01');

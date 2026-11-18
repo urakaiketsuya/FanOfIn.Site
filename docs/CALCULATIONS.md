@@ -7431,3 +7431,15 @@ Comparisons use identical turn policies. These are unopposed best-found sequence
 not predicted resolved game damage. The original `casellaCombatForecast` burst API
 remains for regression compatibility. See CASELLA_COMBAT.md for search weights,
 resource policies, unsupported effects and upstream fixture provenance.
+
+### Observed matchup event ranges
+
+The compact matchup rows show the pooled score rate as a dot and the minimum–maximum
+per-event score rates as a line, only when at least two events contain completed matches
+against that opponent. Event rates use `(wins + ties / 2) / (wins + losses + ties)`;
+reversed pair order and mirrors use the same perspective as the pooled cohort. Combine
+rows for an opponent within an event before finding extrema. Zero-match rows do not
+contribute. Date, format, and event filters apply before computing either value.
+The range describes observed event variation, not a confidence interval or predicted
+outcome. Event sizes may differ; pooled rates remain match-weighted. Counts show physical
+matches and contributing events; mirrors remain 50% with physical matches counted once.

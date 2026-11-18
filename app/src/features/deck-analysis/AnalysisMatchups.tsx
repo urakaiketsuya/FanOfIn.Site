@@ -63,27 +63,39 @@ export default function AnalysisMatchups({ result, loading, cards, error, onRetr
       </> : <p className="mt-3 text-sm text-ctp-subtext1">Historical win rate unavailable.</p>}
     </Panel>}
     {(matchups.length > 0 || matchupsLoading || matchupsError) && <section aria-labelledby={headingId}>
-      <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · {observed ? 'score rate' : 'win rate'} 0–100%</p>
+      <h2 id={headingId} className="text-lg font-semibold">Observed matchups</h2><p className="mt-1 text-xs text-ctp-subtext1">Largest samples first · {observed ? 'score rate' : 'win rate'}</p>
+      {observed?.matchups.some(row => row.eventRange && row.eventRange.events > 1) && <p className="mt-1 text-xs text-ctp-subtext1">Dot: overall · line: event low–high</p>}
       {matchupsError && <div className="mt-3"><p role="alert" className="text-sm">{matchups.length ? 'Showing saved matchups. Updated results could not be loaded.' : 'Opponent matchups could not be loaded.'}</p>{onRetryMatchups && <Button className="mt-2" onClick={onRetryMatchups}>Retry matchups</Button>}</div>}
       {!matchups.length && !matchupsError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{matchupsLoading ? 'Loading opponent matchups…' : observed ? 'No recorded matchups in this selection.' : 'No recorded opponent matchups for this archetype yet.'}</p>}
-      <div id={`${headingId}-rows`} className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {visible.map((matchup) => <Panel as="article" key={matchup.opponentClusterId} className="min-w-0">
-          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-4">
+      <div id={`${headingId}-rows`} className="mt-3 divide-y divide-ctp-surface1 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+        {visible.map((matchup) => {
+          const range = observed?.matchups.find(row => row.id === matchup.opponentClusterId)?.eventRange;
+          const hasRange = range && range.events > 1;
+          return <article key={matchup.opponentClusterId} className="grid min-w-0 gap-x-6 gap-y-2 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:px-4" aria-label={`Against ${matchup.opponentClusterName}`}>
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="w-20 shrink-0"><ChampionArt name={matchup.opponentChampionName} cards={cards} /></div>
+              <div className="min-w-0">
+                <h3 className="font-semibold">{matchup.opponentChampionName}</h3>
+                <Link to={`/archetypes/${matchup.opponentClusterId}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{matchup.opponentClusterName}</Link>
+              </div>
+            </div>
             <div className="min-w-0">
-              <ChampionArt name={matchup.opponentChampionName} cards={cards} />
-              <p className="mt-2 text-xs text-ctp-subtext1">Against</p>
-              <h3 className="break-words text-lg font-semibold">{matchup.opponentChampionName}</h3>
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <strong className="text-2xl tabular-nums">{percent(matchup.baselineWinRate)}</strong>
+                <span className="text-xs text-ctp-subtext1 tabular-nums">{matchup.games.toLocaleString()} {observed ? 'matches' : 'games'}{range ? ` · ${range.events} ${range.events === 1 ? 'event' : 'events'}` : ''}</span>
+              </div>
+              <div className="relative" aria-hidden="true"><svg viewBox="0 0 300 28" className="h-7 w-full" preserveAspectRatio="none" aria-hidden="true">
+                <line x1="6" x2="294" y1="14" y2="14" className="stroke-ctp-surface2" />
+                <line x1="150" x2="150" y1="3" y2="25" className="stroke-ctp-overlay1" strokeDasharray="2 2" />
+                {hasRange && <>
+                  <line x1={6 + range.low * 288} x2={6 + range.high * 288} y1="14" y2="14" className="stroke-ctp-blue" strokeWidth="4" />
+                  {[range.low, range.high].map((value, index) => <line key={index} x1={6 + value * 288} x2={6 + value * 288} y1="8" y2="20" className="stroke-ctp-blue" strokeWidth="2" />)}
+                </>}
+              </svg><span className="absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ctp-text" style={{ left: `${2 + matchup.baselineWinRate * 96}%` }} /></div>
+              <div className="flex justify-between gap-2 text-xs text-ctp-subtext1 tabular-nums"><span>0%</span><span>{hasRange ? `Event range ${percent(range.low)}–${percent(range.high)}` : '50%'}</span><span>100%</span></div>
             </div>
-            <div className="text-right">
-              <p className="text-4xl font-semibold tabular-nums">{percent(matchup.baselineWinRate)}</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">{observed ? 'Observed score rate' : 'Observed win rate'}</p><p className="mt-3 text-xl font-semibold tabular-nums">{matchup.games.toLocaleString()}</p><p className="text-xs text-ctp-subtext1">{observed ? 'Recorded matches' : 'Recorded games'}</p>
-            </div>
-          </div>
-          <div className="relative mt-4 h-3 overflow-hidden rounded-full bg-ctp-surface1" aria-hidden="true"><div className="h-full bg-ctp-blue" style={{ width: `${Math.max(0, Math.min(100, matchup.baselineWinRate * 100))}%` }} /><span className="absolute inset-y-0 left-1/2 border-l border-ctp-text/60" /></div>
-          <div className="mt-3">
-            <Link to={`/archetypes/${matchup.opponentClusterId}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{matchup.opponentClusterName}</Link>
-          </div>
-        </Panel>)}
+          </article>;
+        })}
       </div>
       {ordered.length > (preview ? 3 : 6) && <Button className="mt-3 flex items-center gap-2" aria-controls={`${headingId}-rows`} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Fewer matchups' : `All ${ordered.length} matchups`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
     </section>}

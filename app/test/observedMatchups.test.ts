@@ -89,3 +89,31 @@ test('opponent preview shows names, both samples and missing-period labels', asy
   assert.match(html, /0%/); assert.match(html, /—/);
   assert.match(html, /href="\/archetypes\/new"/);
 });
+
+test('event ranges preserve ties, reversed pair order, mirrors, and scoped samples', async () => {
+  const { observedMatchupCohort, emptyMatchupScope } = await import('@gatcg/shared');
+  const data = { generatedAt: '', builds: {}, events: [
+    { id: 1, name: 'First', date: '2026-01-01', format: 'Standard', decks: { mine: 2 }, rows: [['mine', 'other', 3, 0, 1], ['mine', 'mine', 1, 0, 0]] },
+    { id: 2, name: 'Second', date: '2026-02-01', format: 'Standard', decks: { mine: 3 }, rows: [['other', 'mine', 2, 0, 0], ['mine', 'mine', 2, 1, 1], ['mine', 'empty', 0, 0, 0]] },
+  ] } as import('@gatcg/shared').ObservedMatchupData;
+  const cohort = observedMatchupCohort(data, 'mine', emptyMatchupScope);
+  const other = cohort.matchups.find(row => row.id === 'other')!;
+  assert.equal(other.matches, 6);
+  assert.equal(other.winRate, 3.5 / 6);
+  assert.deepEqual(other.eventRange, { low: 0, high: .875, events: 2 });
+  assert.deepEqual(cohort.matchups.find(row => row.id === 'mine')?.eventRange, { low: .5, high: .5, events: 2 });
+  assert.equal(cohort.matchups.some(row => row.id === 'empty'), false);
+  assert.deepEqual(observedMatchupCohort(data, 'mine', { ...emptyMatchupScope, event: '1' }).matchups.find(row => row.id === 'other')?.eventRange, { low: .875, high: .875, events: 1 });
+});
+
+test('compact rows expose ranges and samples as text, without inventing single-event ranges', () => {
+  const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(AnalysisMatchups, {
+    result, loading: false, cards: new Map(), observed: { winRate: .5, results: 32, decks: 4, events: 2,
+      matchups: [{ id: '20', matches: 20, winRate: .5, eventRange: { low: .25, high: .75, events: 2 } },
+        { id: '1', matches: 1, winRate: 1, eventRange: { low: 1, high: 1, events: 1 } }] },
+  })));
+  assert.match(html, /Event range 25%–75%/);
+  assert.match(html, /20.*matches.*2 events/);
+  assert.doesNotMatch(html, /Event range 100%–100%/);
+  assert.match(html, /1 event/);
+});

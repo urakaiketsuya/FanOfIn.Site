@@ -8,6 +8,11 @@ export interface ObservedMatchupEvent {
   rows: [string, string, number, number, number][];
 }
 export interface ObservedMatchupData { generatedAt: string; builds: Record<string, { name: string; champion: string }>; events: ObservedMatchupEvent[] }
+export interface ObservedMatchupRow {
+  id: string; matches: number; winRate: number;
+  /** Observed per-event extrema, not a confidence interval. */
+  eventRange?: { low: number; high: number; events: number };
+}
 export interface ObservedMatchupScope { from: string; to: string; event: string; format: string }
 export const emptyMatchupScope: ObservedMatchupScope = { from: '', to: '', event: '', format: '' };
 export function observedMatchupEvents(data: ObservedMatchupData, cluster: string, scope: ObservedMatchupScope) {
@@ -17,7 +22,7 @@ export function observedMatchupEvents(data: ObservedMatchupData, cluster: string
 export function observedMatchupCohort(data: ObservedMatchupData, cluster: string, scope: ObservedMatchupScope) {
   const events = observedMatchupEvents(data, cluster, scope).filter(e => !scope.event || String(e.id) === scope.event);
   const record = emptyRecord();
-  const opponents = new Map<string, { record: RecordCount; matches: number }>();
+  const opponents = new Map<string, { record: RecordCount; matches: number; byEvent: Map<number, RecordCount> }>();
   for (const event of events) for (const [a, b, wins, losses, ties] of event.rows) {
     if (a !== cluster && b !== cluster) continue;
     const own = a === cluster ? { wins, losses, ties } : { wins: losses, losses: wins, ties };
@@ -26,12 +31,18 @@ export function observedMatchupCohort(data: ObservedMatchupData, cluster: string
     const outcomes = mirror ? { wins: wins + losses, losses: wins + losses, ties: 2 * ties } : own;
     addRecord(record, outcomes);
     const id = a === cluster ? b : a;
-    const row = opponents.get(id) ?? { record: emptyRecord(), matches: 0 };
+    const row = opponents.get(id) ?? { record: emptyRecord(), matches: 0, byEvent: new Map<number, RecordCount>() };
+    const eventRecord = row.byEvent.get(event.id) ?? emptyRecord();
+    addRecord(eventRecord, outcomes); row.byEvent.set(event.id, eventRecord);
     addRecord(row.record, outcomes); row.matches += wins + losses + ties; opponents.set(id, row);
   }
   const rate = (r: RecordCount) => recordSize(r) ? (r.wins + r.ties / 2) / recordSize(r) : null;
   return { winRate: rate(record), results: recordSize(record), decks: events.reduce((n, e) => n + e.decks[cluster], 0), events: events.length,
-    matchups: [...opponents].map(([id, row]) => ({ id, matches: row.matches, winRate: rate(row.record)! })).sort((a, b) => b.matches - a.matches || a.id.localeCompare(b.id)) };
+    matchups: [...opponents].filter(([, row]) => row.matches > 0).map(([id, row]): ObservedMatchupRow => {
+      const rates = [...row.byEvent.values()].map(rate).filter((value): value is number => value !== null);
+      return { id, matches: row.matches, winRate: rate(row.record)!,
+        eventRange: { low: Math.min(...rates), high: Math.max(...rates), events: rates.length } };
+    }).sort((a, b) => b.matches - a.matches || a.id.localeCompare(b.id)) };
 }
 
 /** Adjacent, non-overlapping UTC periods with equal inclusive day counts. */
