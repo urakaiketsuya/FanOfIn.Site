@@ -117,3 +117,17 @@ test('compact rows expose ranges and samples as text, without inventing single-e
   assert.doesNotMatch(html, /Event range 100%–100%/);
   assert.match(html, /1 event/);
 });
+
+test('period rows show separate event ranges and do not mark absent observations as zero', async () => {
+  const { default: Comparison } = await import('../src/features/deck-analysis/MatchupPeriodComparison');
+  const { emptyMatchupScope } = await import('@gatcg/shared');
+  const base: ReturnType<typeof import('@gatcg/shared').observedMatchupCohort> = { winRate: .5, results: 10, decks: 2, events: 2, matchups: [] };
+  const renderComparison = (current: typeof base, previous: typeof base) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(Comparison, { current, previous, scope: emptyMatchupScope, previousScope: emptyMatchupScope })));
+  const html = renderComparison({ ...base, matchups: [{ id: 'new', matches: 10, winRate: 0, eventRange: { low: 0, high: .2, events: 2 } }] }, base);
+  assert.match(html, /Event range 0%–20%/);
+  assert.match(html, /Selected period only/);
+  assert.equal((html.match(/data-rate-dot/g) ?? []).length, 3); // Two aggregate dots, one observed opponent period.
+  const emptyOpponents = renderComparison(base, base);
+  assert.doesNotMatch(emptyOpponents, /By opponent|No recorded opponents/);
+  assert.equal(renderComparison({ ...base, results: 0, winRate: null }, { ...base, results: 0, winRate: null }), '');
+});

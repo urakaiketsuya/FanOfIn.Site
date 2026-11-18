@@ -20,37 +20,56 @@ export default function MatchupPeriodComparison({ current, previous, scope, prev
   if (!current.results && !previous.results) return null;
   return <Panel className="mt-4">
     <h2 className="font-semibold">Period comparison</h2>
-    <p className="mt-1 text-sm text-ctp-subtext0">{scope.format || 'All formats'} · All events</p>
-    <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {([{ title: 'Previous', cohort: previous, range: previousScope }, { title: 'Selected', cohort: current, range: scope }]).map(({ title, cohort, range }) => <section key={title} aria-label={`${title} period`} className="min-w-0 rounded-lg bg-ctp-base p-3">
-        <h3 className="text-sm font-semibold">{title}</h3>
-        <p className="text-xs text-ctp-subtext0">{range.from} – {range.to}</p>
-        <div className="mt-3 flex items-end justify-between gap-3"><div><p className="text-3xl font-bold tabular-nums">{rate(cohort.winRate)}</p><p className="text-xs">Score rate</p></div><div className="text-right"><p className="text-3xl font-bold tabular-nums">{cohort.results.toLocaleString()}</p><p className="text-xs">Deck results</p></div></div>
-        <div aria-hidden="true" className="my-3 h-2 overflow-hidden rounded-full bg-ctp-surface1"><div className="h-full bg-ctp-blue" style={{ width: `${(cohort.winRate ?? 0) * 100}%` }} /></div>
-        <p className="text-xs text-ctp-subtext0">{cohort.decks.toLocaleString()} {cohort.decks === 1 ? 'deck' : 'decks'} · {cohort.events.toLocaleString()} {cohort.events === 1 ? 'event' : 'events'}</p>
+    <p className="mt-1 text-sm text-ctp-subtext0">{scope.format || 'All formats'} · All events · Score rate</p>
+    <div className="mt-3 divide-y divide-ctp-surface1">
+      {([{ title: 'Previous', cohort: previous, range: previousScope }, { title: 'Selected', cohort: current, range: scope }]).map(({ title, cohort, range }) => <section key={title} aria-label={`${title} period`} className="grid min-w-0 gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:gap-6">
+        <div><h3 className="text-sm font-semibold">{title}</h3><p className="text-xs text-ctp-subtext0">{range.from} – {range.to}</p></div>
+        <div><div className="flex flex-wrap items-baseline justify-between gap-2"><strong className="text-2xl tabular-nums">{rate(cohort.winRate)}</strong><span className="text-xs text-ctp-subtext0">{cohort.results.toLocaleString()} deck results</span></div>
+          <RateTrack value={cohort.winRate} />
+          <p className="text-xs text-ctp-subtext0">{cohort.decks.toLocaleString()} {cohort.decks === 1 ? 'deck' : 'decks'} · {cohort.events.toLocaleString()} {cohort.events === 1 ? 'event' : 'events'}</p>
+        </div>
       </section>)}
     </div>
     {delta !== null && <p className="mt-3 text-sm">{`${delta > 0 ? '+' : ''}${delta.toFixed(1)} percentage points`}<span className="text-ctp-subtext0"> · Ties count ½</span></p>}
+    {rows.length > 0 && <>
     <h3 className="mt-5 font-semibold">By opponent</h3>
     <p className="mt-1 text-xs text-ctp-subtext0">Largest combined samples first · Score rate 0–100%</p>
-    {rows.length === 0 && <p role="status" className="mt-3 text-sm">No recorded opponents in either period.</p>}
-    <div id={rowsId} className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
-      {visible.map(row => <article key={row.id} className="min-w-0 rounded-lg bg-ctp-base p-3">
-        <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
-          <ChampionArt name={builds[row.id]?.champion ?? 'Opponent'} cards={cards} />
-          <Link to={`/archetypes/${row.id}`} className="flex min-h-12 items-center break-words text-sm font-semibold text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{builds[row.id]?.name ?? `Build ${row.id}`}</Link>
+    {rows.some(row => [row.current, row.previous].some(value => value?.eventRange && value.eventRange.events > 1)) && <p className="mt-1 text-xs text-ctp-subtext0">Dot: overall · line: event low–high</p>}
+    <div id={rowsId} className="mt-3 divide-y divide-ctp-surface1 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-base">
+      {visible.map(row => <article key={row.id} aria-label={`Against ${builds[row.id]?.name ?? `Build ${row.id}`}`} className="grid min-w-0 gap-3 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:gap-6 sm:p-4">
+        <div className="min-w-0">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-20 shrink-0"><ChampionArt name={builds[row.id]?.champion ?? 'Opponent'} cards={cards} /></div>
+            <div className="min-w-0"><h4 className="font-semibold">{builds[row.id]?.champion ?? 'Opponent'}</h4><Link to={`/archetypes/${row.id}`} className="flex min-h-12 items-center break-words text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{builds[row.id]?.name ?? `Build ${row.id}`}</Link></div>
+          </div>
+          <p className="mt-2 text-sm tabular-nums">{row.delta === null ? row.current ? 'Selected period only' : 'Previous period only' : `${row.delta > 0 ? '+' : ''}${row.delta.toFixed(1)} pp`}</p>
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="min-w-0 space-y-3">
           {[{ label: 'Previous', value: row.previous }, { label: 'Selected', value: row.current }].map(({ label, value }) => <div key={label}>
-            <p className="text-xs text-ctp-subtext0">{label}</p>
-            <p className="mt-1 text-2xl font-semibold tabular-nums">{rate(value?.winRate ?? null)}</p>
-            <div aria-hidden="true" className="my-2 h-2 overflow-hidden rounded-full bg-ctp-surface1"><div className="h-full bg-ctp-blue" style={{ width: `${(value?.winRate ?? 0) * 100}%` }} /></div>
-            <p className="text-sm"><strong className="tabular-nums">{(value?.matches ?? 0).toLocaleString()}</strong> {value?.matches === 1 ? 'match' : 'matches'}</p>
+            <div className="flex flex-wrap items-baseline justify-between gap-2"><span className="text-xs text-ctp-subtext0">{label} <strong className="ml-1 text-lg text-ctp-text tabular-nums">{rate(value?.winRate ?? null)}</strong></span><span className="text-xs text-ctp-subtext0 tabular-nums">{(value?.matches ?? 0).toLocaleString()} {value?.matches === 1 ? 'match' : 'matches'}{value?.eventRange ? ` · ${value.eventRange.events} ${value.eventRange.events === 1 ? 'event' : 'events'}` : ''}</span></div>
+            <RateTrack value={value?.winRate ?? null} range={value?.eventRange} />
+            {value?.eventRange && value.eventRange.events > 1 && <p className="text-xs text-ctp-subtext0 tabular-nums">Event range {rate(value.eventRange.low)}–{rate(value.eventRange.high)}</p>}
           </div>)}
+          <div aria-hidden="true" className="flex justify-between text-xs text-ctp-subtext0"><span>0%</span><span>50%</span><span>100%</span></div>
         </div>
-        <p className="mt-3 text-sm">{row.delta === null ? row.current ? 'Selected period only' : 'Previous period only' : `${row.delta > 0 ? '+' : ''}${row.delta.toFixed(1)} percentage points`}</p>
       </article>)}
     </div>
+    </>}
     {rows.length > 3 && <Button className="mt-3 flex items-center gap-2" aria-expanded={expanded} aria-controls={rowsId} onClick={() => setExpanded(value => !value)}>{expanded ? 'Fewer opponent comparisons' : `All ${rows.length} opponent comparisons`}<DisclosureChevron className={expanded ? 'rotate-180' : ''} /></Button>}
   </Panel>;
+}
+
+/** A shared scale for both periods; an absent sample has no mark. */
+function RateTrack({ value, range }: { value: number | null; range?: { low: number; high: number; events: number } }) {
+  return <div className="relative" aria-hidden="true">
+    <svg viewBox="0 0 300 24" preserveAspectRatio="none" className="h-6 w-full">
+      <line x1="6" x2="294" y1="12" y2="12" className="stroke-ctp-surface2" />
+      <line x1="150" x2="150" y1="2" y2="22" className="stroke-ctp-overlay1" strokeDasharray="2 2" />
+      {value !== null && range && range.events > 1 && <>
+        <line x1={6 + range.low * 288} x2={6 + range.high * 288} y1="12" y2="12" className="stroke-ctp-blue" strokeWidth="4" />
+        {[range.low, range.high].map((endpoint, i) => <line key={i} x1={6 + endpoint * 288} x2={6 + endpoint * 288} y1="6" y2="18" className="stroke-ctp-blue" strokeWidth="2" />)}
+      </>}
+    </svg>
+    {value !== null && <span data-rate-dot className="absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ctp-text" style={{ left: `${2 + value * 96}%` }} />}
+  </div>;
 }
