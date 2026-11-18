@@ -68,3 +68,57 @@ test('card text requires every term, with quoted phrases and facets preserved', 
  const reverse = {...levelOnly, editions: [{...levelOnly.editions[0], other_orientations: [{name: 'Reverse', effect: 'Deal damage.'}]}]} as Card;
  assert.deepEqual(filterCards([reverse], {...emptyFilterState(), name: 'LV damage'}), [reverse]);
 });
+
+test('strict syntax rejects incomplete and unsupported expressions atomically', () => {
+ for (const query of ['"unfinished', 'name:"unfinished', 'name:', '-name:""', 'name:"a"tail', 'na"me"', 'draw OR damage', '(draw)', 'power>=3', 'name:/draw/', '-', '!', 'type:action wat:x', 'constructor:x', 'any:x', 't:action -type:action']) {
+  const parsed = parseFilterQuery(query);
+  assert.ok(parsed.error, query);
+  assert.deepEqual(parsed.facets, {}, query);
+  assert.deepEqual(parsed.clauses, [], query);
+ }
+ for (const query of ['"OR"', 'effect:"(draw)"', 'name:"a:b"', '"power>=3"']) assert.equal(parseFilterQuery(query).error, undefined, query);
+});
+
+test('name/effect fields, aliases, exact names and negation stay distinct', () => {
+ const pool = [
+  {...make('Draw', []), effect: 'Deal damage.'},
+  {...make('Draw again', []), effect: 'Draw a card.'},
+  {...make('Other', []), effect: 'Draw a card.'},
+ ];
+ const results = (name: string) => filterCards(pool, {...emptyFilterState(), name}).map(card => card.name);
+ assert.deepEqual(results('name:draw'), ['Draw', 'Draw again']);
+ assert.deepEqual(results('n:draw -o:damage'), ['Draw again']);
+ for (const field of ['effect', 'o', 'oracle', 'text']) assert.deepEqual(results(`${field}:"draw a card"`), ['Draw again', 'Other']);
+ assert.deepEqual(results('!"DRAW"'), ['Draw']);
+ assert.deepEqual(results('-draw'), []);
+ assert.deepEqual(results('-name:draw'), ['Other']);
+ assert.deepEqual(results('n:draw effect:draw'), ['Draw again']);
+ assert.deepEqual(results('draw'), ['Draw', 'Draw again', 'Other']);
+ assert.deepEqual(filterCatalog(pool, 'n:draw -effect:damage', emptyCatalogFilters()), [pool[1]]);
+ const parsed = parseFilterQuery('n:"Draw again" -o:damage t:action -s:mrc');
+ assert.deepEqual(parseFilterQuery(formatFilterQuery(parsed.text, parsed.facets)), parsed);
+});
+
+test('aliases preserve facet matching and artist restrictions share one printing', () => {
+ const card = {...harmony, editions: [
+  {...harmony.editions[0], illustrator: 'First Artist'},
+  {...harmony.editions[1], illustrator: 'Second Artist'},
+ ]};
+ for (const [alias, canonical] of [['t', 'type'], ['s', 'set'], ['e', 'set'], ['r', 'rarity']]) {
+  const value = alias === 't' ? 'action' : alias === 'r' ? '1' : 'doa';
+  assert.deepEqual(parseFilterQuery(`${alias}:${value}`), parseFilterQuery(`${canonical}:${value}`));
+ }
+ assert.equal(filterCards([card], {...emptyFilterState(), name: 'a:"First Artist" s:doa r:1'}).length, 1);
+ assert.equal(filterCards([card], {...emptyFilterState(), name: 'artist:first s:mrc'}).length, 0);
+ assert.equal(filterCards([card], {...emptyFilterState(), name: '-a:first s:mrc'}).length, 1);
+ assert.equal(filterCards([card], {...emptyFilterState(), name: 't:action t:ally'}).length, 1);
+});
+
+test('quoted escapes round trip and fields include reverse faces', () => {
+ const card = {...harmony, name: 'A "quoted" name', editions: [{...harmony.editions[0], other_orientations: [{name: 'Reverse', effect: 'Draw a card.'}]}]} as Card;
+ assert.equal(filterCards([card], {...emptyFilterState(), name: 'name:"A \\"quoted\\" name"'}).length, 1);
+ assert.equal(filterCards([card], {...emptyFilterState(), name: 'n:reverse o:"draw a card"'}).length, 1);
+ assert.equal(filterCards([card], {...emptyFilterState(), name: '-n:reverse'}).length, 0);
+ const facets = {tags: new Set(['a "quote"', 'a\\b', 'or'])};
+ assert.deepEqual(parseFilterQuery(formatFilterQuery('', facets)).facets.tags, facets.tags);
+});

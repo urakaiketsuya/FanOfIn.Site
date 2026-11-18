@@ -35,29 +35,87 @@ export function matchesSearchTerms(text: string, terms: readonly string[]): bool
   const normalized = text.toLowerCase();
   return terms.every(term => normalized.includes(term));
 }
-/** Extract explicit field:value filters, preserving plain text and quoted phrases. */
-export function parseFilterQuery(query: string): { text: string; facets: SearchFacets; error?: string } {
-  const facets: SearchFacets = {}, plain: string[] = [];
-  const tokens = query.match(/-?[a-z]+:(?:"[^"]*"|[^\s]*)|"[^"]*"|\S+/gi) ?? [];
+export interface SearchTextClause {
+  field: 'any' | 'name' | 'effect' | 'artist';
+  value: string;
+  exclude: boolean;
+  exact: boolean;
+}
+export interface ParsedFilterQuery {
+  /** Non-facet syntax, retained for existing URL and picker state. */
+  text: string;
+  facets: SearchFacets;
+  clauses: SearchTextClause[];
+  error?: string;
+}
+const FIELD_ALIASES: Record<string, string> = {
+  n: 'name', o: 'effect', oracle: 'effect', text: 'effect', a: 'artist',
+  t: 'type', s: 'set', e: 'set', r: 'rarity',
+};
+
+export function matchesSearchClauses(fields: { name: readonly string[]; effect: readonly string[]; artist?: readonly string[] }, clauses: readonly SearchTextClause[]): boolean {
+  return clauses.every(clause => {
+    const values = clause.field === 'any' ? [[...fields.name, ...fields.effect].join(' ')] : fields[clause.field] ?? [];
+    const matches = values.some(value => clause.exact
+      ? value.toLowerCase() === clause.value.toLowerCase()
+      : value.toLowerCase().includes(clause.value.toLowerCase()));
+    return clause.exclude ? !matches : matches;
+  });
+}
+
+/** Strict bounded grammar: whitespace ANDs text clauses; facet inclusions remain any-of. */
+export function parseFilterQuery(query: string): ParsedFilterQuery {
+  const facets: SearchFacets = {}, plain: string[] = [], clauses: SearchTextClause[] = [];
+  const fail = (error: string): ParsedFilterQuery => ({ text: query, facets: {}, clauses: [], error });
+  // Consume every character: malformed syntax must never silently become a partial query.
+  const tokens: string[] = [];
+  let token = '', quoted = false, escaped = false;
+  for (const char of query) {
+    if (escaped) { token += char; escaped = false; continue; }
+    if (quoted && char === '\\') { token += char; escaped = true; continue; }
+    if (char === '"') quoted = !quoted;
+    if (!quoted && /\s/.test(char)) { if (token) tokens.push(token); token = ''; }
+    else token += char;
+  }
+  if (quoted || escaped) return fail('Close the quoted search value.');
+  if (token) tokens.push(token);
   for (const token of tokens) {
-    const match = token.match(/^(-?)([a-z]+):(.*)$/i);
-    if (!match) { plain.push(token); continue; }
-    const key = SEARCH_FACETS[match[2].toLowerCase() as keyof typeof SEARCH_FACETS];
-    if (!key) return { text: query, facets: {}, error: `Unknown search field: ${match[2]}.` };
-    const raw = match[3];
-    if (!raw || raw.startsWith('"') && !raw.endsWith('"')) return { text: query, facets: {}, error: `Enter a value for ${match[2]}.` };
-    let value = raw.replace(/^"|"$/g, '').trim().toUpperCase();
-    if (key === "tags") value = canonicalCardTag(value.toLowerCase());
-    if (!value) return { text: query, facets: {}, error: `Enter a value for ${match[2]}.` };
-    const signed = match[1] ? `-${value}` : includeFilterValue(value), values = facets[key] ?? new Set<string>();
-    if (values.has(match[1] ? includeFilterValue(value) : `-${value}`)) return { text: query, facets: {}, error: `Choose include or exclude for ${value}.` };
+    const exclude = token.startsWith('-');
+    const unsigned = exclude ? token.slice(1) : token;
+    const match = unsigned.match(/^([a-z]+):(.*)$/i);
+    const inputField = match?.[1].toLowerCase() ?? 'any';
+    const field = Object.hasOwn(FIELD_ALIASES, inputField) ? FIELD_ALIASES[inputField] : inputField;
+    const exact = !match && unsigned.startsWith('!');
+    const raw = match ? match[2] : exact ? unsigned.slice(1) : unsigned;
+    const key = Object.hasOwn(SEARCH_FACETS, field) ? SEARCH_FACETS[field as keyof typeof SEARCH_FACETS] : undefined;
+    if (!key && !(match ? ['name', 'effect', 'artist'] : ['any']).includes(field)) return fail(`Unknown search field: ${match![1]}.`);
+    if (!raw) return fail(`Enter a value${match ? ` for ${match[1]}` : ''}.`);
+    let value: string;
+    if (raw.startsWith('"')) {
+      try { value = JSON.parse(raw); } catch { return fail('Use a complete quoted value, separated by spaces.'); }
+    } else {
+      if (/^(AND|OR|NOT)$/i.test(raw) || /[():<>=!|&"\\]/.test(raw) || raw.startsWith('/')) {
+        return fail('Boolean expressions, comparisons and regular expressions are not supported. Quote literal text.');
+      }
+      value = raw;
+    }
+    value = value.trim();
+    if (!value) return fail(`Enter a value${match ? ` for ${match[1]}` : ''}.`);
+    if (!key) {
+      clauses.push({ field: exact ? 'name' : field as SearchTextClause['field'], value, exclude, exact });
+      plain.push(token);
+      continue;
+    }
+    value = key === 'tags' ? canonicalCardTag(value.toLowerCase()) : value.toUpperCase();
+    const signed = exclude ? `-${value}` : includeFilterValue(value), values = facets[key] ?? new Set<string>();
+    if (values.has(exclude ? includeFilterValue(value) : `-${value}`)) return fail(`Choose include or exclude for ${value}.`);
     values.add(signed); facets[key] = values;
   }
-  return { text: plain.join(' '), facets };
+  return { text: plain.join(' '), facets, clauses };
 }
 export function formatFilterQuery(text: string, facets: SearchFacets): string {
   return [text, ...Object.entries(SEARCH_FACETS).flatMap(([field, key]) => [...facets[key] ?? []].map(value => {
     const raw = filterValue(value).toLowerCase();
-    return `${value.startsWith('-') ? '-' : ''}${field}:${/\s/.test(raw) ? JSON.stringify(raw) : raw}`;
+    return `${value.startsWith('-') ? '-' : ''}${field}:${/^[a-z0-9_-]+$/i.test(raw) && !/^(and|or|not)$/i.test(raw) ? raw : JSON.stringify(raw)}`;
   }))].filter(Boolean).join(' ');
 }

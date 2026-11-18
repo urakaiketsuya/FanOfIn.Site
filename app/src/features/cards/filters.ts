@@ -1,5 +1,5 @@
 import { previewCardSet, PREVIEW_SET } from "../../lib/previewCards";
-import { matchesSearchTerms, searchTextTerms, includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
+import { matchesSearchClauses, includeFilterValue, matchesFilterValues, filterValue, parseFilterQuery } from "@gatcg/shared";
 import { canonicalCardTag } from "@gatcg/shared";
 import { searchSetPrefix, type Card } from "@gatcg/shared";
 import type { CardTagLookup } from "./cardTags";
@@ -77,21 +77,28 @@ export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?:
   const parsed = parseFilterQuery(filters.name);
   if (parsed.error) return [];
   filters = { ...filters, ...Object.fromEntries(Object.entries(parsed.facets).map(([key, values]) => [key, new Set([...(filters[key as keyof CardFilterState] as Set<string> ?? []), ...values])])) };
-  const terms = searchTextTerms(parsed.text);
+  const textClauses = parsed.clauses.filter(clause => clause.field !== "artist");
+  const artistClauses = parsed.clauses.filter(clause => clause.field === "artist");
+  const eligibleEdition = (edition: Card["editions"][number]) => matchesEdition(edition, filters)
+    && matchesSearchClauses({ name: [], effect: [], artist: [edition.illustrator ?? ""] }, artistClauses);
 
   return cards.filter((card) => {
-    if (!matchesSearchTerms(cardSearchText(card), terms)) return false;
+    const faces = card.editions.flatMap(edition => edition.other_orientations ?? []);
+    if (!matchesSearchClauses({
+      name: [card.name, ...faces.map(face => face.name)].filter((value): value is string => Boolean(value)),
+      effect: [card.effect, ...faces.map(face => face.effect)].filter((value): value is string => Boolean(value)),
+    }, textClauses)) return false;
 
     if (filters.classes.size && !matchesFilterValues(card.classes, filters.classes)) return false;
     if (filters.types.size && !matchesFilterValues(card.types, filters.types)) return false;
     if (filters.subtypes.size && !matchesFilterValues(card.subtypes, filters.subtypes)) return false;
     if (filters.elements.size && !matchesFilterValues(card.elements, filters.elements)) return false;
-    if (filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) {
+    if (filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim() || artistClauses.length) {
       const previewPrefix = previewCardSet(card);
-      const previewMatches = previewPrefix && !filters.rarities?.size && !filters.artist.trim()
+      const previewMatches = previewPrefix && !filters.rarities?.size && !filters.artist.trim() && !artistClauses.length
         && matchesFilterValues([PREVIEW_SET.prefix, previewPrefix], filters.sets)
         && matchesFilterValues([previewPrefix], filters.printingSets ?? new Set());
-      if (!previewMatches && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
+      if (!previewMatches && !card.editions.some(eligibleEdition)) return false;
     }
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;
