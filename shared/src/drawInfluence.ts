@@ -1,3 +1,4 @@
+import { createJinFuelSequence, type JinFuelRole, type JinFuelOptions } from './jinFuelSequence.js';
 import { recursionTarget, recursionDiscount, recursionDestination, resolveRecursion, type RecursionEffect } from './recursionPolicy.js';
 import type { ConditionalDraw } from './conditionalDrawPolicy.js';
 import { CHAMPION_DAMAGE_SCENARIO, needsAlly, paidDamageDiscount, paidDamageOutput, type PaidDamageEffect, type PaidDamageScenario } from './paidDamagePolicy.js';
@@ -56,6 +57,7 @@ export interface InfluenceDrawSource {
   action?: boolean;
   item?: boolean;
   unique?: boolean;
+  jinFuelRole?: JinFuelRole;
 }
 
 export interface DrawProgressionPolicy {
@@ -65,7 +67,7 @@ export interface DrawProgressionPolicy {
   rai: boolean;
 }
 
-export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy, scenario: PaidDamageScenario = CHAMPION_DAMAGE_SCENARIO, checkpoint?: (state: { turn: number; hand: InfluenceDrawSource[]; memory: InfluenceDrawSource[]; graveyard: InfluenceDrawSource[]; level: number; recursion: { hand: number; memory: number; replayed: number; sources: string[]; targets: string[] } }) => void) {
+export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], material: InfluenceDrawSource[], opening: number, order: 'first' | 'second', turns = 5, samples = 512, progression?: DrawProgressionPolicy, scenario: PaidDamageScenario = CHAMPION_DAMAGE_SCENARIO, checkpoint?: (state: { turn: number; hand: InfluenceDrawSource[]; memory: InfluenceDrawSource[]; graveyard: InfluenceDrawSource[]; level: number; recursion: { hand: number; memory: number; replayed: number; sources: string[]; targets: string[] } }) => void, jinFuel?: JinFuelOptions) {
   const deck = main.flatMap((source) => Array.from({ length: Math.max(0, Math.floor(source.quantity)) }, () => ({ ...source })));
   const damageSamples = Array.from({ length: turns }, () => [] as number[]);
   const allyDamageSamples = Array.from({ length: turns }, () => [] as number[]);
@@ -81,7 +83,9 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     let seen = 0, level = 0, guides = 0, enlighten = 0, damage = 0;
     let allyDamage = 0, selfDamage = 0, recovered = 0, damageCounters = scenario.startingDamage ?? 0, kindlePaid = 0;
     const allyCounters = new Map<InfluenceDrawSource, number>();
-    const championAlive = () => damageCounters < (level === 0 ? progression?.spiritLife ?? Infinity : progression?.lineage[level - 1]?.life ?? Infinity);
+    let ended = false;
+    const championLife = () => level === 0 ? progression?.spiritLife ?? Infinity : progression?.lineage[level - 1]?.life ?? Infinity;
+    const championAlive = () => !ended && (Boolean(jinFuel) && level === 3 || damageCounters < championLife());
     const damageEffect = (source: InfluenceDrawSource) => source.damage ?? (source.mechanic === 'fireball' || source.mechanic === 'gilded-pyre' ? source.mechanic : undefined);
     let hand: InfluenceDrawSource[] = [];
     let memory: InfluenceDrawSource[] = [];
@@ -99,6 +103,24 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
       const zone = destination === 'memory' ? memory : hand;
       for (let i = 0; i < count && seen < library.length; i++) zone.push(library[seen++]);
     };
+    const fuelSequence = jinFuel ? createJinFuelSequence({
+      hand: () => hand, memory: () => memory, graveyard, banished, field, level: () => level,
+      levelUp: () => { level++; }, draw, random,
+      damage: amount => { damage += amount; selfDamage += amount; damageCounters += amount; },
+      scavenge: subtype => {
+        // Only the selected card is drawn. Revealed misses go to the bottom, never the graveyard.
+        const revealed: InfluenceDrawSource[] = [];
+        for (let n = 0; n < 12 && seen < library.length; n++) {
+          const card = library[seen];
+          if (card.subtypes?.includes(subtype)) { draw(1); break; }
+          revealed.push(...library.splice(seen, 1));
+        }
+        for (let n = revealed.length - 1; n > 0; n--) {
+          const j = Math.floor(random() * (n + 1)); [revealed[n], revealed[j]] = [revealed[j], revealed[n]];
+        }
+        library.push(...revealed);
+      },
+    }, jinFuel) : undefined;
     const resolveDraws = (source: InfluenceDrawSource) => {
       for (const step of source.drawSteps ?? [{ count: source.draws, destination: 'hand' }]) draw(step.count, step.destination);
     };
@@ -119,12 +141,14 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
     };
     // Preserve draw engines when selecting payment/discard cards; stable order breaks ties.
     const take = (zone: InfluenceDrawSource[], count: number) => {
-      zone.sort((a, b) => (a.draws + (a.recursion ? 1 : 0)) - (b.draws + (b.recursion ? 1 : 0)));
+      if (fuelSequence) fuelSequence.rank(zone, false);
+      else zone.sort((a, b) => (a.draws + (a.recursion ? 1 : 0)) - (b.draws + (b.recursion ? 1 : 0)));
       return zone.splice(0, count);
     };
     draw(opening);
     for (let turn = 1; turn <= turns; turn++) {
       let mageTriggered = false;
+      fuelSequence?.beginTurn();
       const restedMarkets = new Set<InfluenceDrawSource>();
       if (championAlive()) {
         if (progression && turn > 1 && level < progression.lineage.length) {
@@ -141,6 +165,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             floatingMemoryPaid += floating;
             for (let paid = floating; paid < cost; paid++) banished.push(...memory.splice(Math.floor(random() * memory.length), 1));
             level++;
+            fuelSequence?.onLevel();
             if (level === 1 && progression.rai) { addEnlighten(2); spendEnlighten(); }
           }
         }
@@ -182,6 +207,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
         }
         hand.push(...memory); memory = [];
         if (turn > 1 || order === 'second') draw(1);
+        fuelSequence?.beforePlays();
         // Every activation pays again, including returned physical copies.
         while (championAlive()) {
           const reserveCost = (source: InfluenceDrawSource) => {
@@ -192,9 +218,10 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
           };
           const kindle = (source: InfluenceDrawSource) => damageEffect(source) === 'intensified-pyre'
             ? Math.min(3, reserveCost(source), graveyard.filter(card => card.fireElement).length) : 0;
+          if (fuelSequence) hand.sort((a, b) => fuelSequence.priority(a) - fuelSequence.priority(b));
           const index = hand.findIndex((source) => {
             const effect = damageEffect(source);
-            return (source.minimumLevel ?? 0) <= level && (source.draws > 0 || !!source.mechanic || !!source.conditionalDraw || !!source.recursion || !!effect)
+            return (source.minimumLevel ?? 0) <= level && (fuelSequence ? fuelSequence.canPlay(source) : source.draws > 0 || !!source.mechanic || !!source.conditionalDraw || !!source.recursion || !!effect)
               && (!source.recursion || graveyard.some(card => recursionTarget(source.recursion!, card)))
               && (source.recursion !== 'Primeval Ritual' || field.some(card => card.ally))
               && (source.mechanic !== 'gloamspire' || !field.some(card => card.mechanic === 'gloamspire'))
@@ -252,6 +279,7 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
             // The inherited activation trigger resolves before the Action's draws.
             spendEnlighten();
           }
+          fuelSequence?.activate(source);
           // Spell activation triggers consume existing graveyard cards before resolution.
           if (source.spell) for (const permanent of field) {
             if (permanent.conditionalDraw === 'apprentice' && consumeFloating()) draw(1);
@@ -297,15 +325,19 @@ export function estimateDrawAndDamageInfluence(main: InfluenceDrawSource[], mate
           }
           if (progression && source.mechanic === 'academy-guide') guides++;
           if (progression && source.mechanic === 'indolent-leisure' && level >= 3) draw(1, 'memory');
+          fuelSequence?.resolve(source);
           (source.recursion === 'Advantageous Perch' ? banished : source.resolvesTo === 'graveyard' ? graveyard : field).push(source);
-          graveyard.push(...take(hand, source.discard));
+          if (fuelSequence) fuelSequence.discard(source.discard);
+          else graveyard.push(...take(hand, source.discard));
         }
         // End-phase draws cannot fund additional slow-speed Main plays this turn.
         for (const source of field) {
           if (source.conditionalDraw === 'end-enlighten' && level >= 1) { addEnlighten(1); spendEnlighten(); }
         }
+        if (jinFuel && damageCounters >= championLife()) ended = true;
         allyCounters.clear(); // Ally damage clears at end of turn; champion damage persists.
       }
+      fuelSequence?.checkpoint(turn);
       checkpoint?.({ turn, hand: [...hand], memory: [...memory], graveyard: [...graveyard], level, recursion: { hand: returnedHand, memory: returnedMemory, replayed, sources: [...recursionSources], targets: [...recursionTargets] } });
       // Couple the modeled and natural draws to the same shuffled library. Only
       // newly accessed names contribute: an engine cannot help find its first copy.

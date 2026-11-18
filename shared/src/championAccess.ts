@@ -8,6 +8,7 @@ export const REVIEWED_SPIRITS = {
   'Spirit of Wind': 'WIND', 'Brissa, Spirit of Wind': 'WIND', 'Gwendolyn, Spirit of Wind': 'WIND', 'Kaze, Spirit of Wind': 'WIND',
 } as const;
 export const REVIEWED_LINEAGES = {
+  jin: ['Jin, Fate Defiant', 'Jin, Zealous Maverick', 'Jin, Undying Resolve'],
   rai: ['Rai, Spellcrafter', 'Rai, Archmage', 'Rai, Mana Weaver'],
   diao: ['Diao Chan, Enchantress', 'Diao Chan, Dreaming Wish', 'Diao Chan, Idyll Corsage'],
   tonoris: ['Tonoris, Lone Mercenary', 'Tonoris, Might of Humanity', 'Tonoris, Genesis Aegis'],

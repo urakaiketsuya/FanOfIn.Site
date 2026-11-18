@@ -183,3 +183,5 @@ export { buildCopyDistributions } from './buildCopyDistributions.js';
 export * from "./discoverySeo";
 
 export * from "./casellaCombat.js";
+
+export * from './jinFuelReport.js';

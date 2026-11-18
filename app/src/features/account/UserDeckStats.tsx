@@ -4,6 +4,7 @@ import RaiDrawReport from '../analytics/RaiDrawReport';
 import RecursionReport from '../analytics/RecursionReport';
 import DefenseReport from '../analytics/DefenseReport';
 import RaiDamageReport from '../analytics/RaiDamageReport';
+import JinFuelReport from '../analytics/JinFuelReport';
 import TonorisDrawReport from '../analytics/TonorisDrawReport';
 import EffectAccessReport from '../analytics/EffectAccessReport';
 import AssociatedCards from "../../components/AssociatedCards";
@@ -240,6 +241,7 @@ export default function UserDeckStats({ decklist, championName, format, ownerDec
       <DeckExpectedResults decklist={decklist} championName={championName} format={format} legal={validation.status === "Legal"} />
       <RaiDrawReport deck={namedSections} cardsByName={cardsByName} />
       <TonorisDrawReport deck={namedSections} cardsByName={cardsByName} />
+      <JinFuelReport deck={namedSections} cardsByName={cardsByName} />
       <RaiDamageReport deck={namedSections} cardsByName={previewCardsByName} />
       <DefenseReport deck={namedSections} cardsByName={previewCardsByName} />
       <RecursionReport deck={namedSections} cardsByName={previewCardsByName} />

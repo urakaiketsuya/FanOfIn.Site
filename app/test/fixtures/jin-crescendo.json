@@ -1,0 +1,16 @@
+{
+  "main": {
+    "Angelic Channeling": 2, "Arthur, Young Heir": 4, "Creative Shock": 4,
+    "Creative Tinder": 4, "Devil's Lifeline": 2, "Dungeon Guide": 4,
+    "Enrage": 4, "Fast Cure": 4, "Hasty Messenger": 4, "Ignite Fate": 4,
+    "Liminal Guide": 4, "Musical Curator": 4, "Package Courier": 4,
+    "Seething Intercession": 4, "Sly Songstress": 4, "Varuckan Acolyte": 2,
+    "Volcanic Crescendo": 4
+  },
+  "material": {
+    "Backup Charger": 1, "Berserker Plate": 1, "Chalice of Blood": 1,
+    "Jin, Fate Defiant": 1, "Jin, Undying Resolve": 1, "Jin, Zealous Maverick": 1,
+    "Lost Providence": 1, "Shuang Ji of Sacrifice": 1, "Spirit of Fire": 1,
+    "Viridian Protective Trinket": 1, "Water Resonance Bauble": 1, "Wind Resonance Bauble": 1
+  }
+}
