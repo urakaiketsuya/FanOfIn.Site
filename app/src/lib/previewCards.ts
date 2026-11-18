@@ -3,6 +3,7 @@ import { searchSetFamily, previewCardSlug, previewCardId, type Card } from '@gat
 export interface PreviewCardRecord {
   image?: string; setPrefix?: string;
   name: string; aliases?: string[]; types: string[]; subtypes: string[]; classes: string[]; elements: string[];
+  durability?: number | null;
   level: number | null; life: number | null; power: number | null; speed: string | null;
   cost: { type: string; value: string | null }; effect: string; flavor?: string;
 }
@@ -41,7 +42,7 @@ export function mergePreviewCards(official: Card[], previews: PreviewCardRecord[
       cost: { type: costType === 'memory' || costType === 'reserve' || costType === 'aria' ? costType : 'none', value: card.cost.value },
       cost_memory: costType === 'memory' ? Number(card.cost.value) : null,
       cost_reserve: costType === 'reserve' ? Number(card.cost.value) : null,
-      durability: null, effect: card.effect, effect_raw: card.effect, effect_html: null, flavor: card.flavor ?? null,
+      durability: card.durability ?? null, effect: card.effect, effect_raw: card.effect, effect_html: null, flavor: card.flavor ?? null,
       editions: [], references: [], referenced_by: [], legality: {}, last_update: '',
     };
     result.push(preview);

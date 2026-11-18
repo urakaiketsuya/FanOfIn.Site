@@ -101,3 +101,35 @@ test('CBL search, artwork, and both exports retain spoiler copies', () => {
   assert.equal(mergePreviewCards([], spoilers.cards, false).length, 0);
   assert.equal(mergePreviewCards([], spoilers.cards, false, [card.name])[0].name, card.name);
 });
+
+import { groupSpoilers, spoilerSetKey } from '../src/lib/spoilerCatalog';
+
+test('spoiler groups order sets and cards by first addition, merging editions only', () => {
+  const cards = [
+    { name: 'Earlier', setPrefix: 'CBL', addedAt: '2026-11-01T12:00:00Z' },
+    { name: 'Opus', setPrefix: 'CBLOS', addedAt: '2026-11-02T12:00:00Z' },
+    { name: 'Latest', setPrefix: 'CBL 1st', addedAt: '2026-11-18T12:00:00Z' },
+    { name: 'Same batch', setPrefix: 'CBL', addedAt: '2026-11-18T12:00:00Z' },
+  ];
+  const groups = groupSpoilers(cards);
+  assert.deepEqual(groups.map(group => group.prefix), ['CBL', 'CBLOS']);
+  assert.deepEqual(groups[0].cards.map(card => card.name), ['Latest', 'Same batch', 'Earlier']);
+  assert.equal(cards[0].name, 'Earlier');
+  assert.equal(spoilerSetKey('Re:C-SKY'), 'Re:C-SKY');
+  assert.deepEqual(groupSpoilers([]), []);
+});
+
+test('Desktop reveals retain printed stats and addition provenance', () => {
+  const catalog = withSpoilerCards([]);
+  const additions = spoilers.cards.filter(card => 'sourceFile' in card);
+  assert.equal(additions.length, 19);
+  for (const card of spoilers.cards) assert.ok(Number.isFinite(Date.parse(card.addedAt)), card.name);
+  for (const card of additions) {
+    assert.ok(catalog.some(candidate => candidate.name === card.name));
+    assert.ok(existsSync(new URL(`../public/images/spoilers/${card.image}`, import.meta.url)), card.name);
+  }
+  assert.equal(catalog.find(card => card.name === 'Idyll Quarter')?.durability, 4);
+  assert.equal(catalog.find(card => card.name === "Salvation's Dominion")?.durability, 8);
+  assert.equal(catalog.find(card => card.name === 'Pocket Incinerator')?.cost_memory, 0);
+  assert.equal(catalog.find(card => card.name === 'Rippling Songwarden')?.life, 4);
+});
