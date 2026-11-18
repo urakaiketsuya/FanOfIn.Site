@@ -1,3 +1,4 @@
+import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
 import { lazy, Suspense, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useArchetypeTaxonomyData } from "./data";
@@ -53,7 +54,8 @@ export interface DisplayRow {
 }
 
 export default function ArchetypesIndex() {
-  useDocumentTitle("Archetypes", "Data-derived Grand Archive TCG deck archetypes and named builds by Champion.");
+  const seo = discoveryIndexMetadata("archetypes");
+  useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
   const data = useArchetypeTaxonomyData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);

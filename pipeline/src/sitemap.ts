@@ -2,38 +2,12 @@ import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Card, ArchetypeTaxonomyData, ChampionTrendsData, OmnidexIndexData } from "@gatcg/shared";
-import { buildArtistGalleries, canonicalSiteUrl } from "@gatcg/shared";
+import { buildArtistGalleries, canonicalSiteUrl, STATIC_SITEMAP_ROUTES, SITEMAP_EVENT_CATEGORIES, championPath } from "@gatcg/shared";
 import { loadCardCatalog } from "./cards/catalog.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../data");
 const OUT_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../app/public/sitemap.xml");
 const SITE_URL = "https://fanofin.site";
-
-const STATIC_ROUTES = [
-  "/",
-  "/cards",
-  "/artists",
-  "/stores",
-  "/cards/stats",
-  "/sets",
-  "/thema",
-  "/tournaments",
-  "/seasons",
-  "/players",
-  "/judges",
-  "/teams",
-  "/achievements",
-  "/archetypes",
-  "/battle-chart",
-  "/top-decks",
-  "/champions",
-  "/pantheon",
-  "/compare",
-  "/popular-decks",
-];
-
-/** Store Championships and up only — the ~18k weekly "regular" events add little independent search value and would dwarf every other URL in the file. */
-const SITEMAP_EVENT_CATEGORIES = new Set(["worlds", "nationals", "ascent", "regionals", "store-championships"]);
 
 function xmlEscape(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -57,7 +31,7 @@ async function readJson<T>(file: string): Promise<T | null> {
  * isn't otherwise published as a standalone list. See docs/CALCULATIONS.md.
  */
 export async function writeSitemap(): Promise<void> {
-  const urls = STATIC_ROUTES.map((route) => canonicalSiteUrl(route));
+  const urls = STATIC_SITEMAP_ROUTES.map((route) => canonicalSiteUrl(route));
 
   const catalog = await loadCardCatalog();
   const fullCatalog = await readJson<{ cards: Card[] }>("card-catalog.json");
@@ -67,22 +41,22 @@ export async function writeSitemap(): Promise<void> {
   const index = await readJson<OmnidexIndexData>("omnidex/index.json");
   if (index) {
     for (const event of index.events) {
-      if (SITEMAP_EVENT_CATEGORIES.has(event.category)) urls.push(`${SITE_URL}/events/${event.id}`);
+      if (SITEMAP_EVENT_CATEGORIES.has(event.category)) urls.push(canonicalSiteUrl(`/events/${event.id}`));
     }
     for (const season of index.seasons) urls.push(`${SITE_URL}/seasons/${season.slug}`);
   }
 
   const championTrends = await readJson<ChampionTrendsData>("analysis/champion-trends.json");
   if (championTrends) {
-    for (const c of championTrends.champions) urls.push(`${SITE_URL}/champions/${encodeURIComponent(c.championName)}`);
+    for (const c of championTrends.champions) urls.push(canonicalSiteUrl(championPath(c.championName)), canonicalSiteUrl(championPath(c.championName, true)));
   }
 
   const taxonomy = await readJson<ArchetypeTaxonomyData>("analysis/archetype-taxonomy.json");
   if (taxonomy) {
-    for (const cluster of taxonomy.clusters) urls.push(`${SITE_URL}/archetypes/${cluster.id}`);
+    for (const cluster of taxonomy.clusters) urls.push(canonicalSiteUrl(`/archetypes/${cluster.id}`));
   }
 
-  const body = urls.map((u) => `  <url><loc>${xmlEscape(u)}</loc></url>`).join("\n");
+  const body = [...new Set(urls)].sort().map((u) => `  <url><loc>${xmlEscape(u)}</loc></url>`).join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
   await writeFile(OUT_PATH, xml, "utf-8");
   console.log(`sitemap: wrote ${urls.length} URLs to app/public/sitemap.xml`);

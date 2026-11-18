@@ -1,3 +1,4 @@
+import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { ArchetypeSummary, Card, ChampionTrend } from "@gatcg/shared";
@@ -43,7 +44,8 @@ function ChampionDirectoryCard({ summary, card, trend, showTrend = false, showSt
 }
 
 export default function ChampionsIndex() {
-  useDocumentTitle("Champions", "Grand Archive TCG Champion cards, decks, tournament results, and the current season.");
+  const seo = discoveryIndexMetadata("champions");
+  useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
   const [query, setQuery] = useState("");
   const [showStats, setShowStats] = useState(true);
   const [view, setView] = useState<"champions" | "spirits" | "race">("champions");

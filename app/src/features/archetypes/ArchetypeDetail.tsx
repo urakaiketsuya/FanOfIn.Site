@@ -1,3 +1,4 @@
+import { archetypeMetadata, discoverySocial } from "@gatcg/shared";
 import { cardImagePath } from "../../lib/previewCards";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -136,14 +137,8 @@ export default function ArchetypeDetail() {
       return Array.from(names);
     }, [impact, clusterMatchups]),
   );
-  useDocumentTitle(
-    cluster?.name,
-    cluster &&
-      `${cluster.name} – a ${cluster.championName} build defined by ${cluster.definingCards
-        .slice(0, 3)
-        .map((c) => c.name)
-        .join(", ")}, played by ${cluster.playerCount} players in Grand Archive TCG tournaments.`,
-  );
+  const seo = cluster ? archetypeMetadata(cluster) : undefined;
+  useDocumentTitle(seo?.title, seo?.description, seo?.path, seo ? discoverySocial(seo) : undefined);
 
   const [sampleEventId, samplePlayer] = useMemo(() => {
     const first = cluster?.deckIds[0];

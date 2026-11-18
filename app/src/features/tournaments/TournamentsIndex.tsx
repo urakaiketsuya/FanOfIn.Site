@@ -1,3 +1,4 @@
+import { discoveryIndexMetadata, discoverySocial } from "@gatcg/shared";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState, useTransition, type FormEvent } from "react";
@@ -24,7 +25,8 @@ function categoryRank(category: string): number {
 }
 
 export default function TournamentsIndex() {
-  useDocumentTitle("Tournaments", "Browse Grand Archive TCG tournament results from Store Championships to Worlds.");
+  const seo = discoveryIndexMetadata("events");
+  useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(() => searchParams.get("q") ?? "");

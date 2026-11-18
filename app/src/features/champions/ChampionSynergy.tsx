@@ -1,3 +1,4 @@
+import { championMetadata, discoverySocial } from "@gatcg/shared";
 import ChampionIdentity from "./ChampionIdentity";
 import ChampionRelationships from "./ChampionRelationships";
 import ReviewedChampionFamilies from "./ReviewedChampionFamilies";
@@ -61,7 +62,8 @@ const JUMP_SECTIONS = [
 export default function ChampionSynergy() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
-  useDocumentTitle(championName, `Card synergies, most-used cards, and archetypes for ${championName} in Grand Archive TCG.`);
+  const seo = championMetadata(championName);
+  useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
 
   const archetypeData = useArchetypeData();
   const archetypeStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");

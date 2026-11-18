@@ -170,3 +170,65 @@ The main flow was checked at 390px and 1280px, including copy confirmation, 48px
 keyboard tab navigation, decklist loading, missing-match recovery, and horizontal overflow.
 Native share completion, forced clipboard/network errors, and social-platform scraper caches
 were not exercised. Validate a published match URL after deployment.
+
+## Champion, archetype and event discovery — November 18
+
+The production build now runs `scripts/build-discovery-pages.mjs` after the existing
+card, deck, artist and timeline generators. It emits 21 champion overviews and 21
+separate season-stat pages, 338 archetype pages, 2,222 event pages, and three linked
+browse directories from the current published data. Event coverage remains Store
+Championships and higher; regular weekly events stay in the app without mass static
+indexing. Missing source bundles fail the build instead of publishing invented results.
+An event's explicit “decklists not public” response produces standings without deck links.
+
+Each entry contains a unique title and description, canonical/OG URL, WebPage JSON-LD,
+readable content and links before React starts, plus a 1200×630 JPEG preview. Champion
+stats use published seasonal results without recomputing formulas. Archetype cards are
+frequently played cards across the cohort, not an exact deck or required core. Event
+previews retain the recorded placement; the highest known deck is not presumed to be
+the winner. Archetype and event artwork uses recorded Material champions, never an
+arbitrary higher-level card from the same champion family. Missing artwork retains a
+text preview. Shared metadata functions keep initial HTML and client navigation aligned;
+filters and tabs do not create separate indexed pages.
+
+`shared/src/discoverySeo.ts` owns the static sitemap destinations, event eligibility,
+and page metadata. The sitemap replaces retired `/sets`, `/judges`, `/tournaments`,
+`/top-decks` and `/popular-decks` URLs with current browse destinations. It includes
+staples, spoilers, banlist, products, official decks and other public discovery pages,
+normalizes champion spaces to the existing hyphenated routes, excludes reserved card
+and deck application routes from directory-detail detection, and replaces stale
+champion/archetype/event entries on every build. Sorting and deduplication make repeated
+builds stable. The pipeline and generated pages use the same canonical policy.
+
+Run `node --import tsx scripts/prepare-discovery-social-art.mjs` when new source card
+art is needed. It downloads official catalog artwork, records source URLs, and removes
+unused files from its own asset directory. Existing artist/match art is reused. Production
+rendering is offline; new unbundled artwork falls back to a text preview until preparation
+runs again. Run `node --import tsx --test scripts/test/build-discovery-pages.test.mjs`
+for focused regression coverage; it is also part of the release checks.
+
+Verification: 26 focused discovery/card/deck/artist/timeline tests pass, including
+missing artwork, unavailable public decklists, exact Material champion selection,
+escaping, stale output cleanup and repeat-build sitemap stability. App/shared/pipeline
+typechecks pass. App lint passes with existing warnings outside the changed files.
+Initial HTML and loaded React pages were checked at 390px and 1280px: no horizontal
+overflow, initial-content links at least 48px in both dimensions, visible keyboard focus,
+and matching canonical/title/image after startup. Navigating home clears discovery
+artwork and structured data. Empty results, missing artwork and nonpublic decklists are
+covered by fixtures. Browser event data and initial card images used published/local
+fixtures; live external API behavior and social-platform caches/composers remain unverified.
+
+Deployment blocker: the existing production artifact, excluding these new discovery
+pages/images, measures approximately 1.117 GB of file contents. GitHub Pages documents
+a 1 GB published-site limit (https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
+This expansion adds more static content; reduce the deployment payload or choose another
+delivery plan before publishing. No deployment or push is part of this change.
+
+Full published-data generation completed: 2,605 new entry pages use 28.9 MB of HTML
+and 130.8 MB of JPEG previews (approximately 159.7 MB combined). The production Vite
+bundle and the existing deck/artist/card/timeline generators completed successfully;
+the discovery generator was rerun successfully after handling nonpublic decklist payloads.
+Rendering is bounded to four pages at a time. The completed artifact is approximately
+1.276 GB before deployment packaging. Deployment and signed-in platform validation are
+still pending; the SEO/social expansion rollout is approximately 90% complete, with
+implementation and local verification complete and hosting/live validation remaining.

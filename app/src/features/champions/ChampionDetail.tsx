@@ -1,3 +1,4 @@
+import { championMetadata, discoverySocial } from "@gatcg/shared";
 import ChampionMatchups from "./ChampionMatchups";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
@@ -50,7 +51,8 @@ const TAB_KEYS: ChampionTab[] = [...OVERVIEW_TABS, "matchups", "decks", ...MORE_
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
-  useDocumentTitle(`${championName} – Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
+  const seo = championMetadata(championName, true);
+  useDocumentTitle(seo.title, seo.description, seo.path, discoverySocial(seo));
 
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
   const surface: ChampionSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "matchups" ? "matchups" : tab === "decks" ? "decks" : "more";

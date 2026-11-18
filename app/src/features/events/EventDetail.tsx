@@ -1,8 +1,9 @@
+import { eventMetadata, discoverySocial, SITEMAP_EVENT_CATEGORIES } from "@gatcg/shared";
 import EventReport from "./EventReport";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS, type DeckFormat, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
+import { type DeckFormat, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
 import { useVodsData } from "./data";
@@ -65,13 +66,10 @@ export default function EventDetail() {
   const eventId = Number(id);
   const [searchParams] = useSearchParams();
   const { bundle, loading, error } = useEventBundle(eventId);
-  useDocumentTitle(
-    bundle?.event.name,
-    bundle &&
-      `${bundle.event.host.name} · ${new Date(bundle.event.date).toLocaleDateString()} · ${
-        EVENT_CATEGORY_LABELS[bundle.event.category] ?? bundle.event.category
-      }${bundle.event.season ? ` · ${bundle.event.season.name}` : ""} Grand Archive TCG tournament results.`,
-  );
+  const seo = bundle ? eventMetadata(bundle.event) : undefined;
+  useDocumentTitle(seo?.title, seo?.description, seo?.path,
+    seo && bundle && SITEMAP_EVENT_CATEGORIES.has(bundle.event.category) ? discoverySocial(seo) : undefined);
+
   const vodsData = useVodsData();
   const vods = vodsData?.vods[id] ?? [];
   const omnidexIndex = useOmnidexIndex();
