@@ -133,3 +133,19 @@ test('Desktop reveals retain printed stats and addition provenance', () => {
   assert.equal(catalog.find(card => card.name === 'Pocket Incinerator')?.cost_memory, 0);
   assert.equal(catalog.find(card => card.name === 'Rippling Songwarden')?.life, 4);
 });
+
+test('spoiler sorts preserve set order, stable dates, and source order', () => {
+  const cards = [
+    { name: 'Zebra', setPrefix: 'CBL', addedAt: '2026-11-18' },
+    { name: 'Alpha', setPrefix: 'CBL 1st', addedAt: '2026-11-17' },
+    { name: 'Beta', setPrefix: 'CBL', addedAt: '2026-11-17' },
+    { name: 'Other', setPrefix: 'P26', addedAt: '2026-11-16' },
+  ];
+  for (const sort of ['newest', 'oldest', 'name', 'name-desc'] as const) {
+    assert.deepEqual(groupSpoilers(cards, sort).map(group => group.prefix), ['CBL', 'P26']);
+  }
+  assert.deepEqual(groupSpoilers(cards, 'oldest')[0].cards.map(card => card.name), ['Alpha', 'Beta', 'Zebra']);
+  assert.deepEqual(groupSpoilers(cards, 'name')[0].cards.map(card => card.name), ['Alpha', 'Beta', 'Zebra']);
+  assert.deepEqual(groupSpoilers(cards, 'name-desc')[0].cards.map(card => card.name), ['Zebra', 'Beta', 'Alpha']);
+  assert.deepEqual(cards.map(card => card.name), ['Zebra', 'Alpha', 'Beta', 'Other']);
+});

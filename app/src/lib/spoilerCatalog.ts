@@ -27,7 +27,7 @@ export const spoilerSetName = (prefix: string) => ({
   'Re:C-MST': 'Re:Collection · Beatrice', P26: '2026 Promos',
 }[prefix] ?? prefix);
 
-export function groupSpoilers<T extends { name: string; setPrefix: string; addedAt: string }>(cards: readonly T[]) {
+export function groupSpoilers<T extends { name: string; setPrefix: string; addedAt: string }>(cards: readonly T[], sort: "newest" | "oldest" | "name" | "name-desc" = "newest") {
   const groups = new Map<string, T[]>();
   // Stable ties preserve editorial order within an import batch.
   for (const card of [...cards].sort((a, b) => Date.parse(b.addedAt) - Date.parse(a.addedAt))) {
@@ -36,5 +36,10 @@ export function groupSpoilers<T extends { name: string; setPrefix: string; added
     group.push(card);
     groups.set(key, group);
   }
-  return [...groups].map(([prefix, cards]) => ({ prefix, name: spoilerSetName(prefix), cards }));
+  return [...groups].map(([prefix, cards]) => ({
+    prefix, name: spoilerSetName(prefix),
+    cards: sort === "newest" ? cards : [...cards].sort((a, b) => sort === "oldest"
+      ? Date.parse(a.addedAt) - Date.parse(b.addedAt)
+      : (sort === "name-desc" ? -1 : 1) * a.name.localeCompare(b.name)),
+  }));
 }
