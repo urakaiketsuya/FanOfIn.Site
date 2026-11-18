@@ -2,6 +2,7 @@ import type { GameSubmissionV1 } from "./schema";
 
 export interface Env {
   INGESTION_API_KEY: string;
+  MATCH_INGESTION_KEYS?: string;
   MATCH_DB: D1Database;
 }
 

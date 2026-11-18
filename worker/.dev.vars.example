@@ -1,1 +1,4 @@
 INGESTION_API_KEY="replace-with-local-development-secret"
+# Separate match endpoint: JSON source-ID -> unique random key (minimum 32 characters).
+# Leave empty to keep the endpoint disabled until local credentials are configured.
+MATCH_INGESTION_KEYS='{}'
