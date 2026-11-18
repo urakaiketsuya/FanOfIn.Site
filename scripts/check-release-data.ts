@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { MANIFEST_ENTRIES } from '../pipeline/src/manifest.js';
-import type { ArchetypeCluster, DeckCardIndexData, ReferenceAnalysis } from '@gatcg/shared';
+import { shortHash, type ArchetypeCluster, type DeckCardIndexData, type ReferenceAnalysis } from '@gatcg/shared';
 const root = new URL('../data/', import.meta.url);
 const read = async (file: string) => JSON.parse(await readFile(new URL(file, root), 'utf8'));
 const manifest = await read('manifest.json');
@@ -9,6 +9,20 @@ for (const { key, file } of MANIFEST_ENTRIES) {
   const artifact = await read(file);
   assert.equal(manifest[key], artifact.generatedAt, `Manifest generation mismatch: ${key}`);
   assert.ok(Number.isFinite(Date.parse(artifact.generatedAt)), `Invalid generation: ${key}`);
+}
+const checkedChampions = new Set<string>();
+// Every selectable champion must resolve a population, even before its first event.
+for (const file of ['card-catalog.json', 'reference/card-spoilers-2026-11-01.json']) {
+  const catalog = await read(file);
+  for (const card of catalog.cards as { name: string; types: string[]; subtypes: string[] }[]) {
+    if (!card.types.includes('CHAMPION') || card.subtypes.includes('SPIRIT')) continue;
+    const hash = shortHash(card.name.split(',')[0].trim());
+    if (checkedChampions.has(hash)) continue;
+    checkedChampions.add(hash);
+    const partition = await read(`analysis/champion-decks/${hash}.json`);
+    assert.equal(manifest[`champion-decks-${hash}`], partition.generatedAt, `Missing champion generation: ${card.name}`);
+    assert.ok(Array.isArray(partition.cards.decks) && Array.isArray(partition.popularity.entries), `Invalid champion population: ${card.name}`);
+  }
 }
 const index: DeckCardIndexData = await read('analysis/deck-card-index.json');
 const decks = new Set(index.decks.map(deck => deck.deckId));
